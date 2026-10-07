@@ -1,0 +1,3 @@
+[build]
+  command = "python3 src/build.py --out build_out && cp build_out/full.html public/index.html"
+  publish = "public"
