@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file://'+path.resolve('out_r9/full.html'));await p.waitForTimeout(500);await p.evaluate(()=>go('home'));await p.waitForTimeout(500);
+const n=await p.evaluate(()=>{const cs=[...document.querySelectorAll('.fchip[data-k]')];return cs.map(c=>{c.scrollIntoView({block:'center'});const r=c.getBoundingClientRect();const e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return [c.textContent.trim().slice(0,20),e===c||c.contains(e)]})});console.log(JSON.stringify(n));
+const c=await p.$('.fchip[data-k]');await c.scrollIntoViewIfNeeded();const bb=await c.boundingBox();console.log(bb);await p.mouse.move(bb.x+bb.width/2,bb.y+bb.height/2);await p.waitForTimeout(600);console.log(await p.evaluate(()=>document.querySelector('#fhov')?.matches(':popover-open')));await b.close()})();

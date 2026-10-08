@@ -122,9 +122,12 @@ function drawChat(){const P=PERSONAS[S.persona];$("#msgs").innerHTML=(S.chat.len
  $("#sugs").innerHTML=P.sugg.concat(["Run impact analysis on ASC 842"]).map(s=>`<button class="chip" data-ask="${esc(s)}">${esc(s)}</button>`).join("");$("#msgs").scrollTop=1e6}
 
 /* round 9: hover a formula chip to see its KPI box; Clarity lens swaps chips for inline mini KPI cards */
-(function(){let box=null,t=null;const get=()=>{if(!box){box=document.createElement("div");box.id="fhov";box.setAttribute("popover","manual");box.className="glass fhov";box.setAttribute("role","tooltip");document.body.appendChild(box)}return box};
- const hide=()=>{clearTimeout(t);if(box&&box.matches(":popover-open")){try{box.hidePopover()}catch(e){}}};
- const show=el=>{const id=el.dataset.k;if(!id||!METRICS[id])return;clearTimeout(t);t=setTimeout(()=>{const b=get();b.innerHTML=kpiBox(id);try{b.showPopover()}catch(e){}const r=el.getBoundingClientRect(),w=b.offsetWidth,h=b.offsetHeight;let x=Math.min(Math.max(8,r.left),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);b.style.left=x+"px";b.style.top=y+"px"},160)};
- document.addEventListener("pointerover",e=>{const c=e.target.closest&&e.target.closest(".fchip[data-k],.fkpi[data-k]");if(c&&!c.matches(".fkpi"))show(c)});
- document.addEventListener("pointerout",e=>{const c=e.target.closest&&e.target.closest(".fchip[data-k]");if(c)hide()});
- document.addEventListener("focusin",e=>{const c=e.target.closest&&e.target.closest(".fchip[data-k]");if(c)show(c)});document.addEventListener("focusout",hide);document.addEventListener("click",hide,true);document.addEventListener("keydown",e=>{if(e.key==="Escape")hide()})})();
+(function(){let box=null,t=null,anchor=null,iv=0;const get=()=>{if(!box){box=document.createElement("div");box.id="fhov";box.setAttribute("popover","manual");box.className="glass fhov";box.setAttribute("role","tooltip");document.body.appendChild(box)}return box};
+ const hide=()=>{clearTimeout(t);clearInterval(iv);iv=0;anchor=null;if(box&&box.matches(":popover-open")){try{box.hidePopover()}catch(e){}}};
+ const chipOf=n=>n&&n.closest?n.closest(".fchip[data-k]"):null;
+ const show=el=>{const id=el.dataset.k;if(!id||!METRICS[id])return;if(anchor===el&&box&&box.matches(":popover-open"))return;clearTimeout(t);t=setTimeout(()=>{if(!document.contains(el))return;anchor=el;const b=get();b.innerHTML=kpiBox(id);try{b.showPopover()}catch(e){}const r=el.getBoundingClientRect(),w=b.offsetWidth,h=b.offsetHeight;let x=Math.min(Math.max(8,r.left),innerWidth-w-8),y=r.bottom+8;if(y+h>innerHeight-8)y=Math.max(8,r.top-h-8);b.style.left=x+"px";b.style.top=y+"px";
+  clearInterval(iv);iv=setInterval(()=>{if(!anchor||!document.contains(anchor)||!anchor.matches(":hover,:focus-visible"))hide()},250)},160)};
+ /* the chip can be replaced by a re-render while hovered, so pointerout alone is not enough: any pointer move off a chip closes the box */
+ document.addEventListener("pointermove",e=>{const c=chipOf(e.target);if(c){show(c)}else if(anchor||t)hide()},{passive:true});
+ document.addEventListener("pointerleave",hide);document.addEventListener("scroll",hide,true);window.addEventListener("blur",hide);
+ document.addEventListener("focusin",e=>{const c=chipOf(e.target);if(c)show(c)});document.addEventListener("focusout",hide);document.addEventListener("click",hide,true);document.addEventListener("keydown",e=>{if(e.key==="Escape")hide()})})();
