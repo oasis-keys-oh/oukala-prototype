@@ -124,3 +124,10 @@ Owner assignments are in your prompt. If two modules must interact, use the cont
 - Nav: accordion (one group open), active item scrolled into view, "How to read this menu" popover, parenthetical label suffix dropped in the menu (full label in tooltip), `dev_pipe` now lives under Portfolio and delivery, sidebar auto-collapses between 901 and 1100 px.
 - `lrHTML` "show more" button copy fixed. `.screen` entrance animation is 200 ms and starts at opacity .001 (no blank first second).
 - `window.coreAfter()` runs after each render (tab aria, hero toggle, scroll cues).
+
+## ROUND 9 ADDENDUM (standing rules)
+- CARD CONSISTENCY IS A SHIPPING CHECK. Repeated cards (same class, same row) must share heights and section offsets: badge, value, formula, agent card, toggle row and chips line up across the row. Metric cards use a 7-row subgrid (`.mgrid>.mcard`); every other family is aligned at runtime by `mod_cardalign.js`. Run `NODE_PATH=$(npm root -g) node cardscan.js OUTDIR` with allscreens and spacescan; zero findings is the bar. Absolutely positioned graph nodes are exempt.
+- Formula chips (`fchip`) carry `data-k`; hover or focus shows the KPI box (`kpiBox`), and the Clarity lens swaps every chip for an inline mini KPI card (`kpiMini`). Always emit chips through `fchip`.
+- Drawer controls (Full screen, Close) live in the sticky `.dctl` bar created in kit2.js; never position controls absolutely over drawer content.
+- Large diagrams in drawers fit the width and offer an Enlarge button (drawer full screen) rather than a horizontal scroll.
+- Process steps show how they decide (`PROC.modeOf`: Deterministic, AI reasoning, Human judgment, or Rules then judgment; override with `mode:` on a step). Gate steps open a three-path table (pre-approved, AI-reasoned, human) with factors from `PROC.policyFor(screen)` and a try-it simulator.
