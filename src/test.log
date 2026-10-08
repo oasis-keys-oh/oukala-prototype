@@ -1,0 +1,35 @@
+incident submitted; drawer open after: true
+new inc INC0416 Data team Jordan Lee
+resolve submitted; drawer open after: true
+hold submitted; drawer open after: true
+assign submitted; drawer open after: true
+ilink submitted; drawer open after: true
+problem submitted; drawer open after: true
+known error submitted; drawer open after: false
+change submitted; drawer open after: true
+cab reject submitted; drawer open after: true
+outcome submitted; drawer open after: true
+template submitted; drawer open after: false
+freeze submitted; drawer open after: false
+go/no-go submitted; drawer open after: false
+release submitted; drawer open after: false
+timeline submitted; drawer open after: false
+comms submitted; drawer open after: false
+pir submitted; drawer open after: false
+INC0414 state In progress
+INC0411 own Tom Becker
+INC0407 prb PRB0009
+CHG0315 2026-10-15 -> 2026-10-22
+CHG0320 rel REL-2612
+REL-2612 stage Plan
+roles {"ic":"Tom Becker","tech":"Sam Patel","comms":"Maya Ortiz","scribe":""}
+ask what changes are scheduled this week -> itsm_chg
+ask show open incidents -> itsm_inc
+ask start major incident -> itsm_mi
+ask any known errors for search -> itsm_prb
+ask release readiness -> itsm_rel
+search 5
+resolve MI submitted; drawer open after: true
+declare MI submitted; drawer open after: false
+mi after itsm_mi INC0408
+errors: none

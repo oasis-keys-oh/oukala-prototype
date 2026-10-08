@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/review_build/full.html');await p.waitForTimeout(800);
+await p.evaluate(()=>go('itsm_chg'));await p.waitForTimeout(400);
+await p.click('#view .vsw label:nth-child(2)');await p.waitForTimeout(700);await p.screenshot({path:'aud/chg_cal.png'});
+await p.evaluate(()=>window.scrollTo(0,600));await p.waitForTimeout(300);await p.screenshot({path:'aud/chg_cal2.png'});
+await p.evaluate(()=>window.scrollTo(0,0));
+await p.click('#view .vsw label:nth-child(5)');await p.waitForTimeout(700);await p.evaluate(()=>window.scrollTo(0,350));await p.screenshot({path:'aud/chg_pol.png'});
+console.log(errs);await b.close()})();

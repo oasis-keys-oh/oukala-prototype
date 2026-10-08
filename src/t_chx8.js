@@ -1,0 +1,16 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_chat');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.keyboard.press('Control+j');await p.waitForTimeout(300);console.log('open via kbd',await p.evaluate("CHATX.isOpen()"));
+await p.fill('#chatq','/order laptop for Hana Koval');await p.press('#chatq','Enter');await p.waitForTimeout(1500);
+await p.evaluate("person360('Sam Patel')");await p.waitForTimeout(500);
+console.log('rec ctx',await p.evaluate("CHATX.ctxNow().rec&&CHATX.ctxNow().rec.id"));
+await p.keyboard.press('Control+Shift+J');await p.waitForTimeout(300);console.log('full',await p.evaluate("CHATX.ST.dock.full"));
+await p.keyboard.press('Escape');await p.waitForTimeout(300);
+await p.evaluate("CHATX.save()");await p.waitForTimeout(700);
+await p.reload();await p.waitForTimeout(600);
+console.log('threads after reload',await p.evaluate("CHATX.ST.threads.length+' msgs '+CHATX.cur().msgs.length+' acts '+CHATX.ST.acts.length"));
+console.log('errors',errs);await b.close()})();

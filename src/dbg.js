@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();p.setDefaultTimeout(4000);
+await p.goto('file://'+path.resolve('out_itsm/full.html'));await p.waitForTimeout(500);await p.evaluate(()=>{S.v.itsm_chg=0;go('itsm_chg')});await p.waitForTimeout(600);
+await p.locator('[data-itsm-frz]').first().click();await p.waitForTimeout(400);
+await p.locator('[data-fk="itsm_frz:from"]').fill('2026-10-26');
+console.log(await p.evaluate(()=>JSON.stringify(FORMST.itsm_frz.vals)));
+await p.locator('[data-fk="itsm_frz:n"]').fill('Audit');
+console.log(await p.evaluate(()=>JSON.stringify(FORMST.itsm_frz.vals)));
+await p.locator('[data-fk="itsm_frz:to"]').fill('2026-10-28');
+console.log(await p.evaluate(()=>JSON.stringify(FORMST.itsm_frz.vals)));
+await b.close()})();

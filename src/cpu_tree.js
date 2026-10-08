@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const ctx=await b.newContext({viewport:{width:1440,height:1000}});const p=await ctx.newPage();
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(500);
+if(process.argv[5])await p.evaluate(()=>SCALE.set(true));
+const c=await ctx.newCDPSession(p);await c.send('Profiler.enable');await c.send('Profiler.start');
+await p.evaluate(([id,i,vk])=>{S.v[vk]=+i;go(id)},[process.argv[3],process.argv[4]||0,process.argv[3]==='svc_sla'?'svc_slav':'svc_ocv']);
+const {profile}=await c.send('Profiler.stop');
+const nodes=new Map(profile.nodes.map(n=>[n.id,n]));const par={};profile.nodes.forEach(n=>(n.children||[]).forEach(ch=>par[ch]=n.id));
+const tot={};const dt=profile.timeDeltas;profile.samples.forEach((id,i)=>{let cur=id;const seen=new Set();while(cur){const n=nodes.get(cur);const k=n.callFrame.functionName+':'+n.callFrame.lineNumber;if(!seen.has(k)){seen.add(k);tot[k]=(tot[k]||0)+dt[i]/1000}cur=par[cur]}});
+Object.entries(tot).sort((a,b)=>b[1]-a[1]).slice(0,40).forEach(e=>console.log(Math.round(e[1]),e[0]));await b.close()})();

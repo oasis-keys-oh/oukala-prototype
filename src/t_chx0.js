@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
+(async()=>{const dir=path.resolve(process.argv[2]||'out_chat');fs.mkdirSync(dir+'/shots',{recursive:true});
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(600);
+const ev=async(js)=>{try{return await p.evaluate(js)}catch(e){errs.push('eval '+js.slice(0,60)+': '+e.message)}};
+console.log('chatx',await ev("!!window.CHATX && CHATX.tools.length"));
+await ev("CHATX.open('chat')");await p.waitForTimeout(600);
+await p.screenshot({path:dir+'/shots/c0.png'});
+console.log('errors:',errs.length?errs:'none');await b.close()})();

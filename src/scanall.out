@@ -1,0 +1,9 @@
+[--w 1000 ppl_org tab 5] ## ppl_org 2
+    {"txt":"Prepare Architecture Review Board pre-re","w":280,"lines":2,"broken":1,"ex":"pre-read","cls":"B"}
+    {"txt":"Triage Portal latency alerts (Sev 2 foll","w":280,"lines":2,"broken":1,"ex":"follow-up","cls":"B"}
+total flagged 2
+[--phone ppl_org tab 1] ## ppl_org 2
+    {"txt":"Prepare Architecture Review Board pre-re","w":297,"lines":2,"broken":1,"ex":"pre-read","cls":"B"}
+    {"txt":"Triage Portal latency alerts (Sev 2 foll","w":297,"lines":2,"broken":1,"ex":"follow-up","cls":"B"}
+total flagged 2
+done

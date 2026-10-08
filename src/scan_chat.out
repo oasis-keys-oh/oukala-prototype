@@ -1,0 +1,53 @@
+tab 0 --w 1000
+total flagged 0
+tab 1 --w 1000
+total flagged 0
+tab 2 --w 1000
+total flagged 0
+tab 3 --w 1000
+    {"txt":"Assign, prioritize and resolve incidents","w":104,"lines":12,"broken":0,"ex":"","cls":"TD"}
+    {"txt":"Assign, prioritize and resolve incidents","w":104,"lines":13,"broken":0,"ex":"","cls":"TD"}
+    {"txt":"Assign, prioritize and resolve incidents","w":104,"lines":10,"broken":0,"ex":"","cls":"TD"}
+    {"txt":"Order from the catalog","w":104,"lines":16,"broken":0,"ex":"","cls":"TD"}
+    {"txt":"Read records and answers","w":104,"lines":12,"broken":0,"ex":"","cls":"TD"}
+total flagged 39
+tab 4 --w 1000
+total flagged 0
+tab 5 --w 1000
+total flagged 0
+tab 6 --w 1000
+total flagged 0
+tab 7 --w 1000
+total flagged 0
+tab 0 --w 1440
+total flagged 0
+tab 1 --w 1440
+total flagged 0
+tab 2 --w 1440
+total flagged 0
+tab 3 --w 1440
+total flagged 0
+tab 4 --w 1440
+total flagged 0
+tab 5 --w 1440
+total flagged 0
+tab 6 --w 1440
+total flagged 0
+tab 7 --w 1440
+total flagged 0
+tab 0 --phone
+total flagged 0
+tab 1 --phone
+total flagged 0
+tab 2 --phone
+total flagged 0
+tab 3 --phone
+total flagged 0
+tab 4 --phone
+total flagged 0
+tab 5 --phone
+total flagged 0
+tab 6 --phone
+total flagged 0
+tab 7 --phone
+total flagged 0

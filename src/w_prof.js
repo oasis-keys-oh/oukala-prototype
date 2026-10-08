@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext({viewport:{width:1440,height:1000}});const p=await c.newPage();p.on('pageerror',e=>console.log('E',e.message));
+await p.goto('file://'+path.resolve(process.argv[2]+'/full.html'));await p.waitForTimeout(500);
+await p.evaluate(()=>{SCALE.n.projects=244;SCALE.on=true;S.scale=true;SCALE.build();});
+const cdp=await c.newCDPSession(p);await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:500});
+await p.evaluate(()=>{window.__t=performance.now()});
+await cdp.send('Profiler.start');
+await p.evaluate(s=>{go(s)},process.argv[3]);
+const {profile}=await cdp.send('Profiler.stop');
+const self={};const nodes=new Map(profile.nodes.map(n=>[n.id,n]));const dt=profile.timeDeltas;profile.samples.forEach((id,i)=>{const n=nodes.get(id);const k=n.callFrame.functionName+':'+n.callFrame.lineNumber;self[k]=(self[k]||0)+dt[i]});
+console.log(Object.entries(self).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([k,v])=>k+' '+Math.round(v/1000)).join('\n'));
+await b.close()})();

@@ -1,0 +1,1 @@
+for mode in "--w 1000" "--w 1440" "--phone"; do for i in 5 6 7 8; do echo "svc tab $i $mode"; PRE="S.svc360.sel='svc_search';S.v.s360d=$i;render()" node spacescan_pre.js out_svc360 $mode --only svc_360 2>&1 | tail -12; done; done

@@ -56,6 +56,9 @@ function metricRing(id,size){const m=METRICS[id],st=mstat(m),p=pid(),sz=size||13
 /* ---- drawer (popover with light-dismiss: click outside or Esc closes it) ---- */
 function openDrawer(html){const d=$("#drawer");d.innerHTML=`<button class="btn quiet closebtn" popovertarget="drawer" popovertargetaction="hide" aria-label="Close">Close</button>${html}`;if(d.showPopover){try{d.showPopover()}catch(e){}}else d.setAttribute("open","")}
 function closeDrawer(){const d=$("#drawer");if(d.hidePopover){try{d.hidePopover()}catch(e){}}}
+function connectedHTML(id,nb){const rows=nb.map(x=>{const t=ANODE(x.o);return t?{lab:x.out?"Goes to":"Comes from",row:{id:x.o,t:t.n,sub:x.l,tag:x.out?"out":"in",go:()=>recDrawer(x.o)}}:null}).filter(Boolean);
+ if(window.lrHTML){const by={};rows.forEach(r=>(by[r.lab]=by[r.lab]||[]).push(r.row));return lrHTML({id:"rec-"+id,groups:Object.entries(by).map(([k,v])=>({key:k,label:k,rows:v})),limit:6,search:true,empty:"No connections."})}
+ return `<div class="row">${rows.slice(0,40).map(r=>`<button class="chip" data-rec="${r.row.id}">${esc(r.row.sub)} · ${esc(r.row.t)}</button>`).join("")}</div>`}
 function recDrawer(id){const n=N(id)||KGN.find(x=>x.id===id);if(!n)return;const isK=!!KGN.find(x=>x.id===id);const T=isK?KT[n.t]:TYPES[n.t];
  const nb=ALLE().filter(e=>e[0]===id||e[1]===id).map(e=>({o:e[0]===id?e[1]:e[0],l:e[2],out:e[0]===id}));
  const attrs=n.a||{};const unused=Object.keys(attrs).filter(k=>!ROLE[k]);
@@ -63,21 +66,27 @@ function recDrawer(id){const n=N(id)||KGN.find(x=>x.id===id);if(!n)return;const 
  <p class="story" data-role="story" style="font-size:17px;margin-bottom:10px">${esc(n.story||n.sub||"")}</p>
  <dl class="kv"><dt>Owner</dt><dd data-role="story">${esc(n.owner||"")}</dd>${n.s?`<dt>Status</dt><dd><span class="pill ${stCls(n.s)}">${stTxt(n.s)}</span></dd>`:""}${n.amt!=null?`<dt>Amount</dt><dd class="num" data-role="metric" style="font-size:22px">${money(n.amt)}</dd>`:""}${Object.entries(attrs).filter(([k])=>k!=="Owner").map(([k,v])=>`<dt>${esc(k)}</dt><dd data-role="${ROLE[k]||"none"}">${esc(v)}</dd>`).join("")}</dl>
  ${unused.length?`<div class="hint" style="display:block;background:var(--warn-s);color:var(--warn);margin-bottom:12px"><b>Clarity check:</b> ${unused.map(esc).join(", ")} ${unused.length>1?"are":"is"} in no story and no metric. Could we remove ${unused.length>1?"them":"it"}?</div>`:""}
- <div class="eyebrow" style="margin:12px 0 8px">Connected to</div><div class="row">${nb.map(x=>{const t=ANODE(x.o);return t?`<button class="chip" data-rec="${x.o}">${x.out?"":"← "}${esc(x.l)} · ${esc(t.n)}${x.out?" →":""}</button>`:""}).join("")}</div>
+ <div class="eyebrow" style="margin:12px 0 8px">Connected to</div>${connectedHTML(id,nb)}
  <div class="row" style="margin-top:20px">${N(id)?`<button class="btn primary" data-trace="${id}">Show in Executive trace</button>`:""}<button class="btn" data-impact="${id}">Run impact analysis</button><button class="btn quiet" data-ask="Tell me about ${esc(n.n)}">Ask Oukala</button></div>`);audit("opened record",id)}
 
 /* ---- navigation ---- */
-function navHTML(){const P=PERSONAS[S.persona];const lab=Object.fromEntries(SCREENS.map(s=>[s[0],s]));const fav=Array.from(new Set(["home"].concat(P.nav.filter(k=>lab[k])))).slice(0,5);
- const item=k=>{const s=lab[k];const badge=k==="inv"?'<em class="badge">3</em>':k==="tower"?'<em class="badge">1</em>':"";return `<button class="navi" data-nav="${k}" ${S.screen===k?'aria-current="page"':""} title="${esc(s[1])}">${IC(s[2])}<span>${s[1]}</span>${badge.replace("<em","<b")}</button>`};
+function navHelpBtn(){return `<button class="navhelp" popovertarget="navHelp" title="How to read the navigation"><span aria-hidden="true">?</span> How to read this menu</button>`}
+function navHTML(){const P=PERSONAS[S.persona];const lab=Object.fromEntries(SCREENS.map(s=>[s[0],s]));const fav=["home"];
+ const gOf=k=>(window.NAVGRP&&NAVGRP[k])||lab[k][3];
+ const item=k=>{const s=lab[k];const badge=k==="inv"?'<em class="badge">3</em>':k==="tower"?'<em class="badge">1</em>':"";return `<button class="navi" data-nav="${k}" ${S.screen===k?'aria-current="page"':""} title="${esc(s[1])}">${IC(s[2])}<span>${esc(s[1].replace(/\s*\([^)]*\)\s*$/,""))}</span>${badge.replace("<em","<b")}</button>`};
  const flat=window.matchMedia("(max-width:900px)").matches||($("#railCollapse")&&$("#railCollapse").checked);
  if(flat){const rest=SCREENS.map(s=>s[0]).filter(k=>!fav.includes(k));return fav.concat(rest).map(item).join("")}
- S.navOpen=S.navOpen||{};const cur=(lab[S.screen]||[])[3];
- return fav.map(item).join("")+NAVG.map(([g,gl])=>{const ks=SCREENS.filter(s=>s[3]===g&&!fav.includes(s[0])).map(s=>s[0]);if(!ks.length)return"";const open=S.navOpen[g]!==undefined?S.navOpen[g]:cur===g;return `<details class="navgd" data-ng="${g}" ${open?"open":""}><summary>${gl}</summary>${ks.map(item).join("")}</details>`}).join("")}
+ S.navOpen=S.navOpen||{};const cur=lab[S.screen]?gOf(S.screen):null;
+ const order=(g,ks)=>{const o=(window.NAVORD&&NAVORD[g])||[];return o.filter(k=>ks.includes(k)).concat(ks.filter(k=>!o.includes(k)))};
+ return navHelpBtn()+fav.map(item).join("")+NAVG.map(([g,gl])=>{const ks0=SCREENS.map(s=>s[0]).filter(k=>gOf(k)===g&&!fav.includes(k));const par=window.NAVP&&NAVP[g];const ks=order(g,ks0).filter(k=>k!==par);if(!ks.length&&!par)return"";const open=S.navOpen[g]!==undefined?S.navOpen[g]:cur===g;const sub=(window.NAVSUB&&NAVSUB[g])||{};
+  const head=par&&lab[par]?`<span class="gparent" data-nav="${par}" role="link" tabindex="0" ${S.screen===par?'aria-current="page"':""} title="Open ${esc(lab[par][1])}">${gl}</span>`:gl;
+  return `<details class="navgd" data-ng="${g}" ${open?"open":""}><summary>${head}</summary>${ks.map(k=>(sub[k]?`<span class="navsub">${sub[k]}</span>`:"")+item(k)).join("")}</details>`}).join("")}
 function renderNav(){$("#nav").innerHTML=navHTML();$("#personaName").textContent=PERSONAS[S.persona].n}
-function go(screen,arg){S.screen=screen;if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
+function go(screen,arg){S.screen=screen;S.navOpen={};if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
 let _R={};
-function render(){renderNav();const v=$("#view");v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender()}
-function afterRender(){if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
+function navReveal(){const n=$("#nav"),a=n&&n.querySelector("[aria-current=page]");if(!a)return;const nr=n.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.bottom>nr.bottom-8)n.scrollTop+=ar.bottom-nr.bottom+40;else if(ar.top<nr.top+8)n.scrollTop-=nr.top-ar.top+40}
+function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender()}
+function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */
 function searchIndex(){const out=[];SCREENS.forEach(s=>out.push({g:"Go to",t:s[1],m:"Screen",c:"--accent",f:()=>go(s[0])}));

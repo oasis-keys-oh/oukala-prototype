@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/review_build/full.html');await p.waitForTimeout(800);
+await p.evaluate(()=>go('itsm_inc'));await p.waitForTimeout(300);
+await p.evaluate(()=>{const b=[...document.querySelectorAll('button')].find(x=>/Ask Oukala/.test(x.textContent));b.click()});await p.waitForTimeout(800);
+console.log(await p.evaluate(()=>[...document.querySelectorAll('textarea,input[type=text]')].map(e=>e.id+'|'+e.className+'|'+e.offsetParent).join(' ; ')));
+const send=async(t)=>{await p.fill('#chatq',t);await p.press('#chatq','Enter');await p.waitForTimeout(2000)};
+const a0=await p.evaluate(()=>AUDIT.length);
+await send('Raise a P2 incident: Codification Portal slow for editors, assign to Ops team');
+await p.screenshot({path:'aud/chat1.png'});
+console.log('audit delta',await p.evaluate(()=>AUDIT.length)-a0, await p.evaluate(()=>AUDIT.slice(0,3).map(a=>a.a+':'+a.d).join(' || ')));
+await send('How is an SLA measured?');await p.screenshot({path:'aud/chat2.png'});
+console.log(errs);await b.close()})();

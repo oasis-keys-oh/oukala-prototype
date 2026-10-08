@@ -1,0 +1,115 @@
+== --w 1000 svc_sla tab 0
+total flagged 0
+== --w 1000 svc_sla tab 1
+total flagged 0
+== --w 1000 svc_sla tab 2
+total flagged 0
+== --w 1000 svc_sla tab 3
+total flagged 0
+== --w 1000 svc_sla tab 4
+total flagged 0
+== --w 1000 svc_sla tab 5
+total flagged 0
+== --w 1000 svc_oncall tab 0
+total flagged 0
+== --w 1000 svc_oncall tab 1
+total flagged 0
+== --w 1000 svc_oncall tab 2
+total flagged 0
+== --w 1000 svc_oncall tab 3
+total flagged 0
+== --w 1000 svc_oncall tab 4
+total flagged 0
+== --w 1000 svc_oncall tab 5
+total flagged 0
+== --w 1000 svc_skills tab 0
+total flagged 0
+== --w 1000 svc_skills tab 1
+total flagged 0
+== --w 1000 svc_skills tab 2
+total flagged 0
+== --w 1000 svc_skills tab 3
+total flagged 0
+== --w 1000 svc_skills tab 4
+total flagged 0
+== --w 1000 svc_skills tab 5
+total flagged 0
+== --w 1000 svc_skills tab 6
+total flagged 0
+== --w 1440 svc_sla tab 0
+total flagged 0
+== --w 1440 svc_sla tab 1
+total flagged 0
+== --w 1440 svc_sla tab 2
+total flagged 0
+== --w 1440 svc_sla tab 3
+total flagged 0
+== --w 1440 svc_sla tab 4
+total flagged 0
+== --w 1440 svc_sla tab 5
+total flagged 0
+== --w 1440 svc_oncall tab 0
+total flagged 0
+== --w 1440 svc_oncall tab 1
+total flagged 0
+== --w 1440 svc_oncall tab 2
+total flagged 0
+== --w 1440 svc_oncall tab 3
+total flagged 0
+== --w 1440 svc_oncall tab 4
+total flagged 0
+== --w 1440 svc_oncall tab 5
+total flagged 0
+== --w 1440 svc_skills tab 0
+total flagged 0
+== --w 1440 svc_skills tab 1
+total flagged 0
+== --w 1440 svc_skills tab 2
+total flagged 0
+== --w 1440 svc_skills tab 3
+total flagged 0
+== --w 1440 svc_skills tab 4
+total flagged 0
+== --w 1440 svc_skills tab 5
+total flagged 0
+== --w 1440 svc_skills tab 6
+total flagged 0
+== --phone svc_sla tab 0
+total flagged 0
+== --phone svc_sla tab 1
+    {"txt":"Conditions use real fields from the plat","w":334,"lines":3,"broken":1,"ex":"re-runs","cls":"muted small"}
+total flagged 1
+== --phone svc_sla tab 2
+total flagged 0
+== --phone svc_sla tab 3
+total flagged 0
+== --phone svc_sla tab 4
+total flagged 0
+== --phone svc_sla tab 5
+total flagged 0
+== --phone svc_oncall tab 0
+total flagged 0
+== --phone svc_oncall tab 1
+total flagged 0
+== --phone svc_oncall tab 2
+total flagged 0
+== --phone svc_oncall tab 3
+total flagged 0
+== --phone svc_oncall tab 4
+total flagged 0
+== --phone svc_oncall tab 5
+total flagged 0
+== --phone svc_skills tab 0
+total flagged 0
+== --phone svc_skills tab 1
+total flagged 0
+== --phone svc_skills tab 2
+total flagged 0
+== --phone svc_skills tab 3
+total flagged 0
+== --phone svc_skills tab 4
+total flagged 0
+== --phone svc_skills tab 5
+total flagged 0
+== --phone svc_skills tab 6
+total flagged 0

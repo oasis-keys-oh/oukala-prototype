@@ -1,0 +1,20 @@
+HOLD orgdrag Prepare Architecture Review Board pre-read for the Taxonomy hub
+Rina Kovacs: 93% → 108% · overload
+W3 owner null
+W4 owner null
+W2 owner (expect null) null
+HOLD allocdrag PR1 131
+retag to PR2
+alloc {"PR1":131,"BAU":10} -> {"BAU":10,"PR2":131}
+HOLD bkdrag Taxonomy hub design review
+Aspen room · Wed Oct 7 3 pm: Overlaps Editorial review (2:30 pm to 3:30 pm)
+b3 {"id":"b3","room":"R3","d":6,"s":15,"e":16,"t":"Taxonomy hub design review","att":6,"hy":true,"av":["Display sharing","Microphones","Camera"],"host":"dr","tech":false,"cat":false,"setup":0,"mid":"m5"} -> {"id":"b3","room":"R3","d":6,"s":15,"e":16,"t":"Taxonomy hub design review","att":6,"hy":true,"av":["Display sharing","Microphones","Camera"],"host":"dr","tech":false,"cat":false,"setup":0,"mid":"m5"}
+stages st2,st3,st4,st1,st5,st6
+raised 1
+A5 open -> done
+courses 11
+who is overloaded => 5 people are over capacity this week: Tom Becker (138%), Greg Nolan (117%), Paula Grant (112%), Aaron Whitfield (111%), Wes Hartley (107%).  ppl_org
+book the boardroom Thursday at 2 => Booked the Boardroom on Thu Oct 8 from 2 pm to 3 pm for 6 people, hybrid, with a display. Because it is the Boardroom, AV-1004 asks Kofi Men ppl_av
+who has not done security training => 6 people have not finished Security awareness 2026, which closed Oct 2: Omar Hamid, Dev Rao, Ben Ito, Tess Whitaker, Anil Mehta, Pierce Cald ppl_train
+show the org chart => Here is the org chart: 39 people and 11 AI agents in one tree. Agents appear under the human who owns them, tinted by tier. Expand a team wi ppl_org
+errors []

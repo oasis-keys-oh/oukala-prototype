@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();p.setDefaultTimeout(6000);const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message+' '+(e.stack||'').split('\n')[1]));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+path.resolve('out_flow/full.html'));await p.waitForTimeout(600);const W=ms=>p.waitForTimeout(ms),sd='out_flow/shots/';
+const step=async(n,fn)=>{try{await fn()}catch(e){errs.push('STEP '+n+': '+e.message.split('\n')[0])}};
+await step('list',async()=>{await p.evaluate(()=>go('flw_design'));await W(400);await p.screenshot({path:sd+'t_list.png'})});
+await step('open',async()=>{await p.evaluate(()=>{document.querySelector('[data-wfd-go]')&&0});await p.evaluate(()=>{S.flw&&0});await p.click('[data-bt-row="wfd_list"][data-id="wf_inv"]');await W(500);await p.screenshot({path:sd+'t_edit.png'})});
+await step('select',async()=>{await p.click('[data-wfd-node="AG1"]');await W(300);await p.screenshot({path:sd+'t_insp.png'})});
+for(const t of ['in','out','cond','par','asg','tgt','vis','grd'])await step('tab '+t,async()=>{await p.click('[data-wfd-tab="'+t+'"]');await W(150)});
+await step('test',async()=>{await p.click('[data-wfd-test]');await W(2500);await p.screenshot({path:sd+'t_run.png'})});
+await step('asmt',async()=>{await p.evaluate(()=>go('flw_asmt'));await W(400);await p.screenshot({path:sd+'t_asmt.png'})});
+console.log('errors:',errs.length?errs:'none');process.exit(0)})();

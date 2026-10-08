@@ -7,9 +7,7 @@
 .bud-bad{color:var(--bad);font-weight:700}
 .bud-vl{font-weight:700;fill:var(--ink)}
 .bud-wf{max-width:100%;height:auto}
-.bud-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:900px){.bud-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.bud-tiles{grid-template-columns:minmax(0,1fr)}}
+.bud-tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .bud-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
 @media(max-width:1200px){.bud-board{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.bud-board{grid-template-columns:minmax(0,1fr)}}
@@ -73,3 +71,21 @@ tr[data-bud-ct]:hover td,tr[data-bud-bn]:hover td{background:var(--glass)}
 @media (prefers-reduced-motion:reduce){.bud-meter i,.bud-ln,.bud-mk{transition:none}}
 .views[data-views^="bud"] .pane>*+*{margin-top:18px}
 .views[data-views^="bud"] .pane>.row+.tablewrap,.views[data-views^="bud"] .pane>.row+.grid{margin-top:14px}
+/* round 8: borderless inline fields, right-aligned numerics */
+.bud-num,.fin.bud-num{background:transparent!important;border:0!important;border-bottom:1.5px dotted var(--muted)!important;border-radius:0!important;box-shadow:none!important;width:7ch;padding:2px 0;text-align:right;font:inherit;font-variant-numeric:tabular-nums;color:inherit}
+.bud-num:focus{outline:none;border-bottom:1.5px solid var(--p4)!important}
+.bud-cat-bar{margin:4px 0 8px}
+.bud-tw td.tabular,.bud-tw th:not(:first-child){font-variant-numeric:tabular-nums}
+.bud-ctlcard{display:flex;padding:10px 14px;border-radius:16px;margin-bottom:12px}
+.bud-ctl{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bud-sel{border:0;border-bottom:1.5px dotted var(--muted);background:transparent;font:inherit;font-weight:600;color:var(--ink);padding:4px 2px}
+.bud-seg{display:inline-flex}
+/* invoice rules: values never clip */
+.rule .val input[type=number]{box-sizing:content-box;width:auto!important;min-width:7ch;padding:2px 6px;text-align:right;border-bottom:1.5px dotted var(--muted);-moz-appearance:textfield;appearance:textfield;font-variant-numeric:tabular-nums}
+.rule .val input[type=number]::-webkit-inner-spin-button,.rule .val input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.rule .sentence{white-space:normal}
+.inv-dash{margin-bottom:14px}
+.inv-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--glass2)}
+.inv-bar i{display:block;height:100%}
+.inv-ledger .lrow{display:grid!important;grid-template-columns:minmax(120px,1fr) 2fr auto;align-items:center;gap:10px}
+.inv-ledger .lrow .v{text-align:right;font-variant-numeric:tabular-nums}

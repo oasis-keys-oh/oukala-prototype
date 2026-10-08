@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();
+p.on('console',m=>console.log('C',m.text()));p.on('pageerror',e=>console.log('PE',e.message));
+await p.goto('file://'+path.resolve('out_itsm/full.html'));await p.waitForTimeout(500);
+await p.evaluate(()=>{S.v.itsm_inc=1;go('itsm_inc')});await p.waitForTimeout(600);
+const a=await p.locator('[data-dnd-id="INC0414"]').first().boundingBox(),t=await p.locator('[data-dnd="st:In progress"]').first().boundingBox();console.log(a,t);
+await p.mouse.move(a.x+a.width/2,a.y+a.height/2);await p.mouse.down();await p.mouse.move(a.x+a.width/2+12,a.y+a.height/2+12,{steps:4});
+console.log('dragging',await p.evaluate(()=>document.body.classList.contains('dnding')));
+await p.mouse.move(t.x+t.width/2,t.y+40,{steps:12});await p.waitForTimeout(150);console.log('over',await p.evaluate(()=>document.querySelector('.dnd-over')?.dataset.dnd));await p.mouse.up();await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>S.itsm.inc.find(i=>i.id==='INC0414').st));
+await b.close()})();

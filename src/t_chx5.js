@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_full');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+p.on('pageerror',e=>console.log('PAGEERROR '+e.stack));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate("CHATX.open('chat')");
+await p.fill('#chatq','Order a developer laptop for Hana Koval');await p.press('#chatq','Enter');await p.waitForTimeout(1500);
+console.log(await p.evaluate(()=>{const f=Object.values(CHATX.ST.forms)[0];f.vals.just='x y z needs memory';try{CHATX.submitForm(f.id)}catch(e){return 'EXC '+e.stack}return f.status+' '+JSON.stringify(f.err)+' acts '+CHATX.ST.acts.length}));
+await b.close()})();

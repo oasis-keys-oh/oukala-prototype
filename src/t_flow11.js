@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();p.setDefaultTimeout(6000);const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message+' '+(e.stack||'').split('\n').slice(1,3).join('|')));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+path.resolve('out_flow/full.html'));await p.waitForTimeout(600);const W=ms=>p.waitForTimeout(ms),sd='out_flow/shots/';
+const step=async(n,fn)=>{try{await fn()}catch(e){errs.push('STEP '+n+': '+e.message.split('\n')[0])}};
+await step('appr',async()=>{await p.evaluate(()=>go('flw_appr'));await W(500);await p.screenshot({path:sd+'t_appr.png'})});
+await step('apprrow',async()=>{await p.click('[data-apx-view="all"]');await W(400);await p.click('[data-bt-row][data-id="AP-2104"]');await W(500);await p.screenshot({path:sd+'t_appr_d.png'})});
+await step('apprform',async()=>{await p.click('[data-apx-act="AP-2104|return"]');await W(400);await p.screenshot({path:sd+'t_appr_f.png'})});
+await step('asmt',async()=>{await p.evaluate(()=>{closeDrawer();go('flw_asmt')});await W(500);await p.screenshot({path:sd+'t_asmt.png'})});
+await step('asmbld',async()=>{await p.click('[data-asm-tab="bld"]');await W(400);await p.screenshot({path:sd+'t_asmb.png'})});
+await step('asmtry',async()=>{await p.click('[data-asm-try]');await W(400);await p.click('[data-asm-prefill]');await W(300);await p.screenshot({path:sd+'t_asmt_take.png'})});
+console.log('errors:',errs.length?errs:'none');process.exit(0)})();

@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_full');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate("CHATX.open('chat')");
+await p.fill('#chatq','Order a developer laptop for Hana Koval');await p.press('#chatq','Enter');await p.waitForTimeout(1500);
+console.log(await p.evaluate("JSON.stringify(Object.values(CHATX.ST.forms).map(f=>({v:f.vals,e:f.err,s:f.status})))"));
+const ids=await p.$$eval('[data-cx-f]',e=>e.map(x=>x.dataset.cxF));console.log(ids);
+await p.fill('[data-cx-f$=":just"]','Needs more memory for builds');
+await p.evaluate("document.addEventListener('click',e=>{window._ck=(e.target.outerHTML||'').slice(0,160)},true)");await p.waitForTimeout(400);console.log(await p.evaluate(()=>{const b=document.querySelector('[data-cx-do^="form-submit"]');const r=b.getBoundingClientRect();const e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return JSON.stringify(r)+' top='+(e&&e.outerHTML.slice(0,100))}));await p.click('[data-cx-do^="form-submit"]');await p.waitForTimeout(2500);
+console.log(await p.evaluate("JSON.stringify(Object.values(CHATX.ST.forms).map(f=>({v:f.vals,e:f.err,s:f.status})))"));
+console.log(await p.evaluate('window._ck'));console.log(errs);await p.screenshot({path:dir+'/shots/f_form_err.png'});await b.close()})();

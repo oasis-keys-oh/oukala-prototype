@@ -1,0 +1,1 @@
+ function renderTpl(t,v){return String(t||"").replace(/\{\{\s*([\w.]+)\s*\}\}/g,(m,k)=>TVARS[k]!==undefined?`<mark class="svc-var">${E(TVARS[k])}</mark>`:`<mark class="svc-var bad" title="Unknown variable">${E(m)}</mark>`)}

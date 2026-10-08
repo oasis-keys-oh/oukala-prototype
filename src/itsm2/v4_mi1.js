@@ -1,0 +1,2 @@
+const MROLES=[["ic","Incident commander","Owns decisions and runs the bridge"],["tech","Technical lead","Directs diagnosis and the fix"],["comms","Communications lead","Approves and sends every update"],["scribe","Scribe","Keeps the timeline and actions"]];
+const KCOL={Alert:"--bad-f",Decision:"--metric-f",Finding:"--story-f",Hypothesis:"--warn-f",Action:"--good-f",Comms:"--p5",Update:"--faint",Restored:"--good-f"};

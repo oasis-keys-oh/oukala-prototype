@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();p.on('pageerror',e=>console.log('E',e.message));
+const d=path.resolve(process.argv[2]);await p.goto('file://'+d+'/full.html');await p.waitForTimeout(500);
+await p.evaluate(()=>go('ims'));await p.waitForTimeout(900);
+const t=await p.$$eval('button,label',els=>els.filter(e=>/^Milestones$/.test(e.textContent.trim())).map(e=>e.outerHTML.slice(0,120)));console.log(t);
+await p.click('text=/^Milestones$/');await p.waitForTimeout(900);
+await p.screenshot({path:d+'/shots/ms.png'});
+await p.evaluate(()=>{const r=document.querySelector('[data-task]');});
+await p.click('text=Funding approved by the steering committee',{timeout:2000}).catch(e=>console.log('norow'));await p.waitForTimeout(900);
+await p.waitForTimeout(2500);await p.screenshot({path:d+'/shots/ms2.png'});await b.close()})();

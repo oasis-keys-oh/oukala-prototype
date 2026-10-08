@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_oncall');const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+p.on('pageerror',e=>console.log('PAGEERROR',e.message));p.on('console',m=>console.log('c:',m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate("go('svc_oncall');S.v.svc_ocv=1;S.oc.rota='R2';S.oc.map='week';S.oc.tier='Primary';render();window.scrollTo(0,300)");await p.waitForTimeout(400);
+const c1=await p.$('[data-dnd="R2|Primary|1"] .oc-chip');const c2=await p.$('[data-dnd="R2|Primary|3"]');
+const a=await c1.boundingBox(),d=await c2.boundingBox();console.log(a,d);
+await p.mouse.move(a.x+40,a.y+a.height/2);await p.mouse.down();await p.mouse.move(a.x+60,a.y+a.height/2+10,{steps:4});
+console.log('dragging?',await p.evaluate("document.body.classList.contains('dnding')"));
+await p.mouse.move(d.x+60,d.y+d.height/2,{steps:10});await p.mouse.up();await p.waitForTimeout(500);
+console.log('ov',await p.evaluate("JSON.stringify(S.oc.ov)"));console.log(await p.evaluate("[document.querySelectorAll(\".dnd-ghost\").length,document.querySelectorAll(\".dnd-ph\").length,document.body.className]"));await p.waitForTimeout(1500);await p.screenshot({path:dir+"/shots/dnd.png"});await b.close()})();

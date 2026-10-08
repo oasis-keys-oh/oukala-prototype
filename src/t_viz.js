@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());const p=await b.newPage({viewport:{width:1440,height:900}});const errs=[];p.on('console',m=>{if(m.type()==='error'||m.type()==='warning')errs.push(m.text().slice(0,200))});p.on('pageerror',e=>errs.push('PE '+e.stack.slice(0,500)));
+await p.goto('file://'+process.cwd()+'/out_viz/full.html');await p.waitForTimeout(800);
+const r=await p.evaluate(()=>{const out=[];const V=window.VIZ;if(!V)return 'noVIZ';for(const id of Object.keys(V.types)){try{const d=document.createElement('div');d.style.width='480px';document.body.appendChild(d);V.render(d,V.demoSpec(id),null,{});const h=d.innerHTML;if(h.length<300||/cannot be drawn|Cannot draw/.test(h))out.push(id+': '+(d.textContent||'').slice(0,100));d.remove()}catch(e){out.push(id+' EXC '+e.message)}}return {n:Object.keys(V.types).length,bad:out}});
+console.log(JSON.stringify(r,null,1));console.log(errs.slice(0,15).join('\n'));await b.close()})();

@@ -1,3 +1,5 @@
 build_out/
 public/index.html
 .DS_Store
+__pycache__/
+*.bak*

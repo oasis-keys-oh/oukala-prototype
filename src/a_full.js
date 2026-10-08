@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file://'+process.cwd()+'/review_build/full.html');await p.waitForTimeout(800);
+await p.evaluate(()=>{go('itsm_inc');});await p.waitForTimeout(300);
+await p.evaluate(()=>{const r=[...document.querySelectorAll('#view tr')].find(t=>/INC/.test(t.textContent)&&t.querySelectorAll('td').length);r.click()});await p.waitForTimeout(500);
+await p.screenshot({path:'aud/inc_drawer.png'});
+console.log(await p.evaluate(()=>{const d=document.getElementById('drawer');const rc=d.getBoundingClientRect();return {w:rc.width,btn:!!d.querySelector('.dexpand')}}));
+await p.click('.dexpand');await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>{const d=document.getElementById('drawer');const rc=d.getBoundingClientRect();return {w:rc.width,cls:d.className,txt:d.querySelector('.dexpand').textContent}}));
+await p.screenshot({path:'aud/inc_drawer_full.png'});
+await b.close()})();

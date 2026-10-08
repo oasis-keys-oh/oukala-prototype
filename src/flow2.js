@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_budget');const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:2400}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>m.type()==='error'&&errs.push(m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate(()=>{S.v.budv=1;go('bud_over')});await p.waitForTimeout(300);
+const s2=await p.locator('[data-dnd-id="PR1-HW"]').boundingBox();const t=await p.locator('[data-dnd="PR3"]').boundingBox();
+await p.mouse.move(s2.x+60,s2.y+30);await p.mouse.down();await p.mouse.move(s2.x+80,s2.y+50,{steps:4});await p.mouse.move(t.x+100,t.y+40,{steps:12});await p.mouse.up();await p.waitForTimeout(400);
+await p.fill('[data-fk="bud_xfer:why"]','Portal needs it');await p.screenshot({path:dir+'/shots/f_xfer.png'});await p.click('[data-fsubmit="bud_xfer"]');await p.waitForTimeout(300);
+console.log('HW',await p.evaluate(()=>S.bud.lines.find(l=>l.id==='PR1-HW').appr),'PR3',await p.evaluate(()=>S.bud.lines.filter(l=>l.p==='PR3').reduce((a,l)=>a+l.appr,0)),await p.evaluate(()=>S.bud.xf.length));
+await p.evaluate(()=>go('bud_ven'));await p.click('.hero [data-bud-newvend]');await p.waitForTimeout(300);await p.fill('[data-fk="bud_nvend:n"]','Harbor Analytics');await p.fill('[data-fk="bud_nvend:cat"]','Analytics consulting');await p.click('[data-fchip^="bud_nvend:own:Dev"]');await p.screenshot({path:dir+'/shots/f_vend.png'});await p.click('[data-fsubmit="bud_nvend"]');await p.waitForTimeout(300);console.log('vend',await p.evaluate(()=>S.bud.vend.length),await p.evaluate(()=>[...document.querySelectorAll('.fld.bad')].map(e=>e.textContent.slice(0,30)),await p.evaluate(()=>JSON.stringify(FORMST.bud_nvend.vals))));
+await p.evaluate(()=>{S.v.budx=2;go('bud_ven')});await p.click('[data-bud-decide="CT-107"]');await p.waitForTimeout(300);await p.click('[data-fai^="bud_dec:why"]');await p.click('[data-fsubmit="bud_dec"]');await p.waitForTimeout(300);console.log('renew',await p.evaluate(()=>METRICS.m_renew.cur));
+console.log(errs);await b.close()})();

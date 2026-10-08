@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());const p=await (await b.newContext({viewport:{width:400,height:820}})).newPage();
+await p.goto('file://'+path.resolve(process.argv[2])+'/full.html');await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>{go("itom_run");S.v.obs_run=3;render();const w=innerWidth;return [...document.querySelectorAll("#view *")].filter(e=>{const r=e.getBoundingClientRect();if(r.right<=w+1)return false;let q=e.parentElement;while(q&&q.id!=="view"){const o=getComputedStyle(q).overflowX;if(o==="auto"||o==="scroll"||o==="hidden")return false;q=q.parentElement}return true}).slice(0,6).map(e=>e.tagName+"."+e.className+" "+Math.round(e.getBoundingClientRect().right)+" "+(e.innerText||"").slice(0,40)).join("\n")}));await b.close()})();

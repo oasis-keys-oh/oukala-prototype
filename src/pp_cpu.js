@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({reducedMotion:'reduce',viewport:{width:1440,height:1000}});const p=await c.newPage();
+await p.goto('file://'+path.resolve('out_fix_people/full.html'));await p.waitForTimeout(400);
+await p.evaluate(()=>{SCALE.set(true);go('home');S.pp2.tab.ppl_org=+(process_tab||1)}).catch(()=>{});
+await p.evaluate(()=>{S.pp2.tab.ppl_org=1});
+const cdp=await c.newCDPSession(p);await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:200});await cdp.send('Profiler.start');
+await p.evaluate(()=>go('ppl_org'));
+const {profile}=await cdp.send('Profiler.stop');
+const self={};const dt=profile.timeDeltas;const idIdx={};profile.nodes.forEach(n=>idIdx[n.id]=n);
+profile.samples.forEach((id,i)=>{const n=idIdx[id];const k=n.callFrame.functionName+':'+n.callFrame.lineNumber;self[k]=(self[k]||0)+dt[i]});
+console.log(Object.entries(self).sort((a,b)=>b[1]-a[1]).slice(0,14).map(([k,v])=>k+' '+Math.round(v/1000)).join('\n'));await b.close()})();

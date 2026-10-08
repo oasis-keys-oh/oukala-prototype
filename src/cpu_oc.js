@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const ctx=await b.newContext({viewport:{width:1440,height:1000}});const p=await ctx.newPage();
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(500);
+const c=await ctx.newCDPSession(p);await c.send('Profiler.enable');await c.send('Profiler.start');
+await p.evaluate(id=>{go(id)},process.argv[3]||'svc_oncall');
+const {profile}=await c.send('Profiler.stop');
+const self={};const nodes=new Map(profile.nodes.map(n=>[n.id,n]));const dt=profile.timeDeltas;
+profile.samples.forEach((id,i)=>{const n=nodes.get(id);const k=n.callFrame.functionName+':'+n.callFrame.lineNumber+':'+n.callFrame.columnNumber+':'+n.callFrame.url.split('/').pop();self[k]=(self[k]||0)+dt[i]/1000});
+Object.entries(self).sort((a,b)=>b[1]-a[1]).slice(0,18).forEach(e=>console.log(Math.round(e[1]),e[0]));await b.close()})();

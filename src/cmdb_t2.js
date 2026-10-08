@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:1000}})).newPage();p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file://'+process.argv[2]+'/full.html');await p.waitForTimeout(500);await p.evaluate(()=>go('itom_graph'));for(const t of [200,600,1500,3000]){await p.waitForTimeout(t);console.log(t,await p.evaluate(()=>{const e=document.querySelector("#view").firstElementChild;return getComputedStyle(e).opacity+" "+getComputedStyle(e).animationName+" "+e.className}))}
+console.log(await p.evaluate(()=>{const v=document.querySelector('#view');const c=document.getElementById('itomCv');const r=c.getBoundingClientRect();return JSON.stringify({sh:v.scrollHeight,st:v.scrollTop,ch:v.clientHeight,top:r.top,h:r.height,sc:getComputedStyle(v.firstElementChild).opacity})}));
+await p.evaluate(()=>document.getElementById('itomCv').scrollIntoView({block:'center'}));await p.waitForTimeout(500);await p.screenshot({path:'out_fix_cmdb/shots/g.png'});await b.close()})();

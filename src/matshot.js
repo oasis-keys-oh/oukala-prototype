@@ -1,0 +1,6 @@
+const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
+(async()=>{const a=process.argv.slice(2),dir=path.resolve(a[0]),tab=+a[1],w=+a[2];const dark=a.includes('--dark'),phone=w<500,scale=a.includes('--scale');const ev=a.includes('--eval')?a[a.indexOf('--eval')+1]:null;
+fs.mkdirSync(dir+'/shots',{recursive:true});const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:w,height:1000},colorScheme:dark?'dark':'light'})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(500);if(scale)await p.evaluate(()=>SCALE.set(true));await p.evaluate(t=>{S.v.matv=t;go("exe_mat")},tab);await p.waitForTimeout(400);if(ev){await p.evaluate(ev);await p.waitForTimeout(400)}
+const ov=await p.evaluate(()=>{const v=document.querySelector('#view');return v.scrollWidth-v.clientWidth});
+const f=dir+'/shots/mat-'+tab+'-'+w+(dark?'-dark':'')+(scale?'-scale':'')+(ev?'-ev':'')+'.png';await p.screenshot({path:f,fullPage:true});console.log(f,'overflow',ov,errs);await b.close()})();

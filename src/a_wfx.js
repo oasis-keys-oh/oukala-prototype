@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+process.cwd()+'/review_build/full.html');await p.waitForTimeout(800);
+console.log(await p.evaluate(()=>{const d=WFX.defs||{};const arr=Array.isArray(d)?d:Object.values(d);const g=WFX.reg;return JSON.stringify({defsType:Array.isArray(d)?'arr':typeof d,n:arr.length,sample:arr.slice(0,3).map(x=>Object.keys(x).join(',')),names:arr.map(x=>x.id||x.name).filter(x=>/lap|onboard|onbo|catalog|cat_/i.test(String(x))).slice(0,20)})}));
+console.log(await p.evaluate(()=>JSON.stringify(Object.keys(WFX))));
+const t=await p.evaluate(()=>{go('flw_design');return document.querySelector('#view').innerText});
+console.log((t.match(/laptop[^\n]*/gi)||[]).slice(0,5),(t.match(/onboard[^\n]*/gi)||[]).slice(0,5));
+const t2=require('fs').readFileSync('aud/txt/flw_design__0first.txt','utf8');console.log('laptop' , /laptop/i.test(t2), 'workflows 92:', (t2.match(/\d+ workflows/)||[])[0]);
+console.log(await p.evaluate(()=>PROC.defs&&Object.keys(PROC.defs).length));
+console.log(errs);await b.close()})();

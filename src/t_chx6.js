@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_full');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+p.on('pageerror',e=>console.log('PAGEERROR '+e.stack));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate("window._cl=[];['pointerdown','mousedown','mouseup','click'].forEach(t=>document.addEventListener(t,e=>_cl.push(t+':'+(e.target.tagName)+':'+(e.target.className||'').toString().slice(0,20)),true))");
+await p.evaluate("CHATX.open('chat')");
+await p.fill('#chatq','Order a developer laptop for Hana Koval');await p.press('#chatq','Enter');await p.waitForTimeout(1500);
+await p.fill('[data-cx-f$=":just"]','Needs more memory for builds');await p.waitForTimeout(500);
+await p.evaluate("_cl.length=0");
+const bx=await p.$('[data-cx-do^="form-submit"]');await bx.scrollIntoViewIfNeeded();const r=await bx.boundingBox();console.log(r);
+await p.mouse.click(r.x+r.width/2,r.y+r.height/2);await p.waitForTimeout(800);
+console.log(await p.evaluate("_cl.join(' | ')"), await p.evaluate("Object.values(CHATX.ST.forms)[0].status"));
+await b.close()})();

@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_full');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+p.on('pageerror',e=>console.log('PAGEERROR '+e.stack));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(400);
+await p.evaluate("CHATX.open('chat')");
+await p.fill('#chatq','Log an incident: portal is slow for editors');await p.press('#chatq','Enter');await p.waitForTimeout(1500);
+await p.click('[data-cx-do^="plan-run"]');await p.waitForTimeout(2500);
+const info=()=>p.evaluate(()=>{const a=CHATX.ST.acts[0];return a.status+' '+a.steps.map(s=>s.kind+':'+s.status+':'+!!(s.res&&s.res.undo)+':'+s.undone).join(' | ')+' toast='+(document.querySelector('.toast')||{}).textContent});
+console.log(await info());
+await p.click('[data-cx-do^="plan-undo"]');await p.waitForTimeout(1500);console.log(await info());
+await b.close()})();
