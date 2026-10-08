@@ -341,3 +341,7 @@ a:focus-visible,button:focus-visible,[role=button]:focus-visible,[tabindex]:focu
 .mc-v{align-items:flex-end;justify-content:space-between}.mc-n{display:flex;flex-direction:column;gap:4px;min-width:0}.mc-v .muted{padding-bottom:0}
 [data-itsm-fishbox]{scroll-margin-top:70px}
 #drawer.dfull [data-dexpand-fish]{display:none}
+/* non-data cards in the metric grid (new metric form, show more) are not on the seven-row subgrid */
+.mgrid>.mcard.mc-x{display:flex;flex-direction:column;grid-template-rows:none;grid-row:span 7;gap:12px;justify-content:flex-start}
+.mgrid>.mcard.mc-x[style*="place-items"]{display:grid;justify-content:normal}
+.mgrid>.mcard.mc-x[style*="place-items"]{align-content:center;gap:14px}
