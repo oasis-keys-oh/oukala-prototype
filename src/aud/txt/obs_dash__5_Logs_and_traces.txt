@@ -1,0 +1,127 @@
+DASHBOARDS AND METRICS
+Every metric, every host, one place
+
+Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incident.
+
+ƒ Mean time to detect (MTTD)
+ƒ Observability coverage
+Add a tile
+SRE: SLOs and error budgets
+OpenTelemetry
+Overview
+Metrics explorer
+Dashboards
+Hosts and CIs
+Network map
+Logs and traces
+LOG PATTERNS
+12
+templates found in 24 hours of lines
+ERROR PATTERNS
+6
+8,963 error lines
+NEW PATTERNS TODAY
+1
+never seen before
+TRACES SAMPLED
+4
+2 with errors
+Error clusters
+Related error patterns grouped by likely cause. Each cluster links to the correlation group it explains.
+Database connection pool exhausted
+10,550 lines
+
+The Codification Platform waits for database connections; slow queries and timeouts follow.
+
+LP1
+LP2
+Group G1
+Search indexing backlog
+1,399 lines
+
+The indexer cannot write checkpoints, so the queue grows.
+
+LP3
+LP4
+Group G2
+Nightly batch gateway errors
+95 lines
+
+Every night around 01:00 the taxonomy gateway returns 502.
+
+LP5
+Log patterns
+The platform clusters raw lines into patterns so ten thousand lines read as a dozen rows. Search by text, service or level. Full text search and retention stay in Azure Log Analytics.
+Filter patterns
+Level
+All
+3
+Service
+All
+7
+LEVEL	PATTERN	SERVICE	LINES, 24 H▼	TREND
+INFO	health probe ok	Codification Portal	12,549	 steady
+ERROR	Timeout expired waiting for a connection from the pool (codif-sql-prd)	Codification Platform	8,439	 rising
+INFO	publish job {id} completed in {s} s	Codification Platform	2,142	 steady
+WARN	Slow query {ms} ms: SELECT … FROM paragraphs WHERE standard_id = @p0	Codification Platform	2,111	 rising
+WARN	queue depth {n} exceeds 5000	Search and indexing	1,073	 rising
+ERROR	indexer: checkpoint write failed, retrying (PRB0007)	Search and indexing	326	 rising
+WARN	CA-007: legacy authentication blocked for {user}	Identity (Entra ID)	183	 rising
+ERROR	502 Bad Gateway from upstream taxonomy-api	Integration hub	95	 steady
+ERROR	TLS handshake failed for client {ip}	Codification Portal	52	 rising
+ERROR	Journal post rejected: period already locked	Lease subledger (ERP)	40	 steady
+WARN	backup job warning: retry {n} of 3	Contract Repository	20	 steady
+ERROR	NullReferenceException in EditorSession.Save() New today	Codification Platform	11	 rising
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Trace explorer
+A trace follows one request through every service. Bars are spans drawn to scale. Red marks the span that dominates the time or fails.
+GET /standards/ISO-9001/clau · 6.8 s
+GET /standards/ISO-9001/clau · 420 ms
+POST /editor/draft/save · 30.0 s
+GET /v1/taxonomy/terms (01:1 · 15.0 s
+
+Event Correlator · 84%
+
+Slow request during the 09:08 incident. 4.83 s of the 6.84 s is one database query waiting for a connection.
+
+0.0 s
+1.7 s
+3.4 s
+5.1 s
+6.8 s
+portal-web: GET /standards/…
+6.8 s
+codification-platform: GET /api/
+6.7 s
+entra-id: validate token
+70 ms
+codif-sql-prd: SELECT paragrap
+4.8 s
+search-api: GET /related
+1.1 s
+render clause view
+700 ms
+Failed or dominant span
+Portal
+Codification Platform
+Other services
+How a metric reaches a dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Agents, Azure Monitor, SNMP and logs feed the metric model.
+AUTOMATIC
+Store and roll up
+Raw samples are rolled up by minute, 15 minutes and hour.
+PERSON
+Explore
+Compare any CIs and metrics.
+PERSON
+Build a dashboard
+Pick tiles, drag them into place, save.
+PERSON
+Share and review
+Dashboards are reviewed monthly in the service review.

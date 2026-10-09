@@ -1,0 +1,116 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+Author a maturity model
+Name it, write what each level means, then list capabilities with where we are and where we want to be. Publishing adds it to the library with an AI mapping to our objectives and services.
+Suggest levels and capabilities
+Model name
+*
+Plain English. It appears everywhere the model is used.
+Owner
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Marco Ellis
+Hana Koval
+Ravi Menon
+Triage Agent
+PMO Agent
+Northwind Managed Services
+What does this model measure?
+Levels
+3 levels. Each level needs a name and the evidence that shows you are there.
+1
+2
+3
+Add level
+Remove last level
+Capabilities
+0 so far. Targets are levels from 1 to 3.
+CAPABILITY	NOW	YEAR 1	YEAR 3	YEAR 5	
+No capabilities yet. Add one or use Suggest.
+Add capability
+Preview and publish
+The ladder below is exactly what people will see in the model library.
+1
+Level 1
+
+Describe the starting point
+
+2
+Level 2
+
+No criteria yet
+
+3
+Level 3
+
+No criteria yet
+
+Publish model
+Add at least one capability. Give it a name.
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

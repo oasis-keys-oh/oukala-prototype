@@ -1,0 +1,108 @@
+SERVICE MANAGEMENT · PROBLEMS
+Fix the cause, not the symptom
+
+5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.
+
+New problem
+New known error
+ƒ Repeat incident rate
+ƒ Known error reuse
+ITIL 5
+KCS v6
+Triage Agent · 80%
+Overview
+Fishbone and RCA
+Link incidents
+Known error database
+Trends
+Drag an incident onto the problem that explains it. Dragging it back to the pool unlinks it. 8 open incidents have no problem yet. Showing the highest priority 12 and the 8 costliest problems; the list on the Overview tab holds the rest.
+Unlinked open incidents
+8
+INC0407
+P2
+Payment export from lease subledger is missing two columns
+Lease subledger (ERP)
+INC0417
+P2
+Board pack site returns 403 for two directors
+Email and collaboration (M365)
+INC0416
+P2
+Executive laptop cannot join Teams meetings before the 15:00 call
+Endpoint management (Intune)
+INC0415
+P3
+Search results page is blank for Safari users
+Search and indexing
+INC0411
+P3
+VPN drops every 20 minutes for remote editors
+Network and VPN
+INC0414
+P3
+Portal TLS certificate expires in 9 days
+Codification Portal
+INC0406
+P4
+Floor 3 print queue stuck
+Endpoint management (Intune)
+INC0410
+P4
+Teams meeting recordings not reaching First Officer
+Email and collaboration (M365)
+PRB0010 Portal web tier saturates under editor load
+2
+INC0412
+P2
+Codification Portal slow for editors (page loads over 6 seconds)
+Codification Platform
+INC0413
+P3
+Editors cannot save drafts: timeout on save
+Codification Platform
+PRB0007 Search indexer builds miss delta updates (Lu
+1
+INC0408
+P3
+Search returns outdated paragraphs after interim indexer build
+Search and indexing
+PRB0008 Taxonomy API connection pool exhausted durin
+1
+INC0402
+P3
+Taxonomy API returns 502 during the nightly batch
+Data platform
+PRB0009 Lease subledger period lock race rejects val
+1
+INC0405
+P2
+Lease subledger rejects posting: period already locked
+Lease subledger (ERP)
+PRB0012 Large file uploads time out in Contract Repo
+1
+INC0409
+P3
+Contract Repository upload fails for PDFs over 50 MB
+Contract Repository
+Problem process (ITIL 5 Support and Evolve)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AI AGENT
+Detect a pattern
+An agent groups repeat incidents by service and text and proposes a problem.
+PERSON
+Assess and prioritize
+Rank by repeats times people affected.
+PERSON
+Root cause analysis
+Fishbone to find contributing causes by category, then five whys to the root.
+PERSON
+Publish known error
+Record the workaround and symptoms so the desk can use them today.
+APPROVAL GATE
+Fix through change
+Raise a change, a knowledge article or a demand for the permanent fix.
+AUTOMATIC
+Verify and close
+Confirm repeats stopped, retire the known error.

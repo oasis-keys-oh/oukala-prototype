@@ -1,0 +1,84 @@
+VENDORS AND CONTRACTS
+Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days
+
+Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepted. Cobalt Security must be told by Oct 16 if you do not want to renew, and Apex Print by Nov 1.
+
+ƒ Renewals needing a decision in 90 days
+ƒ Three-way match rate
+ƒ Vendor performance index
+New purchase order
+New contract
+New vendor
+Vendors
+Contracts
+Renewals
+SOWs and rates
+Purchase orders
+New contract
+Select a row for terms, SLAs, obligations, milestones, invoices and POs.
+CONTRACT	VENDOR	TERM	VALUE	PAID	NEXT RENEWAL EVENT	STATUS
+CT-101
+Northwind Cloud master services agreement
+	Northwind Cloud	Jan 1 2026 to Dec 31 2028	$3,150,000	$740,000
+23% of value
+	Term end
+Dec 31, 2028
+	Active
+CT-102
+Northwind storage add-on order
+	Northwind Cloud	Jun 1 2026 to May 31 2027	$60,000	$18,000
+30% of value
+	Term end
+May 31, 2027
+	Active
+CT-103
+Lumen SOW-3 search indexer
+	Lumen Data Partners	Jun 1 2026 to Jan 29 2027	$250,000	$175,000
+70% of value
+	Term end
+Jan 29, 2027
+	Decide in 85 days
+CT-104
+Lumen SOW-4 taxonomy data engineering
+	Lumen Data Partners	Mar 1 2026 to Mar 31 2027	$655,000
+incl. $45,000 change order
+	$412,000
+63% of value
+	Term end
+Mar 31, 2027
+	Active
+CT-105
+Microsoft Enterprise Agreement (M365 E5, Azure, Entra ID)
+	Microsoft	Jul 1 2025 to Jun 30 2028	$1,236,000	$824,000
+67% of value
+	Annual true-up
+Jul 1, 2027
+	Active
+CT-106
+Apex Print annual services
+	Apex Print	Jan 1 2026 to Dec 31 2026	$48,000	$31,000
+65% of value
+	Term end
+Dec 31, 2026
+	Decide in 26 days
+CT-107
+Cobalt Security penetration test retainer
+	Cobalt Security	Nov 16 2025 to Nov 15 2026	$36,000	$27,000
+75% of value
+	Term end
+Nov 15, 2026
+	Decide in 10 days
+CT-108
+Brightline Staffing contract engineer MSA
+	Brightline Staffing	Feb 1 2026 to Jan 31 2027	$180,000	$129,000
+72% of value
+	Term end
+Jan 31, 2027
+	Decide in 87 days
+CT-109
+LegacyDocs Contract Repository support
+	LegacyDocs Inc.	Apr 1 2025 to Mar 31 2027	$192,000	$144,000
+75% of value
+	Term end
+Mar 31, 2027
+	Decide in 86 days

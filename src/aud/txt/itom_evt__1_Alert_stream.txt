@@ -1,0 +1,167 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+OPEN
+19
+not yet taken
+ACKNOWLEDGED
+0
+someone is on it
+COLLAPSED DUPLICATES
+7,965
+7,999 raw events to 34 alerts
+SUPPRESSED BY WINDOWS
+1
+maintenance windows in force
+MARKED FALSE POSITIVE
+0
+in the last 24 hours
+
+Deduplication key is rule + CI + state. The busiest alert, Memory 92.7% on data-gateway, arrived 410 times as raw events and shows once here with a count, a first seen and a last seen time.
+
+Sev 1 and 2: user impact or imminent
+Sev 3: degraded
+Sev 4: informational
+Alert stream
+Newest first. Search, filter by severity, state, service or rule, or group the rows. Select a row for the full alert, its duplicates, its correlation group and what automation would do.
+sevn
+All
+4
+State
+All
+3
+Service
+All
+11
+rulen
+All
+12
+Group by 
+None
+sevn
+State
+Service
+Group
+Export CSV
+SEVERITY	ALERT	CI	SERVICE	EVENTS COLLAPSED	FIRST SEEN	LAST SEEN▼	STATE	GROUP
+Sev 4	TLS certificate for standards.meridian.example expires in 14 days (renewal failed validation twice)
+EX1 · Event feed · Azure Monitor
+	portal-cdn	Codification Portal	3	05:40	now	Open	G14
+Sev 4	Memory 92.7% (threshold > 85.0%)
+A-5039 · Memory pressure · Azure Monitor
+	data-gateway	Data platform	410	06:50	now	Open	G15
+Sev 4	8 devices fail the disk encryption compliance check
+EX3 · Event feed · Intune
+	Intune tenant	Endpoint management (Intune)	8	08:15	now	Open	G16
+Sev 3	Error rate 3.89% (threshold > 2.00%)
+A-5041 · Error rate · Application Insights
+	codif-lb	Codification Platform	260	09:20	now	Open	G1
+Sev 1	Error rate 7.48% (threshold > 5.00%)
+A-5042 · Error rate · Application Insights
+	codification-platform	Codification Platform	260	09:20	now	Open	G1
+Sev 1	Error rate 5.04% (threshold > 5.00%)
+A-5043 · Error rate · Application Insights
+	codification-portal	Codification Portal	260	09:20	now	Open	G1
+Sev 3	Latency p95 2,449 ms (threshold > 1,500 ms)
+A-5044 · Latency p95 · Application Insights
+	codif-lb	Codification Platform	260	09:20	now	Open	G1
+Sev 2	Latency p95 3,819 ms (threshold > 3,000 ms)
+A-5045 · Latency p95 · Application Insights
+	codification-platform	Codification Platform	260	09:20	now	Open	G1
+Sev 2	Latency p95 3,211 ms (threshold > 3,000 ms)
+A-5046 · Latency p95 · Application Insights
+	codification-portal	Codification Portal	260	09:20	now	Open	G1
+Sev 2	Latency p95 1,292 ms (threshold outside learned band, sensitivity 3)
+A-5047 · Latency anomaly (learned normal) · Application Insights
+	codif-sql-prd	Codification Platform	270	09:10	now	Open	G1
+Sev 2	CPU 106.0% (threshold > 92.0%)
+A-5048 · CPU high on servers and databases · Azure Monitor
+	codif-sql-prd	Codification Platform	260	09:20	now	Open	G1
+Sev 2	CPU 107.4% (threshold > 92.0%)
+A-5049 · CPU high on servers and databases · Azure Monitor
+	lumen-indexer-01	Search and indexing	260	09:20	now	Open	G1
+Sev 2	CPU 92.4% (threshold > 92.0%)
+A-5050 · CPU high on servers and databases · Azure Monitor
+	codif-app-01	Codification Platform	250	09:30	now	Open	G1
+Sev 3	Error rate 3.00% (threshold > 2.00%)
+A-5051 · Error rate · Application Insights
+	search-cluster	Search and indexing	240	09:40	now	Open	G1
+Sev 3	Latency p95 2,333 ms (threshold > 1,500 ms)
+A-5052 · Latency p95 · Application Insights
+	search-cluster	Search and indexing	240	09:40	now	Open	G1
+Sev 2	Queue depth 19,303 msgs (threshold > 15,000 msgs)
+A-5053 · Queue depth · Lumen feed
+	lumen-indexer-01	Search and indexing	230	09:50	now	Open	G1
+Sev 3	CPU 86.5% (threshold > 80.0%)
+A-5054 · CPU high on servers and databases · Azure Monitor
+	codif-app-02	Codification Platform	230	09:50	now	Open	G1
+Sev 3	Queue depth 9,264 msgs (threshold > 5,000 msgs)
+A-5056 · Queue depth · Lumen feed
+	lumen-indexer-02	Search and indexing	180	10:40	now	Open	G1
+Sev 3	Blocked legacy sign-ins: 212 in 10 minutes (CA-007, one mail client)
+EX2 · Event feed · Entra ID
+	Conditional access policies	Identity (Entra ID)	12	11:12	now	Open	G5
+Sev 1	Availability 95.40% (threshold < 98.00%), flapped 5 times
+A-5055 · Availability · Synthetic and heartbeat
+	VPN gateway	Network and VPN	90 flapped 5x	10:40	13:00	Cleared	G2
+Sev 3	Link utilization 89.8% (threshold > 75.0%), flapped 5 times
+A-5057 · Link utilization · Network scan (SNMP)
+	VPN gateway	Network and VPN	90 flapped 5x	10:40	13:00	Cleared	G2
+Sev 3	Packet loss 1.96% (threshold > 0.50%)
+A-5060 · Packet loss · Network scan (SNMP)
+	Edge firewall pair	Network and VPN	80	11:50	13:00	Cleared	G4
+Sev 3	Link utilization 82.7% (threshold > 75.0%)
+A-5061 · Link utilization · Network scan (SNMP)
+	Edge firewall pair	Network and VPN	80	11:50	13:00	Cleared	G4
+Sev 4	CPU 86.2% (threshold > 80.0%)
+A-5058 · CPU high on servers and databases · Azure Monitor
+	erp-sql-01	Lease subledger (ERP)	60	10:50	11:40	Cleared	G17
+Sev 4	Teams recording webhook returned 429 twice
+EX4 · Event feed · Microsoft Graph
+	SharePoint Online	Email and collaboration (M365)	2	05:00	05:12	Cleared	G13
+Sev 4	Memory 87.6% (threshold > 85.0%), flapped 2 times
+A-5035 · Memory pressure · Azure Monitor
+	data-gateway	Data platform	160 flapped 2x	01:10	03:50	Cleared	G11
+
+34 of 34 rows
+Scroll for more · rows are drawn as you scroll
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

@@ -1,0 +1,96 @@
+APPLICATION PORTFOLIO
+Which applications earn their keep?
+
+Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+
+ƒ Application spend to retire or move
+Add application
+Why am I seeing this?
+Annual application cost
+$4.11M
+15 applications
+Invest
+$3.11M
+7 apps, high value and healthy
+Migrate
+$790K
+3 apps, valuable but failing
+Eliminate or duplicate
+$213K
+5.2% of spend
+Value and health
+TIME quadrants
+Inventory
+Retire and replace
+Drag applications between TIME quadrants
+Dropping an app on another quadrant asks for a short reason. Alt with arrow keys moves it from the keyboard.
+Invest
+$3.11M
+
+High value, healthy technology: fund it
+
+Codification Portal
+$190K a year · 14,000 users · Mature
+Search indexer
+$310K a year · 260 users · Growth
+Taxonomy API
+$120K a year · 40 users · Growth
+Meridian ERP
+$640K a year · 120 users · Mature
+Microsoft 365 (E5)
+$520K a year · 310 users · Mature
+Data warehouse DW1 (Azure Synapse)
+$280K a year · 55 users · Mature
+Cloud hosting (Northwind)
+$1.05M a year · service · Mature
+Migrate
+$790K
+
+High value, weak technology: move it to something better
+
+Codification Platform
+$410K a year · 260 users · Mature
+Contract Repository
+$150K a year · 85 users · Sunset
+Lease subledger (ERP)
+$230K a year · 14 users · Sunset
+Tolerate
+$60K
+
+Low value, healthy technology: keep it cheap and unchanged
+
+Zoom (legacy licenses)
+$38K a year · 46 users · Sunset
+duplicate
+Standards survey tool
+$22K a year · 12 users · Mature
+duplicate
+Eliminate
+$153K
+
+Low value, weak technology: retire it
+
+Confluence Server wiki
+$46K a year · 70 users · Sunset
+duplicate
+Editor macros database
+$12K a year · 9 users · Sunset
+Reporting warehouse DW2 (on-premises SQL)
+$95K a year · 30 users · Sunset
+duplicate
+How an application gets its TIME class
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+Score
+Business value and technical health are scored 0 to 100 by the owner and the architect.
+AUTOMATIC
+Classify
+The scores place it in Invest, Migrate, Tolerate or Eliminate.
+AI AGENT
+Recommend
+The Portfolio Agent finds duplicates and low-value applications and drafts a retirement plan.
+APPROVAL GATE
+Approve plan
+The CIO accepts a retirement or replacement, which commits the saving.

@@ -1,0 +1,113 @@
+CMDB · DISCOVERY AND INGESTION
+Tools feed the CMDB; rules decide what is true
+
+7 of 9 sources are connected and feed 84.6% of the CIs that can be discovered. Orion brings availability for 34 CIs. Today 234 records were read, 11 rows are rejected and waiting, and 2 duplicate pairs need a merge decision. Try the SolarWinds lab: it ingests a real-shaped payload and moves service availability.
+
+ƒ Discovery coverage
+ƒ Monitored availability, 30 days
+CSDM 5
+Connect or edit Orion
+Upload CSV
+Why am I seeing this?
+SOURCES CONNECTED
+7 of 9
+degraded or not connected: 3
+DISCOVERY COVERAGE
+84.6%
+14 day freshness
+READ TODAY
+234
+records across all runs
+REJECTED ROWS
+11
+waiting for a decision
+DUPLICATE PAIRS
+2
+to merge
+MONITORED UPTIME
+99.57%
+93.8% of CIs report
+Sources and runs
+SolarWinds uptime lab
+Field mapping
+Identification and reconciliation
+Rejected rows
+Rejected rows
+Rows that identification or reconciliation refused. Nothing here has touched the CMDB.
+11 open
+Source
+All
+6
+Why it was rejected
+All
+5
+State
+All
+1
+Export CSV
+ROW	SOURCE	WHEN	WHY IT WAS REJECTED	STATE
+RJ-1000	vCenter	Oct 6 11:48	
+No identifier: Caption and IPAddress are both empty
+{"name":"vm-240","source":"vcenter"}
+	open
+RJ-1001	CSV upload	Oct 6 08:11	
+Duplicate item inside the payload (same serial twice)
+{"name":"srv-486","source":"csv"}
+	open
+RJ-1002	vCenter	Oct 6 10:09	
+No identifier: Caption and IPAddress are both empty
+{"name":"edge-387","source":"vcenter"}
+	open
+RJ-1003	Intune	Oct 6 10:52	
+Duplicate item inside the payload (same serial twice)
+{"name":"vm-445","source":"intune"}
+	open
+RJ-1004	Azure Resource Graph	Oct 6 12:25	
+Required attribute missing: serial_number for class Computer
+{"name":"lt-939","source":"azure"}
+	open
+RJ-1005	Azure Resource Graph	Oct 6 12:01	
+Unknown class: sys_class_name u_legacy_printer is not in the data model
+{"name":"vm-489","source":"azure"}
+	open
+RJ-1006	SolarWinds Orion	Oct 6 11:24	
+Invalid IP address 10.20.300.4
+{"NodeID":5006,"Caption":"vm-971","IPAddress":"10.20.300.4"}
+	open
+RJ-1007	Azure Resource Graph	Oct 6 08:44	
+Required attribute missing: serial_number for class Computer
+{"name":"vm-219","source":"azure"}
+	open
+RJ-1008	vCenter	Oct 6 09:02	
+Invalid IP address 10.20.300.4
+{"name":"sw-943","source":"vcenter"}
+	open
+RJ-1009	vCenter	Oct 6 09:02	
+Required attribute missing: serial_number for class Computer
+{"name":"sw-778","source":"vcenter"}
+	open
+RJ-1010	ServiceNow import	Oct 6 10:35	
+Duplicate item inside the payload (same serial twice)
+{"name":"vm-992","source":"snow"}
+	open
+11 of 11 rows
+Scroll for more · rows are drawn as you scroll
+How a tool feeds the CMDB
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Connect
+An admin enters the address and a read-only account; the platform tests it.
+PERSON
+Map fields
+Source fields are mapped to class attributes with transforms and previewed on real records.
+AUTOMATIC
+Run and reconcile
+Each run reads, identifies, reconciles by precedence and reports created, updated and rejected rows.
+PERSON
+Resolve exceptions
+Duplicates are merged; rejected rows are fixed, created or ignored.
+AUTOMATIC
+Feed uptime
+Availability from monitoring updates CIs and the services above them.

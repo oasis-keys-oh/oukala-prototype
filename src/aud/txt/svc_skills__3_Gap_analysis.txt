@@ -1,0 +1,198 @@
+PEOPLE AND WORK · SKILLS AND AVAILABILITY
+Who can do what, and who is free right now?
+
+139 skills across 85 people, contractors, providers and AI agents. 2 rota skills depend on one person or none, and 5 certificates expire within 90 days. Rotas, assignment rules, the Service catalog and workflows all read this database.
+
+ƒ Critical skill depth
+ƒ Verified skill share
+ITIL 5
+Add a skill
+Request time off
+Overview
+Matrix
+Who can do this
+Gap analysis
+Certifications
+Availability
+Taxonomy
+Skill gap analysis
+For each skill a rota needs: how many people on that rota are qualified (level 3 or higher, not expired), how many exist company-wide, and what to do about it.
+Depth 68%
+2 single points of failure
+ƒ Critical skill depth
+Status
+All
+3
+Tier
+All
+2
+Export CSV
+ROTA	TIER	SKILL NEEDED	QUALIFIED ON ROTA	WHO	QUALIFIED COMPANY-WIDE	STATUS	ACTION
+Finance systems
+Tier 2
+		Lease subledger (ERP)	1 of 2	
+Jordan
+	2	Single point of failure	Cross-train
+Endpoint management
+Tier 2
+		Intune and endpoint	1 of 2	
+NM
+Northwind
+	2	Single point of failure	Cross-train
+Platform engineering
+Tier 1
+		Kubernetes	2 of 3	
+Sam
+ 
+Ravi
+	2	Thin	Cross-train
+Identity and security
+Tier 1
+		Entra ID	2 of 3	
+Rina
+ 
+Sam
+	3	Thin	Cross-train
+Network device cover
+Tier 1
+		Networking and VPN	2 of 3	
+Sam
+ 
+Ravi
+	2	Thin	Cross-train
+Network device cover
+Tier 1
+		Incident management	2 of 3	
+Sam
+ 
+Ravi
+	13	Thin	Cross-train
+Service desk on-call
+Tier 2
+		Tier 1 service desk	2 of 2	
+NM
+Northwind
+ 
+Tom
+	1	Enough	
+Database class cover
+Tier 2
+		SQL	2 of 2	
+Dev
+ 
+Jordan
+	2	Enough	
+Database class cover
+Tier 2
+		Incident management	2 of 2	
+Dev
+ 
+Jordan
+	13	Enough	
+Finance systems
+Tier 2
+		Incident management	2 of 2	
+Jordan
+ 
+Sam
+	13	Enough	
+Endpoint management
+Tier 2
+		Incident management	2 of 2	
+NM
+Northwind
+ 
+Tom
+	13	Enough	
+Codification Platform
+Tier 1
+		Codification platform	3 of 3	
+Priya
+ 
+Jordan
+ 
+Chief
+	3	Enough	
+Service desk on-call
+Tier 2
+		Incident management	4 of 2	
+NM
+Northwind
+ 
+Tom
+ 
+Nia
+ 
+Priya
+	13	Enough	
+Platform engineering
+Tier 1
+		Azure	4 of 3	
+CC
+Contoso
+ 
+Sam
+ 
+Jordan
+ 
+Ravi
+	3	Enough	
+Identity and security
+Tier 1
+		Incident management	4 of 3	
+Rina
+ 
+Sam
+ 
+Jordan
+ 
+Ravi
+	13	Enough	
+Search and indexing (Lumen)
+Tier 1
+		Search indexing	5 of 3	
+Dev
+ 
+Maya
+ 
+Hana
+ 
+LS
+Lumen
+	4	Enough	
+Search and indexing (Lumen)
+Tier 1
+		Incident management	5 of 3	
+Dev
+ 
+Maya
+ 
+Hana
+ 
+LS
+Lumen
+	13	Enough	
+Codification Platform
+Tier 1
+		Incident management	5 of 3	
+Priya
+ 
+Jordan
+ 
+Dev
+ 
+Sam
+	13	Enough	
+Global follow-the-sun desk
+Tier 1
+		Incident management	5 of 3	
+Hana
+ 
+Marco
+ 
+Tom
+ 
+Nia
+	13	Enough	
+19 of 19 rows
+Scroll for more · rows are drawn as you scroll

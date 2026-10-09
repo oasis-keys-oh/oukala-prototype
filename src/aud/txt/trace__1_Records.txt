@@ -1,0 +1,184 @@
+EXECUTIVE TRACE
+From budget to operations
+
+Milestone 3 is not accepted and paying would overpay accepted work; hold. Follow it through the process below.
+
+INV-20433 Lumen
+INV-20418 Northwind
+Portal latency (Sev 2)
+FY26 Vendor services
+Codification Platform Upgrade
+Vendor delivery slip
+Key
+Process flow
+Records
+RECORD ↑	TYPE	THE STORY IN ONE SENTENCE	STATUS	AMOUNT	OWNER
+Codification Platform Upgrade
+PR1
+	
+Project
+	Beta moved from Nov 4 to Nov 13 because Lumen delivered the search indexer late.	Watch	
+No amount
+	
+PS
+Priya Shah
+
+Codification Portal
+S1
+	
+Service
+	Tier 1 service hosted by Northwind; 99.62% available against a 99.9% target.	Watch	
+No amount
+	
+Pt
+Platform team
+
+Digital Publishing portfolio
+P1
+	
+Portfolio
+	Two projects, $2.06M approved, amber because the beta slipped nine days.	Watch	
+$2,060,000
+	
+MO
+Maya Ortiz
+
+FY26 Cloud hosting
+B1
+	
+Budget line
+	$1.2M approved and $740K paid; a larger hosting tier could add $48K.	Watch	
+$1,200,000
+	
+TB
+Tom Becker
+
+FY26 Vendor services
+B2
+	
+Budget line
+	Commitments of $905K exceed the $860K approved by $45K.	Needs action	
+$860,000
+	
+TB
+Tom Becker
+
+INV-20418 Northwind
+I1
+	
+Invoice
+	Matches usage and contract; the advisor recommends approving $184,200.	On track	
+$184,200
+	
+IA
+Invoice Advisor
+
+INV-20433 Lumen
+I2
+	
+Invoice
+	Milestone 3 is not accepted and paying would overpay accepted work; hold.	Needs action	
+$62,900
+	
+IA
+Invoice Advisor
+
+INV-20451 Northwind
+I3
+	
+Invoice
+	Small storage add-on inside tolerance; eligible to clear on its own.	On track	
+$21,400
+	
+IA
+Invoice Advisor
+
+Lumen Data Partners SOW-4
+V2
+	
+Contract
+	$610K data engineering SOW running behind: paid $412K, accepted work worth $390K.	Watch	
+$610,000
+	
+Vm
+Vendor mgmt
+
+Modernize standards publishing
+O1
+	
+Objective
+	Cut the time to publish a standard from 23 days to 15 by end of FY27.	On track	
+No amount
+	
+Co
+CEO office
+
+Northwind Cloud MSA
+V1
+	
+Contract
+	Annual hosting commitment of $1.05M, delivering to terms (index 0.96).	On track	
+$1,050,000
+	
+Vm
+Vendor mgmt
+
+Portal failover runbook
+K1
+	
+Knowledge
+	Last reviewed 14 months ago; a refresh draft is waiting for its owner.	Watch	
+No amount
+	
+KC
+Knowledge Curator
+
+Portal latency (Sev 2)
+INC1
+	
+Incident
+	Editors saw slow pages since 09:12; 140 users affected.	Needs action	
+No amount
+	
+OA
+Ops Agent
+
+Reduce operating risk
+O2
+	
+Objective
+	Keep Tier 1 services above 99.9% and every vendor above a 0.85 index.	On track	
+No amount
+	
+C
+CFO
+
+Taxonomy API
+S2
+	
+Service
+	Tier 2 service running normally.	On track	
+No amount
+	
+Dt
+Data team
+
+Taxonomy Data Hub
+PR2
+	
+Project
+	Pilot is on track for Dec 2 but depends on the same Lumen staff.	On track	
+No amount
+	
+DR
+Dev Rao
+
+Vendor delivery slip
+R1
+	
+Risk
+	A 40% chance Lumen delays the Taxonomy pilot, worth about $88K of expected loss.	Watch	
+$88,000
+	
+DR
+Dev Rao

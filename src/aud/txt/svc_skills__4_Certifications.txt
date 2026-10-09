@@ -1,0 +1,74 @@
+PEOPLE AND WORK · SKILLS AND AVAILABILITY
+Who can do what, and who is free right now?
+
+139 skills across 85 people, contractors, providers and AI agents. 2 rota skills depend on one person or none, and 5 certificates expire within 90 days. Rotas, assignment rules, the Service catalog and workflows all read this database.
+
+ƒ Critical skill depth
+ƒ Verified skill share
+ITIL 5
+Add a skill
+Request time off
+Overview
+Matrix
+Who can do this
+Gap analysis
+Certifications
+Availability
+Taxonomy
+Certifications and expiry
+Certified skills carry an expiry date. Expired certificates count at two levels lower until renewed.
+Show
+All
+Expired
+Next 30 days
+Next 60 days
+Next 90 days
+Export CSV
+PERSON	CERTIFICATION	LEVEL	STATUS	EXPIRES	
+
+Dev Rao
+	PMP
+Project Management Professional
+	2	Expired	Aug 14 53 days ago	Renew
+
+Gabe Lindholm
+	ITIL 4
+ITIL 4 Foundation
+	4	Certified	Oct 27 21 days	Renew
+
+Maribel Cruz
+	ITIL 4
+ITIL 4 Foundation
+	3	Certified	Nov 7 32 days	Renew
+
+Maya Ortiz
+	PMP
+Project Management Professional
+	5	Certified	Nov 18 43 days	Renew
+
+Jordan Lee
+	TOGAF
+TOGAF 9 Certified
+	4	Certified	Nov 26 51 days	Renew
+
+Owen Fraser
+	ITIL 4
+ITIL 4 Foundation
+	3	Certified	Dec 24 444 days	Renew
+
+Priya Shah
+	PMP
+Project Management Professional
+	3	Certified	Jan 5 456 days	Renew
+
+Tom Becker
+	ITIL 4
+ITIL 4 Foundation
+	5	Certified	Apr 25 567 days	Renew
+
+Rina Okafor
+	CISSP
+CISSP
+	2	Certified	May 6 578 days	Renew
+9 of 9 rows
+Scroll for more · rows are drawn as you scroll

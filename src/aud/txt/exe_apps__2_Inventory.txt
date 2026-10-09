@@ -1,0 +1,105 @@
+APPLICATION PORTFOLIO
+Which applications earn their keep?
+
+Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+
+ƒ Application spend to retire or move
+Add application
+Why am I seeing this?
+Annual application cost
+$4.11M
+15 applications
+Invest
+$3.11M
+7 apps, high value and healthy
+Migrate
+$790K
+3 apps, valuable but failing
+Eliminate or duplicate
+$213K
+5.2% of spend
+Value and health
+TIME quadrants
+Inventory
+Retire and replace
+Application inventory
+Cost, use and lifecycle for every application. Select a row for detail.
+Add application
+APPLICATION	TIME	ANNUAL COST	USERS	COST PER USER	LIFECYCLE	VALUE / HEALTH	OWNER	DUPLICATE
+Cloud hosting (Northwind)
+Infrastructure · Northwind Cloud
+	
+Invest	$1,050,000	service	n/a	Mature	82 / 72	Tom Becker	·
+Meridian ERP
+Finance · Oracle
+	
+Invest	$640,000	120	$5,333	Mature	85 / 70	Avery Chen	·
+Microsoft 365 (E5)
+Workplace · Microsoft
+	
+Invest	$520,000	310	$1,677	Mature	90 / 92	Sam Patel	·
+Codification Platform
+Core publishing · In house
+	
+Migrate	$410,000	260	$1,577	Mature	92 / 38	Priya Shah	·
+Search indexer
+Core publishing · Lumen
+	
+Invest	$310,000	260	$1,192	Growth	80 / 55	Priya Shah	·
+Data warehouse DW1 (Azure Synapse)
+Data · Microsoft
+	
+Invest	$280,000	55	$5,091	Mature	68 / 52	Dev Rao	·
+Lease subledger (ERP)
+Finance · Meridian ERP
+	
+Migrate	$230,000	14	$16,429	Sunset	66 / 29	Avery Chen	·
+Codification Portal
+Public web · Northwind Cloud
+	
+Invest	$190,000	14,000	$14	Mature	88 / 61	Tom Becker	·
+Contract Repository
+Finance and legal · Vendor under selection
+	
+Migrate	$150,000	85	$1,765	Sunset	71 / 33	Maya Ortiz	·
+Taxonomy API
+Data · In house
+	
+Invest	$120,000	40	$3,000	Growth	74 / 77	Dev Rao	·
+Reporting warehouse DW2 (on-premises SQL)
+Data · In house
+	
+Eliminate	$95,000	30	$3,167	Sunset	38 / 30	Dev Rao	with DW1
+Confluence Server wiki
+Knowledge · Atlassian
+	
+Eliminate	$46,000	70	$657	Sunset	31 / 22	Jordan Lee	with M365
+Zoom (legacy licenses)
+Workplace · Zoom
+	
+Tolerate	$38,000	46	$826	Sunset	28 / 66	Sam Patel	with M365
+Standards survey tool
+Editorial · SurveyMonkey
+	
+Tolerate	$22,000	12	$1,833	Mature	40 / 62	Chief Editor	with M365
+Editor macros database
+Editorial · In house
+	
+Eliminate	$12,000	9	$1,333	Sunset	45 / 18	Chief Editor	·
+Total		$4,113,000	
+How an application gets its TIME class
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+Score
+Business value and technical health are scored 0 to 100 by the owner and the architect.
+AUTOMATIC
+Classify
+The scores place it in Invest, Migrate, Tolerate or Eliminate.
+AI AGENT
+Recommend
+The Portfolio Agent finds duplicates and low-value applications and drafts a retirement plan.
+APPROVAL GATE
+Approve plan
+The CIO accepts a retirement or replacement, which commits the saving.

@@ -1,0 +1,501 @@
+WORK BREAKDOWN STRUCTURE
+WBS and task sheet
+
+195 lines across 4 projects: 122 tasks, 25 milestones and 48 summaries. 1 project forecast later than baseline, most of all Codification at 7 work days late. Change a duration or a link and every dependent project reschedules at once.
+
+ƒ WBS completeness
+ƒ Schedule variance
+ƒ Milestone hit rate
+PMBOK
+Why am I seeing this?
+New task
+Projects
+All 4 projects
+4
+Project managers
+All managers
+4
+Resource type
+All types
+4
+4 projects shown
+Task sheet
+Gantt
+Network diagram
+Resource sheet
+Task usage
+Milestones
+Baseline compare
+Earned value
+LINES
+195
+122 tasks, 25 milestones, 48 summaries
+WBS COMPLETENESS
+41%
+Owner, resources, links, deliverable
+BEHIND BASELINE
+1 of 4
+Forecast finish is later
+CRITICAL TASKS
+11
+Zero float, not finished
+COMPLETE
+47%
+Weighted by effort
+BUDGET
+$2.91M
+$1.69M spent
+Furthest behind baseline
+Codification is 7 work days behind baseline.
+ƒ Schedule variance
+Codification
++7 days
+Where the work is
+Complete 62
+On track 13
+Not started 43
+At risk 20
+Should have started 2
+Late 7
+What needs attention
+Gaps in the work breakdown. Select one to open the first line.
+ƒ WBS completeness
+4 lines have no predecessor
+Linked lines are what keep the schedule honest.
+4
+No lines have nobody assigned
+Work with no resource cannot be checked for overload.
+0
+87 lines have no deliverable
+A WBS line should name the thing it produces (the 100 percent rule).
+87
+No lines have no owner
+Every line needs one accountable person.
+0
+PMO Agent · 82%
+PMBOK
+INSERT
+Task
+Milestone
+Summary
+OUTLINE
+Outdent
+Indent
+Move up
+Move down
+PLAN
+Link tasks
+Assign resources
+WBS dictionary
+Set baseline
+Delete
+DATA
+Export CSV
+Projects
+Phases
+Deliverables
+Work packages
+All levels
+Expand all
+Collapse all
+Critical path only
+Search
+
+Select lines with the check boxes, or click a row. Actions apply to the selected line, or to the last line you clicked.
+
+Task sheet
+195 lines shown. Click a cell to edit it, drag a row to move it, or use the buttons above. Every edit reschedules all linked projects.
+WBS AND TASK NAME
+DURATION
+START
+FINISH
+ACTUAL START
+ACTUAL FINISH
+BASELINE START
+BASELINE FINISH
+VARIANCE
+COMPLETE
+PREDECESSORS
+RESOURCES
+FLOAT
+CRITICAL
+COST
+PR1
+Codification Platform Upgrade
+Priya Shah
+117 d
+Jul 1
+Dec 10
+Jul 1
+—
+Jul 1
+Dec 1
++7 d
+59%
+—
+0 d
+Critical
+$1.2M
+1
+Initiation and governance
+8 d
+Jul 1
+Jul 10
+Jul 1
+Jul 13
+Jul 1
+Jul 10
+0 d
+100%
+—
+—
+$12K
+1.1
+Project kickoff
+0 d
+Jul 1
+Jul 1
+Jul 1
+Jul 1
+Jul 1
+Jul 1
+0 d
+100%
+—
+Priya Shah
+0 d
+$0
+1.2
+Charter and business case
+3 d
+Jul 1
+Jul 3
+Jul 1
+Jul 3
+Jul 1
+Jul 3
+0 d
+100%
+1.1
+Priya Shah, Maya Ortiz
+0 d
+$2K
+1.3
+Steering committee, RACI and RAID log setup
+4 d
+Jul 6
+Jul 9
+Jul 6
+Jul 9
+Jul 6
+Jul 9
+0 d
+100%
+1.2
+Maya Ortiz, PMO Agent
+27 d
+$3K
+1.4
+Lumen SOW-4 statement of work and onboarding
+5 d
+Jul 6
+Jul 10
+Jul 6
+Jul 10
+Jul 6
+Jul 10
+0 d
+100%
+1.2
+Contract Analyst Agent, Maya Ortiz
+15 d
+$7K
+1.5
+Funding approved by the steering committee
+0 d
+Jul 13
+Jul 13
+Jul 13
+Jul 13
+Jul 13
+Jul 13
+0 d
+100%
+1.3, 1.4
+Omar Hamid
+26 d
+$0
+2
+Requirements and design
+24 d
+Jul 6
+Aug 6
+Jul 6
+Aug 6
+Jul 6
+Aug 6
+0 d
+100%
+—
+—
+$73K
+2.1
+Requirements and design
+20 d
+Jul 6
+Jul 31
+Jul 6
+Jul 31
+Jul 6
+Jul 31
+0 d
+100%
+1.2
+Priya Shah, Jordan Lee +3
+0 d
+$54K
+2.2
+Editorial requirements
+19 d
+Jul 6
+Jul 30
+Jul 6
+Jul 30
+Jul 6
+Jul 30
+0 d
+100%
+—
+—
+$14K
+2.2.1
+Editor workshops: authoring and review
+6 d
+Jul 6
+Jul 13
+Jul 6
+Jul 13
+Jul 6
+Jul 13
+0 d
+100%
+1.2
+Chief Editor, First Officer
+12 d
+$4K
+2.2.2
+Requirements catalog and traceability matrix
+8 d
+Jul 14
+Jul 23
+Jul 14
+Jul 23
+Jul 14
+Jul 23
+0 d
+100%
+2.2.1
+Priya Shah, Knowledge Curator
+12 d
+$8K
+2.2.3
+Service levels and non-functional requirements
+5 d
+Jul 24
+Jul 30
+Jul 24
+Jul 30
+Jul 24
+Jul 30
+0 d
+100%
+2.2.2
+Jordan Lee
+12 d
+$2K
+2.3
+Architecture and security design
+10 d
+Jul 24
+Aug 6
+Jul 24
+Aug 6
+Jul 24
+Aug 6
+0 d
+100%
+—
+—
+$5K
+2.3.1
+Solution architecture decision records
+5 d
+Jul 24
+Jul 30
+Jul 24
+Jul 30
+Jul 24
+Jul 30
+0 d
+100%
+2.2.2
+Jordan Lee
+12 d
+$3K
+2.3.2
+Entra ID access model and security review
+5 d
+Jul 31
+Aug 6
+Jul 31
+Aug 6
+Jul 31
+Aug 6
+0 d
+100%
+2.3.1
+Rina Okafor
+38 d
+$2K
+2.4
+Design gate G1: baseline approved
+0 d
+Aug 3
+Aug 3
+Aug 3
+Aug 3
+Aug 3
+Aug 3
+0 d
+100%
+2.1, 2.2.3, 2.3.1
+Omar Hamid
+11 d
+$0
+3
+Build
+75 d
+Aug 3
+Nov 13
+Aug 3
+—
+Aug 3
+Nov 13
+0 d
+72%
+—
+0 d
+Critical
+$864K
+3.1
+Core platform
+45 d
+Aug 3
+Oct 2
+Aug 3
+Oct 5
+Aug 3
+Oct 2
+0 d
+100%
+—
+—
+$335K
+3.1.1
+Core platform build
+45 d
+Aug 3
+Oct 2
+Aug 3
+Oct 2
+Aug 3
+Oct 2
+0 d
+100%
+2.1, 1.5, 2.4
+Sam Patel, Elise Park +2
+11 d
+$285K
+3.1.2
+Azure environments and CI/CD pipeline
+10 d
+Aug 3
+Aug 14
+Aug 3
+Aug 14
+Aug 3
+Aug 14
+0 d
+100%
+2.4
+Sam Patel, Contoso Cloud Operations
+24 d
+$9K
+3.1.3
+Authoring workflow
+22 d
+Aug 17
+Sep 15
+Aug 17
+Sep 15
+Aug 17
+Sep 16
+-1 d
+100%
+—
+—
+$19K
+3.1.3.1
+Authoring workflow configuration
+15 d
+Aug 17
+Sep 4
+Aug 17
+Sep 4
+Aug 17
+Sep 4
+0 d
+100%
+3.1.2
+Priya Shah, Elise Park
+27 d
+$12K
+3.1.3.2
+Reviewer routing rules
+7 d
+Sep 7
+Sep 15
+Sep 7
+Sep 15
+Sep 7
+Sep 14
++1 d
+100%
+3.1.3.1
+Priya Shah, Chief Editor
+27 d
+$3K
+Critical path (zero float)
+Percent complete
+Milestone
+Behind baseline
+Selected line
+How the work breakdown becomes the schedule
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Decompose
+The project manager breaks each deliverable into phases, work packages and tasks, and writes the WBS dictionary entry: deliverable and acceptance criteria.
+AI AGENT
+Draft the plan
+PMO Agent suggests tasks, durations and links from similar past projects and from the statement of work. It drafts; a person accepts.
+AUTOMATIC
+Schedule
+The schedule engine runs a forward and a backward pass over all four link types, lags and constraints, then rolls summaries up.
+APPROVAL GATE
+Approve the baseline
+The steering committee approves the plan. Setting or resetting a baseline needs a reason and is audited.
+PERSON
+Track
+Percent complete and actual dates arrive from task sheets. Variance, earned value and resource load update everywhere.

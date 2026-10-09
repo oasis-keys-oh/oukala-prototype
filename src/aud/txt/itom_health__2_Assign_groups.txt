@@ -1,0 +1,90 @@
+CMDB · HEALTH AND GOVERNANCE
+Trust the CMDB, then prove it
+
+Health is 89.4 (target 90). Completeness is 95.4%, correctness 78.4% and compliance 92.6%. 12 CIs fail at least one audit rule and 39 have a finding of some kind. 6 remediation tasks are open and 3 of 7 owners have attested in the current campaigns.
+
+ƒ CMDB health score
+ƒ CMDB completeness
+ƒ CMDB correctness
+ƒ CMDB compliance
+ITIL 5
+New attestation campaign
+Why am I seeing this?
+OVERALL HEALTH
+89.4
+target 90
+FAILING AUDIT RULES
+12
+CIs with 1+ failure
+OPEN TASKS
+6
+of 6 remediation tasks
+ATTESTED
+3 of 7
+owners in open campaigns
+RETIRED
+0
+kept for audit
+Scores and rules
+Remediation tasks
+Assign groups
+Attestation
+Lifecycle and audit
+Assign support groups by drag
+Incidents route by support group. Drop a CI on the group that should run it.
+Drag to assign
+No support group
+2
+srv-legacy-ftp01 Windows server
+vm-new-lic-03 Virtual machine
+
+Showing the first 2. Drop a CI on a group to assign it.
+
+Platform team
+34
+Drop CIs here
+Lead Priya Shah
+Ops team
+37
+Drop CIs here
+Lead Sam Patel
+Data team
+10
+Drop CIs here
+Lead Dev Rao
+Service desk
+61
+Drop CIs here
+Lead Tom Becker
+Security
+3
+Drop CIs here
+Lead Rina Okafor
+Finance
+5
+Drop CIs here
+Lead Avery Chen
+Architecture
+6
+Drop CIs here
+Lead Jordan Lee
+Lumen (vendor)
+4
+Drop CIs here
+Lead Marco Ellis
+How CMDB quality is governed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Measure
+Completeness, correctness and compliance are computed from the data model and rules.
+AI AGENT
+Open tasks
+Each rule failure or finding group becomes a remediation task for the responsible group.
+PERSON
+Fix or escalate
+Groups fix data; large gaps become a demand item in the portfolio.
+APPROVAL GATE
+Attest
+Owners confirm what they own each quarter.

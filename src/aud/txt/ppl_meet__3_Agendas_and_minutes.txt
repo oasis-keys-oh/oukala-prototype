@@ -1,0 +1,60 @@
+FORUMS AND MINUTES
+Decisions that stick
+
+Four forums make the decisions that move work. 3 of 10 open actions are late, the oldest is “draft the resourcing plan for the warehouse and hub overlap”. Only 71% of actions due so far were closed on time against an 85% target, and 1 set of minutes waits for approval.
+
+ƒ Forum actions closed on time
+Build agenda
+File minutes
+First Officer · 90%
+Why am I seeing this?
+Open actions
+10
+3 late
+Closed on time
+71%
+target 85%
+Decisions logged
+10
+0 pending ratification
+Next forum
+Oct 7
+Change Advisory Board
+Forums
+Actions
+Decision log
+Agendas and minutes
+Agendas
+Built before the meeting from open actions and decisions that need a second look.
+Build agenda
+Change Advisory Board · Oct 7
+5 items, 60 of 60 minutes
+Hosting tier change CR-8841 result 15 min · Tom Becker
+Failover rehearsal outcome (PR3) 10 min · Tom Becker
+Standard changes since last week 10 min · Nia Brooks
+Nov 16 freeze exceptions 15 min · Nia Brooks
+Any other business 10 min · Nia Brooks
+Architecture Review Board · Oct 13
+3 items, 55 of 60 minutes
+Subject code API contract 20 min · Rina Kovacs
+SCORM and xAPI mapping 15 min · Yuki Tanaka
+Exception: legacy subledger connector 20 min · Jordan Lee
+Minutes
+Filed by First Officer when a person approves. A forum without quorum cannot ratify decisions.
+Minutes template
+Attendance and quorum
+Decisions, each with why and who decided
+Actions with an owner and a due date
+Risks raised
+Next meeting
+Change Advisory Board · Sep 30
+6 attended (quorum met) · 3 decisions · 2 actions · filed by First Officer
+Filed
+Architecture Review Board · Sep 29
+5 attended (quorum met) · 2 decisions · 3 actions · filed by First Officer
+Filed
+Security Council · Sep 16
+4 attended (quorum met) · 2 decisions · 2 actions · filed by First Officer
+Approve filing
+First Officer · 90%
+File minutes

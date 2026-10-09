@@ -1,0 +1,70 @@
+CMDB · DATA MODEL
+Classes, attributes and relationships, like the CMDB it replaces
+
+The CMDB data model has 42 classes (6 abstract, 36 concrete) and 154 attributes, of which 59 are required. A Linux server inherits attributes from four parent classes. 28 classes hold CIs today, and 11 relationship types say how they connect. Add a class or an attribute here and every form, completeness score and field picker in Oukala learns it immediately.
+
+ƒ CMDB completeness
+CSDM 5
+New class
+New attribute
+Why am I seeing this?
+CLASSES
+42
+28 hold CIs
+ATTRIBUTES
+154
+59 required
+RELATIONSHIP TYPES
+13
+11 edge types, 2 attribute types
+RELATIONSHIP RULES
+6
+6 active
+CSDM DOMAINS
+7
+6 have classes
+EDGES
+236
+relationships between records
+Class hierarchy
+Relationship types
+CSDM 5 domains
+Relationship rules
+Relationship rules (suggested relationships)
+A CI of the class must have at least one relationship of this kind. Rules feed the compliance score; turn one off if it does not fit Meridian.
+Add rule
+RULE	CLASS	NEEDS	FAILING NOW	ACTIVE
+RR1	Application	runs on Computer or Cloud or Software
+An application with no host cannot be patched, recovered or costed.
+	1	On
+RR2	Database	runs on Computer or Cloud
+A database needs a host so backup and failover plans can be traced.
+	2	On
+RR3	Virtual machine	hosted on Virtualization host or Cloud subscription or Server
+Every virtual machine sits on a host or subscription; otherwise capacity and cost are invisible.
+	5	On
+RR4	Server	hosted on Rack
+Physical servers must be placed in a rack for change windows and power planning.
+	1	On
+RR5	Application service	depends on Application
+An application service with no application behind it is an empty shell.
+	0	On
+RR6	Business service	depends on Service offering
+Business services are consumed through offerings (CSDM service consumption).
+	0	On
+How the data model changes
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+Anyone proposes a class, attribute or relationship rule with a reason.
+AUTOMATIC
+Preview impact
+The form shows how many CIs gain the attribute and how completeness moves.
+APPROVAL GATE
+Approve
+The CMDB owner approves anything that touches required attributes.
+AUTOMATIC
+Publish
+The class appears in forms, lists, the data model registry and chat.

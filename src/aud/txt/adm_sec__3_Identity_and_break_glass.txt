@@ -1,0 +1,69 @@
+PLATFORM · SECURITY AND ACCESS
+Know who can see what, and why
+
+11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.
+
+ƒ Access review completion
+Policy engine · draft
+Roles
+Policies and labels
+Who can see this
+Identity and break-glass
+Access reviews
+Single sign-on and SCIM provisioning
+Entra ID is the system of record for people. Oukala receives users and groups over SCIM (System for Cross-domain Identity Management) and signs people in with OpenID Connect.
+Users provisioned
+214
+38 groups synced
+Last sync
+1:05 pm
+25 min ago, delta every 40 min
+Provisioning errors
+3
+Needs attention
+Conditional access
+Multifactor required; compliant device required for Confidential and Restricted; legacy authentication blocked.
+Enforced
+SCIM token
+Rotates every 90 days. Next rotation in 41 days.
+Rotate now
+ATTRIBUTE MAPPING
+ENTRA ID	OUKALA	USED BY
+userPrincipalName	userName	Sign-in
+department	user.department	ABAC policies
+manager	manager	Approvals and reviews
+officeLocation	user.location	Residency policy
+accountEnabled	active	Identity step
+Sync now
+Provisioning errors
+3 items blocked, so some people have stale access until fixed.
+j.mendez@meridian.example
+Duplicate userPrincipalName with an existing guest account
+Fix: Merge the guest into the member account, then retry.
+Retry
+2 users
+Attribute department is empty, so ABAC policies cannot evaluate them
+Fix: Fill department in Entra ID or map from extensionAttribute3.
+Retry
+Chris Okafor (Lumen)
+Group Vendor guests exceeded the Lumen guest quota of 5
+Fix: Raise the quota or remove an unused guest.
+Retry
+Break-glass access request
+Emergency access is time-boxed, needs a named approver and a reason, and is reviewed afterward. Nothing stays open.
+Request access
+Jordan Lee
+Lumen Data Partners SOW-4 · approver Omar Hamid
+Review the Lumen SOW-4 integration clause for the indexer architecture change; laptop is in repair.
+38 min left
+Revoke now
+Sam Patel
+Portal latency (Sev 2) · approver Tom Becker
+Failover rehearsal needed incident worknotes during the Sev 2.
+Expired
+Break-glass audit
+Every request, approval and read is logged and flagged for next-day review.
+Oct 5
+Sam Patel read INC1 worknotes under break-glass for 30 minutes; approved by Tom Becker
+Today
+Jordan Lee granted 60 minutes on the Lumen SOW-4 contract; approved by Omar Hamid

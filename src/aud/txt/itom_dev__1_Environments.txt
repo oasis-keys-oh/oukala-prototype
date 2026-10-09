@@ -1,0 +1,167 @@
+ENVIRONMENTS AND DORA
+How fast, how safely, and where it runs
+
+Four numbers describe delivery: how often you deploy, how long a change takes, how often it fails, and how fast you recover. Environments and freezes show where each service is today.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Deployment rework rate
+DORA metrics
+Open the delivery pipeline
+DORA metrics
+Environments
+Freezes and clashes
+Pipeline
+Gate policy
+Where is my change
+SERVICES IN PRODUCTION
+14
+of 16 in the catalog
+BUILDS ON THEIR WAY
+9
+between development and production
+WAITING FOR APPROVAL
+1
+stopped at the change gate
+ROLLED BACK, 30 DAYS
+0
+automatic or manual
+Promotion board
+Drag a build to the next environment. Development to Test needs a green build. Test to Staging needs passing tests and a clean scan. Staging to Production asks the change gate: a standard change deploys at once, a normal change opens a request for the CAB, and a blocked change tells you why.
+Development
+6
+Contract Repository
+Version 1.0.0 · PL-4109
+Normal
+REL-2616
+Data platform
+Version 1.0.0 · PL-4105
+Normal
+REL-2612
+Lease subledger (ERP)
+Version 12.4.1 · PL-4107
+Emergency
+REL-2614
+Codification Platform
+Version 3.0.0-beta · PL-4104
+Normal
+REL-2611
+Integration hub
+Version 2.2.0 · PL-4111
+Normal
+REL-2618
+Codification Portal
+Version 3.1.1 · PL-4110
+Normal
+REL-2617
+Test
+1
+Search and indexing
+Version 2.4.0 · PL-4102
+Normal
+REL-2609
+Staging
+2
+Identity (Entra ID)
+Version 1.0.1 · PL-4108
+Normal
+REL-2615
+Portfolio and project intake
+07eef69 · PL-4274
+Normal
+Awaiting CAB
+Production
+14
+AI platform and agents
+Version cb289bb · since Oct 3
+Healthy
+Roll back
+Portfolio and project intake
+Version dce1d82 · since Oct 2
+Healthy
+Roll back
+Codification Platform
+Version 2.1.1 · since Oct 2
+Healthy
+Roll back
+Search and indexing
+Version 2.3.0 · since Oct 1
+Healthy
+Roll back
+Lease subledger (ERP)
+Version 12.4.0 · since Sep 22
+Healthy
+Roll back
+Data platform
+Version 2.6.1 · since Sep 18
+Healthy
+Roll back
+Network and VPN
+Version 2.5.0 · since Sep 17
+Healthy
+Roll back
+Service desk
+Version 623aa2b · since Sep 13
+Healthy
+Roll back
+Identity (Entra ID)
+Version 1.2.0 · since Sep 10
+Healthy
+Roll back
+Codification Portal
+Version 2.9.0 · since Sep 3
+Healthy
+Roll back
+Contract Repository
+Version 2.1.0 · since Sep 1
+Healthy
+Roll back
+Endpoint management (Intune)
+Version 2.2.0 · since Aug 7
+Healthy
+Roll back
+Integration hub
+Version 2.2.3 · since Jul 8
+Healthy
+Roll back
+Finance systems
+Version 2.5.1 · since Jun 19
+Healthy
+Roll back
+Standard change, auto‑approved
+Normal change, CAB
+Emergency
+Blocked
+Rollback history
+Rolled back by the pipeline or by a person. Each closes its change record as failed.
+
+PL-4120 Codification Platform, Sep 28 10:51: verify failed and the previous version was restored.
+
+PL-4122 Lease subledger (ERP), Sep 22 12:39: verify failed and the previous version was restored.
+
+PL-4197 Codification Platform, Sep 4 13:04: verify failed and the previous version was restored.
+
+Promotion rules
+Environment by environment, who decides.
+FROM	TO	DECIDED BY
+Development	Test	Automatic green build
+Test	Staging	Automatic tests and security scan
+Staging	Production	Change gate standard, normal or emergency
+How delivery performance is measured
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Every production deploy is recorded
+The deploy stage writes the time, version and outcome.
+AUTOMATIC
+Failures are linked
+A rollback, hotfix or incident within a day marks the deploy as failed.
+AUTOMATIC
+DORA numbers are calculated
+Frequency, lead time, failure rate, time to restore and rework.
+PERSON
+Review monthly
+The release manager and service owners choose one number to improve.

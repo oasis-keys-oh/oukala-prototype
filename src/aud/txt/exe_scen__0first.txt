@@ -1,0 +1,154 @@
+SCENARIO COMPARE
+What happens if we change course?
+
+Compare saved portfolio scenarios on dates, cost, capacity, benefits and risk. Baseline lands the beta at Nov 13 with a 76% chance of Nov 20; Cut the Contract Repository refresh gives 76%, $2.9M of project cost at 80% confidence and 91% peak load.
+
+ƒ Beta date confidence
+ƒ Risk exposure against contingency
+Save a scenario
+Why am I seeing this?
+Compare (2 or 3):
+Baseline
+Lumen slips 10 more days
+Cut the Contract Repository refresh
+REFERENCE
+Baseline
+The plan as it stands today.
+Envelope $2.0M
+Codification beta (plan)
+Nov 13
+Codification beta, 80% date
+Nov 23
+Chance of beta by the committed date
+76%
+Go live, 80% date
+Jan 4
+Taxonomy pilot (plan)
+Dec 2
+Approved project budget
+$2.91M
+Project cost at 80% confidence
+$3.51M
+New demand funded
+$1.44M
+Peak team load (Oct to Jan)
+113% Platform team
+Team-months over 105% load
+1
+Expected risk loss
+$261K
+Benefits over three years
+$4.38M
+Adopt levers
+SCENARIO
+Lumen slips 10 more days
+Lumen's search indexer takes ten more work days.
+Lumen +10 days
+Envelope $2.0M
+Codification beta (plan)
+Nov 27
++10 days
+Codification beta, 80% date
+Dec 7
++10 days
+Chance of beta by the committed date
+0%
+-76 pts
+Go live, 80% date
+Jan 5
++1 days
+Taxonomy pilot (plan)
+Dec 14
++8 days
+Approved project budget
+$2.91M
+Project cost at 80% confidence
+$3.47M
+-$41K
+New demand funded
+$1.44M
+Peak team load (Oct to Jan)
+113% Platform team
+Team-months over 105% load
+1
+Expected risk loss
+$305K
++$44K
+Benefits over three years
+$4.38M
+Adopt levers
+Delete
+SCENARIO
+Cut the Contract Repository refresh
+Stop PR4 and release its budget and Platform team capacity.
+PR4 cut
+Envelope $2.0M
+Codification beta (plan)
+Nov 13
+Codification beta, 80% date
+Nov 23
+Chance of beta by the committed date
+76%
++0 pts
+Go live, 80% date
+Jan 4
+Taxonomy pilot (plan)
+Dec 2
+Approved project budget
+$2.37M
+-$540K
+Project cost at 80% confidence
+$2.9M
+-$605K
+New demand funded
+$1.44M
+Peak team load (Oct to Jan)
+91% Ops team
+-22 pts
+Team-months over 105% load
+0
+-1
+Expected risk loss
+$237K
+-$24K
+Benefits over three years
+$3.9M
+-$480K
+Adopt levers
+Delete
+Dates side by side
+Each dot is a scenario's 80% date, drawn on one scale.
+Nov 2
+Nov 12
+Nov 24
+Dec 4
+Dec 16
+Dec 28
+Beta, 80% date
+Go live, 80% date
+Taxonomy pilot
+Baseline
+Lumen slips 10 more days
+Cut the Contract Repository refresh
+What the AI would choose
+Weighs date confidence first, then cost at 80% confidence.
+Claude Sonnet · 78%
+
+Cut the Contract Repository refresh gives the best mix: a 76% chance of the beta by Nov 20, project cost of $2.9M at 80% confidence, and peak load of 91% on Ops team. Cutting the Contract Repository refresh frees $540K of budget but gives up an estimated $480K of three-year benefits and leaves the old repository costing $150K a year.
+
+How a scenario is compared
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Set levers
+Slip a vendor, add engineers, cut a project or change the funding envelope.
+AUTOMATIC
+Run the engines
+The same schedule, capacity, demand and Monte Carlo engines run for each scenario.
+AI AGENT
+Recommend
+The Portfolio Agent picks the scenario that best protects the date at acceptable cost.
+APPROVAL GATE
+Adopt
+Adopting copies the levers into the live plan and is audited.

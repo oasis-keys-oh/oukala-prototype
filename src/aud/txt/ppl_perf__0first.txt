@@ -1,0 +1,223 @@
+PEOPLE AND WORK
+Performance and growth
+
+The FY26 annual review is in manager review until Oct 23. 60% of 57 reviews are submitted, and 23 are still with managers. Ratings differ between managers by 0.52 (guideline 0.30), so calibration comes next. 88% of personal goals link to a strategic objective. 6 things need attention. Evidence comes from platform data and is shown against peers; AI never rates anyone.
+
+ƒ Review completion
+ƒ Calibration spread between managers
+ƒ Performance index
+Write the next review
+OKRs
+9-box talent grid
+360-degree feedback
+Claude Sonnet · 82%
+Dashboard
+Goals and OKRs
+Reviews
+Calibration
+Feedback, 1:1s and 360
+Growth and succession
+Operational performance
+Competencies
+Goals set
+Jan 12 to Feb 6
+Done
+Mid-year check-in
+Jun 15 to Jul 10
+Done
+Self review
+Sep 14 to Oct 2
+Done
+Manager review
+Oct 5 to Oct 23
+Now
+Calibration
+Oct 26 to Nov 6
+Next
+Share and discuss
+Nov 9 to Nov 20
+Next
+Development plans
+Nov 23 to Dec 11
+Next
+REVIEW COMPLETION
+60%
+34 of 57 submitted
+WAITING ON MANAGERS
+23
+21 drafts · 2 not started
+CALIBRATION SPREAD
+0.52
+between managers (guideline 0.30)
+GOALS ALIGNED
+88%
+98 of 112 goals link to strategy
+FEEDBACK, LAST 30 DAYS
+28
+kudos, coaching and constructive
+360 REQUESTS OPEN
+3
+1 ready to read
+Needs attention
+Manager review is open until Oct 23.
+Watch
+Maya Ortiz has 9 reviews still to submit
+Manager review closes Oct 23. Evidence summaries are drafted and waiting.
+Watch
+Omar Hamid has 2 reviews still to submit
+Manager review closes Oct 23. Evidence summaries are drafted and waiting.
+Watch
+Tom Becker has 2 reviews still to submit
+Manager review closes Oct 23. Evidence summaries are drafted and waiting.
+Good
+14 personal goals are not linked to a team goal
+Unlinked goals cannot show how the work supports a strategic objective.
+Watch
+2 360 requests have fewer than 3 responses
+Results stay hidden until three people answer, to protect anonymity.
+Watch
+23 of 57 recurring 1:1s are overdue
+A 1:1 is overdue when it is more than two days past its cadence.
+Watch
+Manager ratings differ more than the guideline
+Spread between managers is 0.52 (guideline 0.30). Calibrate before sharing.
+Rating distribution
+Manager ratings so far, against a typical guide. The guide shows what a healthy curve looks like; it is not a quota and nobody is forced into a bucket.
+0
+1 Needs improvement
+7
+2 Partly meets
+16
+3 Meets
+5
+4 Exceeds
+6
+5 Outstanding
+Actual ratings so far
+
+The line is a typical healthy curve (5, 12, 50, 25, 8%). Mean rating 3.29. 9-box talent grid
+
+Everyone in the cycle
+Open a person for their evidence, review and growth.
+Team
+All
+10
+Review status
+All
+3
+9-box position
+All
+7
+Group by 
+None
+Team
+Review status
+Manager
+Export CSV
+PERSON	TEAM	MANAGER	REVIEW STATUS	SELF REVIEW	MANAGER RATING	EVIDENCE INDEX	9-BOX POSITION	CALIBRATED
+
+Maya Ortiz
+	PMO	Omar Hamid	Manager draft	Done	Not yet	36	Core contributor	
+
+Priya Shah
+	Platform team	Maya Ortiz	Submitted	Done	3 Meets	51	Core contributor	
+
+Dev Rao
+	Data team	Maya Ortiz	Manager draft	Done	Not yet	49	Core contributor	
+
+Tom Becker
+	Service desk	Sam Patel	Submitted	Done	3 Meets	50	Core contributor	
+
+Avery Chen
+	Finance	Marcus Reid	Manager draft	Done	Not yet	61	Core contributor	
+
+Jordan Lee
+	Architecture	Omar Hamid	Submitted	Done	3 Meets	42	Core contributor	
+
+Sam Patel
+	Ops team	Omar Hamid	Manager draft	Done	Not yet	57	High performer	
+
+Nia Brooks
+	Change management	Sam Patel	Submitted	Done	3 Meets	43	Solid specialist	
+
+Chief Editor
+	Editors	Catherine Doyle	Submitted	Done	2 Partly meets	43	Inconsistent	
+
+Rina Okafor
+	Security	Omar Hamid	Submitted	Done	2 Partly meets	63	Action needed	
+
+Omar Hamid
+	PMO	Catherine Doyle	Submitted	Done	4 Exceeds	33	Future star	
+
+Marcus Reid
+	Finance	Catherine Doyle	Manager draft	Done	Not yet	72	Solid specialist	
+
+Rina Kovacs
+	Architecture	Jordan Lee	Submitted	Done	5 Outstanding	69	High performer	
+
+Aaron Whitfield
+	Architecture	Jordan Lee	Manager draft	Done	Not yet	51	Core contributor	
+
+Leah Moss
+	Platform team	Sam Patel	Submitted	Done	3 Meets	40	Core contributor	
+
+Ben Ito
+	Platform team	Sam Patel	Submitted	Done	2 Partly meets	71	Inconsistent	
+
+Carla Reyes
+	Platform team	Sam Patel	Manager draft	Done	Not yet	54	High performer	
+
+Dmitri Volkov
+	Platform team	Sam Patel	Submitted	Done	4 Exceeds	28	High performer	
+
+Hana Sato
+	Platform team	Sam Patel	Submitted	Done	3 Meets	52	Core contributor	
+
+Greg Nolan
+	Platform team	Sam Patel	Submitted	Done	5 Outstanding	43	High performer	
+
+Tess Whitaker
+	Platform team	Sam Patel	Submitted	Done	3 Meets	52	Solid specialist	
+
+Anil Mehta
+	Data team	Omar Hamid	Submitted	Done	2 Partly meets	56	Inconsistent	
+
+Yuki Tanaka
+	Data team	Anil Mehta	Manager draft	Done	Not yet	54	Rising talent	
+
+Rosa Delgado
+	Data team	Anil Mehta	Submitted	Done	5 Outstanding	44	Future star	
+
+Chen Wei
+	Data team	Anil Mehta	Submitted	Done	3 Meets	36	Solid specialist	
+
+Femi Adeyemi
+	Data team	Anil Mehta	Submitted	Done	4 Exceeds	66	High performer	
+
+Lucas Brandt
+	Data team	Anil Mehta	Submitted	Done	2 Partly meets	39	Inconsistent	
+
+57 of 57 rows
+Scroll for more · rows are drawn as you scroll
+How a performance cycle runs
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Performance management practice, OKRs, 9-box talent grid.
+Add a step
+Open in Workflow designer
+PERSON
+Set goals
+People and managers write OKRs linked to team goals and strategic objectives.
+AI AGENT
+Gather evidence
+Platform data, feedback, 1:1 notes and 360s collect all year. AI drafts a summary, never a rating.
+PERSON
+Self and manager review
+The person reflects. The manager writes the rating after the fairness check.
+APPROVAL GATE
+Calibration
+Managers compare, move people between 9-box positions with a written reason.
+PERSON
+Share and discuss
+Managers hold the conversation. Results are released only after calibration.
+AUTOMATIC
+Develop and plan succession
+Development plans, promotion readiness and the succession bench update.

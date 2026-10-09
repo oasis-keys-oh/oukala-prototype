@@ -1,0 +1,203 @@
+SERVICE MANAGEMENT · RELEASES · SCALED AGILE
+Plan together, deliver in increments
+
+Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.
+
+New program increment
+New PI objective
+Program backlog
+Releases
+ƒ Program predictability
+SAFe
+ITIL 5
+Dashboard and features
+PI planning board
+Objectives and predictability
+System demo and Inspect and adapt
+Trains and timeline
+
+PI planning is where every team on the train commits to what lands in which iteration. Rows are teams, columns are iterations; a card sits where that team expects to finish the feature. Drag a card to move the finish iteration and watch the capacity bar and the release flags. Bars turn red when work exceeds capacity; the innovation and planning iteration holds half capacity.
+
+Release train
+Codification and Portal train
+Data and Contracts train
+Add dependency
+Add risk
+Capacity used
+Over 90%
+Over capacity
+I1
+Sep 28 to Oct 9
+I2
+Oct 12 to Oct 23
+I3
+Oct 26 to Nov 6
+I4
+Nov 9 to Nov 20
+IP
+Nov 23 to Dec 4
+Platform Alpha
+Priya Shah
+38/43 pts
+FT-105
+Standards API 2.3.1 batch fix
+Feature
+WSJF 8.7
+FT-902
+Security scanning in the pipeline
+Enabler
+WSJF 4.2
+41/46 pts
+FT-101
+Editor workspace redesign
+Feature
+WSJF 2
+Dep 1
+Risk 1
+FT-106
+Content migration tooling
+Enabler
+WSJF 1.6
+Dep 1
+FT-107
+Beta feature flags and telemetry
+Enabler
+WSJF 3.8
+32/46 pts
+40/46 pts
+FT-104
+Publishing pipeline automation
+Enabler
+WSJF 3.3
+Dep 1
+FT-901
+CI test automation suite
+Enabler
+WSJF 3.3
+Dep 1
+Risk 1
+21/23 pts
+Search and Indexing (Lumen)
+Jordan Lee
+19/18 pts
+9/18 pts
+13/18 pts
+16/18 pts
+FT-901
+CI test automation suite
+Enabler
+WSJF 3.3
+8/9 pts
+FT-103
+Lumen search indexer 2.4
+Feature
+WSJF 4.3
+Dep 2
+Risk 1
+After REL-2609
+Editor Experience
+Chief Editor
+21/22 pts
+18/22 pts
+FT-133
+Reader accessibility fixes
+Feature
+WSJF 3.6
+10/22 pts
+19/22 pts
+FT-102
+Redline and compare view
+Feature
+WSJF 2
+10/11 pts
+FT-101
+Editor workspace redesign
+Feature
+WSJF 2
+After REL-2611
+Portal Reliability
+Tom Becker
+22/19 pts
+16/19 pts
+13/19 pts
+FT-131
+Portal standby failover (RB-031 v8)
+Enabler
+WSJF 4.3
+Dep 1
+Risk 1
+17/19 pts
+FT-104
+Publishing pipeline automation
+Enabler
+WSJF 3.3
+FT-132
+Autoscale and capacity alerts
+Enabler
+WSJF 5.2
+Dep 1
+After REL-2617
+9/10 pts
+Dependencies
+Cross-team and cross-train, with the iteration each is needed
+FROM	NEEDS	BY	STATUS
+FT-101 · Platform Alpha	FT-103 · Search and Indexing (Lumen)
+Editor workspace needs the 2.4 indexer for related content	Iteration 2	At risk
+FT-201 · Taxonomy Data	FT-103 · Search and Indexing (Lumen)
+Taxonomy engineering starts after the indexer handoff	Iteration 3	On track
+FT-106 · Platform Alpha	FT-131 · Portal Reliability
+Content migration dry run needs the standby failover	Iteration 3	On track
+FT-241 · Contracts and Integration	FT-243 · Contracts and Integration
+Obligation tracker reads from the new storage tier	Iteration 4	On track
+FT-104 · Platform Alpha	FT-901 · Platform Alpha
+Pipeline automation needs the shared test suite	Iteration 2	At risk
+FT-202 · Taxonomy Data	FT-132 · Portal Reliability
+Connection pool alerts reuse the autoscale alert design	Iteration 3	On track
+Risks (ROAM)
+Resolved, Owned, Accepted or Mitigated · drag a card to change its status
+Resolved
+1
+ERP vendor patch date unknown
+Avery Chen
+Owned
+2
+Only one staging environment for three teams in November
+Sam Patel
+Communications review slot not booked for the failover release
+Leila Haddad
+Accepted
+1
+Contractor QA automation contract ends Dec 18
+Priya Shah
+Mitigated
+2
+Lumen indexer 2.4 slips again and delays the beta
+Marco Ellis
+Contractor
+Taxonomy staff are shared with the indexer work until Oct 30
+Dev Rao
+
+Resolved: no longer a risk. Owned: a named person is working it. Accepted: we live with it. Mitigated: reduced to an acceptable level.
+
+Release train process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, ITIL 5.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Epic approved
+The portfolio approves an epic with a business case.
+AI AGENT
+Features analyzed and scored
+Features get acceptance criteria and a WSJF score.
+PERSON
+PI planning
+Teams commit objectives, dependencies and risks (ROAM) for the increment.
+PERSON
+Iterate and demo
+Teams deliver in iterations and show a system demo each time.
+AUTOMATIC
+Release through release management
+Features ship as releases with readiness gates and a go or no-go.
+PERSON
+Inspect and adapt
+Measure predictability, retrospect and solve the biggest problems.

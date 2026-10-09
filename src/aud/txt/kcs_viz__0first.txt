@@ -1,0 +1,432 @@
+VISUALIZATION BUILDER · 97 CHART TYPES, MAPS AND SHAPES
+Draw any chart from a measure someone owns
+
+19 saved visuals on 3 dashboards, 97 chart types including geographic coverage, incident maps and silhouette charts, and a builder that takes any data model table, metric series, a CSV or a 100,000 point stress set. Every chart is bound to a registered field or metric and shows its formula on hover.
+
+ƒ Governed visuals
+ƒ Visuals with text alternatives
+ƒ Render time at 10,000 points (p95)
+ƒ Visual reuse
+DAMA-DMBOK
+Why am I seeing this?
+Library and gallery
+Maps
+Shape charts
+Builder
+Dashboards
+SAVED VISUALS
+19
+3 dashboards use them
+CHART TYPES
+97
+14 families, incl. maps and shapes
+GOVERNED
+68%
+13 of 19 bound to the registry
+DATA SOURCES
+302
+Data model, metrics, samples, big data, CSV
+LARGEST TESTED
+100K
+points, via canvas and aggregation
+Dashboard first: Service health
+The saved visuals your team looks at every morning. Click any bar, slice, state or point and every other visual with that field filters too.
+Open all dashboards
+Click a bar, slice, region or point to filter every other visual that shares the field.
+Tier 1 availability vs target
+Details
+Data table
+Full screen
+99.6%
+Tier 1 availability · target 99.9%
+0
+100
+On target
+Watch
+Act
+Mean time to resolve trend
+Details
+Data table
+Full screen
+0 h
+2 h
+4 h
+6 h
+Aug 17
+Aug 24
+Aug 31
+Sep 7
+Sep 14
+Sep 21
+Sep 28
+Oct 5
+3.4 h
+Target 4
+Hours to resolve by priority
+Details
+Data table
+Full screen
+0 h
+10 h
+20 h
+P1
+P2
+P3
+P4
+2.55 h
+4.9 h
+9.81 h
+17.1 h
+Sev 2 target 4 h
+Incidents opened per week
+Details
+Incident mix by service and priority
+Details
+Incidents by US state
+Details
+Incident points and clusters
+Details
+Saved visuals
+Each one is a JSON spec, bound to the data model or a registered metric. Select a row to preview, edit or place it on a dashboard.
+New visual
+Open the builder
+Family
+All
+10
+Lineage
+All
+2
+Export CSV
+VISUAL	TYPE	FAMILY	SOURCE	LINEAGE	ON DASHBOARDS	OWNER	UPDATED
+Incidents opened per week
+Portal incidents rose the week of Sep 28 after the search index change.
+	Line	Line	Meridian incidents (with location)	Bound to registry	Service health	
+Tom Becker
+	Oct 6
+Hours to resolve by priority
+Shows whether P1 and P2 meet the restore targets.
+	Bar	Bar	Meridian incidents (with location)	Bound to registry	Service health	
+Tom Becker
+	Oct 6
+Incidents by US state
+Where readers and offices feel the pain; click a state to filter every visual.
+	US state choropleth	Maps	Meridian incidents (with location)	Bound to registry	Service health, Reach and spend	
+Tom Becker
+	Oct 6
+Incidents by country
+International reach and where support hours matter.
+	World choropleth	Maps	Meridian incidents (with location)	Bound to registry	Reach and spend	
+Tom Becker
+	Oct 6
+Incident points and clusters
+Every incident as a point; clusters split on zoom.
+	Point map with clusters	Maps	Meridian incidents (with location)	Bound to registry	Service health	
+Tom Becker
+	Oct 6
+Tier 1 availability vs target
+Registered metric with its formula and remediation.
+	Gauge	Radial and gauge	Tier 1 availability (metric series)	Bound to registry	Service health, Operations floor	
+Tom Becker
+	Oct 6
+Mean time to resolve trend
+The Sev 2 restore time over eight weeks against its target.
+	Line	Line	Mean time to resolve (Sev 2) (metric series)	Bound to registry	Service health	
+Tom Becker
+	Oct 6
+Service cost by tier
+Where monthly run cost sits across tiers and services.
+	Treemap	Part to whole	Business services (registry)	Bound to registry	Reach and spend	
+Tom Becker
+	Oct 6
+Car sales by model
+Sample ledger: units sold, drawn as cars sized by value.
+	Silhouette bars	Shape and image	Car sales by model, region and quarter	Sample data	Reach and spend	
+Priya Shah
+	Oct 6
+Units sold per region
+One car icon equals a fixed number of cars.
+	Pictogram (isotype)	Shape and image	Car sales by model, region and quarter	Sample data	None	
+Priya Shah
+	Oct 6
+Incident mix by service and priority
+Which services carry the P1 and P2 load.
+	Stacked bar	Bar	Meridian incidents (with location)	Bound to registry	Service health	
+Tom Becker
+	Oct 6
+Replication traffic between sites
+Daily volume between data centers and offices.
+	Flow map	Maps	Site-to-site replication and traffic	Sample data	Reach and spend	
+Tom Becker
+	Oct 6
+Rack health, Colocation Ashburn
+Devices by status at rack unit position.
+	Rack elevation	Maps	Data center rack elevation	Sample data	Operations floor	
+Sam Patel
+	Oct 6
+Portal response control chart
+p95 response time with 3 sigma limits.
+	Control chart (SPC)	Finance and quality	Portal response time samples (p95, ms)	Sample data	Operations floor	
+Marco Ellis
+	Oct 6
+Incident calendar
+Daily incident volume over 26 weeks.
+	Calendar heatmap	Heat and matrix	Meridian incidents (with location)	Bound to registry	Operations floor	
+Tom Becker
+	Oct 6
+Priority by service heatmap
+Hot spots between services and priority.
+	Heatmap	Heat and matrix	Meridian incidents (with location)	Bound to registry	Operations floor	
+Tom Becker
+	Oct 6
+Where incidents flow
+From site type through service to category.
+	Alluvial	Flow and relationship	Meridian incidents (with location)	Bound to registry	None	
+Tom Becker
+	Oct 6
+Project roadmap
+Twelve work items by team with progress.
+	Gantt	Time and process	Project tasks and milestones	Bound to registry	None	
+Priya Shah
+	Oct 6
+On-call coverage by state
+Which regions have continuous, daytime or limited cover.
+	Coverage map	Maps	On-call coverage by region	Sample data	None	
+Tom Becker
+	Oct 6
+19 of 19 rows
+Scroll for more · rows are drawn as you scroll
+Chart type gallery
+Every thumbnail is drawn live by the same renderer your charts use. Select one to see what it shows, what it needs and how it scales.
+97 types
+All (97)
+Bar
+Line
+Scatter and density
+Distribution
+Part to whole
+Heat and matrix
+Radial and gauge
+Flow and relationship
+Network and hierarchy
+Time and process
+Finance and quality
+KPI and table
+Text and table
+Maps
+Shape and image
+Bar
+Bar
+Horizontal bar
+Bar
+Grouped bar
+Bar
+Stacked bar
+Bar
+100% stacked bar
+Bar
+Diverging bar
+Bar
+Lollipop
+Bar
+Dumbbell
+Bar
+Bullet
+Bar
+Waterfall
+Bar
+Pareto
+Bar
+Line
+Line
+Step line
+Line
+Smooth line
+Line
+Area
+Line
+Stacked area
+Line
+100% area
+Line
+Streamgraph
+Line
+Slope chart
+Line
+Bump chart
+Line
+Sparkline grid
+Line
+Cumulative flow
+Time and process
+Scatter
+Scatter and density
+Bubble
+Scatter and density
+Hexbin
+Scatter and density
+Density heatmap
+Scatter and density
+Contour
+Scatter and density
+Histogram
+Distribution
+Box plot
+Distribution
+Violin
+Distribution
+Ridgeline
+Distribution
+Beeswarm
+Distribution
+Strip plot
+Distribution
+Pie
+Part to whole
+Donut
+Part to whole
+Sunburst
+Part to whole
+Treemap
+Part to whole
+Icicle
+Part to whole
+Packed circles
+Part to whole
+Waffle
+Part to whole
+Marimekko
+Part to whole
+Heatmap
+Heat and matrix
+Dot matrix
+Heat and matrix
+Calendar heatmap
+Heat and matrix
+Correlogram
+Heat and matrix
+Status matrix
+Heat and matrix
+Radar
+Radial and gauge
+Radial bar
+Radial and gauge
+Polar area (rose)
+Radial and gauge
+Gauge
+Radial and gauge
+Speedometer
+Radial and gauge
+KPI card
+KPI and table
+Progress bar
+KPI and table
+Progress ring
+KPI and table
+Funnel
+Flow and relationship
+Pyramid
+Flow and relationship
+Sankey
+Flow and relationship
+Alluvial
+Flow and relationship
+Chord
+Flow and relationship
+Arc diagram
+Flow and relationship
+Network (force graph)
+Network and hierarchy
+Tree
+Network and hierarchy
+Dendrogram
+Network and hierarchy
+Org-style chart
+Network and hierarchy
+Event timeline
+Time and process
+Gantt
+Time and process
+Swimlane
+Time and process
+Roadmap
+Time and process
+Burndown
+Time and process
+Candlestick
+Finance and quality
+Control chart (SPC)
+Finance and quality
+Run chart
+Finance and quality
+Word cloud
+Text and table
+Table with in-cell bars
+KPI and table
+Small multiples
+KPI and table
+Parallel coordinates
+Scatter and density
+Venn / Euler
+Flow and relationship
+World choropleth
+Maps
+US state choropleth
+Maps
+World bubble map
+Maps
+US bubble map
+Maps
+Point map with clusters
+Maps
+Hex-bin map
+Maps
+Coverage map
+Maps
+Flow map
+Maps
+Rack elevation
+Maps
+Floor plan
+Maps
+Heat overlay on a diagram
+Maps
+Shape fill
+Shape and image
+Liquid fill
+Shape and image
+Stacked silhouette
+Shape and image
+Silhouette bars
+Shape and image
+Pictogram (isotype)
+Shape and image
+Pictorial bars
+Shape and image
+Person waffle
+Shape and image
+Custom shape fill
+Shape and image
+Image fill
+Shape and image
+How a visual gets from data to dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DAMA-DMBOK, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Pick governed data
+A data model table, metric series, big-data set or your own CSV.
+AI AGENT
+Recommend chart types
+The AI agent ranks chart types for the chosen fields and explains why.
+AUTOMATIC
+Check lineage and rules
+Measures are checked against the metric registry; chart lint warns about misleading designs.
+PERSON
+Build and preview
+Drag fields to encodings and watch the chart redraw; tooltips show formulas.
+AUTOMATIC
+Accessibility check
+Aria label, data table and color-blind safe palette are verified.
+APPROVAL GATE
+Publish to library
+The owner approves a visual before it appears on shared dashboards.

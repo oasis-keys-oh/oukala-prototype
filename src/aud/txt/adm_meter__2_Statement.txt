@@ -1,0 +1,58 @@
+PLATFORM · LICENSING, USAGE AND BILLING
+What Meridian pays for, and why
+
+The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.
+
+ƒ Licence utilization
+ƒ AI cost per outcome
+Claude Sonnet · 90%
+Seats and plans
+Usage meters
+Statement
+Showback
+Statement: October 2026 (projected)
+Invoice date Nov 1, net 30. Projected total $10,638.22, of which $481.42 is overage you can still avoid. Select any line to hear its story.
+Copy as text
+Full user seats
+150 × $42
+$6,300
+Explain this line
+Light user seats
+80 × $14
+$1,120
+Explain this line
+Approver-only seats
+60 × $6
+$360
+Explain this line
+AI agent seat seats
+8 × $95
+$760
+Explain this line
+Professional platform fee
+1 × $1,800
+$1,800
+Explain this line
+Sandbox environments (Dev and Test)
+2 × $250
+$500
+Explain this line
+API calls overage (projected)
+$376.67
+Explain this line
+AI tokens overage (projected)
+$9.20
+Explain this line
+Notifications overage (projected)
+$95.55
+Explain this line
+Annual commitment credit (8% of seats)
+−$683.20
+Explain this line
+Subtotal
+$11,321.42
+Tax
+Exempt: nonprofit certificate on file
+$0.00
+Total due
+$10,638.22

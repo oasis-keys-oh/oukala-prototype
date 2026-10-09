@@ -1,0 +1,58 @@
+MASTER PROCESS FLOW
+The whole system, end to end
+
+From strategy to demand, projects, build, change and release, deploy, operate, service performance, cost and maturity, and back to strategy. 45% of defined steps are automated and 0 of 14 areas still need a process definition.
+
+ƒ Process automation level
+ƒ Process steps with an SLA
+ITIL 5
+PMBOK
+SAFe
+TBM Taxonomy and ATUM
+Process flow
+Handoffs
+Coverage
+Data handoffs between process areas
+What one area hands to the next, and the data objects behind it. Select a row to open the sending area.
+From
+All
+14
+To
+All
+14
+Export CSV
+FROM	TO	WHAT IS HANDED OVER	DATA OBJECTS	SENDING OWNER
+Strategy and objectives	Demand and intake	Approved objectives	Strategic objective, Capability, Portfolio	Omar Hamid
+Demand and intake	Portfolio and projects	Funded demand	Demand request, Business case	Maya Ortiz
+Portfolio and projects	Requirements and backlog	Scope and plan	Project, WBS task, RAID item	Priya Shah
+Requirements and backlog	Build, test and scan	Ready stories	Feature, User story, Sprint	Chief Editor
+Build, test and scan	Change and release	Signed artifact	Pull request, Build, Artifact, Test result	Zoe Hart
+Change and release	Deploy and verify	Approved change	Change request, Release, Release gate, Approval	Nia Brooks
+Deploy and verify	Events and alerts	Live version and CIs	Deployment, Environment version	Contoso Cloud Operations
+Events and alerts	Incidents	Correlated group	Alert, Alert rule, Standard change	Ops team
+Incidents	Problems and known errors	Recurring cause	Incident, Major incident	Tom Becker
+Problems and known errors	Requests and fulfillment	Permanent fix	Problem, Known error	Tom Becker
+Requests and fulfillment	Service performance	Fulfilled services	Request item, Catalog item, Fulfillment step	Grace Whitfield
+Service performance	Financials (TBM)	Service cost and value	SLA, Task SLA, SLO, XLA response	Service owners
+Financials (TBM)	Maturity and improvement	Cost per service	Cost allocation, Invoice, Budget	Avery Chen
+Maturity and improvement	Strategy and objectives	Improvement priorities	Maturity capability, Assessment	Omar Hamid
+Problems and known errors	Requirements and backlog	Problem becomes a backlog item	Problem, Known error	Tom Becker
+Service performance	Demand and intake	SLA breach raises demand	SLA, Task SLA, SLO, XLA response	Service owners
+16 of 16 rows
+Scroll for more · rows are drawn as you scroll
+How the master map stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, PMBOK, SAFe, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+PERSON
+Process owners define their steps
+Each screen registers who does what and how fast.
+AUTOMATIC
+The map reads the definitions
+Automation and SLA coverage are calculated from the registered steps, not typed in.
+AUTOMATIC
+Gaps are flagged
+Areas without a definition show with a dashed border.
+APPROVAL GATE
+Quarterly review
+The CIO and process owners pick the next step to automate.

@@ -1,0 +1,58 @@
+FEEDBACK LOOP
+Every action teaches the product
+
+Oukala audited 8 of your actions this session. When many people do the same thing, it becomes a candidate for research.
+
+Only actions are recorded, never the content of your documents.
+Trends worth researching
+Detected across personas
+Research
+6 times · Finance approver
+4 of 6 holds on Lumen invoices were overridden
+Could become: Vendor-specific tolerance so the advisor stops holding invoices that are accepted verbally
+Feedback Analyst · 78%
+In research
+Backlog
+7 times · Project manager
+Searches for “milestone acceptance” returned nothing 7 times
+Could become: A milestone acceptance view that links work, invoice and payment
+Feedback Analyst · 78%
+Send to research
+Backlog
+12 times · Executive
+Opening the table then filtering to red, 12 times this week
+Could become: A saved “needs action” view on Home
+Feedback Analyst · 78%
+Send to research
+Research
+11 times · Service desk lead
+Agent-drafted knowledge refreshes accepted without edits 9 of 11 times
+Could become: Raise Knowledge Curator one autonomy level for runbooks
+Feedback Analyst · 78%
+In research
+What we can remove
+Fields in no story and no metric
+Cost center code
+Appears on 3 record types. In no story, no metric, read 0 times in 30 days.
+Remove
+Legacy ID
+Carried over from the old system. Read twice in 30 days.
+Archive
+Region tag
+Set on contracts only; no report uses it.
+Remove
+Your actions, live
+08:20:17 AM
+navigated kg
+08:20:17 AM
+navigated metrics
+08:20:16 AM
+navigated tower
+08:20:15 AM
+navigated fo
+08:20:15 AM
+navigated inv
+08:20:14 AM
+navigated trace
+08:20:14 AM
+navigated home

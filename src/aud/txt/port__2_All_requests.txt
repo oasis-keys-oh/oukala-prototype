@@ -1,0 +1,97 @@
+DEMAND AND PRIORITIES
+What should we fund
+
+4 of 10 ranked requests are funded: $1.44M of the $2.0M envelope and 43 of 70 person-months. Retire the legacy lease subledger scores 77 and sits just below the line, yet it carries a hard date.
+
+ƒ Demand decision time
+ƒ Priority score
+ƒ Funded demand against capacity
+New request
+Contract analyzer
+PMBOK
+Why am I seeing this?
+Priorities
+Pipeline
+All requests
+Capacity vs demand
+Intake
+All requests
+Search, sort, filter and group every request. Select a row for the score, links and next step. Switch to Enterprise volumes in the nav footer to see hundreds.
+ƒ Priority score
+Gate
+All
+4
+Kind of work
+All
+4
+Service
+All
+6
+Objective
+All
+3
+Source
+All
+1
+Group by 
+None
+Gate
+Kind of work
+Service
+Objective
+Export CSV
+ID	REQUEST	KIND OF WORK	SERVICE	OBJECTIVE	CAPABILITY	GATE	SCORE▼	COST	DECISION	SOURCE
+D7	Disaster recovery for the Portal
+IT operations
+	Fix or tech debt	Codification Portal	Reduce operating risk	Service continuity	Review board	85	$460K	Funded	Request
+D5	Vendor risk scorecards
+Procurement
+	New capability	Contract Repository	Reduce operating risk	Vendor management	Scoring	81	$210K	Funded	Request
+D1	Public comment portal
+Editorial
+	New capability	Codification Portal	Modernize standards publishing	Stakeholder engagement	Review board	80	$420K	Funded	Request
+D6	AI drafting assistant for standards
+Editorial
+	New capability	Codification Platform	Modernize standards publishing	AI governance	Scoring	80	$350K	Funded	Request
+D3	Retire the legacy lease subledger
+Finance
+	Compliance mandate	Lease subledger (ERP)	Reduce operating risk	Application rationalization	Review board	77	$680K	Review board	Request
+D2	Reviewer workload dashboard
+Editorial
+	Enhancement	Codification Platform	Modernize standards publishing	Performance measurement	Scoring	58	$120K	Scoring	Request
+D10	Standards publishing analytics
+Editorial
+	New capability	Data platform	Modernize standards publishing	Performance measurement	Submitted	57	$130K	Submitted	Request
+D8	Data warehouse consolidation
+Data office
+	Enhancement	Data platform	Reduce operating risk	Data management	Submitted	54	$900K	Submitted	Request
+D4	Mobile app for editors
+Editorial
+	New capability	Codification Platform	Modernize standards publishing	Digital workplace	Screening	31	$540K	Screening	Request
+D9	Meeting room AV refresh
+Facilities
+	Fix or tech debt	Service desk	None	Digital workplace	Submitted	25	$160K	Submitted	Request
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+How demand becomes funded work
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, TBM Taxonomy and ATUM, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Raise
+Anyone fills the form, emails intake, uploads a contract, or a trigger creates the request: unit-cost scale up or down, service level breach, release finding, maturity gap.
+AI AGENT
+Screen
+Portfolio Agent checks duplicates and missing facts, links the service, and suggests the four 0 to 5 ratings.
+PERSON
+Score and confirm
+The sponsor confirms the ratings. Triggered requests wait here for a person.
+AUTOMATIC
+Rank
+Scores, weights, the envelope and capacity set the order and the funding line. Manual moves are logged with a reason.
+APPROVAL GATE
+Review board
+The board funds, parks or returns each request.
+AUTOMATIC
+Turn into a project
+A funded request becomes a project with a plan, budget line, team and place on the master schedule.

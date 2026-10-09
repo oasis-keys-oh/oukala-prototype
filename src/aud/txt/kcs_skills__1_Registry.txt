@@ -1,0 +1,84 @@
+AGENT SKILLS · KNOWLEDGE INTO ACTION
+Turn what we know into work that runs itself
+
+4 agent skills are running with a 89% success rate and $7,480 saved. 13 more published procedural items score 60 or more and can be promoted. Every skill is a knowledge item with inputs, tools, guardrails, approvals and tests, registered as a workflow step and a chat tool only after a person approves it.
+
+ƒ Agent skill success rate
+ƒ Automation readiness
+ƒ Improvement loop time
+Open the Skill studio
+Why am I seeing this?
+Dashboard
+Registry
+Skill studio
+Runs and improvement loop
+Tool catalog
+
+All skills with their status, runs, success, escalations, cost saved, tests and the readiness of the source item. Click a row for the full procedure.
+
+Status
+All
+5
+Risk
+All
+3
+Service
+All
+7
+Owner
+All
+7
+Group by 
+None
+Status
+Risk
+Service
+Export CSV
+AGENT SKILL	STATUS	RISK	SERVICE	OWNER	RUNS	SUCCESS	ESCALATIONS	COST SAVED	TESTS	READINESS
+
+Reset multifactor authentication for an editor
+SK-101 from KB0451 · v1.3
+	Active	Medium	Identity (Entra ID)	Tom Becker	214	
+ 92%	14	$3,850	12 of 12	89
+
+Fail over the Codification Portal to the secondary region
+SK-102 from KB0421 · v0.8
+	In test	High	Codification Portal	Priya Shah	0	no runs	0	$0	9 of 12	87
+
+Clear stale search results after a deploy
+SK-103 from KB0377 · v2.0
+	Active	Low	Search and indexing	Sam Patel	88	
+ 91%	6	$1,560	8 of 8	91
+
+Grant a vendor access to the staging site
+SK-104 from KB0462 · v1.1
+	Active	Medium	Codification Portal	Priya Shah	41	
+ 80%	7	$820	9 of 10	93
+
+Prepare the quarterly access recertification pack
+SK-105 from KB0333 · v0.9
+	Awaiting approval	Medium	Identity (Entra ID)	Nia Brooks	0	no runs	0	$0	6 of 6	91
+
+Rebuild the Lumen search index
+SK-106 from KB0480 · v0.2
+	Draft	High	Search and indexing	Sam Patel	0	no runs	0	$0	0 of 0	57
+
+Handle Taxonomy API rate limits in bulk imports
+SK-107 from KB0420 · v1.0
+	Paused	Low	Codification Platform	Dev Rao	27	
+ 74%	5	$310	5 of 5	91
+
+Fix VPN disconnects on a Windows laptop
+SK-108 from KB0360 · v0.5
+	In test	Medium	Network and VPN	Sam Patel	0	no runs	0	$0	4 of 6	71
+
+Export the lease schedule after the ERP upgrade
+SK-109 from RTP-091 · v0.1
+	Draft	Low	Lease subledger (ERP)	Avery Chen	0	no runs	0	$0	0 of 0	59
+
+Share a draft standard with an outside reviewer
+SK-110 from KB0140 · v1.2
+	Active	Medium	Email and collaboration (M365)	Maya Ortiz	63	
+ 90%	5	$940	7 of 7	73
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll

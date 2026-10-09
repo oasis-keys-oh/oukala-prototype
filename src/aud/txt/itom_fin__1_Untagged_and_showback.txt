@@ -1,0 +1,48 @@
+CLOUD COST (FINOPS)
+Know who spends what, and stop paying for idle
+
+September Azure spend was $105K against a $100K budget (105%), and October is forecast at $112K because the SQL instance was scaled up during the portal incident. 10.9% of spend is recoverable waste.
+
+ƒ Cloud spend vs monthly budget
+ƒ Cloud waste share
+Add allocation rule
+Why am I seeing this?
+Spend and budget
+Untagged and showback
+Rightsizing
+Untagged spend
+Resources missing a required team or costcenter tag. Tag coverage = 1 − Untagged ÷ Total spend = 85.9%.
+SERVICE	UNTAGGED	RESOURCES	LIKELY OWNER
+SQL managed instance	$4.6K	5	Data team
+App Service	$3.2K	4	Platform team
+Virtual machines	$3.4K	6	Finance systems
+Storage	$2.1K	9	Shared
+Log Analytics	$1.5K	2	Shared
+Most untagged resources sit in resource groups that are tagged. Azure Policy can copy the tag down.
+Apply tag inheritance policy
+FinOps Agent · 87%
+Showback by department
+Direct tagged cost, tag-fix recovery and shared allocation. Variance is against each department's share of the $100K budget.
+Add allocation rule
+DEPARTMENT	DIRECT	RECOVERED BY TAG FIX	SHARED ALLOCATION	TOTAL	BUDGET	VARIANCE
+Publishing	$38.9K	$0.0K	$0.6K	$39.5K	$36.0K	+3.5K
+IT Platform	$23.9K	$0.0K	$0.4K	$24.3K	$22.0K	+2.3K
+Finance	$17.6K	$0.0K	$0.3K	$17.9K	$16.0K	+1.9K
+Legal	$9.8K	$0.0K	$0.2K	$10.0K	$9.0K	+1.0K
+Unallocated	Cost no rule or tag can place yet	$13.3K	$17.0K shared pool	
+How cloud cost is managed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Azure cost export lands daily and is matched to tags.
+PERSON
+Allocate
+Showback assigns untagged cost by rule.
+AI AGENT
+Recommend
+Utilization produces rightsizing proposals with risk and savings.
+APPROVAL GATE
+Approve
+Accepted proposals become changes that need approval.

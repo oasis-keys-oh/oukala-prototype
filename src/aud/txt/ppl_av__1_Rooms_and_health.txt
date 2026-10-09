@@ -1,0 +1,81 @@
+ROOMS AND CONFERENCE SCHEDULING
+Is the right room ready
+
+Rooms are 36% booked this week against a 55% target, yet the Boardroom has 1 meeting of four people or fewer. Huddle Birch has a Teams Room device offline and 2 hybrid bookings today depend on it. 3 AV tickets are open, two of them raised automatically for Thursday's events.
+
+ƒ Room utilization
+Book a room
+Why am I seeing this?
+Room utilization
+36%
+target 55%
+Rooms with a problem
+2
+Huddle Birch offline
+Open AV tickets
+3
+auto-raised for events needing a tech
+Right-size candidates
+4
+meetings in a bigger room than needed
+Booking grid
+Rooms and health
+AV support
+Room health
+2 rooms need attention. A Teams Room device that is offline silently breaks hybrid meetings, so Oukala warns every booking it touches.
+Training room: Microphone array firmware installing tonight
+0 hybrid bookings today use it.
+Raise ticket
+Huddle Birch: Teams Room codec offline since 8:12 am
+2 hybrid bookings today use it. Room Scheduler can move them to a room with a working kit. Ticket AV-1003 is in progress.
+Move today's bookings
+Mark online
+Room inventory
+Capacity, equipment and Teams Room status. Select a room for its week and history.
+ƒ Room utilization
+Boardroom
+Online
+Boardroom, hybrid · floor 3 · 12 seats
+Display sharing
+Camera
+Microphones
+Conference phone
+Recording
+Live captions
+26% booked this week
+Training room
+Updating
+Training, hybrid · floor 2 · 24 seats
+Display sharing
+Camera
+Microphones
+Recording
+26% booked this week
+Aspen room
+Online
+Hybrid meeting room · floor 3 · 8 seats
+Display sharing
+Camera
+Microphones
+45% booked this week
+Cedar room
+Online
+Hybrid meeting room · floor 3 · 10 seats
+Display sharing
+Camera
+Microphones
+Live captions
+38% booked this week
+Huddle Maple
+Online
+Huddle room · floor 2 · 4 seats
+Display sharing
+Conference phone
+41% booked this week
+Huddle Birch
+Offline
+Huddle room, hybrid · floor 2 · 4 seats
+Display sharing
+Camera
+Microphones
+42% booked this week

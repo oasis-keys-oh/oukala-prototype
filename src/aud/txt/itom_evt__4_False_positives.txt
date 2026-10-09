@@ -1,0 +1,244 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+FALSE POSITIVE RATE
+20.4%
+11 of 54 alerts in 7 days
+OPEN SUGGESTIONS
+4
+awaiting your decision
+ALERTS A SUGGESTION WOULD REMOVE
+14
+over the last 7 days if all accepted
+FEEDBACK MARKS
+11
+people and agents teaching the rules
+ƒ False positive rate
+ƒ Event noise reduction
+Suppression suggestions
+Each suggestion shows how many of last week's alerts it would have removed, and its confidence. Nothing changes until you accept it.
+Confidence 97%
+Suppression window
+Event Correlator · 97%
+Suppress Error rate on apim-gateway between 01:00 and 01:20
+
+It fired 7 times in 7 days at the same time (every day around 01:10); 5 were marked as false positive or expected. No crit-level peaks fall outside this window.
+
+ALERTS IN 7 DAYS NOW
+7
+WITH THIS CHANGE
+0
+REMOVED
+100%
+Accept
+Reject
+Open in threshold lab
+Confidence 97%
+Suppression window
+Event Correlator · 97%
+Suppress Storage error rate on contract-blob between 03:00 and 03:20
+
+It fired 7 times in 7 days at the same time (every day around 03:10); 6 were marked as false positive or expected. No crit-level peaks fall outside this window.
+
+ALERTS IN 7 DAYS NOW
+7
+WITH THIS CHANGE
+0
+REMOVED
+100%
+Accept
+Reject
+Open in threshold lab
+Confidence 84%
+Threshold
+Event Correlator · 84%
+Raise the warning threshold of Storage error rate to 1.50%
+
+86% of its warnings were false positives.
+
+ALERTS IN 7 DAYS NOW
+7
+WITH THIS CHANGE
+7
+REMOVED
+0%
+Accept
+Reject
+Open in threshold lab
+Confidence 76%
+Hysteresis
+Event Correlator · 76%
+Hold Memory pressure for 20 minutes before alerting
+
+3 of 8 alerts flapped. A longer duration absorbs short blips.
+
+ALERTS IN 7 DAYS NOW
+8
+WITH THIS CHANGE
+8
+REMOVED
+0%
+Accept
+Reject
+Open in threshold lab
+Review queue
+Newest alerts. Tell the rules whether each was worth a person's time. This feedback is what the suggestions learn from.
+Sev 3
+Link utilization 82.7%
+Edge firewall pair · 12:00
+Useful
+False positive
+Sev 3
+Packet loss 1.96%
+Edge firewall pair · 11:55
+Useful
+False positive
+Sev 4
+CPU 86.2%
+erp-sql-01 · 11:05
+Useful
+False positive
+Sev 3
+Link utilization 89.8%
+VPN gateway · 10:50
+Useful
+False positive
+Sev 3
+Queue depth 9,264 msgs
+lumen-indexer-02 · 10:45
+Useful
+False positive
+Sev 1
+Availability 95.40%
+VPN gateway · 10:43
+Useful
+False positive
+Sev 3
+CPU 86.5%
+codif-app-02 · 10:05
+Useful
+False positive
+Sev 2
+Queue depth 19,303 msgs
+lumen-indexer-01 · 09:55
+Useful
+False positive
+Recent feedback
+Who marked what, and why.
+contract-blob Storage error rate · Oct 5 03:10
+Expected behavior: Expected: nightly backup job warning, no data loss
+Sam Patel
+contract-blob Storage error rate · Oct 4 03:10
+Expected behavior: Expected: nightly backup job warning, no data loss
+Sam Patel
+apim-gateway Error rate · Oct 4 01:15
+Expected behavior: Expected during the Taxonomy nightly batch (PRB0008)
+Sam Patel
+contract-blob Storage error rate · Oct 3 03:10
+Expected behavior: Expected: nightly backup job warning, no data loss
+Sam Patel
+apim-gateway Error rate · Oct 3 01:15
+Expected behavior: Expected during the Taxonomy nightly batch (PRB0008)
+Sam Patel
+contract-blob Storage error rate · Oct 2 03:10
+Expected behavior: Expected: nightly backup job warning, no data loss
+Sam Patel
+apim-gateway Error rate · Oct 2 01:15
+Expected behavior: Expected during the Taxonomy nightly batch (PRB0008)
+Sam Patel
+contract-blob Storage error rate · Oct 1 03:10
+Expected behavior: Expected: nightly backup job warning, no data loss
+Sam Patel
+False positive rate by rule
+Precision is the share of alerts that were real. A rule below 80% is costing responders attention for nothing.
+ALERT RULE	ALERTS, 7 DAYS	FALSE POSITIVES	FALSE POSITIVE RATE▼	PRECISION
+Storage error rate
+AR12 · Ops team
+	7	6	
+ 85.7%	14.3%
+Error rate
+AR05 · Platform team
+	11	5	
+ 45.5%	54.5%
+CPU high on servers and databases
+AR01 · Ops team
+	5	0	
+ 0.0%	100.0%
+Memory pressure
+AR02 · Ops team
+	8	0	
+ 0.0%	100.0%
+Disk space
+AR03 · Ops team
+	1	0	
+ 0.0%	100.0%
+Latency p95
+AR04 · Platform team
+	4	0	
+ 0.0%	100.0%
+Availability
+AR06 · Ops team
+	1	0	
+ 0.0%	100.0%
+Queue depth
+AR07 · Lumen (vendor)
+	2	0	
+ 0.0%	100.0%
+Link utilization
+AR08 · Ops team
+	2	0	
+ 0.0%	100.0%
+Packet loss
+AR09 · Ops team
+	1	0	
+ 0.0%	100.0%
+Memory growth (dynamic baseline)
+AR10 · Ops team
+	7	0	
+ 0.0%	100.0%
+Latency anomaly (learned normal)
+AR11 · Data team
+	1	0	
+ 0.0%	100.0%
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

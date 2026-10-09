@@ -1,0 +1,182 @@
+DELIVERY PIPELINE
+One flow from idea to production
+
+The change process is a stage in the pipeline, not a separate queue. 4.7 production deployments a week, lead time 54 hours, 10.0% failed. 4 runs are waiting at the gate for the CAB.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Changes approved by the gate automatically
+DORA metrics
+ITIL 5
+Pipeline
+Runs
+Gate policy
+Where is my change
+Environments
+Freezes and clashes
+DORA
+Service
+All services
+AI platform and agents
+Codification Platform
+Codification Portal
+Contract Repository
+Data platform
+Endpoint management (Intune)
+Finance systems
+Identity (Entra ID)
+Integration hub
+Lease subledger (ERP)
+Network and VPN
+Portfolio and project intake
+Search and indexing
+Service desk
+DORA metrics
+ƒ Deployment rework rate
+Deployment frequency
+High
+4.7
+per week
+Up 67% against the 30 days before
+ƒ Deployment frequency
+Lead time for changes
+High
+54
+hours, median
+Up 17% against the 30 days before
+ƒ Lead time for changes
+Change failure rate
+High
+10.0
+%
+Up 20% against the 30 days before
+ƒ Change failure rate
+Time to restore service
+High
+5.3
+hours
+Down 19% against the 30 days before
+ƒ Time to restore service
+Elite
+High
+Medium
+Low
+
+20 production deployments in 30 days. Rework rate is 5.0%: hotfixes and redeploys that nobody planned. The release records agree: 13 releases deployed, 15.4% failed.
+
+Deployments per week
+Production, last six weeks. The line is the target of 7 a week.
+0
+2
+4
+6
+8
+Aug 25
+3
+Sep 1
+7
+Sep 8
+4
+Sep 15
+5
+Sep 22
+4
+Sep 29
+4
+target
+Lead time by week
+Median hours from first commit to production.
+0
+20
+41
+61
+82
+Aug 25
+24
+Sep 1
+36
+Sep 8
+58.5
+Sep 15
+71
+Sep 22
+55
+Sep 29
+43
+target 24 h
+Change failure rate by week
+Deployments that failed or were rolled back.
+0%
+10%
+20%
+30%
+40%
+Aug 25
+0%
+Sep 1
+14%
+Sep 8
+0%
+Sep 15
+20%
+Sep 22
+25%
+Sep 29
+0%
+target 10%
+Where lead time goes
+Typical hours spent in each stage for a production change.
+Waiting for review
+14.0 h
+Build and test
+6.0 h
+Security scan
+3.0 h
+Waiting for change approval
+18.0 h
+Waiting for the window
+16.0 h
+Deploy and verify
+2.0 h
+By service
+Select a column heading to sort. Each row uses the same definitions as the headline.
+Export CSV
+SERVICE	DEPLOYMENTS▼	PER WEEK	LEAD TIME (H)	FAILURE RATE	RESTORE (H)	REWORK
+Codification Platform	5	1.2	64	20.0%	7.5	0.0%
+AI platform and agents	3	0.7	32	0.0%	0.0	0.0%
+Portfolio and project intake	3	0.7	36	0.0%	0.0	0.0%
+Search and indexing	3	0.7	75	0.0%	0.0	0.0%
+Data platform	2	0.5	55	0.0%	0.0	0.0%
+Identity (Entra ID)	1	0.2	62	0.0%	0.0	0.0%
+Lease subledger (ERP)	1	0.2	140	100.0%	3.0	0.0%
+Network and VPN	1	0.2	71	0.0%	0.0	0.0%
+Service desk	1	0.2	54	0.0%	0.0	100.0%
+9 of 9 rows
+Scroll for more · rows are drawn as you scroll
+How a change reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics, ITIL 5, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Work item
+A backlog item or project task is the start of every change.
+PERSON
+Commit and pull request
+Code is committed with the work item id and reviewed.
+AUTOMATIC
+Build, test and scan
+Compile, run tests, scan for vulnerabilities, sign the artifact.
+APPROVAL GATE
+Change gate
+The gate reads the evidence: standard changes are approved automatically, normal changes go to the CAB, emergency changes to the ECAB.
+AI AGENT
+Deploy
+The release agent deploys in the agreed window and respects freezes.
+AI AGENT
+Verify
+The service level objective is checked for 15 minutes. If the error budget burns, the deploy is rolled back.
+AUTOMATIC
+Close and learn
+Release and change records close with the outcome. DORA numbers update.

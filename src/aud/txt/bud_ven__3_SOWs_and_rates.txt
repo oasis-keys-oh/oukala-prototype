@@ -1,0 +1,76 @@
+VENDORS AND CONTRACTS
+Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days
+
+Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepted. Cobalt Security must be told by Oct 16 if you do not want to renew, and Apex Print by Nov 1.
+
+ƒ Renewals needing a decision in 90 days
+ƒ Three-way match rate
+ƒ Vendor performance index
+New purchase order
+New contract
+New vendor
+Vendors
+Contracts
+Renewals
+SOWs and rates
+Purchase orders
+Statements of work and orders
+Fixed-price and time-and-materials work, with how much has been paid and what is left.
+SOW	VENDOR	FEE TYPE	VALUE	PAID	REMAINING	PROGRESS
+CT-102
+Northwind storage add-on order
+	Northwind Cloud	$118 per vCPU block	$60,000	$18,000	$42,000	
+30%
+CT-103
+Lumen SOW-3 search indexer
+	Lumen Data Partners	Fixed price	$250,000	$175,000	$75,000	
+70%
+CT-104
+Lumen SOW-4 taxonomy data engineering
+	Lumen Data Partners	Milestone fixed price	$655,000	$412,000	$243,000	
+63%
+CT-106
+Apex Print annual services
+	Apex Print	Per page schedule	$48,000	$31,000	$17,000	
+65%
+CT-107
+Cobalt Security penetration test retainer
+	Cobalt Security	$220 per hour	$36,000	$27,000	$9,000	
+75%
+Rate cards against the market benchmark
+Benchmark from the procurement index for similar roles and services. Rates more than 5% above are flagged for the next renewal.
+Lumen runs 6.5% above on average
+VENDOR	ROLE OR UNIT	OUR RATE	BENCHMARK	DIFFERENCE
+Lumen Data Partners	Senior data engineer
+per hour
+	$172	$158	+8.9%
+Lumen Data Partners	Data engineer
+per hour
+	$138	$131	+5.3%
+Lumen Data Partners	Search engineer
+per hour
+	$165	$160	+3.1%
+Lumen Data Partners	Delivery lead
+per hour
+	$185	$170	+8.8%
+Northwind Cloud	Compute
+per vCPU block
+	118	121	Better
+Northwind Cloud	Object storage
+per TB-month
+	$21	$22	-4.5%
+Northwind Cloud	Premier support
+of monthly spend
+	9%	10%	Better
+Brightline Staffing	Platform engineer
+per hour
+	$118	$109	+8.3%
+Brightline Staffing	Quality engineer
+per hour
+	$96	$90	+6.7%
+Microsoft	M365 E5
+per user-month
+	$46.8	$47	-0.4%
+Cobalt Security	Penetration tester
+per hour
+	$220	$230	-4.3%

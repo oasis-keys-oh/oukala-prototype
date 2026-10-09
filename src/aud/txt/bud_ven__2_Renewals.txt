@@ -1,0 +1,136 @@
+VENDORS AND CONTRACTS
+Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days
+
+Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepted. Cobalt Security must be told by Oct 16 if you do not want to renew, and Apex Print by Nov 1.
+
+ƒ Renewals needing a decision in 90 days
+ƒ Three-way match rate
+ƒ Vendor performance index
+New purchase order
+New contract
+New vendor
+Vendors
+Contracts
+Renewals
+SOWs and rates
+Purchase orders
+Next 12 months
+October 2026 to September 2027. 8 contracts have a renewal or true-up in this window; 2 fall in the current quarter (Oct to Dec).
+ƒ Renewals needing a decision in 90 days
+Oct
+Nov
+Dec
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Jul
+Aug
+Sep
+CT-107 Cobalt Security
+N
+CT-106 Apex Print
+N
+CT-103 Lumen Data Partners
+N
+CT-108 Brightline Staffing
+N
+CT-104 Lumen Data Partners
+N
+CT-109 LegacyDocs Inc.
+N
+CT-102 Northwind Cloud
+N
+CT-105 Microsoft
+N
+
+N is the last day to give notice. The diamond is the renewal or end date.
+
+CT-107 · COBALT SECURITY · TERM END NOV 15, 2026
+Cobalt Security penetration test retainer
+Notice by Oct 16 (10 days)
+Recommended: Renew
+Contract Agent · 88%
+Renew on the same terms. No finding justifies the cost of a switch.
+Vendor scorecard 0.95 against the 0.75 watch line
+All 2 SLAs met
+Record decision
+Open contract
+CT-106 · APEX PRINT · TERM END DEC 31, 2026
+Apex Print annual services
+Notice by Nov 1 (26 days)
+Recommended: Renegotiate
+Contract Agent · 82%
+Add a duplicate-billing clause and a volume floor, and right-size the annual value to the usage trend.
+Vendor scorecard 0.88 against the 0.75 watch line
+2 of 2 SLAs missed (On-time delivery, Error rate)
+1 billing error on record
+Record decision
+Open contract
+CT-103 · LUMEN DATA PARTNERS · TERM END JAN 29, 2027
+Lumen SOW-3 search indexer
+Notice by Dec 30 (85 days)
+Recommended: Renegotiate
+Contract Agent · 82%
+Tie every remaining payment to an accepted milestone, add a service credit for late work, and cap change orders at 5%.
+Vendor scorecard 0.74 against the 0.75 watch line
+2 of 3 SLAs missed (Milestones on time, Defects per release)
+Record decision
+Open contract
+CT-109 · LEGACYDOCS INC. · TERM END MAR 31, 2027
+LegacyDocs Contract Repository support
+Notice by Dec 31 (86 days)
+Recommended: Replace
+Contract Agent · 90%
+Do not renew. Ask for a three-month month-to-month fallback at today's rate in case the cutover slips.
+Vendor scorecard 0.75 against the 0.75 watch line
+2 of 2 SLAs missed (Response to a P1, Patch cadence)
+Rates 12% above benchmark
+PR4 cutover starts Jan 11, 2027 and decommissioning finishes before the contract ends
+Record decision
+Open contract
+CT-108 · BRIGHTLINE STAFFING · TERM END JAN 31, 2027
+Brightline Staffing contract engineer MSA
+Notice by Jan 1 (87 days)
+Recommended: Renegotiate
+Contract Agent · 82%
+Reprice to the benchmark rate card before the notice date.
+Vendor scorecard 0.84 against the 0.75 watch line
+2 of 2 SLAs missed (Time to fill, Engineer retention)
+Rates 8% above benchmark
+Record decision
+Open contract
+CT-104 · LUMEN DATA PARTNERS · TERM END MAR 31, 2027
+Lumen SOW-4 taxonomy data engineering
+Notice by Jan 30 (116 days)
+Recommended: Renegotiate
+Contract Agent · 86%
+Tie every remaining payment to an accepted milestone, add a service credit for late work, and cap change orders at 5%.
+Vendor scorecard 0.74 against the 0.75 watch line
+3 of 3 SLAs missed (Milestones on time, Defect escape rate, Response to a blocker)
+Change orders add 7.4% to the original value
+Record decision
+Open contract
+CT-105 · MICROSOFT · ANNUAL TRUE-UP JUL 1, 2027
+Microsoft Enterprise Agreement (M365 E5, Azure, Entra ID)
+Notice by Apr 2 (178 days)
+Recommended: Renegotiate
+Contract Agent · 80%
+Right-size e5 seats assigned at the true-up and drop the 95 unused seats.
+Vendor scorecard 0.93 against the 0.75 watch line
+All 2 SLAs met
+E5 seats assigned: 765 of 860 (89%)
+Record decision
+Open contract
+CT-102 · NORTHWIND CLOUD · TERM END MAY 31, 2027
+Northwind storage add-on order
+Notice by May 1 (207 days)
+Recommended: Renew
+Contract Agent · 88%
+Renew on the same terms. No finding justifies the cost of a switch.
+Vendor scorecard 0.96 against the 0.75 watch line
+All 2 SLAs met
+Record decision
+Open contract

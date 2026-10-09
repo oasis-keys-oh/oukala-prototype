@@ -1,0 +1,81 @@
+CLOUD COST (FINOPS)
+Know who spends what, and stop paying for idle
+
+September Azure spend was $105K against a $100K budget (105%), and October is forecast at $112K because the SQL instance was scaled up during the portal incident. 10.9% of spend is recoverable waste.
+
+ƒ Cloud spend vs monthly budget
+ƒ Cloud waste share
+Add allocation rule
+Why am I seeing this?
+Spend and budget
+Untagged and showback
+Rightsizing
+Rightsizing recommendations
+AI proposals from 30 days of utilization. Accepting queues a change; nothing resizes without the change approval.
+vm-idx02 Low risk
+Standard_D8s_v5 to Standard_D4s_v5
+CPU p95 18%, memory p95 31% over 30 days
+$1.4K/mo
+FinOps Agent · 91%
+Accept
+asp-cod-test Low risk
+P2v3 to P1v3
+Test plan peaks at 22% CPU
+$0.6K/mo
+FinOps Agent · 88%
+Accept
+stcontracts Low risk
+Move 4 TB of untouched files to the Cool tier
+No reads for 120 days on 4 TB
+$0.9K/mo
+FinOps Agent · 86%
+Accept
+vm-erp-app01, vm-erp-db01 Medium risk
+Buy a 1-year reservation
+Always on for 14 months
+$2.1K/mo
+FinOps Agent · 82%
+Accept
+law-meridian-prod Low risk
+Move verbose tables to Basic logs
+6 tables, no alert queries
+$1.9K/mo
+FinOps Agent · 84%
+Accept
+lic-test-vm02 Low risk
+Delete idle VM (also retires its CI)
+No CPU or network use for 71 days
+$0.6K/mo
+FinOps Agent · 96%
+Accept
+Dev subscription Low risk
+Turn off Defender plans on dev resources
+No production data
+$0.9K/mo
+FinOps Agent · 80%
+Accept
+afd-meridian-internal Medium risk
+Front Door Premium to Standard
+No private link or WAF custom rules used
+$2.9K/mo
+FinOps Agent · 79%
+Accept
+Waste share = Remaining recommended savings ÷ Monthly spend = $11.4K ÷ $105.0K = 10.9%. Realized so far: $0.0K a month.
+ƒ Cloud waste share
+Target 8% or less.
+How cloud cost is managed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Azure cost export lands daily and is matched to tags.
+PERSON
+Allocate
+Showback assigns untagged cost by rule.
+AI AGENT
+Recommend
+Utilization produces rightsizing proposals with risk and savings.
+APPROVAL GATE
+Approve
+Accepted proposals become changes that need approval.

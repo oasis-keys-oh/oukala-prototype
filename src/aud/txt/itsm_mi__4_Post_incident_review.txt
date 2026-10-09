@@ -1,0 +1,58 @@
+SERVICE MANAGEMENT · MAJOR INCIDENT
+War room: Codification Platform is degraded
+
+INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.
+
+Impact analysis
+Add timeline entry
+Join bridge
+ƒ Major incident time to restore
+ITIL 5
+Overview
+War room
+Communications
+Status page
+Post-incident review
+Blameless review template
+Same structure every time so lessons compare across incidents
+Claude Sonnet · 78%
+Summary and impact People affected, duration, customer-facing or not.
+Timeline Built automatically from the war room.
+Five whys Follow the cause to a process or capacity gap, never to a person.
+What went well, what to improve
+Action items Each needs an owner and a date, and becomes a task.
+Start the review
+Due within 5 business days of restore.
+Action items
+Reviews end in work, not a document
+Add an alert on database connection saturation at 80%
+Tom Becker · due Oct 13 · PIR INC0412
+
+1 open. These are tracked here and appear in each owner's work list.
+
+Time to restore
+Major incident measure, includes this one
+3.1h
+ƒ Major incident time to restore
+
+Average of 3 earlier major incidents (1.9, 2.4 and 3.6 hours) and this one at 4h 18m so far.
+
+Major incident process (ITIL 5 Support)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Declare
+Tier 1 service, many users, no workaround.
+PERSON
+Fill roles
+Commander, technical lead, communications lead, scribe.
+AI AGENT
+Diagnose and restore
+Diagnostics by an agent, decisions by people; emergency change if needed.
+APPROVAL GATE
+Communicate
+AI drafts, communications lead approves every update.
+PERSON
+Review
+Blameless post-incident review ends in tasks.

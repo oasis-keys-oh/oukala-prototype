@@ -5,8 +5,18 @@
 (function(){
 const E=esc,N0=n=>Math.round(n).toLocaleString("en-US");
 const PREV=(typeof _R!=="undefined"&&_R["plat_data"])||null;
-S.atlas=Object.assign({ov:"domain",sel:null,fld:null,dom:null,exp:{},q:"",refs:"all",cam:null,trace:null,itab:"fields",metric:"m_delivery",ovr:{},lfld:null,lq:"",showAll:false,panel:true,hist:[]},S.atlas||{});
+S.atlas=Object.assign({ov:"domain",sel:null,fld:null,dom:null,exp:{},q:"",refs:"all",cam:null,trace:null,itab:"fields",metric:"m_delivery",ovr:{},lfld:null,lq:"",showAll:false,panel:true,hist:[],approved:{},confirmed:{},debtLogged:{}},S.atlas||{});
 const A=S.atlas;
+["approved","confirmed","debtLogged"].forEach(k=>{if(!A[k])A[k]={}});
+/* every DATAMODEL.register call flows through here so the atlas honors the optional domain, status, owner module and steward, and updates live */
+let DMV=1,_dmT=0;
+(function(){const R=DATAMODEL.register;if(!R||R._atlas)return;
+ const w=function(t,def){const cur=R.call(this,t,def);
+  if(def){["domain","status","ownerMod","steward","note","ownerApp","seed"].forEach(k=>{if(def[k]!=null)cur[k]=def[k]})}
+  if(!cur.domain&&/^fin_/.test(t))cur.domain="money";
+  DMV++;try{if(window.PLAT&&PLAT.refresh)PLAT.refresh();if(window.LIN)LIN.bump()}catch(e){}
+  clearTimeout(_dmT);_dmT=setTimeout(()=>{if(S.screen==="plat_data"||S.screen==="plat_reg"){try{render()}catch(e){}}},120);
+  return cur};w._atlas=1;DATAMODEL.register=w})();
 const scrName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:""};
 const hasScr=id=>SCREENS.some(x=>x[0]===id);
 let _sbn=null;
@@ -18,8 +28,9 @@ const plural=(n,a,b)=>N0(n)+" "+(n===1?a:(b||a+"s"));
 const reduced=()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}};
 
 /* ---------- domains, colors, layers ---------- */
-const DC={service:"--p1",ops:"--e4",cmdb:"--w1",agree:"--u1",portfolio:"--u3",agile:"--s1",people:"--s4",fin:"--p5",planned:"--faint"};
-const LAYERS=[["Plan and deliver",["portfolio","agile","fin"]],["Run and support",["service","agree","ops"]],["Foundation data",["people","cmdb","planned"]]];
+const DC={service:"--p1",ops:"--e4",cmdb:"--w1",agree:"--u1",portfolio:"--u3",agile:"--s1",people:"--s4",fin:"--p5",money:"--p2",know:"--p6",gov:"--w3",plat:"--u4",planned:"--faint"};
+const DPOOL=["--p3","--e1","--s3","--p4"];
+const LAYERS=[["Plan and deliver",["portfolio","agile","fin","money"]],["Run and support",["service","agree","ops"]],["Foundation data",["people","cmdb"]],["Knowledge, AI, governance and platform",["know","gov","plat"]],["Planned entities",["planned"]]];
 const dName=k=>k==="planned"?"Planned entities":((window.PLAT&&PLAT.DOM[k])?PLAT.DOM[k].n:k);
 const AUTHC={platform:"--p1",external:"--u3",shared:"--w1"};
 const AUTHN={platform:"Oukala owns it",external:"External system owns it",shared:"Shared, newest wins"};
@@ -27,8 +38,8 @@ const CLSC={public:"--s4",internal:"--p5",confidential:"--w1",restricted:"--e4",
 const COVC=["--faint","--p6","--p3","--p1"];
 const COVN=["Feeds no metric","Feeds 1 or 2 metrics","Feeds 3 to 5 metrics","Feeds 6 or more metrics"];
 const covIdx=n=>n<=0?0:n<=2?1:n<=5?2:3;
-const STC={canonical:"--s3",duplicate:"--e1",fixed:"--p3",planned:"--faint"};
-const STN={canonical:"Canonical, one copy",duplicate:"Duplicate, fix open",fixed:"Duplicate fixed in preview",planned:"Planned, not built yet"};
+const STC={canonical:"--s3",duplicate:"--e1",fixed:"--p3",planned:"--faint",proposed:"--p4"};
+const STN={canonical:"Canonical, one copy",duplicate:"Duplicate, fix open",fixed:"Duplicate fixed in preview",planned:"Planned, not built yet",proposed:"Proposed, waiting for approval"};
 const OVN=[["domain","Domain"],["authority","Authority"],["class","Classification"],["metrics","Metric coverage"],["status","Duplicate status"]];
 const TYG={ref:["→","Reference"],person:["→","Reference to a person"],string:["Aa","Text"],text:["Aa","Text"],enum:["▾","Choice"],choice:["▾","Choice"],select:["▾","Choice"],number:["#","Number"],currency:["$","Money"],money:["$","Money"],date:["▦","Date"],datetime:["▦","Date and time"],percent:["%","Percent"],duration:["⏱","Duration"],"boolean":["✓","Yes or no"],bool:["✓","Yes or no"],list:["☰","List"]};
 const tyg=t=>TYG[t]||["Aa",String(t||"Text")];
@@ -37,9 +48,10 @@ const tyg=t=>TYG[t]||["Aa",String(t||"Text")];
 let _M=null,_Mk="";
 function model(){
  const es=PLAT.entities();const lv=LIN.ver();
- const key=es.length+"|"+Object.keys(DATAMODEL.tables).length+"|"+Object.keys(PLAT.FIXES).length+"|"+JSON.stringify(S.plat&&S.plat.applied||{})+"|"+lv+"|"+(window.SCALE&&SCALE.on?1:0);
+ const key=es.length+"|"+Object.keys(DATAMODEL.tables).length+"|"+Object.keys(PLAT.FIXES).length+"|"+JSON.stringify(S.plat&&S.plat.applied||{})+"|"+lv+"|"+DMV+"|"+Object.keys(A.approved).length+"|"+(window.SCALE&&SCALE.on?1:0);
  if(_M&&_Mk===key)return _M;
  const ent=new Map(),list=[];
+ es.forEach(e=>{if(!DC[e.domain]){DC[e.domain]=DPOOL[Object.keys(DC).length%DPOOL.length]}});
  es.forEach(e=>{const o=Object.assign({},e,{ghost:false,out:[],inn:[],fkey:null});ent.set(e.id,o);list.push(o)});
  const raw=LINKS.edgesData().filter(x=>x.type==="ref"),edges=[];
  const pl=new Map(PLAT.PLANNED.map(p=>[p[0],p]));
@@ -48,10 +60,10 @@ function model(){
  raw.forEach(r=>{const a=ent.get(r.from),b=ent.get(r.to);if(!a||!b)return;const fields=String(r.field||"").split(", ").filter(Boolean);edges.push({from:r.from,to:r.to,fields,ghost:!!r.ghost,cross:a.domain!==b.domain});a.out.push(r.to);b.inn.push(r.from)});
  const deg={};list.forEach(e=>deg[e.id]=e.out.length+e.inn.length);
  const hub=new Set(list.filter(e=>e.inn.length>=12).map(e=>e.id));
- const more=PLAT.PLANNED.filter(p=>!ent.has(p[0])).map(p=>({id:p[0],label:p[2],domain:p[1],steward:p[3],why:p[4],use:p[5]}));
+ const more=(PLAT.missing?PLAT.missing():PLAT.PLANNED).filter(p=>!ent.has(p[0])).map(p=>({id:p[0],label:p[2],domain:p[1],steward:p[3],why:p[4],use:p[5]}));
  /* domain pair counts */
  const pair={};edges.forEach(e=>{const a=ent.get(e.from).domain,b=ent.get(e.to).domain;const k=a+"|"+b;(pair[k]=pair[k]||[]).push(e)});
- const ddeg={};list.forEach(e=>{ddeg[e.domain]=(ddeg[e.domain]||0)+deg[e.id]});
+ const ddeg={};list.forEach(e=>{if(!e.proposed)ddeg[e.domain]=(ddeg[e.domain]||0)+deg[e.id]});
  const top=Object.keys(ddeg).filter(k=>k!=="planned").sort((a,b)=>ddeg[b]-ddeg[a])[0]||"service";
  _Mk=key;_M={list,ent,edges,deg,hub,more,pair,ddeg,top,byDom:k=>list.filter(e=>e.domain===k)};return _M}
 
@@ -66,7 +78,8 @@ function ordFields(e){if(e._ord)return e._ord;
 const STOP=new Set("the a an of in on to for and or with by per at as is are be that than from all each any every their its this these those only not no over under within after before between into out up down it was were has have had who whose which when where while into".split(" "));
 const stem=w=>{w=String(w).toLowerCase();if(w.length>4&&/ies$/.test(w))return w.slice(0,-3)+"y";if(w.length>3&&/(ss|us|is)$/.test(w))return w;if(w.length>3&&/s$/.test(w))return w.slice(0,-1);return w};
 const toks=s=>String(s||"").toLowerCase().replace(/[^a-z0-9% ]+/g," ").split(/\s+/).filter(Boolean);
-const stems=s=>toks(s).filter(w=>!STOP.has(w)).map(stem);
+const _stc=new Map();
+const stems=s=>{const k=String(s==null?"":s);let v=_stc.get(k);if(!v){v=toks(k).filter(w=>!STOP.has(w)).map(stem);if(_stc.size>6000)_stc.clear();_stc.set(k,v)}return v};
 const normP=s=>String(s||"").toLowerCase().replace(/[^a-z0-9% ]+/g," ").replace(/\s+/g," ").trim();
 
 /* synonym rules: [regex, entity, [fields], weight]. Entity-only rules pick fields by word overlap. */
@@ -272,6 +285,8 @@ function sourcesFor(phrase,metricId){
  const oh=OVH[metricId];
  if(oh&&oh.map){for(const key in oh.map){const kk=normP(key);if(p===kk){const v=oh.map[key];if(v[0]==="@"||v[0]==="#")return{special:v};spec(v,"override");return out}}}
  const uo=A.ovr[metricId+"|"+p];if(uo){const [en,fk]=uo.ref.split(".");add(en,fk,1,"override");return out}
+ if(_sfv!==_ver){_sfc.clear();_sfv=_ver}
+ const cached=_sfc.get(p);if(cached)return cached;
  const hits=[];
  SYN.forEach(r=>{if(r[0].test(p))hits.push(r)});
  const words=new Set(stems(p));
@@ -288,7 +303,8 @@ function sourcesFor(phrase,metricId){
  /* prune: at most 4, strongest first, and drop a planned entity when real fields exist */
  out.sort((a,b)=>b.conf-a.conf);
  const real=out.filter(o=>o.k!==null||!idx.byEnt.get(o.e).ghost);
- const res=(real.length?real:out).slice(0,4);return res}
+ const res=(real.length?real:out).slice(0,4);_sfc.set(p,res);return res}
+const _sfc=new Map();let _sfv=-1;
 
 function mkSrc(phrase,s,v){const e=fieldIdx().byEnt.get(s.e);return{t:"src",phrase,ent:s.e,fld:s.k,conf:s.conf,via:s.via,ghost:!!(e&&e.ghost),val:v==null?null:v}}
 let _depthGuard=0;
@@ -414,13 +430,13 @@ const ovColor=(e)=>{
  if(A.ov==="authority"){const m=e.authMix||{};const k=Object.keys(m).sort((a,b)=>m[b]-m[a])[0];return AUTHC[k]||"--faint"}
  if(A.ov==="class")return CLSC[e.cls]||"--faint";
  if(A.ov==="metrics")return COVC[covIdx(LIN.feeds(e.id).length)];
- if(A.ov==="status")return STC[e.status]||"--faint";
+ if(A.ov==="status")return e.proposed?STC.proposed:(STC[e.status]||"--faint");
  return DC[e.domain]||"--faint"};
 const ovLabel=e=>{
  if(A.ov==="authority"){const m=e.authMix||{};const k=Object.keys(m).sort((a,b)=>m[b]-m[a])[0];return k?AUTHN[k]:"No fields yet"}
  if(A.ov==="class")return e.ghost?"Not built yet":"Highest class: "+e.cls;
  if(A.ov==="metrics")return COVN[covIdx(LIN.feeds(e.id).length)];
- if(A.ov==="status")return STN[e.status]||e.status;
+ if(A.ov==="status")return e.proposed?STN.proposed:(STN[e.status]||e.status);
  return dName(e.domain)};
 function bodyH(e){
  if(e.ghost)return 84;
@@ -431,7 +447,10 @@ function bodyH(e){
 const boxH=e=>BH+(A.exp[e.id]?bodyH(e):0);
 function layout(M){
  const regs={},pos={},layers=[];let y=TOP,maxR=0;
- LAYERS.forEach((ly,li)=>{
+ const known=new Set();LAYERS.forEach(l=>l[1].forEach(d=>known.add(d)));
+ const extra=[...new Set(M.list.map(e=>e.domain))].filter(d=>!known.has(d));
+ const LYS=extra.length?LAYERS.slice(0,-1).concat([["Added by modules",extra]],LAYERS.slice(-1)):LAYERS;
+ LYS.forEach((ly,li)=>{
   let x=LEFT,lh=0;const rs=[];
   ly[1].forEach(d=>{
    let items=M.byDom(d).slice().sort((a,b)=>(M.deg[b.id]||0)-(M.deg[a.id]||0));
@@ -482,13 +501,13 @@ function entHTML(M,L,Lt,e){
  const p=L.pos[e.id];if(!p)return"";
  if(e.more)return `<div class="at-ent at-more ghost" style="left:${p.x}px;top:${p.y}px;width:${BW}px;height:${BH}px;--c:var(--faint)"><button class="at-eh" data-at-more="1" aria-label="${E(e.label)}. Open the list."><span class="at-en">${E(e.label)}</span><span class="at-eo">Named in the registry, not yet a table</span><span class="at-er">Select to see each one, its steward and why it is needed</span><span class="at-eb"><span class="at-bd">${M.more.length} planned</span></span></button></div>`;
  const sel=A.sel===e.id,exp=!!A.exp[e.id],feeds=LIN.feeds(e.id).length,c=ovColor(e);
- const cls=["at-ent",sel?"sel":"",exp?"exp":"",e.ghost?"ghost":"",Lt.active&&!Lt.ents.has(e.id)?"dim":"",Lt.active&&Lt.ents.has(e.id)&&!sel?"rel":"",Lt.trace.has(e.id)?"tr":""].filter(Boolean).join(" ");
+ const cls=["at-ent",sel?"sel":"",exp?"exp":"",e.ghost?"ghost":"",e.proposed?"prop":"",Lt.active&&!Lt.ents.has(e.id)?"dim":"",Lt.active&&Lt.ents.has(e.id)&&!sel?"rel":"",Lt.trace.has(e.id)?"tr":""].filter(Boolean).join(" ");
  const refs=[...new Set(e.out.map(id=>M.ent.get(id)).filter(Boolean).map(x=>x.label.replace(/\s*\(.*$/,"")))];
  const rt=refs.length?"→ "+refs.slice(0,2).join(", ")+(refs.length>2?" +"+(refs.length-2):""):(e.inn.length?"Referenced by "+e.inn.length:"No references yet");
  const sub=e.fam?`${e.fam.length} classes${window.SCALE&&SCALE.on?" · "+N0(SCALE.n.cis)+" records":""}`:e.ghost?"Planned, not built":e.owner;
  const nm=e.fam?e.label+" ("+e.fam.length+" classes)":e.label;
  let h=`<div class="${cls}" style="left:${p.x}px;top:${p.y}px;width:${BW}px;height:${p.h}px;--c:var(${c})" data-dom="${e.domain}">`;
- h+=`<button class="at-eh" data-at-ent="${e.id}" aria-pressed="${sel}" aria-label="${E(nm)}, ${e.ghost?"planned entity":e.nf+" fields"}, feeds ${feeds} metrics. ${E(ovLabel(e))}"><span class="at-en">${E(nm)}</span><span class="at-ef">${e.ghost?"planned":e.nf+" fields"}</span><span class="at-eo">${E(sub)}</span><span class="at-er">${E(rt)}</span><span class="at-eb"><span class="at-bd" title="Metrics whose formula reads this entity">feeds ${feeds} metric${feeds===1?"":"s"}</span>${mixBar(e)}${CLSRANK(e.cls)>=2&&!e.ghost?`<span class="at-lk" title="Highest classification: ${e.cls}">${lockSvg()}</span>`:""}</span></button>`;
+ h+=`<button class="at-eh" data-at-ent="${e.id}" aria-pressed="${sel}" aria-label="${E(nm)}, ${e.ghost?"planned entity":e.proposed?"proposed entity, "+e.nf+" fields":e.nf+" fields"}, feeds ${feeds} metrics. ${E(ovLabel(e))}"><span class="at-en">${E(nm)}</span><span class="at-ef">${e.ghost?"planned":e.nf+" fields"}</span><span class="at-eo">${E(sub)}</span><span class="at-er">${E(rt)}</span><span class="at-eb">${e.proposed?'<span class="at-bd prop" title="Defined by the coverage audit and waiting for approval">Proposed</span>':""}<span class="at-bd" title="Metrics whose formula reads this entity">feeds ${feeds} metric${feeds===1?"":"s"}</span>${mixBar(e)}${CLSRANK(e.cls)>=2&&!e.ghost?`<span class="at-lk" title="Highest classification: ${e.cls}">${lockSvg()}</span>`:""}</span></button>`;
  if(!e.ghost)h+=`<button class="at-xp" data-at-xp="${e.id}" aria-expanded="${exp}" aria-label="${exp?"Hide":"Show"} fields of ${E(e.label)}"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>`;
  if(exp){
   if(e.ghost)h+=`<div class="at-fl at-gh"><p>${E(e.why||"")}</p><small>Steward: ${E(e.steward)}</small></div>`;
@@ -549,8 +568,8 @@ function legendItems(M){
  if(A.ov==="authority")return [["Oukala owns most fields",AUTHC.platform],["External system owns most fields",AUTHC.external],["Shared, newest wins",AUTHC.shared],["Planned, no fields yet","--faint"]];
  if(A.ov==="class")return [["Public",CLSC.public],["Internal",CLSC.internal],["Confidential",CLSC.confidential],["Restricted",CLSC.restricted],["Personal",CLSC.personal]];
  if(A.ov==="metrics")return COVN.map((n,i)=>[n,COVC[i]]);
- return [["Canonical, one copy",STC.canonical],["Duplicate, fix open",STC.duplicate],["Duplicate fixed in preview",STC.fixed],["Planned, not built",STC.planned]]}
-function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> reference</span>`}
+ return [["Canonical, one copy",STC.canonical],["Duplicate, fix open",STC.duplicate],["Duplicate fixed in preview",STC.fixed],["Proposed, waiting for approval",STC.proposed],["Planned, not built",STC.planned]]}
+function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> reference</span>`}
 
 /* ----- breadcrumb ----- */
 function bcHTML(M){
@@ -586,7 +605,7 @@ function inspHTML(M){
  const e=M.ent.get(A.sel);
  const tabs=ITABS.concat(e.fam?[["classes","Classes"]]:[]);
  if(!tabs.some(t=>t[0]===A.itab))A.itab="fields";
- let h=`<div class="at-ih"><div><div class="eyebrow">${E(dName(e.domain))}${e.ghost?" · planned":""}</div><h3>${E(e.label)}</h3><p class="muted small"><code>${E(e.id)}</code> · owner ${E(e.owner)} · steward ${E(e.steward)}</p></div><button class="btn quiet at-x" data-at-close="1" aria-label="Close the inspector">Close</button></div>`;
+ let h=`<div class="at-ih"><div><div class="eyebrow">${E(dName(e.domain))}${e.ghost?" · planned":""}</div><h3>${E(e.label)}</h3><p class="muted small"><code>${E(e.id)}</code> · owner ${E(e.owner)} · steward ${E(e.steward)}</p>${e.ghost?"":`<p class="small"><button class="at-lnk" data-cov-mods="${E(e.id)}">Which modules use this entity</button></p>`}</div><button class="btn quiet at-x" data-at-close="1" aria-label="Close the inspector">Close</button></div>${e.proposed?`<div class="story at-propbox"><span class="pill info">Proposed</span> ${E(e.note||"Defined by the coverage audit.")} No data moves until it is approved.<div class="row" style="margin-top:8px"><button class="btn primary" data-cov-approve="${E(e.id)}">Approve and make live</button></div></div>`:""}`;
  h+=`<div class="at-tabs" role="tablist" aria-label="Entity details">${tabs.map(t=>`<button role="tab" class="at-tab" aria-selected="${A.itab===t[0]}" data-at-itab="${t[0]}">${t[1]}</button>`).join("")}</div><div class="at-ib">`;
  h+=({fields:tabFields,conn:tabConn,used:tabUsed,metrics:tabMetrics,lineage:tabLineage,classes:tabClasses}[A.itab]||tabFields)(M,e);
  return h+`</div>`}
@@ -621,7 +640,7 @@ function tabUsed(M,e){
  let bl=null;try{bl=e.ghost?null:LINKS.blast(e.id)}catch(x){}
  const procs=bl?bl.processes:[];
  return `${bl?`<div class="statrow at-ss"><div class="stat"><small>Entities affected</small><span class="num" data-role="metric">${bl.counts.entities}</span></div><div class="stat"><small>Apps</small><span class="num" data-role="metric">${bl.counts.apps}</span></div><div class="stat"><small>Processes</small><span class="num" data-role="metric">${bl.counts.processes}</span></div></div><p class="small muted">If this entity changes shape, this is how far it reaches (two hops of references).</p>`:""}
- <h4 class="at-h4">Apps (${apps.size})</h4>${apps.size?`<ul class="at-ul">${[...apps].map(([id,v])=>{const ap=PLAT.app(id);return `<li><span><b>${E(ap?ap.n:id)}</b> <span class="muted small">${E(ap?ap.mod:"")}</span></span><span class="at-lr">${v.w?'<span class="pill good">Writes</span>':""}${v.r?'<span class="pill info">Reads</span>':""}${hasScr(id)?`<button class="btn quiet" data-at-go="${id}">Open</button>`:""}</span></li>`}).join("")}</ul>`:`<p class="muted small">No app reads or writes it yet.</p>`}
+ <h4 class="at-h4">Apps (${apps.size})</h4>${apps.size?`<ul class="at-ul">${[...apps].map(([id,v])=>{const ap=PLAT.app(id),mm=!ap&&window.MODMAP&&MODMAP.modules.find(x=>x.id===id);return `<li><span><b>${E(ap?ap.n:mm?mm.name:id)}</b> <span class="muted small">${E(ap?ap.mod:mm?mm.own:"")}</span></span><span class="at-lr">${v.w?'<span class="pill good">Writes</span>':""}${v.r?'<span class="pill info">Reads</span>':""}${hasScr(id)?`<button class="btn quiet" data-at-go="${id}">Open</button>`:""}</span></li>`}).join("")}</ul>`:`<p class="muted small">No app reads or writes it yet.</p>`}
  <h4 class="at-h4">Processes (${procs.length})</h4>${procs.length?`<ul class="at-ul">${procs.slice(0,14).map(id=>{const d=PROC.defs[id];return `<li><span>${E(d?d.title:id)}</span>${hasScr(id)?`<button class="btn quiet" data-at-go="${id}">Open</button>`:""}</li>`}).join("")}</ul>${procs.length>14?`<p class="muted small">and ${procs.length-14} more.</p>`:""}`:`<p class="muted small">No defined process touches it.</p>`}`}
 function miniGauge(m){const st=mstat(m),sc=v=>Math.max(0,Math.min(100,v/m.max*100));
  const bands=m.dir==="max"?[[0,m.badAt,"--bad-f"],[m.badAt,m.tgt,"--warn-f"],[m.tgt,m.max,"--good-f"]]:[[0,m.tgt,"--good-f"],[m.tgt,m.badAt,"--warn-f"],[m.badAt,m.max,"--bad-f"]];
@@ -1102,7 +1121,7 @@ document.addEventListener("keydown",e=>{const v=e.target.closest&&e.target.close
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-at-lz]");if(!t)return;const z=t.dataset.atLz;if(z==="in")lnZoom(1.3);else if(z==="out")lnZoom(1/1.3);else if(z==="fit")fitLn("all");else fitLn("width")});
 
 /* ----- domain map ----- */
-const DSH={service:"Service",ops:"Operations",cmdb:"Config",agree:"Agreements",portfolio:"Portfolio",agile:"Agile",people:"People",fin:"Finance",planned:"Planned"};
+const DSH={service:"Service",ops:"Operations",cmdb:"Config",agree:"Agreements",portfolio:"Portfolio",agile:"Agile",people:"People",fin:"Finance",money:"Money",know:"Knowledge",gov:"Governance",plat:"Platform",planned:"Planned"};
 function domainPane(){
  const M=model(),doms=Object.keys(DC).filter(d=>M.byDom(d).length||d==="planned");
  const cnt=(a,b)=>(M.pair[a+"|"+b]||[]).length;let mx=1;doms.forEach(a=>doms.forEach(b=>{if(a!==b)mx=Math.max(mx,cnt(a,b))}));
@@ -1139,12 +1158,15 @@ mkMetric("m_atlas_gaps",{n:"Formula terms without a field",f:"Terms in metric fo
 function syncMetrics(st){st=st||LIN.stats();const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=v;m.tr=m.tr.slice(0,-1).concat([v])};set("m_atlas_trace",st.pct);set("m_atlas_conf",st.conf);set("m_atlas_gaps",st.gaps)}
 
 /* ----- the screen ----- */
-const TABS=["Diagram","Metric lineage","Domain map","Tables and checks"];
+const TABS=["Diagram","Metric lineage","Domain map","Coverage","Module matrix","Tables and checks"];
 function atlasScreen(){
  const M=model(),st=LIN.stats(),ps=PLAT.stats();syncMetrics(st);
  const cur=S.v.atlas||0;
- const panes=[cur===0?diagramPane():"",cur===1?lineagePane():"",cur===2?domainPane():"",cur===3?oldPane():""].map((p,i)=>p||`<p class="muted">Opening ${TABS[i]}</p>`);
- return `<div class="screen at-screen">${hero("Data atlas","Master data model, drawn and traced",`<b data-role="metric">${N0(M.list.filter(e=>!e.ghost).length)}</b> tables and <b data-role="metric">${N0(ps.nf)}</b> fields in <b data-role="metric">8</b> domains, with <b data-role="metric">${M.edges.length}</b> references between them. <b data-role="metric">${st.full}</b> of <b data-role="metric">${st.n}</b> metrics trace all the way to fields; the rest show exactly which term is missing.`,`<div class="row">${fchip("m_atlas_trace")}${fchip("m_data_ref")}${typeof stdChip==="function"?stdChip("dmbok"):""}${typeof stdChip==="function"?stdChip("csdm"):""}</div>`)}${lensNote()}${views("atlas",TABS,panes)}${procCard("plat_data")}</div>`}
+ const CV=window.COVER;
+ const panes=[cur===0?diagramPane():"",cur===1?lineagePane():"",cur===2?domainPane():"",cur===3?(CV?CV.coverPane():"<p class='muted'>The coverage module is not loaded.</p>"):"",cur===4?(CV?CV.matrixPane():""):"",cur===5?oldPane():""].map((p,i)=>p||`<p class="muted">Opening ${TABS[i]}</p>`);
+ const cs=CV&&CV.summary?CV.summary():null;
+ const covStory=cs?` Does it cover every module? Now <b data-role="metric">${cs.after.modFull}</b> of <b data-role="metric">${cs.modTotal}</b> (was <b data-role="metric">${cs.before.modFull}</b>), but <b data-role="metric">${cs.proposed}</b> proposed entities wait for your approval and <b data-role="metric">${cs.gapsOpen}</b> gaps remain.`:"";
+ return `<div class="screen at-screen">${hero("Data atlas","Master data model, drawn, traced and audited",`<b data-role="metric">${N0(M.list.filter(e=>!e.ghost).length)}</b> tables and <b data-role="metric">${N0(ps.nf)}</b> fields in <b data-role="metric">${new Set(M.list.filter(e=>!e.ghost).map(e=>e.domain)).size}</b> domains, with <b data-role="metric">${M.edges.length}</b> references between them. <b data-role="metric">${st.full}</b> of <b data-role="metric">${st.n}</b> metrics trace all the way to fields.${covStory}`,`<div class="row">${fchip("m_atlas_trace")}${window.METRICS&&METRICS.m_cov_module?fchip("m_cov_module")+fchip("m_cov_flow"):""}${fchip("m_data_ref")}<button class="btn primary" data-cov-open>See what is missing</button>${typeof stdChip==="function"?stdChip("dmbok"):""}</div>`)}${lensNote()}${views("atlas",TABS,panes)}${procCard("plat_data")}</div>`}
 REG("plat_data","Master data model","platform","M4 5h7v5H4zM13 5h7v5h-7zM8 14h8v5H8zM7.5 10v4M16.5 10v4",atlasScreen);
 if(PREV)REG("plat_data_old","Data tables and model checks","platform","M4 6h16M4 12h16M4 18h10",()=>PREV());
 document.addEventListener("change",e=>{const t=e.target.closest&&e.target.closest("[data-vw^='atlas:']");if(t)setTimeout(()=>{if(S.screen==="plat_data")render()},0)});
@@ -1161,6 +1183,9 @@ const _ATL={
  traceMetric(mid){if(!METRICS[mid])return;S.v.atlas=0;if(S.screen!=="plat_data")go("plat_data");traceOnDiagram(mid)},
  lineage(mid){openLineage(mid)},
  pair(k){A.pair=k;A.pend={k:"pair",pair:k};A.sel=null;A.dom=null;A.trace=null;S.v.atlas=0;audit("Showed domain references on the data diagram",k);if(S.screen==="plat_data")render();else go("plat_data")}};
+_ATL.addEntity=function(d){return window.COVER&&COVER.addEntity?COVER.addEntity(d):{ok:false,id:d&&d.id,duplicates:[],warnings:["The coverage module (mod_plat_cover) is not loaded in this build."]}};
+_ATL.coverage=function(o){return window.COVER&&COVER.coverage?COVER.coverage(o):{modules:[],stats:{}}};
+_ATL._dmv=()=>DMV;_ATL.color=d=>DC[d];_ATL.bump=function(){DMV++;LIN.bump();if(window.PLAT&&PLAT.refresh)PLAT.refresh();if(S.screen==="plat_data")render()};
 window.ATLAS=_ATL;window.LIN=LIN;
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-atlas-go]");if(!t)return;const v=t.dataset.atlasGo;closeDrawer();if(v.indexOf("m_")===0)_ATL.lineage(v);else _ATL.focus(v)});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-er-show]");if(!t||!model().ent.get(t.dataset.erShow))return;e.stopImmediatePropagation();e.preventDefault();closeDrawer();_ATL.focus(t.dataset.erShow)},true);

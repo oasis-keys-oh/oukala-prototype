@@ -1,0 +1,138 @@
+ARTICLE EDITOR
+Write it once, structured, with sources
+
+A new article starts as a Draft. Let the AI draft from a closed incident or a meeting, then edit every section yourself. Nothing the AI writes can be submitted until a person marks it reviewed.
+
+OPEN ARTICLE
+New article
+KB0421 · Fail over the Codification Portal to the seconda
+KB0502 · Portal failover runbook refresh (RB-031 v8)
+KB0377 · Search results stay stale for up to 20 minutes a
+KB0388 · Why is a new standard paragraph missing from sea
+KB0310 · Retention of signed lease and contract records
+KB0312 · Monthly lease amortization close
+KB0295 · Approve a discount rate change
+KB0450 · Break-glass access to Entra ID admin roles
+KB0451 · Reset multifactor authentication for an editor
+KB0462 · Request vendor access to the staging site
+KB0140 · Share a draft standard with a reviewer outside M
+KB0420 · Taxonomy API returns 429 during bulk import
+KB0333 · Quarterly access recertification
+KB0470 · Where can I find the published Codification rele
+KB0475 · Acceptable use of AI tools for standards draftin
+KB0480 · Rebuild the Lumen search index
+KB0350 · Contract Repository upload fails over 100 MB
+ƒ Article quality score
+Write
+Generate with AI
+Version history
+Review and publish
+Article
+New article. It starts in Capture as a Draft.
+Title
+*
+Good titles start with the symptom, for example: Search results stay stale after a deploy.
+Type
+How-to
+Known error
+FAQ
+Policy
+SOP
+Audience visibility labels
+Public
+All staff
+Service desk
+IT staff
+Finance
+Vendors
+Executives
+Only people in these groups can find the article in search or in Ask the knowledge base.
+Classification
+Public
+Internal
+Confidential
+Restricted
+Service
+Codification Portal
+Search service
+Taxonomy API
+Contract Repository
+Lease subledger (ERP)
+Entra ID
+M365
+Owner
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Marco Ellis
+Hana Koval
+Ravi Menon
+Triage Agent
+PMO Agent
+Northwind Managed Services
+Ops Agent
+Reviewer
+*
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Marco Ellis
+Hana Koval
+Ravi Menon
+Triage Agent
+PMO Agent
+Northwind Managed Services
+The reviewer must approve before a Publisher can publish.
+Body, one section at a time
+Structured sections keep answers retrievable. Each section becomes its own search chunk.
+Symptom or question
+Applies to
+Cause
+Resolution
+Notes and escalation
+Quality while you write
+Recomputed on every keystroke.
+ƒ Article quality score
+25
+Completeness
+0
+Clarity
+0
+Citations
+0
+Freshness
+100
+0.35×0 + 0.25×0 + 0.15×0 + 0.25×100 = 25
+Related records and sources
+Citations are 15% of the quality score. Related records also power the knowledge graph.
+Lease accounting policy
+Lease classification review
+Monthly lease amortization close
+Lease inventory completeness
+Discount rate approval
+Lease subledger (ERP)
+Contract repository
+Discount rate
+Codification Portal
+Taxonomy API
+Portal failover runbook
+Portal latency (Sev 2)
+Other sources (comma separated)
+Save
+Version note
+Save version
+Submit for review

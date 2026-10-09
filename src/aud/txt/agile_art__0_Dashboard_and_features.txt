@@ -1,0 +1,221 @@
+SERVICE MANAGEMENT · RELEASES · SCALED AGILE
+Plan together, deliver in increments
+
+Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.
+
+New program increment
+New PI objective
+Program backlog
+Releases
+ƒ Program predictability
+SAFe
+ITIL 5
+Dashboard and features
+PI planning board
+Objectives and predictability
+System demo and Inspect and adapt
+Trains and timeline
+
+PI 26.4 is in iteration 1 of 5, 8 days into 67. The two trains carry 20 features and enablers; 10 (50%) are enablers, inside the usual 20 to 30% band. Last increment's predictability was 78%. 2 dependencies are at risk and 4 risks have an owner or a mitigation. 3 features are forecast to finish after their release date.
+
+INCREMENT PROGRESS
+12%
+day 8 of 67
+FEATURES AND ENABLERS
+20
+10 enablers
+PREDICTABILITY, LAST PI
+78%
+ƒ Formula
+DEPENDENCIES AT RISK
+2
+of 6
+OPEN RISKS
+5
+ROAM reviewed weekly
+RELEASES IN THE INCREMENT
+11
+see Releases
+Program kanban
+Features by state (all increments)
+SAFe
+Funnel
+2
+Analyzing
+2
+Backlog
+4
+Implementing
+11
+Validating
+3
+Deploying
+0
+Releasing
+1
+Done
+6
+Feature progress, PI 26.4
+Share of story points done
+FT-105 Standards API 2.3.1 batch fix
+100%
+FT-902 Security scanning in the pipeline
+73%
+FT-244 ERP posting-lock connector
+57%
+FT-133 Reader accessibility fixes
+50%
+FT-106 Content migration tooling
+43%
+FT-245 Integration hub connector 2.2
+37%
+FT-201 Taxonomy pipeline v1
+35%
+FT-202 Taxonomy API connection pool hardening
+33%
+FT-132 Autoscale and capacity alerts
+31%
+FT-241 Contract obligation tracker
+27%
+FT-101 Editor workspace redesign
+23%
+FT-103 Lumen search indexer 2.4
+23%
+Portfolio to stories
+Epics, capabilities, features and enablers, with progress rolled up from stories
+EP1 Modernize standards publishing
+Business epic
+26%
+Capability: Editorial authoring
+6 features
+Capability: Search and discovery
+2 features
+Capability: Data and taxonomy services
+3 features
+EP2 Reduce operating risk
+Business epic
+46%
+Capability: Resilient operations
+3 features
+EP3 Protect revenue through contract discipline
+Business epic
+30%
+Capability: Contract lifecycle
+4 features
+EP4 Engineering excellence
+Enabler epic
+30%
+Capability: Release and change flow
+0 features
+Capability: Delivery automation
+4 features
+Features and enablers
+29 items · select one for WSJF, links, dependencies and stories
+Program backlog
+Kind
+All
+2
+Status
+All
+7
+Train
+All
+2
+Increment
+All
+3
+Epic
+All
+4
+Service
+All
+8
+Release
+All
+16
+Group by 
+None
+Epic
+Status
+Train
+Increment
+Service
+Export CSV
+FEATURE	TITLE	KIND	STATUS	EPIC	TRAIN	INCREMENT	WSJF▼	PROGRESS	SERVICE	PROJECT	RELEASE
+FT-202	Taxonomy API connection pool hardening	Enabler	Validating	EP2	art2	26.4	9.7	
+ 33%	Data platform	PR2	REL-2612
+FT-105	Standards API 2.3.1 batch fix	Feature	Releasing	EP2	art1	26.4	8.7	
+ 100%	Codification Platform		REL-2608
+FT-244	ERP posting-lock connector	Enabler	Analyzing	EP3	art2	26.4	8.7	
+ 57%	Lease subledger (ERP)		REL-2614
+FT-004	Entra ID sign-in for editors	Enabler	Done	EP2	art1	26.3	6.3	
+ 100%	Identity (Entra ID)	PR1	REL-2602
+FT-002	Portal read replica	Enabler	Done	EP2	art1	26.3	5.2	
+ 100%	Codification Portal	PR3	REL-2601
+FT-132	Autoscale and capacity alerts	Enabler	Implementing	EP2	art1	26.4	5.2	
+ 31%	Codification Portal	PR3	REL-2617
+FT-103	Lumen search indexer 2.4	Feature	Validating	EP1	art1	26.4	4.3	
+ 23%	Search and indexing	PR1	REL-2609
+FT-131	Portal standby failover (RB-031 v8)	Enabler	Validating	EP2	art1	26.4	4.3	
+ 16%	Codification Portal	PR3	REL-2610
+FT-902	Security scanning in the pipeline	Enabler	Backlog	EP4	art1	26.4	4.2	
+ 73%	Codification Platform		
+FT-107	Beta feature flags and telemetry	Enabler	Implementing	EP4	art1	26.4	3.8	
+ 4%	Codification Platform	PR1	REL-2611
+FT-006	Vendor selection for contract repository	Feature	Done	EP3	art2	26.3	3.7	
+ 100%	Contract Repository	PR4	
+FT-005	Taxonomy data model	Feature	Done	EP1	art2	26.3	3.6	
+ 100%	Data platform	PR2	REL-2603
+FT-133	Reader accessibility fixes	Feature	Implementing	EP2	art1	26.4	3.6	
+ 50%	Codification Portal		REL-2607
+FT-104	Publishing pipeline automation	Enabler	Implementing	EP4	art1	26.4	3.3	
+ 21%	Codification Platform	PR1	REL-2611
+FT-901	CI test automation suite	Enabler	Implementing	EP4	art1	26.4	3.3	
+ 20%	Codification Platform		
+FT-242	Renewal alerts	Feature	Backlog	EP3	art2	26.4	3.2	
+ 7%	Contract Repository	PR4	REL-2616
+FT-243	Storage tier migration	Enabler	Implementing	EP3	art2	26.4	3	
+ 20%	Contract Repository	PR4	REL-2613
+FT-201	Taxonomy pipeline v1	Feature	Implementing	EP1	art2	26.4	2.6	
+ 35%	Data platform	PR2	REL-2612
+FT-245	Integration hub connector 2.2	Feature	Implementing	EP3	art2	26.4	2.6	
+ 37%	Integration hub	PR4	REL-2618
+FT-003	Search schema v2	Feature	Done	EP1	art1	26.3	2.3	
+ 100%	Search and indexing	PR1	REL-2606
+FT-001	Editor workspace prototype	Feature	Done	EP1	art1	26.3	2	
+ 100%	Codification Platform	PR1	REL-2602
+FT-101	Editor workspace redesign	Feature	Implementing	EP1	art1	26.4	2	
+ 23%	Codification Platform	PR1	REL-2611
+FT-102	Redline and compare view	Feature	Implementing	EP1	art1	26.4	2	
+ 14%	Codification Platform	PR1	REL-2611
+FT-203	Lakehouse reporting views	Feature	Backlog	EP1	art2	26.4	1.8	
+ 18%	Data platform	PR2	
+FT-241	Contract obligation tracker	Feature	Backlog	EP3	art2	26.4	1.8	
+ 27%	Contract Repository	PR4	REL-2616
+FT-302	AI-assisted standards drafting	Feature	Funnel	EP1	art1	27.1	1.8	
+ 0%	Codification Platform		
+
+29 of 29 rows
+Scroll for more · rows are drawn as you scroll
+Release train process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, ITIL 5.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Epic approved
+The portfolio approves an epic with a business case.
+AI AGENT
+Features analyzed and scored
+Features get acceptance criteria and a WSJF score.
+PERSON
+PI planning
+Teams commit objectives, dependencies and risks (ROAM) for the increment.
+PERSON
+Iterate and demo
+Teams deliver in iterations and show a system demo each time.
+AUTOMATIC
+Release through release management
+Features ship as releases with readiness gates and a go or no-go.
+PERSON
+Inspect and adapt
+Measure predictability, retrospect and solve the biggest problems.

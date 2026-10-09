@@ -1,0 +1,54 @@
+AI AND GOVERNANCE · AI GATEWAY AND TOKENOMICS
+Route every model call on purpose
+
+The gateway routes across 5 approved models and spend is $53.70 this month, on pace for $277 against a $300 cap. An accepted result costs about $0.90 on average, and guardrails stopped or redacted 60 items in 30 days.
+
+ƒ AI cost per outcome
+ƒ Guardrail catch rate
+Control Tower and kill switches
+Routing
+Models and catalog
+Tokenomics
+Budget guard
+Guardrails
+Monthly AI budget
+Spent $53.70 so far, 18% of the $300 cap. At this pace the month ends at $277 (92%), under the cap.
+Edit budget guard
+50%
+80%
+95%
+Projection = spend to date ÷ 6 days × 31 days = $53.70 ÷ 6 × 31 = $277
+Alerts at
+50% ($150), 80% ($240), 95% ($285), to AI governance and the Control Tower
+At the cap
+Hard stop: Pause the lowest-priority agents
+Open the kill switches in the Control Tower
+Per-agent monthly caps
+A cap per agent stops one runaway agent from using the shared budget. Spend is estimated from today's daily spend times 6 days.
+First Officer
+Claude · est. $38.76 so far
+Cap for First Officer
+$
+43%
+Invoice Advisor
+GPT (council) · est. $17.67 so far
+Cap for Invoice Advisor
+$
+25%
+Knowledge Curator
+Gemini · est. $12.54 so far
+Cap for Knowledge Curator
+$
+36%
+Test Agent
+Claude (judge: OpenAI) · est. $53.58 so far
+Cap for Test Agent
+$
+107%
+Personal assistant
+Claude · est. $5.13 so far
+Cap for Personal assistant
+$
+34%
+
+Caps total $260 against the $300 monthly cap, so they cannot all be spent at once.

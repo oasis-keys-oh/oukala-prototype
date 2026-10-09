@@ -1,0 +1,101 @@
+SERVICE MANAGEMENT · ON-CALL AND ESCALATION
+Who is on call, and is every required hour covered?
+
+88% of required on-call hours are covered over the next 14 days across 10 rotas (per team, service, asset class and follow the sun). 429 hours have nobody scheduled or available, and 17 shifts collide with approved time off. Coverage, fairness and cost come from the skills and availability database.
+
+ƒ On-call coverage
+ƒ On-call fairness
+ƒ Time to page a human
+ITIL 5
+New rota
+Skills and availability
+Dashboard and rotas
+Coverage map
+Recommendations
+Auto-assignment
+Escalation
+Overrides, swaps and hand-over
+Coverage recommendation engine
+Give it the service tier, the SLA response time, the incident pattern and the skills needed. It works out who must be on call each hour, compares that with what is scheduled, and prices the options.
+Resource Agent · 83%
+ITIL 5
+Plan for
+A new service
+Service desk on-call
+Platform engineering
+Search and indexing (Lumen)
+Identity and security
+Codification Platform
+Database class cover
+Network device cover
+Global follow-the-sun desk
+Finance systems
+Endpoint management
+Service tier
+Tier 1
+Tier 2
+Tier 3
+Response time in the SLA (minutes)
+Incidents a week
+Average handling time (min)
+Target utilization (%)
+Provider for overnight
+Northwind Managed Services
+Contoso Cloud Operations
+Lumen Search Services
+AI first responder
+Allowed within guardrails
+Skills the responders need
+Incident management, Entra ID
+2
+
+Expected load is 24 incidents a week, peaking at 0.26 responders busy in the busiest hour. Identity and security is short in 98 of 168 required hours today. Entra ID: 3 qualified Incident management: 17 qualified
+
+Required versus scheduled, by hour
+Tall light bars are the responders required each hour; the solid bar is how many of them are scheduled today. Red means short.
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Sun
+Required responders
+Scheduled and matching
+Scheduled but short of the requirement
+Recommended shifts
+Contiguous hours with the same need become one shift. Names are the best qualified, available people for that block.
+TIER	WHEN	PEOPLE	HOURS A WEEK	SUGGESTED
+Primary	Every day 00:00 to 24:00	1	168 h	
+Rina
+ 
+Sam
+
+Secondary	Every day 00:00 to 24:00	1	168 h	
+Rina
+ 
+Sam
+Options, cost and fairness
+Monthly cost includes on-call stipends, contractor standby and provider rates. Pick an option, then apply it.
+OPTION	COST A MONTH	PEOPLE	NIGHT LOAD
+Recommended: Employees only
+Every hour staffed by a rotation of employees and contractors.
+	$2,741	6	487 night h per month
+Employees by day, managed service provider overnight
+Overnight hours (22:00 to 06:00) go to Northwind Managed Services at the contract rate with a AI first responder in front.
+	$12,009	4	0 night h per month
+Follow-the-sun with AI first responder
+An AI agent answers overnight P3 and P4 within guardrails and pages a human only for P1 and P2. Cheapest, but needs your approval of the guardrails.
+	$3,843	3	97 night h per month
+Apply to Identity and security
+Current schedule costs about $3,815 a month; this plan $2,741.
+Fairness today
+Who carries the most on-call hours in this rota over 28 days.
+Rina Okafor
+336 h
+Sam Patel
+336 h
+Jordan Lee
+140 h
+Ravi Menon
+140 h

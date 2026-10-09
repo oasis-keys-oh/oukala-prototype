@@ -1,0 +1,5 @@
+ok exe_apps
+ok exe_scen
+ok exe_board
+ok trace
+ok dev_pipe

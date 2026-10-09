@@ -1,0 +1,123 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+
+6 teams and 31 member slots across two release trains, mixing employees, contractors, AI agents and managed service providers. Capacity counts focus time only (6 hours a day) and discounts AI agents and managed service providers; time off lowers it for the current sprint.
+
+Platform Alpha
+Codification and Portal train
+42 pts velocity
+43 capacity
+Product owner
+Priya Shah
+Scrum master
+Hannah Lowe
+MEMBER	TYPE	ROLE	ALLOCATION	TIME OFF	CAPACITY	SKILLS
+
+Anita Cole
+	
+Employee	Developer	
+ 100%	None	8 pts	C# .NET Azure Functions
+
+Luis Ortega
+	
+Employee	Developer	
+ 100%	None	8 pts	TypeScript React Accessibility
+
+Mei Tan
+	
+Employee	Developer	
+ 80%	None	6.4 pts	Python Search relevance Testing
+
+Sam Patel
+	
+Employee	DevOps engineer	
+ 40%	None	3.2 pts	Azure Kubernetes Terraform
+
+Elise Park
+	
+Contractor	QA automation	
+ 100%	None	8 pts	Test automation Playwright API testing
+
+Test Agent
+	
+AI agent	Automated test runner	
+ 100%	None	4 pts	Test runner Sandbox
+
+Ben Alvarez
+	
+Employee	QA analyst	
+ 100%	3 days	5.6 pts	Manual testing UAT coordination Test design
+VELOCITY, LAST SIX SPRINTS
+
+37, 38, 42, 39, 42, 45 points
+
+Capacity = Σ (allocation × working days × 6 focus hours × type factor) ÷ 7.5 hours per point. People on time off (3 days) reduce it. AI agents count at half, managed service providers at 60%.
+
+WORKING AGREEMENTS
+Pull requests get a first review within 4 working hours.
+No story starts without the definition of ready.
+Automated tests ship with the code, not after it.
+Standup is 15 minutes at 9:30 Eastern; blockers go to the board first.
+Add a member
+Add an agreement
+Open backlog
+Search and Indexing (Lumen)
+Codification and Portal train
+14 pts velocity
+18 capacity
+Editor Experience
+Codification and Portal train
+21 pts velocity
+22 capacity
+Portal Reliability
+Codification and Portal train
+15 pts velocity
+19 capacity
+Taxonomy Data
+Data and Contracts train
+17 pts velocity
+20 capacity
+Contracts and Integration
+Data and Contracts train
+23 pts velocity
+24 capacity
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

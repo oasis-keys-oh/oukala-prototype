@@ -1,0 +1,110 @@
+SERVICE PORTFOLIO AND MAP · BUSINESS SERVICE
+Codification Portal
+
+Tier 1 service owned by Tom Becker, used by 180,000 people. Availability is 99.58% against a 99.9% target (0.32 points short), it costs $31,400 a month, and 1 incident and 6 changes are open on it. It is mapped through seven lenses below.
+
+All services
+Impact analysis
+New offering
+Assign stakeholders
+Link a project
+Tier 1
+ƒ Service availability
+CSDM 5
+Technical composition
+Business and strategy
+Projects
+Stakeholders
+Performance
+Financial
+Impact
+Offerings
+Linked records
+LINKED RECORDS
+15
+across 5 kinds
+INCIDENTS
+1
+open
+CHANGES
+6
+open or planned
+PROJECTS
+3
+relationships
+DEMAND
+0
+raised by cost triggers
+Everything linked to Codification Portal
+Grouped by kind. Search across all of them.
+Impact analysis
+Incidents
+1
+INC0414 Portal TLS certificate expires in 9 days
+New
+Changes
+6
+CHG0312 Raise Codification Portal hosting tier (Northwind, +$48,000 per year)
+2026-10-14
+Authorize
+CHG0311 Scale portal web tier and tune load balancer idle timeout (emergency)
+2026-10-06
+Implement
+CHG0316 Monthly Windows and Linux patching, Platform servers
+2026-10-08
+Scheduled
+CHG0318 Deploy Codification beta to production
+2026-11-12
+Assess
+CHG0322 Enable portal standby failover (RB-031 v8)
+2026-10-27
+Scheduled
+Show 1 more of 1 remaining
+Problems
+1
+PRB0010 Portal web tier saturates under editor load
+Root cause analysis
+Pending requests
+4
+RITM0011629 Subscriber access (Individual)
+Oct 3
+Hollis Grey
+RITM0011833 API licensing (Evaluation)
+Oct 5
+Priti Joshi
+RITM0011796 API licensing (Standard license (5 million calls))
+Oct 2
+Aaron Whitfield
+RITM0011970 API licensing (Enterprise license (50 million calls))
+Oct 4
+Chief Editor
+Projects and demand
+3
+Codification Platform Upgrade
+Feb 26, 2027
+Impacting
+Portal Resilience
+Jan 29, 2027
+Improving
+Portal Resilience
+Nov 15, 2026
+Impacting
+Service portfolio and map
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the service
+Owner, tier, objective and offerings are recorded; CSDM class is set.
+AI AGENT
+Map it
+Relationships to CIs and other services come from discovery and are reviewed.
+AUTOMATIC
+Check completeness
+The seven lenses are scored; gaps open tasks.
+APPROVAL GATE
+Govern changes
+Every change, incident and problem opens the same impact analysis.
+PERSON
+Review the service
+Quarterly review of targets, cost, maturity and retirement.

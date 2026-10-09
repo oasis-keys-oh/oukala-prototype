@@ -1,0 +1,87 @@
+PLATFORM · ADMIN STUDIO
+Shape the platform without code
+
+Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+
+ƒ Promotions passing gates first time
+Claude Sonnet · 84%
+Add a field
+Fields
+Form layout
+List views
+Theme
+Localization
+Incident fields
+12 fields, 1 added by Meridian. Drag a row to change the order used in lists and the API.
+Add a field
+Incident
+Project
+Demand request
+Contract
+Number
+number
+Single line text
+Required
+Edit
+Short description
+short_description
+Single line text
+Required
+Edit
+Description
+description
+Long text
+Edit
+Caller
+caller
+Person reference
+Required
+Edit
+Category
+category
+Picklist
+Edit
+Impact
+impact
+Picklist
+Required
+Edit
+Urgency
+urgency
+Picklist
+Required
+Edit
+Affected service
+cmdb_ci
+Picklist
+Edit
+Assigned to
+assigned_to
+Person reference
+Edit
+State
+state
+Picklist
+Required
+Edit
+Work notes
+work_notes
+Long text
+Only Service desk lead, Executive
+Edit
+Affected business unit
+u_business_unit
+Picklist
+Edit
+Remove
+How fields work here
+
+Every object is metadata: a table, its fields, a layout and a view. Fields are stored with a type, rule and persona visibility, and each change lands in a draft package in Dev that is promoted like code.
+
+Claude Sonnet · 84%
+Open the draft package
+Unused custom fields
+A field in no story and no metric is a candidate for removal.
+Affected business unit
+Not in any list or view
+Unused

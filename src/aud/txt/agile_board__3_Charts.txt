@@ -1,0 +1,134 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+Team
+All teams
+Platform Alpha
+Search and Indexing (Lumen)
+Editor Experience
+Portal Reliability
+Taxonomy Data
+Contracts and Integration
+18 stories, 38 points committed. Charts are drawn to one scale; day 7 of 10 is the last actual.
+Burndown
+Remaining points against the ideal line
+0
+15
+30
+45
+60
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9
+D10
+Remaining
+Ideal
+Burnup
+Done against total scope; the scope line rises when work is added mid-sprint
+0
+15
+30
+45
+60
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9
+D10
+Scope
+Done
+Velocity
+Points completed per sprint
+0
+15
+30
+45
+60
+37
+26.2.3
+38
+26.2.4
+42
+26.3.1
+39
+26.3.2
+42
+26.3.3
+45
+26.3.4
+19
+Now
+3-sprint average 42
+Capacity 43
+Cumulative flow
+Points in each state per day; bands that widen show a bottleneck
+0
+15
+30
+45
+60
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9
+D10
+Done
+Testing
+In review
+In progress
+To do
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

@@ -1,0 +1,59 @@
+PRODUCT LOG
+Everything you asked for
+
+38 requests so far: 31 shipped, 4 in progress and 3 waiting. Nothing you say about the design is lost.
+
+Why am I seeing this?
+Requests
+38
+4 releases so far
+Shipped
+31
+82% of the register
+In progress
+4
+Planned for this release
+Waiting
+3
+Open for your decision
+Register
+Add feedback
+Releases
+2026-10-06 · V4
+Everything on the feature list
+Drag and drop, intake, contract ingestion, projects and RAID, vault graph, ITSM, ITOM, budgets, executive views, workflow, knowledge, people, admin.
+13 items
+F24 · Drag and drop priorities, with a reason captured for every override.
+F25 · Drag and drop everywhere it makes sense: demand gates, assignments, change calendar, release trains, workflo…
+F26 · Show how intake works, with a real form, duplicate check and live score preview.
+F27 · Hover detail on how a priority score is calculated.
+F28 · A funded request automatically becomes a project with tasks and a place on the master schedule.
+F29 · Ingest a contract and extract milestones, agreements, SLAs, deliverables, budget and invoice schedule.
+F30 · Spacing: tiles touched the cards below them in the impact report.
+F31 · Filter project schedules by project, assign project managers and individuals, see milestone progress and a R…
+and 5 more
+2026-10-06 · V3
+PPM and product log
+Demand and priorities, integrated master schedule, project plans, Project Online coverage, this log.
+4 items
+F18 · Track and audit every action. Trends become research for future feature requests.
+F19 · Chat can control everything. AI actions always show lineage and guardrails.
+F20 · Expand project and portfolio management: integrated master schedule across projects, Gantt charts, project p…
+F21 · Track every update, including design feedback, for future releases.
+2026-10-06 · V2
+Oukala v2
+Liquid glass shell, personas, process-flow trace, ledger and rule builder, calendars, Control Tower, metrics, knowledge graph.
+18 items
+F01 · Floating, collapsible glass sidebar like Apple's menu, with a subtle background graphic.
+F02 · User profile and preferences.
+F03 · Liquid glass, floating layers, strong color contrast, hover effects everywhere, subtle animation, no text bo…
+F04 · Use the supplied color palette. Name the app Oukala.
+F05 · Trace the business process like the Codification Publishing Flow, in a modern vector style, keeping the inte…
+F06 · "How to read this" was unreadable and inconsistent.
+F07 · Fix the inconsistent fonts and make the table less boring.
+F08 · Clicking away from a row should close the drawer. The drawer should be floating liquid glass.
+and 10 more
+2026-10-06 · V1
+Prototype v1
+Executive trace, invoice approval, First Officer, AI Control Tower.
+0 items

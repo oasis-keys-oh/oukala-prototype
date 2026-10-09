@@ -1,0 +1,59 @@
+BUDGETS OVERALL · FY27 (JUL 2026 TO JUN 2027)
+The portfolio is 5.6% over budget, and the reserve can cover it
+
+Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K, $58K after the two requests waiting for approval.
+
+ƒ Forecast variance to approved budget
+ƒ Budget lines over commitment
+ƒ Reserve coverage
+ƒ Capital plan used
+Reforecast
+Why am I seeing this?
+Overview
+By project
+By category
+Forecast
+Reserve and approvals
+Monthly burn and forecast
+Forecast spend after September follows each project's schedule, scaled so the year ends at the forecast total of $3.07M.
+ƒ Forecast variance to approved budget
+Reforecast
+$0
+$500K
+$1.0M
+$1.5M
+$2.0M
+$2.5M
+$3.0M
+$3.5M
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Approved $2.91M
+Plan (phasing of approved budget)
+Actual, closed through Sep 30
+Forecast
+Month by month
+Actual is closed through Sep 30. Oct is the current month.
+MONTH	PLAN	ACTUAL OR FORECAST	CUMULATIVE PLAN	CUMULATIVE ACTUAL OR FORECAST	DIFFERENCE
+JulActual	$400,000	$380,000	$400,000	$380,000	$20K under
+AugActual	$500,000	$510,000	$900,000	$890,000	$10K under
+SepActual	$520,000	$588,000	$1,420,000	$1,478,000	+$58K over
+OctForecast	$400,000	$380,000	$1,820,000	$2,708,000	+$888K over
+NovForecast	$300,000	$340,000	$2,120,000	$2,868,000	+$748K over
+DecForecast	$250,000	$290,000	$2,370,000	$2,978,000	+$608K over
+JanForecast	$200,000	$220,000	$2,570,000	$3,028,000	+$458K over
+FebForecast	$150,000	$160,000	$2,720,000	$3,058,000	+$338K over
+MarForecast	$90,000	$110,000	$2,810,000	$3,073,000	+$263K over
+AprForecast	$50,000	$50,000	$2,860,000	$NaN	On budget
+MayForecast	$30,000	$30,000	$2,890,000	$NaN	On budget
+JunForecast	$20,000	$15,000	$2,910,000	$NaN	On budget

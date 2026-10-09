@@ -1,0 +1,96 @@
+SERVICE PORTFOLIO AND MAP · BUSINESS SERVICE
+Codification Portal
+
+Tier 1 service owned by Tom Becker, used by 180,000 people. Availability is 99.58% against a 99.9% target (0.32 points short), it costs $31,400 a month, and 1 incident and 6 changes are open on it. It is mapped through seven lenses below.
+
+All services
+Impact analysis
+New offering
+Assign stakeholders
+Link a project
+Tier 1
+ƒ Service availability
+CSDM 5
+Technical composition
+Business and strategy
+Projects
+Stakeholders
+Performance
+Financial
+Impact
+Offerings
+Linked records
+MATURITY
+2 · Managed
+target 3 · Defined
+OBJECTIVES SUPPORTED
+2
+strategic objectives
+CAPABILITIES
+3
+Standards distribution, Subscription sales, API licensing
+LIFECYCLE
+Invest
+Invest, maintain, migrate or sunset
+STRATEGIC ALIGNMENT
+98%
+weight of objectives × service criticality
+Objectives this service supports
+How Codification Portal connects to strategy. The Strategy alignment screen holds the full objective tree.
+Strategy alignment
+Objective
+Reduce operating risk
+Objective
+Modernize standards publishing
+
+BUSINESS CAPABILITIES
+
+Standards distribution
+Subscription sales
+API licensing
+Maturity
+Where the service is now against where it should be.
+1
+Initial
+2
+Managed
+3
+Defined
+4
+Measured
+5
+Optimizing
+Reached
+Target
+Process
+2
+Technology
+2
+People
+2
+Data
+2
+Governance
+2
+Open maturity models
+Set target level
+CMMI
+Service portfolio and map
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the service
+Owner, tier, objective and offerings are recorded; CSDM class is set.
+AI AGENT
+Map it
+Relationships to CIs and other services come from discovery and are reviewed.
+AUTOMATIC
+Check completeness
+The seven lenses are scored; gaps open tasks.
+APPROVAL GATE
+Govern changes
+Every change, incident and problem opens the same impact analysis.
+PERSON
+Review the service
+Quarterly review of targets, cost, maturity and retirement.

@@ -1,0 +1,16 @@
+KNOWLEDGE GRAPH · LIVING GRAPH AND VAULT
+See how everything we know connects
+
+The knowledge graph joins 54 knowledge items to 16 services, 162 configuration items, 10 agent skills, people, projects and incidents through 798 relationships. Pick any record and walk its relationships to see what it reaches, or find the path between two records.
+
+ƒ Graph link coverage
+ƒ Service knowledge coverage
+ƒ Ontology completeness
+Try an impact walk
+Knowledge lifecycle
+Why am I seeing this?
+Overview
+Living graph
+GAAP vault notes
+The GAAP vault is not loaded in this build
+Add the vault data module to see the notes.

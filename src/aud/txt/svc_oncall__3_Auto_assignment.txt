@@ -1,0 +1,172 @@
+SERVICE MANAGEMENT · ON-CALL AND ESCALATION
+Who is on call, and is every required hour covered?
+
+88% of required on-call hours are covered over the next 14 days across 10 rotas (per team, service, asset class and follow the sun). 429 hours have nobody scheduled or available, and 17 shifts collide with approved time off. Coverage, fairness and cost come from the skills and availability database.
+
+ƒ On-call coverage
+ƒ On-call fairness
+ƒ Time to page a human
+ITIL 5
+New rota
+Skills and availability
+Dashboard and rotas
+Coverage map
+Recommendations
+Auto-assignment
+Escalation
+Overrides, swaps and hand-over
+Automatic assignment rules
+The first rule that matches runs. Drag to change the order. Rules route by team, skills, availability, current load, time zone and language, using the skills and availability database.
+1
+Urgent on a Tier 1 service: page the on-call primary
+When priority P1 or P2 and service is Tier 1. Team: from the service owner. On-call primary, then secondary.
+On
+Edit
+2
+Search incidents: indexer skills, least loaded
+When service is Search and indexing. Team: Data team. Best skill match, then lowest load. Skills: Search indexing, Elasticsearch.
+On
+Edit
+3
+Identity and access: Security team, Entra skills
+When service is Identity (Entra ID). Team: Security. Best skill match, then lowest load. Skills: Entra ID.
+On
+Edit
+4
+Spanish-speaking callers: Spanish-speaking agents
+When priority P3 or P4 and caller language is Spanish. Team: Service desk. Language, then round robin. Skills: Incident management.
+On
+Edit
+5
+Low priority: AI triage first, then service desk round robin
+When priority P3 or P4. Team: Service desk. Round robin among available. Skills: Incident management. AI triage first.
+On
+Edit
+6
+Default: service desk, best available
+Otherwise (catch-all). Team: Service desk. Best skill match, then lowest load. Skills: Incident management.
+On
+Edit
+Add rule
+ITIL 5
+Assign this incident: simulation
+Choose an incident and see which rule fires and why each person ranks where they do. Incidents go to the team first; an individual claims it, or is chosen with a stated reason.
+Routing engine · 88%
+Service
+Codification Platform (Tier 1)
+Codification Portal (Tier 1)
+Search and indexing (Tier 1)
+Contract Repository (Tier 2)
+Lease subledger (ERP) (Tier 2)
+Finance systems (Tier 2)
+Identity (Entra ID) (Tier 1)
+Email and collaboration (M365) (Tier 1)
+Data platform (Tier 2)
+Network and VPN (Tier 1)
+Endpoint management (Intune) (Tier 2)
+Integration hub (Tier 2)
+Service desk (Tier 2)
+Portfolio and project intake (Tier 2)
+AI platform and agents (Tier 2)
+Employee lifecycle (Tier 2)
+Priority
+P1
+P2
+P3
+P4
+Caller language
+Any
+English
+Spanish
+French
+Czech
+German
+Day
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sunday
+Hour (Mountain)
+00:00
+01:00
+02:00
+03:00
+04:00
+05:00
+06:00
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+Extra skills the work needs
+Search indexing
+1
+
+Urgent on a Tier 1 service: page the on-call primary fires. Assigned to the Lumen (vendor) queue, and 
+Dev
+ 
+LS
+Lumen
+ are paged as primary on call. Suggested claimer: Lumen Search Services (score 88.8).
+
+#	PERSON	SCORE	WHY
+1	
+LS
+Lumen Search Services
+ 
+Managed service provider	
+88.8	Level 5 Search indexing Working now, until 24:00 On the Lumen (vendor) Secondary on call for Search and indexing (Lumen)
+2	
+Dev Rao
+ 
+Employee	
+81	Level 4 Search indexing Working now, until 16:00 On the rota for this service Primary on call for Search and indexing (Lumen)
+3	
+Marco Ellis
+ 
+Contractor	
+79	Level 5 Search indexing Working now, until 17:00 On the Lumen (vendor) Owns Search and indexing
+4	
+Maya Ortiz
+ 
+Employee	
+71	Level 3 Search indexing Working now, until 15:00 On the rota for this service Load 421%
+5	
+Hana Koval
+ 
+Contractor	
+54	Level 4 Search indexing On the Lumen (vendor) Expert on Search and indexing Contractor, billableOutside working hours (01:00 to 10:00 MT)
+6	
+Sven Lindqvist
+ 
+Contractor	
+42.1	Working now, until 17:00 On the Lumen (vendor) Contractor, billable Load 43%No Search indexing
+7	
+Marta Kessler
+ 
+Contractor	
+41.5	Working now, until 17:00 On the Lumen (vendor) Contractor, billable Load 48%No Search indexing
+8	
+Amara Okoye
+ 
+Contractor	
+39.8	Working now, until 17:00 On the Lumen (vendor) Contractor, billable Load 60%No Search indexing
+Assign to Lumen (vendor)
+Assign to Lumen Search Services with reason
+Score = skill match 40 + available now 25 + team 10 + load 15 + on-call, service knowledge and language bonuses.

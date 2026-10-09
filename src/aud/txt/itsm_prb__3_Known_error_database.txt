@@ -1,0 +1,71 @@
+SERVICE MANAGEMENT · PROBLEMS
+Fix the cause, not the symptom
+
+5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.
+
+New problem
+New known error
+ƒ Repeat incident rate
+ƒ Known error reuse
+ITIL 5
+KCS v6
+Triage Agent · 80%
+Overview
+Fishbone and RCA
+Link incidents
+Known error database
+Trends
+PUBLISHED KNOWN ERRORS
+4
+searchable by symptom
+TIMES USED
+20
+by the desk and the Triage Agent
+HELPFUL
+85%
+marked helpful
+KNOWN ERROR REUSE
+71%
+target 80% ƒ Known error reuse
+New known error
+KCS v6
+
+When an incident matches a symptom, the service desk gives the workaround in the first reply. Search by symptom, for example stale search, 502, or period locked.
+
+Service
+All
+5
+Status
+All
+2
+Export CSV
+NUMBER	SYMPTOM AND TITLE	SERVICE	STATUS	WORKAROUND	TIMES USED	HELPED	PROBLEM
+KE0010	Portal slow when many editors work at once	Codification Portal	Published	Batch bulk edits after 16:00. Ops adds web nodes by hand using RB-031 step 4.	3	2	PRB0010
+KE0007	Search shows outdated paragraphs after an indexer restart	Search and indexing	Published	Run the nightly full re-index (KB0211) or use Refresh paragraph for urgent changes.	7	6	PRB0007
+KE0008	Taxonomy API 502 during the nightly batch	Data platform	Published	Restart the batch worker. A retry after 03:00 succeeds.	4	4	PRB0008
+KE0009	Lease posting rejected: period already locked	Lease subledger (ERP)	Published	Controller reopens the period for 15 minutes and reposts (KB0219).	6	5	PRB0009
+KE0011	MFA prompts loop on iOS mail with a legacy profile	Identity (Entra ID)	Retired	Remove and re-add the account (KB0204).	6	6	PRB0011
+5 of 5 rows
+Scroll for more · rows are drawn as you scroll
+Problem process (ITIL 5 Support and Evolve)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AI AGENT
+Detect a pattern
+An agent groups repeat incidents by service and text and proposes a problem.
+PERSON
+Assess and prioritize
+Rank by repeats times people affected.
+PERSON
+Root cause analysis
+Fishbone to find contributing causes by category, then five whys to the root.
+PERSON
+Publish known error
+Record the workaround and symptoms so the desk can use them today.
+APPROVAL GATE
+Fix through change
+Raise a change, a knowledge article or a demand for the permanent fix.
+AUTOMATIC
+Verify and close
+Confirm repeats stopped, retire the known error.

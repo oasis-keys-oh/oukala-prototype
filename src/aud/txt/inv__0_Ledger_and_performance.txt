@@ -1,0 +1,105 @@
+INVOICE APPROVAL
+Pay what was earned
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+The advisor recommends. You decide, or set rules so it decides for clean ones.
+INV-20433
+$62,900
+Lumen Data Partners · due Oct 19
+Recommend hold
+INV-20418
+$184,200
+Northwind Cloud · due Oct 21
+Recommend approve
+INV-20451
+$21,400
+Northwind Cloud · due Oct 28
+Recommend approve
+INV-20440
+$12,480
+Apex Print · due Oct 24
+Recommend reject
+LUMEN DATA PARTNERS · SOW-4 (TAXONOMY DATA ENGINEERING)
+INV-20433 $62,900
+Recommend Hold
+Claude + GPT council · 81%
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+Approve
+Hold
+Reject
+Ledger and performance
+Where it connects
+Auto-approval rules
+The ledger
+Contract value
+Total you agreed to pay
+$610,000
+Paid to date
+Cleared in the AP system
+$412,000
+Accepted work
+Delivered and signed off
+$390,000
+This invoice
+Waiting for your decision
+$62,900
+What we should pay now
+Accepted work minus paid, never below zero
+$0
+Left on the contract
+After this invoice if paid in full
+$135,100
+should_pay = max(0, accepted_work − paid_to_date)
+Invoice is $62,900 more than we should pay now
+Performance against time
+Cumulative $K. Paid above accepted work means we are ahead of delivery.
+$0K
+$152500K
+$305000K
+$457500K
+$610000K
+Mar
+May
+Jul
+Sep
+Nov
+Planned
+Accepted
+Paid
+Performance against quality and expectation
+0.75
+Time
+Accepted ÷ planned to date
+0.71
+Quality
+1 − Defect density
+0.78
+Expectation
+Scope and service levels met
+0.75
+Vendor index
+0.4 × Time + 0.3 × Quality + 0.3 × Expectation
+ƒ Vendor performance index
+Same definition used on the Executive trace and in vendor reviews.
+The six checks
+Pass
+PO match
+Within PO-77120; $198,000 remains.
+Fail
+Acceptance
+No acceptance record for milestone 3.
+Fail
+Earned vs paid
+Paid is $22,000 above accepted work.
+Fail
+Budget headroom
+Vendor services is over commitment by $45,000.
+Pass
+Duplicate
+No similar invoice.
+Review
+Vendor risk
+Milestone 2 was nine days late.

@@ -1,0 +1,170 @@
+SERVICE MANAGEMENT · CHANGES
+Change safely, on a calendar everyone trusts
+
+3 changes are scheduled in the next 7 days and 1 waits for approval. 1 collide on the same CI (CHG0314 and CHG0315), and 1 sits inside a freeze window. The change failure rate is 16.7% against a 12% target. Approvers come from your 11 approval policies.
+
+Request change
+ƒ Change failure rate
+ƒ Approval turnaround
+ITIL 5
+DORA metrics
+Claude Sonnet · 82%
+Overview
+Calendar
+CAB and approvals
+Standard templates
+Approval policies
+Risk and DORA
+‹
+October 2026
+›
+9 changes start this month
+Drag a change to another day to reschedule it. Collisions and freezes are re-checked as you drop. Closed and in-progress changes are locked. Hover any chip or legend item for what it means.
+STRIPE ON THE LEFT: CHANGE TYPE
+Standard
+Normal
+Emergency
+DOT ON THE RIGHT: RISK SCORE
+Low, under 20
+Medium, 20 to 39
+High, 40 to 59
+Very high, 60 and up
+CHIP STYLE: STATE
+Scheduled
+Awaiting approval, dashed
+Implementing, filled
+Closed, faded
+DAY BACKGROUND
+Blackout freeze, red hatch
+Restricted, amber hatch
+Weekend
+Today
+! Collision
+MON
+TUE
+WED
+THU
+FRI
+SAT
+SUN
+1
+2
+3
+4
+5
+6
+0311
+Scale portal web tier and tune load balancer idle timeout (emergency)
+7
+8
+0316
+Monthly Windows and Linux patching, Platform servers
+9
+10
+11
+12
+0313
+Deploy Lumen search indexer build 2.4 to staging
+13
+0313 ›
+14
+0312
+Raise Codification Portal hosting tier (Northwind, +$48,000 per year)
+15
+0315
+Scale Azure SQL tier for the Taxonomy pilot load test
+!
+0314
+Resize Taxonomy API connection pool and cap batch concurrency
+!
+16
+0315 ›
+17
+18
+19
+20
+0317
+Conditional access: add editors' VPN as a named location
+21
+22
+23
+24
+25
+26
+27
+0322
+Enable portal standby failover (RB-031 v8)
+0323
+Codification content migration dry run (batch 1)
+28
+29
+30
+31
+Collisions and freezes
+1 collision on the same CI and 1 change inside a freeze. Checked live.
+CHG0314
+and
+CHG0315
+both change synapse-sql on Oct 15.
+Move CHG0315
+CHG0322
+and
+CHG0323
+both change Codification Portal on Oct 27.
+Move CHG0323
+CHG0319
+on Nov 18 is inside
+Financial close freeze
+(Nov 16 to Nov 20).
+Move to Nov 23
+Next 7 days
+3 changes scheduled from today to Oct 13
+Oct 6
+Scale portal web tier and tune load balancer idle timeout (emergency)
+Emergency
+Risk 55 · High
+Oct 8
+Monthly Windows and Linux patching, Platform servers
+Standard
+Risk 24 · Medium
+Oct 12
+Deploy Lumen search indexer build 2.4 to staging
+Normal
+Risk 25 · Medium
+Freeze and blackout windows
+Changes inside a window need an executive exception (policy AP10)
+Nov 16 to Nov 20
+Financial close freeze
+Finance is closing October and filing the lease footnote. No Tier 1 or finance system changes.
+Blackout
+Nov 25 to Nov 27
+Thanksgiving reduced staffing
+Half the on-call roster is out. Only Standard changes and fixes for open incidents.
+Restricted
+Dec 21 to Jan 4
+Year-end freeze
+Audit and year-end processing. Emergency changes need the CIO.
+Blackout
+Add a window
+Change enablement process (ITIL 5 Transition)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Request and assess
+Describe the change, the service and CIs, plans and the risk questionnaire.
+AUTOMATIC
+Check conflicts
+Collision on the same CI and freeze windows are checked live.
+AUTOMATIC
+Route approvals
+The approval policies decide who approves, in what order, with what quorum.
+APPROVAL GATE
+Approve
+Policy picks the approvers. Standard changes from a template need no vote.
+PERSON
+Schedule and implement
+Calendar slot, implementation by the team, backout ready.
+PERSON
+Review
+Outcome feeds the change failure rate. Lessons go to the template or policy.

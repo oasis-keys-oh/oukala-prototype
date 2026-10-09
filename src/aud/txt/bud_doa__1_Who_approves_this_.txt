@@ -1,0 +1,74 @@
+DELEGATION OF AUTHORITY
+Anything up to $100,000 you can approve, and 3 of 6 segregation checks fail
+
+Six tiers decide who approves a commitment, from budget owners up to $25,000, the CIO up to $100,000, the CFO up to $250,000, the CEO up to $1,000,000, and the Board finance committee above that. Failing now: creator is not the approver; approver is inside their authority; no split purchases. PO-77231 was raised and approved by the same person for $36,000, above a budget owner's $10,000 limit.
+
+Who approves this?
+Why am I seeing this?
+Claude Sonnet · 95%
+Approval matrix
+Who approves this?
+Segregation of duties
+Policy editor
+Who approves this?
+Enter a request. The answer shows the approver chain and says why, so nobody has to guess or ask.
+Amount
+$
+Category
+Labor
+Vendor services
+Hardware
+Cloud
+Licences
+Reserve release
+Budget transfer
+Contract renewal
+Project
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Run budget (not a project)
+Requested by
+Priya Shah
+Dev Rao
+Tom Becker
+Maya Ortiz
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Omar (CIO)
+New vendor
+Capital spend (CapEx)
+TRY AN EXAMPLE
+$75,000 purchase by Priya
+You request $75,000
+$20,000 by the portfolio lead
+$8,000 by a budget owner
+$48,000 reserve release
+$300,000 contract renewal
+The answer
+Omar (CIO) approves
+Tier T3, after 3 reviews
+Claude Sonnet · 95%
+1
+Priya Shah Budget owner (requester)
+Raises the request and cannot approve it.
+2
+Avery Chen Controller review
+Confirms the budget line has headroom and posts the commitment.
+3
+Procurement Procurement review
+Three competitive quotes are required from $25,000.
+4
+Legal Legal review
+Contract terms and liability need review from $50,000.
+5
+Omar (CIO) CIO approves
+Tier T3: requests up to $100,000 are approved by the CIO.
+WHY
+$75,000 falls in tier T3 (up to $100,000), so the CIO approves.
+3 reviews must finish first: Controller, Procurement, Legal.
+
+This is inside your authority as CIO.

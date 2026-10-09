@@ -1,0 +1,25 @@
+const {chromium}=require('playwright');
+const dir=process.argv[2],W=+process.argv[3]||1300,dark=process.argv.includes('--dark'),phone=process.argv.includes('--phone');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const ctx=await b.newContext({viewport:{width:phone?400:W,height:phone?860:900},colorScheme:dark?'dark':'light'});const p=await ctx.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(700);
+if(dark)await p.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));
+const tag=(phone?'p400':W)+(dark?'d':'');
+const sh=async(n,full)=>{await p.waitForTimeout(500);await p.screenshot({path:`${dir}/mm_${tag}_${n}.png`,fullPage:!!full})};
+await p.evaluate(()=>go('plat_map'));await p.waitForTimeout(900);
+await sh('1open');
+// scroll to canvas
+await p.evaluate(()=>document.querySelector('.mm-bar').scrollIntoView());await sh('2canvas');
+await p.click('[data-mm-tab=pushes]');await sh('3pushes');
+await p.click('[data-mm-tab=proc]');await sh('4proc');
+await p.click('[data-mm-tab=data]');await sh('5data');
+await p.click('[data-mm-tab=blast]');await p.click('[data-mm-blast]');await sh('6blast');
+await p.click('[data-mm-tab=pulls]');await p.click('[data-mm-flow]');await sh('7flow');
+await p.selectOption('[data-mm-pa]','itsm_inc');await p.selectOption('[data-mm-pb]','bud_over');await sh('8pair');
+await p.click('[data-mm-z=fit]');await sh('9fit');
+await p.evaluate(()=>{S.v.mm_v=1;render()});await sh('Amatrix',true);
+await p.evaluate(()=>{S.v.mm_v=2;render()});await sh('Bjourneys',true);
+await p.evaluate(()=>{S.v.mm_v=3;render()});await sh('Ccoverage',true);
+await p.evaluate(()=>{S.v.mm_v=4;render()});await sh('Dold',true);
+console.log(errs.slice(0,8));await b.close()})();

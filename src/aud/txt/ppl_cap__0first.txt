@@ -1,0 +1,213 @@
+PEOPLE AND WORK
+Resource planning
+
+Planning covers every kind of work, not only projects: incidents, requests, changes, on-call, operational work, meetings, training and leave, for 85 employees, contractors, AI agents and providers across 52 weeks. Load over the next 12 weeks is 70%, with 46 people over capacity. Pull any person to see everything on their plate and whether they can take more.
+
+ƒ Planned utilization, next 12 weeks
+ƒ Over-allocated person-weeks
+ƒ Unstaffed demand
+Request resources
+Find a person
+Capacity and demand planning
+Resource Agent · 82%
+Dashboard
+Heatmap
+Work types
+Person
+Over capacity
+Scenarios
+Forecast
+Bench and requests
+Targets
+Teams
+All teams
+13
+Kinds of worker
+All kinds
+4
+
+Every kind of work is turned into hours per person per week: projects, incidents, requests, changes, on-call, operational work, meetings, training and leave. For 85 workers over 52 weeks, load over the next 12 weeks is 70%. 46 people are over 100% in at least one week (141 weeks in total across them). Demand with no named person is 7.9 FTE. The tightest week is Oct 12 at 77%. 3 resource requests are waiting.
+
+LOAD, NEXT 12 WEEKS
+70%
+target band 70% to 88%
+PEOPLE OVER CAPACITY
+46
+141 person-weeks
+UNSTAFFED DEMAND
+7.9 FTE
+no named person
+RESOURCE REQUESTS WAITING
+3
+answered in 5 days
+Capacity against demand, all 52 weeks
+Demand is every work type added together. The dashed line is available hours after leave and holidays.
+0k
+1.6k
+3.2k
+4.8k
+6.4k
+Oct 5
+Nov 2
+Nov 30
+Dec 28
+Jan 25
+Feb 22
+Mar 22
+Apr 19
+May 17
+Jun 14
+Jul 12
+Aug 9
+Sep 6
+Demand (all work types)
+Available hours
+Teams
+Average load over the next 12 weeks and the 13 weeks after. Select a team to see its people.
+Export CSV
+TEAM	WORKERS	LOAD, NEXT 12 WEEKS	WEEKS 13 TO 26	PEAK WEEK	PEOPLE OVER 100%	SHORTFALL (FTE)
+PMO	5	69%	57%	100%	2	0
+Platform team	16	82%	66%	122%	15	0
+Data team	8	56%	33%	94%	2	0
+Architecture	3	81%	41%	156%	2	0
+Ops team	7	83%	68%	110%	6	0
+Editors	6	77%	53%	131%	6	0
+Service desk	6	80%	80%	91%	5	0
+Finance	4	75%	79%	105%	3	0
+Change management	3	99%	65%	139%	2	0
+Security	3	103%	67%	133%	1	0.1
+Lumen (vendor)	8	62%	39%	88%	2	0
+AI agents	15	62%	67%	64%	0	0
+Leadership	1	69%	101%	95%	0	0
+13 of 13 rows
+Scroll for more · rows are drawn as you scroll
+Everyone
+Each person's load against the target band for their role family. Select a row for everything on their plate.
+Team
+All
+13
+Kind
+All
+3
+Role family
+All
+9
+Group by 
+None
+Team
+Role family
+Kind
+Export CSV
+PERSON	KIND	TEAM	ROLE FAMILY	LOAD, NEXT 12 WEEKS	TARGET BAND	WEEKS OVER 100%	ROOM (H A WEEK)
+
+Maya Ortiz
+	Employee	PMO	Manager or lead	100%	60% to 85%	5	0
+
+Priya Shah
+	Employee	Platform team	Project and change manager	76%	70% to 90%	3	0
+
+Dev Rao
+	Employee	Data team	Project and change manager	71%	70% to 90%	3	0
+
+Tom Becker
+	Employee	Service desk	Manager or lead	119%	60% to 85%	5	0
+
+Avery Chen
+	Employee	Finance	Manager or lead	89%	60% to 85%	4	0
+
+Jordan Lee
+	Employee	Architecture	Engineer or architect	124%	70% to 88%	5	0
+
+Sam Patel
+	Employee	Ops team	Engineer or architect	190%	70% to 88%	17	0
+
+Nia Brooks
+	Employee	Change management	Project and change manager	110%	70% to 90%	5	0
+
+Chief Editor
+	Employee	Editors	Manager or lead	98%	60% to 85%	6	0
+
+Rina Okafor
+	Employee	Security	Manager or lead	88%	60% to 85%	3	0
+
+Omar Hamid
+	Employee	PMO	Executive	66%	50% to 75%	0	0
+
+Marco Ellis
+	Contractor	Lumen (vendor)	Contractor	66%	80% to 95%	3	0
+
+Hana Koval
+	Contractor	Lumen (vendor)	Contractor	77%	80% to 95%	3	0
+
+Ravi Menon
+	Contractor	Ops team	Contractor	100%	80% to 95%	6	0
+
+Elise Park
+	Contractor	Platform team	Contractor	76%	80% to 95%	3	0
+
+First Officer
+	AI agent	AI agents	AI agent	40%	40% to 80%	0	66
+
+Invoice Advisor
+	AI agent	AI agents	AI agent	69%	40% to 80%	0	17
+
+Knowledge Curator
+	AI agent	AI agents	AI agent	54%	40% to 80%	0	43
+
+Test Agent
+	AI agent	AI agents	AI agent	41%	40% to 80%	0	65
+
+Triage Agent
+	AI agent	AI agents	AI agent	47%	40% to 80%	0	55
+
+PMO Agent
+	AI agent	AI agents	AI agent	94%	40% to 80%	9	0
+
+Change Risk Agent
+	AI agent	AI agents	AI agent	45%	40% to 80%	0	59
+
+Contract Analyst Agent
+	AI agent	AI agents	AI agent	59%	40% to 80%	0	35
+
+Ops Agent
+	AI agent	AI agents	AI agent	68%	40% to 80%	0	19
+
+Event Correlator
+	AI agent	AI agents	AI agent	83%	40% to 80%	0	0
+
+Catherine Doyle
+	Employee	Leadership	Executive	69%	50% to 75%	11	0
+
+Marcus Reid
+	Employee	Finance	Executive	75%	50% to 75%	2	0
+
+82 of 82 rows
+Scroll for more · rows are drawn as you scroll
+Scale test
+The model is rebuilt from the sources on demand, so it holds for hundreds or thousands of people.
+
+85 workers × 52 weeks × 8 work types = 35,360 cells. Run the test to time a full rebuild. Switch on Enterprise mode (about 400 people) in the settings menu to try it.
+
+Rebuild all and time it
+How resource planning works
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Capacity and demand planning, Team Topologies.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect demand
+Every work type reports hours per person per week: projects, incidents, requests, changes, on-call, operational work, meetings, training.
+AUTOMATIC
+Subtract leave and holidays
+Approved time off and the company calendar reduce available hours. Contracts end on their end date.
+AI AGENT
+Spot pressure
+Group and person load against the target band for the role family.
+AI AGENT
+Propose fixes
+Move work, add a contractor, offload to an agent, or defer. Each with cost and risk.
+APPROVAL GATE
+Decide and request
+A manager applies a fix or raises a resource request. The resource manager approves.
+PERSON
+Fill and re-plan
+The filled request adds hours to the named person and the plan updates.

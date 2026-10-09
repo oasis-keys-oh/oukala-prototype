@@ -1,0 +1,167 @@
+AUTOMATION · INTEGRATION HUB
+Every connection, healthy or not
+
+13 connectors: 9 healthy, 2 degraded, 1 failing, 1 paused. SAP ERP (Lease subledger) has failed since its certificate expired, and 6 events wait in the dead-letter queue, including the Lumen payment hold.
+
+ƒ Integration failure rate
+Add connector
+Register MCP server
+Connectors
+13
+9 healthy
+Need attention
+3
+SharePoint, Workday, SAP
+Failure rate
+2.5%
+failed ÷ total calls, 24 h
+Dead letters
+9
+waiting for replay
+Connectors
+MCP servers
+Webhooks and keys
+Retries and dead letters
+All
+Needs attention
+Healthy
+Paused
+SAP ERP (Lease subledger)
+Finance
+Failing
+Auth
+Client certificate (mTLS)
+Last sync
+3 h ago
+Error rate
+31%
+← Invoices and POs
+→ Payment holds and journal entries
+SharePoint
+Content
+Degraded
+Auth
+Graph app-only with certificate
+Last sync
+12 min ago
+Error rate
+6.8%
+← Policy library to Knowledge graph
+→ Published articles to a site
+Workday
+HR
+Degraded
+Auth
+ISU basic and OAuth refresh
+Last sync
+31 min ago
+Error rate
+5.1%
+← Workers, managers and cost centers to People
+Microsoft 365
+Productivity
+Healthy
+Auth
+OAuth 2.0 (delegated and app)
+Last sync
+2 min ago
+Error rate
+0.3%
+← Calendar and mail metadata to First Officer
+→ Documents to SharePoint
+Microsoft Entra ID
+Identity
+Healthy
+Auth
+OpenID Connect and SCIM 2.0
+Last sync
+1 min ago
+Error rate
+0.1%
+← Users, groups and roles to People
+→ Group membership changes to Entra
+Microsoft Teams
+Collaboration
+Healthy
+Auth
+Bot and Graph app permissions
+Last sync
+4 min ago
+Error rate
+0.6%
+→ Approval cards and notifications
+← Meeting transcripts to First Officer
+Azure DevOps
+Delivery
+Healthy
+Auth
+Personal access token
+Last sync
+6 min ago
+Error rate
+0.8%
+← Work items to Delivery
+→ Create work item from approved demand
+ServiceNow-compatible REST
+ITSM
+Healthy
+Auth
+OAuth 2.0 client credentials
+Last sync
+3 min ago
+Error rate
+0.5%
+← Incidents and changes via Table API
+→ Resolution notes
+DocuSign
+Contracts
+Healthy
+Auth
+JWT grant
+Last sync
+9 min ago
+Error rate
+0.2%
+→ Send for signature
+← Completed envelopes to Contract Repository
+Slack
+Collaboration
+Healthy
+Auth
+OAuth bot token
+Last sync
+5 min ago
+Error rate
+0.4%
+→ Notifications to #finance-ap
+Zoom
+Collaboration
+Healthy
+Auth
+Server-to-server OAuth
+Last sync
+8 min ago
+Error rate
+0.9%
+→ Meeting links
+← Recordings
+Power BI
+Analytics
+Healthy
+Auth
+Service principal
+Last sync
+15 min ago
+Error rate
+0.7%
+→ Metrics dataset refresh
+Webex
+Collaboration
+Paused
+Auth
+OAuth integration
+Last sync
+Sep 30
+Error rate
+0%
+→ Meeting links

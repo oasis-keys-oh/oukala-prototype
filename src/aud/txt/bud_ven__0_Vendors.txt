@@ -1,0 +1,125 @@
+VENDORS AND CONTRACTS
+Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days
+
+Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepted. Cobalt Security must be told by Oct 16 if you do not want to renew, and Apex Print by Nov 1.
+
+ƒ Renewals needing a decision in 90 days
+ƒ Three-way match rate
+ƒ Vendor performance index
+New purchase order
+New contract
+New vendor
+Vendors
+Contracts
+Renewals
+SOWs and rates
+Purchase orders
+How the scorecard is calculated
+Four things, weighted. Cost penalizes change orders, billing ahead of accepted work, billing errors and rates above the benchmark.
+ƒ Vendor performance index
+ƒ Three-way match rate
+Scorecard = 0.30 × Delivery + 0.30 × Quality + 0.20 × Cost + 0.20 × Responsiveness
+Cost = max(0, 1 − 2 × change-order % − unearned billing % − 0.05 × billing errors − rate premium %)
+
+Worked example, Lumen: 0.30 × 0.75 + 0.30 × 0.71 + 0.20 × 0.86 + 0.20 × 0.66 = 0.74. Cost is 0.86 because change orders add 5.2% and $22K has been paid ahead of accepted work.
+
+New vendor
+Scores of 0.85 or more are good, 0.75 to 0.85 need watching, below 0.75 need action.
+Lumen Data Partners
+Search, indexing and data engineering
+0.74
+Delivery
+0.75
+Quality
+0.71
+Cost
+0.86
+Responsiveness
+0.66
+Paid $587K
+Committed $905K
+2 contracts · risk Medium
+Northwind Cloud
+Cloud hosting
+0.96
+Delivery
+0.98
+Quality
+0.95
+Cost
+1.00
+Responsiveness
+0.91
+Paid $758K
+Committed $1.11M
+2 contracts · risk Low
+Microsoft
+M365 E5, Azure and Entra ID
+0.93
+Delivery
+0.96
+Quality
+0.93
+Cost
+1.00
+Responsiveness
+0.84
+Paid $412K
+Committed $412K
+1 contract · risk Low
+Apex Print
+Print and mailing services
+0.88
+Delivery
+0.90
+Quality
+0.88
+Cost
+0.95
+Responsiveness
+0.80
+Paid $31K
+Committed $48K
+1 contract · risk Low
+Cobalt Security
+Penetration testing
+0.95
+Delivery
+0.94
+Quality
+0.96
+Cost
+1.00
+Responsiveness
+0.92
+Paid $27K
+Committed $36K
+1 contract · risk Low
+Brightline Staffing
+Contract engineers
+0.84
+Delivery
+0.82
+Quality
+0.80
+Cost
+0.92
+Responsiveness
+0.86
+Paid $148K
+Committed $207K
+1 contract · risk Medium
+LegacyDocs Inc.
+Contract Repository support
+0.75
+Delivery
+0.78
+Quality
+0.72
+Cost
+0.88
+Responsiveness
+0.60
+Paid $48K
+Committed $96K
+1 contract · risk High

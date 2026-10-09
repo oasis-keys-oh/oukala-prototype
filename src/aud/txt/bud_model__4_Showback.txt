@@ -1,0 +1,75 @@
+FINANCIAL MODEL · COST PLAN, CAPITALIZATION, TCO AND RETURN
+The portfolio returns 22% over five years, and Taxonomy is the weakest case
+
+Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under ASC 350-40. Taxonomy returns 10% and depends on benefits that start only after the Dec 2 pilot.
+
+ƒ Five-year portfolio return on investment
+ƒ Capital plan used
+Claude Sonnet · 80%
+Why am I seeing this?
+Project and scenario
+Choose what to model. Everything on this screen recalculates from the cost plan, the capitalization rules and the benefits register.
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Portfolio
+Base case
+Low case
+High case
+Cost plan
+Capitalization
+Depreciation
+TCO and ROI
+Showback
+Showback: report only
+Chargeback: post to cost centers
+
+Showback tells each department what its services cost. No money moves. It is the right first step before chargeback.
+
+DEPARTMENT	PR1	PR2	PR3	PR4	TOTAL	SHARE
+Editorial
+CC-4411
+	$757,200	$226,250	$76,667	$57,600	$1,117,717	
+36.4%
+Standards Development
+CC-4450
+	$378,600	$226,250	$90,000	$144,000	$838,850	
+27.3%
+Data Office
+CC-4412
+	0	$316,750	$36,667	0	$353,417	
+11.5%
+Finance and Legal Operations
+CC-4430
+	0	0	$30,000	$316,800	$346,800	
+11.3%
+IT Operations
+CC-4420
+	0	0	$51,667	$57,600	$109,267	
+3.6%
+Membership and Sales
+CC-4460
+	$126,200	$135,750	$45,000	0	$306,950	
+10.0%
+Total FY27 forecast	$1,262,000	$905,000	$330,000	$576,000	$3,073,000	
+Codification
+Driver
+Usage report
+ED 60% · SD 30% · MS 10%
+Edit rule
+Taxonomy
+Driver
+Usage report
+DO 35% · ED 25% · SD 25% · MS 15%
+Edit rule
+Portal
+Driver
+Headcount
+ED 23% · SD 27% · MS 14% · FN 9% · DO 11% · IT 16%
+Edit rule
+Contracts
+Driver
+Usage report
+FN 55% · SD 25% · ED 10% · IT 10%
+Edit rule

@@ -1,0 +1,133 @@
+BUDGETS OVERALL · FY27 (JUL 2026 TO JUN 2027)
+The portfolio is 5.6% over budget, and the reserve can cover it
+
+Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K, $58K after the two requests waiting for approval.
+
+ƒ Forecast variance to approved budget
+ƒ Budget lines over commitment
+ƒ Reserve coverage
+ƒ Capital plan used
+Reforecast
+Why am I seeing this?
+Overview
+By project
+By category
+Forecast
+Reserve and approvals
+Approved budget
+$2.91M
+4 projects, 3 programs
+Committed
+$2.57M
+88% of approved
+Actual, closed Sep 30
+$1.48M
+51% of approved · +$58K vs phasing plan
+Forecast at completion
+$3.07M
++$163K (5.6%) vs approved
+Not yet committed
+$340K
+$503K more is forecast to be needed
+Management reserve left
+$151K
+$58K if $93K pending is approved
+From approved to forecast
+Each project's forecast change, then the reserve that is left against the envelope.
+ƒ Forecast variance to approved budget
+$2.8M
+$2.9M
+$3.0M
+$3.1M
+$3.2M
+$2.91M
+Approved
++$62K
+PR1
+Codification
++$45K
+PR2
+Taxonomy
++$20K
+PR3
+Portal
++$36K
+PR4
+Contracts
+$3.07M
+Forecast
++$17K
+Reserve
+headroom
+$3.09M
+Envelope
+
+The vertical axis starts at $2.8M so the changes are visible. Every bar is drawn to the same scale.
+
+Approved
+Increase
+Forecast
+Envelope (approved + opening reserve)
+Monthly spend against plan
+Actual is +$58K against the phasing plan at Sep 30. That is timing: Lumen and Northwind were paid earlier than planned.
+Forecast Agent · 84%
+$0
+$500K
+$1.0M
+$1.5M
+$2.0M
+$2.5M
+$3.0M
+$3.5M
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Approved $2.91M
+Plan (phasing of approved budget)
+Actual, closed through Sep 30
+Forecast
+Where the forecast differs from the approved budget
+Every variance has a reason and a remediation. Select Edit to change a line, or Reforecast to ask for reserve.
+Reforecast
+BUDGET LINE	APPROVED	FORECAST	VARIANCE	WHY IT VARIES	WHAT WE ARE DOING	RESERVE	
+PR1-CLD
+Codification Portal hosting (Northwind)
+Codification · Tom Becker
+	$360,000	$408,000	+$48K over	After the Oct 5 latency incident the portal needs the next hosting tier, adding $48K over the year.	Fund from the management reserve (request RL-04, waiting for your approval); right-size after the failover rehearsal.	$48K pending	Edit
+PR2-VEN
+Lumen SOW-4 taxonomy engineering and CO-2
+Taxonomy · Dev Rao
+	$610,000	$655,000	+$45K over	Change order CO-2 ($45K) added taxonomy mapping for three more source systems and was signed on Sep 22 without a budget transfer.	Fund from the reserve (request RL-05) and require a budget check before any change order is signed.	$45K pending	Edit
+PR4-VEN
+Replacement platform implementation (shortlist)
+Contracts · Maya Ortiz
+	$220,000	$256,000	+$36K over	Two shortlisted vendors quote $240K to $272K to migrate; the forecast uses the midpoint.	Negotiate a fixed-price migration near $230K before the selection gate on Oct 30.	None	Edit
+PR1-VEN
+Lumen SOW-3 search indexer
+Codification · Priya Shah
+	$250,000	$262,000	+$12K over	Lumen delivered the indexer 7 work days late and the slip adds $12K of extended engineer time on time and materials.	Tie the remaining SOW-3 payments to accepted milestones and claim a delivery service credit.	$14K drawn	Edit
+PR3-LAB
+Operations engineers and rehearsal weekends
+Portal · Tom Becker
+	$140,000	$150,000	+$10K over	The failover rehearsal needs a second weekend window with overtime.	Trim the second rehearsal to one weekend if the first passes; review Oct 22.	None	Edit
+PR3-CLD
+Standby region in Azure
+Portal · Tom Becker
+	$90,000	$100,000	+$10K over	Standby capacity priced $10K above the first estimate.	$15K already drawn from the reserve (RL-03); the last $5K is unfunded.	$15K drawn	Edit
+PR1-LAB
+Platform, architecture and editor time
+Codification · Priya Shah
+	$400,000	$408,000	+$8K over	Integration testing needs 1.5 more test-lead FTE for two months.	Absorb by moving the content migration rehearsal two weeks; decide at the Oct 15 steering group.	None	Edit
+PR1-HW
+Editor test lab devices
+Codification · Sam Patel
+	$90,000	$84,000	$6K under	Refurbished displays came in $6K under the estimate.	Release the $6K back to the reserve at project close.	None	Edit

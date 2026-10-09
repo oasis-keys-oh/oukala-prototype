@@ -1,0 +1,77 @@
+PLATFORM · CHAT AND AGENTS
+One assistant on every screen, doing the work with your approval
+
+The chat answered 73% of questions without a person and finished 86% of the tasks it started, using 2 steps on average. 41 tools are registered under 10 active guardrails. This session has 0 agent tasks, 0 waiting on a person.
+
+ƒ Chat deflection rate
+ƒ Agent task completion rate
+ƒ Average steps per task
+ƒ Escalation to a person
+Agentic AI governance
+Open the chat
+Dashboard
+Threads
+Activities
+Tool registry
+Guardrails
+Permissions by role
+Audit
+Test console
+Guardrail policies
+Written rules the planner checks before any plan can run. Switch a rule off or change its limit. Locked rules cannot be turned off. Every edit is audited.
+Agentic AI governance
+G1 · High risk actions need a person
+An action marked high risk never runs on its own, even when the thread is set to act within guardrails.
+On
+G2 · Spend limit
+Orders above the limit need the requester's manager. Orders above ten times the limit also need Finance.
+Limit  $
+On
+G3 · Delegation required
+Writing records for another person needs a verified delegation (management chain, executive delegation or a recorded grant).
+On
+G4 · Redact sensitive HR data
+Compensation, performance and the reason for time off are hidden unless the acting role holds the HR data permission.
+On
+G5 · AI token limit policy
+A raise above the multiple needs Finance. Restricted data adds Security. Nothing goes above the hard cap.
+Limit  x
+On
+G6 · Tier 1 changes go to the CAB
+A change on a Tier 1 service is never approved automatically: the change advisory board (CAB) decides.
+On
+G7 · Separation of duties
+A person never approves their own request, even through chat or a delegate.
+On
+G8 · Bulk limit
+One chat action may create or change at most this many records; more goes to a person to review.
+Limit  records
+On
+G9 · Cite or decline
+Answers about policy, SLAs and metrics must cite a source from the platform, or say they cannot.
+On
+G10 · Audit every action
+Every executed step writes an audit entry with the model, confidence and the policy that allowed it. Cannot be turned off.
+On
+Chat and agentic fulfillment
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Agentic AI governance, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Understand the ask
+The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.
+AUTOMATIC
+Check guardrails and permissions
+Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.
+PERSON
+Show the plan
+Steps, parameters, risk, cost and approvers appear as a card. The person can approve, edit or cancel.
+APPROVAL GATE
+Approvals from other people
+Manager, budget owner or change advisory board steps wait as gates. The chat never approves its own plan for a person who is not allowed.
+AI AGENT
+Run step by step
+Each tool runs against the real module, with live status. A failed step stops the plan and offers retry or handoff.
+AUTOMATIC
+Audit and learn
+Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.

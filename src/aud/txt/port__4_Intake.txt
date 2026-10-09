@@ -1,0 +1,125 @@
+DEMAND AND PRIORITIES
+What should we fund
+
+4 of 10 ranked requests are funded: $1.44M of the $2.0M envelope and 43 of 70 person-months. Retire the legacy lease subledger scores 77 and sits just below the line, yet it carries a hard date.
+
+ƒ Demand decision time
+ƒ Priority score
+ƒ Funded demand against capacity
+New request
+Contract analyzer
+PMBOK
+Why am I seeing this?
+Priorities
+Pipeline
+All requests
+Capacity vs demand
+Intake
+How intake works
+4 requests are waiting at the first two gates. Median decision time is 19 days against a target of 14.
+ƒ Demand decision time
+New request
+1
+Submit
+Web form, email to intake, Teams message, a trigger, or a journey pain point
+10
+2
+Screen
+Portfolio Agent checks for duplicates and missing facts
+7
+3
+Score
+Sponsor confirms four 0 to 5 ratings
+6
+4
+Decide
+Review board funds, parks or returns it
+3
+5
+Deliver
+Funded requests become projects automatically
+0
+Ways in
+Every channel lands in the same queue, with the same fields.
+New request form
+Full form with live score preview
+Open the form
+Email to intake
+Forward a note to intake@meridian.example. Claude fills the form and asks the sender to confirm.
+Try an example
+From a contract
+Upload a statement of work and its milestones, invoices and service levels are read for you.
+Open SOW analyzer
+From a pain point
+Journey maps and incident trends can raise a request with the evidence attached.
+See journey maps
+What Portfolio Agent checks
+Portfolio Agent · 84%
+Duplicate wording against every open request
+Objective, service and capability linked; cost and benefit stated
+Hard dates (regulator, contract, event) and who owns them
+Team capacity in the months it would start
+Past decisions on similar requests
+Demand that creates itself
+When a service needs to scale, breaches its service level, fails a release review or sits below its maturity target, the system raises a request for you: scored, linked to the service, and logged. It is all connected.
+ƒ Demand raised by triggers
+TBM Taxonomy and ATUM
+Unit-cost model says scale up
+Search and indexing passes 85% of provisioned capacity in January
+Simulate this trigger
+Unit-cost model says scale down
+Three Azure test environments idle for 60 days
+Simulate this trigger
+Service level breach
+Codification Portal availability under target two months running
+Simulate this trigger
+Release or change finding
+Unsupported TLS listener found in a release review
+Simulate this trigger
+Maturity gap
+Service continuity below its level 3 target
+Simulate this trigger
+
+Other modules call addDemand({title, reason, source, cost, service, kind, pm}). The request appears at the top of Priorities with a Created by trigger badge, already scored, and a person screens it before the board.
+
+Recent requests
+Standards publishing analytics
+Editorial · Submitted · $130K · New capability
+Objective linked
+Meeting room AV refresh
+Facilities · Submitted · $160K · Fix or tech debt
+No objective
+Data warehouse consolidation
+Data office · Submitted · $900K · Enhancement
+Objective linked
+Disaster recovery for the Portal
+IT operations · Review board · $460K · Fix or tech debt
+Objective linked
+AI drafting assistant for standards
+Editorial · Scoring · $350K · New capability
+Objective linked
+Vendor risk scorecards
+Procurement · Scoring · $210K · New capability
+Objective linked
+How demand becomes funded work
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, TBM Taxonomy and ATUM, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Raise
+Anyone fills the form, emails intake, uploads a contract, or a trigger creates the request: unit-cost scale up or down, service level breach, release finding, maturity gap.
+AI AGENT
+Screen
+Portfolio Agent checks duplicates and missing facts, links the service, and suggests the four 0 to 5 ratings.
+PERSON
+Score and confirm
+The sponsor confirms the ratings. Triggered requests wait here for a person.
+AUTOMATIC
+Rank
+Scores, weights, the envelope and capacity set the order and the funding line. Manual moves are logged with a reason.
+APPROVAL GATE
+Review board
+The board funds, parks or returns each request.
+AUTOMATIC
+Turn into a project
+A funded request becomes a project with a plan, budget line, team and place on the master schedule.

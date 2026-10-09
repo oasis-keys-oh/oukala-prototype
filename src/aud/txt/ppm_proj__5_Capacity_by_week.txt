@@ -1,0 +1,401 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+Team capacity by week
+19 of 85 people pass 100% of capacity in at least one of the next 10 weeks, and the worst week is Oct 12 with 18 over. Planned hours come from the schedule, project teams and standing work like tickets and approvals.
+ƒ Resource utilization
+PMBOK
+OCT 5
+OCT 12
+OCT 19
+OCT 26
+NOV 2
+NOV 9
+NOV 16
+NOV 23
+NOV 30
+DEC 7
+AI agents
+15 people
+0
+15
+0
+0
+40%
+2
+43%
+2
+37%
+2
+39%
+2
+39%
+2
+38%
+2
+37%
+2
+37%
+2
+37%
+2
+36%
+2
+Architecture
+3 people
+3
+0
+0
+0
+140%
+1
+151%
+1
+149%
+1
+118%
+1
+138%
+1
+153%
+1
+119%
+1
+126%
+1
+114%
+1
+131%
+1
+Change management
+3 people
+3
+0
+0
+0
+132%
+1
+127%
+1
+105%
+1
+108%
+1
+125%
+1
+130%
+1
+149%
+1
+129%
+1
+100%
+1
+101%
+1
+Data team
+8 people
+8
+0
+0
+0
+54%
+1
+51%
+1
+51%
+1
+53%
+1
+45%
+1
+43%
+1
+45%
+1
+47%
+1
+40%
+1
+42%
+1
+Editors
+6 people
+6
+0
+0
+0
+37%
+1
+38%
+1
+41%
+1
+39%
+1
+45%
+1
+50%
+1
+40%
+1
+44%
+1
+42%
+1
+36%
+1
+Finance
+4 people
+4
+0
+0
+0
+73%
+1
+77%
+1
+72%
+1
+67%
+1
+67%
+1
+71%
+1
+77%
+1
+76%
+1
+59%
+1
+63%
+1
+Leadership
+1 people
+1
+0
+0
+0
+25%
+20%
+26%
+22%
+22%
+21%
+22%
+21%
+23%
+22%
+Lumen (vendor)
+8 people
+0
+0
+7
+1
+132%
+3
+122%
+3
+157%
+3
+124%
+3
+121%
+3
+122%
+3
+121%
+3
+85%
+2
+87%
+2
+82%
+2
+Ops team
+7 people
+5
+0
+1
+1
+207%
+2
+234%
+3
+199%
+2
+188%
+2
+185%
+2
+183%
+2
+174%
+2
+192%
+2
+201%
+2
+204%
+2
+PMO
+5 people
+5
+0
+0
+0
+109%
+1
+100%
+1
+102%
+1
+98%
+1
+93%
+1
+105%
+1
+108%
+1
+120%
+2
+111%
+2
+101%
+1
+Platform team
+16 people
+15
+0
+1
+0
+48%
+2
+46%
+2
+51%
+2
+49%
+2
+48%
+2
+48%
+2
+43%
+2
+44%
+2
+44%
+2
+45%
+2
+Security
+3 people
+3
+0
+0
+0
+68%
+1
+71%
+1
+84%
+1
+67%
+1
+80%
+1
+58%
+1
+69%
+1
+56%
+1
+62%
+1
+55%
+1
+Service desk
+6 people
+5
+0
+0
+1
+75%
+1
+75%
+1
+75%
+1
+70%
+1
+68%
+1
+70%
+1
+67%
+1
+71%
+1
+72%
+1
+62%
+1
+Under 30%: mostly free
+30% to 85%: healthy
+85% to 100%: full
+Over 100%: overallocated
+
+A small raised number is how many people in that team are over 100% that week. AI agents are measured in agent hours, contractors by their hours, and providers against contracted capacity. Teams are aggregated; select one to see people.
+
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

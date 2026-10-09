@@ -1,0 +1,63 @@
+INVOICE APPROVAL
+Pay what was earned
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+The advisor recommends. You decide, or set rules so it decides for clean ones.
+INV-20433
+$62,900
+Lumen Data Partners · due Oct 19
+Recommend hold
+INV-20418
+$184,200
+Northwind Cloud · due Oct 21
+Recommend approve
+INV-20451
+$21,400
+Northwind Cloud · due Oct 28
+Recommend approve
+INV-20440
+$12,480
+Apex Print · due Oct 24
+Recommend reject
+LUMEN DATA PARTNERS · SOW-4 (TAXONOMY DATA ENGINEERING)
+INV-20433 $62,900
+Recommend Hold
+Claude + GPT council · 81%
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+Approve
+Hold
+Reject
+Ledger and performance
+Where it connects
+Auto-approval rules
+
+This invoice is the last link in a chain that starts with a strategic objective. Holding or paying it changes the story above it.
+
+OBJECTIVE
+Modernize standards publishing
+On track
+advances
+PORTFOLIO
+Digital Publishing portfolio
+$2.06M
+contains
+PROJECT
+Taxonomy Data Hub
+On track
+funded by
+BUDGET LINE
+FY26 Vendor services
+$860K
+committed to
+CONTRACT
+Lumen Data Partners SOW-4
+$610K
+billed
+INVOICE
+INV-20433 Lumen
+$63K
+Open in Executive trace
+Run impact analysis

@@ -1,0 +1,255 @@
+SERVICE MANAGEMENT · ON-CALL AND ESCALATION
+Who is on call, and is every required hour covered?
+
+88% of required on-call hours are covered over the next 14 days across 10 rotas (per team, service, asset class and follow the sun). 429 hours have nobody scheduled or available, and 17 shifts collide with approved time off. Coverage, fairness and cost come from the skills and availability database.
+
+ƒ On-call coverage
+ƒ On-call fairness
+ƒ Time to page a human
+ITIL 5
+New rota
+Skills and availability
+Dashboard and rotas
+Coverage map
+Recommendations
+Auto-assignment
+Escalation
+Overrides, swaps and hand-over
+COVERAGE, NEXT 14 DAYS
+88%
+3,139 of 3,568 required hours
+HOURS WITH NOBODY
+429
+271 are time off collisions
+ROTAS WITH GAPS
+9
+of 10 rotas
+TIME OFF COLLISIONS
+17
+6 more pending approval
+FAIRNESS
+84
+lowest rota 59 of 100
+On call right now
+Who is carrying the pager this minute, by rota. Select a rota for its schedule.
+Service desk on-call
+Team
+FIRST RESPONDER
+NM
+Northwind
+Managed service provider
+PRIMARY
+Nia
+SECONDARY
+Tom
+Platform engineering
+Team
+FIRST RESPONDER
+CC
+Contoso
+Managed service provider
+PRIMARY
+Jordan
+SECONDARY
+Sam
+Search and indexing (Lumen)
+Service
+PRIMARY
+Maya
+SECONDARY
+LS
+Lumen
+Managed service provider
+Identity and security
+Service
+PRIMARY
+Sam
+SECONDARY
+Ravi
+Contractor
+Codification Platform
+Service
+PRIMARY
+Jordan
+SECONDARY
+Ravi
+Contractor
+Database class cover
+Asset class
+PRIMARY
+Jordan
+SECONDARY
+Nobody
+Network device cover
+Asset class
+PRIMARY
+Ravi
+Contractor
+SECONDARY
+Nobody
+Global follow-the-sun desk
+Follow the sun
+FIRST RESPONDER
+Triage
+AI agent
+PRIMARY
+Nia
+SECONDARY
+Nobody
+Coverage by rota
+Share of required hours covered over the next 14 days, worst first.
+ƒ On-call coverage
+Network device cover
+74.4%
+Endpoint management
+78.6%
+Search and indexing (Lumen)
+85.7%
+Service desk on-call
+86.1%
+Finance systems
+87.8%
+Global follow-the-sun desk
+88.1%
+Codification Platform
+89.1%
+Identity and security
+89.9%
+Platform engineering
+94.9%
+Database class cover
+100%
+Covered
+Partly covered
+Scheduled person on time off
+Nobody
+Needs attention: gaps
+Longest uncovered or partly covered runs. Plan cover opens the recommendation engine for that rota.
+Time off
+Network device cover: Primary
+Tue Oct 13 10:00 for 4 days
+Plan cover
+No cover
+Search and indexing (Lumen): Secondary
+Sat Oct 10 00:00 for 2 days
+Plan cover
+No cover
+Search and indexing (Lumen): Secondary
+Sat Oct 17 00:00 for 2 days
+Plan cover
+Time off
+Identity and security: Primary
+Mon Oct 12 00:00 for 2 days
+Plan cover
+Time off
+Platform engineering: Secondary
+Mon Oct 12 00:00 for 34 hours
+Plan cover
+Needs attention: time off collisions
+People who are on call while on leave. Cover uses the skills database and availability to rank replacements.
+Time off
+Tom Becker is secondary for Service desk on-call
+Appointment: Wed Oct 7 to Wed Oct 7
+Cover with Hana
+Time off
+Tom Becker is primary for Global follow-the-sun desk
+Appointment: Wed Oct 7 to Wed Oct 7
+Cover with Maribel
+Time off
+Sam Patel is secondary for Platform engineering
+Vacation: Mon Oct 12 to Tue Oct 13
+Cover with Ravi
+Time off
+Sam Patel is primary for Identity and security
+Vacation: Mon Oct 12 to Tue Oct 13
+Cover with Rina
+Time off
+Sam Patel is primary for Finance systems
+Vacation: Mon Oct 12 to Tue Oct 13
+Cover with Jordan
+All rotas
+Per team, per service and per asset class. Select a row for the schedule, layers, participants and hand-over notes.
+New rota
+Scope
+All
+4
+Tier
+All
+2
+Export CSV
+ROTA	SCOPE	TIER	COVERAGE 14 DAYS	PRIMARY NOW	PEOPLE	RESPONSE TARGET
+Service desk on-call
+Service desk
+	Team	Tier 2	86.1% 32 h short	
+Nia
+	4 1 provider, 3 employee	30 min
+Platform engineering
+Ops team
+	Team	Tier 1	94.9% 34 h short	
+Jordan
+	4 1 provider, 2 employee, 1 contractor	15 min
+Search and indexing (Lumen)
+Search and indexing
+	Service	Tier 1	85.7% 96 h short	
+Maya
+	5 2 employee, 2 contractor, 1 provider	15 min
+Identity and security
+Identity (Entra ID)
+	Service	Tier 1	89.9% 48 h short	
+Sam
+	4 3 employee, 1 contractor	15 min
+Codification Platform
+Codification Platform
+	Service	Tier 1	89.1% 52 h short	
+Jordan
+	6 5 employee, 1 contractor	15 min
+Database class cover
+Database
+	Asset class	Tier 2	100% 0 h short	
+Jordan
+	2 2 employee	60 min
+Network device cover
+Network device
+	Asset class	Tier 1	74.4% 86 h short	
+Ravi
+	2 1 employee, 1 contractor	15 min
+Global follow-the-sun desk
+Americas, Europe, Asia Pacific
+	Follow the sun	Tier 1	88.1% 40 h short	
+Nia
+	6 2 contractor, 2 employee, 1 provider, 1 AI	15 min
+Finance systems
+Finance systems
+	Service	Tier 2	87.8% 11 h short	
+Sam
+	2 2 employee	120 min
+Endpoint management
+Endpoint management (Intune)
+	Service	Tier 2	78.6% 30 h short	
+NM
+Northwind
+	2 1 provider, 1 employee	60 min
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+How on-call cover is built and used
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the rota
+A team, service or asset class gets layers: first responder, primary, secondary, escalation. Providers and AI agents can hold layers.
+AUTOMATIC
+Check coverage
+Required hours are compared with people scheduled and available, minus time off.
+AI AGENT
+Recommend and fill
+The recommendation engine sizes shifts from SLA response time, incident volume and skills, and prices the options.
+APPROVAL GATE
+Approve changes
+Leads approve swaps, overrides and time off that collide with a shift.
+AUTOMATIC
+Route and page
+Incidents go to the team, then the on-call person is paged by the escalation policy.
+PERSON
+Hand over
+The outgoing person writes a hand-over note; the next rotation starts.

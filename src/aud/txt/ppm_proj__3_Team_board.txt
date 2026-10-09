@@ -1,0 +1,355 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+Drag anyone onto a project. Employees, AI agents, contractors and managed service providers all work. Drop on the manager slot to make an employee or contractor the project manager, or on the team list to add them. Drag back to the pool to remove. Checks run the moment you drop: a contractor whose contract ends before the work, or an AI agent with no accountable human, is flagged. Alt and the arrow keys also move a selected card.
+People and agents
+Least loaded first
+58
+15
+9
+3
+Event Correlator
+20 of 168 agent hours a week · $0.76 per task
+Resource Agent
+20 of 168 agent hours a week · $0.65 per task
+Room Scheduler
+20 of 168 agent hours a week · $2.26 per task
+Learning Coach
+20 of 168 agent hours a week · $2.53 per task
+Forecast Agent
+20 of 168 agent hours a week · $0.43 per task
+Personal assistant
+20 of 168 agent hours a week · $1.73 per task
+Carla Reyes
+13% loaded · 1 open items
+Noor Haddad
+13% loaded · 1 open items
+Isla Fenn
+13% loaded · 1 open items
+Colette Brandt
+13% loaded · 1 open items
+Hollis Grey
+13% loaded · 1 open items
+Ops Agent
+26 of 168 agent hours a week · $0.79 per task
+Rina Kovacs
+15% loaded · 2 open items
+Wes Hartley
+15% loaded · 2 open items
+Maribel Cruz
+15% loaded · 2 open items
+Gabe Lindholm
+15% loaded · 2 open items
+Femi Adeyemi
+16% loaded · 1 open items
+Invoice Advisor
+28 of 168 agent hours a week · $1.40 per task
+PMO Agent
+28 of 168 agent hours a week · $1.10 per task
+First Officer
+30 of 168 agent hours a week · $0.90 per task
+Greg Nolan
+18% loaded · 3 open items
+Chen Wei
+18% loaded · 2 open items
+Pierce Caldwell
+18% loaded · 3 open items
+Priti Joshi
+18% loaded · 3 open items
+Noelle Park
+18% loaded · 3 open items
+Leah Moss
+20% loaded · 3 open items
+Anil Mehta
+20% loaded · 4 open items
+Paula Grant
+20% loaded · 4 open items
+Marcus Webb
+20% loaded · 4 open items
+Hana Sato
+22% loaded · 3 open items
+Catherine Doyle
+23% loaded · 5 open items
+Aaron Whitfield
+23% loaded · 4 open items
+Ben Ito
+23% loaded · 4 open items
+Tess Whitaker
+23% loaded · 5 open items
+Viktor Sokol
+23% loaded · 5 open items
+Dmitri Volkov
+25% loaded · 5 open items
+Imran Sheikh
+25% loaded · 6 open items
+Anita Cole
+25% loaded · 6 open items
+Luis Ortega
+25% loaded · 6 open items
+Yuki Tanaka
+28% loaded · 6 open items
+
+Showing 40 of 85. Search or filter to find the rest.
+
+PR1
+Codification
+Needs action
+Manager
+Priya Shah
+196% loaded · 46 open items
+1 check
+Team (9)
+Jordan Lee
+388% loaded · 55 open items
+1 check
+Sam Patel
+1128% loaded · 92 open items
+1 check
+Nia Brooks
+399% loaded · 53 open items
+1 check
+Chief Editor
+143% loaded · 28 open items
+1 check
+Marco Ellis
+Ends Mar 31, 2027 · $165 an hour · 264% loaded
+1 check
+Elise Park
+Ends Dec 18, 2026 · $110 an hour · 308% loaded
+1 check
+LS
+Lumen Search Services
+Tier 2 search support · 60% of contracted capacity
+Test Agent
+228 of 168 agent hours a week · $0.50 per task
+Knowledge Curator
+220 of 168 agent hours a week · $0.60 per task
+Detail
+Add by form
+PR2
+Taxonomy
+On track
+Manager
+Dev Rao
+230% loaded · 47 open items
+1 check
+Team (5)
+Hana Koval
+Ends Mar 31, 2027 · $150 an hour · 372% loaded
+1 check
+Jordan Lee
+388% loaded · 55 open items
+LS
+Lumen Search Services
+Tier 2 search support · 60% of contracted capacity
+Invoice Advisor
+28 of 168 agent hours a week · $1.40 per task
+PMO Agent
+28 of 168 agent hours a week · $1.10 per task
+Detail
+Add by form
+PR3
+Portal
+On track
+Manager
+Tom Becker
+324% loaded · 70 open items
+1 check
+Team (4)
+Sam Patel
+1128% loaded · 92 open items
+Ravi Menon
+Ends Jan 29, 2027 · $140 an hour · 617% loaded
+1 check
+CC
+Contoso Cloud Operations
+Tier 1 platform monitoring 24x7 · 59% of contracted capacity
+Triage Agent
+57 of 168 agent hours a week · $0.30 per task
+1 check
+Detail
+Add by form
+PR4
+Contracts
+On track
+Manager
+Maya Ortiz
+421% loaded · 85 open items
+1 check
+Team (6)
+Avery Chen
+208% loaded · 38 open items
+1 check
+Jordan Lee
+388% loaded · 55 open items
+Elise Park
+Ends Dec 18, 2026 · $110 an hour · 308% loaded
+1 check
+Contract Analyst Agent
+134 of 168 agent hours a week · $2.60 per task
+NM
+Northwind Managed Services
+Tier 1 desk 7am to 7pm ET · 55% of contracted capacity
+Change Risk Agent
+60 of 168 agent hours a week · $0.70 per task
+1 check
+Detail
+Add by form
+Task assignments
+Tasks on the master schedule. Select a row to assign any kind of worker.
+Project
+All
+4
+Kind
+All
+4
+ID	TASK	PROJECT	ASSIGNED	KIND	DONE	FINISH
+p1_11	Charter and business case	PR1	
+Priya Shah
+	
+Employee	100%	Jul 3, 2026
+p1_12	Steering committee, RACI and RAID log setup	PR1	
+Maya Ortiz
+	
+Employee	100%	Jul 9, 2026
+p1_13	Lumen SOW-4 statement of work and onboarding	PR1	
+Maya Ortiz
+	
+Employee	100%	Jul 10, 2026
+p1_1	Requirements and design	PR1	
+Priya Shah
+	
+Employee	100%	Jul 31, 2026
+p1_15	Editor workshops: authoring and review	PR1	
+Chief Editor
+	
+Employee	100%	Jul 13, 2026
+p1_16	Requirements catalog and traceability matrix	PR1	
+Priya Shah
+	
+Employee	100%	Jul 23, 2026
+p1_17	Service levels and non-functional requirements	PR1	
+Jordan Lee
+	
+Employee	100%	Jul 30, 2026
+p1_18	Solution architecture decision records	PR1	
+Jordan Lee
+	
+Employee	100%	Jul 30, 2026
+p1_19	Entra ID access model and security review	PR1	
+Rina Okafor
+	
+Employee	100%	Aug 6, 2026
+p1_2	Core platform build	PR1	
+Priya Shah
+	
+Employee	100%	Oct 2, 2026
+p1_21	Azure environments and CI/CD pipeline	PR1	
+Sam Patel
+	
+Employee	100%	Aug 14, 2026
+p1_22	Authoring workflow configuration	PR1	
+Priya Shah
+	
+Employee	100%	Sep 4, 2026
+p1_48	Reviewer routing rules	PR1	
+Priya Shah
+	
+Employee	100%	Sep 15, 2026
+p1_49	Redline and comparison view	PR1	
+Elise Park
+	
+Contractor	100%	Sep 15, 2026
+p1_23	Version and citation engine	PR1	
+Sam Patel
+	
+Employee	100%	Sep 11, 2026
+p1_50	Citation link checker	PR1	
+Test Agent
+	
+AI agent	100%	Sep 18, 2026
+p1_24	Role based access with Entra ID groups	PR1	
+Rina Okafor
+	
+Employee	100%	Aug 26, 2026
+p1_26	Relevance corpus preparation	PR1	
+Chief Editor
+	
+Employee	100%	Aug 21, 2026
+p1_3	Search indexer (Lumen)	PR1	
+LS
+Lumen
+	
+Managed service provider	70%	Oct 22, 2026
+p1_27	Index performance harness	PR1	
+Elise Park
+	
+Contractor	100%	Sep 4, 2026
+p1_28	Relevance tuning pass 1	PR1	
+Marco Ellis
+	
+Contractor	100%	Sep 18, 2026
+p1_46	Query log analysis	PR1	
+Knowledge Curator
+	
+AI agent	100%	Sep 25, 2026
+p1_47	Editor relevance panel review	PR1	
+Chief Editor
+	
+Employee	100%	Oct 1, 2026
+p1_29	Relevance tuning pass 2	PR1	
+Marco Ellis
+	
+Contractor	85%	Oct 6, 2026
+
+122 of 122 rows
+Scroll for more · rows are drawn as you scroll
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

@@ -1,0 +1,131 @@
+PROMPT LIBRARY · GOVERNED PROMPTS
+Every prompt has an owner, a version and a test
+
+10 prompts are governed here, 7 in production and 1 waiting on approval. The cost-cutting rewrite of the knowledge answer prompt (v4) fails its regression suite, so it cannot reach production.
+
+SELECTED PROMPT
+P101 · KB answer with citations
+P102 · Incident to article drafter
+P103 · Meeting decision extractor
+P104 · Invoice match explainer
+P105 · Service desk triage classifier
+P106 · Change risk summarizer
+P107 · Executive brief writer
+P108 · Query rewriter
+P109 · Second-model judge rubric
+P110 · Legacy FAQ answerer
+ƒ Answer groundedness
+ƒ Judge disagreement rate
+Why am I seeing this?
+In production
+7
+prompts live now
+Awaiting approval
+1
+cannot ship until approved
+High risk
+3
+need Security and Legal
+Average pass rate
+92%
+production versions
+Library
+Versions and diff
+Editor and test
+Approval
+A/B compare
+KB answer with citations: versions
+Every version is immutable. Only one is in production.
+v4
+candidate
+Oct 2, 2026 · Jordan Lee
+Shorter prompt to cut cost: removes the refusal and group rules
+pass 67% · grounded 78% · safe 83%
+v3
+production
+Aug 26, 2026 · Maya Ortiz
+Added viewer groups and staleness warning
+pass 92% · grounded 95% · safe 100%
+v2
+retired
+Jun 18, 2026 · Maya Ortiz
+Added refusal rule
+pass 84% · grounded 91% · safe 96%
+v1
+retired
+May 4, 2026 · Sam Patel
+First version
+pass 71% · grounded 84% · safe 92%
+Diff
++3 words added, −52 removed from v3 to v4.
+FROM
+v1 · May 4, 2026
+v2 · Jun 18, 2026
+v3 · Aug 26, 2026
+v4 · Oct 2, 2026
+TO
+v1 · May 4, 2026
+v2 · Jun 18, 2026
+v3 · Aug 26, 2026
+v4 · Oct 2, 2026
+You answer questions for Meridian Standards Foundation staff using only the context chunks below.
+Rules:
+1. Use only facts that appear in the chunks. Never use outside knowledge.
+2. Cite every sentence with the chunk number in square brackets, for example [1].
+3. If the chunks do not contain the answer, reply exactly: "I could not find this in the knowledgeBe base."concise and stop.
+4. The reader belongs to these groups: {{viewer_groups}}. Never mention content from other groups.
+5. If a cited article was last reviewed more than 12 months ago, say so in one sentence.helpful.
+Question: {{question}}
+Context chunks:
+{{chunks}}
+Prompts, agent skills and guardrails
+Every prompt shows its production version, the guardrails it must keep, the agent skills that use it and its latest evaluation score. A prompt change re-runs the evaluation before it can reach a skill.
+ƒ Answer groundedness
+NIST CSF 2.0
+PROMPT	STATUS AND RISK	VERSION	GUARDRAILS	AGENT SKILLS	EVALUATION
+KB answer with citations
+P101 · Claude Sonnet · Maya Ortiz
+	Production High risk	v3 v4 candidate	Cites only retrieved chunks Refuses when evidence is missing Respects the viewer's audience	SK-101 SK-103 SK-104	94.5 pass, grounded, safe
+Incident to article drafter
+P102 · Claude Sonnet · Nia Brooks
+	Production Medium risk	v2	Draft only, never publishes Quotes the source line for each section	Used by Knowledge Curator, Article editor	92.4 pass, grounded, safe
+Meeting decision extractor
+P103 · Claude Sonnet · Priya Shah
+	Production Medium risk	v3	Extracts, never decides Flags low confidence	SK-101 SK-103 SK-104	93.7 pass, grounded, safe
+Invoice match explainer
+P104 · GPT (council) · Avery Chen
+	In approval High risk	v2 v3 candidate	No personal data in output Plain language only	Used by Invoice Advisor	93.2 pass, grounded, safe
+Service desk triage classifier
+P105 · Claude Haiku · Tom Becker
+	Production Medium risk	v2 v3 candidate	Suggests, a person confirms	Used by Ops Agent, Service desk	93.7 pass, grounded, safe
+Change risk summarizer
+P106 · Claude Sonnet · Nia Brooks
+	Draft Medium risk	none v1 candidate	Summary only, no approvals	SK-101 SK-103 SK-104	not evaluated
+Executive brief writer
+P107 · Claude Sonnet · Maya Ortiz
+	Production Low risk	v2	Human review before use Logged to the AI audit trail	Used by Personal assistant	95.6 pass, grounded, safe
+Query rewriter
+P108 · Claude Haiku · Sam Patel
+	Production Low risk	v1	Human review before use Logged to the AI audit trail	Used by Ask the knowledge base	96.7 pass, grounded, safe
+Second-model judge rubric
+P109 · GPT (council) · Jordan Lee
+	Production High risk	v2	Human review before use Logged to the AI audit trail	Used by Test Agent, AI test management	93.2 pass, grounded, safe
+Legacy FAQ answerer
+P110 · Claude Haiku · Sam Patel
+	Retired Low risk	none	Human review before use Logged to the AI audit trail	Used by	not evaluated
+How a prompt reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to NIST CSF 2.0, ISO/IEC 27001.
+Add a step
+Open in Workflow designer
+PERSON
+Write a version
+Owner edits the prompt and its variables.
+AI AGENT
+Evaluate
+Regression suite and judge model.
+APPROVAL GATE
+Gate
+A candidate must not regress. High risk needs Security and Legal.
+AUTOMATIC
+Promote
+Production version changes, skills pick it up.

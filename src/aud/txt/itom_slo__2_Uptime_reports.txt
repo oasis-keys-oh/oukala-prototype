@@ -1,0 +1,106 @@
+OBSERVABILITY AND SLOS
+Promise a level of service, and watch the budget
+
+4 of 8 SLOs are inside their error budget. The portal availability budget was spent by the incident that began at 09:08 today: its SLI is 99.41% against a 99.9% promise. The platform covers 68% of what a mid-size business buys separate observability tools for.
+
+ƒ SLOs inside error budget
+ƒ Observability coverage
+New SLO
+New synthetic check
+SRE: SLOs and error budgets
+OpenTelemetry
+SLOs and error budgets
+Synthetic checks
+Uptime reports
+Coverage: what this replaces
+SERVICES BELOW TARGET
+5 of 16
+October to date
+AVERAGE UPTIME, OCTOBER
+99.64%
+all services
+TIER 1 UPTIME
+99.68%
+target 99.9%
+Uptime by service and month
+Green meets the service target; red misses it. Select a service to open its health. Export the table for the monthly service review.
+Tier
+All
+2
+Export CSV
+SERVICE	TIER	TARGET	MAY	JUN	JUL	AUG	SEP	OCT	DOWNTIME, OCT
+Codification Platform	Tier 1	99.9%	100.00%	99.92%	99.89%	99.95%	99.97%	99.62%	36 min
+Codification Portal	Tier 1	99.9%	99.92%	99.85%	99.92%	99.99%	99.85%	99.58%	40 min
+Search and indexing	Tier 1	99.5%	99.19%	99.44%	99.60%	99.42%	99.55%	99.10%	1 h 25 min
+Contract Repository	Tier 2	99.5%	99.68%	99.94%	99.37%	99.27%	99.20%	99.40%	57 min
+Lease subledger (ERP)	Tier 2	99.5%	99.59%	99.30%	99.21%	99.60%	99.59%	99.70%	28 min
+Finance systems	Tier 2	99.5%	99.88%	98.95%	99.87%	99.79%	99.80%	99.80%	19 min
+Identity (Entra ID)	Tier 1	99.9%	99.98%	99.93%	99.85%	99.97%	100.00%	99.95%	5 min
+Email and collaboration (M365)	Tier 1	99.9%	99.97%	99.90%	99.84%	99.84%	99.94%	99.93%	7 min
+Data platform	Tier 2	99.5%	99.69%	99.99%	99.12%	99.39%	99.31%	99.30%	1 h 6 min
+Network and VPN	Tier 1	99.9%	99.99%	99.96%	99.84%	100.00%	100.00%	99.90%	9 min
+Endpoint management (Intune)	Tier 2	99.5%	99.54%	100.00%	99.07%	99.56%	99.98%	99.60%	38 min
+Integration hub	Tier 2	99.5%	98.98%	99.06%	99.05%	99.43%	99.50%	99.50%	47 min
+Service desk	Tier 2	99.5%	99.12%	99.72%	99.83%	99.96%	99.20%	99.70%	28 min
+Portfolio and project intake	Tier 2	99.5%	99.63%	98.95%	99.47%	99.08%	99.86%	99.70%	28 min
+AI platform and agents	Tier 2	99.5%	99.65%	99.45%	99.79%	99.68%	99.95%	99.70%	28 min
+Employee lifecycle	Tier 2	99.5%	99.53%	99.23%	99.06%	99.89%	99.25%	99.70%	28 min
+16 of 16 rows
+Scroll for more · rows are drawn as you scroll
+Status page preview
+What customers and staff would see on the public status page. Components follow the live host status, and a Sev 1 or 2 incident adds a banner.
+IncidentWe are investigating slow page loads for editors and readers. Updates every 30 minutes.
+Codification Platform
+Major outage
+Codification Portal
+Major outage
+Search and indexing
+Major outage
+Contract Repository
+Operational
+Lease subledger (ERP)
+Operational
+Finance systems
+Operational
+Identity (Entra ID)
+Degraded performance
+Email and collaboration (M365)
+Operational
+Data platform
+Degraded performance
+Network and VPN
+Operational
+Endpoint management (Intune)
+Degraded performance
+Integration hub
+Operational
+Service desk
+Operational
+Portfolio and project intake
+Operational
+AI platform and agents
+Operational
+Employee lifecycle
+Operational
+How an SLO is run
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the SLI
+What counts as a good 5-minute period.
+APPROVAL GATE
+Set the objective
+For example 99.9% over 30 days.
+AUTOMATIC
+Measure
+Good and bad periods counted from the metric model.
+AUTOMATIC
+Burn rate alerts
+Multi-window rules page or ticket.
+APPROVAL GATE
+Spend the budget wisely
+When it is spent, risky changes need approval.
+PERSON
+Review
+SLOs are reviewed quarterly.

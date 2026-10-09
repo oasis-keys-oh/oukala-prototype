@@ -1,0 +1,137 @@
+STANDARD CHANGE CATALOG
+Pre-approved changes that are also the runbooks
+
+15 standard changes carry their own SOP, validation and rollback. 12 are run or proposed by AI agents, and every run becomes an auto‑approved change record, so the Change process sees what operations did.
+
+ƒ Automation rate
+New standard change
+Automation rules
+Changes
+ITIL 5
+Catalog
+Runbook editor
+Pre-approvals
+RUNBOOKS IN THE LIBRARY
+15
+every one is a standard change too
+STEPS BY AI AGENTS
+4
+diagnose or propose
+APPROVAL GATES
+10
+a person decides
+UNSAVED EDITS
+0
+publish to create a new version
+SC-01Restart the Lumen search indexer serviceAgentic with approval · v4
+SC-02Scale the SQL managed instance up one tierAgentic with approval · v3
+SC-03Recycle the portal application pool and clear cacheAutonomous · v5
+SC-04Extend a data disk by 25%Autonomous · v3
+SC-05Run the service health check bundleAutonomous · v6
+SC-06Fail over the VPN gateway pairAgentic with approval · v2
+SC-07Renew a managed TLS certificateAutonomous · v2
+SC-08Rotate a service secret in Key VaultScripted · v3
+SC-09Add one web node within the approved tierAgentic with approval · v3
+SC-10Fail over the portal to the paired regionAgentic with approval · v8
+SC-11Quarantine a non-compliant deviceAgentic with approval · v2
+SC-12Monthly operating system patchingScripted · v7
+SC-13Throttle the indexer and scale SQLAgentic with approval · v2
+SC-14Retire stale configuration itemsScripted · v1
+SC-15Restart the ERP integration serviceAgentic with approval · v3
+Runbook editor
+Edit steps, parameters, validation and rollback. A dry run executes the playbook against the selected CI without changing anything. Publishing makes a new version with a change note.
+SC-01 · VERSION V4
+Restart the Lumen search indexer service
+Low risk
+Level 3 Agentic with approval
+Approved
+Run
+Dry run
+Edit details
+Add step
+Publish new version
+Discard changes
+Steps (drag to reorder)
+1
+Read queue depth, CPU and the last 20 indexer log lines
+Automatic
+Edit
+Remove
+2
+Agent checks the log for the crawler checkpoint error from PRB0007 and rates restart safety
+AI agent
+Edit
+Remove
+3
+Approver confirms the restart (Tier 1 service) approver Marco Ellis
+Approval
+Edit
+Remove
+4
+Drain in-flight batches for 5 minutes
+Automatic
+Edit
+Remove
+5
+Restart the indexer service on the host
+Automatic
+Edit
+Remove
+6
+Wait for the service to report healthy
+Automatic
+Edit
+Remove
+7
+Run a test search for a recently revised paragraph
+Person
+Edit
+Remove
+Automatic
+AI agent
+Approval gate
+Person
+Parameters
+NAME	DEFAULT
+host	lumen-indexer-01
+drainMinutes	5
+Add parameter
+Validation after the change
+Queue depth falling for 5 minutes
+Search for revised text returns the new paragraph
+Rollback
+Restore the previous indexer batch size
+Fail over search to lumen-indexer-02
+Versions
+VERSION	DATE	BY	CHANGE
+v4	2026-09-18	
+Marco Ellis
+	Added the log check for PRB0007
+v3	2026-06-30	
+Marco Ellis
+	Drain time raised to 5 minutes
+v2	2026-04-02	
+Nia Brooks
+	Pre-approved by CAB
+Life of a standard change
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+An owner writes the SOP, validation and rollback.
+APPROVAL GATE
+CAB review
+The Change Advisory Board pre-approves the scope.
+AI AGENT
+Use
+People, scripts or agents run it, each run a change record.
+AUTOMATIC
+Measure
+Success rate and runs build evidence.
+APPROVAL GATE
+Promote
+Higher automation level once evidence is strong.
+PERSON
+Review yearly
+Pre-approval expires unless renewed.

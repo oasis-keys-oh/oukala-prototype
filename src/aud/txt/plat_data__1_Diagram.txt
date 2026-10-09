@@ -1,0 +1,1357 @@
+MASTER DATA MODEL
+Every table, every reference, one picture
+
+94 tables and 1,445 fields, read live from what each module registers. Reference integrity is 85%.
+
+ƒ Data model reference integrity
+DAMA-DMBOK
+CSDM 5
+Overview
+Diagram
+Model checks
+Domain
+All
+ITSM
+PPM
+CMDB
+Catalog
+SLA
+Contract
+Finance
+People
+Knowledge
+Observability and DevOps
+References
+Show all
+Selected table only
+Hide
+Export JSON
+Export CSV
+Zoom in
+Zoom out
+Fit to screen
+100%
+Zoom 21%. Drag to pan. Hold Ctrl and scroll to zoom.
+ITSM
+PPM
+CMDB
+Catalog
+SLA
+Contract
+Finance
+People
+Observability and DevOps
+Incident
+20
+Number
+string
+Short description
+string
+→ Service
+ref
+→ Configuration item
+ref
+→ Assignment group
+ref
+→ Caller
+ref
+Change request
+13
+Number
+string
+Type
+enum
+Risk
+enum
+→ Service
+ref
+→ Configuration item
+ref
+→ Assignment group
+ref
+Request item
+24
+→ Catalog item
+ref
+→ Service offering
+ref
+→ Requested for
+ref
+→ Requested by
+ref
+→ Service
+ref
+→ Assignment group
+ref
+Project
+12
+Project ID
+string
+Name
+string
+→ Project manager
+ref
+Status
+enum
+Start
+date
+Finish
+date
+Project task (WBS line)
+12
+WBS code
+string
+Task name
+string
+Planned start
+date
+Planned finish
+date
+Actual start
+date
+→ Owner
+ref
+Configuration item
+18
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service supported
+ref
+Business service
+7
+Name
+string
+→ Service owner
+ref
+Tier
+enum
+Availability, last 30…
+percent
+Monthly cost
+currency
+Active users
+number
+Invoice
+8
+Invoice number
+string
+→ Vendor
+ref
+Amount
+currency
+Status
+enum
+Due date
+date
+→ Purchase order
+ref
+Person, agent or provider
+8
+Name
+string
+Type
+enum
+Role
+string
+→ Team
+ref
+→ Manager
+ref
+Contracted hours
+number
+Contract line (clause, c…
+21
+→ Owner
+ref
+→ Playbook clause
+ref
+→ Project WBS line
+ref
+→ SLA
+ref
+→ Invoice schedule line
+ref
+→ RAID item
+ref
+WBS line
+22
+WBS code
+text
+Task name
+text
+Project
+text
+Outline level
+number
+Duration (work days)
+number
+Percent complete
+number
+Hardware
+19
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Computer
+27
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Server
+31
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Linux server
+33
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Windows server
+34
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Virtualization host
+35
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Endpoint device
+30
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Network device
+23
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Firewall
+25
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Switch
+25
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Router
+24
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Load balancer
+25
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Storage
+24
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Asset tag
+ref
+Software
+15
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Application
+20
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Business application
+24
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Product owner
+ref
+Database
+22
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Replica of
+ref
+SQL Server instance
+25
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Replica of
+ref
+Middleware
+17
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Web server
+18
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Message broker
+19
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+API gateway
+19
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Cloud
+20
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Virtual machine
+26
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Container
+24
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Cloud function
+23
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Cloud resource
+24
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Cloud subscription
+23
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Account owner
+ref
+Service
+18
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service owner
+ref
+Business service
+21
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service owner
+ref
+Technology management se…
+19
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service owner
+ref
+Application service
+20
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service owner
+ref
+Service offering
+30
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Service owner
+ref
+Dynamic CI group
+17
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Business capability
+18
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Parent capability
+ref
+Information object
+18
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Data steward
+ref
+Site
+18
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Datacenter
+20
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Rack
+23
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+Vendor (related record)
+17
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+→ Primary contact
+ref
+Contract (related record)
+19
+Name
+string
+→ Owned by
+ref
+→ Support group
+ref
+→ Managed by group
+ref
+→ Location
+ref
+→ Vendor
+ref
+CI relationship
+4
+→ Depends on (child)
+ref
+→ Used by (parent)
+ref
+Relationship type
+enum
+Source
+enum
+Problem record
+10
+Number
+text
+Title
+text
+→ Service
+ref
+State
+enum
+Priority
+enum
+→ Problem owner
+ref
+Change approval policy
+12
+Policy
+text
+Name
+text
+Change type
+enum
+→ Service
+ref
+CI class
+enum
+Risk score at least
+number
+Incident priority policy
+8
+Impact score (0 to 10…
+number
+Impact band
+enum
+Urgency requested
+enum
+Urgency applied
+enum
+Caller role
+enum
+VIP level
+enum
+Maturity capability
+8
+Capability
+text
+Model
+text
+Current level
+number
+Year 1 target
+number
+Year 3 target
+number
+Year 5 target
+number
+Alert (deduplicated even…
+13
+→ Configuration item
+ref
+→ Service
+ref
+→ Alert rule
+ref
+→ Correlation group
+ref
+→ Incident
+ref
+→ Acknowledged by
+ref
+Alert rule (threshold)
+10
+Rule
+string
+Metric
+enum
+CI class
+enum
+Type
+enum
+→ Linked standard change
+ref
+→ Owning team
+ref
+Correlation group (incid…
+6
+Group
+string
+→ Root cause CI
+ref
+Correlation reason
+string
+Alerts
+number
+Severity
+enum
+→ Incident
+ref
+Maintenance window
+5
+Name
+string
+→ Configuration items
+ref
+Schedule
+string
+Mode
+enum
+→ Change
+ref
+False positive feedback
+4
+→ Alert
+ref
+Reason
+enum
+→ Marked by
+ref
+Marked at
+datetime
+Alert-to-action rule
+9
+Rule
+string
+Severity at least
+enum
+Workflow
+enum
+→ Standard change
+ref
+→ Executor
+ref
+→ Approver
+ref
+Standard change template…
+11
+Standard change
+string
+Name
+string
+Risk
+enum
+Automation level
+enum
+→ Owner
+ref
+→ Service
+ref
+Automation execution
+10
+→ Standard change
+ref
+→ Automation rule
+ref
+→ Alert
+ref
+→ Configuration item
+ref
+→ Change record
+ref
+→ Executor
+ref
+Service level objective
+7
+SLO
+string
+→ Service
+ref
+Objective
+percent
+Window (days)
+number
+Indicator definition
+string
+→ Owner
+ref
+Synthetic check
+7
+Check
+string
+Type
+enum
+Target
+string
+→ Configuration item
+ref
+→ Service
+ref
+Interval (min)
+number
+Metric series
+5
+→ Configuration item
+ref
+Metric
+enum
+Timestamp
+datetime
+Value
+number
+Resolution
+enum
+Dashboard
+3
+Name
+string
+→ Owner
+ref
+Tiles
+number
+Log pattern
+4
+Pattern template
+string
+Level
+enum
+→ Service
+ref
+Lines in 24 hours
+number
+On-call shift
+7
+→ Rota
+ref
+Tier
+enum
+→ Person, agent or prov…
+ref
+Starts
+datetime
+Ends
+datetime
+Participant type
+enum
+Skill record
+6
+→ Person
+ref
+→ Skill
+ref
+Level (1 to 5)
+number
+Status
+enum
+→ Verified by
+ref
+Certificate expires
+date
+Time off
+5
+→ Person
+ref
+Type
+enum
+From
+date
+To
+date
+Status
+enum
+Demand request
+10
+Request id
+string
+Title
+string
+Kind of work
+enum
+→ Service
+ref
+→ Strategic objective
+ref
+Maturity capability
+enum
+RAID item
+11
+Id
+string
+Type
+enum
+→ Project
+ref
+→ Owner
+ref
+Owner kind
+enum
+→ Accountable human
+ref
+Skill record
+4
+→ Person, agent or prov…
+ref
+Skill
+string
+Level (1 to 5)
+number
+Verified
+boolean
+Release
+13
+Number
+string
+Name
+string
+Version
+string
+→ Service
+ref
+→ Release train
+ref
+→ Release manager
+ref
+Story, defect or enabler
+11
+Number
+string
+→ Sprint
+ref
+→ Team
+ref
+→ Assigned to
+ref
+→ Feature
+ref
+→ Release
+ref
+Pull request
+8
+Number
+string
+Title
+string
+Repository
+string
+→ Author
+ref
+Status
+enum
+→ Story
+ref
+Feature or enabler
+10
+Number
+string
+→ Epic
+ref
+→ Program increment
+ref
+→ Service
+ref
+→ Project
+ref
+→ Release
+ref
+Release readiness task
+8
+Number
+string
+Task
+string
+Phase
+enum
+Gate type
+enum
+→ Owner
+ref
+→ Release
+ref
+Catalog task (fulfillmen…
+9
+Number
+string
+→ Request item
+ref
+State
+enum
+Assignment group
+enum
+→ Service
+ref
+Priority
+enum
+Vendor ticket (underpinn…
+9
+Vendor reference
+string
+Vendor or provider
+enum
+Severity
+enum
+Type
+enum
+State
+enum
+→ Service
+ref
+Agreement definition (SL…
+18
+Number
+string
+Name
+string
+Type
+enum
+→ Applies to table
+ref
+→ Schedule
+ref
+→ Owner
+ref
+Agreement clock (one per…
+11
+→ Definition
+ref
+→ Task
+ref
+Stage
+enum
+Start time
+datetime
+End time
+datetime
+Planned end time
+datetime
+Experience response
+7
+→ Definition
+ref
+→ Task
+ref
+Dimension
+enum
+Source
+enum
+Score (1 to 5)
+number
+Comment
+string
+Contract or statement of…
+12
+Contract ID
+string
+→ Vendor
+ref
+Type
+enum
+Status
+enum
+→ Contract owner
+ref
+→ Linked project
+ref
+Contract obligation
+7
+Obligation ID
+string
+→ Contract
+ref
+Party
+enum
+→ Owner
+ref
+Due
+date
+Status
+enum
+Contract change request
+7
+Change ID
+string
+→ Contract
+ref
+Type
+enum
+State
+enum
+Price impact
+currency
+→ Required approver
+ref
+Catalog item
+10
+Item id
+string
+Name
+string
+→ Service
+ref
+→ Service offering
+ref
+Category
+enum
+→ Fulfillment workflow
+ref
+Fulfillment step
+8
+Step
+string
+Type
+enum
+→ Assignment group
+ref
+→ Assigned to
+ref
+Operational target (h…
+number
+Elapsed (hours)
+number
+Hardware asset
+9
+Asset tag
+string
+Model
+string
+Class
+enum
+Lifecycle state
+enum
+→ Assigned to
+ref
+→ Source request
+ref
+Scaling step
+8
+Step
+string
+→ Service
+ref
+Capacity per step
+number
+Steps in place
+number
+Cost per step a year
+currency
+Target utilization
+percent
+Cost allocation
+4
+→ From (pool, tower, se…
+ref
+→ To (tower, service, o…
+ref
+Allocation driver
+string
+Amount a month
+currency
+ITSM
+PPM
+CMDB
+Catalog
+SLA
+Contract
+Finance
+People
+Observability and DevOps
+Reference field (arrow)
+Selected table's references
+
+At low zoom only table names show. Zoom in to read fields. 94 of 94 tables shown.
+
+How the master data model stays current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DAMA-DMBOK, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+A module registers its tables
+Each module declares fields, types and references when it loads.
+AUTOMATIC
+The model reads the registry
+The diagram, list and checks are built at render time, so there is nothing to keep in sync.
+PERSON
+The data architect reviews gaps
+Unresolved references and isolated tables are listed under model checks.
+APPROVAL GATE
+Owners fix their domain
+Each domain has a named data owner.

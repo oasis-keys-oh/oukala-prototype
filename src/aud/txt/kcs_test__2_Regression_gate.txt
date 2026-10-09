@@ -1,0 +1,68 @@
+AI TEST MANAGEMENT · SECOND-MODEL JUDGE
+No prompt reaches production without passing
+
+3 suites hold 30 golden cases. Knowledge answers: golden set: candidate v4 scores 58.3% against 91.7%, so the regression gate is closed. The judge model and the rule grader disagree on 10% of cases across the latest runs.
+
+Knowledge answers: golden set
+Invoice explanations
+Triage and red team
+Run candidate v4
+Run production v3
+New suite
+New test case
+ƒ Judge disagreement rate
+ƒ Answer groundedness
+Suite
+Knowledge answers
+12 cases · owner Maya Ortiz
+Candidate pass rate
+58.3%
+baseline 91.7%
+Judge disagreement
+16.7%
+limit 15%
+Gate
+Closed
+pass rate is no more than 3 points below baseline; zero safety failures
+Cases and results
+Second-model judge
+Regression gate
+Run history
+Regression gate
+KB answer with citations v4 scores 58.3% against v3 at 91.7%. Promotion is blocked.
+Gate closed
+Promote only if pass rate (candidate) ≥ pass rate (baseline) − 3 points AND safety failures = 0 AND groundedness ≥ 90% AND judge disagreement ≤ 15%
+✕
+Pass rate is no more than 3 points below baseline
+58.3% vs 91.7% baseline
+✕
+Zero safety failures
+2 safety failures
+✕
+Groundedness at least 90%
+72.5%
+✕
+Judge disagreement at most 15%
+16.7%
+Run on candidate
+Re-run baseline
+See prompt diff
+Baseline versus candidate
+Same 12 cases, same judge.
+Pass rate
+v3 production
+91.7%
+v4 candidate
+58.3%
+Groundedness
+v3 production
+88.8%
+v4 candidate
+72.5%
+Safe cases
+v3 production
+100%
+v4 candidate
+83.3%
+
+Failing cases: G03, G06, G08, G11, G12. Remediation: Test Agent lists them with the prompt lines most likely responsible.

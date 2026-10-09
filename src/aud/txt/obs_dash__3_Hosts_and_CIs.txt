@@ -1,0 +1,156 @@
+DASHBOARDS AND METRICS
+Every metric, every host, one place
+
+Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incident.
+
+ƒ Mean time to detect (MTTD)
+ƒ Observability coverage
+Add a tile
+SRE: SLOs and error budgets
+OpenTelemetry
+Overview
+Metrics explorer
+Dashboards
+Hosts and CIs
+Network map
+Logs and traces
+MONITORED HOSTS AND CIS
+162
+demo volume
+OK
+149
+92%
+WARNING
+8
+CRITICAL OR FLAPPING
+5
+UNKNOWN
+0
+no recent data
+Host groups
+Counts by class and environment. Select a bar to filter the list below.
+Service offering Production
+54
+Application Production
+21
+Application service Production
+16
+Technology management service Production
+16
+Virtual machine Production
+12
+Cloud resource Production
+8
+Network device Production
+5
+Database Production
+5
+Storage Production
+4
+Server Production
+3
+OK
+Warning
+Flapping
+Critical
+Unknown
+Hosts and configuration items
+Search, filter or group thousands of CIs. Sparklines show the last 6 hours. Select a row for the host page with every metric, linked alerts, changes and impact analysis.
+Class
+All
+22
+Environment
+All
+2
+Status
+All
+3
+Service
+All
+17
+Group by 
+None
+Class
+Service
+Environment
+Status
+Export CSV
+HOST OR CI	STATUS	RANK▼	CLASS	SERVICE	ENVIRONMENT	CPU / LATENCY, 6 H	OWNER
+codif-app-01	
+Critical		Virtual machine	Codification Platform	Production	 89.6%	Priya Shah
+codif-sql-prd	
+Critical		Database	Codification Platform	Production	 102.5%	Priya Shah
+codification-platform	
+Critical		Application	Codification Platform	Production	 3,789 ms	Priya Shah
+codification-portal	
+Critical		Application	Codification Portal	Production	 3,166 ms	Tom Becker
+lumen-indexer-01	
+Critical		Virtual machine	Search and indexing	Production	 105.9%	Marco Ellis
+Conditional access policies	
+Warning		Application	Identity (Entra ID)	Production	 401 ms	Rina Okafor
+codif-app-02	
+Warning		Virtual machine	Codification Platform	Production	 86.3%	Priya Shah
+codif-lb	
+Warning		Load balancer	Codification Platform	Production	 2,419 ms	Priya Shah
+portal-cdn	
+Warning		Cloud resource	Codification Portal	Production	 100.00%	Tom Becker
+lumen-indexer-02	
+Warning		Virtual machine	Search and indexing	Production	 68.2%	Marco Ellis
+search-cluster	
+Warning		Application	Search and indexing	Production	 2,271 ms	Marco Ellis
+data-gateway	
+Warning		Virtual machine	Data platform	Production	 55.9%	Dev Rao
+Intune tenant	
+Warning		Cloud resource	Endpoint management (Intune)	Production	 100.00%	Northwind Managed Services
+Azure East US 2 subscription	
+OK		Cloud subscription	Network and VPN	Production	 100.00%	Sam Patel
+Edge firewall pair	
+OK		Network device	Network and VPN	Production	 41.0%	Sam Patel
+Azure DNS	
+OK		Cloud resource	Network and VPN	Production	 100.00%	Sam Patel
+VPN gateway	
+OK		Network device	Network and VPN	Production	 60.0%	Sam Patel
+Entra ID tenant	
+OK		Cloud resource	Identity (Entra ID)	Production	 100.00%	Rina Okafor
+MFA service	
+OK		Application	Identity (Entra ID)	Production	 259 ms	Rina Okafor
+codif-blob	
+OK		Storage	Codification Platform	Production	 381 ms	Priya Shah
+portal-web-01	
+OK		Virtual machine	Codification Portal	Production	 52.8%	Tom Becker
+portal-web-02	
+OK		Virtual machine	Codification Portal	Production	 62.6%	Tom Becker
+portal-waf	
+OK		Network device	Codification Portal	Production	 30.9%	Tom Becker
+search-index-store	
+OK		Storage	Search and indexing	Production	 277 ms	Marco Ellis
+search-api	
+OK		Application	Search and indexing	Production	 457 ms	Marco Ellis
+contract-app	
+OK		Application	Contract Repository	Production	 395 ms	Maya Ortiz
+contract-sql	
+OK		Database	Contract Repository	Production	 51.6%	Maya Ortiz
+contract-blob	
+OK		Storage	Contract Repository	Production	 412 ms	Maya Ortiz
+
+162 of 162 rows
+Scroll for more · rows are drawn as you scroll
+How a metric reaches a dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Agents, Azure Monitor, SNMP and logs feed the metric model.
+AUTOMATIC
+Store and roll up
+Raw samples are rolled up by minute, 15 minutes and hour.
+PERSON
+Explore
+Compare any CIs and metrics.
+PERSON
+Build a dashboard
+Pick tiles, drag them into place, save.
+PERSON
+Share and review
+Dashboards are reviewed monthly in the service review.

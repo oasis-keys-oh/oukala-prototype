@@ -1,0 +1,66 @@
+PLATFORM · ADMIN STUDIO
+Shape the platform without code
+
+Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+
+ƒ Promotions passing gates first time
+Claude Sonnet · 84%
+Add a field
+Fields
+Form layout
+List views
+Theme
+Localization
+Incident list columns
+Drag between Shown and Hidden. Order is the order people see.
+Save as a named view
+Incident
+Project
+Demand request
+Contract
+SHOWN (6)
+Number
+Short description
+Affected service
+Impact
+Assigned to
+State
+HIDDEN (6)
+Description
+Caller
+Category
+Urgency
+Work notes
+Affected business unit
+Sort by
+Number
+Short description
+Description
+Caller
+Category
+Impact
+Urgency
+Affected service
+Assigned to
+State
+Work notes
+Affected business unit
+Direction
+Ascending
+Descending
+Group by
+No grouping
+Category
+Impact
+Urgency
+Affected service
+State
+Affected business unit
+SAVED VIEWS
+My open incidents
+Preview
+Sample incident records.
+NUMBER ↓	SHORT DESCRIPTION	AFFECTED SERVICE	IMPACT	ASSIGNED TO	STATE
+INC0010291	Portal latency for editors	Codification Portal	1 - High	Tom Becker	In progress
+INC0010288	Taxonomy API returns stale terms	Taxonomy API	2 - Medium	Sam Patel	On hold
+INC0010280	Cannot open lease schedule export	Lease subledger (ERP)	3 - Low	Nia Brooks	Resolved

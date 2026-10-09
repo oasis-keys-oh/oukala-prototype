@@ -1,0 +1,120 @@
+OBSERVABILITY AND SLOS
+Promise a level of service, and watch the budget
+
+4 of 8 SLOs are inside their error budget. The portal availability budget was spent by the incident that began at 09:08 today: its SLI is 99.41% against a 99.9% promise. The platform covers 68% of what a mid-size business buys separate observability tools for.
+
+ƒ SLOs inside error budget
+ƒ Observability coverage
+New SLO
+New synthetic check
+SRE: SLOs and error budgets
+OpenTelemetry
+SLOs and error budgets
+Synthetic checks
+Uptime reports
+Coverage: what this replaces
+CHECKS
+10
+20 check locations
+FAILING NOW
+3
+SY2, SY4, SY6
+AVERAGE SUCCESS, 24 H
+85.0%
+across all checks
+SLOWEST P95
+6,142 ms
+Editor sign-in and open a draft
+Last 12 hours at a glance
+Each square is one hour for one check. Green: every location passed. Amber: some failed. Red: all failed.
+New check
+02:30
+03:30
+04:30
+05:30
+06:30
+07:30
+08:30
+09:30
+10:30
+11:30
+12:30
+13:30
+Portal home page
+Editor sign-in and open a draft
+Search API query
+Standards API health
+DNS resolution of the portal
+Portal TLS certificate
+VPN tunnel up
+Contract upload (API)
+All locations passed
+Some locations failed
+All failed
+Synthetic checks
+Scripted probes from several locations: web pages, APIs, multi-step browser sign-in, DNS, TLS and ports. A failing check raises an alert on its CI.
+Type
+All
+7
+State now
+All
+2
+Service
+All
+7
+Export CSV
+CHECK	TYPE	SERVICE	STATE NOW	SUCCESS, 24 H	P95 RESPONSE	LOCATIONS	EVERY
+Portal home page
+SY1 · https://standards.meridian.example/
+	HTTP	Codification Portal	Passing	91.7%	1,848 ms	4	1 min
+Editor sign-in and open a draft
+SY2 · codification-platform (5 steps)
+	Browser flow	Codification Platform	Failing	79.2%	6,142 ms	2	5 min
+Search API query
+SY3 · GET /v1/search?q=lease
+	API	Search and indexing	Passing	100.0%	1,371 ms	3	1 min
+Standards API health
+SY4 · GET /v2/health
+	API	Codification Platform	Failing	79.2%	2,161 ms	2	1 min
+DNS resolution of the portal
+SY5 · standards.meridian.example
+	DNS	Network and VPN	Passing	100.0%	153 ms	2	5 min
+Portal TLS certificate
+SY6 · standards.meridian.example:443
+	TLS	Codification Portal	Failing	0.0%	64 ms	1	60 min
+VPN tunnel up
+SY7 · vpn.meridian.example:443
+	ICMP and TCP	Network and VPN	Passing	100.0%	154 ms	2	1 min
+Contract upload (API)
+SY8 · POST /contracts (1 MB test file)
+	API	Contract Repository	Passing	100.0%	243 ms	1	15 min
+Entra ID sign-in page
+SY9 · login.microsoftonline.com/meridian
+	HTTP	Identity (Entra ID)	Passing	100.0%	153 ms	2	5 min
+Lakehouse SQL endpoint
+SY10 · synapse-meridian:1433
+	TCP	Data platform	Passing	100.0%	66 ms	1	5 min
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+How an SLO is run
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the SLI
+What counts as a good 5-minute period.
+APPROVAL GATE
+Set the objective
+For example 99.9% over 30 days.
+AUTOMATIC
+Measure
+Good and bad periods counted from the metric model.
+AUTOMATIC
+Burn rate alerts
+Multi-window rules page or ticket.
+APPROVAL GATE
+Spend the budget wisely
+When it is spent, risky changes need approval.
+PERSON
+Review
+SLOs are reviewed quarterly.

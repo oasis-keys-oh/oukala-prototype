@@ -1,0 +1,198 @@
+EXECUTIVE DASHBOARD · MERIDIAN STANDARDS FOUNDATION
+One set of numbers, five executive views
+
+Every tab below is a different arrangement of the same data, so the CEO, CFO, CIO, COO and Board audit chair never argue about whose number is right. We are 76% likely to hit the beta by Nov 20, forecast is 105.6% of budget, and 7 decisions are open.
+
+ƒ Beta date confidence
+ƒ Strategic alignment score
+ƒ Risk exposure against contingency
+Why am I seeing this?
+Group overview
+CEO
+CFO
+CIO
+COO
+Board
+CIO VIEW
+Delivery is amber and AI overrides keep rising
+
+Delivery health is 71, availability 99.62%, and agents are overridden 22% of the time. 5.2% of application spend ($213K a year) is duplicated or failing.
+
+Delivery health
+71
+Beta moved 7 days from Nov 4
+ƒ Formula
+Open →
+Maturity vs strategy
+70%
+Glide-path index 93; 49 of 68 gaps have a funded path
+ƒ Formula
+Open →
+Beta confidence by Nov 20
+76%
+80% by Nov 23 · plan Nov 13
+ƒ Formula
+Open →
+Tier 1 availability
+99.62%
+Portal Sev 2 since Oct 5
+ƒ Formula
+Open →
+Agent override rate
+22%
+Four of six Lumen holds overridden
+ƒ Formula
+Open →
+Application spend to retire
+5.2%
+$213K a year is duplicated or failing
+ƒ Formula
+Open →
+Top 3 decisions needed
+Chosen for the CIO. Approve or defer here; each choice is audited and the numbers on the other screens follow.
+ƒ Executive decision age
+Commit to Nov 23 as the Codification beta date
+Nov 23
+
+76% chance of landing by Nov 20; 80% by Nov 23. The plan date is Nov 13 and the baseline was Nov 4.
+
+Monte Carlo (2,000 trials) · 80%
+Waiting 3 days
+Source
+Approve
+Defer
+Pause expansion of the AI drafting assistant until overrides drop
+22%
+
+Agents are overridden 22% of the time against a 10% target. Four of six Lumen holds were overridden. Existing agents keep running.
+
+Feedback Analyst · 84%
+Waiting 4 days
+Source
+Approve
+Defer
+Retire 5 duplicate or failing applications, saving $213K a year
+$213K
+
+AI reviewed cost, use and overlap. Each retirement has an owner and a 4 to 8 week plan in the application portfolio.
+
+Claude Sonnet · 85%
+Waiting 6 days
+Source
+Approve
+Defer
+Maturity against strategy
+10 maturity models, 80 capabilities. Attainment 70% against the Year 1 target; glide-path index 93.
+Modernize codification
+2.1
+Watch
+Resilient operations
+2.3
+On track
+Contract discipline
+2.2
+Watch
+Trusted AI
+2.3
+Behind
+Editor experience
+2.4
+Behind
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+Open maturity models
+Delivery health
+Baseline (hollow) against forecast (filled), from the master schedule. Schedule performance index 0.96.
+ƒ Delivery health
+ƒ Schedule performance index
+Master schedule
+Sep 23
+Oct 7
+Oct 21
+Nov 4
+Nov 18
+Dec 2
+Dec 16
+Dec 30
+Today
+Codification beta
+Nov 13 (+7 days)
+Codification go live
+Dec 11 (+7 days)
+Taxonomy pilot
+Dec 2
+Sev 2 problem closed
+Nov 2
+Service health
+The Codification Portal has been slow since 09:12 on Oct 5. Ops Agent is running RB-031; rehearsal is set for Oct 24.
+Tier 1 availability
+99.62%
+Mean time to resolve (Sev 2)
+3.4h
+Operational health
+82
+ƒ Tier 1 availability
+ƒ Knowledge freshness
+Open the incident
+AI spend and governance
+5 of 6 agents run through the gateway. Copilot in Teams is observed only.
+Spend today
+$22.40 of $75 cap (30%)
+Override rate
+22% (target 10%)
+Guardrail hits
+3 this week, all blocked
+30-day trend
+ƒ Agent override rate
+ƒ AI spend against daily cap
+Control Tower
+Application portfolio
+$4,113,000 a year across 15 applications. 5.2% ($213K) is duplicated or failing.
+Invest
+$3.11M
+Migrate
+$790K
+Tolerate
+$60K
+Eliminate
+$153K
+ƒ Application spend to retire or move
+Open portfolio
+Top risks
+Expected loss is probability times impact. Together they use 90% of the $291K contingency.
+ƒ Risk exposure against contingency
+3×3
+Lumen delivers the search indexer late again
+Dev Rao · mitigation Dev Rao
+$88K
+2×4
+Lease subledger cannot support the ASC 842 amendment by Jan 1
+Avery Chen · mitigation Jordan Lee
+$56K
+2×4
+Portal outage before the failover is tested
+Tom Becker · mitigation Tom Becker
+$45K
+Ask about this view
+Chat can answer from the same numbers and open the right screen.
+Claude Sonnet · 90%
+What is the chance we hit the beta date?
+Which apps should we retire?
+Show the risk heat map
+How the executive views are built
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.
+AI AGENT
+Arrange by role
+The headline, six measures and three decisions are chosen for the CEO, CFO, CIO, COO or Board audit chair.
+APPROVAL GATE
+Decide
+Approve or defer a decision. Each choice is audited and the numbers on other screens update.
+PERSON
+Explain
+Select a tile to open its source screen and see the formula and the owner.

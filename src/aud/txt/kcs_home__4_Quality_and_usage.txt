@@ -1,0 +1,221 @@
+KNOWLEDGE MANAGEMENT · KCS V6 · SOURCE, OUTPUT, AUTOMATION
+Knowledge that runs the work
+
+54 knowledge items feed answers and agents. 6 are ready to automate and 4 already run as agent skills, with a 89% success rate. 5 published items are stale, and 2 fixes were flagged by skill runs.
+
+ƒ Article reuse rate
+ƒ Automation readiness
+ƒ Agent skill success rate
+New knowledge item
+Agent skills
+Knowledge graph
+Why am I seeing this?
+ITEMS
+54
+42 published
+STALE
+5
+past 12 months
+QUALITY SCORE
+83
+target 85
+LINK RATE
+71%
+closed tickets with a link
+DEFLECTION
+31%
+of support searches
+SKILL SUCCESS
+89%
+433 runs
+Lifecycle
+Library
+KCS board
+Freshness
+Quality and usage
+Views
+5,732
+all articles, last 90 days
+Deflections
+1,293
+31% of support searches
+Reuse count
+651
+links to incidents and tickets
+Helpful votes
+76%
+average of published articles
+Article quality score
+Average 83 across 17 live articles. Lowest: Share a draft standard with a reviewer outside Meridian at 57.
+ƒ Article quality score
+Quality = 0.35 × Completeness + 0.25 × Clarity + 0.15 × Citations + 0.25 × Freshness
+Completeness
+Points for each filled section: symptom 20, applies to 10, cause 20, resolution 35, notes 5, plus 10 for any related record or source.
+Clarity
+100 minus 6 for every word that the average sentence runs over 10, plus 4 when the resolution has three or more numbered steps.
+Citations
+30 points for each source or related record (up to two records), capped at 100.
+Freshness
+See the Freshness tab.
+Worked example: KB0140 scores 0.35×90 + 0.25×100 + 0.15×0 + 0.25×0 = 57. Fix the lowest part first: review the article.
+Usage
+Most reused and most deflecting articles.
+REUSE COUNT (LINKED TO A RECORD)
+Where can I find the published Codification release notes?
+210
+Reset multifactor authentication for an editor
+163
+Search results stay stale for up to 20 minutes after a deploy
+57
+Why is a new standard paragraph missing from search?
+41
+Fail over the Codification Portal to the secondary region (RB-031)
+38
+Retention of signed lease and contract records
+29
+Monthly lease amortization close
+22
+DEFLECTIONS (RESOLVED WITHOUT A TICKET)
+Where can I find the published Codification release notes?
+640
+Reset multifactor authentication for an editor
+214
+Why is a new standard paragraph missing from search?
+164
+Search results stay stale for up to 20 minutes after a deploy
+121
+Retention of signed lease and contract records
+58
+
+Deflection counts a search that ends on the article with no ticket from that person in 24 hours. Reuse counts every time the article is linked to an incident or request.
+
+Score by article
+Lowest first. Click a row to open it.
+ARTICLE	QUALITY	COMPLETENESS	CLARITY	CITATIONS	FRESHNESS
+Share a draft standard with a reviewer outside Meridian
+KB0140 · Published
+	57	
+ 90	
+ 100	
+ 0	
+ 0
+Request vendor access to the staging site
+KB0462 · Published
+	69	
+ 100	
+ 100	
+ 60	
+ 0
+Fail over the Codification Portal to the secondary region (RB-031)
+KB0421 · Published
+	71	
+ 100	
+ 83	
+ 100	
+ 0
+Monthly lease amortization close
+KB0312 · Published
+	74	
+ 100	
+ 100	
+ 90	
+ 0
+Quarterly access recertification
+KB0333 · Published
+	74	
+ 100	
+ 100	
+ 30	
+ 38
+Contract Repository upload fails over 100 MB
+KB0350 · Retiring
+	74	
+ 100	
+ 100	
+ 60	
+ 20
+Break-glass access to Entra ID admin roles
+KB0450 · Published
+	88	
+ 100	
+ 100	
+ 30	
+ 94
+Retention of signed lease and contract records
+KB0310 · Published
+	89	
+ 100	
+ 99	
+ 100	
+ 56
+Reset multifactor authentication for an editor
+KB0451 · Published
+	90	
+ 100	
+ 100	
+ 30	
+ 100
+Why is a new standard paragraph missing from search?
+KB0388 · Published
+	94	
+ 100	
+ 100	
+ 60	
+ 100
+Taxonomy API returns 429 during bulk import
+KB0420 · Published
+	94	
+ 100	
+ 100	
+ 60	
+ 100
+Where can I find the published Codification release notes?
+KB0470 · Published
+	94	
+ 100	
+ 100	
+ 60	
+ 100
+Approve a discount rate change
+KB0295 · Published
+	95	
+ 100	
+ 100	
+ 100	
+ 81
+Search results stay stale for up to 20 minutes after a deploy
+KB0377 · Published
+	97	
+ 100	
+ 93	
+ 90	
+ 100
+Portal failover runbook refresh (RB-031 v8)
+KB0502 · In review
+	99	
+ 100	
+ 97	
+ 100	
+ 100
+How knowledge flows from source to output to automation
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Capture
+Write it down while solving the ticket, with its source.
+AI AGENT
+Structure
+Fill the sections, add links to service, CI and process.
+APPROVAL GATE
+Review and publish
+A reviewer checks it. Publish needs a Publisher.
+AUTOMATIC
+Reuse
+Search, chat, agent assist and portal guidance cite it.
+PERSON
+Improve
+Flag it, fix it, reuse the fix.
+APPROVAL GATE
+Promote to a skill
+Procedural items with high readiness become agent skills.

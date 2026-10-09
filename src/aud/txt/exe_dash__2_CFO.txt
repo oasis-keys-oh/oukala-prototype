@@ -1,0 +1,176 @@
+EXECUTIVE DASHBOARD · MERIDIAN STANDARDS FOUNDATION
+One set of numbers, five executive views
+
+Every tab below is a different arrangement of the same data, so the CEO, CFO, CIO, COO and Board audit chair never argue about whose number is right. We are 76% likely to hit the beta by Nov 20, forecast is 105.6% of budget, and 7 decisions are open.
+
+ƒ Beta date confidence
+ƒ Strategic alignment score
+ƒ Risk exposure against contingency
+Why am I seeing this?
+Group overview
+CEO
+CFO
+CIO
+COO
+Board
+CFO VIEW
+105.6% of budget, $163K over
+
+Forecast is $3.07M against $2.91M approved. We have paid 58% but earned 45%, and $62,900 of invoices should be held. Risk exposure uses 90% of contingency.
+
+Forecast vs approved
+105.6%
+$163K over $2.91M approved
+ƒ Formula
+Open →
+Financial health
+62
+Vendor services is $45K over commitment
+ƒ Formula
+Open →
+Paid vs earned
+58% / 45%
+Paid $1.69M, earned $1.32M. Includes prepaid hosting.
+ƒ Formula
+Open →
+Invoices recommended for hold
+$62,900
+$280,980 waiting in total
+ƒ Formula
+Open →
+Risk exposure vs contingency
+90%
+$261K of $291K reserve
+ƒ Formula
+Open →
+AI spend vs daily cap
+29%
+Target at most 80%
+ƒ Formula
+Open →
+Top 3 decisions needed
+Chosen for the CFO. Approve or defer here; each choice is audited and the numbers on the other screens follow.
+ƒ Executive decision age
+Approve the $48,000 reforecast for cloud hosting
+$48K
+
+Moves contingency to cover a larger Northwind tier. Forecast is 105.6% of approved. Forecast Agent drafted it.
+
+Forecast Agent · 86%
+Waiting 2 days
+Source
+Approve
+Defer
+Hold the Lumen payment of $62,900 (INV-20433)
+$62.9K
+
+Milestone 3 is not accepted and $412,000 is already paid against $390,000 accepted. Invoice Advisor recommends holding.
+
+GPT (council) · 81%
+Waiting 1 day
+Source
+Approve
+Defer
+Fund the lease subledger retirement (D3, $680K)
+$680K
+
+D3 scores 77, just under the funding line at 80. The ASC 842 amendment takes effect Jan 1, 2027, and the old subledger cannot support it.
+
+Portfolio Agent · 78%
+Waiting 5 days
+Source
+Approve
+Defer
+Spend vs plan
+$1.69M paid of $2.91M approved. Forecast at completion $3.07M (105.6%).
+ƒ Forecast vs approved budget
+ƒ Financial health
+Trace budget
+$0
+$300K
+$600K
+$900K
+$1.2M
+Codification
+$1.2M
+paid $740K · earned $716K
+Taxonomy
+$860K
+paid $770K · earned $447K
+Portal
+$310K
+paid $120K · earned $121K
+Contracts
+$540K
+paid $60K · earned $38K
+Approved
+Paid
+Work earned (planned effort completed)
+Invoices waiting
+$280,980 across 4 invoices; $62,900 is recommended for hold.
+ƒ Invoice cycle time
+hold
+Lumen Data Partners
+INV-20433 · due Oct 19
+$62,900
+approve
+Northwind Cloud
+INV-20418 · due Oct 21
+$184,200
+approve
+Northwind Cloud
+INV-20451 · due Oct 28
+$21,400
+reject
+Apex Print
+INV-20440 · due Oct 24
+$12,480
+Top risks
+Expected loss is probability times impact. Together they use 90% of the $291K contingency.
+ƒ Risk exposure against contingency
+3×3
+Lumen delivers the search indexer late again
+Dev Rao · mitigation Dev Rao
+$88K
+2×4
+Lease subledger cannot support the ASC 842 amendment by Jan 1
+Avery Chen · mitigation Jordan Lee
+$56K
+2×4
+Portal outage before the failover is tested
+Tom Becker · mitigation Tom Becker
+$45K
+AI spend and governance
+5 of 6 agents run through the gateway. Copilot in Teams is observed only.
+Spend today
+$22.40 of $75 cap (30%)
+Override rate
+22% (target 10%)
+Guardrail hits
+3 this week, all blocked
+30-day trend
+ƒ Agent override rate
+ƒ AI spend against daily cap
+Control Tower
+Ask about this view
+Chat can answer from the same numbers and open the right screen.
+Claude Sonnet · 90%
+Why is the forecast over budget?
+Show invoices on hold
+Which apps should we retire?
+How the executive views are built
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.
+AI AGENT
+Arrange by role
+The headline, six measures and three decisions are chosen for the CEO, CFO, CIO, COO or Board audit chair.
+APPROVAL GATE
+Decide
+Approve or defer a decision. Each choice is audited and the numbers on other screens update.
+PERSON
+Explain
+Select a tile to open its source screen and see the formula and the owner.

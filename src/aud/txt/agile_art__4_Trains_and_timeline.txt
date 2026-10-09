@@ -1,0 +1,133 @@
+SERVICE MANAGEMENT · RELEASES · SCALED AGILE
+Plan together, deliver in increments
+
+Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.
+
+New program increment
+New PI objective
+Program backlog
+Releases
+ƒ Program predictability
+SAFe
+ITIL 5
+Dashboard and features
+PI planning board
+Objectives and predictability
+System demo and Inspect and adapt
+Trains and timeline
+
+Two agile release trains plan, build and release together on one cadence: ten-week program increments of four two-week iterations plus one innovation and planning iteration. Each train has a release train engineer, a product manager and a system architect, and delivers through the release process on the Releases screen.
+
+Program increment timeline
+PI 26.2 to PI 27.1 with freezes and major releases
+New program increment
+PI 26.2
+I1
+I2
+I3
+I4
+IP
+PI 26.3
+I1
+I2
+I3
+I4
+IP
+PI 26.4
+I1
+I2
+I3
+I4
+IP
+PI 27.1
+I1
+I2
+I3
+I4
+IP
+Closed iteration
+Executing iteration
+Planned iteration
+Innovation and planning
+Major release
+Blackout freeze
+Codification and Portal train
+4 teams · 12 features in PI 26.4
+Release train engineer
+Priya Shah
+Product management
+Chief Editor
+System architect
+Jordan Lee
+Projects
+PR1 Codification Platform Upgrade
+PR3 Portal Resilience
+Strategy
+Modernize standards publishing
+Reduce operating risk
+Cadence
+Ten-week increments of four two-week iterations plus one innovation and planning iteration.
+TEAMS
+Platform Alpha
+7 members
+42 pts
+Search and Indexing (Lumen)
+5 members
+14 pts
+Editor Experience
+5 members
+21 pts
+Portal Reliability
+5 members
+15 pts
+
+Predictability last increment: 78%
+
+Data and Contracts train
+2 teams · 8 features in PI 26.4
+Release train engineer
+Dev Rao
+Product management
+Maya Ortiz
+System architect
+Jordan Lee
+Projects
+PR2 Taxonomy Data Hub
+PR4 Contract Repository Refresh
+Strategy
+Modernize standards publishing
+Protect revenue through contract discipline
+Cadence
+Same cadence as the Codification train so the two trains plan on the same days.
+TEAMS
+Taxonomy Data
+4 members
+17 pts
+Contracts and Integration
+5 members
+23 pts
+
+Predictability last increment: 78%
+
+Release train process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, ITIL 5.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Epic approved
+The portfolio approves an epic with a business case.
+AI AGENT
+Features analyzed and scored
+Features get acceptance criteria and a WSJF score.
+PERSON
+PI planning
+Teams commit objectives, dependencies and risks (ROAM) for the increment.
+PERSON
+Iterate and demo
+Teams deliver in iterations and show a system demo each time.
+AUTOMATIC
+Release through release management
+Features ship as releases with readiness gates and a go or no-go.
+PERSON
+Inspect and adapt
+Measure predictability, retrospect and solve the biggest problems.

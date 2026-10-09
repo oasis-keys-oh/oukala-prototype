@@ -1,0 +1,46 @@
+FINANCIAL MODEL · COST PLAN, CAPITALIZATION, TCO AND RETURN
+The portfolio returns 22% over five years, and Taxonomy is the weakest case
+
+Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under ASC 350-40. Taxonomy returns 10% and depends on benefits that start only after the Dec 2 pilot.
+
+ƒ Five-year portfolio return on investment
+ƒ Capital plan used
+Claude Sonnet · 80%
+Why am I seeing this?
+Project and scenario
+Choose what to model. Everything on this screen recalculates from the cost plan, the capitalization rules and the benefits register.
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Portfolio
+Base case
+Low case
+High case
+Cost plan
+Capitalization
+Depreciation
+TCO and ROI
+Showback
+ROLE	LOADED RATE PER FTE-MONTH	FTE	MONTHS IN FY27	COST = RATE × FTE × MONTHS
+Platform engineer	$16,000			$192,000
+Architect	$20,000			$80,000
+Editor subject expert	$13,000			$91,000
+Test lead	$15,000			$45,000
+Labor plan		5.5 FTE		$408,000
+Budget labor forecast $408,000 · plan $0
+Add a role
+OTHER COST LINES (FROM THE BUDGET)	CATEGORY	APPROVED	FORECAST	
+PR1-VEN
+Lumen SOW-3 search indexer
+	Vendor	$250,000	$262,000	Edit
+PR1-CLD
+Codification Portal hosting (Northwind)
+	Cloud	$360,000	$408,000	Edit
+PR1-LIC
+Azure AI Search and M365 add-ons
+	Licences	$100,000	$100,000	Edit
+PR1-HW
+Editor test lab devices
+	Hardware	$90,000	$84,000	Edit
+Total FY27 cost plan		$1,200,000	$1,262,000	

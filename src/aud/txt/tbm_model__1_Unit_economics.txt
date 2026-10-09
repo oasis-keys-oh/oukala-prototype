@@ -1,0 +1,125 @@
+COST TRANSPARENCY · TBM AND ATUM
+See what each service costs, and when it needs more
+
+Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now. 1 idle step could save $19,200 a year.
+
+Forecast demand
+Scaling model
+Budgets
+ƒ IT cost per employee a month
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Cost flow
+Unit economics
+Showback and chargeback
+Scaling model
+Forecast and triggers
+COST PER EMPLOYEE
+$501
+a month
+COST PER REQUEST
+$8.64
+service desk request
+COST PER INCIDENT
+$19.97
+handled
+PER MILLION API CALLS
+$1,592
+gateway and licensing
+PER 1,000 SEARCHES
+$6.16
+public search
+UNIT COST VS PLAN
+103%
+target 100%
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Unit cost by offering
+Cost of each offering divided by what is consumed. Click a row to see the drivers.
+Service
+All
+16
+Group by 
+None
+Service
+Export CSV
+OFFERING	SERVICE	DRIVER	VOLUME A MONTH	COST A MONTH	COST PER UNIT	AGAINST PLAN
+Editor workspace	Codification Platform	Active seats	420 seats	$24,100	$57.38	96%
+Publishing pipeline	Codification Platform	Releases	22 releases	$9,640	$438	108%
+Standards API	Codification Platform	API calls	11 million calls	$14,460	$1,315	93%
+Public reader site	Codification Portal	Page views	14K 1,000 page views	$14,130	$1.01	94%
+Subscriber access	Codification Portal	Active users	1.8K user	$7,850	$4.36	108%
+API licensing	Codification Portal	Licensee API calls	4 million calls	$9,420	$2,355	105%
+Public search	Search and indexing	Search queries	2.2K 1,000 queries	$13,560	$6.16	98%
+Editor search	Search and indexing	Active editors	420 editors	$5,650	$13.45	95%
+Related content	Search and indexing	Recommendation calls	950 1,000 recommendations	$3,390	$3.57	102%
+Contract storage	Contract Repository	Active users	60 user	$3,267	$54.44	100%
+Obligation tracking	Contract Repository	Active users	60 user	$3,267	$54.44	100%
+Renewal alerts	Contract Repository	Active users	60 user	$3,267	$54.44	106%
+Lease accounting	Lease subledger (ERP)	Active users	34 user	$6,450	$190	107%
+Month-end close	Lease subledger (ERP)	Active users	34 user	$6,450	$190	107%
+Accounts payable	Finance systems	Active users	48 user	$4,425	$92.19	106%
+Invoice approval	Finance systems	Active users	48 user	$4,425	$92.19	98%
+Reporting	Finance systems	Active users	48 user	$4,425	$92.19	96%
+Vendor setup	Finance systems	Active users	48 user	$4,425	$92.19	108%
+Sign-in and MFA	Identity (Entra ID)	Active users	640 user	$2,100	$3.28	100%
+Access reviews	Identity (Entra ID)	Active users	640 user	$2,100	$3.28	96%
+Privileged access	Identity (Entra ID)	Active users	640 user	$2,100	$3.28	103%
+Access provisioning	Identity (Entra ID)	Active users	640 user	$2,100	$3.28	106%
+Email	Email and collaboration (M365)	Active users	640 user	$4,417	$6.90	93%
+Teams	Email and collaboration (M365)	Active users	640 user	$4,417	$6.90	102%
+SharePoint	Email and collaboration (M365)	Active users	640 user	$4,417	$6.90	98%
+OneDrive	Email and collaboration (M365)	Active users	640 user	$4,417	$6.90	101%
+
+54 of 54 rows
+Scroll for more · rows are drawn as you scroll
+Usage today and forecast
+For each consumption driver: bar one is today, bar two is 3 months out, bar three is 12 months out.
+Public search
+Search queries (1,000 queries)
+2.2K now, 3.1K in a year (+43%)
+Editor search
+Active editors (editors)
+420 now, 502 in a year (+20%)
+Related content
+Recommendation calls (1,000 recommendations)
+950 now, 1.5K in a year (+60%)
+Public reader site
+Page views (1,000 page views)
+14K now, 18K in a year (+27%)
+Standards API
+API calls (million calls)
+11 now, 18 in a year (+60%)
+API licensing
+Licensee API calls (million calls)
+4 now, 7.2 in a year (+80%)
+Incident handling
+Incidents (incidents)
+640 now, 812 in a year (+27%)
+Requests
+Requests (requests)
+1.1K now, 1.6K in a year (+43%)
+Today
+In 3 months
+In 12 months
+Cost transparency and scaling
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ingest the ledger
+General ledger accounts map to cost pools by rule.
+AI AGENT
+Allocate
+Pools flow to towers, services, offerings and consumers by drivers.
+AI AGENT
+Forecast demand
+Growth and scenarios project each driver against capacity.
+PERSON
+Review trigger
+The service owner checks the step and the funding line.
+APPROVAL GATE
+Raise demand
+Approved triggers become demand with cost and reason.

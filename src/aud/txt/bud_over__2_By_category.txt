@@ -1,0 +1,87 @@
+BUDGETS OVERALL · FY27 (JUL 2026 TO JUN 2027)
+The portfolio is 5.6% over budget, and the reserve can cover it
+
+Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K, $58K after the two requests waiting for approval.
+
+ƒ Forecast variance to approved budget
+ƒ Budget lines over commitment
+ƒ Reserve coverage
+ƒ Capital plan used
+Reforecast
+Why am I seeing this?
+Overview
+By project
+By category
+Forecast
+Reserve and approvals
+By category
+Labor, vendor, hardware, cloud and licences. Vendor is the only category over its commitment.
+CATEGORY	APPROVED	COMMITTED	ACTUAL	FORECAST	VARIANCE	APPROVED AND FORECAST
+Labor	$850,000	$850,000	$442,000	$868,000	+$18K over	
+
+Vendor	$1,120,000	$945,000	$597,000	$1,213,000	+$93K over	
+
+Hardware	$130,000	$125,000	$77,000	$124,000	$6K under	
+
+Cloud	$570,000	$510,000	$270,000	$628,000	+$58K over	
+
+Licences	$240,000	$140,000	$92,000	$240,000	On budget	
+
+Total	$2,910,000	$2,570,000	$1,478,000	$3,073,000	+$163K over	
+By department and cost center
+Who carries the budget. Showback to the people who consume the services is on the Financial model screen.
+DEPARTMENT	APPROVED	COMMITTED	ACTUAL	FORECAST	VARIANCE	APPROVED AND FORECAST
+Editorial
+CC-4411
+	$750,000	$750,000	$483,000	$770,000	+$20K over	
+
+Data Office
+CC-4412
+	$860,000	$905,000	$558,000	$905,000	+$45K over	
+
+Finance and Legal Operations
+CC-4430
+	$540,000	$180,000	$60,000	$576,000	+$36K over	
+
+IT Operations
+CC-4420
+	$760,000	$735,000	$377,000	$822,000	+$62K over	
+
+Total	$2,910,000	$2,570,000	$1,478,000	$3,073,000	+$163K over	
+By program
+Digital Publishing holds two projects and the Lumen dependency.
+PROGRAM	APPROVED	COMMITTED	ACTUAL	FORECAST	VARIANCE	APPROVED AND FORECAST
+Digital Publishing
+PR1, PR2
+	$2,060,000	$2,100,000	$1,298,000	$2,167,000	+$107K over	
+
+Operational Resilience
+PR3
+	$310,000	$290,000	$120,000	$330,000	+$20K over	
+
+Records and Contracts
+PR4
+	$540,000	$180,000	$60,000	$576,000	+$36K over	
+
+Total	$2,910,000	$2,570,000	$1,478,000	$3,073,000	+$163K over	
+CapEx and OpEx
+Capital share comes from the ASC 350-40 rules in the Financial model, not from a typed percentage.
+ƒ Capital plan used
+Open capitalization rules
+PR1 Codification
+49% capital
+CapEx $619K
+OpEx $643K
+PR2 Taxonomy
+65% capital
+CapEx $593K
+OpEx $313K
+PR3 Portal
+23% capital
+CapEx $75K
+OpEx $255K
+PR4 Contracts
+10% capital
+CapEx $60K
+OpEx $516K
+Forecast $3.07M = CapEx $1.35M (43.8%) + OpEx $1.73M (56.2%) · Capital used 96.2% of the $1.4M board envelope

@@ -1,0 +1,2221 @@
+METRICS
+Define once, use everywhere
+
+192 metrics, 142 off trend. Each one shows its formula, and each off-trend one already has an article, procedure or agent working on it.
+
+All
+Off trend
+On trend
+OWNER · PMO
+Delivery health
+Off trend
+71
+target at least 80
+0.4 × Schedule adherence + 0.3 × Milestone hit rate + 0.3 × (1 − Risk exposure ÷ Contingency)
+PMO Agent · SOP-208
+Step 2 of 5: re-baselining the indexer work with Lumen
+Start automatically
+Run now
+Home
+Executive trace
+Metrics
+OWNER · FINANCE
+Financial health
+Off trend
+62
+target at least 85
+100 − (Forecast overrun % × 5) − (Budget lines over commitment × 10)
+Forecast Agent · KB-114
+Waiting for your approval to move $48,000 from B1 contingency
+Start automatically
+Run now
+Home
+Executive trace
+Invoice approval
+OWNER · IT OPS
+Operational health
+On trend
+82
+target at least 80
+0.5 × Availability score + 0.3 × Incident score + 0.2 × Knowledge freshness
+No remediation attached
+Attach a knowledge article, procedure or agent.
+Home
+Executive trace
+AI Control Tower
+OWNER · FINANCE
+Forecast vs approved budget
+Off trend
+105.6%
+target at most 100%
+Forecast at completion ÷ Approved budget
+Forecast Agent · KB-114
+Drafted a reforecast; awaiting approval
+Start automatically
+Run now
+Home
+Executive trace
+OWNER · FINANCE
+Invoice cycle time
+Off trend
+4.2 days
+target at most 3 days
+Average days from invoice received to decision
+Invoice Advisor · Invoice Advisor
+Pre-cleared 6 of 9 invoices this week
+Start automatically
+Run now
+Home
+Invoice approval
+Executive trace
+OWNER · FINANCE
+Auto-approval rate
+Off trend
+38%
+target at least 60%
+Invoices cleared by rule ÷ Invoices received
+Feedback Analyst · SOP-114
+Suggests rule changes from override patterns
+Start automatically
+Run now
+Invoice approval
+Metrics
+OWNER · VENDOR MGMT
+Vendor performance index
+On trend
+0.86
+target at least 0.85
+0.4 × Time + 0.3 × Quality + 0.3 × Expectation
+No remediation attached
+Attach a knowledge article, procedure or agent.
+Invoice approval
+Executive trace
+OWNER · IT OPS
+Tier 1 availability
+Off trend
+99.62%
+target at least 99.9%
+1 − (Minutes of outage ÷ Minutes in period)
+Ops Agent · RB-031
+Failover rehearsal scheduled for 16:00
+Start automatically
+Run now
+Home
+Executive trace
+AI Control Tower
+OWNER · IT OPS
+Mean time to resolve (Sev 2)
+On trend
+3.4h
+target at most 4h
+Average hours from incident opened to resolved
+No remediation attached
+Attach a knowledge article, procedure or agent.
+Executive trace
+OWNER · AI GOVERNANCE
+Agent override rate
+Off trend
+22%
+target at most 10%
+Human overrides ÷ Agent recommendations
+Feedback Analyst · Feedback Analyst
+Found a pattern: 4 of 6 holds on Lumen were overridden
+Start automatically
+Run now
+AI Control Tower
+Invoice approval
+Feedback loop
+OWNER · AI GOVERNANCE
+AI spend against daily cap
+On trend
+29%
+target at most 80%
+AI spend today ÷ Daily cap
+No remediation attached
+Attach a knowledge article, procedure or agent.
+AI Control Tower
+OWNER · KNOWLEDGE
+Knowledge freshness
+Off trend
+74%
+target at least 90%
+Articles reviewed in the last 12 months ÷ Active articles
+Knowledge Curator · Knowledge Curator
+11 refresh drafts waiting for owner review
+Start automatically
+Run now
+Executive trace
+Metrics
+OWNER · PMO
+Meeting capture yield
+On trend
+94%
+target at least 90%
+Actions and decisions captured ÷ Actions and decisions stated
+No remediation attached
+Attach a knowledge article, procedure or agent.
+First Officer
+OWNER · PMO
+WBS completeness
+Off trend
+41%
+target at least 80%
+Work lines with an owner, a duration, a predecessor, a resource and a confirmed deliverable ÷ All work lines (milestones need a predecessor and a deliverable) × 100
+PMO Agent · SOP-212
+Drafts missing deliverables and resources, then asks the project manager to confirm
+Start automatically
+Run now
+WBS and task sheet
+Master schedule
+OWNER · PMO
+Schedule variance
+On trend
+1.8
+target at most 2
+Forecast finish − Baseline finish, in work days, averaged over active projects (positive means late)
+PMO Agent · SOP-208
+Standing by
+Start automatically
+Run now
+WBS and task sheet
+Master schedule
+Project plan
+OWNER · PMO
+Milestone hit rate
+On trend
+100%
+target at least 85%
+Milestones finished on or before their baseline date ÷ Milestones whose baseline date has passed × 100
+PMO Agent · KB-122
+Standing by
+Start automatically
+Run now
+WBS and task sheet
+Master schedule
+OWNER · PORTFOLIO OFFICE
+Priority score
+On trend
+68
+target at least 60
+(0.35 × Strategic fit + 0.25 × Financial return + 0.20 × Risk reduction + 0.20 × Urgency) ÷ 5 × 100
+Portfolio Agent · SOP-301
+Standing by
+Start automatically
+Run now
+Demand and priorities
+OWNER · PMO
+Schedule performance index
+On trend
+0.96
+target at least 0.95
+Earned value ÷ Planned value
+PMO Agent · SOP-208
+Standing by
+Start automatically
+Run now
+Master schedule
+Project plan
+Home
+OWNER · PMO
+Milestones on time
+Off trend
+78%
+target at least 85%
+Milestones met by the baseline date ÷ Milestones due to date
+PMO Agent · KB-122
+Drafts a recovery plan when a milestone slips
+Start automatically
+Run now
+Master schedule
+OWNER · RESOURCE OFFICE
+Resource utilization
+Off trend
+92%
+target at most 85%
+Assigned FTE ÷ Available FTE, per team per month
+Resource Agent · SOP-315
+Proposes moves that clear the overload without moving a milestone
+Start automatically
+Run now
+Demand and priorities
+Master schedule
+OWNER · PORTFOLIO OFFICE
+Demand decision time
+Off trend
+19
+target at most 14
+Date decided − Date submitted, in days
+Portfolio Agent · Portfolio Agent
+Reminded 2 sponsors about scores due this week
+Start automatically
+Run now
+Demand and priorities
+OWNER · SECURITY
+Access review completion
+Off trend
+25%
+target at least 85%
+Entitlements attested or revoked ÷ Entitlements in the campaign
+Feedback Analyst · SOP-410
+Reminds reviewers in Teams and escalates to their manager after 5 days
+Start automatically
+Run now
+Security and access
+OWNER · IT FINANCE
+Licence utilization
+Off trend
+83.9%
+target at least 85%
+Σ(assigned seats × seat price) ÷ Σ(purchased seats × seat price)
+Forecast Agent · Licence Optimizer
+Lists seats idle for 60 days and proposes a downgrade to light or approver-only
+Start automatically
+Run now
+Licensing and billing
+OWNER · AI GOVERNANCE
+AI cost per resolved outcome (USD)
+On trend
+1.1
+target at most 1.5
+Σ(cost per outcome × monthly volume) ÷ Σ monthly volume, where cost per outcome = token cost ÷ acceptance rate + review minutes × loaded rate
+Test Agent · Gateway router
+Standing by
+Start automatically
+Run now
+AI gateway and tokenomics
+OWNER · INTERNAL AUDIT
+Controls with current evidence
+Off trend
+73%
+target at least 90%
+Controls with automated or fresh evidence ÷ Controls in scope (SOC 2, ISO 27001, NIST AI RMF)
+Knowledge Curator · SOP-433
+Pulls fresh evidence from the audit log and access reviews
+Start automatically
+Run now
+Audit and compliance
+OWNER · RELEASE MANAGEMENT
+Promotions passing gates first time
+Off trend
+78%
+target at least 85%
+Promotions that passed every gate on the first attempt ÷ Promotion attempts
+Test Agent · KB-221
+Runs gate checks in Dev before a package is dragged to Test
+Start automatically
+Run now
+Environments and releases
+Admin studio
+OWNER · AI GOVERNANCE
+Guardrail catch rate
+Off trend
+91%
+target at least 95%
+Red-team prompts stopped by the expected guardrail ÷ Red-team prompts run
+Test Agent · Test Agent
+Running 120 injection and PII prompts against the policy set
+Start automatically
+Run now
+AI gateway and tokenomics
+OWNER · FINANCE
+Forecast variance to approved budget
+Off trend
+5.6%
+target at most 3%
+(Forecast $3.07M − Approved $2.91M) ÷ Approved $2.91M
+Forecast Agent · KB-114
+Drafted two reserve requests worth $93,000; waiting for approval
+Start automatically
+Run now
+Budgets overall
+Financial model
+OWNER · FINANCE
+Budget lines over commitment
+Off trend
+1
+target at most 0
+Count of budget lines where Committed > Approved
+Forecast Agent · SOP-122
+Checks the open change orders and drafts a reserve request
+Start automatically
+Run now
+Budgets overall
+Vendors and contracts
+OWNER · CFO
+Reserve coverage
+Off trend
+113%
+target at least 120%
+Management reserve balance ÷ Forecast overrun not yet funded by an approved draw
+Forecast Agent · Forecast Agent
+Drafts the reserve release with evidence for the approver
+Start automatically
+Run now
+Budgets overall
+Delegation of authority
+OWNER · CONTROLLER
+Capital plan used
+On trend
+96%
+target at most 100%
+Forecast CapEx $1.35M under ASC 350-40 ÷ Board capital envelope $1.4M
+Forecast Agent · KB-131
+Standing by
+Start automatically
+Run now
+Budgets overall
+Financial model
+OWNER · PORTFOLIO OFFICE
+Five-year portfolio return on investment
+Off trend
+22%
+target at least 30%
+(Total benefits $7.8M − Total costs $6.4M) ÷ Total costs, FY27 to FY31, base case
+Portfolio Agent · SOP-301
+Compares benefit drivers with measurements and flags the weakest
+Start automatically
+Run now
+Financial model
+Benefits realization
+OWNER · BENEFIT OWNERS
+Benefits realized to date
+Off trend
+85%
+target at least 90%
+Benefits measured to date ÷ Benefits planned to date
+Benefits Agent · Benefits Agent
+Asked 3 owners for the Q1 measurement
+Start automatically
+Run now
+Benefits realization
+OWNER · VENDOR MANAGEMENT
+Renewals needing a decision in 90 days
+Off trend
+5
+target at most 2
+Contracts with a notice deadline in the next 90 days and no recorded decision
+Contract Agent · Contract Agent
+Drafted 5 recommendations with evidence
+Start automatically
+Run now
+Vendors and contracts
+OWNER · ACCOUNTS PAYABLE
+Three-way match rate
+Off trend
+82%
+target at least 95%
+Purchase orders where PO, receipt and invoice agree within 2% ÷ Purchase orders with activity
+Invoice Advisor · SOP-114
+Holding INV-20433 and INV-20440
+Start automatically
+Run now
+Vendors and contracts
+Invoice approval
+OWNER · SERVICE DESK LEAD
+Chat deflection rate
+On trend
+73%
+target at least 70%
+100 × questions the chat answered or fulfilled without a person ÷ all questions asked in chat, 30 days
+Knowledge Agent · KB0112
+Standing by
+Start automatically
+Run now
+Chat and agents
+OWNER · PLATFORM OWNER
+Agent task completion rate
+On trend
+86%
+target at least 85%
+100 × agentic tasks finished with every step done ÷ agentic tasks started (cancelled by the person excluded), 30 days
+Triage Agent · SOP-AI-03
+Standing by
+Start automatically
+Run now
+Chat and agents
+OWNER · PLATFORM OWNER
+Average steps per task
+On trend
+2
+target at most 3
+Steps executed ÷ agentic tasks started, 30 days. Lower is simpler for the person; approvals count as steps
+Workflow Agent · SOP-AI-04
+Standing by
+Start automatically
+Run now
+Chat and agents
+OWNER · SERVICE DESK LEAD
+Escalation to a person
+Off trend
+14%
+target at most 10%
+100 × chat tasks handed to a person ÷ agentic tasks started, 30 days
+Knowledge Agent · KB0113
+Lists the asks that ended in a handoff, ranked by volume
+Start automatically
+Run now
+Chat and agents
+OWNER · RELEASE MANAGER
+Deployment frequency
+Off trend
+3
+target at least 7
+Production deployments in the last 30 days ÷ (30 ÷ 7). A deployment counts when the deploy stage finished, whether or not verify passed
+Release Agent · RB-DF
+Finds releases that bundle many features and proposes smaller slices
+Start automatically
+Run now
+Delivery pipeline
+Environments and DORA
+OWNER · RELEASE MANAGER
+Lead time for changes
+Off trend
+64
+target at most 24
+Median of (production deploy time − first commit time) in hours, for production deployments in the last 30 days
+Release Agent · RB-LT
+Shows which pipeline stage holds work longest and proposes an automation
+Start automatically
+Run now
+Delivery pipeline
+Where is my change
+OWNER · CHANGE MANAGER
+Change failure rate
+Off trend
+15.4%
+target at most 10%
+Production deployments that caused a rollback, hotfix or incident ÷ production deployments, last 30 days
+Change Risk Agent · RB-CFR
+Proposes stricter gate criteria for the service types that fail most
+Start automatically
+Run now
+Delivery pipeline
+Change and release
+OWNER · OPS TEAM
+Time to restore service
+Off trend
+5.3
+target at most 1
+Average hours from a failed deployment to service restored, for production deployments that failed in the last 30 days
+Ops Agent · RB-TTR
+Moves rollback from a manual runbook to an automatic step after a failed verify
+Start automatically
+Run now
+Delivery pipeline
+Rollback
+OWNER · RELEASE MANAGER
+Deployment rework rate
+Off trend
+9%
+target at most 5%
+Unplanned deployments (hotfixes and redeploys after a failure) ÷ all production deployments, last 30 days. The fifth DORA metric
+Release Agent · RB-RW
+Looks for the root cause of hotfixes in test coverage gaps
+Start automatically
+Run now
+Delivery pipeline
+OWNER · CHANGE MANAGER
+Changes approved by the gate automatically
+Off trend
+58%
+target at least 70%
+Production changes approved under a standard change template without a person ÷ all production changes, last 30 days
+Change Risk Agent · RB-GA
+Finds repeated normal changes that always succeed and drafts a template for CAB review
+Start automatically
+Run now
+Delivery pipeline
+Gate policy
+OWNER · CHANGE MANAGER
+Change success rate
+Off trend
+92%
+target at least 95%
+Changes closed with outcome successful ÷ changes closed, last 30 days, standard and normal together
+Change Risk Agent · RB-CS
+Summarizes common causes of failed changes
+Start automatically
+Run now
+Delivery pipeline
+Changes
+OWNER · PROCESS OWNERS
+Process automation level
+Off trend
+42%
+target at least 60%
+Steps done by automation or an AI agent ÷ all steps, across every end-to-end process with a definition
+Ops Agent · RB-PA
+Ranks manual steps by volume and wait time
+Start automatically
+Run now
+Master process flow
+OWNER · SERVICE LEVEL MANAGER
+Process steps with an SLA
+Off trend
+55%
+target at least 80%
+Steps with a stated time limit ÷ all steps in defined processes
+SLA Agent · RB-PS
+Uses the measured duration of each step
+Start automatically
+Run now
+Master process flow
+OWNER · DATA ARCHITECT
+Data model reference integrity
+Off trend
+96%
+target at least 100%
+Reference fields that point to a registered table ÷ all reference fields in the master data model
+Knowledge Curator · RB-DR
+Lists reference fields with no target table
+Start automatically
+Run now
+Master data model
+OWNER · PORTFOLIO OFFICE
+Strategic alignment score
+Off trend
+89
+target at least 90
+Funded dollars linked to an objective ÷ All funded dollars × 100, minus 8 points for each objective with no funded work
+Portfolio Agent · SOP-410
+Lists funded work with no objective and objectives with no funded work
+Start automatically
+Run now
+Strategy alignment
+Executive dashboard
+Board pack
+OWNER · PMO
+Risk exposure against contingency
+Off trend
+90%
+target at most 70%
+Σ (Probability × Impact in dollars) ÷ Contingency reserve (10% of approved budget)
+Forecast Agent · KB-131
+Proposes mitigations ranked by exposure removed per dollar
+Start automatically
+Run now
+Risk heat map
+Executive dashboard
+Board pack
+OWNER · PMO
+Beta date confidence
+Off trend
+60%
+target at least 80%
+Monte Carlo trials that finish the beta milestone on or before the committed date ÷ All trials
+PMO Agent · SOP-211
+Testing a two-engineer Lumen crash against the committed date
+Start automatically
+Run now
+Risk heat map
+Executive dashboard
+Scenario compare
+OWNER · ARCHITECTURE
+Application spend to retire or move
+Off trend
+5.2%
+target at most 5%
+Annual cost of applications classed Eliminate, plus duplicates ÷ Total application cost
+Portfolio Agent · Portfolio Agent
+Drafts a plan per application with users to move and a date
+Start automatically
+Run now
+Application portfolio
+Executive dashboard
+OWNER · EXECUTIVE OFFICE
+Executive decision age
+Off trend
+3.2 days
+target at most 3 days
+Average days since a decision was requested, for decisions not yet made
+First Officer · First Officer
+Sent two nudges this week
+Start automatically
+Run now
+Executive dashboard
+Board pack
+OWNER · FINANCE OPERATIONS
+Rule-decided approvals
+Off trend
+41%
+target at least 55%
+Approvals decided by a decision table with no human step ÷ Approvals requested × 100
+Feedback Analyst · SOP-118
+Proposes decision table rows from approver overrides
+Start automatically
+Run now
+Decision tables
+Approvals inbox
+OWNER · FINANCE OPERATIONS
+Approval turnaround
+Off trend
+17.5h
+target at most 16h
+Σ(decision time − request time) ÷ Approvals decided
+First Officer · Reminder policy
+Sends Teams reminders and offers a delegate when an approver is out
+Start automatically
+Run now
+Approvals inbox
+Workflow designer
+OWNER · SERVICE DESK
+Approvals past SLA
+Off trend
+18%
+target at most 10%
+Approvals still pending after their SLA ÷ Approvals pending × 100
+First Officer · SOP-121
+Reassigns to the delegate on file and tells the requester
+Start automatically
+Run now
+Approvals inbox
+OWNER · AUTOMATION TEAM
+Workflow run success
+Off trend
+96.2%
+target at least 97%
+Runs that finish without manual rescue ÷ Runs started × 100
+Ops Agent · KB0517
+Groups failed runs by cause and drafts the fix
+Start automatically
+Run now
+Workflow designer
+Agentic workflows
+OWNER · INTEGRATION TEAM
+Integration failure rate
+Off trend
+2.5%
+target at most 1%
+Failed calls ÷ Total calls over the last 24 hours × 100
+Ops Agent · SOP-133
+Renews certificates it can reach and replays safe events
+Start automatically
+Run now
+Integration hub
+OWNER · AUTOMATION TEAM
+Workflow automation rate
+Off trend
+47%
+target at least 55%
+Steps done by an AI agent or a deterministic action ÷ all work steps (human, agentic, deterministic) × 100
+Ops Agent · Convert suggestions
+Scores each human step for conversion and shows expected hours and cost saved
+Start automatically
+Run now
+Workflow designer
+Approvals inbox
+OWNER · PROCESS OWNERS
+Step cycle time
+Off trend
+5.8h
+target at most 5h
+Σ(step end − step start, including queue wait) ÷ step executions, last 30 days
+Ops Agent · SOP-140
+Ranks steps by queue time and suggests a reroute or an agent
+Start automatically
+Run now
+Workflow designer
+OWNER · SECURITY AND RISK
+Assessment gate pass rate
+Off trend
+78%
+target at least 85%
+Required-gate assessments that passed at first completion ÷ required-gate assessments completed × 100
+Knowledge Curator · KB0602
+Drafts guidance for the questions that fail most often
+Start automatically
+Run now
+Assessments
+Approvals inbox
+OWNER · PROCESS OWNERS
+Rework rate
+Off trend
+9.4%
+target at most 7%
+Step executions sent back, repeated or returned for information ÷ step executions × 100
+Feedback Analyst · SOP-141
+Finds the fields most often returned and proposes a clearer question
+Start automatically
+Run now
+Workflow designer
+Approvals inbox
+OWNER · SERVICE DESK
+Steps meeting their target
+Off trend
+91%
+target at least 94%
+Step executions finished within their SLA, OLA or XLA target ÷ step executions with a target × 100
+First Officer · SOP-121
+Warns the owner at 75% of a target and offers a delegate
+Start automatically
+Run now
+Workflow designer
+OWNER · FINANCE OPERATIONS
+Cost per workflow run
+Off trend
+38
+target at most 34
+Σ(step cost: labor hours × rate + agent tokens + system calls) of every step executed ÷ workflow runs, last 30 days
+Forecast Agent · Cost review
+Compares each step with its target cost and flags overruns
+Start automatically
+Run now
+Workflow designer
+OWNER · FINANCE OPERATIONS
+Approver override rate
+Off trend
+12%
+target at most 10%
+Approvals where the approver decided against the AI recommendation or an advisory assessment ÷ approvals decided × 100
+Feedback Analyst · SOP-118
+Groups overrides by reason and proposes new rule bands
+Start automatically
+Run now
+Approvals inbox
+Assessments
+OWNER · IT OPS
+CMDB health score
+Off trend
+84
+target at least 90
+0.4 × Completeness + 0.3 × Correctness + 0.3 × Compliance, each 0 to 100 and measured over active CIs
+CMDB Steward Agent · RB-063
+Drafts remediation tasks for the biggest gaps
+Start automatically
+Run now
+CMDB
+CMDB health
+Discovery and ingestion
+OWNER · CMDB OWNER
+CMDB completeness
+Off trend
+92%
+target at least 95%
+Σ (weight × attributes filled) ÷ Σ weight over active CIs. Required attributes weigh 2, recommended weigh 1. Required sets come from the class data model.
+CMDB Steward Agent · CMDB Steward Agent
+Proposes values from the highest-precedence source and asks owners to confirm
+Start automatically
+Run now
+CMDB
+CMDB data model
+CMDB health
+OWNER · CMDB OWNER
+CMDB correctness
+Off trend
+94%
+target at least 97%
+1 − (CIs that are stale, orphaned or duplicate) ÷ active CIs. Stale = fed by a tool and not seen for more than 60 days. Orphan = no path to any service. Duplicate = same identity seen twice.
+CMDB Steward Agent · SOP-241
+Lists the merge candidates with a confidence score
+Start automatically
+Run now
+CMDB
+CMDB health
+Discovery and ingestion
+OWNER · CMDB OWNER
+CMDB compliance
+Off trend
+86%
+target at least 92%
+CIs that pass every active audit rule ÷ active CIs. Rules: owner, support group, monitoring on mission-critical CIs, lifecycle sanity and the relationship rules from the data model.
+CMDB Steward Agent · SOP-242
+Groups failures by rule and opens remediation tasks for the support groups
+Start automatically
+Run now
+CMDB health
+OWNER · IT OPS
+Discovery coverage
+Off trend
+88%
+target at least 95%
+CIs that an automated source saw in the last 14 days ÷ CIs that can be discovered (hardware, software and cloud classes)
+CMDB Steward Agent · KB-310
+Finds classes that no connected source covers
+Start automatically
+Run now
+CMDB
+Discovery and ingestion
+OWNER · IT OPS
+Monitored availability, 30 days
+On trend
+99.6%
+target at least 99.5%
+Average 30 day availability of CIs that report from a monitoring source (SolarWinds Orion, Azure Monitor, vCenter, Intune). Monitoring coverage is shown next to it.
+Ops Agent · Ops Agent
+Standing by
+Start automatically
+Run now
+CMDB
+Discovery and ingestion
+OWNER · FINANCE AND IT OPS
+Cloud spend vs monthly budget
+Off trend
+105%
+target at most 100%
+Month-to-date actual ÷ Monthly budget, using the latest full month
+FinOps Agent · KB-221
+Finds the top three drivers of the overrun and drafts actions
+Start automatically
+Run now
+Cloud cost (FinOps)
+OWNER · FINOPS
+Cloud waste share
+Off trend
+10.9%
+target at most 8%
+(Rightsizing savings + idle resource savings, per month) ÷ Monthly cloud spend
+FinOps Agent · FinOps Agent
+Queues low-risk recommendations for your approval
+Start automatically
+Run now
+Cloud cost (FinOps)
+OWNER · SERVICE DESK
+SLA compliance
+Off trend
+91%
+target at least 95%
+Incidents resolved inside their resolution target ÷ Incidents resolved (last 30 days)
+Triage Agent · SOP-212
+Reassigning 3 incidents whose timers are under 25% remaining
+Start automatically
+Run now
+Incidents
+Service desk overview
+OWNER · CHANGE MANAGEMENT
+Change failure rate
+Off trend
+16.7%
+target at most 12%
+Changes that failed, rolled back or caused an incident ÷ Changes implemented (last 30 days)
+Change Risk Agent · KB-233
+Proposes a rule: no Tier 1 change is approved without a tested backout
+Start automatically
+Run now
+Changes
+Service desk overview
+OWNER · SERVICE DESK
+Backlog age
+On trend
+9.8h
+target at most 24h
+Sum of hours open ÷ Open incidents (on-hold time excluded)
+Triage Agent · Triage Agent
+Standing by
+Start automatically
+Run now
+Incidents
+Service desk overview
+OWNER · INCIDENT COMMANDER
+Major incident time to restore
+Off trend
+3.1h
+target at most 3h
+Average of (Service restored time − Major incident declared time) over the last 90 days, including the active one
+Triage Agent · RB-031
+Running diagnostics and drafting the next update
+Start automatically
+Run now
+Major incident
+Service desk overview
+OWNER · PROBLEM MANAGER
+Repeat incident rate
+Off trend
+35%
+target at most 25%
+Incidents linked to an open problem ÷ Incidents opened (last 30 days)
+Triage Agent · SOP-218
+Ranks open problems by repeats times affected users
+Start automatically
+Run now
+Problems and known errors
+Service desk overview
+OWNER · SERVICE DESK
+Team-first assignment
+On trend
+94%
+target at least 90%
+Incidents routed to a team and then claimed by a member (or worked by the team) ÷ All incidents opened (last 30 days). Direct assignments to a named person are the exception.
+Triage Agent · SOP-215
+Standing by
+Start automatically
+Run now
+Incidents
+Service desk overview
+OWNER · INCIDENT MANAGER
+Priority override rate
+Off trend
+5.9%
+target at most 5%
+Incidents whose calculated priority was overridden by a person ÷ Incidents opened (last 30 days)
+Triage Agent · KB-241
+Flags overrides without a reason longer than a sentence
+Start automatically
+Run now
+Incidents
+Priority policy
+OWNER · CHANGE MANAGEMENT
+Approval turnaround
+On trend
+9.4h
+target at most 24h
+Σ(approval decision time − approval request time) ÷ Approvals decided (last 30 days), compared with the policy SLA of each approval
+Change Risk Agent · Change Risk Agent
+Standing by
+Start automatically
+Run now
+Changes
+Approval policies
+OWNER · PROBLEM MANAGER
+Known error reuse
+Off trend
+71%
+target at least 80%
+Incidents closed with a known error workaround ÷ Incidents linked to a published known error (last 30 days)
+Knowledge Curator · KB-244
+Drafts first-reply text for each published known error
+Start automatically
+Run now
+Problems and known errors
+OWNER · INCIDENT MANAGER
+Incident impact score
+On trend
+32
+target at most 35
+Σ factor share × weight, 0 to 100: users affected ÷ service users (25, full at 50%) + function lost ÷ 100 (20) + availability shortfall vs target ÷ 0.5 points (10) + dollars at risk an hour ÷ $10,000 (15) + service tier share (15) + regulatory exposure share (15). Bands: 65 and up Extensive, 40 to 64 Significant, 20 to 39 Moderate, below 20 Minor.
+Triage Agent · SOP-216
+Standing by
+Start automatically
+Run now
+Incidents
+Priority policy
+OWNER · SERVICE DESK
+Time to restore service
+Off trend
+39.3h
+target at most 8h
+Σ(resolved time − opened time, on-hold excluded) ÷ Incidents resolved (last 30 days). This is the DORA time to restore.
+Triage Agent · Triage Agent
+Searches the known error database for each new incident
+Start automatically
+Run now
+Incidents
+Service desk overview
+OWNER · KNOWLEDGE
+Article freshness
+Off trend
+69%
+target at least 85%
+Published articles reviewed within 12 months and not past expiry ÷ Published articles
+Knowledge Curator · KCS-12
+Drafts a refreshed version from the latest incidents and asks the owner to review
+Start automatically
+Run now
+Knowledge management
+Knowledge gaps
+OWNER · SERVICE DESK
+Self-service deflection
+Off trend
+31%
+target at least 40%
+Support intent searches that end on an article with no ticket in 24 hours ÷ Support intent searches
+Knowledge Curator · KCS-07
+Drafts articles for the six most frequent unanswered searches
+Start automatically
+Run now
+Knowledge management
+Knowledge gaps
+OWNER · AI QUALITY
+Answer groundedness
+On trend
+93%
+target at least 92%
+Claims supported by a cited chunk ÷ All claims in answers, scored by a second model on a sample
+Test Agent · AIQ-03
+Standing by
+Start automatically
+Run now
+Ask the knowledge base
+AI test management
+OWNER · AI QUALITY
+Judge disagreement rate
+On trend
+10%
+target at most 10%
+Test cases where the judge model and the rule grader reach different verdicts ÷ Cases judged
+Test Agent · AIQ-09
+Standing by
+Start automatically
+Run now
+AI test management
+OWNER · KNOWLEDGE
+Article quality score
+Off trend
+83
+target at least 85
+0.35 × Completeness + 0.25 × Clarity + 0.15 × Citations + 0.25 × Freshness (each 0 to 100)
+Knowledge Curator · KCS-15
+Lists the five lowest scoring articles with the missing piece for each
+Start automatically
+Run now
+Knowledge management
+OWNER · KNOWLEDGE
+Article reuse rate
+On trend
+80.6
+target at least 6
+Times a published item was linked to an incident, request or chat answer in 90 days ÷ Published items
+Knowledge Curator · KCS-21
+Standing by
+Start automatically
+Run now
+Knowledge management
+Agent skills
+OWNER · SERVICE DESK
+Knowledge link rate
+Off trend
+71%
+target at least 80%
+Incidents and requests closed with a linked knowledge item ÷ Incidents and requests closed (KCS v6 link rate)
+Triage Agent · KCS-02
+Suggests the best matching item on every ticket before it is closed
+Start automatically
+Run now
+Knowledge management
+OWNER · KNOWLEDGE AND AUTOMATION
+Automation readiness
+Off trend
+27%
+target at least 30%
+Items scoring 80 or more on readiness ÷ Procedural items (runbooks, SOPs, articles, patterns, codified processes). Readiness = 0.30 × Determinism + 0.25 × Completeness + 0.20 × Test coverage + 0.25 × Safety
+Test Agent · KCS-22
+Drafts test cases for items that score 60 to 79 and lack tests
+Start automatically
+Run now
+Knowledge management
+Agent skills
+OWNER · KNOWLEDGE AND AUTOMATION
+Agent skill success rate
+Off trend
+89%
+target at least 90%
+Skill runs finished without escalation, failure or block ÷ Skill runs
+Knowledge Curator · KCS-23
+Turns every escalated run into an improvement task on its source article
+Start automatically
+Run now
+Agent skills
+OWNER · KNOWLEDGE
+Service knowledge coverage
+Off trend
+54%
+target at least 90%
+Services with at least 3 published items that are current ÷ Services
+Knowledge Curator · KCS-24
+Drafts items for the services with the fewest published items
+Start automatically
+Run now
+Knowledge management
+Knowledge graph
+OWNER · KNOWLEDGE
+Improvement loop time
+Off trend
+6
+target at most 5
+Median days from a flagged skill run to the fixed and reused item
+Knowledge Curator · KCS-25
+Escalates flagged items older than 5 days to their owner
+Start automatically
+Run now
+Agent skills
+OWNER · ACCOUNTING POLICY
+Ontology completeness
+Off trend
+0%
+target at least 85%
+Complete notes ÷ (Complete notes + Stub notes)
+Drafting Agent · Drafting Agent
+Drafts a note from the Codification text and queues it for a person to review
+Start automatically
+Run now
+Knowledge graph
+OWNER · ACCOUNTING POLICY
+Link density
+Off trend
+0
+target at least 2
+Links ÷ Notes
+Drafting Agent · KB-GAAP-04
+Suggests links between notes that cite each other
+Start automatically
+Run now
+Knowledge graph
+OWNER · KNOWLEDGE
+Graph link coverage
+Off trend
+94%
+target at least 95%
+Knowledge items linked to a service, a configuration item and a process ÷ Knowledge items
+Knowledge Curator · KCS-30
+Proposes service, CI and process links for items that lack one
+Start automatically
+Run now
+Knowledge graph
+OWNER · KNOWLEDGE
+Orphan nodes
+On trend
+0
+target at most 0
+Nodes with no relationship at all in the knowledge graph
+Knowledge Curator · KCS-31
+Standing by
+Start automatically
+Run now
+Knowledge graph
+OWNER · CIO OFFICE
+Maturity attainment
+Off trend
+70%
+target at least 85%
+Σ (capability weight × min(1, current level ÷ Year 1 target level)) ÷ Σ capability weight × 100, over every leaf capability in every model
+Maturity Agent · SOP-MAT-01
+Re-scores each capability from its linked metrics and accepted project work, then lists the largest gaps
+Start automatically
+Run now
+Maturity models
+Strategy alignment
+Executive dashboard
+Board pack
+OWNER · CIO OFFICE
+Glide-path index
+Off trend
+93
+target at least 100
+Σ (weight × current level) ÷ Σ (weight × expected level today on the straight line from the start-of-year baseline to the Year 1 target) × 100
+Maturity Agent · Maturity Agent
+Lists capabilities below the line and the project milestones that would restore them
+Start automatically
+Run now
+Maturity models
+Strategy alignment
+Executive dashboard
+OWNER · PORTFOLIO OFFICE
+Capability delivery coverage
+Off trend
+72%
+target at least 80%
+Capabilities with a gap to their Year 1 target that have a funded, dated project path to it ÷ Capabilities with a gap to their Year 1 target × 100
+Portfolio Agent · SOP-MAT-02
+Drafts a demand request for each uncovered gap with a cost and time estimate from unit costs
+Start automatically
+Run now
+Maturity models
+Strategy alignment
+Executive dashboard
+Board pack
+OWNER · OPS TEAM
+Mean time to detect (MTTD)
+Off trend
+6.2
+target at most 5
+Σ(alert fired time − first threshold breach time) ÷ alerts with a measurable onset, last 24 hours, plus one minute of polling delay
+Event Correlator · RB-DET
+Finds rules whose required duration is longer than the service can tolerate
+Start automatically
+Run now
+Event management
+OWNER · OPS TEAM
+Mean time to acknowledge (MTTA)
+Off trend
+7.5
+target at most 5
+Σ(time a person or AI agent took the alert − alert fired time) ÷ alerts taken, last 24 hours
+Ops Agent · SOP-410
+Takes alerts that have an automation rule and attaches the health check output
+Start automatically
+Run now
+Event management
+On-call
+OWNER · OPS TEAM
+Event noise reduction
+On trend
+97.4%
+target at least 95%
+1 − (Actionable correlation groups ÷ Raw events), last 24 hours, after deduplication, suppression, false positive filtering and correlation
+Event Correlator · RB-NZ
+Standing by
+Start automatically
+Run now
+Event management
+OWNER · OPS TEAM
+False positive rate
+On trend
+9%
+target at most 10%
+Alerts marked as false positive or expected behavior ÷ all alerts fired, last 7 days
+Event Correlator · SOP-411
+Standing by
+Start automatically
+Run now
+Event management
+False positives
+OWNER · PLATFORM TEAM
+Automation rate
+Off trend
+38%
+target at least 50%
+Alerts handled end to end by a deterministic playbook or an approved agent workflow ÷ alerts that matched an automation rule, last 7 days
+Ops Agent · SOP-412
+Looks for standard changes with 95% success over 10 runs and proposes a higher automation level
+Start automatically
+Run now
+Runbooks and automation
+OWNER · OPS TEAM
+Alert fatigue index
+On trend
+34
+target at most 35
+50 × min(1, alerts per responder per day ÷ 25) + 50 × (share of correlation groups that are not actionable). 0 is calm, 100 is burnout
+Event Correlator · SOP-413
+Standing by
+Start automatically
+Run now
+Event management
+On-call
+OWNER · OPS TEAM
+SLOs inside error budget
+Off trend
+63%
+target at least 90%
+SLOs with error budget remaining above 0 ÷ SLOs tracked (30 day window)
+Ops Agent · RB-031
+Proposes the standard change with the largest expected budget gain
+Start automatically
+Run now
+Observability and SLOs
+OWNER · PLATFORM TEAM
+Observability coverage
+Off trend
+72%
+target at least 85%
+Capability areas fully covered ÷ capability areas a mid-size business needs (infrastructure, network, APM, logs, synthetics, alerting, status page, RUM, security signals)
+Ops Agent · SOP-414
+Drafts a demand for the highest value gap
+Start automatically
+Run now
+Observability and SLOs
+OWNER · SERVICE DESK LEAD
+On-call coverage
+Off trend
+96%
+target at least 99%
+Hours where the scheduled, available responders meet the required number ÷ hours that require cover, next 14 days, all rotas
+Resource Agent · RB-ONCALL-02
+Proposes overrides ranked by skill, availability and load; a lead approves
+Start automatically
+Run now
+On-call and escalation
+OWNER · SERVICE DESK LEAD
+On-call fairness
+Off trend
+78
+target at least 80
+100 × (1 − standard deviation ÷ mean of on-call hours per person over 28 days), averaged across rotas; managed service providers and AI agents excluded
+Resource Agent · SOP-OC-07
+Suggests swaps that move night hours to the lightest-loaded qualified person
+Start automatically
+Run now
+On-call and escalation
+OWNER · SERVICE DESK LEAD
+Time to page a human
+On trend
+2
+target at most 5
+Minutes from alert to the first human being paged = sum of escalation waits before the first human level (AI and provider levels excluded)
+Triage Agent · KB0261
+Standing by
+Start automatically
+Run now
+On-call and escalation
+OWNER · RESOURCE MANAGEMENT
+Critical skill depth
+Off trend
+72%
+target at least 90%
+Skills required by a service or rota that have at least 3 qualified people (level 3 or higher, not expired) ÷ skills required by a service or rota
+Resource Agent · SOP-SK-03
+Proposes cross-training pairs and learning items
+Start automatically
+Run now
+Skills and availability
+OWNER · RESOURCE MANAGEMENT
+Verified skill share
+Off trend
+61%
+target at least 80%
+Skill claims that a lead or certificate has verified (and not expired) ÷ all skill claims
+Resource Agent · SOP-SK-01
+Queues claims to the right verifier
+Start automatically
+Run now
+Skills and availability
+OWNER · RESOURCE OFFICE
+Overloaded people
+Off trend
+13%
+target at most 10%
+People above 100% of capacity this week ÷ People in scope × 100
+Resource Agent · SOP-315
+Proposes moves that clear the overload without moving a milestone
+Start automatically
+Run now
+Org chart and workload
+Resource planning
+OWNER · PEOPLE OFFICE
+Mandatory training completion
+Off trend
+91%
+target at least 95%
+Mandatory courses completed by the due date ÷ Mandatory courses due to date × 100
+Learning Coach · Learning Coach
+Drafted 7 reminders; escalates to the manager after day 7
+Start automatically
+Run now
+Training and learning
+OWNER · FACILITIES
+Room utilization
+Off trend
+36%
+target at least 55%
+Booked hours ÷ Bookable hours (10 hours × 5 days × rooms) × 100
+Room Scheduler · Room Scheduler
+Suggests moving small meetings out of the Boardroom and Training room
+Start automatically
+Run now
+Rooms and conference scheduling
+OWNER · AI GOVERNANCE
+Agent work accepted without rework
+Off trend
+88%
+target at least 90%
+Agent tasks accepted without human edits ÷ Agent tasks completed × 100
+Test Agent · SOP-540
+Replays 50 recent tasks and proposes a tier change
+Start automatically
+Run now
+Org chart and workload
+OWNER · EXPERIENCE OFFICE
+Journey sentiment
+Off trend
+3.1
+target at least 3.8
+Average emotion score across the stages of a journey (1 frustrated, 3 neutral, 5 delighted)
+Portfolio Agent · SOP-612
+Raises the lowest-scoring pain point as a demand request
+Start automatically
+Run now
+Journey maps
+OWNER · GOVERNANCE OFFICE
+Forum actions closed on time
+Off trend
+71%
+target at least 85%
+Actions closed by their due date ÷ Actions due to date × 100
+First Officer · First Officer
+Sent 5 reminders this week
+Start automatically
+Run now
+Forums and minutes
+OWNER · RESOURCE OFFICE
+Planned utilization, next 12 weeks
+On trend
+71%
+target at most 88%
+Demand hours (project, incident, request, change, on-call, operational, meetings, training) ÷ available hours (contract hours − PTO − holidays), all people in scope, weeks 1 to 12
+Resource Agent · SOP-315
+Standing by
+Start automatically
+Run now
+Resource planning
+Org chart and workload
+OWNER · RESOURCE OFFICE
+Over-allocated person-weeks
+Off trend
+14.7%
+target at most 3%
+Person-weeks with demand above 100% of available hours ÷ all person-weeks in the next 12 weeks × 100
+Resource Agent · SOP-316
+Ranks four fixes per overloaded person: move, add a contractor, offload to an agent, defer
+Start automatically
+Run now
+Resource planning
+OWNER · RESOURCE OFFICE
+Unstaffed demand
+Off trend
+7.9
+target at most 2
+Demand hours with no named person (placeholder roles, ended contracts) ÷ 40 hours = full-time equivalents (FTE), next 12 weeks
+Resource Agent · KB-340
+Matches skills and availability across employees, contractors, agents and providers
+Start automatically
+Run now
+Resource planning
+OWNER · RESOURCE OFFICE
+Resource requests answered in 5 days
+Off trend
+78%
+target at least 85%
+Resource requests with a decision within 5 working days ÷ requests decided × 100
+Resource Agent · SOP-317
+Drafts the recommendation so the resource manager only confirms
+Start automatically
+Run now
+Resource planning
+OWNER · PEOPLE OFFICE
+Performance index
+Off trend
+52
+target at least 55
+Weighted mean of peer percentiles for tickets resolved (15%), reopen rate (10%), SLA attainment (20%), project tasks on time (20%), story velocity (10%), approvals turnaround (10%), knowledge contributions (5%), XLA score (10%). Evidence for a conversation, never a rating
+Review Coach · KB-701
+Shows each metric against peers with workload and on-call adjustments
+Start automatically
+Run now
+Performance management
+OWNER · PEOPLE OFFICE
+Review completion
+Off trend
+65%
+target at least 90%
+Manager reviews submitted ÷ reviews due this cycle × 100
+Review Coach · Review Coach
+Drafts an evidence summary for each pending review; the manager writes the rating
+Start automatically
+Run now
+Performance management
+OWNER · PEOPLE OFFICE
+Calibration spread between managers
+Off trend
+0.39
+target at most 0.3
+Standard deviation of each manager's average rating, across managers with 4 or more reports (rating scale 1 to 5)
+Review Coach · SOP-702
+Lists managers whose average rating is more than one deviation from the organization
+Start automatically
+Run now
+Performance management
+OWNER · STRATEGY OFFICE
+Goals aligned to strategy
+Off trend
+87%
+target at least 90%
+Individual goals linked to a team goal that links to a strategic objective ÷ all individual goals × 100
+Review Coach · SOP-703
+Suggests the closest team goal for each unlinked goal
+Start automatically
+Run now
+Performance management
+OWNER · SERVICE DESK
+Tickets resolved per FTE-week
+On trend
+9.4
+target at least 9
+Incidents and requests resolved ÷ FTE weeks worked, last 12 weeks
+Triage Agent · KB-710
+Standing by
+Start automatically
+Run now
+Performance management
+OWNER · SERVICE DESK
+Reopen rate
+Off trend
+5.1%
+target at most 5%
+Tickets reopened within 7 days ÷ tickets resolved × 100
+Triage Agent · KB-711
+Adds a verification step before closure
+Start automatically
+Run now
+Performance management
+OWNER · SERVICE DESK
+SLA attainment
+Off trend
+93%
+target at least 95%
+Tickets and tasks resolved within the service level target ÷ tickets and tasks with a target × 100
+PMO Agent · SOP-208
+Re-ranks the queue by time to breach
+Start automatically
+Run now
+Performance management
+OWNER · PMO
+Project tasks on time
+Off trend
+81%
+target at least 85%
+Tasks finished by their baseline finish ÷ tasks finished × 100
+PMO Agent · KB-122
+Proposes a new finish date and flags the dependent tasks
+Start automatically
+Run now
+Performance management
+OWNER · RELEASE OFFICE
+Story velocity
+On trend
+21
+target at least 20
+Story points accepted per sprint, 3 sprint average (people on an agile release train only)
+Test Agent · KB-720
+Standing by
+Start automatically
+Run now
+Performance management
+OWNER · PROCESS OFFICE
+Approvals turnaround
+Off trend
+9h
+target at most 8h
+Median hours from approval request to decision, last 12 weeks
+Review Coach · Review Coach
+Sends a nudge at 75% of the approval target
+Start automatically
+Run now
+Performance management
+OWNER · KNOWLEDGE OFFICE
+Knowledge contributions
+Off trend
+1.6
+target at least 2
+Articles written or improved and reused ≥ 3 times, per person per quarter
+Knowledge Curator · Knowledge Curator
+Turns a resolved ticket into a draft the owner publishes
+Start automatically
+Run now
+Performance management
+OWNER · EXPERIENCE OFFICE
+Experience (XLA) score
+Off trend
+4.1
+target at least 4.2
+Mean of the 1 to 5 experience score people give after their work with this person or team, last 90 days
+Portfolio Agent · SOP-612
+Raises the lowest-scoring moment as demand
+Start automatically
+Run now
+Performance management
+OWNER · AI GOVERNANCE
+Agent work accepted without rework
+Off trend
+88%
+target at least 90%
+Agent tasks accepted without a human edit ÷ agent tasks completed × 100
+Test Agent · SOP-540
+Replays 50 recent tasks and proposes a tier change
+Start automatically
+Run now
+Performance management
+OWNER · AI GOVERNANCE
+Agent escalation rate
+On trend
+14%
+target at most 15%
+Tasks the agent handed to a person ÷ tasks the agent started × 100
+Test Agent · SOP-541
+Standing by
+Start automatically
+Run now
+Performance management
+OWNER · AI GOVERNANCE
+Cost per agent task
+On trend
+0.42
+target at most 0.5
+Model and tool spend ÷ tasks completed, last 30 days
+Test Agent · SOP-542
+Standing by
+Start automatically
+Run now
+Performance management
+OWNER · AI GOVERNANCE
+Guardrail violations
+On trend
+1.2
+target at most 2
+Actions blocked or redacted by the AI gateway ÷ actions attempted × 1000
+Test Agent · SOP-543
+Standing by
+Start automatically
+Run now
+Performance management
+OWNER · VENDOR MANAGEMENT
+Deliverables accepted first time
+Off trend
+84%
+target at least 90%
+Contractor deliverables accepted without rework ÷ deliverables submitted × 100
+Contract Analyst Agent · SOP-410
+Cites the acceptance criteria in the SOW
+Start automatically
+Run now
+Performance management
+OWNER · VENDOR MANAGEMENT
+Rate card variance
+Off trend
+2.4%
+target at most 0%
+(Billed rate − rate card rate) ÷ rate card rate × 100, per contractor
+Invoice Advisor · SOP-411
+Holds the invoice line and asks for a corrected rate
+Start automatically
+Run now
+Performance management
+OWNER · VENDOR MANAGEMENT
+Provider SLA attainment
+Off trend
+94%
+target at least 95%
+Tickets resolved inside the contracted service level ÷ tickets resolved × 100
+Contract Analyst Agent · SOP-412
+Calculates the service credit due under the contract
+Start automatically
+Run now
+Performance management
+OWNER · VENDOR MANAGEMENT
+Service credits claimed
+Off trend
+4200
+target at most 0
+Credits due under the contract for missed service levels, last quarter
+Contract Analyst Agent · SOP-413
+Drafts the credit claim with the missed tickets attached
+Start automatically
+Run now
+Performance management
+OWNER · EXPERIENCE OFFICE
+Journey automation coverage
+On trend
+59%
+target at least 55%
+Journey boxes whose fulfillment is rule-automated or agentic ÷ all journey boxes × 100
+Portfolio Agent · SOP-615
+Standing by
+Start automatically
+Run now
+Journey maps
+OWNER · EXPERIENCE OFFICE
+Journey experience score
+Off trend
+2.91
+target at least 3.9
+Mean of the box experience scores (1 frustrated, 3 neutral, 5 delighted) across the stages of all journeys, weighted by volume
+Portfolio Agent · SOP-612
+Raises the lowest-scoring pain point as a demand request
+Start automatically
+Run now
+Journey maps
+OWNER · EXPERIENCE OFFICE
+Boxes linked to a process
+On trend
+93%
+target at least 90%
+Journey boxes linked to at least one workflow or process ÷ all journey boxes × 100
+Portfolio Agent · SOP-616
+Standing by
+Start automatically
+Run now
+Journey maps
+OWNER · PMO
+Risk exposure
+Off trend
+252
+target at most 250
+Sum of (probability × cost impact) for open risks, in $K
+PMO Agent · SOP-212
+Drafts mitigation options for the three largest exposures
+Start automatically
+Run now
+RAID log
+Projects and teams
+OWNER · PMO AND PROCUREMENT
+Contracts that outlast their work
+Off trend
+80%
+target at least 100%
+Contractor assignments whose contract ends on or after the work's finish ÷ contractor assignments × 100
+Resource Agent · SOP-215
+Lists contractors ending before their tasks and drafts extension requests
+Start automatically
+Run now
+Projects and teams
+OWNER · AI GOVERNANCE BOARD
+AI agents with an accountable human
+Off trend
+71%
+target at least 100%
+AI agent assignments that name a human owner ÷ AI agent assignments × 100
+Governance Agent · SOP-410
+Proposes the project manager as owner and asks them to confirm
+Start automatically
+Run now
+Projects and teams
+RAID log
+OWNER · PORTFOLIO OFFICE
+Funded demand against capacity
+On trend
+61%
+target at most 90%
+Funded person-months ÷ capacity person-months in the envelope × 100
+Resource Agent · SOP-301
+Standing by
+Start automatically
+Run now
+Demand and priorities
+OWNER · PORTFOLIO OFFICE
+Demand raised by triggers
+Off trend
+0%
+target at least 20%
+Requests created by triggers ÷ all open requests × 100
+Portfolio Agent · KB0510
+Shows how a scale, SLA, change or maturity trigger calls addDemand
+Start automatically
+Run now
+Demand and priorities
+OWNER · RELEASE MANAGEMENT
+Lead time for changes
+On trend
+48h
+target at most 72h
+Median of (production deploy time − first commit time) for releases deployed in the last 30 days
+Release Agent · SOP-410
+Standing by
+Start automatically
+Run now
+Releases
+Release trains and increments
+OWNER · RELEASE MANAGEMENT
+Deployments per week
+Off trend
+2.9
+target at least 3
+Successful and failed production deployments ÷ weeks in the period (30 days ÷ 7)
+Release Agent · SOP-411
+Suggests which batched releases can be split
+Start automatically
+Run now
+Releases
+OWNER · RELEASE MANAGEMENT
+Release change failure rate
+Off trend
+16%
+target at most 12%
+Releases rolled back or fixed by a hotfix ÷ releases deployed (30 days) × 100
+Change Risk Agent · SOP-412
+Finds the criteria that were waived before each failure
+Start automatically
+Run now
+Releases
+Changes
+OWNER · OPERATIONS
+Time to restore after a failed release
+Off trend
+5.3h
+target at most 4h
+Mean of (service restored time − failed release start time) for failed releases in 30 days
+Triage Agent · SOP-413
+Checks rollback rehearsal status for open releases
+Start automatically
+Run now
+Releases
+Incidents
+OWNER · RELEASE TRAIN ENGINEERS
+Program predictability
+On trend
+84%
+target at least 80%
+Σ business value achieved on committed PI objectives ÷ Σ planned business value × 100 (SAFe: 80 to 100% is healthy)
+PMO Agent · SOP-414
+Standing by
+Start automatically
+Run now
+Release trains and increments
+Sprints and backlogs
+OWNER · QUALITY
+Defect escape rate
+Off trend
+12%
+target at most 10%
+Defects found in production ÷ all defects found in the period × 100
+Test Agent · SOP-415
+Drafts the missing regression test for every escaped defect
+Start automatically
+Run now
+Sprints and backlogs
+Releases
+OWNER · RELEASE MANAGEMENT
+Release readiness score
+Off trend
+42%
+target at least 90%
+Σ (checklist item weight × credit) ÷ Σ weight × 100. Hard gate weight 2, advisory 1. Done or waived = 1, in progress = 0.5, otherwise 0
+Release Agent · SOP-416
+Messages every owner of an overdue readiness task
+Start automatically
+Run now
+Releases
+OWNER · SERVICE DESK
+Agreement attainment
+Off trend
+92%
+target at least 95%
+Σ clocks that stopped inside their target ÷ Σ clocks that stopped, across active SLAs, OLAs and underpinning contracts, last 30 days × 100
+Triage Agent · SOP-212
+Reassigns at-risk records and pages owners at 75% elapsed
+Start automatically
+Run now
+SLAs, OLAs and XLAs
+OWNER · SERVICE LEVEL MANAGER
+Agreement coverage of processes
+Off trend
+60%
+target at least 85%
+Σ required agreement types that exist ÷ Σ required agreement types, for every process and service tier, where required types follow the coverage policy (Tier 1 needs SLA, OLA and XLA where the process calls for them) × 100
+Resource Agent · SOP-230
+Drafts the missing agreement from similar processes for the owner to approve
+Start automatically
+Run now
+SLAs, OLAs and XLAs
+OWNER · SERVICE DESK
+Clocks at risk
+Off trend
+9%
+target at most 5%
+Running or paused clocks at 75% or more of target elapsed (or already past it) ÷ all running or paused clocks × 100
+Triage Agent · SOP-213
+Finds the next free qualified person and offers to reassign
+Start automatically
+Run now
+SLAs, OLAs and XLAs
+OWNER · SERVICE DESK
+Experience score
+Off trend
+82%
+target at least 85%
+Average over active XLAs of (average survey score ÷ 5 × 100, or the percent favorable, 4 or 5 out of 5), last 30 days
+Knowledge Curator · KB0160
+Summarizes comments by theme and proposes fixes
+Start automatically
+Run now
+SLAs, OLAs and XLAs
+OWNER · VENDOR MANAGER
+Vendor credits due
+Off trend
+3400
+target at most 0
+Σ over underpinning contracts of monthly fee × credit percent earned, where credit percent = per-miss or per-point rate × misses or shortfall, capped by the contract clause
+Contract Agent · SOP-231
+Prepares the credit claim with the evidence and sends it for approval
+Start automatically
+Run now
+SLAs, OLAs and XLAs
+OWNER · MERIDIAN LEGAL
+Clause playbook coverage
+Off trend
+71.3%
+target at least 85%
+Lines that match a standard term or approved fallback ÷ All lines analyzed
+Contract Analyst Agent · Contract Analyst Agent
+Finds clauses vendors keep changing and drafts a standard plus fallback for legal to approve
+Start automatically
+Run now
+SOW and contract analyzer
+Terms playbook
+OWNER · CONTRACT OWNERS
+Obligation on-time rate
+Off trend
+63%
+target at least 90%
+Obligations completed by their due date ÷ (Obligations completed + Obligations overdue)
+Contract Analyst Agent · SOP-412
+Reminds owners 10 days ahead and escalates overdue vendor obligations to the account manager
+Start automatically
+Run now
+Obligations and calendar
+SOW and contract analyzer
+OWNER · PROCUREMENT AND LEGAL
+Negotiation cycle time
+Off trend
+42
+target at most 35
+Σ(date executed − date first proposal received) ÷ Contracts executed
+Contract Analyst Agent · KB0510
+Routes lines inside approved fallbacks straight to the business owner so legal sees only true exceptions
+Start automatically
+Run now
+Terms playbook
+SOW and contract analyzer
+OWNER · CONTROLLER
+Contract leakage
+On trend
+0.3%
+target at most 1%
+(Paid beyond accepted work + Service credits owed and unclaimed) ÷ Total committed value of live contracts
+Invoice Advisor · Invoice Advisor
+Standing by
+Start automatically
+Run now
+Obligations and calendar
+Invoice approval
+OWNER · CONTRACT OWNERS
+Auto-renewal traps
+Off trend
+1
+target at most 0
+Live contracts that renew automatically with a notice deadline inside 120 days ÷ none expected
+Contract Analyst Agent · Contract Analyst Agent
+Drafts a keep, renegotiate or leave recommendation 150 days before every notice deadline
+Start automatically
+Run now
+Obligations and calendar
+Dashboard and contracts
+OWNER · SERVICE DESK
+Fulfillment time
+On trend
+0.8
+target at most 5
+Median of (request closed time − request submitted time), in business days, for requests delivered in the last 30 days, excluding time paused for approvals and requester waits
+Triage Agent · SOP-218
+Standing by
+Start automatically
+Run now
+Service catalog
+Requests and fulfillment
+OWNER · SERVICE OWNERS
+First-time approval rate
+On trend
+93.8%
+target at least 90%
+Requests approved with no rework (no more information requested, no resubmission) ÷ requests that reached a final approval decision × 100
+Knowledge Curator · KB0122
+Standing by
+Start automatically
+Run now
+Service catalog
+Requests and fulfillment
+OWNER · SERVICE DESK
+Cost per request
+Off trend
+102
+target at most 95
+Σ process cost of every executed fulfillment step (labor, system and vendor handling, excluding the price of the thing ordered) ÷ requests delivered, last 30 days
+PMO Agent · SOP-305
+Ranks steps by cost × volume × rework and drafts an automation proposal
+Start automatically
+Run now
+Service catalog
+Requests and fulfillment
+OWNER · SERVICE OWNERS
+Experience score (XLA)
+On trend
+81%
+target at least 80%
+Average of survey answers (1 to 5) to "This service helps me get my work done" ÷ 5, shown as a percent, last 90 days
+Service Agent · KB0302
+Standing by
+Start automatically
+Run now
+Service portfolio and map
+SLAs and OLAs
+OWNER · IT ASSET MANAGEMENT
+Licence true-up exposure
+Off trend
+2.6%
+target at most 1%
+Σ over titles of max(0, assigned − entitled) × list price per licence ÷ annual software spend × 100
+Invoice Advisor · SOP-340
+Lists inactive assignments, notifies users, then removes the licence
+Start automatically
+Run now
+Assets and software licences
+OWNER · IT ASSET MANAGEMENT
+Asset record accuracy
+Off trend
+91.1%
+target at least 98%
+Devices whose inventory record matches Intune and the last physical check ÷ devices in inventory × 100
+Test Agent · SOP-352
+Compares Intune serial numbers with inventory and opens a task per mismatch
+Start automatically
+Run now
+Assets and software licences
+OWNER · PLATFORM TEAM
+Notification delivery rate
+Off trend
+96.3%
+target at least 98%
+Notifications delivered ÷ (delivered + failed), excluding ones suppressed by dedupe, throttling or quiet hours, last 24 hours × 100
+Triage Agent · SOP-405
+Retries transient failures and switches permanent failures to Teams
+Start automatically
+Run now
+Notification engine
+OWNER · SERVICE DESK
+Fulfillment on time
+On trend
+90.6%
+target at least 90%
+Requested items delivered on or before the SLA due date ÷ requested items delivered, last 30 days × 100
+Triage Agent · SOP-218
+Standing by
+Start automatically
+Run now
+Requests and fulfillment
+OWNER · SERVICE DESK
+SLA attainment
+Off trend
+94%
+target at least 95%
+Σ tickets and requests closed inside their SLA target ÷ Σ tickets and requests closed, over the last 30 days, weighted by volume
+Triage Agent · SOP-212
+Reassigns at-risk work and pings owners at 75% elapsed
+Start automatically
+Run now
+Requests and fulfillment
+OWNER · SERVICE DESK
+Self-service deflection
+Off trend
+52%
+target at least 55%
+Portal searches and Ask Claude chats that ended in an article read or a completed request, with no ticket raised ÷ all portal searches and chats × 100
+Knowledge Curator · KB0101
+Finds searches that ended in a ticket and drafts article fixes
+Start automatically
+Run now
+Self-service portal
+OWNER · SERVICE OWNERS
+Service availability
+Off trend
+99.64%
+target at least 99.8%
+1 − (minutes the service was down or degraded ÷ minutes in the period), per service, rolled up as the user-weighted average
+Ops Agent · RB-031
+Opens the runbook for the lowest service
+Start automatically
+Run now
+Service portfolio and map
+Impact analysis
+SLAs and OLAs
+OWNER · SERVICE DESK
+Service restore time
+On trend
+2.9h
+target at most 3h
+Σ (service restored time − service down time) ÷ number of outages, per service
+Triage Agent · AG-17
+Standing by
+Start automatically
+Run now
+Service portfolio and map
+OWNER · CMDB TEAM
+Service map completeness
+On trend
+93%
+target at least 90%
+Σ lenses with data (technical, business, projects, stakeholders, performance, financial, impact) ÷ (7 × number of services)
+CMDB Agent · SOP-212
+Standing by
+Start automatically
+Run now
+Service portfolio and map
+OWNER · CIO OFFICE
+IT cost per employee a month
+On trend
+429
+target at most 450
+Σ fully allocated technology cost for the month ÷ number of employees and contractors served (dollars)
+FinOps Agent · SOP-310
+Standing by
+Start automatically
+Run now
+Cost transparency (TBM and ATUM)
+Service portfolio and map
+OWNER · SERVICE OWNERS
+Unit cost against plan
+Off trend
+103%
+target at most 100%
+Σ (actual cost per unit ÷ planned cost per unit) across the offerings with a defined unit, weighted by spend
+FinOps Agent · AG-33
+Explains each unit cost change by driver, rate and volume
+Start automatically
+Run now
+Cost transparency (TBM and ATUM)
+Service offerings
+OWNER · CAPACITY PLANNING
+Demand forecast accuracy
+On trend
+91%
+target at least 90%
+1 − (Σ |forecast volume − actual volume| ÷ Σ actual volume) over the last 6 months, across scaling drivers
+Capacity Agent · KB0318
+Standing by
+Start automatically
+Run now
+Cost transparency (TBM and ATUM)
+OWNER · CIO OFFICE
+Spend traced to consumers
+On trend
+97%
+target at least 95%
+Σ cost allocated to a named consumer ÷ Σ total technology cost
+FinOps Agent · SOP-311
+Standing by
+Start automatically
+Run now
+Cost transparency (TBM and ATUM)
+OWNER · DATA GOVERNANCE
+Governed visuals
+Off trend
+84%
+target at least 90%
+Saved visuals bound to a registered metric or data model field ÷ All saved visuals × 100
+Metric Steward Agent · SOP-412
+Finds unbound measures and proposes the matching registered metric
+Start automatically
+Run now
+Visualization builder
+OWNER · DESIGN SYSTEMS
+Visuals with text alternatives
+On trend
+100%
+target at least 100%
+Visuals with an aria label and a data table ÷ All rendered visuals × 100
+No remediation attached
+Attach a knowledge article, procedure or agent.
+Visualization builder
+OWNER · PLATFORM TEAM
+Render time at 10,000 points (p95)
+On trend
+180
+target at most 250
+95th percentile of milliseconds from data to first paint for a 10,000 point visual
+Performance Agent · AG-77
+Standing by
+Start automatically
+Run now
+Visualization builder
+OWNER · DATA GOVERNANCE
+Visual reuse
+Off trend
+22%
+target at least 30%
+Saved visuals placed on two or more dashboards ÷ All saved visuals × 100
+No remediation attached
+Attach a knowledge article, procedure or agent.
+Visualization builder
+NEW METRIC
+Define it once
+Higher is better
+Lower is better
+Add to registry
+
+Once defined it can be dropped onto any screen, report or agent.

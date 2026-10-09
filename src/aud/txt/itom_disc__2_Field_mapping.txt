@@ -1,0 +1,337 @@
+CMDB · DISCOVERY AND INGESTION
+Tools feed the CMDB; rules decide what is true
+
+7 of 9 sources are connected and feed 84.6% of the CIs that can be discovered. Orion brings availability for 34 CIs. Today 234 records were read, 11 rows are rejected and waiting, and 2 duplicate pairs need a merge decision. Try the SolarWinds lab: it ingests a real-shaped payload and moves service availability.
+
+ƒ Discovery coverage
+ƒ Monitored availability, 30 days
+CSDM 5
+Connect or edit Orion
+Upload CSV
+Why am I seeing this?
+SOURCES CONNECTED
+7 of 9
+degraded or not connected: 3
+DISCOVERY COVERAGE
+84.6%
+14 day freshness
+READ TODAY
+234
+records across all runs
+REJECTED ROWS
+11
+waiting for a decision
+DUPLICATE PAIRS
+2
+to merge
+MONITORED UPTIME
+99.57%
+93.8% of CIs report
+Sources and runs
+SolarWinds uptime lab
+Field mapping
+Identification and reconciliation
+Rejected rows
+Field mapping
+Source field to CI attribute, with preview
+Monitoring
+SolarWinds Orion
+Nagios and Zabbix
+Azure Resource Graph
+AWS
+Intune
+Entra ID
+vCenter
+ServiceNow import
+CSV upload
+
+Network Performance Monitor (NPM) and Server and Application Monitor (SAM). Reads nodes, interfaces, volumes and application templates through the SolarWinds Information Service (SWIS) and brings availability and uptime with every node. Drag a source field onto the CI attribute it should fill. The preview shows three real records after the mapping, with transforms applied.
+
+Source fields 
+Claude Sonnet · 86%
+NodeID
+AvgResponseTime
+PercentLoss
+SysName
+Auto-map with AI
+Add a mapping
+CI attributes
+Name
+required
+name
+Caption
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+Environment
+required
+environment
+Drop a source field here
+Operational status
+required
+operational_status
+Status
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+Lifecycle stage
+required
+lifecycle_stage
+Drop a source field here
+Owned by
+required
+owned_by
+Drop a source field here
+Support group
+required
+support_group
+Drop a source field here
+Business criticality
+required
+business_criticality
+Drop a source field here
+Managed by group
+managed_by_group
+Drop a source field here
+Location
+location
+Drop a source field here
+Vendor
+vendor
+Drop a source field here
+Correlation ID
+correlation_id
+Drop a source field here
+Description
+short_description
+Drop a source field here
+Manufacturer
+manufacturer
+Vendor
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+Model
+model_id
+Drop a source field here
+Asset tag
+asset_tag
+Drop a source field here
+Serial number
+serial_number
+Drop a source field here
+Warranty expiration
+warranty_expiration
+Drop a source field here
+CPU count
+required
+cpu_count
+Drop a source field here
+Memory (MB)
+required
+ram_mb
+Drop a source field here
+Operating system
+required
+os
+MachineType
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+OS version
+os_version
+Drop a source field here
+IP address
+required
+ip_address
+IPAddress
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+MAC address
+mac_address
+Drop a source field here
+Disk space (GB)
+disk_space_gb
+Drop a source field here
+Fully qualified name
+fqdn
+Drop a source field here
+Uptime, last 30 days
+uptime_30d
+Availability30d
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+last_discovered
+last_discovered
+LastBoot
+as is
+lowercase
+capitalize
+clean text
+number
+date
+look up person
+first group
+1 Up, 2 Down, 3 Warning
+0 Up, 1 Down, 2 Unreachable
+number, 2 decimals
+Preview with three records
+SOURCE RECORD
+{
+ "NodeID": 8210,
+ "Caption": "Edge firewall pair",
+ "IPAddress": "10.10.161.150",
+ "MachineType": "Windows 2022 Server",
+ "Vendor": "HPE",
+ "Status": 1,
+ "LastBoot": "2026-09-18T02:14:08",
+ "Availability30d": 99.97,
+ "AvgResponseTime": 22,
+ "PercentLoss": 0,
+ "SysName": "edge firewall pair"
+}
+BECOMES
+Name
+edge firewall pair
+IP address
+10.10.161.150
+Manufacturer
+HPE
+Operating system
+Windows Server 2022
+Operational status
+Operational
+Uptime, last 30 days
+99.97
+last_discovered
+2026-09-18
+Ignored fields: NodeID, AvgResponseTime, PercentLoss, SysName
+SOURCE RECORD
+{
+ "NodeID": 5779,
+ "Caption": "VPN gateway",
+ "IPAddress": "10.17.156.117",
+ "MachineType": "Windows 2022 Server",
+ "Vendor": "Dell",
+ "Status": 1,
+ "LastBoot": "2026-09-09T02:14:08",
+ "Availability30d": 99.84,
+ "AvgResponseTime": 21,
+ "PercentLoss": 0,
+ "SysName": "vpn gateway"
+}
+BECOMES
+Name
+vpn gateway
+IP address
+10.17.156.117
+Manufacturer
+Dell
+Operating system
+Windows Server 2022
+Operational status
+Operational
+Uptime, last 30 days
+99.84
+last_discovered
+2026-09-09
+Ignored fields: NodeID, AvgResponseTime, PercentLoss, SysName
+SOURCE RECORD
+{
+ "NodeID": 8095,
+ "Caption": "Conditional access policies",
+ "IPAddress": "10.28.36.57",
+ "MachineType": "Windows 2022 Server",
+ "Vendor": "Dell",
+ "Status": 1,
+ "LastBoot": "2026-09-13T02:14:08",
+ "Availability30d": 99.58,
+ "AvgResponseTime": 27,
+ "PercentLoss": 0,
+ "SysName": "conditional access policies"
+}
+BECOMES
+Name
+conditional access policies
+IP address
+10.28.36.57
+Manufacturer
+Dell
+Operating system
+Windows Server 2022
+Operational status
+Operational
+Uptime, last 30 days
+99.58
+last_discovered
+2026-09-13
+Ignored fields: NodeID, AvgResponseTime, PercentLoss, SysName
+How a tool feeds the CMDB
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Connect
+An admin enters the address and a read-only account; the platform tests it.
+PERSON
+Map fields
+Source fields are mapped to class attributes with transforms and previewed on real records.
+AUTOMATIC
+Run and reconcile
+Each run reads, identifies, reconciles by precedence and reports created, updated and rejected rows.
+PERSON
+Resolve exceptions
+Duplicates are merged; rejected rows are fixed, created or ignored.
+AUTOMATIC
+Feed uptime
+Availability from monitoring updates CIs and the services above them.

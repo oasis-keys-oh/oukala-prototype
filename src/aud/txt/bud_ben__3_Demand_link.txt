@@ -1,0 +1,57 @@
+BENEFITS REALIZATION
+Measured benefit is 85% of plan so far, and $48K over the next year is at risk
+
+The register holds 10 benefits worth $1.85M a year once all are running. In the first quarter $32,600 was measured against $38,375 planned. Most value starts after go-live, so the beta slip (nine days) and the Dec 2 pilot decide the next two quarters. 3 items have confidence below 70% or are behind plan.
+
+ƒ Benefits realized to date
+ƒ Five-year portfolio return on investment
+Record a measurement
+Benefits Agent · 78%
+Register
+Planned and realized
+At risk
+Demand link
+Demand to funded project to benefit
+Each funded demand item should have benefits in the register. The 3-year benefit claimed at intake is compared with what the register now holds.
+D7 Disaster recovery for the Portal → PR3 Portal Resilience
+Claimed at intake: $800K over three years. Register holds $569K for PR3 over FY27 to FY29, so
+$231K
+of the claim has no measured driver yet.
+71% backed
+PR1, PR2 and PR4 were funded without a linked demand item
+They carry $3.54M of three-year benefit in the register. Ask the portfolio office to link the intake record so the claim can be tracked.
+3 unlinked
+Demand queue
+From Demand and priorities. Funded means inside the current funding line.
+Open Demand and priorities
+DEMAND	SPONSOR	COST	3-YEAR BENEFIT	RETURN	FUNDING	
+D7
+Disaster recovery for the Portal
+	CIO	$460K	$800K	1.7×	Funded	Add to register
+D5
+Vendor risk scorecards
+	CFO	$210K	$600K	2.9×	Funded	Add to register
+D1
+Public comment portal
+	Chief Editor	$420K	$1.1M	2.6×	Funded	Add to register
+D6
+AI drafting assistant for standards
+	CEO office	$350K	$1.4M	4.0×	Funded	Add to register
+D3
+Retire the legacy lease subledger
+	CFO	$680K	$910K	1.3×	Not funded	
+D2
+Reviewer workload dashboard
+	Chief Editor	$120K	$340K	2.8×	Not funded	
+D10
+Standards publishing analytics
+	Chief Editor	$130K	$310K	2.4×	Not funded	
+D8
+Data warehouse consolidation
+	CIO	$900K	$1.2M	1.3×	Not funded	
+D4
+Mobile app for editors
+	Chief Editor	$540K	$480K	0.9×	Not funded	
+D9
+Meeting room AV refresh
+	COO	$160K	$90K	0.6×	Not funded	

@@ -1,0 +1,65 @@
+BENEFITS REALIZATION
+Measured benefit is 85% of plan so far, and $48K over the next year is at risk
+
+The register holds 10 benefits worth $1.85M a year once all are running. In the first quarter $32,600 was measured against $38,375 planned. Most value starts after go-live, so the beta slip (nine days) and the Dec 2 pilot decide the next two quarters. 3 items have confidence below 70% or are behind plan.
+
+ƒ Benefits realized to date
+ƒ Five-year portfolio return on investment
+Record a measurement
+Benefits Agent · 78%
+Register
+Planned and realized
+At risk
+Demand link
+Planned against realized by quarter
+Eight quarters from July 2026. Future quarters show planned benefit × confidence.
+$0
+$129K
+$259K
+$388K
+$517K
+Q1 27
+Jul-Sep
+Q2 27
+Oct-Dec
+Q3 27
+Jan-Mar
+Q4 27
+Apr-Jun
+Q1 28
+Jul-Sep
+Q2 28
+Oct-Dec
+Q3 28
+Jan-Mar
+Q4 28
+Apr-Jun
+Now
+Planned
+Realized (measured)
+Forecast = planned × confidence
+QUARTER	PLANNED	REALIZED OR FORECAST	GAP
+Q1 FY27
+Jul to Sep 2026
+	$38,375	$32,600 Measured	−$5,775
+Q2 FY27
+Oct to Dec 2026
+	$56,250	$46,369 Forecast	−$9,881
+Q3 FY27
+Jan to Mar 2027
+	$150,425	$118,938 Forecast	−$31,488
+Q4 FY27
+Apr to Jun 2027
+	$287,200	$214,930 Forecast	−$72,270
+Q1 FY28
+Jul to Sep 2027
+	$343,000	$255,430 Forecast	−$87,570
+Q2 FY28
+Oct to Dec 2027
+	$461,900	$337,123 Forecast	−$124,778
+Q3 FY28
+Jan to Mar 2028
+	$461,900	$337,123 Forecast	−$124,778
+Q4 FY28
+Apr to Jun 2028
+	$461,900	$337,123 Forecast	−$124,778

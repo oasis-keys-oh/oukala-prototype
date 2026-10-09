@@ -1,0 +1,212 @@
+PEOPLE AND WORK · SKILLS AND AVAILABILITY
+Who can do what, and who is free right now?
+
+139 skills across 85 people, contractors, providers and AI agents. 2 rota skills depend on one person or none, and 5 certificates expire within 90 days. Rotas, assignment rules, the Service catalog and workflows all read this database.
+
+ƒ Critical skill depth
+ƒ Verified skill share
+ITIL 5
+Add a skill
+Request time off
+Overview
+Matrix
+Who can do this
+Gap analysis
+Certifications
+Availability
+Taxonomy
+Who can do this right now
+Pick skills and a minimum level. Results are ranked by skill match, whether they are working now, load, and fit with the team. Drag a person onto a rota to add them to its rotation.
+Routing engine · 90%
+Skills
+Azure
+1
+Minimum level
+2+
+3+
+4+
+5+
+Availability
+Available now only
+Team
+All
+PMO
+Platform team
+Data team
+Architecture
+Ops team
+Editors
+Service desk
+Finance
+Change management
+Security
+Lumen (vendor)
+AI agents
+
+4 people have Azure at level 3 or higher; 25 of the top candidates are working right now.
+
+#	PERSON	SKILL MATCH	AVAILABILITY	LOAD	WHY
+1	
+CC
+Contoso Cloud Operations
+Managed service provider
+	100% match	Available now
+24x7 · Pacific
+	59%	Level 4 Azure Working now, until 24:00 Managed service provider
+2	
+Jordan Lee
+Employee
+	100% match	Available now
+08:00 to 17:00 MT · Mountain
+	388%	Level 4 Azure Working now, until 17:00 Load 388%
+3	
+Sam Patel
+Employee
+	100% match	Available now
+08:00 to 17:00 MT · Mountain
+	1128%	Level 5 Azure Working now, until 17:00 Load 1128%
+4	
+Ravi Menon
+Contractor
+	100% match	Available now
+09:00 to 18:00 MT · Mountain
+	617%	Level 4 Azure Working now, until 18:00 Contractor, billable
+5	
+Event Correlator
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+6	
+Resource Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+7	
+Room Scheduler
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+8	
+Learning Coach
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+9	
+Forecast Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+10	
+Personal assistant
+AI agent
+	0% match	Available now
+24x7 · Always on
+	12%	Working now, until 24:00 AI first responder, guardrails apply Load 12%
+11	
+Ops Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	15%	Working now, until 24:00 AI first responder, guardrails apply Load 15%
+12	
+Invoice Advisor
+AI agent
+	0% match	Available now
+24x7 · Always on
+	17%	Working now, until 24:00 AI first responder, guardrails apply Load 17%
+13	
+PMO Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	17%	Working now, until 24:00 AI first responder, guardrails apply Load 17%
+14	
+First Officer
+AI agent
+	0% match	Available now
+24x7 · Always on
+	18%	Working now, until 24:00 AI first responder, guardrails apply Load 18%
+15	
+Triage Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	34%	Working now, until 24:00 AI first responder, guardrails apply Load 34%
+16	
+Carla Reyes
+Employee
+	0% match	Available now
+08:00 to 17:00 MT · Mountain
+	13%	Working now, until 17:00 Load 13%
+17	
+Noor Haddad
+Employee
+	0% match	Available now
+06:00 to 15:00 MT · Eastern
+	13%	Working now, until 15:00 Load 13%
+18	
+Change Risk Agent
+AI agent
+	0% match	Available now
+24x7 · Always on
+	36%	Working now, until 24:00 AI first responder, guardrails apply Load 36%
+19	
+Rina Kovacs
+Employee
+	0% match	Available now
+06:00 to 15:00 MT · Eastern
+	15%	Working now, until 15:00 Load 15%
+20	
+Wes Hartley
+Employee
+	0% match	Available now
+07:00 to 16:00 MT · Central
+	15%	Working now, until 16:00 Load 15%
+21	
+Femi Adeyemi
+Employee
+	0% match	Available now
+06:00 to 15:00 MT · Eastern
+	16%	Working now, until 15:00 Load 16%
+22	
+Greg Nolan
+Employee
+	0% match	Available now
+06:00 to 15:00 MT · Eastern
+	18%	Working now, until 15:00 Load 18%
+23	
+Chen Wei
+Employee
+	0% match	Available now
+07:00 to 16:00 MT · Central
+	18%	Working now, until 16:00 Load 18%
+24	
+Leah Moss
+Employee
+	0% match	Available now
+08:00 to 17:00 MT · Mountain
+	20%	Working now, until 17:00 Load 20%
+25	
+Anil Mehta
+Employee
+	0% match	Available now
+06:00 to 15:00 MT · Eastern
+	20%	Working now, until 15:00 Load 20%
+Drop on a rota
+Service desk on-call
+Northwind, Tom, Nia, Priya
+Platform engineering
+Contoso, Sam, Jordan, Ravi
+Search and indexing (Lumen)
+Dev, Maya, Hana, Lumen, Marco
+Identity and security
+Rina, Sam, Jordan, Ravi
+Codification Platform
+Priya, Jordan, Dev, Sam, Ravi
+Database class cover
+Dev, Jordan

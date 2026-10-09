@@ -1,0 +1,223 @@
+SERVICE MANAGEMENT · INCIDENTS
+Restore service fast, to a team first
+
+14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a major incident.
+
+Log incident
+Open the war room
+ƒ SLA compliance
+ƒ Backlog age
+ƒ Incident impact score
+ITIL 5
+ISO/IEC 20000
+DORA metrics
+Triage Agent · 86%
+Overview
+Board
+Priority calculator
+SLA timers
+Priority policy
+
+Priority is calculated so that every team normalizes impact and urgency the same way. Impact is a number, measured from the service's key metrics. Urgency is a qualitative choice the customer can make, up to a limit set by their role and by the impact. Try it: change any input and watch the priority move. Only a person with the override right can change the result, and a P1 downgrade needs a second approver.
+
+Try the calculator
+Inputs here do not create an incident.
+Service
+Codification Platform (Tier 1)
+Codification Portal (Tier 1)
+Search and indexing (Tier 1)
+Contract Repository (Tier 2)
+Lease subledger (ERP) (Tier 2)
+Finance systems (Tier 2)
+Identity (Entra ID) (Tier 1)
+Email and collaboration (M365) (Tier 1)
+Data platform (Tier 2)
+Network and VPN (Tier 1)
+Endpoint management (Intune) (Tier 2)
+Integration hub (Tier 2)
+Service desk (Tier 2)
+Users affected: 140
+Function lost: 85%
+Revenue or transactions at risk an hour: 5,000
+Regulatory exposure
+None
+Deadline or audit commitment at risk
+Reportable breach or regulatory exposure
+URGENCY: THE CUSTOMER'S CHOICE, BOUNDED BY WHO IS CHOOSING
+Who is choosing
+Caller or employee
+Service desk analyst
+Team lead or service desk lead
+Incident manager
+Service owner
+Executive (CIO or delegate)
+Urgency requested
+Critical: Work or a regulated deadline is stopped and there is no workaround
+High: Work is badly slowed or the workaround is costly
+Medium: A workaround exists; the customer can wait until tomorrow
+Low: Can wait for planned work
+Caller VIP level
+Standard
+Level 1: Board and CEO
+Level 2: Executive team
+Level 3: Critical role in a time-boxed window
+Lead who agrees to Critical
+None
+Tom Becker (service desk lead)
+Nia Brooks (change manager)
+Omar Hamid (CIO)
+Log an incident with these inputs
+ITIL 5
+Result
+Live. The matrix is the policy in force.
+Impact: measured from the service's key metrics
+ƒ ƒ Impact score
+ITIL 5
+Users affected
+140 of 420 users (33.3%)
+16.7/25
+Function lost
+85% of the service's function
+17/20
+Availability against target
+99.62% vs target 99.9%
+5.6/10
+Transactions or revenue at risk
+$5,000 an hour
+7.5/15
+Service tier
+Tier 1
+15/15
+Regulatory exposure
+None
+0/15
+Impact score = 16.7 + 17 + 5.6 + 7.5 + 15 + 0 = 62 of 100 → Significant impact (band 2)
+Urgency: the customer's choice, within bounds
+Service desk analyst
+Requested
+High
+›
+After role and impact bounds
+High
+›
+After VIP rule
+High
+
+No bound or VIP rule changed the urgency.
+
+CRITICAL
+HIGH
+MEDIUM
+LOW
+EXTENSIVE
+P1
+P1
+P2
+P3
+SIGNIFICANT
+P1
+P2
+P3
+P3
+MODERATE
+P2
+P3
+P3
+P4
+MINOR
+P3
+P4
+P4
+P4
+Priority = matrix(Significant, High)
+P2
+High
+Respond in 30m, resolve in 8h
+The matrix in force
+Counts are open incidents in each cell. 4 impact bands by 4 urgency levels.
+Edit matrix
+CRITICAL URGENCY
+HIGH URGENCY
+MEDIUM URGENCY
+LOW URGENCY
+EXTENSIVE IMPACT
+P1
+0 open
+P1
+0 open
+P2
+0 open
+P3
+0 open
+SIGNIFICANT IMPACT
+P1
+0 open
+P2
+2 open
+P3
+0 open
+P3
+0 open
+MODERATE IMPACT
+P2
+0 open
+P3
+6 open
+P3
+3 open
+P4
+0 open
+MINOR IMPACT
+P3
+0 open
+P4
+0 open
+P4
+2 open
+P4
+0 open
+P1 Critical
+P2 High
+P3 Moderate
+P4 Low
+Who may choose what
+Urgency bounds by role. A request above the bound is lowered and the note says why.
+ROLE	MOST URGENT ALLOWED	MAY CALL CRITICAL	MAY OVERRIDE PRIORITY	NOTES
+Caller or employee	Medium	Only if a lead agrees	No	Sets urgency from their own view. Medium at most; the desk adjusts.
+Service desk analyst	High	Only if a lead agrees	No	Can choose High. Critical needs a lead or incident manager to agree.
+Team lead or service desk lead	Critical	Yes, impact Extensive or Significant	No	Can choose Critical when impact is Extensive or Significant.
+Incident manager	Critical	Yes, impact Extensive or Significant	Yes, with a reason	Can choose Critical and override a calculated priority with a reason. A P1 downgrade needs a second approver.
+Service owner	Critical	Yes, impact Extensive or Significant	Yes, with a reason	Can override for their own services, with a reason.
+Executive (CIO or delegate)	Critical	Yes, impact Extensive or Significant	Yes, with a reason	Can override any priority. Every override is audited and reported monthly.
+VIP levels
+A VIP raises urgency by documented steps, never above High on its own, with an expiry and an owner.
+LEVEL	STEPS UP	PRIORITY FLOOR	EXPIRES	BASIS AND OWNER
+Standard	0	None	Never	No adjustment. Priority comes from impact and urgency only.
+Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Omar Hamid.
+Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Omar Hamid.
+Level 3: Critical role in a time-boxed window	1	P3 or higher	Nov 20	Chief Editor and senior editors during the Codification beta publishing windows (PR1). Expires when the window closes. Owner: Maya Ortiz.
+Incident process (ITIL 5 Support activity)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect and log
+Monitoring, a caller or an agent raises the incident against a service and CI.
+AUTOMATIC
+Calculate priority
+Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.
+AI AGENT
+Confirm triage
+An agent suggests category, team and similar incidents. A person confirms.
+AUTOMATIC
+Route to a team
+Work lands in the team queue. Individuals are not assigned from outside the team.
+PERSON
+Claim and swarm
+A team member claims it, or the team swarms. A direct assignment needs a stated reason.
+PERSON
+Diagnose and restore
+Work the known error or runbook, link a change if one is needed, communicate.
+AI AGENT
+Resolve and learn
+Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.

@@ -1,0 +1,98 @@
+home         opened 2 fullbtn 2 fullworks 0 tried 28 Codification Platform Upgrade FULLFAIL | Taxonomy Data Hub FULLFAIL
+trace        opened 3 fullbtn 3 fullworks 0 tried 21 Modernize standards publishing FULLFAIL | Digital Publishing portfolio FULLFAIL | Taxonomy Data Hub FULLFAIL
+inv          opened 0 fullbtn 0 fullworks 0 tried 7 
+fo           opened 3 fullbtn 3 fullworks 0 tried 5 Codification steering group FULLFAIL | Northwind vendor sync FULLFAIL | IT operations daily FULLFAIL
+tower        opened 0 fullbtn 0 fullworks 0 tried 8 
+metrics      opened 0 fullbtn 0 fullworks 0 tried 3 
+kg           opened 1 fullbtn 1 fullworks 0 tried 30 Lease accounting policy FULLFAIL
+loop         opened 0 fullbtn 0 fullworks 0 tried 9 
+port         opened 3 fullbtn 3 fullworks 0 tried 14 Vendor risk scorecards FULLFAIL | Public comment portal FULLFAIL | AI drafting assistant for stan FULLFAIL
+ims          opened 3 fullbtn 3 fullworks 0 tried 25 Add a process step FULLFAIL | Project managers update progre FULLFAIL | Schedule engine recalculates FULLFAIL
+plan         opened 3 fullbtn 3 fullworks 0 tried 14 Vendor delivery slip FULLFAIL | Vendor selection FULLFAIL | Migration design FULLFAIL
+log          opened 0 fullbtn 0 fullworks 0 tried 15 
+adm_studio   opened 3 fullbtn 3 fullworks 0 tried 9 Add a field to Incident FULLFAIL | Add a field to Incident FULLFAIL | Edit Vendor FULLFAIL
+adm_sec      opened 1 fullbtn 1 fullworks 0 tried 40 Add a role FULLFAIL
+adm_env      opened 3 fullbtn 3 fullworks 0 tried 8 PKG-0143 FULLFAIL | PKG-0141 FULLFAIL | PKG-0141 FULLFAIL
+adm_meter    opened 2 fullbtn 2 fullworks 0 tried 19 Change purchased seats FULLFAIL | Request a plan change FULLFAIL
+adm_gate     opened 3 fullbtn 3 fullworks 0 tried 5 New routing policy FULLFAIL | Edit routing policy FULLFAIL | Edit routing policy FULLFAIL
+adm_audit    opened 3 fullbtn 3 fullworks 0 tried 16 INV-20451 Northwind FULLFAIL | Portal failover runbook FULLFAIL | FY26 Vendor services FULLFAIL
+bud_over     opened 3 fullbtn 3 fullworks 0 tried 14 Edit budget line PR1-CLD FULLFAIL | Edit budget line PR2-VEN FULLFAIL | Edit budget line PR4-VEN FULLFAIL
+bud_model    opened 0 fullbtn 0 fullworks 0 tried 12 
+bud_ven      opened 3 fullbtn 3 fullworks 0 tried 9 New contract FULLFAIL | New vendor FULLFAIL | New vendor FULLFAIL
+bud_ben      opened 3 fullbtn 3 fullworks 0 tried 11 Record a benefit measurement FULLFAIL | Record a benefit measurement FULLFAIL | New benefit FULLFAIL
+bud_doa      opened 0 fullbtn 0 fullworks 0 tried 10 
+chat_home    opened 3 fullbtn 3 fullworks 0 tried 17 Add a process step FULLFAIL | Understand the ask FULLFAIL | Check guardrails and permissio FULLFAIL
+dev_pipe     opened 3 fullbtn 3 fullworks 0 tried 15 Work item FULLFAIL | Commit FULLFAIL | Pull request FULLFAIL
+itom_dev     opened 3 fullbtn 3 fullworks 0 tried 28 Add a process step FULLFAIL | Every production deploy is rec FULLFAIL | Failures are linked FULLFAIL
+plat_map     opened 3 fullbtn 3 fullworks 0 tried 19 Strategy and objectives FULLFAIL | Demand and intake FULLFAIL | Portfolio and projects FULLFAIL
+plat_data    opened 3 fullbtn 3 fullworks 0 tried 18 Add a process step FULLFAIL | A module registers its tables FULLFAIL | The model reads the registry FULLFAIL
+exe_dash     opened 3 fullbtn 3 fullworks 0 tried 28 Add a process step FULLFAIL | Collect FULLFAIL | Arrange by role FULLFAIL
+exe_strat    opened 3 fullbtn 3 fullworks 0 tried 9 New key result FULLFAIL | Update key result progress FULLFAIL | Days to publish a standard FULLFAIL
+exe_risk     opened 3 fullbtn 3 fullworks 0 tried 7 Log a risk FULLFAIL | Assign a mitigation owner FULLFAIL | Lumen asks for a price change  FULLFAIL
+exe_apps     opened 3 fullbtn 3 fullworks 0 tried 23 Add a process step FULLFAIL | Score FULLFAIL | Classify FULLFAIL
+exe_board    opened 3 fullbtn 3 fullworks 0 tried 36 Edit: AI governance FULLFAIL | Draft from live data FULLFAIL | Edit FULLFAIL
+exe_scen     opened 3 fullbtn 3 fullworks 0 tried 14 Save a scenario FULLFAIL | Set levers FULLFAIL | Recommend FULLFAIL
+flw_design   opened 3 fullbtn 3 fullworks 0 tried 19 Add a lane FULLFAIL | Import a workflow FULLFAIL | Workflow settings FULLFAIL
+flw_asmt     opened 3 fullbtn 3 fullworks 0 tried 10 Assign an assessment FULLFAIL | New assessment type FULLFAIL | Attach Security assessment FULLFAIL
+flw_appr     opened 3 fullbtn 3 fullworks 0 tried 20 Release $48,000 of the Q4 rese FULLFAIL | Overspend: Azure August actual FULLFAIL | Northwind MSA amendment: Satur FULLFAIL
+flw_dmn      opened 0 fullbtn 0 fullworks 0 tried 16 
+flw_bpmn     opened 1 fullbtn 1 fullworks 0 tried 24 Add a step FULLFAIL
+flw_agent    opened 3 fullbtn 3 fullworks 0 tried 11 Add a step FULLFAIL | Edit step FULLFAIL | Edit step FULLFAIL
+flw_hub      opened 2 fullbtn 2 fullworks 0 tried 8 Register an MCP server FULLFAIL | Webex Paused FULLFAIL
+itom_cmdb    opened 0 fullbtn 0 fullworks 0 tried 36 
+itom_model   opened 3 fullbtn 3 fullworks 0 tried 29 New class FULLFAIL | Add an attribute FULLFAIL | Add an attribute FULLFAIL
+itom_graph   opened 0 fullbtn 0 fullworks 0 tried 39 
+itom_disc    opened 3 fullbtn 3 fullworks 0 tried 18 Upload a CSV of CIs FULLFAIL | Add a field mapping for CSV up FULLFAIL | Add a process step FULLFAIL
+itom_health  opened 3 fullbtn 3 fullworks 0 tried 40 Azure DNS FULLFAIL | Azure DNS FULLFAIL | Entra ID tenant FULLFAIL
+itom_fin     opened 3 fullbtn 3 fullworks 0 tried 13 Cost allocation rule FULLFAIL | Add a process step FULLFAIL | Collect FULLFAIL
+itsm_inc     opened 3 fullbtn 3 fullworks 0 tried 27 Log an incident FULLFAIL | ITIL 5 FULLFAIL | ITIL 5 FULLFAIL
+itsm_prb     opened 3 fullbtn 3 fullworks 0 tried 11 New problem record FULLFAIL | New known error FULLFAIL | ITIL 5 FULLFAIL
+itsm_chg     opened 3 fullbtn 3 fullworks 0 tried 11 Request a change FULLFAIL | Scale Azure SQL tier for the T FULLFAIL | Apply ERP vendor patch for the FULLFAIL
+itsm_mi      opened 3 fullbtn 3 fullworks 0 tried 10 CSDM 5 FULLFAIL | Add a timeline entry FULLFAIL | ITIL 5 FULLFAIL
+itsm_home    opened 3 fullbtn 3 fullworks 0 tried 12 Log an incident FULLFAIL | Request a change FULLFAIL | ITIL 5 FULLFAIL
+kcs_home     opened 3 fullbtn 3 fullworks 0 tried 19 New knowledge item FULLFAIL | Promote to an agent skill FULLFAIL | Promote to an agent skill FULLFAIL
+kcs_edit     opened 0 fullbtn 0 fullworks 0 tried 27 
+kcs_ask      opened 0 fullbtn 0 fullworks 0 tried 8 
+kcs_gap      opened 3 fullbtn 3 fullworks 0 tried 7 Acceptable use of AI tools for FULLFAIL | Rebuild the Lumen search index FULLFAIL | Acceptable use of AI tools for FULLFAIL
+kcs_prompt   opened 3 fullbtn 3 fullworks 0 tried 7 KB answer with citations FULLFAIL | Incident to article drafter FULLFAIL | Meeting decision extractor FULLFAIL
+kcs_test     opened 3 fullbtn 3 fullworks 0 tried 10 New test suite FULLFAIL | New test case FULLFAIL | New test case FULLFAIL
+kcs_skills   opened 3 fullbtn 3 fullworks 0 tried 11 Steps extracted by AI FULLFAIL | Steps extracted by AI FULLFAIL | Steps extracted by AI FULLFAIL
+vault        opened 0 fullbtn 0 fullworks 0 tried 26 
+exe_mat      opened 3 fullbtn 3 fullworks 0 tried 23 New capability FULLFAIL | Change targets: Autonomous ser FULLFAIL | Change risk assessment and app FULLFAIL
+itom_evt     opened 3 fullbtn 3 fullworks 0 tried 15 Codification Platform FULLFAIL | Codification Portal FULLFAIL | Search and indexing FULLFAIL
+obs_dash     opened 3 fullbtn 3 fullworks 0 tried 10 Add a tile FULLFAIL | Add a tile FULLFAIL | Add a process step FULLFAIL
+itom_slo     opened 3 fullbtn 3 fullworks 0 tried 19 New SLO FULLFAIL | New synthetic check FULLFAIL | Sam Patel FULLFAIL
+itom_run     opened 3 fullbtn 3 fullworks 0 tried 14 New automation rule FULLFAIL | New automation rule FULLFAIL | Sev 1 and 2: collect diagnosti FULLFAIL
+obs_std      opened 3 fullbtn 3 fullworks 0 tried 11 Restart the Lumen search index FULLFAIL | Restart the Lumen search index FULLFAIL | Scale the SQL managed instance FULLFAIL
+svc_oncall   opened 3 fullbtn 3 fullworks 0 tried 7 New rota FULLFAIL | Service desk on-call FULLFAIL | Platform engineering FULLFAIL
+svc_skills   opened 3 fullbtn 3 fullworks 0 tried 11 Request time off FULLFAIL | Avery Chen FULLFAIL | Event Correlator FULLFAIL
+ppl_org      opened 3 fullbtn 3 fullworks 0 tried 9 Add a worker FULLFAIL | Add a vacancy FULLFAIL | Platform team FULLFAIL
+ppl_cap      opened 3 fullbtn 3 fullworks 0 tried 11 Sam Patel FULLFAIL | Sam Patel FULLFAIL | Sam Patel FULLFAIL
+ppl_train    opened 3 fullbtn 3 fullworks 0 tried 12 Import a SCORM or xAPI package FULLFAIL | Using AI safely at Meridian FULLFAIL | Working with the AI drafting a FULLFAIL
+ppl_av       opened 3 fullbtn 3 fullworks 0 tried 12 Boardroom FULLFAIL | Vendor call FULLFAIL | Finance check-in FULLFAIL
+ppl_jrny     opened 3 fullbtn 3 fullworks 0 tried 19 Welcome message and checklist FULLFAIL | New hire onboarding (parent wo FULLFAIL | Laptop and accounts ready FULLFAIL
+ppl_meet     opened 3 fullbtn 3 fullworks 0 tried 7 File minutes FULLFAIL | Architecture Review Board FULLFAIL | Build an agenda FULLFAIL
+ppl_perf     opened 3 fullbtn 3 fullworks 0 tried 11 Maya Ortiz FULLFAIL | Omar Hamid FULLFAIL | Tom Becker FULLFAIL
+ppm_proj     opened 3 fullbtn 3 fullworks 0 tried 9 Who answers for Triage Agent? FULLFAIL | Contract Repository Refresh FULLFAIL | Who answers for Change Risk Ag FULLFAIL
+ppm_raid     opened 3 fullbtn 3 fullworks 0 tried 10 Lumen slips the search indexer FULLFAIL | Pilot date has no cushion FULLFAIL | Content migration finds malfor FULLFAIL
+itsm_rel     opened 3 fullbtn 3 fullworks 0 tried 17 New release FULLFAIL | Go or no-go: REL-2608 FULLFAIL | Standards API 2.3.1 batch hotf FULLFAIL
+agile_board  opened 3 fullbtn 3 fullworks 0 tried 3 New story FULLFAIL | Plan a sprint FULLFAIL | Estimate a story FULLFAIL
+agile_art    opened 3 fullbtn 3 fullworks 0 tried 11 New program increment FULLFAIL | New PI objective FULLFAIL | Security scanning in the pipel FULLFAIL
+svc_sla      opened 3 fullbtn 3 fullworks 0 tried 30 New agreement FULLFAIL | New agreement FULLFAIL | INC004441 FULLFAIL
+ppm_sow      opened 3 fullbtn 3 fullworks 0 tried 14 Add or analyze a document FULLFAIL | Legal returns redlines on liab FULLFAIL | Meridian provides the Azure la FULLFAIL
+svc_cat      opened 3 fullbtn 3 fullworks 0 tried 13 Design a catalog item FULLFAIL | Avery Chen FULLFAIL | Rina Okafor FULLFAIL
+svc_req      opened 3 fullbtn 3 fullworks 0 tried 11 Dev Rao FULLFAIL | Mobile phone FULLFAIL | Tess Whitaker FULLFAIL
+svc_portal   opened 3 fullbtn 3 fullworks 0 tried 11 Maya Ortiz FULLFAIL | Approval: Manager approval FULLFAIL | Approval: Budget owner FULLFAIL
+svc_asset    opened 3 fullbtn 3 fullworks 0 tried 9 Add an asset FULLFAIL | Reclaim unused seats FULLFAIL | Add an asset FULLFAIL
+svc_notify   opened 3 fullbtn 3 fullworks 0 tried 12 Approval needed to Avery Chen FULLFAIL | On-call page to Dev Rao FULLFAIL | SLA breached to Jordan Lee FULLFAIL
+svc_360      opened 3 fullbtn 3 fullworks 0 tried 10 New service FULLFAIL | New service offering FULLFAIL | CSDM 5 FULLFAIL
+tbm_model    opened 3 fullbtn 3 fullworks 0 tried 15 New scaling step FULLFAIL | Edit scaling step: Service des FULLFAIL | Edit scaling step: Search inde FULLFAIL
+kcs_viz      opened 3 fullbtn 3 fullworks 0 tried 12 New dashboard FULLFAIL | Add a saved visual to “Operati FULLFAIL | Operations floor FULLFAIL
+ppm_wbs      opened 3 fullbtn 3 fullworks 0 tried 22 Business case and legal requir FULLFAIL | Project kickoff FULLFAIL | Charter, RACI and steering cad FULLFAIL
+[
+  'LN is not defined',
+  'LN is not defined',
+  'LN is not defined',
+  'LN is not defined',
+  'LN is not defined'
+]

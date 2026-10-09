@@ -1,0 +1,125 @@
+RAID LOG
+Risks, assumptions, issues, dependencies
+
+8 open risks carry $252K of exposure, and the largest is lumen slips the search indexer again at $108K. 3 issues are open, 3 dependencies wait on something, and 2 assumptions have not been checked. Owners include employees, AI agents, contractors, managed service providers.
+
+ƒ Risk exposure
+PMBOK
+Why am I seeing this?
+Projects
+All projects
+4
+Types
+All types
+5
+Owner is a
+All four kinds
+4
+Add an entry
+Dashboard and register
+Board
+Heat map
+Linked records
+By kind of owner
+Items can be owned by an employee, an AI agent, a contractor or a managed service provider. AI-owned items name a human who is accountable.
+Employees
+15
+AI agents
+2
+Test automation contractor leaves before acceptance testing ends
+Risk
+Test Agent · Codification
+Tier 1 portal latency since 09:12 today
+Issue
+Triage Agent · Portal
+Contractors
+1
+Taxonomy model changes after reviewer feedback
+Risk
+Hana Koval · Taxonomy
+Managed service providers
+1
+Taxonomy engineering waits for the Lumen indexer team
+Dependency
+Lumen Search Services · Taxonomy
+By project
+Open items grouped under each project
+PR1 Codification Platform Upgrade
+9
+Lumen slips the search indexer again
+Risk
+Priya Shah
+Editors cannot test during the Nov 16 close
+Risk
+Priya Shah
+Content migration finds malformed legacy records
+Risk
+Sam Patel
+Test automation contractor leaves before acceptance testing ends
+Risk
+Test Agent
+Lumen keeps the same two engineers through go live
+Assumption
+Priya Shah
+The Q2 comment window is a hard regulator date
+Assumption
+Maya Ortiz
+Show 3 more of 3 remaining
+PR2 Taxonomy Data Hub
+5
+Pilot date has no cushion
+Risk
+Dev Rao
+Taxonomy model changes after reviewer feedback
+Risk
+Hana Koval
+Lumen invoice INV-20433 is on hold
+Issue
+Avery Chen
+Taxonomy engineering waits for the Lumen indexer team
+Dependency
+Lumen Search Services
+Pilot with 40 or 80 editors
+Decision
+Maya Ortiz
+PR3 Portal Resilience
+2
+Failover rehearsal exposes a gap in the standby region
+Risk
+Tom Becker
+Tier 1 portal latency since 09:12 today
+Issue
+Triage Agent
+PR4 Contract Repository Refresh
+3
+Cutover window collides with year-end freeze
+Risk
+Maya Ortiz
+Legacy repository has no active legal holds
+Assumption
+Avery Chen
+Cutover needs Platform team capacity in January
+Dependency
+Maya Ortiz
+How a risk is handled
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ISO/IEC 27001.
+Add a step
+Open in Workflow designer
+PERSON
+Identify
+Anyone or any agent logs a risk, assumption, issue, dependency or decision.
+PERSON
+Rate
+Probability and impact are rated 1 to 5; risks also get a cost, so exposure is in dollars.
+APPROVAL GATE
+Own
+Every item has an owner who can be an employee, an AI agent, a contractor or a provider. An AI agent needs an accountable human.
+PERSON
+Respond
+Mitigate, accept, transfer or avoid. The response links to a schedule task.
+AUTOMATIC
+Watch exposure
+Exposure adds up by project and owner kind; overdue and unowned items are flagged.
+APPROVAL GATE
+Close or escalate
+A risk that happens becomes an issue; a closed item keeps its history.

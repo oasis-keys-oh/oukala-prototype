@@ -1,0 +1,25 @@
+exe_dash 1440 d 
+exe_strat 1440 d 
+exe_mat 1440 d 
+port 1440 d 
+ppm_proj 1440 d 
+ppm_wbs 1440 d 
+ppm_sow 1440 d 
+ims 1440 d 
+plan 1440 d 
+ppm_raid 1440 d 
+inv 1440 d 
+bud_over 1440 d 
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.screenshot: Target page, context or browser has been closed
+Call log:
+[2m  - taking page screenshot[22m
+[2m  - waiting for fonts to load...[22m
+[2m  - fonts loaded[22m
+
+    at /tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/vp_tools/batch.js:9:9
+
+Node.js v22.22.0

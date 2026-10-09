@@ -1,0 +1,98 @@
+PLATFORM · ENVIRONMENTS AND RELEASES
+Promote configuration like code
+
+3 packages are moving toward Production and 2 are waiting on a gate. Prod runs 26.09.14+136; the next platform upgrade, 26.12, is ready to schedule with 2 items to review.
+
+ƒ Promotions passing gates first time
+Test Agent · 90%
+BUILD AND BREAK THINGS
+Dev
+Healthy
+26.10.06+144
+Deployed
+Today 10:12
+Checks
+212 of 212 unit tests
+Packages
+1 here
+Drift
+None
+AUTOMATED TESTS RUN HERE
+Test
+Healthy
+26.10.02+141
+Deployed
+Oct 2
+Checks
+88 of 90 integration tests
+Packages
+1 here
+Drift
+2 settings differ from the next environment
+BUSINESS OWNERS SIGN OFF
+UAT
+1 sign-off pending
+26.09.28+138
+Deployed
+Sep 28
+Checks
+Business sign-off 4 of 6
+Packages
+1 here
+Drift
+3 settings differ from the next environment
+MERIDIAN RUNS ON THIS
+Prod
+Healthy, 99.62% available
+26.09.14+136
+Deployed
+Sep 14
+Checks
+Smoke tests pass
+Packages
+1 here
+Drift
+None
+Pipeline
+Migration kits
+Upgrades
+Feature flags
+Promotion pipeline
+Drag a configuration package one column to the right to promote it, one to the left to roll it back. Gates must pass first; a blocked drop tells you which one. Alt plus arrow keys also work.
+ƒ Promotions passing gates first time
+New package
+Dev
+1
+PKG-0143
+Lumen guest quota and vendor share policy
+2 changes · Sam Patel · Today 09:40
+✓ Unit
+Open
+Promote
+Test
+1
+PKG-0141
+Contract renewal flow with 90-day notice alert
+3 changes · Nia Brooks · Oct 2
+○ Integration
+○ Scan
+Open
+Promote
+UAT
+1
+PKG-0138
+Meridian theme and invoice approval limits
+2 changes · Avery Chen · Sep 28
+○ UAT sign-off
+○ CAB
+○ Backup
+Open
+Promote
+Prod
+1
+PKG-0136
+Incident impact and urgency matrix
+2 changes · Tom Becker · Sep 14
+Live in production
+Open
+Roll back

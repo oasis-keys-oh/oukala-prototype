@@ -1,0 +1,129 @@
+CMDB · HEALTH AND GOVERNANCE
+Trust the CMDB, then prove it
+
+Health is 89.4 (target 90). Completeness is 95.4%, correctness 78.4% and compliance 92.6%. 12 CIs fail at least one audit rule and 39 have a finding of some kind. 6 remediation tasks are open and 3 of 7 owners have attested in the current campaigns.
+
+ƒ CMDB health score
+ƒ CMDB completeness
+ƒ CMDB correctness
+ƒ CMDB compliance
+ITIL 5
+New attestation campaign
+Why am I seeing this?
+OVERALL HEALTH
+89.4
+target 90
+FAILING AUDIT RULES
+12
+CIs with 1+ failure
+OPEN TASKS
+6
+of 6 remediation tasks
+ATTESTED
+3 of 7
+owners in open campaigns
+RETIRED
+0
+kept for audit
+Scores and rules
+Remediation tasks
+Assign groups
+Attestation
+Lifecycle and audit
+Lifecycle stages
+CIs by CSDM lifecycle stage
+Planned
+0
+Build
+0
+Operational
+161
+Retiring
+1
+Retired
+0
+
+Planned, Build, Operational, Retiring, Retired are the CSDM lifecycle stages. Retired CIs stay in the table for audit but leave health scoring.
+
+CI audit trail
+Every field change, with who or which tool made it. Tools are tracked the same as people.
+By
+All
+2
+Field
+All
+7
+Export CSV
+WHEN	WHO	BY	CI	FIELD	FROM	TO
+Oct 6 10:54	
+Leah Moss
+	Person	portal-waf	ip_address	10.20.4.17	10.20.4.18
+Oct 6 12:45	
+Priti Joshi
+	Person	vm-sql-prod-02	ip_address	10.20.4.17	10.20.4.18
+Oct 6 13:03	vCenter	Tool	codif-blob	ip_address	10.20.4.17	10.20.4.18
+Oct 6 11:47	SolarWinds Orion	Tool	codif-app-02	lifecycle_stage	Build	Operational
+Oct 6 11:24	ServiceNow import	Tool	Service desk phone system	ip_address	10.20.4.17	10.20.4.18
+Oct 6 07:46	Azure Resource Graph	Tool	ctr-taxonomy-api	lifecycle_stage	Build	Operational
+Oct 6 08:49	ServiceNow import	Tool	logic-connectors	ip_address	10.20.4.17	10.20.4.18
+Oct 6 10:16	
+Ines Duarte
+	Person	search-cluster	ip_address	10.20.4.17	10.20.4.18
+Oct 6 10:07	SolarWinds Orion	Tool	apim-gateway	business_criticality	2 - Somewhat critical	1 - Mission critical
+Oct 6 07:10	
+Grace Whitfield
+	Person	codification-portal	operational_status	Operational	Degraded
+Oct 6 07:50	vCenter	Tool	service-bus	lifecycle_stage	Build	Operational
+Oct 6 12:18	
+Rina Kovacs
+	Person	erp-sql-01	os	Windows Server 2019	Windows Server 2022
+Oct 6 07:33	
+Owen Fraser
+	Person	contract-app	os	Windows Server 2019	Windows Server 2022
+Oct 6 09:55	
+Ben Alvarez
+	Person	Entra ID tenant	operational_status	Operational	Degraded
+Oct 5 08:26	
+Rina Kovacs
+	Person	nas-nor-01	business_criticality	2 - Somewhat critical	1 - Mission critical
+Oct 5 07:11	vCenter	Tool	Entra ID tenant	business_criticality	2 - Somewhat critical	1 - Mission critical
+Oct 5 09:25	Azure Resource Graph	Tool	codif-app-02	support_group	(empty)	Platform team
+Oct 5 11:58	
+Isla Reid
+	Person	sw-core-nor-02	support_group	(empty)	Platform team
+Oct 5 09:05	Azure Resource Graph	Tool	adf-pipelines	os	Windows Server 2019	Windows Server 2022
+Oct 5 09:44	
+Pierce Caldwell
+	Person	lumen-indexer-01	ip_address	10.20.4.17	10.20.4.18
+Oct 5 08:10	
+Rina Kovacs
+	Person	ctr-taxonomy-api	os	Windows Server 2019	Windows Server 2022
+Oct 5 09:49	ServiceNow import	Tool	db-prod-02	operational_status	Operational	Degraded
+Oct 5 13:03	
+Femi Adeyemi
+	Person	Conditional access policies	os	Windows Server 2019	Windows Server 2022
+Oct 5 10:21	
+Maribel Cruz
+	Person	esx-nor-02	operational_status	Operational	Degraded
+Oct 5 07:10	
+Wes Hartley
+	Person	lumen-indexer-02	owned_by	Sam Patel	Dev Rao
+
+48 of 48 rows
+Scroll for more · rows are drawn as you scroll
+How CMDB quality is governed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Measure
+Completeness, correctness and compliance are computed from the data model and rules.
+AI AGENT
+Open tasks
+Each rule failure or finding group becomes a remediation task for the responsible group.
+PERSON
+Fix or escalate
+Groups fix data; large gaps become a demand item in the portfolio.
+APPROVAL GATE
+Attest
+Owners confirm what they own each quarter.

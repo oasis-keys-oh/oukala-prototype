@@ -1,0 +1,86 @@
+CLOUD COST (FINOPS)
+Know who spends what, and stop paying for idle
+
+September Azure spend was $105K against a $100K budget (105%), and October is forecast at $112K because the SQL instance was scaled up during the portal incident. 10.9% of spend is recoverable waste.
+
+ƒ Cloud spend vs monthly budget
+ƒ Cloud waste share
+Add allocation rule
+Why am I seeing this?
+Spend and budget
+Untagged and showback
+Rightsizing
+Budget against actual
+Monthly Azure consumption, billed through the Northwind Cloud MSA (budget line B1, $1.2M a year)
+ƒ Cloud spend vs monthly budget
+$0K
+$30K
+$60K
+$90K
+$120K
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Jul
+Aug
+Sep
+Oct
+Budget $100K
+Budget burn = Month actual ÷ Monthly budget = $105K ÷ $100K = 105%. October forecast $112K is 112%: $12.0K over unless the SQL scale-up is reverted.
+Anomaly detection
+Daily cost for 30 days. The band is the mean plus or minus 2 standard deviations of the first 25 days ($3.35K ± $0.36K).
+$0K
+$2K
+$4K
+$6K
+-30d
+-25d
+-20d
+-15d
+-10d
+-5d
+today
+2 anomalous days
+SQL managed instance was scaled from General Purpose 8 vCore to Business Critical 16 vCore on Oct 5 at 14:20 during INC1. It adds $1,870 a day, about $56K a month if left.
+FinOps Agent · 92%
+Schedule revert after INC1
+Where the money goes
+September actual by service, $105.0K total
+Service
+Department
+Environment
+SQL managed instance
+$31.2K
+App Service
+$24.6K
+Virtual machines
+$18.4K
+Storage
+$9.8K
+Log Analytics
+$7.9K
+Front Door
+$6.1K
+Defender for Cloud
+$4.3K
+Other
+$2.7K
+How cloud cost is managed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Azure cost export lands daily and is matched to tags.
+PERSON
+Allocate
+Showback assigns untagged cost by rule.
+AI AGENT
+Recommend
+Utilization produces rightsizing proposals with risk and savings.
+APPROVAL GATE
+Approve
+Accepted proposals become changes that need approval.

@@ -1,7 +1,7 @@
 /* mod_plat_modmap: the Module map. Takes over plat_map (Master process flow). Every module, every push and pull of data between them,
    pair paths, journeys, a matrix and a coverage audit. Reads window.PLAT, window.LINKS and PROC lazily because it loads before the registry. */
 (function(){
-S.mm=S.mm||{sel:"itsm_inc",tab:"pulls",pair:null,jny:null,showPush:true,showPull:true,byMode:false,blast:false,insp:true,view:null,edge:null,q:""};
+S.mm=S.mm||{sel:"itsm_inc",tab:"pulls",pair:null,jny:null,showPush:true,showPull:true,byMode:false,byMat:false,blast:false,insp:true,view:null,edge:null,q:""};
 const MM=S.mm,E=esc;
 const OLD=(typeof _R!=="undefined"&&_R["plat_map"])||null;
 const ICON="M4 6h5v4H4zM15 6h5v4h-5zM9.5 8h5M17.5 10v6M4 16h5v4H4zM15 16h5v4h-5zM9 18h6";
@@ -481,7 +481,9 @@ Object.assign(METRICS,{
 /* ---------- state ---------- */
 let READY=false,MODS=[],MB={},FL=[],OUT={},INN={},PLN={},DROP=[],PAIRN=new Map(),LAY=null;
 const FRESH=["live","near-live","hourly","daily"],MODEN={e:"event",b:"batch",h:"human"};
+const XMODS=[];
 const NW=150,NH=54,GX=22,GL=104,ROWP=80,LTOP=40,LGAP=12,MAXC=8;
+const hasScreen=id=>SCREENS.some(x=>x[0]===id);
 const scName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:id};
 const stepsOf=id=>{const d=window.PROC&&PROC.defs[id];return d?(S.proc&&S.proc[id])||d.steps||[]:null};
 function init(){
@@ -499,6 +501,11 @@ function init(){
   const m={id,sn:c[1],name:scName(id),band:c[2],bi:BI[c[2]],own:c[3],al:c[4].split(",").map(s=>s.trim().toLowerCase()).filter(Boolean),app:ap?ap.id:null,r:[...r],w:[...w],proc:st?id:null,steps:st?st.length:0,scr:id};
   m.al.push(m.sn.toLowerCase());if(m.name.toLowerCase()!==m.sn.toLowerCase())m.al.push(m.name.toLowerCase());
   MODS.push(m);MB[id]=m;
+ });
+ XMODS.forEach(d=>{
+  const ok=x=>entMap[x]||PLN[x];
+  const m={id:d.id,sn:d.sn||d.name,name:d.name,band:d.band,bi:BI[d.band],own:d.own||"Not assigned",al:[d.name.toLowerCase(),(d.sn||d.name).toLowerCase(),d.id.replace(/_/g," ")],app:null,r:(d.r||[]).filter(ok),w:(d.w||[]).filter(ok),proc:stepsOf(d.id)?d.id:null,steps:(stepsOf(d.id)||[]).length,scr:hasScreen(d.id)?d.id:null,proposed:!!d.proposed,added:true};
+  MODS.push(m);MB[m.id]=m;
  });
  /* flows */
  FL=[];OUT={};INN={};DROP=[];PAIRN=new Map();
@@ -539,17 +546,17 @@ function layout(){
  LAY={lanes,W:GL+18+MAXC*(NW+GX)+10,H:y};
 }
 function stats(){
- const n=MODS.length,nf=FL.length;
- const pp=MODS.filter(m=>m.out.some(f=>f.reg)&&m.inn.some(f=>f.reg)).length;
+ const real=MODS.filter(m=>!m.proposed),n=real.length,nf=FL.length,prop=MODS.length-n;
+ const pp=real.filter(m=>m.out.some(f=>f.reg)&&m.inn.some(f=>f.reg)).length;
  const ct=FL.filter(f=>f.reg).length;
  const reg=FL.filter(f=>f.reg);const live=reg.filter(f=>f.fresh==="live"||f.fresh==="near-live").length;
  METRICS.m_mm_pp.cur=Math.round(100*pp/Math.max(1,n));METRICS.m_mm_ct.cur=Math.round(100*ct/Math.max(1,nf));METRICS.m_mm_live.cur=Math.round(100*live/Math.max(1,reg.length));
  const bandPairs=new Map();FL.forEach(f=>{const a=MB[f.from].bi,b=MB[f.to].bi;if(a===b)return;const k=Math.min(a,b)+"-"+Math.max(a,b);bandPairs.set(k,(bandPairs.get(k)||[]).concat(f))});
- const fnd={noPush:MODS.filter(m=>!m.nout),noPull:MODS.filter(m=>!m.nin),noProc:MODS.filter(m=>!m.proc),noReg:MODS.filter(m=>!m.out.some(f=>f.reg)||!m.inn.some(f=>f.reg)),
-  nonOwn:MODS.filter(m=>m.nonOwn.length),planned:{}};
+ const fnd={noPush:real.filter(m=>!m.nout),noPull:real.filter(m=>!m.nin),noProc:real.filter(m=>!m.proc),noReg:real.filter(m=>!m.out.some(f=>f.reg)||!m.inn.some(f=>f.reg)),
+  nonOwn:real.filter(m=>m.nonOwn.length),planned:{}};
  FL.forEach(f=>f.refs.forEach(r=>{if(r.kind==="plan")fnd.planned[r.id]=(fnd.planned[r.id]||0)+1}));
  fnd.noContract=FL.filter(f=>!f.reg);fnd.batch=FL.filter(f=>f.mode==="batch").length;
- window._mmStats=Object.assign({n,nf,pp,ct,live,reg:reg.length,bandPairs},{fnd});
+ window._mmStats=Object.assign({n,nf,pp,ct,live,prop,reg:reg.length,bandPairs},{fnd});
 }
 const ST=()=>{init();return window._mmStats};
 /* ---------- graph helpers ---------- */
@@ -583,11 +590,61 @@ function matchMods(text){
 }
 window.MODMAP={
  get modules(){init();return MODS},get flows(){init();return FL},get bands(){return BANDS.map(b=>({id:b[0],name:b[1]}))},get dropped(){init();return DROP},
- between(a,b){init();return between(a,b)},neighbors(id){init();return neighbors(id)},blast(id,h){init();return blastOf(id,h)},match:matchMods,stats(){return ST()}
+ between(a,b){init();return between(a,b)},neighbors(id){init();return neighbors(id)},blast(id,h){init();return blastOf(id,h)},match:matchMods,stats(){return ST()},
+ select(id,tab){init();if(!MB[id])return false;goMap({sel:id,pair:null,jny:null,flow:null,edge:null,insp:true,tab:/^(pulls|pushes|proc|data|blast)$/.test(tab||"")?tab:(MM.tab||"pulls"),flyIds:[id]});return true},
+ refresh(){if(!READY)return true;READY=false;init();if(S.screen==="plat_map")render();return true},
+ addModule(def){return addModule(def)},addFlows(arr){return addFlows(arr)}
 };
+const MODE_CODE={event:"e",batch:"b",human:"h",api:"e"};
+const clean=t=>String(t==null?"":t).replace(/[|\n\r]+/g," ").replace(/>/g,"-").trim();
+function flowLine(from,to,f){
+ const ent=clean(f.entity||"-")||"-";
+ return [from+">"+to,clean(f.data)||"Data",ent,clean(f.trig)||"On change",MODE_CODE[f.mode]||"e",clean(f.why||f.data)||"Documented flow"].join("|");
+}
+function addModule(def){
+ def=def||{};const w=[];
+ if(!init())return{ok:false,id:def.id||null,warnings:["The module map is still starting. Try again in a moment."]};
+ const id=String(def.id||"").trim();
+ if(!/^[a-z][a-z0-9_]*$/i.test(id))return{ok:false,id:id||null,warnings:["A module needs an id of letters, numbers and underscores, for example fin_cost_pools."]};
+ if(MB[id])return{ok:false,id,warnings:["A module with the id "+id+" already exists."]};
+ if(!def.name)return{ok:false,id,warnings:["A module needs a name."]};
+ if(BI[def.band]==null)return{ok:false,id,warnings:["Unknown band "+def.band+". Use one of: "+BANDS.map(b=>b[0]).join(", ")+"."]};
+ if(!def.own)w.push("No accountable team or person. Name one so the module has an owner.");
+ const known=x=>PLAT.ent(x)||(PLAT.PLANNED||[]).some(p=>p[0]===x);
+ const r=(def.r||[]).filter(known),wr=(def.w||[]).filter(known);
+ if(r.length!==(def.r||[]).length||wr.length!==(def.w||[]).length)w.push("Some entities are not in the registry or planned list and were left out: "+(def.r||[]).concat(def.w||[]).filter(x=>!known(x)).join(", ")+".");
+ if(!(def.r||[]).length&&!(def.w||[]).length)w.push("No entities read or written. Name the records this module owns or uses.");
+ const flows=def.flows||[];if(!flows.length)w.push("No data flows. A module that nothing feeds and that feeds nothing is an island.");
+ const lines=[];
+ flows.forEach(f=>{
+  if(!MB[f.other]){w.push("Flow to "+f.other+" skipped: that module does not exist.");return}
+  if(f.entity&&!known(String(f.entity).split(".")[0]))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
+  lines.push(f.dir==="pull"?flowLine(f.other,id,f):flowLine(id,f.other,f));
+ });
+ XMODS.push({id,name:def.name,sn:def.sn||def.name,band:def.band,own:def.own||"",r,w:wr,proposed:def.proposed!==false});
+ lines.forEach(l=>FLOWS.push(l));
+ READY=false;init();
+ if(S.screen==="plat_map")render();
+ audit("Module map: added "+(def.proposed===false?"module":"proposed module"),def.name+" in "+BANDS[BI[def.band]][1]);
+ return{ok:true,id,warnings:w};
+}
+function addFlows(arr){
+ const w=[];if(!init())return{ok:false,added:0,warnings:["The module map is still starting."]};
+ let k=0;
+ (arr||[]).forEach(f=>{
+  if(!MB[f.from]||!MB[f.to]){w.push("Flow "+f.from+" to "+f.to+" skipped: unknown module.");return}
+  if(f.from===f.to){w.push("Flow "+f.from+" to itself skipped.");return}
+  if(flowsBetween(f.from,f.to).some(x=>x.data===clean(f.data))){w.push("Flow \""+f.data+"\" from "+f.from+" to "+f.to+" already exists.");return}
+  if(f.entity&&!(PLAT.ent(String(f.entity).split(".")[0])||(PLAT.PLANNED||[]).some(p=>p[0]===String(f.entity).split(".")[0])))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
+  FLOWS.push(flowLine(f.from,f.to,f));k++;
+ });
+ if(k){READY=false;init();if(S.screen==="plat_map")render();audit("Module map: added flows",k+" flow"+(k===1?"":"s"))}
+ return{ok:true,added:k,warnings:w};
+}
 /* ---------- canvas ---------- */
 const ARR=["push","pull","event","batch","human","pd","pr","p2","jn"];
 const bandCol=bi=>"var(--mm-b"+bi+")";
+const matOf=id=>{try{return window.PROCLIB&&PROCLIB.moduleMaturity?PROCLIB.moduleMaturity(id):null}catch(e){return null}};
 function modePillH(md){return `<span class="mm-md ${md}">${md}</span>`}
 function refChips(f){
  if(!f.refs.length)return `<span class="pill mute" title="No registry entity carries this data yet">no entity</span>`;
@@ -596,7 +653,7 @@ function refChips(f){
 function mapHTML(){
  const W=LAY.W,H=LAY.H;
  const lanes=LAY.lanes.map(l=>`<div class="mm-lane" style="top:${l.y}px;height:${l.h}px;left:${GL}px;width:${W-GL-6}px;--c:${bandCol(l.bi)}"><span class="mm-lt">${E(l.name)}<small>${l.n} modules</small></span></div>`).join("");
- const nodes=MODS.map(m=>`<button type="button" class="mm-n" data-mm-n="${m.id}" style="left:${m.x}px;top:${m.y}px;--c:${bandCol(m.bi)}" aria-label="${E(m.name)}, ${m.nout} pushes, ${m.nin} pulls${m.proc?"":", no process defined"}"><i class="mm-bar"></i><b>${E(m.sn)}</b><span class="mm-io"><em class="o">${m.nout}</em> out <em class="i">${m.nin}</em> in</span>${m.proc?"":`<u class="mm-np" title="No process defined for this module yet"></u>`}</button>`).join("");
+ const nodes=MODS.map(m=>`<button type="button" class="mm-n${m.proposed?" prop":""}" data-mm-n="${m.id}" style="left:${m.x}px;top:${m.y}px;--c:${bandCol(m.bi)}" aria-label="${E(m.name)}, ${m.nout} pushes, ${m.nin} pulls${m.proposed?", proposed module":""}${m.proc?"":", no process defined"}"><i class="mm-bar"></i><b>${E(m.sn)}</b><span class="mm-io"><em class="o">${m.nout}</em> out <em class="i">${m.nin}</em> in</span>${m.proposed?`<u class="mm-pp">Proposed</u>`:m.proc?`<i class="mm-mb" data-mm-mb title="Process maturity"></i>`:`<u class="mm-np" title="No process defined for this module yet"></u>`}</button>`).join("");
  const mk=ARR.map(c=>`<marker id="mm-ar-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" class="mm-mk ${c}"/></marker>`).join("");
  return `<div class="mm-vp" data-mm-vp tabindex="0" role="application" aria-label="Module map. Drag to pan. Control plus scroll or the plus and minus buttons to zoom. Select a module for its pushes and pulls."><div class="mm-world" data-mm-world style="width:${W}px;height:${H}px">${lanes}<svg class="mm-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>${mk}</defs><g class="mm-bund" data-mm-bund-g></g><g class="mm-edges" data-mm-edges></g></svg>${nodes}</div>
  <div class="mm-ctl" role="group" aria-label="Zoom"><button type="button" class="btn quiet" data-mm-z="in" aria-label="Zoom in">+</button><button type="button" class="btn quiet" data-mm-z="out" aria-label="Zoom out">&minus;</button><button type="button" class="btn quiet" data-mm-z="fit">Fit all</button><button type="button" class="btn quiet" data-mm-z="cluster">Incident cluster</button><button type="button" class="btn quiet" data-mm-collapse>Details</button><span class="small muted" data-mm-zl>100%</span><details class="mm-lgd"><summary>Legend</summary><div class="mm-lgp glass">${legendHTML()}</div></details></div>
@@ -658,7 +715,7 @@ function styleNodes(){
  else if(MM.sel&&MB[MM.sel]){focus=true;add(MM.sel,"on");
   if(MM.blast){blastOf(MM.sel,3).forEach((lv,i)=>lv.forEach(x=>add(x,"bl"+(i+1))))}
   else{const nb=neighbors(MM.sel);if(MM.showPush)nb.push.forEach(x=>add(x,"nb-push"));if(MM.showPull)nb.pull.forEach(x=>add(x,"nb-pull"))}}
- document.querySelectorAll("[data-mm-n]").forEach(el=>{const id=el.dataset.mmN,m=MB[id];el.className="mm-n"+(cls[id]||"")+((!allB&&!bands.has(m.band))?" off":"");el.setAttribute("aria-pressed",MM.sel===id?"true":"false")});
+ document.querySelectorAll("[data-mm-n]").forEach(el=>{const id=el.dataset.mmN,m=MB[id];const mt=matOf(id);el.className="mm-n"+(m.proposed?" prop":"")+(cls[id]||"")+((!allB&&!bands.has(m.band))?" off":"")+(MM.byMat&&mt?" mat mt"+mt.level:"");el.setAttribute("aria-pressed",MM.sel===id?"true":"false");const bd=el.querySelector("[data-mm-mb]");if(bd){bd.textContent=mt?mt.level:"";bd.className="mm-mb"+(mt?" mt"+mt.level:"");bd.title=mt?"Process maturity "+mt.avg+" of 5 across "+mt.n+" process"+(mt.n===1?"":"es")+(mt.below?", "+mt.below+" below target":""):"No maturity yet"}});
  const w=document.querySelector("[data-mm-world]");if(w)w.classList.toggle("focus",focus);
  const mini=document.querySelectorAll("[data-mm-mm]");mini.forEach(r=>{const c=cls[r.dataset.mmMm]||"";r.setAttribute("class","mm-md0"+(/on/.test(c)?" hi":/nb|bl/.test(c)?" nb":""))});
 }
@@ -696,7 +753,8 @@ function flyTo(ids){const v=boxView(ids,ids.length>1?90:170,1.1,panelOpen()?400:
 /* ---------- selection ---------- */
 function update(){styleNodes();drawEdges();const el=document.querySelector("[data-mm-insp]");if(el){el.innerHTML=`<div class="mm-colr"><button type="button" class="btn quiet" data-mm-collapse>Hide panel</button></div>`+inspHTML();el.classList.toggle("open",!!(MM.sel||MM.pair||MM.flow)&&MM.insp)}
  const pa=document.querySelector("[data-mm-pa]"),pb=document.querySelector("[data-mm-pb]");if(pa)pa.value=MM.pair?MM.pair.a||"":"";if(pb)pb.value=MM.pair?MM.pair.b||"":"";
- document.querySelectorAll("[data-mm-tg]").forEach(b=>{const k=b.dataset.mmTg;b.setAttribute("aria-pressed",String(k==="push"?MM.showPush:k==="pull"?MM.showPull:MM.byMode))});
+ document.querySelectorAll(".mm-dtog").forEach(b=>b.setAttribute("aria-pressed",String(!!MM.insp)));
+ document.querySelectorAll("[data-mm-tg]").forEach(b=>{const k=b.dataset.mmTg;b.setAttribute("aria-pressed",String(k==="push"?MM.showPush:k==="pull"?MM.showPull:k==="mat"?!!MM.byMat:MM.byMode))});
  document.querySelectorAll("[data-mm-jsel]").forEach(b=>b.classList.toggle("on",b.dataset.mmJsel===MM.jny));
 }
 function selectMod(id,fly,tab){
@@ -725,10 +783,15 @@ function grouped(m,dir){
  return `<p class="small muted mm-sum">${dir==="in"?`${E(m.sn)} pulls ${list.length} kinds of data from ${ids.length} modules.`:`${E(m.sn)} pushes ${list.length} kinds of data to ${ids.length} modules.`} Select a row for its data contract.</p>`+ids.map(id=>`<section class="mm-g"><button type="button" class="mm-gh" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i><b>${dir==="in"?"From ":"To "}${E(MB[id].name)}</b><span class="small muted">${E(mdOf(MB[id]))}</span><span class="pill mute">${g[id].length}</span></button>${g[id].map(f=>flowRow(f)).join("")}</section>`).join("");
 }
 function procTab(m){
- const st=stepsOf(m.id);
- if(!st)return empty("No process defined yet","This module has no steps in the process registry. Process owners add them in the Workflow designer.")+`<div class="row"><button class="btn" data-nav="flw_design">Open Workflow designer</button></div>`;
- return `<p class="small muted mm-sum">${st.length} steps. Each says who acts, how fast, and how it decides.</p><ol class="mm-steps">${st.map((s,i)=>`<li><span class="mm-sn">${i+1}</span><div><b>${E(s.n)}</b><div class="row">${pill(WHO[s.who||"human"],"info")}${window.PROC&&PROC.modeTag?PROC.modeTag(s):""}${s.sla?`<span class="pill mute">${E(s.sla)}</span>`:""}</div><p class="small muted">${E(s.d||"")}</p></div></li>`).join("")}</ol>`;
+ const st=stepsOf(m.id),PL=window.PROCLIB,list=PL&&PL.forModule?PL.forModule(m.id):[];
+ const mt=matOf(m.id),prim=PL&&PL.primary?PL.primary(m.id):null;
+ if(!st&&!list.length)return empty(m.proposed?"Proposed module":"No process defined yet",m.proposed?"This module is proposed. Define its process when it is built; the Process library will pick it up.":"This module has no steps in the process registry. Process owners add them in the Workflow designer.")+`<div class="row">${m.proposed?"":`<button class="btn" data-nav="flw_design">Open Workflow designer</button>`}</div>`;
+ const head=list.length?`<div class="eyebrow">${list.length===1?"Process":list.length+" processes"} in this module</div><div class="mm-plist">${list.map(x=>`<button type="button" class="mm-pr" data-mm-popen="${E(x.id)}" title="Open the full process page"><span class="mm-mb mt${Math.max(1,Math.min(5,Math.round(x.level/Math.max(1,mxOf(x))*5)))}">${x.level}</span><span><b>${E(x.name)}</b><small class="muted">${E(x.owner)} · ${x.steps} steps · ${x.below?"below target":"meets target"}</small></span></button>`).join("")}</div>`:"";
+ const sh=st||[];
+ return `${head}<div class="row mm-pact">${prim?`<button type="button" class="btn primary" data-mm-popen="${E(prim)}">Open full process page</button>`:""}<button type="button" class="btn" data-mm-lib>Process library</button></div>
+ ${sh.length?`<p class="small muted mm-sum">${sh.length} steps${mt?`, average maturity ${mt.avg} of 5`:""}. Select a step to open its process page. Each step says who acts, how fast, and how it decides.</p><ol class="mm-steps">${sh.map((s,i)=>`<li><span class="mm-sn">${i+1}</span><button type="button" class="mm-stb" ${prim?`data-mm-popen="${E(prim)}"`:""}><b>${E(s.n)}</b><span class="row">${pill(WHO[s.who||"human"],"info")}${window.PROC&&PROC.modeTag?PROC.modeTag(s):""}${s.sla?`<span class="pill mute">${E(s.sla)}</span>`:""}</span><span class="small muted">${E(s.d||"")}</span></button></li>`).join("")}</ol>`:""}`;
 }
+const mxOf=x=>{const m=window.MAT&&MAT.ALLM?MAT.ALLM().find(q=>q.id===x.model):null;return m?m.lv.length:5};
 function dataTab(m){
  const chips=(arr,kind)=>arr.length?arr.map(id=>{const e=PLAT.ent(id);return `<button type="button" class="chip mm-ec" data-mm-ent="${id}" title="Open ${E(e?e.label:id)} in the data model">${E(e?e.label:(PLN[id]?PLN[id].label:id))}${kind==="plan"?" (planned)":""}</button>`}).join(""):`<span class="muted small">None</span>`;
  const plan=[...new Set(m.out.concat(m.inn).flatMap(f=>f.refs.filter(r=>r.kind==="plan").map(r=>r.id)))];
@@ -748,8 +811,8 @@ function modHTML(m){
  const bl=blastOf(m.id,3).reduce((a,l)=>a+l.length,0);
  const tabs=[["pulls","Pulls from",m.nin],["pushes","Pushes to",m.nout],["proc","Its process",m.steps],["data","Data",m.r.length+m.w.length],["blast","Blast radius",bl]];
  const body=MM.tab==="pushes"?grouped(m,"out"):MM.tab==="proc"?procTab(m):MM.tab==="data"?dataTab(m):MM.tab==="blast"?blastTab(m):grouped(m,"in");
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${E(m.own)}</p>
- <div class="row"><button type="button" class="btn primary" data-mm-open="${m.id}">Open screen</button><button type="button" class="btn" data-mm-cmp="${m.id}">Compare with another</button></div></div>
+ return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${E(m.own)}${m.proposed?' <span class="pill warn">Proposed</span>':""}${matOf(m.id)?` <span class="mm-mb mt${matOf(m.id).level}" title="Average process maturity">${matOf(m.id).level}</span> <span class="small muted">process maturity ${matOf(m.id).avg} of 5</span>`:""}</p>
+ <div class="row">${m.scr?`<button type="button" class="btn primary" data-mm-open="${m.id}">Open screen</button>`:""}<button type="button" class="btn" data-mm-cmp="${m.id}">Compare with another</button>${m.proc?`<button type="button" class="btn" data-mm-popen="${window.PROCLIB&&PROCLIB.primary?PROCLIB.primary(m.id):m.id}">Process page</button>`:""}</div></div>
  <div class="mm-tabs" role="tablist">${tabs.map(t=>`<button type="button" role="tab" class="${MM.tab===t[0]?"on":""}" aria-selected="${MM.tab===t[0]}" data-mm-tab="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div><div class="mm-ib" role="tabpanel">${body}</div>`;
 }
 function refBlock(r,f){
@@ -808,15 +871,16 @@ function toolbar(){
  const opts=`<option value="">Choose a module</option>`+BANDS.map(b=>`<optgroup label="${E(b[1])}">${MODS.filter(m=>m.band===b[0]).map(m=>`<option value="${m.id}">${E(m.sn)}</option>`).join("")}</optgroup>`).join("");
  return `<div class="mm-bar"><label class="mm-search"><input type="search" class="txtin" data-mm-q placeholder="Incidents, budget, CMDB, invoices" aria-label="Find a module" autocomplete="off"><div class="mm-res glass" data-mm-res hidden></div></label>
  <div class="mm-pair"><span class="small muted">Compare</span><select class="mm-sel" data-mm-pa aria-label="First module">${opts}</select><span class="small muted">and</span><select class="mm-sel" data-mm-pb aria-label="Second module">${opts}</select></div>
- <div class="mm-tgs" role="group" aria-label="Layers"><button type="button" class="chip" data-mm-tg="push" aria-pressed="${MM.showPush}">Pushes</button><button type="button" class="chip" data-mm-tg="pull" aria-pressed="${MM.showPull}">Pulls</button><button type="button" class="chip" data-mm-tg="mode" aria-pressed="${MM.byMode}">Color by mode</button></div>
+ <div class="mm-tgs" role="group" aria-label="Layers"><button type="button" class="chip" data-mm-tg="push" aria-pressed="${MM.showPush}">Pushes</button><button type="button" class="chip" data-mm-tg="pull" aria-pressed="${MM.showPull}">Pulls</button><button type="button" class="chip" data-mm-tg="mode" aria-pressed="${MM.byMode}">Color by mode</button><button type="button" class="chip" data-mm-tg="mat" aria-pressed="${!!MM.byMat}" title="Tint each module by the average maturity of its processes">Color by maturity</button><button type="button" class="chip mm-dtog" data-mm-collapse aria-pressed="${MM.insp}" title="Show or hide the details panel (Esc also closes it)">Details panel</button></div>
  ${mpHTML({id:"mm_band",label:"Bands",all:"All bands",opts:BANDS.map(b=>({v:b[0],l:b[1]}))})}</div>`;
 }
 function legendHTML(){
  const ln=(c,t,dash)=>`<span class="mm-lgi"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" style="stroke:${c};stroke-width:2.4;${dash?"stroke-dasharray:6 4":""}"/></svg>${t}</span>`;
  return `<div class="mm-lg">${ln("var(--mm-push)","Push: data leaves the selected module",1)}${ln("var(--mm-pull)","Pull: data arrives at it",1)}${ln("var(--mm-event)","Event (with Color by mode)",1)}${ln("var(--mm-batch)","Batch",1)}${ln("var(--mm-human)","Human",1)}${ln("var(--mm-pd)","Direct path between two modules",1)}${ln("var(--mm-p2)","Two-step path",1)}
  <span class="mm-lgi"><svg width="34" height="12" aria-hidden="true"><path d="M30,1 C14,1 14,11 30,11" style="fill:none;stroke:var(--muted);stroke-width:3;opacity:.4"/></svg>Faint arcs: flows between two bands</span>
- <span class="mm-lgi"><i class="mm-npd"></i>No process defined</span><span class="mm-lgi"><i class="mm-sq" style="background:var(--accent)"></i>Selected module</span><span class="mm-lgi">Animated dashes show the direction data moves. Numbers on a line count flows.</span></div>
- ${legend(BANDS.map((b,i)=>[b[1],"--mm-b"+i]))}`;
+ <span class="mm-lgi"><i class="mm-npd"></i>No process defined</span><span class="mm-lgi"><i class="mm-mb mt3 mm-lgb">3</i>Badge: average process maturity of the module, 1 to 5</span><span class="mm-lgi"><i class="mm-prop-sw"></i>Dashed outline with a Proposed pill: module not built yet</span><span class="mm-lgi"><i class="mm-sq" style="background:var(--accent)"></i>Selected module</span><span class="mm-lgi">Animated dashes show the direction data moves. Numbers on a line count flows.</span></div>
+ ${legend(BANDS.map((b,i)=>[b[1],"--mm-b"+i]))}
+ ${legend([["Maturity 1 (initial)","--mm-m1"],["2","--mm-m2"],["3","--mm-m3"],["4","--mm-m4"],["5 (optimizing)","--mm-m5"]])}<p class="small muted">With Color by maturity on, each module takes the tint of its processes' average level, from red at 1 to green at 5.</p>`;
 }
 /* ---------- matrix ---------- */
 const BSH=["Strategy","Projects","Money","Build","Service ops","CMDB","Observe","People","Knowledge","Platform"];
@@ -843,11 +907,13 @@ function journeyCard(j){
 }
 function journeysPane(){return `<p class="muted small" style="margin:0 0 12px">Each journey crosses several modules. The caption on every arrow is the data handed over, when, and how. Select a module to open it on the map.</p><div class="mm-jwrap">${JOURNEYS.map(journeyCard).join("")}</div>${legend([["Event: sent when it happens","--mm-event"],["Batch: sent on a schedule","--mm-batch"],["Human: a person acts","--mm-human"]])}`}
 /* ---------- coverage ---------- */
+const plBelow=()=>{try{return PROCLIB.stats().belowTarget}catch(e){return 0}};
 function covRows(){
- return MODS.map(m=>{const f=[];if(!m.nout)f.push("No push");if(!m.nin)f.push("No pull");if(!m.proc)f.push("No process");
+ return MODS.map(m=>{const f=[];if(!m.nout)f.push("No push");if(!m.nin)f.push("No pull");if(!m.proc&&!m.proposed)f.push("No process");if(m.proposed)f.push("Proposed, not built");
   if(m.nout&&!m.out.some(x=>x.reg))f.push("No registered data on push");if(m.nin&&!m.inn.some(x=>x.reg))f.push("No registered data on pull");if(m.nonOwn.length)f.push("Writes "+m.nonOwn.length+" entity not owned");
   const noEnt=m.out.concat(m.inn).filter(x=>!x.reg).length;
-  return{id:m.id,n:m.name,band:BANDS[m.bi][1],push:m.nout,pull:m.nin,proc:m.proc?m.steps+" steps":"None",entities:m.w.length+" write, "+m.r.length+" read",gaps:noEnt,find:f,status:f.length?"Needs work":"Complete"}});
+  const mt=matOf(m.id);
+  return{id:m.id,n:m.name,band:BANDS[m.bi][1],push:m.nout,pull:m.nin,proc:m.proc?m.steps+" steps":"None",mat:mt?mt.avg:0,matBelow:mt?mt.below:0,entities:m.w.length+" write, "+m.r.length+" read",gaps:noEnt,find:f,status:m.proposed?"Proposed":f.length?"Needs work":"Complete"}});
 }
 function coveragePane(){
  const s=ST(),F=s.fnd,rows=covRows();
@@ -857,7 +923,8 @@ function coveragePane(){
  const cards=[
   fc("No outgoing flow",F.noPush.length,chips(F.noPush),"Add at least one flow that publishes this module's data.",F.noPush.length?"bad":"good"),
   fc("No incoming flow",F.noPull.length,chips(F.noPull),"Add at least one flow that feeds this module from its source.",F.noPull.length?"bad":"good"),
-  fc("No process definition",F.noProc.length,chips(F.noProc),"Define who does what in Workflow designer, with times and gates."),
+  fc("No process definition",F.noProc.length,chips(F.noProc),F.noProc.length?"Define who does what in Workflow designer, with times and gates.":"Every module has at least one process in the Process library. Open it to see each one's maturity.",F.noProc.length?"bad":"good"),
+  fc("Processes below their Year 1 target",plBelow(),`<div class="row"><button type="button" class="btn quiet" data-mm-lib>Open the Process library</button></div>`,"Raise the weakest maturity dimension first. The library lists the next written criterion for each."),
   fc("Push or pull with no registered data",F.noReg.length,chips(F.noReg),"Register the entity or point the flow at an existing one."),
   fc("Writes an entity it does not own",F.nonOwn.length,chips(F.nonOwn),"Move the write behind the owning module or transfer ownership in the registry."),
   fc("Planned entities that block a contract",pl.length,pl.length?`<div class="row">${pl.slice(0,6).map(i=>`<span class="pill warn">${E(PLN[i].label)} ${F.planned[i]}</span>`).join("")}${pl.length>6?`<span class="pill mute">+${pl.length-6}</span>`:""}</div>`:"None.","Registering these removes the most gaps first. The count is flows that need it.")
@@ -865,22 +932,26 @@ function coveragePane(){
  const tbl=btHTML({id:"mm_cov",h:460,rowH:54,key:"id",sort:{k:"n",d:1},exportName:"module-coverage",facets:["band","status"],cols:[
   {k:"n",label:"Module",val:r=>r.n,fmt:r=>`<b>${E(r.n)}</b>`},{k:"band",label:"Band",val:r=>r.band,fmt:r=>E(r.band)},
   {k:"push",label:"Pushes",val:r=>r.push,fmt:r=>`<span class="num">${r.push}</span>`},{k:"pull",label:"Pulls",val:r=>r.pull,fmt:r=>`<span class="num">${r.pull}</span>`},
-  {k:"proc",label:"Process",val:r=>r.proc,fmt:r=>r.proc==="None"?pill("None","warn"):pill(r.proc,"good")},{k:"entities",label:"Registry entities",val:r=>r.entities,fmt:r=>E(r.entities)},
+  {k:"proc",label:"Process",val:r=>r.proc,fmt:r=>r.proc==="None"?pill("None","warn"):pill(r.proc,"good")},{k:"mat",label:"Process maturity",val:r=>r.mat,fmt:r=>r.mat?`<span class="mm-mb mt${Math.max(1,Math.round(r.mat))}">${Math.round(r.mat*10)/10}</span>${r.matBelow?` <span class="pill warn">${r.matBelow} below target</span>`:""}`:`<span class="muted">None</span>`},{k:"entities",label:"Registry entities",val:r=>r.entities,fmt:r=>E(r.entities)},
   {k:"gaps",label:"Flows with no registered data",val:r=>r.gaps,fmt:r=>`<span class="num">${r.gaps}</span>`},
   {k:"status",label:"Findings",val:r=>r.status+r.find.length,wrap:1,fmt:r=>r.find.length?r.find.map(x=>`<span class="pill warn">${E(x)}</span>`).join(" "):pill("Complete","good")}],rows,open:id=>{S.v.mm_v=0;MM.sel=id;MM.pair=null;MM.jny=null;MM.flow=null;MM.flyIds=[id];render()}});
  return `<div class="mm-fcg">${cards.join("")}</div><div style="margin-top:14px">${tbl}</div>`;
 }
 /* ---------- screen ---------- */
 function oldPane(){let h="";try{h=OLD?OLD():"";h=h.replace(procCard("plat_map"),"")}catch(e){h=""}return `<div class="mm-old"><p class="small muted">The original 14-area view: a high-level loop from strategy to demand, projects, build, change, deploy, operate, incident and problem, with its handoffs and process coverage. Kept so nothing is lost.</p>${h}</div>`}
+function libTab(){
+ if(!window.PROCLIB||!PROCLIB.pane)return empty("The Process library is not loaded","Open it from the Platform menu.");
+ return `<div class="card glass"><div class="row sp"><div><div class="eyebrow">From the map to one process</div><p class="small muted">Every module's processes with their maturity. Select a row for the full page: steps, who acts, data in and out, metrics, controls, neighbors and blast radius. You can also select a module on the map and choose <b>Its process</b>.</p></div><button type="button" class="btn primary" data-mm-lib="full">Open the full Process library</button></div></div><div style="margin-top:14px">${PROCLIB.pane()}</div>`;
+}
 function screen(){
  if(!init())return `<div class="screen">${hero("Master process flow","Loading the module map","The platform registry is still starting.","")}</div>`;
  const s=ST(),nB=BANDS.length;
  if(!MM._seen){MM._seen=1;if(window.innerWidth<=1000)MM.insp=false}
- const kp=kpiRow([["Modules",s.n,"in "+nB+" bands"],["Data flows",s.nf,"push and pull"],["Documented push and pull",METRICS.m_mm_pp.cur+"%","modules, with registered data",{metric:"m_mm_pp"}],["With a data contract",METRICS.m_mm_ct.cur+"%","flows, registered entity",{metric:"m_mm_ct"}],["Live or near-live",METRICS.m_mm_live.cur+"%","of contracted flows",{metric:"m_mm_live"}]]);
- const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${s.n}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition.`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}</div>`);
+ const kp=kpiRow([["Modules",s.n,"in "+nB+" bands"],["Data flows",s.nf,"push and pull"],["Push and pull",METRICS.m_mm_pp.cur+"%","modules documented",{metric:"m_mm_pp"}],["With a data contract",METRICS.m_mm_ct.cur+"%","flows, registered entity",{metric:"m_mm_ct"}],["Live or near-live",METRICS.m_mm_live.cur+"%","of contracted flows",{metric:"m_mm_live"}]]);
+ const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${s.n}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition${(()=>{try{const t=PROCLIB.stats();return "; "+t.processes+" processes in all, average maturity "+t.avgMaturity+" of 5"}catch(e){return ""}})()}.${s.prop?` ${s.prop} proposed module${s.prop===1?" is":"s are"} drawn dashed.`:""}`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}<button type="button" class="btn" data-mm-lib>Process library</button></div>`);
  const pane0=`${toolbar()}<div class="mm-cv">${mapHTML()}<aside class="mm-insp glass" data-mm-insp aria-label="Module details"></aside></div><div class="mm-note small muted" data-mm-note aria-live="polite"></div><div style="margin-top:12px">${kp}</div>`;
  setTimeout(mount,0);
- return `<div class="screen mm-screen">${hero_}${lensNote()}${views("mm_v",["Module map","Matrix","Journeys","Coverage","Process areas (original)"],[pane0,matrixPane(),journeysPane(),coveragePane(),oldPane()])}${procCard("plat_map")}</div>`;
+ return `<div class="screen mm-screen">${hero_}${lensNote()}${views("mm_v",["Module map","Matrix","Journeys","Coverage","Process areas (original)","Process library"],[pane0,matrixPane(),journeysPane(),coveragePane(),oldPane(),libTab()])}${procCard("plat_map")}</div>`;
 }
 REG("plat_map","Master process flow","platform",ICON,screen);
 /* ---------- mount ---------- */
@@ -925,6 +996,8 @@ document.addEventListener("pointerover",e=>{
 });
 document.addEventListener("click",e=>{
  let t;
+ if((t=e.target.closest("[data-mm-popen]"))){if(window.PROCLIB&&PROCLIB.open)PROCLIB.open(t.dataset.mmPopen);return}
+ if((t=e.target.closest("[data-mm-lib]"))){if(window.PROCLIB){if(t.dataset.mmLib==="full")PROCLIB.openLibrary(0);else{S.v.mm_v=5;if(S.screen==="plat_map")render();else go("plat_map")}}return}
  if((t=e.target.closest("[data-mm-n]"))){selectMod(t.dataset.mmN,false);return}
  if((t=e.target.closest("[data-mm-edge]"))){const k=t.dataset.mmEdge,fl=PAIRN.get(k);if(fl){MM.edge=k;MM.flow=fl[0].id;MM.insp=true;update()}return}
  if((t=e.target.closest("[data-mm-bund]"))){const k=t.dataset.mmBund,[i,j]=k.split("-").map(Number);openFlows(BANDS[i][1]+" and "+BANDS[j][1],ST().bandPairs.get(k)||[],"Every documented flow between these two bands, both directions.");return}
@@ -943,7 +1016,7 @@ document.addEventListener("click",e=>{
  if(e.target.closest("[data-mm-pall]")){MM.pairAll=!MM.pairAll;update();return}
  if(e.target.closest("[data-mm-blast]")){MM.blast=!MM.blast;update();return}
  if((t=e.target.closest("[data-mm-ent]"))){openEnt(t.dataset.mmEnt);return}
- if((t=e.target.closest("[data-mm-tg]"))){const k=t.dataset.mmTg;if(k==="push")MM.showPush=!MM.showPush;else if(k==="pull")MM.showPull=!MM.showPull;else MM.byMode=!MM.byMode;update();return}
+ if((t=e.target.closest("[data-mm-tg]"))){const k=t.dataset.mmTg;if(k==="push")MM.showPush=!MM.showPush;else if(k==="pull")MM.showPull=!MM.showPull;else if(k==="mat")MM.byMat=!MM.byMat;else MM.byMode=!MM.byMode;update();return}
  if((t=e.target.closest("[data-mm-z]"))){const k=t.dataset.mmZ;if(k==="in")zoomAt(1.25);else if(k==="out")zoomAt(.8);else if(k==="fit"){MM.touched=true;setView(fitView(),true)}else{MM.touched=false;setView(clusterView(),true)}return}
  if((t=e.target.closest("[data-mm-cell]"))){const p=t.dataset.mmCell.split(">"),fl=flowsBetween(p[0],p[1]);openFlows(nameOf(p[0])+" pushes to "+nameOf(p[1]),fl,fl.length+" flow"+(fl.length===1?"":"s")+" in this direction.");return}
  if((t=e.target.closest("[data-mm-bcell]"))){const p=t.dataset.mmBcell.split("-").map(Number),fl=FL.filter(f=>MB[f.from].bi===p[0]&&MB[f.to].bi===p[1]);openFlows(BANDS[p[0]][1]+" pushes to "+BANDS[p[1]][1],fl,fl.length+" flows.");return}
@@ -965,6 +1038,7 @@ document.addEventListener("input",e=>{
 });
 document.addEventListener("keydown",e=>{
  const q=e.target.closest&&e.target.closest("[data-mm-q]");
+ if(e.key==="Escape"&&!q&&document.querySelector("[data-mm-insp].open")&&!document.querySelector("#drawer:popover-open")){MM.insp=false;update();applyView();return}
  if(q&&e.key==="Enter"){const f=document.querySelector("[data-mm-res] [data-mm-pick]");if(f){e.preventDefault();f.click()}return}
  if(q&&e.key==="Escape"){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;return}
  const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target!==vp||!MM.view)return;
@@ -980,6 +1054,8 @@ window.addEventListener("pointermove",e=>{if(miniDown)miniMove(e)});window.addEv
 /* ---------- search and chat ---------- */
 SEARCHX.push(()=>{if(!init())return[];return MODS.map(m=>({g:"Modules",t:m.name,m:BANDS[m.bi][1]+" · "+m.nout+" out, "+m.nin+" in",c:"--p4",f:()=>goMap({sel:m.id,pair:null,jny:null,flow:null,edge:null,flyIds:[m.id]}),k:m.al.join(" ")+" module map pushes pulls "+m.r.join(" ")+" "+m.w.join(" ")}))});
 ASKX.push(q=>{
+ const t0=q.toLowerCase();
+ if(/(hide|close|dismiss|collapse|show|open)\b.*\b(panel|details|inspector)/.test(t0)&&document.querySelector("[data-mm-insp]")){const show=/(show|open)/.test(t0)&&!/(hide|close)/.test(t0);MM.insp=show;if(!show){MM.touched=MM.touched}update();applyView();say(q,{t:show?"Details panel is showing.":"Details panel is hidden. Say show the panel, or use the Details panel button, to bring it back.",steps:[show?"Showed the details panel":"Hid the details panel"]});return true}
  const t=q.toLowerCase();if(!/connect|relat|link|between|reach|path|push|pull|read|module map|how do|how does|what does|what pulls|what reads/.test(t))return false;
  if(!init())return false;const ids=matchMods(q);
  let m;

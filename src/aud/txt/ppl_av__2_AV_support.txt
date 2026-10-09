@@ -1,0 +1,42 @@
+ROOMS AND CONFERENCE SCHEDULING
+Is the right room ready
+
+Rooms are 36% booked this week against a 55% target, yet the Boardroom has 1 meeting of four people or fewer. Huddle Birch has a Teams Room device offline and 2 hybrid bookings today depend on it. 3 AV tickets are open, two of them raised automatically for Thursday's events.
+
+ƒ Room utilization
+Book a room
+Why am I seeing this?
+Room utilization
+36%
+target 55%
+Rooms with a problem
+2
+Huddle Birch offline
+Open AV tickets
+3
+auto-raised for events needing a tech
+Right-size candidates
+4
+meetings in a bigger room than needed
+Booking grid
+Rooms and health
+AV support
+AV support tickets
+3 open. Tickets are raised automatically when a booking asks for recording, has 12 or more people, or is a board-level event. You can also raise one yourself.
+Raise AV ticket
+TICKET	EVENT OR ISSUE	ROOM	WHEN	TECHNICIAN	STATE	RAISED BY
+AV-1001	Security awareness live session
+Recording needed and 18 attendees
+	Training room	Thu Oct 8 1 pm	Kofi Mensah	
+Scheduled
+	Room Scheduler (auto)
+AV-1002	Board audit preparation
+Board-level event, 12 attendees, catering
+	Boardroom	Thu Oct 8 9:30 am	Kofi Mensah	
+Scheduled
+	Room Scheduler (auto)
+AV-1003	Huddle Birch: Teams Room codec offline
+Device offline since 8:12 am, 2 bookings today
+	Huddle Birch	Tue Oct 6 8:12 am	Paula Grant	
+In progress
+	Room Scheduler (health alert)

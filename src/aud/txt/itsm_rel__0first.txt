@@ -1,0 +1,318 @@
+SERVICE MANAGEMENT · RELEASES
+Ship together, with proof
+
+12 releases are in flight on 2 trains. The Codification beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes to a go or no-go decision before Oct 8.
+
+New release
+Go or no-go: REL-2608
+Sprints and backlogs
+Release trains
+ƒ Release change failure rate
+ƒ Lead time for changes
+ITIL 5
+DORA metrics
+SAFe
+Dashboard and releases
+Clash register
+Readiness tree
+Exit criteria
+Go or no-go
+OPEN RELEASES
+12
+3 major, 7 minor, 2 hotfix
+READY FOR GO (90% OR BETTER)
+2
+of 12 open releases
+CLASHES
+6
+2 hard and 4 soft
+AVERAGE READINESS
+42%
+ƒ How readiness is scored
+EXIT CRITERIA PASSING
+47%
+average across open releases
+DEPLOYMENTS A WEEK
+3
+13 in 30 days, 15.4% failed
+Releases by state
+Where every open release sits today
+ƒ Release readiness score
+Planning
+4
+In development
+4
+In test
+2
+Readiness review
+1
+Scheduled
+1
+Delivery performance (DORA)
+Four of the five DORA measures, last 30 days
+DORA metrics
+LEAD TIME FOR CHANGES
+64h
+On trend target at most 72h
+ƒ Formula
+DEPLOYMENTS PER WEEK
+3
+On trend target at least 3
+ƒ Formula
+RELEASE CHANGE FAILURE RATE
+15.4%
+Off trend target at most 12%
+ƒ Formula
+TIME TO RESTORE AFTER A FAILED RELEASE
+5.3h
+Off trend target at most 4h
+ƒ Formula
+Enhancement versus defect mix
+Share of stories by kind in the next releases (enhancement / defect)
+REL-2608 Standards API 2.3.1 batch hotfix
+50% / 50%
+REL-2609 Lumen search indexer 2.4 to staging
+61% / 19%
+REL-2615 Conditional access: editors VPN named location
+67% / 0%
+REL-2607 Portal accessibility fixes
+44% / 25%
+REL-2610 Portal standby failover (RB-031 v8)
+78% / 22%
+REL-2617 Autoscale and capacity alerts
+74% / 21%
+REL-2613 Contract Repository storage tier migration
+59% / 24%
+REL-2618 Integration hub connector 2.2
+76% / 18%
+Enhancement
+Defect fix
+Enabler or spike
+Test coverage: automated and human
+Test cases per release, run by pipeline or by people
+REL-2608 Standards API 2.3.1 batch hotfix
+69% auto
+REL-2609 Lumen search indexer 2.4 to staging
+79% auto
+REL-2615 Conditional access: editors VPN named location
+80% auto
+REL-2607 Portal accessibility fixes
+79% auto
+REL-2610 Portal standby failover (RB-031 v8)
+76% auto
+REL-2617 Autoscale and capacity alerts
+74% auto
+REL-2613 Contract Repository storage tier migration
+76% auto
+REL-2618 Integration hub connector 2.2
+62% auto
+Automated (Test Agent and pipeline)
+Manual (QA, editors)
+Exit criteria pass rate
+Share of the 10 exit criteria met, per release
+Open the matrix
+REL-2608
+100%
+REL-2609
+40%
+REL-2615
+100%
+REL-2607
+10%
+REL-2610
+50%
+REL-2617
+20%
+REL-2613
+50%
+REL-2618
+40%
+Clashes to resolve
+6 releases with a clash
+Open clash register
+REL-2608 Standards API 2.3.1 batch hotfix Oct 8Soft Codification Portal depends on or supports Codification Platform: change CHG0316 within a day
+REL-2615 Conditional access: editors VPN named location Oct 20Soft Codification Portal depends on or supports Identity (Entra ID) and changes within a day (REL-2607)
+REL-2607 Portal accessibility fixes Oct 21Soft Identity (Entra ID) depends on or supports Codification Portal and changes within a day (REL-2615)
+Soft Identity (Entra ID) depends on or supports Codification Portal: change CHG0317 within a day
+REL-2610 Portal standby failover (RB-031 v8) Oct 27Soft Same service, 2 days apart (REL-2617)
+Hard Change CHG0323 on the same service on the same day
+REL-2617 Autoscale and capacity alerts Oct 29Soft Same service, 2 days apart (REL-2610)
+Soft Change CHG0322 on the same service, 2 days apart
+REL-2614 ERP posting-lock vendor patch Nov 18Hard Inside the Financial close freeze blackout, Nov 16 to Nov 20. A hotfix needs a CIO exception.
+Release calendar
+Open releases by service, with freezes, changes and clashes
+Why am I seeing this?
+Financial close fre…
+Thanksgiving reduce…
+Year-end freeze
+Oct 5
+Oct 19
+Nov 2
+Nov 16
+Nov 30
+Dec 14
+Dec 28
+Jan 11
+Codification Portal
+2610 Portal standby failover (RB-031 v8)
+2607 Portal accessibility fixes
+2617 Autoscale and capacity alerts
+Codification Platform
+2611 Codification beta
+2608 Standards API 2.3.1 batch hotfix
+Search and indexing
+2609 Lumen search indexer 2.4 to staging
+Data platform
+2612 Taxonomy Data Hub pilot
+Contract Repository
+2613 Contract Repository storage tier migration
+2616 Contract obligation tracker and renewal alerts
+Lease subledger (ERP)
+2614 ERP posting-lock vendor patch
+Identity (Entra ID)
+2615 Conditional access: editors VPN named location
+Integration hub
+2618 Integration hub connector 2.2
+Today
+Major release
+Minor release
+Hotfix
+Blackout freeze
+Restricted period
+
+Each bar runs from the start of the release to its target date (diamond); the darker fill is readiness. A red thick outline is a hard clash, a dashed amber outline is a soft clash, and grey dots are changes from the change calendar. Select a bar to open the release.
+
+All releases
+Open releases · select a row to open the release
+Show deployed history
+Search, sort, filter by service, train, state or type, and group.
+Service
+All
+8
+Train
+All
+2
+State
+All
+5
+Type
+All
+3
+Mix
+All
+3
+Clashes
+All
+3
+Group by 
+None
+State
+Service
+Type
+Train
+Export CSV
+RELEASE	NAME	TYPE	SERVICE	TRAIN	STATE	TARGET	READINESS	EXIT CRITERIA	MIX	CLASHES	RELEASE MANAGER
+REL-2607	Portal accessibility fixes 2.9.3	Minor	Codification Portal	Codification and Portal train	In development	Oct 21	
+17%
+	10%	
+7/4/5	2 soft	
+Nia Brooks
+
+REL-2608	Standards API 2.3.1 batch hotfix 2.3.1	Hotfix	Codification Platform	Codification and Portal train	Readiness review	Oct 8	
+96%
+	100%	
+5/5/0	1 soft	
+Sam Patel
+
+REL-2609	Lumen search indexer 2.4 to staging 2.4.0	Minor	Search and indexing	Codification and Portal train	In test	Oct 12	
+62%
+	40%	
+35/11/11	Clear	
+Priya Shah
+
+REL-2610	Portal standby failover (RB-031 v8) 3.1.0	Minor	Codification Portal	Codification and Portal train	In test	Oct 27	
+42%
+	50%	
+28/8/0	1 hard + 1 soft	
+Sam Patel
+
+REL-2611	Codification beta 3.0.0-beta	Major	Codification Platform	Codification and Portal train	In development	Nov 13	
+31%
+	40%	
+132/33/30	Clear	
+Priya Shah
+
+REL-2612	Taxonomy Data Hub pilot 1.0.0	Major	Data platform	Data and Contracts train	Planning	Dec 2	
+19%
+	20%	
+50/13/9	Clear	
+Dev Rao
+
+REL-2613	Contract Repository storage tier migration 1.4.0	Minor	Contract Repository	Data and Contracts train	In development	Nov 3	
+31%
+	50%	
+20/8/6	Clear	
+Maya Ortiz
+
+REL-2614	ERP posting-lock vendor patch 12.4.1	Hotfix	Lease subledger (ERP)	Data and Contracts train	Planning	Nov 18	
+46%
+	50%	
+15/2/1	1 hard	
+Sam Patel
+
+REL-2615	Conditional access: editors VPN named location 1.0.1	Minor	Identity (Entra ID)	Codification and Portal train	Scheduled	Oct 20	
+92%
+	100%	
+2/0/1	1 soft	
+Nia Brooks
+
+REL-2616	Contract obligation tracker and renewal alerts 1.0.0	Major	Contract Repository	Data and Contracts train	Planning	Jan 12	
+23%
+	40%	
+33/9/7	Clear	
+Maya Ortiz
+
+REL-2617	Autoscale and capacity alerts 3.1.1	Minor	Codification Portal	Codification and Portal train	Planning	Oct 29	
+23%
+	20%	
+14/4/1	3 soft	
+Sam Patel
+
+REL-2618	Integration hub connector 2.2 2.2.0	Minor	Integration hub	Data and Contracts train	In development	Nov 10	
+23%
+	40%	
+13/3/1	Clear	
+Nia Brooks
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Release management process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Plan the release
+Scope features, set the date, check the calendar for clashes.
+AUTOMATIC
+Generate readiness tasks
+The standard checklist creates child tasks with owners, due dates and gates.
+AI AGENT
+Build and test
+Pipeline builds; Test Agent runs the suite; QA and editors run UAT.
+AUTOMATIC
+Evaluate exit criteria
+Ten criteria are scored automatically from tests, pull requests and defects.
+APPROVAL GATE
+Security review and CAB
+Security signs off the scan; the change advisory board approves the change record.
+APPROVAL GATE
+Training, communications and OCM approved
+Training approved, Communications team approves the package, OCM plan implemented.
+APPROVAL GATE
+Go or no-go
+A named person decides from the evidence. Hard clashes block go.
+AUTOMATIC
+Deploy through the pipeline
+The deployment runs in the approved window with rollback ready.
+PERSON
+Post-release review
+Failures feed the readiness template; DORA measures update.

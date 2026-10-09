@@ -1,0 +1,147 @@
+PLATFORM · ADMIN STUDIO
+Shape the platform without code
+
+Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+
+ƒ Promotions passing gates first time
+Claude Sonnet · 84%
+Add a field
+Fields
+Form layout
+List views
+Theme
+Localization
+Incident form layout
+Drag fields between sections. The preview on the right is the real field renderer, so what you see is what editors get.
+Add a section
+Incident
+Project
+Demand request
+Contract
+What happened
+Rename
+Remove
+Number
+Single line text
+Short description
+Single line text
+Description
+Long text
+Caller
+Person reference
+Impact and service
+Rename
+Remove
+Category
+Picklist
+Impact
+Picklist
+Urgency
+Picklist
+Affected service
+Picklist
+Work
+Rename
+Remove
+Assigned to
+Person reference
+State
+Picklist
+Work notes
+Long text
+Not on the form
+1 unplaced
+Affected business unit
+Picklist
+Live preview
+Showing the form as
+Everyone (admin view)
+Executive
+Finance approver
+Project manager
+Service desk lead
+WHAT HAPPENED
+Number
+*
+Assigned automatically, like INC0010234.
+Short description
+*
+Rule: length <= 160.
+Description
+Caller
+*
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Marco Ellis
+Hana Koval
+Ravi Menon
+Triage Agent
+PMO Agent
+NM
+Northwind Managed Services
+IMPACT AND SERVICE
+Category
+Choose one
+Software
+Hardware
+Network
+Access
+Data
+Impact
+*
+Choose one
+1 - High
+2 - Medium
+3 - Low
+Urgency
+*
+Choose one
+1 - High
+2 - Medium
+3 - Low
+Affected service
+Choose one
+Codification Portal
+Taxonomy API
+Contract Repository
+Lease subledger (ERP)
+The configuration item that is degraded.
+WORK
+Assigned to
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Marco Ellis
+Hana Koval
+Ravi Menon
+Triage Agent
+PMO Agent
+NM
+Northwind Managed Services
+State
+*
+Choose one
+New
+In progress
+On hold
+Resolved
+Closed
+Work notes
+Internal only. Hidden from requesters and finance.
+Try saving this form
+Nothing is stored; this checks required fields only.

@@ -1,0 +1,54 @@
+FIRST OFFICER
+Meetings that file themselves
+
+It attended 4 meetings, created 12 records without being asked, and left 2 for you. Come back here after the fact, not during.
+
+Claude · 94%
+Meetings handled
+4
+8 coming up, pre-reads ready
+Records filed on its own
+12
+of 14 proposed
+Waiting for a person
+2
+Lower confidence or money involved
+Capture yield
+94%
+ƒ Formula
+Week
+Day
+Month
+Review
+Needs a person
+Only items below its confidence threshold or with money attached
+Risk · 72%
+Taxonomy pilot slips if Lumen staff stay on the indexer
+Will create: Risk on Taxonomy Data Hub, linked to the Lumen risk
+Claude · 72%
+File it
+Dismiss
+Rooms and AV
+Taxonomy hub design review
+Aspen room (hybrid) · Display wall, 2 mics, Teams room kit booked
+Booked
+Board audit preparation
+Boardroom · Projector, 12 seats, conference phone booked
+Booked
+Filed automatically
+ƒ Meeting capture yield
+Hold the next Lumen payment until milestone 3 is accepted
+Decision · Links INV-20433 and SOW-4
+Priya Shah confirms milestone 3 acceptance criteria by Friday
+Action · Task on Codification Platform Upgrade
+Tom Becker brings the hosting tier estimate to the finance review on the 15th
+Action · Task on FY26 Cloud hosting
+Keep the Nov 13 beta date and review again on Oct 22
+Decision · Milestone note plus a review meeting
+HOW MUCH FIRST OFFICER DECIDES ALONE
+Suggest
+Draft
+Act with approval
+Act within rules
+
+Sources: Teams transcripts, Zoom and Webex recordings, Outlook calendar. Summaries can be pushed back to Outlook.

@@ -1,0 +1,224 @@
+AUTOMATION · INTEGRATION HUB
+Every connection, healthy or not
+
+13 connectors: 9 healthy, 2 degraded, 1 failing, 1 paused. SAP ERP (Lease subledger) has failed since its certificate expired, and 6 events wait in the dead-letter queue, including the Lumen payment hold.
+
+ƒ Integration failure rate
+Add connector
+Register MCP server
+Connectors
+13
+9 healthy
+Need attention
+3
+SharePoint, Workday, SAP
+Failure rate
+2.5%
+failed ÷ total calls, 24 h
+Dead letters
+9
+waiting for replay
+Connectors
+MCP servers
+Webhooks and keys
+Retries and dead letters
+5 MCP servers, 17 tools. Agents can only call a tool when the server allows the agent and the tool permission is Allow, or Ask first with a person approving. Register a server
+oukala-records
+https://mcp.meridian.example/records
+Streamable HTTP
+Healthy
+4,210 calls, 7 days
+240 ms p95
+0.4% errors
+Auth: OAuth 2.1 with Entra ID
+TOOL	SCOPE	PERMISSION	CALLS
+search_records
+Search invoices, projects, contracts and articles the caller may read
+	read	
+Allow
+Ask first
+Deny
+	2,870
+get_invoice
+Fetch one invoice with checks and ledger position
+	read	
+Allow
+Ask first
+Deny
+	910
+place_payment_hold
+Put one invoice on hold in the ERP (reversible)
+	write	
+Allow
+Ask first
+Deny
+	62
+approve_invoice
+Approve an invoice for payment
+	admin	
+Allow
+Ask first
+Deny
+	0
+RESOURCES
+oukala://invoices/{id}
+oukala://projects/{id}
+oukala://articles/{id}
+AGENTS ALLOWED TO CALL IT
+Invoice Advisor
+First Officer
+Knowledge Curator
+Forecast Agent
+Edit access
+azure-devops
+https://mcp.dev.azure.example/meridian
+Streamable HTTP
+Healthy
+1,380 calls, 7 days
+410 ms p95
+0.9% errors
+Auth: Personal access token
+TOOL	SCOPE	PERMISSION	CALLS
+list_work_items
+Query work items by project and state
+	read	
+Allow
+Ask first
+Deny
+	840
+create_work_item
+Create a task or bug
+	write	
+Allow
+Ask first
+Deny
+	96
+get_pipeline_run
+Status of a build or release
+	read	
+Allow
+Ask first
+Deny
+	444
+trigger_pipeline
+Start a pipeline run
+	write	
+Allow
+Ask first
+Deny
+	0
+RESOURCES
+ado://projects/{p}/boards
+ado://builds/{id}
+AGENTS ALLOWED TO CALL IT
+Ops Agent
+First Officer
+Edit access
+sharepoint-docs
+npx @meridian/mcp-sharepoint
+stdio (local gateway)
+Degraded
+2,240 calls, 7 days
+1180 ms p95
+5.6% errors
+Auth: App-only certificate
+TOOL	SCOPE	PERMISSION	CALLS
+search_documents
+Full-text search across selected sites
+	read	
+Allow
+Ask first
+Deny
+	1,620
+read_document
+Return the text of one file
+	read	
+Allow
+Ask first
+Deny
+	590
+upload_document
+Add or replace a file in a library
+	write	
+Allow
+Ask first
+Deny
+	30
+RESOURCES
+sp://sites/policy/documents
+AGENTS ALLOWED TO CALL IT
+Knowledge Curator
+Contract Analyst
+Edit access
+servicenow-compat
+https://mcp.meridian.example/itsm
+Streamable HTTP
+Healthy
+3,050 calls, 7 days
+280 ms p95
+0.5% errors
+Auth: OAuth client credentials
+TOOL	SCOPE	PERMISSION	CALLS
+query_table
+Read rows from incident, change or request tables
+	read	
+Allow
+Ask first
+Deny
+	2,400
+create_incident
+Log an incident
+	write	
+Allow
+Ask first
+Deny
+	410
+update_incident
+Add work notes or change state
+	write	
+Allow
+Ask first
+Deny
+	240
+RESOURCES
+itsm://incident/{number}
+itsm://change/{number}
+AGENTS ALLOWED TO CALL IT
+Triage Agent
+Ops Agent
+Edit access
+entra-directory
+https://mcp.meridian.example/directory
+Streamable HTTP
+Healthy
+760 calls, 7 days
+190 ms p95
+0.1% errors
+Auth: OAuth 2.1 with Entra ID
+TOOL	SCOPE	PERMISSION	CALLS
+get_user
+Profile, manager and group list
+	read	
+Allow
+Ask first
+Deny
+	610
+list_group_members
+Members of one group
+	read	
+Allow
+Ask first
+Deny
+	150
+add_group_member
+Add a user to a group (privileged)
+	admin	
+Allow
+Ask first
+Deny
+	0
+RESOURCES
+entra://users/{upn}
+AGENTS ALLOWED TO CALL IT
+Triage Agent
+Edit access

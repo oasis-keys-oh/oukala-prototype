@@ -1,0 +1,70 @@
+AI AND GOVERNANCE · AI GATEWAY AND TOKENOMICS
+Route every model call on purpose
+
+The gateway routes across 5 approved models and spend is $53.70 this month, on pace for $277 against a $300 cap. An accepted result costs about $0.90 on average, and guardrails stopped or redacted 60 items in 30 days.
+
+ƒ AI cost per outcome
+ƒ Guardrail catch rate
+Control Tower and kill switches
+Routing
+Models and catalog
+Tokenomics
+Budget guard
+Guardrails
+Cost per outcome
+Tokens are a means. The number that matters is what it costs to get one accepted result. Blended across 1,955 outcomes a month it is $0.90, against a human baseline of about $8.87.
+ƒ AI cost per outcome
+OUTCOME	MODEL	TOKENS IN	TOKENS OUT	CALLS	ACCEPTED	REVIEW MIN	TOKEN COST	COST PER OUTCOME	HUMAN BASELINE
+Resolved service ticket
+Ops Agent · 420 a month	
+Claude Sonnet 5.5
+Claude Haiku 5
+GPT-5
+Azure OpenAI GPT-4.1
+Llama 4 Scout
+						$0.059	$1.50
+$0.075 tokens + $1.42 review	$14.40
+Saves $12.90
+Drafted knowledge article
+Knowledge Curator · 60 a month	
+Claude Sonnet 5.5
+Claude Haiku 5
+GPT-5
+Azure OpenAI GPT-4.1
+Llama 4 Scout
+						$0.260	$8.87
+$0.317 tokens + $8.55 review	$52.00
+Saves $43.13
+Pre-cleared invoice
+Invoice Advisor · 180 a month	
+Claude Sonnet 5.5
+Claude Haiku 5
+GPT-5
+Azure OpenAI GPT-4.1
+Llama 4 Scout
+						$0.061	$0.54
+$0.067 tokens + $0.48 review	$6.50
+Saves $5.96
+Meeting filed to records
+First Officer · 95 a month	
+Claude Sonnet 5.5
+Claude Haiku 5
+GPT-5
+Azure OpenAI GPT-4.1
+Llama 4 Scout
+						$0.213	$1.18
+$0.227 tokens + $0.95 review	$22.00
+Saves $20.82
+Generated test case
+Test Agent · 1,200 a month	
+Claude Sonnet 5.5
+Claude Haiku 5
+GPT-5
+Azure OpenAI GPT-4.1
+Llama 4 Scout
+						$0.041	$0.33
+$0.046 tokens + $0.29 review	$4.10
+Saves $3.77
+Cost per outcome = (tokens in × input price + tokens out × output price) ÷ 1,000,000 × calls ÷ acceptance rate + review minutes × $0.95 per minute
+
+Acceptance rate is the share of AI results a person keeps without rework; low acceptance multiplies the token cost because rejected results are paid for twice. Review minutes are priced at a loaded rate of $57 an hour. Change any input to see a different model or prompt size.

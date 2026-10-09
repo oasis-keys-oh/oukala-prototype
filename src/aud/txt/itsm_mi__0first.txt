@@ -1,0 +1,103 @@
+SERVICE MANAGEMENT · MAJOR INCIDENT
+War room: Codification Platform is degraded
+
+INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.
+
+Impact analysis
+Add timeline entry
+Join bridge
+ƒ Major incident time to restore
+ITIL 5
+Overview
+War room
+Communications
+Status page
+Post-incident review
+STATUS
+Active
+INC0412
+MAJOR INCIDENTS, 90 DAYS
+4
+including the current one
+AVERAGE TIME TO RESTORE
+3.1 h
+ƒ Major incident time to restore target 4 h
+REVIEWS COMPLETED
+3/3
+blameless, within 5 days
+ROLES FILLED
+2/4
+current war room
+Blast radius now
+What the current major incident reaches
+SERVICES
+1
+1 are Tier 1
+USERS
+180,000
+largest group reached
+COST AT RISK
+$31K
+a month, services reached
+OBJECTIVES
+2
+2 projects depend on it
+Codification Portal
+Impact analysis
+Opens the visual dependency map: services, users, cost and objectives.
+Latest on the timeline
+Newest entries first
+13:25
+Triage Agent: p95 now 3.2 s. Still above the 2 s threshold; monitoring.
+Finding
+13:12
+Sam Patel: CHG0311 implementation started. p95 fell from 6.1 s to 3.8 s.
+Action
+12:06
+Sam Patel: Northwind engaged (NW-88213) to add two nodes.
+Update
+11:42
+Nia Brooks: ECAB approved emergency change CHG0311 (scale out and tune the balancer).
+Decision
+MAJOR INCIDENT HISTORY
+Service
+All
+4
+Review
+All
+2
+Export CSV
+INCIDENT	WHAT HAPPENED	SERVICE	DATE	HOURS TO RESTORE	PEOPLE AFFECTED	INCIDENT COMMANDER	REVIEW	CAUSE
+INC0412	Codification Portal slow for editors (page loads over 6 seconds)	Codification Platform	Oct 6	4.3 so far	140	
+Tom Becker
+	Due	Probable capacity saturation
+INC0361	Email delivery delay for all staff	Email and collaboration (M365)	Aug 12	1.9	310	
+Nia Brooks
+	Done	Mail flow connector throttled by a tenant policy change
+INC0378	Sign-in failures after conditional access change	Identity (Entra ID)	Sep 2	2.4	420	
+Tom Becker
+	Done	Named location removed in error (change CHG0295)
+INC0390	Contract Repository unavailable during storage patch	Contract Repository	Sep 19	3.6	95	
+Sam Patel
+	Done	Patch needed a restart that was not in the plan
+4 of 4 rows
+Scroll for more · rows are drawn as you scroll
+Major incident process (ITIL 5 Support)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Declare
+Tier 1 service, many users, no workaround.
+PERSON
+Fill roles
+Commander, technical lead, communications lead, scribe.
+AI AGENT
+Diagnose and restore
+Diagnostics by an agent, decisions by people; emergency change if needed.
+APPROVAL GATE
+Communicate
+AI drafts, communications lead approves every update.
+PERSON
+Review
+Blameless post-incident review ends in tasks.

@@ -1,0 +1,109 @@
+PEOPLE AND WORK
+Journey maps tied to workflows
+
+Journey maps are how the work looks to the people in it. Each of the 29 boxes across 4 journeys can be tied to the workflow or process that fulfills it, with a mode: human, deterministic or agentic. 93% have a process behind them, 59% run on rules or agents. Promote a journey to a workflow and refine it in the designer.
+
+ƒ Boxes linked to a process
+ƒ Journey automation coverage
+ƒ Journey experience score
+New journey
+Journey mapping
+Journey Agent · 78%
+Dashboard
+Map
+Fulfillment
+Processes
+Personas
+
+4 journeys with 29 boxes. 93% of boxes run on a linked process (2 do not, so nothing fulfills them); 2 boxes use more than one. 59% are fulfilled by rules or agents and 5 are agentic today. 15 more are strong candidates for an agent, worth about $55,906 a month. People spend 2,084 hours a month inside these boxes. Journey mapping
+
+BOXES LINKED TO A PROCESS
+93%
+2 with nothing behind them
+AUTOMATION COVERAGE
+59%
+5 agentic
+EXPERIENCE SCORE
+2.9 of 5
+weighted by volume
+AGENT CANDIDATES
+15
+assessment 70 or more
+Journeys
+Health roll-up for each journey. Select one to open its map.
+Area
+All
+3
+Main persona
+All
+2
+Export CSV
+JOURNEY	AREA	MAIN PERSONA	STAGES	BOXES	LINKED	RULES OR AGENTS	EXPERIENCE	MINUTES	COST PER RUN	WORKFLOW
+Employee onboarding	People	Requester	5	9	78%	56%	3.3	321	$98	wf_onboard
+Laptop request	Service	Requester	5	7	100%	86%	2.7	178	$104	wf_laptop
+Incident resolution	Service	Requester	5	7	100%	57%	3	268	$162	Not promoted
+New project request	Delivery	Project manager	5	6	100%	33%	2.9	780	$695	wf_project
+4 of 4 rows
+Scroll for more · rows are drawn as you scroll
+Biggest pain points
+Lowest experience first, then by volume.
+Pain points
+8
+Tell someone it is broken
+2 of 5
+Incident resolution · Has to repeat it to each person
+Hand over and set up
+2 of 5
+Laptop request · Setup takes an hour
+Manager approves
+2 of 5
+Laptop request · Waits a day and a half on average
+Provider investigates
+2 of 5
+Incident resolution · No shared status
+Approve an emergency change
+2 of 5
+Incident resolution · Late-night approvals
+Show 3 more of 3 remaining
+Strong agent candidates
+Boxes that score 70 or more and are not agentic yet.
+Candidates
+8
+Find the cause
+78
+Incident resolution · 420 a month · saves about $16,709 a month
+Apply the fix
+73
+Incident resolution · 420 a month · saves about $10,633 a month
+Hand over and set up
+81
+Laptop request · 220 a month · saves about $7,957 a month
+Manager approves
+87
+Laptop request · 180 a month · saves about $5,859 a month
+Order and receive
+87
+Laptop request · 220 a month · saves about $5,570 a month
+Show 3 more of 3 remaining
+How a journey becomes a workflow
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Journey mapping, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Map the journey
+Personas, stages and boxes with touchpoints, experience and pain points.
+PERSON
+Link each box to a process
+One box can run on one or several workflows or processes.
+AI AGENT
+Assess fulfillment
+Score every box for an agent: volume, repeatability, data, safety.
+APPROVAL GATE
+Raise demand
+Strong candidates become portfolio demand with the assessment attached.
+AUTOMATIC
+Promote to a workflow
+The map becomes a workflow definition and opens in the designer.
+AUTOMATIC
+Measure
+Experience, time and cost per box roll up to the journey.

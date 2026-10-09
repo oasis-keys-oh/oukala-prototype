@@ -1,0 +1,181 @@
+DELIVERY PIPELINE
+One flow from idea to production
+
+The change process is a stage in the pipeline, not a separate queue. 4.7 production deployments a week, lead time 54 hours, 10.0% failed. 4 runs are waiting at the gate for the CAB.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Changes approved by the gate automatically
+DORA metrics
+ITIL 5
+Pipeline
+Runs
+Gate policy
+Where is my change
+Environments
+Freezes and clashes
+DORA
+All pipeline runs
+Filter by service, target environment, result or change path. Group by any of them. Export to CSV from the table menu.
+Service
+All
+14
+Target
+All
+3
+Result
+All
+8
+Change path
+All
+4
+Group by 
+None
+Service
+Target
+Result
+Change path
+Export CSV
+RUN	SERVICE	RELEASE	TARGET	STAGES	CHANGE PATH	RESULT	STARTED▼	MINUTES
+PL-4109
+main · 04007ea
+	Contract Repository	REL-2616	Production	
+	Normal	Running	Jan 12 14:34	33
+PL-4105
+main · 724e10b
+	Data platform	REL-2612	Production	
+	Normal	Running	Dec 2 08:36	16
+PL-4107
+hotfix/9332 · be174c0
+	Lease subledger (ERP)	REL-2614	Production	
+	Emergency	Running	Nov 18 15:15	15
+PL-4104
+release/3.0.0-beta · 1aea8cb
+	Codification Platform	REL-2611	Production	
+	Normal	Running	Nov 13 08:21	51
+PL-4111
+release/2.2.0 · 5172f4a
+	Integration hub	REL-2618	Production	
+	Normal	Running	Nov 10 13:21	44
+PL-4106
+main · dbb2b3b
+	Contract Repository	REL-2613	Production	
+	Normal	Running	Nov 3 16:51	20
+PL-4110
+release/3.1.1 · f80d51a
+	Codification Portal	REL-2617	Production	
+	Normal	Running	Oct 29 14:06	39
+PL-4103
+release/3.1.0 · b175e8b
+	Codification Portal	REL-2610	Production	
+	Normal	Running	Oct 27 09:07	47
+PL-4100
+main · 8d147a4
+	Codification Portal	REL-2607	Production	
+	Normal	Running	Oct 21 16:53	23
+PL-4108
+release/1.0.1 · ac9bebb
+	Identity (Entra ID)	REL-2615	Production	
+	Normal	Ready to deploy	Oct 20 11:16	54
+PL-4102
+release/2.4.0 · 4efda13
+	Search and indexing	REL-2609	Production	
+	Normal	Running	Oct 12 15:22	32
+PL-4101
+hotfix/6e58 · 3e2a744
+	Codification Platform	REL-2608	Production	
+	Emergency	Waiting for change approval	Oct 8 11:20	48
+PL-4294
+release/2.9 · 95bbda7
+	AI platform and agents	No release record	Staging	
+	Standard	Succeeded	Oct 6 14:21	38
+PL-4306
+release/2.9 · 84f29d0
+	AI platform and agents	No release record	Test	
+	Standard	Running	Oct 6 12:56	29
+PL-4282
+main · a68507e
+	Portfolio and project intake	No release record	Staging	
+	Blocked	Tests failed	Oct 6 08:47	47
+PL-4245
+main · 4090299
+	Portfolio and project intake	No release record	Test	
+	Normal	Waiting for change approval	Oct 5 14:47	22
+PL-4257
+main · e8485bc
+	Portfolio and project intake	No release record	Test	
+	Normal	Succeeded	Oct 5 12:54	32
+PL-4270
+release/2.9 · 74e4559
+	Portfolio and project intake	No release record	Test	
+	Normal	Succeeded	Oct 5 09:29	49
+PL-4224
+release/2.9 · bcc957c
+	Codification Platform	No release record	Test	
+	Normal	Succeeded	Oct 4 15:24	32
+PL-4233
+main · 19cbc6a
+	Service desk	No release record	Test	
+	Standard	Succeeded	Oct 4 08:45	50
+PL-4307
+main · aa5e6e4
+	AI platform and agents	No release record	Test	
+	Standard	Succeeded	Oct 3 16:01	47
+PL-4295
+release/2.9 · cb289bb
+	AI platform and agents	No release record	Production	
+	Standard	Succeeded	Oct 3 10:26	16
+PL-4259
+main · d744308
+	Portfolio and project intake	No release record	Test	
+	Normal	Succeeded	Oct 2 14:07	54
+PL-4283
+release/2.9 · dce1d82
+	Portfolio and project intake	No release record	Production	
+	Standard	Succeeded	Oct 2 13:51	25
+PL-4217
+release/2.1.1 · 4a8faae
+	Codification Platform	REL-2557	Production	
+	Normal	Succeeded	Oct 2 13:26	43
+PL-4271
+release/2.9 · cba169d
+	Portfolio and project intake	No release record	Test	
+	Normal	Build failed	Oct 2 10:56	40
+PL-4246
+release/2.9 · 3f6e5a6
+	Portfolio and project intake	No release record	Test	
+	Normal	Succeeded	Oct 2 10:24	19
+PL-4258
+release/2.9 · 1ea51cf
+	Portfolio and project intake	No release record	Test	
+	Standard	Succeeded	Oct 2 08:59	49
+
+215 of 215 rows
+Scroll for more · rows are drawn as you scroll
+How a change reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics, ITIL 5, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Work item
+A backlog item or project task is the start of every change.
+PERSON
+Commit and pull request
+Code is committed with the work item id and reviewed.
+AUTOMATIC
+Build, test and scan
+Compile, run tests, scan for vulnerabilities, sign the artifact.
+APPROVAL GATE
+Change gate
+The gate reads the evidence: standard changes are approved automatically, normal changes go to the CAB, emergency changes to the ECAB.
+AI AGENT
+Deploy
+The release agent deploys in the agreed window and respects freezes.
+AI AGENT
+Verify
+The service level objective is checked for 15 minutes. If the error budget burns, the deploy is rolled back.
+AUTOMATIC
+Close and learn
+Release and change records close with the outcome. DORA numbers update.

@@ -1,0 +1,105 @@
+COST TRANSPARENCY · TBM AND ATUM
+See what each service costs, and when it needs more
+
+Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now. 1 idle step could save $19,200 a year.
+
+Forecast demand
+Scaling model
+Budgets
+ƒ IT cost per employee a month
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Cost flow
+Unit economics
+Showback and chargeback
+Scaling model
+Forecast and triggers
+SCALING STEPS
+8
+capacity rules defined
+OVER 85% TODAY
+1
+close to the next step
+SCALE-UP NEEDED
+5
+inside 52 weeks
+SCALE-DOWN CANDIDATES
+1
+idle capacity
+RUN COST IN STEPS
+$822,400
+a year across all steps
+New scaling step
+TBM Taxonomy and ATUM
+ƒ Demand forecast accuracy
+Capacity rules
+Each service lists what one step of capacity is, what it costs, and who pays. Click a row to edit it.
+Budgets (read only)
+Export CSV
+STEP	WHAT IT CARRIES	IN PLACE	COST PER STEP A YEAR	USED TODAY	NEXT STEP	FUNDED BY
+Service desk analysts
+Service desk	1 per 560 tickets and requests a month	4	$96,000	80%	in 5 weeks	Operations run budget: service desk labor
+Search indexer nodes
+Search and indexing	1 per 1.7M index queries a month	2	$38,000	65%	in 7 weeks	Run budget: search and indexing (Lumen)
+API gateway units
+Codification Portal	1 per 20M API calls a month	1	$27,000	75%	in 1 weeks	Run budget: integration and API (offset by licence revenue)
+Codification application servers
+Codification Platform	1 per 150 concurrent editors	3	$14,400	58%	none in horizon	Run budget: Codification Platform hosting
+Contract storage blocks
+Contract Repository	1 per 5 terabytes stored	4	$4,800	73%	in 28 weeks	Run budget: Contract Repository storage
+Lakehouse capacity units
+Data platform	1 per 40 scheduled pipelines	3	$31,000	80%	in 5 weeks	Run budget: data platform (Azure)
+Entra ID P2 licence bands
+Identity (Entra ID)	1 per 100 licensed users	7	$21,600	91%	none in horizon	Run budget: identity licences
+Lease subledger servers
+Lease subledger (ERP)	1 per 40 concurrent users	3	$9,600	18%	remove 2	Run budget: ERP hosting (retiring under D3)
+8 of 8 rows
+Scroll for more · rows are drawn as you scroll
+Search indexer nodes
+Each Lumen indexer node serves about 1.65 million index queries a month. One AI question fans out to about 25 index queries.
+One step carries
+1.7M index queries a month
+In place now
+2 (3.4M total, 85% target use = 2.9M)
+Cost per step
+$38,000 a year
+Order lead time
+5 weeks
+Funded by
+Run budget: search and indexing (Lumen)
+Companion cost
+Part-time search relevance analyst (0.25 FTE) $24,000
+Edit step
+Stepped cost curve
+The line shows annual cost as demand grows.
+Annual cost of indexer nodes
+1.4M
+2.9M
+4.3M
+5.8M
+$0
+$76K
+$152K
+today
+forecast
+index queries a month (a step is added at each dashed line)
+Cost transparency and scaling
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ingest the ledger
+General ledger accounts map to cost pools by rule.
+AI AGENT
+Allocate
+Pools flow to towers, services, offerings and consumers by drivers.
+AI AGENT
+Forecast demand
+Growth and scenarios project each driver against capacity.
+PERSON
+Review trigger
+The service owner checks the step and the funding line.
+APPROVAL GATE
+Raise demand
+Approved triggers become demand with cost and reason.

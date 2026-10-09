@@ -1,0 +1,57 @@
+MASTER SCHEDULE
+Every project on one timeline
+
+Four projects run to Feb 24, 2027. 1 of the four core projects is behind baseline. Codification go live is 7 work days late, and the Taxonomy pilot is on baseline, because one Lumen team sits on both.
+
+ƒ Schedule performance index
+ƒ Milestones on time
+ƒ Schedule variance
+PMBOK
+Why am I seeing this?
+Projects
+All 4 projects
+4
+Project managers
+All managers
+4
+Resource type
+All types
+4
+4 projects shown
+Current plan
+Lumen slips 5 more work days
+Lumen slips 10 more work days
+Add two Lumen engineers to the indexer
+Editor testing takes twice as long
+Overview
+Gantt
+Milestones
+What changed
+Project Online coverage
+Scenario against baseline
+Pick a scenario above, then come back here.
+MILESTONE	BASELINE	CURRENT PLAN	CURRENT PLAN	AGAINST BASELINE
+Codification beta	Nov 4	Nov 13	Nov 13	7 work days late
+Codification go live	Dec 2	Dec 11	Dec 11	7 work days late
+Taxonomy pilot	Dec 2	Dec 2	Dec 2	on baseline
+Sev 2 problem closed	Nov 2	Nov 2	Nov 2	on baseline
+Contract repository cutover	Feb 1	Feb 1	Feb 1	on baseline
+How the master schedule stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Project managers update progress
+Percent complete and actual dates arrive from task sheets, Teams and First Officer meeting notes.
+AUTOMATIC
+Schedule engine recalculates
+Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.
+AI AGENT
+PMO Agent flags drift
+Compares forecast with baseline, finds new critical chains and cross-project collisions, drafts a recovery option.
+PERSON
+Portfolio manager reviews
+Decides which recovery option to take and whether a milestone moves.
+APPROVAL GATE
+Baseline reset approval
+A re-baseline needs approval from the steering committee. It is audited and the old baseline is kept.

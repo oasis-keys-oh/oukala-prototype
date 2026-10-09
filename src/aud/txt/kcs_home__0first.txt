@@ -1,0 +1,232 @@
+KNOWLEDGE MANAGEMENT · KCS V6 · SOURCE, OUTPUT, AUTOMATION
+Knowledge that runs the work
+
+54 knowledge items feed answers and agents. 6 are ready to automate and 4 already run as agent skills, with a 89% success rate. 5 published items are stale, and 2 fixes were flagged by skill runs.
+
+ƒ Article reuse rate
+ƒ Automation readiness
+ƒ Agent skill success rate
+New knowledge item
+Agent skills
+Knowledge graph
+Why am I seeing this?
+ITEMS
+54
+42 published
+STALE
+5
+past 12 months
+QUALITY SCORE
+83
+target 85
+LINK RATE
+71%
+closed tickets with a link
+DEFLECTION
+31%
+of support searches
+SKILL SUCCESS
+89%
+433 runs
+Lifecycle
+Library
+KCS board
+Freshness
+Quality and usage
+The knowledge loop, live
+Capture in the flow of work, structure it, reuse it, improve it, automate it.
+ƒ Article reuse rate
+ƒ Knowledge link rate
+ƒ Article freshness
+ƒ Self-service deflection
+ƒ Automation readiness
+ƒ Agent skill success rate
+KCS v6
+1. CAPTURE
+6
+drafts captured while solving
+Contributors write it down as they resolve a ticket. Not validated yet.
+2. STRUCTURE
+4
+in review
+Symptom, cause, resolution, links. A reviewer checks it.
+3. REUSE
+3,386
+reuses and citations, 90 days
+Linked to tickets, cited in chat, used in portal guidance.
+4. IMPROVE
+3
+open improvement tasks
+Anyone who finds it wrong flags it. The owner fixes it once, everyone benefits.
+5. AUTOMATE
+4
+active agent skills
+Items that score high on readiness become executable skills.
+Escalated or failed skill runs flag the source item, which goes back into Improve. 4 flagged so far, 1 fixed and reused.
+From article to automated fulfillment
+Each step is a real object you can open: the item, its structured procedure, the skill, the registered workflow step and chat tool, and the runs.
+ƒ Automation readiness
+KNOWLEDGE ITEM
+22
+procedural items, published
+Article, runbook, SOP, pattern, codified process
+STRUCTURED PROCEDURE
+22
+with clear numbered steps (determinism 60 or more)
+AI extracts steps and tools
+AGENT SKILL
+10
+4 active
+Inputs, tools, guardrails, approvals, tests
+WORKFLOW STEP AND CHAT TOOL
+4
+registered in Workflows and Chat
+WFX workflow plus chat tool
+RUNS AND OUTCOMES
+433
+89% succeeded
+Failures flow back to the item
+1. Source
+Every item says where it came from, who owns it and how sure we are.
+KCS v6
+ITEMS
+54
+across 12 kinds
+WITH REVIEW DATE
+100%
+owner and reviewer named
+AVERAGE CONFIDENCE
+85%
+5 below 65%
+EVIDENCE LINKS
+39
+item is evidence for another
+SOP
+9
+Runbook
+8
+Resolved-ticket pattern
+6
+Policy
+5
+FAQ
+5
+Article
+4
+Contract term
+3
+Decision record
+3
+
+Kinds covered: articles, runbooks, SOPs, policies, contract terms, decision records, architecture docs, FAQs, resolved ticket patterns, chat threads, vault notes and codified processes. License and sensitivity: 2 licensed from vendor, 1 restricted, need to know, 12 confidential, no external sharing.
+
+2. Output
+Where knowledge is used, with the numbers behind it.
+ƒ Self-service deflection
+VIEWS
+11,361
+90 days
+DEFLECTIONS
+1,968
+solved without a ticket
+HELPFUL
+79%
+average vote
+GAPS
+6
+searches with no answer
+Self-service answers
+6,251
+Chat citations
+1,609
+Agent assist for analysts
+2,619
+Portal guidance on catalog items
+794
+Workflow step help
+455
+Training content
+342
+Generated documents
+321
+Release and change risk text
+112
+
+Chat and agent citations are counted when an answer cites a numbered chunk. See Ask the knowledge base.
+
+3. Automated fulfillment
+Procedural items can become agent skills that run, with guardrails and approvals.
+ƒ Automation readiness
+SKILLS
+10
+4 active
+RUNS
+433
+89% succeed
+COST SAVED
+$7,480
+vs manual handling
+ESCALATIONS
+37
+sent back to a person
+Ready to automate
+6
+Close, needs tests
+19
+Needs structuring
+28
+Reference only
+1
+BEST CANDIDATES WITHOUT A SKILL
+Monthly lease amortization close
+KB0312 · Lease subledger (ERP)
+71
+Promote
+Approve a discount rate change
+KB0295 · Lease subledger (ERP)
+71
+Promote
+Renew the portal TLS certificate
+RB-080 · Codification Portal
+69
+Promote
+Provision a new editor laptop in Intune
+RB-071 · Endpoint management (Intune)
+67
+Promote
+What needs attention
+The four things worth doing today.
+Stale and popular
+Acceptable use of Meridian systems has 905 views and was last reviewed Sep 1, 2025.
+Review now
+Close to automatable
+Monthly lease amortization close scores 71. It lacks tests, so it cannot reach 80.
+Promote to a skill
+2 flagged by skill runs
+KB0451: 14 escalations: the user had no authentication method left to reset. The article does not say what to do next.
+Open the loop
+Biggest search gap
+how do I rebuild the lumen search index was searched 23 times with no answer.
+Open gaps
+How knowledge flows from source to output to automation
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Capture
+Write it down while solving the ticket, with its source.
+AI AGENT
+Structure
+Fill the sections, add links to service, CI and process.
+APPROVAL GATE
+Review and publish
+A reviewer checks it. Publish needs a Publisher.
+AUTOMATIC
+Reuse
+Search, chat, agent assist and portal guidance cite it.
+PERSON
+Improve
+Flag it, fix it, reuse the fix.
+APPROVAL GATE
+Promote to a skill
+Procedural items with high readiness become agent skills.

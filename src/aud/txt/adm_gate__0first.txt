@@ -1,0 +1,116 @@
+AI AND GOVERNANCE · AI GATEWAY AND TOKENOMICS
+Route every model call on purpose
+
+The gateway routes across 5 approved models and spend is $53.70 this month, on pace for $277 against a $300 cap. An accepted result costs about $0.90 on average, and guardrails stopped or redacted 60 items in 30 days.
+
+ƒ AI cost per outcome
+ƒ Guardrail catch rate
+Control Tower and kill switches
+Routing
+Models and catalog
+Tokenomics
+Budget guard
+Guardrails
+Routing policies
+The gateway picks a model per task. The first matching policy wins, so order is priority: drag to change it. Fallback is used when the primary is denied, down or not cleared for the data's label.
+New routing policy
+1
+Any task when data is Confidential+
+Confidential or Restricted data never leaves the Meridian tenant.
+Primary
+Azure OpenAI GPT-4.1 (Meridian tenant)
+Fallback
+Llama 4 Scout (self-hosted)
+Ceiling
+$0.60 per run
+Edit
+Remove
+2
+Invoice scoring
+Council check by a second vendor above $25,000.
+Primary
+GPT-5
+Fallback
+Gemini 3 Pro
+Ceiling
+$0.15 per run
+Edit
+Remove
+3
+Meeting summary
+Best quality on long transcripts.
+Primary
+Claude Sonnet 5.5
+Fallback
+GPT-5
+Ceiling
+$0.40 per run
+Edit
+Remove
+4
+Knowledge drafting
+Strong at long documents at a lower price.
+Primary
+Gemini 3 Pro
+review
+Fallback
+Claude Sonnet 5.5
+Ceiling
+$0.30 per run
+Edit
+Remove
+5
+Triage and classification
+Fast and cheap; quality is enough for routing.
+Primary
+Claude Haiku 5
+Fallback
+Llama 4 Scout (self-hosted)
+Ceiling
+$0.02 per run
+Edit
+Remove
+6
+Test generation
+Sandbox data only.
+Primary
+Claude Sonnet 5.5
+Fallback
+GPT-5
+Ceiling
+$0.50 per run
+Edit
+Remove
+7
+General
+Default for everything else.
+Primary
+Claude Haiku 5
+Fallback
+Azure OpenAI GPT-4.1 (Meridian tenant)
+Ceiling
+$0.05 per run
+Edit
+Remove
+Try a route
+Which model would the gateway use right now?
+Task
+Invoice scoring
+Meeting summary
+Knowledge drafting
+Triage and classification
+Test generation
+General
+Highest label in the prompt data
+Public
+Internal
+Confidential
+Restricted
+GPT-5
+Residency: US region. Ceiling $0.15 per run.
+–
+Policy 1 (Any task, Confidential+) does not match.
+›
+Policy 2 (Invoice scoring) matches.
+✓
+Primary GPT-5 is approved for Internal data. Using it.

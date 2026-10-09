@@ -1,0 +1,155 @@
+VENDORS AND CONTRACTS
+Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days
+
+Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepted. Cobalt Security must be told by Oct 16 if you do not want to renew, and Apex Print by Nov 1.
+
+ƒ Renewals needing a decision in 90 days
+ƒ Three-way match rate
+ƒ Vendor performance index
+New purchase order
+New contract
+New vendor
+Vendors
+Contracts
+Renewals
+SOWs and rates
+Purchase orders
+New purchase order
+Three-way match compares what was ordered, what was received and accepted, and what was invoiced. The tolerance is 2%.
+Match rate
+82%
+9 of 11 active POs match
+Invoiced ahead of receipt
+$97,380
+Held by the Invoice Advisor
+Awaiting approval
+1
+$45,000 not yet committed
+PO	VENDOR AND DESCRIPTION	ORDERED	RECEIVED	INVOICED	PAID	THREE-WAY VIEW	MATCH	APPROVAL
+PO-77120
+Mar 2
+	Lumen Data Partners
+Taxonomy engineering (SOW-4) · PR2-VEN
+	$610,000	$390,000	$474,900
+$62,900 unpaid
+	$412,000	
+PO
+Receipt
+Invoice
+	Invoice ahead of receipt	CEO
+PO-77188
+Sep 22
+	Lumen Data Partners
+Change order CO-2 · PR2-VEN
+	$45,000	$0	$0	$0	
+PO
+Receipt
+Invoice
+	Awaiting approval	Approve
+PO-77090
+Jun 2
+	Lumen Data Partners
+Search indexer (SOW-3) · PR1-VEN
+	$250,000	$175,000	$175,000	$175,000	
+PO
+Receipt
+Invoice
+	Matched	CFO
+PO-76810
+Jan 5
+	Northwind Cloud
+Annual hosting commitment · Run
+	$1,050,000	$924,200	$924,200
+$184,200 unpaid
+	$740,000	
+PO
+Receipt
+Invoice
+	Matched	Board finance committee
+PO-77012
+Jun 3
+	Northwind Cloud
+Storage add-on · PR1-CLD
+	$60,000	$39,400	$39,400
+$21,400 unpaid
+	$18,000	
+PO
+Receipt
+Invoice
+	Matched	CIO
+PO-77300
+Jun 20
+	Microsoft
+Enterprise agreement year 2 · Run
+	$412,000	$412,000	$412,000	$412,000	
+PO
+Receipt
+Invoice
+	Matched	CEO
+PO-76990
+Jan 8
+	Apex Print
+Print services 2026 · Run
+	$48,000	$31,000	$43,480
+$12,480 unpaid
+	$31,000	
+PO
+Receipt
+Invoice
+	Invoice ahead of receipt	CIO
+PO-77231
+Nov 17
+	Cobalt Security
+Penetration test retainer · Run
+	$36,000	$27,000	$27,000	$27,000	
+PO
+Receipt
+Invoice
+	Matched	Tom BeckerSelf-approved
+Re-route approval
+
+PO-77070
+Feb 2
+	Brightline Staffing
+Contract engineers MSA · Run
+	$180,000	$129,000	$129,000	$129,000	
+PO
+Receipt
+Invoice
+	Matched	CFO
+PO-77241
+Sep 14
+	Brightline Staffing
+Extra engineer, two weeks · PR1-LAB
+	$9,000	$9,000	$9,000	$9,000	
+PO
+Receipt
+Invoice
+	Matched	Priya Shah
+PO-77249
+Sep 22
+	Brightline Staffing
+Extra engineer, two weeks · PR1-LAB
+	$9,500	$9,500	$9,500	$9,500	
+PO
+Receipt
+Invoice
+	Matched	Priya Shah
+PO-77256
+Sep 29
+	Brightline Staffing
+Extra engineer, two weeks · PR1-LAB
+	$8,800	$0	$0	$0	
+PO
+Receipt
+Invoice
+	Awaiting receipt	Priya Shah
+PO-77301
+Apr 2
+	LegacyDocs Inc.
+Repository support year 2 · Run
+	$96,000	$48,000	$48,000	$48,000	
+PO
+Receipt
+Invoice
+	Matched	CIO

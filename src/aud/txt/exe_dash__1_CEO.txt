@@ -1,0 +1,181 @@
+EXECUTIVE DASHBOARD · MERIDIAN STANDARDS FOUNDATION
+One set of numbers, five executive views
+
+Every tab below is a different arrangement of the same data, so the CEO, CFO, CIO, COO and Board audit chair never argue about whose number is right. We are 76% likely to hit the beta by Nov 20, forecast is 105.6% of budget, and 7 decisions are open.
+
+ƒ Beta date confidence
+ƒ Strategic alignment score
+ƒ Risk exposure against contingency
+Why am I seeing this?
+Group overview
+CEO
+CFO
+CIO
+COO
+Board
+CEO VIEW
+80% sure the beta lands by Nov 23
+
+The plan date is Nov 13 and the baseline was Nov 4. Strategy alignment is 89 of 100: Improve editor and reviewer experience has no funded work. 7 decisions are waiting on leadership.
+
+Strategic alignment
+88.9
+1 objective without funded work
+ƒ Formula
+Open →
+Maturity vs strategy
+70%
+Glide-path index 93; 49 of 68 gaps have a funded path
+ƒ Formula
+Open →
+Beta confidence by Nov 20
+76%
+80% by Nov 23 · plan Nov 13
+ƒ Formula
+Open →
+Delivery health
+71
+Beta moved 7 days from Nov 4
+ƒ Formula
+Open →
+Forecast vs approved
+105.6%
+$163K over $2.91M approved
+ƒ Formula
+Open →
+Operational health
+82
+Target at least 80
+ƒ Formula
+Open →
+Top 3 decisions needed
+Chosen for the CEO. Approve or defer here; each choice is audited and the numbers on the other screens follow.
+ƒ Executive decision age
+Commit to Nov 23 as the Codification beta date
+Nov 23
+
+76% chance of landing by Nov 20; 80% by Nov 23. The plan date is Nov 13 and the baseline was Nov 4.
+
+Monte Carlo (2,000 trials) · 80%
+Waiting 3 days
+Source
+Approve
+Defer
+Fund the lease subledger retirement (D3, $680K)
+$680K
+
+D3 scores 77, just under the funding line at 80. The ASC 842 amendment takes effect Jan 1, 2027, and the old subledger cannot support it.
+
+Portfolio Agent · 78%
+Waiting 5 days
+Source
+Approve
+Defer
+Pause expansion of the AI drafting assistant until overrides drop
+22%
+
+Agents are overridden 22% of the time against a 10% target. Four of six Lumen holds were overridden. Existing agents keep running.
+
+Feedback Analyst · 84%
+Waiting 4 days
+Source
+Approve
+Defer
+Strategic objectives
+2 of 5 are on track. The tick marks where each should be by today.
+ƒ Strategic alignment score
+Modernize standards publishing
+Watch
+43% · $2.07M
+Reduce operating risk
+On track
+45% · $1.2M
+Protect revenue through contract discipline
+On track
+26% · $558K
+Trusted AI
+Watch
+42% · $519K
+Improve editor and reviewer experience
+Needs action
+25% · no funded work
+Maturity against strategy
+10 maturity models, 80 capabilities. Attainment 70% against the Year 1 target; glide-path index 93.
+Modernize codification
+2.1
+Watch
+Resilient operations
+2.3
+On track
+Contract discipline
+2.2
+Watch
+Trusted AI
+2.3
+Behind
+Editor experience
+2.4
+Behind
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+Open maturity models
+Top risks
+Expected loss is probability times impact. Together they use 90% of the $291K contingency.
+ƒ Risk exposure against contingency
+3×3
+Lumen delivers the search indexer late again
+Dev Rao · mitigation Dev Rao
+$88K
+2×4
+Lease subledger cannot support the ASC 842 amendment by Jan 1
+Avery Chen · mitigation Jordan Lee
+$56K
+2×4
+Portal outage before the failover is tested
+Tom Becker · mitigation Tom Becker
+$45K
+Delivery health
+Baseline (hollow) against forecast (filled), from the master schedule. Schedule performance index 0.96.
+ƒ Delivery health
+ƒ Schedule performance index
+Master schedule
+Sep 23
+Oct 7
+Oct 21
+Nov 4
+Nov 18
+Dec 2
+Dec 16
+Dec 30
+Today
+Codification beta
+Nov 13 (+7 days)
+Codification go live
+Dec 11 (+7 days)
+Taxonomy pilot
+Dec 2
+Sev 2 problem closed
+Nov 2
+Ask about this view
+Chat can answer from the same numbers and open the right screen.
+Claude Sonnet · 90%
+What is the chance we hit the beta date?
+Show strategy gaps
+Give me the board view
+How the executive views are built
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.
+AI AGENT
+Arrange by role
+The headline, six measures and three decisions are chosen for the CEO, CFO, CIO, COO or Board audit chair.
+APPROVAL GATE
+Decide
+Approve or defer a decision. Each choice is audited and the numbers on other screens update.
+PERSON
+Explain
+Select a tile to open its source screen and see the formula and the owner.

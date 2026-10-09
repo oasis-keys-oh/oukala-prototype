@@ -1,0 +1,274 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+Modernize codification
+Resilient operations
+Contract discipline
+Trusted AI
+Editor experience
+O1 · CEO OFFICE
+Modernize standards publishing
+
+29 capabilities carry this objective. The roll-up is at level 2.1 (scaled to 5) against 2.3 expected today on the glide path to 3.1 by end of FY27. 18 of 26 capabilities that have a gap have a funded path to close it.
+
+Watch
+ƒ Glide-path index
+ƒ Maturity attainment
+ƒ Capability delivery coverage
+Objective glide path
+All capabilities rolled up. The solid blue line is the forecast from funded projects.
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Actual to today
+Forecast with funded projects
+Glide path (expected)
+Target at each horizon
+Horizon check
+Year 1, Year 3 and Year 5 against the forecast.
+HORIZON	TARGET LEVEL	FORECAST LEVEL	MEETING TARGET	STATUS
+Year 1
+end of FY27
+	3.1	2.8	21 of 29	Watch
+Year 3
+end of FY29
+	3.9	2.9	7 of 29	Behind
+Year 5
+end of FY31
+	4.7	2.9	0 of 29	Behind
+Glide variance = current level − expected level today = 2.1 − 2.3 = -0.22 levels (scaled to 5). Levels are scaled to a common 1 to 5 range so a 4-tier model compares fairly with a 5-level one.
+Capability glide path
+Objective to project link (Project and delivery traceability). Choose another capability on the right.
+Watch
+Linked now · Verified by end of FY27
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Actual to today
+Forecast with funded projects
+Glide path (expected)
+Target at each horizon
+Open capability
+Change targets
+Capabilities of this objective
+29 across 8 models.
+Project and delivery traceability
+5
+Objective to project link
+PDT.1
+level 3 to 4
+Requirement to task link
+PDT.2
+level 2 to 3
+Task to milestone and acceptance
+PDT.3
+level 3 to 4
+Earned value from task progress
+PDT.5
+level 3 to 4
+Benefit realization tracking
+PDT.6
+level 1 to 2
+Process capability (CMMI style)
+4
+Requirements management
+CMMI.1
+level 2 to 3
+Project planning and monitoring
+CMMI.2
+level 3 to 3
+Measurement and analysis
+CMMI.5
+level 2 to 3
+Process and product quality assurance
+CMMI.7
+level 2 to 3
+IT service management practices
+1
+Digital product and service lifecycle (ITIL 5)
+ITIL.10
+level 1 to 2
+Technology business management
+1
+Value and benefit realization
+TBM.7
+level 1 to 2
+Data management
+7
+Data governance
+DMM.1
+level 2 to 3
+Data architecture
+DMM.2
+level 2 to 3
+Metadata and catalog
+DMM.3
+level 1 to 3
+Data quality
+DMM.4
+level 2 to 3
+Master and reference data (taxonomy)
+DMM.5
+level 2 to 3
+Show 2 more of 2 remaining
+AI governance
+1
+Provenance and citation of sources
+GAI.5
+level 2 to 4
+Software delivery (DORA)
+5
+Deployment frequency
+DORA.1
+level 2 to 3
+Lead time for changes
+DORA.2
+level 2 to 3
+Rework rate
+DORA.5
+level 2 to 3
+Test automation
+DORA.6
+level 2 to 3
+Platform engineering
+DORA.7
+level 1 to 2
+Portfolio management (P3M3)
+5
+Management control
+P3M3.1
+level 3 to 3
+Benefits management
+P3M3.2
+level 1 to 2
+Stakeholder engagement
+P3M3.4
+level 3 to 3
+Organizational governance
+P3M3.6
+level 2 to 3
+Resource management
+P3M3.7
+level 2 to 3
+Every objective on one scale
+Same chart for all objectives so you can see which strategy is furthest behind.
+Modernize codification
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Resilient operations
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Contract discipline
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Trusted AI
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+Editor experience
+1
+2
+3
+4
+5
+Year 1
+Year 3
+Year 5
+Today
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

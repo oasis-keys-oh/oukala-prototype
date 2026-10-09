@@ -1,0 +1,53 @@
+KNOWLEDGE GRAPH
+Know what a change touches
+
+Changing ASC 842 Leases reaches 26 other items across 13 owners, about 64 hours of review. It travels from the standard through policy, procedure and control to the systems, data and reports that depend on it.
+
+FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)
+Replace the lease subledger
+Contract repository maintenance window
+Codification Portal major release
+Rewrite the lease accounting policy
+Graph
+Impact report
+Sources
+Folder crawl
+11 sample files across 3 folders on the file share
+Accounting
+Policies
+Lease Accounting Policy v4.docx
+Linked
+Capitalization Threshold Policy v2.docx
+Linked
+Revenue Recognition Policy v3.docx
+Not linked
+Checklists
+Lease classification checklist.xlsx
+Linked
+Month-end close checklist.xlsx
+Month-end close for leases (88%)
+Link
+Standards
+FASB ASC 842 summary.pdf
+ASC 842 Leases (96%)
+Link
+GASB 87 comparison.pdf
+Not linked
+Vendor management
+Lumen SOW-4 signed.pdf
+Lumen Data Partners SOW-4 (93%)
+Link
+Vendor scorecard template.xlsx
+Not linked
+IT operations
+Portal failover runbook v7.docx
+Linked
+Change request template.docx
+Not linked
+How links are found
+Names and content
+A file that mentions ASC 842 or a contract number is matched to that record, with a confidence score.
+You confirm
+Suggestions stay suggestions until a person links them. Linked files then pull the graph with them when they change.
+Other sources
+SharePoint, Confluence, the contract repository and the CMDB feed the same graph. The file share is the first connector.

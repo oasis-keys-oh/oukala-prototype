@@ -1,0 +1,29 @@
+ASK THE KNOWLEDGE BASE · RETRIEVAL WITH CITATIONS
+Answers that show their work
+
+Ask a question. The answer cites numbered chunks, shows how well it is grounded, and refuses when the evidence is not there. Groundedness over the last 200 sampled answers is 93%.
+
+ƒ Answer groundedness
+ƒ Self-service deflection
+ASK AS
+Editor (all staff)
+Service desk analyst
+IT staff
+Finance
+Vendor contractor
+Ask
+Try the break-glass question as Service desk and then as IT staff.
+Ask
+How do I fail over the portal?
+Search results are stale after a deploy. What should I check?
+How long do we keep signed lease contracts?
+What is the break-glass procedure for Entra ID admin roles?
+Who approves a discount rate change?
+What is our policy on using AI tools to draft standards text?
+Answer
+Pick a question or type your own
+Answers come only from published articles you are allowed to read, and every claim carries a number you can open.
+Retrieval trace
+Which chunks were found, who was allowed to see them, which models ran, and what it cost.
+Ask a question to see the trace
+Every answer shows what was retrieved, what was filtered out, which models ran and what it cost.

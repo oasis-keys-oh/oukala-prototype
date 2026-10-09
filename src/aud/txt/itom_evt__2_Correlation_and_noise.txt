@@ -1,0 +1,220 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+RAW EVENTS
+7,999
+last 24 hours
+CORRELATION GROUPS
+17
+1 folded by topology
+ACTIONABLE
+5
+need a person or an agent
+INCIDENT CANDIDATES
+1
+Sev 1 or 2 and active
+ƒ Event noise reduction
+Noise reduction funnel
+From every raw signal down to what a person must act on. Each step shows how much it removes.
+7,999
+Raw eventsEvery poll, log line and notification from Azure Monitor, Application Insights, Entra ID, Intune, network scans and the Lumen feed100.00% of raw
+34
+Unique alertsDuplicates with the same dedup key (rule, CI, state) folded into one alert with a count0.43% of raw · 99.6% removed at this step
+34
+After suppressionMaintenance windows and alerts marked as false positive removed0.43% of raw · 0.0% removed at this step
+17
+Correlation groupsAlerts on connected CIs within 45 minutes folded into one group0.21% of raw · 50.0% removed at this step
+5
+Actionable groupsGroups that need a person or an agent: Sev 3 or worse, or three or more alerts0.06% of raw · 70.6% removed at this step
+1
+IncidentsActive groups at Sev 1 or 2 that become or link to an incident0.01% of raw · 80.0% removed at this step
+Noise reduction = 1 − actionable groups ÷ raw events = 1 − 5 ÷ 7,999 = 99.9%. Compression to incidents = 7,999 ÷ 1 = 7,999 to 1. Bar widths use a log scale because each step removes most of the volume.
+Correlation rules
+These settings change the groups immediately. Try turning topology off to see an alert storm unfold into separate groups.
+Topology
+Alerts on CIs that are connected in the CMDB (up to two hops) join one group.
+Same service
+Alerts on CIs of the same service join one group.
+Time window
+Only alerts within this many minutes of each other group together.
+45 min
+Largest group: dependency map
+Codification Platform: 15 alerts across 9 CIs
+Open group
+codif-lb
+codification-platform
+codification-portal
+codif-sql-prd
+ROOT
+lumen-indexer-01
+codif-app-01
+search-cluster
+codif-app-02
+lumen-indexer-02
+Correlation groups
+Each group is an incident candidate. The topology reason comes from the CMDB dependency graph, not from text matching.
+Sev 1
+G1
+topology
+09:25 · 15 alerts · 3,720 events
+Codification Platform: 15 alerts across 9 CIs
+
+Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). Root cause candidate: codif-sql-prd.
+
+Active
+INC0412
+codif-lb
+codification-platform
+codification-portal
++6 more
+Sev 1
+G2
+10:43 · 2 alerts · 180 events
+Availability 95.40%
+
+Single alert, no correlated neighbors. Root cause candidate: VPN gateway.
+
+Cleared
+INC0411
+VPN gateway
+Sev 2
+G3
+01:15 · 1 alert · 10 events
+Error rate 9.63%
+
+Single alert, no correlated neighbors. Root cause candidate: apim-gateway.
+
+Cleared
+apim-gateway
+Sev 3
+G4
+11:55 · 2 alerts · 160 events
+Packet loss 1.96%
+
+Single alert, no correlated neighbors. Root cause candidate: Edge firewall pair.
+
+Cleared
+INC0411
+Edge firewall pair
+Sev 3
+G5
+11:20 · 1 alert · 12 events
+Blocked legacy sign-ins: 212 in 10 minutes
+
+Single alert, no correlated neighbors. Root cause candidate: Conditional access policies.
+
+Active
+Conditional access policies
+Sev 4
+G6
+Oct 5 13:40 · 1 alert · 80 events
+Memory 91.5%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G7
+Oct 5 16:30 · 1 alert · 50 events
+Memory 87.6%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G8
+Oct 5 18:20 · 1 alert · 30 events
+Memory 86.9%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G9
+Oct 5 20:00 · 1 alert · 90 events
+Memory 86.2%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G10
+Oct 5 23:10 · 1 alert · 20 events
+Memory 85.9%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G11
+01:20 · 1 alert · 160 events
+Memory 87.6%
+
+Single alert, no correlated neighbors. Root cause candidate: data-gateway.
+
+Cleared
+INC0402
+data-gateway
+Sev 4
+G12
+03:10 · 1 alert · 10 events
+Error rate 3.60%
+
+Single alert, no correlated neighbors. Root cause candidate: contract-blob.
+
+Cleared
+INC0409
+contract-blob
+
+Showing the 12 most severe of 17 groups. Use the alert stream to filter by group.
+
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

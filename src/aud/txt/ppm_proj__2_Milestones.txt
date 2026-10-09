@@ -1,0 +1,189 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+PR1
+Codification Platform Upgrade
+Priya Shah
+✓
+Project kickoff
+Jul 1, 2026 · Achieved
+0 of 0 tasks before it are done
+Achieved
+✓
+Funding approved by the steering committee
+Jul 13, 2026 · Achieved
+3 of 3 tasks before it are done
+Achieved
+✓
+Design gate G1: baseline approved
+Aug 3, 2026 · Achieved
+6 of 6 tasks before it are done
+Achieved
+✓
+Core build complete
+Oct 5, 2026 · Achieved
+17 of 17 tasks before it are done
+Achieved
+88%
+Indexer accepted by Meridian
+Oct 23, 2026 · 7 work days late
+10 of 12 tasks before it are done
+At risk
+✓
+Taxonomy schema v1 received from Taxonomy Data Hub
+Sep 7, 2026 · Achieved
+5 of 5 tasks before it are done
+Achieved
+76%
+Beta release
+Nov 13, 2026 · 7 work days late
+31 of 51 tasks before it are done
+At risk
+74%
+UAT sign-off by the Chief Editor
+Dec 1, 2026 · 7 work days late
+31 of 52 tasks before it are done
+At risk
+65%
+Go or no-go decision by the steering committee
+Dec 11, 2026 · 7 work days late
+32 of 61 tasks before it are done
+At risk
+65%
+Go live
+Dec 11, 2026 · 7 work days late
+32 of 61 tasks before it are done
+At risk
+PR2
+Taxonomy Data Hub
+Dev Rao
+✓
+Project kickoff
+Aug 3, 2026 · Achieved
+1 of 1 tasks before it are done
+Achieved
+✓
+Funding and SOW-4 signed
+Aug 17, 2026 · Achieved
+3 of 3 tasks before it are done
+Achieved
+✓
+Taxonomy schema v1 published
+Sep 7, 2026 · Achieved
+5 of 5 tasks before it are done
+Achieved
+80%
+Lumen team released from the search indexer
+Oct 23, 2026 · 7 work days late
+3 of 4 tasks before it are done
+At risk
+63%
+Pilot go or no-go
+Nov 30, 2026 · 7 work days late
+12 of 22 tasks before it are done
+At risk
+63%
+Pilot
+Dec 2, 2026 · on baseline
+12 of 22 tasks before it are done
+On track
+PR3
+Portal Resilience
+Tom Becker
+✓
+Sev 2 incident declared
+Sep 8, 2026 · Achieved
+0 of 0 tasks before it are done
+Achieved
+36%
+Failover rehearsal passed
+Nov 2, 2026 · on baseline
+5 of 19 tasks before it are done
+On track
+36%
+Problem review board sign-off
+Nov 2, 2026 · on baseline
+5 of 19 tasks before it are done
+On track
+36%
+Sev 2 problem closed
+Nov 2, 2026 · on baseline
+5 of 19 tasks before it are done
+On track
+PR4
+Contract Repository Refresh
+Maya Ortiz
+✓
+Project kickoff
+Sep 28, 2026 · Achieved
+1 of 1 tasks before it are done
+Achieved
+✓
+Funding released for phase 1
+Oct 1, 2026 · Achieved
+2 of 2 tasks before it are done
+Achieved
+37%
+Vendor selected and contract signed
+Nov 2, 2026 · on baseline
+3 of 8 tasks before it are done
+On track
+22%
+Design approved
+Dec 7, 2026 · on baseline
+3 of 15 tasks before it are done
+On track
+14%
+Cutover readiness review passed
+Jan 29, 2027 · on baseline
+3 of 23 tasks before it are done
+On track
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

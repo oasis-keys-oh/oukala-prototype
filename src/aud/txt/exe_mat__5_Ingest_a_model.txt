@@ -1,0 +1,158 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+Bring in a maturity model
+Paste or upload a model as CSV, JSON or Markdown. The parser reads levels, criteria and capabilities and shows exactly what it found before anything is saved.
+Detect
+CSV
+JSON
+Markdown
+Try a sample:
+Zero trust (CSV)
+KCS adoption (JSON)
+Accessibility (Markdown)
+Model text
+Choose a file or drop it here
+CSV, JSON, Markdown or plain text. It stays in your browser.
+Format guide
+
+CSV: two blocks separated by a blank line. First block header level,name,criteria. Second block header capability,parent,current,year1,year3,year5,owner,description. Lines starting with # model: name it.
+
+JSON: {"name","levels":[{"name","criteria"}],"capabilities":[{"name","parent","current","year1","year3","year5"}]}
+
+Markdown: # Name, a ## Levels section with ### Level 3: Defined headings and bullets as criteria, then ## Capabilities bullets such as - Name (current 2, target 4, year 3 5). Indent a bullet to make it a sub capability.
+
+Missing targets are filled in: Year 1 is one level up, later years keep climbing. The parser warns about anything it guessed.
+
+What the parser understood
+Updates as you type.
+Ready to import
+CSV detected
+Zero trust maturity
+LEVELS
+4
+Traditional, Initial, Advanced, Optimal
+CAPABILITIES
+6
+1 are sub capabilities
+WARNINGS
+0
+none
+LEVELS THE PARSER FOUND
+1
+Traditional
+
+Static rules and manual configuration. Access is granted by network location.
+
+2
+Initial
+
+Some automation of provisioning. Identity and device checks begin at the edges.
+
+3
+Advanced
+
+Integrated policy across pillars with centralized visibility and risk-based access.
+
+4
+Optimal
+
+Fully automated, just-in-time access with continuous monitoring and dynamic policy.
+
+CAPABILITIES AND TARGETS
+CAPABILITY	NOW	YEAR 1	YEAR 3	YEAR 5	OWNER
+Identity	2	3	4	4	Rina Okafor
+› Conditional access policies	3	3	4	4	Rina Okafor
+Devices	2	3	3	4	Sam Patel
+Networks	2	2	3	4	Sam Patel
+Applications and workloads	1	2	3	4	Jordan Lee
+Data	2	3	4	4	Dev Rao
+MAPPED TO OUR STRATEGY BY AI
+Claude Sonnet · 70%
+
+Drag a capability to a different objective if the match is wrong. Confidence shows how many strategic words matched. Services are chosen from the same words.
+
+Modernize codification
+0
+Resilient operations
+5
+Identity
+61% · Identity (Entra ID)
+Devices
+77% · Identity (Entra ID), Endpoint management (Intune)
+Networks
+61% · Network and VPN
+Applications and workloads
+77% · Identity (Entra ID), Codification Platform
+Conditional access policies
+93% · Identity (Entra ID)
+Contract discipline
+0
+Trusted AI
+0
+Editor experience
+0
+Not mapped
+1
+Data
+30% · Data platform
+Import 6 capabilities as a model
+Clear
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

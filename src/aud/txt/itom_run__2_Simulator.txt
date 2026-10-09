@@ -1,0 +1,134 @@
+RUNBOOKS AND AUTOMATION
+From alert to action, with guardrails
+
+7 automation rules connect alerts to 15 pre‑approved standard changes. A restart of the Lumen indexer, for example, is diagnosed by an AI agent and approved by Marco Ellis before it runs. Every run is a standard change record, so it is part of the change process, not around it.
+
+ƒ Automation rate
+ƒ Mean time to acknowledge (MTTA)
+New automation rule
+Standard change catalog
+ITIL 5
+SRE: SLOs and error budgets
+Automation rules
+Execution history
+Simulator
+Guardrails
+SAMPLE ALERTS
+33
+newest and most severe from the last 24 hours
+WOULD RUN AUTOMATICALLY
+2
+inside guardrails
+WOULD NEED APPROVAL
+2
+agent proposes, person approves
+HELD BY A GUARDRAIL
+9
+paged to people instead
+Pick an alert
+Replay a real alert from the stream through the rules and guardrails. Nothing runs until you press a run button.
+Alert
+Sev 1 · Availability 95.40% (threshold < 98.00%), flapped 5 times · VPN gateway
+Sev 1 · Error rate 7.48% (threshold > 5.00%) · codification-platform
+Sev 1 · Error rate 5.04% (threshold > 5.00%) · codification-portal
+Sev 2 · Queue depth 19,303 msgs (threshold > 15,000 msgs) · lumen-indexer-01
+Sev 2 · CPU 92.4% (threshold > 92.0%) · codif-app-01
+Sev 2 · CPU 106.0% (threshold > 92.0%) · codif-sql-prd
+Sev 2 · CPU 107.4% (threshold > 92.0%) · lumen-indexer-01
+Sev 2 · Latency p95 3,819 ms (threshold > 3,000 ms) · codification-platform
+Sev 2 · Latency p95 3,211 ms (threshold > 3,000 ms) · codification-portal
+Sev 2 · Latency p95 1,292 ms (threshold outside learned band, sensitivity 3) · codif-sql-prd
+Sev 2 · Error rate 9.63% (threshold > 5.00%) · apim-gateway
+Sev 3 · Link utilization 82.7% (threshold > 75.0%) · Edge firewall pair
+Sev 3 · Packet loss 1.96% (threshold > 0.50%) · Edge firewall pair
+Sev 3 · Blocked legacy sign-ins: 212 in 10 minutes (CA-007, one mail client) · Conditional access policies
+Sev 3 · Link utilization 89.8% (threshold > 75.0%), flapped 5 times · VPN gateway
+Sev 3 · Queue depth 9,264 msgs (threshold > 5,000 msgs) · lumen-indexer-02
+Sev 3 · CPU 86.5% (threshold > 80.0%) · codif-app-02
+Sev 3 · Latency p95 2,333 ms (threshold > 1,500 ms) · search-cluster
+Sev 3 · Error rate 3.00% (threshold > 2.00%) · search-cluster
+Sev 3 · Latency p95 2,449 ms (threshold > 1,500 ms) · codif-lb
+Sev 3 · Error rate 3.89% (threshold > 2.00%) · codif-lb
+Sev 4 · CPU 86.2% (threshold > 80.0%) · erp-sql-01
+Sev 4 · 8 devices fail the disk encryption compliance check · Intune tenant
+Sev 4 · Memory 92.7% (threshold > 85.0%) · data-gateway
+Sev 4 · TLS certificate for standards.meridian.example expires in 14 days (ren · portal-cdn
+Sev 4 · Teams recording webhook returned 429 twice · SharePoint Online
+Sev 4 · Error rate 3.60% (threshold > 1.00%) · contract-blob
+Sev 4 · Memory 87.6% (threshold > 85.0%), flapped 2 times · data-gateway
+Sev 4 · Memory 85.9% (threshold > 85.0%) · data-gateway
+Sev 4 · Memory 86.2% (threshold > 85.0%), flapped 2 times · data-gateway
+Sev 4 · Memory 86.9% (threshold > 85.0%) · data-gateway
+Sev 4 · Memory 87.6% (threshold > 85.0%) · data-gateway
+Sev 4 · Memory 91.5% (threshold above learned weekly baseline) · data-gateway
+What if
+A change freeze is in effect
+The service error budget is spent
+The automation kill switch is on
+Inject a custom alert
+Open this alert
+Decision path
+Every rule that was checked, every guardrail, and the result.
+1
+Alert received
+Sev 1 · Availability 95.40% (threshold < 98.00%), flapped 5 times
+2
+Rules checked in priority order
+AU1 Sev 1 and 2: collect diagnostics first; AU7 VPN flapping: propose a gateway failover matched; 5 did not match
+Show every condition
+3
+Action: SC-06 Fail over the VPN gateway pair
+Agentic workflow · risk Medium · automation level 3 (Agentic with approval) · executor Ops Agent
+4
+Guardrails
+✓ Automation kill switch is off
+All automation can be stopped from the Guardrails tab.
+✓ Standard change is pre-approved and in date
+Approved by Nia Brooks on 2026-06-03, review due 2027-06-03
+✓ Blast radius within limit
+1 CI targeted, limit 1
+✓ Rate limit not reached
+0 of 1 runs used in the last hour
+✓ No change freeze in effect
+No freeze today (next: Financial close, Nov 16)
+✓ Rollback is defined
+1 rollback step
+✓ Service error budget allows a risky change
+Budget left 63.0%
+5
+Outcome: Needs approval
+Ops Agent diagnoses and proposes. Sam Patel approves before anything changes.
+A standard change record is created already approved (pre-approved by Nia Brooks on 2026-06-03).
+
+Approver
+Sam Patel
+Executor
+Ops Agent
+Dry run
+Run now
+Dry run with a failed check
+From alert to action
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Alert matches a rule
+Rules run in priority order.
+APPROVAL GATE
+Guardrails
+Pre-approved, blast radius, rate, freeze, error budget, rollback.
+AI AGENT
+Agent diagnoses
+Agentic workflows gather evidence and propose.
+APPROVAL GATE
+Approval
+A person approves when risk or policy needs it.
+AUTOMATIC
+Standard change record
+An auto-approved change is created.
+AUTOMATIC
+Run and validate
+Playbook steps, then validation; rollback on failure.
+AUTOMATIC
+Audit
+Every step and approval is logged.

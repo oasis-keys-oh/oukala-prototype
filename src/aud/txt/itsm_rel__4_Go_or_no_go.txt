@@ -1,0 +1,148 @@
+SERVICE MANAGEMENT · RELEASES
+Ship together, with proof
+
+12 releases are in flight on 2 trains. The Codification beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes to a go or no-go decision before Oct 8.
+
+New release
+Go or no-go: REL-2608
+Sprints and backlogs
+Release trains
+ƒ Release change failure rate
+ƒ Lead time for changes
+ITIL 5
+DORA metrics
+SAFe
+Dashboard and releases
+Clash register
+Readiness tree
+Exit criteria
+Go or no-go
+
+Claude sorts releases by recommendation: Go needs readiness of 90% or better and no failed hard criteria. Drag a card to a column to record the decision (a form asks who decides and on what condition). Entering Deploy requires a recorded go or conditional go.
+
+Go
+2
+REL-2608
+Hotfix
+Standards API 2.3.1 batch hotfix
+96%
+Oct 8
+1 soft
+No decision yet
+REL-2615
+Minor
+Conditional access: editors VPN named location
+92%
+Oct 20
+1 soft
+No decision yet
+Conditional go
+0
+Nothing here
+No-go
+10
+REL-2609
+Minor
+Lumen search indexer 2.4 to staging
+62%
+Oct 12
+Clear
+No decision yet
+REL-2607
+Minor
+Portal accessibility fixes
+17%
+Oct 21
+2 soft
+No decision yet
+REL-2610
+Minor
+Portal standby failover (RB-031 v8)
+42%
+Oct 27
+1 hard + 1 soft
+No decision yet
+REL-2617
+Minor
+Autoscale and capacity alerts
+23%
+Oct 29
+3 soft
+No decision yet
+REL-2613
+Minor
+Contract Repository storage tier migration
+31%
+Nov 3
+Clear
+No decision yet
+REL-2618
+Minor
+Integration hub connector 2.2
+23%
+Nov 10
+Clear
+No decision yet
+REL-2611
+Major
+Codification beta
+31%
+Nov 13
+Clear
+No decision yet
+REL-2614
+Hotfix
+ERP posting-lock vendor patch
+46%
+Nov 18
+1 hard
+No decision yet
+REL-2612
+Major
+Taxonomy Data Hub pilot
+19%
+Dec 2
+Clear
+No decision yet
+REL-2616
+Major
+Contract obligation tracker and renewal alerts
+23%
+Jan 12
+Clear
+No decision yet
+Decision log
+Every recorded go or no-go, newest first
+No decisions recorded yet
+Drag a release to a column or open it and record one.
+Release management process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Plan the release
+Scope features, set the date, check the calendar for clashes.
+AUTOMATIC
+Generate readiness tasks
+The standard checklist creates child tasks with owners, due dates and gates.
+AI AGENT
+Build and test
+Pipeline builds; Test Agent runs the suite; QA and editors run UAT.
+AUTOMATIC
+Evaluate exit criteria
+Ten criteria are scored automatically from tests, pull requests and defects.
+APPROVAL GATE
+Security review and CAB
+Security signs off the scan; the change advisory board approves the change record.
+APPROVAL GATE
+Training, communications and OCM approved
+Training approved, Communications team approves the package, OCM plan implemented.
+APPROVAL GATE
+Go or no-go
+A named person decides from the evidence. Hard clashes block go.
+AUTOMATIC
+Deploy through the pipeline
+The deployment runs in the approved window with rollback ready.
+PERSON
+Post-release review
+Failures feed the readiness template; DORA measures update.

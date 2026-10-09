@@ -1,0 +1,340 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+Team backlog and sprint planning
+Product backlog
+Program backlog (features)
+Team
+Platform Alpha
+Search and Indexing (Lumen)
+Editor Experience
+Portal Reliability
+Taxonomy Data
+Contracts and Integration
+Plan sprint
+New story
+Capacity 46 points a sprint · velocity 42 · Product owner Priya Shah
+
+Drag a card to rank it or move it between the backlog and the next two sprints. The bar shows committed points against capacity; amber is above 90%, red is over. Stories marked Not ready fail the definition of ready and should be refined first. Stories are assigned to the team; people claim them when the sprint starts.
+
+Team backlog
+173 stories, 498 points, top ranked first
+173
+ST-1161
+1
+Add autosave on mobile
+Enhancement
+ST-1177
+5
+Validate editor save flow in the audit view
+Enhancement
+Not ready
+ST-1162
+2
+Automate bulk edit for administrators
+Enhancement
+ST-1178
+8
+Simplify publishing queue for administrators
+Enhancement
+ST-1163
+1
+Log publishing queue in the beta
+Enhancement
+ST-1164
+5
+Validate standard compare panel for the nightly batch
+Enhancement
+Not ready
+ST-1179
+3
+Automate comment threads for the nightly batch
+Enhancement
+ST-1121
+8
+Show comment threads for large standards
+Enhancement
+ST-1122
+13
+Filter template picker in the beta
+Enhancement
+ST-1123
+5
+Spike: options for editor save flow
+Spike
+ST-1180
+3
+Automate bulk edit for administrators
+Enhancement
+Not ready
+ST-1124
+2
+Add draft versioning for large standards
+Enhancement
+ST-1181
+1
+Filter template picker for the nightly batch
+Enhancement
+ST-1165
+1
+Show workspace layout for editors
+Enhancement
+ST-1182
+2
+Support workspace layout in the beta
+Enhancement
+ST-1125
+2
+Improve autosave with keyboard only
+Enhancement
+ST-1183
+2
+Improve document locking on mobile
+Enhancement
+ST-1126
+3
+Fix editor save flow slow with 500 items
+Defect
+ST-1127
+1
+Fix autosave slow with 500 items
+Defect
+ST-1184
+2
+Improve standard compare panel for editors
+Enhancement
+Not ready
+ST-1128
+2
+Show publishing queue with keyboard only
+Enhancement
+ST-1129
+2
+Refactor draft versioning
+Enabler
+ST-1130
+13
+Export draft versioning with keyboard only
+Enhancement
+ST-1131
+1
+Fix workspace layout wrong after a locale change
+Defect
+Not ready
+ST-1132
+1
+Support autosave for administrators
+Enhancement
+Not ready
+ST-1133
+3
+Upgrade a dependency of editor save flow
+Enabler
+ST-1134
+2
+Fix comment threads slow with 500 items
+Defect
+ST-1185
+3
+Support publishing queue in the audit view
+Enhancement
+ST-1135
+2
+Fix publishing queue wrong after a locale change
+Defect
+ST-1186
+2
+Fix template picker failing for long titles
+Defect
+ST-1187
+2
+Simplify document locking in the beta
+Enhancement
+Not ready
+ST-1188
+3
+Validate draft versioning in the beta
+Enhancement
+ST-1166
+2
+Automate publishing queue for large standards
+Enhancement
+Not ready
+ST-1189
+5
+Show autosave for the nightly batch
+Enhancement
+Not ready
+ST-1190
+1
+Upgrade a dependency of comment threads
+Enabler
+Not ready
+ST-1136
+3
+Simplify publishing queue in the beta
+Enhancement
+ST-1191
+1
+Support bulk edit for readers
+Enhancement
+ST-1192
+1
+Export document locking for readers
+Enhancement
+ST-1137
+1
+Validate document locking on mobile
+Enhancement
+ST-1167
+1
+Fix draft versioning showing stale data
+Defect
+Not ready
+133 more below, ranked by priority
+Sprint 26.4.2
+Oct 12 to Oct 23
+41/44
+ST-1096
+2
+Automate standard compare panel for the nightly batch
+Enhancement
+ST-1097
+5
+Add tests for template picker
+Enabler
+ST-1098
+2
+Automate workspace layout with keyboard only
+Enhancement
+Not ready
+ST-1089
+13
+Improve bulk edit for the nightly batch
+Enhancement
+ST-1099
+2
+Filter autosave for the nightly batch
+Enhancement
+ST-1100
+2
+Filter comment threads for large standards
+Enhancement
+ST-1101
+2
+Simplify workspace layout on mobile
+Enhancement
+ST-1090
+2
+Support standard compare panel on mobile
+Enhancement
+ST-1102
+1
+Simplify autosave in the beta
+Enhancement
+ST-1091
+3
+Log bulk edit for editors
+Enhancement
+ST-1092
+1
+Fix publishing queue failing for long titles
+Defect
+ST-1093
+3
+Document workspace layout
+Enabler
+ST-1094
+2
+Refactor template picker
+Enabler
+ST-1095
+1
+Filter draft versioning for editors
+Enhancement
+Sprint 26.4.3
+Oct 26 to Nov 6
+32/41
+ST-1103
+5
+Add tests for workspace layout
+Enabler
+ST-1104
+3
+Export workspace layout with keyboard only
+Enhancement
+ST-1105
+1
+Fix draft versioning wrong after a locale change
+Defect
+ST-1106
+2
+Support draft versioning for large standards
+Enhancement
+ST-1107
+13
+Simplify comment threads for administrators
+Enhancement
+ST-1108
+1
+Support draft versioning for vendors
+Enhancement
+ST-1109
+1
+Validate template picker with keyboard only
+Enhancement
+ST-1110
+2
+Validate workspace layout in the beta
+Enhancement
+ST-1111
+1
+Simplify standard compare panel for administrators
+Enhancement
+ST-1112
+2
+Improve editor save flow with keyboard only
+Enhancement
+ST-1113
+1
+Add tests for autosave
+Enabler
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

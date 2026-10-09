@@ -1,0 +1,163 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+PROJECTS
+4
+1 behind baseline
+PEOPLE AND AGENTS
+23
+9 employees, 4 contractors, 7 AI agents, 3 providers
+OVER CAPACITY
+16
+above 100% of weekly capacity
+CONTRACTS ENDING EARLY
+1
+before their work ends
+AGENTS WITHOUT AN OWNER
+2
+no accountable human
+What needs attention
+Checks run on every assignment: a contractor whose contract ends before the work, an AI agent without a human who answers for it, a provider near its contracted capacity.
+ƒ Contracts that outlast their work
+AI
+Triage Agent on Portal
+Triage Agent has no human accountable owner. Someone must answer for what it does on Portal.
+Assign owner
+C
+Elise Park on Contracts
+Elise Park's contract PO-7713 ends Dec 18, 2026, 48 work days before Contracts finishes (Feb 24, 2027).
+Open project
+AI
+Change Risk Agent on Contracts
+Change Risk Agent has no human accountable owner. Someone must answer for what it does on Contracts.
+Assign owner
+Who does the work
+Four kinds of worker, each measured the way it is contracted
+ƒ AI agents with an accountable human
+9
+7
+4
+3
+Employees
+AI agents (avatar badge AI)
+Contractors (avatar badge C)
+Managed service providers (avatar badge M)
+Employee
+9 assigned
+382% average load of a 40 hour week
+AI agent
+7 assigned
+$1.03 average cost per task, 64% of agent hours
+Contractor
+4 assigned
+1 contract end before the work does
+Managed service provider
+3 assigned
+58% average of contracted capacity
+All projects
+4 projects match the filters. Search, sort, group and export; select a row for its team, checks and linked records.
+ƒ Milestones on time
+ƒ Schedule performance index
+Status
+All
+2
+Project manager
+All
+4
+Manager's team
+All
+4
+Group by 
+None
+Status
+Project manager
+Manager's team
+Export CSV
+ID	PROJECT	PROJECT MANAGER	STATUS	DONE	FINISH	SCHEDULE INDEX	TEAM	CHECKS	OPEN RAID	MANAGER'S TEAM	BUDGET
+PR1	Codification Platform Upgrade	
+Priya Shah
+	Needs action	
+ 68%	Dec 11, 2026	0.94	10 
+5
+2
+2
+1
+	7 to fix	9	Platform team	$1.2M
+PR2	Taxonomy Data Hub	
+Dev Rao
+	On track	
+ 60%	Dec 2, 2026	0.99	6 
+2
+2
+1
+1
+	2 to fix	5	Data team	$860K
+PR3	Portal Resilience	
+Tom Becker
+	On track	
+ 40%	Nov 2, 2026	0.91	5 
+2
+1
+1
+1
+	3 to fix	2	Service desk	$310K
+PR4	Contract Repository Refresh	
+Maya Ortiz
+	On track	
+ 10%	Feb 24, 2027	1.29	7 
+3
+2
+1
+1
+	4 to fix	3	PMO	$540K
+4 of 4 rows
+Scroll for more · rows are drawn as you scroll
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

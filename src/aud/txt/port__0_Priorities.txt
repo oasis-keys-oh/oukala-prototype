@@ -1,0 +1,253 @@
+DEMAND AND PRIORITIES
+What should we fund
+
+4 of 10 ranked requests are funded: $1.44M of the $2.0M envelope and 43 of 70 person-months. Retire the legacy lease subledger scores 77 and sits just below the line, yet it carries a hard date.
+
+ƒ Demand decision time
+ƒ Priority score
+ƒ Funded demand against capacity
+New request
+Contract analyzer
+PMBOK
+Why am I seeing this?
+Priorities
+Pipeline
+All requests
+Capacity vs demand
+Intake
+REQUESTS
+10
+in the funnel
+FUNDED
+4
+$1.44M of $2.0M
+EFFORT
+43
+of 70 person-months
+WAITING FOR THE BOARD
+3
+at the final gate
+FROM TRIGGERS
+0
+created automatically
+BECAME PROJECTS
+0
+funded and scheduled
+What needs attention
+Each line opens the place to act.
+Funded demand and scheduled work overload teams: 1 team month pass 100%, worst Platform team in Jan at 113%.
+Open the capacity tab to see which teams and what Resource Agent suggests.
+See capacity
+Retire the legacy lease subledger scores 77, just below the line, and carries a hard date
+Consider a manual move. Every override is logged with a reason.
+Review ranking
+1 without a strategic objective, 2 possible duplicates
+They cannot reach the review board until fixed.
+See pipeline
+Work that starts from a contract
+Upload a statement of work and its milestones, invoices and service levels become a project.
+Open SOW analyzer
+Capacity against funded demand
+Total funded demand fits inside total capacity every month. 1 team month pass 100%, worst Platform team in Jan at 113%.
+ƒ Funded demand against capacity
+0
+9
+17
+26
+35
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Jan
+Feb
+Mar
+Capacity 31 FTE
+Scheduled project work (FTE)
+Funded demand (FTE)
+Total team capacity
+Cost by kind of work
+All requests in the funnel, in thousands of dollars
+New capability
+$1.65M
+Enhancement
+$1.02M
+Compliance mandate
+$680K
+Fix or tech debt
+$620K
+Demand that creates itself
+Triggers from unit-cost models, service levels, change reviews and maturity gaps add requests here. None waiting right now.
+See the triggers
+TBM Taxonomy and ATUM
+Your levers
+Move a weight or the envelope and the whole list re-ranks. Every change is audited.
+ƒ Priority score
+Strategic fit
+35%
+Financial return
+25%
+Risk reduction
+20%
+Urgency
+20%
+Budget envelope
+$2.0M
+Capacity
+70 pm
+Ranked by score. Drag a row to override the order. Moving an item asks for a reason, so a board can see every override later. Alt and the arrow keys also move a selected row.
+Ranked demand
+Drag to reorder. Hover a score to see how it is built.
+ƒ Priority score
+REQUEST
+SCORE
+COST
+1
+Disaster recovery for the Portal
+IT operations · CIO
+Fix or tech debt
+Codification Portal
+Reduce operating risk
+Service continuity
+85
+$460K
+Funded
+2
+Vendor risk scorecards
+Procurement · CFO
+New capability
+Contract Repository
+Reduce operating risk
+Vendor management
+81
+$210K
+Funded
+3
+Public comment portal
+Editorial · Chief Editor
+New capability
+Codification Portal
+Modernize standards publishing
+Stakeholder engagement
+80
+$420K
+Funded
+4
+AI drafting assistant for standards
+Editorial · CEO office
+New capability
+Codification Platform
+Modernize standards publishing
+AI governance
+80
+$350K
+Funded
+FUNDING LINE
+$1.44M of $2.0M · 43 of 70 person-months
+5
+Retire the legacy lease subledger
+Finance · CFO
+Compliance mandate
+Lease subledger (ERP)
+Reduce operating risk
+Application rationalization
+77
+$680K
+Not funded
+6
+Reviewer workload dashboard
+Editorial · Chief Editor · possible duplicate
+Enhancement
+Codification Platform
+Modernize standards publishing
+Performance measurement
+58
+$120K
+Not funded
+7
+Standards publishing analytics
+Editorial · Chief Editor · possible duplicate
+New capability
+Data platform
+Modernize standards publishing
+Performance measurement
+57
+$130K
+Not funded
+8
+Data warehouse consolidation
+Data office · CIO
+Enhancement
+Data platform
+Reduce operating risk
+Data management
+54
+$900K
+Not funded
+9
+Mobile app for editors
+Editorial · Chief Editor
+New capability
+Codification Platform
+Modernize standards publishing
+Digital workplace
+31
+$540K
+Not funded
+10
+Meeting room AV refresh
+Facilities · COO
+Fix or tech debt
+Service desk
+Digital workplace
+25
+$160K
+Not funded
+Value against cost
+Bubble size is effort. Green is inside the funding line.
+0
+25
+50
+75
+100
+$0
+$250K
+$500K
+$750K
+$1000K
+Priority score
+Cost
+D7
+D5
+D1
+D6
+D3
+D2
+D10
+D8
+D4
+D9
+How demand becomes funded work
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, TBM Taxonomy and ATUM, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Raise
+Anyone fills the form, emails intake, uploads a contract, or a trigger creates the request: unit-cost scale up or down, service level breach, release finding, maturity gap.
+AI AGENT
+Screen
+Portfolio Agent checks duplicates and missing facts, links the service, and suggests the four 0 to 5 ratings.
+PERSON
+Score and confirm
+The sponsor confirms the ratings. Triggered requests wait here for a person.
+AUTOMATIC
+Rank
+Scores, weights, the envelope and capacity set the order and the funding line. Manual moves are logged with a reason.
+APPROVAL GATE
+Review board
+The board funds, parks or returns each request.
+AUTOMATIC
+Turn into a project
+A funded request becomes a project with a plan, budget line, team and place on the master schedule.

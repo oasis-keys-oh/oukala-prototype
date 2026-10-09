@@ -1,0 +1,89 @@
+PLATFORM · ADMIN STUDIO
+Shape the platform without code
+
+Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+
+ƒ Promotions passing gates first time
+Claude Sonnet · 84%
+Add a field
+Fields
+Form layout
+List views
+Theme
+Localization
+Theme editor
+Meridian blue: in preview. The rest of the app is untouched.
+Theme name
+Brand primary
+#14788E
+Accent (links, selection, focus)
+#0F6E82
+Font
+Hanken Grotesk
+Newsreader (serif)
+System UI
+Georgia (serif)
+Corner radius
+22px
+Density
+Comfortable
+Compact
+Logo
+PNG, SVG or JPG. Stays in your browser in this prototype; the preview shows it in the header.
+Apply to tenant
+Reset to default
+Version history (1)
+Accessibility contrast checker
+Computed live from your colors against the light and dark page backgrounds.
+Aa
+Button text on the primary color
+Text on every primary button
+5.11 to 1
+AA pass
+Aa
+Selected chip text on the accent
+Text on selected chips and tabs
+5.88 to 1
+AA pass
+Aa
+Accent as link text, light page
+Links and small labels in light mode
+5.00 to 1
+AA pass
+Aa
+Accent as link text, dark page (auto-lightened to #448f9d)
+Dark mode derives a lighter accent so links stay readable
+5.15 to 1
+AA pass
+Aa
+Focus ring against the light page
+Keyboard focus outline (non-text needs 3 to 1)
+5.00 to 1
+AA pass
+
+Contrast = (L1 + 0.05) ÷ (L2 + 0.05) where L is relative luminance of each color. Every pair meets WCAG 2.1 AA.
+
+Live preview
+CSS variables are set on this panel only.
+M
+Meridian Standards
+Home
+Projects
+Invoices
+Good afternoon, Omar
+
+This panel previews the theme. Only this panel changes until you apply it.
+
+Approve invoice
+Hold
+Info pill
+On track
+Delivery health
+71
+Amber for 3 weeks
+Open invoices
+4
+1 held
+Search
+
+A link in the accent color

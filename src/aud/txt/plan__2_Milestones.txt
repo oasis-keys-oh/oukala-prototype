@@ -1,0 +1,76 @@
+PROJECT PLAN
+Codification
+
+Codification Platform Upgrade finishes Dec 11, 2026, 7 work days late. It is 59% done against 64% planned, and 4 tasks have no float, starting with search indexer (lumen).
+
+Codification
+Taxonomy
+Portal
+Contracts
+Open in the trace
+Open the WBS and task sheet
+PMBOK
+Finish
+Dec 11
+7 work days late
+Schedule performance
+0.94
+Earned ÷ planned · target 0.95
+Done
+59%
+Planned 64%
+Budget used
+62%
+$740K of $1.2M
+Overview
+Gantt
+Milestones
+Progress
+Milestones
+Milestones that feed other milestones are linked.
+Project
+All
+1
+Export CSV
+MILESTONE	PROJECT	BASELINE	FORECAST	VARIANCE	STATUS	FED BY MILESTONES	FEEDS MILESTONES
+Project kickoff
+WBS 1.1 · Codification Platform Upgrade	Codification	Jul 1, 2026	Jul 1, 2026	on baseline	Complete	Starts the chain	Design gate G1: baseline approved Core build complete Beta release Indexer accepted by Meridian Lumen team released from the search indexer Pilot go or no-go Pilot Go or no-go decision by the steering committee Go live Funding approved by the steering committee
+Funding approved by the steering committee
+WBS 1.5 · Codification Platform Upgrade	Codification	Jul 13, 2026	Jul 13, 2026	on baseline	Complete	Project kickoff	Core build complete Beta release Go or no-go decision by the steering committee Go live
+Design gate G1: baseline approved
+WBS 2.4 · Codification Platform Upgrade	Codification	Aug 3, 2026	Aug 3, 2026	on baseline	Complete	Project kickoff	Go or no-go decision by the steering committee Go live Indexer accepted by Meridian Core build complete Beta release
+Taxonomy schema v1 received from Taxonomy Data Hub
+WBS 4.1.1 · Codification Platform Upgrade	Codification	Sep 7, 2026	Sep 7, 2026	on baseline	Complete	Taxonomy schema v1 published	Beta release
+Core build complete
+WBS 3.1.6 · Codification Platform Upgrade	Codification	Oct 5, 2026	Oct 5, 2026	on baseline	Complete	Design gate G1: baseline approved Project kickoff Funding approved by the steering committee	Beta release
+Indexer accepted by Meridian
+WBS 3.2.4 · Codification Platform Upgrade	Codification	Oct 14, 2026	Oct 23, 2026	7 work days late	At risk	Design gate G1: baseline approved Project kickoff	Beta release
+Beta release
+WBS 4.4 · Codification Platform Upgrade	Codification	Nov 4, 2026	Nov 13, 2026	7 work days late	Late	Indexer accepted by Meridian Failover rehearsal passed Core build complete Taxonomy schema v1 received from Taxonomy Data Hub Design gate G1: baseline approved Project kickoff Funding approved by the steering committee	Go or no-go decision by the steering committee Go live UAT sign-off by the Chief Editor
+UAT sign-off by the Chief Editor
+WBS 5.2 · Codification Platform Upgrade	Codification	Nov 20, 2026	Dec 1, 2026	7 work days late	At risk	Beta release	End of chain
+Go or no-go decision by the steering committee
+WBS 6.4 · Codification Platform Upgrade	Codification	Dec 2, 2026	Dec 11, 2026	7 work days late	Late	Beta release Design gate G1: baseline approved Funding approved by the steering committee Project kickoff	Go live
+Go live
+WBS 6.5 · Codification Platform Upgrade	Codification	Dec 2, 2026	Dec 11, 2026	7 work days late	Late	Go or no-go decision by the steering committee Beta release Design gate G1: baseline approved Funding approved by the steering committee Project kickoff	End of chain
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+How a project plan is built and kept current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Scope and WBS
+The project manager breaks the scope into phases, deliverables and work packages. Every line gets a deliverable and an owner.
+PERSON
+Estimate and link
+Durations, resources and predecessors are set. The engine shows the critical path as you work.
+AI AGENT
+AI completeness check
+PMO Agent drafts missing deliverables, flags lines with no owner, no resource or no predecessor, and suggests fixes.
+APPROVAL GATE
+Approve and baseline
+The sponsor approves the plan and a baseline is set. Variance is measured from here.
+AUTOMATIC
+Track and replan
+Actuals flow in, the engine reforecasts, and changes to dates need a reason.

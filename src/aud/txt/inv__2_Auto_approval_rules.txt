@@ -1,0 +1,88 @@
+INVOICE APPROVAL
+Pay what was earned
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+The advisor recommends. You decide, or set rules so it decides for clean ones.
+INV-20433
+$62,900
+Lumen Data Partners · due Oct 19
+Recommend hold
+INV-20418
+$184,200
+Northwind Cloud · due Oct 21
+Recommend approve
+INV-20451
+$21,400
+Northwind Cloud · due Oct 28
+Recommend approve
+INV-20440
+$12,480
+Apex Print · due Oct 24
+Recommend reject
+LUMEN DATA PARTNERS · SOW-4 (TAXONOMY DATA ENGINEERING)
+INV-20433 $62,900
+Recommend Hold
+Claude + GPT council · 81%
+
+Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past its approved budget.
+
+Approve
+Hold
+Reject
+Ledger and performance
+Where it connects
+Auto-approval rules
+Auto-approval rules
+
+Written as sentences. Change a value and the back-test on the right updates. The first rule that matches wins, top to bottom.
+
+Auto-approve
+Feedback Analyst · 80%
+WHEN amount is at most 
+ AND the PO matches AND a receipt is present AND duplicate score is under 
+% AND vendor risk is 
+low
+low or medium
+ AND vendor index is at least 
+Small, clean invoices from trusted vendors should not need a person.
+Hold and ask the project manager
+WHEN paid to date plus this invoice is more than accepted work
+Billing ahead of accepted work is the most common cause of overpayment.
+Reject as duplicate
+WHEN duplicate score is at least 
+%
+Escalate to the CFO
+WHEN amount is above 
+Guardrails that cannot be edited here: never auto-approve a first invoice from a new vendor, and payment execution always stays in the AP system.
+BACK-TEST ON THE LAST 60 INVOICES
+3%
+would clear on their own
+Auto-approved
+2
+Needs a person
+41
+Escalated
+14
+Rejected as duplicate
+3
+
+1 of the auto-approved invoices were later overridden
+
+Tighten the limit or vendor index to avoid these.
+
+ƒ Auto-approval rate
+Save and apply
+Today's invoices under these rules
+INV-20433
+Lumen Data Partners · $62,900
+Needs a person
+INV-20418
+Northwind Cloud · $184,200
+Needs a person
+INV-20451
+Northwind Cloud · $21,400
+Would auto-approve
+INV-20440
+Apex Print · $12,480
+Needs a person

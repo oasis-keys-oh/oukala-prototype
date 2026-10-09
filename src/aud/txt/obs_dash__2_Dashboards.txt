@@ -1,0 +1,125 @@
+DASHBOARDS AND METRICS
+Every metric, every host, one place
+
+Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incident.
+
+ƒ Mean time to detect (MTTD)
+ƒ Observability coverage
+Add a tile
+SRE: SLOs and error budgets
+OpenTelemetry
+Overview
+Metrics explorer
+Dashboards
+Hosts and CIs
+Network map
+Logs and traces
+DASHBOARDS
+3
+yours and shared
+TILES ON THIS DASHBOARD
+7
+drag to rearrange in edit mode
+TILE TYPES
+8
+line, number, gauge, status, top list, alerts, SLO, funnel
+Dashboards
+Build views like Grafana or SolarWinds dashboards from any metric. Choose Edit, drag tiles into the order you want, add tiles from any metric, then Save.
+NOC overview
+Portal service health
+Search and indexing
+New dashboard
+Edit
+Duplicate
+Delete
+Open alerts
+Alert counts
+SEV 1 AND 2
+9
+open
+SEV 3
+7
+open
+SEV 4
+3
+open
+Noise funnel
+Noise funnel
+Raw events
+7,999
+Unique alerts
+34
+After suppression
+34
+Groups
+17
+Actionable
+5
+Incidents
+1
+Codification Portal
+Service status
+Codification Portal
+3
+open alerts
+Critical
+Search and indexing
+Service status
+Search and indexing
+5
+open alerts
+Critical
+Application latency p95
+Line chart
+0 ms
+1,069 ms
+2,139 ms
+3,208 ms
+4,278 ms
+13:45
+18:30
+23:15
+04:00
+08:45
+13:30
+codification-portal
+codification-platform
+search-cluster
+Hottest CPUs
+Top CIs
+lumen-indexer-01
+105.9%
+codif-sql-prd
+102.5%
+codif-app-01
+89.6%
+codif-app-02
+86.3%
+lumen-indexer-01.meridian.local
+70.8%
+erp-app-01
+69.9%
+Portal availability SLO
+SLO
+0%
+Portal readers can load pages
+SLI 99.41%
+How a metric reaches a dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Agents, Azure Monitor, SNMP and logs feed the metric model.
+AUTOMATIC
+Store and roll up
+Raw samples are rolled up by minute, 15 minutes and hour.
+PERSON
+Explore
+Compare any CIs and metrics.
+PERSON
+Build a dashboard
+Pick tiles, drag them into place, save.
+PERSON
+Share and review
+Dashboards are reviewed monthly in the service review.

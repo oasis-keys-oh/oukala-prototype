@@ -1,0 +1,122 @@
+ENVIRONMENTS AND DORA
+How fast, how safely, and where it runs
+
+Four numbers describe delivery: how often you deploy, how long a change takes, how often it fails, and how fast you recover. Environments and freezes show where each service is today.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Deployment rework rate
+DORA metrics
+Open the delivery pipeline
+DORA metrics
+Environments
+Freezes and clashes
+Pipeline
+Gate policy
+Where is my change
+APPROVED AUTOMATICALLY
+6
+standard change path
+SENT TO THE CAB
+16
+normal change path
+EMERGENCY
+1
+hotfix branches
+BLOCKED
+0
+stopped before the gate
+Change gate criteria
+A change is approved automatically only when every criterion below is met. Two criteria stop the pipeline outright. The rest send the change to the CAB. Pass rate is for production deployments in the last 30 days.
+CRITERION	RULE NOW	PASSED, 30 DAYS	IF NOT MET
+Tests pass rate	Pass rate 95% or higher	
+ 100%	Stops the pipeline
+Code coverage	Coverage 80% or higher	
+ 87%	Sends to the CAB
+Critical vulnerabilities	At most 0	
+ 100%	Stops the pipeline
+High vulnerabilities	At most 2	
+ 100%	Sends to the CAB
+Change risk	Low risk or lower	
+ 30%	Sends to the CAB
+Database schema change	None allowed	
+ 61%	Sends to the CAB
+Standard change template match	Required	
+ 96%	Sends to the CAB
+Deployment freeze	Blocks auto-approval	
+ 100%	Sends to the CAB
+Clash with other changes	Hard clash blocks	
+ 100%	Sends to the CAB
+Service error budget	More than 10% left	
+ 65%	Sends to the CAB
+Rollback ready	Required	
+ 100%	Sends to the CAB
+Edit gate policy
+Allow auto-approval under a standard change template
+Reset to defaults
+ITIL 5
+Standard change templates the pipeline can use
+These are pre-approved by the CAB. A run that fits one is approved automatically.
+TEMPLATE	SCOPE	APPROVED BY
+STD-APP
+Application release, no schema change	Stateless application or content deployment, tested, rollback by redeploying the previous artifact.	
+Nia Brooks
+
+Jun 3
+STD-CFG
+Configuration change from source control	Feature flags and configuration values stored in source control.	
+Nia Brooks
+
+Jun 3
+STD-DB
+Schema migration, backward compatible	Additive schema changes only, tested on a production copy.	
+Jordan Lee
+
+Aug 12
+Open the standard change catalog
+Change approval policies
+Defined in the change process. The pipeline uses the same policies, so there is one place to change them.
+POLICY	APPLIES TO	PIPELINE PATH
+AP1 Standard change from an approved template	Standard	Standard
+AP2 Standard change without a template	Standard	Standard
+AP3 Emergency change: ECAB	Emergency	Emergency
+AP4 Normal change: change manager	Normal	Normal
+AP5 Service owner for their own service	Normal	Normal
+AP6 Architecture review for medium risk or higher	Normal	Normal
+Open changes and approval policies
+Release gates and where the pipeline checks them
+Release records list gates (hard or advisory). The pipeline completes the ones it can check itself, so people only handle what a machine cannot.
+RELEASE GATE	TYPE	CHECKED BY	EVIDENCE
+Development complete	Hard	Pipeline: Work item, Pull request	Board: every story in the release is Done
+Code review done and pull requests merged	Hard	Pipeline: Pull request	Repository: pull requests merged with reviewers
+Automated test suite passes (95% or better)	Hard	Pipeline: Test	Pipeline run report
+Manual user acceptance testing complete	Hard	A person	UAT sign-off sheet
+Exit criteria and acceptance criteria met	Hard	A person	Exit criteria matrix
+Security review	Hard	Pipeline: Security scan	Scan report and review record
+Change approval (CAB)	Hard	Pipeline: Change gate	Change record approval
+Training built	Advisory	A person	Training package in the learning system
+Training approved	Advisory	A person	Training approval record
+Communications package built	Advisory	A person	Draft announcement, FAQ and release notes
+Communications team approved the package	Hard	A person	Communications approval record
+Organizational change management (OCM) plan implemented	Advisory	A person	OCM plan checklist and adoption survey
+Support handover and monitoring ready	Hard	Pipeline: Verify	Handover note and runbook link
+Rollback plan rehearsed	Hard	Pipeline: Change gate (rollback ready)	Rehearsal log
+Go or no-go decision	Hard	Pipeline: Change gate then Deploy	Decision record
+How delivery performance is measured
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Every production deploy is recorded
+The deploy stage writes the time, version and outcome.
+AUTOMATIC
+Failures are linked
+A rollback, hotfix or incident within a day marks the deploy as failed.
+AUTOMATIC
+DORA numbers are calculated
+Frequency, lead time, failure rate, time to restore and rework.
+PERSON
+Review monthly
+The release manager and service owners choose one number to improve.

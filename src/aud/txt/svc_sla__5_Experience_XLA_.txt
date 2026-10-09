@@ -1,0 +1,162 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+EXPERIENCE SCORE
+82%
+average over active XLAs
+RESPONSES, 30 DAYS
+174
+out of 575 eligible records
+RESPONSE RATE
+30%
+across all sources
+XLAS AT GOAL
+3 of 5
+active experience agreements
+Experience level agreements
+An XLA measures how a service feels, using a short survey or device telemetry, and sits beside the SLA that measures speed. Keep each to a few measures.
+New XLA
+Sentiment
+4.20 of 5
+Incident experience: sentiment
+
+Overall, how did working with IT make you feel about this issue?
+
+1
+2
+3
+4
+5
+Goal 4.2 of 5
+45 of 143 responded
+Post-resolution survey
+Open
+Resolution satisfaction
+71.4%
+Incident experience: did it fix the problem
+
+Is your problem fixed?
+
+1
+2
+3
+4
+5
+Goal 88% favorable
+56 of 143 responded
+Post-resolution survey
+Open
+Effort
+87.9%
+Request experience: effort
+
+How easy was it to get what you needed?
+
+1
+2
+3
+4
+5
+Goal 85% favorable
+33 of 133 responded
+Portal feedback
+Open
+Sentiment
+4.00 of 5
+New hire experience: day-one readiness
+
+On your first day, did you have what you needed to start work?
+
+1
+2
+3
+4
+5
+Goal 4.4 of 5
+9 of 17 responded
+Day-30 pulse survey
+Open
+Sentiment
+4.29 of 5
+Change experience: clarity of communication
+
+Were you told clearly what would change and when?
+
+1
+2
+3
+4
+5
+Goal 4 of 5
+31 of 139 responded
+Teams pulse
+Open
+Does the SLA tell the whole story
+A service can meet every time target and still frustrate people. This table lines the two up by service.
+Experience level agreements
+SERVICE	SLA ATTAINMENT	EXPERIENCE	
+Codification Platform
+Tier 1	85%	75% favorable
+4 responses	
+Codification Portal
+Tier 1	92%	100% favorable
+7 responses	
+Search and indexing
+Tier 1	91%	75% favorable
+4 responses	
+Contract Repository
+Tier 2	93%	80% favorable
+5 responses	
+Lease subledger (ERP)
+Tier 2	97%	100% favorable
+3 responses	
+Finance systems
+Tier 2	92%	Too few responses	
+Identity (Entra ID)
+Tier 1	97%	75% favorable
+4 responses	
+Email and collaboration (M365)
+Tier 1	95%	Too few responses	
+Data platform
+Tier 2	92%	Too few responses	
+Network and VPN
+Tier 1	97%	Too few responses	
+Endpoint management (Intune)
+Tier 2	74%	Too few responses	
+Integration hub
+Tier 2	93%	100% favorable
+3 responses	
+Service desk
+Tier 2	100%	Too few responses	
+Portfolio and project intake
+Tier 2	88%	Too few responses	
+AI platform and agents
+Tier 2	92%	75% favorable
+4 responses	
+Employee lifecycle
+Tier 2	93%	Too few responses	
+Where responses come from
+Each source feeds one or more XLAs. Surveys are short: one question each, asked once per record.
+ƒ Experience score
+SOURCE	XLAS	RESPONSES	RESPONSE RATE	
+Post-resolution survey	2	101	35%	Connected
+Portal feedback	1	33	25%	Connected
+Teams pulse	1	31	22%	Connected
+Day-30 pulse survey	1	9	53%	Connected
+Digital experience telemetry	0	0	No data	Use this source

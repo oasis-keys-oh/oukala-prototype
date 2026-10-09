@@ -1,0 +1,90 @@
+AI CONTROL TOWER
+Everything AI, in one place
+
+5 of 6 agents are running inside the gateway and spend is at 30% of the cap. One agent, Copilot in Teams, runs outside it and is only observed.
+
+Live
+Gateway · draft
+Governance posture
+87
+Policy coverage × Guardrail pass rate × Audit completeness
+Spend today
+$22
+of $75 daily cap
+Guardrail pass rate
+99.2%
+3 blocks, 1 redaction today
+22%
+Agent override rate
+Off trend · target ≤ 10%
+Human overrides ÷ Agent recommendations
+Overview
+Fleet
+Lineage
+Kill switch
+AI spend, last 30 days
+ƒ AI spend against daily cap
+$0
+$3.5
+$7
+$10.5
+$14
+1
+6
+11
+16
+21
+26
+Daily cap $12
+
+Spend has tripled in a month as Test Agent and First Officer scaled up, and still sits at 30% of the cap.
+
+When agents work
+Runs per hour, today
+First Officer
+Invoice Advisor
+Knowledge Curator
+Test Agent
+Personal assistant
+Copilot in Teams
+12am
+6am
+12pm
+6pm
+11pm
+Calls by model provider
+Council mode splits risky decisions
+Anthropic
+52%
+OpenAI
+31%
+Google
+13%
+Other
+4%
+Waiting for a human
+Agent actions above their autonomy
+First Officer wants to email the Lumen delivery lead the hold notice
+Sends from your address, mentions INV-20433
+Claude · 82%
+Approve
+Deny
+Invoice Advisor wants to tighten the Lumen tolerance
+Backed by 6 recent decisions
+Claude · 82%
+Approve
+Deny
+Live activity
+Streaming
+13:29
+Invoice Advisor scored INV-20451: approve, 91%
+13:27
+First Officer filed 3 records from IT operations daily
+13:24
+Guardrail: redacted a personal phone number in a transcript
+13:20
+Test Agent passed 24 of 24 invoice flow checks
+13:12
+Knowledge Curator blocked: output cited no source
+13:05
+Forecast Agent drafted a reforecast for FY26 Vendor services

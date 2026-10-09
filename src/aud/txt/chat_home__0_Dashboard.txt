@@ -1,0 +1,84 @@
+PLATFORM · CHAT AND AGENTS
+One assistant on every screen, doing the work with your approval
+
+The chat answered 73% of questions without a person and finished 86% of the tasks it started, using 2 steps on average. 41 tools are registered under 10 active guardrails. This session has 0 agent tasks, 0 waiting on a person.
+
+ƒ Chat deflection rate
+ƒ Agent task completion rate
+ƒ Average steps per task
+ƒ Escalation to a person
+Agentic AI governance
+Open the chat
+Dashboard
+Threads
+Activities
+Tool registry
+Guardrails
+Permissions by role
+Audit
+Test console
+Running now
+0
+Agent tasks executing
+Waiting on a person
+0
+Plans and approvals
+Completed
+0
+This session
+Blocked or failed
+0
+Needs review
+How well the chat is doing
+Four standard metrics. Select one for its formula, trend and what happens when it slips.
+ƒ Chat deflection rate
+On target
+73%
+target 70%
+ƒ Agent task completion rate
+On target
+86%
+target 85%
+ƒ Average steps per task
+On target
+2
+target 3
+ƒ Escalation to a person
+Near target
+14%
+target 10%
+Most used tools
+Number of times each tool ran or answered in this session. Bar length is the count.
+No tool has run yet
+Open the chat and ask for something, for example “order a laptop for Hana”.
+Needs a person
+Activities waiting for approval or an answer.
+
+Nothing is waiting.
+
+Recent threads
+Each thread keeps its own context pack and history.
+THREAD	MESSAGES	
+New chat	0	Open
+Chat and agentic fulfillment
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Agentic AI governance, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Understand the ask
+The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.
+AUTOMATIC
+Check guardrails and permissions
+Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.
+PERSON
+Show the plan
+Steps, parameters, risk, cost and approvers appear as a card. The person can approve, edit or cancel.
+APPROVAL GATE
+Approvals from other people
+Manager, budget owner or change advisory board steps wait as gates. The chat never approves its own plan for a person who is not allowed.
+AI AGENT
+Run step by step
+Each tool runs against the real module, with live status. A failed step stops the plan and offers retry or handoff.
+AUTOMATIC
+Audit and learn
+Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.

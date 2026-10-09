@@ -1,0 +1,130 @@
+SERVICE MANAGEMENT · PROBLEMS
+Fix the cause, not the symptom
+
+5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.
+
+New problem
+New known error
+ƒ Repeat incident rate
+ƒ Known error reuse
+ITIL 5
+KCS v6
+Triage Agent · 80%
+Overview
+Fishbone and RCA
+Link incidents
+Known error database
+Trends
+OPEN PROBLEMS
+5
+2 are P1 or P2
+NO WORKAROUND YET
+0
+open problems
+REPEAT INCIDENT RATE
+35%
+target 25% ƒ Repeat incident rate
+KNOWN ERRORS
+4
+published
+OPEN INCIDENTS WITHOUT A PROBLEM
+8
+candidates to link
+Costliest problems
+Repeats in 4 weeks × people affected.
+ƒ Repeat incident rate
+PRB0010
+Portal web tier saturates under editor load
+9 repeats · 140 people · 2 incidents
+P2
+PRB0007
+Search indexer builds miss delta updates (Lumen build 2.3)
+8 repeats · 60 people · 1 incidents
+P3
+PRB0008
+Taxonomy API connection pool exhausted during the nightly ba
+4 repeats · 25 people · 1 incidents
+P3
+PRB0009
+Lease subledger period lock race rejects valid postings
+6 repeats · 12 people · 1 incidents
+P2
+PRB0012
+Large file uploads time out in Contract Repository
+2 repeats · 8 people · 1 incidents
+P4
+Problems by state
+Where the analysis stands.
+New
+1
+Assess
+0
+Root cause analysis
+1
+Fix in progress
+3
+Resolved
+1
+Bar length: number of problems
+ALL PROBLEMS
+Priority
+All
+3
+State
+3 of 4
+3
+Service
+All
+6
+Workaround
+All
+1
+Root cause
+All
+2
+Group by 
+None
+State
+Service
+Priority
+Export CSV
+NUMBER	PRIORITY	PROBLEM	SERVICE	STATE	OWNER	LINKED INCIDENTS	REPEATS, 4 WEEKS▼	PEOPLE AFFECTED	WORKAROUND	ROOT CAUSE
+PRB0010	P2	Portal web tier saturates under editor load	Codification Portal	Root cause analysis	
+Tom Becker
+	2	9	140	Yes	Known
+PRB0007	P3	Search indexer builds miss delta updates (Lumen build 2.3)	Search and indexing	Fix in progress	
+Jordan Lee
+	1	8	60	Yes	Known
+PRB0009	P2	Lease subledger period lock race rejects valid postings	Lease subledger (ERP)	Fix in progress	
+Sam Patel
+	1	6	12	Yes	Known
+PRB0008	P3	Taxonomy API connection pool exhausted during the nightly batch	Data platform	Fix in progress	
+Dev Rao
+	1	4	25	Yes	Known
+PRB0012	P4	Large file uploads time out in Contract Repository	Contract Repository	New	
+Sam Patel
+	1	2	8	Yes	Unknown
+5 of 6 rows
+Scroll for more · rows are drawn as you scroll
+Problem process (ITIL 5 Support and Evolve)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AI AGENT
+Detect a pattern
+An agent groups repeat incidents by service and text and proposes a problem.
+PERSON
+Assess and prioritize
+Rank by repeats times people affected.
+PERSON
+Root cause analysis
+Fishbone to find contributing causes by category, then five whys to the root.
+PERSON
+Publish known error
+Record the workaround and symptoms so the desk can use them today.
+APPROVAL GATE
+Fix through change
+Raise a change, a knowledge article or a demand for the permanent fix.
+AUTOMATIC
+Verify and close
+Confirm repeats stopped, retire the known error.

@@ -1,0 +1,36 @@
+PLATFORM · LICENSING, USAGE AND BILLING
+What Meridian pays for, and why
+
+The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.
+
+ƒ Licence utilization
+ƒ AI cost per outcome
+Claude Sonnet · 90%
+Seats and plans
+Usage meters
+Statement
+Showback
+Usage by department (showback)
+The projected bill of $9,259 split by department. Platform fee, sandboxes and overage are shared in proportion to seat charges.
+By seats
+By usage
+Evenly
+DEPARTMENT	PEOPLE	SEAT CHARGES	SHARED SHARE	TOTAL	SHARE OF BILL
+Delivery	43	$1,474	$432	$1,906	
+21%
+IT Operations	38	$1,188	$348	$1,536	
+17%
+Editorial	34	$1,095	$321	$1,416	
+15%
+Engineering	27	$1,081	$317	$1,398	
+15%
+Finance	33	$989	$290	$1,279	
+14%
+Portfolio office	16	$539	$158	$697	
+8%
+Vendor management	16	$488	$143	$631	
+7%
+Executive office	10	$307	$90	$397	
+4%
+
+Department charge = Σ(department seats × seat price) + shared charges × allocation share Showback informs; chargeback would post these to cost centers.

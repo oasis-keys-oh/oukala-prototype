@@ -1,0 +1,251 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+Teams
+All 6 teams
+6
+6 of 6 teams · sprint 26.4.1, day 7 of 10 · Sep 28 to Oct 9
+
+Across the two trains, 139 points are committed this sprint against a capacity of 146. 80 points (58%) are done on day 7; the ideal line says 94. The team is 14 points behind the burndown. Average velocity is 133 points.
+
+COMMITTED
+139 pts
+53 stories
+DONE SO FAR
+80 pts
+58% of commitment
+CAPACITY
+146 pts
+1 people with time off
+VELOCITY (3 SPRINTS)
+133 pts
+ƒ Predictability
+OPEN PULL REQUESTS
+13
+2 with failing checks
+ESCAPED DEFECTS
+3.4%
+ƒ Defect escape rate
+Burndown
+Remaining points per day; dashed is the ideal line
+SAFe
+0
+40
+80
+120
+160
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+D8
+D9
+D10
+Remaining points
+Ideal
+Velocity trend
+Points completed per sprint, with capacity
+All charts
+0
+45
+90
+135
+180
+124
+26.2.3
+127
+26.2.4
+134
+26.3.1
+124
+26.3.2
+135
+26.3.3
+140
+26.3.4
+80
+Now
+3-sprint average 133
+Capacity 146
+Enhancement, defect and enabler mix
+Stories completed since Aug 24
+Enhancements
+56
+Defect fixes
+32
+Enablers
+14
+
+31% of finished work is defect repair. Target is under 25%.
+
+Where stories are today
+Current sprint by state (points)
+To do
+10
+In progress
+4
+In review
+21
+Testing
+24
+Done
+80
+
+1 blocked stories need help today.
+
+Stories
+All 1,500 stories, defects and enablers · select a row for the full story
+New story
+Kind
+All
+3
+State
+All
+5
+Sprint
+All
+10
+Team
+All
+6
+Feature
+All
+27
+Release
+All
+16
+Group by 
+None
+Sprint
+Team
+State
+Kind
+Feature
+Export CSV
+STORY	TITLE	KIND	POINTS	STATE	SPRINT	TEAM	ASSIGNEE	FEATURE	RELEASE
+ST-1001	Fix comment threads returning 502 errors under load	Defect	1	Done	26.2.3	Platform Alpha	
+Elise Park
+	FT-104	REL-2611
+ST-1002	Show autosave for editors	Enhancement	13	Done	26.2.3	Platform Alpha	
+Mei Tan
+	FT-101	REL-2611
+ST-1003	Add an alert for publishing queue	Enabler	2	Done	26.2.3	Platform Alpha	
+Anita Cole
+	FT-001	REL-2602
+ST-1004	Support autosave in the beta	Enhancement	5	Done	26.2.3	Platform Alpha	
+Anita Cole
+	FT-101	REL-2611
+ST-1005	Support editor save flow in the audit view	Enhancement	8	Done	26.2.3	Platform Alpha	
+Ben Alvarez
+	FT-004	REL-2602
+ST-1006	Simplify document locking for readers	Enhancement	2	Done	26.2.3	Platform Alpha	
+Anita Cole
+	FT-001	REL-2602
+ST-1007	Automate autosave for large standards	Enhancement	2	Done	26.2.3	Platform Alpha	
+Sam Patel
+	FT-004	REL-2602
+ST-1008	Fix autosave not saving after a timeout	Defect	8	Done	26.2.3	Platform Alpha	
+Anita Cole
+	FT-001	REL-2602
+ST-1009	Add tests for bulk edit	Enabler	1	Done	26.2.4	Platform Alpha	
+Anita Cole
+	FT-104	REL-2611
+ST-1010	Simplify autosave for vendors	Enhancement	13	Done	26.2.4	Platform Alpha	
+Luis Ortega
+	FT-105	REL-2608
+ST-1011	Support comment threads on mobile	Enhancement	13	Done	26.2.4	Platform Alpha	
+Ben Alvarez
+	FT-901	
+ST-1012	Fix comment threads slow with 500 items	Defect	3	Done	26.2.4	Platform Alpha	
+Sam Patel
+	FT-001	REL-2602
+ST-1013	Spike: options for standard compare panel	Spike	5	Done	26.2.4	Platform Alpha	
+Anita Cole
+	FT-106	REL-2611
+ST-1014	Fix document locking returning 502 errors under load	Defect	3	Done	26.2.4	Platform Alpha	
+Elise Park
+	FT-105	REL-2608
+ST-1015	Validate autosave in the audit view	Enhancement	1	Done	26.3.1	Platform Alpha	
+Mei Tan
+	FT-004	REL-2602
+ST-1016	Automate document locking for editors	Enhancement	8	Done	26.3.1	Platform Alpha	
+Elise Park
+	FT-001	REL-2602
+ST-1017	Export draft versioning for administrators	Enhancement	1	Done	26.3.1	Platform Alpha	
+Mei Tan
+		
+ST-1018	Filter template picker for large standards	Enhancement	8	Done	26.3.1	Platform Alpha	
+Luis Ortega
+	FT-001	REL-2602
+ST-1019	Log bulk edit for vendors	Enhancement	1	Done	26.3.1	Platform Alpha	
+Luis Ortega
+	FT-105	REL-2608
+ST-1020	Document publishing queue	Enabler	1	Done	26.3.1	Platform Alpha	
+Mei Tan
+	FT-001	REL-2602
+ST-1021	Show workspace layout in the audit view	Enhancement	2	Done	26.3.1	Platform Alpha	
+Elise Park
+	FT-101	REL-2611
+ST-1022	Simplify publishing queue for vendors	Enhancement	2	Done	26.3.1	Platform Alpha	
+Mei Tan
+	FT-106	REL-2611
+ST-1023	Log standard compare panel for vendors	Enhancement	1	Done	26.3.1	Platform Alpha	
+Ben Alvarez
+	FT-004	REL-2602
+ST-1024	Simplify document locking for large standards	Enhancement	5	Done	26.3.1	Platform Alpha	
+Luis Ortega
+	FT-101	REL-2611
+ST-1025	Fix standard compare panel failing for long titles	Defect	3	Done	26.3.1	Platform Alpha	
+Elise Park
+	FT-001	REL-2602
+ST-1026	Add workspace layout in the beta	Enhancement	2	Done	26.3.1	Platform Alpha	
+Luis Ortega
+	FT-104	REL-2611
+ST-1027	Support autosave for large standards	Enhancement	5	Done	26.3.1	Platform Alpha	
+Ben Alvarez
+	FT-106	REL-2611
+
+1,500 of 1,500 rows
+Scroll for more · rows are drawn as you scroll
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

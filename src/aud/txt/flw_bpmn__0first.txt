@@ -1,0 +1,100 @@
+AUTOMATION · PROCESS MODELS
+See how work really flows
+
+Demand to project takes 5.5 days on the happy path, and 79% of that is waiting. The longest queue is Review business case, with 52 hours of average wait.
+
+Demand to project
+Incident to resolution
+ƒ Approval turnaround
+Demand to project
+From a one-page idea to a staffed, baselined project. Owner: Portfolio lead.
+Business view
+Technical view
+Analytics overlay
+Add step
+
+Business view: each step is described in plain English under its shape. The overlay shades slow steps and flags the bottleneck.
+
+Requester
+Portfoliolead
+Finance
+Delivery(PMO)
+Yes 64%
+No 36%
+Yes 71%
+No 29%
+Idea submitted
+Anyone at Meridian canraise a need.
+Complete demandform
+The requester explainsthe problem, the benefitand a rough cost.
+0.8h work · 0h wait
+Score with AI
+Claude scores value, riskand fit and drafts aone-page summary.
+0.2h work · 0.4h wait
+Score at least60?
+Review businesscase
+Finance checks the cost,the funding source andthe benefit.
+9h work · 52h wait
+Bottleneck 52h
+Portfolio boarddecision
+The board funds, defersor declines the project.
+3h work · 30h wait
+Funded?
+Create projectand baseline
+The project record,schedule shell and budgetare created.
+0.5h work · 2h wait
+Staff and kickoff
+The PMO assigns peopleand holds the kick-offmeeting.
+14h work · 20h wait
+Project started
+A project exists,staffed, with a baseline.
+Read feedbackand revise
+The requester sees why itscored low and canresubmit.
+0.5h work · 24h wait
+Parked
+Nothing is funded now.The idea stays on file.
+Declined
+The board declined withreasons recorded.
+ELEMENT INSPECTOR
+Select a shape
+
+Click any event, task or gateway to see who does it, how long it takes and how it is wired to workflows, agents and systems.
+
+Average cycle time
+5.5 days
+Σ(work + wait) on the happy path
+Time spent waiting
+79%
+Σ wait ÷ (Σ wait + Σ work)
+Bottleneck
+52h
+“Review business case”
+Cases a month
+31
+from the start event, last 90 days
+Where the time goes
+79% of the 5.5 days is waiting, not working. The longest queue is “Review business case”.
+Review business case
+52h wait
+Portfolio board decision
+30h wait
+Read feedback and revise
+24h wait
+Staff and kick off
+20h wait
+Create project and baseline
+2h wait
+Score with AI
+0.4h wait
+Waiting
+Working
+How these are calculated
+Every number on this screen comes from these formulas over the last 90 days of cases.
+Cycle time = Σ(work time + wait time) of the steps on the happy path
+Wait share = Σ wait time ÷ cycle time × 100
+Bottleneck = step with the highest (average wait × cases per month)
+ƒ Approval turnaround
+ƒ Workflow run success
+Claude Sonnet · 79%
+Tune the decision table
+Open approvals inbox

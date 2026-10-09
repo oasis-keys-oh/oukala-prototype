@@ -1,0 +1,102 @@
+MASTER SCHEDULE
+Every project on one timeline
+
+Four projects run to Feb 24, 2027. 1 of the four core projects is behind baseline. Codification go live is 7 work days late, and the Taxonomy pilot is on baseline, because one Lumen team sits on both.
+
+ƒ Schedule performance index
+ƒ Milestones on time
+ƒ Schedule variance
+PMBOK
+Why am I seeing this?
+Projects
+All 4 projects
+4
+Project managers
+All managers
+4
+Resource type
+All types
+4
+4 projects shown
+Current plan
+Lumen slips 5 more work days
+Lumen slips 10 more work days
+Add two Lumen engineers to the indexer
+Editor testing takes twice as long
+Overview
+Gantt
+Milestones
+What changed
+Project Online coverage
+Microsoft Project Online coverage
+Microsoft set Project Online to retire on Sep 30, 2026, so customers are choosing a destination now. This is the checklist we hold ourselves to. PMBOK
+Project plans with a full WBS: outline levels, WBS codes, summaries, milestones, durations, links and lags
+WBS and task sheet, Project plan, Master schedule
+In this prototype
+Four link types (FS, SS, FF, SF), lags and constraints
+Edit a task or link two tasks
+In this prototype
+Critical path, total float and free float
+Recalculates when you change a duration
+In this prototype
+Baseline, actual dates and variance
+One baseline now. Several named baselines are planned.
+In this prototype
+Integrated master schedule with cross-project links
+Lumen indexer feeds the Taxonomy hub and the Codification beta
+In this prototype
+Roll-up of dates, percent complete, cost and work to summary lines
+Summaries are never scheduled as work
+In this prototype
+Resource sheet, task usage and overallocation
+People, AI agents, contractors and managed service providers
+In this prototype
+Network diagram and earned value by WBS element
+WBS and task sheet tabs
+In this prototype
+Demand management: requests, scoring, stages
+Workflow designer is planned
+In this prototype
+Portfolio analysis and constrained funding
+Efficient frontier chart is planned
+In this prototype
+Resource pools, utilization and what-if
+Automatic leveling is planned
+In this prototype
+Timesheets and task updates
+Captured by First Officer and Teams, not a separate site
+Planned
+Enterprise custom fields and lookup tables
+Comes from the Metrics and fields registry
+Planned
+Import and export of Microsoft Project files
+CSV export works today; .mpp and XML import are needed for migrations
+Planned
+Reports and dashboards
+Persona dashboards and AI-built reports replace report authoring
+Different on purpose
+Project web app and desktop co-editing
+Browser-only; no desktop client
+Planned
+Microsoft 365, Teams and Planner integration
+Through Microsoft Graph
+Planned
+How the master schedule stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Project managers update progress
+Percent complete and actual dates arrive from task sheets, Teams and First Officer meeting notes.
+AUTOMATIC
+Schedule engine recalculates
+Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.
+AI AGENT
+PMO Agent flags drift
+Compares forecast with baseline, finds new critical chains and cross-project collisions, drafts a recovery option.
+PERSON
+Portfolio manager reviews
+Decides which recovery option to take and whether a milestone moves.
+APPROVAL GATE
+Baseline reset approval
+A re-baseline needs approval from the steering committee. It is audited and the old baseline is kept.

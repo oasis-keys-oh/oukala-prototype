@@ -1,0 +1,82 @@
+SERVICE MANAGEMENT · INCIDENTS
+Restore service fast, to a team first
+
+14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a major incident.
+
+Log incident
+Open the war room
+ƒ SLA compliance
+ƒ Backlog age
+ƒ Incident impact score
+ITIL 5
+ISO/IEC 20000
+DORA metrics
+Triage Agent · 86%
+Overview
+Board
+Priority calculator
+SLA timers
+Priority policy
+Drag a card to a column to change its state. Drag it onto a team to reassign it to that team (a named person stays only if they belong to the new team). Drop it on "Claim for Tom Becker" to claim it. Keyboard: focus a card, then Alt plus arrow keys. Resolving or holding asks for the required details.
+Services
+All services
+13
+ITIL 5
+DROP A CARD ON A TEAM TO REASSIGN IT, OR ON YOURSELF TO CLAIM IT
+Claim for Tom Becker
+Only for your own team
+Service desk
+4 open
+Platform team
+3 open
+Ops team
+2 open
+Data team
+2 open
+Finance
+2 open
+Security
+0 open
+Architecture
+0 open
+Change management
+0 open
+Lumen (vendor)
+1 open
+AI agents
+0 open
+New
+0
+In progress
+0
+On hold
+0
+Resolved
+0
+P1 to P4 chip: calculated priority
+SLA chip: green on track, amber under 25% left, red breached
+Incident process (ITIL 5 Support activity)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect and log
+Monitoring, a caller or an agent raises the incident against a service and CI.
+AUTOMATIC
+Calculate priority
+Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.
+AI AGENT
+Confirm triage
+An agent suggests category, team and similar incidents. A person confirms.
+AUTOMATIC
+Route to a team
+Work lands in the team queue. Individuals are not assigned from outside the team.
+PERSON
+Claim and swarm
+A team member claims it, or the team swarms. A direct assignment needs a stated reason.
+PERSON
+Diagnose and restore
+Work the known error or runbook, link a change if one is needed, communicate.
+AI AGENT
+Resolve and learn
+Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.

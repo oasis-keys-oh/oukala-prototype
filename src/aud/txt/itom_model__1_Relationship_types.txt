@@ -1,0 +1,129 @@
+CMDB · DATA MODEL
+Classes, attributes and relationships, like the CMDB it replaces
+
+The CMDB data model has 42 classes (6 abstract, 36 concrete) and 154 attributes, of which 59 are required. A Linux server inherits attributes from four parent classes. 28 classes hold CIs today, and 11 relationship types say how they connect. Add a class or an attribute here and every form, completeness score and field picker in Oukala learns it immediately.
+
+ƒ CMDB completeness
+CSDM 5
+New class
+New attribute
+Why am I seeing this?
+CLASSES
+42
+28 hold CIs
+ATTRIBUTES
+154
+59 required
+RELATIONSHIP TYPES
+13
+11 edge types, 2 attribute types
+RELATIONSHIP RULES
+6
+6 active
+CSDM DOMAINS
+7
+6 have classes
+EDGES
+236
+relationships between records
+Class hierarchy
+Relationship types
+CSDM 5 domains
+Relationship rules
+How relationships are used
+Edges in this CMDB by type. Direction matters: a relationship always points from the item that depends to the item it depends on.
+Depends on / Used by
+127
+Runs on / Runs
+57
+Hosted on / Hosts
+9
+Connects to / Connected by
+5
+Uses / Used by
+26
+Consumes / Consumed by
+0
+Runs behind / Fronts
+1
+Contained by / Contains
+1
+Provided by / Provides
+1
+Supported by / Supports
+6
+Located in / Houses
+3
+Owned by / Owns
+attribute
+Managed by / Manages
+attribute
+Relationship type catalog
+Each type has a label for each direction, an example and the class pairs it is meant for. Types that read naturally the other way (Contains, Provides, Supports) are stored inverted so impact still flows upward.
+New relationship type
+TYPE	READS FORWARD	READS BACKWARD	MEANING AND EXAMPLE	ALLOWED PAIRS
+depends on	Depends on	Used by	The source cannot work without the target. This is the default for impact analysis: if the target fails the source is affected.
+Example: Application depends on Database
+	Application → Database Service → Service Application service → Application
+runs on	Runs on	Runs	Software or a virtual machine that executes on a host, container or platform.
+Example: Application runs on Virtual machine
+	Software → Computer Software → Cloud Cloud → Computer
+hosted on	Hosted on	Hosts	Physical or logical placement: a server in a rack, a virtual machine on a host or subscription.
+Example: Server hosted on Rack
+	Computer → Rack Network device → Rack Cloud → Cloud subscription
+connects to	Connects to	Connected by	Network or data connection between two items that does not imply ownership.
+Example: Server connects to Switch
+	Computer → Network device Network device → Network device Network device → Cloud
+uses	Uses	Used by	Consumes a shared capability such as an identity tenant, API or reference data store.
+Example: Application uses Cloud resource
+	Software → Configuration item Business application → Information object Service → Configuration item
+consumes	Consumes	Consumed by	A service or application takes data or output from another.
+Example: Business service consumes Application service
+	Service → Service Application → Application
+runs behind	Runs behind	Fronts	Sits behind a gateway, firewall or load balancer.
+Example: Application runs behind Load balancer
+	Configuration item → Network device
+contained by
+entered inverted
+	Contained by	Contains	Grouping: a rack contains servers, a capability contains business applications. Entered as Contains, stored as Contained by so impact still flows to the container.
+Example: Rack contains Server
+	Configuration item → Configuration item
+provided by
+entered inverted
+	Provided by	Provides	A vendor or platform provides a service or asset. Entered as Provides, stored as Provided by.
+Example: Vendor provides Contract
+	Configuration item → Vendor Configuration item → Contract Service → Configuration item
+supported by
+entered inverted
+	Supported by	Supports	A contract, group or technology supports an item. Entered as Supports, stored as Supported by.
+Example: Contract supports Application
+	Configuration item → Contract Business capability → Business application
+located in	Located in	Houses	Physical or organizational location.
+Example: Rack located in Datacenter
+	Rack → Datacenter Datacenter → Site Configuration item → Site
+owned by
+stored as owned_by
+	Owned by	Owns	Accountable person or group. Stored as the Owned by attribute (not a CI-to-CI edge) so it never distorts impact paths.
+Example: Application owned by Person
+	Configuration item → sys_user
+managed by
+stored as managed_by_group
+	Managed by	Manages	Group or managed service provider that operates the item day to day. Stored as an attribute.
+Example: Server managed by Northwind Managed Services
+	Configuration item → sys_user_group
+How the data model changes
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+Anyone proposes a class, attribute or relationship rule with a reason.
+AUTOMATIC
+Preview impact
+The form shows how many CIs gain the attribute and how completeness moves.
+APPROVAL GATE
+Approve
+The CMDB owner approves anything that touches required attributes.
+AUTOMATIC
+Publish
+The class appears in forms, lists, the data model registry and chat.

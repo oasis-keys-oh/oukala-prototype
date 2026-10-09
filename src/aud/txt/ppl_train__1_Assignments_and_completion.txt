@@ -1,0 +1,186 @@
+TRAINING AND LEARNING
+Is everyone ready to do the work safely
+
+91% of mandatory courses due to date are complete, against a 95% target. 6 people have not finished Security awareness 2026, which closed Oct 2, and 10 certificates expire or have expired within 60 days. Learning Coach has reminders ready.
+
+ƒ Mandatory training completion
+Design a course
+Import SCORM or xAPI
+Why am I seeing this?
+Mandatory completion
+91%
+82 of 90 due to date
+People with overdue courses
+6
+of 39
+Certificates expiring or expired
+10
+within 60 days
+Courses in catalog
+10
+0 imported packages
+Catalog and paths
+Assignments and completion
+Certificates and nudges
+Designer and import
+My learning
+Completion by team and course
+91% of mandatory courses due to date are done (82 of 90). Select a cell for names.
+ƒ Mandatory training completion
+C1
+C2
+C3
+C4
+C5
+C6
+C7
+C8
+C9
+C10
+Leadership
+2
+100
+50
+50
+50
+·
+50
+·
+·
+·
+·
+Finance
+2
+100
+·
+100
+50
+·
+50
+·
+·
+·
+100
+Editors
+4
+100
+25
+75
+25
+·
+0
+0
+0
+·
+·
+PMO
+4
+100
+50
+75
+50
+·
+25
+·
+·
+·
+100
+Architecture
+3
+100
+100
+100
+100
+100
+100
+·
+·
+·
+·
+Platform team
+8
+88
+·
+75
+13
+13
+25
+·
+·
+·
+·
+Data team
+6
+83
+·
+83
+17
+·
+17
+·
+·
+·
+100
+Ops team
+5
+100
+·
+100
+60
+60
+20
+·
+·
+60
+·
+Lumen (vendor)
+5
+100
+·
+100
+60
+·
+60
+·
+·
+·
+·
+90%+
+70 to 89%
+under 70%, not yet due
+under 70% and past due
+C1 Code of conduct and co · C2 Antitrust and fair pro · C3 Security awareness 202 · C4 Phishing and social en · C5 Privileged access and · C6 Using AI safely at Mer · C7 Working with the AI dr · C8 Codification Platform: · C9 Incident response for · C10 Data handling and reco
+Assignments by role
+Who has to take what, and by when. Changing an audience creates enrollments with the due date.
+Assign a course
+COURSE	AUDIENCE	DUE	ENROLLED	DONE	OVERDUE	
+Code of conduct and conflicts of interest
+Mandatory · Compliance
+	All	Sep 30 closed	39	37	2	Assign
+Antitrust and fair process in standards setting
+Mandatory · Compliance
+	Editors Architecture PMO Leadership	Oct 31	13	7	0	Assign
+Security awareness 2026
+Mandatory · Security awareness
+	All	Oct 2 closed	39	33	6	Assign
+Phishing and social engineering drill
+Mandatory · Security awareness
+	All	Oct 9	39	16	0	Assign
+Privileged access and change control
+Mandatory · Security awareness
+	Platform team Ops team Architecture	Oct 23	16	7	0	Assign
+Using AI safely at Meridian
+Mandatory · AI safe use
+	All	Oct 30	39	13	0	Assign
+Working with the AI drafting assistant
+Optional · AI safe use
+	Editors	Nov 20	4	0	0	Assign
+Codification Platform: editor basics
+Optional · Product training
+	Editors	Nov 13	4	0	0	Assign
+Incident response for the service desk
+Mandatory · Product training
+	Ops team	Oct 16	5	3	0	Assign
+Data handling and records retention
+Mandatory · Compliance
+	Data team Finance PMO	Sep 25 closed	12	12	0	Assign

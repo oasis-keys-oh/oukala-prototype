@@ -1,0 +1,50 @@
+PLATFORM · ADMIN STUDIO
+Shape the platform without code
+
+Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+
+ƒ Promotions passing gates first time
+Claude Sonnet · 84%
+Add a field
+Fields
+Form layout
+List views
+Theme
+Localization
+Language packs
+3 of 5 packs are on. People see their Entra ID preferred language, then the tenant default.
+Add a language
+English (US) en-US Tenant default
+100% of 12 sample strings
+Edit strings
+Spanish (US) es-US
+75% of 12 sample strings
+Edit strings
+French (Canada) fr-CA
+58% of 12 sample strings
+Edit strings
+Arabic (right to left) ar Right to left
+0% of 12 sample strings
+Edit strings
+Japanese ja
+0% of 12 sample strings
+Edit strings
+Translate missing strings with AI
+Claude Sonnet · 88%
+String overrides: English (US)
+Rename a term for the whole tenant, for example Incident becomes Service interruption.
+KEY	ENGLISH DEFAULT	ENGLISH (US)
+nav.incident	Incident	
+nav.demand	Demand request	
+btn.approve	Approve	
+btn.hold	Hold	
+btn.save	Save	
+btn.cancel	Cancel	
+lbl.owner	Owner	
+lbl.due	Due date	
+msg.saved	Saved. Your change is in the audit log.	
+msg.required	This is needed so the record tells its story.	
+lbl.vendor	Vendor	
+lbl.risk	Risk	
+
+Preview: Approve / Hold on a service interruption for Vendor Lumen.

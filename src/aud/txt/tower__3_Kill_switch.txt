@@ -1,0 +1,60 @@
+AI CONTROL TOWER
+Everything AI, in one place
+
+5 of 6 agents are running inside the gateway and spend is at 30% of the cap. One agent, Copilot in Teams, runs outside it and is only observed.
+
+Live
+Gateway · draft
+Governance posture
+87
+Policy coverage × Guardrail pass rate × Audit completeness
+Spend today
+$22
+of $75 daily cap
+Guardrail pass rate
+99.2%
+3 blocks, 1 redaction today
+22%
+Agent override rate
+Off trend · target ≤ 10%
+Human overrides ÷ Agent recommendations
+Overview
+Fleet
+Lineage
+Kill switch
+KILL SWITCH
+Stop AI, exactly as wide as you need
+One run
+Stops a single execution
+One agent
+Pauses all of an agent's work
+A capability
+Such as every finance agent
+A provider
+Switch off one model vendor
+This tenant
+Everything for Meridian
+Platform
+Every tenant (operator only)
+First Officer
+Invoice Advisor
+Knowledge Curator
+Test Agent
+Personal assistant
+Prepare to stop
+Pause instead
+Blast radius
+What this will touch before you press anything
+1
+Agents
+2
+Runs in flight
+9
+People notified
+
+Will stop Invoice Advisor, and pause about 2 workflows that depend on them.
+
+Third-party AI outside the gateway, such as Copilot in Teams, can be seen but not stopped.
+
+Control log
+No control actions yet.

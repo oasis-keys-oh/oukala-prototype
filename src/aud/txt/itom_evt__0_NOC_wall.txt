@@ -1,0 +1,215 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+OPEN ALERTS
+19
+9 at Sev 1 or 2
+SERVICES AFFECTED
+6 of 16
+5 correlation groups
+HOSTS CRITICAL OR FLAPPING
+5
+8 more in warning of 162 monitored
+MTTD
+12.0 min
+target 5 min · last 24 hours
+MTTA
+5.8 min
+target 5 min · last 24 hours
+NOISE REDUCTION
+99.9%
+7,999 raw events to 5 actionable
+ALERT FATIGUE INDEX
+46
+0 calm, 100 burnout · 5.5 alerts per responder
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ Event noise reduction
+ƒ Alert fatigue index
+Incident candidateError rate Codification Platform: 15 alerts from 9 CIs fold into one group. Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB).Open group
+Service status wall
+Each tile is a service. Color is the worst open alert on any CI that supports it. Select a tile to see its CIs, alerts and impact.
+Refreshed 13:30
+Codification Platform
+Tier 1 · 99.62% available
+8
+open alerts
+Codification Portal
+Tier 1 · 99.58% available
+3
+open alerts
+Search and indexing
+Tier 1 · 99.10% available
+5
+open alerts
+Contract Repository
+Tier 2 · 99.40% available
+0
+open alerts
+Lease subledger (ERP)
+Tier 2 · 99.70% available
+0
+open alerts
+Finance systems
+Tier 2 · 99.80% available
+0
+open alerts
+Identity (Entra ID)
+Tier 1 · 99.95% available
+1
+open alert
+Email and collaboration (M365)
+Tier 1 · 99.93% available
+0
+open alerts
+Data platform
+Tier 2 · 99.30% available
+1
+open alert
+Network and VPN
+Tier 1 · 99.90% available
+0
+open alerts
+Endpoint management (Intune)
+Tier 2 · 99.60% available
+1
+open alert
+Integration hub
+Tier 2 · 99.50% available
+0
+open alerts
+Service desk
+Tier 2 · 99.70% available
+0
+open alerts
+Portfolio and project intake
+Tier 2 · 99.70% available
+0
+open alerts
+AI platform and agents
+Tier 2 · 99.70% available
+0
+open alerts
+Employee lifecycle
+Tier 2 · 99.70% available
+0
+open alerts
+OK
+Warning
+Critical
+Flapping
+Unknown (no data)
+Host groups
+Hosts by class and environment, colored by status. Select a row to open the host list.
+Service offering Production
+54
+Application Production
+21
+Application service Production
+16
+Technology management service Production
+16
+Virtual machine Production
+12
+Cloud resource Production
+8
+Network device Production
+5
+Database Production
+5
+Storage Production
+4
+Server Production
+3
+OK
+Warning
+Flapping
+Critical
+Unknown
+Alerts per hour, last 24 hours
+Stacked by severity. Each bar counts alerts after deduplication, not raw events.
+0
+6
+11
+13:30
+16:30
+19:30
+22:30
+01:30
+04:30
+07:30
+10:30
+Sev 1 and 2
+Sev 3
+Sev 4
+Top talkers
+Which configuration items and rules produce the most raw events. These are the first candidates for tuning.
+By configuration item
+data-gateway
+840 events · 7 alerts
+codif-sql-prd
+530 events · 2 alerts
+codif-lb
+520 events · 2 alerts
+codification-platform
+520 events · 2 alerts
+codification-portal
+520 events · 2 alerts
+lumen-indexer-01
+490 events · 2 alerts
+By alert rule
+CPU high on servers and databases
+1,060 events
+Error rate
+1,030 events
+Latency p95
+1,020 events
+Memory pressure
+760 events
+Queue depth
+410 events
+
+Why am I seeing this?
+
+Standards followed: SRE: SLOs and error budgets ITIL 5
+
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

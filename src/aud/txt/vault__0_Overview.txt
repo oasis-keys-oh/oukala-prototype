@@ -1,0 +1,216 @@
+KNOWLEDGE GRAPH · LIVING GRAPH AND VAULT
+See how everything we know connects
+
+The knowledge graph joins 54 knowledge items to 16 services, 162 configuration items, 10 agent skills, people, projects and incidents through 798 relationships. Pick any record and walk its relationships to see what it reaches, or find the path between two records.
+
+ƒ Graph link coverage
+ƒ Service knowledge coverage
+ƒ Ontology completeness
+Try an impact walk
+Knowledge lifecycle
+Why am I seeing this?
+Overview
+Living graph
+GAAP vault notes
+NODES
+315
+11 kinds of record
+RELATIONSHIPS
+798
+documents, runs on, built from
+KNOWLEDGE ITEMS
+54
+100% linked to a CI
+AGENT SKILLS
+10
+each built from an item
+ORPHANS
+4
+no relationships
+THIN SERVICES
+8
+fewer than 3 published items
+ƒ Graph link coverage
+ƒ Orphan nodes
+ƒ Service knowledge coverage
+ƒ Link density
+CSDM 5
+DAMA-DMBOK
+What is in the graph
+Every kind of record, coloured as in the graph legend.
+ Configuration item
+162
+ Knowledge item
+54
+ Workflow
+20
+ Service
+16
+ Person or agent
+13
+ Process
+12
+ Agent skill
+10
+ Prompt
+10
+ Incident
+8
+ Knowledge gap
+6
+ Project
+4
+Ask the graph
+Each opens the graph with the path or walk already drawn. You can also ask in chat: walk impact of Search, or path from A to B.
+Dot-walk impact
+If the Search service changes, what knowledge and skills are affected?
+Show
+Neighborhood
+What does the VPN article connect to?
+Show
+Path finder
+How is the Lumen contract term connected to the portal failover skill?
+Show
+Dot-walk impact
+What depends on the MFA reset article, including the agent skill?
+Show
+Every record in the graph
+Search, sort and filter. Click a row to focus it in the living graph.
+Kind
+All
+11
+Group
+All
+20
+Group by 
+None
+Kind
+Group
+Export CSV
+RECORD	KIND	GROUP	USERS OR VIEWS
+
+Codification Platform
+Tier 1
+	 Service	svc	420
+
+Codification Portal
+Tier 1
+	 Service	svc	180,000
+
+Search and indexing
+Tier 1
+	 Service	svc	180,420
+
+Contract Repository
+Tier 2
+	 Service	svc	60
+
+Lease subledger (ERP)
+Tier 2
+	 Service	svc	34
+
+Finance systems
+Tier 2
+	 Service	svc	48
+
+Identity (Entra ID)
+Tier 1
+	 Service	svc	640
+
+Email and collaboration (M365)
+Tier 1
+	 Service	svc	640
+
+Data platform
+Tier 2
+	 Service	svc	75
+
+Network and VPN
+Tier 1
+	 Service	svc	640
+
+Endpoint management (Intune)
+Tier 2
+	 Service	svc	640
+
+Integration hub
+Tier 2
+	 Service	svc	12
+
+Service desk
+Tier 2
+	 Service	svc	640
+
+Portfolio and project intake
+Tier 2
+	 Service	svc	640
+
+AI platform and agents
+Tier 2
+	 Service	svc	85
+
+Employee lifecycle
+Tier 2
+	 Service	svc	640
+
+Azure East US 2 subscription
+Cloud subscription · Network and VPN
+	 Configuration item	Network and VPN	
+
+Edge firewall pair
+Network device · Network and VPN
+	 Configuration item	Network and VPN	
+
+Azure DNS
+Cloud resource · Network and VPN
+	 Configuration item	Network and VPN	
+
+VPN gateway
+Network device · Network and VPN
+	 Configuration item	Network and VPN	
+
+Entra ID tenant
+Cloud resource · Identity (Entra ID)
+	 Configuration item	Identity (Entra ID)	
+
+Conditional access policies
+Application · Identity (Entra ID)
+	 Configuration item	Identity (Entra ID)	
+
+MFA service
+Application · Identity (Entra ID)
+	 Configuration item	Identity (Entra ID)	
+
+codif-app-01
+Virtual machine · Codification Platform
+	 Configuration item	Codification Platform	
+
+codif-app-02
+Virtual machine · Codification Platform
+	 Configuration item	Codification Platform	
+
+codif-sql-prd
+Database · Codification Platform
+	 Configuration item	Codification Platform	
+
+315 of 315 rows
+Scroll for more · rows are drawn as you scroll
+How the knowledge graph is kept true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, DAMA-DMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Link on capture
+Every item names its service, CI and process when written.
+AI AGENT
+Suggest missing links
+AI proposes links for items that lack them.
+APPROVAL GATE
+Confirm
+A reviewer accepts or rejects each link.
+AUTOMATIC
+Walk the graph
+Impact, path and neighborhood views read the same links.
+PERSON
+Fix orphans
+Nodes with no links are listed weekly.

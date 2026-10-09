@@ -1,0 +1,171 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+PR1
+Codification Platform Upgrade
+7 work days late
+Project manager
+Priya Shah
+Change
+Done
+68%
+Milestones
+5 of 10
+C
+C
+LS
+M
++2
+5
+2
+2
+1
+Finish
+Dec 11, 2026
+Schedule index
+0.94
+Budget paid
+$740K of $1.2M
+Open RAID
+4 risks · 1 issues
+Team and detail
+Project plan
+On the Gantt
+PR2
+Taxonomy Data Hub
+on baseline
+Project manager
+Dev Rao
+Change
+Done
+60%
+Milestones
+3 of 6
+C
+LS
+M
+AI
+AI
+2
+2
+1
+1
+Finish
+Dec 2, 2026
+Schedule index
+0.99
+Budget paid
+$770K of $860K
+Open RAID
+2 risks · 1 issues
+Team and detail
+Project plan
+On the Gantt
+PR3
+Portal Resilience
+on baseline
+Project manager
+Tom Becker
+Change
+Done
+40%
+Milestones
+1 of 4
+C
+CC
+M
+AI
+2
+1
+1
+1
+Finish
+Nov 2, 2026
+Schedule index
+0.91
+Budget paid
+$120K of $310K
+Open RAID
+1 risks · 1 issues
+Team and detail
+Project plan
+On the Gantt
+PR4
+Contract Repository Refresh
+on baseline
+Project manager
+Maya Ortiz
+Change
+Done
+10%
+Milestones
+2 of 5
+C
+AI
+NM
+M
+AI
+3
+2
+1
+1
+Finish
+Feb 24, 2027
+Schedule index
+1.29
+Budget paid
+$60K of $540K
+Open RAID
+1 risks · 0 issues
+Team and detail
+Project plan
+On the Gantt
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

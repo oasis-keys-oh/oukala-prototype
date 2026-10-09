@@ -1,0 +1,75 @@
+SERVICE MANAGEMENT · PROBLEMS
+Fix the cause, not the symptom
+
+5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.
+
+New problem
+New known error
+ƒ Repeat incident rate
+ƒ Known error reuse
+ITIL 5
+KCS v6
+Triage Agent · 80%
+Overview
+Fishbone and RCA
+Link incidents
+Known error database
+Trends
+Repeat incidents per week
+12 repeat incidents last week, up from 1 the week of Sep 7. PRB0010 is the main driver.
+ƒ Repeat incident rate
+0
+2
+4
+6
+8
+10
+12
+Aug 17
+Aug 24
+Aug 31
+Sep 7
+Sep 14
+Sep 21
+Sep 28
+Oct 5
+All problems
+PRB0010 Portal web tier saturates un
+PRB0007 Search indexer builds miss d
+PRB0008 Taxonomy API connection pool
+Where to dig first
+Ranked by repeats in 4 weeks × people affected.
+Triage Agent · 80%
+PROBLEM	REPEATS	USERS	SCORE
+PRB0010
+Portal web tier saturates under editor load	9	140	1260
+PRB0007
+Search indexer builds miss delta updates (Lu	8	60	480
+PRB0008
+Taxonomy API connection pool exhausted durin	4	25	100
+PRB0009
+Lease subledger period lock race rejects val	6	12	72
+PRB0012
+Large file uploads time out in Contract Repo	2	8	16
+Problem process (ITIL 5 Support and Evolve)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AI AGENT
+Detect a pattern
+An agent groups repeat incidents by service and text and proposes a problem.
+PERSON
+Assess and prioritize
+Rank by repeats times people affected.
+PERSON
+Root cause analysis
+Fishbone to find contributing causes by category, then five whys to the root.
+PERSON
+Publish known error
+Record the workaround and symptoms so the desk can use them today.
+APPROVAL GATE
+Fix through change
+Raise a change, a knowledge article or a demand for the permanent fix.
+AUTOMATIC
+Verify and close
+Confirm repeats stopped, retire the known error.

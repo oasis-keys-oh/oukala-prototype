@@ -1,0 +1,303 @@
+PORTFOLIO AND DELIVERY · CONTRACTS
+Every proposal and contract, line by line
+
+13 contracts hold $9.92M of commitments and $3.98M has been paid. Lumen's SOW-5 proposal has 12 of 41 lines off playbook, 4 of them with no standard term yet. 11 obligations fall due in 30 days and 2 are overdue, and notice to stop the LegacyDocs Inc. renewal must go out by Nov 1, 2026.
+
+ƒ Clause playbook coverage
+ƒ Obligation on-time rate
+ƒ Negotiation cycle time
+ƒ Contract leakage
+Analyze a document
+Request a change
+Contract Analyst Agent · 90%
+Dashboard and contracts
+Repository
+Analyzer
+Terms playbook
+Proposal vs contract
+Changes
+Obligations and calendar
+WORKING ON
+Lumen SOW-5: search indexer phase 2
+CLM-1002 · Lumen Data Partners · SOW · $348,000
+Vendor proposal ✓
+Executed contract
+Change contract
+LINES READ
+41
+from Lumen_SOW-5_proposal_v2.pdf
+AVERAGE CONFIDENCE
+91%
+0 lines under 75 percent
+LINES WITH A DATE
+7
+become obligations and WBS dates
+FIXED PRICE STATED
+$348,000
+first price line found
+OFF PLAYBOOK
+12
+8 variance, 4 new
+ƒ Clause playbook coverage
+Contract Analyst Agent · 91%
+Why this way
+What the document contains
+41 lines by type. Select a type in the table filter to focus.
+Deliverable
+5
+Milestone
+4
+Price or rate card
+4
+Data protection and security
+4
+Service level
+3
+General legal term
+3
+Term, renewal, termination
+3
+Measure or KPI
+2
+Payment or invoice term
+2
+Assumption
+2
+Dependency
+2
+Intellectual property
+2
+Liability and indemnity
+2
+Outcome
+1
+Warranty
+1
+Change control
+1
+
+Colors only separate types here. Each bar is labeled.
+
+Playbook position
+How many lines are our standard, a variance, or not in the playbook yet.
+29
+8
+4
+Standard (matches our clause or is routine)
+Variance (differs, redline and fallback ready)
+New term (no standard yet, draft for legal)
+
+41 lines: 29 standard, 8 variance, 4 new. The variances and new terms are the only lines that need legal or shared review.
+
+Review in Terms playbook
+Compare proposal and contract
+Line by line register
+Every clause, commitment and measure as one row. Select a row for the source text, owner, links and playbook decision.
+Show
+This document
+This contract
+All contracts
+Type
+All
+16
+Playbook
+All
+3
+Status
+All
+4
+Party
+All
+3
+Risk
+All
+3
+Contract
+All
+1
+Export CSV
+CLAUSE AND PAGE	TYPE	SOURCE TEXT	NORMALIZED VALUE	PARTY	OWNER	DUE	MEASURE AND TARGET	CONFIDENCE	STATUS	PLAYBOOK	RISK	CONTRACT	LINKS
+§1.1 p.1	
+Deliverable	
+Lumen shall deliver a production search indexer for the Codification Platform, including the index schema design document.
+	Stated	Vendor	Marco Ellis	None	Accepted by Meridian Review in 10 business days	
+84%
+	Proposed	Standard	Low	CLM-1002	WBS
+§1.2 p.1	
+Deliverable	
+Lumen shall deliver a relevance tuning report covering the top 500 standards queries by December 18, 2026.
+	Due Dec 18, 2026	Vendor	Marco Ellis	Dec 18, 2026	Accepted by Meridian By Dec 18, 2026	
+95%
+	Accepted	Standard	Low	CLM-1002	WBS
+§1.3 p.1	
+Outcome	
+The desired outcome is that editors find the correct standard on the first page of results.
+	Stated	Both	Priya Shah	None	None	
+95%
+	Proposed	Standard	Low	CLM-1002	None
+§2.1 p.1	
+Milestone	
+Milestone 1: Design approved by Meridian on January 29, 2027.
+	Due Jan 29, 2027	Vendor	Marco Ellis	Jan 29, 2027	Accepted by Meridian By Jan 29, 2027	
+90%
+	Accepted	Standard	Low	CLM-1002	WBS
+§2.2 p.1	
+Milestone	
+Milestone 2: Indexer running in the test environment on March 12, 2027.
+	Due Mar 12, 2027	Vendor	Marco Ellis	Mar 12, 2027	Accepted by Meridian By Mar 12, 2027	
+95%
+	Proposed	Standard	Low	CLM-1002	WBS
+§2.3 p.1	
+Milestone	
+Milestone 3: Relevance tuning complete and accepted on April 30, 2027.
+	Due Apr 30, 2027	Vendor	Marco Ellis	Apr 30, 2027	Accepted by Meridian By Apr 30, 2027	
+93%
+	Accepted	Standard	Low	CLM-1002	WBS
+§2.4 p.1	
+Milestone	
+Milestone 4: Production cutover completed on June 25, 2027.
+	Due Jun 25, 2027	Vendor	Marco Ellis	Jun 25, 2027	Accepted by Meridian By Jun 25, 2027	
+90%
+	Proposed	Standard	Low	CLM-1002	WBS
+§3.1 p.1	
+Service level	
+Search availability shall be at least 99.5 percent each month.
+	99.5% monthly	Vendor	Marco Ellis	None	availability At least 99.5% monthly	
+91%
+	Agreed	Variance	Medium	CLM-1002	SLARAID
+§3.2 p.1	
+Service level	
+Lumen shall respond to a Severity 1 incident within 15 minutes.
+	15 minutes	Vendor	Marco Ellis	None	Severity 1 response Within 15 minutes	
+90%
+	Accepted	Standard	Medium	CLM-1002	SLA
+§3.3 p.1	
+Service level	
+For each month below the availability target, Lumen will issue a service credit of 5 percent of the monthly fee.
+	5% monthly	Vendor	Marco Ellis	None	availability 5% monthly	
+94%
+	Agreed	Variance	Medium	CLM-1002	SLARAID
+§3.4 p.1	
+Measure or KPI	
+Relevance accuracy shall be at least 90 percent of the top 500 queries returning the correct standard in the first 10 results, measured quarterly.
+	90%	Vendor	Marco Ellis	None	Relevance accuracy At least 90%	
+93%
+	Proposed	Standard	Low	CLM-1002	SLA
+§3.5 p.1	
+Measure or KPI	
+Median query latency shall not exceed 400 milliseconds, measured by Meridian monitoring.
+	400 ms	Vendor	Contract Analyst Agent	None	Query latency Within 400 ms	
+93%
+	Accepted	Standard	Low	CLM-1002	SLA
+§4.1 p.1	
+Price or rate card	
+The fixed fee for this Statement of Work is $348,000.
+	$348,000	Both	Priya Shah	None	None	
+90%
+	Proposed	Standard	Medium	CLM-1002	INVBUD
+§4.2 p.1	
+Payment or invoice term	
+Lumen may invoice each milestone upon delivery, and invoices are payable within 30 days.
+	Net 30	Vendor	Marco Ellis	None	Matches accepted work	
+91%
+	Negotiating	Variance	Medium	CLM-1002	INVRAIDBUD
+§4.3 p.1	
+Price or rate card	
+Travel and expenses require Meridian's prior written approval.
+	Prior approval	Both	Priya Shah	None	None	
+94%
+	Accepted	Standard	Low	CLM-1002	None
+§4.4 p.2	
+Price or rate card	
+Rates for additional work follow the rate card in Exhibit A and are fixed for the term of this Statement of Work.
+	Rates fixed for the term	Both	Priya Shah	None	None	
+91%
+	Proposed	Standard	Medium	CLM-1002	None
+§5.1 p.2	
+Assumption	
+Lumen assumes Meridian will provide production-like test data by January 15, 2027.
+	Due Jan 15, 2027	Vendor	Marco Ellis	Jan 15, 2027	None	
+94%
+	Accepted	Standard	Low	CLM-1002	RAID
+§5.2 p.2	
+Assumption	
+Any delay in Meridian providing data, access or approvals automatically extends all dates and may result in additional fees.
+	Dates and fees move automatically	Both	Priya Shah	None	None	
+87%
+	Negotiating	Variance	Medium	CLM-1002	RAID
+§5.3 p.2	
+Dependency	
+Meridian shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
+	5 days	Meridian	Priya Shah	Jan 18, 2027	None	
+92%
+	Proposed	Standard	Low	CLM-1002	RAID
+§5.4 p.2	
+Dependency	
+The indexer depends on the Codification Platform content API being stable and documented.
+	Stated	Meridian	Priya Shah	None	None	
+87%
+	Accepted	Standard	Low	CLM-1002	RAID
+§6.1 p.2	
+Deliverable	
+Meridian shall review each deliverable within 10 business days of delivery.
+	10 business days	Meridian	Priya Shah	None	Accepted by Meridian	
+93%
+	Proposed	Standard	High	CLM-1002	WBS
+§6.2 p.2	
+Deliverable	
+A deliverable not rejected in writing within the review period is deemed accepted.
+	Deemed acceptance	Vendor	Marco Ellis	None	Accepted by Meridian	
+94%
+	Negotiating	Variance	High	CLM-1002	WBSRAID
+§6.3 p.2	
+Warranty	
+Lumen warrants that deliverables will conform to the specification for 90 days after acceptance.
+	90 days	Vendor	Marco Ellis	None	None	
+91%
+	Accepted	Standard	Medium	CLM-1002	None
+§7.1 p.2	
+Intellectual property	
+Meridian owns all deliverables and work product created under this Statement of Work.
+	Meridian owns	Meridian	Priya Shah	None	None	
+94%
+	Agreed	Standard	High	CLM-1002	None
+§7.2 p.2	
+Intellectual property	
+Lumen grants Meridian a perpetual, royalty-free license to Lumen background tools embedded in the deliverables.
+	Perpetual license	Vendor	Marco Ellis	None	None	
+89%
+	Accepted	Standard	Medium	CLM-1002	None
+
+41 of 41 rows
+Scroll for more · rows are drawn as you scroll
+Analyze a new document
+Paste text, drop a file, or use a sample. The result replaces the register for the selected document.
+Open
+From vendor proposal to managed contract
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to WorldCC contracting practice, COBIT 2019, PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Intake
+A vendor proposal, SOW or terms arrive by upload, email or request. The original file and version are stored.
+AI AGENT
+AI analysis
+The Contract Analyst Agent splits the text into typed lines with owners, dates, measures and confidence.
+AI AGENT
+Playbook match
+Each line is matched to a standard clause, a variance with a redline, or flagged as new for legal.
+PERSON
+Legal or shared review
+Legal reviews exceptions. Shared review adds the vendor and business owner in one thread with a deadline.
+APPROVAL GATE
+Approval
+The signer is chosen by contract value under the delegation of authority. AI cannot accept terms.
+AUTOMATIC
+Execution
+The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.
+AI AGENT
+Obligations tracking
+Due dates, renewal notices and acceptance checks run daily. Invoices wait for accepted work.
+APPROVAL GATE
+Change control
+Any change to schedule, scope, price, SLA or term is a change request with impact analysis and the right approver.

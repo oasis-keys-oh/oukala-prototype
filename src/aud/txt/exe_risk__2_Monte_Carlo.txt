@@ -1,0 +1,93 @@
+RISK HEAT MAP AND MONTE CARLO
+How likely are we to hit the date?
+
+There is an 80% chance the Codification beta lands by Nov 23, 2026, and a 76% chance of making Nov 20. 7 open risks carry $261,000 of expected loss, 90% of the $291,000 contingency; the largest is Lumen delivers the search indexer late again at $88K.
+
+ƒ Beta date confidence
+ƒ Risk exposure against contingency
+Log a risk
+Assign mitigation owner
+Why am I seeing this?
+Heat map
+Register
+Monte Carlo
+Uncertainty
+Move a slider and 2,000 trials re-run at once.
+ƒ Beta date confidence
+Overall uncertainty
+1.0×
+Lumen uncertainty
+1.0×
+Committed beta date
+Nov 13
+Nov 20
+Nov 27
+Dec 4
+Include register risks (7 open)
+Re-run with a new seed
+Reset sliders
+
+Drag a risk on the heat map and these results change, because each risk is rolled by its probability and adds its delay and cost.
+
+WHAT THE SIMULATION SAYS
+There is an 80% chance Codification beta lands by Nov 23, 2026.
+
+The plan date is Nov 13 and the baseline was Nov 4. The chance of landing by the committed date, Nov 20, is 76% (below the 80% rule: commit later or add capacity). Adding two Lumen engineers would move the 80% date 4 work days earlier, to Nov 17.
+
+Monte Carlo + Claude Sonnet · 80%
+ƒ Beta date confidence
+P50 Codification beta
+Nov 18
++3 work days from plan (Nov 13)
+P80 Codification beta
+Nov 23
++6 work days from plan (Nov 13)
+P90 Codification beta
+Nov 24
++7 work days from plan (Nov 13)
+Codification beta
+Codification go live
+Taxonomy pilot
+Portfolio cost
+0%
+25%
+50%
+75%
+100%
+Nov 11
+Nov 13
+Nov 17
+Nov 19
+Nov 23
+Nov 25
+Nov 27
+Plan
+P50
+P80
+P90
+Commit
+trials
+Trials on or before the commit date
+Trials after it
+Cumulative chance (right axis)
+MILESTONE	PLAN	P50	P80	P90
+Codification beta	Nov 13	Nov 18	Nov 23	Nov 24
+Codification go live	Dec 11	Dec 31	Jan 4	Jan 4
+Taxonomy pilot	Dec 2	Dec 3	Dec 8	Dec 9
+Portfolio cost	$3.07M	$3.35M	$3.51M	$3.56M
+How risk and date confidence are produced
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, COBIT 2019.
+Add a step
+Open in Workflow designer
+PERSON
+Log a risk
+Anyone describes cause, effect, likelihood and dollar impact.
+AUTOMATIC
+Score
+Likelihood and impact place the risk on the heat map. Expected loss is probability times impact.
+AUTOMATIC
+Simulate
+2,000 trials roll task durations and register risks through the schedule.
+APPROVAL GATE
+Assign mitigation
+Every risk above the green zone needs a named owner and a dated action.

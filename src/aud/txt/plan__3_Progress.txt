@@ -1,0 +1,90 @@
+PROJECT PLAN
+Codification
+
+Codification Platform Upgrade finishes Dec 11, 2026, 7 work days late. It is 59% done against 64% planned, and 4 tasks have no float, starting with search indexer (lumen).
+
+Codification
+Taxonomy
+Portal
+Contracts
+Open in the trace
+Open the WBS and task sheet
+PMBOK
+Finish
+Dec 11
+7 work days late
+Schedule performance
+0.94
+Earned ÷ planned · target 0.95
+Done
+59%
+Planned 64%
+Budget used
+62%
+$740K of $1.2M
+Overview
+Gantt
+Milestones
+Progress
+Percent complete over time
+The dashed line is where we are heading. The gap to the grey line is the schedule slip.
+ƒ Schedule performance index
+0%
+25%
+50%
+75%
+100%
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Jan
+Feb
+Mar
+Baseline
+Current forecast
+Paid 62% of the $1.2M budget
+Earned value by phase
+Planned value is budget times planned percent; earned value is budget times percent complete.
+1 Initiation and governance
+Budget $12K · planned $12K · earned $12K · spent $14K
+SPI 1.00 CPI 0.89
+2 Requirements and design
+Budget $73K · planned $73K · earned $73K · spent $72K
+SPI 1.00 CPI 1.01
+3 Build
+Budget $864K · planned $687K · earned $619K · spent $641K
+SPI 0.90 CPI 0.97
+4 Integration, test and beta
+Budget $140K · planned $16K · earned $16K · spent $13K
+SPI 1.00 CPI 1.22
+5 Acceptance and transition
+Budget $62K · planned $0 · earned $0 · spent $0
+SPI — CPI —
+6 Cutover and go live
+Budget $50K · planned $0 · earned $0 · spent $0
+SPI — CPI —
+
+Project total: budget $1.2M, earned $720K, spent $740K.
+
+How a project plan is built and kept current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Scope and WBS
+The project manager breaks the scope into phases, deliverables and work packages. Every line gets a deliverable and an owner.
+PERSON
+Estimate and link
+Durations, resources and predecessors are set. The engine shows the critical path as you work.
+AI AGENT
+AI completeness check
+PMO Agent drafts missing deliverables, flags lines with no owner, no resource or no predecessor, and suggests fixes.
+APPROVAL GATE
+Approve and baseline
+The sponsor approves the plan and a baseline is set. Variance is measured from here.
+AUTOMATIC
+Track and replan
+Actuals flow in, the engine reforecasts, and changes to dates need a reason.

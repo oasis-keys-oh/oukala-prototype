@@ -1,0 +1,144 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+ACTIVE RULES
+12
+0 turned off
+DYNAMIC OR ANOMALY
+2
+17% of active rules learn their own normal
+ALERTS IN 7 DAYS
+54
+8 held back by windows
+MAINTENANCE WINDOWS
+2
+0 in effect now
+New alert rule
+New maintenance window
+Select any rule to open the threshold lab and see how a change would have behaved over the last 7 days.
+Thresholds by CI class and metric
+Which rule watches which metric on which kind of CI. Gaps (none) are blind spots. Select a value to open it in the lab.
+CI CLASS	CPU	MEMORY	DISK USED	LATENCY P95	ERROR RATE	AVAILABILITY	QUEUE DEPTH	LINK UTILIZATION	PACKET LOSS
+VIRTUAL MACHINE	80/92	85/93baseline	80/90	none	none	none	5,000/15,000	none	none
+DATABASE	80/92	85/93	80/90	anomaly 3	none	none	none	none	none
+APPLICATION	none	none	none	1,500/3,000	2/5	< 99.5/98	none	none	none
+LOAD BALANCER	none	none	none	1,500/3,000	2/5	none	none	none	none
+NETWORK DEVICE	none	none	none	none	none	< 99.5/98	none	75/90	0.5/2
+STORAGE	none	none	80/90	anomaly 3	1/5	none	none	none	none
+CLOUD RESOURCE	none	none	none	none	none	< 99.5/98	none	none	none
+Static: warn/crit value
+Dynamic baseline
+Anomaly with sensitivity 1 to 5
+Alert rules
+Static thresholds, learned weekly baselines and anomaly detection with a sensitivity setting. All rules run on the same metric model, so the 7 day counts match the alert stream.
+Type
+All
+3
+Metric
+All
+9
+State
+All
+1
+Export CSV
+RULE	METRIC	TYPE	WARN / CRITICAL	FOR (MIN)	CIS COVERED	ALERTS, 7 DAYS	FALSE POSITIVE RATE	AUTOMATION	STATE
+CPU high on servers and databases
+AR01 · Virtual machine, Database, Server
+	CPU	Static threshold	> 80.0% / 92.0%	15	21	6	0.0%	Scale the SQL managed instance up one tier	On
+Memory pressure
+AR02 · Virtual machine, Database, Server
+	Memory	Static threshold	> 85.0% / 93.0%	10	21	8	0.0%	None	On
+Disk space
+AR03 · Virtual machine, Database, Storage
+	Disk used	Static threshold	> 80.0% / 90.0%	0	22	1	0.0%	Extend a data disk by 25%	On
+Latency p95
+AR04 · Application, Load balancer
+	Latency p95	Static threshold	> 1,500 ms / 3,000 ms	10	22	4	0.0%	Add one web node within the approved tier	On
+Error rate
+AR05 · Application, Load balancer
+	Error rate	Static threshold	> 2.00% / 5.00%	5	22	18	27.8%	Add one web node within the approved tier	On
+Availability
+AR06 · Application, Network device, Cloud resource
+	Availability	Static threshold	< 99.50% / 98.00%	3	34	1	0.0%	Fail over the VPN gateway pair	On
+Queue depth
+AR07 · Virtual machine
+	Queue depth	Static threshold	> 5,000 msgs / 15,000 msgs	5	3	2	0.0%	Restart the Lumen search indexer service	On
+Link utilization
+AR08 · Network device
+	Link utilization	Static threshold	> 75.0% / 90.0%	10	5	2	0.0%	None	On
+Packet loss
+AR09 · Network device
+	Packet loss	Static threshold	> 0.50% / 2.00%	5	5	1	0.0%	None	On
+Memory growth (dynamic baseline)
+AR10 · Virtual machine
+	Memory	Dynamic baseline	3 sigma over weekly baseline	60	13	7	0.0%	None	On
+Latency anomaly (learned normal)
+AR11 · Database, Storage
+	Latency p95	Anomaly detection	sensitivity 3 of 5	20	9	1	0.0%	None	On
+Storage error rate
+AR12 · Storage
+	Error rate	Static threshold	> 1.00% / 5.00%	0	4	7	85.7%	None	On
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Maintenance windows
+Planned work should not page anyone. In-effect windows suppress or downgrade alerts on their CIs; the effect is counted so you can audit it.
+ERP monthly patching
+Scheduled
+
+Every Wed 02:00 to 04:00 · Suppress alerts
+
+Vendor patches and reboots are planned (standard change SC-12). Covers 3 CIs: erp-app-01, erp-sql-01, lease-subledger.
+
+1 alerts affected in 7 days
+Turn off
+Delete
+Nightly data pipeline
+Scheduled
+
+Every day 00:20 to 01:30 · Downgrade to info
+
+The lakehouse load runs every night and is expected to be slow. Covers 3 CIs: lakehouse-prod, adf-pipelines, synapse-sql.
+
+7 alerts affected in 7 days
+Turn off
+Delete
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push('C:'+m.text())});
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(500);
+const r=await p.evaluate(()=>{const o={};try{o.stats=FIN.stats();o.val=FIN.validate().map(v=>v.n+':'+v.fail+'/'+v.total);o.bal=FIN.balances;o.lines=FIN.lines.length;o.fc=FIN.forecast().unfunded;o.shifted=FIN.forecast().shifted;o.lapse=Object.fromEntries(Object.entries(FIN.forecast().end).map(([k,v])=>[k,v.lapse]));o.exc=FIN.exceptions().map(e=>e.type+':'+e.ref);o.sp=FIN.spend('RUN-DATA').splits;o.sp2=FIN.spend('PR4-VEN').splits;o.sp2r=FIN.spend('PR4-VEN').rationale}catch(e){o.err=e.message+e.stack}return o});
+console.log(JSON.stringify(r,null,1));console.log('ERRS',errs);await b.close()})();

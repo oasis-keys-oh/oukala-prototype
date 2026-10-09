@@ -1,0 +1,563 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+Agreement
+New agreement (unsaved)
+Incident P1: restore service
+Incident P1: first response
+Incident P2: restore service
+Incident P3 and P4: restore service
+Incident P1: restore service (tighter target)
+Hardware request: deliver
+Standard request: fulfill
+Access request: provision
+Report request: first draft
+Incidents resolved without a hand-off
+Changes closed as successful
+Resolver groups accept an assigned incident
+Network team: resolve its P2 incidents
+Endpoint team: image and ship
+Identity team: provision access
+Security team: triage a reported phish
+Lumen: Severity 1 restore
+Lumen: index rebuild turnaround
+Microsoft Unified: Severity A response
+Northwind: Tier 1 desk response
+Contoso: monitoring alert acknowledgement
+Incident experience: sentiment
+Incident experience: did it fix the problem
+Request experience: effort
+New hire experience: day-one readiness
+Change experience: clarity of communication
+Active
+Saved
+New from a template
+Discard changes
+Save changes
+
+Conditions use real fields from the platform data model. Changing the table swaps the field list. Every change updates the preview using the last 30 days of records.
+
+Agreement
+Name, kind and what it measures.
+Name
+Type
+SLA: with the business
+OLA: between internal teams
+UC: underpinning contract with a vendor
+XLA: experience
+Service level agreement
+Measures
+A time target per record
+A percentage of records
+A survey score
+Table (the records it measures)
+Incident
+Change request
+Request item
+Project (no sample history)
+Project task (WBS line) (no sample history)
+Configuration item (no sample history)
+Business service (no sample history)
+Invoice (no sample history)
+Person, agent or provider (no sample history)
+Contract line (clause, commitment, outcome) (no sample history)
+WBS line (no sample history)
+Hardware (no sample history)
+Computer (no sample history)
+Server (no sample history)
+Linux server (no sample history)
+Windows server (no sample history)
+Virtualization host (no sample history)
+Endpoint device (no sample history)
+Network device (no sample history)
+Firewall (no sample history)
+Switch (no sample history)
+Router (no sample history)
+Load balancer (no sample history)
+Storage (no sample history)
+Software (no sample history)
+Application (no sample history)
+Business application (no sample history)
+Database (no sample history)
+SQL Server instance (no sample history)
+Middleware (no sample history)
+Web server (no sample history)
+Message broker (no sample history)
+API gateway (no sample history)
+Cloud (no sample history)
+Virtual machine (no sample history)
+Container (no sample history)
+Cloud function (no sample history)
+Cloud resource (no sample history)
+Cloud subscription (no sample history)
+Service (no sample history)
+Business service (no sample history)
+Technology management service (no sample history)
+Application service (no sample history)
+Service offering (no sample history)
+Dynamic CI group (no sample history)
+Business capability (no sample history)
+Information object (no sample history)
+Site (no sample history)
+Datacenter (no sample history)
+Rack (no sample history)
+Vendor (related record) (no sample history)
+Contract (related record) (no sample history)
+CI relationship (no sample history)
+Problem record (no sample history)
+Change approval policy (no sample history)
+Incident priority policy (no sample history)
+Maturity capability (no sample history)
+Alert (deduplicated event) (no sample history)
+Alert rule (threshold) (no sample history)
+Correlation group (incident candidate) (no sample history)
+Maintenance window (no sample history)
+False positive feedback (no sample history)
+Alert-to-action rule (no sample history)
+Standard change template and SOP (no sample history)
+Automation execution (no sample history)
+Service level objective (no sample history)
+Synthetic check (no sample history)
+Metric series (no sample history)
+Dashboard (no sample history)
+Log pattern (no sample history)
+On-call shift (no sample history)
+Skill record (no sample history)
+Time off (no sample history)
+Demand request (no sample history)
+RAID item (no sample history)
+Skill record (no sample history)
+Release (no sample history)
+Story, defect or enabler (no sample history)
+Pull request (no sample history)
+Feature or enabler (no sample history)
+Release readiness task (no sample history)
+Catalog task (fulfillment task)
+Vendor ticket (underpinning contract)
+Agreement definition (SLA, OLA, UC, XLA) (no sample history)
+Agreement clock (one per record and agreement) (no sample history)
+Experience response (no sample history)
+Contract or statement of work (no sample history)
+Contract obligation (no sample history)
+Contract change request (no sample history)
+Catalog item (no sample history)
+Fulfillment step (no sample history)
+Hardware asset (no sample history)
+Scaling step (no sample history)
+Cost allocation (no sample history)
+Sample history is available for this table.
+Process
+Incident and problem
+Request fulfillment
+Change enablement
+Release and deployment
+Onboarding
+Access management
+Vendor and contract
+Project and portfolio delivery
+Risk and issue handling
+Knowledge
+Service portfolio
+On-call and skills
+Executive and governance
+Other
+Used by the coverage map.
+Owner
+Maya Ortiz
+Priya Shah
+Dev Rao
+Tom Becker
+Avery Chen
+Jordan Lee
+Sam Patel
+Nia Brooks
+Chief Editor
+Rina Okafor
+Omar Hamid
+Lumen Search Services
+Northwind Managed Services
+Contoso Cloud Operations
+Catherine Doyle
+Marcus Reid
+Rina Kovacs
+Aaron Whitfield
+Leah Moss
+Ben Ito
+Carla Reyes
+Dmitri Volkov
+Hana Sato
+Greg Nolan
+Tess Whitaker
+Anil Mehta
+Yuki Tanaka
+Rosa Delgado
+Chen Wei
+Femi Adeyemi
+Lucas Brandt
+Ines Duarte
+Kofi Mensah
+Paula Grant
+Wes Hartley
+Noor Haddad
+Pierce Caldwell
+Isla Fenn
+Maribel Cruz
+Owen Fraser
+Priti Joshi
+Gabe Lindholm
+Imran Sheikh
+Colette Brandt
+Noelle Park
+Victor Amaya
+Hollis Grey
+Anita Cole
+Luis Ortega
+Mei Tan
+Zoe Hart
+Ben Alvarez
+Isla Reid
+Tessa Lin
+Viktor Sokol
+Amara Diallo
+Hannah Lowe
+Marcus Webb
+Leila Haddad
+Owen Pryce
+Grace Whitfield
+Notes
+Applies to and activation
+Which records this agreement measures, and when it turns on and off.
+Services
+Services
+All services
+16
+Leave on All services to cover every service.
+Service tiers
+Tier 1
+Tier 2
+Empty means every tier.
+Priorities
+P1
+P2
+P3
+P4
+Empty means every priority.
+Customer tiers
+Gold
+Silver
+Bronze
+Empty means every customer.
+Assignment groups
+Service desk
+Network team
+Identity team
+Endpoint team
+Data team
+Platform team
+Security team
+For OLAs, the team that owes the work.
+Configuration items
+Configuration items
+All CIs
+162
+Limit to specific CIs. Empty means any.
+Turns on
+First day it measures.
+Turns off
+Leave empty to keep it running.
+Draft
+Keep as a draft (never measures)
+Retroactive start
+Also measure records opened before it turns on
+Like a ServiceNow retroactive start: clocks begin at the record's own start time.
+
+Active since Jan 1. All services.
+
+What this would have measured
+The design run over the last 30 days of real records.
+ƒ Agreement attainment
+RECORDS MEASURED
+36
+4 still running
+RESULT
+91.7%
+Goal 95%
+BREACHES
+3
+1 running clocks at risk
+
+Compared with the saved version, this design would have measured +0 points.
+
+Weekly, oldest to newest
+
+Main reasons for misses: No runbook for this case (2); Waiting on a vendor (1).
+
+INC004418
+INC004486
+INC004549
+This agreement is live, so the numbers match its dashboard row.
+Conditions: when the clock starts, pauses, resumes, stops, resets and cancels
+Each one is a set of tests on real fields. The clock is checked every time the record changes.
+Start required
+
+The clock starts the first time this is true.
+
+Number
+Short description
+Service
+Configuration item
+Impact
+Urgency
+Priority
+State
+Assignment group
+Opened
+Resolved
+Business time to resolve
+SLA due
+Caller
+Reassignment count
+Reopen count
+Customer tier
+Contact type
+Made SLA
+First response at
+is
+is not
+is one of
+is none of
+is empty
+is not empty
+Choose a value
+P1
+P2
+P3
+P4
+Remove
+Add a condition
+
+Priority is P2
+
+Pause
+
+While this is true the clock stops counting (for example on hold, waiting for the customer).
+
+Number
+Short description
+Service
+Configuration item
+Impact
+Urgency
+Priority
+State
+Assignment group
+Opened
+Resolved
+Business time to resolve
+SLA due
+Caller
+Reassignment count
+Reopen count
+Customer tier
+Contact type
+Made SLA
+First response at
+is
+is not
+is one of
+is none of
+is empty
+is not empty
+Choose a value
+New
+In progress
+On hold
+Resolved
+Closed
+Remove
+Add a condition
+
+State is On hold
+
+Resume
+
+The clock counts again when this is true. Leave empty to resume as soon as the pause condition stops being true.
+
+Not set.
+
+Add a condition
+
+Not set
+
+Stop required
+
+The clock stops and the result is recorded: met if inside the target.
+
+Number
+Short description
+Service
+Configuration item
+Impact
+Urgency
+Priority
+State
+Assignment group
+Opened
+Resolved
+Business time to resolve
+SLA due
+Caller
+Reassignment count
+Reopen count
+Customer tier
+Contact type
+Made SLA
+First response at
+is
+is not
+is one of
+is none of
+is empty
+is not empty
+New
+In progress
+On hold
+Resolved
+Closed
+Remove
+Add a condition
+
+State is one of Resolved or Closed
+
+Reset
+
+Starts the elapsed time again from zero when this becomes true (for example a request returned to the requester).
+
+Not set.
+
+Add a condition
+
+Not set
+
+Cancel
+
+The clock is thrown away and nothing is measured (for example the priority changed so another agreement now applies).
+
+Number
+Short description
+Service
+Configuration item
+Impact
+Urgency
+Priority
+State
+Assignment group
+Opened
+Resolved
+Business time to resolve
+SLA due
+Caller
+Reassignment count
+Reopen count
+Customer tier
+Contact type
+Made SLA
+First response at
+is
+is not
+is one of
+is none of
+is empty
+is not empty
+Choose a value
+P1
+P2
+P3
+P4
+Remove
+Add a condition
+
+Priority is P1
+
+Schedule
+The calendar the clock follows: only hours inside it count.
+Calendar
+24x7, every day
+Business hours, Monday to Friday 8:00 to 17:00
+Extended hours, Monday to Friday 6:00 to 20:00
+24x5, Monday to Friday around the clock
+7:00 to 19:00, every day
+Time zone
+Mountain
+Central
+Eastern
+Pacific
+UTC
+Central European
+The zone the calendar hours are in.
+Time zone source
+Fixed
+Caller's location
+Assignment group's location
+Prototype measures with the fixed zone.
+Holidays
+No holidays (every day counts)
+Meridian holidays (U.S. federal)
+Holidays do not count as working time.
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Sun
+
+9 schedule hours per working day. Shaded bars show the open hours of each day in Mountain time.
+
+Target, warnings and escalation
+The goal, and what happens as the clock runs down.
+Target time
+minutes
+hours
+business days (9 h)
+Of schedule time, not clock time. 8 h in total.
+Goal: share of records inside the target (%)
+WARNING THRESHOLDS AND ESCALATION ACTIONS
+%
+Teams
+Email
+Page
+Bridge
+Ticket
+Remove
+%
+Teams
+Email
+Page
+Bridge
+Ticket
+Remove
+%
+Teams
+Email
+Page
+Bridge
+Ticket
+Remove
+Add an action

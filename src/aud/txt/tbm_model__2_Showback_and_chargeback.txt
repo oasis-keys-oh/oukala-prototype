@@ -1,0 +1,105 @@
+COST TRANSPARENCY · TBM AND ATUM
+See what each service costs, and when it needs more
+
+Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now. 1 idle step could save $19,200 a year.
+
+Forecast demand
+Scaling model
+Budgets
+ƒ IT cost per employee a month
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Cost flow
+Unit economics
+Showback and chargeback
+Scaling model
+Forecast and triggers
+SHOWN BACK A MONTH
+$320,400
+to 12 consumers
+BUSINESS UNITS
+$265,423
+internal headcount and usage drivers
+CUSTOMERS AND LICENSEES
+$45,365
+cost to serve
+MARGIN, EXTERNAL
++$404,635
+revenue a month minus cost to serve
+UNALLOCATED
+$9,612
+3% shared overhead
+Showback (information)
+Chargeback (billed)
+TBM Taxonomy and ATUM
+ƒ Spend traced to consumers
+Who consumes the spend
+Bars are monthly cost by consumer; segments are the five biggest services.
+Editorial
+$82,980
+Standards development
+$53,499
+Finance
+$45,489
+IT operations
+$28,161
+Public readers
+$24,667
+Member services
+$16,509
+Executive office
+$15,078
+Legal operations
+$13,584
+Subscribers
+$12,853
+Procurement
+$10,123
+Unallocated shared overhead
+$9,612
+API licensees
+$7,845
+Codification Platform
+Data platform
+Codification Portal
+Service desk
+Email and collaboration (M365)
+Other services
+Showback by consumer
+Click a row to see which services and offerings drive it.
+Export CSV
+CONSUMER	KIND	A MONTH	COST A YEAR	SHARE	BIGGEST DRIVER	REVENUE A YEAR
+Editorial	Business unit	$82,980	$995,755	25.9%	Codification Platform	
+Standards development	Business unit	$53,499	$641,993	16.7%	Codification Platform	
+Finance	Business unit	$45,489	$545,869	14.2%	Finance systems	
+Legal operations	Business unit	$13,584	$163,007	4.2%	Contract Repository	
+Procurement	Business unit	$10,123	$121,475	3.2%	Contract Repository	
+IT operations	Business unit	$28,161	$337,932	8.8%	Data platform	
+Executive office	Business unit	$15,078	$180,932	4.7%	Data platform	
+Member services	Business unit	$16,509	$198,113	5.2%	Data platform	
+Public readers	Customer or licensee	$24,667	$296,005	7.7%	Codification Portal	
+Subscribers	Customer or licensee	$12,853	$154,230	4.0%	Codification Portal	$4,100,000
+API licensees	Customer or licensee	$7,845	$94,144	2.4%	Codification Portal	$1,300,000
+Unallocated shared overhead	Shared	$9,612	$115,344	3.0%	Codification Platform	
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Cost transparency and scaling
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ingest the ledger
+General ledger accounts map to cost pools by rule.
+AI AGENT
+Allocate
+Pools flow to towers, services, offerings and consumers by drivers.
+AI AGENT
+Forecast demand
+Growth and scenarios project each driver against capacity.
+PERSON
+Review trigger
+The service owner checks the step and the funding line.
+APPROVAL GATE
+Raise demand
+Approved triggers become demand with cost and reason.

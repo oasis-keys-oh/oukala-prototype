@@ -1,0 +1,33 @@
+Dashboard true 4232 6987 vo/shots/ppl_org__Dashboard-1440.png
+Org chart true 2853 6083 vo/shots/ppl_org__Org_chart-1440.png
+List true 1605 3861 vo/shots/ppl_org__List-1440.png
+Matrix true 1810 3461 vo/shots/ppl_org__Matrix-1440.png
+Team topology true 2621 6050 vo/shots/ppl_org__Team_topology-1440.png
+Work queue true 3988 6991 vo/shots/ppl_org__Work_queue-1440.png
+[]
+Dashboard true 2641 5448 vo/shots/ppl_perf__Dashboard-1440.png
+Goals and OKRs true 3073 6994 vo/shots/ppl_perf__Goals_and_OKRs-1440.png
+Reviews true 1796 4055 vo/shots/ppl_perf__Reviews-1440.png
+Calibration true 2849 5700 vo/shots/ppl_perf__Calibration-1440.png
+Feedback true 3025 5980 vo/shots/ppl_perf__Feedback-1440.png
+Growth and succession true 2956 7006 vo/shots/ppl_perf__Growth_and_successio-1440.png
+Operational performance true 3360 6857 vo/shots/ppl_perf__Operational_performa-1440.png
+Competencies true 1912 5622 vo/shots/ppl_perf__Competencies-1440.png
+[]
+Dashboard true 3255 6296 vo/shots/ppl_cap__Dashboard-1440.png
+Heatmap true 1694 3279 vo/shots/ppl_cap__Heatmap-1440.png
+Work types true 2270 4903 vo/shots/ppl_cap__Work_types-1440.png
+Person true 1746 3044 vo/shots/ppl_cap__Person-1440.png
+Over capacity true 1807 6217 vo/shots/ppl_cap__Over_capacity-1440.png
+Scenarios true 1854 4923 vo/shots/ppl_cap__Scenarios-1440.png
+Forecast true 2489 4963 vo/shots/ppl_cap__Forecast-1440.png
+Bench and requests true 2157 4042 vo/shots/ppl_cap__Bench_and_requests-1440.png
+Targets true 2005 5611 vo/shots/ppl_cap__Targets-1440.png
+[]
+Dashboard true 2338 4541 vo/shots/ppl_jrny__Dashboard-1440.png
+Map true 2658 5124 vo/shots/ppl_jrny__Map-1440.png
+Fulfillment true 1808 4342 vo/shots/ppl_jrny__Fulfillment-1440.png
+Processes true 2251 4525 vo/shots/ppl_jrny__Processes-1440.png
+Personas true 1630 5230 vo/shots/ppl_jrny__Personas-1440.png
+[]
+done

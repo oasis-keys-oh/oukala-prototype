@@ -1,0 +1,124 @@
+ROOMS AND CONFERENCE SCHEDULING
+Is the right room ready
+
+Rooms are 36% booked this week against a 55% target, yet the Boardroom has 1 meeting of four people or fewer. Huddle Birch has a Teams Room device offline and 2 hybrid bookings today depend on it. 3 AV tickets are open, two of them raised automatically for Thursday's events.
+
+ƒ Room utilization
+Book a room
+Why am I seeing this?
+Room utilization
+36%
+target 55%
+Rooms with a problem
+2
+Huddle Birch offline
+Open AV tickets
+3
+auto-raised for events needing a tech
+Right-size candidates
+4
+meetings in a bigger room than needed
+Booking grid
+Rooms and health
+AV support
+Booking grid
+Drag a booking to another room or time. Overlaps are blocked, small rooms and missing equipment are flagged, and the AV ticket follows the booking.
+Book a room
+ƒ Room utilization
+Day
+Week
+Mon 5
+Tue 6 · today
+Wed 7
+Thu 8
+Fri 9
+Mon 12
+Tue 13
+Wed 14
+Thu 15
+Fri 16
+8 am
+9 am
+10 am
+11 am
+12 pm
+1 pm
+2 pm
+3 pm
+4 pm
+5 pm
+Boardroom
+12 seats · Online
+Interview
+10:30 am to 11:30 am · 7 · hybrid
+Architecture huddle
+1:30 pm to 2:30 pm · 9 · hybrid
+Training room
+24 seats · Updating
+Platform onboarding workshop
+10 am to 12 pm · 12
+Aspen room
+8 seats · Online
+Taxonomy hub design review
+3 pm to 4 pm · 6 · hybrid
+Editorial review
+9:30 am to 10:30 am · 5 · hybrid
+Customer call
+11:30 am to 12:30 pm · 6 · hybrid
+Cedar room
+10 seats · Online
+Finance and vendor review
+1 pm to 2 pm · 5 · hybrid
+Finance check-in
+8:30 am to 9:30 am · 6 · hybrid
+Interview
+10 am to 11 am · 5
+Interview
+3 pm to 4 pm · 5
+Huddle Maple
+4 seats · Online
+Planning session
+8 am to 8:30 am · 2
+Vendor call
+9 am to 9:30 am · 2
+Vendor call
+10:30 am to 11 am · 2
+Design review
+11:30 am to 12 pm · 2
+Huddle Birch
+4 seats · Offline
+Ops stand-up
+Off
+9 am to 10 am · 4 · hybrid
+Vendor call
+12:30 pm to 1 pm · 2
+Finance check-in
+Off
+2:30 pm to 3:30 pm · 3 · hybrid
+Booking
+Hybrid (Teams Room)
+AV
+A technician is assigned
+Utilization this week:
+36%
+(109 of 300 bookable hours)
+Right-size suggestions
+4 bookings fill a big room with a small group. Moving them frees the Boardroom and Training room for the meetings that need them.
+Quick budget check-in
+3 people in Boardroom (12 seats), Wed Oct 7 2 pm. Cedar room seats 10, is free, and has everything the booking needs.
+Room Scheduler · 86%
+Move
+Finance and vendor review
+5 people in Cedar room (10 seats), Tue Oct 6 1 pm. Aspen room seats 8, is free, and has everything the booking needs.
+Room Scheduler · 86%
+Move
+Design review
+3 people in Aspen room (8 seats), Wed Oct 7 1:30 pm. Huddle Maple seats 4, is free, and has everything the booking needs.
+Room Scheduler · 86%
+Move
+Team sync
+3 people in Cedar room (10 seats), Fri Oct 9 11 am. Huddle Maple seats 4, is free, and has everything the booking needs.
+Room Scheduler · 86%
+Move
+
+Utilization formula: booked hours ÷ (10 bookable hours × 5 days × 6 rooms).

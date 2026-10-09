@@ -1,0 +1,76 @@
+AGENT SKILLS · KNOWLEDGE INTO ACTION
+Turn what we know into work that runs itself
+
+4 agent skills are running with a 89% success rate and $7,480 saved. 13 more published procedural items score 60 or more and can be promoted. Every skill is a knowledge item with inputs, tools, guardrails, approvals and tests, registered as a workflow step and a chat tool only after a person approves it.
+
+ƒ Agent skill success rate
+ƒ Automation readiness
+ƒ Improvement loop time
+Open the Skill studio
+Why am I seeing this?
+Dashboard
+Registry
+Skill studio
+Runs and improvement loop
+Tool catalog
+
+Skills may only call registered tools: an API or a Model Context Protocol (MCP) server action. Each tool states what it can change, how risky that is and which guardrail it needs by default.
+
+Tool and MCP catalog
+18 registered tools
+NIST CSF 2.0
+TOOL	WHAT IT DOES	SYSTEM	KIND	RISK	USED BY
+entra.getUser	Look up a user
+Reads directory profile, MFA methods and sign-in state.
+	Entra MCP	read	Low	3 skills
+entra.resetMfa	Reset multifactor methods
+Clears registered methods so the user can register again. Audited by Entra.
+	Entra MCP	write	Medium	1 skills
+entra.revokeSessions	Revoke sign-in sessions
+Signs the user out everywhere.
+	Entra MCP	write	Medium	0 skills
+entra.grantGuest	Create a guest account with expiry
+Creates an B2B guest with a sponsor and a 30 day expiry.
+	Entra MCP	write	Medium	1 skills
+portal.setMode	Set portal read-only or normal
+Changes what 180,000 readers can do.
+	Portal admin API	write	High	1 skills
+traffic.shiftWeight	Shift traffic between regions
+Moves production traffic.
+	Azure MCP	write	High	1 skills
+db.promoteReplica	Promote the database replica
+Irreversible within the failover window.
+	Azure MCP	admin	High	1 skills
+search.clearCache	Clear the search result cache
+Safe: cache refills on demand.
+	Lumen API	write	Low	1 skills
+search.rebuildIndex	Rebuild the search index
+Takes 2 to 3 hours; search quality drops while it runs.
+	Lumen API	admin	High	1 skills
+smoke.run	Run the smoke test pack
+Read only checks of the public site.
+	Test runner	read	Low	3 skills
+itsm.updateIncident	Update an incident record
+Adds work notes, changes state.
+	Oukala ITSM	write	Low	5 skills
+itsm.postStatus	Post a status page update
+Visible to all staff.
+	Oukala ITSM	write	Medium	2 skills
+teams.notify	Notify a Teams channel
+Posts a message.
+	Microsoft Graph MCP	write	Low	5 skills
+m365.shareLink	Create an expiring share link
+Creates a link that expires in 14 days.
+	Microsoft Graph MCP	write	Medium	2 skills
+cr.splitUpload	Split and link large contract scans
+Splits files and links the parts to one record.
+	Contract Repository API	write	Medium	0 skills
+vpn.reissueProfile	Reissue the VPN client profile
+Pushes a new profile to one device.
+	Intune MCP	write	Medium	1 skills
+erp.exportLease	Run the lease schedule export
+Read only report run.
+	ERP API	read	Low	1 skills
+kb.draftUpdate	Propose an article change
+Creates a draft for a human publisher.
+	Oukala Knowledge	write	Low	0 skills

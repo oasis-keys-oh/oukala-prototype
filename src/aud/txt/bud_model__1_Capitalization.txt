@@ -1,0 +1,65 @@
+FINANCIAL MODEL · COST PLAN, CAPITALIZATION, TCO AND RETURN
+The portfolio returns 22% over five years, and Taxonomy is the weakest case
+
+Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under ASC 350-40. Taxonomy returns 10% and depends on benefits that start only after the Dec 2 pilot.
+
+ƒ Five-year portfolio return on investment
+ƒ Capital plan used
+Claude Sonnet · 80%
+Why am I seeing this?
+Project and scenario
+Choose what to model. Everything on this screen recalculates from the cost plan, the capitalization rules and the benefits register.
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Portfolio
+Base case
+Low case
+High case
+Cost plan
+Capitalization
+Depreciation
+TCO and ROI
+Showback
+Preliminary stage share
+0%
+Vendor selection and proof of concept. Expensed.
+Development stage share
+85%
+Design, build and test. Capitalized.
+Directly associated payroll
+90%
+Share of labor that qualifies as direct.
+Preliminary project stage
+0%
+Evaluating vendors, selecting, proof of concept. ASC 350-40-25-1
+Expense · $0 of labor and vendor cost
+Application development stage
+85%
+Design, coding, installation, testing. Directly associated payroll and external costs. ASC 350-40-25-2
+Capitalize · $570K of labor and vendor cost
+Post-implementation stage
+15%
+Training, maintenance, data conversion. Upgrades that add function are capitalized. ASC 350-40-25-6
+Expense · $101K of labor and vendor cost
+CapEx = Σ line forecast × capital share · Labor share = development % × directly associated payroll % · $1.26M forecast → $619K CapEx (49.0%) and $643K OpEx
+LINE	FY27 FORECAST	RULE APPLIED	CAPITAL SHARE	CAPEX	OPEX
+PR1-LAB
+Platform, architecture and editor time
+	$408,000	85% development stage × 90% directly associated payroll	77%	$312,120	$95,880
+PR1-VEN
+Lumen SOW-3 search indexer
+	$262,000	85% development stage (external direct cost)	85%	$222,700	$39,300
+PR1-CLD
+Codification Portal hosting (Northwind)
+	$408,000	Hosting is a service contract, expensed	0%	$0	$408,000
+PR1-LIC
+Azure AI Search and M365 add-ons
+	$100,000	Subscriptions are expensed	0%	$0	$100,000
+PR1-HW
+Editor test lab devices
+	$84,000	Always capital: property and equipment (ASC 360)	100%	$84,000	$0
+Total	$1,262,000		49.0%	$618,820	$643,180
+
+Cloud hosting fees are expensed. Implementation costs of a cloud computing arrangement are capitalized as a prepaid asset under ASU 2018-15 and shown in operating expense; this prototype treats the Northwind tier change as hosting only.

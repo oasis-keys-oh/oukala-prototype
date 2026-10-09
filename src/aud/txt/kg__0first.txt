@@ -1,0 +1,103 @@
+KNOWLEDGE GRAPH
+Know what a change touches
+
+Changing ASC 842 Leases reaches 26 other items across 13 owners, about 64 hours of review. It travels from the standard through policy, procedure and control to the systems, data and reports that depend on it.
+
+FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)
+Replace the lease subledger
+Contract repository maintenance window
+Codification Portal major release
+Rewrite the lease accounting policy
+Graph
+Impact report
+Sources
+billed
+drives
+contains
+contains
+interpreted in
+interpreted in
+drives
+drives
+tested against
+stores
+stores
+feeds
+holds contract
+holds contract
+documented in
+degrades into
+ASC 842 Leases
+Standard
+842-20-25 Lessee
+recognition
+1
+842-20-50 Disclosures
+Paragraph
+1
+Lease accounting
+policy
+2
+Capitalization
+threshold policy
+2
+Lease classification
+review
+3
+Monthly lease
+amortization close
+3
+Lease inventory
+completeness
+3
+Discount rate approval
+Control
+2
+Lease subledger (ERP)
+Configuration item
+3
+Contract repository
+Configuration item
+4
+Lease term
+Data element
+4
+Discount rate
+Data element
+4
+Balance sheet: lease
+liability
+5
+Lease disclosure
+footnote
+2
+Lease Accounting
+Policy v4.docx
+Lease classification
+checklist.xlsx
+Northwind Cloud MSA
+Contract
+5
+Lumen Data Partners
+SOW-4
+5
+INV-20433 Lumen
+Invoice
+6
+Vendor delivery slip
+Risk
+6
+Codification Portal
+Service
+6
+Portal latency (Sev 2)
+Incident
+7
+Portal failover
+runbook
+7
+Directly affected
+Second step
+Further out
+Select any card to simulate a change there. Numbers show steps from the change.
+Open ASC 842 Leases

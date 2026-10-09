@@ -1,0 +1,141 @@
+SERVICE MANAGEMENT · PROBLEMS
+Fix the cause, not the symptom
+
+5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.
+
+New problem
+New known error
+ƒ Repeat incident rate
+ƒ Known error reuse
+ITIL 5
+KCS v6
+Triage Agent · 80%
+Overview
+Fishbone and RCA
+Link incidents
+Known error database
+Trends
+Problem
+PRB0010 Portal web tier saturates under editor load
+PRB0007 Search indexer builds miss delta updates (Lumen build 2.3)
+PRB0008 Taxonomy API connection pool exhausted during the nightly ba
+PRB0009 Lease subledger period lock race rejects valid postings
+PRB0012 Large file uploads time out in Contract Repository
+PRB0011 MFA loop on the legacy iOS mail profile
+Open the problem
+Impact analysis
+
+Portal web tier saturates under editor load: 2 incidents, 9 repeats in 4 weeks. Build the fishbone with the team, mark the root cause, then follow it to a change, a knowledge article or a demand.
+
+10 causes on 6 of 6 bones. Root cause: Hosting tier was sized for 95 editors and there are now 140.
+Add a cause
+ITIL 5
+PROBLEM (EFFECT)
+Portal web tier
+saturates under editor
+load
+People (2)
+Ops team covers Portal Resilience…
+The capacity review has no named …
+Process (2)
+No capacity review before the Cod…
+Index jobs are scheduled in busin…
+Technology (3)
+Web tier has no autoscale rule
+Hosting tier was sized for 95 edi…
+Load balancer idle timeout is 30 …
+Environment (1)
+Peak editing overlaps the nightly…
+Vendor (1)
+Northwind tier change needs a 5-d…
+Data (1)
+No alert on database connection s…
+Root cause (large red dot)
+Confirmed with evidence
+Probable
+Possible, to be tested
+Select a cause to edit it
+
+Select a line on the diagram to rename it, change its evidence, mark it as the root cause or move it. Drag a line onto another bone to move it. Use the plus on a bone to add a cause.
+
+ALL CAUSES
+People · Skills, staffing, ownership, handoffs
+2
+Ops team covers Portal Resilience and the daily incidents
+probable
+The capacity review has no named owner
+probable
+Process · Procedures, approvals, checklists, governance
+2
+No capacity review before the Codification beta
+confirmed
+Index jobs are scheduled in business hours
+probable
+Technology · Software, hardware, configuration, capacity
+3
+Web tier has no autoscale rule
+confirmed
+Hosting tier was sized for 95 editors and there are now 140
+ROOT CAUSE
+confirmed
+Load balancer idle timeout is 30 seconds
+possible
+Environment · Where and when it runs: load, schedule, location
+1
+Peak editing overlaps the nightly index job window
+confirmed
+Vendor · Suppliers, contracts, lead times, builds
+1
+Northwind tier change needs a 5-day lead time
+confirmed
+Data · Measurement, monitoring, data quality
+1
+No alert on database connection saturation below 95%
+confirmed
+Five whys
+Drill from the symptom to the root.
+Edit
+Why 1
+Editors see pages that take over 6 seconds
+Why 2
+Web tier CPU is at 94% and database connections at 88%
+Why 3
+Bulk edits before the beta and index jobs run during business hours
+Why 4
+The hosting tier was sized for 95 editors in FY25 and there are now 140
+Why 5
+Capacity reviews are not tied to editor growth or to project dates
+From root cause to action
+Every RCA ends in work.
+Change
+Raise the fix change (linked: CHG0312)
+Knowledge
+Draft a knowledge article from the analysis (linked: KE0010)
+Demand
+Raise a demand item for a permanent fix that needs funding
+Known error
+Publish the workaround so the desk can use it today
+Triage Agent · 78%
+Suggested next question: what changed in Codification Portal in the 7 days before the first incident?
+Problem process (ITIL 5 Support and Evolve)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AI AGENT
+Detect a pattern
+An agent groups repeat incidents by service and text and proposes a problem.
+PERSON
+Assess and prioritize
+Rank by repeats times people affected.
+PERSON
+Root cause analysis
+Fishbone to find contributing causes by category, then five whys to the root.
+PERSON
+Publish known error
+Record the workaround and symptoms so the desk can use them today.
+APPROVAL GATE
+Fix through change
+Raise a change, a knowledge article or a demand for the permanent fix.
+AUTOMATIC
+Verify and close
+Confirm repeats stopped, retire the known error.

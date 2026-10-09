@@ -1,0 +1,46 @@
+PRODUCT LOG
+Everything you asked for
+
+38 requests so far: 31 shipped, 4 in progress and 3 waiting. Nothing you say about the design is lost.
+
+Why am I seeing this?
+Requests
+38
+4 releases so far
+Shipped
+31
+82% of the register
+In progress
+4
+Planned for this release
+Waiting
+3
+Open for your decision
+Register
+Add feedback
+Releases
+Add feedback
+Anything you notice, from a color to a missing feature. It goes into the register as Open.
+Feature
+Design
+Clarity
+Idea
+Question
+Add to the register
+
+In the real platform this writes to the product backlog. In the prototype it lives in your browser and in the vault register that Claude keeps after each round.
+
+Signals from usage
+Patterns in the audit trail that deserve research
+4 of 6 holds on Lumen invoices were overridden
+Vendor-specific tolerance so the advisor stops holding invoices that are accepted verbally
+Add to register
+Searches for “milestone acceptance” returned nothing 7 times
+A milestone acceptance view that links work, invoice and payment
+Add to register
+Opening the table then filtering to red, 12 times this week
+A saved “needs action” view on Home
+Add to register
+Agent-drafted knowledge refreshes accepted without edits 9 of 11 times
+Raise Knowledge Curator one autonomy level for runbooks
+Add to register

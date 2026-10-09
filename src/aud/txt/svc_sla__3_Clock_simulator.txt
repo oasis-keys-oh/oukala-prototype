@@ -1,0 +1,126 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+Clock simulator
+Pick an agreement and a start time, add a pause, and watch the clock. It uses the same calendar, time zone and holiday logic as live clocks.
+ƒ Agreement attainment
+Agreement
+Incident P1: restore service (4 h)
+Incident P1: first response (15 min)
+Incident P2: restore service (8 h)
+Incident P3 and P4: restore service (27 h)
+Hardware request: deliver (45 h)
+Standard request: fulfill (45 h)
+Access request: provision (9 h)
+Report request: first draft (3.8 days)
+Resolver groups accept an assigned incident (3 h)
+Network team: resolve its P2 incidents (6 h)
+Endpoint team: image and ship (27 h)
+Identity team: provision access (12 h)
+Lumen: Severity 1 restore (4 h)
+Lumen: index rebuild turnaround (18 h)
+Microsoft Unified: Severity A response (1 h)
+Northwind: Tier 1 desk response (30 min)
+Contoso: monitoring alert acknowledgement (30 min)
+Record opened
+Today, Tue Oct 6
+Tomorrow, Wed Oct 7
+In 2 days, Thu Oct 8
+In 3 days, Fri Oct 9
+In 4 days, Sat Oct 10
+In 5 days, Sun Oct 11
+In 6 days, Mon Oct 12
+In 7 days, Tue Oct 13
+At hour
+00:00
+01:00
+02:00
+03:00
+04:00
+05:00
+06:00
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+Paused after (hours)
+Paused for (hours)
+50%
+75%
+100%
+Due
+Sat
+Sun
+Mon
+Tue
+Clock counting
+Outside the schedule (nights, weekends, holidays)
+Paused
+DUE
+Tue Oct 13, 14:00
+4 days after it opened
+WITHOUT THE PAUSE
+Tue Oct 13, 14:00
+The pause moves the due time by 1 min
+TARGET
+8 h
+of schedule time
+SCHEDULE
+Limited hours
+Mountain time
+
+The clock has not started yet. Opened Fri Oct 9, 15:00; due Tue Oct 13, 14:00.
+
+Warnings and escalation actions
+When each action fires for this simulated clock.
+50%
+Notify the assignee in Teams
+Teams
+Tue Oct 13, 10:00
+75%
+Notify the assignment group manager
+Teams
+Tue Oct 13, 12:00
+100%
+Reassign to the on-call primary
+Page
+Tue Oct 13, 14:00
+Due time by when the record is opened
+How the schedule changes the real deadline for the same target.
+OPENED ON	02:00	08:00	12:00	16:00	22:00
+MON	Mon 16:00 14 h	Mon 16:00 8 h	Tue 11:00 23 h	Tue 15:00 23 h	Tue 16:00 18 h
+TUE	Tue 16:00 14 h	Tue 16:00 8 h	Wed 11:00 23 h	Wed 15:00 23 h	Wed 16:00 18 h
+WED	Wed 16:00 14 h	Wed 16:00 8 h	Thu 11:00 23 h	Thu 15:00 23 h	Thu 16:00 18 h
+THU	Thu 16:00 14 h	Thu 16:00 8 h	Fri 11:00 23 h	Fri 15:00 23 h	Fri 16:00 18 h
+FRI	Fri 16:00 14 h	Fri 16:00 8 h	Tue 11:00 4 days	Tue 15:00 4 days	Tue 16:00 3.8 days
+SAT	Tue 16:00 3.6 days	Tue 16:00 3.3 days	Tue 16:00 3.2 days	Tue 16:00 3 days	Tue 16:00 2.8 days
+SUN	Tue 16:00 2.6 days	Tue 16:00 2.3 days	Tue 16:00 2.2 days	Tue 16:00 2 days	Tue 16:00 42 h

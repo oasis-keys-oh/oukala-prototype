@@ -1,0 +1,134 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+Story pointing standard
+Relative size, not hours. One scale for every team so work can be compared and rolled up
+POINTS	REFERENCE STORY	WHAT IT MEANS
+1	Change a label on the editor toolbar	Known change, one place, no risk. Under half a day.
+2	Add a field to the audit export	Small change in two places; tests exist.
+3	Add keyboard shortcut for save in the editor	Clear but touches several parts; one day of work.
+5	Show cross references in the compare panel	Some design choices and test work; two to three days.
+8	Resume an interrupted publishing job	Real complexity or a new integration; the upper limit for one sprint item.
+13	Rebuild the redline engine on the new index	Too big. Split it before it enters a sprint.
+21	Replace the editor save architecture	Epic-sized. Never plan it; break it into features and stories.
+Points measure effort, complexity and uncertainty together.
+Use the Fibonacci scale: 1, 2, 3, 5, 8, 13, 21. Compare to a reference story, never to hours.
+Anything above 8 is split before the sprint. A spike gets a time box, not a size.
+Everyone votes together in planning poker, then discusses the highest and lowest vote.
+Re-estimate only when new facts appear, not when work is late.
+Run planning poker
+SAFe
+Definition of ready and done
+The two checklists every story passes through
+DEFINITION OF READY
+A named product owner wrote it as a user story with a clear benefit
+At least two acceptance criteria in plain Given, When, Then form
+Estimated by the team, 8 points or fewer
+Dependencies named and not blocked
+Test approach noted (automated, manual or both)
+Design or mock-up attached where the screen changes
+DEFINITION OF DONE
+Code reviewed and pull request merged
+Automated tests written and passing
+Manual tests passed where the story changes behavior
+Every acceptance criterion demonstrated to the product owner
+Accessibility, security and performance checks passed
+Documentation and release notes updated
+Deployed to the test environment through the pipeline
+
+The sprint board enforces the definition of done: a story cannot move to Done while its pull request is open, a criterion is unmet or a test is failing.
+
+Ceremonies calendar
+Sprint 26.4.1 · Sep 28 to Oct 9 · today is highlighted
+Mon Sep 28
+Daily standup
+9:30
+Sprint planning
+10:00 to 12:00
+Tue Sep 29
+Daily standup
+9:30
+Wed Sep 30
+Daily standup
+9:30
+Backlog refinement
+14:00 to 15:00
+Thu Oct 1
+Daily standup
+9:30
+Fri Oct 2
+Daily standup
+9:30
+Scrum of scrums
+11:00
+Mon Oct 5
+Daily standup
+9:30
+Scrum of scrums
+11:00
+Tue Oct 6
+Daily standup
+9:30
+Wed Oct 7
+Daily standup
+9:30
+Backlog refinement
+14:00 to 15:00
+Thu Oct 8
+Daily standup
+9:30
+Fri Oct 9
+Daily standup
+9:30
+Sprint review
+10:00 to 11:00
+Retrospective
+13:00 to 14:00
+System demo
+15:00 to 16:00
+Planning
+Refinement
+Review
+Retrospective
+System demo
+Standup
+Scrum of scrums
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

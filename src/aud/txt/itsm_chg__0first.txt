@@ -1,0 +1,153 @@
+SERVICE MANAGEMENT · CHANGES
+Change safely, on a calendar everyone trusts
+
+3 changes are scheduled in the next 7 days and 1 waits for approval. 1 collide on the same CI (CHG0314 and CHG0315), and 1 sits inside a freeze window. The change failure rate is 16.7% against a 12% target. Approvers come from your 11 approval policies.
+
+Request change
+ƒ Change failure rate
+ƒ Approval turnaround
+ITIL 5
+DORA metrics
+Claude Sonnet · 82%
+Overview
+Calendar
+CAB and approvals
+Standard templates
+Approval policies
+Risk and DORA
+OPEN CHANGES
+12
+3 in the next 7 days
+AWAITING APPROVAL
+1
+0 past an approval SLA
+COLLISIONS
+1
+same CI, overlapping window
+INSIDE A FREEZE
+1
+need an exception
+CHANGE FAILURE RATE
+16.7%
+target 12% ƒ Change failure rate
+APPROVAL TURNAROUND
+9.4 h
+target 24 h ƒ Approval turnaround
+Needs attention
+Conflicts and approvals that will slip
+ƒ Change failure rate
+CHG0314
+collides with CHG0315 on synapse-sql
+Collision
+CHG0319
+inside Financial close freeze
+Freeze
+Open changes by state and type
+Bars show counts; the stripe colors match the calendar legend
+Draft
+1
+Assess
+1
+Authorize
+1
+Scheduled
+8
+Implement
+1
+Review
+0
+Standard
+2
+Normal
+9
+Emergency
+1
+Standard
+Normal
+Emergency
+ALL CHANGES
+Type
+All
+3
+State
+All
+5
+Service
+All
+6
+Group
+All
+2
+Environment
+All
+1
+Flags
+All
+3
+Group by 
+None
+State
+Type
+Service
+Export CSV
+NUMBER	TYPE	SHORT DESCRIPTION	SERVICE	STATE	START▲	RISK	APPROVALS	GROUP	ENVIRONMENT	IMPLEMENTER	FLAGS
+CHG0311	Emergency	Scale portal web tier and tune load balancer idle timeout (emergency)	Codification Portal	Implement	Oct 6	Risk 55 · High	-	Ops team	Production	
+Sam Patel
+	
+CHG0316	Standard	Monthly Windows and Linux patching, Platform servers	Codification Portal	Scheduled	Oct 8	Risk 24 · Medium	Auto	Ops team	Production	
+Sam Patel
+	
+CHG0313	Normal	Deploy Lumen search indexer build 2.4 to staging	Search and indexing	Scheduled	Oct 12 to Oct 13	Risk 25 · Medium	-	Architecture	Production	
+Jordan Lee
+	
+CHG0312	Normal	Raise Codification Portal hosting tier (Northwind, +$48,000 per year)	Codification Portal	Authorize	Oct 14	Risk 47 · High	0/4	Ops team	Production	
+Sam Patel
+	
+CHG0314	Normal	Resize Taxonomy API connection pool and cap batch concurrency	Data platform	Scheduled	Oct 15	Risk 22 · Medium	-	Architecture	Production	
+Jordan Lee
+	Collision
+CHG0315	Normal	Scale Azure SQL tier for the Taxonomy pilot load test	Data platform	Scheduled	Oct 15 to Oct 16	Risk 32 · Medium	-	Ops team	Production	
+Sam Patel
+	Collision
+CHG0317	Standard	Conditional access: add editors' VPN as a named location	Identity (Entra ID)	Scheduled	Oct 20	Risk 38 · Medium	Auto	Architecture	Production	
+Jordan Lee
+	
+CHG0322	Normal	Enable portal standby failover (RB-031 v8)	Codification Portal	Scheduled	Oct 27	Risk 34 · Medium	-	Ops team	Production	
+Sam Patel
+	
+CHG0323	Normal	Codification content migration dry run (batch 1)	Codification Portal	Scheduled	Oct 27	Risk 13 · Low	-	Ops team	Production	
+Sam Patel
+	
+CHG0320	Normal	Contract Repository storage tier migration rehearsal	Contract Repository	Scheduled	Nov 3	Risk 13 · Low	-	Ops team	Production	
+Sam Patel
+	
+CHG0318	Normal	Deploy Codification beta to production	Codification Portal	Assess	Nov 12 to Nov 13	Risk 41 · High	-	Ops team	Production	
+Sam Patel
+	
+CHG0319	Normal	Apply ERP vendor patch for the lease subledger period lock race	Lease subledger (ERP)	Draft	Nov 18	Risk 49 · High	-	Ops team	Production	
+Sam Patel
+	Freeze
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Change enablement process (ITIL 5 Transition)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Request and assess
+Describe the change, the service and CIs, plans and the risk questionnaire.
+AUTOMATIC
+Check conflicts
+Collision on the same CI and freeze windows are checked live.
+AUTOMATIC
+Route approvals
+The approval policies decide who approves, in what order, with what quorum.
+APPROVAL GATE
+Approve
+Policy picks the approvers. Standard changes from a template need no vote.
+PERSON
+Schedule and implement
+Calendar slot, implementation by the team, backout ready.
+PERSON
+Review
+Outcome feeds the change failure rate. Lessons go to the template or policy.

@@ -71,7 +71,7 @@ function metricsFor(appIds){
  return Object.keys(METRICS).filter(k=>(METRICS[k].use||[]).some(u=>names.has(String(u).toLowerCase())));
 }
 /* ---------- processes, families, handoffs ---------- */
-const FAM=[["strat","Strategy and portfolio"],["demand","Demand"],["proj","Projects and WBS"],["agile","Agile delivery and release trains"],["chg","Change and release"],["inc","Incident and problem"],["req","Request and catalog"],["cmdb","CMDB and discovery"],["evt","Event and automation"],["obs","Observability and SLO"],["fin","Finance and invoices"],["con","Contracts and SOW"],["ppl","People, skills and on-call"],["kn","Knowledge"],["ai","AI governance"],["wf","Workflow and approvals"]];
+const FAM=[["strat","Strategy and portfolio"],["demand","Demand"],["proj","Projects and WBS"],["agile","Agile delivery and release trains"],["chg","Change and release"],["inc","Incident and problem"],["req","Request and catalog"],["cmdb","CMDB and discovery"],["evt","Event and automation"],["obs","Observability and SLO"],["fin","Finance and invoices"],["con","Contracts and SOW"],["ppl","People, skills and on-call"],["kn","Knowledge"],["ai","AI governance"],["wf","Workflow and approvals"],["gov","Security, audit and platform governance"]];
 const FIDX={};FAM.forEach((f,i)=>FIDX[f[0]]=i);
 const PF={exe_dash:["Executive views","strat"],exe_risk:["Risk and date confidence","strat"],exe_apps:["Application TIME class","strat"],exe_board:["Board pack","strat"],exe_scen:["Scenario compare","strat"],exe_mat:["Capability maturity","strat"],
  exe_strat:["Strategy to work","demand"],port:["Demand to funded work","demand"],
@@ -88,6 +88,8 @@ const PF={exe_dash:["Executive views","strat"],exe_risk:["Risk and date confiden
  svc_oncall:["On-call cover","ppl"],svc_skills:["Skills and availability","ppl"],ppl_org:["Joiners and movers","ppl"],ppl_perf:["Performance cycle","ppl"],ppl_cap:["Resource planning","ppl"],ppl_jrny:["Journey to workflow","ppl"],
  kcs_home:["Knowledge flow","kn"],kcs_gap:["Search gap to article","kn"],kcs_edit:["Article lifecycle","kn"],kcs_ask:["Answer building","kn"],vault:["Knowledge graph","kn"],kcs_viz:["Visual builder","kn"],
  kcs_skills:["Agent skills","ai"],kcs_prompt:["Prompt release","ai"],kcs_test:["AI quality tests","ai"],
+ bud_ben:["Benefits realization","strat"],bud_over:["Budget control","fin"],bud_model:["Financial model and forecast","fin"],bud_doa:["Delegation of authority","fin"],bud_ven:["Vendor and contract management","con"],
+ adm_gate:["AI gateway and token spend","ai"],tower:["AI oversight and control","ai"],adm_sec:["Access and security administration","gov"],adm_audit:["Audit and compliance evidence","gov"],
  flw_design:["Workflow design","wf"],flw_appr:["Approvals","wf"],flw_asmt:["Assessments","wf"],flw_dmn:["Decision tables","wf"]};
 const PREF=[[/^itsm_/,"inc"],[/^itom_/,"cmdb"],[/^svc_/,"req"],[/^ppm_/,"proj"],[/^kcs_/,"kn"],[/^flw_/,"wf"],[/^exe_/,"strat"],[/^ppl_/,"ppl"],[/^bud_/,"fin"],[/^agile_/,"agile"],[/^obs_/,"obs"],[/^tbm_/,"fin"]];
 function procIds(){
@@ -103,7 +105,9 @@ const PX={ims:{r:["project","project_task","wbs_line","person"],w:["project_task
  itom_slo:{r:["metric_series","business_service"],w:["slo"]},obs_std:{r:["automation_rule","change_request"],w:["standard_change"]},tbm_model:{r:["invoice","business_service"],w:["cost_allocation","scaling_step"]},
  ppl_perf:{r:["person","skill_claim","project_task"]},ppl_cap:{r:["person","time_off","project_task","oncall_shift"]},ppl_jrny:{r:["person"]},
  kcs_home:{r:["incident","request_item"]},kcs_gap:{r:["incident","request_item"]},kcs_edit:{r:["incident","problem_record"]},kcs_ask:{r:["incident"]},vault:{r:["business_service","cmdb_ci"]},kcs_skills:{r:["person","skill_claim"]},
- flw_design:{r:["change_approval_policy"]}};
+ flw_design:{r:["change_approval_policy"]},
+ bud_ben:{r:["project","demand_request"]},bud_over:{r:["invoice"],w:["cost_allocation"]},bud_model:{r:["cost_allocation"]},bud_doa:{r:["person","change_approval_policy"]},bud_ven:{r:["contract","invoice"],w:["contract_obligation"]},
+ adm_gate:{r:["cost_allocation"]},tower:{r:["alert_event","runbook_execution"],w:["false_positive_feedback"]},adm_sec:{r:["person"]},adm_audit:{r:["person","change_request"]}};
 const PAL={tbm_model:"bud_over"};
 const inE=id=>!!model().eset.get(id);
 const _pe={};
@@ -190,7 +194,27 @@ const HO=[
  ["kcs_test","kcs_skills",["knowledge_article"],"Test result","event"],
  ["flw_design","flw_appr",["approval_policy"],"Workflow publishes an approval step","event"],
  ["flw_dmn","flw_appr",["approval_policy"],"Decision table routes approvals","event"],
- ["flw_asmt","exe_mat",["maturity_capability"],"Assessment sets a level","batch"]
+ ["flw_asmt","exe_mat",["maturity_capability"],"Assessment sets a level","batch"],
+ ["ppm_proj","bud_ben",["project"],"Project approved with a business case","event"],
+ ["bud_ben","exe_strat",["project","demand_request"],"Benefit review feeds strategy","batch"],
+ ["inv","bud_over",["invoice","cost_allocation"],"Invoice posted against a budget line","batch"],
+ ["bud_over","bud_model",["cost_allocation"],"Month-end actuals","batch"],
+ ["bud_model","exe_board",["cost_allocation"],"Forecast for the board","batch"],
+ ["bud_doa","flw_appr",["change_approval_policy"],"Limits applied to approval routing","event"],
+ ["bud_doa","inv",["invoice"],"Invoice approver chosen by amount","event"],
+ ["ppm_sow","bud_ven",["contract"],"Contract signed","event"],
+ ["bud_ven","inv",["contract","invoice"],"Vendor invoices matched to contract","batch"],
+ ["bud_ven","ppm_sow",["contract_obligation"],"Renewal or change needs a contract review","human"],
+ ["adm_gate","tbm_model",["cost_allocation"],"AI token cost allocated","batch"],
+ ["adm_gate","tower",["alert_event"],"Spend and policy events","event"],
+ ["kcs_test","tower",["alert_event"],"Test results feed oversight","batch"],
+ ["tower","kcs_skills",["false_positive_feedback"],"Guardrail finding becomes a skill fix","human"],
+ ["ppl_org","adm_sec",["person"],"Joiner, mover or leaver changes access","event"],
+ ["adm_sec","flw_appr",["person"],"Privileged access needs approval","event"],
+ ["adm_sec","adm_audit",["person"],"Access evidence for audit","batch"],
+ ["tower","adm_audit",["alert_event"],"Agent oversight evidence","batch"],
+ ["bud_over","adm_audit",["cost_allocation"],"Budget control evidence","batch"],
+ ["adm_audit","exe_risk",["raid_item"],"Findings feed the risk register","batch"],
 ];
 function validHO(){const ids=new Set(procIds());return HO.filter(h=>ids.has(h[0])&&ids.has(h[1])).map(h=>({from:h[0],to:h[1],entities:h[2],trigger:h[3],mode:h[4],kind:"handoff"}))}
 /* data dependencies: p writes an entity q reads. Shared entities between every pair. */
@@ -584,9 +608,9 @@ function panelP(){
  const dIn=g.dep.filter(x=>x.to===id),dOut=g.dep.filter(x=>x.from===id);
  const cnt={};(S.proc&&S.proc[id]||d.steps).forEach(s=>{const w=s.who||"human";cnt[w]=(cnt[w]||0)+1});
  return `<div class="plk-ph"><div class="eyebrow">${E(FAM[FIDX[pFam(id)]][1])}</div><h3>${E(pName(id))}</h3><p class="small muted">${E(d.title)}</p>
-  <div class="row" style="gap:6px;flex-wrap:wrap">${Object.keys(cnt).map(w=>`<span class="pill ${WHOC[w]}">${cnt[w]} ${WHON[w].toLowerCase()}</span>`).join("")}</div></div>
+  <div class="row" style="gap:6px;flex-wrap:wrap">${(()=>{try{const m=window.PROCLIB&&PROCLIB.maturity(id);return m?`<span class="pill ${m.level>=m.target?"good":"warn"}" title="Process maturity, Year 1 target ${m.target}">Maturity ${m.level} of ${m.max}</span>`:""}catch(e){return""}})()}${Object.keys(cnt).map(w=>`<span class="pill ${WHOC[w]}">${cnt[w]} ${WHON[w].toLowerCase()}</span>`).join("")}</div></div>
   <div class="plk-imp"><b class="small">If this breaks</b><div class="statrow plk-st"><div class="stat"><small>Processes</small><span class="num" data-role="metric">${ds.procs.length}</span></div><div class="stat"><small>Entities</small><span class="num" data-role="metric">${ds.real.length}</span></div><div class="stat"><small>Apps</small><span class="num" data-role="metric">${ds.apps.length}</span></div></div><p class="small muted" data-role="story">${ds.procs.length?"Downstream: "+ds.procs.slice(0,5).map(pName).join(", ")+(ds.procs.length>5?" and "+(ds.procs.length-5)+" more.":"."):"Nothing depends on this process through a documented handoff or written data."}</p></div>
-  <div class="row plk-act"><button class="btn quiet" data-plk-phop="1">Focus 1 hop</button><button class="btn quiet" data-plk-phop="2">2</button><button class="btn quiet" data-plk-phop="3">3</button>${hasScr(id)?`<button class="btn quiet" data-plk-go="${E(id)}">Open process screen</button>`:""}</div>
+  <div class="row plk-act"><button class="btn quiet" data-plk-phop="1">Focus 1 hop</button><button class="btn quiet" data-plk-phop="2">2</button><button class="btn quiet" data-plk-phop="3">3</button>${window.PROCLIB?`<button class="btn primary" data-plk-pfull="${E(id)}">Open full process page</button>`:""}${hasScr(id)?`<button class="btn quiet" data-plk-go="${E(id)}">Open process screen</button>`:""}</div>
   ${lrHTML({id:"plk_pp",groups:[
    {key:"in",label:"Handoffs in",rows:hoRows(inn,"in")},{key:"out",label:"Handoffs out",rows:hoRows(out,"out")},
    {key:"w",label:"Data it writes",rows:ents.w.map(x=>({id:x,t:entN(x),sub:DOM[model().eset.get(x).domain].n,tag:"Writes",st:"good",go:()=>pickD(x)}))},
@@ -618,7 +642,7 @@ function pList(){
 }
 function pHost(){
  const P=Z.p,gsvg=pGraphSvg(),ar=lastAR.toFixed(2);
- return `<div class="plk-split" data-view="${P.view}"><div class="plk-main">${toolbarP()}<div class="plk-canvas plk-gonly" data-plk-canvas="p" style="aspect-ratio:${ar}">${gsvg}<p class="plk-hint small muted">Drag to pan. Hold Ctrl or Cmd and scroll to zoom. Select a family to see its processes.</p></div><div class="plk-lonly">${pList()}</div></div><aside class="plk-panel card glass" aria-live="polite" data-plk-panel>${panelP()}</aside></div>`;
+ return `<div class="plk-split" data-view="${P.view}"><div class="plk-main">${toolbarP()}<div class="plk-canvas plk-gonly" data-plk-canvas="p" style="aspect-ratio:${ar}">${gsvg}<p class="plk-hint small muted">Drag to pan. Hold Ctrl or Cmd and scroll to zoom. Select a family to see its processes. Select a process, then select it again to open its full page.</p></div><div class="plk-lonly">${pList()}</div></div><aside class="plk-panel card glass" aria-live="polite" data-plk-panel>${panelP()}</aside></div>`;
 }
 function drawP(refit){if(refit)Z.p.vb=null;const h=document.querySelector("[data-plk-phost]");if(!h){render();return}h.innerHTML=pHost()}
 function pickP(id,open){
@@ -876,7 +900,7 @@ document.addEventListener("click",e=>{
   if(k==="g"){pickG(id);refocus(`[data-plk-ghost] [data-plk-n="${cssq(id)}"]`);return}
   if(Z.d.sel===id&&!/^dom:/.test(id)){Z.d.sel=null;if(Z.d.hop>0)Z.d.vb=null;drawD(false);return}
   Z.d.sel=id;Z.d.ff="";if(Z.d.hop>0&&!/^dom:/.test(id))Z.d.vb=null;drawD(false);refocus(`[data-plk-dhost] [data-plk-n="${cssq(id)}"]`);return}
- if((t=e.target.closest("[data-plk-pn]"))){const id=t.dataset.plkPn;if(Z.p.sel===id){Z.p.sel=null;if(Z.p.hop>0)Z.p.vb=null;drawP(false);return}Z.p.sel=id;if(Z.p.hop>0&&!/^fam:/.test(id))Z.p.vb=null;drawP(false);refocus(`[data-plk-phost] [data-plk-pn="${cssq(id)}"]`);return}
+ if((t=e.target.closest("[data-plk-pn]"))){const id=t.dataset.plkPn;if(Z.p.sel===id&&!/^fam:/.test(id)&&window.PROCLIB&&PROCLIB.open&&PROCLIB.open(id)!==false){return}if(Z.p.sel===id){Z.p.sel=null;if(Z.p.hop>0)Z.p.vb=null;drawP(false);return}Z.p.sel=id;if(Z.p.hop>0&&!/^fam:/.test(id))Z.p.vb=null;drawP(false);refocus(`[data-plk-phost] [data-plk-pn="${cssq(id)}"]`);return}
  if((t=e.target.closest("[data-plk-dtoggle]"))){const k=t.dataset.plkDtoggle;Z.d.col[k]=!Z.d.col[k];audit("Domain "+(Z.d.col[k]?"collapsed":"expanded"),DOM[k]?DOM[k].n:k);if(Z.d.sel&&/^dom:/.test(Z.d.sel)&&!Z.d.col[k])Z.d.sel=null;drawD(true);return}
  if((t=e.target.closest("[data-plk-ptoggle]"))){const k=t.dataset.plkPtoggle;Z.p.exp[k]=!Z.p.exp[k];if(Z.p.sel==="fam:"+k&&Z.p.exp[k])Z.p.sel=null;drawP(true);return}
  if((t=e.target.closest("[data-plk-ov]"))){Z.d.ov=t.dataset.plkOv;drawD(false);return}
@@ -893,6 +917,7 @@ document.addEventListener("click",e=>{
  if((t=e.target.closest("[data-plk-view]"))){Z.d.view=t.dataset.plkView;drawD(false);return}
  if((t=e.target.closest("[data-plk-pview]"))){Z.p.view=t.dataset.plkPview;drawP(false);return}
  if((t=e.target.closest("[data-plk-zoom]"))){const [k,a]=t.dataset.plkZoom.split(":");zoomVp(k,a==="in"?1.35:a==="out"?1/1.35:"fit");return}
+ if((t=e.target.closest("[data-plk-pfull]"))){if(window.PROCLIB)PROCLIB.open(t.dataset.plkPfull);return}
  if((t=e.target.closest("[data-plk-go]"))){closeDrawer&&0;go(t.dataset.plkGo);return}
  if((t=e.target.closest("[data-plk-pgo]"))){Z.p.sel=t.dataset.plkPgo;S.v.plk_p=0;go("plat_pmap");return}
  if((t=e.target.closest("[data-plk-entgo]"))){closeDrawer();Z.d.sel=t.dataset.plkEntgo;Z.d.ff="";S.v.plk_d=0;if(Z.d.hop>0)Z.d.vb=null;if(document.querySelector("[data-plk-dhost]")){render()}else go("plat_dmap");return}

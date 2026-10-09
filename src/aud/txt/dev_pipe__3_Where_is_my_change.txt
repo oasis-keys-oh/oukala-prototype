@@ -1,0 +1,200 @@
+DELIVERY PIPELINE
+One flow from idea to production
+
+The change process is a stage in the pipeline, not a separate queue. 4.7 production deployments a week, lead time 54 hours, 10.0% failed. 4 runs are waiting at the gate for the CAB.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Changes approved by the gate automatically
+DORA metrics
+ITIL 5
+Pipeline
+Runs
+Gate policy
+Where is my change
+Environments
+Freezes and clashes
+DORA
+Release
+REL-2607 Portal accessibility fixes (In development)
+REL-2608 Standards API 2.3.1 batch hotfix (Readiness review)
+REL-2609 Lumen search indexer 2.4 to staging (In test)
+REL-2610 Portal standby failover (RB-031 v8) (In test)
+REL-2611 Codification beta (In development)
+REL-2612 Taxonomy Data Hub pilot (Planning)
+REL-2613 Contract Repository storage tier migration (In development)
+REL-2614 ERP posting-lock vendor patch (Planning)
+REL-2615 Conditional access: editors VPN named location (Scheduled)
+REL-2616 Contract obligation tracker and renewal alerts (Planning)
+REL-2617 Autoscale and capacity alerts (Planning)
+REL-2618 Integration hub connector 2.2 (In development)
+REL-2601 Portal read replica (Deployed)
+REL-2602 Editor sign-in with Entra ID (Deployed)
+REL-2603 Taxonomy data model v1 (Deployed)
+REL-2604 Standards API 2.3.0 (Rolled back)
+REL-2605 Lease subledger Q3 patch (Rolled back)
+REL-2606 Search index schema update (Deployed)
+REL-2520 Lease subledger (ERP) hotfix (Deployed)
+REL-2521 Codification Portal update (Deployed)
+REL-2522 Codification Platform update (Deployed)
+REL-2523 Codification Platform update (Deployed)
+REL-2524 Codification Platform major release (Deployed)
+REL-2525 Finance systems update (Deployed)
+REL-2526 Search and indexing update (Deployed)
+REL-2527 Contract Repository hotfix (Deployed)
+REL-2528 Codification Portal update (Deployed)
+REL-2529 Lease subledger (ERP) update (Deployed)
+REL-2530 Codification Platform hotfix (Deployed)
+REL-2531 Integration hub update (Deployed)
+REL-2532 Codification Platform major release (Deployed)
+REL-2533 Search and indexing update (Deployed)
+REL-2534 Search and indexing hotfix (Deployed)
+REL-2535 Codification Portal update (Deployed)
+REL-2536 Search and indexing hotfix (Deployed)
+REL-2537 Data platform update (Deployed)
+REL-2538 Codification Portal major release (Deployed)
+REL-2539 Lease subledger (ERP) major release (Deployed)
+REL-2540 Endpoint management (Intune) update (Deployed)
+REL-2541 Codification Portal major release (Deployed)
+REL-2542 Data platform update (Deployed)
+REL-2543 Contract Repository update (Deployed)
+REL-2544 Data platform major release (Deployed)
+REL-2545 Codification Portal major release (Deployed)
+REL-2546 Search and indexing major release (Deployed)
+REL-2547 Contract Repository major release (Deployed)
+REL-2548 Contract Repository major release (Deployed)
+REL-2549 Codification Platform update (Rolled back)
+REL-2550 Codification Platform update (Deployed)
+REL-2551 Search and indexing update (Deployed)
+REL-2552 Network and VPN major release (Deployed)
+REL-2553 Data platform update (Deployed)
+REL-2554 Search and indexing update (Deployed)
+REL-2555 Codification Platform update (Deployed)
+REL-2556 Codification Platform major release (Deployed)
+REL-2557 Codification Platform update (Deployed)
+Find
+
+Codification beta (REL-2611, version 3.0.0-beta) is in development. It is planned for Nov 13. Not eligible for auto-approval because of: code coverage, change risk, database schema change, service error budget.
+
+1
+WORK ITEM
+FT-101
+5 features in the release
+Done
+2
+PROJECT TASK
+Beta release
+PR1 · WBS 4.4 · 0% complete
+Running
+3
+PULL REQUEST AND COMMIT
+PR #516 · 1aea8cb
+Jordan Lee · 2 files, 785 lines
+Done
+4
+BUILD AND TEST
+PL-4104
+98.6% passed · 0 critical findings
+Done
+5
+CHANGE
+CHG0318 · Normal
+Assess
+Waiting
+6
+RELEASE RECORD
+REL-2611 · 3.0.0-beta
+In development · target Nov 13
+Running
+7
+DEPLOYMENT
+Not deployed
+Planned Nov 13
+Not started
+8
+SERVICE
+Codification Platform
+6 CIs · error budget spent
+Not started
+Open release record
+Impact analysis
+Open latest run
+ƒ Lead time for changes
+Linked records
+Everything connected to this release, grouped. Select a row to open it.
+Work items in this release
+5
+FT-101
+Feature
+Feature in Codification beta
+FT-102
+Feature
+Feature in Codification beta
+FT-104
+Feature
+Feature in Codification beta
+FT-106
+Feature
+Feature in Codification beta
+FT-107
+Feature
+Feature in Codification beta
+Project tasks (WBS)
+40
+Pipeline runs
+1
+PL-4104 release/3.0.0-beta
+Running
+Nov 13 08:21 · Production
+Changes
+1
+CHG0318 Deploy Codification beta to production
+Normal
+Normal · Assess
+Release gates
+15
+Configuration items of the service
+6
+codif-app-01
+CI
+Virtual machine
+codif-app-02
+CI
+Virtual machine
+codif-sql-prd
+CI
+Database
+codif-lb
+CI
+Load balancer
+codification-platform
+CI
+Application
+Show 1 more of 1 remaining
+How a change reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics, ITIL 5, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Work item
+A backlog item or project task is the start of every change.
+PERSON
+Commit and pull request
+Code is committed with the work item id and reviewed.
+AUTOMATIC
+Build, test and scan
+Compile, run tests, scan for vulnerabilities, sign the artifact.
+APPROVAL GATE
+Change gate
+The gate reads the evidence: standard changes are approved automatically, normal changes go to the CAB, emergency changes to the ECAB.
+AI AGENT
+Deploy
+The release agent deploys in the agreed window and respects freezes.
+AI AGENT
+Verify
+The service level objective is checked for 15 minutes. If the error budget burns, the deploy is rolled back.
+AUTOMATIC
+Close and learn
+Release and change records close with the outcome. DORA numbers update.

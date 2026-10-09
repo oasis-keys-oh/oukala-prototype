@@ -1,0 +1,93 @@
+RAID LOG
+Risks, assumptions, issues, dependencies
+
+8 open risks carry $252K of exposure, and the largest is lumen slips the search indexer again at $108K. 3 issues are open, 3 dependencies wait on something, and 2 assumptions have not been checked. Owners include employees, AI agents, contractors, managed service providers.
+
+ƒ Risk exposure
+PMBOK
+Why am I seeing this?
+Projects
+All projects
+4
+Types
+All types
+5
+Owner is a
+All four kinds
+4
+Add an entry
+Dashboard and register
+Board
+Heat map
+Linked records
+Risk heat map
+Drag a dot to change its probability and impact. Cells with more than six items show a count.
+PROBABILITY
+80%
+60%
+104
+201
+101
+40%
+102
+103
+301
+101
+20%
+202
+401
+401
+102
+5%
+Minor
+Moderate
+Serious
+Major
+Severe
+Low: rating under 8
+Medium: 8 to 14
+High: 15 or more
+Rating is probability (1 to 5) × impact (1 to 5). Dot labels are the item number, for example 101 is R-101. A dark dot is a risk, an outlined dot an assumption.
+Largest exposures
+Probability × cost impact
+ƒ Risk exposure
+Lumen slips the search indexer again
+60% × $180K · Codification · Priya Shah
+$108K
+Pilot date has no cushion
+60% × $55K · Taxonomy · Dev Rao
+$33K
+Content migration finds malformed legacy records
+40% × $65K · Codification · Sam Patel
+$26K
+Cutover window collides with year-end freeze
+20% × $120K · Contracts · Maya Ortiz
+$24K
+Test automation contractor leaves before acceptance testing ends
+60% × $35K · Codification · Test Agent
+$21K
+Failover rehearsal exposes a gap in the standby region
+40% × $45K · Portal · Tom Becker
+$18K
+How a risk is handled
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ISO/IEC 27001.
+Add a step
+Open in Workflow designer
+PERSON
+Identify
+Anyone or any agent logs a risk, assumption, issue, dependency or decision.
+PERSON
+Rate
+Probability and impact are rated 1 to 5; risks also get a cost, so exposure is in dollars.
+APPROVAL GATE
+Own
+Every item has an owner who can be an employee, an AI agent, a contractor or a provider. An AI agent needs an accountable human.
+PERSON
+Respond
+Mitigate, accept, transfer or avoid. The response links to a schedule task.
+AUTOMATIC
+Watch exposure
+Exposure adds up by project and owner kind; overdue and unowned items are flagged.
+APPROVAL GATE
+Close or escalate
+A risk that happens becomes an issue; a closed item keeps its history.

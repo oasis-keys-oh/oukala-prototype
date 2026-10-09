@@ -1,0 +1,81 @@
+AUTOMATION · DECISION TABLES
+Write the rule once, see it decide
+
+4 tables hold 27 rules that route invoices, changes, tickets and catalog requests. Today 41% of approvals clear by rule alone. No overlaps or gaps.
+
+ƒ Rule-decided approvals
+Claude Sonnet · 84%
+Invoice auto-approval
+Change risk to approver
+Ticket priority matrix
+Catalog routing
+Invoice auto-approval
+Decides who must look at an invoice. Rows are read top to bottom; the first match wins.
+Add rule
+Suggest a rule
+HIT POLICY
+Any
+Priority
+Collect: count
+First
+Unique
+Collect
+The first row that matches wins. Order matters, so drag rows to reorder.
+#
+Invoice amount
+NUMBER
+PO match
+TEXT
+Vendor risk
+TEXT
+Work accepted
+TEXT
+Decision
+OUTPUT
+Approver
+OUTPUT
+R1
+R2
+R3
+R4
+R5
+R6
+
+Click any cell to edit. Number columns accept > 50000, [10..20] or - for any. Text columns accept Low,Medium or not(High). Drag the grip to reorder.
+
+Conflicts and gaps
+Checked live as you edit.
+No conflicts or gaps
+6 rows checked against 126 sampled inputs
+Rows R4 and R6 can both match, for example invoice amount 0, po match Match, vendor risk High, work accepted No.
+First policy: R4 wins because it is higher. That is fine if intended.
+Rows R4 and R5 can both match, for example invoice amount 0, po match Mismatch, vendor risk Low, work accepted No.
+First policy: R4 wins because it is higher. That is fine if intended.
+Rows R5 and R6 can both match, for example invoice amount 0, po match Mismatch, vendor risk High, work accepted Yes.
+First policy: R5 wins because it is higher. That is fine if intended.
+Tester
+Enter an input and see which rule fires and why. The matched row lights up above.
+Invoice amount
+PO match
+Match
+Mismatch
+Missing
+Vendor risk
+Low
+Medium
+High
+Work accepted
+Yes
+No
+Rule R4 fires
+First
+Decision
+Hold until accepted
+Approver
+Project manager
+WHY
+Invoice amount 62,900 satisfies “-”
+PO match Match satisfies “-”
+Vendor risk Medium satisfies “-”
+Work accepted No satisfies “No”
+Why 3 other rows did not fire

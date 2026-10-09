@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext();const p=await c.newPage();
+await p.goto('file://'+path.resolve(process.argv[2],'full.html'));await p.waitForTimeout(800);
+await p.evaluate(()=>SCALE.set(true));
+const cl=await c.newCDPSession(p);await cl.send('Profiler.enable');await cl.send('Profiler.setSamplingInterval',{interval:200});await cl.send('Profiler.start');
+await p.evaluate(process.argv[3]);
+const {profile}=await cl.send('Profiler.stop');
+const self={};const dt=profile.timeDeltas;const idIdx={};profile.nodes.forEach(n=>idIdx[n.id]=n);
+profile.samples.forEach((id,i)=>{const n=idIdx[id];const k=n.callFrame.functionName+":"+n.callFrame.lineNumber;self[k]=(self[k]||0)+(dt[i]||0)});
+const tot=Object.values(self).reduce((a,b)=>a+b,0);
+console.log('total ms',Math.round(tot/1000));Object.entries(self).sort((a,b)=>b[1]-a[1]).slice(0,14).forEach(([k,v])=>console.log(Math.round(v/1000),k));await b.close()})();

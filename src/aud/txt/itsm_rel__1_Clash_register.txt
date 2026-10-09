@@ -1,0 +1,93 @@
+SERVICE MANAGEMENT · RELEASES
+Ship together, with proof
+
+12 releases are in flight on 2 trains. The Codification beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes to a go or no-go decision before Oct 8.
+
+New release
+Go or no-go: REL-2608
+Sprints and backlogs
+Release trains
+ƒ Release change failure rate
+ƒ Lead time for changes
+ITIL 5
+DORA metrics
+SAFe
+Dashboard and releases
+Clash register
+Readiness tree
+Exit criteria
+Go or no-go
+
+10 clashes across 6 releases: 2 hard, 8 soft. Hard clashes block a go decision until the date moves or someone accepts the risk in writing.
+
+How clash detection works
+The rule, in plain words
+
+Hard clash: the release date sits inside a blackout freeze (or a restricted freeze for a major release), or another release or change touches the same service within 1 day. Soft clash: another release or change touches the same service within 3 days, touches a service this one depends on or supports within 1 day, or the same release manager has two windows on one day. Changes linked to the release are never counted against it.
+
+ITIL 5
+DORA metrics
+Freeze and restricted periods
+Set in the change calendar
+Blackout
+Financial close freeze
+Nov 16 to Nov 20
+Restricted
+Thanksgiving reduced staffing
+Nov 25 to Nov 27
+Blackout
+Year-end freeze
+Dec 21 to Jan 4
+Clash register
+Every clash, and the first clear day for each affected release
+Service
+All
+4
+Severity
+All
+2
+Export CSV
+RELEASE	NAME	SERVICE	TARGET	SEVERITY	COLLIDES WITH	WHY	FIRST CLEAR DAY
+REL-2607	Portal accessibility fixes	Codification Portal	Oct 21	Soft	REL-2615 Conditional access: editors VPN named location	Identity (Entra ID) depends on or supports Codification Portal and changes within a day (REL-2615)	Move to Oct 23
+REL-2607	Portal accessibility fixes	Codification Portal	Oct 21	Soft	CHG0317 Conditional access: VPN named location	Identity (Entra ID) depends on or supports Codification Portal: change CHG0317 within a day	Move to Oct 23
+REL-2608	Standards API 2.3.1 batch hotfix	Codification Platform	Oct 8	Soft	CHG0316 Monthly patching, Platform servers	Codification Portal depends on or supports Codification Platform: change CHG0316 within a day	Move to Oct 12
+REL-2610	Portal standby failover (RB-031 v8)	Codification Portal	Oct 27	Soft	REL-2617 Autoscale and capacity alerts	Same service, 2 days apart (REL-2617)	Move to Nov 2
+REL-2610	Portal standby failover (RB-031 v8)	Codification Portal	Oct 27	Hard	CHG0323 Codification content migration dry run	Change CHG0323 on the same service on the same day	Move to Nov 2
+REL-2614	ERP posting-lock vendor patch	Lease subledger (ERP)	Nov 18	Hard	fz1 Financial close freeze	Inside the Financial close freeze blackout, Nov 16 to Nov 20. A hotfix needs a CIO exception.	Move to Nov 23
+REL-2615	Conditional access: editors VPN named location	Identity (Entra ID)	Oct 20	Soft	REL-2607 Portal accessibility fixes	Codification Portal depends on or supports Identity (Entra ID) and changes within a day (REL-2607)	Move to Oct 22
+REL-2617	Autoscale and capacity alerts	Codification Portal	Oct 29	Soft	REL-2610 Portal standby failover (RB-031 v8)	Same service, 2 days apart (REL-2610)	Move to Nov 2
+REL-2617	Autoscale and capacity alerts	Codification Portal	Oct 29	Soft	CHG0322 Enable portal standby failover (RB-031 v8)	Change CHG0322 on the same service, 2 days apart	Move to Nov 2
+REL-2617	Autoscale and capacity alerts	Codification Portal	Oct 29	Soft	CHG0323 Codification content migration dry run	Change CHG0323 on the same service, 2 days apart	Move to Nov 2
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+Release management process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Plan the release
+Scope features, set the date, check the calendar for clashes.
+AUTOMATIC
+Generate readiness tasks
+The standard checklist creates child tasks with owners, due dates and gates.
+AI AGENT
+Build and test
+Pipeline builds; Test Agent runs the suite; QA and editors run UAT.
+AUTOMATIC
+Evaluate exit criteria
+Ten criteria are scored automatically from tests, pull requests and defects.
+APPROVAL GATE
+Security review and CAB
+Security signs off the scan; the change advisory board approves the change record.
+APPROVAL GATE
+Training, communications and OCM approved
+Training approved, Communications team approves the package, OCM plan implemented.
+APPROVAL GATE
+Go or no-go
+A named person decides from the evidence. Hard clashes block go.
+AUTOMATIC
+Deploy through the pipeline
+The deployment runs in the approved window with rollback ready.
+PERSON
+Post-release review
+Failures feed the readiness template; DORA measures update.

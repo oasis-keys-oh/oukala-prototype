@@ -1,0 +1,178 @@
+OBSERVABILITY AND SLOS
+Promise a level of service, and watch the budget
+
+4 of 8 SLOs are inside their error budget. The portal availability budget was spent by the incident that began at 09:08 today: its SLI is 99.41% against a 99.9% promise. The platform covers 68% of what a mid-size business buys separate observability tools for.
+
+ƒ SLOs inside error budget
+ƒ Observability coverage
+New SLO
+New synthetic check
+SRE: SLOs and error budgets
+OpenTelemetry
+SLOs and error budgets
+Synthetic checks
+Uptime reports
+Coverage: what this replaces
+SLOS INSIDE BUDGET
+4 of 8
+50% · target 90%
+BURN ALERTS FIRING
+23
+SL1, SL2, SL3, SL4, SL5, SL8
+WORST SLI
+99.40%
+30 day window
+BUDGET SPENT BY INCIDENTS
+1,315 bad min
+across all SLOs
+ƒ SLOs inside error budget
+Service level objectives
+An SLO is a promise measured on what users feel. The error budget is what you may miss. Select one to see its budget and multi-window burn rate alerts.
+New SLO
+Budget spent
+99.9% over 30 days
+Portal readers can load pagesCodification Portal
+99.41% SLI
+0% budget left
+Burning fast
+99% over 30 days
+Portal p95 latency under 2 secondsCodification Portal
+99.41% SLI
+41% budget left
+Budget spent
+99.9% over 30 days
+Editors can save draftsCodification Platform
+99.40% SLI
+0% budget left
+Budget spent
+99.5% over 30 days
+Search index is freshSearch and indexing
+99.47% SLI
+0% budget left
+Budget spent
+99.5% over 30 days
+Search API answers in under 1.5 secondsSearch and indexing
+99.46% SLI
+0% budget left
+Inside budget
+99.95% over 30 days
+Sign-in works (Entra ID and MFA)Identity (Entra ID)
+100.00% SLI
+100% budget left
+Inside budget
+99.5% over 30 days
+Lease postings completeLease subledger (ERP)
+100.00% SLI
+100% budget left
+Burning fast
+99.5% over 30 days
+Remote access (VPN) is upNetwork and VPN
+99.81% SLI
+63% budget left
+Portal readers can load pages: error budget
+Budget remaining over the last 30 days. Below zero means the promise was broken. It was spent by the incident that started at 09:08 today.
+ƒ SLOs inside error budget
+-100%
+-50%
+0%
+50%
+100%
+Sep 7 13:30
+Sep 13 13:30
+Sep 19 13:30
+Sep 24 13:30
+Sep 30 13:30
+13:30
+budget spent
+Definition
+What counts as good, and who owns it.
+Service
+Codification Portal
+Objective
+99.9% over 30 days
+Good period
+Share of 5-minute periods with error rate under 2% and p95 latency under 3 seconds
+Allowed bad time
+43 minutes (0.7 hours)
+Bad time so far
+255 minutes
+Owner
+Tom Becker
+Current state
+Bad right now
+Impact analysis
+Incidents
+Multi-window, multi-burn-rate alerts
+The standard SRE pattern: page quickly for fast burns, ticket for slow burns, and avoid pages for blips.
+ALERT WINDOW	BURN RATE NEEDED	NOW (LONG / SHORT)	MEANS	ACTION	STATE
+1 h and 5 min	14.4×	1,000.0× / 1,000.0×	2% of the budget in 1 hour	Page on-call now	Firing
+6 h and 30 min	6×	708.3× / 1,000.0×	5% of the budget in 6 hours	Page on-call now	Firing
+1 d and 2 h	3×	177.1× / 1,000.0×	10% of the budget in 1 day	Open a ticket and watch	Firing
+3 d and 6 h	1×	59.0× / 708.3×	10% of the budget in 3 days	Open a ticket	Firing
+Burn rate = (bad share of the window) ÷ (1 − target) = bad share ÷ 0.10%. A burn rate of 1 spends exactly the whole budget by the end of the 30 days. An alert needs both the long and the short window above its factor, so it fires fast and stops fast.
+All SLOs
+Sorted by what needs attention.
+SLO	TARGET	SLI, 30 DAYS	BUDGET LEFT	BURN RATE, 1 H	OWNER
+Portal readers can load pages
+SL1 · Codification Portal
+	99.9%	99.41%	spent	1,000.0×	
+Tom Becker
+
+Portal p95 latency under 2 seconds
+SL2 · Codification Portal
+	99%	99.41%	41%	100.0×	
+Tom Becker
+
+Editors can save drafts
+SL3 · Codification Platform
+	99.9%	99.40%	spent	1,000.0×	
+Priya Shah
+
+Search index is fresh
+SL4 · Search and indexing
+	99.5%	99.47%	spent	200.0×	
+Marco Ellis
+
+Search API answers in under 1.5 seconds
+SL5 · Search and indexing
+	99.5%	99.46%	spent	200.0×	
+Marco Ellis
+
+Sign-in works (Entra ID and MFA)
+SL6 · Identity (Entra ID)
+	99.95%	100.00%	100%	0.0×	
+Rina Okafor
+
+Lease postings complete
+SL7 · Lease subledger (ERP)
+	99.5%	100.00%	100%	0.0×	
+Avery Chen
+
+Remote access (VPN) is up
+SL8 · Network and VPN
+	99.5%	99.81%	63%	66.7×	
+Sam Patel
+8 of 8 rows
+Scroll for more · rows are drawn as you scroll
+How an SLO is run
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the SLI
+What counts as a good 5-minute period.
+APPROVAL GATE
+Set the objective
+For example 99.9% over 30 days.
+AUTOMATIC
+Measure
+Good and bad periods counted from the metric model.
+AUTOMATIC
+Burn rate alerts
+Multi-window rules page or ticket.
+APPROVAL GATE
+Spend the budget wisely
+When it is spent, risky changes need approval.
+PERSON
+Review
+SLOs are reviewed quarterly.

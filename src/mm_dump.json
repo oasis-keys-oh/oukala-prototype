@@ -1,0 +1,1537 @@
+{
+ "screens": [
+  [
+   "home",
+   "Home",
+   "platform"
+  ],
+  [
+   "trace",
+   "Executive trace",
+   "portfolio"
+  ],
+  [
+   "inv",
+   "Invoice approval",
+   "portfolio"
+  ],
+  [
+   "fo",
+   "First Officer",
+   "people"
+  ],
+  [
+   "tower",
+   "AI Control Tower",
+   "ai"
+  ],
+  [
+   "metrics",
+   "Metrics",
+   "platform"
+  ],
+  [
+   "kg",
+   "Impact graph",
+   "know"
+  ],
+  [
+   "loop",
+   "Feedback loop",
+   "platform"
+  ],
+  [
+   "port",
+   "Demand and priorities",
+   null
+  ],
+  [
+   "ims",
+   "Master schedule",
+   null
+  ],
+  [
+   "plan",
+   "Project plan",
+   null
+  ],
+  [
+   "log",
+   "Product log",
+   null
+  ],
+  [
+   "adm_studio",
+   "Admin studio",
+   "platform"
+  ],
+  [
+   "adm_sec",
+   "Security and access",
+   "platform"
+  ],
+  [
+   "adm_env",
+   "Environments and releases",
+   "platform"
+  ],
+  [
+   "adm_meter",
+   "Licensing and billing",
+   "platform"
+  ],
+  [
+   "adm_gate",
+   "AI gateway and tokenomics",
+   "ai"
+  ],
+  [
+   "adm_audit",
+   "Audit and compliance",
+   "platform"
+  ],
+  [
+   "bud_over",
+   "Budgets overall",
+   "portfolio"
+  ],
+  [
+   "bud_model",
+   "Financial model",
+   "portfolio"
+  ],
+  [
+   "bud_ven",
+   "Vendors and contracts",
+   "portfolio"
+  ],
+  [
+   "bud_ben",
+   "Benefits realization",
+   "portfolio"
+  ],
+  [
+   "bud_doa",
+   "Delegation of authority",
+   "portfolio"
+  ],
+  [
+   "chat_home",
+   "Chat and agents",
+   "platform"
+  ],
+  [
+   "dev_pipe",
+   "Delivery pipeline",
+   "automate"
+  ],
+  [
+   "itom_dev",
+   "Environments and DORA",
+   "ops"
+  ],
+  [
+   "plat_map",
+   "Master process flow",
+   "platform"
+  ],
+  [
+   "plat_data",
+   "Master data model",
+   "platform"
+  ],
+  [
+   "exe_dash",
+   "Executive dashboard",
+   "portfolio"
+  ],
+  [
+   "exe_strat",
+   "Strategy alignment",
+   "portfolio"
+  ],
+  [
+   "exe_risk",
+   "Risk heat map and Monte Carlo",
+   "portfolio"
+  ],
+  [
+   "exe_apps",
+   "Application portfolio",
+   "portfolio"
+  ],
+  [
+   "exe_board",
+   "Board pack",
+   "portfolio"
+  ],
+  [
+   "exe_scen",
+   "Scenario compare",
+   "portfolio"
+  ],
+  [
+   "flw_design",
+   "Workflow designer",
+   "automate"
+  ],
+  [
+   "flw_asmt",
+   "Assessments",
+   "automate"
+  ],
+  [
+   "flw_appr",
+   "Approvals inbox",
+   "automate"
+  ],
+  [
+   "flw_dmn",
+   "Decision tables",
+   "automate"
+  ],
+  [
+   "flw_bpmn",
+   "Process models (BPMN)",
+   "automate"
+  ],
+  [
+   "flw_agent",
+   "Agentic workflows",
+   "automate"
+  ],
+  [
+   "flw_hub",
+   "Integration hub",
+   "automate"
+  ],
+  [
+   "itom_cmdb",
+   "CMDB",
+   "ops"
+  ],
+  [
+   "itom_model",
+   "CMDB data model",
+   "ops"
+  ],
+  [
+   "itom_graph",
+   "Dependency views",
+   "ops"
+  ],
+  [
+   "itom_disc",
+   "Discovery and ingestion",
+   "ops"
+  ],
+  [
+   "itom_health",
+   "CMDB health and governance",
+   "ops"
+  ],
+  [
+   "itom_fin",
+   "Cloud cost (FinOps)",
+   "ops"
+  ],
+  [
+   "itsm_inc",
+   "Incidents",
+   "service"
+  ],
+  [
+   "itsm_prb",
+   "Problems and known errors",
+   "service"
+  ],
+  [
+   "itsm_chg",
+   "Changes",
+   "service"
+  ],
+  [
+   "itsm_mi",
+   "Major incident",
+   "service"
+  ],
+  [
+   "itsm_home",
+   "Service desk overview",
+   "service"
+  ],
+  [
+   "kcs_home",
+   "Knowledge management",
+   "know"
+  ],
+  [
+   "kcs_edit",
+   "Article editor",
+   "know"
+  ],
+  [
+   "kcs_ask",
+   "Ask the knowledge base",
+   "know"
+  ],
+  [
+   "kcs_gap",
+   "Knowledge gaps and analytics",
+   "know"
+  ],
+  [
+   "kcs_prompt",
+   "Prompt library",
+   "ai"
+  ],
+  [
+   "kcs_test",
+   "AI test management",
+   "ai"
+  ],
+  [
+   "kcs_skills",
+   "Agent skills",
+   "know"
+  ],
+  [
+   "vault",
+   "Knowledge graph",
+   "know"
+  ],
+  [
+   "exe_mat",
+   "Maturity models",
+   "portfolio"
+  ],
+  [
+   "itom_evt",
+   "Event management",
+   "ops"
+  ],
+  [
+   "obs_dash",
+   "Dashboards and metrics",
+   "ops"
+  ],
+  [
+   "itom_slo",
+   "Observability and SLOs",
+   "ops"
+  ],
+  [
+   "itom_run",
+   "Runbooks and automation",
+   "ops"
+  ],
+  [
+   "obs_std",
+   "Standard change catalog",
+   "service"
+  ],
+  [
+   "svc_oncall",
+   "On-call and escalation",
+   "service"
+  ],
+  [
+   "svc_skills",
+   "Skills and availability",
+   "people"
+  ],
+  [
+   "ppl_org",
+   "Org chart and workload",
+   "people"
+  ],
+  [
+   "ppl_cap",
+   "Resource planning",
+   "people"
+  ],
+  [
+   "ppl_train",
+   "Training and learning",
+   "people"
+  ],
+  [
+   "ppl_av",
+   "Rooms and conference scheduling",
+   "people"
+  ],
+  [
+   "ppl_jrny",
+   "Journey maps",
+   "people"
+  ],
+  [
+   "ppl_meet",
+   "Forums and minutes",
+   "people"
+  ],
+  [
+   "ppl_perf",
+   "Performance management",
+   "people"
+  ],
+  [
+   "plat_debt",
+   "Technical debt ledger",
+   "platform"
+  ],
+  [
+   "plat_fab",
+   "Integration fabric",
+   "platform"
+  ],
+  [
+   "plat_gate",
+   "Citizen apps",
+   "platform"
+  ],
+  [
+   "plat_mcp",
+   "AI and coding clients",
+   "ai"
+  ],
+  [
+   "plat_dmap",
+   "Data connections",
+   "platform"
+  ],
+  [
+   "plat_pmap",
+   "Process connections",
+   "platform"
+  ],
+  [
+   "plat_reg",
+   "Platform registry",
+   "platform"
+  ],
+  [
+   "ppm_proj",
+   "Projects and teams",
+   "portfolio"
+  ],
+  [
+   "ppm_raid",
+   "RAID log",
+   "portfolio"
+  ],
+  [
+   "itsm_rel",
+   "Releases",
+   "service"
+  ],
+  [
+   "agile_board",
+   "Sprints and backlogs",
+   "service"
+  ],
+  [
+   "agile_art",
+   "Release trains and increments",
+   "service"
+  ],
+  [
+   "plat_self",
+   "Self-build",
+   "platform"
+  ],
+  [
+   "svc_sla",
+   "SLAs, OLAs and XLAs",
+   "service"
+  ],
+  [
+   "ppm_sow",
+   "SOW and contract analyzer",
+   "portfolio"
+  ],
+  [
+   "svc_cat",
+   "Service catalog",
+   "service"
+  ],
+  [
+   "svc_req",
+   "Requests and fulfillment",
+   "service"
+  ],
+  [
+   "svc_portal",
+   "Self-service portal",
+   "service"
+  ],
+  [
+   "svc_asset",
+   "Assets and software licenses",
+   "service"
+  ],
+  [
+   "svc_notify",
+   "Notification engine",
+   "automate"
+  ],
+  [
+   "svc_360",
+   "Service portfolio and map",
+   "service"
+  ],
+  [
+   "tbm_model",
+   "Cost transparency (TBM and ATUM)",
+   "portfolio"
+  ],
+  [
+   "kcs_viz",
+   "Visualization builder",
+   "know"
+  ],
+  [
+   "ppm_wbs",
+   "WBS and task sheet",
+   "portfolio"
+  ]
+ ],
+ "procs": [
+  [
+   "ims",
+   "How the master schedule stays true",
+   5
+  ],
+  [
+   "plan",
+   "How a project plan is built and kept current",
+   5
+  ],
+  [
+   "inv",
+   "Invoice approval",
+   5
+  ],
+  [
+   "chat_home",
+   "Chat and agentic fulfillment",
+   6
+  ],
+  [
+   "dev_pipe",
+   "How a change reaches production",
+   7
+  ],
+  [
+   "itom_dev",
+   "How delivery performance is measured",
+   4
+  ],
+  [
+   "plat_map",
+   "How the master map stays true",
+   4
+  ],
+  [
+   "plat_data",
+   "How the master data model stays current",
+   4
+  ],
+  [
+   "exe_dash",
+   "How the executive views are built",
+   4
+  ],
+  [
+   "exe_strat",
+   "How strategy becomes measured work",
+   5
+  ],
+  [
+   "exe_risk",
+   "How risk and date confidence are produced",
+   4
+  ],
+  [
+   "exe_apps",
+   "How an application gets its TIME class",
+   4
+  ],
+  [
+   "exe_board",
+   "How the board pack is written and approved",
+   4
+  ],
+  [
+   "exe_scen",
+   "How a scenario is compared",
+   4
+  ],
+  [
+   "flw_design",
+   "How a workflow is made and kept",
+   6
+  ],
+  [
+   "flw_appr",
+   "How an approval gets decided",
+   6
+  ],
+  [
+   "flw_asmt",
+   "How an assessment is built, answered and used",
+   6
+  ],
+  [
+   "flw_dmn",
+   "How a decision table is made and used",
+   5
+  ],
+  [
+   "itom_cmdb",
+   "How a configuration item is created and kept true",
+   6
+  ],
+  [
+   "itom_model",
+   "How the data model changes",
+   4
+  ],
+  [
+   "itom_graph",
+   "How impact analysis walks the graph",
+   4
+  ],
+  [
+   "itom_disc",
+   "How a tool feeds the CMDB",
+   5
+  ],
+  [
+   "itom_health",
+   "How CMDB quality is governed",
+   4
+  ],
+  [
+   "itom_fin",
+   "How cloud cost is managed",
+   4
+  ],
+  [
+   "itsm_inc",
+   "Incident process (ITIL 5 Support activity)",
+   7
+  ],
+  [
+   "itsm_prb",
+   "Problem process (ITIL 5 Support and Evolve)",
+   6
+  ],
+  [
+   "itsm_chg",
+   "Change enablement process (ITIL 5 Transition)",
+   6
+  ],
+  [
+   "itsm_mi",
+   "Major incident process (ITIL 5 Support)",
+   5
+  ],
+  [
+   "itsm_home",
+   "Service desk operating rhythm",
+   4
+  ],
+  [
+   "kcs_home",
+   "How knowledge flows from source to output to automation",
+   6
+  ],
+  [
+   "kcs_skills",
+   "From knowledge item to approved agent skill",
+   7
+  ],
+  [
+   "kcs_gap",
+   "From a failed search to published knowledge",
+   5
+  ],
+  [
+   "kcs_prompt",
+   "How a prompt reaches production",
+   4
+  ],
+  [
+   "kcs_ask",
+   "How an answer is built",
+   4
+  ],
+  [
+   "kcs_edit",
+   "Article lifecycle",
+   5
+  ],
+  [
+   "kcs_test",
+   "How AI quality is tested",
+   4
+  ],
+  [
+   "vault",
+   "How the knowledge graph is kept true",
+   5
+  ],
+  [
+   "exe_mat",
+   "How a capability's level is set and how it moves",
+   7
+  ],
+  [
+   "itom_evt",
+   "How an event becomes an incident",
+   7
+  ],
+  [
+   "obs_dash",
+   "How a metric reaches a dashboard",
+   5
+  ],
+  [
+   "itom_slo",
+   "How an SLO is run",
+   6
+  ],
+  [
+   "itom_run",
+   "From alert to action",
+   7
+  ],
+  [
+   "obs_std",
+   "Life of a standard change",
+   6
+  ],
+  [
+   "svc_oncall",
+   "How on-call cover is built and used",
+   6
+  ],
+  [
+   "svc_skills",
+   "How skills and availability stay true",
+   5
+  ],
+  [
+   "svc_oncall_t1",
+   "Behind this tab: Coverage map",
+   4
+  ],
+  [
+   "svc_oncall_t2",
+   "Behind this tab: Recommendations",
+   4
+  ],
+  [
+   "svc_oncall_t3",
+   "Behind this tab: Auto-assignment",
+   4
+  ],
+  [
+   "svc_oncall_t4",
+   "Behind this tab: Escalation",
+   4
+  ],
+  [
+   "svc_oncall_t5",
+   "Behind this tab: Overrides and swaps",
+   4
+  ],
+  [
+   "svc_skills_t0",
+   "Behind this tab: Overview",
+   4
+  ],
+  [
+   "svc_skills_t1",
+   "Behind this tab: Matrix",
+   4
+  ],
+  [
+   "svc_skills_t2",
+   "Behind this tab: Who can do this",
+   4
+  ],
+  [
+   "svc_skills_t3",
+   "Behind this tab: Gap analysis",
+   4
+  ],
+  [
+   "svc_skills_t4",
+   "Behind this tab: Certifications",
+   4
+  ],
+  [
+   "svc_skills_t5",
+   "Behind this tab: Availability",
+   4
+  ],
+  [
+   "svc_skills_t6",
+   "Behind this tab: Taxonomy",
+   4
+  ],
+  [
+   "ppl_org",
+   "How a person, agent, contractor or provider joins the org",
+   6
+  ],
+  [
+   "ppl_perf",
+   "How a performance cycle runs",
+   6
+  ],
+  [
+   "ppl_cap",
+   "How resource planning works",
+   6
+  ],
+  [
+   "ppl_jrny",
+   "How a journey becomes a workflow",
+   6
+  ],
+  [
+   "plat_debt",
+   "How technical debt is found, owned and paid down",
+   5
+  ],
+  [
+   "plat_fab",
+   "How a connector or feed goes live",
+   8
+  ],
+  [
+   "plat_gate",
+   "How a citizen app goes from idea to certified",
+   5
+  ],
+  [
+   "plat_mcp",
+   "How an AI or coding client uses the platform",
+   5
+  ],
+  [
+   "plat_dmap",
+   "How the data connection map stays true",
+   5
+  ],
+  [
+   "plat_pmap",
+   "How the process connection map stays true",
+   5
+  ],
+  [
+   "plat_reg",
+   "How the registry stays true",
+   5
+  ],
+  [
+   "port",
+   "How demand becomes funded work",
+   6
+  ],
+  [
+   "ppm_proj",
+   "How people, agents and providers get assigned",
+   6
+  ],
+  [
+   "ppm_raid",
+   "How a risk is handled",
+   6
+  ],
+  [
+   "itsm_rel",
+   "Release management process",
+   9
+  ],
+  [
+   "agile_board",
+   "Sprint process",
+   6
+  ],
+  [
+   "agile_art",
+   "Release train process",
+   6
+  ],
+  [
+   "svc_sla",
+   "How an agreement is made, measured and kept",
+   7
+  ],
+  [
+   "svc_sla_t0",
+   "Behind this tab: Dashboard and agreements",
+   4
+  ],
+  [
+   "svc_sla_t1",
+   "Behind this tab: Designer",
+   4
+  ],
+  [
+   "svc_sla_t3",
+   "Behind this tab: Clock simulator",
+   4
+  ],
+  [
+   "svc_sla_t4",
+   "Behind this tab: Breaches and credits",
+   4
+  ],
+  [
+   "svc_sla_t5",
+   "Behind this tab: Experience (XLA)",
+   4
+  ],
+  [
+   "ppm_sow",
+   "From vendor proposal to managed contract",
+   8
+  ],
+  [
+   "svc_cat",
+   "From catalog item to delivered service",
+   6
+  ],
+  [
+   "svc_req",
+   "How a request moves",
+   6
+  ],
+  [
+   "svc_portal",
+   "What happens when you order",
+   5
+  ],
+  [
+   "svc_asset",
+   "Life of a device and a license",
+   5
+  ],
+  [
+   "svc_notify",
+   "How a notification travels",
+   5
+  ],
+  [
+   "svc_360",
+   "Service portfolio and map",
+   5
+  ],
+  [
+   "tbm_model",
+   "Cost transparency and scaling",
+   5
+  ],
+  [
+   "kcs_viz",
+   "How a visual gets from data to dashboard",
+   6
+  ],
+  [
+   "ppm_wbs",
+   "How the work breakdown becomes the schedule",
+   5
+  ]
+ ],
+ "ents": [
+  [
+   "incident",
+   "Incident",
+   "ITSM",
+   "number,short_description,service,ci,impact,urgency,priority,state,assignment_group,opened_at,resolved_at,business_duration,sla_due,caller,reassignment_count,reopen_count,customer_tier,contact_type,made_sla,first_response_at"
+  ],
+  [
+   "change_request",
+   "Change request",
+   "ITSM",
+   "number,type,risk,state,service,ci,start_date,end_date,assignment_group,approval,priority,customer_tier,close_code"
+  ],
+  [
+   "request_item",
+   "Request item",
+   "Service catalog",
+   "number,cat_item,offering,requested_for,opened_by,state,price,due_date,stage,priority,service,assignment_group,customer_tier,cat_class,returned,service_offering,lifecycle_state,worker_type,region,role_level,security_tier,process_cost,cycle_hours,xla_rating"
+  ],
+  [
+   "project",
+   "Project",
+   "PPM",
+   "id,name,manager,status,start,finish,baseline_finish,percent_complete,budget,actual_cost,spi,cpi"
+  ],
+  [
+   "project_task",
+   "Project task (WBS line)",
+   "PPM",
+   "wbs,name,planned_start,planned_finish,actual_start,actual_finish,duration,percent_complete,predecessors,owner,float,milestone"
+  ],
+  [
+   "cmdb_ci",
+   "Configuration item",
+   "CMDB",
+   "name,class,environment,operational_status,owned_by,support_group,business_criticality,uptime_30d,last_discovered,lifecycle_stage,managed_by_group,location,vendor,discovery_source,correlation_id,short_description,health_score,service"
+  ],
+  [
+   "business_service",
+   "Business service",
+   "CMDB",
+   "name,service_owner,tier,availability_30d,monthly_cost,users,maturity"
+  ],
+  [
+   "invoice",
+   "Invoice",
+   "Finance",
+   "id,vendor,amount,status,due,po,accepted_work,paid_to_date"
+  ],
+  [
+   "person",
+   "Person, agent or provider",
+   "Directory",
+   "name,kind,role,team,manager,hours,load,skills"
+  ],
+  [
+   "contract_line",
+   "Contract line (clause, commitment, outcome)",
+   "Contract analyzer",
+   "clause,type,measure,target,due,playbook,owner,page,source_text,value,party,confidence,status,playbook_clause,route,risk,wbs_link,sla_link,invoice_link,raid_link,budget_link"
+  ],
+  [
+   "wbs_line",
+   "WBS line",
+   "Project plan",
+   "wbs,n,p,lv,dur,pct,ms,es,ef,as,af,bes,bef,fl,crit,pred,ct,cd,cost,ac,own,dv"
+  ],
+  [
+   "service_offering",
+   "Service offering",
+   "Service portfolio",
+   "name,environment,operational_status,lifecycle_stage,owned_by,support_group,business_criticality,managed_by_group,location,vendor,discovery_source,last_discovered,correlation_id,short_description,service_owner,tier,sla_target,users,parent_service,support_hours,delivery_manager,price_model,service,unit,unit_cost,fulfil_sla_hours,pending,deployed,decommissioned,approval_rule"
+  ],
+  [
+   "core_company",
+   "Vendor (related record)",
+   "CMDB",
+   "name,environment,operational_status,lifecycle_stage,owned_by,support_group,business_criticality,managed_by_group,location,vendor,discovery_source,last_discovered,correlation_id,short_description,vendor_type,risk_rating,primary_contact"
+  ],
+  [
+   "ast_contract",
+   "Contract (related record)",
+   "CMDB",
+   "name,environment,operational_status,lifecycle_stage,owned_by,support_group,business_criticality,managed_by_group,location,vendor,discovery_source,last_discovered,correlation_id,short_description,contract_number,start_date,end_date,annual_value,renewal_notice_days"
+  ],
+  [
+   "cmdb_rel_ci",
+   "CI relationship",
+   "CMDB",
+   "parent,child,type,source"
+  ],
+  [
+   "problem_record",
+   "Problem record",
+   "ITSM",
+   "number,short_description,service,state,priority,owner,root_cause,workaround,repeat_incidents,users_affected"
+  ],
+  [
+   "change_approval_policy",
+   "Change approval policy",
+   "ITSM",
+   "id,name,change_type,service,ci_class,min_risk,requesting_group,environment,min_cost,approvers,quorum,sla_hours"
+  ],
+  [
+   "incident_priority_policy",
+   "Incident priority policy",
+   "ITSM",
+   "impact_score,impact_band,urgency_requested,urgency_applied,caller_role,vip_level,priority,overridden"
+  ],
+  [
+   "maturity_capability",
+   "Maturity capability",
+   "Maturity models",
+   "name,model,cur,t1,t3,t5,owner,status"
+  ],
+  [
+   "alert_event",
+   "Alert (deduplicated event)",
+   "Event management",
+   "number,severity,state,ci,service,rule,dedup_key,event_count,first_seen,last_seen,group,incident,acknowledged_by"
+  ],
+  [
+   "alert_rule",
+   "Alert rule (threshold)",
+   "Event management",
+   "id,metric,ci_class,type,warning,critical,duration_min,sensitivity,standard_change,owner"
+  ],
+  [
+   "correlation_group",
+   "Correlation group (incident candidate)",
+   "Event management",
+   "id,root_cause_ci,reason,alert_count,severity,incident"
+  ],
+  [
+   "maintenance_window",
+   "Maintenance window",
+   "Event management",
+   "name,ci,schedule,mode,change"
+  ],
+  [
+   "false_positive_feedback",
+   "False positive feedback",
+   "Event management",
+   "alert,kind,marked_by,marked_at"
+  ],
+  [
+   "automation_rule",
+   "Alert-to-action rule",
+   "Automation",
+   "id,min_severity,workflow,standard_change,executor,approver,blast_radius,rate_per_hour,max_level"
+  ],
+  [
+   "standard_change",
+   "Standard change template and SOP",
+   "Automation",
+   "id,name,risk,automation_level,pre_approval,review_due,owner,service,itsm_template,success_rate,version"
+  ],
+  [
+   "runbook_execution",
+   "Automation execution",
+   "Automation",
+   "id,standard_change,rule,alert,ci,change,result,executor,approver,dry_run"
+  ],
+  [
+   "slo",
+   "Service level objective",
+   "Observability",
+   "id,service,objective,window_days,sli,budget_left,owner"
+  ],
+  [
+   "synthetic_check",
+   "Synthetic check",
+   "Observability",
+   "id,type,target,ci,service,interval_min,locations"
+  ],
+  [
+   "metric_series",
+   "Metric series",
+   "Observability",
+   "ci,metric,timestamp,value,resolution"
+  ],
+  [
+   "dashboard",
+   "Dashboard",
+   "Observability",
+   "name,owner,tile_count"
+  ],
+  [
+   "log_pattern",
+   "Log pattern",
+   "Observability",
+   "template,level,service,count_24h"
+  ],
+  [
+   "oncall_shift",
+   "On-call shift",
+   "On-call",
+   "rota,tier,person,starts,ends,kind,override"
+  ],
+  [
+   "skill_claim",
+   "Skill record",
+   "Skills database",
+   "person,skill,level,status,verified_by,expires"
+  ],
+  [
+   "time_off",
+   "Time off",
+   "Availability",
+   "person,type,from,to,status"
+  ],
+  [
+   "demand_request",
+   "Demand request",
+   "PPM",
+   "id,title,kind_of_work,service,objective,capability,score,cost,stage,created_by_trigger"
+  ],
+  [
+   "raid_item",
+   "RAID item",
+   "PPM",
+   "id,type,project,owner,owner_kind,accountable_human,probability,impact,exposure,status,due"
+  ],
+  [
+   "skill",
+   "Skill record",
+   "PPM",
+   "person,skill,level,verified"
+  ],
+  [
+   "release",
+   "Release",
+   "Releases",
+   "number,short_description,version,type,state,service,release_train,planned_date,actual_date,release_manager,readiness,exit_criteria_pass,clash"
+  ],
+  [
+   "user_story",
+   "Story, defect or enabler",
+   "Sprints and backlogs",
+   "number,short_description,kind,story_points,state,sprint,team,assigned_to,feature,release,severity"
+  ],
+  [
+   "pull_request",
+   "Pull request",
+   "Repository",
+   "number,title,repository,author,status,checks,age_days,story"
+  ],
+  [
+   "feature",
+   "Feature or enabler",
+   "Release trains",
+   "number,short_description,kind,state,epic,program_increment,wsjf,service,project,release"
+  ],
+  [
+   "release_task",
+   "Release readiness task",
+   "Releases",
+   "number,short_description,phase,gate,state,assigned_to,due,release"
+  ],
+  [
+   "catalog_task",
+   "Catalog task (fulfillment task)",
+   "Service catalog",
+   "number,request_item,state,assignment_group,service,priority,customer_tier,opened_at,closed_at"
+  ],
+  [
+   "vendor_ticket",
+   "Vendor ticket (underpinning contract)",
+   "Vendor management",
+   "number,vendor,severity,type,state,service,priority,customer_tier,opened_at"
+  ],
+  [
+   "sla_definition",
+   "Agreement definition (SLA, OLA, UC, XLA)",
+   "Agreements",
+   "number,name,type,table,target,goal,schedule,time_zone,active_from,retire_on,retroactive,start_condition,pause_condition,resume_condition,stop_condition,reset_condition,cancel_condition,owner"
+  ],
+  [
+   "task_sla",
+   "Agreement clock (one per record and agreement)",
+   "Agreements",
+   "definition,task,stage,start_time,end_time,planned_end_time,business_duration,business_percentage,pause_duration,has_breached,original_breach_time"
+  ],
+  [
+   "xla_response",
+   "Experience response",
+   "Surveys and telemetry",
+   "definition,task,dimension,source,score,comment,responded_at"
+  ],
+  [
+   "contract",
+   "Contract or statement of work",
+   "Contract repository",
+   "id,vendor,type,status,value,start,end,auto_renew,notice_days,owner,project,risk"
+  ],
+  [
+   "contract_obligation",
+   "Contract obligation",
+   "Contract analyzer",
+   "id,contract,party,owner,due,status,kind"
+  ],
+  [
+   "contract_change",
+   "Contract change request",
+   "Contract analyzer",
+   "id,contract,type,state,price_impact,schedule_days,approver"
+  ],
+  [
+   "catalog_item",
+   "Catalog item",
+   "Service catalog",
+   "number,name,service,offering,category,price,approvals_required,fulfillment_flow,sla_hours,visible_to"
+  ],
+  [
+   "fulfillment_step",
+   "Fulfillment step",
+   "Service catalog",
+   "step,type,assignment_group,assigned_to,target_hours,elapsed_hours,step_cost,rework"
+  ],
+  [
+   "asset",
+   "Hardware asset",
+   "Assets",
+   "asset_tag,model,class,lifecycle,assigned_to,purchase_cost,warranty_end,intune_compliant,request"
+  ],
+  [
+   "scaling_step",
+   "Scaling step",
+   "Cost transparency",
+   "name,service,capacity_per_step,units_in_place,cost_per_step,target_utilization,lead_weeks,funding_line"
+  ],
+  [
+   "cost_allocation",
+   "Cost allocation",
+   "Cost transparency",
+   "from,to,driver,amount"
+  ]
+ ],
+ "apps": [
+  [
+   "itsm_inc",
+   "Incidents",
+   "ITSM",
+   "person,business_service,cmdb_ci,sla_definition,incident_priority_policy",
+   "incident,task_sla"
+  ],
+  [
+   "itsm_chg",
+   "Changes",
+   "ITSM",
+   "business_service,cmdb_ci,maintenance_window",
+   "change_request,change_approval_policy"
+  ],
+  [
+   "itsm_prb",
+   "Problems",
+   "ITSM",
+   "incident,business_service",
+   "problem_record"
+  ],
+  [
+   "svc_cat",
+   "Service catalog",
+   "Service catalog",
+   "service_offering,person",
+   "catalog_item,catalog_task,request_item,fulfillment_step"
+  ],
+  [
+   "itom_cmdb",
+   "CMDB",
+   "CMDB",
+   "person",
+   "cmdb_ci,cmdb_rel_ci,business_service"
+  ],
+  [
+   "itom_evt",
+   "Event management",
+   "Event management",
+   "cmdb_ci,maintenance_window",
+   "alert_event,alert_rule,correlation_group,false_positive_feedback,maintenance_window"
+  ],
+  [
+   "itom_run",
+   "Automation",
+   "Automation",
+   "alert_event,standard_change",
+   "automation_rule,runbook_execution,standard_change"
+  ],
+  [
+   "obs_dash",
+   "Observability",
+   "Observability",
+   "business_service",
+   "slo,synthetic_check,metric_series,dashboard,log_pattern"
+  ],
+  [
+   "svc_sla",
+   "Agreements",
+   "Agreements",
+   "incident,request_item,business_service",
+   "sla_definition,task_sla,xla_response"
+  ],
+  [
+   "ppm_proj",
+   "Projects",
+   "PPM",
+   "person,demand_request,business_service",
+   "project,raid_item,demand_request,skill"
+  ],
+  [
+   "port",
+   "Portfolio plan",
+   "PPM",
+   "project,person",
+   "project_task"
+  ],
+  [
+   "ppm_wbs",
+   "WBS editor",
+   "Project plan",
+   "project,person",
+   "wbs_line"
+  ],
+  [
+   "ppm_sow",
+   "SOW and contract analyzer",
+   "Contract analyzer",
+   "contract",
+   "contract,contract_line,contract_obligation,contract_change"
+  ],
+  [
+   "bud_ven",
+   "Vendor management",
+   "Vendor management",
+   "contract,invoice",
+   "vendor_ticket,contract"
+  ],
+  [
+   "inv",
+   "Invoices",
+   "Finance",
+   "contract,project",
+   "invoice"
+  ],
+  [
+   "bud_over",
+   "Budget overview",
+   "Cost transparency",
+   "invoice,project,business_service",
+   "cost_allocation,scaling_step"
+  ],
+  [
+   "svc_skills",
+   "Skills database",
+   "Skills database",
+   "person",
+   "skill_claim"
+  ],
+  [
+   "svc_oncall",
+   "On-call",
+   "On-call",
+   "person",
+   "oncall_shift,time_off"
+  ],
+  [
+   "itsm_rel",
+   "Releases",
+   "Releases",
+   "feature,user_story,change_request",
+   "release,release_task"
+  ],
+  [
+   "agile_board",
+   "Sprints and backlogs",
+   "Sprints and backlogs",
+   "person,feature",
+   "user_story"
+  ],
+  [
+   "agile_art",
+   "Release trains",
+   "Release trains",
+   "person",
+   "feature"
+  ],
+  [
+   "exe_mat",
+   "Maturity models",
+   "Maturity models",
+   "business_service,project",
+   "maturity_capability"
+  ],
+  [
+   "ppl_org",
+   "Directory",
+   "Directory",
+   "person",
+   "person"
+  ],
+  [
+   "flw_appr",
+   "Approvals",
+   "Workflow",
+   "change_request,invoice,request_item",
+   "change_approval_policy"
+  ]
+ ],
+ "fams": [
+  {
+   "id": "strat",
+   "name": "Strategy and portfolio"
+  },
+  {
+   "id": "demand",
+   "name": "Demand"
+  },
+  {
+   "id": "proj",
+   "name": "Projects and WBS"
+  },
+  {
+   "id": "agile",
+   "name": "Agile delivery and release trains"
+  },
+  {
+   "id": "chg",
+   "name": "Change and release"
+  },
+  {
+   "id": "inc",
+   "name": "Incident and problem"
+  },
+  {
+   "id": "req",
+   "name": "Request and catalog"
+  },
+  {
+   "id": "cmdb",
+   "name": "CMDB and discovery"
+  },
+  {
+   "id": "evt",
+   "name": "Event and automation"
+  },
+  {
+   "id": "obs",
+   "name": "Observability and SLO"
+  },
+  {
+   "id": "fin",
+   "name": "Finance and invoices"
+  },
+  {
+   "id": "con",
+   "name": "Contracts and SOW"
+  },
+  {
+   "id": "ppl",
+   "name": "People, skills and on-call"
+  },
+  {
+   "id": "kn",
+   "name": "Knowledge"
+  },
+  {
+   "id": "ai",
+   "name": "AI governance"
+  },
+  {
+   "id": "wf",
+   "name": "Workflow and approvals"
+  }
+ ],
+ "pe": 145,
+ "lk": [
+  "edgesData",
+  "processEdges",
+  "processes",
+  "blast",
+  "processBlast",
+  "families",
+  "stats"
+ ],
+ "hasModeOf": "function",
+ "atlas": "undefined"
+}

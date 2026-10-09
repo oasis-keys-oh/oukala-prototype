@@ -1,0 +1,164 @@
+SERVICE MANAGEMENT · INCIDENTS
+Restore service fast, to a team first
+
+14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a major incident.
+
+Log incident
+Open the war room
+ƒ SLA compliance
+ƒ Backlog age
+ƒ Incident impact score
+ITIL 5
+ISO/IEC 20000
+DORA metrics
+Triage Agent · 86%
+Overview
+Board
+Priority calculator
+SLA timers
+Priority policy
+BREACHED
+3
+past target, act now
+AT RISK
+3
+under 25% of target left
+ON TRACK
+8
+plenty of time
+SLA COMPLIANCE
+91%
+30 days ƒ SLA compliance
+
+Clocks pause while an incident waits on a caller, vendor or change. Sort by Resolution to see what breaches first. Experience level agreements
+
+Priority
+All
+3
+State
+3 of 4
+3
+Team
+All
+6
+Export CSV
+NUMBER	PRIORITY	SERVICE	STATE	TEAM	ASSIGNED TO	RESPONSE	RESOLUTION▲
+INC0407	P2 Ovr	Lease subledger (ERP)	New	Finance	Team queue	
+RESP
+Missed by 2h 42m	
+RESO
+Breached 4h ago
+INC0408	P3	Search and indexing	In progress	Data team	
+Jordan Lee
+	
+RESP
+Met, 48m to spare	
+RESO
+Breached 6h ago
+INC0405	P2	Lease subledger (ERP)	On hold	Finance	
+Avery Chen
+	
+RESP
+Met, 12m to spare	
+RESO
+1h left
+INC0409	P3	Contract Repository	In progress	Platform team	
+Elise Park
+	
+RESP
+Met, 30m to spare	
+RESO
+4h left
+INC0402	P3	Data platform	On hold	Data team	
+Dev Rao
+	
+RESP
+Met, 1h 36m to spare	
+RESO
+8h left
+INC0412 Major	P2	Codification Platform	In progress	Ops team	
+Sam Patel
+	
+RESP
+Met, 22m to spare	
+RESO
+3h 42m left
+INC0406	P4	Endpoint management (Intune)	In progress	Service desk	
+NM
+Northwind Managed Services
+	
+RESP
+Met, 2h to spare	
+RESO
+44h left
+INC0415	P3	Search and indexing	In progress	Lumen (vendor)	
+Marco Ellis
+	
+RESP
+Met, 0m to spare	
+RESO
+16h left
+INC0417	P2 VIP	Email and collaboration (M365)	In progress	Service desk	
+NM
+Northwind Managed Services
+	
+RESP
+Met, 18m to spare	
+RESO
+5h 54m left
+INC0413	P3	Codification Platform	In progress	Platform team	Team queue	
+RESP
+Met, 1h 36m to spare	
+RESO
+20h 12m left
+INC0416	P2 VIP	Endpoint management (Intune)	New	Service desk	Team queue	
+RESP
+Breached 12m ago	
+RESO
+7h 18m left
+INC0411	P3	Network and VPN	In progress	Ops team	
+Ravi Menon
+	
+RESP
+Met, 1h 30m to spare	
+RESO
+22h 24m left
+INC0410	P4	Email and collaboration (M365)	New	Service desk	
+Triage Agent
+	
+RESP
+48m left	
+RESO
+2d 21h left
+INC0414	P3	Codification Portal	New	Platform team	Team queue	
+RESP
+1h left	
+RESO
+23h left
+14 of 17 rows
+Scroll for more · rows are drawn as you scroll
+Incident process (ITIL 5 Support activity)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect and log
+Monitoring, a caller or an agent raises the incident against a service and CI.
+AUTOMATIC
+Calculate priority
+Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.
+AI AGENT
+Confirm triage
+An agent suggests category, team and similar incidents. A person confirms.
+AUTOMATIC
+Route to a team
+Work lands in the team queue. Individuals are not assigned from outside the team.
+PERSON
+Claim and swarm
+A team member claims it, or the team swarms. A direct assignment needs a stated reason.
+PERSON
+Diagnose and restore
+Work the known error or runbook, link a change if one is needed, communicate.
+AI AGENT
+Resolve and learn
+Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.

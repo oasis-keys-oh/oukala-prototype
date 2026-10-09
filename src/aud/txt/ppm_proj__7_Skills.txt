@@ -1,0 +1,230 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+SKILL RECORDS
+246
+person by skill by level
+DISTINCT SKILLS
+141
+in the database
+THIN COVERAGE
+110
+skills with fewer than 2 people at level 3
+VERIFIED
+48%
+confirmed by a manager or a test
+Skill coverage
+People at level 3 or above, for the ten best covered skills. Amber bars are single points of failure.
+Integration and APIs
+11
+Data modeling
+8
+Cloud and failover
+8
+Taxonomy
+7
+Search and indexing
+7
+Incident response
+6
+Editorial review
+5
+PMP
+3
+Azure
+3
+Python
+3
+2 or more people at level 3+
+Fewer than 2: a single point of failure
+How levels work
+1
+Aware
+Knows the concept and can follow a guide
+2
+Working
+Does it with some help
+3
+Skilled
+Does it alone and reviews others
+4
+Advanced
+Designs and fixes hard cases
+5
+Expert
+Sets the standard and teaches it
+Add or update a skill
+PMBOK
+Skills database
+Assignment, the bench, on-call rotas and staffing requests all read these records. Select a row to change a level.
+Skill
+All
+141
+Kind
+All
+4
+Level
+All
+4
+Group by 
+None
+Skill
+Kind
+Export CSV
+PERSON	KIND	SKILL	LEVEL	VERIFIED
+
+Maya Ortiz
+	employee	Portfolio management	
+ 2	Self-reported
+
+Maya Ortiz
+	employee	PMP	
+ 3	Self-reported
+
+Maya Ortiz
+	employee	Vendor management	
+ 4	Self-reported
+
+Maya Ortiz
+	employee	Risk	
+ 5	Verified
+
+Priya Shah
+	employee	PMP	
+ 5	Verified
+
+Priya Shah
+	employee	Agile delivery	
+ 5	Verified
+
+Priya Shah
+	employee	Release planning	
+ 5	Verified
+
+Priya Shah
+	employee	Stakeholder management	
+ 2	Self-reported
+
+Dev Rao
+	employee	Data engineering	
+ 3	Self-reported
+
+Dev Rao
+	employee	PMP	
+ 3	Self-reported
+
+Dev Rao
+	employee	Azure Data Factory	
+ 2	Self-reported
+
+Dev Rao
+	employee	Taxonomy	
+ 2	Self-reported
+
+Tom Becker
+	employee	ITIL 4	
+ 4	Verified
+
+Tom Becker
+	employee	Incident management	
+ 2	Self-reported
+
+Tom Becker
+	employee	ServiceNow	
+ 3	Self-reported
+
+Tom Becker
+	employee	Major incident command	
+ 3	Self-reported
+
+Avery Chen
+	employee	Accounting	
+ 3	Self-reported
+
+Avery Chen
+	employee	ASC 842	
+ 3	Self-reported
+
+Avery Chen
+	employee	Invoice approval	
+ 3	Self-reported
+
+Avery Chen
+	employee	Budgeting	
+ 2	Self-reported
+
+Jordan Lee
+	employee	Enterprise architecture	
+ 4	Verified
+
+Jordan Lee
+	employee	Azure	
+ 5	Verified
+
+Jordan Lee
+	employee	Integration	
+ 4	Verified
+
+Jordan Lee
+	employee	TOGAF	
+ 5	Verified
+
+Sam Patel
+	employee	Azure	
+ 4	Verified
+
+Sam Patel
+	employee	Kubernetes	
+ 4	Verified
+
+246 of 246 rows
+Scroll for more · rows are drawn as you scroll
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

@@ -1,0 +1,136 @@
+SERVICE CATALOG
+15 items you can order, 240 requests so far
+
+33 approvals are waiting on 10 people, the oldest for 18.1 h. Median fulfillment is 0.8 days against a 5 day goal, and 39 service offerings still have nothing to order. Each item is a form, a price, approval rules and a fulfillment workflow that you can open and change.
+
+Design a catalog item
+Open the customer portal
+Workflow designer
+ƒ Fulfillment time
+ƒ Experience score (XLA)
+ITIL 5
+Experience level agreements
+CSDM 5
+Dashboard and catalog
+Workflows
+Approval rules
+Capacity and demand
+OFFERINGS WATCHED
+7
+capacity and demand each
+TRIGGERS FIRING
+8
+scale up 4, down 4
+DEMAND CREATED
+4
+from this screen
+AUTO-ADD ON
+2 of 4
+rules that raise demand by themselves
+Capacity against demand
+Each offering has a supply, a demand rate from the requests it receives and a capacity. The line is the 85% point where we scale up.
+TBM Taxonomy and ATUM
+ITIL 5
+OFFERING	SUPPLY	DEMAND	CAPACITY USED	COVER	TREND	SOURCE
+Laptop provisioning
+Endpoint management (Intune)
+	12 laptops in stock or on order	22 a month	
+74%	16 d	+6%	Live: assets in stock plus requests in the last 90 days
+Mobile devices
+Endpoint management (Intune)
+	2 phones in stock or on order	8.9 a month	
+38%	7 d	-3%	Live: assets in stock plus requests in the last 90 days
+Software deployment
+Endpoint management (Intune)
+	78 licenses available	9.7 a month	
+37%	241 d	+9%	Live: license pool and software requests
+Token budgets
+AI platform and agents
+	140 million tokens of headroom a month	30 a month	
+50%	140 d	+22%	Modeled: token pool less approved increases
+Reporting
+Data and analytics
+	-5 data team build hours a month	165 a month	
+103%	-1 d	+11%	Modeled: report requests at 55 build hours each
+Project intake
+Portfolio and project intake
+	12 intake reviews a month	1.7 a month	
+12%	212 d	+4%	Modeled: PMO review capacity
+Rooms and AV
+Email and collaboration (M365)
+	33 AV support slots a month	6.7 a month	
+17%	148 d	+2%	Modeled: facilities AV crew
+Triggers
+These offerings need a decision now. Adding to demand sends them to portfolio intake with the cost attached.
+The cost model also reports 1 scaling signals
+Scale up
+Laptop provisioning
+Scale up: stock covers under 21 days · add about 26 laptops · $47,840 to fund
+Add to demand
+Scale up
+Mobile devices
+Scale up: stock covers under 21 days · add about 11 phones · $9,119 to fund
+Add to demand
+Scale down
+Mobile devices
+Scale down: demand under 40% of capacity · retire about 4 phones · $3,316 a year saved
+Add to demand
+Scale down
+Software deployment
+Scale down: demand under 40% of capacity · retire about 5 licenses · $1,080 a year saved
+Add to demand
+Scale up
+Reporting
+Scale up: demand over 85% of capacity · add about 198 data · $18,810 to fund
+Add to demand
+Scale up
+Reporting
+Scale up: stock covers under 21 days · add about 198 data · $18,810 to fund
+Add to demand
+Scale down
+Project intake
+Scale down: demand under 40% of capacity · retire about 4 intake · $1,240 a year saved
+Add to demand
+Scale down
+Rooms and AV
+Scale down: demand under 40% of capacity · retire about 10 AV · $1,400 a year saved
+Add to demand
+Rules
+Rules use the same condition language as approvals. Fields: util, cover, growth, dpm, supply, cap.
+Up
+Scale up: demand over 85% of capacity
+util >= 85
+Auto
+Up
+Scale up: stock covers under 21 days
+cover < 21
+Auto
+Down
+Scale down: demand under 40% of capacity
+util < 40
+Ask
+Up
+Growth outlook: demand rising over 15% a quarter and above 60% of capacity
+growth > 15 and util >= 60
+Ask
+Add a rule
+From the cost model (TBM and ATUM)
+Scaling signals the cost model computed from forecast demand.
+Scale up
+Data platform
+In 5 weeks: Data platform needs a 4th capacity unit ($31,000 a year). Order 6 weeks ahead, so start the request now.
+Add to demand
+Demand created from here
+Each is now in portfolio demand.
+Scale up Reporting
+Added automatically by a rule · Tue Oct 6, 11:00
+In portfolio demand
+Scale up Reporting
+Added automatically by a rule · Tue Oct 6, 11:00
+In portfolio demand
+Scale up Mobile devices
+Added automatically by a rule · Tue Oct 6, 11:00
+In portfolio demand
+Scale up Laptop provisioning
+Added automatically by a rule · Tue Oct 6, 11:00
+In portfolio demand

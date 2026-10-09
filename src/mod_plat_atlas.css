@@ -328,3 +328,10 @@
 }
 .at-ovs .chip{padding:4px 10px;font-size:13px}
 .at-refs .txtin{width:96px}
+
+/* proposed entities */
+.at-ent.prop{border-style:dashed;border-top-style:solid;background:color-mix(in srgb,var(--glass2) 82%,transparent)}
+.at-ent.prop::after{content:"";position:absolute;inset:-5px;border-radius:22px;border:2px dashed color-mix(in srgb,var(--c) 70%,transparent);pointer-events:none}
+.at-bd.prop{background:color-mix(in srgb,var(--p4) 28%,transparent);color:var(--ink);border:1px dashed var(--p4)}
+.at-propkey{display:inline-block;width:22px;height:12px;border-radius:5px;border:2px dashed var(--p4);flex:none}
+.at-propbox{margin:10px 0 0}

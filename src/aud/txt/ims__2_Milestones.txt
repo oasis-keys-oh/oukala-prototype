@@ -1,0 +1,122 @@
+MASTER SCHEDULE
+Every project on one timeline
+
+Four projects run to Feb 24, 2027. 1 of the four core projects is behind baseline. Codification go live is 7 work days late, and the Taxonomy pilot is on baseline, because one Lumen team sits on both.
+
+ƒ Schedule performance index
+ƒ Milestones on time
+ƒ Schedule variance
+PMBOK
+Why am I seeing this?
+Projects
+All 4 projects
+4
+Project managers
+All managers
+4
+Resource type
+All types
+4
+4 projects shown
+Current plan
+Lumen slips 5 more work days
+Lumen slips 10 more work days
+Add two Lumen engineers to the indexer
+Editor testing takes twice as long
+Overview
+Gantt
+Milestones
+What changed
+Project Online coverage
+Milestones
+25 milestones in the selected projects. 18 forecast on or before baseline. Each one shows the milestones that feed it and the ones it feeds.
+ƒ Milestones on time
+ƒ Milestone hit rate
+Project
+All
+4
+Export CSV
+MILESTONE	PROJECT	BASELINE	FORECAST	VARIANCE	STATUS	FED BY MILESTONES	FEEDS MILESTONES
+Project kickoff
+WBS 1.1 · Codification Platform Upgrade	Codification	Jul 1, 2026	Jul 1, 2026	on baseline	Complete	Starts the chain	Design gate G1: baseline approved Core build complete Beta release Indexer accepted by Meridian Lumen team released from the search indexer Pilot go or no-go Pilot Go or no-go decision by the steering committee Go live Funding approved by the steering committee
+Funding approved by the steering committee
+WBS 1.5 · Codification Platform Upgrade	Codification	Jul 13, 2026	Jul 13, 2026	on baseline	Complete	Project kickoff	Core build complete Beta release Go or no-go decision by the steering committee Go live
+Design gate G1: baseline approved
+WBS 2.4 · Codification Platform Upgrade	Codification	Aug 3, 2026	Aug 3, 2026	on baseline	Complete	Project kickoff	Go or no-go decision by the steering committee Go live Indexer accepted by Meridian Core build complete Beta release
+Project kickoff
+WBS 1.2 · Taxonomy Data Hub	Taxonomy	Aug 3, 2026	Aug 3, 2026	on baseline	Complete	Starts the chain	Taxonomy schema v1 published Pilot go or no-go Pilot Funding and SOW-4 signed
+Funding and SOW-4 signed
+WBS 1.5 · Taxonomy Data Hub	Taxonomy	Aug 17, 2026	Aug 17, 2026	on baseline	Complete	Project kickoff	End of chain
+Taxonomy schema v1 received from Taxonomy Data Hub
+WBS 4.1.1 · Codification Platform Upgrade	Codification	Sep 7, 2026	Sep 7, 2026	on baseline	Complete	Taxonomy schema v1 published	Beta release
+Taxonomy schema v1 published
+WBS 2.3 · Taxonomy Data Hub	Taxonomy	Sep 7, 2026	Sep 7, 2026	on baseline	Complete	Project kickoff	Taxonomy schema v1 received from Taxonomy Data Hub Pilot go or no-go Pilot
+Sev 2 incident declared
+WBS 1.1 · Portal Resilience	Portal	Sep 8, 2026	Sep 8, 2026	on baseline	Complete	Starts the chain	Failover rehearsal passed Sev 2 problem closed
+Project kickoff
+WBS 1.2 · Contract Repository Refresh	Contracts	Sep 28, 2026	Sep 28, 2026	on baseline	Complete	Starts the chain	Design approved Vendor selected and contract signed Funding released for phase 1
+Funding released for phase 1
+WBS 1.6 · Contract Repository Refresh	Contracts	Oct 1, 2026	Oct 1, 2026	on baseline	Complete	Project kickoff	Vendor selected and contract signed Design approved
+Core build complete
+WBS 3.1.6 · Codification Platform Upgrade	Codification	Oct 5, 2026	Oct 5, 2026	on baseline	Complete	Design gate G1: baseline approved Project kickoff Funding approved by the steering committee	Beta release
+Indexer accepted by Meridian
+WBS 3.2.4 · Codification Platform Upgrade	Codification	Oct 14, 2026	Oct 23, 2026	7 work days late	At risk	Design gate G1: baseline approved Project kickoff	Beta release
+Lumen team released from the search indexer
+WBS 4.1 · Taxonomy Data Hub	Taxonomy	Oct 14, 2026	Oct 23, 2026	7 work days late	At risk	Project kickoff	Pilot go or no-go Pilot
+Failover rehearsal passed
+WBS 3.3 · Portal Resilience	Portal	Nov 2, 2026	Nov 2, 2026	on baseline	Not started	Sev 2 incident declared	Problem review board sign-off Sev 2 problem closed Beta release
+Problem review board sign-off
+WBS 3.4 · Portal Resilience	Portal	Nov 2, 2026	Nov 2, 2026	on baseline	Not started	Failover rehearsal passed	Sev 2 problem closed
+Sev 2 problem closed
+WBS 3.5 · Portal Resilience	Portal	Nov 2, 2026	Nov 2, 2026	on baseline	Not started	Failover rehearsal passed Problem review board sign-off Sev 2 incident declared	End of chain
+Vendor selected and contract signed
+WBS 2.3 · Contract Repository Refresh	Contracts	Nov 2, 2026	Nov 2, 2026	on baseline	Not started	Project kickoff Funding released for phase 1	Design approved
+Beta release
+WBS 4.4 · Codification Platform Upgrade	Codification	Nov 4, 2026	Nov 13, 2026	7 work days late	Late	Indexer accepted by Meridian Failover rehearsal passed Core build complete Taxonomy schema v1 received from Taxonomy Data Hub Design gate G1: baseline approved Project kickoff Funding approved by the steering committee	Go or no-go decision by the steering committee Go live UAT sign-off by the Chief Editor
+Pilot go or no-go
+WBS 5.5 · Taxonomy Data Hub	Taxonomy	Nov 19, 2026	Nov 30, 2026	7 work days late	At risk	Taxonomy schema v1 published Lumen team released from the search indexer Project kickoff Project kickoff	Pilot
+UAT sign-off by the Chief Editor
+WBS 5.2 · Codification Platform Upgrade	Codification	Nov 20, 2026	Dec 1, 2026	7 work days late	At risk	Beta release	End of chain
+Pilot
+WBS 5.6 · Taxonomy Data Hub	Taxonomy	Dec 2, 2026	Dec 2, 2026	on baseline	Not started	Pilot go or no-go Taxonomy schema v1 published Lumen team released from the search indexer Project kickoff Project kickoff	End of chain
+Design approved
+WBS 3.3 · Contract Repository Refresh	Contracts	Dec 7, 2026	Dec 7, 2026	on baseline	Not started	Vendor selected and contract signed Project kickoff Funding released for phase 1	Cutover readiness review passed
+Go or no-go decision by the steering committee
+WBS 6.4 · Codification Platform Upgrade	Codification	Dec 2, 2026	Dec 11, 2026	7 work days late	Late	Beta release Design gate G1: baseline approved Funding approved by the steering committee Project kickoff	Go live
+Go live
+WBS 6.5 · Codification Platform Upgrade	Codification	Dec 2, 2026	Dec 11, 2026	7 work days late	Late	Go or no-go decision by the steering committee Beta release Design gate G1: baseline approved Funding approved by the steering committee Project kickoff	End of chain
+Cutover readiness review passed
+WBS 4.4.5 · Contract Repository Refresh	Contracts	Jan 29, 2027	Jan 29, 2027	on baseline	Not started	Design approved	End of chain
+25 of 25 rows
+Scroll for more · rows are drawn as you scroll
+What to watch
+One chain decides two projects
+Lumen's search indexer feeds the Codification beta and, through the same staff, the Taxonomy engineering work. It has no float.
+Open the indexer
+The pilot has almost no cushion
+Another 5 days on the indexer moves the pilot 3 work days, from Dec 2 to Dec 7.
+Try it
+Content migration has room
+It has 11 work days of float, so it can lend people to the critical chain.
+Recovery plan is running
+PMO Agent is following SOP-208 and re-baselining the indexer work with Lumen.
+PMO Agent · 84%
+How the master schedule stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Project managers update progress
+Percent complete and actual dates arrive from task sheets, Teams and First Officer meeting notes.
+AUTOMATIC
+Schedule engine recalculates
+Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.
+AI AGENT
+PMO Agent flags drift
+Compares forecast with baseline, finds new critical chains and cross-project collisions, drafts a recovery option.
+PERSON
+Portfolio manager reviews
+Decides which recovery option to take and whether a milestone moves.
+APPROVAL GATE
+Baseline reset approval
+A re-baseline needs approval from the steering committee. It is audited and the old baseline is kept.

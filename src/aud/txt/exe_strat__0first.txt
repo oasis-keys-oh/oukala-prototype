@@ -1,0 +1,139 @@
+STRATEGY ALIGNMENT
+Is the money pointed at the strategy?
+
+The alignment score is 89 of 100. 4 of 5 objectives have funded work; Improve editor and reviewer experience has none because its linked requests all sit below the funding line. Laptop refresh (run budget) ($140K) is funded with no objective. 2 of 5 objectives are on track against where they should be today.
+
+ƒ Strategic alignment score
+New objective
+New key result
+Update progress
+Why am I seeing this?
+Alignment score
+88.9
+Target 90 · below target
+Funded dollars linked
+$4.35M
+of $4.49M funded
+Objectives with no funded work
+1
+Editor experience
+Funded work with no objective
+1
+$140K at stake
+ƒ Maturity attainment
+ƒ Glide-path index
+Capability maturity: attainment 70%, glide-path index 93. Each objective below shows its capabilities.
+Open maturity models
+Objectives and key results
+Link initiatives
+Coverage gaps
+Score
+Capabilities and maturity
+O1 · CEO OFFICE
+Modernize standards publishing
+Cut the time to publish a standard from 23 days to 15 by the end of FY27.
+Watch
+43%
+Days to publish a standard
+Chief Editor · updated by hand
+23 days → 20 days → 15 days
+Watch
+Codification Platform work earned
+Priya Shah · measured live
+0% → 60% → 100%
+On track
+Standards drafted with AI assistance
+Chief Editor · updated by hand
+0% → 12% → 40%
+Watch
+4 funded initiatives carry $2,071,000 of weighted spend
+Add key result
+Maturity: 29 capabilities at level 2.1 against 2.3 expected today, Year 1 target 3.1
+Watch
+O2 · CFO
+Reduce operating risk
+Keep Tier 1 services above 99.9% and every vendor above a 0.85 performance index.
+On track
+45%
+Tier 1 availability
+Tom Becker · measured live
+99.5% → 99.6% → 99.9%
+Watch
+Vendors at or above a 0.85 index
+Maya Ortiz · measured live
+0 of 3 → 2 of 3 → 3 of 3
+On track
+Sev 2 problem closed (failover work earned)
+Tom Becker · measured live
+0% → 39% → 100%
+On track
+5 funded initiatives carry $1,202,000 of weighted spend
+Add key result
+Maturity: 37 capabilities at level 2.3 against 2.5 expected today, Year 1 target 3.2
+On track
+O3 · CFO
+Protect revenue through contract discipline
+Pay only for accepted work and find every contract obligation before it lapses.
+On track
+26%
+Invoices cleared by rule
+Avery Chen · measured live
+20% → 38% → 60%
+Watch
+Contract Repository Refresh work earned
+Maya Ortiz · measured live
+0% → 7% → 100%
+On track
+2 funded initiatives carry $558,000 of weighted spend
+Add key result
+Maturity: 20 capabilities at level 2.2 against 2.3 expected today, Year 1 target 3
+Watch
+O4 · CIO
+Trusted AI
+Every AI action shows its sources, its guardrails and who is accountable for it.
+Watch
+42%
+Agent override rate (lower is better)
+Jordan Lee · measured live
+12% → 22% → 10%
+Needs action
+Agents under the AI gateway
+Jordan Lee · measured live
+0 of 6 → 5 of 6 → 6 of 6
+On track
+2 funded initiatives carry $519,000 of weighted spend
+Add key result
+Maturity: 14 capabilities at level 2.3 against 2.4 expected today, Year 1 target 3.4
+Behind
+O5 · COO
+Improve editor and reviewer experience
+Reviewers turn drafts around in five days, not nine, without evening work.
+Needs action
+25%
+Reviewer turnaround
+Chief Editor · updated by hand
+9 days → 8 days → 5 days
+Needs action
+0 funded initiatives carry $0 of weighted spend
+Add key result
+Maturity: 16 capabilities at level 2.4 against 2.6 expected today, Year 1 target 3.3
+Behind
+How strategy becomes measured work
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+State objectives
+Leadership writes each objective in plain language with an owner.
+PERSON
+Add key results
+Each objective gets measurable results. Measured ones update themselves.
+AI AGENT
+Link funded work
+The Portfolio Agent proposes which projects and requests serve which objective. The office confirms.
+APPROVAL GATE
+Break into capabilities
+Each objective is broken into capabilities measured on maturity models, with year 1, 3 and 5 targets.
+AUTOMATIC
+Review gaps
+Objectives without funded work, funded work without an objective, and capabilities off their glide path are listed.

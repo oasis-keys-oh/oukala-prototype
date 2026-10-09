@@ -1,0 +1,56 @@
+FINANCIAL MODEL · COST PLAN, CAPITALIZATION, TCO AND RETURN
+The portfolio returns 22% over five years, and Taxonomy is the weakest case
+
+Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under ASC 350-40. Taxonomy returns 10% and depends on benefits that start only after the Dec 2 pilot.
+
+ƒ Five-year portfolio return on investment
+ƒ Capital plan used
+Claude Sonnet · 80%
+Why am I seeing this?
+Project and scenario
+Choose what to model. Everything on this screen recalculates from the cost plan, the capitalization rules and the benefits register.
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Portfolio
+Base case
+Low case
+High case
+Cost plan
+Capitalization
+Depreciation
+TCO and ROI
+Showback
+Software useful life
+5 years
+Straight line. Hardware uses 4 years.
+Amortization = Software CapEx $535K ÷ (5 years × 12) × months in service · Hardware $84K ÷ (4 years × 12) × months in service · straight line from the month after go-live
+
+Go-live from the master schedule: Codification: Dec 2026
+
+$0
+$64K
+$128K
+FY27
+$64K
+FY28
+$128K
+FY29
+$128K
+FY30
+$128K
+FY31
+$117K
+FY32
+$53K
+YEAR	SOFTWARE	HARDWARE	TOTAL EXPENSE
+FY27	$53,482	$10,500	$63,982
+FY28	$106,964	$21,000	$127,964
+FY29	$106,964	$21,000	$127,964
+FY30	$106,964	$21,000	$127,964
+FY31	$106,964	$10,500	$117,464
+FY32	$53,482	$0	$53,482
+Total	$534,820	$84,000	$618,820
+Software amortization
+Hardware depreciation

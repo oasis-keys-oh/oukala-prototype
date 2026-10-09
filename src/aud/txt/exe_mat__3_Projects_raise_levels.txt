@@ -1,0 +1,421 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+LEVEL CREDITS
+59
+17 projects and requests
+COUNTED
+0
+accepted, in today's level
+AWAITING ACCEPTANCE
+2
+delivered, not yet credited
+PLANNED
+52
+funded, counts in forecast
+NOT FUNDED
+5
+potential only
+What if a project slips?
+Pick a project and a slip. The forecast moves by the same number of work days as the milestone.
+Project or request
+PR3 Portal Resilience
+CI1 Service desk automation sprint
+D7 Disaster recovery for the Portal
+D6 AI drafting assistant for standards
+CI2 Delivery practice uplift
+PR1 Codification Platform Upgrade
+PR4 Contract Repository Refresh
+PR2 Taxonomy Data Hub
+D8 Data warehouse consolidation
+D10 Standards publishing analytics
+D1 Public comment portal
+CI3 FinOps and TBM tagging program
+CI4 Data governance council and catalog
+D3 Retire the legacy lease subledger
+CI5 Security uplift plan
+CI6 AI governance program
+D2 Reviewer workload dashboard
+Slip
+2 weeks
+
+If Codification Platform Upgrade slips 2 weeks, Earned value from task progress misses the end of FY27 target.
+
+Earned value from task progress
+Misses Year 1
+Project and delivery traceability · target 4
+Forecast at Year 1 goes from 4 to 3. Slack: 8 work days to -2 work days.
+Open the master schedule
+Compare scenarios
+Which projects can least afford to slip
+Work days of slack between a project's credit date and the Year 1 date, for the tightest capability it feeds.
+D1 Public comment portal
+Already late
+D6 AI drafting assistant for standards
+Already late
+CI3 FinOps and TBM tagging program
+0 weeks of slack
+D7 Disaster recovery for the Portal
+1 week of slack
+PR1 Codification Platform Upgrade
+1 week of slack
+CI6 AI governance program
+2 weeks of slack
+CI2 Delivery practice uplift
+2 weeks of slack
+PR4 Contract Repository Refresh
+2 weeks of slack
+Under 2 weeks of slack
+2 to 6 weeks
+More than 6 weeks
+Credit register
+Every project or request that raises a capability, from level X to Y when delivered. A level only counts toward today's maturity after acceptance. The forecast counts funded work on its plan date.
+Link a project to a capability
+Status
+All
+3
+Project or request
+All
+17
+Group by 
+None
+Project or request
+Status
+Export CSV
+PROJECT OR REQUEST	CAPABILITY	RAISES	MILESTONE	CREDIT DATE	SLACK TO YEAR 1	STATUS
+PR3 Portal Resilience
+Project
+	Automatic classification and routing
+Autonomous service delivery
+	3 to 4
+70% sure
+	Runbook RB-031 refresh
+Oct 12, 2026
+	Jan 4, 2027
++60 work days to adopt and accept
+	127 days	Planned
+CI1 Service desk automation sprint
+Program
+	Priority and impact prediction
+Autonomous service delivery
+	2 to 3
+65% sure
+	Project closes
+Feb 26, 2027
+	Apr 9, 2027
++30 work days to adopt and accept
+	58 days	Planned
+PR3 Portal Resilience
+Project
+	Incident resolution by agents
+Autonomous service delivery
+	2 to 3
+70% sure
+	Failover rehearsal
+Nov 2, 2026
+	Dec 14, 2026
++30 work days to adopt and accept
+	142 days	Planned
+D7 Disaster recovery for the Portal
+Demand
+	Incident resolution by agents
+Autonomous service delivery
+	3 to 4
+55% sure
+	Request delivered
+Mar 29, 2027
+	Jun 21, 2027
++60 work days to adopt and accept
+	7 days	Planned
+CI1 Service desk automation sprint
+Program
+	Change risk assessment and approval
+Autonomous service delivery
+	2 to 3
+65% sure
+	Project closes
+Feb 26, 2027
+	Apr 9, 2027
++30 work days to adopt and accept
+	58 days	Planned
+PR3 Portal Resilience
+Project
+	Event correlation and problem detection
+Autonomous service delivery
+	2 to 3
+60% sure
+	Failover redesign
+Oct 26, 2026
+	Jan 18, 2027
++60 work days to adopt and accept
+	117 days	Planned
+D6 AI drafting assistant for standards
+Demand
+	Knowledge capture and reuse
+Autonomous service delivery
+	3 to 4
+50% sure
+	Request delivered
+May 28, 2027
+	Jun 11, 2027
++10 work days to adopt and accept
+	13 days	Planned
+D6 AI drafting assistant for standards
+Demand
+	Guardrails and human oversight for agents
+Autonomous service delivery
+	2 to 3
+60% sure
+	Request delivered
+May 28, 2027
+	Jun 11, 2027
++10 work days to adopt and accept
+	n/a	Planned
+CI2 Delivery practice uplift
+Program
+	Objective to project link
+Project and delivery traceability
+	3 to 4
+65% sure
+	Project closes
+Apr 30, 2027
+	Jun 11, 2027
++30 work days to adopt and accept
+	13 days	Planned
+PR1 Codification Platform Upgrade
+Project
+	Requirement to task link
+Project and delivery traceability
+	2 to 3
+80% sure
+	Integration and test
+Nov 13, 2026
+	Feb 5, 2027
++60 work days to adopt and accept
+	103 days	Planned
+PR4 Contract Repository Refresh
+Project
+	Task to milestone and acceptance
+Project and delivery traceability
+	3 to 4
+70% sure
+	Maintenance window cutover
+Feb 4, 2027
+	Jun 10, 2027
++90 work days to adopt and accept
+	14 days	Planned
+PR2 Taxonomy Data Hub
+Project
+	Invoice to milestone matching
+Project and delivery traceability
+	3 to 4
+65% sure
+	Pilot readiness test
+Nov 30, 2026
+	May 17, 2027
++120 work days to adopt and accept
+	32 days	Planned
+PR1 Codification Platform Upgrade
+Project
+	Earned value from task progress
+Project and delivery traceability
+	3 to 4
+80% sure
+	Cutover rehearsal
+Dec 11, 2026
+	Jun 18, 2027
++135 work days to adopt and accept
+	8 days	Planned
+CI2 Delivery practice uplift
+Program
+	Benefit realization tracking
+Project and delivery traceability
+	1 to 2
+65% sure
+	Project closes
+Apr 30, 2027
+	Jun 11, 2027
++30 work days to adopt and accept
+	13 days	Planned
+D8 Data warehouse consolidation
+Demand · not funded
+	Service to project impact (CMDB link)
+Project and delivery traceability
+	2 to 3
+50% sure
+	Request delivered
+Oct 28, 2027
+	Dec 9, 2027
++30 work days to adopt and accept
+	n/a	Not funded
+PR4 Contract Repository Refresh
+Project
+	Contract obligation to work and cost
+Project and delivery traceability
+	2 to 3
+70% sure
+	Decommission legacy
+Feb 25, 2027
+	Jun 3, 2027
++70 work days to adopt and accept
+	19 days	Planned
+PR1 Codification Platform Upgrade
+Project
+	Requirements management
+Process capability (CMMI style)
+	2 to 3
+70% sure
+	Integration and test
+Nov 13, 2026
+	Jan 22, 2027
++50 work days to adopt and accept
+	113 days	Planned
+PR3 Portal Resilience
+Project
+	Configuration management
+Process capability (CMMI style)
+	2 to 3
+55% sure
+	Failover redesign
+Oct 26, 2026
+	Feb 1, 2027
++70 work days to adopt and accept
+	107 days	Planned
+D10 Standards publishing analytics
+Demand · not funded
+	Measurement and analysis
+Process capability (CMMI style)
+	2 to 3
+50% sure
+	Request delivered
+Apr 28, 2027
+	Jun 23, 2027
++40 work days to adopt and accept
+	n/a	Not funded
+PR4 Contract Repository Refresh
+Project
+	Supplier agreement management
+Process capability (CMMI style)
+	2 to 3
+70% sure
+	Vendor selection
+Nov 2, 2026
+	Jan 25, 2027
++60 work days to adopt and accept
+	112 days	Planned
+CI2 Delivery practice uplift
+Program
+	Process and product quality assurance
+Process capability (CMMI style)
+	2 to 3
+65% sure
+	Project closes
+Apr 30, 2027
+	Jun 11, 2027
++30 work days to adopt and accept
+	13 days	Planned
+PR3 Portal Resilience
+Project
+	Incident management
+IT service management practices
+	3 to 4
+75% sure
+	Sev 2 problem closed
+Nov 2, 2026
+	Jan 25, 2027
++60 work days to adopt and accept
+	112 days	Planned
+PR3 Portal Resilience
+Project
+	Service level management
+IT service management practices
+	2 to 3
+60% sure
+	Sev 2 problem closed
+Nov 2, 2026
+	Feb 22, 2027
++80 work days to adopt and accept
+	92 days	Planned
+CI1 Service desk automation sprint
+Program
+	Knowledge management
+IT service management practices
+	3 to 4
+65% sure
+	Project closes
+Feb 26, 2027
+	Apr 9, 2027
++30 work days to adopt and accept
+	58 days	Planned
+PR3 Portal Resilience
+Project
+	Problem management
+IT service management practices
+	2 to 3
+70% sure
+	Root cause review
+Sep 28, 2026
+	Jan 18, 2027
++80 work days to adopt and accept
+	117 days	Awaiting acceptance Accept
+
+59 of 59 rows
+Scroll for more · rows are drawn as you scroll
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

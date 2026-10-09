@@ -1,0 +1,95 @@
+NOTIFICATION ENGINE
+96.3% delivered, 87 failures to fix
+
+Of 3,418 events in 24 hours, 2,906 found a recipient, 508 were stopped as duplicates or throttled, and 64 waited for the morning. 87 failures need a person, mostly bad contact data rather than outages. Requests you raise in the portal send real notifications that appear in the log.
+
+ƒ Notification delivery rate
+New template
+Claude Sonnet · 83%
+EVENTS IN 24 H
+3,418
+2,906 notified
+DELIVERY RATE
+96.3%
+goal 98%
+STOPPED AS NOISE
+508
+duplicates and throttling
+HELD FOR THE MORNING
+64
+quiet hours
+FAILED
+87
+mostly SMS
+Pipeline
+Channel matrix
+Personas and quiet hours
+Templates
+Delivery log
+How a notification travels
+Select a stage to see its rules and today's numbers.
+1. EVENT
+3,418
+Where events come from
+2. RULES
+2,906
+Who should hear about it
+minus 512 no recipient
+3. DEDUPE AND THROTTLE
+2,398
+Do not say it twice
+minus 508 dropped
+4. TEMPLATE
+2,398
+Say it the right way
+5. CHANNEL
+2,334
+Pick the door
+minus 64 held
+6. DELIVERY LOG
+2,247
+Prove it landed
+87 failed
+Event
+
+Incidents, requests, changes, SLA timers, on call pages, license scans and Lumen webhooks arrive as events with a record, a severity and a timestamp.
+
+3,418 events in the last 24 hours
+Top sources: SLAs 31%, Requests 27%, Incidents 19%
+Events carry a dedupe key: event type + record id + recipient
+Failures to fix
+Most recent failures. Select one to retry or switch channel.
+Approval needed to Avery Chen
+Teams: user not found in tenant chat service (404). Likely a recent rename.
+Teams
+On-call page to Dev Rao
+SMS: carrier rejected the number (invalid). Contact record needs fixing.
+SMS
+SLA breached to Jordan Lee
+Email: mailbox full (452 4.2.2). Retry is likely to work in an hour.
+Email
+Incident P1 opened to Maya Ortiz
+Push: device token expired. The phone needs to open the app once.
+Push
+Change freeze starts to Marco Ellis
+SMS: carrier rejected the number.
+SMS
+How a notification travels
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Event
+A record changes.
+AUTOMATIC
+Rules
+Who should hear, by role and preference.
+AUTOMATIC
+Dedupe and throttle
+Never say it twice.
+AUTOMATIC
+Template and channel
+Fill the message and choose the door.
+AI AGENT
+Delivery log
+Retry, fall back and prove it landed.

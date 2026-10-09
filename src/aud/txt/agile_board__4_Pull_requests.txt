@@ -1,0 +1,191 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+
+13 pull requests are open, 6 have waited two days or more for a review, and 2 have failing checks. Median time to first review on merged work is 4.8 hours against the working agreement of 4 working hours.
+
+OPEN
+13
+0 drafts
+WAITING FOR REVIEW
+6
+two days or more
+FAILING CHECKS
+2
+fix before review
+MERGED
+288
+all time in this view
+MEDIAN FIRST REVIEW
+4.8h
+target 4 working hours
+MEDIAN SIZE
+177 lines
+smaller reviews faster
+Pull requests
+Linked to stories; reviewers can be people or the Test Agent
+Status
+All
+4
+Repository
+All
+6
+Team
+All
+6
+Checks
+All
+3
+Group by 
+None
+Status
+Repository
+Team
+Export CSV
+PR	TITLE	REPOSITORY	TEAM	AUTHOR	REVIEWERS	CHECKS	STATUS	AGE (DAYS)▼	LINES	STORY
+#4164	Improve draft versioning for vendors	codification-platform	tm_alpha	
+Anita Cole
+	
+	passing	Merged	18	277	ST-1065
+#4102	Show autosave for editors	codification-platform	tm_alpha	
+Mei Tan
+	
+	passing	Merged	17	306	ST-1002
+#4222	Add index rebuild job for administrators	search-indexer	tm_search	
+Marco Ellis
+	
+	passing	Merged	17	174	ST-1263
+#4141	Simplify workspace layout in the beta	codification-platform	tm_alpha	
+Sam Patel
+	
+	passing	Merged	16	205	ST-1042
+#4238	Simplify side-by-side view for administrators	editor-ui	tm_editor	
+Zoe Hart
+	
+	passing	Merged	16	92	ST-1425
+#4111	Support comment threads on mobile	codification-platform	tm_alpha	
+Ben Alvarez
+	
+	passing	Merged	15	160	ST-1011
+#4309	Filter lineage capture for vendors	taxonomy-pipeline	tm_tax	
+Tessa Lin
+	
+	passing	Merged	15	580	ST-1761
+#4359	Support connector retry for administrators	contract-repo	tm_con	
+Viktor Sokol
+	
+	passing	Merged	15	51	ST-1944
+#4247	Filter citation export with keyboard only	editor-ui	tm_editor	
+Zoe Hart
+	
+	passing	Merged	14	252	ST-1434
+#4277	Show cache purge on mobile	portal-infra	tm_portal	
+Sam Patel
+	
+	passing	Merged	14	115	ST-1591
+#4318	Add lineage capture for the nightly batch	taxonomy-pipeline	tm_tax	
+Tessa Lin
+	
+	passing	Merged	13	629	ST-1770
+#4379	Show contract import for readers	contract-repo	tm_con	
+Amara Diallo
+	
+	passing	Merged	13	98	ST-1965
+#4196	Add crawl scheduler for administrators	search-indexer	tm_search	
+Marco Ellis
+	
+	passing	Merged	12	198	ST-1237
+#4392	Validate clause tagging in the audit view	contract-repo	tm_con	
+Amara Diallo
+	
+	passing	Merged	12	275	ST-1978
+#4108	Fix autosave not saving after a timeout	codification-platform	tm_alpha	
+Anita Cole
+	
+	passing	Merged	11	719	ST-1008
+#4110	Simplify autosave for vendors	codification-platform	tm_alpha	
+Luis Ortega
+	
+	passing	Merged	11	103	ST-1010
+#4265	Filter table of contents for the nightly batch	editor-ui	tm_editor	
+Zoe Hart
+	
+	passing	Merged	11	63	ST-1452
+#4283	Fix standby failover showing stale data	portal-infra	tm_portal	
+Ravi Menon
+	
+	passing	Merged	11	325	ST-1597
+#4286	Filter connection pool alert for the nightly batch	portal-infra	tm_portal	
+Ravi Menon
+	
+	passing	Merged	11	250	ST-1600
+#4301	Log standby failover for large standards	portal-infra	tm_portal	
+Ravi Menon
+	
+	passing	Merged	11	401	ST-1615
+#4158	Simplify publishing queue for editors	codification-platform	tm_alpha	
+Luis Ortega
+	
+	passing	Merged	10	248	ST-1059
+#4231	Add redline view with keyboard only	editor-ui	tm_editor	
+Isla Reid
+	
+	passing	Merged	10	656	ST-1418
+#4358	Fix clause tagging missing for read-only users	contract-repo	tm_con	
+Viktor Sokol
+	
+	passing	Merged	10	87	ST-1943
+#4118	Filter template picker for large standards	codification-platform	tm_alpha	
+Luis Ortega
+	
+	passing	Merged	9	189	ST-1018
+#4187	Improve relevance weighting in the beta	search-indexer	tm_search	
+Marco Ellis
+	
+	passing	Merged	9	860	ST-1226
+#4293	Show cache purge with keyboard only	portal-infra	tm_portal	
+Ravi Menon
+	
+	passing	Merged	9	93	ST-1607
+
+301 of 301 rows
+Scroll for more · rows are drawn as you scroll
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

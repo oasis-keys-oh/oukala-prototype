@@ -1,0 +1,77 @@
+APPLICATION PORTFOLIO
+Which applications earn their keep?
+
+Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+
+ƒ Application spend to retire or move
+Add application
+Why am I seeing this?
+Annual application cost
+$4.11M
+15 applications
+Invest
+$3.11M
+7 apps, high value and healthy
+Migrate
+$790K
+3 apps, valuable but failing
+Eliminate or duplicate
+$213K
+5.2% of spend
+Value and health
+TIME quadrants
+Inventory
+Retire and replace
+Business value against technical health
+Each bubble is an application, sized by annual cost. Select one for detail.
+Claude Sonnet · 84%
+MIGRATE
+INVEST
+ELIMINATE
+TOLERATE
+0
+0
+25
+25
+50
+50
+75
+75
+100
+100
+Technical health (0 to 100) →
+↑ Business value (0 to 100)
+Hosting
+ERP
+M365
+Codification
+Indexer
+DW1
+Lease
+Portal
+Contracts
+Taxonomy
+DW2
+Wiki
+Zoom
+Survey
+Macros
+Bubble area is annual cost
+Red dot: duplicates another application
+Dashed edge: your decision differs from the scores
+How an application gets its TIME class
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+Score
+Business value and technical health are scored 0 to 100 by the owner and the architect.
+AUTOMATIC
+Classify
+The scores place it in Invest, Migrate, Tolerate or Eliminate.
+AI AGENT
+Recommend
+The Portfolio Agent finds duplicates and low-value applications and drafts a retirement plan.
+APPROVAL GATE
+Approve plan
+The CIO accepts a retirement or replacement, which commits the saving.

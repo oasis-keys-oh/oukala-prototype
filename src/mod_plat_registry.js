@@ -12,10 +12,15 @@ const DOM={
  cmdb:{n:"Services and configuration",steward:"Configuration manager",ent:["business_service","cmdb_rel_ci","asset","core_company","ast_contract"]},
  ops:{n:"Operations and observability",steward:"Operations lead",ent:["alert_event","alert_rule","correlation_group","false_positive_feedback","maintenance_window","automation_rule","runbook_execution","metric_series","dashboard","log_pattern","slo","synthetic_check"]},
  agree:{n:"Agreements and vendors",steward:"Service level manager",ent:["sla_definition","task_sla","xla_response","vendor_ticket"]},
- fin:{n:"Finance and contracts",steward:"Finance controller",ent:["invoice","cost_allocation","scaling_step","contract","contract_line","contract_obligation","contract_change"]}
+ fin:{n:"Finance and contracts",steward:"Finance controller",ent:["invoice","cost_allocation","scaling_step","contract","contract_line","contract_obligation","contract_change"]},
+ money:{n:"Money (IT financial model)",steward:"Finance controller",ent:[]},
+ know:{n:"Knowledge and AI",steward:"Knowledge manager",ent:[]},
+ gov:{n:"Governance, risk and compliance",steward:"Compliance lead",ent:[]},
+ plat:{n:"Platform and integration",steward:"Platform lead",ent:[]}
 };
+const ensureDom=d=>{if(!DOM[d])DOM[d]={n:String(d).replace(/[_-]+/g," ").replace(/^./,c=>c.toUpperCase()),steward:"Data council chair",ent:[],dyn:true};return d};
 const CIFAM="cmdb_ci";
-const domOf=t=>{if(t.indexOf("cmdb_ci")===0)return"cmdb";for(const k in DOM)if(DOM[k].ent.includes(t))return k;return"ops"};
+const domOf=t=>{const tb=DATAMODEL.tables[t];if(tb&&tb.domain)return ensureDom(tb.domain);if(t.indexOf("cmdb_ci")===0)return"cmdb";if(/^fin_/.test(t))return"money";for(const k in DOM)if(DOM[k].ent.includes(t))return k;return"ops"};
 const STEW={person:"Head of People Operations",invoice:"Finance controller",incident:"Service desk manager",change_request:"Change manager",project:"PMO director",contract:"General counsel delegate"};
 const CLS_ORDER=["public","internal","confidential","restricted","personal"];
 const RET={fin:"7 years",people:"Employment plus 7 years",service:"5 years",ops:"13 months hot, 5 years cold",cmdb:"Life of item plus 3 years",portfolio:"7 years",agile:"3 years",agree:"7 years"};
@@ -23,7 +28,7 @@ const RET={fin:"7 years",people:"Employment plus 7 years",service:"5 years",ops:
 const hash=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%9973;return h};
 function fieldMeta(t,f){
  const k=f.k,ty=f.type||"string",dm=domOf(t),isCI=t.indexOf("cmdb_ci")===0;
- let auth="platform",fresh="live",cls="internal",why="Created and edited in Oukala";
+ let auth="platform",fresh="live",cls="internal",why="Created and edited in Oukala";let basis="default";
  if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why="Oukala work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
  else if(t==="time_off"){auth="external";fresh="hourly";why="HR system is authoritative"}
  else if(t==="project_task"||t==="wbs_line"){ if(/start|finish|duration|actual|percent/.test(k)){auth="shared";fresh="hourly";why="External planning tool wins dates; Oukala wins dependencies and cost"} }
@@ -38,11 +43,14 @@ function fieldMeta(t,f){
  if(t==="person"&&/rate|contract|hours/.test(k))cls="restricted";
  if(/contract|clause|liability/.test(t+k))cls=cls==="restricted"?cls:"confidential";
  if(/^id$|number|name|label|state|status/.test(k)&&cls==="internal")cls="internal";
+ if(auth!=="platform"||fresh!=="live"||cls!=="internal"||why!=="Created and edited in Oukala")basis="rule";
+ if(f.authority||f.classification){if(f.authority){auth=f.authority;why=f.why||(auth==="external"?"The source system is authoritative":auth==="shared"?"Oukala and the source both edit; newest wins":"Created and edited in Oukala");if(auth==="external"&&fresh==="live")fresh="near-live"}if(f.classification)cls=f.classification;basis="declared"}
+ else if(basis==="default"&&S.atlas&&S.atlas.confirmed&&S.atlas.confirmed[t])basis="confirmed";
  const dir=auth==="platform"?"out":auth==="external"?"in":"both";
  const conflict=auth==="platform"?"Oukala wins":auth==="external"?"External system wins":"Newest wins, differences open a reconciliation item";
  const trust=auth==="platform"?0.98:Math.round((0.72+(hash(t+k)%24)/100)*100)/100;
  const rule={ref:"Must resolve to a live record",date:"Valid date; finish is on or after start",datetime:"Valid timestamp, not in the future unless a plan",currency:"Zero or more, two decimals, currency set",enum:"One of the allowed values",percent:"0 to 100","boolean":"True or false",number:"Number in range",list:"No duplicates, each item in catalog",duration:"Non-negative duration"}[ty]||"Trimmed text, required when marked";
- return{auth,dir,fresh,cls,why,conflict,trust,rule};
+ return{auth,dir,fresh,cls,why,conflict,trust,rule,basis};
 }
 /* ---------- planned entities (gaps found in the catalog) ---------- */
 const PLANNED=[
@@ -128,7 +136,9 @@ function entities(){
   const fields=isCI?v.fields:v.fields;
   const readers=APPS.filter(a=>a.reads.includes(t)||(isCI&&a.reads.includes(CIFAM))).map(a=>a.id);
   const writers=APPS.filter(a=>a.writes.includes(t)||(isCI&&a.writes.includes(CIFAM))).map(a=>a.id);
-  out.push({id:t,label:v.label,owner:own,steward:STEW[t]||DOM[dm].steward,domain:dm,fields:fields,nf:fields.length,fam:fam,
+  const uu=(window.COVER&&COVER.use&&COVER.use(t))||null;if(uu){uu.r.forEach(x=>{if(!readers.includes(x))readers.push(x)});uu.w.forEach(x=>{if(!writers.includes(x))writers.push(x)})}
+  const pend=v.status==="proposed"&&!(S.atlas&&S.atlas.approved&&S.atlas.approved[t]);
+  out.push({id:t,label:v.label,owner:own,steward:v.steward||STEW[t]||DOM[dm].steward,domain:dm,fields:fields,nf:fields.length,fam:fam,lifecycle:pend?"proposed":"live",proposed:pend,ownerMod:v.ownerMod||null,note:v.note||"",
    cls:fields.reduce((m,f)=>{const c=fieldMeta(t,f).cls;return CLS_ORDER.indexOf(c)>CLS_ORDER.indexOf(m)?c:m},"internal"),
    ret:RET[dm],readers,writers,fix:fx&&fx.id,status:fx?(applied?"fixed":"duplicate"):"canonical",
    authMix:fields.reduce((m,f)=>{const a=fieldMeta(t,f).auth;m[a]=(m[a]||0)+1;return m},{})});
@@ -139,13 +149,16 @@ let _ent=null,_nt=0;
 const PLAT=window.PLAT={DOM,APPS,FIXES,PLANNED,fieldMeta,domOf,CLS_ORDER,
  entities(){const n=Object.keys(DATAMODEL.tables).length;if(n!==_nt){_nt=n;_ent=null}return _ent||(_ent=entities())},refresh(){_ent=null},
  ent(id){return this.entities().find(e=>e.id===id)},
+ missing(){const al=(window.COVER&&COVER.alias)||{};return PLANNED.filter(p=>!DATAMODEL.tables[p[0]]&&!al[p[0]])},
+ ensureDom,
  app(id){return APPS.find(a=>a.id===id)},
  fieldsAll(){const o=[];this.entities().forEach(e=>e.fields.forEach(f=>{const m=fieldMeta(e.id,f);o.push(Object.assign({ent:e.id,entLabel:e.label,k:f.k,label:f.label,type:f.type||"string",owner:e.owner,domain:e.domain},m))}));return o},
  /* entities that more than one app writes, and writes by a non-owner: used by the debt ledger and the citizen gate */
  multiWriters(){return this.entities().filter(e=>e.writers.length>1).map(e=>({ent:e.id,apps:e.writers}))},
  nonOwnerWrites(){const o=[];this.entities().forEach(e=>e.writers.forEach(a=>{const ap=APPS.find(x=>x.id===a);if(ap&&ap.mod!==e.owner)o.push({ent:e.id,app:a,owner:e.owner,mod:ap.mod})}));return o},
  stats(){const es=this.entities(),fs=this.fieldsAll();const dups=FIXES.filter(f=>!S.plat.applied[f.id]).length;
-  return{n:es.length,nf:fs.length,dups,planned:PLANNED.length,withOwner:es.filter(e=>e.owner&&e.steward).length,classified:fs.filter(f=>f.cls).length,
+  const miss=this.missing().length,prop=es.filter(e=>e.proposed).length,def=fs.filter(f=>f.basis==="default").length;
+  return{n:es.length,nLive:es.length-prop,proposed:prop,nf:fs.length,dups,planned:miss,withOwner:es.filter(e=>e.owner&&e.steward).length,classified:fs.length-def,defaulted:def,classPct:fs.length?Math.round(100*(fs.length-def)/fs.length):100,
    extAuth:fs.filter(f=>f.auth==="external").length,shared:fs.filter(f=>f.auth==="shared").length,readers:es.reduce((a,e)=>a+e.readers.length,0),writers:es.reduce((a,e)=>a+e.writers.length,0),
    reuse:Math.round(100*(1-es.filter(e=>e.status==="duplicate").length/Math.max(1,es.length)))}},
  apply(fxid){S.plat.applied[fxid]=true;this.refresh();const f=FIXES.find(x=>x.id===fxid);audit("Registry fix applied",f.t+": "+f.plan.slice(0,80));toast("Applied: "+f.t,"good");render()},
@@ -162,11 +175,11 @@ Object.assign(METRICS,{
 const AUTHP={platform:"good",external:"info",shared:"warn"},CLSP={public:"mute",internal:"mute",confidential:"warn",restricted:"bad",personal:"bad"};
 const pill_=(t,c)=>`<span class="pill ${c||"mute"}">${E(t)}</span>`;
 function regScreen(){
- const s=PLAT.stats(),es=PLAT.entities();METRICS.m_reg_dup.cur=s.dups;METRICS.m_reg_reuse.cur=s.reuse;
+ const s=PLAT.stats(),es=PLAT.entities();METRICS.m_reg_dup.cur=s.dups;METRICS.m_reg_reuse.cur=s.reuse;METRICS.m_reg_class.cur=s.classPct;METRICS.m_reg_class.tr=METRICS.m_reg_class.tr.slice(0,-1).concat([s.classPct]);
  const dmCounts=Object.keys(DOM).map(k=>[DOM[k].n,es.filter(e=>e.domain===k).length]);
- const hero_=hero("Platform registry","One catalog every app builds on",`<b data-role="metric">${s.n}</b> canonical entities and <b data-role="metric">${s.nf.toLocaleString()}</b> fields, each with an owner, a steward, a classification and a declared authority. <b data-role="metric">${s.dups}</b> duplicates are open and <b data-role="metric">${s.planned}</b> core entities are still missing. Citizen apps read this registry before they build anything.`,
+ const hero_=hero("Platform registry","One catalog every app builds on",`<b data-role="metric">${s.n}</b> canonical entities and <b data-role="metric">${s.nf.toLocaleString()}</b> fields, each with an owner, a steward, a classification and a declared authority. <b data-role="metric">${s.dups}</b> duplicates are open, <b data-role="metric">${s.proposed}</b> entities are proposed and wait for approval, and <b data-role="metric">${s.planned}</b> core entities are still undefined. Citizen apps read this registry before they build anything.`,
   `<div class="row">${fchip("m_reg_own")}${fchip("m_reg_dup")}${fchip("m_reg_class")}${fchip("m_reg_reuse")}<button class="btn primary" data-reg-new>Propose an entity</button></div>`);
- const kp=kpiRow([["Canonical entities",s.n,"CI classes counted once"],["Fields",s.nf.toLocaleString(),s.extAuth+" external, "+s.shared+" shared"],["Duplicates open",s.dups,"of 5 planned fixes",{cls:s.dups?"bad":"good",keep:true}],["Missing core entities",s.planned,"proposed below"],["Reuse rate",s.reuse+"%","single writer, no duplicate",{metric:"m_reg_reuse"}]]);
+ const kp=kpiRow([["Canonical entities",s.n,"CI classes counted once"],["Fields",s.nf.toLocaleString(),s.extAuth+" external, "+s.shared+" shared"],["Duplicates open",s.dups,"of 5 planned fixes",{cls:s.dups?"bad":"good",keep:true}],["Undefined core entities",s.planned,s.proposed+" more are proposed"],["Reuse rate",s.reuse+"%","single writer, no duplicate",{metric:"m_reg_reuse"}]]);
  const entTbl=btHTML({id:"reg_ent",cols:[
   {k:"label",label:"Entity",fmt:r=>`<b>${E(r.label)}</b><div class="muted small">${E(r.id)}</div>`,val:r=>r.label,wrap:true,w:240},
   {k:"domain",label:"Domain",fmt:r=>E(DOM[r.domain].n),val:r=>DOM[r.domain].n},
@@ -176,21 +189,23 @@ function regScreen(){
   {k:"cls",label:"Highest class",fmt:r=>pill_(r.cls,CLSP[r.cls]),val:r=>r.cls},
   {k:"w",label:"Writers",fmt:r=>r.writers.length>1?pill_(r.writers.length+" writers","warn"):r.writers.length,val:r=>r.writers.length},
   {k:"r",label:"Readers",fmt:r=>r.readers.length,val:r=>r.readers.length},
-  {k:"status",label:"Status",fmt:r=>r.status==="duplicate"?pill_("Duplicate","bad"):r.status==="fixed"?pill_("Fixed","good"):pill_("Canonical","good"),val:r=>r.status}
+  {k:"status",label:"Status",fmt:r=>r.proposed?pill_("Proposed","info"):r.status==="duplicate"?pill_("Duplicate","bad"):r.status==="fixed"?pill_("Fixed","good"):pill_("Canonical","good"),val:r=>r.proposed?"proposed":r.status}
  ],rows:()=>PLAT.entities(),key:"id",h:460,rowH:52,facets:["domain","owner","status"],groupBy:["domain","owner"],exportName:"registry-entities",open:id=>entDrawer(id)});
  const fixes=FIXES.map(f=>{const ap=S.plat.applied[f.id];return `<section class="card glass reg-fix" data-reg-fix="${f.id}"><div class="row" style="justify-content:space-between;gap:10px"><b>${E(f.t)}</b>${ap?pill_("Applied","good"):pill_("Open","bad")}</div>
   <p class="muted small" style="margin:6px 0">${f.ents.map(e=>`<code>${E(e)}</code>`).join(" and ")} become <b>${E(f.keep)}</b></p>
   <p style="margin:6px 0">${E(f.plan)}</p>
   <div class="row small muted" style="gap:10px;flex-wrap:wrap"><span>Effort ${E(f.effort)}</span><span>Risk ${E(f.risk)}</span><span>${f.apps.length} apps touched: ${f.apps.map(a=>E((PLAT.app(a)||{n:a}).n)).join(", ")}</span></div>
   <div class="row" style="gap:8px;margin-top:10px">${ap?`<button class="btn quiet" data-reg-revert="${f.id}">Undo in the preview</button>`:`<button class="btn primary" data-reg-apply="${f.id}">Preview and apply</button>`}</div></section>`}).join("");
- const planned=PLANNED.map(p=>({id:p[0],label:p[2],domain:p[1],steward:p[3],why:p[4],use:p[5]}));
+ const al_=(window.COVER&&COVER.alias)||{};
+ const planned=PLANNED.map(p=>{const t=DATAMODEL.tables[p[0]],a=al_[p[0]];const pe=t?PLAT.ent(p[0]):null;return{id:p[0],label:p[2],domain:p[1],steward:p[3],why:p[4],use:p[5],state:pe?(pe.proposed?"Defined, proposed":"Defined, live"):a?"Covered by "+((DATAMODEL.tables[a]||{}).label||a):"Undefined"}});
  const planTbl=btHTML({id:"reg_plan",cols:[
   {k:"label",label:"Planned entity",fmt:r=>`<b>${E(r.label)}</b><div class="muted small">${E(r.id)}</div>`,val:r=>r.label,w:220,wrap:true},
   {k:"domain",label:"Domain",fmt:r=>E(DOM[r.domain].n),val:r=>DOM[r.domain].n},
   {k:"steward",label:"Proposed steward",fmt:r=>E(r.steward),val:r=>r.steward,wrap:true},
+  {k:"state",label:"State",fmt:r=>pill_(r.state,r.state==="Undefined"?"warn":r.state==="Defined, live"?"good":"info"),val:r=>r.state,wrap:true},
   {k:"why",label:"Why it is needed",fmt:r=>E(r.why),val:r=>r.why,wrap:true,w:360},
   {k:"use",label:"First users",fmt:r=>E(r.use),val:r=>r.use,wrap:true}
- ],rows:()=>planned.concat((S.plat.proposals||[]).map(p=>({id:p.id,label:p.label,domain:p.domain,steward:p.steward,why:p.why,use:"Proposed by "+p.by}))),key:"id",h:420,rowH:56,facets:["domain"],exportName:"planned-entities",open:id=>planDrawer(id)});
+ ],rows:()=>planned.concat((S.plat.proposals||[]).map(p=>({id:p.id,label:p.label,domain:p.domain,steward:p.steward,why:p.why,use:"Proposed by "+p.by,state:"Proposal"}))),key:"id",h:420,rowH:56,facets:["domain","state"],exportName:"planned-entities",open:id=>planDrawer(id)});
  const fieldTbl=btHTML({id:"reg_fld",cols:[
   {k:"ent",label:"Entity",fmt:r=>E(r.entLabel),val:r=>r.entLabel},
   {k:"label",label:"Field",fmt:r=>`<b>${E(r.label)}</b><div class="muted small">${E(r.k)}</div>`,val:r=>r.label,w:200},
@@ -199,9 +214,10 @@ function regScreen(){
   {k:"dir",label:"Direction",fmt:r=>r.dir==="in"?"In":r.dir==="out"?"Out":"Both",val:r=>r.dir},
   {k:"fresh",label:"Freshness",fmt:r=>E(r.fresh),val:r=>r.fresh},
   {k:"cls",label:"Class",fmt:r=>pill_(r.cls,CLSP[r.cls]),val:r=>r.cls},
+  {k:"basis",label:"Label basis",fmt:r=>pill_(r.basis==="default"?"Default, unreviewed":r.basis==="rule"?"Rule":r.basis==="declared"?"Declared":"Steward confirmed",r.basis==="default"?"warn":"good"),val:r=>r.basis,wrap:true},
   {k:"trust",label:"Trust",fmt:r=>Math.round(r.trust*100)+"%",val:r=>r.trust},
   {k:"rule",label:"Quality rule",fmt:r=>E(r.rule),val:r=>r.rule,wrap:true,w:240}
- ],rows:()=>PLAT.fieldsAll(),key:null,h:480,rowH:48,facets:["auth","fresh","cls","domain"],groupBy:["ent","auth","cls"],exportName:"registry-fields"});
+ ],rows:()=>PLAT.fieldsAll(),key:null,h:480,rowH:48,facets:["auth","fresh","cls","domain","basis"],groupBy:["ent","auth","cls"],exportName:"registry-fields"});
  const appTbl=btHTML({id:"reg_app",cols:[
   {k:"n",label:"App or screen",fmt:r=>`<b>${E(r.n)}</b><div class="muted small">${E(r.mod)}</div>`,val:r=>r.n,w:220},
   {k:"w",label:"Writes",fmt:r=>r.writes.map(w=>`<code>${E(w)}</code>`).join(" "),val:r=>r.writes.length,wrap:true,w:300},
@@ -211,7 +227,7 @@ function regScreen(){
  const dist=`<div class="grid g2 reg-dist" style="gap:12px">${dmCounts.map(d=>`<div class="reg-bar"><span class="small">${E(d[0])}</span><div class="reg-track"><i style="width:${Math.round(100*d[1]/s.n)}%"></i></div><b>${d[1]}</b></div>`).join("")}</div>`;
  const pane0=`${kp}<div class="grid g2" style="gap:16px;margin-top:14px">${card("Entities by domain","Counts of canonical entities; CI classes count once",dist)}${card("How the registry is enforced","Every app declares what it reads and writes",`<ol class="small" style="margin:0;padding-left:18px;display:grid;gap:6px"><li>A new entity or field is proposed with an owner and steward.</li><li>The reuse check looks for the same name, fields or purpose.</li><li>The data council approves; the registry publishes the change.</li><li>Apps and citizen apps see it through the MCP server and the typed API.</li></ol>`)}</div><div style="margin-top:14px">${entTbl}</div>`;
  const pane1=`<p class="muted small">Five structural duplicates were found when the model was catalogued. Preview shows which apps change; apply updates the registry view and closes the matching debt items.</p><div class="grid g2" style="gap:14px">${fixes}</div>`;
- const pane2=`<p class="muted small">About ${s.planned} core entities are not yet in the model. Anyone can propose one; the reuse check runs first.</p>${planTbl}`;
+ const pane2=`<p class="muted small">${s.planned} core entities are still undefined and ${s.proposed} more are defined as Proposed until the data council approves them (see the Coverage tab in the Master data model). Anyone can propose one; the reuse check runs first.</p>${planTbl}`;
  const pane3=`<p class="muted small">Every field has an authority, a direction, a freshness class, a classification and a quality rule. External authority means the field is mirrored from the source and never edited here.</p>${legend([["Platform authority","--good-f"],["External authority","--info-f"],["Shared","--warn-f"]])}${fieldTbl}`;
  const pane4=`<p class="muted small">What each app reads and writes. Two writers on one entity, or a write by a module that is not the owner, becomes a debt item.</p>${appTbl}`;
  return `<div class="screen">${hero_}${lensNote()}${views("reg",["Overview","Duplicates and fixes","Planned entities","Field catalog","Who reads and writes"],[pane0,pane1,pane2,pane3,pane4])}${procCard("plat_reg")}</div>`;
@@ -219,8 +235,9 @@ function regScreen(){
 function entDrawer(id){
  const e=PLAT.ent(id);if(!e)return;
  const fx=e.fix&&FIXES.find(f=>f.id===e.fix);
- const rows=e.fields.map(f=>{const m=fieldMeta(e.id,f);return `<tr><td><b>${E(f.label)}</b><div class="muted small">${E(f.k)}</div></td><td>${E(f.type||"string")}</td><td>${pill_(m.auth,AUTHP[m.auth])}</td><td>${E(m.fresh)}</td><td>${pill_(m.cls,CLSP[m.cls])}</td><td class="small">${E(m.rule)}</td></tr>`}).join("");
+ const rows=e.fields.map(f=>{const m=fieldMeta(e.id,f);return `<tr><td><b>${E(f.label)}</b><div class="muted small">${E(f.k)}</div></td><td>${E(f.type||"string")}</td><td>${pill_(m.auth,AUTHP[m.auth])}</td><td>${E(m.fresh)}</td><td>${pill_(m.cls,CLSP[m.cls])}${m.basis==="default"?' <span class="pill mute" title="Default label, not yet reviewed by a steward">default</span>':""}</td><td class="small">${E(m.rule)}</td></tr>`}).join("");
  openDrawer(`<div class="dfullgrid"><div><div class="eyebrow">${E(DOM[e.domain].n)}</div><h2 style="margin:4px 0">${E(e.label)}</h2><p class="muted small"><code>${E(e.id)}</code> owned by ${E(e.owner)}, stewarded by ${E(e.steward)}. Retention: ${E(e.ret)}.</p>
+  ${e.proposed?`<div class="story" style="margin:10px 0"><b>Proposed.</b> ${E(e.note||"Defined from the coverage audit.")} It is in the model and the diagram but no data is migrated until it is approved.<div class="row" style="gap:8px;margin-top:8px"><button class="btn primary" data-cov-approve="${E(e.id)}">Approve and make live</button><button class="btn quiet" data-atlas-go="${E(e.id)}">View on the data diagram</button></div></div>`:""}
   ${fx?`<div class="story" style="margin:10px 0"><b>${e.status==="fixed"?"Fixed":"Duplicate"}.</b> ${E(fx.plan)}</div>`:""}
   <h3>Readers and writers</h3><p class="small">Writes: ${e.writers.map(a=>`<code>${E(a)}</code>`).join(" ")||"none"}<br>Reads: ${e.readers.map(a=>`<code>${E(a)}</code>`).join(" ")||"none"}</p>
   <h3>Authority mix</h3><p class="small">${Object.keys(e.authMix).map(k=>`${pill_(k,AUTHP[k])} ${e.authMix[k]}`).join(" ")}</p>

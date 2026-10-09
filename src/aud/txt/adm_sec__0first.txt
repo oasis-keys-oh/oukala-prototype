@@ -1,0 +1,139 @@
+PLATFORM · SECURITY AND ACCESS
+Know who can see what, and why
+
+11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.
+
+ƒ Access review completion
+Policy engine · draft
+Roles
+Policies and labels
+Who can see this
+Identity and break-glass
+Access reviews
+Role and capability matrix
+Roles are bundles of capabilities. 11 roles, 10 capabilities. A toggle takes effect in the simulator immediately and is audited. Risky pairings are flagged.
+Add a role
+ROLE	VIEW RECORDS	VIEW FINANCE RECORDS	MANAGE CONTRACTS	VIEW RESTRICTED DATA	EDIT RECORDS	APPROVE INVOICES	RUN AI AGENTS	EXPORT DATA	CHANGE CONFIGURATION	MANAGE SECURITY	PEOPLE
+Platform admin	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Executive	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Portfolio lead	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Project manager	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	2
+Service desk	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Change manager	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Finance approver	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	2
+Architect	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Auditor (read only)	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+Vendor guest	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+AI agent service role	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	1
+
+Role-based access answers "what can this job do". Attribute policies on the next tab answer "under which conditions", so the number of roles stays small instead of growing one per exception. A role holding both Approve invoices and Change configuration breaks separation of duties.

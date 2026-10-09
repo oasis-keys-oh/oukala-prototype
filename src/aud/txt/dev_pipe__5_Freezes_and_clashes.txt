@@ -1,0 +1,114 @@
+DELIVERY PIPELINE
+One flow from idea to production
+
+The change process is a stage in the pipeline, not a separate queue. 4.7 production deployments a week, lead time 54 hours, 10.0% failed. 4 runs are waiting at the gate for the CAB.
+
+ƒ Deployment frequency
+ƒ Lead time for changes
+ƒ Change failure rate
+ƒ Time to restore service
+ƒ Changes approved by the gate automatically
+DORA metrics
+ITIL 5
+Pipeline
+Runs
+Gate policy
+Where is my change
+Environments
+Freezes and clashes
+DORA
+FREEZES ON THE CALENDAR
+3
+3 still ahead
+OPEN RELEASES
+12
+not yet deployed
+WITH A HARD CLASH
+2
+freeze or conflicting change
+WITH A SOFT CLASH
+4
+shared service or CI within a day
+Deployment calendar
+Shaded bands are freezes. Dots are planned releases: red means a hard clash. Select a dot to open the release.
+Nov 2026
+Dec 2026
+Jan 2027
+Feb 2027
+Financial close freeze
+Thanksgiving reduced staffing
+Year-end freeze
+Today
+Blackout freeze
+Restricted period
+Planned release
+Release with hard clash
+Can I deploy on this day?
+Checks freezes and other releases.
+Check
+
+Pick a date and select Check.
+
+Freezes
+Release calendar freezes plus any you add. Freezes stop auto-approval at the change gate.
+FREEZE	KIND	DATES	
+Financial close freeze	Blackout	Nov 16 to Nov 20	Release calendar
+Thanksgiving reduced staffing	Restricted	Nov 25 to Nov 27	Release calendar
+Year-end freeze	Blackout	Dec 21 to Jan 4	Release calendar
+Add a freeze
+Clashes across open releases
+Hard clashes block the standard path. Soft clashes ask for a human look.
+Hard clashes: must be resolved
+2
+REL-2610 Portal standby failover (RB-031 v8)
+CHG0323
+Change CHG0323 on the same service on the same day
+REL-2614 ERP posting-lock vendor patch
+fz1
+Inside the Financial close freeze blackout, Nov 16 to Nov 20. A hotfix needs a CIO exception.
+Soft clashes: review
+8
+REL-2607 Portal accessibility fixes
+REL-2615
+Identity (Entra ID) depends on or supports Codification Portal and changes within a day (REL-2615)
+REL-2607 Portal accessibility fixes
+CHG0317
+Identity (Entra ID) depends on or supports Codification Portal: change CHG0317 within a day
+REL-2608 Standards API 2.3.1 batch hotfix
+CHG0316
+Codification Portal depends on or supports Codification Platform: change CHG0316 within a day
+REL-2610 Portal standby failover (RB-031 v8)
+REL-2617
+Same service, 2 days apart (REL-2617)
+REL-2615 Conditional access: editors VPN named location
+REL-2607
+Codification Portal depends on or supports Identity (Entra ID) and changes within a day (REL-2607)
+REL-2617 Autoscale and capacity alerts
+REL-2610
+Same service, 2 days apart (REL-2610)
+Show 2 more of 2 remaining
+How a change reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DORA metrics, ITIL 5, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Work item
+A backlog item or project task is the start of every change.
+PERSON
+Commit and pull request
+Code is committed with the work item id and reviewed.
+AUTOMATIC
+Build, test and scan
+Compile, run tests, scan for vulnerabilities, sign the artifact.
+APPROVAL GATE
+Change gate
+The gate reads the evidence: standard changes are approved automatically, normal changes go to the CAB, emergency changes to the ECAB.
+AI AGENT
+Deploy
+The release agent deploys in the agreed window and respects freezes.
+AI AGENT
+Verify
+The service level objective is checked for 15 minutes. If the error budget burns, the deploy is rolled back.
+AUTOMATIC
+Close and learn
+Release and change records close with the outcome. DORA numbers update.

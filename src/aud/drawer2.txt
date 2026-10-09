@@ -1,0 +1,22 @@
+port         opened 3 fullbtn 3 fullworks 0 tried 14 Vendor risk scorecards FULLFAIL | Public comment portal FULLFAIL | AI drafting assistant for stan FULLFAIL
+trace        opened 3 fullbtn 3 fullworks 0 tried 21 Modernize standards publishing FULLFAIL | Digital Publishing portfolio FULLFAIL | Taxonomy Data Hub FULLFAIL
+home         opened 2 fullbtn 2 fullworks 0 tried 28 Codification Platform Upgrade FULLFAIL | Taxonomy Data Hub FULLFAIL
+inv          opened 0 fullbtn 0 fullworks 0 tried 7 
+tower        opened 0 fullbtn 0 fullworks 0 tried 8 
+kg           opened 1 fullbtn 1 fullworks 0 tried 30 Lease accounting policy FULLFAIL
+fo           opened 3 fullbtn 3 fullworks 0 tried 5 Codification steering group FULLFAIL | Northwind vendor sync FULLFAIL | IT operations daily FULLFAIL
+ims          opened 3 fullbtn 3 fullworks 0 tried 25 Add a process step FULLFAIL | Project managers update progre FULLFAIL | Schedule engine recalculates FULLFAIL
+PAGEERR LN is not defined ReferenceError: LN is not defined |     at wbsKids (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:4595:66) |     at sumDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5683:59) |     at taskDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5654:19) screen plan
+PAGEERR LN is not defined ReferenceError: LN is not defined |     at wbsKids (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:4595:66) |     at sumDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5683:59) |     at taskDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5654:19) screen plan
+PAGEERR LN is not defined ReferenceError: LN is not defined |     at wbsKids (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:4595:66) |     at sumDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5683:59) |     at taskDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5654:19) screen plan
+PAGEERR LN is not defined ReferenceError: LN is not defined |     at wbsKids (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:4595:66) |     at sumDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5683:59) |     at taskDrawer (file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/review_build/full.html:5654:19) screen plan
+plan         opened 3 fullbtn 3 fullworks 0 tried 14 Vendor delivery slip FULLFAIL | Vendor selection FULLFAIL | Migration design FULLFAIL
+ppm_proj     opened 3 fullbtn 3 fullworks 0 tried 9 Who answers for Triage Agent? FULLFAIL | Contract Repository Refresh FULLFAIL | Who answers for Change Risk Ag FULLFAIL
+exe_dash     opened 3 fullbtn 3 fullworks 0 tried 28 Add a process step FULLFAIL | Collect FULLFAIL | Arrange by role FULLFAIL
+exe_strat    opened 3 fullbtn 3 fullworks 0 tried 9 New key result FULLFAIL | Update key result progress FULLFAIL | Days to publish a standard FULLFAIL
+exe_mat      opened 3 fullbtn 3 fullworks 0 tried 23 New capability FULLFAIL | Change targets: Autonomous ser FULLFAIL | Change risk assessment and app FULLFAIL
+exe_risk     opened 3 fullbtn 3 fullworks 0 tried 7 Log a risk FULLFAIL | Assign a mitigation owner FULLFAIL | Lumen asks for a price change  FULLFAIL
+exe_apps     opened 3 fullbtn 3 fullworks 0 tried 23 Add a process step FULLFAIL | Score FULLFAIL | Classify FULLFAIL
+exe_board    opened 3 fullbtn 3 fullworks 0 tried 37 Draft from live data FULLFAIL | Edit FULLFAIL | CIO review FULLFAIL
+exe_scen     opened 3 fullbtn 3 fullworks 0 tried 14 Save a scenario FULLFAIL | Set levers FULLFAIL | Recommend FULLFAIL
+[]

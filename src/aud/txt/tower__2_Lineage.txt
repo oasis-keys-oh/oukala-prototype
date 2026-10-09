@@ -1,0 +1,72 @@
+AI CONTROL TOWER
+Everything AI, in one place
+
+5 of 6 agents are running inside the gateway and spend is at 30% of the cap. One agent, Copilot in Teams, runs outside it and is only observed.
+
+Live
+Gateway · draft
+Governance posture
+87
+Policy coverage × Guardrail pass rate × Audit completeness
+Spend today
+$22
+of $75 daily cap
+Guardrail pass rate
+99.2%
+3 blocks, 1 redaction today
+22%
+Agent override rate
+Off trend · target ≤ 10%
+Human overrides ÷ Agent recommendations
+Overview
+Fleet
+Lineage
+Kill switch
+Lineage
+Pick an agent to follow people, gateway, model and tools. Guardrails apply at the gateway and at every tool.
+First Officer
+Invoice Advisor
+Knowledge Curator
+Test Agent
+Personal assistant
+Copilot in Teams
+Executives
+People
+Finance
+People
+Project teams
+People
+Service desk
+People
+First Officer
+Act within rules
+Invoice Advisor
+Draft
+Knowledge Curator
+Suggest
+Test Agent
+Act with approval
+Personal assistant
+Draft
+Copilot in Teams
+Observe only
+AI gateway
+Guardrails
+Spend caps
+Audit log
+Kill switch
+Council check
+Anthropic
+Model provider
+OpenAI
+Model provider
+Google
+Model provider
+Microsoft
+Model provider
+Records API
+Tool (MCP)
+Calendar and transcripts
+Tool (MCP)
+Invoices and POs
+Tool (MCP)

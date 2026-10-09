@@ -1,0 +1,31 @@
+ARTICLE EDITOR
+Write it once, structured, with sources
+
+A new article starts as a Draft. Let the AI draft from a closed incident or a meeting, then edit every section yourself. Nothing the AI writes can be submitted until a person marks it reviewed.
+
+OPEN ARTICLE
+New article
+KB0421 · Fail over the Codification Portal to the seconda
+KB0502 · Portal failover runbook refresh (RB-031 v8)
+KB0377 · Search results stay stale for up to 20 minutes a
+KB0388 · Why is a new standard paragraph missing from sea
+KB0310 · Retention of signed lease and contract records
+KB0312 · Monthly lease amortization close
+KB0295 · Approve a discount rate change
+KB0450 · Break-glass access to Entra ID admin roles
+KB0451 · Reset multifactor authentication for an editor
+KB0462 · Request vendor access to the staging site
+KB0140 · Share a draft standard with a reviewer outside M
+KB0420 · Taxonomy API returns 429 during bulk import
+KB0333 · Quarterly access recertification
+KB0470 · Where can I find the published Codification rele
+KB0475 · Acceptable use of AI tools for standards draftin
+KB0480 · Rebuild the Lumen search index
+KB0350 · Contract Repository upload fails over 100 MB
+ƒ Article quality score
+Write
+Generate with AI
+Version history
+Review and publish
+No history yet
+Save the first version and the history starts here.

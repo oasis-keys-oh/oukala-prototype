@@ -1,0 +1,109 @@
+ASSETS AND SOFTWARE LICENSES
+140 devices, 3 titles over entitlement
+
+96 devices are deployed and 6 are in stock. Record accuracy against Intune is 91.1%. True up exposure is $12,648 on 3 titles; reclaiming unused seats is the cheapest fix. Laptops and phones ordered through the catalog appear here as soon as they are ordered, and retire here when the request is decommissioned.
+
+Add an asset
+Reclaim licenses
+ƒ Asset record accuracy
+ƒ Licence true-up exposure
+ITIL 5
+CSDM 5
+Inventory
+Lifecycle board
+Software licenses
+TITLES
+11
+tracked
+TRUE-UP EXPOSURE
+$12,648
+2.6% of annual spend
+TITLES OVER ENTITLEMENT
+3
+assigned more than bought
+ANNUAL SPEND
+$477,438
+at list price
+RECLAIMED
+0
+unused seats returned
+Entitled and assigned
+The tick is what we are entitled to. The bar is what is assigned. Past the tick means we owe the vendor.
+ƒ Licence true-up exposure
+ITIL 5
+Microsoft 365 E5
+462 of 450 $8,208 exposed
+Adobe Acrobat Pro
+131 of 120 $2,640 exposed
+Microsoft Visio Plan 2
+37 of 40
+Power BI Pro
+85 of 85
+Tableau Creator
+12 of 10 $1,800 exposed
+Figma Full seat
+13 of 15
+Adobe InDesign
+12 of 12
+Docker Desktop
+15 of 15
+Claude Team seats
+58 of 60
+Defender for Endpoint P2
+652 of 700
+Intune Suite
+652 of 700
+Compliant
+At the limit or thin headroom
+Over entitlement, true-up risk
+Reclaim unused licenses
+Seats not used in 90 days can go back to the pool before we buy more or owe a true-up.
+
+76 seats look unused across 9 titles.
+
+Reclaim seats
+Invoice Advisor · 88%
+License titles
+Search a title or vendor. Select a row for who holds the seats.
+Status
+All
+4
+Vendor
+All
+6
+Export CSV
+TITLE	VENDOR	MODEL	ENTITLED	ASSIGNED	STATUS	EXPOSURE	RENEWS	OWNER
+Microsoft 365 E5	Microsoft	Per user	450	462	True-up risk	$8,208	Jun 30	
+Jordan Lee
+
+Adobe Acrobat Pro	Adobe	Per user	120	131	True-up risk	$2,640	Jan 31	
+Nia Brooks
+
+Microsoft Visio Plan 2	Microsoft	Per user	40	37	Compliant		Jun 30	
+Jordan Lee
+
+Power BI Pro	Microsoft	Per user	85	85	At the limit		Jun 30	
+Dev Rao
+
+Tableau Creator	Tableau	Per user	10	12	True-up risk	$1,800	Dec 15	
+Jordan Lee
+
+Figma Full seat	Figma	Per user	15	13	Compliant		Mar 1	
+Maya Ortiz
+
+Adobe InDesign	Adobe	Per user	12	12	At the limit		Jan 31	
+Maya Ortiz
+
+Docker Desktop	Docker	Per user	15	15	At the limit		Apr 30	
+Sam Patel
+
+Claude Team seats	Anthropic	Per seat	60	58	Thin headroom		Feb 28	
+Jordan Lee
+
+Defender for Endpoint P2	Microsoft	Per device	700	652	Compliant		Jun 30	
+Rina Okafor
+
+Intune Suite	Microsoft	Per device	700	652	Compliant		Jun 30	
+Sam Patel
+11 of 11 rows
+Scroll for more · rows are drawn as you scroll

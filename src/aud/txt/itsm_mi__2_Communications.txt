@@ -1,0 +1,62 @@
+SERVICE MANAGEMENT · MAJOR INCIDENT
+War room: Codification Platform is degraded
+
+INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.
+
+Impact analysis
+Add timeline entry
+Join bridge
+ƒ Major incident time to restore
+ITIL 5
+Overview
+War room
+Communications
+Status page
+Post-incident review
+Claude drafts, a person approves. No communications lead is assigned, so nothing can be sent. Drag someone into the role in the War room tab.
+New update
+Redraft all with latest facts
+Editors and the Chief Editor's office
+Sent 10:05
+Teams and email · approved by Tom Becker
+
+We are investigating slow page loads in the Codification Portal that started at 09:12. You may see pages take 6 to 10 seconds. Please continue to work; save often. Next update at 10:30.
+
+Claude Sonnet · 90%
+Executive team (hourly)
+Draft
+Email
+
+Status at 13:30: the Codification Portal remains degraded for 140 editors. Cause is probable capacity saturation of the hosting tier. Emergency change CHG0311 is in progress and response times have improved from 6.1 s to 3.2 s. Target is below 2 s. Next update at 14:30. No data loss. Beta date of Nov 13 is not affected at this time.
+
+Claude Sonnet · 88%
+Approve and send
+Edit
+Northwind account team
+Draft
+Teams
+
+Thank you for the quick action on NW-88213. Please confirm both nodes are healthy in the pool and send the capacity graph for the last 24 hours. We would also like a call tomorrow to review the T4 tier (CHG0312).
+
+Claude Sonnet · 84%
+Approve and send
+Edit
+Major incident process (ITIL 5 Support)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Declare
+Tier 1 service, many users, no workaround.
+PERSON
+Fill roles
+Commander, technical lead, communications lead, scribe.
+AI AGENT
+Diagnose and restore
+Diagnostics by an agent, decisions by people; emergency change if needed.
+APPROVAL GATE
+Communicate
+AI drafts, communications lead approves every update.
+PERSON
+Review
+Blameless post-incident review ends in tasks.

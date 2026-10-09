@@ -1,0 +1,102 @@
+RUNBOOKS AND AUTOMATION
+From alert to action, with guardrails
+
+7 automation rules connect alerts to 15 pre‑approved standard changes. A restart of the Lumen indexer, for example, is diagnosed by an AI agent and approved by Marco Ellis before it runs. Every run is a standard change record, so it is part of the change process, not around it.
+
+ƒ Automation rate
+ƒ Mean time to acknowledge (MTTA)
+New automation rule
+Standard change catalog
+ITIL 5
+SRE: SLOs and error budgets
+Automation rules
+Execution history
+Simulator
+Guardrails
+GLOBAL KILL SWITCH
+Off
+Rules may run
+MAX BLAST RADIUS
+10
+CIs in one run
+STANDARD CHANGES IN DATE
+15 of 15
+pre-approval not expired
+RUNS HELD IN 7 DAYS
+1
+by a guardrail
+Global guardrails
+These apply to every automation rule. A guardrail never lets an AI agent change something that a human could not have pre-approved.
+Kill switch
+Stops all automation immediately. Alerts keep flowing to people.
+Only pre-approved standard changes
+An automation rule can run only a catalog entry whose pre-approval is current. Anything else becomes a normal change for the CAB.
+Human approval when risk is high
+High-risk entries always need an approver. Medium risk needs one unless the rule is explicitly set to allow autonomy.
+Blast radius
+Each rule caps how many CIs one run can touch, and the catalog entry has its own cap. The smaller wins.
+Rate limit
+A rule can run a limited number of times per hour, so a flapping alert cannot restart a service in a loop.
+Rollback
+Every entry needs a rollback. If validation fails after the change, the rollback steps run and the change is closed as failed.
+Freeze and error budget
+Changes are held during a freeze, and risky ones need approval when the service has spent its error budget.
+Audit
+Every decision, approval and step is logged with who or which agent did it.
+Guardrails per rule
+Blast radius, rate limit, approval threshold and highest autonomy for every rule.
+Sev 1 and 2: collect diagnostics first
+blast 5 · 6/h · approval from High · autonomy 4
+Indexer queue backlog: diagnose, propose a restart
+blast 2 · 2/h · approval from Low · autonomy 3
+Database CPU: propose a scale up
+blast 1 · 1/h · approval from Low · autonomy 3
+Disk above 80%: extend the volume
+blast 3 · 3/h · approval from High · autonomy 4
+Portal errors: recycle the pool, then propose a node
+blast 1 · 2/h · approval from Medium · autonomy 4
+Certificate near expiry: renew
+blast 1 · 1/h · approval from High · autonomy 4
+VPN flapping: propose a gateway failover
+blast 1 · 1/h · approval from Low · autonomy 3
+Encryption check failures: quarantine devices
+blast 10 · 2/h · approval from Medium · autonomy 3
+Responders
+Who or what can act. People, AI agents, contractors and managed service providers are all first-class responders.
+Ops Agent Operations remediation agent
+Triage Agent Incident triage agent
+Change Risk Agent Change risk scoring agent
+Event Correlator Alert correlation and noise agent
+Sam Patel Platform engineer
+Tom Becker Service desk lead
+Ravi Menon Site reliability engineer
+Marco Ellis Lead engineer, search indexer
+CC
+Contoso Cloud Operations Managed service provider: Azure operations
+LS
+Lumen Search Services Managed service provider: search and indexing
+From alert to action
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Alert matches a rule
+Rules run in priority order.
+APPROVAL GATE
+Guardrails
+Pre-approved, blast radius, rate, freeze, error budget, rollback.
+AI AGENT
+Agent diagnoses
+Agentic workflows gather evidence and propose.
+APPROVAL GATE
+Approval
+A person approves when risk or policy needs it.
+AUTOMATIC
+Standard change record
+An auto-approved change is created.
+AUTOMATIC
+Run and validate
+Playbook steps, then validation; rollback on failure.
+AUTOMATIC
+Audit
+Every step and approval is logged.

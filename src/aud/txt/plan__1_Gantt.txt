@@ -1,0 +1,94 @@
+PROJECT PLAN
+Codification
+
+Codification Platform Upgrade finishes Dec 11, 2026, 7 work days late. It is 59% done against 64% planned, and 4 tasks have no float, starting with search indexer (lumen).
+
+Codification
+Taxonomy
+Portal
+Contracts
+Open in the trace
+Open the WBS and task sheet
+PMBOK
+Finish
+Dec 11
+7 work days late
+Schedule performance
+0.94
+Earned ÷ planned · target 0.95
+Done
+59%
+Planned 64%
+Budget used
+62%
+$740K of $1.2M
+Overview
+Gantt
+Milestones
+Progress
+Resource type
+All types
+4
+Projects
+Phases
+Deliverables
+Work packages
+All levels
+Expand all
+Collapse all
+Baseline
+Critical path only
+Links
+Quarter
+Month
+Week
+31 ROWS
+JUL
+AUG
+SEP
+OCT
+NOV
+DEC
+JAN 2027
+FEB
+MAR
+Today
+Codification Platform Upgrade
+Dec 10 7 work days late
+1Initiation and governance
+1.1Project kickoff
+Jul 1
+1.2Charter and business case
+1.3Steering committee, RACI and RAID log setup
+1.4Lumen SOW-4 statement of work and onboarding
+Planned work (current plan)
+Done so far
+Critical: zero float
+Baseline (ghost bar)
+Milestone on baseline
+Milestone late
+Today line
+Dependency arrow
+Cross-project dependency
+
+Bars are drawn from the WBS lines. Thin green line under a bar is the actual start to finish. Dates are work days, Monday to Friday.
+
+How a project plan is built and kept current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Scope and WBS
+The project manager breaks the scope into phases, deliverables and work packages. Every line gets a deliverable and an owner.
+PERSON
+Estimate and link
+Durations, resources and predecessors are set. The engine shows the critical path as you work.
+AI AGENT
+AI completeness check
+PMO Agent drafts missing deliverables, flags lines with no owner, no resource or no predecessor, and suggests fixes.
+APPROVAL GATE
+Approve and baseline
+The sponsor approves the plan and a baseline is set. Variance is measured from here.
+AUTOMATIC
+Track and replan
+Actuals flow in, the engine reforecasts, and changes to dates need a reason.

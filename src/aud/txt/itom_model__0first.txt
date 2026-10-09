@@ -1,0 +1,257 @@
+CMDB · DATA MODEL
+Classes, attributes and relationships, like the CMDB it replaces
+
+The CMDB data model has 42 classes (6 abstract, 36 concrete) and 154 attributes, of which 59 are required. A Linux server inherits attributes from four parent classes. 28 classes hold CIs today, and 11 relationship types say how they connect. Add a class or an attribute here and every form, completeness score and field picker in Oukala learns it immediately.
+
+ƒ CMDB completeness
+CSDM 5
+New class
+New attribute
+Why am I seeing this?
+CLASSES
+42
+28 hold CIs
+ATTRIBUTES
+154
+59 required
+RELATIONSHIP TYPES
+13
+11 edge types, 2 attribute types
+RELATIONSHIP RULES
+6
+6 active
+CSDM DOMAINS
+7
+6 have classes
+EDGES
+236
+relationships between records
+Class hierarchy
+Relationship types
+CSDM 5 domains
+Relationship rules
+Class hierarchy
+Select a class to see what it inherits and what it adds. The dot shows its CSDM domain.
+▾
+Configuration item
+abstract
+162 CIs · 14 own + 0 inherited
+▾
+Hardware
+abstract
+16 CIs · 5 own + 14 inherited
+▾
+Computer
+abstract
+6 CIs · 8 own + 19 inherited
+▾
+Server
+3 CIs · 4 own + 27 inherited
+·
+Linux server
+0 CIs · 2 own + 31 inherited
+·
+Windows server
+1 CIs · 3 own + 31 inherited
+·
+Virtualization host
+2 CIs · 4 own + 31 inherited
+·
+Endpoint device
+3 CIs · 3 own + 27 inherited
+▾
+Network device
+6 CIs · 4 own + 19 inherited
+·
+Firewall
+2 CIs · 2 own + 23 inherited
+·
+Switch
+2 CIs · 2 own + 23 inherited
+·
+Router
+1 CIs · 1 own + 23 inherited
+·
+Load balancer
+1 CIs · 2 own + 23 inherited
+·
+Storage
+4 CIs · 5 own + 19 inherited
+▾
+Software
+abstract
+26 CIs · 1 own + 14 inherited
+▾
+Application
+20 CIs · 5 own + 15 inherited
+·
+Business application
+3 CIs · 4 own + 20 inherited
+▾
+Database
+5 CIs · 7 own + 15 inherited
+·
+SQL Server instance
+5 CIs · 3 own + 22 inherited
+▾
+Middleware
+1 CIs · 2 own + 15 inherited
+·
+Web server
+0 CIs · 1 own + 17 inherited
+·
+Message broker
+0 CIs · 2 own + 17 inherited
+·
+API gateway
+1 CIs · 2 own + 17 inherited
+▾
+Cloud
+abstract
+23 CIs · 6 own + 14 inherited
+·
+Virtual machine
+13 CIs · 6 own + 20 inherited
+·
+Container
+1 CIs · 4 own + 20 inherited
+·
+Cloud function
+1 CIs · 3 own + 20 inherited
+·
+Cloud resource
+7 CIs · 4 own + 20 inherited
+·
+Cloud subscription
+1 CIs · 3 own + 20 inherited
+▾
+Service
+abstract
+86 CIs · 4 own + 14 inherited
+·
+Business service
+0 CIs · 3 own + 18 inherited
+·
+Technology management service
+16 CIs · 1 own + 18 inherited
+·
+Application service
+16 CIs · 2 own + 18 inherited
+·
+Service offering
+54 CIs · 4 own + 18 inherited
+·
+Dynamic CI group
+1 CIs · 3 own + 14 inherited
+·
+Business capability
+3 CIs · 4 own + 14 inherited
+·
+Information object
+1 CIs · 4 own + 14 inherited
+▾
+Site
+4 CIs · 4 own + 14 inherited
+▾
+Datacenter
+3 CIs · 2 own + 18 inherited
+·
+Rack
+2 CIs · 3 own + 20 inherited
+·
+Vendor
+record
+1 CIs · 3 own + 14 inherited
+·
+Contract
+record
+1 CIs · 5 own + 14 inherited
+Foundation
+Ideation and Strategy
+Design and Planning
+Build and Integration
+Service Delivery
+Service Consumption
+Manage Portfolio
+Configuration item
+›
+Hardware
+›
+Computer
+›
+Server
+Server
+cmdb_ci_server
+Service Delivery
+0 CIs of this exact class
+3 with subclasses
+Add attribute
+Add subclass
+Add relationship rule
+Show CIs
+Edit class
+OWN ATTRIBUTES
+4
+defined on this class
+INHERITED
+27
+from 3 parent classes
+REQUIRED
+11
+counted double in completeness
+SUBCLASSES
+3
+inherit all of this
+Attributes by inheritance level
+Inherited from Configuration item14
+Inherited from Hardware5
+Inherited from Computer8
+Own: Server4
+ATTRIBUTE	FIELD NAME	TYPE	RULES	CHOICES OR TARGET
+Rack	rack	ref	recommended	Rack
+Rack position (U)	rack_u	int		
+Virtual	is_virtual	bool		
+Chassis type	chassis_type	enum		Rack, Blade, Tower
+Relationships
+RELATIONSHIP	CAN POINT AT
+Hosted on
+Hosts from the other side
+	Rack
+Connects to
+Connected by from the other side
+	Network device
+Runs behind
+Fronts from the other side
+	Network device
+Contained by
+Contains from the other side
+	Configuration item
+Provided by
+Provides from the other side
+	Vendor Contract
+Supported by
+Supports from the other side
+	Contract
+Located in
+Houses from the other side
+	Site
+Required relationships
+Server hosted on Rack, at least 1
+Physical servers must be placed in a rack for change windows and power planning.
+1 failing
+How the data model changes
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+Anyone proposes a class, attribute or relationship rule with a reason.
+AUTOMATIC
+Preview impact
+The form shows how many CIs gain the attribute and how completeness moves.
+APPROVAL GATE
+Approve
+The CMDB owner approves anything that touches required attributes.
+AUTOMATIC
+Publish
+The class appears in forms, lists, the data model registry and chat.

@@ -1,0 +1,315 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+ACTIVE AGREEMENTS
+24
+2 more: 1 scheduled, 1 draft, 0 retired
+ATTAINMENT, LAST 30 DAYS
+91.1%
+11 agreements below goal
+BREACHES
+47
+clocks that missed their target
+CLOCKS AT RISK
+6
+52 running or paused
+COVERAGE OF PROCESSES
+72.4%
+50 gaps, 8 partial
+EXPERIENCE SCORE
+82%
+3 of 5 XLAs at goal
+Attainment by agreement type
+How many clocks stopped inside their target (or, for XLAs, how people rated the service). The tick on each bar is the goal.
+ƒ Agreement attainment
+Service level agreement
+10 active, 4 at goal
+93.8%
+Operational level agreement
+4 active, 3 at goal
+91.1%
+Underpinning contract
+5 active, 3 at goal
+73.3%
+Experience level agreement
+5 active, 3 at goal
+81.8%
+Meets the goal
+Within 5 points of the goal
+Below the goal
+Weakest processes
+Attainment of the agreements that belong to each process, worst first. Select a process to see its agreements.
+Onboarding
+1 agreements
+80%
+Access management
+2 agreements
+85.2%
+Change enablement
+2 agreements
+86.1%
+Incident and problem
+10 agreements
+89.5%
+Vendor and contract
+4 agreements
+93.3%
+Request fulfillment
+5 agreements
+98.3%
+Attainment by week
+All time-based agreements together, eight weeks ending today.
+0%
+25%
+50%
+75%
+100%
+Aug 18
+Aug 25
+Sep 1
+Sep 8
+Sep 15
+Sep 22
+Sep 29
+Oct 6
+Goal 95%
+Weakest services
+Clocks stopped in the last 30 days, by the service the record belongs to.
+Endpoint management (Intune)
+54 clocks
+74.1%
+Codification Platform
+48 clocks
+85.4%
+Portfolio and project intake
+16 clocks
+87.5%
+Search and indexing
+46 clocks
+91.3%
+Codification Portal
+36 clocks
+91.7%
+Data platform
+25 clocks
+92%
+AI platform and agents
+26 clocks
+92.3%
+Finance systems
+26 clocks
+92.3%
+At-risk clocks right now
+Running or paused clocks at 75% or more of target. Drag one onto a person in the Breaches tab to hand it over.
+ƒ Clocks at risk
+INC0004417
+Incident P2: restore service · Contract Repository
+88% used
+INC0004423
+Incident P1: restore service · Codification Platform
+85% used
+INC0004421
+Network team: resolve its P2 incidents · Network and VPN
+83% used
+INC004310
+Network team: resolve its P2 incidents · Identity (Entra ID)
+76% used
+LUM-88231
+Lumen: Severity 1 restore · Search and indexing
+75% used
+LUM-88213
+Lumen: index rebuild turnaround · Search and indexing
+75% used
+Where agreements are missing
+The coverage policy says which agreement types each process needs at each service tier. Gaps are listed with the largest first.
+ƒ Agreement coverage of processes
+No agreement
+How knowledge flows from source to output to automation
+Tier 1 · missing OLA, XLA
+Create
+No agreement
+From knowledge item to approved agent skill
+Tier 1 · missing OLA, XLA
+Create
+No agreement
+From a failed search to published knowledge
+Tier 1 · missing OLA, XLA
+Create
+No agreement
+How a prompt reaches production
+Tier 1 · missing OLA, XLA
+Create
+No agreement
+How an answer is built
+Tier 1 · missing OLA, XLA
+Create
+Open the coverage map
+All agreements
+26 agreements across SLAs, OLAs, underpinning contracts and XLAs. Select a row to open it. Results use the last 30 days of records on the platform.
+New agreement
+Service
+All services
+16
+Type
+All
+4
+Status
+All
+3
+Process
+All
+6
+Group by 
+None
+Type
+Status
+Process
+Export CSV
+AGREEMENT	TYPE	PROCESS	APPLIES TO	TARGET	LAST 30 DAYS	TREND	STATUS	OWNER
+Incident P1: restore service
+SLA-INC-P1
+	SLA	Incident and problem	All services	4 h at 95%	76.9% 13 clocks		Active	
+Tom Becker
+
+Incident P1: first response
+SLA-INC-P1R
+	SLA	Incident and problem	All services	15 min at 98%	86.7% 15 clocks		Active	
+Tom Becker
+
+Incident P2: restore service
+SLA-INC-P2
+	SLA	Incident and problem	All services	8 h at 95%	91.7% 36 clocks		Active	
+Tom Becker
+
+Incident P3 and P4: restore service
+SLA-INC-P3
+	SLA	Incident and problem	All services	27 h at 95%	93.6% 94 clocks		Active	
+Tom Becker
+
+Incident P1: restore service (tighter target)
+SLA-INC-P1B
+	SLA	Incident and problem	All services	3 h at 95%	No data 0 clocks		Scheduled	
+Tom Becker
+
+Hardware request: deliver
+SLA-REQ-HW
+	SLA	Request fulfillment	All services	45 h at 90%	100% 10 clocks		Active	
+Nia Brooks
+
+Standard request: fulfill
+SLA-REQ-STD
+	SLA	Request fulfillment	All services	45 h at 92%	98.6% 70 clocks		Active	
+Nia Brooks
+
+Access request: provision
+SLA-REQ-ACC
+	SLA	Access management	All services	9 h at 95%	93.9% 33 clocks		Active	
+Sam Patel
+
+Report request: first draft
+SLA-REQ-RPT
+	SLA	Request fulfillment	All services	3.8 days at 90%	95% 20 clocks		Active	
+Dev Rao
+
+Resolver groups accept an assigned incident
+OLA-DESK-ROUTE
+	OLA	Incident and problem	All services	3 h at 90%	92.8% 139 clocks		Active	
+Tom Becker
+
+Network team: resolve its P2 incidents
+OLA-NET-P2
+	OLA	Incident and problem	All services	6 h at 92%	100% 6 clocks		Active	
+Sam Patel
+
+Endpoint team: image and ship
+OLA-ENDPT-IMG
+	OLA	Request fulfillment	All services	27 h at 90%	100% 17 clocks		Active	
+Sam Patel
+
+Identity team: provision access
+OLA-IAM-ACC
+	OLA	Access management	All services	12 h at 95%	75% 28 clocks		Active	
+Sam Patel
+
+Security team: triage a reported phish
+OLA-SEC-PHISH
+	OLA	Incident and problem	All services	30 min at 95%	No data 0 clocks		Draft	
+Jordan Lee
+
+Lumen: Severity 1 restore
+UC-LUMEN-P1
+	UC	Vendor and contract	All services	4 h at 95%	50% 2 clocks		Active	
+Dev Rao
+
+Lumen: index rebuild turnaround
+UC-LUMEN-CHG
+	UC	Vendor and contract	All services	18 h at 90%	100% 1 clocks		Active	
+Dev Rao
+
+Microsoft Unified: Severity A response
+UC-MS-A
+	UC	Vendor and contract	All services	1 h at 100%	100% 3 clocks		Active	
+Sam Patel
+
+Northwind: Tier 1 desk response
+UC-NORTHWIND-T1
+	UC	Incident and problem	All services	30 min at 95%	63.3% 30 clocks		Active	
+Tom Becker
+
+Contoso: monitoring alert acknowledgement
+UC-CONTOSO-MON
+	UC	Vendor and contract	All services	30 min at 98%	100% 9 clocks		Active	
+Sam Patel
+
+Incidents resolved without a hand-off
+SLA-INC-FCR
+	SLA	Incident and problem	All services	At least 60%	68.5% 143 clocks		Active	
+Tom Becker
+
+Changes closed as successful
+SLA-CHG-SUCC
+	SLA	Change enablement	All services	At least 93%	86.3% 139 clocks		Active	
+Nia Brooks
+
+Incident experience: sentiment
+XLA-INC-SAT
+	XLA	Incident and problem	All services	Average at least 4.2 of 5	4.20 of 5 45 responses		Active	
+Tom Becker
+
+Incident experience: did it fix the problem
+XLA-INC-RES
+	XLA	Incident and problem	All services	88% favorable (4 or 5)	71.4% 56 responses		Active	
+Tom Becker
+
+Request experience: effort
+XLA-REQ-EFF
+	XLA	Request fulfillment	All services	85% favorable (4 or 5)	87.9% 33 responses		Active	
+Nia Brooks
+
+New hire experience: day-one readiness
+XLA-ONB
+	XLA	Onboarding	All services	Average at least 4.4 of 5	4.00 of 5 9 responses		Active	
+Maya Ortiz
+
+Change experience: clarity of communication
+XLA-CHG-COM
+	XLA	Change enablement	All services	Average at least 4 of 5	4.29 of 5 31 responses		Active	
+Nia Brooks
+26 of 26 rows
+Scroll for more · rows are drawn as you scroll

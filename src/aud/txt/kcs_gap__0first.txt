@@ -1,0 +1,266 @@
+KNOWLEDGE GAPS AND ANALYTICS
+Find what people need that we have not written
+
+People asked 82 questions this month that no published article answered. The biggest is how do I rebuild the lumen search index. Coverage is weakest for Lease subledger (ERP): only 40% of its incidents have a linked article.
+
+ƒ Self-service deflection
+ƒ Article freshness
+Draft top 3 with AI
+Unanswered searches
+82
+6 distinct questions
+Searches with no click
+152
+5 queries led nowhere
+Low helpfulness
+3
+articles under 70% helpful
+Incident coverage
+68%
+incidents with a linked article
+Top unanswered searches
+The question was asked and the knowledge base said it could not answer.
+how do I rebuild the lumen search index
+IT staff · last Oct 5 · Search
+23
+Draft exists
+ai policy for drafting standards
+All staff · last Oct 6 · Standards authoring
+17
+Draft exists
+vpn keeps dropping vendor laptop
+IT staff · last Oct 4 · Identity and access
+14
+Draft it
+export lease schedule after erp upgrade
+Finance · last Oct 3 · Finance close
+11
+Draft it
+scheduled publish did not go live
+All staff · last Oct 2 · Standards authoring
+9
+Draft it
+who approves taxonomy term changes
+Editors · last Oct 1 · Standards authoring
+8
+Draft it
+Searches with no click
+Results appeared and nobody opened one: the titles or ranking are wrong.
+portal slow
+Top results are release notes, not the incident guide
+63% no click
+41
+reset password
+Results mix MFA reset with admin steps
+58% no click
+36
+lease amortization
+Article title does not use the word amortization in search snippet
+51% no click
+22
+contract upload error
+Retiring article ranks first
+47% no click
+19
+mfa new phone
+Good article exists but audience label hides it from editors
+40% no click
+15
+
+No-click rate = searches with results and zero result clicks ÷ searches with results.
+
+Low helpfulness
+Published articles people mark as not helpful.
+Share a draft standard with a reviewer outside Meridian
+KB0140 · 251 views · Maya Ortiz
+48% helpful
+Monthly lease amortization close
+KB0312 · 118 views · Avery Chen
+64% helpful
+Request vendor access to the staging site
+KB0462 · 204 views · Priya Shah
+69% helpful
+
+Helpfulness = helpful votes ÷ all votes. Articles under 70% go to their owner with the comments.
+
+Coverage by service
+Incidents closed in 90 days that carry a linked article.
+Codification Portal
+74%
+Search service
+89%
+Taxonomy API
+56%
+Contract Repository
+62%
+Lease subledger (ERP)
+40%
+Entra ID
+77%
+M365
+42%
+Coverage = incidents with a linked article ÷ incidents closed
+Suggested new articles
+Ranked by searches plus incidents. Each draft cites its evidence and still needs a human editor and a reviewer.
+Claude Sonnet · 88%
+A later save cancels a scheduled publish
+9 searches this week · 3 incidents (INC0102, INC0089, INC0074)
+Draft it
+Claude Sonnet · 84%
+Vendor laptops lose VPN every 10 minutes
+14 searches · INC0105 closed with a clear fix
+Draft it
+Claude Sonnet · 90%
+Export the lease schedule after the ERP upgrade
+11 searches by Finance · INC0091 · KB0201 retired with no replacement
+Draft it
+Claude Sonnet · 52%
+Who approves taxonomy term changes
+8 searches, no incident. Needs an owner to write it
+Draft it
+Claude Sonnet · 74%
+Portal slow: the first 15 minutes
+Daily ops meeting Oct 6 · 41 'portal slow' searches with no click
+Draft it
+Coverage heat grid
+Share of searches answered, by topic and audience. Blank means nobody has searched or no article is visible.
+PUBLIC
+EDITORS
+SERVICE DESK
+FINANCE
+VENDORS
+EXECUTIVES
+Portal
+90%
+70%
+88%
+none
+none
+40%
+Search
+none
+66%
+82%
+none
+34%
+none
+Finance close
+none
+20%
+25%
+52%
+none
+48%
+Contracts
+20%
+55%
+40%
+60%
+none
+35%
+Identity and access
+none
+72%
+90%
+none
+30%
+45%
+Standards authoring
+35%
+48%
+60%
+none
+28%
+none
+Security
+none
+none
+40%
+none
+18%
+70%
+70% and up
+40 to 69%
+under 40%
+none
+How each number is calculated
+Unanswered
+Questions where retrieval scored under 0.34, or every match was filtered by permission.
+No click
+Searches with results and no click ÷ searches with results.
+Helpfulness
+Helpful votes ÷ votes.
+Coverage
+Incidents with a linked article ÷ incidents closed.
+Heat cell
+Searches answered by a published article visible to that audience ÷ searches by that audience on that topic.
+Deflection
+Support intent searches that end on an article with no ticket in 24 hours ÷ Support intent searches
+ƒ Self-service deflection
+ƒ Article freshness
+ƒ Answer groundedness
+From gap to work
+Failed searches and repeat incidents with no article become demand for the portfolio office and a drafted item for a human to publish. Nothing is published without a Publisher approving it.
+KCS v6
+how do I rebuild the lumen search index
+Search gap
+23 searches, IT staff · Search and indexing
+Draft exists
+Raise demand
+ai policy for drafting standards
+Search gap
+17 searches, All staff · Email and collaboration (M365)
+Draft exists
+Raise demand
+vpn keeps dropping vendor laptop
+Search gap
+14 searches, IT staff · Network and VPN
+AI draft
+Raise demand
+export lease schedule after erp upgrade
+Search gap
+11 searches, Finance · Lease subledger (ERP)
+AI draft
+Raise demand
+scheduled publish did not go live
+Search gap
+9 searches, All staff · Codification Platform
+AI draft
+Raise demand
+VPN drops on vendor laptops
+Repeat incident
+INC0105 and 3 repeats in 30 days · Network and VPN
+Draft exists
+Raise demand
+Scheduled publish cancelled by a later save
+Repeat incident
+INC0102, INC0089, INC0074 · Codification Platform
+AI draft
+Raise demand
+Lease export fails after the ERP upgrade
+Repeat incident
+INC0091, KB0201 retired with no replacement · Lease subledger (ERP)
+AI draft
+Raise demand
+
+AI draft: Knowledge Curator reads the incidents and threads, drafts the item with citations (lineage shown on the item), and a Publisher approves it. Demand goes to the portfolio intake with the service and the evidence.
+
+From a failed search to published knowledge
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect the gap
+Searches with no answer and incidents with no article.
+AUTOMATIC
+Raise demand
+Sent to portfolio intake with service and evidence.
+AI AGENT
+AI draft
+Knowledge Curator drafts with citations.
+PERSON
+Human review
+A reviewer checks the draft against the sources.
+APPROVAL GATE
+Publish approval
+A Publisher approves. AI never publishes.

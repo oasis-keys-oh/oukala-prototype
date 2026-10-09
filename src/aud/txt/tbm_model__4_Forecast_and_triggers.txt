@@ -1,0 +1,180 @@
+COST TRANSPARENCY · TBM AND ATUM
+See what each service costs, and when it needs more
+
+Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now. 1 idle step could save $19,200 a year.
+
+Forecast demand
+Scaling model
+Budgets
+ƒ IT cost per employee a month
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Cost flow
+Unit economics
+Showback and chargeback
+Scaling model
+Forecast and triggers
+What if demand grows?
+Move a slider and the triggers below update at once. Defaults show the two scenarios on Omar's list.
+AI search of the codification: questions a month
+40,000
+New API licensee: millions of calls a month
+12 million
+New staff and contractors
++0
+Organic growth, against the trend
+1.0x
+26 weeks
+52 weeks
+104 weeks
+Back to baseline
+
+One AI question fans out to about 25 index queries. A new licensee also brings support tickets (about 2 or 3 a month per million calls).
+
+How the forecast is built
+Demand = today × (1 + growth) over time, plus the scenario ramping in. A step is added when demand passes the target utilization of the capacity in place.
+Start from today's volume of each driver.
+Apply the monthly growth trend, times the organic slider.
+Add the scenario volume, ramping in over 4 to 12 weeks.
+Find the first week demand is above capacity × target utilization.
+If capacity is far above demand for 26 weeks, flag a scale down.
+Check the funding line for headroom, then offer to raise demand.
+Claude Sonnet · 78%
+ƒ Demand forecast accuracy
+SCALE-UP TRIGGERS
+5
+inside 52 weeks
+ADDED RUN COST
+$220,800
+a year if all are built
+SCALE-DOWN SAVINGS
+$19,200
+a year, 1 candidates
+NET CHANGE
++$201,600
+a year
+SOONEST
+1 week
+Codification Portal
+In 1 week
+Codification Portal
++$27,000 a year
+
+In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now.
+
+Funding: Run budget: integration and API (offset by licence revenue). Allocated $90,000, committed $27,000, so $36,000 of headroom remains
+
+Create demand
+Show the curve
+Open service
+In 5 weeks
+Service desk
++$96,000 a year
+
+In 5 weeks: Service desk needs a 5th analyst ($96,000 a year). Order 6 weeks ahead, so start the request now.
+
+Funding: Operations run budget: service desk labor. Allocated $520,000, committed $384,000, so $40,000 of headroom remains
+
+Create demand
+Show the curve
+Open service
+In 5 weeks
+Data platform
++$31,000 a year
+
+In 5 weeks: Data platform needs a 4th capacity unit ($31,000 a year). Order 6 weeks ahead, so start the request now.
+
+Funding: Run budget: data platform (Azure). Allocated $140,000, committed $93,000, so $16,000 of headroom remains
+
+Create demand
+Show the curve
+Open service
+In 7 weeks
+Search and indexing
++$62,000 a year
+
+In 7 weeks: Search and indexing needs a 3rd indexer node ($38,000 a year), plus part-time search relevance analyst (0.25 fte) ($24,000 a year). Order 5 weeks ahead.
+
+Funding: Run budget: search and indexing (Lumen). Allocated $152,000, committed $76,000, so $14,000 of headroom remains
+
+Create demand
+Show the curve
+Open service
+In 28 weeks
+Contract Repository
++$4,800 a year
+
+In 28 weeks: Contract Repository needs a 5th 5 TB block ($4,800 a year). Order 2 weeks ahead.
+
+Funding: Run budget: Contract Repository storage. Allocated $24,000, committed $19,200, so $0 of headroom remains
+
+Create demand
+Show the curve
+Open service
+Scale down
+Lease subledger (ERP)
+-$19,200 a year
+
+Lease subledger (ERP) runs at 18% of capacity. You can retire 2 servers and save $19,200 a year without crossing the 70% utilization line for 26 weeks.
+
+Funding: Run budget: ERP hosting (retiring under D3). Allocated $30,000, committed $28,800. Retiring frees $19,200.
+
+Create decommission demand
+Show the curve
+Open service
+Demand against capacity: Search indexer nodes
+Purple is forecast demand. The red dashes are capacity today; the green dots are capacity after the triggered step.
+Service desk analysts
+Search indexer nodes
+API gateway units
+Codification application servers
+Contract storage blocks
+Lakehouse capacity units
+Entra ID P2 licence bands
+Lease subledger servers
+Demand (index queries a month) by week
+0
+2.2M
+4.3M
+Capacity today (2 indexer nodes at 85%)
+With 1 more
+Week 7
+0
+13
+26
+39
+52
+Weeks from today
+Stepped cost curve
+Cost rises in steps, not smoothly: one more unit of demand can cost a whole analyst or node.
+Annual cost of indexer nodes
+1.4M
+2.9M
+4.3M
+5.8M
+$0
+$76K
+$152K
+today
+forecast
+index queries a month (a step is added at each dashed line)
+Cost transparency and scaling
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ingest the ledger
+General ledger accounts map to cost pools by rule.
+AI AGENT
+Allocate
+Pools flow to towers, services, offerings and consumers by drivers.
+AI AGENT
+Forecast demand
+Growth and scenarios project each driver against capacity.
+PERSON
+Review trigger
+The service owner checks the step and the funding line.
+APPROVAL GATE
+Raise demand
+Approved triggers become demand with cost and reason.

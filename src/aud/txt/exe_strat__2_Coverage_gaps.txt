@@ -1,0 +1,80 @@
+STRATEGY ALIGNMENT
+Is the money pointed at the strategy?
+
+The alignment score is 89 of 100. 4 of 5 objectives have funded work; Improve editor and reviewer experience has none because its linked requests all sit below the funding line. Laptop refresh (run budget) ($140K) is funded with no objective. 2 of 5 objectives are on track against where they should be today.
+
+ƒ Strategic alignment score
+New objective
+New key result
+Update progress
+Why am I seeing this?
+Alignment score
+88.9
+Target 90 · below target
+Funded dollars linked
+$4.35M
+of $4.49M funded
+Objectives with no funded work
+1
+Editor experience
+Funded work with no objective
+1
+$140K at stake
+ƒ Maturity attainment
+ƒ Glide-path index
+Capability maturity: attainment 70%, glide-path index 93. Each objective below shows its capabilities.
+Open maturity models
+Objectives and key results
+Link initiatives
+Coverage gaps
+Score
+Capabilities and maturity
+Objectives with no funded work
+Strategy that nothing is paying for
+Improve editor and reviewer experience
+no funded work
+
+Linked work is all below the funding line: Reviewer workload dashboard ($120K), Mobile app for editors ($540K), Standards publishing analytics ($130K).
+
+Portfolio Agent · 80%
+AI suggests: fund Reviewer workload dashboard ($120K), the smallest linked request.
+Open demand
+Funded work with no objective
+Money spent without a stated reason
+Laptop refresh (run budget)
+$140K funded
+
+Funded, but it moves no objective. Link it, or ask whether to stop it.
+
+Link to Modernize codification
+Link to Resilient operations
+Link to Contract discipline
+Link to Trusted AI
+Link to Editor experience
+Requests that are neither funded nor aligned
+Safe to decline
+Meeting room AV refresh
+not funded
+
+Below the funding line and aligned to nothing. Declining it frees $160K of envelope for work that moves an objective.
+
+Open demand
+How strategy becomes measured work
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+State objectives
+Leadership writes each objective in plain language with an owner.
+PERSON
+Add key results
+Each objective gets measurable results. Measured ones update themselves.
+AI AGENT
+Link funded work
+The Portfolio Agent proposes which projects and requests serve which objective. The office confirms.
+APPROVAL GATE
+Break into capabilities
+Each objective is broken into capabilities measured on maturity models, with year 1, 3 and 5 targets.
+AUTOMATIC
+Review gaps
+Objectives without funded work, funded work without an objective, and capabilities off their glide path are listed.

@@ -1,0 +1,43 @@
+AGENT SKILLS · KNOWLEDGE INTO ACTION
+Turn what we know into work that runs itself
+
+4 agent skills are running with a 89% success rate and $7,480 saved. 13 more published procedural items score 60 or more and can be promoted. Every skill is a knowledge item with inputs, tools, guardrails, approvals and tests, registered as a workflow step and a chat tool only after a person approves it.
+
+ƒ Agent skill success rate
+ƒ Automation readiness
+ƒ Improvement loop time
+Open the Skill studio
+Why am I seeing this?
+Dashboard
+Registry
+Skill studio
+Runs and improvement loop
+Tool catalog
+1. Pick the knowledge item
+The best 80 procedural items without a skill, highest readiness first.
+ƒ Automation readiness
+ITEM
+Choose an item
+KB0502 · Portal failover runbook refresh (RB-031 v8) · 72
+KB0312 · Monthly lease amortization close · 71
+KB0295 · Approve a discount rate change · 71
+RB-080 · Renew the portal TLS certificate · 69
+RB-071 · Provision a new editor laptop in Intune · 67
+KB0450 · Break-glass access to Entra ID admin roles · 66
+KB0350 · Contract Repository upload fails over 100 MB · 65
+RB-052 · Rotate the Lumen search API keys · 65
+CP-12 · Standards publishing pipeline, as it actually runs · 65
+CP-21 · New user onboarding sequence · 63
+SOP-210 · Onboard a vendor into the Contract Repository · 61
+RB-044 · Restore the Contract Repository from backup · 60
+RB-060 · Revoke a leaver's sessions in Entra ID · 60
+RTP-102 · Vendor laptops lose VPN every 10 minutes · 60
+RTP-074 · Scheduled publish cancelled by a later save · 60
+CP-18 · Invoice exception handling · 60
+KB0365 · Request VPN access for a vendor · 60
+RB-091 · Restart the integration hub event bus · 54
+SOP-221 · Approve an invoice above the delegation limit · 54
+SOP-230 · Quarterly lease schedule reconciliation · 54
+Extract steps with AI
+
+Or press Promote on any item in the Library or Lifecycle tab.

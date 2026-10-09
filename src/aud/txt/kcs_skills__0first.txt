@@ -1,0 +1,135 @@
+AGENT SKILLS · KNOWLEDGE INTO ACTION
+Turn what we know into work that runs itself
+
+4 agent skills are running with a 89% success rate and $7,480 saved. 13 more published procedural items score 60 or more and can be promoted. Every skill is a knowledge item with inputs, tools, guardrails, approvals and tests, registered as a workflow step and a chat tool only after a person approves it.
+
+ƒ Agent skill success rate
+ƒ Automation readiness
+ƒ Improvement loop time
+Open the Skill studio
+Why am I seeing this?
+Dashboard
+Registry
+Skill studio
+Runs and improvement loop
+Tool catalog
+SKILLS
+10
+4 active
+RUNS
+433
+last 90 days
+SUCCESS
+89%
+target 90%
+ESCALATIONS
+37
+sent back to a person
+COST SAVED
+$7,480
+at analyst cost per handled ticket
+AWAITING APPROVAL
+1
+need a decision
+ƒ Agent skill success rate
+ƒ Automation readiness
+ƒ Improvement loop time
+KCS v6
+Skill pipeline
+Knowledge item to skill to registered workflow step and chat tool. Drag a skill between lanes; each move passes a gate.
+Draft
+2
+Rebuild the Lumen search index
+SK-106 · Sam Patel · High risk
+Export the lease schedule after the ERP upgrade
+SK-109 · Avery Chen · Low risk
+In test
+2
+Fail over the Codification Portal to the secondary region
+SK-102 · Priya Shah · High risk
+Fix VPN disconnects on a Windows laptop
+SK-108 · Sam Patel · Medium risk
+Awaiting approval
+1
+Prepare the quarterly access recertification pack
+SK-105 · Nia Brooks · Medium risk
+Active
+4
+Reset multifactor authentication for an editor
+SK-101 · Tom Becker · Medium risk
+Clear stale search results after a deploy
+SK-103 · Sam Patel · Low risk
+Grant a vendor access to the staging site
+SK-104 · Priya Shah · Medium risk
+Share a draft standard with an outside reviewer
+SK-110 · Maya Ortiz · Medium risk
+
+Drag a skill to the next lane. Gates: needs a step and guardrail to enter test, every test passing to ask for approval, a Publisher or Coach to activate, two approvers for High risk. Paused: 1, retired: 0.
+
+Runs by outcome
+How runs finished.
+ƒ Agent skill success rate
+Succeeded
+386
+Escalated to a person
+37
+Failed
+10
+Busiest skills
+Active skills by run count.
+Reset multifactor authentication for an editor
+214
+Clear stale search results after a deploy
+88
+Share a draft standard with an outside reviewer
+63
+Grant a vendor access to the staging site
+41
+The closed loop
+Failed or escalated runs flag the source item. The owner fixes it once and every later run reuses the fix.
+1. CAPTURE
+6
+drafts captured while solving
+Contributors write it down as they resolve a ticket. Not validated yet.
+2. STRUCTURE
+4
+in review
+Symptom, cause, resolution, links. A reviewer checks it.
+3. REUSE
+3,386
+reuses and citations, 90 days
+Linked to tickets, cited in chat, used in portal guidance.
+4. IMPROVE
+3
+open improvement tasks
+Anyone who finds it wrong flags it. The owner fixes it once, everyone benefits.
+5. AUTOMATE
+4
+active agent skills
+Items that score high on readiness become executable skills.
+Escalated or failed skill runs flag the source item, which goes back into Improve. 4 flagged so far, 1 fixed and reused.
+From knowledge item to approved agent skill
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6, NIST CSF 2.0.
+Add a step
+Open in Workflow designer
+PERSON
+Pick the item
+Choose a procedural item with high readiness.
+AI AGENT
+AI extracts steps
+Steps, inputs and tool mappings are proposed.
+PERSON
+Edit tools and guardrails
+A person fixes mappings and sets approvals.
+AUTOMATIC
+Test
+Dry run with sample input and guardrail checks.
+APPROVAL GATE
+Approve
+Publisher or Coach approves. High risk needs two approvers.
+AUTOMATIC
+Register
+A workflow step and a chat tool are created.
+AI AGENT
+Run and learn
+Failed and escalated runs flag the source item.

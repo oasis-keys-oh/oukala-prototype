@@ -1,0 +1,218 @@
+SERVICE MANAGEMENT · RELEASES
+Ship together, with proof
+
+12 releases are in flight on 2 trains. The Codification beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes to a go or no-go decision before Oct 8.
+
+New release
+Go or no-go: REL-2608
+Sprints and backlogs
+Release trains
+ƒ Release change failure rate
+ƒ Lead time for changes
+ITIL 5
+DORA metrics
+SAFe
+Dashboard and releases
+Clash register
+Readiness tree
+Exit criteria
+Go or no-go
+Release
+REL-2608 · Standards API 2.3.1 batch hotfix · Oct 8
+REL-2609 · Lumen search indexer 2.4 to staging · Oct 12
+REL-2615 · Conditional access: editors VPN named location · Oct 20
+REL-2607 · Portal accessibility fixes · Oct 21
+REL-2610 · Portal standby failover (RB-031 v8) · Oct 27
+REL-2617 · Autoscale and capacity alerts · Oct 29
+REL-2613 · Contract Repository storage tier migration · Nov 3
+REL-2618 · Integration hub connector 2.2 · Nov 10
+REL-2611 · Codification beta · Nov 13
+REL-2614 · ERP posting-lock vendor patch · Nov 18
+REL-2612 · Taxonomy Data Hub pilot · Dec 2
+REL-2616 · Contract obligation tracker and renewal alerts · Jan 12
+Add missing standard tasks
+Create tasks in the project plan
+Add a task
+Impact analysis
+
+REL-2611 Codification beta goes live Nov 13 (38 days). Readiness is 31%: 10 of 11 hard gates are still open. Each line below is a real child task with an owner, a due date and an evidence link, following our standard project approach (work breakdown, owner, due date, gate, evidence).
+
+Readiness tree
+15 child tasks in 5 phases; select a task to edit it
+ƒ Release readiness score
+Build
+75%
+1/2
+Development complete
+44 of 195 stories done (132 not yet planned)
+Board: every story in the release is Done
+Priya Shah
+In progress
+Auto
+Hard gate
+Due Oct 23
+Code review done and pull requests merged
+44 of 44 pull requests merged
+Repository: pull requests merged with reviewers
+Anita Cole
+Done
+Auto
+Hard gate
+Due Oct 26
+Test and quality
+50%
+0/3
+Automated test suite passes (95% or better)
+274 of 274 automated tests passing (100%)
+Pipeline run report
+Test Agent
+AI agent
+In progress
+Auto
+Hard gate
+Due Oct 30
+Manual user acceptance testing complete
+78 of 78 manual cases passed
+UAT sign-off sheet
+Chief Editor
+In progress
+Auto
+Hard gate
+Due Nov 3
+Exit criteria and acceptance criteria met
+3 of 5 test and acceptance criteria met
+Exit criteria matrix
+Priya Shah
+In progress
+Auto
+Hard gate
+Due Nov 5
+Governance
+25%
+0/2
+Security review
+Scan report and review record
+Rina Okafor
+In progress
+Hard gate
+Due Nov 1
+Change approval (CAB)
+Change record approval
+Nia Brooks
+Not started
+Hard gate
+Due Nov 6
+People readiness
+17%
+0/5
+Training built
+Training package in the learning system
+Grace Whitfield
+In progress
+Advisory
+Due Oct 30
+Training approved
+Training approval record
+Maya Ortiz
+Not started
+Advisory
+Due Nov 6
+Communications package built
+Draft announcement, FAQ and release notes
+Knowledge Curator
+AI agent
+In progress
+Advisory
+Due Nov 3
+Communications team approved the package
+Communications approval record
+Leila Haddad
+Not started
+Hard gate
+Due Nov 8
+Organizational change management (OCM) plan implemented
+OCM plan checklist and adoption survey
+Owen Pryce
+Not started
+Advisory
+Due Nov 11
+Go-live
+0%
+0/3
+Support handover and monitoring ready
+Handover note and runbook link
+NM
+Northwind Managed Services
+Managed service provider
+Not started
+Hard gate
+Due Nov 10
+Rollback plan rehearsed
+Rehearsal log
+CC
+Contoso Cloud Operations
+Managed service provider
+Not started
+Hard gate
+Due Nov 8
+Go or no-go decision
+Decision record
+Priya Shah
+Not started
+Hard gate
+Due Nov 12
+Roll-up
+Weighted by gate type
+31%
+Claude recommends No-go
+
+6 hard exit criteria are not met and readiness is 31%.
+
+Claude Sonnet · 84%
+Build
+75%
+Test and quality
+50%
+Governance
+25%
+People readiness
+17%
+Go-live
+0%
+Legend
+What the tags mean
+Hard gate must be Done or Waived before a go decision
+Advisory tracked and reported, never blocks
+Auto status is read from the board, pull requests and test runs
+Blocked waiting on someone else; the owner states who
+Release management process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Plan the release
+Scope features, set the date, check the calendar for clashes.
+AUTOMATIC
+Generate readiness tasks
+The standard checklist creates child tasks with owners, due dates and gates.
+AI AGENT
+Build and test
+Pipeline builds; Test Agent runs the suite; QA and editors run UAT.
+AUTOMATIC
+Evaluate exit criteria
+Ten criteria are scored automatically from tests, pull requests and defects.
+APPROVAL GATE
+Security review and CAB
+Security signs off the scan; the change advisory board approves the change record.
+APPROVAL GATE
+Training, communications and OCM approved
+Training approved, Communications team approves the package, OCM plan implemented.
+APPROVAL GATE
+Go or no-go
+A named person decides from the evidence. Hard clashes block go.
+AUTOMATIC
+Deploy through the pipeline
+The deployment runs in the approved window with rollback ready.
+PERSON
+Post-release review
+Failures feed the readiness template; DORA measures update.

@@ -1,0 +1,425 @@
+CMDB · CONFIGURATION ITEMS
+One trusted picture of what runs the Foundation
+
+162 active configuration items sit in 28 classes and support 16 business services. Health is 89.4 against a target of 90: 4 CIs have no owner, 2 have not been seen in 60 days, 35 reach no service and 2 duplicate pairs wait for a merge. Monitored availability averages 99.57% and covers 93.8% of the CIs that should report it.
+
+ƒ CMDB health score
+ƒ Discovery coverage
+ƒ Monitored availability, 30 days
+CSDM 5
+ITIL 5
+New CI
+Dependency views
+Why am I seeing this?
+ACTIVE CIS
+162
+0 retired or merged
+SERVICES
+16
+business services supported
+STALE
+2
+fed by a tool, unseen 60+ days
+ORPHANS
+35
+no path to a service
+DUPLICATE PAIRS
+2
+candidates to merge
+NO OWNER
+4
+accountability gap
+DISCOVERY
+84.6%
+seen by a tool in 14 days
+UPTIME
+99.57%
+93.8% monitored
+CMDB health
+Three scores combine into the overall health. Each shows the formula with this CMDB's numbers.
+Overall 89.4
+CMDB completeness
+95.4% · target 95
+95
+Completeness = weighted attributes filled ÷ weighted attributes required
+4,049 ÷ 4,246 = 95.4
+ƒ CMDB completeness
+CMDB correctness
+78.4% · target 97
+78
+Correctness = 1 − (stale + orphan + duplicate CIs) ÷ active CIs
+1 − 35 ÷ 162 = 0.8 (shown as %)
+ƒ CMDB correctness
+CMDB compliance
+92.6% · target 92
+93
+Compliance = CIs passing every audit rule ÷ active CIs
+150 ÷ 162 = 92.6
+ƒ CMDB compliance
+Configuration items by class
+Most specific class, active CIs only
+Service offering
+54
+Application
+17
+Application service
+16
+Technology management service
+16
+Virtual machine
+13
+Cloud resource
+7
+SQL Server instance
+5
+Storage
+4
+Endpoint device
+3
+Business capability
+3
+Business application
+3
+Firewall
+2
+Services and capabilities
+Software
+Hardware
+Cloud
+Locations
+Vendors, contracts, information
+
+Bars count active CIs by their most specific class. Select a bar to filter the list below.
+
+What needs attention
+Largest data quality gaps first
+4
+CIs have no owner
+Show
+Create task
+2
+CIs not seen by their source for over 60 days
+Show
+Create task
+35
+CIs have no path to any service
+Show
+Create task
+2
+duplicate candidates wait for a merge decision
+Show
+Create task
+2
+mission-critical CIs report no uptime
+Show
+Create task
+Availability by source
+30 day availability from each monitoring source
+ƒ Monitored availability, 30 days
+SolarWinds Orion
+99.54%
+34 CIs report availability
+Azure Resource Graph
+99.53%
+18 CIs report availability
+vCenter
+99.70%
+5 CIs report availability
+Intune
+99.88%
+3 CIs report availability
+No uptime source
+4
+
+Bars start at 98% so small differences are visible. The last row counts CIs that should be monitored but have no source.
+
+Where the data comes from
+CIs by discovery source. Manual entries are the least trusted for technical facts.
+Sources
+Manual
+105
+SolarWinds Orion
+25
+Azure Resource Graph
+19
+vCenter
+5
+ServiceNow import
+4
+Intune
+3
+CSV upload
+1
+Configuration items
+162 records. Search, filter by facet, group, sort and export. Select a row to open the full CI with its relationships, linked records and uptime.
+New CI
+All CIs
+Production, mission critical
+No owner
+Stale, not seen for 60 days
+Orphans, no service
+Duplicate candidates
+Degraded or down
+Critical and unmonitored
+Save current view
+Class
+All
+28
+Environment
+All
+2
+Status
+All
+2
+Support group
+All
+9
+Service
+All
+17
+Source
+All
+7
+Group by 
+None
+Class
+Environment
+Service
+Support group
+Source
+Status
+Export CSV
+CONFIGURATION ITEM	CLASS	ENVIRONMENT	STATUS	SERVICE	SUPPORT GROUP	OWNER	SOURCE	HEALTH	UPTIME, 30 DAYS
+
+Azure East US 2 subscription
+ci_az
+	
+Cloud subscription	Production	Operational	Network and VPN	Platform team	
+Sam Patel
+	
+Azure Resource Graph	97	Not monitored
+
+Edge firewall pair
+ci_fw
+	
+Firewall	Production	Operational	Network and VPN	Ops team	
+Sam Patel
+	
+SolarWinds Orion	99	99.97%
+
+Azure DNS
+ci_dns
+	
+Cloud resource	Production	Operational	Network and VPN	Platform team	
+Sam Patel
+	
+Azure Resource Graph	90	99.92%
+
+VPN gateway
+ci_vpn
+	
+Router	Production	Operational	Network and VPN	Ops team	
+Sam Patel
+	
+SolarWinds Orion	97	99.84%
+
+Entra ID tenant
+ci_tenant
+	
+Cloud resource	Production	Operational	Identity (Entra ID)	Security	
+Rina Okafor
+	
+Azure Resource Graph	91	99.60%
+
+Conditional access policies
+ci_ca
+	
+Application	Production	Operational	Identity (Entra ID)	Security	
+Rina Okafor
+	
+SolarWinds Orion	89	99.58%
+
+MFA service
+ci_mfa
+	
+Application	Production	Operational	Identity (Entra ID)	Security	
+Rina Okafor
+	
+Manual	89	99.56%
+
+codif-app-01
+ci_cod0
+	
+Virtual machine	Production	Operational	Codification Platform	Platform team	
+Priya Shah
+	
+Azure Resource Graph	99	99.96%
+
+codif-app-02
+ci_cod1
+	
+Virtual machine	Production	Operational	Codification Platform	Platform team	
+Priya Shah
+	
+Azure Resource Graph	99	99.28%
+
+codif-sql-prd
+ci_cod2
+	
+SQL Server instance	Production	Operational	Codification Platform	Data team	
+Priya Shah
+	
+Azure Resource Graph	91	99.34%
+
+codif-lb
+ci_cod3
+	
+Load balancer	Production	Operational	Codification Platform	Ops team	
+Priya Shah
+	
+SolarWinds Orion	97	99.26%
+
+codification-platform
+ci_cod4
+	
+Application	Production	Operational	Codification Platform	Ops team	
+Priya Shah
+	
+SolarWinds Orion	89	99.37%
+
+codif-blob
+ci_cod5
+	
+Storage	Production	Operational	Codification Platform	Ops team	
+Priya Shah
+	
+SolarWinds Orion	97	99.79%
+
+portal-web-01
+ci_por0
+	
+Virtual machine	Production	Operational	Codification Portal	Ops team	
+Tom Becker
+	
+Azure Resource Graph	93	99.45%
+
+portal-web-02
+ci_por1
+	
+Virtual machine	Production	Operational	Codification Portal	Ops team	
+Tom Becker
+	
+Azure Resource Graph	89	99.47%
+
+portal-cdn
+ci_por2
+	
+Cloud resource	Production	Operational	Codification Portal	Platform team	
+Tom Becker
+	
+Azure Resource Graph	90	99.82%
+
+portal-waf
+ci_por3
+	
+Firewall	Production	Operational	Codification Portal	Ops team	
+Tom Becker
+	
+SolarWinds Orion	97	99.95%
+
+codification-portal
+ci_por4
+	
+Application	Production	Operational	Codification Portal	Platform team	
+Tom Becker
+	
+SolarWinds Orion	91	99.65%
+
+lumen-indexer-01
+ci_sea0
+	
+Virtual machine	Production	Degraded	Search and indexing	Lumen (vendor)	
+Marco Ellis
+	
+vCenter	99	99.47%
+
+lumen-indexer-02
+ci_sea1
+	
+Virtual machine	Production	Operational	Search and indexing	Lumen (vendor)	
+Marco Ellis
+	
+vCenter	98	99.79%
+
+search-cluster
+ci_sea2
+	
+Application	Production	Operational	Search and indexing	Platform team	
+Marco Ellis
+	
+SolarWinds Orion	91	99.66%
+
+search-index-store
+ci_sea3
+	
+Storage	Production	Operational	Search and indexing	Platform team	
+Marco Ellis
+	
+SolarWinds Orion	97	99.85%
+
+search-api
+ci_sea4
+	
+Application	Production	Operational	Search and indexing	Platform team	
+Marco Ellis
+	
+Manual	83	Not monitored
+
+contract-app
+ci_cr0
+	
+Application	Production	Operational	Contract Repository	Platform team	
+Maya Ortiz
+	
+Manual	91	99.82%
+
+contract-sql
+ci_cr1
+	
+SQL Server instance	Production	Operational	Contract Repository	Data team	
+Maya Ortiz
+	
+SolarWinds Orion	85	99.81%
+
+contract-blob
+ci_cr2
+	
+Storage	Production	Operational	Contract Repository	Platform team	
+Maya Ortiz
+	
+ServiceNow import	100	99.22%
+
+162 of 162 rows
+Scroll for more · rows are drawn as you scroll
+How a configuration item is created and kept true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Discover
+Connected tools (Orion, Azure, vCenter, Intune, Entra, ServiceNow) report what exists. Manual entry is the fallback for things no tool sees.
+AUTOMATIC
+Identify and reconcile
+Identification rules decide if a record is a CI we know; source precedence decides whose value wins for each attribute.
+AI AGENT
+Assign accountability
+Every CI needs a named owner and a support group. The Steward Agent proposes them from teams and past tickets.
+PERSON
+Link to a service
+Each CI is tied to the services it supports so impact analysis can reach the business.
+APPROVAL GATE
+Audit and attest
+Completeness, correctness and compliance rules run nightly; owners attest each quarter.
+APPROVAL GATE
+Retire
+A what-if check shows what depends on the CI before it is retired.

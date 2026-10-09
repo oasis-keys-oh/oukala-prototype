@@ -1,0 +1,189 @@
+PRODUCT LOG
+Everything you asked for
+
+38 requests so far: 31 shipped, 4 in progress and 3 waiting. Nothing you say about the design is lost.
+
+Why am I seeing this?
+Requests
+38
+4 releases so far
+Shipped
+31
+82% of the register
+In progress
+4
+Planned for this release
+Waiting
+3
+Open for your decision
+Register
+Add feedback
+Releases
+Register
+Every request and every piece of design feedback, with where it landed
+Export as Markdown
+All statuses
+Done
+In progress
+Open
+All kinds
+Design
+Feature
+Clarity
+Principle
+Process
+Question
+Idea
+Bug
+F01
+Floating, collapsible glass sidebar like Apple's menu, with a subtle background graphic.
+Design · Shell · landed in v2
+Done
+F02
+User profile and preferences.
+Design · Shell · landed in v2
+Done
+F03
+Liquid glass, floating layers, strong color contrast, hover effects everywhere, subtle animation, no text boxes or visible text boundaries.
+Design · Visual · landed in v2
+Done
+F04
+Use the supplied color palette. Name the app Oukala.
+Design · Visual · landed in v2
+Done
+F05
+Trace the business process like the Codification Publishing Flow, in a modern vector style, keeping the interactivity.
+Design · Trace · landed in v2
+Done
+F06
+"How to read this" was unreadable and inconsistent.
+Design · Trace · landed in v2
+Done
+F07
+Fix the inconsistent fonts and make the table less boring.
+Design · Table · landed in v2
+Done
+F08
+Clicking away from a row should close the drawer. The drawer should be floating liquid glass.
+Design · Table · landed in v2
+Done
+F09
+Dashboard was mediocre. Needs richer visuals.
+Design · Dashboard · landed in v2
+Done
+F10
+Show a ledger: contract total, paid to date, this invoice, what we should pay, remaining, and performance on time, quality and expectation.
+Feature · Invoices · landed in v2
+Done
+F11
+Make the link between an invoice and the executive trace obvious.
+Clarity · Invoices · landed in v2
+Done
+F12
+Show how to define auto-approval rules.
+Feature · Invoices · landed in v2
+Done
+F13
+Agents should handle meetings automatically. The screen is for after-the-fact review. Needs robust calendar views.
+Feature · First Officer · landed in v2
+Done
+F14
+The AI Control Tower was boring. Look at Salesforce and ServiceNow for inspiration.
+Design · Control Tower · landed in v2
+Done
+F15
+Traverse a file system or other source to link knowledge such as GAAP, with the same impact analysis as a changed CI.
+Feature · Knowledge graph · landed in v2
+Done
+F16
+Every field is either part of the story or a metric. Metrics are defined once, show their formula, and name what happens when off trend.
+Principle · Everywhere · landed in v2
+Done
+F17
+Persona-based, hyper-contextual content. Adaptive to skill level, device and accessibility.
+Principle · Everywhere · landed in v2
+Done
+F18
+Track and audit every action. Trends become research for future feature requests.
+Principle · Everywhere · landed in v3
+In progress
+F19
+Chat can control everything. AI actions always show lineage and guardrails.
+Principle · Everywhere · landed in v3
+In progress
+F20
+Expand project and portfolio management: integrated master schedule across projects, Gantt charts, project plans, full Microsoft Project Online features, demand and prioritization.
+Feature · Portfolio · landed in v3
+In progress
+F21
+Track every update, including design feedback, for future releases.
+Process · Product log · landed in v3
+In progress
+F22
+Why does the data-model research matter in a prototype? It informs the real data model, so it is not a screen. Answered in chat.
+Question · Research · landed in v2
+Done
+F23
+Offer to get outside UI and UX guidance (ChatGPT) if the visuals need it. Not needed yet.
+Idea · Visual
+Open
+F24
+Drag and drop priorities, with a reason captured for every override.
+Feature · Demand · landed in v4
+Done
+F25
+Drag and drop everywhere it makes sense: demand gates, assignments, change calendar, release trains, workflow canvas, budget transfers, risk heat map, room bookings.
+Feature · Platform · landed in v4
+Done
+F26
+Show how intake works, with a real form, duplicate check and live score preview.
+Feature · Demand · landed in v4
+Done
+F27
+Hover detail on how a priority score is calculated.
+Feature · Demand · landed in v4
+Done
+F28
+A funded request automatically becomes a project with tasks and a place on the master schedule.
+Feature · Demand · landed in v4
+Done
+F29
+Ingest a contract and extract milestones, agreements, SLAs, deliverables, budget and invoice schedule.
+Feature · Demand · landed in v4
+Done
+F30
+Spacing: tiles touched the cards below them in the impact report.
+Bug · Visual · landed in v4
+Done
+F31
+Filter project schedules by project, assign project managers and individuals, see milestone progress and a RAID log.
+Feature · Schedule · landed in v4
+Done
+F32
+Knowledge graph should feel like Obsidian. Rebuilt from the GAAP vault as a force graph with local graph, backlinks and stubs.
+Feature · Knowledge · landed in v4
+Done
+F33
+Show ITSM components: incidents, problems, changes, releases, major incidents, catalog, SLAs, on-call, assets.
+Feature · Service · landed in v4
+Done
+F34
+Show budgets overall, financial model, vendors and contracts, benefits and delegation of authority.
+Feature · Finance · landed in v4
+Done
+F35
+Show executive views: CEO, CFO, CIO, COO and Board, strategy alignment, risk heat map with Monte Carlo, application portfolio, board pack.
+Feature · Executive · landed in v4
+Done
+F36
+Build initial feature prototypes with forms for everything on the feature list.
+Feature · Platform · landed in v4
+Done
+F37
+The vault graph should read the live Obsidian vault instead of a snapshot. Needs the desktop connector.
+Idea · Platform
+Open
+F38
+Contract ingestion should read real PDF and Word files through a document service.
+Idea · Demand
+Open

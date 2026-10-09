@@ -1,0 +1,171 @@
+PLATFORM · CHAT AND AGENTS
+One assistant on every screen, doing the work with your approval
+
+The chat answered 73% of questions without a person and finished 86% of the tasks it started, using 2 steps on average. 41 tools are registered under 10 active guardrails. This session has 0 agent tasks, 0 waiting on a person.
+
+ƒ Chat deflection rate
+ƒ Agent task completion rate
+ƒ Average steps per task
+ƒ Escalation to a person
+Agentic AI governance
+Open the chat
+Dashboard
+Threads
+Activities
+Tool registry
+Guardrails
+Permissions by role
+Audit
+Test console
+Tool registry
+Every action the chat can take. Each tool names the permission it needs, its risk, and whether a person must confirm. Registered like MCP tools, so other agents can call them with the same checks.
+Agentic AI governance
+TOOL	CATEGORY	WHAT IT DOES	PERMISSION	RISK	CONFIRM	RUNS
+Create incident
+incident.create
+	Service desk	Logs an incident, calculates priority from measured impact and urgency, routes it to a team and starts the SLA clocks.	Report an incident	Low	By mode	0
+Assign work to a team or person
+incident.assign
+	Service desk	Assigns an incident to a team first (ITIL). A named person needs a reason; a member can claim from the queue.	Assign, prioritize and resolve incidents	Low	By mode	0
+Set priority with the calculator
+incident.priority
+	Service desk	Recalculates an incident's priority from users affected, function lost and urgency using the same impact calculator as the Incidents screen.	Assign, prioritize and resolve incidents	Medium	By mode	0
+Resolve an incident
+incident.resolve
+	Service desk	Marks an incident resolved with a resolution note and links a knowledge article if one is named.	Assign, prioritize and resolve incidents	Medium	By mode	0
+Order a catalog item
+request.order
+	Fulfillment	Renders the catalog form inline, prefilled from your words and the person you act for, shows cost and who approves, and submits to the request pipeline.	Order from the catalog	Medium	By mode	0
+Check request status
+request.status
+	Fulfillment	Finds a request and shows where it is, who it is sitting with, how much of its SLA is used and what happens next.	Read records and answers	Low	Never	0
+Approve a request
+request.approve
+	Fulfillment	Approves a pending approval for you or, with a verified delegation, for the person you act for. Never your own request.	Approve or reject requests	Medium	By mode	0
+Reject a request
+request.reject
+	Fulfillment	Rejects a pending approval with a reason. Delegation aware.	Approve or reject requests	Medium	By mode	0
+Raise AI token limit
+aiaccess.raise
+	AI governance	Checks the AI token policy (multiple of the current limit, data class, hard cap), routes approvals and applies the new monthly limit.	Request a higher AI token limit	Medium	By mode	0
+Everything on a person's plate
+person.plate
+	People	Pulls everything assigned to a person from every module, with load and whether they can take more.	Read records and answers	Low	Never	0
+Show a person's records
+person.records
+	People	Lists the assets, software, tickets, requests, projects, approvals, skills and time off of the person you act for, with HR data redacted unless your role allows it.	Read records and answers	Low	Never	0
+Find who can do this
+route.expert
+	People	Ranks people by skills, availability, on-call, ownership and load using the routing engine; shows why each is suggested.	Read records and answers	Low	Never	0
+Who is on call
+oncall.who
+	Operations	Shows who is on call right now across rotas, with the escalation path.	Read records and answers	Low	Never	0
+Swap an on-call shift
+oncall.swap
+	Operations	Requests a one-day shift swap. The team lead approves and the rotation changes only after that.	Swap on-call shifts	Medium	By mode	0
+Request time off
+pto.request
+	People	Requests time off, checks on-call collisions and routes to the manager. The reason stays private.	Request time off	Low	By mode	0
+Raise demand
+demand.create
+	Portfolio	Adds a demand item to the portfolio intake so it is scored and competes fairly for funding.	Raise demand	Low	By mode	0
+Create a project
+project.create
+	Portfolio	Creates a project with a default plan, a project manager and a budget through the portfolio module.	Create projects, tasks and RAID items	Medium	By mode	0
+Add a RAID item
+raid.add
+	Portfolio	Logs a risk, assumption, issue or dependency on a project with owner, impact and mitigation.	Create projects, tasks and RAID items	Low	By mode	0
+Add tasks to a work breakdown structure
+wbs.addtasks
+	Portfolio	Adds tasks to a project's WBS (through the WBS module when loaded), one per line with an optional duration like (5d).	Create projects, tasks and RAID items	Low	By mode	0
+Assign a task to a person
+work.assign
+	Portfolio	Creates a task for a person after checking their load, and tells you if someone else has more room.	Create projects, tasks and RAID items	Low	By mode	0
+Create a change
+change.create
+	Service desk	Creates a change record with risk-based approval routing (standard pre-approved, normal to the CAB, emergency to the emergency CAB).	Create and schedule changes	Medium	By mode	0
+Run a runbook or standard change (dry run)
+runbook.run
+	Operations	Walks a runbook step by step against the CMDB and the change calendar. A dry run changes nothing; execution is high risk and needs a person.	Run runbooks and standard changes	Medium	By mode	0
+Run impact analysis
+impact.run
+	Operations	Traces what depends on a service, CI, change or incident: services, users, cost at risk, projects and objectives.	Read records and answers	Low	Never	0
+Draft a knowledge article
+kb.draft
+	Knowledge	Drafts a KCS-style article (symptoms, cause, resolution, scope) from an incident or a topic. A reviewer publishes it.	Draft knowledge articles	Low	By mode	0
+Summarize a contract
+contract.summarize
+	Portfolio	Summarizes a vendor contract from the directory, invoices and obligations records: parties, term, rates, service levels and money paid.	Read and summarize contracts	Low	Never	0
+Generate a chart or report
+report.chart
+	Insight	Builds a chart from platform data (incidents, requests, work, metrics) using the data model fields, with a path to the visualization builder.	Build charts and reports	Low	Never	0
+Explain how an SLA is measured
+sla.explain
+	Insight	Explains an agreement from its real definition: target, start, pause and stop conditions, schedule, warnings and current attainment, with sources.	Read records and answers	Low	Never	0
+Explain a metric
+metric.explain
+	Insight	Shows a metric's current value, formula, target, owner and what happens when it is off trend, from the single metric catalog.	Read records and answers	Low	Never	0
+Show me (navigate)
+nav.go
+	Chat control	Opens any screen or record. Everything you can click, you can ask for.	Read records and answers	Low	Never	0
+Change a display setting
+ui.setting
+	Chat control	Theme, text size, density, Clarity lens, data volume. Every setting is reachable from chat.	Change display settings and chat controls	Low	Never	0
+Act on behalf of someone
+chat.subject
+	Chat control	Sets or clears the person this thread acts for. Checks the delegation and shows what you may do for them.	Read records and answers	Low	Never	0
+Attach to the context
+chat.attach
+	Chat control	Adds a record, service, CI or project to this thread's context pack.	Read records and answers	Low	Never	0
+Set the autonomy mode
+chat.mode
+	Chat control	Suggest only, ask before acting, or act within guardrails. Per thread.	Read records and answers	Low	Never	0
+Grant system access
+access.grant
+	Identity	Requests access to a system at a level with the data owner's approval; Admin also needs Security.	Grant system access	Medium	By mode	0
+Onboard a new user
+onboard.user
+	Fulfillment	A multi-step plan: identity and mailbox, licenses, laptop and phone, system access, badge, training, calendar and welcome. Runs as an activity with sub-plans, approvals and owners.	Grant system access	Medium	By mode	0
+Offboard a user
+offboard.user
+	Fulfillment	Plan: disable sign-in at the end time, hand off work, collect devices, send the checklist. High risk, so a person always approves.	Grant system access	High	Always	0
+Search the platform
+search.records
+	Insight	Searches every registered record and returns citations.	Read records and answers	Low	Never	0
+Reset multifactor authentication for an editor
+oukala.skill.sk101
+	Agent skills	Run the agent skill Reset multifactor authentication for an editor (from KB0451). Never reset an admin account. Maximum 5 resets per hour. Manager confirmation for executives	Run runbooks and standard changes	Medium	Always	0
+Clear stale search results after a deploy
+oukala.skill.sk103
+	Agent skills	Run the agent skill Clear stale search results after a deploy (from KB0377). Only after a completed change. Maximum 3 clears a day	Run runbooks and standard changes	Low	By mode	0
+Grant a vendor access to the staging site
+oukala.skill.sk104
+	Agent skills	Run the agent skill Grant a vendor access to the staging site (from KB0462). Sponsor approval required. Expiry never beyond 90 days. Staging only, never production	Run runbooks and standard changes	Medium	Always	0
+Share a draft standard with an outside reviewer
+oukala.skill.sk110
+	Agent skills	Run the agent skill Share a draft standard with an outside reviewer (from KB0140). Public or Internal drafts only. Link expires in 14 days	Run runbooks and standard changes	Medium	Always	0
+
+41 tools shown, 9 internal steps hidden. Confirm "By mode" means the thread autonomy setting decides.
+
+Chat and agentic fulfillment
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Agentic AI governance, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Understand the ask
+The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.
+AUTOMATIC
+Check guardrails and permissions
+Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.
+PERSON
+Show the plan
+Steps, parameters, risk, cost and approvers appear as a card. The person can approve, edit or cancel.
+APPROVAL GATE
+Approvals from other people
+Manager, budget owner or change advisory board steps wait as gates. The chat never approves its own plan for a person who is not allowed.
+AI AGENT
+Run step by step
+Each tool runs against the real module, with live status. A failed step stops the plan and offers retry or handoff.
+AUTOMATIC
+Audit and learn
+Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.

@@ -1,0 +1,163 @@
+COST TRANSPARENCY · TBM AND ATUM
+See what each service costs, and when it needs more
+
+Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week: Codification Portal needs a 2nd gateway unit ($27,000 a year). Order 3 weeks ahead, so start the request now. 1 idle step could save $19,200 a year.
+
+Forecast demand
+Scaling model
+Budgets
+ƒ IT cost per employee a month
+ƒ Unit cost against plan
+ƒ Demand forecast accuracy
+TBM Taxonomy and ATUM
+Cost flow
+Unit economics
+Showback and chargeback
+Scaling model
+Forecast and triggers
+COST A MONTH
+$320,400
+$3,844,800 a year
+COST PER EMPLOYEE
+$501
+a month, 640 people
+RUN, GROW, TRANSFORM
+78 / 15 / 7
+percent of spend
+BIGGEST TOWER
+Applications
+$92,638 a month
+BIGGEST SERVICE
+Codification Platform
+$48,200 a month
+TRACED TO CONSUMERS
+97%
+3% shared overhead
+ƒ IT cost per employee a month
+ƒ Spend traced to consumers
+TBM Taxonomy and ATUM
+Trace one service in detail 
+All services
+Codification Platform
+Codification Portal
+Search and indexing
+Contract Repository
+Lease subledger (ERP)
+Finance systems
+Identity (Entra ID)
+Email and collaboration (M365)
+Data platform
+Network and VPN
+Endpoint management (Intune)
+Integration hub
+Service desk
+Portfolio and project intake
+AI platform and agents
+Employee lifecycle
+From the ledger to the people who use it
+Each ribbon is a month of spend, colored by where it comes from. Block height is cost. Pick a service above to add its offerings.
+COST POOLS (GENERAL LEDGER)
+Labor $108,041
+Vendor and outside servic… $48,272
+Cloud services $47,802
+Hardware $35,981
+Software and licences $62,046
+Facilities and power $18,258
+RESOURCE TOWERS
+Applications $92,638
+Compute $53,378
+Service desk $38,410
+Delivery $30,937
+End user $28,092
+Network $26,065
+Storage $25,550
+Security $25,330
+SOLUTIONS: SERVICES
+Codification Platform $48,200
+Data platform $34,800
+Codification Portal $31,400
+Service desk $28,400
+Email and collaboration (… $26,500
+Search and indexing $22,600
+AI platform and agents $21,800
+Finance systems $17,700
+Network and VPN $15,200
+Employee lifecycle $14,600
+Lease subledger (ERP) $12,900
+Endpoint management (Intu… $11,300
+Contract Repository $9,800
+Portfolio and project int… $9,200
+Identity (Entra ID) $8,400
+CONSUMERS
+Editorial $82,980
+Standards development $53,499
+Finance $45,489
+IT operations $28,161
+Public readers $24,667
+Member services $16,509
+Executive office $15,078
+Legal operations $13,584
+Subscribers $12,853
+Procurement $10,123
+Unallocated shared overhe… $9,612
+Labor, compute, network...
+Other pools and towers
+Everything else (shared)
+
+Click any block to trace where its money came from and where it goes.
+
+Resource towers
+The TBM towers, with the services each one feeds.
+TOWER	INCLUDES	A MONTH	SHARE	LARGEST SERVICE
+Compute	Servers, virtual machines, containers, serverless	$53,378	16.7%	Data platform
+Storage	Block, file, object, backup	$25,550	8.0%	Data platform
+Network	WAN, LAN, wireless, VPN, DNS	$26,065	8.1%	Network and VPN
+End user	Devices, mobile, peripherals	$28,092	8.8%	Email and collaboration (M365)
+Security	Identity, endpoint protection, monitoring	$25,330	7.9%	Codification Portal
+Service desk	Tier 1 and 2 support, knowledge	$38,410	12.0%	Service desk
+Applications	Application support and development	$92,638	28.9%	Codification Platform
+Delivery	Project, architecture, management	$30,937	9.7%	Codification Platform
+8 of 8 rows
+Scroll for more · rows are drawn as you scroll
+General ledger accounts
+Where the cost pools come from. Mapping rules are data, so a new account is mapped once.
+Cost pool
+All
+6
+Export CSV
+ACCOUNT	DESCRIPTION	COST POOL	A MONTH
+6110	Salaries and wages, IT	Labor	$66,986
+6125	Benefits and payroll taxes, IT	Labor	$30,252
+6130	Contract labor	Labor	$10,804
+6410	Managed services (Northwind)	Vendor and outside services	$26,550
+6420	Consulting and implementation	Vendor and outside services	$14,482
+6430	Vendor support and maintenance	Vendor and outside services	$7,241
+6510	Azure consumption	Cloud services	$38,241
+6520	SaaS subscriptions (cloud)	Cloud services	$9,560
+6210	Computer hardware, expensed	Hardware	$19,790
+6220	Depreciation, hardware	Hardware	$16,192
+6310	Software licences and subscriptions	Software and licences	$46,534
+6320	Software maintenance	Software and licences	$15,511
+6710	Facilities and data center share	Facilities and power	$12,781
+6720	Power and cooling share	Facilities and power	$5,477
+14 of 14 rows
+Scroll for more · rows are drawn as you scroll
+Cost transparency and scaling
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ingest the ledger
+General ledger accounts map to cost pools by rule.
+AI AGENT
+Allocate
+Pools flow to towers, services, offerings and consumers by drivers.
+AI AGENT
+Forecast demand
+Growth and scenarios project each driver against capacity.
+PERSON
+Review trigger
+The service owner checks the step and the funding line.
+APPROVAL GATE
+Raise demand
+Approved triggers become demand with cost and reason.

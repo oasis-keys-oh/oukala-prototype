@@ -1,0 +1,101 @@
+BENEFITS REALIZATION
+Measured benefit is 85% of plan so far, and $48K over the next year is at risk
+
+The register holds 10 benefits worth $1.85M a year once all are running. In the first quarter $32,600 was measured against $38,375 planned. Most value starts after go-live, so the beta slip (nine days) and the Dec 2 pilot decide the next two quarters. 3 items have confidence below 70% or are behind plan.
+
+ƒ Benefits realized to date
+ƒ Five-year portfolio return on investment
+Record a measurement
+Benefits Agent · 78%
+Register
+Planned and realized
+At risk
+Demand link
+All initiatives
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Record a measurement
+New benefit
+BENEFIT	INITIATIVE	TYPE	OWNER	DRIVER	PLANNED PER YEAR	STARTS	CONFIDENCE	REALIZED TO DATE	STATUS
+BEN-1
+Editors spend less time publishing a standard
+	Codification	
+Productivity hours	Chief Editor	6,400 hours × $68	$435,200	Q4 FY27
+Apr to Jun 2027
+	70%	$0
+of $0 planned
+	Not started
+BEN-2
+Retire the legacy codification host and licences
+	Codification	
+Cost avoidance	Tom Becker	Fixed annual amount	$142,000	Q1 FY27
+Jul to Sep 2026
+	85%	$15,200
+of $17,750 planned
+	Watch
+BEN-3
+More standards sold through faster publication
+	Codification	
+Revenue	Membership and Sales	Fixed annual amount	$210,000	Q4 FY27
+Apr to Jun 2027
+	55%	$0
+of $0 planned
+	At risk
+BEN-4
+Analysts stop reconciling taxonomy by hand
+	Taxonomy	
+Productivity hours	Dev Rao	5,200 hours × $72	$374,400	Q3 FY27
+Jan to Mar 2027
+	75%	$0
+of $0 planned
+	Not started
+BEN-5
+Fewer data reconciliation errors reach publication
+	Taxonomy	
+Risk reduction	Data Office	12% chance × $600,000	$72,000	Q3 FY27
+Jan to Mar 2027
+	60%	$0
+of $0 planned
+	At risk
+BEN-6
+Tier 1 portal outages avoided by tested failover
+	Portal	
+Risk reduction	Tom Becker	5.5 hours × $26,000 per hour	$143,000	Q2 FY27
+Oct to Dec 2026
+	80%	$0
+of $0 planned
+	On track
+BEN-7
+Operations hours saved by tested runbooks
+	Portal	
+Productivity hours	Ops team	1,100 hours × $70	$77,000	Q1 FY27
+Jul to Sep 2026
+	85%	$7,100
+of $9,625 planned
+	At risk
+BEN-8
+Staff find contract clauses faster
+	Contracts	
+Productivity hours	Maya Ortiz	2,800 hours × $75	$210,000	Q4 FY27
+Apr to Jun 2027
+	70%	$0
+of $0 planned
+	Not started
+BEN-9
+Avoid auto-renewals nobody reviewed
+	Contracts	
+Cost avoidance	Procurement	Fixed annual amount	$88,000	Q1 FY27
+Jul to Sep 2026
+	80%	$10,300
+of $11,000 planned
+	On track
+BEN-10
+Retire LegacyDocs support contract
+	Contracts	
+Cost avoidance	Maya Ortiz	Fixed annual amount	$96,000	Q4 FY27
+Apr to Jun 2027
+	90%	$0
+of $0 planned
+	Not started

@@ -1,0 +1,76 @@
+SERVICE PORTFOLIO AND MAP · BUSINESS SERVICE
+Codification Portal
+
+Tier 1 service owned by Tom Becker, used by 180,000 people. Availability is 99.58% against a 99.9% target (0.32 points short), it costs $31,400 a month, and 1 incident and 6 changes are open on it. It is mapped through seven lenses below.
+
+All services
+Impact analysis
+New offering
+Assign stakeholders
+Link a project
+Tier 1
+ƒ Service availability
+CSDM 5
+Technical composition
+Business and strategy
+Projects
+Stakeholders
+Performance
+Financial
+Impact
+Offerings
+Linked records
+AVAILABILITY
+99.58%
+target 99.9% · -0.32 pts
+RESTORE TIME
+3.1 h
+target 3 h
+EXPERIENCE SCORE
+89%
+target 80%
+CHANGE SUCCESS
+98%
+changes without incident
+FULFILLED ON TIME
+97%
+requests inside target
+ƒ Service availability
+ƒ Service restore time
+ƒ Experience score (XLA)
+Experience level agreements
+Availability, last 8 months
+Month by month against the 99.9% target.
+
+Down: 184 minutes this month. Error budget: 44 minutes.
+
+SLA, OLA and XLA status
+Promises to customers, between teams, and about experience.
+Open SLAs and OLAs
+TYPE	MEASURE	TARGET	ACTUAL	STATUS
+SLA	Availability	99.9%	99.58%	Missed
+SLA	Priority 1 response	15 min	10 min	Met
+SLA	Request fulfillment	120 h	105 h	Met
+OLA	Platform team patch turnaround	5 days	4 days	Met
+OLA	Vendor response	30 min	25 min	Met
+XLA	Helps me get my work done	80%	89%	Met
+XLA	Effort to get help (low is good)	20%	12%	Met
+Service portfolio and map
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the service
+Owner, tier, objective and offerings are recorded; CSDM class is set.
+AI AGENT
+Map it
+Relationships to CIs and other services come from discovery and are reviewed.
+AUTOMATIC
+Check completeness
+The seven lenses are scored; gaps open tasks.
+APPROVAL GATE
+Govern changes
+Every change, incident and problem opens the same impact analysis.
+PERSON
+Review the service
+Quarterly review of targets, cost, maturity and retirement.

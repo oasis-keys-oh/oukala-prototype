@@ -1,0 +1,87 @@
+SERVICE CATALOG
+15 items you can order, 240 requests so far
+
+33 approvals are waiting on 10 people, the oldest for 18.1 h. Median fulfillment is 0.8 days against a 5 day goal, and 39 service offerings still have nothing to order. Each item is a form, a price, approval rules and a fulfillment workflow that you can open and change.
+
+Design a catalog item
+Open the customer portal
+Workflow designer
+ƒ Fulfillment time
+ƒ Experience score (XLA)
+ITIL 5
+Experience level agreements
+CSDM 5
+Dashboard and catalog
+Workflows
+Approval rules
+Capacity and demand
+WORKFLOWS
+15
+one per catalog item
+STEPS IN TOTAL
+217
+across all workflows
+APPROVAL GATES
+60
+each driven by a data rule
+PROCESS COST TO DATE
+$22,774
+all requests, excluding item prices
+CONTAINING SUB-WORKFLOWS
+1
+for example onboarding
+Fulfillment workflows
+Each workflow is also registered in the Workflow designer. Select one to see the timeline, graph, cost and performance of every step.
+BPMN 2.0 and DMNITIL 5
+WORKFLOW	STEPS	GATES	STAGES THE REQUESTER SEES	MEDIAN TIME	SLA MET	STEPS ON TARGET	REWORK	COST PER REQUEST
+Laptop provisioning
+Endpoint management (Intune) · Laptop provisioning
+	21	6	9	3.8 d	88.6%	80.1%	2.4%	$60
+Mobile phone provisioning
+Endpoint management (Intune) · Mobile devices
+	15	4	8	3.2 d	85.7%	77.8%	3.9%	$55
+Software license and install
+Endpoint management (Intune) · Software deployment
+	10	3	7	1.5 h	90%	80.9%	0.5%	$8
+Project intake and decision
+Portfolio and project intake · Project intake
+	14	6	9	2.2 d	100%	72.7%	9.1%	$107
+Access provisioning
+Identity (Entra ID) · Access provisioning
+	11	4	5	41 min	100%	82.9%	3%	$7
+New hire onboarding (parent workflow)
+Employee lifecycle · Onboarding · contains 2 sub-workflows
+	52	5	23	34.1 d	90%	79.8%	2.5%	$127
+Employee offboarding
+Employee lifecycle · Offboarding
+	13	4	6	21.9 h	100%	82.1%	3.6%	$34
+Mover: role or location change
+Employee lifecycle · Role changes
+	11	4	6	14.5 h	100%	87.5%	3.1%	$19
+Conference room AV support
+Email and collaboration (M365) · Rooms and AV
+	7	2	6	10.3 h	92.9%	75.9%	7.6%	$88
+Vendor onboarding
+Finance systems · Vendor setup
+	13	5	6	43.1 h	n/a	81.8%	9.1%	$207
+AI agent access and token budget
+AI platform and agents · Token budgets
+	12	5	5		n/a	100%	0%	$0
+New service design and publication
+Portfolio and project intake · Service design intake
+	12	4	8	35.9 h	n/a	83.3%	8.3%	$747
+API key issuance
+Integration hub · API keys
+	9	3	6	24 min	100%	82.9%	0%	$5
+Report build
+Data platform · Reporting
+	10	3	7	2.1 d	100%	85.4%	2.1%	$1,157
+Shared mailbox or channel
+Email and collaboration (M365) · Shared mailboxes and channels
+	7	2	5	31 min	100%	68.8%	3.1%	$3
+An example of one workflow inside another
+Onboarding a new hire is one request. It contains the laptop workflow and the phone workflow as sub-workflows, plus account, badge and orientation steps.
+Open the onboarding workflow
+Open the laptop workflow
+
+Cost and time of the laptop steps roll up into the onboarding request, and each step still reports against its own target.

@@ -1,0 +1,751 @@
+VISUALIZATION BUILDER · 97 CHART TYPES, MAPS AND SHAPES
+Draw any chart from a measure someone owns
+
+19 saved visuals on 3 dashboards, 97 chart types including geographic coverage, incident maps and silhouette charts, and a builder that takes any data model table, metric series, a CSV or a 100,000 point stress set. Every chart is bound to a registered field or metric and shows its formula on hover.
+
+ƒ Governed visuals
+ƒ Visuals with text alternatives
+ƒ Render time at 10,000 points (p95)
+ƒ Visual reuse
+DAMA-DMBOK
+Why am I seeing this?
+Library and gallery
+Maps
+Shape charts
+Builder
+Dashboards
+1. Data
+Meridian samples Incident records, geocoded to the reader or office location · DATAMODEL.incident
+Source
+Meridian incidents (with location)
+Meridian sites (offices, data centers, customers)
+Site-to-site replication and traffic
+On-call coverage by region
+Car sales by model, region and quarter
+Business services (registry)
+Configuration item dependencies
+People, agents and providers (directory)
+Project tasks and milestones
+Portal response time samples (p95, ms)
+Knowledge search terms
+Data center rack elevation
+Office floor plan devices
+Sprint burndown (story points)
+Stress data (10,000 to 100,000 points)
+All governed metrics (series)
+Incident (20 fields)
+Change request (13 fields)
+Request item (24 fields)
+Project (12 fields)
+Project task (WBS line) (12 fields)
+Configuration item (18 fields)
+Business service (7 fields)
+Invoice (8 fields)
+Person, agent or provider (8 fields)
+Contract line (clause, commitment, outcome) (21 fields)
+WBS line (22 fields)
+Hardware (19 fields)
+Computer (27 fields)
+Server (31 fields)
+Linux server (33 fields)
+Windows server (34 fields)
+Virtualization host (35 fields)
+Endpoint device (30 fields)
+Network device (23 fields)
+Firewall (25 fields)
+Switch (25 fields)
+Router (24 fields)
+Load balancer (25 fields)
+Storage (24 fields)
+Software (15 fields)
+Application (20 fields)
+Business application (24 fields)
+Database (22 fields)
+SQL Server instance (25 fields)
+Middleware (17 fields)
+Web server (18 fields)
+Message broker (19 fields)
+API gateway (19 fields)
+Cloud (20 fields)
+Virtual machine (26 fields)
+Container (24 fields)
+Cloud function (23 fields)
+Cloud resource (24 fields)
+Cloud subscription (23 fields)
+Service (18 fields)
+Business service (21 fields)
+Technology management service (19 fields)
+Application service (20 fields)
+Service offering (30 fields)
+Dynamic CI group (17 fields)
+Business capability (18 fields)
+Information object (18 fields)
+Site (18 fields)
+Datacenter (20 fields)
+Rack (23 fields)
+Vendor (related record) (17 fields)
+Contract (related record) (19 fields)
+CI relationship (4 fields)
+Problem record (10 fields)
+Change approval policy (12 fields)
+Incident priority policy (8 fields)
+Maturity capability (8 fields)
+Alert (deduplicated event) (13 fields)
+Alert rule (threshold) (10 fields)
+Correlation group (incident candidate) (6 fields)
+Maintenance window (5 fields)
+False positive feedback (4 fields)
+Alert-to-action rule (9 fields)
+Standard change template and SOP (11 fields)
+Automation execution (10 fields)
+Service level objective (7 fields)
+Synthetic check (7 fields)
+Metric series (5 fields)
+Dashboard (3 fields)
+Log pattern (4 fields)
+On-call shift (7 fields)
+Skill record (6 fields)
+Time off (5 fields)
+Demand request (10 fields)
+RAID item (11 fields)
+Skill record (4 fields)
+Release (13 fields)
+Story, defect or enabler (11 fields)
+Pull request (8 fields)
+Feature or enabler (10 fields)
+Release readiness task (8 fields)
+Catalog task (fulfillment task) (9 fields)
+Vendor ticket (underpinning contract) (9 fields)
+Agreement definition (SLA, OLA, UC, XLA) (18 fields)
+Agreement clock (one per record and agreement) (11 fields)
+Experience response (7 fields)
+Contract or statement of work (12 fields)
+Contract obligation (7 fields)
+Contract change request (7 fields)
+Catalog item (10 fields)
+Fulfillment step (8 fields)
+Hardware asset (9 fields)
+Scaling step (8 fields)
+Cost allocation (4 fields)
+Delivery health
+Financial health
+Operational health
+Forecast vs approved budget
+Invoice cycle time
+Auto-approval rate
+Vendor performance index
+Tier 1 availability
+Mean time to resolve (Sev 2)
+Agent override rate
+AI spend against daily cap
+Knowledge freshness
+Meeting capture yield
+WBS completeness
+Schedule variance
+Milestone hit rate
+Priority score
+Schedule performance index
+Milestones on time
+Resource utilization
+Demand decision time
+Access review completion
+Licence utilization
+AI cost per resolved outcome (USD)
+Controls with current evidence
+Promotions passing gates first time
+Guardrail catch rate
+Forecast variance to approved budget
+Budget lines over commitment
+Reserve coverage
+Capital plan used
+Five-year portfolio return on investment
+Benefits realized to date
+Renewals needing a decision in 90 days
+Three-way match rate
+Chat deflection rate
+Agent task completion rate
+Average steps per task
+Escalation to a person
+Deployment frequency
+Lead time for changes
+Change failure rate
+Time to restore service
+Deployment rework rate
+Changes approved by the gate automatically
+Change success rate
+Process automation level
+Process steps with an SLA
+Data model reference integrity
+Strategic alignment score
+Risk exposure against contingency
+Beta date confidence
+Application spend to retire or move
+Executive decision age
+Rule-decided approvals
+Approval turnaround
+Approvals past SLA
+Workflow run success
+Integration failure rate
+Workflow automation rate
+Step cycle time
+Assessment gate pass rate
+Rework rate
+Steps meeting their target
+Cost per workflow run
+Approver override rate
+CMDB health score
+CMDB completeness
+CMDB correctness
+CMDB compliance
+Discovery coverage
+Monitored availability, 30 days
+Cloud spend vs monthly budget
+Cloud waste share
+SLA compliance
+Change failure rate
+Backlog age
+Major incident time to restore
+Repeat incident rate
+Team-first assignment
+Priority override rate
+Approval turnaround
+Known error reuse
+Incident impact score
+Time to restore service
+Article freshness
+Self-service deflection
+Answer groundedness
+Judge disagreement rate
+Article quality score
+Article reuse rate
+Knowledge link rate
+Automation readiness
+Agent skill success rate
+Service knowledge coverage
+Improvement loop time
+Ontology completeness
+Link density
+Graph link coverage
+Orphan nodes
+Maturity attainment
+Glide-path index
+Capability delivery coverage
+Mean time to detect (MTTD)
+Mean time to acknowledge (MTTA)
+Event noise reduction
+False positive rate
+Automation rate
+Alert fatigue index
+SLOs inside error budget
+Observability coverage
+On-call coverage
+On-call fairness
+Time to page a human
+Critical skill depth
+Verified skill share
+Overloaded people
+Mandatory training completion
+Room utilization
+Agent work accepted without rework
+Journey sentiment
+Forum actions closed on time
+Planned utilization, next 12 weeks
+Over-allocated person-weeks
+Unstaffed demand
+Resource requests answered in 5 days
+Performance index
+Review completion
+Calibration spread between managers
+Goals aligned to strategy
+Tickets resolved per FTE-week
+Reopen rate
+SLA attainment
+Project tasks on time
+Story velocity
+Approvals turnaround
+Knowledge contributions
+Experience (XLA) score
+Agent work accepted without rework
+Agent escalation rate
+Cost per agent task
+Guardrail violations
+Deliverables accepted first time
+Rate card variance
+Provider SLA attainment
+Service credits claimed
+Journey automation coverage
+Journey experience score
+Boxes linked to a process
+Risk exposure
+Contracts that outlast their work
+AI agents with an accountable human
+Funded demand against capacity
+Demand raised by triggers
+Lead time for changes
+Deployments per week
+Release change failure rate
+Time to restore after a failed release
+Program predictability
+Defect escape rate
+Release readiness score
+Agreement attainment
+Agreement coverage of processes
+Clocks at risk
+Experience score
+Vendor credits due
+Clause playbook coverage
+Obligation on-time rate
+Negotiation cycle time
+Contract leakage
+Auto-renewal traps
+Fulfillment time
+First-time approval rate
+Cost per request
+Experience score (XLA)
+Licence true-up exposure
+Asset record accuracy
+Notification delivery rate
+Fulfillment on time
+SLA attainment
+Self-service deflection
+Service availability
+Service restore time
+Service map completeness
+IT cost per employee a month
+Unit cost against plan
+Demand forecast accuracy
+Spend traced to consumers
+Governed visuals
+Visuals with text alternatives
+Render time at 10,000 points (p95)
+Visual reuse
+Paste or upload CSV
+Use enterprise volume
+Fields (drag to a slot, or use the menus)
+Aa
+Incident
+Date
+Opened
+Geo
+US state
+Geo
+Country
+Aa
+City
+Aa
+Service
+Aa
+Priority
+Aa
+Category
+Aa
+Site type
+#
+Hours to resolve
+ƒ
+#
+Cost to resolve
+#
+Users affected
+#
+Satisfaction (1 to 5)
+Pos
+Latitude
+Pos
+Longitude
+2. Chart and encodings
+1 of 9 slots used
+Chart type
+Bar
+Horizontal bar
+Grouped bar
+Stacked bar
+100% stacked bar
+Diverging bar
+Lollipop
+Dumbbell
+Bullet
+Waterfall
+Pareto
+Line
+Step line
+Smooth line
+Area
+Stacked area
+100% area
+Streamgraph
+Slope chart
+Bump chart
+Sparkline grid
+Scatter
+Bubble
+Hexbin
+Density heatmap
+Contour
+Parallel coordinates
+Histogram
+Box plot
+Violin
+Ridgeline
+Beeswarm
+Strip plot
+Pie
+Donut
+Sunburst
+Treemap
+Icicle
+Packed circles
+Waffle
+Marimekko
+Heatmap
+Dot matrix
+Calendar heatmap
+Correlogram
+Status matrix
+Radar
+Radial bar
+Polar area (rose)
+Gauge
+Speedometer
+Funnel
+Pyramid
+Sankey
+Alluvial
+Chord
+Arc diagram
+Venn / Euler
+Network (force graph)
+Tree
+Dendrogram
+Org-style chart
+Cumulative flow
+Event timeline
+Gantt
+Swimlane
+Roadmap
+Burndown
+Candlestick
+Control chart (SPC)
+Run chart
+KPI card
+Progress bar
+Progress ring
+Table with in-cell bars
+Small multiples
+Word cloud
+World choropleth
+US state choropleth
+World bubble map
+US bubble map
+Point map with clusters
+Hex-bin map
+Coverage map
+Flow map
+Rack elevation
+Floor plan
+Heat overlay on a diagram
+Shape fill
+Liquid fill
+Stacked silhouette
+Silhouette bars
+Pictogram (isotype)
+Pictorial bars
+Person waffle
+Custom shape fill
+Image fill
+Trend over time, one line per series. Needs a date (or ordered category) and a measure.
+X: group or time
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Y: measure
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Color
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Size
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Shape (third dimension)
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Facet
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Label
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Compare (second measure or end date)
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+Tooltip field
+None
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+3. Calculate
+How rows become numbers
+Aggregate
+Automatic
+Sum
+Average
+Count
+Median
+90th percentile
+95th percentile
+99th percentile
+Minimum
+Maximum
+Distinct count
+Sort
+Automatic
+High to low
+Low to high
+A to Z
+As found
+Show top (0 = all)
+Bins for a number (0 = off)
+Time grain
+day
+week
+month
+quarter
+year
+Calculated fields (0)
+Add calculated field
+Filters (0)
+Incident
+Opened
+US state
+Country
+City
+Service
+Priority
+Category
+Site type
+Hours to resolve
+Cost to resolve
+Users affected
+Satisfaction (1 to 5)
+Latitude
+Longitude
+equals
+is not
+greater than
+less than
+at least
+at most
+contains
+Add
+4. Style and notes
+Palette, titles, thresholds
+Palette
+Brand
+Color-blind safe (Okabe-Ito)
+Categorical
+Status
+Color ramp for heat and density
+teal
+plum
+warm
+blue (color-blind safe)
+Title
+Subtitle
+Trend line on scatter
+Show metric target line
+Annotations (0)
+Add reference line, band or note
+Live preview
+Redraws as you change anything.
+PNG
+SVG
+CSV
+Copy JSON spec
+Save to library
+Save and add to a dashboard
+Start over
+Recommended chart types
+Ranked for the fields you chose, with the reason
+Claude Sonnet · 84%
+Line
+95% fit
+
+A date on X and a measure on Y is a trend over time, which a line shows best.
+
+Point map with clusters
+90% fit
+
+Latitude and longitude are present: plot each record, clustered when dense.
+
+Area
+80% fit
+
+Area adds volume under the line when there is a single series.
+
+Hex-bin map
+70% fit
+
+Hexagons summarize points over the map.
+
+Bar
+62% fit
+
+Bars work when there are only a handful of periods.
+
+Calendar heatmap
+55% fit
+
+Daily values are easy to scan as a calendar.
+
+Chart checks
+Lint for misleading or unreadable designs
+i
+Add a title that says what to conclude, not just what is plotted.
+✓
+Passes chart checks: every number is traceable, labels are readable, a data table and text alternative are included.
+How a visual gets from data to dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DAMA-DMBOK, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Pick governed data
+A data model table, metric series, big-data set or your own CSV.
+AI AGENT
+Recommend chart types
+The AI agent ranks chart types for the chosen fields and explains why.
+AUTOMATIC
+Check lineage and rules
+Measures are checked against the metric registry; chart lint warns about misleading designs.
+PERSON
+Build and preview
+Drag fields to encodings and watch the chart redraw; tooltips show formulas.
+AUTOMATIC
+Accessibility check
+Aria label, data table and color-blind safe palette are verified.
+APPROVAL GATE
+Publish to library
+The owner approves a visual before it appears on shared dashboards.

@@ -1,0 +1,104 @@
+AUTOMATION · AGENTIC WORKFLOWS
+Agents do the work, people keep the say
+
+3 agent-run workflows ran 12 times this week for $1.85. 3 runs are paused at a human approval, and every write to money or access asks first. The kill switch has three levels, from pausing new runs to revoking tools.
+
+ƒ Workflow run success
+Create agentic workflow
+Open AI Control Tower
+Invoice hold advisor · Running
+Runbook refresh · Running
+Quarterly reforecast · Running
+Invoice hold advisor
+Check each invoice over $25,000 against accepted work and recommend approve, hold or reject. Place a payment hold when work is not accepted.
+Running
+GPT (council) · 88%
+Guardrails
+Runs, last 7 days
+5
+Success
+60%
+Tokens
+188K
+Cost
+$0.72
+Steps and human-in-the-loop policy
+Set how much freedom each step has. Drag to reorder. Writes to money or access should ask first.
+Add step
+1
+Read invoice, PO and contract
+Invoices
+POs
+Contracts
+Tools and name
+Autonomous
+Propose then approve
+Suggest only
+2
+Compare earned value with payments
+Earned value calculator
+Tools and name
+Autonomous
+Propose then approve
+Suggest only
+3
+Recommend approve, hold or reject
+No tools: reasoning only
+Tools and name
+Autonomous
+Propose then approve
+Suggest only
+4
+Place payment hold in ERP
+ERP payment hold
+Tools and name
+Autonomous
+Propose then approve
+Suggest only
+5
+Notify the project manager in Teams
+Teams post
+Tools and name
+Autonomous
+Propose then approve
+Suggest only
+Autonomous: acts, then logs
+Propose then approve: waits for Avery Chen
+Suggest only: shows, never acts
+Kill switch
+Three levels, most gentle first. Anyone with the reviewer role can pull it.
+Level 1: Pause new runs
+Existing runs finish. Nothing new starts.
+Level 2: Stop running work
+In-flight runs are cancelled and pending approvals are voided.
+Level 3: Revoke tool access
+Credentials for every tool are revoked. Reviewers must re-grant them.
+Guardrails
+Limits apply per run unless noted.
+Max steps
+12
+Spend cap per run
+$0.50
+Runs per day
+25
+Money it may move
+None
+Hours
+24 hours a day
+Reviewers
+Avery Chen
+Protections
+Redact personal data
+Must cite sources
+Writes need approval
+No external domains
+Escalate under 70% confidence
+Run history
+Open a run to see every step, what it cost and who approved it.
+ƒ Workflow run success
+RUN	STARTED	INPUT	STATUS	STEPS	TOKENS	COST	TIME
+R-4821	Oct 6 09:14	INV-20433	Awaiting approval	4/5	39.1K	$0.152	41s
+R-4809	Oct 5 16:02	INV-20418	Completed	5/5	36.2K	$0.137	36s
+R-4790	Oct 5 11:40	INV-20451	Completed	5/5	33.6K	$0.126	33s
+R-4766	Oct 3 14:25	INV-20402	Failed	2/5	43.4K	$0.170	19s
+R-4741	Oct 2 10:05	INV-20395	Completed	5/5	35.2K	$0.133	35s

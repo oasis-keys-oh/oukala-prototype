@@ -1,0 +1,92 @@
+RISK HEAT MAP AND MONTE CARLO
+How likely are we to hit the date?
+
+There is an 80% chance the Codification beta lands by Nov 23, 2026, and a 76% chance of making Nov 20. 7 open risks carry $261,000 of expected loss, 90% of the $291,000 contingency; the largest is Lumen delivers the search indexer late again at $88K.
+
+ƒ Beta date confidence
+ƒ Risk exposure against contingency
+Log a risk
+Assign mitigation owner
+Why am I seeing this?
+Heat map
+Register
+Monte Carlo
+Portfolio risk heat map
+Drag a risk to a new cell to change its likelihood and impact. Alt with arrow keys moves it from the keyboard.
+Risk Agent · 83%
+LIKELIHOOD, FROM RARE TO ALMOST CERTAIN
+5
+Almost certain
+4
+Likely
+3
+Possible
+4
+7
+1
+2
+Unlikely
+6
+2
+3
+1
+Rare
+5
+1
+Under $50K
+2
+$50K to $125K
+3
+$125K to $250K
+4
+$250K to $500K
+5
+Over $500K
+IMPACT IF IT HAPPENS, FROM SMALL TO SEVERE
+Top risks by expected loss
+$261,000 in total. Select one to see its schedule effect and owner.
+ƒ Risk exposure against contingency
+1
+Lumen delivers the search indexer late again
+40% of $220K · Dev Rao
+$88K
+3
+Lease subledger cannot support the ASC 842 amendment by Jan 1
+20% of $280K · Avery Chen
+$56K
+2
+Portal outage before the failover is tested
+15% of $300K · Tom Becker
+$45K
+6
+Contract Repository cutover collides with the January freeze
+20% of $120K · Maya Ortiz
+$24K
+4
+Lumen asks for a price change on SOW-4
+30% of $60K · Maya Ortiz
+$18K
+5
+AI drafting assistant publishes an uncited sentence
+5% of $300K · Jordan Lee
+$15K
+7
+Platform team is overloaded in November
+30% of $50K · Priya Shah
+$15K
+How risk and date confidence are produced
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, COBIT 2019.
+Add a step
+Open in Workflow designer
+PERSON
+Log a risk
+Anyone describes cause, effect, likelihood and dollar impact.
+AUTOMATIC
+Score
+Likelihood and impact place the risk on the heat map. Expected loss is probability times impact.
+AUTOMATIC
+Simulate
+2,000 trials roll task durations and register risks through the schedule.
+APPROVAL GATE
+Assign mitigation
+Every risk above the green zone needs a named owner and a dated action.

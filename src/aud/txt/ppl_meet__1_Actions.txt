@@ -1,0 +1,129 @@
+FORUMS AND MINUTES
+Decisions that stick
+
+Four forums make the decisions that move work. 3 of 10 open actions are late, the oldest is “draft the resourcing plan for the warehouse and hub overlap”. Only 71% of actions due so far were closed on time against an 85% target, and 1 set of minutes waits for approval.
+
+ƒ Forum actions closed on time
+Build agenda
+File minutes
+First Officer · 90%
+Why am I seeing this?
+Open actions
+10
+3 late
+Closed on time
+71%
+target 85%
+Decisions logged
+10
+0 pending ratification
+Next forum
+Oct 7
+Change Advisory Board
+Forums
+Actions
+Decision log
+Agendas and minutes
+Action items
+10 open actions across the forums, 3 late. Drag a card to change its status. Done cards keep their closing date for the on-time metric.
+Add action
+All forums
+Architecture Review Board
+Change Advisory Board
+Portfolio Council
+Security Council
+Open
+6
+Write rollback test for the Contract Repository connector
+Sam Patel · due Oct 2
+CAB
+4 days late
+DEC-0411
+Re-score demand D7 against new Sev 2 evidence
+Dev Rao · due Oct 8
+PC
+DEC-0408
+Draft the resourcing plan for the warehouse and hub overlap
+Anil Mehta · due Sep 30
+PC
+6 days late
+DEC-0407
+Remove privileged roles from anyone with an expired access certificate
+Aaron Whitfield · due Oct 5
+SC
+1 days late
+DEC-0406
+Map SCORM runtime calls to xAPI verbs
+Yuki Tanaka · due Oct 20
+ARB
+DEC-0404
+Agree the Nov 16 freeze exceptions list
+Nia Brooks · due Nov 4
+CAB
+DEC-0411
+In progress
+4
+Bring the hosting tier cost estimate to the finance review on the 15th
+Tom Becker · due Oct 15
+CAB
+m1
+Publish the subject code API contract
+Rina Kovacs · due Oct 13
+ARB
+DEC-0410
+Review Invoice Advisor override log
+Avery Chen · due Oct 21
+SC
+DEC-0405
+Confirm Lumen extra staff cost with Procurement
+Priya Shah · due Oct 7
+PC
+m1
+Done
+11
+Tell the second search vendor we are not proceeding
+Maya Ortiz · due Oct 1
+ARB
+DEC-0409
+Add certificate renewals to the standard change catalog
+Nia Brooks · due Sep 30
+CAB
+DEC-0403
+Publish AI agent tier definitions to all staff
+Nia Brooks · due Sep 25
+SC
+DEC-0405
+Update the change calendar with the October freeze dates
+Nia Brooks · due Sep 18
+CAB
+Minutes Sep
+Document the xAPI event schema
+Rina Kovacs · due Sep 22
+ARB
+Minutes Sep
+Publish the September demand ranking
+Dev Rao · due Sep 12
+PC
+Minutes Sep
+Run the quarterly access review
+Aaron Whitfield · due Sep 24
+SC
+Minutes Sep
+Rehearse the portal rollback
+Tom Becker · due Sep 19
+CAB
+Minutes Sep
+Review the taxonomy hub data model
+Anil Mehta · due Sep 15
+ARB
+Minutes Sep
+Send the Lumen payment hold notice
+Priya Shah · due Sep 11
+PC
+Minutes Sep
+Close the phishing drill report
+Nia Brooks · due Sep 20
+SC
+Minutes Sep
+
+On-time formula: actions closed by their due date ÷ actions due to date. ƒ Forum actions closed on time

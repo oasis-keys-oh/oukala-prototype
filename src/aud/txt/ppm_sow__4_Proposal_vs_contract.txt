@@ -1,0 +1,172 @@
+PORTFOLIO AND DELIVERY · CONTRACTS
+Every proposal and contract, line by line
+
+13 contracts hold $9.92M of commitments and $3.98M has been paid. Lumen's SOW-5 proposal has 12 of 41 lines off playbook, 4 of them with no standard term yet. 11 obligations fall due in 30 days and 2 are overdue, and notice to stop the LegacyDocs Inc. renewal must go out by Nov 1, 2026.
+
+ƒ Clause playbook coverage
+ƒ Obligation on-time rate
+ƒ Negotiation cycle time
+ƒ Contract leakage
+Analyze a document
+Request a change
+Contract Analyst Agent · 90%
+Dashboard and contracts
+Repository
+Analyzer
+Terms playbook
+Proposal vs contract
+Changes
+Obligations and calendar
+ENGAGEMENT
+Lumen SOW-4: taxonomy data engineering and search indexer
+Proposal v2 (Jan 19) against the executed contract (Feb 27)
+Engagement 
+Lumen Data Partners · CLM-1001
+Northwind Managed Services · CLM-1003
+PRICE
++$62,000
+$548,000 proposed, $610,000 signed
+LINES CHANGED
+10
+14 moved against Meridian
+PROMISED, NOT IN CONTRACT
+3
+commitments that disappeared
+IN CONTRACT, NOT PROMISED
+5
+5 are off playbook
+UNCHANGED
+12
+identical in value and date
+
+What moved between the proposal and the signature. The vendor promised availability, Severity 1 response, vendor obligation in the proposal, but the signed contract no longer has them. The contract adds 5 terms nobody proposed, including an advance payment. The price is +$62,000 (11.3 percent) from the proposal.
+
+Where the changes are
+Count of changed, missing and added lines by area.
+Price and payment
+4
+Scope and schedule
+3
+Service levels
+3
+Assumptions
+2
+Terms and conditions
+6
+
+Contract Analyst Agent · 88%
+
+Milestone dates
+Proposed date against signed date for each milestone.
+Milestone 1
+Data model approved on April 10, 2026.
+Apr 10 → Apr 10
+Same
+Milestone 2
+Indexer design accepted on May 22, 2026.
+May 22 → May 22
+Same
+Milestone 3
+Taxonomy ingestion pipeline complete on Septemb
+Aug 28 → Sep 30
++33 days
+Milestone 4
+Indexer running in the test environment on Octo
+Oct 30 → Oct 30
+Same
+Milestone 5
+Final acceptance on December 18, 2026.
+Dec 18 → Dec 18
+Same
+Promised in the proposal, missing from the contract
+3 lines. These are the commitments most likely to be lost without anyone noticing.
+§3.3 Service level
+For each month below the availability target, Lumen will issue a service credit of 10 percent of the monthly fee.
+Request amendment
+Compare
+§3.2 Service level
+Lumen shall respond to a Severity 1 incident within 30 minutes.
+Request amendment
+Compare
+§6.3 Vendor obligation
+Lumen will assign Marco Ellis and Hana Koval as key personnel and will not replace them without Meridian's written consent.
+Request amendment
+Compare
+In the contract, never proposed
+5 lines. New obligations, new risks and anything that moves money.
+§4.3 Payment or invoice term Variance
+An advance of $22,000 is payable on signature for mobilization.
+Open line
+§5.3 Assumption Variance
+Any delay in Meridian providing data, access or approvals extends all dates and may result in additional fees.
+Open line
+§7.3 Data protection and security New term
+Lumen may use Meridian content and query logs to improve its relevance models.
+Open line
+§7.4 Data protection and security Variance
+Lumen may engage subcontractors without prior consent.
+Open line
+§8.3 Term, renewal, termination Variance
+This Statement of Work renews automatically for one year unless either party gives 120 days notice of non-renewal.
+Open line
+Every change, side by side
+Select a row to see the proposal and contract wording redlined.
+Area
+All
+5
+Kind
+All
+3
+Direction
+All
+3
+Export CSV
+AREA	TOPIC	KIND	PROPOSAL SAYS	CONTRACT SAYS	DIRECTION
+Scope and schedule	§1.3 Deliverable	Changed	16 hours	8 hours	Changed
+Scope and schedule	§2.3 Milestone	Changed	Due Aug 28, 2026	Due Sep 30, 2026	Changed
+Service levels	§3.1 Availability service level	Changed	99.9% monthly	99.5% monthly	Against Meridian
+Service levels	§3.3 Availability service level	Promised, not in contract	10% monthly	Not in contract	Not rated
+Service levels	§3.2 Severity 1 response time	Promised, not in contract	30 minutes	Not in contract	Not rated
+Price and payment	§4.1 Price or rate card	Changed	$548,000	$610,000	Against Meridian
+Price and payment	§4.2 Payment terms	Changed	Net 45	Net 30	Against Meridian
+Price and payment	§4.4 Travel and expenses	Changed	Prior approval	No approval needed	Against Meridian
+Assumptions	§5.1 Assumption	Changed	Due Apr 1, 2026	Due Apr 15, 2026	Changed
+Terms and conditions	§6.2 Warranty period	Changed	90 days	60 days	Against Meridian
+Scope and schedule	§6.3 Key personnel	Promised, not in contract	Consent to replace	Not in contract	Not rated
+Terms and conditions	§7.2 Breach notification	Changed	48 hours	72 hours	Changed
+Terms and conditions	§8.1 Limitation of liability	Changed	12 months of fees	6 months of fees	Against Meridian
+Price and payment	§4.3 Payment only after acceptance	In contract, not promised	Not in proposal	Paid in advance · $22,000	Not rated
+Assumptions	§5.3 Assumption failure	In contract, not promised	Not in proposal	Dates and fees move automatically	Not rated
+Terms and conditions	§7.3 AI and model training on Meridian data	In contract, not promised	Not in proposal	Stated	Not rated
+Terms and conditions	§7.4 Subcontractors and subprocessors	In contract, not promised	Not in proposal	No consent needed	Not rated
+Terms and conditions	§8.3 Renewal and auto-renewal	In contract, not promised	Not in proposal	Auto-renews, 120 days notice	Not rated
+18 of 18 rows
+Scroll for more · rows are drawn as you scroll
+From vendor proposal to managed contract
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to WorldCC contracting practice, COBIT 2019, PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Intake
+A vendor proposal, SOW or terms arrive by upload, email or request. The original file and version are stored.
+AI AGENT
+AI analysis
+The Contract Analyst Agent splits the text into typed lines with owners, dates, measures and confidence.
+AI AGENT
+Playbook match
+Each line is matched to a standard clause, a variance with a redline, or flagged as new for legal.
+PERSON
+Legal or shared review
+Legal reviews exceptions. Shared review adds the vendor and business owner in one thread with a deadline.
+APPROVAL GATE
+Approval
+The signer is chosen by contract value under the delegation of authority. AI cannot accept terms.
+AUTOMATIC
+Execution
+The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.
+AI AGENT
+Obligations tracking
+Due dates, renewal notices and acceptance checks run daily. Invoices wait for accepted work.
+APPROVAL GATE
+Change control
+Any change to schedule, scope, price, SLA or term is a change request with impact analysis and the right approver.

@@ -1,0 +1,140 @@
+SERVICE MANAGEMENT · MERIDIAN STANDARDS FOUNDATION
+Service desk overview
+
+5 open P1 or P2 incidents, led by the Codification Portal slowdown that has run 4h 18m. 6 SLA timers are at risk and 3 already breached; 4 incidents wait in a team queue for someone to claim them. The change calendar has 3 changes in the next 7 days and 1 waiting for approval, with 1 collision to resolve; the next freeze, Financial close freeze, starts Nov 16 and 1 planned change would land inside it.
+
+Log incident
+Request change
+Open the war room
+ƒ SLA compliance
+ƒ Change failure rate
+ƒ Backlog age
+ƒ Major incident time to restore
+ITIL 5
+Claude Sonnet · 86%
+Open P1 or P2
+5
+of 14 open incidents
+SLA at risk
+6
+3 breached
+Backlog age
+9.8h
+average open time
+ƒ Formula
+Changes, next 7 days
+3
+1 collision
+Major incident in progress
+Codification Portal slow for editors (page loads over 6 seconds)
+4h 18m
+elapsed
+Live
+2 roles empty
+
+p95 now 3.2 s. Still above the 2 s threshold; monitoring.
+
+Open the war room
+Incident
+SLA at risk
+Closest to breaching first
+INC0407
+Payment export from lease subledger is missing two c
+P2
+RESO.
+Breached 4h ago
+INC0416
+Executive laptop cannot join Teams meetings before t
+P2
+RESP.
+Breached 12m ago
+INC0408
+Search returns outdated paragraphs after interim ind
+P3
+RESO.
+Breached 6h ago
+INC0405
+Lease subledger rejects posting: period already lock
+P2
+RESO.
+1h left
+INC0409
+Contract Repository upload fails for PDFs over 50 MB
+P3
+RESO.
+4h left
+Open the queue
+Change calendar: next 7 days
+3 scheduled. Next freeze Nov 16 to Nov 20.
+Tue Oct 6
+Scale portal web tier and tune load balancer idle
+Emergency
+Thu Oct 8
+Monthly Windows and Linux patching, Platform serve
+Standard
+Mon Oct 12
+Deploy Lumen search indexer build 2.4 to staging
+Normal
+CHG0314
+and
+CHG0315
+collide on synapse-sql.
+Open the calendar
+Is there a freeze?
+Top services by incidents
+Incidents in the last 30 days, all priorities
+Endpoint management (Intune)
+3
+Codification Platform
+2
+Search and indexing
+2
+Lease subledger (ERP)
+2
+Email and collaboration (M365)
+2
+Network and VPN
+2
+
+Endpoint management (Intune) leads with 3 incidents. Most trace to PRB0010 (hosting capacity) and PRB0007 (the Lumen indexer). Select a service to filter the queue.
+
+Backlog age
+How long open incidents have been waiting
+ƒ Backlog age
+Under 4 hours
+6
+4 to 24 hours
+6
+1 to 3 days
+2
+Over 3 days
+0
+Bar length: open incidents
+Go to
+Everything in service management
+Incidents
+Queue, board, priority calculator, SLA timers
+Problems and known errors
+Fishbone, five whys, known errors
+Changes
+Calendar, approval policies, CAB, risk
+Releases
+Trains, stages, go or no-go
+Major incident
+War room, comms, status page, review
+Service desk operating rhythm
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Watch the queue
+Priority, timers and team queues.
+PERSON
+Decide the day
+The service desk lead confirms ownership and escalations.
+PERSON
+Check changes
+Next 7 days, collisions, freezes.
+AI AGENT
+Improve
+Trends feed problems, knowledge and the policy.

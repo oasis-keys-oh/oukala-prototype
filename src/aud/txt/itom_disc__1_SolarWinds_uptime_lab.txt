@@ -1,0 +1,225 @@
+CMDB · DISCOVERY AND INGESTION
+Tools feed the CMDB; rules decide what is true
+
+7 of 9 sources are connected and feed 84.6% of the CIs that can be discovered. Orion brings availability for 34 CIs. Today 234 records were read, 11 rows are rejected and waiting, and 2 duplicate pairs need a merge decision. Try the SolarWinds lab: it ingests a real-shaped payload and moves service availability.
+
+ƒ Discovery coverage
+ƒ Monitored availability, 30 days
+CSDM 5
+Connect or edit Orion
+Upload CSV
+Why am I seeing this?
+SOURCES CONNECTED
+7 of 9
+degraded or not connected: 3
+DISCOVERY COVERAGE
+84.6%
+14 day freshness
+READ TODAY
+234
+records across all runs
+REJECTED ROWS
+11
+waiting for a decision
+DUPLICATE PAIRS
+2
+to merge
+MONITORED UPTIME
+99.57%
+93.8% of CIs report
+Sources and runs
+SolarWinds uptime lab
+Field mapping
+Identification and reconciliation
+Rejected rows
+SolarWinds Orion uptime lab
+Ingest uptime and availability from SolarWinds Orion (NPM and SAM) and see it flow to CIs and services.
+Sandbox
+A normal day
+Core switch outage
+ERP host reboot
+
+Every node answers; availability moves by hundredths. Oukala asks Orion for 30 day availability, matches each node to a CI, writes the uptime onto the CI and re-computes the availability of every service above it. This sandbox sends a sample payload shaped like a SolarWinds Information Service (SWIS) query result.
+
+1. Query sent to Orion
+Healthy
+SELECT n.NodeID, n.Caption, n.IPAddress, n.Status, n.StatusDescription, n.LastBoot, n.MachineType, n.Vendor,
+       AVG(r.Availability) AS Availability30d, AVG(r.AvgResponseTime) AS AvgResponseTime, AVG(r.PercentLoss) AS PercentLoss
+FROM Orion.Nodes n
+JOIN Orion.ResponseTimeHistory r ON r.NodeID = n.NodeID
+WHERE r.DateTime > ADDDAY(-30, GETUTCDATE())
+GROUP BY n.NodeID, n.Caption, n.IPAddress, n.Status, n.StatusDescription, n.LastBoot, n.MachineType, n.Vendor
+Endpoint
+https://orion.meridian.example:17774/SolarWinds/InformationService/v3/Json
+Modules
+NPM, SAM
+Matching
+IPAddress first, then Caption. Both are identifiers for class Computer.
+Precedence
+Orion owns uptime_30d and operational_status.
+2. Payload received (10 nodes, 1 application)
+{
+ "results": [
+  {
+   "NodeID": 3100,
+   "Caption": "esx-nor-01",
+   "IPAddress": "10.20.7.187",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-24T01:14:08",
+   "MachineType": "Windows Server 2019",
+   "Vendor": "Juniper",
+   "Availability30d": 99.84,
+   "AvgResponseTime": 8,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3101,
+   "Caption": "esx-nor-02",
+   "IPAddress": "10.20.8.18",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-23T02:14:08",
+   "MachineType": "Ubuntu 22.04 LTS",
+   "Vendor": "Microsoft",
+   "Availability30d": 99.85,
+   "AvgResponseTime": 11,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3102,
+   "Caption": "sw-core-nor-01",
+   "IPAddress": "10.20.181.197",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-22T03:14:08",
+   "MachineType": "Cisco IOS",
+   "Vendor": "Cisco",
+   "Availability30d": 99.63,
+   "AvgResponseTime": 14,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3103,
+   "Caption": "sw-core-nor-02",
+   "IPAddress": "10.20.182.28",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-21T04:14:08",
+   "MachineType": "Cisco IOS",
+   "Vendor": "Cisco",
+   "Availability30d": 99.73,
+   "AvgResponseTime": 17,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3104,
+   "Caption": "Edge firewall pair",
+   "IPAddress": "10.10.161.150",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-20T05:14:08",
+   "MachineType": "Cisco IOS",
+   "Vendor": "HPE",
+   "Availability30d": 99.97,
+   "AvgResponseTime": 20,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3105,
+   "Caption": "lumen-indexer-01.lumen.example",
+   "IPAddress": "10.26.90.128",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-19T06:14:08",
+   "MachineType": "Windows Server 2022",
+   "Vendor": "Cisco",
+   "Availability30d": 99.46,
+   "AvgResponseTime": 23,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3106,
+   "Caption": "codif-app-01",
+   "IPAddress": "10.18.125.217",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-18T01:14:08",
+   "MachineType": "Red Hat Enterprise Linux 9",
+   "Vendor": "Cisco",
+   "Availability30d": 99.95,
+   "AvgResponseTime": 26,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3107,
+   "Caption": "db-prod-02",
+   "IPAddress": "10.20.116.182",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-17T02:14:08",
+   "MachineType": "Cisco IOS",
+   "Vendor": "Cisco",
+   "Availability30d": 99.64,
+   "AvgResponseTime": 29,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3108,
+   "Caption": "nas-nor-01",
+   "IPAddress": "10.20.160.146",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-16T03:14:08",
+   "MachineType": "Cisco IOS",
+   "Vendor": "NetApp",
+   "Availability30d": 99.41,
+   "AvgResponseTime": 32,
+   "PercentLoss": 0
+  },
+  {
+   "NodeID": 3190,
+   "Caption": "nas-nor-02",
+   "IPAddress": "10.20.4.99",
+   "Status": 1,
+   "StatusDescription": "Node status is Up.",
+   "LastBoot": "2026-09-20T03:00:12",
+   "MachineType": "NetApp Release 9",
+   "Vendor": "NetApp",
+   "Availability30d": 99.97,
+   "AvgResponseTime": 6,
+   "PercentLoss": 0
+  }
+ ],
+ "applications": [
+  {
+   "ApplicationID": 77,
+   "Name": "Microsoft SQL Server - db-prod-02",
+   "NodeID": 3107,
+   "Status": 1,
+   "ApplicationAvailability": 99.64
+  }
+ ]
+}
+3. Ingest this payload
+Edit the Orion connection
+Availability is the 30 day average from Orion.ResponseTimeHistory.
+How a tool feeds the CMDB
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Connect
+An admin enters the address and a read-only account; the platform tests it.
+PERSON
+Map fields
+Source fields are mapped to class attributes with transforms and previewed on real records.
+AUTOMATIC
+Run and reconcile
+Each run reads, identifies, reconciles by precedence and reports created, updated and rejected rows.
+PERSON
+Resolve exceptions
+Duplicates are merged; rejected rows are fixed, created or ignored.
+AUTOMATIC
+Feed uptime
+Availability from monitoring updates CIs and the services above them.

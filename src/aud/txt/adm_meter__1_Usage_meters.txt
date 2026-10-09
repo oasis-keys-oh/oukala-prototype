@@ -1,0 +1,64 @@
+PLATFORM · LICENSING, USAGE AND BILLING
+What Meridian pays for, and why
+
+The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.
+
+ƒ Licence utilization
+ƒ AI cost per outcome
+Claude Sonnet · 90%
+Seats and plans
+Usage meters
+Statement
+Showback
+Usage meters
+Day 6 of 31. 3 of 5 meters are on pace to pass their quota, worth about $481 in overage if nothing changes.
+ƒ AI cost per outcome
+AI budget guard
+API calls
+Over quota by month end
+1.15M of 5M
+23% used
+Projected 119%
+1,150,000 ÷ 6 days × 31 days = 5,941,667
+Integrations with Entra ID, the Lumen webhook and the Teams bot drive most calls.
+Overage preview: $376.67 (941,667 × $0.40 per 1,000)
+AI tokens
+Over quota by month end
+20M of 100M
+20% used
+Projected 102%
+19,800,000 ÷ 6 days × 31 days = 102,300,000
+Test Agent and First Officer use the most; the gateway meters every model call.
+Overage preview: $9.20 (2,300,000 × $4.00 per 1,000,000)
+Storage
+On pace
+1,386 of 2,000 GB
+69% used
+Projected 81%
+1,386 + 9.2 GB per day × 25 days left = 1,616 (storage grows, it does not reset)
+Attachments and meeting recordings; storage is a running balance and does not reset.
+Automation runs
+On pace
+61,000 of 400,000 runs
+15% used
+Projected 79%
+61,000 ÷ 6 days × 31 days = 315,167
+Workflow and rule executions; month-end close adds a spike.
+Notifications
+Over quota by month end
+52,000 of 150,000 messages
+35% used
+Projected 179%
+52,000 ÷ 6 days × 31 days = 268,667
+Email, Teams and push; the incident bot is the loudest sender.
+Overage preview: $95.55 (37,500 × $0.60 per 1,000 + 81,167 × $0.90 per 1,000)
+Rating and overage preview
+How a meter becomes money: usage above quota is rated in two bands.
+METER	QUOTA	PROJECTED	OVER	RATING	CHARGE
+API calls	5,000,000	5,941,667	941,667	941,667 × $0.40 per 1,000	$376.67
+AI tokens	100M	102M	2M	2,300,000 × $4.00 per 1,000,000	$9.20
+Storage	2,000	1,616	—	Within quota	$0.00
+Automation runs	400,000	315,167	—	Within quota	$0.00
+Notifications	150,000	268,667	118,667	37,500 × $0.60 per 1,000 + 81,167 × $0.90 per 1,000	$95.55
+
+Charge = min(over, 25% of quota) × rate + max(0, over − 25% of quota) × rate × 1.5, per unit price

@@ -1,0 +1,86 @@
+CMDB · HEALTH AND GOVERNANCE
+Trust the CMDB, then prove it
+
+Health is 89.4 (target 90). Completeness is 95.4%, correctness 78.4% and compliance 92.6%. 12 CIs fail at least one audit rule and 39 have a finding of some kind. 6 remediation tasks are open and 3 of 7 owners have attested in the current campaigns.
+
+ƒ CMDB health score
+ƒ CMDB completeness
+ƒ CMDB correctness
+ƒ CMDB compliance
+ITIL 5
+New attestation campaign
+Why am I seeing this?
+OVERALL HEALTH
+89.4
+target 90
+FAILING AUDIT RULES
+12
+CIs with 1+ failure
+OPEN TASKS
+6
+of 6 remediation tasks
+ATTESTED
+3 of 7
+owners in open campaigns
+RETIRED
+0
+kept for audit
+Scores and rules
+Remediation tasks
+Assign groups
+Attestation
+Lifecycle and audit
+Attestation campaigns
+Owners confirm they still own what the CMDB says they own.
+New campaign
+Q4 attestation: mission-critical CIs
+Mission-critical CIs (criticality 1) · due Oct 23
+3 of 6 owners
+
+34 of 46 CIs attested. An owner attests by confirming "I still own these and the data is right"; anything unattested at the due date goes to the support group lead.
+
+Sam Patel
+ 19 CIs
+Attested
+Priya Shah
+ 8 CIs
+Attested
+Tom Becker
+ 7 CIs
+Attested
+Marco Ellis
+ 6 CIs
+Attest
+Rina Okafor
+ 4 CIs
+Attest
+Dev Rao
+ 2 CIs
+Attest
+Remind 3 owners
+Annual review: vendor-managed CIs
+Vendor-managed CIs · due Nov 6
+0 of 1 owners
+
+0 of 3 CIs attested. An owner attests by confirming "I still own these and the data is right"; anything unattested at the due date goes to the support group lead.
+
+Marco Ellis
+ 3 CIs
+Attest
+Remind 1 owners
+How CMDB quality is governed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Measure
+Completeness, correctness and compliance are computed from the data model and rules.
+AI AGENT
+Open tasks
+Each rule failure or finding group becomes a remediation task for the responsible group.
+PERSON
+Fix or escalate
+Groups fix data; large gaps become a demand item in the portfolio.
+APPROVAL GATE
+Attest
+Owners confirm what they own each quarter.

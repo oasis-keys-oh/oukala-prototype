@@ -1,0 +1,52 @@
+BENEFITS REALIZATION
+Measured benefit is 85% of plan so far, and $48K over the next year is at risk
+
+The register holds 10 benefits worth $1.85M a year once all are running. In the first quarter $32,600 was measured against $38,375 planned. Most value starts after go-live, so the beta slip (nine days) and the Dec 2 pilot decide the next two quarters. 3 items have confidence below 70% or are behind plan.
+
+ƒ Benefits realized to date
+ƒ Five-year portfolio return on investment
+Record a measurement
+Benefits Agent · 78%
+Register
+Planned and realized
+At risk
+Demand link
+
+$48K of planned benefit over the next four quarters is at risk across 3 items. Value at risk is planned benefit × (1 − confidence), summed for the next four quarters.
+
+BEN-3 · CODIFICATION
+More standards sold through faster publication
+At risk
+$24K
+at risk · confidence 55%
+
+Depends on the beta date and on the comment portal launching, so confidence is the lowest in the register.
+
+Remediation
+Hold the beta date at Nov 13 and re-plan the indexer work with Lumen. Each week of delay moves about $4K of this benefit.
+Record a measurement
+Open Codification plan
+BEN-5 · TAXONOMY
+Fewer data reconciliation errors reach publication
+At risk
+$14K
+at risk · confidence 60%
+
+Probability is an estimate from the correction log, not a measured result.
+
+Remediation
+Take the pilot readiness test early to confirm the Dec 2 date; validate the driver with a second analyst timesheet sample.
+Record a measurement
+Open Taxonomy plan
+BEN-7 · PORTAL
+Operations hours saved by tested runbooks
+At risk
+$10K
+at risk · confidence 85%
+
+Runbook refresh is 30% done, so the first quarter is below plan.
+
+Remediation
+Pass the November failover rehearsal; the benefit exists only if the failover is proven.
+Record a measurement
+Open Portal plan

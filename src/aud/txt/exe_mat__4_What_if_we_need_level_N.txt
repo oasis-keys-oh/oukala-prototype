@@ -1,0 +1,584 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+WHAT IF WE NEED LEVEL 4
+Autonomous service delivery: level 4 by end of FY29
+
+Reaching level 4 (Agentic with approval) for Autonomous service delivery by end of FY29 touches 18 capabilities across 3 models, 7 services and 5 projects. 8 need new work: about $887K over 29 months, earliest finish Feb 2029, which meets the Year 3 date with 4 months to spare.
+
+We need level for
+Autonomous service delivery (whole model)
+Incident triage and routing · Autonomous service delivery
+Automatic classification and routing
+Priority and impact prediction
+Incident resolution by agents · Autonomous service delivery
+Change risk assessment and approval · Autonomous service delivery
+Request fulfillment · Autonomous service delivery
+Event correlation and problem detection · Autonomous service delivery
+Knowledge capture and reuse · Autonomous service delivery
+Guardrails and human oversight for agents · Autonomous service delivery
+Access and identity provisioning · Autonomous service delivery
+Project and delivery traceability (whole model)
+Objective to project link · Project and delivery traceability
+Requirement to task link · Project and delivery traceability
+Task to milestone and acceptance · Project and delivery traceability
+Invoice to milestone matching · Project and delivery traceability
+Earned value from task progress · Project and delivery traceability
+Benefit realization tracking · Project and delivery traceability
+Service to project impact (CMDB link) · Project and delivery traceability
+Contract obligation to work and cost · Project and delivery traceability
+Process capability (CMMI style) (whole model)
+Requirements management · Process capability (CMMI style)
+Project planning and monitoring · Process capability (CMMI style)
+Risk management · Process capability (CMMI style)
+Configuration management · Process capability (CMMI style)
+Measurement and analysis · Process capability (CMMI style)
+Supplier agreement management · Process capability (CMMI style)
+Process and product quality assurance · Process capability (CMMI style)
+IT service management practices (whole model)
+Incident management · IT service management practices
+Change enablement · IT service management practices
+Service level management · IT service management practices
+Service catalog and request management · IT service management practices
+Knowledge management · IT service management practices
+Problem management · IT service management practices
+Continual improvement · IT service management practices
+Monitoring and event management · IT service management practices
+Supplier management · IT service management practices
+Digital product and service lifecycle (ITIL 5) · IT service management practices
+AI-enabled service management (ITIL 5) · IT service management practices
+Technology business management (whole model)
+Cost pools and ledger mapping · Technology business management
+Resource tower allocation · Technology business management
+Application and solution costing · Technology business management
+Showback to business units · Technology business management
+Unit costs and benchmarking · Technology business management
+Forecasting and planning · Technology business management
+Value and benefit realization · Technology business management
+Data management (whole model)
+Data governance · Data management
+Data architecture · Data management
+Metadata and catalog · Data management
+Data quality · Data management
+Master and reference data (taxonomy) · Data management
+Data security and privacy · Data management
+Data integration and interoperability · Data management
+Business intelligence and analytics · Data management
+Document and content management · Data management
+Data storage and operations · Data management
+Cybersecurity (NIST CSF 2.0 tiers) (whole model)
+Govern · Cybersecurity (NIST CSF 2.0 tiers)
+Identify · Cybersecurity (NIST CSF 2.0 tiers)
+Protect · Cybersecurity (NIST CSF 2.0 tiers)
+Detect · Cybersecurity (NIST CSF 2.0 tiers)
+Respond · Cybersecurity (NIST CSF 2.0 tiers)
+Recover · Cybersecurity (NIST CSF 2.0 tiers)
+AI governance (whole model)
+AI inventory and registry · AI governance
+Guardrails and policy enforcement · AI governance
+Evaluation and model risk · AI governance
+Human oversight and override tracking · AI governance
+Provenance and citation of sources · AI governance
+AI spend governance · AI governance
+AI incident response · AI governance
+AI literacy and skills · AI governance
+Software delivery (DORA) (whole model)
+Deployment frequency · Software delivery (DORA)
+Lead time for changes · Software delivery (DORA)
+Change failure rate · Software delivery (DORA)
+Time to restore service · Software delivery (DORA)
+Rework rate · Software delivery (DORA)
+Test automation · Software delivery (DORA)
+Platform engineering · Software delivery (DORA)
+Portfolio management (P3M3) (whole model)
+Management control · Portfolio management (P3M3)
+Benefits management · Portfolio management (P3M3)
+Financial management · Portfolio management (P3M3)
+Stakeholder engagement · Portfolio management (P3M3)
+Risk management · Portfolio management (P3M3)
+Organizational governance · Portfolio management (P3M3)
+Resource management · Portfolio management (P3M3)
+Level
+1 Manual
+2 Assisted
+3 Partially aut…
+4 Agentic with …
+5 Autonomous wi…
+By
+Year 1 · end of FY27
+Year 3 · end of FY29
+Year 5 · end of FY31
+Child capabilities must reach
+The same level
+One level below
+Prerequisites must reach
+Their stated offset
+One more level below
+Adopt as our target
+Create 8 demand requests
+ITIL 5
+Claude Sonnet · 74%
+CAPABILITIES TOUCHED
+18
+16 measurable, 2 parents
+NEED NEW WORK
+8
+5 already funded
+ESTIMATED COST
+$887K
+four TBM towers
+TIME TO FINISH
+29 mo
+meets Year 3
+SERVICES
+7
+6 Tier 1
+PEOPLE EFFORT
+27
+FTE months, 4 skills
+Radar: today, funded forecast, required
+Capabilities that must move, on the model's own scale.
+Incident triage and routi…
+Change risk assessment an…
+Event correlation and pro…
+Guardrails and human over…
+Incident resolution by ag…
+Request fulfillment
+Access and identity provi…
+Knowledge capture and reu…
+Level today
+Funded forecast
+Required
+Heat map: where the gap is
+Each row is a capability. Cells fill to the level reached, then show what funded work delivers and what is still missing.
+CAPABILITY	REQUIRED LEVEL PATH	WHY IT IS NEEDED
+Change risk assessment and approval
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+Guardrails and human oversight for agents
+Autonomous service delivery
+	
+	prerequisite of Incident triage and routing
+Request fulfillment
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+Priority and impact prediction
+Autonomous service delivery
+	
+	child of Incident triage and routing
+Event correlation and problem detection
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+Human oversight and override tracking
+AI governance
+	
+	prerequisite of Guardrails and human oversight for agents
+Incident resolution by agents
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+AI inventory and registry
+AI governance
+	
+	prerequisite of Guardrails and policy enforcement
+Access and identity provisioning
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+Automatic classification and routing
+Autonomous service delivery
+	
+	child of Incident triage and routing
+Guardrails and policy enforcement
+AI governance
+	
+	prerequisite of Guardrails and human oversight for agents
+Knowledge capture and reuse
+Autonomous service delivery
+	
+	child of Autonomous service delivery
+Knowledge management
+IT service management practices
+	
+	prerequisite of Knowledge capture and reuse
+Change enablement
+IT service management practices
+	
+	prerequisite of Change risk assessment and approval
+Reached today
+Funded project delivers it
+Gap: new work needed
+
+Top 14 of 16 capabilities by gap. The table below has all of them.
+
+Roadmap
+Months from today. A capability starts when its prerequisites finish.
+Now
++4m
++8m
++12m
++16m
++20m
++24m
++28m
++32m
+Year 3 date
+Automatic classification …
+AI inventory and registry
+Knowledge management
+Access and identity provi…
+Knowledge capture and reu…
+Guardrails and policy enf…
+Incident resolution by ag…
+Event correlation and pro…
+Request fulfillment
+Human oversight and overr…
+Guardrails and human over…
+Change risk assessment an…
+Priority and impact predi…
+Funded project already delivers it
+New work, finishes in time
+New work, finishes after the date
+Cost by TBM tower
+$887K in total.
+Labor $544K
+Software and tools $154K
+Services and training $142K
+Cloud and compute $48K
+
+Unit costs: $18K per FTE month of labor, $9K tooling, $5K training and $3K compute for the first step. Each higher level costs about 40% more than the last. TBM Taxonomy and ATUM
+
+Edit unit costs
+
+Dependency map
+Capabilities, the services that realize them, the projects that deliver them and the skills they need.
+Capabilities that must rise
+Services that realize them
+Projects that deliver
+People and skills
+Change risk assessment…
+Guardrails and human o…
+Request fulfillment
+Priority and impact pr…
+Event correlation and …
+AI inventory and regis…
+Human oversight and ov…
+Access and identity pr…
+Automatic classificati…
+Guardrails and policy …
+Service desk
+Codification Portal
+Codification Platform
+Network and VPN
+Search and indexing
+Email and collaboratio…
+Identity (Entra ID)
+PR3 Portal Resilience
+CI1 Service desk aut…
+D6 AI drafting assis…
+CI6 AI governance pr…
+D7 Disaster recovery…
+AI agents and gov…
+ITSM and service …
+Operations and SRE
+Security
+
+Showing the 10 most expensive of 13 capabilities. The table below lists all of them.
+
+Services affected
+Open one for impact analysis.
+Services that must change
+7
+Service desk
+Tier 2
+maturity 2 now, 8 capabilities
+Codification Portal
+Tier 1
+maturity 2 now, 5 capabilities
+Codification Platform
+Tier 1
+maturity 2 now, 6 capabilities
+Network and VPN
+Tier 1
+maturity 3 now, 1 capability
+Search and indexing
+Tier 1
+maturity 2 now, 2 capabilities
+Email and collaboration (M365)
+Tier 1
+maturity 3 now, 1 capability
+Identity (Entra ID)
+Tier 1
+maturity 3 now, 2 capabilities
+Projects contributing
+Funded and requested work that already raises these capabilities.
+Projects that already contribute
+5
+Portal Resilience
+PR3
+Automatic classification and routing, Event correlation and problem detection
+Service desk automation sprint
+CI1
+Priority and impact prediction, Change risk assessment and approval
+AI drafting assistant for standards
+D6
+Guardrails and human oversight for agents, Knowledge capture and reuse
+AI governance program
+CI6
+Guardrails and policy enforcement, Human oversight and override tracking
+Disaster recovery for the Portal
+D7
+Incident resolution by agents
+People and skills
+Effort to close the gaps, and who holds the skills today.
+SKILL	EFFORT (FTE MONTHS)	PEOPLE WHO HOLD IT
+AI agents and governance	16.8	nobody yet: hire or contract
+ITSM and service desk	4.2	
+Tom Becker
+ 
+Nia Brooks
+ 
+Aaron Whitfield
+ +10 more
+Security	4.2	
+Rina Okafor
+ 
+Aaron Whitfield
+ 
+Dmitri Volkov
+ +4 more
+Operations and SRE	1.8	
+Dev Rao
+ 
+Jordan Lee
+ 
+Sam Patel
+ +13 more
+If the target were different
+Cost and time at each level for the same capability and date.
+IF THE TARGET IS LEVEL	CAPABILITIES TOUCHED	NEED NEW WORK	COST	MONTHS	MEETS YEAR 3
+Level 2 Assisted	18	0	$0K	0	Yes
+Level 3 Partially automated	18	1	$56K	9	Yes
+Level 4 Agentic with approval	18	8	$887K	29	Yes
+Level 5 Autonomous within guardrails	18	15	$3.06M	70	No
+
+Change the level, the horizon or either rule above and every chart, table and action on this page recalculates.
+
+Gap list
+All capabilities in this requirement, parents and children, with cost and time.
+Model
+All
+3
+Export CSV
+CAPABILITY	MODEL	NOW	REQUIRED	FUNDED TO	COST	MONTHS	OWNER
+Autonomous service delivery
+the requested target
+	Autonomous service delivery	2.3	4	n/a	in children	0	
+Jordan Lee
+
+Incident triage and routing
+child of Autonomous service delivery
+	Autonomous service delivery	2.5	4	n/a	in children	0	
+Tom Becker
+
+Automatic classification and routing
+child of Incident triage and routing
+	Autonomous service delivery	3	4	4	$0K	0	
+Tom Becker
+
+Priority and impact prediction
+child of Incident triage and routing
+	Autonomous service delivery	2	4	3	$101K	6	
+Tom Becker
+
+Change risk assessment and approval
+child of Autonomous service delivery
+	Autonomous service delivery	2	4	3	$148K	4	
+Nia Brooks
+
+Event correlation and problem detection
+child of Autonomous service delivery
+	Autonomous service delivery	2	4	3	$101K	7	
+Sam Patel
+
+Guardrails and human oversight for agents
+prerequisite of Incident triage and routing
+	Autonomous service delivery	2	4	3	$148K	6	
+Jordan Lee
+
+Guardrails and policy enforcement
+prerequisite of Guardrails and human oversight for agents
+	AI governance	3	4	4	$0K	0	
+Jordan Lee
+
+AI inventory and registry
+prerequisite of Guardrails and policy enforcement
+	AI governance	3	4	3	$98K	6	
+Jordan Lee
+
+Human oversight and override tracking
+prerequisite of Guardrails and human oversight for agents
+	AI governance	2	4	3	$78K	6	
+Jordan Lee
+
+Change enablement
+prerequisite of Change risk assessment and approval
+	IT service management practices	3	3	3	$0K	0	
+Nia Brooks
+
+Incident management
+prerequisite of Incident triage and routing
+	IT service management practices	3	3	3	$0K	0	
+Tom Becker
+
+Incident resolution by agents
+child of Autonomous service delivery
+	Autonomous service delivery	2	4	4	$0K	0	
+Tom Becker
+
+Request fulfillment
+child of Autonomous service delivery
+	Autonomous service delivery	2	4	2	$134K	10	
+Sam Patel
+
+Access and identity provisioning
+child of Autonomous service delivery
+	Autonomous service delivery	3	4	3	$78K	7	
+Rina Okafor
+
+Service catalog and request management
+prerequisite of Request fulfillment
+	IT service management practices	3	3	3	$0K	0	
+Sam Patel
+
+Knowledge capture and reuse
+child of Autonomous service delivery
+	Autonomous service delivery	3	4	4	$0K	0	
+Jordan Lee
+
+Knowledge management
+prerequisite of Knowledge capture and reuse
+	IT service management practices	3	4	4	$0K	0	
+Jordan Lee
+18 of 18 rows
+Scroll for more · rows are drawn as you scroll
+Recommended action items
+Each one can become a demand request in Demand and priorities.
+Create all 8
+Raise Change risk assessment and approval from level 2 to 4
+$148K · 4 mo
+Autonomous service delivery · owner Nia Brooks · Codification Platform
+Autonomous service delivery: Change risk assessment and approval must reach level 4 (child of Autonomous service delivery). Estimated $148K over about 4 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Guardrails and human oversight for agents from level 2 to 4
+$148K · 6 mo
+Autonomous service delivery · owner Jordan Lee · Service desk
+Autonomous service delivery: Guardrails and human oversight for agents must reach level 4 (prerequisite of Incident triage and routing). Estimated $148K over about 6 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Request fulfillment from level 2 to 4
+$134K · 10 mo
+Autonomous service delivery · owner Sam Patel · Service desk
+Autonomous service delivery: Request fulfillment must reach level 4 (child of Autonomous service delivery). Estimated $134K over about 10 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Priority and impact prediction from level 2 to 4
+$101K · 6 mo
+Autonomous service delivery · owner Tom Becker · Service desk
+Autonomous service delivery: Priority and impact prediction must reach level 4 (child of Incident triage and routing). Estimated $101K over about 6 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Event correlation and problem detection from level 2 to 4
+$101K · 7 mo
+Autonomous service delivery · owner Sam Patel · Network and VPN
+Autonomous service delivery: Event correlation and problem detection must reach level 4 (child of Autonomous service delivery). Estimated $101K over about 7 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise AI inventory and registry from level 3 to 4
+$98K · 6 mo
+AI governance · owner Jordan Lee
+AI governance: AI inventory and registry must reach level 4 (prerequisite of Guardrails and policy enforcement). Estimated $98K over about 6 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Human oversight and override tracking from level 2 to 4
+$78K · 6 mo
+AI governance · owner Jordan Lee · Service desk
+AI governance: Human oversight and override tracking must reach level 4 (prerequisite of Guardrails and human oversight for agents). Estimated $78K over about 6 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Raise Access and identity provisioning from level 3 to 4
+$78K · 7 mo
+Autonomous service delivery · owner Rina Okafor · Identity (Entra ID)
+Autonomous service delivery: Access and identity provisioning must reach level 4 (child of Autonomous service delivery). Estimated $78K over about 7 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

@@ -1,0 +1,175 @@
+SERVICE MANAGEMENT · ON-CALL AND ESCALATION
+Who is on call, and is every required hour covered?
+
+88% of required on-call hours are covered over the next 14 days across 10 rotas (per team, service, asset class and follow the sun). 429 hours have nobody scheduled or available, and 17 shifts collide with approved time off. Coverage, fairness and cost come from the skills and availability database.
+
+ƒ On-call coverage
+ƒ On-call fairness
+ƒ Time to page a human
+ITIL 5
+New rota
+Skills and availability
+Dashboard and rotas
+Coverage map
+Recommendations
+Auto-assignment
+Escalation
+Overrides, swaps and hand-over
+Overrides
+One-off changes on top of the rotation. Escalation follows them immediately.
+Add override
+Request swap
+
+No overrides. Drag people on the weekly calendar, or add one.
+
+Swap requests
+A swap hands a shift to a teammate. The lead approves; the rotation changes after that.
+
+No swap requests.
+
+Time off collisions, next 28 days
+Approved or pending time off for people scheduled on call, with qualified cover ranked by the skills database.
+PERSON	ROTA	TIER	WHEN	REASON	COVER WITH
+
+Tom Becker
+	Service desk on-call	Secondary	Wed Oct 7 to Wed Oct 7	Appointment	
+Hana
+Maribel
+Priti
+
+Tom Becker
+	Global follow-the-sun desk	Primary	Wed Oct 7 to Wed Oct 7	Appointment	
+Maribel
+Priti
+Maya
+
+Sam Patel
+	Platform engineering	Secondary	Mon Oct 12 to Tue Oct 13	Vacation	
+Ravi
+Jordan
+Joel
+
+Sam Patel
+	Identity and security	Primary	Mon Oct 12 to Tue Oct 13	Vacation	
+Rina
+Colette
+Hana
+
+Sam Patel
+	Finance systems	Primary	Mon Oct 12 to Tue Oct 13	Vacation	
+Jordan
+Marco
+Hana
+
+Rina Okafor
+	Identity and security	Primary	Tue Oct 13 to Tue Oct 13	Conference	
+Colette
+Jordan
+Maribel
+
+Sam Patel
+	Codification Platform	Secondary	Tue Oct 13 to Fri Oct 16	Vacation	
+Priya
+Jordan
+Dev
+
+Sam Patel
+	Network device cover	Primary	Tue Oct 13 to Fri Oct 16	Vacation	
+Ravi
+Maribel
+Priti
+
+Priya Shah
+	Service desk on-call	Primary	Wed Oct 14 to Wed Oct 14	Sick day	
+Tom
+Hana
+Maribel
+
+Nia Brooks
+	Service desk on-call	Secondary	Mon Oct 19 to Tue Oct 20	Vacation	
+Tom
+Hana
+Maribel
+
+Nia Brooks
+	Global follow-the-sun desk	Primary	Mon Oct 19 to Fri Oct 23	Vacation	
+Maribel
+Priti
+Maya
+
+Ravi Menon
+	Platform engineering	Primary	Tue Oct 20 to Tue Oct 20	Vacation	
+Sam
+Jordan
+Joel
+
+Ravi Menon
+	Platform engineering	Secondary	Tue Oct 20 to Wed Oct 21	Vacation	
+Sam
+Jordan
+Wes
+
+Ravi Menon
+	Identity and security	Secondary	Tue Oct 20 to Wed Oct 21	Vacation	
+Sam
+Rina
+Colette
+
+Ravi Menon
+	Codification Platform	Secondary	Tue Oct 20 to Wed Oct 21	Vacation	
+Priya
+Jordan
+Maribel
+
+Ravi Menon
+	Network device cover	Primary	Tue Oct 20 to Wed Oct 21	Vacation	
+Sam
+Maribel
+Priti
+
+Jordan Lee
+	Database class cover	Primary	Mon Oct 26 to Fri Oct 30	Vacation, pending	
+Dev
+Maribel
+Priti
+
+Jordan Lee
+	Platform engineering	Primary	Tue Oct 27 to Fri Oct 30	Vacation, pending	
+Sam
+Ravi
+Wes
+
+Jordan Lee
+	Identity and security	Secondary	Tue Oct 27 to Fri Oct 30	Vacation, pending	
+Rina
+Sam
+Colette
+
+Jordan Lee
+	Codification Platform	Primary	Tue Oct 27 to Fri Oct 30	Vacation, pending	
+Priya
+Sam
+Maribel
+
+Jordan Lee
+	Finance systems	Primary	Tue Oct 27 to Fri Oct 30	Vacation, pending	
+Avery
+Maribel
+Priti
+
+Marco Ellis
+	Global follow-the-sun desk	Primary	Thu Oct 29 to Thu Oct 29	Vacation	
+Hana
+Maribel
+Priti
+
+Dev Rao
+	Database class cover	Primary	Mon Nov 2 to Mon Nov 2	Vacation, pending	
+Jordan
+Maribel
+Priti
+Hand-over notes
+What the outgoing person passes to the incoming one: open incidents, risky changes, things to watch.
+Write hand-over note
+
+No notes yet.

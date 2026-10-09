@@ -1,0 +1,167 @@
+KNOWLEDGE GRAPH
+Know what a change touches
+
+Changing ASC 842 Leases reaches 26 other items across 13 owners, about 64 hours of review. It travels from the standard through policy, procedure and control to the systems, data and reports that depend on it.
+
+FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)
+Replace the lease subledger
+Contract repository maintenance window
+Codification Portal major release
+Rewrite the lease accounting policy
+Graph
+Impact report
+Sources
+Items affected
+26
+2 directly
+Owners to notify
+13
+Tasks drafted for each
+Review effort
+64h
+Estimate from item type
+Effective date
+Jan 1, 2027
+Review done by Nov 30
+What to do about it
+Review in order of closeness: the document that changes first, then what it controls.
+Claude · 86%
+Create review tasks
+Have agents draft updates
+
+Controller (6), CFO (1), Finance systems (3), Internal audit (1), Accounting manager (2), Vendor mgmt (3), Invoice Advisor (3), Dev Rao (2), Platform team (1), Ops Agent (1), Knowledge Curator (1), Tom Becker (1), Data team (1)
+
+Paragraph
+2
+High
+842-20-25 Lessee recognition
+via ASC 842 Leases
+Controller
+High
+842-20-50 Disclosures
+via ASC 842 Leases
+Controller
+Control
+2
+Medium
+Discount rate approval
+via ASC 842 Leases → 842-20-25 Lessee recognition
+CFO
+Low
+Lease inventory completeness
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy
+Internal audit
+Policy
+2
+Medium
+Lease accounting policy
+via ASC 842 Leases → 842-20-25 Lessee recognition
+Controller
+Medium
+Capitalization threshold policy
+via ASC 842 Leases → 842-20-25 Lessee recognition
+Controller
+Report
+2
+Medium
+Lease disclosure footnote
+via ASC 842 Leases → 842-20-50 Disclosures
+Controller
+Low
+Balance sheet: lease liability
+via ASC 842 Leases → 842-20-25 Lessee recognition → Discount rate approval → Lease subledger (ERP) → Lease term
+Controller
+Configuration item
+2
+Low
+Lease subledger (ERP)
+via ASC 842 Leases → 842-20-25 Lessee recognition → Discount rate approval
+Finance systems
+Low
+Contract repository
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness
+Vendor mgmt
+Procedure
+2
+Low
+Lease classification review
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy
+Accounting manager
+Low
+Monthly lease amortization close
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy
+Accounting manager
+Data element
+2
+Low
+Lease term
+via ASC 842 Leases → 842-20-25 Lessee recognition → Discount rate approval → Lease subledger (ERP)
+Finance systems
+Low
+Discount rate
+via ASC 842 Leases → 842-20-25 Lessee recognition → Discount rate approval → Lease subledger (ERP)
+Finance systems
+Contract
+2
+Low
+Northwind Cloud MSA
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository
+Vendor mgmt
+Low
+Lumen Data Partners SOW-4
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository
+Vendor mgmt
+Invoice
+3
+Low
+INV-20418 Northwind
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Northwind Cloud MSA
+Invoice Advisor
+Low
+INV-20433 Lumen
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Lumen Data Partners SOW-4
+Invoice Advisor
+Low
+INV-20451 Northwind
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Northwind Cloud MSA
+Invoice Advisor
+Risk
+1
+Low
+Vendor delivery slip
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Lumen Data Partners SOW-4
+Dev Rao
+Service
+2
+Low
+Codification Portal
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Northwind Cloud MSA
+Platform team
+Low
+Taxonomy API
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Lumen Data Partners SOW-4 → Vendor delivery slip → Taxonomy Data Hub
+Data team
+Incident
+1
+Low
+Portal latency (Sev 2)
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Northwind Cloud MSA → Codification Portal
+Ops Agent
+Knowledge
+1
+Low
+Portal failover runbook
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Northwind Cloud MSA → Codification Portal
+Knowledge Curator
+Project
+1
+Low
+Taxonomy Data Hub
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Lumen Data Partners SOW-4 → Vendor delivery slip
+Dev Rao
+Budget line
+1
+Low
+FY26 Vendor services
+via ASC 842 Leases → 842-20-25 Lessee recognition → Lease accounting policy → Lease inventory completeness → Contract repository → Lumen Data Partners SOW-4 → Vendor delivery slip → Taxonomy Data Hub
+Tom Becker

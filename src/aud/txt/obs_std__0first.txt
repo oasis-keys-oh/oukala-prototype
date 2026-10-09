@@ -1,0 +1,201 @@
+STANDARD CHANGE CATALOG
+Pre-approved changes that are also the runbooks
+
+15 standard changes carry their own SOP, validation and rollback. 12 are run or proposed by AI agents, and every run becomes an auto‑approved change record, so the Change process sees what operations did.
+
+ƒ Automation rate
+New standard change
+Automation rules
+Changes
+ITIL 5
+Catalog
+Runbook editor
+Pre-approvals
+CATALOG ENTRIES
+15
+15 pre-approved by CAB
+SUCCESSFUL RUNS
+94.6%
+472 runs recorded
+LEVEL 3 OR 4
+12
+an agent diagnoses or the run is autonomous
+PRE-APPROVAL DUE FOR REVIEW
+0
+none overdue
+By automation level
+A runbook starts as a document (0) and earns autonomy through evidence.
+Level 0 Manual
+0 entries
+Level 1 Assisted
+0 entries
+Level 2 Scripted
+3 entries
+Level 3 Agentic with approval
+8 entries
+Level 4 Autonomous
+4 entries
+By risk
+High-risk entries always need a human approver, whatever their level.
+Low risk
+8 entries, 96.3% success
+Medium risk
+6 entries, 92.8% success
+High risk
+1 entries, 92.0% success
+Standard change catalog with SOPs
+Each entry is a pre-approved change (ITIL standard change) and its runbook in one record: steps, validation, rollback, owner and level. Using one from an alert creates an auto-approved change record. Select a row for the SOP.
+New standard change
+Risk
+All
+3
+Automation level
+All
+3
+Pre-approval
+All
+2
+Export CSV
+STANDARD CHANGE AND SOP	RISK	AUTOMATION LEVEL	PRE-APPROVAL	OWNER	LAST EXECUTED	SUCCESS RATE	RUNS	ALERT RULES
+Restart the Lumen search indexer service
+SC-01 · v4 · Search and indexing
+	Low	Level 3 Agentic with approval	Approved
+review 2027-04-02
+	
+Marco Ellis
+	Oct 4	
+ 93%	27	1
+Scale the SQL managed instance up one tier
+SC-02 · v3 · Codification Platform · ITSM TPL05
+	Medium	Level 3 Agentic with approval	Approved
+review 2027-05-14
+	
+Dev Rao
+	Sep 21	
+ 90%	12	1
+Recycle the portal application pool and clear cache
+SC-03 · v5 · Codification Portal
+	Low	Level 4 Autonomous	Approved
+review 2027-02-11
+	
+Tom Becker
+	Oct 2	
+ 97%	63	0
+Extend a data disk by 25%
+SC-04 · v3 · Any
+	Medium	Level 4 Autonomous	Approved
+review 2027-03-12
+	
+Sam Patel
+	Aug 12	
+ 96%	18	1
+Run the service health check bundle
+SC-05 · v6 · Any
+	Low	Level 4 Autonomous	Approved
+review 2027-01-20
+	Ops team	Today	
+ 99%	212	0
+Fail over the VPN gateway pair
+SC-06 · v2 · Network and VPN
+	Medium	Level 3 Agentic with approval	Approved
+review 2027-06-03
+	
+Sam Patel
+	Jun 3	
+ 88%	9	1
+Renew a managed TLS certificate
+SC-07 · v2 · Codification Portal · ITSM TPL04
+	Low	Level 4 Autonomous	Approved
+review 2027-02-11
+	
+Sam Patel
+	Jun 3	
+ 93%	6	0
+Rotate a service secret in Key Vault
+SC-08 · v3 · Any · ITSM TPL06
+	Medium	Level 2 Scripted	Approved
+review 2027-04-10
+	
+Rina Okafor
+	Oct 1	
+ 97%	22	0
+Add one web node within the approved tier
+SC-09 · v3 · Codification Portal · ITSM TPL05
+	Low	Level 3 Agentic with approval	Approved
+review 2027-05-02
+	
+Sam Patel
+	Oct 6	
+ 94%	17	2
+Fail over the portal to the paired region
+SC-10 · v8 · Codification Portal
+	High	Level 3 Agentic with approval	Approved with conditions
+review 2026-12-14
+	
+Tom Becker
+	Jul 14	
+ 92%	5	0
+Quarantine a non-compliant device
+SC-11 · v2 · Endpoint management (Intune)
+	Low	Level 3 Agentic with approval	Approved
+review 2027-03-01
+	
+Nia Brooks
+	Oct 2	
+ 99%	31	0
+Monthly operating system patching
+SC-12 · v7 · Any · ITSM TPL01
+	Medium	Level 2 Scripted	Approved
+review 2027-01-08
+	
+Sam Patel
+	Oct 8	
+ 98%	24	0
+Throttle the indexer and scale SQL
+SC-13 · v2 · Search and indexing
+	Medium	Level 3 Agentic with approval	Approved
+review 2027-06-15
+	
+Dev Rao
+	Sep 21	
+ 88%	8	0
+Retire stale configuration items
+SC-14 · v1 · Any
+	Low	Level 2 Scripted	Approved
+review 2027-09-08
+	
+Tom Becker
+	Sep 8	
+ 100%	4	0
+Restart the ERP integration service
+SC-15 · v3 · Lease subledger (ERP)
+	Low	Level 3 Agentic with approval	Approved
+review 2027-04-20
+	
+Avery Chen
+	Sep 30	
+ 95%	14	0
+15 of 15 rows
+Scroll for more · rows are drawn as you scroll
+Life of a standard change
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+An owner writes the SOP, validation and rollback.
+APPROVAL GATE
+CAB review
+The Change Advisory Board pre-approves the scope.
+AI AGENT
+Use
+People, scripts or agents run it, each run a change record.
+AUTOMATIC
+Measure
+Success rate and runs build evidence.
+APPROVAL GATE
+Promote
+Higher automation level once evidence is strong.
+PERSON
+Review yearly
+Pre-approval expires unless renewed.

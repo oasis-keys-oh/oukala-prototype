@@ -1,0 +1,218 @@
+CMDB · DISCOVERY AND INGESTION
+Tools feed the CMDB; rules decide what is true
+
+7 of 9 sources are connected and feed 84.6% of the CIs that can be discovered. Orion brings availability for 34 CIs. Today 234 records were read, 11 rows are rejected and waiting, and 2 duplicate pairs need a merge decision. Try the SolarWinds lab: it ingests a real-shaped payload and moves service availability.
+
+ƒ Discovery coverage
+ƒ Monitored availability, 30 days
+CSDM 5
+Connect or edit Orion
+Upload CSV
+Why am I seeing this?
+SOURCES CONNECTED
+7 of 9
+degraded or not connected: 3
+DISCOVERY COVERAGE
+84.6%
+14 day freshness
+READ TODAY
+234
+records across all runs
+REJECTED ROWS
+11
+waiting for a decision
+DUPLICATE PAIRS
+2
+to merge
+MONITORED UPTIME
+99.57%
+93.8% of CIs report
+Sources and runs
+SolarWinds uptime lab
+Field mapping
+Identification and reconciliation
+Rejected rows
+Identification rules
+How an incoming record is recognized as a CI we know. Independent classes match on their own attributes, dependent classes together with their host.
+New rule
+CLASS	IDENTIFIER ATTRIBUTES (TRIED IN ORDER)	KIND	PARTIAL PAYLOADS	WHY
+Computer	serial_number name + ip_address	Independent	Held and retried	Physical and virtual servers: serial number first, then name together with IP.
+Edit
+
+Virtual machine	resource_id name + subscription_id	Independent	Rejected	Cloud virtual machines: the cloud resource ID never changes.
+Edit
+
+Network device	serial_number ip_address	Independent	Held and retried	Network gear: serial number, then management IP.
+Edit
+
+Endpoint device	serial_number	Independent	Rejected	Endpoints: Intune serial number.
+Edit
+
+Application	name + host (runs on)	Dependent	Held and retried	Dependent class: an application is identified together with the host it runs on, so two apps named Reader on different hosts stay separate.
+Edit
+
+Database	instance_name + host (runs on)	Dependent	Held and retried	Dependent class: a database instance is identified with its host.
+Edit
+
+Service	name	Independent	Rejected	Services are maintained by people; the name is the identity.
+Edit
+
+Rack	name + site	Independent	Rejected	Racks are identified by label inside a datacenter.
+Edit
+Source precedence per attribute
+When two sources disagree, the one nearest the top wins. Drag a source to change its rank; the most recent value breaks ties inside a rank.
+Drag to reorder
+name
+first source wins
+1
+Manual
+2
+ServiceNow import
+3
+vCenter
+4
+Azure Resource Graph
+5
+SolarWinds Orion
+6
+Intune
+7
+CSV upload
+ip_address
+first source wins
+1
+vCenter
+2
+Azure Resource Graph
+3
+SolarWinds Orion
+4
+Intune
+5
+ServiceNow import
+6
+Manual
+serial_number
+first source wins
+1
+Intune
+2
+vCenter
+3
+SolarWinds Orion
+4
+ServiceNow import
+5
+CSV upload
+os
+first source wins
+1
+Intune
+2
+vCenter
+3
+SolarWinds Orion
+4
+Azure Resource Graph
+5
+ServiceNow import
+operational_status
+first source wins
+1
+SolarWinds Orion
+2
+Azure Resource Graph
+3
+vCenter
+4
+Nagios and Zabbix
+5
+Manual
+uptime_30d
+first source wins
+1
+SolarWinds Orion
+2
+Nagios and Zabbix
+3
+Azure Resource Graph
+4
+vCenter
+owned_by
+first source wins
+1
+Manual
+2
+ServiceNow import
+3
+Entra ID
+4
+CSV upload
+support_group
+first source wins
+1
+Manual
+2
+ServiceNow import
+3
+CSV upload
+business_criticality
+first source wins
+1
+Manual
+2
+ServiceNow import
+3
+CSV upload
+location
+first source wins
+1
+Manual
+2
+ServiceNow import
+3
+SolarWinds Orion
+Duplicate candidates
+Same name and IP seen from two sources. Merge keeps one record, moves the relationships and retires the other.
+Export CSV
+KEEP (SURVIVOR)	DUPLICATE	MATCH SCORE	WHY	
+
+codif-app-02
+Azure Resource Graph · ci_cod1
+	
+CODIF-APP-02
+CSV upload · ci_x_dup2
+	65	Same name after removing the domain	
+Merge
+Not a duplicate
+
+
+lumen-indexer-01
+vCenter · ci_sea0
+	
+lumen-indexer-01.meridian.local
+vCenter · ci_x_dup1
+	95	Same name after removing the domain; Same IP address 10.26.90.128	
+Merge
+Not a duplicate
+2 of 2 rows
+Scroll for more · rows are drawn as you scroll
+How a tool feeds the CMDB
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Connect
+An admin enters the address and a read-only account; the platform tests it.
+PERSON
+Map fields
+Source fields are mapped to class attributes with transforms and previewed on real records.
+AUTOMATIC
+Run and reconcile
+Each run reads, identifies, reconciles by precedence and reports created, updated and rejected rows.
+PERSON
+Resolve exceptions
+Duplicates are merged; rejected rows are fixed, created or ignored.
+AUTOMATIC
+Feed uptime
+Availability from monitoring updates CIs and the services above them.

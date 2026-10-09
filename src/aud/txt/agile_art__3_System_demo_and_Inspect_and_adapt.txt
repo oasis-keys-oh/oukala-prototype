@@ -1,0 +1,115 @@
+SERVICE MANAGEMENT · RELEASES · SCALED AGILE
+Plan together, deliver in increments
+
+Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.
+
+New program increment
+New PI objective
+Program backlog
+Releases
+ƒ Program predictability
+SAFe
+ITIL 5
+Dashboard and features
+PI planning board
+Objectives and predictability
+System demo and Inspect and adapt
+Trains and timeline
+
+Every iteration ends with a system demo: the whole train shows working, integrated software to stakeholders. Every increment ends with Inspect and adapt: measure, retrospect, then solve the biggest problems. The next system demo is Oct 9 for iteration 1; the next Inspect and adapt is Dec 3.
+
+System demos
+Iterations of PI 26.4 and the last two of PI 26.3
+Done
+Aug 21
+Iteration 26.3.3
+FT-004
+FT-005
+Entra ID sign-in is smoother than expected; add a help link.
+Done
+Sep 4
+Iteration 26.3.4
+FT-001
+FT-002
+FT-003
+Editors want the compare panel to remember its position.
+Portal failover demo needs a recorded version for the board.
+Scheduled
+Oct 9
+Iteration 26.4.1
+FT-103
+FT-131
+FT-105
+Record feedback
+Planned
+Oct 23
+Iteration 26.4.2
+FT-101
+FT-102
+FT-201
+Record feedback
+Planned
+Nov 6
+Iteration 26.4.3
+FT-104
+FT-243
+FT-245
+Record feedback
+Planned
+Nov 20
+Iteration 26.4.4
+FT-101
+FT-106
+Record feedback
+Inspect and adapt for PI 26.3
+Held Sep 24, 2026 · three parts
+1 · QUANTITATIVE MEASUREMENT
+
+Predictability 84% (healthy from 80%). ƒ Formula
+
+2 · RETROSPECTIVE
+
+Went well: Entra ID work finished early; The failover design was approved by operations.
+
+Problems: Vendor handoffs slipped the indexer by nine days; Test environments were contended in weeks 7 and 8.
+
+3 · PROBLEM-SOLVING WORKSHOP
+
+Root cause: The indexer build and the staging booking were never planned together, so testing waited for both.
+
+Claude Sonnet · 78%
+Improvement backlog
+Actions from Inspect and adapt become enabler stories in the team backlogs so they are planned like any other work
+Add an improvement
+ACTION	OWNER	TEAM	DUE	STATUS
+Book a dedicated staging slot for each Lumen build	
+Sam Patel
+	Platform Alpha	Oct 16	In progress
+Add the vendor handoff date to the PI planning board as a dependency	
+Hannah Lowe
+	Search and Indexing (Lumen)	Oct 9	Done
+Raise automated test coverage on the publishing pipeline to 70%	
+Elise Park
+	Platform Alpha	Nov 13	In progress
+Release train process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, ITIL 5.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Epic approved
+The portfolio approves an epic with a business case.
+AI AGENT
+Features analyzed and scored
+Features get acceptance criteria and a WSJF score.
+PERSON
+PI planning
+Teams commit objectives, dependencies and risks (ROAM) for the increment.
+PERSON
+Iterate and demo
+Teams deliver in iterations and show a system demo each time.
+AUTOMATIC
+Release through release management
+Features ship as releases with readiness gates and a go or no-go.
+PERSON
+Inspect and adapt
+Measure predictability, retrospect and solve the biggest problems.

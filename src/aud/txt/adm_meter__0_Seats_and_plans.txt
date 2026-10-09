@@ -1,0 +1,71 @@
+PLATFORM · LICENSING, USAGE AND BILLING
+What Meridian pays for, and why
+
+The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.
+
+ƒ Licence utilization
+ƒ AI cost per outcome
+Claude Sonnet · 90%
+Seats and plans
+Usage meters
+Statement
+Showback
+Seat types
+Four seat types match four kinds of work. $1,379 a month pays for seats nobody uses, so utilization is 83.9%.
+ƒ Licence utilization
+Change seats
+Full user
+138 of 150
+$42 per seat per month
+Create and edit records, run agents, build views.
+Light user
+52 of 80
+$14 per seat per month
+View, comment and update their own tasks.
+Approver-only
+27 of 60
+$6 per seat per month
+Approve invoices, changes and reviews from email or Teams.
+AI agent seat
+5 of 8
+$95 per seat per month
+A named agent identity with its own audit trail and spend cap.
+Plan comparison and what-if
+Slide the numbers to see which tier is cheapest for the usage you expect.
+	STANDARD	PROFESSIONAL (YOURS)	ENTERPRISE
+Base fee per month	$900	$1,800	$4,200
+Full user seat	$45	$42	$36
+Included API calls	2M	5M	20M
+Included AI tokens	40M	100M	400M
+Included automation runs	150K	400K	2,000K
+Included storage	1,000 GB	2,000 GB	10,000 GB
+Sandbox environments	1	2	4
+Identity	SSO only	SSO and SCIM	SSO, SCIM, customer keys
+Break-glass and reviews	No	Yes	Yes, two-person
+AI gateway	One model	Multi-model routing	Multi-model, private endpoints
+Support	Business hours	24 by 5, 1 hour for Sev 1	24 by 7, 15 minutes for Sev 1
+Overage rate multiplier	1.25 ×	1 ×	0.8 ×
+Full user seats planned
+138
+AI tokens per month (millions)
+100M
+API calls per month (millions)
+5M
+Standard
+$10,429
+$900 base + $7,729 seats + $1,800 overage
+Costs $1,468 a month vs current
+Professional
+Current
+Cheapest
+$8,961
+$1,800 base + $7,161 seats
+Costs $0 a month vs current
+Enterprise
+$10,327
+$4,200 base + $6,127 seats
+Costs $1,366 a month vs current
+
+Total = base fee + Σ(seats × seat price) + overage above plan quota × rate × plan multiplier
+
+Request a plan change

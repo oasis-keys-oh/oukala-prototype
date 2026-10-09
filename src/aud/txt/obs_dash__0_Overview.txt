@@ -1,0 +1,119 @@
+DASHBOARDS AND METRICS
+Every metric, every host, one place
+
+Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incident.
+
+ƒ Mean time to detect (MTTD)
+ƒ Observability coverage
+Add a tile
+SRE: SLOs and error budgets
+OpenTelemetry
+Overview
+Metrics explorer
+Dashboards
+Hosts and CIs
+Network map
+Logs and traces
+OPEN ALERTS
+19
+on 162 CIs
+METRICS IN THE MODEL
+10
+drawn from 162 CIs in demo data
+DASHBOARDS
+3
+16 tiles
+NETWORK LINKS
+14
+0 with a problem
+CPU, average of virtual machines
+24 hours. The climb after 09:00 is the portal incident reaching the application servers.
+0.0%
+25.0%
+50.0%
+75.0%
+100.0%
+13:45
+18:30
+23:15
+04:00
+08:45
+13:30
+warn
+Average CPU, virtual machines
+Portal database CPU
+Application latency p95
+Portal, Codification Platform and search, 24 hours.
+0 ms
+1,069 ms
+2,139 ms
+3,208 ms
+4,278 ms
+13:45
+18:30
+23:15
+04:00
+08:45
+13:30
+warn
+codification-portal
+codification-platform
+search-cluster
+Error rate
+Applications and the load balancer.
+0.00%
+2.09%
+4.19%
+6.28%
+8.38%
+13:45
+18:30
+23:15
+04:00
+08:45
+13:30
+warn
+codification-portal
+codification-platform
+codif-lb
+Availability
+VPN gateway and MFA service, 24 hours.
+94.00%
+95.55%
+97.10%
+98.65%
+100.20%
+13:45
+18:30
+23:15
+04:00
+08:45
+13:30
+critical
+VPN gateway
+MFA service
+Where to go next
+Every view reads the same metric model.
+Event management
+SLOs and synthetic checks
+Runbooks and automation
+Add a tile to a dashboard
+How a metric reaches a dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Agents, Azure Monitor, SNMP and logs feed the metric model.
+AUTOMATIC
+Store and roll up
+Raw samples are rolled up by minute, 15 minutes and hour.
+PERSON
+Explore
+Compare any CIs and metrics.
+PERSON
+Build a dashboard
+Pick tiles, drag them into place, save.
+PERSON
+Share and review
+Dashboards are reviewed monthly in the service review.

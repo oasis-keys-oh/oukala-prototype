@@ -1,0 +1,212 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+ON THE BENCH
+68
+can take 6+ hours a week
+SPARE HOURS A WEEK
+2,698
+up to 85% load
+OPEN REQUESTS
+4
+waiting for someone
+EMPLOYEES
+47
+with room
+AI AGENTS
+13
+with spare agent hours
+Staffing requests
+Matched on skills in the skills database, spare hours, and for contractors a contract that lasts through the work.
+New request
+QA automation for editor acceptance testing
+Codification · Test automation · 24 hours a week · Nov 2, 2026 to Dec 18, 2026 · prefers contractor
+SR-1
+Nobody with the skill and room. Raise a contractor request or move work.
+Taxonomy engineer for the December pipeline push
+Taxonomy · Taxonomy · 30 hours a week · Nov 16, 2026 to Jan 29, 2027 · prefers any kind
+SR-2
+Isla Fenn
+employee · skill level 5 of 5 · 29 spare hours
+Assign
+Yuki Tanaka
+employee · skill level 4 of 5 · 23 spare hours
+Assign
+Femi Adeyemi
+employee · skill level 4 of 5 · 22 spare hours
+Assign
+Reliability engineer for the failover rehearsal
+Portal · Azure · 20 hours a week · Nov 2, 2026 to Nov 20, 2026 · prefers employee
+SR-3
+Anita Cole
+employee · skill level 2 of 5 · 24 spare hours
+Assign
+Contract clause extraction at volume
+Contracts · Clause extraction · 16 hours a week · Oct 19, 2026 to Jan 15, 2027 · prefers AI agent
+SR-4
+Nobody with the skill and room. Raise a contractor request or move work.
+Who could take more
+Most spare hours first
+Resource Agent · 80%
+Kind
+All
+4
+Team
+All
+13
+WHO	KIND	TEAM	LOAD	SPARE HOURS▼	SKILLS
+
+Event Correlator
+	
+AI agent	AI agents	12%	123	Diagnostics, Runbooks, Guardrails
+
+Resource Agent
+	
+AI agent	AI agents	12%	123	Capacity, Leveling, Skills matching
+
+Room Scheduler
+	
+AI agent	AI agents	12%	123	Rooms, Calendar
+
+Learning Coach
+	
+AI agent	AI agents	12%	123	Training, Reminders
+
+Forecast Agent
+	
+AI agent	AI agents	12%	123	Reforecast, Actuals
+
+Personal assistant
+	
+AI agent	AI agents	12%	123	Calendar, Tasks
+
+Ops Agent
+	
+AI agent	AI agents	15%	118	Diagnostics, Runbooks, Guardrails
+
+Invoice Advisor
+	
+AI agent	AI agents	17%	114	Invoices, Purchase orders, Contracts
+
+PMO Agent
+	
+AI agent	AI agents	17%	114	Critical path, Forecasting, Status drafting
+
+First Officer
+	
+AI agent	AI agents	18%	113	Meetings, Transcripts, Action items
+
+Triage Agent
+	
+AI agent	AI agents	34%	86	Incident classification, Routing, Similar incidents
+
+Change Risk Agent
+	
+AI agent	AI agents	36%	82	Change risk, Collision detection, CMDB impact
+
+NM
+Northwind Managed Services
+	
+Managed service provider	Service desk	55%	48	Tier 1 service desk, Endpoint management, Intune
+
+CC
+Contoso Cloud Operations
+	
+Managed service provider	Ops team	59%	42	Azure operations, Backup and restore, Monitoring
+
+LS
+Lumen Search Services
+	
+Managed service provider	Lumen (vendor)	60%	40	Search operations, Indexing, Relevance
+
+Carla Reyes
+	
+Employee	Platform team	13%	29	Integration and APIs, Data modeling, Search and indexing
+
+Noor Haddad
+	
+Employee	Editors	13%	29	Editorial review, Taxonomy
+
+Isla Fenn
+	
+Employee	Editors	13%	29	Editorial review, Taxonomy
+
+Colette Brandt
+	
+Employee	Security	13%	29	Entra ID, Access reviews
+
+Hollis Grey
+	
+Employee	Change management	13%	29	Release coordination, CAB facilitation
+
+Rina Kovacs
+	
+Employee	Architecture	15%	28	Data modeling, Taxonomy, Integration and APIs
+
+Wes Hartley
+	
+Employee	Ops team	15%	28	Incident response
+
+Maribel Cruz
+	
+Employee	Service desk	15%	28	ITIL 4, Incident management
+
+Gabe Lindholm
+	
+Employee	Service desk	15%	28	Endpoint management, ITIL 4
+
+Greg Nolan
+	
+Employee	Platform team	18%	27	Cloud and failover, Incident response, Integration and APIs
+
+68 of 68 rows
+Scroll for more · rows are drawn as you scroll
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

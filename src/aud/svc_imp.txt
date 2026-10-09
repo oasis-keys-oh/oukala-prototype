@@ -1,0 +1,84 @@
+SERVICE PORTFOLIO AND MAP · BUSINESS SERVICE
+Codification Portal
+
+Tier 1 service owned by Tom Becker, used by 180,000 people. Availability is 99.58% against a 99.9% target (0.32 points short), it costs $31,400 a month, and 1 incident and 6 changes are open on it. It is mapped through seven lenses below.
+
+All services
+Impact analysis
+New offering
+Assign stakeholders
+Link a project
+Tier 1
+ƒ Service availability
+CSDM 5
+Technical composition
+Business and strategy
+Projects
+Stakeholders
+Performance
+Financial
+Impact
+Offerings
+Linked records
+SERVICES THAT DEPEND ON IT
+0
+1 Tier 1 including this one
+PEOPLE REACHED
+180,000
+at the widest point
+REVENUE SUPPORTED
+$9,400,000 a year
+$1,073 an hour
+DOWN 1 HOUR
+$8,849
+180,000 people
+DOWN 4 HOURS
+$35,396
+1 SLA breaches
+DOWN 24 HOURS
+$212,377
+1 SLA breaches
+If it fails: Severity 1
+RTO 2 h
+RPO 0.25 h
+Open impact analysis
+What breaks if it goes down
+Red boxes are the services that go down, amber ones degrade.
+CUSTOMERS AND GOALS
+BUSINESS SERVICES
+Public readers and su…
+180,000 people
+Reduce operating risk
+Strategic objective
+Modernize standards p…
+Strategic objective
+Codification Portal
+Tier 1 · 180,000 users
+FOCUS
+
+4 boxes. Click a box to open the full impact analysis centered there.
+
+Dependents
+Services that rely on Codification Portal, direct first.
+
+Nothing depends on this service.
+
+Service portfolio and map
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the service
+Owner, tier, objective and offerings are recorded; CSDM class is set.
+AI AGENT
+Map it
+Relationships to CIs and other services come from discovery and are reviewed.
+AUTOMATIC
+Check completeness
+The seven lenses are scored; gaps open tasks.
+APPROVAL GATE
+Govern changes
+Every change, incident and problem opens the same impact analysis.
+PERSON
+Review the service
+Quarterly review of targets, cost, maturity and retirement.

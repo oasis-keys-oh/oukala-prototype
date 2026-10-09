@@ -1,0 +1,1053 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+REQUIRED AGREEMENTS IN PLACE
+72.4%
+176 of 243 required agreement types
+CELLS WITH NO AGREEMENT
+50
+of 170 process and tier cells
+PARTLY COVERED
+8
+some required types missing
+FULLY COVERED
+72
+every required type present
+Coverage map
+Every process screen and workflow on the platform, against each service tier. A cell lists the agreement types the policy requires there.
+ƒ Agreement coverage of processes
+By process
+By service
+Required types present
+Scheduled but not live yet
+Missing
+Drag an agreement onto a cell to extend it
+SLA
+OLA
+UC
+XLA
+OLA
+Resolver groups accept an assigned incident
+OLA
+Network team: resolve its P2 incidents
+OLA
+Endpoint team: image and ship
+OLA
+Identity team: provision access
+PROCESS OR WORKFLOW	TIER 1	TIER 2
+
+How the master schedule stays true
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+How a project plan is built and kept current
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+Chat and agentic fulfillment
+Request fulfillment · Screen process
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+How a change reaches production
+Change enablement · Screen process
+	
+SLA
+XLA
+86%
+	
+SLA
+86%
+
+
+How delivery performance is measured
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How the master map stays true
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How the master data model stays current
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How the executive views are built
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How strategy becomes measured work
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How risk and date confidence are produced
+Risk and issue handling · Screen process
+	
+OLA
+	
+OLA
+
+
+How an application gets its TIME class
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How the board pack is written and approved
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How a scenario is compared
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How a workflow is made and kept
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How an approval gets decided
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How an assessment is built, answered and used
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How a decision table is made and used
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How a configuration item is created and kept true
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How the data model changes
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How impact analysis walks the graph
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How a tool feeds the CMDB
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How CMDB quality is governed
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How cloud cost is managed
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Incident process (ITIL 5 Support activity)
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Problem process (ITIL 5 Support and Evolve)
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Change enablement process (ITIL 5 Transition)
+Change enablement · Screen process
+	
+SLA
+XLA
+86%
+	
+SLA
+86%
+
+
+Major incident process (ITIL 5 Support)
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Service desk operating rhythm
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How knowledge flows from source to output to automation
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+From knowledge item to approved agent skill
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+From a failed search to published knowledge
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How a prompt reaches production
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How an answer is built
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+Article lifecycle
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How AI quality is tested
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How the knowledge graph is kept true
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How a capability's level is set and how it moves
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How an event becomes an incident
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+How a metric reaches a dashboard
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How an SLO is run
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+From alert to action
+Incident and problem · Screen process
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Life of a standard change
+Change enablement · Screen process
+	
+SLA
+XLA
+86%
+	
+SLA
+86%
+
+
+How on-call cover is built and used
+On-call and skills · Screen process
+	
+OLA
+	
+OLA
+
+
+How skills and availability stay true
+On-call and skills · Screen process
+	
+OLA
+	
+OLA
+
+
+How a person, agent, contractor or provider joins the org
+Vendor and contract · Screen process
+	
+UC
+OLA
+88%
+	
+UC
+OLA
+88%
+
+
+How a performance cycle runs
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How resource planning works
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+How a journey becomes a workflow
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How demand becomes funded work
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+How people, agents and providers get assigned
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+How a risk is handled
+Risk and issue handling · Screen process
+	
+OLA
+	
+OLA
+
+
+Release management process
+Release and deployment · Screen process
+	
+OLA
+	
+OLA
+
+
+Sprint process
+Release and deployment · Screen process
+	
+OLA
+	
+OLA
+
+
+Release train process
+Release and deployment · Screen process
+	
+OLA
+	
+OLA
+
+
+How an agreement is made, measured and kept
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+From vendor proposal to managed contract
+Vendor and contract · Screen process
+	
+UC
+OLA
+88%
+	
+UC
+OLA
+88%
+
+
+From catalog item to delivered service
+Request fulfillment · Screen process
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+How a request moves
+Request fulfillment · Screen process
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+What happens when you order
+Request fulfillment · Screen process
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Life of a device and a license
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+How a notification travels
+Other · Screen process
+	
+None needed
+	
+None needed
+
+
+Service portfolio and map
+Service portfolio · Screen process
+	
+SLA
+	
+SLA
+
+
+Cost transparency and scaling
+Executive and governance · Screen process
+	
+None needed
+	
+None needed
+
+
+How a visual gets from data to dashboard
+Knowledge · Screen process
+	
+OLA
+XLA
+	
+OLA
+
+
+How the work breakdown becomes the schedule
+Project and portfolio delivery · Screen process
+	
+OLA
+	
+OLA
+
+
+Change enablement
+Change enablement · Workflow
+	
+SLA
+XLA
+86%
+	
+SLA
+86%
+
+
+Agent skill: Reset multifactor authentication for an editor
+Access management · Workflow
+	
+SLA
+OLA
+84%
+	
+SLA
+OLA
+84%
+
+
+Agent skill: Clear stale search results after a deploy
+Incident and problem · Workflow
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Agent skill: Grant a vendor access to the staging site
+Access management · Workflow
+	
+SLA
+OLA
+84%
+	
+SLA
+OLA
+84%
+
+
+Agent skill: Share a draft standard with an outside reviewer
+Incident and problem · Workflow
+	
+SLA
+OLA
+XLA
+83%
+	
+SLA
+OLA
+83%
+
+
+Laptop provisioning
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Mobile phone provisioning
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Software license and install
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Project intake and decision
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Access provisioning
+Access management · Workflow
+	
+SLA
+OLA
+84%
+	
+SLA
+OLA
+84%
+
+
+New hire onboarding (parent workflow)
+Onboarding · Workflow
+	
+SLA
+XLA
+80%
+	
+SLA
+80%
+
+
+Employee offboarding
+Onboarding · Workflow
+	
+SLA
+XLA
+80%
+	
+SLA
+80%
+
+
+Mover: role or location change
+Onboarding · Workflow
+	
+SLA
+XLA
+80%
+	
+SLA
+80%
+
+
+Conference room AV support
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Vendor onboarding
+Onboarding · Workflow
+	
+SLA
+XLA
+80%
+	
+SLA
+80%
+
+
+AI agent access and token budget
+Access management · Workflow
+	
+SLA
+OLA
+84%
+	
+SLA
+OLA
+84%
+
+
+New service design and publication
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+API key issuance
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Report build
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+
+
+Shared mailbox or channel
+Request fulfillment · Workflow
+	
+SLA
+OLA
+XLA
+96%
+	
+SLA
+OLA
+96%
+Gaps to close
+Largest gaps first. Creating an agreement starts a draft with sensible conditions for the process.
+Resource Agent · 82%
+No agreement
+How knowledge flows from source to output to automation
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+From knowledge item to approved agent skill
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+From a failed search to published knowledge
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How a prompt reaches production
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How an answer is built
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+Article lifecycle
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How AI quality is tested
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How the knowledge graph is kept true
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How a visual gets from data to dashboard
+Tier 1 · needs an OLA, an XLA
+Create OLA
+No agreement
+How the master schedule stays true
+Tier 1 · needs an OLA
+Create OLA
+No agreement
+How a project plan is built and kept current
+Tier 1 · needs an OLA
+Create OLA
+No agreement
+How risk and date confidence are produced
+Tier 1 · needs an OLA
+Create OLA
+Coverage policy
+Which agreement types each kind of process needs. Tier 1 needs all of them, Tier 2 drops the XLA, Tier 3 needs only the first.
+ITIL 5
+Incident and problem
+SLA
+OLA
+XLA
+Edit
+Request fulfillment
+SLA
+OLA
+XLA
+Edit
+Change enablement
+SLA
+XLA
+Edit
+Release and deployment
+OLA
+Edit
+Onboarding
+SLA
+XLA
+Edit
+Access management
+SLA
+OLA
+Edit
+Vendor and contract
+UC
+OLA
+Edit
+Project and portfolio delivery
+OLA
+Edit
+Risk and issue handling
+OLA
+Edit
+Knowledge
+OLA
+XLA
+Edit
+Service portfolio
+SLA
+Edit
+On-call and skills
+OLA
+Edit
+How an agreement is made, measured and kept
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Define the agreement
+The service level manager names what is promised, to whom, and for which services, CIs, priorities and customer tiers.
+PERSON
+Choose real fields
+Conditions for start, pause, resume, stop, reset and cancel are built from fields in the platform data model, so the clock reads the same records everyone else does.
+APPROVAL GATE
+Preview and approve
+The designer runs the draft over the last 30 days. The owner and the other party approve before the activation date.
+AUTOMATIC
+Measure
+Each matching record gets a clock that follows the schedule, time zone and holidays. Pauses stop the clock.
+AI AGENT
+Warn and escalate
+At 50%, 75% and 100% of the target the agreement notifies, pages or opens a bridge. The Triage Agent offers to hand the record to the best available responder.
+PERSON
+Review breaches
+Breaches get a reason. The Pareto and recommendations show what to fix, and vendor credits are worked out from the contract clause.
+APPROVAL GATE
+Renegotiate or retire
+Agreements that are always green get tighter, always red get reviewed, and obsolete ones get a retire date.

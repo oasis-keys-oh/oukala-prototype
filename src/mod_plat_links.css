@@ -1,7 +1,7 @@
 /* mod_plat_links: Data connections and Process connections */
 :root{--plk-c0:var(--p1);--plk-c1:var(--u3);--plk-c2:var(--w1);--plk-c3:var(--s3);--plk-c4:var(--e4);--plk-c5:var(--p5);--plk-c6:var(--u4);--plk-c7:var(--s4);
  --plk-c8:color-mix(in srgb,var(--p1) 55%,var(--u1));--plk-c9:color-mix(in srgb,var(--w1) 55%,var(--e1));--plk-c10:color-mix(in srgb,var(--s1) 50%,var(--p1));--plk-c11:color-mix(in srgb,var(--u3) 50%,var(--e4));
- --plk-c12:color-mix(in srgb,var(--p5) 50%,var(--u4));--plk-c13:color-mix(in srgb,var(--w3) 55%,var(--s3));--plk-c14:color-mix(in srgb,var(--e1) 55%,var(--u1));--plk-c15:color-mix(in srgb,var(--p2) 60%,var(--s1))}
+ --plk-c12:color-mix(in srgb,var(--p5) 50%,var(--u4));--plk-c13:color-mix(in srgb,var(--w3) 55%,var(--s3));--plk-c14:color-mix(in srgb,var(--e1) 55%,var(--u1));--plk-c15:color-mix(in srgb,var(--p2) 60%,var(--s1));--plk-c16:color-mix(in srgb,var(--e4) 55%,var(--p5))}
 .plk-screen{container-type:inline-size;container-name:plk}
 .plk-split{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px;align-items:start}
 .plk-main{min-width:0}

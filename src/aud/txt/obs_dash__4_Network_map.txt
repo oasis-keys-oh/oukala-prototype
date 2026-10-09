@@ -1,0 +1,95 @@
+DASHBOARDS AND METRICS
+Every metric, every host, one place
+
+Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incident.
+
+ƒ Mean time to detect (MTTD)
+ƒ Observability coverage
+Add a tile
+SRE: SLOs and error budgets
+OpenTelemetry
+Overview
+Metrics explorer
+Dashboards
+Hosts and CIs
+Network map
+Logs and traces
+LINKS
+14
+14 devices on the detail map
+LINKS WITH A PROBLEM
+0
+none
+FLAPPING LINKS
+0
+none
+BUSIEST LINK
+60.0%
+VPN trunk
+Network map
+Devices and links drawn from the CMDB and the network scan. Link color is the worst of utilization, packet loss and tunnel availability. Select a device to open its host page.
+41%
+2%
+41%
+60%
+60%
+32%
+43%
+13%
+23%
+12%
+41%
+40%
+38%
+29%
+ISP A (primary)
+ISP B (backup)
+Edge firewall pair
+VPN gateway
+Core switch, Norwalk
+Distribution A
+Distribution B
+Wi-Fi controller
+Access points (42)
+Washington office rout
+Azure East US 2 hub
+Azure DNS
+Portal WAF and Front D
+Remote editors (140)
+Link or device OK
+Warning: over 75% utilized or loss over 0.5%
+Critical: over 90%, loss over 2% or tunnel availability under 98%
+
+Line thickness shows capacity. A dashed line is flapping. Numbers on links are utilization.
+
+Busiest links
+Utilization now.
+VPN trunk
+60.0%
+VPN tunnels
+60.0%
+Uplink B
+42.9%
+ISP A
+41.0%
+Core uplink
+41.0%
+How a metric reaches a dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Agents, Azure Monitor, SNMP and logs feed the metric model.
+AUTOMATIC
+Store and roll up
+Raw samples are rolled up by minute, 15 minutes and hour.
+PERSON
+Explore
+Compare any CIs and metrics.
+PERSON
+Build a dashboard
+Pick tiles, drag them into place, save.
+PERSON
+Share and review
+Dashboards are reviewed monthly in the service review.

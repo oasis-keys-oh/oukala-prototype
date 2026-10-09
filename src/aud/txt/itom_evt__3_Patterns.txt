@@ -1,0 +1,153 @@
+EVENT MANAGEMENT
+7,999 signals in 24 hours, 5 worth a person's time
+
+Noise reduction is 99.9%. The biggest candidate, Codification Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs on codif‑sql‑prd in the CMDB). MTTD is 12.0 min and MTTA 5.8 min.
+
+ƒ Event noise reduction
+ƒ Mean time to detect (MTTD)
+ƒ Mean time to acknowledge (MTTA)
+ƒ False positive rate
+ƒ Alert fatigue index
+ITIL 5
+SRE: SLOs and error budgets
+NOC wall
+Alert stream
+Correlation and noise
+Patterns
+False positives
+Thresholds and windows
+ALERTS ANALYZED
+58
+last 7 days, after deduplication
+RECURRING PATTERNS
+5
+3 are on a regular schedule
+FLAPPING SIGNALS
+5
+in the last 3 days
+BUSIEST HOUR
+09:00
+14 alerts started in this hour
+WEEKDAY VS WEEKEND
+2.5 to 1
+alerts per day, load-driven
+When alerts start
+Each cell counts alerts that started in that hour of that day. A bright column is a scheduled job; a bright block is a real outage.
+00
+03
+06
+09
+12
+15
+18
+21
+Sep 30 Wed
+Oct 1 Thu
+Oct 2 Fri
+Oct 3 Sat
+Oct 4 Sun
+Oct 5 Mon
+Oct 6 Tue
+Many alerts started
+Seasonality
+Alerts by hour of day (left) and by weekday (right) over seven days. Weekday peaks follow editors working; night peaks are batch jobs.
+0
+7
+14
+00
+03
+06
+09
+12
+15
+18
+21
+0
+13
+25
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Flapping detector
+A signal that goes up and down quickly pages people over and over. These alerts were merged by flap detection (gaps under 30 minutes). Hysteresis makes a rule hold its state for longer before it changes.
+VPN gateway
+Availability 95.40% (threshold < 98.00%), flapped 5 times
+5 episodes
+10:40 to 13:00
+Add hysteresis
+VPN gateway
+Link utilization 89.8% (threshold > 75.0%), flapped 5 times
+5 episodes
+10:40 to 13:00
+Add hysteresis
+data-gateway
+Memory 91.5% (threshold > 85.0%), flapped 4 times
+4 episodes
+Oct 5 08:30 to 15:30
+Add hysteresis
+data-gateway
+Memory 86.2% (threshold > 85.0%), flapped 2 times
+2 episodes
+Oct 5 19:50 to 21:30
+Add hysteresis
+data-gateway
+Memory 87.6% (threshold > 85.0%), flapped 2 times
+2 episodes
+01:10 to 03:50
+Add hysteresis
+Recurring alerts
+Alerts that repeat on the same CI. Regular ones are almost always jobs, backups or patches: schedule a window or fix the cause. Irregular ones need investigation.
+Recurs
+All
+2
+Likely cause
+All
+2
+Export CSV
+PATTERN	RECURS	WHEN	TIMES IN 7 DAYS▼	LIKELY CAUSE	MARKED FALSE POSITIVE	SUGGESTION
+Memory pressure
+data-gateway
+	Irregular	on 2 days around 09:43	8	Flapping signal	0 of 8	Investigate
+Error rate
+adf-pipelines
+	Daily	every day around 00:40	7	Scheduled job	0 of 7	Window exists
+Error rate
+apim-gateway
+	Daily	every day around 01:10	7	Scheduled job	5 of 7	Suppress or schedule
+Storage error rate
+contract-blob
+	Daily	every day around 03:10	7	Scheduled job	6 of 7	Suppress or schedule
+Memory growth (dynamic baseline)
+data-gateway
+	Irregular	on 4 days around 15:57	7	Flapping signal	0 of 7	Investigate
+5 of 5 rows
+Scroll for more · rows are drawn as you scroll
+How an event becomes an incident
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect
+Monitoring sources and rules raise events.
+AUTOMATIC
+Deduplicate and filter
+Same rule, CI and state become one alert; windows and false positives are removed.
+AI AGENT
+Correlate
+Alerts on connected CIs form one group with a root cause candidate.
+AI AGENT
+Triage
+A person or an agent acknowledges, classifies and picks the response.
+APPROVAL GATE
+Automate or escalate
+A pre-approved standard change runs, or on-call is paged.
+PERSON
+Incident, problem, change
+Group becomes an incident; recurring causes go to problem management.
+AI AGENT
+Learn
+False positive feedback tunes rules; patterns feed problems.

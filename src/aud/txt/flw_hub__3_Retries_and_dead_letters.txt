@@ -1,0 +1,71 @@
+AUTOMATION · INTEGRATION HUB
+Every connection, healthy or not
+
+13 connectors: 9 healthy, 2 degraded, 1 failing, 1 paused. SAP ERP (Lease subledger) has failed since its certificate expired, and 6 events wait in the dead-letter queue, including the Lumen payment hold.
+
+ƒ Integration failure rate
+Add connector
+Register MCP server
+Connectors
+13
+9 healthy
+Need attention
+3
+SharePoint, Workday, SAP
+Failure rate
+2.5%
+failed ÷ total calls, 24 h
+Dead letters
+9
+waiting for replay
+Connectors
+MCP servers
+Webhooks and keys
+Retries and dead letters
+Rate limits
+How close each connector runs to its limit
+Workday
+99%
+SharePoint
+94%
+Microsoft 365
+31%
+Microsoft Teams
+31%
+Power BI
+26%
+SAP ERP (Lease subledger)
+26%
+ServiceNow-compatible REST
+25%
+
+Oukala throttles itself at 80% of each vendor limit and honors Retry-After headers.
+
+Retry policy
+What happens to a failed delivery
+first 30s
+then 2 min
+then 8 min
+then 48 min
+then 3 h
+dead letter
+
+Up to 5 attempts, starting at 30 seconds and growing about 4 times each step, with ±20% jitter so retries do not stampede. After the last attempt the event waits in the dead-letter queue for 14 days.
+
+Edit retry policy
+Dead-letter queue
+9 events wait for a person
+Replay selected (0)
+Replay all SAP ERP (Lease subledger) (6)
+Replay all SharePoint (2)
+Replay all Workday (1)
+	EVENT	CONNECTOR	ATTEMPTS	ERROR	AGE	
+	journal.post JE-8838	SAP ERP (Lease subledger)	5/5	401 Unauthorized: client certificate expired	3 h	Replay Payload
+	payment.hold INV-20433	SAP ERP (Lease subledger)	5/5	401 Unauthorized: client certificate expired	3 h	Replay Payload
+	journal.post JE-8839	SAP ERP (Lease subledger)	5/5	401 Unauthorized: client certificate expired	3 h	Replay Payload
+	invoice.status INV-20418	SAP ERP (Lease subledger)	5/5	401 Unauthorized: client certificate expired	2 h	Replay Payload
+	invoice.status INV-20440	SAP ERP (Lease subledger)	5/5	401 Unauthorized: client certificate expired	2 h	Replay Payload
+	journal.post JE-8841	SAP ERP (Lease subledger)	4/5	401 Unauthorized: client certificate expired	1 h	Replay Payload
+	document.upload RB-031.docx	SharePoint	5/5	429 Too Many Requests (Retry-After 3600)	5 h	Replay Payload
+	document.upload SOP-114.docx	SharePoint	5/5	429 Too Many Requests (Retry-After 3600)	5 h	Replay Payload
+	worker.sync batch 42	Workday	5/5	429 Rate limit: 2,000 calls per minute	1 h	Replay Payload

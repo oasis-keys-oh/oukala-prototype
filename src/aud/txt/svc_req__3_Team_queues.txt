@@ -1,0 +1,64 @@
+REQUESTS AND FULFILLMENT
+86 open, 33 approvals waiting
+
+6 requests have used 75% or more of their SLA. Median fulfillment is 0.8 days and 93.8% of approvals pass the first time. Open any request for who it is sitting with, every approval and the evidence behind it, and the cost and time of each step.
+
+Order something
+Approvals inbox
+ƒ Fulfillment on time
+ƒ First-time approval rate
+ƒ Cost per request
+ITIL 5
+Experience level agreements
+Dashboard and list
+Board
+Approvals inbox
+Team queues
+Team queues
+Select a team. Work arrives in the team, then a person claims it or it is assigned with a reason.
+TEAM	WAITING	CLAIMED	OLDEST	AT RISK
+
+Vendor (Dell)
+	10	0	3 d	0
+
+Facilities
+	5	3	4.3 h	1
+
+People team
+	3	1	12.6 d	0
+
+Data team
+	3	1	24.1 h	0
+
+Endpoint team
+	2	1	11.2 h	2
+
+Security
+	0	1	14.4 h	0
+
+Legal and contracts
+	0	1	4.8 h	0
+Endpoint team queue
+Intune, Autopilot, imaging and delivery. Lead: Sam Patel. Drag a request onto a person to assign it. Assigning to someone other than yourself needs a reason.
+WAITING IN THE TEAM QUEUE (2)
+RITM0010633
+Delivery to desk or shipped to home
+Laptop (new or replacement)
+93%
+RITM0010683
+Collect or remote-wipe device
+Employee offboarding
+40%
+Sam Patel Platform engineer
+1128% loaded
+Drop here to assign to Sam Patel
+NM
+Northwind Managed Services Managed service provider: service desk and endpoint
+55% loaded
+Drop here to assign to Northwind Managed Services
+Ravi Menon Site reliability engineer
+617% loaded
+Drop here to assign to Ravi Menon
+Test Agent Quality and testing agent
+136% loaded
+Drop here to assign to Test Agent

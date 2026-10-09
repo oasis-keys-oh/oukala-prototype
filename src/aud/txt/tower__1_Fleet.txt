@@ -1,0 +1,135 @@
+AI CONTROL TOWER
+Everything AI, in one place
+
+5 of 6 agents are running inside the gateway and spend is at 30% of the cap. One agent, Copilot in Teams, runs outside it and is only observed.
+
+Live
+Gateway · draft
+Governance posture
+87
+Policy coverage × Guardrail pass rate × Audit completeness
+Spend today
+$22
+of $75 daily cap
+Guardrail pass rate
+99.2%
+3 blocks, 1 redaction today
+22%
+Agent override rate
+Off trend · target ≤ 10%
+Human overrides ÷ Agent recommendations
+Overview
+Fleet
+Lineage
+Kill switch
+PLATFORM AGENT
+First Officer
+running
+Claude · Anthropic · owner PMO
+42
+Runs today
+$6.80
+of $25
+1
+Guardrail hits
+AUTONOMY
+0
+1
+2
+3
+Act within rules
+No external email without approval
+Redact personal data
+See lineage
+Pause
+PLATFORM AGENT
+Invoice Advisor
+running
+GPT (council) · OpenAI · owner Finance
+18
+Runs today
+$3.10
+of $20
+0
+Guardrail hits
+AUTONOMY
+0
+1
+2
+3
+Draft
+Cannot execute payments
+Reads only approver-scoped data
+See lineage
+Pause
+PLATFORM AGENT
+Knowledge Curator
+running
+Gemini · Google · owner Knowledge
+67
+Runs today
+$2.20
+of $10
+2
+Guardrail hits
+AUTONOMY
+0
+1
+2
+3
+Suggest
+Drafts only, owner publishes
+See lineage
+Pause
+PLATFORM AGENT
+Test Agent
+running
+Claude (judge: OpenAI) · Anthropic · owner Engineering
+120
+Runs today
+$9.40
+of $15
+0
+Guardrail hits
+AUTONOMY
+0
+1
+2
+3
+Act with approval
+Sandbox only
+Second model validates
+See lineage
+Pause
+PERSONAL AGENT
+Personal assistant
+running
+Claude · Anthropic · owner You
+9
+Runs today
+$0.90
+of $5
+0
+Guardrail hits
+AUTONOMY
+0
+1
+2
+3
+Draft
+Acts as you, never above you
+See lineage
+Pause
+THIRD-PARTY AI
+Copilot in Teams
+Observe only
+Microsoft-managed · Microsoft · owner Microsoft
+0
+Runs today
+$0.00
+No spend
+0
+Guardrail hits
+Runs outside the gateway. We can see it, but we cannot stop it.
+Observe only: outside the gateway
+See lineage

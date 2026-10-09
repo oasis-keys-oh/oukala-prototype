@@ -1,0 +1,315 @@
+SERVICE MANAGEMENT · INCIDENTS
+Restore service fast, to a team first
+
+14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a major incident.
+
+Log incident
+Open the war room
+ƒ SLA compliance
+ƒ Backlog age
+ƒ Incident impact score
+ITIL 5
+ISO/IEC 20000
+DORA metrics
+Triage Agent · 86%
+Overview
+Board
+Priority calculator
+SLA timers
+Priority policy
+OPEN INCIDENTS
+14
+4 still in a team queue
+P1 OR P2 OPEN
+5
+1 is a major incident
+SLA CLOCKS
+3
+breached, 3 more at risk
+TIME TO RESTORE
+39.3h
+average, last 30 days ƒ Time to restore service
+AVERAGE IMPACT SCORE
+30
+of 100, open incidents ƒ Incident impact score
+TEAM-FIRST ASSIGNMENT
+94%
+target 90% ƒ Team-first assignment
+Incident volume
+Opened per day for 14 days. Colors are the calculated priority.
+ƒ Backlog age
+23
+25
+27
+29
+1
+3
+5
+P1 Critical
+P2 High
+P3 Moderate
+P4 Low
+Open by service
+Top services by open incidents. Select a service to filter the list below.
+Codification Platform
+2
+Search and indexing
+2
+Lease subledger (ERP)
+2
+Email and collaboration (M365)
+2
+Endpoint management (Intune)
+2
+Contract Repository
+1
+Network and VPN
+1
+Data platform
+1
+
+Codification Platform has the most open incidents (2).
+
+Aging by priority
+How long open incidents have been waiting, on-hold time excluded.
+ƒ Backlog age
+UNDER 4 HOURS
+4 TO 24 HOURS
+1 TO 3 DAYS
+OVER 3 DAYS
+P1
+0
+0
+0
+0
+P2
+2
+3
+0
+0
+P3
+3
+3
+1
+0
+P4
+1
+0
+1
+0
+Darker means more incidents
+Red outline: P1 or P2 waiting over a day
+Major incident candidates
+High impact and Tier 1. A person declares; the war room opens.
+War room
+INC0405
+Lease subledger rejects posting: period already locked
+Lease subledger (ERP) · impact score 44 (Significant)
+P2
+Open
+SLA clocks closest to breach
+Response and resolution timers, closest first.
+ƒ SLA compliance
+INC0407
+Payment export from lease subledger is missing t
+P2
+RESO.
+Breached 4h ago
+INC0416
+Executive laptop cannot join Teams meetings befo
+P2
+RESP.
+Breached 12m ago
+INC0408
+Search returns outdated paragraphs after interim
+P3
+RESO.
+Breached 6h ago
+INC0405
+Lease subledger rejects posting: period already
+P2
+RESO.
+1h left
+INC0409
+Contract Repository upload fails for PDFs over 5
+P3
+RESO.
+4h left
+Team queues
+Open work by assignment group. Work goes to a team first; people claim it.
+ƒ Team-first assignment
+Service desk
+4
+1 unclaimed · 1 breached
+Platform team
+3
+2 unclaimed
+Ops team
+2
+0 unclaimed
+Data team
+2
+0 unclaimed · 1 breached
+Finance
+2
+1 unclaimed · 1 breached
+Lumen (vendor)
+1
+0 unclaimed
+ALL INCIDENTS
+Priority
+All
+3
+State
+3 of 4
+3
+Service
+All
+10
+Team
+All
+6
+Assignee type
+All
+5
+Group by 
+None
+Priority
+State
+Team
+Service
+Export CSV
+NUMBER	PRIORITY▲	SHORT DESCRIPTION	SERVICE	STATE	TEAM	ASSIGNED TO	ASSIGNEE TYPE	RESPONSE	RESOLUTION	AGE
+INC0412 Major	P2	Codification Portal slow for editors (page loads over 6 seconds)	Codification Platform	In progress	Ops team	
+Sam Patel
+	
+Employee	
+RESP
+Met, 22m to spare	
+RESO
+3h 42m left	4h 18m
+INC0405	P2	Lease subledger rejects posting: period already locked	Lease subledger (ERP)	On hold	Finance	
+Avery Chen
+	
+Employee	
+RESP
+Met, 12m to spare	
+RESO
+1h left	2d 4h
+INC0407	P2 Ovr	Payment export from lease subledger is missing two columns	Lease subledger (ERP)	New	Finance	Team queue	
+Team queue	
+RESP
+Missed by 2h 42m	
+RESO
+Breached 4h ago	12h
+INC0416	P2 VIP	Executive laptop cannot join Teams meetings before the 15:00 call	Endpoint management (Intune)	New	Service desk	Team queue	
+Team queue	
+RESP
+Breached 12m ago	
+RESO
+7h 18m left	42m
+INC0417	P2 VIP	Board pack site returns 403 for two directors	Email and collaboration (M365)	In progress	Service desk	
+NM
+Northwind Managed Services
+	
+Managed service provider	
+RESP
+Met, 18m to spare	
+RESO
+5h 54m left	2h 6m
+INC0413	P3	Editors cannot save drafts: timeout on save	Codification Platform	In progress	Platform team	Team queue	
+Team queue	
+RESP
+Met, 1h 36m to spare	
+RESO
+20h 12m left	3h 48m
+INC0408	P3	Search returns outdated paragraphs after interim indexer build	Search and indexing	In progress	Data team	
+Jordan Lee
+	
+Employee	
+RESP
+Met, 48m to spare	
+RESO
+Breached 6h ago	30h
+INC0409	P3	Contract Repository upload fails for PDFs over 50 MB	Contract Repository	In progress	Platform team	
+Elise Park
+	
+Contractor	
+RESP
+Met, 30m to spare	
+RESO
+4h left	20h
+INC0411	P3	VPN drops every 20 minutes for remote editors	Network and VPN	In progress	Ops team	
+Ravi Menon
+	
+Contractor	
+RESP
+Met, 1h 30m to spare	
+RESO
+22h 24m left	1h 36m
+INC0402	P3	Taxonomy API returns 502 during the nightly batch	Data platform	On hold	Data team	
+Dev Rao
+	
+Employee	
+RESP
+Met, 1h 36m to spare	
+RESO
+8h left	4d
+INC0414	P3	Portal TLS certificate expires in 9 days	Codification Portal	New	Platform team	Team queue	
+Team queue	
+RESP
+1h left	
+RESO
+23h left	1h
+INC0415	P3	Search results page is blank for Safari users	Search and indexing	In progress	Lumen (vendor)	
+Marco Ellis
+	
+Contractor	
+RESP
+Met, 0m to spare	
+RESO
+16h left	8h
+INC0410	P4	Teams meeting recordings not reaching First Officer	Email and collaboration (M365)	New	Service desk	
+Triage Agent
+	
+AI agent	
+RESP
+48m left	
+RESO
+2d 21h left	3h 12m
+INC0406	P4	Floor 3 print queue stuck	Endpoint management (Intune)	In progress	Service desk	
+NM
+Northwind Managed Services
+	
+Managed service provider	
+RESP
+Met, 2h to spare	
+RESO
+44h left	28h
+14 of 17 rows
+Scroll for more · rows are drawn as you scroll
+Incident process (ITIL 5 Support activity)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect and log
+Monitoring, a caller or an agent raises the incident against a service and CI.
+AUTOMATIC
+Calculate priority
+Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.
+AI AGENT
+Confirm triage
+An agent suggests category, team and similar incidents. A person confirms.
+AUTOMATIC
+Route to a team
+Work lands in the team queue. Individuals are not assigned from outside the team.
+PERSON
+Claim and swarm
+A team member claims it, or the team swarms. A direct assignment needs a stated reason.
+PERSON
+Diagnose and restore
+Work the known error or runbook, link a change if one is needed, communicate.
+AI AGENT
+Resolve and learn
+Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.

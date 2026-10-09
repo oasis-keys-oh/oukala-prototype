@@ -1,0 +1,184 @@
+CMDB · DATA MODEL
+Classes, attributes and relationships, like the CMDB it replaces
+
+The CMDB data model has 42 classes (6 abstract, 36 concrete) and 154 attributes, of which 59 are required. A Linux server inherits attributes from four parent classes. 28 classes hold CIs today, and 11 relationship types say how they connect. Add a class or an attribute here and every form, completeness score and field picker in Oukala learns it immediately.
+
+ƒ CMDB completeness
+CSDM 5
+New class
+New attribute
+Why am I seeing this?
+CLASSES
+42
+28 hold CIs
+ATTRIBUTES
+154
+59 required
+RELATIONSHIP TYPES
+13
+11 edge types, 2 attribute types
+RELATIONSHIP RULES
+6
+6 active
+CSDM DOMAINS
+7
+6 have classes
+EDGES
+236
+relationships between records
+Class hierarchy
+Relationship types
+CSDM 5 domains
+Relationship rules
+Foundation
+6 of 7 classes in use
+
+Shared reference data every other domain points at: locations, companies, people, groups, contracts.
+
+CSDM 4 name: Foundation
+Configuration item
+Cloud subscription
+1
+Site
+1
+Datacenter
+1
+Rack
+2
+Vendor
+1
+Contract
+1
+Ideation and Strategy
+1 of 1 classes in use
+
+What the Foundation wants to be able to do: business capabilities, goals and strategic portfolios.
+
+CSDM 4 name: new in CSDM 5
+Business capability
+3
+Design and Planning
+3 of 3 classes in use
+
+The business view of what is built: business applications, information objects and dynamic CI groups.
+
+CSDM 4 name: Design
+Business application
+3
+Dynamic CI group
+1
+Information object
+1
+Build and Integration
+4 of 9 classes in use
+
+The software and cloud assets teams build and release: applications, middleware, containers, functions.
+
+CSDM 4 name: Build
+Software
+Application
+17
+Middleware
+Web server
+Message broker
+API gateway
+1
+Cloud
+Container
+1
+Cloud function
+1
+Service Delivery
+13 of 19 classes in use
+
+How technology is run: technology management services, application services (service instances), servers, databases, network and storage.
+
+CSDM 4 name: Manage Technical Services
+Hardware
+Computer
+Server
+Linux server
+Windows server
+1
+Virtualization host
+2
+Endpoint device
+3
+Network device
+Firewall
+2
+Switch
+2
+Router
+1
+Load balancer
+1
+Storage
+4
+Database
+SQL Server instance
+5
+Virtual machine
+13
+Cloud resource
+7
+Technology management service
+16
+Application service
+16
+Service Consumption
+1 of 3 classes in use
+
+What people consume and order: business services and service offerings with their support hours and prices.
+
+CSDM 4 name: Sell and Consume (ordering, service offerings)
+Service
+Business service
+Service offering
+54
+Manage Portfolio
+0 of 0 classes in use
+
+Planning and investment view: demand, projects and portfolios linked to the services they change (lives in the PPM modules).
+
+CSDM 4 name: new in CSDM 5
+No classes here. This domain lives in other Oukala modules.
+How the domains connect
+A capability is supported by business applications; a business application has application services; application services run on technology management services and CIs; offerings expose them to the people who consume them.
+CSDM 5
+Business capability
+→
+Business application
+→
+Application service
+→
+Application and database CIs
+→
+Servers, VMs, network, storage
+→
+Rack and site
+Business service
+→
+Service offering
+→
+Application service
+→
+Technology management service
+→
+CIs
+How the data model changes
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CSDM 5, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+Anyone proposes a class, attribute or relationship rule with a reason.
+AUTOMATIC
+Preview impact
+The form shows how many CIs gain the attribute and how completeness moves.
+APPROVAL GATE
+Approve
+The CMDB owner approves anything that touches required attributes.
+AUTOMATIC
+Publish
+The class appears in forms, lists, the data model registry and chat.

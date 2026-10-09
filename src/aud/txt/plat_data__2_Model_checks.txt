@@ -1,0 +1,55 @@
+MASTER DATA MODEL
+Every table, every reference, one picture
+
+94 tables and 1,445 fields, read live from what each module registers. Reference integrity is 85%.
+
+ƒ Data model reference integrity
+DAMA-DMBOK
+CSDM 5
+Overview
+Diagram
+Model checks
+REFERENCE INTEGRITY
+85%
+resolved references
+UNRESOLVED FIELDS
+33
+declare a target table
+TABLES WITHOUT REFERENCES
+4
+may be standalone
+Model checks
+Unresolved fields mostly point to groups, vendors and sprints that are not registered as tables yet. Registering them closes the gap.
+Reference fields with no target table (33)
+33
+Tables with no references (4)
+4
+Invoice
+Finance
+Finance · 8 fields
+Incident priority policy
+ITSM
+ITSM · 8 fields
+Maturity capability
+PPM
+Maturity models · 8 fields
+Cost allocation
+Finance
+Cost transparency · 4 fields
+ƒ Data model reference integrity
+How the master data model stays current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DAMA-DMBOK, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+A module registers its tables
+Each module declares fields, types and references when it loads.
+AUTOMATIC
+The model reads the registry
+The diagram, list and checks are built at render time, so there is nothing to keep in sync.
+PERSON
+The data architect reviews gaps
+Unresolved references and isolated tables are listed under model checks.
+APPROVAL GATE
+Owners fix their domain
+Each domain has a named data owner.

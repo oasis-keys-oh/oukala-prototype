@@ -1,0 +1,202 @@
+PROJECT PLAN
+Codification
+
+Codification Platform Upgrade finishes Dec 11, 2026, 7 work days late. It is 59% done against 64% planned, and 4 tasks have no float, starting with search indexer (lumen).
+
+Codification
+Taxonomy
+Portal
+Contracts
+Open in the trace
+Open the WBS and task sheet
+PMBOK
+Finish
+Dec 11
+7 work days late
+Schedule performance
+0.94
+Earned ÷ planned · target 0.95
+Done
+59%
+Planned 64%
+Budget used
+62%
+$740K of $1.2M
+Overview
+Gantt
+Milestones
+Progress
+Phases
+Each phase rolls up from the lines inside it. The faint bar is the baseline.
+1
+Initiation and governance
+100%
+Jul 1 to Jul 10
+Complete
+2
+Requirements and design
+100%
+Jul 6 to Aug 6
+Complete
+3
+Build
+72%
+Aug 3 to Nov 13
+On track
+4
+Integration, test and beta
+12%
+Aug 27 to Nov 12
+Late
+5
+Acceptance and transition
+0%
+Nov 13 to Nov 30
+Late
+6
+Cutover and go live
+0%
+Nov 13 to Dec 10
+Late
+Critical path
+Tasks with zero float, in order
+Search indexer (Lumen)
+Integration and test
+Editor acceptance testing
+Cutover rehearsal
+Work breakdown
+Every line of the WBS. Select a row for its links, dictionary and what-ifs.
+Status
+All
+6
+Export CSV
+WBS	TASK NAME	START	FINISH	DONE	FLOAT	STATUS	WAITS FOR	PEOPLE AND TEAMS
+1	
+Initiation and governance
+	Jul 1	Jul 10	
+100%
+		Complete		
+1.1	
+Project kickoff	—	—	
+100%
+	0d	Complete		Priya Shah
+1.2	Charter and business case	Jul 1	Jul 3	
+100%
+	0d	Complete	1.1	Priya Shah, Maya Ortiz
+1.3	Steering committee, RACI and RAID log setup	Jul 6	Jul 9	
+100%
+	27d	Complete	1.2	Maya Ortiz, PMO Agent
+1.4	Lumen SOW-4 statement of work and onboarding	Jul 6	Jul 10	
+100%
+	15d	Complete	1.2	Contract Analyst Agent, Maya Ortiz
+1.5	
+Funding approved by the steering committee	Jul 13	Jul 13	
+100%
+	26d	Complete	1.3, 1.4	Omar Hamid
+2	
+Requirements and design
+	Jul 6	Aug 6	
+100%
+		Complete		
+2.1	Requirements and design	Jul 6	Jul 31	
+100%
+	0d	Complete	1.2	Priya Shah, Jordan Lee, Chief Editor, Architecture, Editors
+2.2	
+Editorial requirements
+	Jul 6	Jul 30	
+100%
+		Complete		
+2.2.1	Editor workshops: authoring and review	Jul 6	Jul 13	
+100%
+	12d	Complete	1.2	Chief Editor, First Officer
+2.2.2	Requirements catalog and traceability matrix	Jul 14	Jul 23	
+100%
+	12d	Complete	2.2.1	Priya Shah, Knowledge Curator
+2.2.3	Service levels and non-functional requirements	Jul 24	Jul 30	
+100%
+	12d	Complete	2.2.2	Jordan Lee
+2.3	
+Architecture and security design
+	Jul 24	Aug 6	
+100%
+		Complete		
+2.3.1	Solution architecture decision records	Jul 24	Jul 30	
+100%
+	12d	Complete	2.2.2	Jordan Lee
+2.3.2	Entra ID access model and security review	Jul 31	Aug 6	
+100%
+	38d	Complete	2.3.1	Rina Okafor
+2.4	
+Design gate G1: baseline approved	Aug 3	Aug 3	
+100%
+	11d	Complete	2.1, 2.2.3, 2.3.1	Omar Hamid
+3	
+Build
+ Critical	Aug 3	Nov 13	
+72%
+	0d	On track		
+3.1	
+Core platform
+	Aug 3	Oct 2	
+100%
+		Complete		
+3.1.1	Core platform build	Aug 3	Oct 2	
+100%
+	11d	Complete	2.1, 1.5, 2.4	Sam Patel, Elise Park, Priya Shah, Platform team
+3.1.2	Azure environments and CI/CD pipeline	Aug 3	Aug 14	
+100%
+	24d	Complete	2.4	Sam Patel, Contoso Cloud Operations
+3.1.3	
+Authoring workflow
+	Aug 17	Sep 15	
+100%
+		Complete		
+3.1.3.1	Authoring workflow configuration	Aug 17	Sep 4	
+100%
+	27d	Complete	3.1.2	Priya Shah, Elise Park
+3.1.3.2	Reviewer routing rules	Sep 7	Sep 15	
+100%
+	27d	Complete	3.1.3.1	Priya Shah, Chief Editor
+3.1.3.3	Redline and comparison view	Sep 7	Sep 15	
+100%
+	27d	Complete	3.1.3.1	Elise Park
+3.1.4	
+Citation and versioning
+	Aug 17	Sep 18	
+100%
+		Complete		
+3.1.4.1	Version and citation engine	Aug 17	Sep 11	
+100%
+	24d	Complete	3.1.2	Sam Patel
+3.1.4.2	Citation link checker	Sep 14	Sep 18	
+100%
+	24d	Complete	3.1.4.1	Test Agent
+3.1.5	Role based access with Entra ID groups	Aug 17	Aug 26	
+100%
+	32d	Complete	2.3.2, 3.1.2	Rina Okafor, Sam Patel
+3.1.6	
+Core build complete	Oct 5	Oct 5	
+100%
+	14d	Complete	3.1.1, 3.1.3.1, 3.1.4.1, 3.1.5, 3.1.3.2, 3.1.3.3, 3.1.4.2	Priya Shah
+
+67 of 67 rows
+Scroll for more · rows are drawn as you scroll
+How a project plan is built and kept current
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Scope and WBS
+The project manager breaks the scope into phases, deliverables and work packages. Every line gets a deliverable and an owner.
+PERSON
+Estimate and link
+Durations, resources and predecessors are set. The engine shows the critical path as you work.
+AI AGENT
+AI completeness check
+PMO Agent drafts missing deliverables, flags lines with no owner, no resource or no predecessor, and suggests fixes.
+APPROVAL GATE
+Approve and baseline
+The sponsor approves the plan and a baseline is set. Variance is measured from here.
+AUTOMATIC
+Track and replan
+Actuals flow in, the engine reforecasts, and changes to dates need a reason.

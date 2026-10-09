@@ -1,0 +1,442 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+Where we stand, by model
+Share of capabilities meeting their target today and in the forecast. Forecast counts only funded projects, and only after acceptance for the current level.
+CMMI
+NIST CSF 2.0
+MODEL	LEVEL NOW	AT YEAR 1 TARGET	FORECAST Y1	FORECAST Y3	FORECAST Y5	GLIDE PATH
+Autonomous service delivery
+Oukala (own)
+	2.3 of 5	1 of 9	7 of 9	2 of 9	0 of 9	On track
+Project and delivery traceability
+Oukala (own)
+	2.4 of 5	0 of 8	7 of 8	2 of 8	0 of 8	Watch
+Process capability (CMMI style)
+Ingested standard
+	2.3 of 5	1 of 7	5 of 7	1 of 7	0 of 7	Watch
+IT service management practices
+Ingested standard
+	2.2 of 5	2 of 11	8 of 11	3 of 11	0 of 11	On track
+Technology business management
+Ingested standard
+	1.7 of 5	0 of 7	5 of 7	1 of 7	0 of 7	Watch
+Data management
+Ingested standard
+	2.2 of 5	2 of 10	8 of 10	1 of 10	0 of 10	On track
+Cybersecurity (NIST CSF 2.0 tiers)
+Ingested standard
+	2.8 of 5	2 of 6	6 of 6	3 of 6	1 of 6	On track
+AI governance
+Ingested standard
+	2.3 of 5	1 of 8	5 of 8	2 of 8	0 of 8	Behind
+Software delivery (DORA)
+Ingested standard
+	2.3 of 5	1 of 7	6 of 7	3 of 7	0 of 7	On track
+Portfolio management (P3M3)
+Ingested standard
+	2.4 of 5	2 of 7	4 of 7	2 of 7	0 of 7	Behind
+80% or more of capabilities meet their target
+50% to 79%
+Under 50%
+Strategic objectives, broken into capabilities
+Each objective rolls up the capabilities that make it true. Select one to see its glide path.
+Modernize standards publishing
+2.1
+29 capabilities
+Watch
+Reduce operating risk
+2.3
+37 capabilities
+On track
+Protect revenue through contract discipline
+2.2
+20 capabilities
+Watch
+Trusted AI
+2.3
+14 capabilities
+Behind
+Improve editor and reviewer experience
+2.4
+16 capabilities
+Behind
+Current level (colored by status)
+Tick: expected level today
+Hollow marker: Year 1 target
+What needs attention
+Capabilities behind the glide path or forecast to miss the Year 1 target.
+19 behind
+Guardrails and human oversight for agents
+Behind
+Autonomous service delivery · owner Jordan Lee
+No funded project reaches level 4.
+AI-enabled service management (ITIL 5)
+Behind
+IT service management practices · owner Jordan Lee
+No funded project reaches level 3.
+Request fulfillment
+Behind
+Autonomous service delivery · owner Sam Patel
+No funded project reaches level 3.
+Service to project impact (CMDB link)
+Behind
+Project and delivery traceability · owner Sam Patel
+No funded project reaches level 3.
+Risk management
+Behind
+Process capability (CMMI style) · owner Maya Ortiz
+No funded project reaches level 4.
+Measurement and analysis
+Behind
+Process capability (CMMI style) · owner Dev Rao
+No funded project reaches level 3.
+Recommended actions
+Gaps with no funded path to the Year 1 target, largest first. Each one can become a demand request.
+Create top 4 as demand requests
+Fund the path from level 2 to 4 for Guardrails and human oversight for agents
+$253K · 10 mo
+Autonomous service delivery · owner Jordan Lee · Service desk
+Autonomous service delivery: no funded project reaches level 4 by end of FY27. Estimated $253K over about 10 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Fund the path from level 1 to 3 for AI‑enabled service management (ITIL 5)
+$181K · 11 mo
+IT service management practices · owner Jordan Lee · Service desk
+IT service management practices: no funded project reaches level 3 by end of FY27. Estimated $181K over about 11 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Fund the path from level 2 to 3 for Continual improvement
+$103K · 5 mo
+IT service management practices · owner Nia Brooks
+IT service management practices: no funded project reaches level 3 by end of FY27. Estimated $103K over about 5 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+Fund the path from level 1 to 2 for Value and benefit realization
+$74K · 4 mo
+Technology business management · owner Maya Ortiz
+Technology business management: no funded project reaches level 2 by end of FY27. Estimated $74K over about 4 months.
+Claude Sonnet · 78%
+Create demand request
+Open capability
+All capabilities
+80 measurable capabilities across 10 models. Search, sort, group by model or objective, or filter by status.
+New capability
+Model
+All
+10
+Status
+All
+3
+Objective
+All
+17
+Group by 
+None
+Model
+Objective
+Export CSV
+CAPABILITY	MODEL	LEVEL NOW TO YEAR 1	FORECAST YEAR 1	STATUS	OBJECTIVE	OWNER
+Incident triage and routing
+Autonomous service delivery ›
+	Autonomous service delivery	
+2.5 to 3.5
+	3.5	On track	Resilient operations, Editor experience	
+Tom Becker
+
+Automatic classification and routing
+Autonomous service delivery › Incident triage and routing
+	Autonomous service delivery	
+3 to 4
+	4	On track	Editor experience	
+Tom Becker
+
+Priority and impact prediction
+Autonomous service delivery › Incident triage and routing
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Tom Becker
+
+Incident resolution by agents
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	4	On track	Resilient operations	
+Tom Becker
+
+Change risk assessment and approval
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Nia Brooks
+
+Request fulfillment
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	2	Behind	Editor experience	
+Sam Patel
+
+Event correlation and problem detection
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Sam Patel
+
+Knowledge capture and reuse
+Autonomous service delivery ›
+	Autonomous service delivery	
+3 to 4
+	4	Watch	Editor experience, Trusted AI	
+Jordan Lee
+
+Guardrails and human oversight for agents
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 4
+	3	Behind	Trusted AI, Resilient operations	
+Jordan Lee
+
+Access and identity provisioning
+Autonomous service delivery ›
+	Autonomous service delivery	
+3 to 3
+	3	On track	Resilient operations	
+Rina Okafor
+
+Objective to project link
+Project and delivery traceability ›
+	Project and delivery traceability	
+3 to 4
+	4	Watch	Modernize codification, Resilient operations, Contract discipline, Trusted AI, Editor experience	
+Maya Ortiz
+
+Requirement to task link
+Project and delivery traceability ›
+	Project and delivery traceability	
+2 to 3
+	3	On track	Modernize codification	
+Priya Shah
+
+Task to milestone and acceptance
+Project and delivery traceability ›
+	Project and delivery traceability	
+3 to 4
+	4	Watch	Modernize codification, Contract discipline	
+Priya Shah
+
+Invoice to milestone matching
+Project and delivery traceability ›
+	Project and delivery traceability	
+3 to 4
+	4	On track	Contract discipline	
+Avery Chen
+
+Earned value from task progress
+Project and delivery traceability ›
+	Project and delivery traceability	
+3 to 4
+	4	Watch	Modernize codification	
+Dev Rao
+
+Benefit realization tracking
+Project and delivery traceability ›
+	Project and delivery traceability	
+1 to 2
+	2	Watch	Modernize codification, Contract discipline	
+Maya Ortiz
+
+Service to project impact (CMDB link)
+Project and delivery traceability ›
+	Project and delivery traceability	
+2 to 3
+	2	Behind	Resilient operations	
+Sam Patel
+
+Contract obligation to work and cost
+Project and delivery traceability ›
+	Project and delivery traceability	
+2 to 3
+	3	On track	Contract discipline	
+Avery Chen
+
+Requirements management
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+2 to 3
+	3	On track	Modernize codification	
+Priya Shah
+
+Project planning and monitoring
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+3 to 3
+	3	On track	Modernize codification, Contract discipline	
+Priya Shah
+
+Risk management
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+3 to 4
+	3	Behind	Resilient operations	
+Maya Ortiz
+
+Configuration management
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+2 to 3
+	3	On track	Resilient operations	
+Sam Patel
+
+Measurement and analysis
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+2 to 3
+	2	Behind	Modernize codification	
+Dev Rao
+
+Supplier agreement management
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+2 to 3
+	3	On track	Contract discipline	
+Maya Ortiz
+
+Process and product quality assurance
+Process capability (CMMI style) ›
+	Process capability (CMMI style)	
+2 to 3
+	3	Watch	Modernize codification, Editor experience	
+Priya Shah
+
+Incident management
+IT service management practices ›
+	IT service management practices	
+3 to 4
+	4	On track	Resilient operations	
+Tom Becker
+
+
+81 of 81 rows
+Scroll for more · rows are drawn as you scroll
+Service maturity
+Each service takes the average of the capabilities mapped to it. The same number appears in the service catalog.
+Tier
+All
+2
+Export CSV
+SERVICE	TIER	MATURITY NOW (1 TO 5)	YEAR 1 TARGET	CAPABILITIES	OBJECTIVES
+Codification Platform
+Tier 1 · Priya Shah
+	Tier 1	2	3	27	Modernize standards publishing
+Codification Portal
+Tier 1 · Tom Becker
+	Tier 1	2	3	19	Reduce operating risk, Modernize standards publishing
+Search and indexing
+Tier 1 · Marco Ellis
+	Tier 1	2	3	6	Modernize standards publishing
+Contract Repository
+Tier 2 · Maya Ortiz
+	Tier 2	2	3	7	Protect revenue through contract discipline
+Lease subledger (ERP)
+Tier 2 · Avery Chen
+	Tier 2	3	4	2	Protect revenue through contract discipline
+Finance systems
+Tier 2 · Avery Chen
+	Tier 2	3	4	5	Protect revenue through contract discipline
+Identity (Entra ID)
+Tier 1 · Rina Okafor
+	Tier 1	3	3	6	Reduce operating risk
+Email and collaboration (M365)
+Tier 1 · Sam Patel
+	Tier 1	3	3	4	Reduce operating risk
+Data platform
+Tier 2 · Dev Rao
+	Tier 2	2	3	13	Modernize standards publishing
+Network and VPN
+Tier 1 · Sam Patel
+	Tier 1	3	3	4	Reduce operating risk
+Endpoint management (Intune)
+Tier 2 · Northwind Managed Services
+	Tier 2	3	3	3	Reduce operating risk
+Integration hub
+Tier 2 · Jordan Lee
+	Tier 2	2	3	2	Protect revenue through contract discipline
+Service desk
+Tier 2 · Tom Becker
+	Tier 2	2	3	14	Reduce operating risk
+Portfolio and project intake
+Tier 2 · Maya Ortiz
+	Tier 2	2	None	0	Modernize standards publishing
+AI platform and agents
+Tier 2 · Jordan Lee
+	Tier 2	2	None	0	Modernize standards publishing, Reduce operating risk
+Employee lifecycle
+Tier 2 · Nia Brooks
+	Tier 2	3	None	0	Reduce operating risk
+16 of 16 rows
+Scroll for more · rows are drawn as you scroll
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

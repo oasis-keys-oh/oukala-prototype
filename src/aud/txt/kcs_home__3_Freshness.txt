@@ -1,0 +1,111 @@
+KNOWLEDGE MANAGEMENT · KCS V6 · SOURCE, OUTPUT, AUTOMATION
+Knowledge that runs the work
+
+54 knowledge items feed answers and agents. 6 are ready to automate and 4 already run as agent skills, with a 89% success rate. 5 published items are stale, and 2 fixes were flagged by skill runs.
+
+ƒ Article reuse rate
+ƒ Automation readiness
+ƒ Agent skill success rate
+New knowledge item
+Agent skills
+Knowledge graph
+Why am I seeing this?
+ITEMS
+54
+42 published
+STALE
+5
+past 12 months
+QUALITY SCORE
+83
+target 85
+LINK RATE
+71%
+closed tickets with a link
+DEFLECTION
+31%
+of support searches
+SKILL SUCCESS
+89%
+433 runs
+Lifecycle
+Library
+KCS board
+Freshness
+Quality and usage
+Freshness
+9 of 13 published articles are inside their review window.
+ƒ Article freshness
+69%
+target at least 85%
+Published articles reviewed within 12 months and not past expiry ÷ Published articles
+5
+0 to 90
+2
+91 to 180
+2
+181 to 270
+0
+271 to 365
+4
+Over 365 or expired
+
+Per-article freshness score: 100 when reviewed in the last 90 days, falling in a straight line to 0 at 365 days, and 0 once the expiry date has passed. This feeds the quality score at 25%.
+
+If freshness slips
+Remediation attached to the metric.
+Knowledge Curator runs KCS-12: Nudge owners of stale articles and draft a refresh
+Drafts a refreshed version from the latest incidents and asks the owner to review. Owners decide; the agent never publishes.
+Nudge all 4 owners
+See knowledge gaps
+
+The oldest is Share a draft standard with a reviewer outside Meridian, 463 days since review. Its owner Maya Ortiz has not been nudged yet.
+
+Stale articles
+Published articles past 12 months since review or past expiry, oldest first.
+ARTICLE	DAYS SINCE REVIEW	EXPIRY	OWNER	USED LAST 90 DAYS	
+Share a draft standard with a reviewer outside Meridian
+KB0140 · M365
+	463	Jun 30, 2026 expired	Maya Ortiz	12 reuses	
+Nudge owner
+Refresh
+
+Fail over the Codification Portal to the secondary region (RB-031)
+KB0421 · Codification Portal
+	427	Aug 5, 2026 expired	Tom Becker	38 reuses	
+Nudge owner
+Refresh
+
+Monthly lease amortization close
+KB0312 · Lease subledger (ERP)
+	389	Sep 12, 2026 expired	Avery Chen	22 reuses	
+Nudge owner
+Refresh
+
+Request vendor access to the staging site
+KB0462 · Codification Portal
+	371	Sep 30, 2026 expired	Priya Shah	19 reuses	
+Nudge owner
+Refresh
+How knowledge flows from source to output to automation
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Capture
+Write it down while solving the ticket, with its source.
+AI AGENT
+Structure
+Fill the sections, add links to service, CI and process.
+APPROVAL GATE
+Review and publish
+A reviewer checks it. Publish needs a Publisher.
+AUTOMATIC
+Reuse
+Search, chat, agent assist and portal guidance cite it.
+PERSON
+Improve
+Flag it, fix it, reuse the fix.
+APPROVAL GATE
+Promote to a skill
+Procedural items with high readiness become agent skills.

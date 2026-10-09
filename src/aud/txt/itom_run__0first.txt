@@ -1,0 +1,128 @@
+RUNBOOKS AND AUTOMATION
+From alert to action, with guardrails
+
+7 automation rules connect alerts to 15 pre‑approved standard changes. A restart of the Lumen indexer, for example, is diagnosed by an AI agent and approved by Marco Ellis before it runs. Every run is a standard change record, so it is part of the change process, not around it.
+
+ƒ Automation rate
+ƒ Mean time to acknowledge (MTTA)
+New automation rule
+Standard change catalog
+ITIL 5
+SRE: SLOs and error budgets
+Automation rules
+Execution history
+Simulator
+Guardrails
+AUTOMATION RATE
+70%
+alerts with an agent or playbook handling them
+EXECUTIONS IN 7 DAYS
+29
+26 completed, 2 failed or rolled back
+ACTIVE RULES
+7
+3 agentic
+PRE-APPROVED STANDARD CHANGES
+15
+of 15 in the catalog
+KILL SWITCH
+Off
+Automation is allowed
+ƒ Automation rate
+ƒ Mean time to acknowledge (MTTA)
+How much is automated
+Each standard change has an automation level from 0 (manual SOP) to 4 (autonomous inside guardrails). Moving a runbook up a level needs evidence of success.
+Level 0 Manual
+0 of 15
+Level 1 Assisted
+0 of 15
+Level 2 Scripted
+3 of 15
+Level 3 Agentic with approval
+8 of 15
+Level 4 Autonomous
+4 of 15
+
+ITIL 5
+
+SRE: SLOs and error budgets
+
+What happens when an alert arrives
+Rules run in order. The first matching action rule stops the chain unless it says to continue.
+Alert fires
+Rules match
+Guardrails check
+Agent diagnoses (agentic)
+Approval if risk or policy needs it
+Standard change record
+Playbook runs with validation
+Rollback if validation fails
+Audit and metrics
+Automatic step
+AI agent step
+Approval gate
+Alert-to-action rules
+Highest priority first. Select a rule to see its conditions and guardrails, or use Simulator to replay an alert through all of them.
+New rule
+Workflow
+All
+2
+Risk
+All
+2
+State
+All
+2
+Export CSV
+ORDER▲	RULE	WORKFLOW	STANDARD CHANGE	AUTOMATION LEVEL	RISK	RUNS	SUCCESS	STATE
+1	Sev 1 and 2: collect diagnostics first
+AU1 · when Sev 2 or worse
+	Deterministic	SC-05 Run the service health check bundle	Level 4 Autonomous	Low	41	100%	On
+2	Indexer queue backlog: diagnose, propose a restart
+AU2 · when Queue depth · Sev 3 or worse · Search and indexing · Virtual machine
+	Agentic	SC-01 Restart the Lumen search indexer service	Level 3 Agentic with approval	Low	27	93%	On
+3	Database CPU: propose a scale up
+AU3 · when CPU · Sev 2 or worse · Database
+	Agentic	SC-02 Scale the SQL managed instance up one tier	Level 3 Agentic with approval	Medium	12	92%	On
+4	Disk above 80%: extend the volume
+AU4 · when Disk used · Sev 3 or worse · Virtual machine, Database, Storage
+	Deterministic	SC-04 Extend a data disk by 25%	Level 4 Autonomous	Medium	18	94%	On
+5	Portal errors: recycle the pool, then propose a node
+AU5 · when Error rate · Sev 2 or worse · Codification Portal, Codification Platform · Application, Load balancer
+	Deterministic	SC-03 Recycle the portal application pool and clear cache	Level 4 Autonomous	Low	63	97%	On
+6	Certificate near expiry: renew
+AU6 · when event · Sev 4 or worse · "certificate"
+	Deterministic	SC-07 Renew a managed TLS certificate	Level 4 Autonomous	Low	6	100%	On
+7	VPN flapping: propose a gateway failover
+AU7 · when Availability · Sev 2 or worse · Network and VPN · Network device
+	Agentic	SC-06 Fail over the VPN gateway pair	Level 3 Agentic with approval	Medium	9	89%	On
+8	Encryption check failures: quarantine devices
+AU8 · when event · Sev 4 or worse · Endpoint management (Intune) · "encryption"
+	Deterministic	SC-11 Quarantine a non-compliant device	Level 3 Agentic with approval	Low	31	100%	Off
+8 of 8 rows
+Scroll for more · rows are drawn as you scroll
+From alert to action
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Alert matches a rule
+Rules run in priority order.
+APPROVAL GATE
+Guardrails
+Pre-approved, blast radius, rate, freeze, error budget, rollback.
+AI AGENT
+Agent diagnoses
+Agentic workflows gather evidence and propose.
+APPROVAL GATE
+Approval
+A person approves when risk or policy needs it.
+AUTOMATIC
+Standard change record
+An auto-approved change is created.
+AUTOMATIC
+Run and validate
+Playbook steps, then validation; rollback on failure.
+AUTOMATIC
+Audit
+Every step and approval is logged.

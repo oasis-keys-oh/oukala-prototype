@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message+' '+(e.stack||'').split('\n').slice(1,3).join('|')));p.on('console',m=>{if(m.type()==='error')errs.push('C:'+m.text())});
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(700);
+const ev=(f)=>p.evaluate(f);
+const out=async(n,f)=>{try{console.log(n,JSON.stringify(await p.evaluate(f)))}catch(e){console.log(n,'ERR',e.message)}};
+await out('wiring',()=>FIN.wiring());
+await out('mm',()=>{const m=MODMAP.stats?MODMAP.stats():null;return m});
+await out('checks',()=>FIN.gateChecks('PR4','G1').map(c=>[c.ok,c.hard,c.label]));
+await out('checks2',()=>FIN.gateChecks('PR1','G3').map(c=>[c.ok,c.hard,c.label]));
+await out('board',()=>FIN.gateBoard.board());
+await out('splits',()=>FIN.splits());
+await out('ask',()=>{let r=[];['which color funds RUN-HOST','color headroom for XR-P','run the spend order for PR3-HW','what changes under ASU 2025-06'].forEach(q=>{let hit=false;ASKX.forEach(f=>{try{if(!hit&&f(q))hit=true}catch(e){r.push('ERR '+e.message)}});r.push(hit)});return r});
+await out('search',()=>searchIndex().filter(x=>x.g==='Finance').length);
+await out('work',()=>WORK.filter?0:0);
+await p.evaluate(()=>go('fin_gates'));
+await p.waitForTimeout(200);
+await out('tabs',()=>[...document.querySelectorAll('.screen .tabs button,.screen [role=tab]')].map(x=>x.textContent).slice(0,8));
+console.log('ERRS',errs.slice(0,10));await b.close()})();

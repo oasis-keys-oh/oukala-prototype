@@ -1,0 +1,2 @@
+const {chromium}=require("playwright");(async()=>{const b=await chromium.launch();const p=await b.newPage();await p.goto("file://"+process.argv[2]+"/full.html");await p.waitForTimeout(800);
+const r=await p.evaluate(()=>PLAT.entities().map(e=>e.id+":"+e.label+"["+e.fields.filter(f=>/loc|site|room|building/i.test(f.k)).map(f=>f.k).join(",")+"]").join("\n")+"\nNOTIF:"+MODMAP.modules.filter(m=>/notif|alert|chat/i.test(m.name+m.id)).map(m=>m.id+":"+m.name).join(",")+"\nDOMS:"+Object.keys(PLAT.DOM));console.log(r);await b.close()})()

@@ -1,0 +1,319 @@
+PORTFOLIO AND DELIVERY · CONTRACTS
+Every proposal and contract, line by line
+
+13 contracts hold $9.92M of commitments and $3.98M has been paid. Lumen's SOW-5 proposal has 12 of 41 lines off playbook, 4 of them with no standard term yet. 11 obligations fall due in 30 days and 2 are overdue, and notice to stop the LegacyDocs Inc. renewal must go out by Nov 1, 2026.
+
+ƒ Clause playbook coverage
+ƒ Obligation on-time rate
+ƒ Negotiation cycle time
+ƒ Contract leakage
+Analyze a document
+Request a change
+Contract Analyst Agent · 90%
+Dashboard and contracts
+Repository
+Analyzer
+Terms playbook
+Proposal vs contract
+Changes
+Obligations and calendar
+WORKING ON
+Lumen SOW-5: search indexer phase 2
+CLM-1002 · Lumen Data Partners · SOW · $348,000
+Vendor proposal ✓
+Executed contract
+Change contract
+LINES
+41
+in this document
+STANDARD
+29
+70.7% coverage
+VARIANCE
+8
+redline and fallback ready
+NEW TERMS
+4
+draft for legal to approve
+DECISIONS WAITING
+10
+5 reviews open
+Where this document stands
+41 lines: 29 standard, 8 variance, 4 new. 0 variances sit inside an approved fallback, so the AI can propose our position without legal. 0 high risk lines have no route yet.
+29
+8
+4
+Standard
+Variance
+New term, not in playbook
+ƒ Clause playbook coverage
+Contract Analyst Agent · 90%
+COBIT 2019
+Confirm 12 standard lines
+AI picks fallback for 0
+Send 0 high risk to legal
+Guardrails
+Who can do what in a contract review.
+AI reads, classifies, drafts redlines and suggests a route. It cannot accept a term, change a price or send anything to the vendor.
+Business owner confirms standard and low risk lines and picks a route.
+Meridian Legal must approve every high risk exception and every new clause.
+Signer is set by value under the delegation of authority ($348,000 needs CEO).
+Review queue
+Reviews in progress
+Negotiation
+Clause library
+Lines that need a decision
+Select a line to see the side by side redline, the explanation and the three routes.
+Off playbook (12)
+All lines (41)
+Position
+All
+3
+Route
+All
+4
+Risk
+All
+3
+Status
+All
+4
+Export CSV
+CLAUSE	TOPIC	POSITION	VENDOR ASK	AI RECOMMENDS	ROUTE	STATUS	RISK	CONFIDENCE
+§1.1	Deliverable Deliverable	Standard	Stated	Confirm standard	Not chosen	Proposed	Low	
+84%
+
+§1.2	Deliverable Deliverable	Standard	Due Dec 18, 2026	Confirm standard	Not chosen	Accepted	Low	
+95%
+
+§1.3	Outcome Outcome	Standard	Stated	Confirm standard	Not chosen	Proposed	Low	
+95%
+
+§2.1	Milestone Milestone	Standard	Due Jan 29, 2027	Confirm standard	Not chosen	Accepted	Low	
+90%
+
+§2.2	Milestone Milestone	Standard	Due Mar 12, 2027	Confirm standard	Not chosen	Proposed	Low	
+95%
+
+§2.3	Milestone Milestone	Standard	Due Apr 30, 2027	Confirm standard	Not chosen	Accepted	Low	
+93%
+
+§2.4	Milestone Milestone	Standard	Due Jun 25, 2027	Confirm standard	Not chosen	Proposed	Low	
+90%
+
+§3.1	Availability service level Service level	Variance	99.5% monthly	AI picks standard	AI picks standard	Agreed	Medium	
+91%
+
+§3.2	Severity 1 response time Service level	Standard	15 minutes	Confirm standard	Not chosen	Accepted	Medium	
+90%
+
+§3.3	Availability service level Service level	Variance	5% monthly	Shared review	AI picks standard	Agreed	Medium	
+94%
+
+§3.4	Measure or KPI Measure or KPI	Standard	90%	Confirm standard	Not chosen	Proposed	Low	
+93%
+
+§3.5	Measure or KPI Measure or KPI	Standard	400 ms	Confirm standard	Not chosen	Accepted	Low	
+93%
+
+§4.1	Price or rate card Price or rate card	Standard	$348,000	Confirm standard	Not chosen	Proposed	Medium	
+90%
+
+§4.2	Payment terms Payment or invoice term	Variance	Net 30	AI picks standard	AI picks standard	Negotiating	Medium	
+91%
+
+§4.3	Travel and expenses Price or rate card	Standard	Prior approval	Confirm standard	Not chosen	Accepted	Low	
+94%
+
+§4.4	Price increases and rate card Price or rate card	Standard	Rates fixed for the term	Confirm standard	Not chosen	Proposed	Medium	
+91%
+
+§5.1	Assumption Assumption	Standard	Due Jan 15, 2027	Confirm standard	Not chosen	Accepted	Low	
+94%
+
+§5.2	Assumption failure Assumption	Variance	Dates and fees move automatically	Shared review	Shared review	Negotiating	Medium	
+87%
+
+§5.3	Dependency Dependency	Standard	5 days	Confirm standard	Not chosen	Proposed	Low	
+92%
+
+§5.4	Dependency Dependency	Standard	Stated	Confirm standard	Not chosen	Accepted	Low	
+87%
+
+§6.1	Acceptance Deliverable	Standard	10 business days	Confirm standard	Not chosen	Proposed	High	
+93%
+
+§6.2	Acceptance Deliverable	Variance	Deemed acceptance	Legal review	Legal review	Negotiating	High	
+94%
+
+§6.3	Warranty period Warranty	Standard	90 days	Confirm standard	Not chosen	Accepted	Medium	
+91%
+
+§7.1	Ownership of deliverables Intellectual property	Standard	Meridian owns	Confirm standard	Not chosen	Agreed	High	
+94%
+
+
+41 of 41 rows
+Scroll for more · rows are drawn as you scroll
+Meridian standard terms library
+26 clauses with approved language, fallback positions and a risk rating. Legal owns each clause.
+New clause
+Category
+All
+6
+Risk
+All
+3
+Export CSV
+ID	CLAUSE	CATEGORY	RISK	APPROVED LANGUAGE	FALLBACK	LINES SEEN	VERSION	OWNER
+PB-PAY	Payment terms	Commercial	Medium	
+Meridian pays undisputed amounts within 45 days of receiving a correct invoice.
+	
+Net 30 is acceptable only with a 2 percent discount for payment within 10 days.
+	0	v1 Sep 6	Meridian Legal
+PB-ACC	Payment only after acceptance	Commercial	High	
+Milestone payments become due only after Meridian gives written acceptance of the deliverable. No advance payments are made.
+	
+A mobilization advance up to 5 percent is acceptable if it is secured by a credit against the final milestone.
+	0	v2 Aug 20	Meridian Legal
+PB-LOL	Limitation of liability	Legal	High	
+Each party's aggregate liability is limited to the fees paid or payable in the 12 months before the claim, with a 3x super-cap for data breach and no cap for IP indemnity, gross negligence or willful misconduct.
+	
+A 2x super-cap for data breach is acceptable. A cap below 12 months of fees is not.
+	0	v3 Aug 3	Meridian Legal
+PB-IND	IP infringement indemnity	Legal	High	
+The supplier will defend and indemnify Meridian against third-party claims that the deliverables or services infringe intellectual property rights, without a cap.
+	
+None. This clause is not negotiable.
+	0	v4 Jul 17	Meridian Legal
+PB-TFC	Termination rights	Legal	Medium	
+Meridian may terminate for convenience on 30 days written notice and pays only for accepted work. Either party may terminate for uncured material breach after 30 days.
+	
+60 days notice for convenience is acceptable on subscriptions with a prepaid term refund.
+	0	v1 Jun 30	Meridian Legal
+PB-REN	Renewal and auto-renewal	Commercial	High	
+The agreement renews only by a written order signed by Meridian. The supplier sends a renewal reminder at least 120 days before the term ends.
+	
+Automatic renewal is acceptable only if notice of non-renewal is 60 days or less and the supplier sends a reminder 120 days before.
+	0	v2 Jun 13	Meridian Legal
+PB-CAP	Price increases and rate card	Commercial	Medium	
+Rates are fixed for the term. Renewal price increases are capped at 3 percent a year or the consumer price index, whichever is lower.
+	
+A 5 percent cap is acceptable with 90 days written notice.
+	0	v3 May 27	Meridian Legal
+PB-SLA	Availability service level	Service levels	Medium	
+The service is available at least 99.9 percent of each month, measured by Meridian monitoring, excluding agreed maintenance.
+	
+99.5 percent is acceptable for Tier 2 services only.
+	0	v4 May 10	Meridian Legal
+PB-SLC	Service credits	Service levels	Medium	
+For each month below the availability target the supplier credits at least 10 percent of the monthly fee, rising to 25 percent below 99 percent. Credits are not the exclusive remedy.
+	
+A 7.5 percent credit is acceptable if repeated misses allow termination.
+	0	v1 Apr 23	Meridian Legal
+PB-RSP	Severity 1 response time	Service levels	Medium	
+The supplier responds to a Severity 1 incident within 30 minutes, around the clock.
+	
+60 minutes is acceptable outside Tier 1 services.
+	0	v2 Apr 6	Meridian Legal
+PB-DPA	Breach notification	Data and security	High	
+The supplier notifies Meridian of a security incident affecting Meridian data within 48 hours of discovery.
+	
+72 hours is acceptable where the supplier also gives hourly updates for Severity 1 events.
+	0	v3 Mar 20	Meridian Legal
+PB-DPI	Processing on instructions	Data and security	High	
+The supplier processes personal data only on Meridian's documented instructions under the data processing addendum.
+	
+None.
+	0	v4 Mar 3	Meridian Legal
+PB-SUB	Subcontractors and subprocessors	Data and security	Medium	
+The supplier may engage subcontractors or subprocessors only with Meridian's prior written consent and remains responsible for them.
+	
+Notice of 30 days with a right to object is acceptable for cloud infrastructure subprocessors.
+	0	v1 Sep 2	Meridian Legal
+PB-SEC	Security certifications	Data and security	Medium	
+The supplier maintains a SOC 2 Type II report or ISO/IEC 27001 certification, provides it annually, encrypts data in transit and at rest, and runs an annual penetration test.
+	
+A SOC 2 Type I report is acceptable for one year for a new supplier.
+	0	v2 Aug 16	Meridian Legal
+PB-RES	Data residency	Data and security	Medium	
+Meridian data is stored and processed in the United States.
+	
+EU regions are acceptable for backup only.
+	0	v3 Jul 30	Meridian Legal
+PB-IPO	Ownership of deliverables	Intellectual property	High	
+Meridian owns all deliverables and work product created under the agreement, and the supplier assigns all rights to Meridian on payment.
+	
+A license is acceptable for the supplier's own tools, never for custom deliverables.
+	0	v4 Jul 13	Meridian Legal
+PB-BIP	Background IP license	Intellectual property	Medium	
+The supplier grants Meridian a perpetual, royalty-free license to supplier tools embedded in the deliverables.
+	
+A term license that matches the life of the service is acceptable for SaaS.
+	0	v1 Jun 26	Meridian Legal
+PB-WAR	Warranty period	Legal	Medium	
+The supplier warrants that deliverables conform to the specification for 90 days after acceptance and corrects defects at no charge.
+	
+60 days is acceptable for low-risk deliverables.
+	0	v2 Jun 9	Meridian Legal
+PB-ACP	Acceptance	Delivery	High	
+Meridian has 10 business days to review each deliverable against agreed criteria. Silence is never acceptance.
+	
+A 5 business day reminder before a deliverable is escalated is acceptable.
+	0	v3 May 23	Meridian Legal
+PB-CHG	Change control	Delivery	Medium	
+Changes take effect only through a written change order signed by both parties before work begins.
+	
+None.
+	0	v4 May 6	Meridian Legal
+PB-EXP	Travel and expenses	Commercial	Low	
+Travel and expenses are reimbursed at cost only with Meridian's prior written approval and within a cap.
+	
+A pre-approved annual travel budget is acceptable.
+	0	v1 Apr 19	Meridian Legal
+PB-KEY	Key personnel	Delivery	Medium	
+Named key personnel are assigned for the term and are replaced only with Meridian's written consent and a 10 business day handover.
+	
+Replacement with equal skills on 10 days notice is acceptable.
+	0	v2 Apr 2	Meridian Legal
+PB-ASM	Assumption failure	Delivery	Medium	
+If an assumption proves false, the supplier raises a change request within 5 business days. Dates and fees do not change automatically.
+	
+Dates may slip day for day for a documented customer delay of more than 5 business days.
+	0	v3 Mar 16	Meridian Legal
+PB-CONF	Confidentiality	Legal	Low	
+Confidentiality is mutual for five years after the term, and indefinitely for trade secrets and personal data.
+	
+Three years for non-sensitive material.
+	0	v4 Feb 27	Meridian Legal
+
+26 of 26 rows
+Scroll for more · rows are drawn as you scroll
+From vendor proposal to managed contract
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to WorldCC contracting practice, COBIT 2019, PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Intake
+A vendor proposal, SOW or terms arrive by upload, email or request. The original file and version are stored.
+AI AGENT
+AI analysis
+The Contract Analyst Agent splits the text into typed lines with owners, dates, measures and confidence.
+AI AGENT
+Playbook match
+Each line is matched to a standard clause, a variance with a redline, or flagged as new for legal.
+PERSON
+Legal or shared review
+Legal reviews exceptions. Shared review adds the vendor and business owner in one thread with a deadline.
+APPROVAL GATE
+Approval
+The signer is chosen by contract value under the delegation of authority. AI cannot accept terms.
+AUTOMATIC
+Execution
+The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.
+AI AGENT
+Obligations tracking
+Due dates, renewal notices and acceptance checks run daily. Invoices wait for accepted work.
+APPROVAL GATE
+Change control
+Any change to schedule, scope, price, SLA or term is a change request with impact analysis and the right approver.

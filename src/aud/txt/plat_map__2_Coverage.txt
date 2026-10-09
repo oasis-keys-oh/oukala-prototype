@@ -1,0 +1,72 @@
+MASTER PROCESS FLOW
+The whole system, end to end
+
+From strategy to demand, projects, build, change and release, deploy, operate, service performance, cost and maturity, and back to strategy. 45% of defined steps are automated and 0 of 14 areas still need a process definition.
+
+ƒ Process automation level
+ƒ Process steps with an SLA
+ITIL 5
+PMBOK
+SAFe
+TBM Taxonomy and ATUM
+Process flow
+Handoffs
+Coverage
+PROCESS DEFINITIONS
+65
+on 91 screens
+WORKFLOWS
+20
+in the workflow designer
+SCREENS WITHOUT A DEFINITION
+12
+candidates to define
+Coverage of process definitions and workflows
+Every screen should answer who does what, how fast, and what standard it follows. Gaps are listed first.
+Screens without a process definition
+12
+Product log
+Screen
+log
+Budgets overall
+Screen
+bud_over
+Financial model
+Screen
+bud_model
+Vendors and contracts
+Screen
+bud_ven
+Benefits realization
+Screen
+bud_ben
+Delegation of authority
+Screen
+bud_doa
+Process models (BPMN)
+Screen
+flw_bpmn
+Agentic workflows
+Screen
+flw_agent
+Show 4 more of 4 remaining
+Process definitions
+65
+Workflows
+20
+How the master map stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, PMBOK, SAFe, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+PERSON
+Process owners define their steps
+Each screen registers who does what and how fast.
+AUTOMATIC
+The map reads the definitions
+Automation and SLA coverage are calculated from the registered steps, not typed in.
+AUTOMATIC
+Gaps are flagged
+Areas without a definition show with a dashed border.
+APPROVAL GATE
+Quarterly review
+The CIO and process owners pick the next step to automate.

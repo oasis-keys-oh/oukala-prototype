@@ -1,0 +1,118 @@
+PROMPT LIBRARY · GOVERNED PROMPTS
+Every prompt has an owner, a version and a test
+
+10 prompts are governed here, 7 in production and 1 waiting on approval. The cost-cutting rewrite of the knowledge answer prompt (v4) fails its regression suite, so it cannot reach production.
+
+SELECTED PROMPT
+P101 · KB answer with citations
+P102 · Incident to article drafter
+P103 · Meeting decision extractor
+P104 · Invoice match explainer
+P105 · Service desk triage classifier
+P106 · Change risk summarizer
+P107 · Executive brief writer
+P108 · Query rewriter
+P109 · Second-model judge rubric
+P110 · Legacy FAQ answerer
+ƒ Answer groundedness
+ƒ Judge disagreement rate
+Why am I seeing this?
+In production
+7
+prompts live now
+Awaiting approval
+1
+cannot ship until approved
+High risk
+3
+need Security and Legal
+Average pass rate
+92%
+production versions
+Library
+Versions and diff
+Editor and test
+Approval
+A/B compare
+PROMPT	STATUS	RISK	VERSION	MODEL	OWNER	VARIABLES	USED BY
+KB answer with citations
+P101 · Answers staff questions from retrieved article chunks, with numbered c...
+	Production	High risk	v3 v4 candidate	Claude Sonnet	Maya Ortiz	3	Knowledge Curator, Ask the knowledge base +1
+Incident to article drafter
+P102 · Turns a closed incident or meeting transcript into a structured draft ...
+	Production	Medium risk	v2	Claude Sonnet	Nia Brooks	3	Knowledge Curator, Article editor
+Meeting decision extractor
+P103 · Finds decisions, actions and risks in a transcript and links each to t...
+	Production	Medium risk	v3	Claude Sonnet	Priya Shah	2	First Officer
+Invoice match explainer
+P104 · Explains in plain language why an invoice passed or failed the six che...
+	In approval	High risk	v2 v3 candidate	GPT (council)	Avery Chen	3	Invoice Advisor
+Service desk triage classifier
+P105 · Classifies a new ticket by service, priority and category and suggests...
+	Production	Medium risk	v2 v3 candidate	Claude Haiku	Tom Becker	2	Ops Agent, Service desk
+Change risk summarizer
+P106 · Summarizes a change request, its blast radius and the nearest freeze w...
+	Draft	Medium risk	none v1 candidate	Claude Sonnet	Nia Brooks	2	First Officer
+Executive brief writer
+P107 · Writes the weekly executive brief in plain English from approved metri...
+	Production	Low risk	v2	Claude Sonnet	Maya Ortiz	2	Personal assistant
+Query rewriter
+P108 · Rewrites a user question into a clear search query before retrieval an...
+	Production	Low risk	v1	Claude Haiku	Sam Patel	1	Ask the knowledge base
+Second-model judge rubric
+P109 · Scores another model's answer for correctness, groundedness and safety...
+	Production	High risk	v2	GPT (council)	Jordan Lee	3	Test Agent, AI test management
+Legacy FAQ answerer
+P110 · Replaced by P101. Kept for audit.
+	Retired	Low risk	none	Claude Haiku	Sam Patel	1	nothing
+Prompts, agent skills and guardrails
+Every prompt shows its production version, the guardrails it must keep, the agent skills that use it and its latest evaluation score. A prompt change re-runs the evaluation before it can reach a skill.
+ƒ Answer groundedness
+NIST CSF 2.0
+PROMPT	STATUS AND RISK	VERSION	GUARDRAILS	AGENT SKILLS	EVALUATION
+KB answer with citations
+P101 · Claude Sonnet · Maya Ortiz
+	Production High risk	v3 v4 candidate	Cites only retrieved chunks Refuses when evidence is missing Respects the viewer's audience	SK-101 SK-103 SK-104	94.5 pass, grounded, safe
+Incident to article drafter
+P102 · Claude Sonnet · Nia Brooks
+	Production Medium risk	v2	Draft only, never publishes Quotes the source line for each section	Used by Knowledge Curator, Article editor	92.4 pass, grounded, safe
+Meeting decision extractor
+P103 · Claude Sonnet · Priya Shah
+	Production Medium risk	v3	Extracts, never decides Flags low confidence	SK-101 SK-103 SK-104	93.7 pass, grounded, safe
+Invoice match explainer
+P104 · GPT (council) · Avery Chen
+	In approval High risk	v2 v3 candidate	No personal data in output Plain language only	Used by Invoice Advisor	93.2 pass, grounded, safe
+Service desk triage classifier
+P105 · Claude Haiku · Tom Becker
+	Production Medium risk	v2 v3 candidate	Suggests, a person confirms	Used by Ops Agent, Service desk	93.7 pass, grounded, safe
+Change risk summarizer
+P106 · Claude Sonnet · Nia Brooks
+	Draft Medium risk	none v1 candidate	Summary only, no approvals	SK-101 SK-103 SK-104	not evaluated
+Executive brief writer
+P107 · Claude Sonnet · Maya Ortiz
+	Production Low risk	v2	Human review before use Logged to the AI audit trail	Used by Personal assistant	95.6 pass, grounded, safe
+Query rewriter
+P108 · Claude Haiku · Sam Patel
+	Production Low risk	v1	Human review before use Logged to the AI audit trail	Used by Ask the knowledge base	96.7 pass, grounded, safe
+Second-model judge rubric
+P109 · GPT (council) · Jordan Lee
+	Production High risk	v2	Human review before use Logged to the AI audit trail	Used by Test Agent, AI test management	93.2 pass, grounded, safe
+Legacy FAQ answerer
+P110 · Claude Haiku · Sam Patel
+	Retired Low risk	none	Human review before use Logged to the AI audit trail	Used by	not evaluated
+How a prompt reaches production
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to NIST CSF 2.0, ISO/IEC 27001.
+Add a step
+Open in Workflow designer
+PERSON
+Write a version
+Owner edits the prompt and its variables.
+AI AGENT
+Evaluate
+Regression suite and judge model.
+APPROVAL GATE
+Gate
+A candidate must not regress. High risk needs Security and Legal.
+AUTOMATIC
+Promote
+Production version changes, skills pick it up.

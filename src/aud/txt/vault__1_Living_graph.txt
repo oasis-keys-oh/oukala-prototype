@@ -1,0 +1,55 @@
+KNOWLEDGE GRAPH · LIVING GRAPH AND VAULT
+See how everything we know connects
+
+The knowledge graph joins 54 knowledge items to 16 services, 162 configuration items, 10 agent skills, people, projects and incidents through 798 relationships. Pick any record and walk its relationships to see what it reaches, or find the path between two records.
+
+ƒ Graph link coverage
+ƒ Service knowledge coverage
+ƒ Ontology completeness
+Try an impact walk
+Knowledge lifecycle
+Why am I seeing this?
+Overview
+Living graph
+GAAP vault notes
+
+Knowledge, services, configuration items, processes, projects, people, agent skills, workflows, incidents, prompts and gaps in one graph. Explore by clicking; Find path between any two records; Dot-walk impact to follow relationships step by step and see who and what is reached. Big graphs open as groups and show only a neighborhood when you select something, so 315 nodes stay fast.
+
+Explore
+Find path
+Dot-walk impact
+1
+2
+3
++
+−
+Fit
+Overview
+All: 315 nodes shown of 315
+Configuration item
+162
+Knowledge item
+54
+Workflow
+20
+Service
+16
+Person or agent
+13
+Process
+12
+Agent skill
+10
+Prompt
+10
+Incident
+8
+Knowledge gap
+6
+Project
+4
+Gap or stub
+At risk
+Pick a node
+Select a dot or search. You will see its properties, what it links to, and who links back.
+The CMDB uses the same engine: GRAPHX.render(el,config).

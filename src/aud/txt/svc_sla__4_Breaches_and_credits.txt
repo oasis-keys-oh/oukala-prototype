@@ -1,0 +1,193 @@
+SERVICE MANAGEMENT · SLAS, OLAS AND XLAS
+Are we keeping our promises, and does every process have one?
+
+91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at risk right now and 47 have breached. Only 72.4% of the agreements our processes call for exist, with 50 processes or services uncovered.
+
+ƒ Agreement attainment
+ƒ Agreement coverage of processes
+ƒ Clocks at risk
+ƒ Experience score
+ITIL 5
+Experience level agreements
+New agreement
+Open the designer
+Dashboard and agreements
+Designer
+Coverage by process
+Clock simulator
+Breaches and credits
+Experience (XLA)
+BREACHES, LAST 30 DAYS
+111
+across 19 agreements
+CLOCKS AT RISK
+6
+75% or more of target used
+LARGEST CAUSE
+Sent to the wrong group first
+44 misses
+VENDOR CREDITS EARNED
+$4,000
+2 contracts
+Hand over an at-risk clock
+Drag a clock onto a person. The list on the right is ranked by skills, availability and load.
+ƒ Clocks at risk
+INC0004417
+Incident P2: restore service · Contract Repository
+88%
+INC0004423
+Incident P1: restore service · Codification Platform
+85%
+INC0004421
+Network team: resolve its P2 incidents · Network and VPN
+83%
+INC004310
+Network team: resolve its P2 incidents · Identity (Entra ID)
+76%
+LUM-88231
+Lumen: Severity 1 restore · Search and indexing
+75%
+LUM-88213
+Lumen: index rebuild turnaround · Search and indexing
+75%
+Best available
+Jordan Lee
+Working now, until 17:00 · On the rota for this service
+67
+Sam Patel
+Working now, until 17:00 · On the rota for this service
+67
+Maya Ortiz
+Working now, until 15:00 · On the rota for this service
+61
+C
+Ravi Menon
+Working now, until 18:00 · On the rota for this service
+59
+Rina Kovacs
+Working now, until 15:00 · Load 15%
+58
+Leah Moss
+Working now, until 17:00 · Load 20%
+57
+Recommended next steps
+Drafted from the reasons on the breaches below.
+Service Level Agent · 84%
+Sent to the wrong group first is behind 44 of 111 misses (40%).
+
+Add a routing rule so the catalog class and CI route to the owning group
+
+Open auto-assignment
+Service Level Agent · 78%
+Waiting on a vendor is next with 19 misses.
+
+Raise the open vendor tickets at the next service review and claim credits where the contract allows
+
+See service credits
+Service Level Agent · 88%
+6 clocks are at 75% or more of target.
+
+Hand the oldest to the best available responder before they breach. Drag a clock onto a person above.
+
+Service Level Agent · 90%
+2 vendor credits are earned and not yet claimed, $4,000 in total.
+
+Claim them with the evidence from the clock history.
+
+Claim all
+Why agreements are missed
+Reasons recorded on breached clocks, largest first. Select a reason to see the records and tag more.
+All types
+SLA
+OLA
+UC
+Sent to the wrong group first
+44
+40% cumulative
+Waiting on a vendor
+19
+57% cumulative
+Short staffed at the peak
+12
+68% cumulative
+Dependency was down
+10
+77% cumulative
+Request was unclear
+9
+85% cumulative
+No runbook for this case
+9
+93% cumulative
+Approval delay
+5
+97% cumulative
+No reason recorded
+3
+100% cumulative
+Number of breaches with this reason
+Vendor and provider service credits
+Credits are worked out from the contract clause attached to each underpinning contract: the monthly fee, the rate per miss or per point of shortfall, and the cap.
+ƒ Vendor credits due
+VENDOR AND CLAUSE	MONTHLY FEE	HOW IT IS WORKED OUT	CREDIT	AMOUNT	
+
+Lumen
+Schedule C, clause 7.2
+	$38,000	1 missed in 30 days at 5% each, capped at 15%	5%	$1,900	Claim
+
+Lumen
+Schedule C, clause 7.5
+	$38,000	0 missed in 30 days at 0% each, capped at 0%	0%	$0	No credit
+
+Northwind Managed Services
+Master services agreement, Schedule 4 (service levels)
+	$21,000	Result 63.3% against goal 95%: 31.7 points short, 2% per point, capped at 10%	10%	$2,100	Claim
+
+Contoso Cloud Operations
+Order form 2, service level exhibit
+	$14,500	Result 100% against goal 98%: 0 points short, 3% per point, capped at 12%	0%	$0	No credit
+
+Contract lines are entered here until the Contract analyzer shares its lines. Providers with an MSP (managed service provider) clause are measured against their goal; others per missed clock.
+
+Every breach in the last 30 days
+111 clocks. Select one to replay its clock.
+Type
+All
+3
+Service
+All
+16
+Reason
+All
+8
+Export CSV
+RECORD	AGREEMENT	TYPE	SERVICE	ELAPSED OF TARGET	REASON	OPENED
+INC004306	Incident P1: restore service	SLA	Lease subledger (ERP)	4.7 h of 4 h	Sent to the wrong group first	Oct 5
+INC004421	Incident P1: restore service	SLA	Endpoint management (Intune)	8.3 h of 4 h	Dependency was down	Sep 21
+INC004494	Incident P1: restore service	SLA	Integration hub	5.7 h of 4 h	Approval delay	Sep 25
+INC0004426	Incident P1: first response	SLA	Search and indexing	25 min of 15 min	Waiting on a vendor	Oct 6
+INC004546	Incident P1: first response	SLA	Portfolio and project intake	16 min of 15 min	Request was unclear	Sep 7
+INC004418	Incident P2: restore service	SLA	Integration hub	9 h of 8 h	Waiting on a vendor	Sep 28
+INC004486	Incident P2: restore service	SLA	Email and collaboration (M365)	8.1 h of 8 h	No runbook for this case	Sep 17
+INC004549	Incident P2: restore service	SLA	Codification Platform	9 h of 8 h	No runbook for this case	Sep 23
+INC004321	Incident P3 and P4: restore service	SLA	Portfolio and project intake	45.9 h of 27 h	Sent to the wrong group first	Sep 25
+INC004341	Incident P3 and P4: restore service	SLA	Codification Platform	36 h of 27 h	Waiting on a vendor	Sep 27
+INC004414	Incident P3 and P4: restore service	SLA	Finance systems	2.3 days of 27 h	Waiting on a vendor	Sep 7
+INC004452	Incident P3 and P4: restore service	SLA	Data platform	38.8 h of 27 h	Approval delay	Sep 21
+INC004472	Incident P3 and P4: restore service	SLA	Codification Platform	27.2 h of 27 h	Request was unclear	Sep 7
+INC004539	Incident P3 and P4: restore service	SLA	Codification Platform	32.9 h of 27 h	Sent to the wrong group first	Sep 21
+RITM0010539	Standard request: fulfill	SLA	Search and indexing	2.1 days of 45 h	Waiting on a vendor	Sep 10
+RITM0010342	Access request: provision	SLA	Identity (Entra ID)	10.1 h of 9 h	Sent to the wrong group first	Oct 1
+RITM0010379	Access request: provision	SLA	Contract Repository	9.9 h of 9 h	Approval delay	Sep 21
+RITM0010386	Report request: first draft	SLA	Employee lifecycle	5.3 days of 3.8 days	Waiting on a vendor	Aug 21
+INC004366	Resolver groups accept an assigned incident	OLA	Codification Portal	3.3 h of 3 h	Sent to the wrong group first	Sep 18
+INC004405	Resolver groups accept an assigned incident	OLA	Endpoint management (Intune)	3.5 h of 3 h	Waiting on a vendor	Sep 10
+INC004414	Resolver groups accept an assigned incident	OLA	Finance systems	7.2 h of 3 h	Waiting on a vendor	Sep 7
+INC004464	Resolver groups accept an assigned incident	OLA	Network and VPN	5 h of 3 h	Waiting on a vendor	Sep 28
+INC004470	Resolver groups accept an assigned incident	OLA	Contract Repository	3.5 h of 3 h	No runbook for this case	Sep 21
+INC004492	Resolver groups accept an assigned incident	OLA	Email and collaboration (M365)	4.4 h of 3 h	Sent to the wrong group first	Sep 14
+INC004507	Resolver groups accept an assigned incident	OLA	Employee lifecycle	3.8 h of 3 h	Dependency was down	Sep 25
+INC004511	Resolver groups accept an assigned incident	OLA	Codification Platform	3 h of 3 h	Waiting on a vendor	Sep 14
+
+111 of 111 rows
+Scroll for more · rows are drawn as you scroll

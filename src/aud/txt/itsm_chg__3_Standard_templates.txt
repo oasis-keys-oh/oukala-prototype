@@ -1,0 +1,111 @@
+SERVICE MANAGEMENT · CHANGES
+Change safely, on a calendar everyone trusts
+
+3 changes are scheduled in the next 7 days and 1 waits for approval. 1 collide on the same CI (CHG0314 and CHG0315), and 1 sits inside a freeze window. The change failure rate is 16.7% against a 12% target. Approvers come from your 11 approval policies.
+
+Request change
+ƒ Change failure rate
+ƒ Approval turnaround
+ITIL 5
+DORA metrics
+Claude Sonnet · 82%
+Overview
+Calendar
+CAB and approvals
+Standard templates
+Approval policies
+Risk and DORA
+5 approved templates cover the routine changes. Using one needs no CAB vote, only a calendar slot (policy AP1). ITIL 5
+New template
+TPL01
+Approved
+Monthly OS patching (Windows and Linux)
+
+Patch set released by the vendor and approved by security. Off-hours window.
+
+Codification Portal
+98% success · 24 runs
+Monthly · 4 h
+Use template
+TPL02
+Approved
+Add or remove a user from a privileged group
+
+Approved request ticket attached.
+
+Identity (Entra ID)
+100% success · 61 runs
+Weekly · 15 min
+Use template
+TPL03
+Approved
+Update a conditional access named location
+
+Report-only review shows no unexpected blocks.
+
+Identity (Entra ID)
+100% success · 9 runs
+Quarterly · 1 h
+Use template
+TPL04
+Approved
+Renew a TLS certificate on the web tier
+
+Certificate expires in under 30 days.
+
+Codification Portal
+100% success · 6 runs
+Yearly · 1 h
+Use template
+TPL05
+Under review
+Add one web node within the approved tier
+
+Within the approved hosting tier and budget.
+
+Codification Portal
+94% success · 17 runs
+As needed · 45 min
+Use template
+TPL06
+Approved
+Rotate a service account secret in Key Vault
+
+Secret older than 90 days.
+
+Network and VPN
+96% success · 22 runs
+Quarterly · 30 min
+Use template
+Templates Claude suggests
+Normal changes that keep repeating without trouble
+Change Risk Advisor · 80%
+Scale Azure SQL up and down for a load test
+3 Normal changes in 90 days, all successful, median risk 14
+Draft template
+Change Risk Advisor · 76%
+Deploy a minor search index schema update
+4 Normal changes in 90 days, all successful, median risk 11
+Draft template
+Change enablement process (ITIL 5 Transition)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Request and assess
+Describe the change, the service and CIs, plans and the risk questionnaire.
+AUTOMATIC
+Check conflicts
+Collision on the same CI and freeze windows are checked live.
+AUTOMATIC
+Route approvals
+The approval policies decide who approves, in what order, with what quorum.
+APPROVAL GATE
+Approve
+Policy picks the approvers. Standard changes from a template need no vote.
+PERSON
+Schedule and implement
+Calendar slot, implementation by the team, backout ready.
+PERSON
+Review
+Outcome feeds the change failure rate. Lessons go to the template or policy.

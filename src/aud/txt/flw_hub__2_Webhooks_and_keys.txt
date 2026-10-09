@@ -1,0 +1,53 @@
+AUTOMATION · INTEGRATION HUB
+Every connection, healthy or not
+
+13 connectors: 9 healthy, 2 degraded, 1 failing, 1 paused. SAP ERP (Lease subledger) has failed since its certificate expired, and 6 events wait in the dead-letter queue, including the Lumen payment hold.
+
+ƒ Integration failure rate
+Add connector
+Register MCP server
+Connectors
+13
+9 healthy
+Need attention
+3
+SharePoint, Workday, SAP
+Failure rate
+2.5%
+failed ÷ total calls, 24 h
+Dead letters
+9
+waiting for replay
+Connectors
+MCP servers
+Webhooks and keys
+Retries and dead letters
+Webhooks
+Inbound endpoints are signed; outbound ones retry with backoff
+Create webhook
+NAME	DIRECTION	EVENT	SIGNATURE	LAST DELIVERY	SUCCESS	STATUS
+Azure DevOps work item updated
+https://hooks.oukala.example/in/ado/9f3c1a
+	Inbound	workitem.updated	HMAC-SHA256	6 min ago	99.2%	Healthy
+DocuSign envelope completed
+https://hooks.oukala.example/in/dsig/22be90
+	Inbound	envelope.completed	HMAC-SHA256	1 h ago	100%	Healthy
+Approval decided to ERP
+https://erp.meridian.example/odata/approvals
+	Outbound	approval.decided	mTLS	3 h ago	0%	Failing
+Incident opened to Teams
+https://graph.microsoft.com/v1.0/teams/.../messages
+	Outbound	incident.created	OAuth 2.0	4 min ago	99.5%	Healthy
+API keys
+Service accounts with only the scopes they need
+Create API key
+NAME	KEY	SCOPES	LAST USED	EXPIRES	OWNER	
+Power BI refresher
+Created Aug 12 · 60/min
+	okl_live_7Qa…c41e	metrics:read	15 min ago	Feb 12, 2027	Analytics team	Rotate Revoke
+Planner import script
+Created Jun 3 · 120/min
+	okl_live_Xm3…02bd	records:read records:write	2 days ago	Dec 3, 2026	Dev Rao	Rotate Revoke
+Legacy ServiceNow forwarder
+Created Mar 20 · 300/min
+	okl_live_Lp9…aa17	tickets:write	3 min ago	Oct 20, 2026 14 days	Tom Becker	Rotate Revoke

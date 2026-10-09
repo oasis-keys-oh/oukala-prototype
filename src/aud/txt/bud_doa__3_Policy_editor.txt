@@ -1,0 +1,72 @@
+DELEGATION OF AUTHORITY
+Anything up to $100,000 you can approve, and 3 of 6 segregation checks fail
+
+Six tiers decide who approves a commitment, from budget owners up to $25,000, the CIO up to $100,000, the CFO up to $250,000, the CEO up to $1,000,000, and the Board finance committee above that. Failing now: creator is not the approver; approver is inside their authority; no split purchases. PO-77231 was raised and approved by the same person for $36,000, above a budget owner's $10,000 limit.
+
+Who approves this?
+Why am I seeing this?
+Claude Sonnet · 95%
+Approval matrix
+Who approves this?
+Segregation of duties
+Policy editor
+Approval tiers
+Edit a tier to change who approves or the limit. Limits must stay in ascending order. Every change is versioned and audited.
+TIER	UP TO	APPROVER	
+T1	$10,000	Budget owner	Edit tier
+T2	$25,000	Portfolio lead	Edit tier
+T3	$100,000	CIO	Edit tier
+T4	$250,000	CFO	Edit tier
+T5	$1,000,000	CEO	Edit tier
+T6	Any amount	Board finance committee	Edit tier
+Review rules by category
+Extra reviews that must finish before the approver signs.
+Add a review rule
+CATEGORY	REVIEW	FROM AMOUNT	WHY	
+Vendor services	Procurement	$25,000	Three competitive quotes are required from $25,000.	
+Edit
+Remove
+
+Vendor services	Legal	$50,000	Contract terms and liability need review from $50,000.	
+Edit
+Remove
+
+Cloud	FinOps and Architecture	$25,000	Cloud commitments need a sizing and reservation review from $25,000.	
+Edit
+Remove
+
+Licences	Security and Privacy	$10,000	Software that touches data needs a security and privacy review from $10,000.	
+Edit
+Remove
+
+Hardware	Architecture	$25,000	Hardware from $25,000 must fit the target architecture.	
+Edit
+Remove
+
+Labor	HR	$25,000	Contractor engagements from $25,000 need an HR classification check.	
+Edit
+Remove
+
+Reserve release	Controller	$0	The Controller posts every reserve ledger entry.	
+Edit
+Remove
+
+Budget transfer	Both budget owners	$0	A transfer needs the owners of the giving and receiving budgets.	
+Edit
+Remove
+
+Contract renewal	Procurement	$0	Every renewal is benchmarked against market price first.	
+Edit
+Remove
+
+Contract renewal	Legal	$50,000	Renewals from $50,000 get a terms review.	
+Edit
+Remove
+Policy history
+Each version, who approved it and what changed.
+v2
+Jul 1, 2026 · CFO
+Raised tier T3 from $75,000 to $100,000 for the CIO and aligned reserve releases to the same tiers.
+v1
+Jul 1, 2025 · Board finance committee
+First delegation of authority for FY26.

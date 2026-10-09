@@ -1,0 +1,166 @@
+AUTOMATION · ASSESSMENTS
+Questions that score a risk, kept apart from the decision
+
+7 assessments are complete and average 68 out of 100. 33% of required gates passed first time, 5 are still open and 1 are overdue. An assessment is a form with weights and a score. It never approves anything. Attach it to an approval or a workflow step as a required gate that blocks, or as an advisory input that an approver may override with a reason.
+
+ƒ Assessment gate pass rate
+ƒ Approver override rate
+NIST CSF 2.0
+ISO/IEC 27001
+Assign an assessment
+New assessment type
+Completed
+7
+of 12 in the last 90 days
+Average score
+68
+Σ weighted answers ÷ Σ weights, 0 to 100
+Gate pass rate
+33%
+Σ gates passed ÷ gates completed
+Advisories overridden
+0
+approver decided against the score
+Results
+Builder
+Where they are used
+Results by risk band
+Each bar is 100% of the completed assessments of that type.
+ƒ Assessment gate pass rate
+Security assessment
+2
+Privacy impact assessment
+1
+Vendor risk assessment
+1
+Change risk assessment
+1
+Architecture review
+1
+Data classification
+1
+Low risk
+Moderate
+High
+Critical
+Waiting on experts
+Drag an assessment to another expert to reassign it. Alt plus arrow keys also work.
+Maya Ortiz
+1
+Vendor risk assessment
+New e-signature provider · due Oct 9
+Rina Okafor
+2
+Security assessment
+Public API gateway · due Oct 8
+Security assessment
+Contoso Cloud Operations contract · due Oct 14
+Nia Brooks
+1
+Change risk assessment
+Backup vault consolidation · due Oct 12
+Chief Editor
+1
+Privacy impact assessment
+Payroll provider change · due Oct 6
+All assessment results
+Search, filter and sort 12 results. Select one for the answers, score and where it is used.
+Type
+All
+6
+Band
+All
+5
+Status
+All
+3
+Used as
+All
+2
+Group by 
+None
+Type
+Band
+Status
+Used as
+Expert
+Export CSV
+ASSESSMENT	TYPE	ABOUT	SCORE	BAND	USED AS	STATUS	EXPERT	DUE	APPROVAL
+AS-3012	Privacy impact assessment	Payroll provider change
+Payroll
+	-	Not started	Required gate	Assigned, not started	
+Chief Editor	Oct 6	-
+AS-3011	Security assessment	Contoso Cloud Operations contract
+Azure
+	-	Not started	Required gate	Assigned, not started	
+Rina Okafor	Oct 14	AP-2114
+AS-3010	Change risk assessment	Backup vault consolidation
+Azure
+	-	Not started	Advisory	Assigned, not started	
+Nia Brooks	Oct 12	AP-2108
+AS-3009	Security assessment	Public API gateway
+Integration hub
+	20	Critical · 20	Required gate	In progress	
+Rina Okafor	Oct 8	AP-2113
+AS-3008	Vendor risk assessment	New e-signature provider
+Contract Repository
+	22	Critical · 22	Required gate	In progress	
+Maya Ortiz	Oct 9	AP-2112
+AS-3007	Data classification	Standards PDF generator
+Codification Platform
+	82	Internal · 82	Advisory	Complete	
+Rina Okafor	Oct 3	-
+AS-3006	Privacy impact assessment	Member portal redesign
+Member portal
+	45	Critical · 45	Required gate	Complete	
+Chief Editor	Oct 3	AP-2111
+AS-3005	Architecture review	Data lake for member analytics
+Data platform
+	71	Moderate · 71	Advisory	Complete	
+Jordan Lee	Oct 2	AP-2110
+AS-3004	Change risk assessment	Entra ID conditional access change
+Identity (Entra ID)
+	55	High · 55	Advisory	Complete	
+Nia Brooks	Oct 2	AP-2107
+AS-3003	Security assessment	Okta replacement
+Identity (Entra ID)
+	83	Moderate · 83	Advisory	Complete	
+Rina Okafor	Oct 1	AP-2106
+AS-3002	Security assessment	Lumen Search Services renewal
+Search and indexing
+	63	High · 63	Required gate	Complete	
+Rina Okafor	Sep 30	AP-2104
+AS-3001	Vendor risk assessment	Lumen Search Services renewal
+Contract Repository
+	78	Moderate · 78	Required gate	Complete	
+Maya Ortiz	Sep 29	AP-2104
+12 of 12 rows
+Scroll for more · rows are drawn as you scroll
+Required gate: blocks the approval until complete and passing
+Advisory: the approver sees the score and can override with a reason
+Low risk
+Moderate
+High
+Critical
+How an assessment is built, answered and used
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to NIST CSF 2.0, ISO/IEC 27001.
+Add a step
+Open in Workflow designer
+PERSON
+Build the form
+Questions, weights, conditions and risk bands.
+PERSON
+Attach it
+To an approval type or a workflow step, as a required gate or advisory input.
+AUTOMATIC
+Assign experts
+People, AI agents, contractors or providers.
+AI AGENT
+AI prefills
+Drafts answers from documents on file. Experts confirm.
+PERSON
+Expert answers
+The score is worked out live.
+APPROVAL GATE
+Gate or advise
+A gate blocks until it passes. Advice can be overridden with a reason.

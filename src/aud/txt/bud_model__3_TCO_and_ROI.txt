@@ -1,0 +1,94 @@
+FINANCIAL MODEL · COST PLAN, CAPITALIZATION, TCO AND RETURN
+The portfolio returns 22% over five years, and Taxonomy is the weakest case
+
+Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under ASC 350-40. Taxonomy returns 10% and depends on benefits that start only after the Dec 2 pilot.
+
+ƒ Five-year portfolio return on investment
+ƒ Capital plan used
+Claude Sonnet · 80%
+Why am I seeing this?
+Project and scenario
+Choose what to model. Everything on this screen recalculates from the cost plan, the capitalization rules and the benefits register.
+PR1 Codification
+PR2 Taxonomy
+PR3 Portal
+PR4 Contracts
+Portfolio
+Base case
+Low case
+High case
+Cost plan
+Capitalization
+Depreciation
+TCO and ROI
+Showback
+Discount rate
+8%
+Meridian hurdle rate is 8%.
+Run cost growth a year
+3%
+Applies from FY29.
+5-year TCO
+$2.42M
+Base case, Codification
+NPV at 8%
+$504K
+Worth doing at this rate
+ROI
+35%
+Benefit-cost ratio 1.35
+Payback
+3.3 yrs
+Oct 2029
+Total cost of ownership by year
+FY27 is the build; FY28 onward is incremental run cost, growing 3% a year.
+FY27
+$1.26M
+FY28
+$276K
+FY29
+$284K
+FY30
+$293K
+FY31
+$302K
+Build
+Hosting
+Licences
+Support
+Edit run costs
+Cost against benefit
+Benefits come from the Benefits realization register, shifted by the scenario.
+$0
+$694K
+$1.39M
+FY27
+FY28
+FY29
+FY30
+FY31
+Cost
+Benefit
+Return on investment, with the arithmetic
+Every number below is computed from the cost plan, the run costs and the benefits register.
+ƒ Five-year portfolio return on investment
+YEAR	COST	BENEFIT	NET	DISCOUNT FACTOR 1 ÷ (1 + 8%)^T	PRESENT VALUE	CUMULATIVE NET
+FY27 t = 0	$1,262,000	$187,150	−$1,074,850	1.000	−$1,074,850	−$1,074,850
+FY28 t = 1	$276,000	$706,550	$430,550	0.926	$398,657	−$644,300
+FY29 t = 2	$284,280	$787,200	$502,920	0.857	$431,173	−$141,380
+FY30 t = 3	$292,808	$787,200	$494,392	0.794	$392,464	$353,012
+FY31 t = 4	$301,593	$787,200	$485,607	0.735	$356,936	$838,619
+NPV = Σ (Benefit − Cost) ÷ (1 + 8%)^t = (−$1.07M) + ($431K) ÷ 1.080 + ($503K) ÷ 1.166 + ($494K) ÷ 1.260 + ($486K) ÷ 1.360 = $504,380
+ROI = (Total benefit $3,255,300 − Total cost $2,416,681) ÷ Total cost $2,416,681 = 34.7% · Payback = first year cumulative net turns positive = 3.3 years, about Oct 2029
+Scenarios side by side
+Same discount rate, different assumptions. The highlighted row is the one selected above.
+SCENARIO	BENEFIT	COST	NPV	ROI	PAYBACK
+Base case
+Plan as approved
+	$3.26M	$2.42M	$504K	35%	3.3 yrs
+Low case
+Benefits 30% lower, costs 12% higher
+	$2.28M	$2.71M	−$577K	-16%	Beyond FY31
+High case
+Benefits 15% higher, costs 5% lower
+	$3.74M	$2.3M	$1.02M	63%	2.7 yrs

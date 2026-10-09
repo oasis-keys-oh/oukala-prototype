@@ -1,0 +1,104 @@
+SERVICE MANAGEMENT · MAJOR INCIDENT
+War room: Codification Platform is degraded
+
+INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.
+
+Impact analysis
+Add timeline entry
+Join bridge
+ƒ Major incident time to restore
+ITIL 5
+Overview
+War room
+Communications
+Status page
+Post-incident review
+Edit components
+Matches what is published
+Codification Portal
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Editor workbench
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Search
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Taxonomy API
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Contract Repository
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Sign-in (Entra ID)
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Lease subledger
+Operational
+Degraded performance
+Partial outage
+Major outage
+Under maintenance
+Publish to status page
+Published 10:05. Needs a communications lead.
+Status page preview
+What editors and partners see
+Meridian Standards Foundation
+Service status
+Some systems are experiencing issues
+Codification Portal
+Degraded performance
+Editor workbench
+Degraded performance
+Search
+Operational
+Taxonomy API
+Operational
+Contract Repository
+Operational
+Sign-in (Entra ID)
+Operational
+Lease subledger
+Operational
+Latest update
+
+We are investigating slow page loads in the Codification Portal that started at 09:12. You may see pages take 6 to 10 seconds. Please continue to work; save often. Next update at 10:30.
+
+30 days of history. Last published 10:05.
+Major incident process (ITIL 5 Support)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Declare
+Tier 1 service, many users, no workaround.
+PERSON
+Fill roles
+Commander, technical lead, communications lead, scribe.
+AI AGENT
+Diagnose and restore
+Diagnostics by an agent, decisions by people; emergency change if needed.
+APPROVAL GATE
+Communicate
+AI drafts, communications lead approves every update.
+PERSON
+Review
+Blameless post-incident review ends in tasks.

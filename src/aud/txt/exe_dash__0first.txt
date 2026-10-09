@@ -1,0 +1,94 @@
+EXECUTIVE DASHBOARD · MERIDIAN STANDARDS FOUNDATION
+One set of numbers, five executive views
+
+Every tab below is a different arrangement of the same data, so the CEO, CFO, CIO, COO and Board audit chair never argue about whose number is right. We are 76% likely to hit the beta by Nov 20, forecast is 105.6% of budget, and 7 decisions are open.
+
+ƒ Beta date confidence
+ƒ Strategic alignment score
+ƒ Risk exposure against contingency
+Why am I seeing this?
+Group overview
+CEO
+CFO
+CIO
+COO
+Board
+Strategy
+Is the money pointed at the strategy, and are the capabilities that deliver it getting stronger?
+
+Alignment 89 of 100. Maturity attainment 70%.
+
+Strategy alignment
+Objectives, key results and the work linked to them
+Maturity models
+Maturity models, glide paths and what it takes to reach a level
+Delivery
+What we chose to build, the plan and dates, the work breakdown, and the trace from objective to outcome.
+
+Beta forecast Nov 13, 2026. 4 requests funded.
+
+Demand and priorities
+Requests, scoring and the funding line
+Executive trace
+Objective to requirement to task to invoice
+Master schedule
+One schedule for every project
+Project plan
+Project plans and earned value
+WBS and task sheet
+Work breakdown structure editor
+Projects and teams
+Project register and health
+RAID log
+Risks, assumptions, issues and dependencies
+SOW and contract analyzer
+Statements of work and contract analysis
+Money
+Invoices, budgets, vendors, benefits and who may approve what.
+
+$1.69M paid of $2.91M approved. $62,900 recommended for hold.
+
+Invoice approval
+Approve or hold invoices against accepted work
+Budgets overall
+Budget overview and forecast
+Financial model
+Budget model and scenarios
+Vendors and contracts
+Vendor spend and performance
+Benefits realization
+Benefits tracking
+Delegation of authority
+Delegation of authority
+Risk and portfolio
+What could go wrong, which applications to keep, what changes if we change course, and the board pack.
+
+Risk exposure $261K of $291K reserve. Board pack: Draft.
+
+Risk heat map and Monte Carlo
+Heat map and Monte Carlo date confidence
+Application portfolio
+Keep, migrate, tolerate or retire each application
+Scenario compare
+Compare what-if scenarios
+Board pack
+The quarterly board pack written from live data
+More in this group
+Other screens that belong to portfolio and delivery.
+Cost transparency (TBM and ATUM)
+How the executive views are built
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Collect
+Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.
+AI AGENT
+Arrange by role
+The headline, six measures and three decisions are chosen for the CEO, CFO, CIO, COO or Board audit chair.
+APPROVAL GATE
+Decide
+Approve or defer a decision. Each choice is audited and the numbers on other screens update.
+PERSON
+Explain
+Select a tile to open its source screen and see the formula and the owner.

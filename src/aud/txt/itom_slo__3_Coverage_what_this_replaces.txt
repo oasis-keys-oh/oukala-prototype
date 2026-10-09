@@ -1,0 +1,238 @@
+OBSERVABILITY AND SLOS
+Promise a level of service, and watch the budget
+
+4 of 8 SLOs are inside their error budget. The portal availability budget was spent by the incident that began at 09:08 today: its SLI is 99.41% against a 99.9% promise. The platform covers 68% of what a mid-size business buys separate observability tools for.
+
+ƒ SLOs inside error budget
+ƒ Observability coverage
+New SLO
+New synthetic check
+SRE: SLOs and error budgets
+OpenTelemetry
+SLOs and error budgets
+Synthetic checks
+Uptime reports
+Coverage: what this replaces
+COVERAGE OF A MID-SIZE BUSINESS TOOLSET
+68%
+fully or partly covered capabilities
+CAPABILITIES COVERED FULLY
+20
+of 36
+GAPS TO CLOSE
+7
+not covered at all
+CLASSIC TOOLS REPLACEABLE
+14
+in categories at 75% or better
+ƒ Observability coverage
+What this replaces
+Each row is a category of tool a mid-size business typically buys, with the classic products it covers. The checklist shows exactly which capabilities are in this platform today, which are partial and which are gaps.
+Infrastructure monitoring
+64%
+
+Replaces: SolarWinds SAM, Nagios, Zabbix, Datadog infrastructure
+
+✓
+Host CPU, memory, diskMetrics explorer and Hosts tab
+✓
+Process and service stateHeartbeat and service checks
+◐
+Agentless polling (SNMP, WMI, SSH)SNMP and Azure Monitor today; WMI through the collector
+◐
+Container and KubernetesContainer class supported; pod-level views are a gap
+✓
+Cloud resources (Azure Monitor)Azure Monitor is a source
+◐
+Capacity forecastingDisk growth forecast; no CPU capacity model
+○
+Hardware health (iLO, iDRAC)Not collected
+Network monitoring
+60%
+
+Replaces: SolarWinds NPM, PRTG, Nagios XI
+
+✓
+Device and link availabilityNetwork map and rules AR06 to AR09
+✓
+Interface utilization and packet lossMetrics util and loss
+✓
+Topology and dependency mapNetwork map tab and CMDB
+○
+Flow analysis (NetFlow, sFlow)Not collected
+○
+Configuration backup and complianceUse the vendor tool for now
+Application performance (APM)
+40%
+
+Replaces: Datadog APM, New Relic, Dynatrace, AppDynamics
+
+✓
+Latency, errors, throughput per serviceGolden signals on every application CI
+◐
+Distributed tracesOpenTelemetry sample traces; no full ingestion
+◐
+Database query analysisQuery latency only
+○
+Code-level profilingNot collected
+○
+Real user monitoring (RUM)Browser beacons not built
+Logs
+38%
+
+Replaces: Splunk, Elastic, Datadog logs
+
+◐
+Search and live tailPattern search on a sample; full search stays in Log Analytics
+✓
+Error clusteringLog patterns panel
+○
+Retention and archiveStays in Azure Log Analytics
+○
+Security analytics (SIEM)Defender and Sentinel stay separate
+Synthetic monitoring
+100%
+
+Replaces: Pingdom, Uptime Robot, Datadog synthetics
+
+✓
+HTTP and API checksSynthetic checks tab
+✓
+Multi-step browser flowsEditor sign-in flow
+✓
+Multiple locations4 locations
+✓
+Certificate and DNS checksTLS and DNS checks
+Alerting and on-call
+80%
+
+Replaces: PagerDuty, Opsgenie, BigPanda
+
+✓
+Thresholds, baselines, anomalyAlert rules
+✓
+Deduplication and correlationFunnel and groups, topology aware
+✓
+Escalation and schedulesOn-call and escalation screen
+◐
+Phone and SMS pagingTeams push today; SMS needs a gateway contract
+◐
+ChatOpsTeams actions; chat commands through Ask Oukala
+Status page
+75%
+
+Replaces: Atlassian Statuspage, Instatus
+
+✓
+Internal statusWall and status page preview
+◐
+Public status page and subscribersPreview only; publishing needs a hosting decision
+SLOs and delivery metrics
+100%
+
+Replaces: Nobl9, Sloth, DORA tooling
+
+✓
+SLOs and burn rate alertsSLOs tab
+✓
+DORA delivery metricsDelivery pipeline screen
+Automation and remediation
+100%
+
+Replaces: Rundeck, StackStorm, Ansible Tower
+
+✓
+Runbooks and playbooksStandard change catalog
+✓
+Agentic remediation with approvalAutomation rules
+Fully covered
+Partly covered
+Gap
+Gap list
+What would have to be built or bought to replace the remaining tools. Raise a demand to put it on the portfolio, or accept the gap with a reason.
+CATEGORY	CAPABILITY	STATE	TODAY	NEXT STEP
+Infrastructure monitoring	Agentless polling (SNMP, WMI, SSH)	Partial	SNMP and Azure Monitor today; WMI through the collector	
+Raise a demand
+Accept gap
+
+Infrastructure monitoring	Container and Kubernetes	Partial	Container class supported; pod-level views are a gap	
+Raise a demand
+Accept gap
+
+Infrastructure monitoring	Capacity forecasting	Partial	Disk growth forecast; no CPU capacity model	
+Raise a demand
+Accept gap
+
+Infrastructure monitoring	Hardware health (iLO, iDRAC)	Gap	Not collected	
+Raise a demand
+Accept gap
+
+Network monitoring	Flow analysis (NetFlow, sFlow)	Gap	Not collected	
+Raise a demand
+Accept gap
+
+Network monitoring	Configuration backup and compliance	Gap	Use the vendor tool for now	
+Raise a demand
+Accept gap
+
+Application performance (APM)	Distributed traces	Partial	OpenTelemetry sample traces; no full ingestion	
+Raise a demand
+Accept gap
+
+Application performance (APM)	Database query analysis	Partial	Query latency only	
+Raise a demand
+Accept gap
+
+Application performance (APM)	Code-level profiling	Gap	Not collected	
+Raise a demand
+Accept gap
+
+Application performance (APM)	Real user monitoring (RUM)	Gap	Browser beacons not built	
+Raise a demand
+Accept gap
+
+Logs	Search and live tail	Partial	Pattern search on a sample; full search stays in Log Analytics	
+Raise a demand
+Accept gap
+
+Logs	Retention and archive	Gap	Stays in Azure Log Analytics	
+Raise a demand
+Accept gap
+
+Logs	Security analytics (SIEM)	Gap	Defender and Sentinel stay separate	
+Raise a demand
+Accept gap
+
+Alerting and on-call	Phone and SMS paging	Partial	Teams push today; SMS needs a gateway contract	
+Raise a demand
+Accept gap
+
+Alerting and on-call	ChatOps	Partial	Teams actions; chat commands through Ask Oukala	
+Raise a demand
+Accept gap
+
+Status page	Public status page and subscribers	Partial	Preview only; publishing needs a hosting decision	
+Raise a demand
+Accept gap
+How an SLO is run
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SRE: SLOs and error budgets, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Define the SLI
+What counts as a good 5-minute period.
+APPROVAL GATE
+Set the objective
+For example 99.9% over 30 days.
+AUTOMATIC
+Measure
+Good and bad periods counted from the metric model.
+AUTOMATIC
+Burn rate alerts
+Multi-window rules page or ticket.
+APPROVAL GATE
+Spend the budget wisely
+When it is spent, risky changes need approval.
+PERSON
+Review
+SLOs are reviewed quarterly.

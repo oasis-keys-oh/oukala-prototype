@@ -1,0 +1,338 @@
+SERVICE MANAGEMENT · RELEASES
+Ship together, with proof
+
+12 releases are in flight on 2 trains. The Codification beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes to a go or no-go decision before Oct 8.
+
+New release
+Go or no-go: REL-2608
+Sprints and backlogs
+Release trains
+ƒ Release change failure rate
+ƒ Lead time for changes
+ITIL 5
+DORA metrics
+SAFe
+Dashboard and releases
+Clash register
+Readiness tree
+Exit criteria
+Go or no-go
+
+Exit criteria are the evidence behind a go decision. 2 of 9 releases pass every hard criterion. Pass means met, Fail means a hard criterion is open, Watch means an advisory criterion is open. Hover or read the grey text for the numbers.
+
+Exit criteria matrix
+Rows are criteria, columns are the next releases by date
+ITIL 5
+CRITERION	REL-2608OCT 8	REL-2609OCT 12	REL-2615OCT 20	REL-2607OCT 21	REL-2610OCT 27	REL-2617OCT 29	REL-2613NOV 3	REL-2618NOV 10	REL-2611NOV 13
+AUTOMATED SUITE PASS RATE AT LEAST 95% HARD	
+Pass
+100% of 43 tests
+	
+Fail
+90% of 130 tests
+	
+Pass
+100% of 12 tests
+	
+Fail
+76.9% of 78 tests
+	
+Pass
+100% of 45 tests
+	
+Fail
+75% of 48 tests
+	
+Pass
+100% of 42 tests
+	
+Pass
+100% of 23 tests
+	
+Pass
+100% of 274 tests
+
+MANUAL UAT PASSED (98% OR BETTER) HARD	
+Pass
+19 of 19 cases passed
+	
+Fail
+30 of 35 cases passed
+	
+Pass
+3 of 3 cases passed
+	
+Fail
+19 of 21 cases passed
+	
+Pass
+14 of 14 cases passed
+	
+Fail
+14 of 17 cases passed
+	
+Pass
+13 of 13 cases passed
+	
+Pass
+14 of 14 cases passed
+	
+Pass
+78 of 78 cases passed
+
+EVERY ACCEPTANCE CRITERION MET HARD	
+Pass
+32 of 32 criteria met
+	
+Fail
+49 of 178 criteria met
+	
+Pass
+7 of 7 criteria met
+	
+Fail
+34 of 44 criteria met
+	
+Fail
+18 of 104 criteria met
+	
+Fail
+17 of 54 criteria met
+	
+Fail
+20 of 96 criteria met
+	
+Fail
+20 of 45 criteria met
+	
+Fail
+125 of 579 criteria met
+
+NO OPEN SEVERITY 1 OR 2 DEFECTS HARD	
+Pass
+0 open
+	
+Fail
+2 open
+	
+Pass
+0 open
+	
+Fail
+1 open
+	
+Fail
+4 open
+	
+Fail
+1 open
+	
+Pass
+0 open
+	
+Fail
+1 open
+	
+Fail
+8 open
+
+ALL PULL REQUESTS REVIEWED AND MERGED HARD	
+Pass
+10 of 10 merged
+	
+Fail
+16 of 17 merged
+	
+Pass
+3 of 3 merged
+	
+Fail
+9 of 13 merged
+	
+Pass
+7 of 7 merged
+	
+Pass
+5 of 5 merged
+	
+Pass
+7 of 7 merged
+	
+Pass
+6 of 6 merged
+	
+Pass
+44 of 44 merged
+
+SECURITY REVIEW PASSED HARD	
+Pass
+Done
+	
+Pass
+Done
+	
+Pass
+Done
+	
+Fail
+Not started
+	
+Pass
+Done
+	
+Fail
+Not started
+	
+Fail
+In progress
+	
+Fail
+Not started
+	
+Fail
+In progress
+
+PERFORMANCE WITHIN 10% OF BASELINE ADVISORY	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+	
+Pass
+p95 response +3% vs baseline
+
+ROLLBACK REHEARSED HARD	
+Pass
+Done
+	
+Fail
+Not started
+	
+Pass
+Done
+	
+Fail
+Not started
+	
+Fail
+In progress
+	
+Fail
+Not started
+	
+Fail
+Not started
+	
+Fail
+Not started
+	
+Fail
+Not started
+
+CHANGE APPROVED BY CAB HARD	
+Pass
+Done
+	
+Pass
+Done
+	
+Pass
+Done
+	
+Fail
+Not started
+	
+Fail
+In progress
+	
+Fail
+Not started
+	
+Fail
+In progress
+	
+Fail
+Not started
+	
+Fail
+Not started
+
+TRAINING AND COMMUNICATIONS APPROVED ADVISORY	
+Pass
+Training waived, communications done
+	
+Pass
+Training waived, communications waived
+	
+Pass
+Training waived, communications waived
+	
+Watch
+Training not started, communications not started
+	
+Watch
+Training not started, communications blocked
+	
+Watch
+Training not started, communications not started
+	
+Watch
+Training not started, communications not started
+	
+Watch
+Training not started, communications not started
+	
+Fail
+Training not started, communications not started
+
+CRITERIA MET	100%	40%	100%	10%	50%	20%	50%	40%	40%
+Release management process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Plan the release
+Scope features, set the date, check the calendar for clashes.
+AUTOMATIC
+Generate readiness tasks
+The standard checklist creates child tasks with owners, due dates and gates.
+AI AGENT
+Build and test
+Pipeline builds; Test Agent runs the suite; QA and editors run UAT.
+AUTOMATIC
+Evaluate exit criteria
+Ten criteria are scored automatically from tests, pull requests and defects.
+APPROVAL GATE
+Security review and CAB
+Security signs off the scan; the change advisory board approves the change record.
+APPROVAL GATE
+Training, communications and OCM approved
+Training approved, Communications team approves the package, OCM plan implemented.
+APPROVAL GATE
+Go or no-go
+A named person decides from the evidence. Hard clashes block go.
+AUTOMATIC
+Deploy through the pipeline
+The deployment runs in the approved window with rollback ready.
+PERSON
+Post-release review
+Failures feed the readiness template; DORA measures update.

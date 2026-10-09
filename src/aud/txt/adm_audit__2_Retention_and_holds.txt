@@ -1,0 +1,54 @@
+PLATFORM · AUDIT AND COMPLIANCE
+Prove what happened, and who or what did it
+
+The log holds 46 entries, 10 of them by AI agents. 73% of the 15 controls across SOC 2, ISO 27001 and the NIST AI Risk Management Framework have current evidence. 1 legal hold freezes records for the Lumen dispute.
+
+ƒ Controls with current evidence
+Claude Sonnet · 87%
+Audit log
+Controls
+Retention and holds
+Retention policies
+How long each kind of data is kept and what happens at the end. A legal hold always wins over a schedule. Next purge: 1,204 transcripts on Oct 21, minus 22 under hold.
+Audit log
+4,812 entries a month
+Keep 7 years
+Archive
+Edit
+AI prompts and outputs
+38K calls a month
+Keep 13 months
+Delete
+Edit
+Invoices and approvals
+180 a month
+Keep 7 years
+Archive
+Edit
+Meeting transcripts
+95 meetings a month
+Keep 3 months
+Delete
+Edit
+Incident records
+420 a month
+Keep 5 years
+Anonymize
+Edit
+Knowledge drafts
+60 a month
+Keep 3 years
+Delete
+Edit
+Database backups
+Daily
+Keep 1 month
+Delete
+Edit
+Legal holds
+1 active hold freeze 38 records. Frozen records cannot be edited, deleted or purged, and each access is logged.
+New legal hold
+Lumen SOW-4 dispute Active
+Possible dispute over milestone 3 acceptance.
+Custodians: Maya Ortiz, Tom Becker · Scope: Contract, Invoice, Meeting transcript · since Oct 5 · 38 records
+Release

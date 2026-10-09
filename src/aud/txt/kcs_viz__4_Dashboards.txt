@@ -1,0 +1,168 @@
+VISUALIZATION BUILDER · 97 CHART TYPES, MAPS AND SHAPES
+Draw any chart from a measure someone owns
+
+19 saved visuals on 3 dashboards, 97 chart types including geographic coverage, incident maps and silhouette charts, and a builder that takes any data model table, metric series, a CSV or a 100,000 point stress set. Every chart is bound to a registered field or metric and shows its formula on hover.
+
+ƒ Governed visuals
+ƒ Visuals with text alternatives
+ƒ Render time at 10,000 points (p95)
+ƒ Visual reuse
+DAMA-DMBOK
+Why am I seeing this?
+Library and gallery
+Maps
+Shape charts
+Builder
+Dashboards
+Dashboard composer
+Drag a card by its handle to reorder, resize with S, M, L or Full, and select any bar or slice to cross-filter the rest. Every visual keeps its formula and lineage.
+Service health
+(7)
+Reach and spend
+(5)
+Operations floor
+(5)
+New dashboard
+Click a bar, slice, region or point to filter every other visual that shares the field.
+Add a saved visual
+Full screen
+Export dashboard JSON
+Delete dashboard
+Tier 1 availability vs target
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Data table
+Full screen
+99.6%
+Tier 1 availability · target 99.9%
+0
+100
+On target
+Watch
+Act
+Tier 1 availability (metric series)
+8 rows
+ƒ Tier 1 availability
+METRICS.m_avail · 1 − (Minutes of outage ÷ Minutes in period)
+Mean time to resolve trend
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Data table
+Full screen
+0 h
+2 h
+4 h
+6 h
+Aug 17
+Aug 24
+Aug 31
+Sep 7
+Sep 14
+Sep 21
+Sep 28
+Oct 5
+3.4 h
+Target 4
+Mean time to resolve (Sev 2) (metric series)
+8 rows
+ƒ Mean time to resolve (Sev 2)
+METRICS.m_mttr · Average hours from incident opened to resolved
+Hours to resolve by priority
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Data table
+Full screen
+0 h
+5 h
+10 h
+15 h
+20 h
+P1
+P2
+P3
+P4
+2.55 h
+4.9 h
+9.81 h
+17.1 h
+Sev 2 target 4 h
+Meridian incidents (with location)
+1,800 rows
+ƒ Mean time to resolve (Sev 2)
+Incident records, geocoded to the reader or office location · DATAMODEL.incident
+Incidents opened per week
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Incident mix by service and priority
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Incidents by US state
+S
+M
+L
+Full
+−
++
+Details
+Remove
+Incident points and clusters
+S
+M
+L
+Full
+−
++
+Details
+Remove
+How a visual gets from data to dashboard
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to DAMA-DMBOK, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Pick governed data
+A data model table, metric series, big-data set or your own CSV.
+AI AGENT
+Recommend chart types
+The AI agent ranks chart types for the chosen fields and explains why.
+AUTOMATIC
+Check lineage and rules
+Measures are checked against the metric registry; chart lint warns about misleading designs.
+PERSON
+Build and preview
+Drag fields to encodings and watch the chart redraw; tooltips show formulas.
+AUTOMATIC
+Accessibility check
+Aria label, data table and color-blind safe palette are verified.
+APPROVAL GATE
+Publish to library
+The owner approves a visual before it appears on shared dashboards.

@@ -1,0 +1,95 @@
+MASTER SCHEDULE
+Every project on one timeline
+
+Four projects run to Feb 24, 2027. 1 of the four core projects is behind baseline. Codification go live is 7 work days late, and the Taxonomy pilot is on baseline, because one Lumen team sits on both.
+
+ƒ Schedule performance index
+ƒ Milestones on time
+ƒ Schedule variance
+PMBOK
+Why am I seeing this?
+Projects
+All 4 projects
+4
+Project managers
+All managers
+4
+Resource type
+All types
+4
+4 projects shown
+Current plan
+Lumen slips 5 more work days
+Lumen slips 10 more work days
+Add two Lumen engineers to the indexer
+Editor testing takes twice as long
+Overview
+Gantt
+Milestones
+What changed
+Project Online coverage
+Projects shown
+4 of 4
+Whole portfolio
+Behind baseline
+1 of 4
+Forecast finish later than baseline
+Critical tasks
+11
+Zero float, not finished
+Milestones late
+7 of 25
+Forecast later than baseline
+Furthest behind baseline
+Codification is the furthest behind at 7 work days.
+ƒ Schedule variance
+Codification
++7 days
+Where the work is
+Share of lines by status, across the selected projects.
+Complete 62
+On track 13
+Not started 43
+At risk 20
+Should have started 2
+Late 7
+Projects
+Select a row to open its plan. Sort, search and filter at any size.
+Source
+All
+1
+Export CSV
+PROJECT	PROJECT MANAGER	CURRENT PHASE	DONE	BASELINE FINISH	FORECAST FINISH	AGAINST BASELINE	CRITICAL TASKS	SCHEDULE INDEX	SOURCE
+PR1 Codification Platform Upgrade	Priya Shah	Build	
+59%
+	Dec 1	Dec 10	7 work days late	4	0.94	Core
+PR2 Taxonomy Data Hub	Dev Rao	Pipeline and platform build	
+50%
+	Dec 1	Dec 1	on baseline	0	0.99	Core
+PR3 Portal Resilience	Tom Becker	Failover redesign and remediation	
+40%
+	Oct 30	Oct 30	on baseline	2	0.91	Core
+PR4 Contract Repository Refresh	Maya Ortiz	Initiation and governance	
+7%
+	Feb 24	Feb 24	on baseline	5	1.29	Core
+4 of 4 rows
+Scroll for more · rows are drawn as you scroll
+How the master schedule stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, SAFe.
+Add a step
+Open in Workflow designer
+PERSON
+Project managers update progress
+Percent complete and actual dates arrive from task sheets, Teams and First Officer meeting notes.
+AUTOMATIC
+Schedule engine recalculates
+Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.
+AI AGENT
+PMO Agent flags drift
+Compares forecast with baseline, finds new critical chains and cross-project collisions, drafts a recovery option.
+PERSON
+Portfolio manager reviews
+Decides which recovery option to take and whether a milestone moves.
+APPROVAL GATE
+Baseline reset approval
+A re-baseline needs approval from the steering committee. It is audited and the old baseline is kept.

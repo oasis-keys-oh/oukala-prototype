@@ -1,0 +1,105 @@
+SERVICE MANAGEMENT · RELEASES · SCALED AGILE
+Plan together, deliver in increments
+
+Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.
+
+New program increment
+New PI objective
+Program backlog
+Releases
+ƒ Program predictability
+SAFe
+ITIL 5
+Dashboard and features
+PI planning board
+Objectives and predictability
+System demo and Inspect and adapt
+Trains and timeline
+PI 26.3 (closed)
+PI 26.4 (executing)
+New objective
+ƒ Program predictability
+SAFe
+
+In PI 26.3 the train achieved 78% of its planned business value on committed objectives. That is below the healthy band. Platform Alpha and Search and Indexing (Lumen) and Editor Experience and Portal Reliability and Contracts and Integration fell short, mostly because of vendor handoffs.
+
+PREDICTABILITY
+78%
+achieved ÷ planned value
+PLANNED VALUE
+89
+committed objectives
+ACHIEVED VALUE
+69
+STRETCH OBJECTIVES
+0
+not counted in predictability
+Planned versus achieved business value
+By team
+Platform Alpha
+15/19 · 79%
+Search and Indexing (Lumen)
+10/14 · 71%
+Editor Experience
+11/14 · 79%
+Portal Reliability
+9/14 · 64%
+Taxonomy Data
+13/14 · 93%
+Contracts and Integration
+11/14 · 79%
+Achieved share of planned value (marker at 80%)
+Below 80%
+Predictability trend
+Last eight increments
+0
+25
+50
+75
+100
+25.1
+25.2
+25.3
+25.4
+26.1
+26.2
+26.3
+Healthy from 80%
+Objectives
+Every objective, its business value and how it ended
+TEAM	OBJECTIVE	FEATURE	PLANNED VALUE	ACHIEVED	
+Platform Alpha	Editor workspace prototype demonstrated		8	6 (75%)	Edit
+Platform Alpha	Entra ID sign-in for editors live		6	5 (83%)	Edit
+Platform Alpha	Standards API 2.3.0 released		5	4 (80%)	Edit
+Search and Indexing (Lumen)	Search schema v2 live in production		8	8 (100%)	Edit
+Search and Indexing (Lumen)	Indexer 2.3 stable under load		6	2 (33%)	Edit
+Editor Experience	Prototype tried with five editors		8	6 (75%)	Edit
+Editor Experience	Reader navigation pilot		6	5 (83%)	Edit
+Portal Reliability	Read replica live		8	5 (63%)	Edit
+Portal Reliability	Failover design approved		6	4 (67%)	Edit
+Taxonomy Data	Taxonomy data model approved		8	8 (100%)	Edit
+Taxonomy Data	Pipeline skeleton running nightly		6	5 (83%)	Edit
+Contracts and Integration	Vendor selected and contracted		8	6 (75%)	Edit
+Contracts and Integration	Migration design started		6	5 (83%)	Edit
+Release train process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, ITIL 5.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Epic approved
+The portfolio approves an epic with a business case.
+AI AGENT
+Features analyzed and scored
+Features get acceptance criteria and a WSJF score.
+PERSON
+PI planning
+Teams commit objectives, dependencies and risks (ROAM) for the increment.
+PERSON
+Iterate and demo
+Teams deliver in iterations and show a system demo each time.
+AUTOMATIC
+Release through release management
+Features ship as releases with readiness gates and a go or no-go.
+PERSON
+Inspect and adapt
+Measure predictability, retrospect and solve the biggest problems.

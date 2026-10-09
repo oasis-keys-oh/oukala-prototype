@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext({viewport:{width:1300,height:1000}});const p=await c.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push('console:'+m.text())});
+await p.goto('file://'+path.join(dir,'full.html'));await p.waitForTimeout(600);
+const clk=s=>p.evaluate(s=>{const e=[...document.querySelectorAll(s)].find(x=>x.offsetParent!==null);if(!e)throw new Error("none "+s);e.click()},s);
+const shot=async n=>{await p.waitForTimeout(500);await p.screenshot({path:path.join(dir,'shots','ui-'+n+'.png')})};
+await p.evaluate(()=>{go('plat_fab')});await p.waitForTimeout(400);
+for(const id of ['c_graph','c_mcp_reg','c_idp','c_jira']){await p.evaluate(i=>{document.querySelector('[data-fab-run="'+i+'"]')||0;},id);await p.evaluate(i=>{document.querySelector('[data-fab-conn="c_graph"]');},id)}
+await p.evaluate(()=>{S.v.fab=1;render()});await p.waitForTimeout(300);
+await clk('.fab-four[data-fab-conn="c_graph"]');await p.waitForTimeout(400);await clk('[data-fab-run="c_graph"]');await shot('graph');
+await p.evaluate(()=>{const d=document.querySelector('.drawer,#drawer');if(d)d.scrollTop=1500});await shot('graph2');
+await p.evaluate(()=>closeDrawer());await p.evaluate(()=>FAB.open('c_mcp_reg'));await p.waitForTimeout(300);await clk('[data-fab-run="c_mcp_reg"]');await shot('mcp');
+await p.evaluate(()=>FAB.open('c_idp'));await p.waitForTimeout(300);await clk('[data-fab-run="c_idp"]');await shot('idp');
+await p.evaluate(()=>{closeDrawer();S.v.fab=6;render()});await p.waitForTimeout(300);await clk('[data-fab-pj="M2M-05"]');await shot('pj');
+await clk('[data-fab-decide="M2M-05"]');await shot('decide');
+await p.evaluate(()=>{closeDrawer();0});
+await p.evaluate(()=>{document.querySelector('[data-fab-newm2m]').click()});await shot('m2mform');
+await p.evaluate(()=>{closeDrawer();S.v.fab=4;render();});await p.evaluate(()=>{FAB.openQuarantine('Q-60')}).catch(()=>{});
+await p.evaluate(()=>{const el=document.querySelector('[data-bt-row="fab_quar"]');el.click()});await p.waitForTimeout(300);await clk('[data-fab-fix]');await shot('fix');
+await p.evaluate(()=>{closeDrawer();S.v.fab=3;render()});await p.evaluate(()=>{document.querySelector('[data-bt-row="fab_auth"]').click()});await p.waitForTimeout(300);await clk('[data-fab-ovr]');await shot('ovr');
+await p.evaluate(()=>{closeDrawer();S.v.fab=0;S.fab.edition='core';render()});await shot('core');await p.evaluate(()=>{document.querySelector('[data-fab-unlock]').click()});await shot('unlock');await clk('[data-fab-key]');await shot('key');
+console.log('errors',errs);await b.close()})();

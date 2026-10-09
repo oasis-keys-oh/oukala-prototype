@@ -1,0 +1,299 @@
+REQUESTS AND FULFILLMENT
+86 open, 33 approvals waiting
+
+6 requests have used 75% or more of their SLA. Median fulfillment is 0.8 days and 93.8% of approvals pass the first time. Open any request for who it is sitting with, every approval and the evidence behind it, and the cost and time of each step.
+
+Order something
+Approvals inbox
+ƒ Fulfillment on time
+ƒ First-time approval rate
+ƒ Cost per request
+ITIL 5
+Experience level agreements
+Dashboard and list
+Board
+Approvals inbox
+Team queues
+OPEN REQUESTS
+86
+53 being worked
+WAITING ON APPROVAL
+21
+33 approvals outstanding
+AT RISK OF MISSING SLA
+6
+2 already over
+DELIVERED, LAST 30 DAYS
+96
+90.6% on time
+FIRST-TIME APPROVAL
+93.8%
+goal 90%
+COST PER REQUEST
+$102
+goal $95
+Requests by state
+Where every request is right now.
+Pending approval
+Approved, scheduled
+Fulfilling
+Deployed
+Decommissioned
+Rejected or cancelled
+21
+pending approval
+12
+approved, scheduled
+53
+fulfilling
+132
+deployed
+12
+decommissioned
+10
+rejected or cancelled
+Closest to breaching the SLA
+Open requests that have used the most of their service level. The clock excludes time waiting on approvers and requesters.
+RITM0010635 Software license
+With Victor Amaya · Requester confirms install
+144%
+RITM0010612 Software license
+With Chen Wei · Requester confirms install
+109%
+RITM0010633 Laptop (new or replacement)
+With Endpoint team · Delivery to desk or shipped to home
+93%
+RITM0010573 Mobile phone
+With Northwind Managed Services · Delivery
+92%
+RITM0010646 Laptop (new or replacement)
+With Elise Park · Receiving and tagging
+78%
+RITM0010568 Software license
+With Owen Fraser · Requester confirms install
+75%
+Team queues
+Work lands in a team first. A person claims it or is assigned with a reason.
+Vendor (Dell)
+10 waiting, 0 claimed
+Facilities
+5 waiting, 3 claimed
+People team
+3 waiting, 1 claimed
+Data team
+3 waiting, 1 claimed
+Endpoint team
+2 waiting, 1 claimed
+Security
+0 waiting, 1 claimed
+Waiting in the team queue
+Claimed by a person
+Approvals waiting longest
+Approvers are found from the data on each request.
+Open the approvals inbox
+RITM0010458 Steering: cost over $50,000
+New project request · Avery Chen
+18.1 h
+RITM0010458 AI governance review
+New project request · Jordan Lee
+18.1 h
+RITM0010651 Manager approval
+Mobile phone · Maya Ortiz
+9.1 h
+RITM0010626 Manager approval
+Access request · Sam Patel
+6.4 h
+RITM0010626 Data owner
+Access request · Maya Ortiz
+6.4 h
+All requests
+Every request from every item. Filter by state, item, service or who has it. Select a row for the full story.
+State
+All
+6
+Item
+All
+15
+Service
+All
+9
+Sitting with
+All
+36
+Export CSV
+REQUEST	ITEM	REQUESTED BY	FOR	STATE	SITTING WITH	CURRENT STEP	SLA USED	COST	OPENED	SERVICE
+RITM0010547	Shared mailbox or Teams channel	
+Owen Fraser
+	Same person	Fulfilling	
+Owen Fraser
+	Owner confirms	9%	$1	Oct 6	Email and collaboration (M365)
+RITM0010554	Shared mailbox or Teams channel	
+Hana Koval
+	Same person	Fulfilling	
+Hana Koval
+	Owner confirms	8%	$1	Oct 6	Email and collaboration (M365)
+RITM0010599	Conference room AV support	
+Aaron Whitfield
+	Same person	Fulfilling	
+Nia Brooks
+	Test audio and camera the day before	7%	$6	Oct 6	Email and collaboration (M365)
+RITM0010687	Conference room AV support	
+Viktor Sokol
+	Same person	Fulfilling	
+Facilities
+	Confirm room and equipment	7%	$0	Oct 6	Email and collaboration (M365)
+RITM0010714	Conference room AV support	
+Isla Reid
+	Same person	Fulfilling	
+Nia Brooks
+	Confirm room and equipment	7%	$0	Oct 6	Email and collaboration (M365)
+RITM0010638	Laptop (new or replacement)	
+Marcus Reid
+	Same person	Pending approval	
+Catherine Doyle
+	Approval: Manager approval	0%	$1,840	Oct 6	Endpoint management (Intune)
+RITM0010445	Conference room AV support	
+Maya Ortiz
+	
+Maribel Cruz
+	Fulfilling	
+Facilities
+	Confirm room and equipment	11%	$60	Oct 6	Email and collaboration (M365)
+RITM0010608	Laptop (new or replacement)	
+Nia Brooks
+	Same person	Pending approval	
+Sam Patel
+ 
+Avery Chen
+	Approval: Manager approval	0%	$2,650	Oct 6	Endpoint management (Intune)
+RITM0010466	New service request	
+Maya Ortiz
+	Same person	Pending approval	
+Omar Hamid
+	Approval: Portfolio board	0%	$3	Oct 6	Portfolio and project intake
+RITM0010698	Access request	
+Rosa Delgado
+	
+Hana Sato
+	Pending approval	
+Sam Patel
+ 
+Maya Ortiz
+	Approval: Manager approval	3%	$0	Oct 6	Identity (Entra ID)
+RITM0010450	Laptop (new or replacement)	
+Maya Ortiz
+	
+Hana Koval
+	Pending approval	
+Jordan Lee
+	Approval: EU import review	0%	$3,195	Oct 6	Endpoint management (Intune)
+RITM0010575	Access request	
+Rosa Delgado
+	
+Imran Sheikh
+	Pending approval	
+Rina Okafor
+ 
+Maya Ortiz
+	Approval: Manager approval	3%	$0	Oct 6	Identity (Entra ID)
+RITM0010525	Mobile phone	
+Catherine Doyle
+	Same person	Pending approval	
+Omar Hamid
+	Approval: Manager approval	0%	$260	Oct 6	Endpoint management (Intune)
+RITM0010689	AI agent access and token budget	
+Ines Duarte
+	Same person	Pending approval	
+Tom Becker
+ 
+Jordan Lee
+	Approval: Agent owner's manager	2%	$900	Oct 6	AI platform and agents
+RITM0010443	Software license	
+Jordan Lee
+	Same person	Pending approval	
+Avery Chen
+ 
+Rina Okafor
+	Approval: Budget owner	1%	$903	Oct 6	Endpoint management (Intune)
+RITM0010518	Mobile phone	
+Amara Diallo
+	Same person	Pending approval	
+Maya Ortiz
+	Approval: Manager approval	0%	$829	Oct 6	Endpoint management (Intune)
+RITM0010587	Vendor onboarding	
+Zoe Hart
+	Same person	Pending approval	
+Avery Chen
+ 
+Maya Ortiz
+	Approval: Procurement lead	0%	$0	Oct 6	Finance systems
+RITM0010557	Laptop (new or replacement)	
+Omar Hamid
+	Same person	Pending approval	
+Omar Hamid
+ 
+Maya Ortiz
+	Approval: Manager approval	0%	$2,899	Oct 6	Endpoint management (Intune)
+RITM0010441	Laptop (new or replacement)	
+Priya Shah
+	Same person	Pending approval	
+Avery Chen
+	Approval: Budget owner	0%	$3,253	Oct 6	Endpoint management (Intune)
+RITM0010569	New hire onboarding	
+Rina Kovacs
+	Same person	Rejected or cancelled	Closed (rejected)		0%	$4,157	Oct 6	Employee lifecycle
+RITM0010506	Conference room AV support	
+Marcus Reid
+	Same person	Fulfilling	
+Facilities
+	Test audio and camera the day before	34%	$6	Oct 6	Email and collaboration (M365)
+RITM0010701	Laptop (new or replacement)	
+Carla Reyes
+	Same person	Pending approval	
+Sam Patel
+	Approval: Manager approval	0%	$1,840	Oct 6	Endpoint management (Intune)
+RITM0010503	Laptop (new or replacement)	
+Femi Adeyemi
+	Same person	Rejected or cancelled	Closed (rejected)		0%	$2,902	Oct 6	Endpoint management (Intune)
+RITM0010571	Software license	
+Marcus Webb
+	Same person	Pending approval	
+Maya Ortiz
+ 
+Rina Okafor
+	Approval: Manager approval	1%	$110	Oct 6	Endpoint management (Intune)
+RITM0010452	AI agent access and token budget	
+Avery Chen
+	Same person	Pending approval	
+Rina Okafor
+	Approval: Security (restricted or autonomous)	2%	$1,445	Oct 6	AI platform and agents
+RITM0010631	Shared mailbox or Teams channel	
+Kofi Mensah
+	Same person	Fulfilling	
+Kofi Mensah
+	Owner confirms	13%	$1	Oct 6	Email and collaboration (M365)
+
+240 of 240 rows
+Scroll for more · rows are drawn as you scroll
+How a request moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Submitted
+Created from the portal, chat or on behalf of someone.
+APPROVAL GATE
+Approvals
+Each triggered rule asks its approver. A person never approves their own request.
+PERSON
+Queued to a team
+Work lands in a team first.
+PERSON
+Claimed or assigned
+A person claims it, or is assigned with a reason.
+AI AGENT
+Worked
+Automatic and AI steps run; people do the rest.
+PERSON
+Delivered and rated
+Requester confirms and rates the experience.

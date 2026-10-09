@@ -1,0 +1,118 @@
+TRAINING AND LEARNING
+Is everyone ready to do the work safely
+
+91% of mandatory courses due to date are complete, against a 95% target. 6 people have not finished Security awareness 2026, which closed Oct 2, and 10 certificates expire or have expired within 60 days. Learning Coach has reminders ready.
+
+ƒ Mandatory training completion
+Design a course
+Import SCORM or xAPI
+Why am I seeing this?
+Mandatory completion
+91%
+82 of 90 due to date
+People with overdue courses
+6
+of 39
+Certificates expiring or expired
+10
+within 60 days
+Courses in catalog
+10
+0 imported packages
+Catalog and paths
+Assignments and completion
+Certificates and nudges
+Designer and import
+My learning
+Course catalog
+Four families: compliance, security awareness, product training and AI safe use. Select a course for modules, audience and who is behind.
+Design a course
+All
+Compliance
+Security awareness
+Product training
+AI safe use
+Compliance
+Mandatory
+Code of conduct and conflicts of interest
+35 min · 4 modules · pass mark 80% · every 12 months
+95% done of 39
+2 overdue
+Compliance
+Mandatory
+Antitrust and fair process in standards setting
+45 min · 5 modules · pass mark 85% · every 12 months
+54% done of 13
+due Oct 31
+Security awareness
+Mandatory
+Security awareness 2026
+30 min · 5 modules · pass mark 80% · every 12 months
+85% done of 39
+6 overdue
+Security awareness
+Mandatory
+Phishing and social engineering drill
+15 min · 3 modules · pass mark 70% · every 3 months
+41% done of 39
+due Oct 9
+Security awareness
+Mandatory
+Privileged access and change control
+40 min · 4 modules · pass mark 85% · every 12 months
+44% done of 16
+due Oct 23
+AI safe use
+Mandatory
+Using AI safely at Meridian
+25 min · 4 modules · pass mark 80% · every 12 months
+33% done of 39
+due Oct 30
+AI safe use
+Working with the AI drafting assistant
+40 min · 6 modules · pass mark 75% · one time
+0% done of 4
+due Nov 20
+Product training
+Codification Platform: editor basics
+60 min · 6 modules · pass mark 75% · one time
+0% done of 4
+due Nov 13
+Product training
+Mandatory
+Incident response for the service desk
+50 min · 4 modules · pass mark 80% · every 12 months
+60% done of 5
+due Oct 16
+Compliance
+Mandatory
+Data handling and records retention
+30 min · 4 modules · pass mark 80% · every 12 months
+100% done of 12
+due Sep 25
+Learning paths
+Bundles of courses assigned together to a role or a moment such as a start date.
+New hire first week
+Everyone, within 5 days of starting
+Code of conduct and conflic…
+Security awareness 2026
+Using AI safely at Meridian
+Phishing and social enginee…
+63% average completion · 105 minutes total
+Editor certification
+Standards editors before acceptance testing on Nov 13
+Antitrust and fair process …
+Codification Platform: edit…
+Working with the AI draftin…
+18% average completion · 145 minutes total
+Platform and operations access
+Anyone with production access
+Privileged access and chang…
+Security awareness 2026
+Incident response for the s…
+63% average completion · 120 minutes total
+AI champion
+One per team, supports peers
+Using AI safely at Meridian
+Working with the AI draftin…
+17% average completion · 65 minutes total

@@ -1,0 +1,23 @@
+exe_dash 1440 l 
+exe_strat 1440 l 
+exe_mat 1440 l 
+port 1440 l 
+ppm_proj 1440 l 
+ppm_wbs 1440 l 
+ppm_sow 1440 l 
+ims 1440 l 
+plan 1440 l 
+ppm_raid 1440 l 
+inv 1440 l 
+bud_over 1440 l 
+bud_model 1440 l 
+bud_ven 1440 l 
+bud_ben 1440 l 
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at /tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/vp_tools/batch.js:7:30
+
+Node.js v22.22.0

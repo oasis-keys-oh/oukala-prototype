@@ -1,0 +1,176 @@
+STANDARD CHANGE CATALOG
+Pre-approved changes that are also the runbooks
+
+15 standard changes carry their own SOP, validation and rollback. 12 are run or proposed by AI agents, and every run becomes an auto‑approved change record, so the Change process sees what operations did.
+
+ƒ Automation rate
+New standard change
+Automation rules
+Changes
+ITIL 5
+Catalog
+Runbook editor
+Pre-approvals
+PRE-APPROVED
+15
+of 15
+DUE WITHIN 60 DAYS
+0
+renew at the next CAB
+WITH CONDITIONS
+1
+approver always required
+PROMOTION CANDIDATES
+5
+enough evidence for a higher level
+Promotion candidates
+A runbook may move up an automation level when it has run at least 10 times with 94% or better success. The change manager records the decision.
+Confidence 95%
+Change Risk Agent · 95%
+SC-08 Rotate a service secret in Key Vault
+
+Scripted to Agentic with approval: 97% success over 22 runs, Medium risk. At this level an agent diagnoses and a person still approves.
+
+Promote to level 3
+Open
+Confidence 95%
+Change Risk Agent · 95%
+SC-09 Add one web node within the approved tier
+
+Agentic with approval to Autonomous: 94% success over 17 runs, Low risk. At level 4 it runs without approval inside its guardrails.
+
+Promote to level 4
+Open
+Confidence 95%
+Change Risk Agent · 95%
+SC-11 Quarantine a non-compliant device
+
+Agentic with approval to Autonomous: 99% success over 31 runs, Low risk. At level 4 it runs without approval inside its guardrails.
+
+Promote to level 4
+Open
+Confidence 95%
+Change Risk Agent · 95%
+SC-12 Monthly operating system patching
+
+Scripted to Agentic with approval: 98% success over 24 runs, Medium risk. At this level an agent diagnoses and a person still approves.
+
+Promote to level 3
+Open
+Confidence 95%
+Change Risk Agent · 95%
+SC-15 Restart the ERP integration service
+
+Agentic with approval to Autonomous: 95% success over 14 runs, Low risk. At level 4 it runs without approval inside its guardrails.
+
+Promote to level 4
+Open
+Pre-approval register
+What the CAB pre-approved, who approved it, and when it must be reviewed again. An expired pre-approval blocks automation for that entry.
+Status
+All
+2
+Risk
+All
+3
+Export CSV
+STANDARD CHANGE	STATUS	APPROVED BY	APPROVED ON	REVIEW DUE▲	WHAT IS PRE-APPROVED	RISK
+Fail over the portal to the paired region
+SC-10
+	Approved with conditions	
+Nia Brooks
+	2026-07-14	2026-12-14 (69 days)	Incident commander approval is always required. Rehearsed quarterly.	High
+Monthly operating system patching
+SC-12
+	Approved	
+Nia Brooks
+	2026-01-08	2027-01-08 (94 days)	Vendor-released patches approved by security.	Medium
+Run the service health check bundle
+SC-05
+	Approved	
+Nia Brooks
+	2026-01-20	2027-01-20 (106 days)	Read-only diagnostics, no changes.	Low
+Recycle the portal application pool and clear cache
+SC-03
+	Approved	
+Nia Brooks
+	2026-02-11	2027-02-11 (128 days)	One application pool at a time, outside active publishing jobs.	Low
+Renew a managed TLS certificate
+SC-07
+	Approved	
+Nia Brooks
+	2026-02-11	2027-02-11 (128 days)	Managed certificates only.	Low
+Quarantine a non-compliant device
+SC-11
+	Approved	
+Nia Brooks
+	2026-03-01	2027-03-01 (146 days)	Conditional Access block of up to 10 devices at a time.	Low
+Extend a data disk by 25%
+SC-04
+	Approved	
+Nia Brooks
+	2026-03-12	2027-03-12 (157 days)	Growth of up to 25% and 1 TB per disk, managed disks only.	Medium
+Restart the Lumen search indexer service
+SC-01
+	Approved	
+Nia Brooks
+	2026-04-02	2027-04-02 (178 days)	Restart of the indexer service on up to 2 hosts, one at a time.	Low
+Rotate a service secret in Key Vault
+SC-08
+	Approved	
+Nia Brooks
+	2026-04-10	2027-04-10 (186 days)	One secret at a time with the owner's approval.	Medium
+Restart the ERP integration service
+SC-15
+	Approved	
+Nia Brooks
+	2026-04-20	2027-04-20 (196 days)	Restart of the integration service on one host, not during the Oct 28 close.	Low
+Add one web node within the approved tier
+SC-09
+	Approved	
+Nia Brooks
+	2026-05-02	2027-05-02 (208 days)	One node at a time within the hosting tier and budget (CHG0312).	Low
+Scale the SQL managed instance up one tier
+SC-02
+	Approved	
+Nia Brooks
+	2026-05-14	2027-05-14 (220 days)	One tier up only, cost up to $2,000 a day. Anything larger is a normal change.	Medium
+Fail over the VPN gateway pair
+SC-06
+	Approved	
+Nia Brooks
+	2026-06-03	2027-06-03 (240 days)	Active-passive switch only, no configuration changes.	Medium
+Throttle the indexer and scale SQL
+SC-13
+	Approved	
+Nia Brooks
+	2026-06-15	2027-06-15 (252 days)	Throttle first; scale only with approval.	Medium
+Retire stale configuration items
+SC-14
+	Approved	
+Nia Brooks
+	2026-09-08	2027-09-08 (337 days)	Not discovered for 60 days, not Tier 1, not manual.	Low
+15 of 15 rows
+Scroll for more · rows are drawn as you scroll
+Life of a standard change
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Propose
+An owner writes the SOP, validation and rollback.
+APPROVAL GATE
+CAB review
+The Change Advisory Board pre-approves the scope.
+AI AGENT
+Use
+People, scripts or agents run it, each run a change record.
+AUTOMATIC
+Measure
+Success rate and runs build evidence.
+APPROVAL GATE
+Promote
+Higher automation level once evidence is strong.
+PERSON
+Review yearly
+Pre-approval expires unless renewed.

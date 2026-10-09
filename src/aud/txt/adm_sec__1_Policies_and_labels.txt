@@ -1,0 +1,98 @@
+PLATFORM · SECURITY AND ACCESS
+Know who can see what, and why
+
+11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.
+
+ƒ Access review completion
+Policy engine · draft
+Roles
+Policies and labels
+Who can see this
+Identity and break-glass
+Access reviews
+Attribute policies (ABAC)
+Policies compare attributes of the user, the record and the context. Any matching Deny wins. Drag to set the order shown in traces.
+New policy
+Confidential data needs a compliant device
+record.label at least Confidential and user.device is not Compliant
+Deny
+Edit
+Remove
+Finance records stay with finance and oversight
+record.department is Finance and user.department is not in Finance,Executive office,Internal audit
+Deny
+Edit
+Remove
+Confidential data stays in approved countries
+record.label at least Confidential and user.location is not in United States,Canada,Azure US-East
+Deny
+Edit
+Remove
+AI agents never read Restricted data
+user.type is agent and record.label at least Restricted
+Deny
+Edit
+Remove
+Guests see only what is shared with their company
+user.type is guest and record.shared_with_user_org is No
+Deny
+Edit
+Remove
+Allow: records shared with a guest's company
+user.type is guest and record.shared_with_user_org is Yes
+Allow
+Edit
+Remove
+Classification labels
+Four labels, mapped to Purview sensitivity labels so Microsoft 365 files and Oukala records agree.
+Public
+1
+records at this label after inheritance
+Internal
+14
+records at this label after inheritance
+Confidential
+9
+records at this label after inheritance
+Restricted
+1
+records at this label after inheritance
+INHERITANCE RULES
+Child records inherit the highest parent label
+An invoice or risk linked to a Confidential contract becomes Confidential.
+Attachments and exports inherit the record's label
+A CSV export of a Restricted list stays Restricted.
+AI answers carry the highest label of any source
+An agent summary of Confidential contracts is itself Confidential.
+Lowering a label needs the data owner's approval
+Prevents quiet downgrades.
+Assign a label to a record
+Modernize standards publishing
+Reduce operating risk
+Digital Publishing portfolio
+Codification Platform Upgrade
+Taxonomy Data Hub
+FY26 Cloud hosting
+FY26 Vendor services
+Northwind Cloud MSA
+Lumen Data Partners SOW-4
+INV-20418 Northwind
+INV-20451 Northwind
+INV-20433 Lumen
+Vendor delivery slip
+Taxonomy API
+Codification Portal
+Portal latency (Sev 2)
+Portal failover runbook
+INV-20440 Apex Print
+Lease accounting policy
+Capitalization threshold policy
+Lease classification review
+Monthly lease amortization close
+Lease inventory completeness
+Discount rate approval
+SOW-4 milestone 3 acceptance criteria
+Public
+Internal
+Confidential
+Restricted

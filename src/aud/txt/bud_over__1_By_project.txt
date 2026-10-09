@@ -1,0 +1,147 @@
+BUDGETS OVERALL · FY27 (JUL 2026 TO JUN 2027)
+The portfolio is 5.6% over budget, and the reserve can cover it
+
+Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K, $58K after the two requests waiting for approval.
+
+ƒ Forecast variance to approved budget
+ƒ Budget lines over commitment
+ƒ Reserve coverage
+ƒ Capital plan used
+Reforecast
+Why am I seeing this?
+Overview
+By project
+By category
+Forecast
+Reserve and approvals
+
+Drag a budget line onto another project to move its uncommitted money. The system shows the effect on both projects and who must approve under the delegation of authority before anything changes. Keyboard: focus a line and press Alt with the arrow keys.
+
+PR1 · DIGITAL PUBLISHING
+Codification
+Priya Shah
++$62K over
+Approved
+$1.2M
+Forecast
+$1.26M
+Reserve
+$14K
+Platform, architecture and editor time
+Labor · PR1-LAB
+Edit
+$400K approved
+$0 uncommitted
+Lumen SOW-3 search indexer
+Vendor · PR1-VEN
+Edit
+$250K approved
+$0 uncommitted
+Codification Portal hosting (Northwind)
+Cloud · PR1-CLD
+Edit
+$360K approved
+$0 uncommitted
+Azure AI Search and M365 add-ons
+Licences · PR1-LIC
+Edit
+$100K approved
+$0 uncommitted
+Editor test lab devices
+Hardware · PR1-HW
+Edit
+$90K approved
+$5K uncommitted
+PR2 · DIGITAL PUBLISHING
+Taxonomy
+Dev Rao
++$45K over
+Approved
+$860K
+Forecast
+$905K
+Reserve
+$0
+Data engineering and architecture time
+Labor · PR2-LAB
+Edit
+$150K approved
+$0 uncommitted
+Lumen SOW-4 taxonomy engineering and CO-2
+Vendor · PR2-VEN
+Edit
+$610K approved
+$45K over committed
+Azure data platform
+Cloud · PR2-CLD
+Edit
+$60K approved
+$0 uncommitted
+Data catalog licences
+Licences · PR2-LIC
+Edit
+$40K approved
+$0 uncommitted
+PR3 · OPERATIONAL RESILIENCE
+Portal
+Tom Becker
++$20K over
+Approved
+$310K
+Forecast
+$330K
+Reserve
+$15K
+Operations engineers and rehearsal weekends
+Labor · PR3-LAB
+Edit
+$140K approved
+$0 uncommitted
+Standby region in Azure
+Cloud · PR3-CLD
+Edit
+$90K approved
+$20K uncommitted
+Standby network gear
+Hardware · PR3-HW
+Edit
+$40K approved
+$0 uncommitted
+Northwind resilience consulting
+Vendor · PR3-VEN
+Edit
+$40K approved
+$0 uncommitted
+PR4 · RECORDS AND CONTRACTS
+Contracts
+Maya Ortiz
++$36K over
+Approved
+$540K
+Forecast
+$576K
+Reserve
+$0
+Architecture, platform and PM time
+Labor · PR4-LAB
+Edit
+$160K approved
+$0 uncommitted
+Replacement platform implementation (shortlist)
+Vendor · PR4-VEN
+Edit
+$220K approved
+$220K uncommitted
+Contract repository subscription
+Licences · PR4-LIC
+Edit
+$100K approved
+$100K uncommitted
+Repository hosting and storage
+Cloud · PR4-CLD
+Edit
+$60K approved
+$40K uncommitted
+Actual
+Committed
+Forecast, not yet committed

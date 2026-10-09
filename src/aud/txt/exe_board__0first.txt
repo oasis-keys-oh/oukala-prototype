@@ -1,0 +1,115 @@
+BOARD PACK
+The quarterly pack, written from live data
+
+9 of 9 sections are in the pack and 49 numbered sources back its claims; hover a number to see the source, select it to open the record. Status is Draft.
+
+Generate pack
+ƒ Executive decision age
+Claude Sonnet · 90%
+Sections
+Drag to reorder. Switch a section off to leave it out of the pack. Edit rewrites the narrative.
+1. Executive summary
+AI draft · 5 claims
+Claude Sonnet · 92%
+Edit
+2. Strategic progress
+AI draft · 5 claims
+Claude Sonnet · 88%
+Edit
+3. Capability maturity
+AI draft · 4 claims
+Claude Sonnet · 84%
+Edit
+4. Financials
+AI draft · 4 claims
+Claude Sonnet · 90%
+Edit
+5. Delivery
+AI draft · 4 claims
+Claude Sonnet · 89%
+Edit
+6. Risk
+AI draft · 4 claims
+Claude Sonnet · 86%
+Edit
+7. Service and security
+AI draft · 4 claims
+Claude Sonnet · 90%
+Edit
+8. AI governance
+AI draft · 4 claims
+Claude Sonnet · 87%
+Edit
+9. Decisions requested
+AI draft · 7 claims
+Claude Sonnet · 93%
+Edit
+Approval workflow
+Next: Submit for CIO review.
+Draft
+CIO review
+CFO review
+Published
+Submit for CIO review
+Print or save as PDF
+Why am I seeing this?
+APPROVAL LOG
+Draft · Oukala Board Agent · Oct 6 07:55
+Meridian Standards Foundation
+Board of Directors: technology and portfolio report
+Quarter 1, FY27 · Prepared Tuesday, October 6, 2026 · Version 1.0 · Draft
+DRAFT
+1. Executive summary
+
+Delivery health is 71 against a target of 80. The Codification beta moved from Nov 4 to Nov 13 because Lumen delivered the search indexer late.12 Forecast at completion is $3.07M, which is 105.6% of the $2.91M approved budget.3 We are 76% likely to land the beta by Nov 20 and 80% likely by Nov 23.45 Risk exposure is $261K, which uses 90% of the contingency reserve.6 7 decisions are requested in section 8.7
+
+2. Strategic progress
+
+Strategic alignment scores 89 of 100 against a target of 90.1 2 of 5 objectives are on track; Modernize codification, Trusted AI, Editor experience are behind where it should be today.2 Improve editor and reviewer experience has no funded work: Reviewer workload dashboard, Mobile app for editors, Standards publishing analytics.3 Laptop refresh (run budget) ($140K) is funded without an objective.4 Tier 1 availability is 99.62% against a key result of 99.9%.5
+
+3. Capability maturity
+
+Maturity attainment is 70% against the Year 1 target of 85%, and the glide-path index is 93 where 100 means on the line.12 19 of 80 capabilities are forecast to miss their Year 1 target, for example Request fulfillment, Guardrails and human oversight for agents, Service to project impact (CMDB link).3 49 of 68 gaps have a funded project path. 17 have none; the largest is Guardrails and human oversight for agents.45 2 delivered results are waiting for acceptance and not yet counted in maturity.6
+
+4. Financials
+
+$1.69M of the $2.91M approved has been paid, while 45% of planned work is earned. The gap includes prepaid hosting.1 The forecast is $163K over approved budget. Vendor services commitments of $905K exceed the $860K approved by $45K.23 $62,900 of invoices is recommended for hold, including Lumen INV-20433, because milestone 3 is not accepted.4 A $48,000 reforecast for a larger cloud hosting tier is waiting for approval.56
+
+5. Delivery
+
+Codification beta is forecast for Nov 13, 2026, go live for Dec 11, 2026, and the Taxonomy pilot is on track for Dec 2, 2026.1 Schedule performance index is 0.96 and 78% of milestones are on time against a target of 85%.23 The simulation puts the 80% date for go live at Jan 4.4 The Taxonomy pilot depends on the same Lumen staff who are finishing the indexer.5
+
+6. Risk
+
+Lumen delivers the search indexer late again: 40% chance of $220K, expected loss $88K. Owner Dev Rao; mitigation owner Dev Rao.1 Lease subledger cannot support the ASC 842 amendment by Jan 1: 20% chance of $280K, expected loss $56K. Owner Avery Chen; mitigation owner Jordan Lee.2 Portal outage before the failover is tested: 15% chance of $300K, expected loss $45K. Owner Tom Becker; mitigation owner Tom Becker.3 7 risks are open with $261K of expected loss against a $291K reserve. 4 have no mitigation under way.4
+
+7. Service and security
+
+The Codification Portal has had a Sev 2 incident since Oct 5 at 09:12, affecting 140 editors.1 Tier 1 availability is 99.62% against a 99.9% target; mean time to resolve Sev 2 is 3.4 hours.23 The failover runbook is 14 months old. A refresh is drafted and a rehearsal is proposed for Oct 24.4 Microsoft Defender shows no open security incident above Sev 3, and Entra ID Conditional Access covers all staff sign-ins.5
+
+8. AI governance
+
+5 of 6 AI agents run through the gateway with logged lineage and guardrails. Copilot in Teams is observed only.1 Agents are overridden 22% of the time against a 10% target, rising for eight periods.2 AI spend today is $22.40 of a $75 daily cap.3 Guardrails blocked 3 actions this week, including one uncited knowledge draft.4
+
+9. Decisions requested
+
+Approve the $48,000 reforecast for cloud hosting. Moves contingency to cover a larger Northwind tier. Forecast is 105.6% of approved. Forecast Agent drafted it.1 Hold the Lumen payment of $62,900 (INV-20433). Milestone 3 is not accepted and $412,000 is already paid against $390,000 accepted. Invoice Advisor recommends holding.2 Fund the lease subledger retirement (D3, $680K). D3 scores 77, just under the funding line at 80. The ASC 842 amendment takes effect Jan 1, 2027, and the old subledger cannot support it.3 Commit to Nov 23 as the Codification beta date. 76% chance of landing by Nov 20; 80% by Nov 23. The plan date is Nov 13 and the baseline was Nov 4.4 Approve the Portal failover rehearsal, Sat Oct 24 02:00. A tested failover is the fix for Tier 1 availability of 99.62%. Needs a two-hour maintenance window and Ops team overtime.5 Pause expansion of the AI drafting assistant until overrides drop. Agents are overridden 22% of the time against a 10% target. Four of six Lumen holds were overridden. Existing agents keep running.6 Retire 5 duplicate or failing applications, saving $213K a year. AI reviewed cost, use and overlap. Each retirement has an owner and a 4 to 8 week plan in the application portfolio.7
+
+Drafted by Claude Sonnet from live records. Every number links to its source. Not yet approved.
+Oukala · Page 1
+How the board pack is written and approved
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to COBIT 2019.
+Add a step
+Open in Workflow designer
+AI AGENT
+Draft from live data
+The Board Agent writes each section from the records. Every number carries a source.
+PERSON
+Edit
+Executives rewrite sentences in their own voice. Sources stay attached.
+APPROVAL GATE
+CIO review
+The CIO checks delivery, service and AI sections.
+APPROVAL GATE
+CFO review and publish
+The CFO checks financials and publishes. Publishing locks the pack.

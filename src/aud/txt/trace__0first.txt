@@ -1,0 +1,103 @@
+EXECUTIVE TRACE
+From budget to operations
+
+Milestone 3 is not accepted and paying would overpay accepted work; hold. Follow it through the process below.
+
+INV-20433 Lumen
+INV-20418 Northwind
+Portal latency (Sev 2)
+FY26 Vendor services
+Codification Platform Upgrade
+Vendor delivery slip
+Key
+Process flow
+Records
+STRATEGY AND
+PORTFOLIO
+DELIVERY (PMO)
+FINANCE
+VENDORS
+OPERATIONS
+hold
+lessons
+1
+Set objective
+2 objectives, both on track
+ƒ Operational health 82
+2
+Fund portfolio
+$2.06M across 2 projects
+ƒ Financial health 62
+3
+Approve project
+Codification amber, Taxonomy
+green
+ƒ Delivery health 71
+4
+Commit budget line
+B2 is $45K over approved
+ƒ Forecast vs approve… 105.6%
+5
+Sign contract and PO
+2 active vendors
+ƒ Vendor performance … 0.86
+6
+Deliver milestone
+Lumen milestone 3 at 70%
+ƒ Vendor performance … 0.86
+7
+Accept milestone
+Acceptance missing for M3
+ƒ Delivery health 71
+8
+Receive invoice
+3 invoices, $268,500
+ƒ Invoice cycle time 4.2 days
+9
+Approve invoice
+AI
+Advisor recommends 1 hold
+ƒ Auto-approval rate 38%
+10
+Pay
+Payment stays in the AP system
+11
+Service live
+Portal hosted by Northwind
+ƒ Tier 1 availability 99.62%
+12
+Monitor and resolve
+AI
+1 Sev 2 open for 4 hours
+ƒ Mean time to resolv… 3.4h
+13
+Update knowledge
+AI
+Runbook is 14 months old
+ƒ Knowledge freshness 74%
+INV-20433 Lumen: where it comes from and what it touches
+Select any card to open it, or select a step above for its metric and who owns it.
+Run impact analysis
+OBJECTIVE
+Modernize standards publishing
+On track
+advances
+PORTFOLIO
+Digital Publishing portfolio
+$2.06M
+contains
+PROJECT
+Taxonomy Data Hub
+On track
+funded by
+BUDGET LINE
+FY26 Vendor services
+$860K
+committed to
+CONTRACT
+Lumen Data Partners SOW-4
+$610K
+billed
+INVOICE
+INV-20433 Lumen
+$63K

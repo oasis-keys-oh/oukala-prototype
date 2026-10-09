@@ -1,0 +1,167 @@
+SERVICE MANAGEMENT · RELEASES · AGILE DELIVERY
+Plan in sprints, ship in releases
+
+Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests are open.
+
+New story
+Plan sprint
+Estimate a story
+ƒ Program predictability
+ƒ Defect escape rate
+SAFe
+DORA metrics
+Dashboard and stories
+Sprint board
+Backlogs and planning
+Charts
+Pull requests
+Quality and tests
+Teams
+Standards and ceremonies
+Team
+Platform Alpha
+Search and Indexing (Lumen)
+Editor Experience
+Portal Reliability
+Taxonomy Data
+Contracts and Integration
+New story
+Work-in-progress limits protect flow. A story moves to Done only when it meets the definition of done.
+To do
+1 · 1 pts
+ST-1084
+1
+Fix autosave missing for read-only users
+Defect
+Auto 0/4
+Manual 0/1
+In progress limit 6
+0/6 · 0 pts
+Empty
+In review limit 4
+4/4 · 11 pts
+ST-1075
+1
+Automate comment threads for large standards
+Enhancement
+Auto 1/2
+Manual 1/2
+ST-1076
+5
+Validate editor save flow for large standards
+Enhancement
+Auto 5/7
+Manual 1/2
+ST-1083
+3
+Fix bulk edit slow with 500 items
+Defect
+Auto 6/9
+Manual 1/1
+ST-1088
+2
+Improve editor save flow for administrators
+Enhancement
+Auto 4/6
+Manual 2/3
+Testing limit 4
+3/4 · 7 pts
+ST-1078
+3
+Simplify editor save flow for editors
+Enhancement
+Auto 2/2
+Manual 3/4
+ST-1080
+3
+Document draft versioning
+Enabler
+Auto 5/5
+ST-1085
+1
+Validate draft versioning for the nightly batch
+Enhancement
+Auto 4/4
+Manual 3/4
+Done
+10 · 19 pts
+ST-1071
+1
+Fix workspace layout showing stale data
+Defect
+Auto 2/2
+Manual 1/1
+ST-1072
+1
+Fix standard compare panel not saving after a timeout
+Defect
+Auto 6/6
+Manual 1/1
+ST-1073
+1
+Fix publishing queue missing for read-only users
+Defect
+Auto 5/5
+Manual 1/1
+ST-1074
+1
+Fix draft versioning missing for read-only users
+Defect
+Auto 10/10
+Manual 1/1
+ST-1077
+5
+Fix editor save flow wrong after a locale change
+Defect
+Auto 6/6
+Manual 1/1
+ST-1079
+3
+Fix comment threads wrong after a locale change
+Defect
+Auto 5/5
+Manual 1/1
+ST-1081
+1
+Validate document locking for vendors
+Enhancement
+Auto 2/2
+Manual 2/2
+ST-1082
+1
+Fix comment threads returning 502 errors under load
+Defect
+Auto 5/5
+Manual 1/1
+ST-1086
+3
+Refactor comment threads
+Enabler
+Auto 9/9
+ST-1087
+2
+Instrument draft versioning
+Enabler
+Auto 6/6
+Sprint process
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to SAFe, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Backlog refinement
+Product owner and team write acceptance criteria and estimate stories.
+PERSON
+Sprint planning
+Team commits stories up to capacity and sets a goal.
+PERSON
+Build and review
+Work is claimed, built and reviewed through pull requests.
+AI AGENT
+Automated tests
+Test Agent and the pipeline run the suite on every pull request.
+APPROVAL GATE
+Definition of done gate
+A story reaches Done only with merged code, met criteria and passing tests.
+PERSON
+Sprint review and retrospective
+Demo to stakeholders; the team improves its way of working.

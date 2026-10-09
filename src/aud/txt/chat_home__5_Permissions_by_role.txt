@@ -1,0 +1,63 @@
+PLATFORM · CHAT AND AGENTS
+One assistant on every screen, doing the work with your approval
+
+The chat answered 73% of questions without a person and finished 86% of the tasks it started, using 2 steps on average. 41 tools are registered under 10 active guardrails. This session has 0 agent tasks, 0 waiting on a person.
+
+ƒ Chat deflection rate
+ƒ Agent task completion rate
+ƒ Average steps per task
+ƒ Escalation to a person
+Agentic AI governance
+Open the chat
+Dashboard
+Threads
+Activities
+Tool registry
+Guardrails
+Permissions by role
+Audit
+Test console
+Tool permission matrix by role
+Which roles may use which capability. Select a cell to grant or revoke it. Green means allowed.
+CAPABILITY	EXECUTIVE	FINANCE APPROVER	PROJECT MANAGER	SERVICE DESK LEAD	TOOLS USING IT
+Read records and answers	Allowed	Allowed	Allowed	Allowed	13
+Report an incident	Allowed	Allowed	Allowed	Allowed	1
+Assign, prioritize and resolve incidents	Allowed	No	No	Allowed	3
+Order from the catalog	Allowed	Allowed	Allowed	Allowed	1
+Approve or reject requests	Allowed	Allowed	No	Allowed	2
+Request a higher AI token limit	Allowed	Allowed	No	No	1
+Approve AI token limits	Allowed	Allowed	No	No	0
+Create projects, tasks and RAID items	Allowed	No	Allowed	No	4
+Raise demand	Allowed	Allowed	Allowed	No	1
+Create and schedule changes	Allowed	No	No	Allowed	1
+Swap on-call shifts	Allowed	No	No	Allowed	1
+Request time off	Allowed	Allowed	Allowed	Allowed	1
+Draft knowledge articles	Allowed	No	Allowed	Allowed	1
+Build charts and reports	Allowed	Allowed	Allowed	Allowed	1
+Read and summarize contracts	Allowed	Allowed	Allowed	No	1
+See sensitive HR data	Allowed	No	No	No	0
+Run runbooks and standard changes	Allowed	No	No	Allowed	5
+Grant system access	Allowed	No	No	Allowed	3
+Change display settings and chat controls	Allowed	Allowed	Allowed	Allowed	1
+Chat and agentic fulfillment
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to Agentic AI governance, ITIL 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Understand the ask
+The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.
+AUTOMATIC
+Check guardrails and permissions
+Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.
+PERSON
+Show the plan
+Steps, parameters, risk, cost and approvers appear as a card. The person can approve, edit or cancel.
+APPROVAL GATE
+Approvals from other people
+Manager, budget owner or change advisory board steps wait as gates. The chat never approves its own plan for a person who is not allowed.
+AI AGENT
+Run step by step
+Each tool runs against the real module, with live status. A failed step stops the plan and offers retry or handoff.
+AUTOMATIC
+Audit and learn
+Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.

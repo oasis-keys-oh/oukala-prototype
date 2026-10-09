@@ -1,0 +1,204 @@
+Customer view
+Admin view
+This is what a customer sees. They need no access to anything else.
+SELF-SERVICE PORTAL
+Hi Priya, what do you need?
+
+Order equipment, software and access, start a project or ask for help. Say it in your own words and Claude finds the right form and fills in what it can. You have 3 requests in progress, and nothing needs you right now.
+
+Find it
+I need a new laptop
+Give a contractor access to the Contract Repository
+Hire someone new
+Book the boardroom for a hybrid meeting
+Install Visio
+Start a new project
+Browse by category
+Hardware
+2 items
+Software
+1 items
+Access
+1 items
+Onboarding
+2 items
+People moves
+1 items
+Facilities
+1 items
+Data
+1 items
+Collaboration
+1 items
+AI and automation
+1 items
+Projects
+1 items
+Finance
+1 items
+Integration
+1 items
+Service
+1 items
+Popular right now
+Laptop (new or replacement)
+A standard, developer or designer laptop that arrives enrolled in Intune, encrypted and ready to sign in.
+from $1,840
+3 business days
+Needs approval
+4.13 / 5
+Software license
+An application that is not in Company Portal. Paid titles check the license pool first.
+from $180
+1 business day
+Needs approval
+4.09 / 5
+Access request
+Reader, Contributor, Admin or privileged access to a system. Time-bound where it matters.
+No charge
+1 business day
+Needs approval
+4.39 / 5
+Mobile phone
+A company phone with carrier service, enrolled in Intune with work and personal data kept apart.
+from $829
+3 business days
+Needs approval
+3.99 / 5
+Everything you can order
+Laptop (new or replacement)
+A standard, developer or designer laptop that arrives enrolled in Intune, encrypted and ready to sign in.
+from $1,840
+3 business days
+Needs approval
+4.13 / 5
+Mobile phone
+A company phone with carrier service, enrolled in Intune with work and personal data kept apart.
+from $829
+3 business days
+Needs approval
+3.99 / 5
+Software license
+An application that is not in Company Portal. Paid titles check the license pool first.
+from $180
+1 business day
+Needs approval
+4.09 / 5
+New project request
+Propose work for the portfolio. Cost, risk and strategy decide who must approve before it becomes a funded project.
+No charge
+10 business days to a decision
+Needs approval
+3.88 / 5
+Access request
+Reader, Contributor, Admin or privileged access to a system. Time-bound where it matters.
+No charge
+1 business day
+Needs approval
+4.39 / 5
+New hire onboarding
+One order for everything a new person needs on day one: laptop, accounts, badge, phone, training and security.
+from $2,260
+10 business days before start
+Needs approval
+3.64 / 5
+Employee offboarding
+Close accounts at the right moment, protect data, collect devices and release licenses back to the pool.
+No charge
+Done on the last day
+Needs approval
+4.68 / 5
+Role or location change
+A mover keeps what they need and loses what they no longer should: access, groups, equipment and cost center.
+No charge
+1 business day
+Needs approval
+3.62 / 5
+Conference room AV support
+A technician sets up and attends hybrid meetings, recordings or livestreams in the Boardroom and training rooms.
+No charge
+1 business day
+Needs approval
+4.03 / 5
+Vendor onboarding
+Add a supplier to the vendor master with screening, risk review, contract and payment details verified.
+No charge
+1 business day
+Needs approval
+3.5 / 5
+AI agent access and token budget
+Register an agent, give it tool access, or raise a Claude token limit with the guardrails that match its autonomy.
+from $1,440
+1 business day
+Needs approval
+New service request
+Propose a new service for the catalog. Architecture, finance and service owners shape the offerings before it is published.
+No charge
+15 business days
+Needs approval
+4.7 / 5
+API key
+A scoped, expiring key for an API in the gateway, delivered once through a secure link.
+No charge
+1 business day
+Needs approval
+4.26 / 5
+New report
+Ask the data team to build a Power BI report. Personal data triggers a privacy review.
+from $1,425
+3 business days
+Needs approval
+4.48 / 5
+Shared mailbox or Teams channel
+A shared mailbox, distribution list or private Teams channel with named owners.
+No charge
+1 business day
+Needs approval
+4.68 / 5
+My requests
+8 in total
+Laptop (new or replacement)
+Pending approval
+RITM0010441 · opened Oct 6
+Waiting for approval · Waiting for Avery Chen
+Expected Oct 12
+New report
+Fulfilling
+RITM0010437 for Lucas Brandt · opened Oct 4
+Building · With the Data team team
+Expected Oct 10
+Employee offboarding
+Approved, scheduled
+RITM0010455 · opened Oct 1
+Next · Scheduled to start Oct 10
+Expected Oct 8
+Software license
+Deployed
+RITM0010419 · opened Sep 21
+Done
+See all 8
+Order for someone else
+Managers and delegates can request on behalf of another person. The price, approvals and delivery follow the person it is for.
+Choose
+
+Try Hana Koval, a contractor in Prague. A laptop for her needs different approvals than one for you, and you will see why on the form.
+
+What happens when you order
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Find it
+Search, browse, or describe it to Claude.
+AI AGENT
+Fill the form
+The form changes with the item. Claude can fill it from your words.
+AUTOMATIC
+See the price and approvers
+Shown before you submit.
+APPROVAL GATE
+Approve
+Only the approvers your answers trigger.
+AUTOMATIC
+Track it
+You see stages and who has it, as far as the item allows.

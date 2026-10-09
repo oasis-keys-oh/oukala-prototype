@@ -1,0 +1,214 @@
+MATURITY MODELS
+Are we on the path to the strategy?
+
+10 maturity models measure 80 capabilities. Attainment against the Year 1 target is 70%, we are at 93 on the glide path (100 is on the line), and 49 of 68 gaps have a funded project path. 19 capabilities are forecast to miss end of FY27, and 2 delivered results are waiting for acceptance before it counts. Largest uncovered gap: Guardrails and human oversight for agents.
+
+ƒ Maturity attainment
+ƒ Glide-path index
+ƒ Capability delivery coverage
+CMMI
+ITIL 5
+Why am I seeing this?
+New capability
+Ingest a model
+What if we need level 5?
+ATTAINMENT
+70%
+target 85%
+GLIDE-PATH INDEX
+93
+100 is on the line
+DELIVERY COVERAGE
+72%
+gaps with a funded path
+BEHIND THE GLIDE PATH
+19
+of 80 capabilities
+AWAITING ACCEPTANCE
+2
+delivered, not yet counted
+Overview and library
+Strategy on track?
+Models and levels
+Projects raise levels
+What if we need level N
+Ingest a model
+Build a model
+Autonomous service delivery
+Project and delivery traceability
+Process capability (CMMI style)
+IT service management practices
+Technology business management
+Data management
+Cybersecurity (NIST CSF 2.0 tiers)
+AI governance
+Software delivery (DORA)
+Portfolio management (P3M3)
+OUKALA (OWN) · VERSION 1.2
+ITIL 5
+Autonomous service delivery
+
+How much of resolving, changing and fulfilling service work is done by agents instead of people, and under what controls. Meridian wrote this model for its own platform. Owner Jordan Lee. 9 measurable capabilities, average level 2.3 (scaled to 5).
+
+On track
+Edit levels and details
+Add capability
+What would level 4 take?
+The levels
+What each level means in Autonomous service delivery. The bar shows how many capabilities are at that level today.
+1
+Manual
+
+People do the work from memory. Tools only record it.
+
+0
+2
+Assisted
+
+Agents suggest and draft. A person decides and does every step.
+
+6
+3
+Partially automated
+
+Routine steps run by rule with no person. Everything else is manual or assisted.
+
+3
+4
+Agentic with approval
+
+Agents plan and execute whole tasks. A named person approves each action before it runs.
+
+0
+5
+Autonomous within guardrails
+
+Agents act alone inside written limits (cost, scope, data). Humans review samples and exceptions. Overrides are tracked.
+
+0
+Radar: today against targets
+Top-level areas of the model, on its own 5-level scale.
+Incident triage and routi…
+Incident resolution by ag…
+Change risk assessment an…
+Request fulfillment
+Event correlation and pro…
+Knowledge capture and reu…
+Guardrails and human over…
+Access and identity provi…
+Level today
+Year 1 target
+Year 3 target
+Capabilities in this model
+Each row shows level now, Year 1 target and forecast. Select a row for evidence, criteria and actions.
+Model
+All
+1
+Status
+All
+3
+Objective
+All
+5
+Group by 
+None
+Model
+Objective
+Export CSV
+CAPABILITY	MODEL	LEVEL NOW TO YEAR 1	FORECAST YEAR 1	STATUS	OBJECTIVE	OWNER
+Incident triage and routing
+Autonomous service delivery ›
+	Autonomous service delivery	
+2.5 to 3.5
+	3.5	On track	Resilient operations, Editor experience	
+Tom Becker
+
+Automatic classification and routing
+Autonomous service delivery › Incident triage and routing
+	Autonomous service delivery	
+3 to 4
+	4	On track	Editor experience	
+Tom Becker
+
+Priority and impact prediction
+Autonomous service delivery › Incident triage and routing
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Tom Becker
+
+Incident resolution by agents
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	4	On track	Resilient operations	
+Tom Becker
+
+Change risk assessment and approval
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Nia Brooks
+
+Request fulfillment
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	2	Behind	Editor experience	
+Sam Patel
+
+Event correlation and problem detection
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 3
+	3	On track	Resilient operations	
+Sam Patel
+
+Knowledge capture and reuse
+Autonomous service delivery ›
+	Autonomous service delivery	
+3 to 4
+	4	Watch	Editor experience, Trusted AI	
+Jordan Lee
+
+Guardrails and human oversight for agents
+Autonomous service delivery ›
+	Autonomous service delivery	
+2 to 4
+	3	Behind	Trusted AI, Resilient operations	
+Jordan Lee
+
+Access and identity provisioning
+Autonomous service delivery ›
+	Autonomous service delivery	
+3 to 3
+	3	On track	Resilient operations	
+Rina Okafor
+10 of 10 rows
+Scroll for more · rows are drawn as you scroll
+How a capability's level is set and how it moves
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to CMMI, ISO/IEC 33020, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Choose or ingest a model
+A model comes from the library, from a file the parser reads, or from the builder. Levels need criteria.
+AI AGENT
+AI maps capabilities
+The Maturity Agent maps each capability to a strategic objective and the services that realize it, with a confidence. A person confirms.
+PERSON
+Assess today's level
+The owner scores the level from evidence: linked metrics, reviews and audits.
+APPROVAL GATE
+Set targets
+Level wanted at year 1, 3 and 5. Parents pass targets to children and prerequisites.
+PERSON
+Projects deliver
+A project or request raises a capability from X to Y at a milestone.
+APPROVAL GATE
+Accept and credit
+A named person accepts the work. Only then does the level count today.
+AUTOMATIC
+Recalculate roll-ups
+Objective, service, dashboard and board numbers update automatically.

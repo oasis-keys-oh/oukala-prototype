@@ -1,0 +1,322 @@
+CMDB · HEALTH AND GOVERNANCE
+Trust the CMDB, then prove it
+
+Health is 89.4 (target 90). Completeness is 95.4%, correctness 78.4% and compliance 92.6%. 12 CIs fail at least one audit rule and 39 have a finding of some kind. 6 remediation tasks are open and 3 of 7 owners have attested in the current campaigns.
+
+ƒ CMDB health score
+ƒ CMDB completeness
+ƒ CMDB correctness
+ƒ CMDB compliance
+ITIL 5
+New attestation campaign
+Why am I seeing this?
+OVERALL HEALTH
+89.4
+target 90
+FAILING AUDIT RULES
+12
+CIs with 1+ failure
+OPEN TASKS
+6
+of 6 remediation tasks
+ATTESTED
+3 of 7
+owners in open campaigns
+RETIRED
+0
+kept for audit
+Scores and rules
+Remediation tasks
+Assign groups
+Attestation
+Lifecycle and audit
+Three scores, one health number
+Overall = 0.4 × Completeness + 0.3 × Correctness + 0.3 × Compliance
+ƒ CMDB health score
+CMDB completeness
+95.4% · target 95
+95
+Completeness = weighted attributes filled ÷ weighted attributes required
+4,049 ÷ 4,246 = 95.4
+ƒ CMDB completeness
+CMDB correctness
+78.4% · target 97
+78
+Correctness = 1 − (stale + orphan + duplicate CIs) ÷ active CIs
+1 − 35 ÷ 162 = 0.8 (shown as %)
+ƒ CMDB correctness
+CMDB compliance
+92.6% · target 92
+93
+Compliance = CIs passing every audit rule ÷ active CIs
+150 ÷ 162 = 92.6
+ƒ CMDB compliance
+Health = 0.4 × 95.4 + 0.3 × 78.4 + 0.3 × 92.6 = 89.4
+Audit rules
+Switch a rule off if it does not fit Meridian; the score recalculates at once. Relationship rules come from the data model.
+New relationship rule
+RULE	WHAT IT CHECKS	APPLIES TO	FAILING	CONTROL
+CR1	Every CI has a named owner
+Someone must be accountable for a change, an outage and a recertification.
+	162	4	
+On
+Create task
+
+CR2	Every CI has a support group
+Incidents route to the support group; without one they land in the general queue.
+	162	2	
+On
+Create task
+
+CR3	Mission-critical CIs are monitored
+A CI marked mission critical must report availability from a monitoring source.
+	33	2	
+On
+Create task
+
+CR4	Production CIs are not still in Planned or Build
+A production CI in a planning stage means the lifecycle was never advanced.
+	161	0	
+On
+
+CR5	Operational status matches lifecycle
+A retired CI cannot be Operational, and an operational CI cannot be Retired.
+	162	0	
+On
+
+RR1	Relationship: Application runs on Computer or Cloud or Software
+An application with no host cannot be patched, recovered or costed.
+	17	1	
+On
+Create task
+
+RR2	Relationship: Database runs on Computer or Cloud
+A database needs a host so backup and failover plans can be traced.
+	5	2	
+On
+Create task
+
+RR3	Relationship: Virtual machine hosted on Virtualization host or Cloud subscription or Server
+Every virtual machine sits on a host or subscription; otherwise capacity and cost are invisible.
+	13	5	
+On
+Create task
+
+RR4	Relationship: Server hosted on Rack
+Physical servers must be placed in a rack for change windows and power planning.
+	3	1	
+On
+Create task
+
+RR5	Relationship: Application service depends on Application
+An application service with no application behind it is an empty shell.
+	0	0	
+On
+
+RR6	Relationship: Business service depends on Service offering
+Business services are consumed through offerings (CSDM service consumption).
+	0	0	
+On
+Findings
+Every CI with a stale, orphan, duplicate or audit failure. Select a row to open it.
+39
+Class
+All
+9
+First finding
+All
+6
+Support group
+All
+8
+Export CSV
+CONFIGURATION ITEM	CLASS	FIRST FINDING	SUPPORT GROUP	OWNER	HEALTH
+
+Azure DNS
+ci_dns
+	
+Cloud resource	Orphan	Platform team	
+Sam Patel
+	90
+
+Entra ID tenant
+ci_tenant
+	
+Cloud resource	Orphan	Security	
+Rina Okafor
+	91
+
+Conditional access policies
+ci_ca
+	
+Application	Orphan	Security	
+Rina Okafor
+	89
+
+MFA service
+ci_mfa
+	
+Application	Orphan	Security	
+Rina Okafor
+	89
+
+codif-sql-prd
+ci_cod2
+	
+SQL Server instance	Missing relationship (RR2)	Data team	
+Priya Shah
+	91
+
+codification-platform
+ci_cod4
+	
+Application	Orphan	Ops team	
+Priya Shah
+	89
+
+portal-web-01
+ci_por0
+	
+Virtual machine	Missing relationship (RR3)	Ops team	
+Tom Becker
+	93
+
+portal-web-02
+ci_por1
+	
+Virtual machine	Missing relationship (RR3)	Ops team	
+Tom Becker
+	89
+
+portal-cdn
+ci_por2
+	
+Cloud resource	Orphan	Platform team	
+Tom Becker
+	90
+
+codification-portal
+ci_por4
+	
+Application	Orphan	Platform team	
+Tom Becker
+	91
+
+search-cluster
+ci_sea2
+	
+Application	Orphan	Platform team	
+Marco Ellis
+	91
+
+search-api
+ci_sea4
+	
+Application	Critical but unmonitored +1 more	Platform team	
+Marco Ellis
+	83
+
+contract-app
+ci_cr0
+	
+Application	Orphan	Platform team	
+Maya Ortiz
+	91
+
+contract-sql
+ci_cr1
+	
+SQL Server instance	Missing relationship (RR2) +1 more	Data team	
+Maya Ortiz
+	85
+
+lease-subledger
+ci_erp2
+	
+Application	Orphan	Finance	
+Avery Chen
+	84
+
+ap-app
+ci_fin0
+	
+Application	Orphan	Finance	
+Avery Chen
+	91
+
+fin-reporting
+ci_fin1
+	
+Application	Orphan	Finance	
+Avery Chen
+	86
+
+Exchange Online tenant
+ci_m360
+	
+Cloud resource	Orphan	Ops team	
+Sam Patel
+	85
+
+Teams
+ci_m361
+	
+Application	Orphan	Ops team	
+Sam Patel
+	89
+
+SharePoint Online
+ci_m362
+	
+Application	Orphan	Ops team	
+Sam Patel
+	89
+
+synapse-sql
+ci_dat2
+	
+SQL Server instance	Orphan	Data team	
+Dev Rao
+	91
+
+data-gateway
+ci_dat3
+	
+Virtual machine	Missing relationship (RR3)	Data team	
+Dev Rao
+	90
+
+Intune tenant
+ci_end0
+	
+Cloud resource	Orphan	Service desk	
+NM
+Northwind Managed Services
+	87
+
+Autopilot profiles
+ci_end1
+	
+Application	Orphan	Service desk	
+NM
+Northwind Managed Services
+	91
+
+39 of 39 rows
+Scroll for more · rows are drawn as you scroll
+How CMDB quality is governed
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Measure
+Completeness, correctness and compliance are computed from the data model and rules.
+AI AGENT
+Open tasks
+Each rule failure or finding group becomes a remediation task for the responsible group.
+PERSON
+Fix or escalate
+Groups fix data; large gaps become a demand item in the portfolio.
+APPROVAL GATE
+Attest
+Owners confirm what they own each quarter.

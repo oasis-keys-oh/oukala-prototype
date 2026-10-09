@@ -1,0 +1,118 @@
+TRAINING AND LEARNING
+Is everyone ready to do the work safely
+
+91% of mandatory courses due to date are complete, against a 95% target. 6 people have not finished Security awareness 2026, which closed Oct 2, and 10 certificates expire or have expired within 60 days. Learning Coach has reminders ready.
+
+ƒ Mandatory training completion
+Design a course
+Import SCORM or xAPI
+Why am I seeing this?
+Mandatory completion
+91%
+82 of 90 due to date
+People with overdue courses
+6
+of 39
+Certificates expiring or expired
+10
+within 60 days
+Courses in catalog
+10
+0 imported packages
+Catalog and paths
+Assignments and completion
+Certificates and nudges
+Designer and import
+My learning
+My learning
+Omar's transcript. The mini-player below is what a learner sees; each step it takes sends an xAPI statement to the stream.
+Code of conduct and confl… ✓
+Antitrust and fair proces…
+Security awareness 2026
+Phishing and social engin…
+Using AI safely at Meridi…
+MODULE 1 OF 5
+Why attackers target standards bodies
+
+Security awareness 2026. In this module you will see a short scenario and then choose what to do. It takes about 6 minutes.
+
+Back
+Mark complete and continue
+Progress
+0%
+1
+Why attackers target standards bodies
+2
+Spotting phishing
+3
+Passwords, passkeys and MFA
+4
+Handling drafts and documents
+5
+Reporting something odd
+?
+Quiz
+xAPI statement stream
+Every launch, progress step and result the player sends is a statement: who (actor), did what (verb), to what (object), with what result. Select one to see the JSON.
+Learning Coach · 90%
+failed
+Greg Nolan
+Using AI safely at Meridian
+08:55:13
+launched
+Greg Nolan
+Using AI safely at Meridian
+08:40:51
+passed
+Leah Moss
+Security awareness 2026
+08:21:06
+completed
+Leah Moss
+Security awareness 2026
+08:21:05
+progressed
+Leah Moss
+Security awareness 2026
+08:09:40
+launched
+Leah Moss
+Security awareness 2026
+08:02:11
+{
+  "id": "b22821573-5e1a-4c0f-9d7e-0f6a2c9d41ab",
+  "actor": {
+    "objectType": "Agent",
+    "name": "Greg Nolan",
+    "mbox": "mailto:greg.nolan@meridian.example"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/failed",
+    "display": {
+      "en-US": "failed"
+    }
+  },
+  "object": {
+    "objectType": "Activity",
+    "id": "https://learn.meridian.example/courses/C6",
+    "definition": {
+      "type": "http://adlnet.gov/expapi/activities/course",
+      "name": {
+        "en-US": "Using AI safely at Meridian"
+      }
+    }
+  },
+  "result": {
+    "success": false,
+    "score": {
+      "scaled": 0.62
+    }
+  },
+  "context": {
+    "platform": "Oukala Learning",
+    "extensions": {
+      "https://oukala.example/ext/package": "Native"
+    }
+  },
+  "timestamp": "2026-10-06T08:55:13Z"
+}

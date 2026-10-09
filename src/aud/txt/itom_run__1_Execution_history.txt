@@ -1,0 +1,208 @@
+RUNBOOKS AND AUTOMATION
+From alert to action, with guardrails
+
+7 automation rules connect alerts to 15 pre‑approved standard changes. A restart of the Lumen indexer, for example, is diagnosed by an AI agent and approved by Marco Ellis before it runs. Every run is a standard change record, so it is part of the change process, not around it.
+
+ƒ Automation rate
+ƒ Mean time to acknowledge (MTTA)
+New automation rule
+Standard change catalog
+ITIL 5
+SRE: SLOs and error budgets
+Automation rules
+Execution history
+Simulator
+Guardrails
+EXECUTIONS
+30
+last 7 days
+COMPLETED
+27
+90% success
+FAILED OR ROLLED BACK
+2
+rolled back automatically where possible
+HELD BY GUARDRAILS
+1
+sent to people instead
+WAITING FOR APPROVAL
+0
+nothing pending
+Executions per day
+Dry runs and real runs, last 7 days.
+0
+6
+11
+Wed
+Thu
+Fri
+Sat
+Sun
+Mon
+Tue
+Execution history
+Every run with its step log, approval trace and audit trail. Select a row to open it.
+Result
+All
+3
+Workflow
+All
+3
+Standard change
+All
+7
+Export CSV
+EXECUTION	STANDARD CHANGE	CI	WORKFLOW	EXECUTOR	APPROVAL	RESULT	CHANGE RECORD
+EX-2203
+11:32
+	SC-04 Extend a data disk by 25%	adf-pipelines	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2211
+11:21
+	SC-05 Run the service health check bundle	codification-platform	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2230
+10:47
+	SC-06 Fail over the VPN gateway pair	codification-platform	Agentic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2224
+10:09
+	SC-02 Scale the SQL managed instance up one tier	contract-blob	Agentic	
+Ops Agent
+	Dev Rao (approved)	Completed	archived
+EX-2218
+06:42
+	SC-03 Recycle the portal application pool and clear cache	data-gateway	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2225
+05:16
+	SC-02 Scale the SQL managed instance up one tier	Edge firewall pair	Agentic	
+Ops Agent
+	Dev Rao (approved)	Completed	archived
+EX-2221
+05:07
+	SC-01 Restart the Lumen search indexer service	adf-pipelines	Agentic	
+Ops Agent
+	Marco Ellis (approved)	Completed	archived
+EX-2223
+04:53
+	SC-06 Fail over the VPN gateway pair	erp-app-01	Agentic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2229
+03:57
+	SC-06 Fail over the VPN gateway pair	adf-pipelines	Agentic · dry run	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2209
+01:41
+	SC-04 Extend a data disk by 25%	codif-lb	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Rolled back	archived
+EX-2207
+00:36
+	SC-07 Renew a managed TLS certificate	data-gateway	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2208
+Oct 5 23:36
+	SC-04 Extend a data disk by 25%	apim-gateway	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2219
+Oct 5 21:16
+	SC-04 Extend a data disk by 25%	data-gateway	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2222
+Oct 5 19:59
+	SC-01 Restart the Lumen search indexer service	codification-portal	Agentic	
+Ops Agent
+	Marco Ellis (approved)	Completed	archived
+EX-2228
+Oct 5 10:16
+	SC-04 Extend a data disk by 25%	data-gateway	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2226
+Oct 5 09:40
+	SC-03 Recycle the portal application pool and clear cache	data-gateway	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2217
+Oct 5 09:35
+	SC-01 Restart the Lumen search indexer service	adf-pipelines	Agentic	
+Ops Agent
+	Marco Ellis (approved)	Completed	archived
+EX-2201
+Oct 5 06:34
+	SC-07 Renew a managed TLS certificate	apim-gateway	Deterministic	
+Ops Agent
+	Not needed	Blocked	
+EX-2214
+Oct 5 05:18
+	SC-03 Recycle the portal application pool and clear cache	contract-blob	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2210
+Oct 4 19:44
+	SC-05 Run the service health check bundle	codif-lb	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2206
+Oct 4 17:14
+	SC-07 Renew a managed TLS certificate	data-gateway	Deterministic	
+Ops Agent
+	Not needed	Completed	archived
+EX-2212
+Oct 4 13:34
+	SC-06 Fail over the VPN gateway pair	data-gateway	Agentic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+EX-2213
+Oct 4 09:56
+	SC-01 Restart the Lumen search indexer service	codification-platform	Agentic	
+Ops Agent
+	Marco Ellis (approved)	Completed	archived
+EX-2215
+Oct 3 13:18
+	SC-02 Scale the SQL managed instance up one tier	apim-gateway	Agentic	
+Ops Agent
+	Dev Rao (approved)	Completed	archived
+EX-2216
+Oct 3 09:46
+	SC-04 Extend a data disk by 25%	contract-blob	Deterministic	
+Ops Agent
+	Sam Patel (approved)	Completed	archived
+
+30 of 30 rows
+Scroll for more · rows are drawn as you scroll
+From alert to action
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, SRE: SLOs and error budgets.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Alert matches a rule
+Rules run in priority order.
+APPROVAL GATE
+Guardrails
+Pre-approved, blast radius, rate, freeze, error budget, rollback.
+AI AGENT
+Agent diagnoses
+Agentic workflows gather evidence and propose.
+APPROVAL GATE
+Approval
+A person approves when risk or policy needs it.
+AUTOMATIC
+Standard change record
+An auto-approved change is created.
+AUTOMATIC
+Run and validate
+Playbook steps, then validation; rollback on failure.
+AUTOMATIC
+Audit
+Every step and approval is logged.

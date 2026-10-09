@@ -1,0 +1,155 @@
+KNOWLEDGE MANAGEMENT · KCS V6 · SOURCE, OUTPUT, AUTOMATION
+Knowledge that runs the work
+
+54 knowledge items feed answers and agents. 6 are ready to automate and 4 already run as agent skills, with a 89% success rate. 5 published items are stale, and 2 fixes were flagged by skill runs.
+
+ƒ Article reuse rate
+ƒ Automation readiness
+ƒ Agent skill success rate
+New knowledge item
+Agent skills
+Knowledge graph
+Why am I seeing this?
+ITEMS
+54
+42 published
+STALE
+5
+past 12 months
+QUALITY SCORE
+83
+target 85
+LINK RATE
+71%
+closed tickets with a link
+DEFLECTION
+31%
+of support searches
+SKILL SUCCESS
+89%
+433 runs
+Lifecycle
+Library
+KCS board
+Freshness
+Quality and usage
+Acting as Gates change with the KCS role. Try dragging a card you are not allowed to move.
+Candidate
+Contributor
+Publisher
+Coach
+Capture
+Draft
+Write it down while you solve it. Not validated yet.
+2 articles
+Acceptable use of AI tools for standards drafting
+KB0475 · Policy · Maya Ortiz
+Structure gate ok · 90%
+Q 82
+Rebuild the Lumen search index
+KB0480 · How-to · Sam Patel
+Gate: 65% of 70% complete
+Q 73
+Structure
+In review
+Fill every section, add sources, name a reviewer.
+1 article
+Portal failover runbook refresh (RB-031 v8)
+KB0502 · How-to · Ops Agent
+Needs Tom Becker
+Q 99
+Reuse
+Published
+Findable and used. Every reuse is counted.
+13 articles
+Fail over the Codification Portal to the secondary region (RB-031)
+KB0421 · How-to · Tom Becker
+Stale: review due
+Q 71
+Search results stay stale for up to 20 minutes after a deploy
+KB0377 · Known error · Sam Patel
+Review by Jul 14, 2027
+Q 97
+Why is a new standard paragraph missing from search?
+KB0388 · FAQ · Sam Patel
+Review by Aug 20, 2027
+Q 94
+Retention of signed lease and contract records
+KB0310 · Policy · Avery Chen
+Review by Mar 10, 2027
+Q 89
+Monthly lease amortization close
+KB0312 · SOP · Avery Chen
+Stale: review due
+Q 74
+Approve a discount rate change
+KB0295 · SOP · Avery Chen
+Review by May 18, 2027
+Q 95
+Break-glass access to Entra ID admin roles
+KB0450 · SOP · Jordan Lee
+Review by Jun 22, 2027
+Q 88
+Reset multifactor authentication for an editor
+KB0451 · How-to · Tom Becker
+Review by Sep 1, 2027
+Q 90
+Request vendor access to the staging site
+KB0462 · SOP · Priya Shah
+Stale: review due
+Q 69
+Share a draft standard with a reviewer outside Meridian
+KB0140 · FAQ · Maya Ortiz
+Stale: review due
+Q 57
+Taxonomy API returns 429 during bulk import
+KB0420 · Known error · Dev Rao
+Review by Aug 11, 2027
+Q 94
+Quarterly access recertification
+KB0333 · SOP · Nia Brooks
+Review by Jan 19, 2027
+Q 74
+Where can I find the published Codification release notes?
+KB0470 · FAQ · Priya Shah
+Review by Sep 15, 2027
+Q 94
+Improve
+Retiring
+Flagged as wrong, stale or replaced. Fix or retire.
+1 article
+Contract Repository upload fails over 100 MB
+KB0350 · Known error · Maya Ortiz
+Retire: Publisher
+Q 74
+Role gates on each move
+Capture to Structure:
+Contributor, at least 70% complete, reviewer named.
+Structure to Reuse (publish):
+Publisher role and an approval from the named reviewer. Shown as the lock chip.
+Reuse to Improve:
+any Contributor can flag an article that is wrong or stale.
+Improve to Retired:
+Publisher or Coach, from the article panel. 1 article is already retired.
+How knowledge flows from source to output to automation
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to KCS v6, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Capture
+Write it down while solving the ticket, with its source.
+AI AGENT
+Structure
+Fill the sections, add links to service, CI and process.
+APPROVAL GATE
+Review and publish
+A reviewer checks it. Publish needs a Publisher.
+AUTOMATIC
+Reuse
+Search, chat, agent assist and portal guidance cite it.
+PERSON
+Improve
+Flag it, fix it, reuse the fix.
+APPROVAL GATE
+Promote to a skill
+Procedural items with high readiness become agent skills.

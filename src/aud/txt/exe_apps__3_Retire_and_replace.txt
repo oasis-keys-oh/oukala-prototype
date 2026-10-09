@@ -1,0 +1,113 @@
+APPLICATION PORTFOLIO
+Which applications earn their keep?
+
+Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+
+ƒ Application spend to retire or move
+Add application
+Why am I seeing this?
+Annual application cost
+$4.11M
+15 applications
+Invest
+$3.11M
+7 apps, high value and healthy
+Migrate
+$790K
+3 apps, valuable but failing
+Eliminate or duplicate
+$213K
+5.2% of spend
+Value and health
+TIME quadrants
+Inventory
+Retire and replace
+Retire and replace recommendations
+AI found 5 applications to retire, worth $213,000 a year, and 2 to replace through projects already in flight.
+ƒ Application spend to retire or move
+Reporting warehouse DW2 (on-premises SQL) 
+Eliminate
+Retire · saves $95K a year
+
+Reporting warehouse DW2 (on-premises SQL) duplicates Data warehouse DW1 (Azure Synapse). 30 users can move with no loss of function.
+
+Claude Sonnet · 88%
+Effort 4 to 6 weeks · owner Dev Rao
+Accept retirement
+Details
+Confluence Server wiki 
+Eliminate
+Retire · saves $46K a year
+
+Confluence Server wiki duplicates Microsoft 365 (E5). 70 users can move with no loss of function.
+
+Claude Sonnet · 88%
+Effort 4 to 6 weeks · owner Jordan Lee
+Accept retirement
+Details
+Zoom (legacy licenses) 
+Tolerate
+Retire · saves $38K a year
+
+Zoom (legacy licenses) duplicates Microsoft 365 (E5). 46 users can move with no loss of function.
+
+Claude Sonnet · 88%
+Effort 4 to 6 weeks · owner Sam Patel
+Accept retirement
+Details
+Standards survey tool 
+Tolerate
+Retire · saves $22K a year
+
+Standards survey tool duplicates Microsoft 365 (E5). 12 users can move with no loss of function.
+
+Claude Sonnet · 88%
+Effort 4 to 6 weeks · owner Chief Editor
+Accept retirement
+Details
+Editor macros database 
+Eliminate
+Retire · saves $12K a year
+
+Business value 45 and technical health 18 are both low. 9 users, $12K a year.
+
+Claude Sonnet · 82%
+Effort 6 to 8 weeks · owner Chief Editor
+Accept retirement
+Details
+Contract Repository 
+Migrate
+Replace
+
+Valuable (71) but failing (health 33) and already at sunset. A funded project is the replacement path.
+
+Claude Sonnet · 74%
+Effort Tracked in its project · owner Maya Ortiz
+Accept and track
+Details
+Lease subledger (ERP) 
+Migrate
+Replace
+
+Valuable (66) but failing (health 29) and already at sunset. A funded project is the replacement path.
+
+Claude Sonnet · 74%
+Effort Tracked in its project · owner Avery Chen
+Accept and track
+Details
+How an application gets its TIME class
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to TBM Taxonomy and ATUM, TOGAF.
+Add a step
+Open in Workflow designer
+PERSON
+Score
+Business value and technical health are scored 0 to 100 by the owner and the architect.
+AUTOMATIC
+Classify
+The scores place it in Invest, Migrate, Tolerate or Eliminate.
+AI AGENT
+Recommend
+The Portfolio Agent finds duplicates and low-value applications and drafts a retirement plan.
+APPROVAL GATE
+Approve plan
+The CIO accepts a retirement or replacement, which commits the saving.

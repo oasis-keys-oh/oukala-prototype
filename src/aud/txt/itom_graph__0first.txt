@@ -1,0 +1,170 @@
+CMDB · DEPENDENCY VIEWS
+Walk the graph to find what breaks and what caused it
+
+db-prod-02 sits in a graph of 178 nodes and 236 relationships. If it fails, 7 items within 3 steps are affected, including 6 business services (3 Tier 1) and up to 180,420 users. Only this neighborhood is drawn, so it stays fast: 8 nodes in 10 ms.
+
+ƒ CMDB correctness
+CSDM 5
+ITIL 5
+Impact analysis for the focus
+Why am I seeing this?
+BLAST RADIUS
+7
+3 application, 1 virtual machine, 1 container, 1 technology management service
+SERVICES AFFECTED
+6
+3 Tier 1 · 180,420 users
+DRAWN
+8
+of 8 in range, 162 CIs in total
+RENDER TIME
+10 ms
+neighborhood only, target under 300 ms
+Largest blast radius
+CIs whose failure reaches the most business services, Tier 1 first. Select one to open it in the graph below.
+Azure East US 2 subscription
+Cloud subscription
+78
+11 services, 6 Tier 1
+Edge firewall pair
+Firewall
+34
+16 services, 6 Tier 1
+Lumen managed search contract LMN-2024-118
+Contract
+13
+3 services, 3 Tier 1
+data-gateway
+Virtual machine
+12
+6 services, 3 Tier 1
+lumen-indexer-01
+Virtual machine
+11
+3 services, 3 Tier 1
+lumen-indexer-02
+Virtual machine
+11
+3 services, 3 Tier 1
+search-index-store
+Storage
+11
+3 services, 3 Tier 1
+codif-blob
+Storage
+15
+2 services, 2 Tier 1
+Explorer
+Hover to light up neighbors, select to trace a path, double-click to refocus, drag to rearrange, scroll to zoom. Groups of similar nodes collapse into a dashed +N more circle.
+Downstream impact
+Focus: a service or a CI
+Downstream impact
+Upstream causes
+Both directions
+Depth 3 of 6
+Relationship types
+All types
+11
+Classes
+All classes
+40
+Labels
+Fit
+Reset
++
+−
+Fit
+Services and capabilities
+Software
+Hardware
+Cloud
+Locations
+Vendors, contracts, information
+Collapsed group, click to expand
+Degraded or down (red ring)
+Hover or select a node
+Hover lights up its direct neighbors and dims the rest. Select a node to trace the path from db-prod-02 to it; the dashed red line shows the direction a failure travels. Double-click a node to make it the new focus.
+Path finder
+How are two things connected? Pick any two CIs or services.
+From
+To
+Find shortest path
+Walks relationships in either direction and shows how the two are connected.
+Dot-walk query builder
+Walk the model class by class, for example business service to offering to application service to application to virtual machine to server to rack, and see how many records exist at each step.
+CSDM 5
+Try
+Service to rack
+Who depends on db-prod-02
+What a server connects to
+Start from the graph focus
+Lease subledger (ERP)
+1
+Path
+Walk
+Each name is a class. The walk follows relationships step by step and counts what it finds at every step. The arrow shows which way it went: down follows Depends on, up follows Used by.
+Walk one step further
+↓ Business service
+3
+↓ Service offering
+2
+↑ Business service
+1
+Result: 1 item
+At the end of the path
+1
+Lease subledger (ERP)
+Tier 2
+Business service
+Show this walk in the graph
+Back to the neighborhood
+List view of this neighborhood
+The same nodes as text, grouped by distance from the focus. Useful on a phone and with a screen reader.
+Depth 0
+1
+db-prod-02
+Operational
+SQL Server instance
+Depth 1
+4
+codification-platform
+Operational
+Application
+search-api
+Operational
+Application
+codification-portal
+Operational
+Application
+data-gateway
+Operational
+Virtual machine
+Depth 2
+2
+ctr-taxonomy-api
+Operational
+Container
+Data platform hosting (technology service)
+Operational
+Technology management service
+Depth 3
+1
+Data platform (application service)
+Operational
+Application service
+How impact analysis walks the graph
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+PERSON
+Pick a start
+A service or a CI, from an incident, problem, change or a search.
+AUTOMATIC
+Walk the relationships
+Breadth-first search follows Depends on edges backward for impact, forward for causes, up to six hops.
+AUTOMATIC
+Roll up to services
+Every service reached is listed with tier, users and revenue exposure.
+APPROVAL GATE
+Decide
+The change manager approves, defers or adds mitigations.

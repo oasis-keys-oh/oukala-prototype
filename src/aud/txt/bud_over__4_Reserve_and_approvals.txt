@@ -1,0 +1,109 @@
+BUDGETS OVERALL · FY27 (JUL 2026 TO JUN 2027)
+The portfolio is 5.6% over budget, and the reserve can cover it
+
+Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K, $58K after the two requests waiting for approval.
+
+ƒ Forecast variance to approved budget
+ƒ Budget lines over commitment
+ƒ Reserve coverage
+ƒ Capital plan used
+Reforecast
+Why am I seeing this?
+Overview
+By project
+By category
+Forecast
+Reserve and approvals
+Opening reserve
+$180K
+6.2% of approved budgets
+Drawn so far
+$29K
+2 approved draws
+Balance now
+$151K
+$93K pending requests
+After pending
+$58K
+$41K of overrun still unfunded
+Reserve at a glance
+The reserve is the CFO's pool for the whole portfolio. Project contingency stays inside each project's own budget.
+ƒ Reserve coverage
+Request reserve
+Drawn $29K
+Pending $93K
+Left after pending $58K
+Reserve coverage = $151K balance ÷ $134K overrun not yet funded by an approved draw = 113%
+
+If both pending requests are approved, $58K is left and $41K of forecast overrun still needs a source (PR3 $5K and PR4 $36K). The reserve covers it with $17K to spare.
+
+Waiting for you
+These are inside your delegated authority as CIO (up to $100,000). Approve or reject here.
+RL-04: $48K from reserve to Codification
+Next hosting tier after the Oct 5 latency incident. Drafted by the Forecast Agent from the Northwind quote.
+Approve
+Reject
+RL-05: $45K from reserve to Taxonomy
+Lumen change order CO-2 signed above the approved vendor budget.
+Approve
+Reject
+Reserve ledger
+Every opening balance, draw and decision, in order. Approving or rejecting here posts to the ledger and writes the audit log.
+Reforecast
+ENTRY	PROJECT	REASON	AMOUNT	BALANCE	STATUS	
+RL-01
+Jul 1, 2026
+	Opening balance	FY27 opening management reserve, held by the CFO for the whole portfolio.	+$180,000	$180,000	Approved
+CFO approved
+	
+RL-02
+Sep 2, 2026
+	Codification
+PR1-VEN
+	Lumen indexer slip (+$12K) and test-lead time (+$8K), net of $6K hardware underspend.	−$14,000	$166,000	Approved
+Maya Ortiz approved
+	
+RL-03
+Sep 21, 2026
+	Portal
+PR3-CLD
+	Standby region quote above estimate after the incident review.	−$15,000	$151,000	Approved
+Maya Ortiz approved
+	
+RL-04
+Oct 6, 2026
+	Codification
+PR1-CLD
+	Next hosting tier after the Oct 5 latency incident. Drafted by the Forecast Agent from the Northwind quote. 
+Forecast Agent · 84%	−$48,000	Not posted	Pending
+CIO to approve
+	
+Approve
+Reject
+
+RL-05
+Oct 2, 2026
+	Taxonomy
+PR2-VEN
+	Lumen change order CO-2 signed above the approved vendor budget.	−$45,000	Not posted	Pending
+CIO to approve
+	
+Approve
+Reject
+Approval rules that apply here
+Reserve releases follow the delegation of authority. The invoice auto-approval rule from the Invoice approval screen sits underneath.
+T1 up to $10,000
+Budget owner
+T2 up to $25,000
+Portfolio lead
+T3 up to $100,000
+CIO
+T4 up to $250,000
+CFO
+T5 up to $1,000,000
+CEO
+T6 up to any amount
+Board finance committee
+Invoices. Rule r1 clears invoices up to $25,000 from vendors with an index of 0.85 or better when they match the PO. Rule r4 sends anything over $100,000 to the CFO. Reserve draws, transfers and change orders are not covered by those rules and always follow the tiers on the left.
+Open delegation of authority
+Open invoice rules

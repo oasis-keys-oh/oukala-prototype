@@ -1,0 +1,61 @@
+AI AND GOVERNANCE · AI GATEWAY AND TOKENOMICS
+Route every model call on purpose
+
+The gateway routes across 5 approved models and spend is $53.70 this month, on pace for $277 against a $300 cap. An accepted result costs about $0.90 on average, and guardrails stopped or redacted 60 items in 30 days.
+
+ƒ AI cost per outcome
+ƒ Guardrail catch rate
+Control Tower and kill switches
+Routing
+Models and catalog
+Tokenomics
+Budget guard
+Guardrails
+Model catalog
+5 of 7 models are approved. A denied model is removed from every route immediately. Prices are per million tokens.
+Add a model for review
+MODEL	INPUT	OUTPUT	LATENCY	QUALITY	RESIDENCY	ZERO RETENTION	HIGHEST LABEL	DECISION
+Claude Sonnet 5.5
+Anthropic	$3.00	$15.00	1.9s	92
+	US region	Yes	Restricted	
+Approve
+Deny
+
+Claude Haiku 5
+Anthropic	$0.80	$4.00	0.6s	81
+	US region	Yes	Confidential	
+Approve
+Deny
+
+GPT-5
+OpenAI	$1.25	$10.00	2.2s	90
+	US region	Yes	Confidential	
+Approve
+Deny
+
+Gemini 3 Pro
+Google	$2.00	$12.00	1.7s	88
+	US and EU	No	Internal	
+Approve
+Deny
+In review
+
+Azure OpenAI GPT-4.1 (Meridian tenant)
+Microsoft	$2.00	$8.00	1.4s	86
+	US East, private endpoint	Yes	Restricted	
+Approve
+Deny
+
+Llama 4 Scout (self-hosted)
+Meridian Azure	$0.20	$0.20	0.9s	72
+	Meridian Azure, no egress	Yes	Restricted	
+Approve
+Deny
+
+Unvetted public model
+Other	$1.00	$3.00	1.2s	70
+	Unknown	No	Public	
+Approve
+Deny
+
+Quality is the score on Meridian's own 200-task evaluation set (drafting, scoring, summarizing), not a vendor benchmark. Latency is the median time to a full answer.
