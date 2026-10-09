@@ -1,0 +1,6 @@
+.reg-bar{display:grid;grid-template-columns:minmax(0,1fr) minmax(60px,1.2fr) auto;gap:10px;align-items:center}
+.reg-track{height:8px;border-radius:99px;background:color-mix(in srgb,var(--ink) 8%,transparent);overflow:hidden}
+.reg-track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.reg-fix{display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.reg-fix:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.reg-fix,.reg-track i{transition:none}.reg-fix:hover{transform:none}}

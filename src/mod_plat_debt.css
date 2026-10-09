@@ -1,0 +1,17 @@
+.debt-bars{display:grid;gap:10px}
+.debt-bar{display:grid;grid-template-columns:minmax(120px,1.1fr) minmax(70px,1.4fr) 52px;gap:10px;align-items:center}
+.debt-bar>b{text-align:right;white-space:nowrap}
+.debt-track{height:9px;border-radius:99px;background:color-mix(in srgb,var(--ink) 8%,transparent);overflow:hidden}
+.debt-track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.debt-list{display:grid;gap:8px}
+.debt-li{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px 12px;border-radius:14px;background:var(--glass2);border:1px solid transparent;color:var(--ink);font:inherit;cursor:pointer;min-width:0;transition:transform .2s,border-color .2s}
+.debt-li:hover,.debt-li:focus-visible{transform:translateY(-1px);border-color:var(--accent)}
+.debt-li-t{font-weight:700;overflow-wrap:break-word}
+.debt-lin{display:grid;gap:10px;margin-bottom:8px}
+.debt-lin>div{padding:10px 12px;border-radius:14px;background:var(--glass2)}
+.debt-lin p{margin:4px 0 0}
+.debt-steps{display:grid;gap:6px;padding-left:20px;margin:6px 0 12px}
+.debt-code,.gate-code{margin:0;padding:14px;border-radius:14px;background:var(--accent-soft);font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto;max-height:420px;white-space:pre;color:var(--ink)}
+[data-debt-hrs]{width:100%;accent-color:var(--accent)}
+@media (max-width:560px){.debt-bar{grid-template-columns:minmax(0,1fr) 52px}.debt-bar .debt-track{grid-column:1/-1;grid-row:2}}
+@media (prefers-reduced-motion:reduce){.debt-track i,.debt-li{transition:none}.debt-li:hover{transform:none}}
