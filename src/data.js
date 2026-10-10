@@ -26,7 +26,7 @@ const NODES=[
 {id:"O1",t:"obj",n:"Modernize standards publishing",s:"good",c:"confirmed",owner:"CEO office",story:"Cut the time to publish a standard from 23 days to 15 by end of FY27.",a:{Owner:"CEO office",Horizon:"FY26 to FY27","Legacy ID":"OBJ-0007"}},
 {id:"O2",t:"obj",n:"Reduce operating risk",s:"good",c:"confirmed",owner:"CFO",story:"Keep Tier 1 services above 99.9% and every vendor above a 0.85 index.",a:{Owner:"CFO",Horizon:"FY26"}},
 {id:"P1",t:"port",n:"Digital Publishing portfolio",s:"warn",c:"confirmed",owner:"Maya Ortiz",story:"Two projects, $2.06M approved, amber because the beta slipped nine days.",amt:2060000,a:{Budget:"$2.06M",Health:"Amber",Projects:"2","Cost center code":"CC-4410"}},
-{id:"PR1",t:"proj",n:"Codification Platform Upgrade",s:"warn",c:"confirmed",owner:"Priya Shah",story:"Beta moved from Nov 4 to Nov 13 because Lumen delivered the search indexer late.",a:{Sponsor:"Chief Editor",Milestone:"Beta Nov 13 (slipped 9 days)",Health:"Amber","Cost center code":"CC-4411"}},
+{id:"PR1",t:"proj",n:"Standards Platform Upgrade",s:"warn",c:"confirmed",owner:"Priya Shah",story:"Beta moved from Nov 4 to Nov 13 because Lumen delivered the search indexer late.",a:{Sponsor:"Chief Editor",Milestone:"Beta Nov 13 (slipped 9 days)",Health:"Amber","Cost center code":"CC-4411"}},
 {id:"PR2",t:"proj",n:"Taxonomy Data Hub",s:"good",c:"confirmed",owner:"Dev Rao",story:"Pilot is on track for Dec 2 but depends on the same Lumen staff.",a:{Sponsor:"CIO",Milestone:"Pilot Dec 2",Health:"Green"}},
 {id:"B1",t:"bud",n:"FY26 Cloud hosting",s:"warn",c:"confirmed",owner:"Tom Becker",story:"$1.2M approved and $740K paid; a larger hosting tier could add $48K.",amt:1200000,paid:740000,a:{Approved:"$1,200,000",Committed:"$1,050,000",Paid:"$740,000"}},
 {id:"B2",t:"bud",n:"FY26 Vendor services",s:"bad",c:"confirmed",owner:"Tom Becker",story:"Commitments of $905K exceed the $860K approved by $45K.",amt:860000,paid:770000,a:{Approved:"$860,000",Committed:"$905,000",Paid:"$770,000"}},
@@ -37,7 +37,7 @@ const NODES=[
 {id:"I2",t:"inv",n:"INV-20433 Lumen",s:"bad",c:"confirmed",owner:"Invoice Advisor",story:"Milestone 3 is not accepted and paying would overpay accepted work; hold.",amt:62900,a:{Due:"Oct 19",Recommendation:"Hold"}},
 {id:"R1",t:"risk",n:"Vendor delivery slip",s:"warn",c:"hypothesis",owner:"Dev Rao",story:"A 40% chance Lumen delays the Taxonomy pilot, worth about $88K of expected loss.",amt:88000,a:{Likelihood:"40%",Impact:"$220,000"}},
 {id:"S2",t:"svc",n:"Taxonomy API",s:"good",c:"confirmed",owner:"Data team",story:"Tier 2 service running normally.",a:{Tier:"2",Owner:"Data team"}},
-{id:"S1",t:"svc",n:"Codification Portal",s:"warn",c:"confirmed",owner:"Platform team",story:"Tier 1 service hosted by Northwind; 99.62% available against a 99.9% target.",a:{Tier:"1",Hosting:"Northwind"}},
+{id:"S1",t:"svc",n:"Standards Portal",s:"warn",c:"confirmed",owner:"Platform team",story:"Tier 1 service hosted by Northwind; 99.62% available against a 99.9% target.",a:{Tier:"1",Hosting:"Northwind"}},
 {id:"INC1",t:"inc",n:"Portal latency (Sev 2)",s:"bad",c:"confirmed",owner:"Ops Agent",story:"Editors saw slow pages since 09:12; 140 users affected.",a:{Opened:"Oct 5 09:12",Impact:"140 editors"}},
 {id:"K1",t:"kb",n:"Portal failover runbook",s:"warn",c:"unclear",owner:"Knowledge Curator",story:"Last reviewed 14 months ago; a refresh draft is waiting for its owner.",a:{Version:"v7",Reviewed:"14 months ago","Legacy ID":"KB-0031"}}
 ];
@@ -48,12 +48,12 @@ const ROLE={Owner:"story",Horizon:"story",Budget:"metric",Health:"metric",Projec
 const N=id=>NODES.find(n=>n.id===id);
 const nbrs=id=>EDGES.filter(e=>e[0]===id||e[1]===id).map(e=>({o:e[0]===id?e[1]:e[0],l:e[2],out:e[0]===id}));
 
-/* ---- process flow: lanes by owner, numbered steps, like the Codification flow ---- */
+/* ---- process flow: lanes by owner, numbered steps, like the Standards flow ---- */
 const LANES=[["strat","Strategy and portfolio","--u3"],["deliv","Delivery (PMO)","--p4"],["fin","Finance","--w1"],["vend","Vendors","--s3"],["ops","Operations","--e4"]];
 const STEPS=[
 {id:"s1",ln:0,col:0,n:"Set objective",st:"2 objectives, both on track",m:"m_ops",recs:["O1","O2"]},
 {id:"s2",ln:0,col:1,n:"Fund portfolio",st:"$2.06M across 2 projects",m:"m_fin",recs:["P1"]},
-{id:"s3",ln:1,col:2,n:"Approve project",st:"Codification amber, Taxonomy green",m:"m_delivery",recs:["PR1","PR2"]},
+{id:"s3",ln:1,col:2,n:"Approve project",st:"Standards amber, Taxonomy green",m:"m_delivery",recs:["PR1","PR2"]},
 {id:"s4",ln:2,col:3,n:"Commit budget line",st:"B2 is $45K over approved",m:"m_burn",recs:["B1","B2"]},
 {id:"s5",ln:3,col:4,n:"Sign contract and PO",st:"2 active vendors",m:"m_vendor",recs:["V1","V2"]},
 {id:"s6",ln:3,col:5,n:"Deliver milestone",st:"Lumen milestone 3 at 70%",m:"m_vendor",recs:["R1"]},
@@ -107,7 +107,7 @@ const RULES=[
 /* ---- people, calendar and First Officer ---- */
 const MEET_TYPES={proj:["Project","--p4"],vend:["Vendor","--s3"],ops:["Operations","--e4"],fin:["Finance","--w1"],pers:["Personal","--u3"],board:["Governance","--u1"]};
 const MEETINGS=[
-{id:"m1",d:5,s:10,e:11,t:"Codification steering group",k:"proj",st:"done",rec:5,auto:4,rev:1,room:"Teams",att:["Maya Ortiz","Dev Rao","Priya Shah","Tom Becker"],link:"PR1",sum:"Kept the Nov 13 beta date, held the next Lumen payment until milestone 3 is accepted, and asked for a hosting cost estimate."},
+{id:"m1",d:5,s:10,e:11,t:"Standards steering group",k:"proj",st:"done",rec:5,auto:4,rev:1,room:"Teams",att:["Maya Ortiz","Dev Rao","Priya Shah","Tom Becker"],link:"PR1",sum:"Kept the Nov 13 beta date, held the next Lumen payment until milestone 3 is accepted, and asked for a hosting cost estimate."},
 {id:"m2",d:5,s:14,e:14.5,t:"Northwind vendor sync",k:"vend",st:"done",rec:2,auto:2,rev:0,room:"Webex",att:["Tom Becker","Northwind account team"],link:"V1",sum:"Confirmed September usage and the storage add-on order."},
 {id:"m3",d:6,s:9,e:9.5,t:"IT operations daily",k:"ops",st:"done",rec:3,auto:3,rev:0,room:"Teams",att:["Ops team"],link:"INC1",sum:"Portal latency opened as a Sev 2; failover rehearsal scheduled for 16:00."},
 {id:"m4",d:6,s:11,e:12,t:"Finance review prep",k:"fin",st:"done",rec:4,auto:3,rev:1,room:"Teams",att:["Tom Becker","Dana (AP lead)"],link:"B2",sum:"Vendor services is $45,000 over commitment; reforecast drafted for approval."},
@@ -122,7 +122,7 @@ const MEETINGS=[
 ];
 const EXTRACTED=[
 {id:"x1",kind:"Decision",txt:"Hold the next Lumen payment until milestone 3 is accepted",line:2,conf:.9,auto:true,rec:"Links INV-20433 and SOW-4"},
-{id:"x2",kind:"Action",txt:"Priya Shah confirms milestone 3 acceptance criteria by Friday",line:3,conf:.95,auto:true,rec:"Task on Codification Platform Upgrade"},
+{id:"x2",kind:"Action",txt:"Priya Shah confirms milestone 3 acceptance criteria by Friday",line:3,conf:.95,auto:true,rec:"Task on Standards Platform Upgrade"},
 {id:"x3",kind:"Action",txt:"Tom Becker brings the hosting tier estimate to the finance review on the 15th",line:5,conf:.88,auto:true,rec:"Task on FY26 Cloud hosting"},
 {id:"x4",kind:"Risk",txt:"Taxonomy pilot slips if Lumen staff stay on the indexer",line:6,conf:.72,auto:false,rec:"Risk on Taxonomy Data Hub, linked to the Lumen risk"},
 {id:"x5",kind:"Decision",txt:"Keep the Nov 13 beta date and review again on Oct 22",line:7,conf:.93,auto:true,rec:"Milestone note plus a review meeting"}];
@@ -158,7 +158,7 @@ pm:{n:"Project manager",who:"Delivery lead, sees milestones, risks and vendors",
   needs:[{ic:"warn",t:"Confirm milestone 3 acceptance criteria",d:"Due Friday. First Officer filed this from Monday's steering group.",go:["fo","m9"],a:"Open"},{ic:"info",t:"Prepare the design review at 15:00",d:"A pre-read is ready; the Aspen room is booked with a display wall.",go:["fo","m5"],a:"Open"},{ic:"bad",t:"Taxonomy pilot risk needs an owner",d:"40% chance Lumen staff are still on the indexer.",go:["trace","R1"],a:"Trace"}],
   sugg:["What slipped and why?","Show my meetings this week","Who is the risk owner?"]},
 ops:{n:"Service desk lead",who:"Sees incidents, services and knowledge",home:["needs","rings","insights","projects"],rings:["m_ops","m_avail","m_kb"],nav:["home","trace","kg","tower","metrics","fo","loop","inv"],
-  story:'The <b>Codification Portal</b> has had a Sev 2 since 09:12 and availability is <b>99.62%</b> against 99.9%. The failover runbook is 14 months old, so a refresh draft is waiting.',
+  story:'The <b>Standards Portal</b> has had a Sev 2 since 09:12 and availability is <b>99.62%</b> against 99.9%. The failover runbook is 14 months old, so a refresh draft is waiting.',
   needs:[{ic:"bad",t:"Portal latency (Sev 2)",d:"140 editors affected. Ops Agent is running RB-031.",go:["trace","INC1"],a:"Trace"},{ic:"warn",t:"Review the failover runbook refresh",d:"Knowledge Curator drafted changes; you own the article.",go:["trace","K1"],a:"Open"},{ic:"info",t:"Change advisory board tomorrow 10:00",d:"Hosting tier change is on the agenda with a risk score.",go:["fo","m6"],a:"Open"}],
   sugg:["Why is the portal slow?","Which articles are stale?","What changed this week?"]}
 };
@@ -174,7 +174,7 @@ const UNUSED=[["Cost center code","Appears on 3 record types. In no story, no me
 /* ============ Knowledge graph: one graph for standards, policies, procedures, controls, CIs, data, reports ============ */
 const KT={std:["Standard","--u1"],par:["Paragraph","--u4"],pol:["Policy","--p4"],sop:["Procedure","--p5"],ctl:["Control","--w1"],ci:["Configuration item","--s3"],dat:["Data element","--p1"],rpt:["Report","--e4"],file:["Source file","--faint"]};
 const KGN=[
-{id:"std1",t:"std",n:"ASC 842 Leases",owner:"Controller",x:30,y:250,sub:"FASB Codification topic",hrs:0},
+{id:"std1",t:"std",n:"ASC 842 Leases",owner:"Controller",x:30,y:250,sub:"FASB Standards topic",hrs:0},
 {id:"par1",t:"par",n:"842-20-25 Lessee recognition",owner:"Controller",x:215,y:130,sub:"Initial and subsequent measurement",hrs:2},
 {id:"par2",t:"par",n:"842-20-50 Disclosures",owner:"Controller",x:215,y:370,sub:"Footnote requirements",hrs:2},
 {id:"pol1",t:"pol",n:"Lease accounting policy",owner:"Controller",x:420,y:60,sub:"v4, approved Mar 2026",hrs:6},
@@ -198,5 +198,5 @@ const KGE=[["std1","par1","contains"],["std1","par2","contains"],["par1","pol1",
 const ALLN=()=>[...NODES.map(n=>({...n,x:null})),...KGN];
 const ANODE=id=>KGN.find(n=>n.id===id)||NODES.find(n=>n.id===id);
 const ALLE=()=>[...EDGES,...KGE,...(window.KG_EXTRA||[])];
-const KSCEN=[["std1","FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)"],["ci1","Replace the lease subledger"],["ci2","Contract repository maintenance window"],["S1","Codification Portal major release"],["pol1","Rewrite the lease accounting policy"]];
+const KSCEN=[["std1","FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)"],["ci1","Replace the lease subledger"],["ci2","Contract repository maintenance window"],["S1","Standards Portal major release"],["pol1","Rewrite the lease accounting policy"]];
 const TREE=[["Accounting",[["Policies",[["Lease Accounting Policy v4.docx","linked","f1"],["Capitalization Threshold Policy v2.docx","linked","pol2"],["Revenue Recognition Policy v3.docx","unlinked"]]],["Checklists",[["Lease classification checklist.xlsx","linked","f2"],["Month-end close checklist.xlsx","suggest","sop2","Month-end close for leases (88%)"]]],["Standards",[["FASB ASC 842 summary.pdf","suggest","std1","ASC 842 Leases (96%)"],["GASB 87 comparison.pdf","unlinked"]]]]],["Vendor management",[["Lumen SOW-4 signed.pdf","suggest","V2","Lumen Data Partners SOW-4 (93%)"],["Vendor scorecard template.xlsx","unlinked"]]],["IT operations",[["Portal failover runbook v7.docx","linked","K1"],["Change request template.docx","unlinked"]]]];

@@ -10,7 +10,7 @@ st.decs=st.decs||[
  {id:"DEC-0412",f:"cab",d:"2026-09-30",t:"Approve hosting tier change CR-8841 for the weekend of Oct 17",why:"Portal availability is 99.62% against a 99.9% target. The larger tier removes the latency spikes.",by:"nb",st:"Approved"},
  {id:"DEC-0411",f:"cab",d:"2026-09-30",t:"Defer the Contract Repository connector change until after the Nov 16 freeze",why:"Three of nine open changes collide with the freeze. This one has no rollback test yet.",by:"nb",st:"Deferred"},
  {id:"DEC-0410",f:"arb",d:"2026-09-29",t:"Use the Taxonomy Data Hub as the single source for subject codes",why:"Three copies of the code list exist today. One owner, one API, others read from it.",by:"jl",st:"Approved"},
- {id:"DEC-0409",f:"arb",d:"2026-09-29",t:"Reject a second search vendor for the Codification Platform",why:"Lumen owns indexing under SOW-4. A second vendor would double integration work.",by:"jl",st:"Rejected"},
+ {id:"DEC-0409",f:"arb",d:"2026-09-29",t:"Reject a second search vendor for the Standards Platform",why:"Lumen owns indexing under SOW-4. A second vendor would double integration work.",by:"jl",st:"Rejected"},
  {id:"DEC-0408",f:"pc",d:"2026-09-10",t:"Fund Disaster recovery for the Portal ahead of the mobile app",why:"A Sev 2 showed there is no tested failover. Tier 1 availability depends on it.",by:"mo",st:"Approved"},
  {id:"DEC-0407",f:"pc",d:"2026-09-10",t:"Hold the Data warehouse consolidation until the Taxonomy hub pilot",why:"Both draw on the Data team in the same months.",by:"mo",st:"Deferred"},
  {id:"DEC-0406",f:"sec",d:"2026-09-16",t:"Require the privileged access course before any production role is granted",why:"Two access reviews found roles held without training.",by:"oh",st:"Approved"},

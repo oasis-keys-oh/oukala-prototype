@@ -1,11 +1,11 @@
 /* EXTRACT of v4 kcs_viz (Visualization builder) from mod_kcs.js. Lines 581-658 + forms 678-686. Full v4 file: ref/mod_kcs_v4_full.js (also contains click/input handlers with data-kcs-vz* attrs and K.vz/K.dash state at line 104). */
 /* ---------- Visualization builder ---------- */
 const WK=["Jul 20","Jul 27","Aug 3","Aug 10","Aug 17","Aug 24","Aug 31","Sep 7","Sep 14","Sep 21","Sep 28","Oct 5"],MO=["Jul","Aug","Sep","Oct"];
-const SV6=[["Codification Portal",14,"Performance",1],["Search service",9,"Data",2],["Taxonomy API",5,"Performance",2],["Contract Repository",7,"Data",3],["Lease subledger (ERP)",4,"Data",2],["Entra ID",11,"Access",1]];
+const SV6=[["Standards Portal",14,"Performance",1],["Search service",9,"Data",2],["Taxonomy API",5,"Performance",2],["Contract Repository",7,"Data",3],["Lease subledger (ERP)",4,"Data",2],["Entra ID",11,"Access",1]];
 const incRows=[],slaRows=[],spRows=[];
-WK.forEach((w,wi)=>SV6.forEach(s=>{["P1","P2","P3"].forEach((p,pi)=>{let n=Math.round(s[1]*[.14,.34,.6][pi]*(.65+H(w+s[0]+p)*.8));if(s[0]==="Codification Portal"&&wi===11)n+=pi===0?3:pi===1?4:2;if(s[0]==="Search service"&&wi===10&&pi>0)n+=3;incRows.push({week:w,service:s[0],priority:p,category:s[2],count:n,hrs:[3.2,5.5,9][pi]*(.8+H(w+p+s[0])*.5)})});
- let a=s[3]===1?99.93:s[3]===2?99.88:99.8;a-=H(w+s[0]+"s")*.18;if(s[0]==="Codification Portal"&&wi===11)a=99.34;slaRows.push({service:s[0],week:w,tier:"Tier "+s[3],att:+a.toFixed(2),breaches:a<99.5?3:a<99.75?1:0})}));
-[["Codification",{Labor:130,Vendor:92,Cloud:20}],["Taxonomy",{Labor:96,Vendor:60,Cloud:12}],["Portal Resilience",{Labor:30,Vendor:6,Cloud:9}],["Contract Refresh",{Labor:8,Vendor:2,Cloud:3}]].forEach(p=>MO.forEach((m,mi)=>Object.keys(p[1]).forEach(t=>{const b=p[1][t]*(.75+mi*.12+H(p[0]+m+t)*.2);spRows.push({project:p[0],type:t,month:m,spend:Math.round(b),commit:Math.round(p[1][t]*1.12)})})));
+WK.forEach((w,wi)=>SV6.forEach(s=>{["P1","P2","P3"].forEach((p,pi)=>{let n=Math.round(s[1]*[.14,.34,.6][pi]*(.65+H(w+s[0]+p)*.8));if(s[0]==="Standards Portal"&&wi===11)n+=pi===0?3:pi===1?4:2;if(s[0]==="Search service"&&wi===10&&pi>0)n+=3;incRows.push({week:w,service:s[0],priority:p,category:s[2],count:n,hrs:[3.2,5.5,9][pi]*(.8+H(w+p+s[0])*.5)})});
+ let a=s[3]===1?99.93:s[3]===2?99.88:99.8;a-=H(w+s[0]+"s")*.18;if(s[0]==="Standards Portal"&&wi===11)a=99.34;slaRows.push({service:s[0],week:w,tier:"Tier "+s[3],att:+a.toFixed(2),breaches:a<99.5?3:a<99.75?1:0})}));
+[["Standards",{Labor:130,Vendor:92,Cloud:20}],["Taxonomy",{Labor:96,Vendor:60,Cloud:12}],["Portal Resilience",{Labor:30,Vendor:6,Cloud:9}],["Contract Refresh",{Labor:8,Vendor:2,Cloud:3}]].forEach(p=>MO.forEach((m,mi)=>Object.keys(p[1]).forEach(t=>{const b=p[1][t]*(.75+mi*.12+H(p[0]+m+t)*.2);spRows.push({project:p[0],type:t,month:m,spend:Math.round(b),commit:Math.round(p[1][t]*1.12)})})));
 const dmRows=DEMAND.map(d=>({initiative:d.n,area:d.who,sponsor:d.sp,score:dscore(d,DW0),cost:d.cost,ben:d.ben}));
 const DSET={
  inc:{n:"Incident volume",cls:"Internal",own:"Service desk",src:"Incident records, hourly",dims:{week:{n:"Week",ord:1},service:{n:"Service"},priority:{n:"Priority"},category:{n:"Category"}},meas:{count:{n:"Incidents opened",agg:"sum",f:"COUNT of incident records opened in the period",fmt:v=>Math.round(v).toLocaleString()},hrs:{n:"Hours to resolve",agg:"avg",f:"Average of (resolved time − opened time) in hours",metric:"m_mttr",fmt:v=>v.toFixed(1)+" h"}},rows:incRows},
@@ -46,10 +46,10 @@ function chartHTML(sp,o){o=o||{};const d=DSET[sp.ds],m=d.meas[sp.measure],dm=d.d
  return `<figure class="kcs-ch"><figcaption><b>${esc(t)}</b><span class="muted small">${esc(d.n)}${sp.fdim&&sp.fval?" · "+esc(d.dims[sp.fdim].n)+" = "+esc(sp.fval):""} · as of Oct 6, 2026</span></figcaption>${body}<div class="kcs-srcl2"><span class="eyebrow">${m.metric?"Source metric":"Measure definition"}</span>${m.metric?fchip(m.metric):`<span class="pill metric">ƒ ${esc(m.n)}</span>`}<span class="small muted">${esc(m.f)}</span></div></figure>`}
 const DASH0=()=>({ops:{n:"Operations review",shares:[],cards:[
  {id:"c1",title:"Incidents opened per week",w:2,note:"Portal incidents rose in the week of Oct 5, matching the Sev 2.",spec:{ds:"inc",type:"line",measure:"count",dim:"week",fdim:"",fval:"",sort:"nat",top:0}},
- {id:"c2",title:"Availability by service",w:1,note:"Codification Portal is the only service below 99.5%.",spec:{ds:"sla",type:"bar",measure:"att",dim:"service",fdim:"week",fval:"Oct 5",sort:"asc",top:0}},
+ {id:"c2",title:"Availability by service",w:1,note:"Standards Portal is the only service below 99.5%.",spec:{ds:"sla",type:"bar",measure:"att",dim:"service",fdim:"week",fval:"Oct 5",sort:"asc",top:0}},
  {id:"c3",title:"Incidents by category",w:1,note:"Data and Performance incidents account for most volume.",spec:{ds:"inc",type:"donut",measure:"count",dim:"category",fdim:"",fval:"",sort:"desc",top:0}}]},
  exec:{n:"Executive board pack",shares:[{who:["exec","fin"],perm:"View only"}],cards:[
- {id:"c4",title:"Spend by project",w:1,note:"Codification takes about two thirds of spend.",spec:{ds:"spend",type:"donut",measure:"spend",dim:"project",fdim:"",fval:"",sort:"desc",top:0}},
+ {id:"c4",title:"Spend by project",w:1,note:"Standards takes about two thirds of spend.",spec:{ds:"spend",type:"donut",measure:"spend",dim:"project",fdim:"",fval:"",sort:"desc",top:0}},
  {id:"c5",title:"Demand score by initiative",w:1,note:"Retiring the lease subledger and portal disaster recovery rank highest.",spec:{ds:"demand",type:"bar",measure:"score",dim:"initiative",fdim:"",fval:"",sort:"desc",top:6}}]}});
 K.dash=K.dash||DASH0();
 function vzPane(){const v=K.vz,d=DSET[v.ds],fvals=v.fdim?[...new Set(d.rows.map(r=>String(r[v.fdim])))]:[];

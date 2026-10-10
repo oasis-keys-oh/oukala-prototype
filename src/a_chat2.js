@@ -7,7 +7,7 @@ await p.evaluate(()=>{const b=[...document.querySelectorAll('button')].find(x=>/
 console.log(await p.evaluate(()=>[...document.querySelectorAll('textarea,input[type=text]')].map(e=>e.id+'|'+e.className+'|'+e.offsetParent).join(' ; ')));
 const send=async(t)=>{await p.fill('#chatq',t);await p.press('#chatq','Enter');await p.waitForTimeout(2000)};
 const a0=await p.evaluate(()=>AUDIT.length);
-await send('Raise a P2 incident: Codification Portal slow for editors, assign to Ops team');
+await send('Raise a P2 incident: Standards Portal slow for editors, assign to Ops team');
 await p.screenshot({path:'aud/chat1.png'});
 console.log('audit delta',await p.evaluate(()=>AUDIT.length)-a0, await p.evaluate(()=>AUDIT.slice(0,3).map(a=>a.a+':'+a.d).join(' || ')));
 await send('How is an SLA measured?');await p.screenshot({path:'aud/chat2.png'});

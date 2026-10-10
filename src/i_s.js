@@ -1,0 +1,1 @@
+(()=>{SCALE.set(true);const t=performance.now();INBOX.refresh();const a=performance.now()-t;const t2=performance.now();INBOX.items();return {refreshMs:Math.round(a),collectMs:Math.round(performance.now()-t2)}})()

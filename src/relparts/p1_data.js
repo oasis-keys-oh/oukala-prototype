@@ -27,8 +27,8 @@ const piOf=id=>PIS.find(p=>p.id===id);
 const PASTSP=["26.2.3","26.2.4","26.3.1","26.3.2","26.3.3","26.3.4"];
 
 /* ---------- agile release trains and teams ---------- */
-const ARTS=[{id:"art1",n:"Codification and Portal train",rte:"Priya Shah",pm:"Chief Editor",arch:"Jordan Lee",proj:["PR1","PR3"],obj:["Modernize standards publishing","Reduce operating risk"],std:"Ten-week increments of four two-week iterations plus one innovation and planning iteration."},
- {id:"art2",n:"Data and Contracts train",rte:"Dev Rao",pm:"Maya Ortiz",arch:"Jordan Lee",proj:["PR2","PR4"],obj:["Modernize standards publishing","Protect revenue through contract discipline"],std:"Same cadence as the Codification train so the two trains plan on the same days."}];
+const ARTS=[{id:"art1",n:"Standards and Portal train",rte:"Priya Shah",pm:"Chief Editor",arch:"Jordan Lee",proj:["PR1","PR3"],obj:["Modernize standards publishing","Reduce operating risk"],std:"Ten-week increments of four two-week iterations plus one innovation and planning iteration."},
+ {id:"art2",n:"Data and Contracts train",rte:"Dev Rao",pm:"Maya Ortiz",arch:"Jordan Lee",proj:["PR2","PR4"],obj:["Modernize standards publishing","Protect revenue through contract discipline"],std:"Same cadence as the Standards train so the two trains plan on the same days."}];
 const M=(n,role,al,o)=>Object.assign({n,role,al,pto:0},o||{});
 const TEAM=[
  {id:"tm_alpha",n:"Platform Alpha",art:"art1",po:"Priya Shah",sm:"Hannah Lowe",hpp:7.5,tr:.02,bias:-0.04,over:1.0,mem:[M("Anita Cole","Developer",100),M("Luis Ortega","Developer",100),M("Mei Tan","Developer",80),M("Sam Patel","DevOps engineer",40),M("Elise Park","QA automation",100),M("Test Agent","Automated test runner",100),M("Ben Alvarez","QA analyst",100,{pto:3})],ag:["Pull requests get a first review within 4 working hours.","No story starts without the definition of ready.","Automated tests ship with the code, not after it.","Standup is 15 minutes at 9:30 Eastern; blockers go to the board first."]},
@@ -53,22 +53,22 @@ const CAPS=[{id:"CB1",n:"Editorial authoring",ep:"EP1",mat:"Application delivery
 const FS=["Funnel","Analyzing","Backlog","Implementing","Validating","Deploying","Releasing","Done"];
 const F=(id,t,kind,ep,cap,art,pi,st,tms,svc,proj,rel,w,p,wsjf,o)=>Object.assign({id,t,kind,ep,cap,art,pi,st,tms,svc,proj,rel,w,p,bv:wsjf[0],tc:wsjf[1],rr:wsjf[2],js:wsjf[3],plan:[],dep:[]},o||{});
 const FEAT=[
- F("FT-001","Editor workspace prototype","Feature","EP1","CB1","art1","26.3","Done",["tm_alpha","tm_editor"],"Codification Platform","PR1","REL-2602",.7,1,[8,5,3,8]),
- F("FT-002","Portal read replica","Enabler","EP2","CB3","art1","26.3","Done",["tm_portal"],"Codification Portal","PR3","REL-2601",.6,1,[5,8,13,5]),
+ F("FT-001","Editor workspace prototype","Feature","EP1","CB1","art1","26.3","Done",["tm_alpha","tm_editor"],"Standards Platform","PR1","REL-2602",.7,1,[8,5,3,8]),
+ F("FT-002","Portal read replica","Enabler","EP2","CB3","art1","26.3","Done",["tm_portal"],"Standards Portal","PR3","REL-2601",.6,1,[5,8,13,5]),
  F("FT-003","Search schema v2","Feature","EP1","CB2","art1","26.3","Done",["tm_search"],"Search and indexing","PR1","REL-2606",.6,1,[8,5,5,8]),
  F("FT-004","Entra ID sign-in for editors","Enabler","EP2","CB4","art1","26.3","Done",["tm_alpha"],"Identity (Entra ID)","PR1","REL-2602",.4,1,[3,8,8,3]),
  F("FT-005","Taxonomy data model","Feature","EP1","CB5","art2","26.3","Done",["tm_tax"],"Data platform","PR2","REL-2603",.6,1,[8,5,5,5]),
  F("FT-006","Vendor selection for contract repository","Feature","EP3","CB7","art2","26.3","Done",["tm_con"],"Contract Repository","PR4","",.3,1,[3,5,3,3]),
- F("FT-101","Editor workspace redesign","Feature","EP1","CB1","art1","26.4","Implementing",["tm_alpha","tm_editor"],"Codification Platform","PR1","REL-2611",1.3,.4,[13,8,5,13],{own:"Chief Editor"}),
- F("FT-102","Redline and compare view","Feature","EP1","CB1","art1","26.4","Implementing",["tm_editor"],"Codification Platform","PR1","REL-2611",.8,.3,[8,5,3,8],{own:"Chief Editor"}),
+ F("FT-101","Editor workspace redesign","Feature","EP1","CB1","art1","26.4","Implementing",["tm_alpha","tm_editor"],"Standards Platform","PR1","REL-2611",1.3,.4,[13,8,5,13],{own:"Chief Editor"}),
+ F("FT-102","Redline and compare view","Feature","EP1","CB1","art1","26.4","Implementing",["tm_editor"],"Standards Platform","PR1","REL-2611",.8,.3,[8,5,3,8],{own:"Chief Editor"}),
  F("FT-103","Lumen search indexer 2.4","Feature","EP1","CB2","art1","26.4","Validating",["tm_search"],"Search and indexing","PR1","REL-2609",1.0,.8,[13,13,8,8],{own:"Jordan Lee"}),
- F("FT-104","Publishing pipeline automation","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha","tm_portal"],"Codification Platform","PR1","REL-2611",.9,.45,[5,8,13,8],{own:"Jordan Lee"}),
- F("FT-105","Standards API 2.3.1 batch fix","Feature","EP2","CB4","art1","26.4","Releasing",["tm_alpha"],"Codification Platform","","REL-2608",.4,.9,[5,13,8,3],{own:"Priya Shah"}),
- F("FT-106","Content migration tooling","Enabler","EP1","CB1","art1","26.4","Implementing",["tm_alpha"],"Codification Platform","PR1","REL-2611",.8,.25,[8,5,8,13],{own:"Priya Shah"}),
- F("FT-107","Beta feature flags and telemetry","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha"],"Codification Platform","PR1","REL-2611",.5,.2,[3,8,8,5],{own:"Jordan Lee"}),
- F("FT-131","Portal standby failover (RB-031 v8)","Enabler","EP2","CB3","art1","26.4","Validating",["tm_portal"],"Codification Portal","PR3","REL-2610",.9,.7,[8,13,13,8],{own:"Tom Becker"}),
- F("FT-132","Autoscale and capacity alerts","Enabler","EP2","CB3","art1","26.4","Implementing",["tm_portal"],"Codification Portal","PR3","REL-2617",.7,.35,[5,8,13,5],{own:"Tom Becker"}),
- F("FT-133","Reader accessibility fixes","Feature","EP2","CB1","art1","26.4","Implementing",["tm_editor"],"Codification Portal","","REL-2607",.6,.4,[5,5,8,5],{own:"Chief Editor"}),
+ F("FT-104","Publishing pipeline automation","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha","tm_portal"],"Standards Platform","PR1","REL-2611",.9,.45,[5,8,13,8],{own:"Jordan Lee"}),
+ F("FT-105","Standards API 2.3.1 batch fix","Feature","EP2","CB4","art1","26.4","Releasing",["tm_alpha"],"Standards Platform","","REL-2608",.4,.9,[5,13,8,3],{own:"Priya Shah"}),
+ F("FT-106","Content migration tooling","Enabler","EP1","CB1","art1","26.4","Implementing",["tm_alpha"],"Standards Platform","PR1","REL-2611",.8,.25,[8,5,8,13],{own:"Priya Shah"}),
+ F("FT-107","Beta feature flags and telemetry","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha"],"Standards Platform","PR1","REL-2611",.5,.2,[3,8,8,5],{own:"Jordan Lee"}),
+ F("FT-131","Portal standby failover (RB-031 v8)","Enabler","EP2","CB3","art1","26.4","Validating",["tm_portal"],"Standards Portal","PR3","REL-2610",.9,.7,[8,13,13,8],{own:"Tom Becker"}),
+ F("FT-132","Autoscale and capacity alerts","Enabler","EP2","CB3","art1","26.4","Implementing",["tm_portal"],"Standards Portal","PR3","REL-2617",.7,.35,[5,8,13,5],{own:"Tom Becker"}),
+ F("FT-133","Reader accessibility fixes","Feature","EP2","CB1","art1","26.4","Implementing",["tm_editor"],"Standards Portal","","REL-2607",.6,.4,[5,5,8,5],{own:"Chief Editor"}),
  F("FT-201","Taxonomy pipeline v1","Feature","EP1","CB5","art2","26.4","Implementing",["tm_tax"],"Data platform","PR2","REL-2612",1.2,.45,[13,13,8,13],{own:"Dev Rao"}),
  F("FT-202","Taxonomy API connection pool hardening","Enabler","EP2","CB5","art2","26.4","Validating",["tm_tax"],"Data platform","PR2","REL-2612",.5,.8,[3,13,13,3],{own:"Dev Rao"}),
  F("FT-203","Lakehouse reporting views","Feature","EP1","CB5","art2","26.4","Backlog",["tm_tax"],"Data platform","PR2","",.6,.1,[8,3,3,8],{own:"Dev Rao"}),
@@ -77,11 +77,11 @@ const FEAT=[
  F("FT-243","Storage tier migration","Enabler","EP3","CB7","art2","26.4","Implementing",["tm_con"],"Contract Repository","PR4","REL-2613",.8,.5,[3,8,13,8],{own:"Maya Ortiz"}),
  F("FT-244","ERP posting-lock connector","Enabler","EP3","CB4","art2","26.4","Analyzing",["tm_con"],"Lease subledger (ERP)","","REL-2614",.4,.1,[5,13,8,3],{own:"Avery Chen"}),
  F("FT-245","Integration hub connector 2.2","Feature","EP3","CB4","art2","26.4","Implementing",["tm_con"],"Integration hub","PR4","REL-2618",.5,.4,[3,5,5,5],{own:"Jordan Lee"}),
- F("FT-901","CI test automation suite","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha","tm_search"],"Codification Platform","","",.7,.5,[5,8,13,8],{own:"Jordan Lee"}),
- F("FT-902","Security scanning in the pipeline","Enabler","EP4","CB6","art1","26.4","Backlog",["tm_alpha"],"Codification Platform","","",.4,.15,[3,5,13,5],{own:"Rina Okafor"}),
- F("FT-301","Public API licensing portal","Feature","EP1","CB4","art1","27.1","Analyzing",["tm_alpha","tm_portal"],"Codification Portal","","",0,0,[13,3,5,13],{own:"Chief Editor"}),
- F("FT-302","AI-assisted standards drafting","Feature","EP1","CB1","art1","27.1","Funnel",["tm_editor"],"Codification Platform","","",0,0,[13,3,8,13],{own:"Chief Editor"}),
- F("FT-303","Multilingual reader","Feature","EP1","CB1","art1","27.1","Funnel",["tm_editor"],"Codification Portal","","",0,0,[8,2,3,13],{own:"Chief Editor"})];
+ F("FT-901","CI test automation suite","Enabler","EP4","CB6","art1","26.4","Implementing",["tm_alpha","tm_search"],"Standards Platform","","",.7,.5,[5,8,13,8],{own:"Jordan Lee"}),
+ F("FT-902","Security scanning in the pipeline","Enabler","EP4","CB6","art1","26.4","Backlog",["tm_alpha"],"Standards Platform","","",.4,.15,[3,5,13,5],{own:"Rina Okafor"}),
+ F("FT-301","Public API licensing portal","Feature","EP1","CB4","art1","27.1","Analyzing",["tm_alpha","tm_portal"],"Standards Portal","","",0,0,[13,3,5,13],{own:"Chief Editor"}),
+ F("FT-302","AI-assisted standards drafting","Feature","EP1","CB1","art1","27.1","Funnel",["tm_editor"],"Standards Platform","","",0,0,[13,3,8,13],{own:"Chief Editor"}),
+ F("FT-303","Multilingual reader","Feature","EP1","CB1","art1","27.1","Funnel",["tm_editor"],"Standards Portal","","",0,0,[8,2,3,13],{own:"Chief Editor"})];
 const ftOf=id=>FEAT.find(f=>f.id===id);
 const wsjf=f=>rnd1((f.bv+f.tc+f.rr)/f.js);
 FEAT.forEach(f=>{f.own=f.own||"Priya Shah"});

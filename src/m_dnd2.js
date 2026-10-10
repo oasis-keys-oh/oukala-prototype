@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}).catch(()=>chromium.launch());
+const p=await (await b.newContext({viewport:{width:1440,height:1800}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(500);
+await p.evaluate(()=>{go("meet_act");render()});await p.waitForTimeout(1200);
+const id=await p.evaluate(()=>document.querySelector('[data-dnd="st:open"] [data-dnd-id]').dataset.dndId);
+await p.evaluate(()=>document.querySelector('[data-dnd="st:open"] [data-dnd-id]').scrollIntoView({block:'center'}));
+const a=await p.locator('[data-dnd="st:open"] [data-dnd-id]').first().boundingBox(),t=await p.locator('[data-dnd="st:prog"]').first().boundingBox();
+await p.mouse.move(a.x+20,a.y+20);await p.mouse.down();await p.mouse.move(a.x+40,a.y+30,{steps:3});await p.mouse.move(t.x+40,t.y+60,{steps:8});await p.mouse.up();await p.waitForTimeout(500);
+console.log(id,await p.evaluate(i=>MEETX.aById(i).st,id),errs);await b.close()})();

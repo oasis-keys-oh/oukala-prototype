@@ -94,7 +94,7 @@ Totals: DONE 74, PARTIAL 9, MISSING 0 (83 IDs).
 
 ## Cross-module wiring checks
 - addDemand: creates D11, visible on port (Priorities, Pipeline, All requests, Intake). OK.
-- TBM trigger: demand created ("Add 1 gateway unit to Codification Portal", trig source TBM trigger). OK but B2.
+- TBM trigger: demand created ("Add 1 gateway unit to Standards Portal", trig source TBM trigger). OK but B2.
 - openImpact from incident, change, problem, release, ci, service: all open drawer with map, cost, SLAs, projects. OK.
 - REQREG states on service Offerings tab. OK.
 - WFX shows catalog flows (wf_laptop, wf_onboard) in designer. OK.

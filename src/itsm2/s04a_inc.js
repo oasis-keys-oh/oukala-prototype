@@ -88,7 +88,7 @@ function boardHTML(){const mpb=mpHTML({id:"itsm_bd_svc",label:"Services",opts:SV
  <div class="eyebrow">Drop a card on a team to reassign it, or on yourself to claim it</div><div class="itsm-assign slim"><div class="itsm-as me" data-dnd="claim:me" data-dnd-scope="itsm_inc">${avatar(ME,{size:24})}<span><b>Claim for ${esc(ME)}</b></span></div>${tg}</div>`}
 
 /* ---------- priority calculator and policy tabs ---------- */
-const CDEF={svc:"Codification Platform",ua:140,deg:85,txh:5000,reg:0,urg:2,role:"analyst",vip:"",apprBy:""};
+const CDEF={svc:"Standards Platform",ua:140,deg:85,txh:5000,reg:0,urg:2,role:"analyst",vip:"",apprBy:""};
 function calcInputs(){const c=Object.assign({},CDEF,X.calc||{});X.calc=c;const sv=SV(c.svc);
  const sel=(k,l,opts,v)=>`<label class="itsm-f"><span>${l}</span><select class="fin" data-itsm-cin="${k}">${opts.map(o=>`<option value="${esc(o[0])}" ${String(o[0])===String(v)?"selected":""}>${esc(o[1])}</option>`).join("")}</select></label>`;
  const rg=(k,l,min,max,step,v,u)=>`<label class="itsm-f itsm-rg"><span>${l}: <b data-itsm-cv="${k}">${N0(v)}${u||""}</b></span><input type="range" class="rng" data-itsm-cin="${k}" min="${min}" max="${max}" step="${step}" value="${v}"></label>`;

@@ -49,7 +49,7 @@ await go('itsm_rel',0);await p.locator('[data-itsm-rnew]').first().click();await
 await p.evaluate(()=>{S.itsm.relSel='REL-2611'});await go('itsm_rel',2);await p.locator('[data-itsm-chk="REL-2611:2"]').click();await W(300);
 // major incident
 await go('itsm_mi',0);await p.locator('[data-itsm-miup]').first().click();await W(400);await form('timeline','itsm_miup',{kind:'Finding',who:'Sam Patel',x:'Two Northwind nodes joined the pool; p95 2.4 s.'});
-await go('itsm_mi',1);await p.locator('[data-itsm-cnew2]').first().click();await W(400);await form('comms','itsm_comm',{aud:'All staff',body:'The Codification Portal is slower than usual; we are working on it.'});
+await go('itsm_mi',1);await p.locator('[data-itsm-cnew2]').first().click();await W(400);await form('comms','itsm_comm',{aud:'All staff',body:'The Standards Portal is slower than usual; we are working on it.'});
 await go('itsm_mi',1);await p.locator('[data-itsm-send]').first().click();await W(300); // blocked: no comms lead
 await go('itsm_mi',3);await p.locator('[data-itsm-pir]').first().click();await W(500);await shot('f_pir');await form('pir','itsm_pir',{sum:'Portal degraded for 4 hours because of an undersized tier.'});
 // drag tests

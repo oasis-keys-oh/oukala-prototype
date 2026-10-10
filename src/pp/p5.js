@@ -18,10 +18,10 @@ function seedJ(){let n=0;const P=(t,sev)=>({id:"pn"+(++n),t,sev:sev||2,raised:fa
   S2("Filed and obligations tracked",4,["Store the signed copy","Track renewal dates"],["Contract Repository"],[["Renewal dates are typed in by hand",2]],["Extract dates and obligations automatically"],"Legal operations",["Contract Repository"])]},
  {id:"J3",n:"Subscriber renews a standards license",who:"Subscriber",story:"A library or company renews its subscription to the codified standards.",stages:[
   S2("Renewal notice",3,["Read the notice","Check the budget"],["Email","Subscriber portal"],[["The notice arrives 30 days out; buyers need 60",3]],["Notice at 90, 60 and 30 days with the usage report"],"Subscriptions",["Subscriber portal"]),
-  S2("Review what is included",3,["Check titles and seats","Compare with last year"],["Subscriber portal"],[["Seat counts are not visible in the portal",2]],["Show seats and usage on the renewal page"],"Subscriptions",["Codification Platform"]),
+  S2("Review what is included",3,["Check titles and seats","Compare with last year"],["Subscriber portal"],[["Seat counts are not visible in the portal",2]],["Show seats and usage on the renewal page"],"Subscriptions",["Standards Platform"]),
   S2("Quote and approval",2,["Request a quote","Internal approval"],["Email","Quote PDF"],[["Every quote is built by hand",3],["Discounts need two approvals",2]],["Instant quote with rules for discount approval"],"Sales operations",["CRM","Billing"]),
   S2("Payment",3,["Raise the purchase order","Pay the invoice"],["Invoice","Payment portal"],[["Purchase order number is rejected for format",1]],["Validate the PO as it is typed"],"Finance",["Billing (ERP)"]),
-  S2("Access restored",4,["Confirm access","Re-invite seats"],["Subscriber portal"],[["Access lapses for two days after payment",3]],["Extend access automatically while payment clears"],"Platform team",["Entra External ID","Codification Platform"]),
+  S2("Access restored",4,["Confirm access","Re-invite seats"],["Subscriber portal"],[["Access lapses for two days after payment",3]],["Extend access automatically while payment clears"],"Platform team",["Entra External ID","Standards Platform"]),
   S2("Usage review",3,["Review usage","Plan next year"],["Account manager call"],[],["Send a usage story before the next renewal"],"Subscriptions",["CRM"])]}]}
 st.jr=st.jr||{list:seedJ(),sel:"J1",raised:[],sev:null};
 const JR=()=>st.jr.list.find(j=>j.id===st.jr.sel);

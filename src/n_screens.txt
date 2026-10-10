@@ -1,0 +1,109 @@
+home|Home|platform
+trace|Executive trace|portfolio
+inv|Invoice approval|portfolio
+fo|First Officer|people
+tower|AI Control Tower|ai
+metrics|Metrics|platform
+kg|Impact graph|know
+loop|Feedback loop|platform
+port|Demand and priorities|portfolio
+ims|Master schedule|portfolio
+plan|Project plan|portfolio
+log|Product log|platform
+adm_studio|Admin studio|platform
+adm_sec|Security and access|platform
+adm_env|Environments and releases|platform
+adm_meter|Licensing and billing|platform
+adm_gate|AI gateway and tokenomics|ai
+adm_audit|Audit and compliance|platform
+bud_over|Budgets overall|portfolio
+bud_model|Financial model|portfolio
+bud_ven|Vendors and contracts|portfolio
+bud_ben|Benefits realization|portfolio
+bud_doa|Delegation of authority|portfolio
+chat_home|Chat and agents|platform
+dev_pipe|Delivery pipeline|portfolio
+itom_dev|Environments and DORA|ops
+plat_map|Master process flow|platform
+plat_data|Master data model|platform
+exe_dash|Executive dashboard|portfolio
+exe_strat|Strategy alignment|portfolio
+exe_risk|Risk heat map and Monte Carlo|portfolio
+exe_apps|Application portfolio|portfolio
+exe_board|Board pack|portfolio
+exe_scen|Scenario compare|portfolio
+flw_design|Workflow designer|automate
+flw_asmt|Assessments|automate
+flw_appr|Approvals inbox|automate
+flw_dmn|Decision tables|automate
+flw_bpmn|Process models (BPMN)|automate
+flw_agent|Agentic workflows|automate
+flw_hub|Integration hub|automate
+itom_cmdb|CMDB|ops
+itom_model|CMDB data model|ops
+itom_graph|Dependency views|ops
+itom_disc|Discovery and ingestion|ops
+itom_health|CMDB health and governance|ops
+itom_fin|Cloud cost (FinOps)|ops
+itsm_inc|Incidents|service
+itsm_prb|Problems and known errors|service
+itsm_chg|Changes|service
+itsm_mi|Major incident|service
+itsm_home|Service desk overview|service
+kcs_home|Knowledge management|know
+kcs_edit|Article editor|know
+kcs_ask|Ask the knowledge base|know
+kcs_gap|Knowledge gaps and analytics|know
+kcs_prompt|Prompt library|ai
+kcs_test|AI test management|ai
+kcs_skills|Agent skills|know
+vault|Knowledge graph|know
+exe_mat|Maturity models|portfolio
+itom_evt|Event management|ops
+obs_dash|Dashboards and metrics|ops
+itom_slo|Observability and SLOs|ops
+itom_run|Runbooks and automation|ops
+obs_std|Standard change catalog|service
+svc_oncall|On-call and escalation|service
+svc_skills|Skills and availability|people
+ppl_org|Org chart and workload|people
+ppl_cap|Resource planning|people
+ppl_train|Training and learning|people
+ppl_av|Rooms and conference scheduling|people
+ppl_jrny|Journey maps|people
+ppl_meet|Forums and minutes|people
+ppl_perf|Performance management|people
+plat_data_old|Data tables and model checks|platform
+plat_build|Build a module|platform
+plat_debt|Technical debt ledger|platform
+plat_fab|Integration fabric|platform
+fin_model|IT financial model|portfolio
+fin_color|Color of money|portfolio
+fin_spend|Spend-order simulator|portfolio
+fin_budget|Budget and forecast|portfolio
+fin_gates|Funding gates|portfolio
+fin_alloc|Allocation and showback|portfolio
+fin_rules|Financial controls|portfolio
+plat_gate|Citizen apps|platform
+plat_mcp|AI and coding clients|ai
+plat_dmap|Data connections|platform
+plat_pmap|Process connections|platform
+plat_proc|Process library|platform
+plat_reg|Platform registry|platform
+ppm_proj|Projects and teams|portfolio
+ppm_raid|RAID log|portfolio
+itsm_rel|Releases|service
+agile_board|Sprints and backlogs|service
+agile_art|Release trains and increments|service
+plat_self|Self-build|platform
+svc_sla|SLAs, OLAs and XLAs|service
+ppm_sow|SOW and contract analyzer|portfolio
+svc_cat|Service catalog|service
+svc_req|Requests and fulfillment|service
+svc_portal|Self-service portal|service
+svc_asset|Assets and software licenses|service
+svc_notify|Notification engine|automate
+svc_360|Service portfolio and map|service
+tbm_model|Cost transparency (TBM and ATUM)|portfolio
+kcs_viz|Visualization builder|know
+ppm_wbs|WBS and task sheet|portfolio

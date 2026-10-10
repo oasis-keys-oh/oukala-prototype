@@ -36,7 +36,7 @@ const OBJS=()=>[...new Set(SVCREG.flatMap(s=>s.obj))];
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,28);
 
 /* ================= configuration items: CIREG plus scale data ================= */
-const scaleSvc={"Codification Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int"};
+const scaleSvc={"Standards Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int"};
 let _sc=null,_scN=-1;
 const scaled=()=>{if(!(window.SCALE&&SCALE.on))return[];if(_sc&&_scN===SCALE.n.cis)return _sc;_sc=SCALE.cis().map(c=>Object.assign({},c,{svcI:scaleSvc[c.svc]||svcId(c.svc)||"svc_data",scaled:1}));_scN=SCALE.n.cis;return _sc};
 const scMap=()=>{const m={};scaled().forEach(c=>(m[c.svcI]=m[c.svcI]||[]).push(c));return m};

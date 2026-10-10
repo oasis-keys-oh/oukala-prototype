@@ -22,7 +22,7 @@ const PJ=id=>PROJ.find(p=>p.id===id);
 const L0=[
 ["PR1-LAB","PR1","Labor","Platform, architecture and editor time","ED",400,400,240,408,"Priya Shah","Integration testing needs 1.5 more test-lead FTE for two months.","Absorb by moving the content migration rehearsal two weeks; decide at the Oct 15 steering group."],
 ["PR1-VEN","PR1","Vendor","Lumen SOW-3 search indexer","ED",250,250,175,262,"Priya Shah","Lumen delivered the indexer 7 work days late and the slip adds $12K of extended engineer time on time and materials.","Tie the remaining SOW-3 payments to accepted milestones and claim a delivery service credit."],
-["PR1-CLD","PR1","Cloud","Codification Portal hosting (Northwind)","IT",360,360,190,408,"Tom Becker","After the Oct 5 latency incident the portal needs the next hosting tier, adding $48K over the year.","Fund from the management reserve (request RL-04, waiting for your approval); right-size after the failover rehearsal."],
+["PR1-CLD","PR1","Cloud","Standards Portal hosting (Northwind)","IT",360,360,190,408,"Tom Becker","After the Oct 5 latency incident the portal needs the next hosting tier, adding $48K over the year.","Fund from the management reserve (request RL-04, waiting for your approval); right-size after the failover rehearsal."],
 ["PR1-LIC","PR1","Licences","Azure AI Search and M365 add-ons","ED",100,100,68,100,"Priya Shah","",""],
 ["PR1-HW","PR1","Hardware","Editor test lab devices","IT",90,85,67,84,"Sam Patel","Refurbished displays came in $6K under the estimate.","Release the $6K back to the reserve at project close."],
 ["PR2-LAB","PR2","Labor","Data engineering and architecture time","DO",150,150,92,150,"Dev Rao","",""],

@@ -36,13 +36,13 @@ D.pipes=D.pipes||[
 {id:"PL4",n:"contract-repo-sync",repo:"meridian/contract-repo",prov:"Azure Pipelines",br:"main",run:"#310",by:"Maya Ortiz",when:"Oct 4",st:[["Build","pass","2m 02s"],["Test","pass","5m 16s"],["Scan","pass","2m 48s"],["Deploy","pass","Prod"]],flaky:false},
 {id:"PL5",n:"infra-bicep",repo:"meridian/infrastructure",prov:"GitHub Actions",br:"main",run:"#61",by:"Jordan Lee",when:"09:05",st:[["Build","pass","0m 40s"],["Test","pass","1m 55s"],["Scan","pass","1m 10s"],["Deploy","pend","approval"]],flaky:false}];
 D.rel=D.rel||[
-{id:"RL1",app:"Codification Platform",ver:"26.10.05.2",env:"UAT",tests:"pass",scan:"pass",cab:"approved",note:"Beta candidate for Nov 13"},
+{id:"RL1",app:"Standards Platform",ver:"26.10.05.2",env:"UAT",tests:"pass",scan:"pass",cab:"approved",note:"Beta candidate for Nov 13"},
 {id:"RL2",app:"Taxonomy API",ver:"26.10.06.1",env:"Dev",tests:"fail",scan:"pass",cab:"none",note:"2 contract tests failing"},
 {id:"RL3",app:"Lease recon adapter",ver:"26.10.06.2",env:"Test",tests:"pass",scan:"fail",cab:"none",note:"1 high-severity dependency finding"},
 {id:"RL4",app:"Contract Repository sync",ver:"26.10.03.1",env:"Prod",tests:"pass",scan:"pass",cab:"approved",note:"Live since Oct 4"},
 {id:"RL5",app:"Infrastructure (Bicep)",ver:"26.10.06.3",env:"Test",tests:"pass",scan:"pass",cab:"pending",note:"Waiting on CAB, Thu 10:00"},
-{id:"RL6",app:"Codification Platform",ver:"26.10.01.3",env:"Prod",tests:"pass",scan:"pass",cab:"approved",note:"Current production"}];
-D.hist=D.hist||(()=>{const lead=[18,22,31,26,19,44,27,23,26,35,21,29,24,26,52,17,25,28,20,26],ap=["Codification Platform","Contract Repository sync","Taxonomy API","Infrastructure (Bicep)","Lease recon adapter"];const a=lead.map((l,i)=>({d:Math.min(29,Math.floor(i*1.5)+(i>14?1:0)),app:ap[i%5],ver:"26.09."+(8+i),env:"Prod",lead:l,res:"ok"}));a.push({d:12,app:"Codification Platform",ver:"26.09.22",env:"Prod",lead:30,res:"fail",rest:3.5},{d:21,app:"Taxonomy API",ver:"26.09.14",env:"Prod",lead:40,res:"fail",rest:1.8});return a.sort((x,y)=>x.d-y.d)})();
+{id:"RL6",app:"Standards Platform",ver:"26.10.01.3",env:"Prod",tests:"pass",scan:"pass",cab:"approved",note:"Current production"}];
+D.hist=D.hist||(()=>{const lead=[18,22,31,26,19,44,27,23,26,35,21,29,24,26,52,17,25,28,20,26],ap=["Standards Platform","Contract Repository sync","Taxonomy API","Infrastructure (Bicep)","Lease recon adapter"];const a=lead.map((l,i)=>({d:Math.min(29,Math.floor(i*1.5)+(i>14?1:0)),app:ap[i%5],ver:"26.09."+(8+i),env:"Prod",lead:l,res:"ok"}));a.push({d:12,app:"Standards Platform",ver:"26.09.22",env:"Prod",lead:30,res:"fail",rest:3.5},{d:21,app:"Taxonomy API",ver:"26.09.14",env:"Prod",lead:40,res:"fail",rest:1.8});return a.sort((x,y)=>x.d-y.d)})();
 const med=a=>{const s=a.slice().sort((x,y)=>x-y),n=s.length;return n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):0};
 function dora(){const p=D.hist.filter(h=>h.env==="Prod"),ok=p.filter(h=>h.res==="ok"),fl=p.filter(h=>h.res==="fail");const wk=p.length/(30/7);const L=med(ok.map(h=>h.lead)),cfr=p.length?fl.length/p.length*100:0,mttr=med(fl.map(h=>h.rest||0));
  const band=(v,c)=>{const i=c.findIndex(x=>v<=x);return ["Elite","High","Medium","Low"][i<0?3:i]};

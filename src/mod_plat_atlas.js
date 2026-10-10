@@ -5,7 +5,7 @@
 (function(){
 const E=esc,N0=n=>Math.round(n).toLocaleString("en-US");
 const PREV=(typeof _R!=="undefined"&&_R["plat_data"])||null;
-S.atlas=Object.assign({ov:"domain",sel:null,fld:null,dom:null,exp:{},q:"",refs:"all",cam:null,trace:null,itab:"fields",metric:"m_delivery",ovr:{},lfld:null,lq:"",showAll:false,panel:true,hist:[],approved:{},confirmed:{},debtLogged:{}},S.atlas||{});
+S.atlas=Object.assign({ov:"domain",sel:null,fld:null,dom:null,exp:{},q:"",refs:"domains",cam:null,trace:null,itab:"fields",metric:"m_delivery",ovr:{},lfld:null,lq:"",showAll:false,panel:true,hist:[],approved:{},confirmed:{},debtLogged:{}},S.atlas||{});
 const A=S.atlas;
 ["approved","confirmed","debtLogged"].forEach(k=>{if(!A[k])A[k]={}});
 /* every DATAMODEL.register call flows through here so the atlas honors the optional domain, status, owner module and steward, and updates live */
@@ -532,17 +532,20 @@ function worldHTML(M,L){
   const dim=A.dom&&A.dom!==d&&!A.sel?" dim":"";
   h+=`<section class="at-reg${A.dom===d?" cur":""}${dim}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;--c:var(${DC[d]})" aria-label="${E(dName(d))}"><header class="at-rh"><button class="at-rt" data-at-dom-go="${d}">${E(dName(d))}</button><span class="at-rs">${d==="planned"?M.byDom(d).length+" shown of "+(M.byDom(d).length+M.more.length)+" planned":es.length+" tables · "+N0(nf)+" fields"}</span><span class="at-rm">${d==="planned"?"Not built yet":fed.size+" metrics read it"}</span></header></section>`});
  /* edges */
- const mode=A.refs;let eg="",fe="";
+ if(A.refs==="cross"||A.refs==="all-faded")A.refs="all";if(!/^(off|domains|sel|all)$/.test(A.refs))A.refs="domains";const mode=A.refs;let eg="",fe="";
  M.edges.forEach((ed,i)=>{
   const hot=Lt.edges.has(i);
-  if(!hot){if(mode==="off"||mode==="sel")return;if(mode==="cross"&&!ed.cross)return}
+  if(!hot&&mode!=="all")return
   const g=edgeGeom(M,L,ed);if(!g)return;
-  const c=["at-e",ed.cross?"x":"",ed.ghost?"g":"",M.hub.has(ed.to)?"hub":"",hot?"hot":(Lt.active?"off":"")].filter(Boolean).join(" ");
+  const c=["at-e",mode==="all"&&!hot?"fade":"",ed.cross?"x":"",ed.ghost?"g":"",M.hub.has(ed.to)?"hub":"",hot?"hot":(Lt.active?"off":"")].filter(Boolean).join(" ");
   eg+=`<path class="${c}" d="${g.d}" marker-end="url(#${hot?"at-arh":"at-ar"})"><title>${E(M.ent.get(ed.from).label+" points to "+M.ent.get(ed.to).label+" through "+ed.fields.join(", "))}</title></path>`});
- Object.keys(M.pair).forEach(k=>{const [a,b]=k.split("|");if(a>=b&&M.pair[b+"|"+a])return;if(a===b)return;
-  const ra=L.regs[a],rb=L.regs[b];if(!ra||!rb)return;const n=(M.pair[k]||[]).length+((M.pair[b+"|"+a]||[]).length);
+ if(mode!=="off")Object.keys(M.pair).forEach(k=>{const [a,b]=k.split("|");if(a>=b&&M.pair[b+"|"+a])return;if(a===b)return;
+  const ra=L.regs[a],rb=L.regs[b];if(!ra||!rb)return;const l1=M.pair[k]||[],l2=M.pair[b+"|"+a]||[],n=l1.length+l2.length;
+  const nf=l1.concat(l2).reduce((q,x)=>q+(x.fields?x.fields.length:1),0);
   const ax=ra.x+ra.w/2,ay=ra.y+ra.h/2,bx=rb.x+rb.w/2,by=rb.y+rb.h/2,mx=(ax+bx)/2+(ay-by)*.12,my=(ay+by)/2+(bx-ax)*.12;
-  fe+=`<g class="at-fe"><path d="M${ax.toFixed(0)} ${ay.toFixed(0)}Q${mx.toFixed(0)} ${my.toFixed(0)} ${bx.toFixed(0)} ${by.toFixed(0)}" style="stroke-width:${Math.min(16,2+n*1.1)}px"/><text x="${mx.toFixed(0)}" y="${(my+10).toFixed(0)}" text-anchor="middle">${n}</text></g>`});
+  const lst=l1.concat(l2).slice(0,12).map(x=>M.ent.get(x.from).label.replace(/\s*\(.*$/,"")+" points to "+M.ent.get(x.to).label.replace(/\s*\(.*$/,"")+" through "+(x.fields||[]).join(", ")).join("; ");
+  const tt=E(dName(a)+" and "+dName(b)+": "+n+" reference"+(n===1?"":"s")+" ("+l1.length+" from "+dName(a)+", "+l2.length+" from "+dName(b)+"). "+lst+(n>12?"; and "+(n-12)+" more":""));
+  fe+=`<g class="at-fe"><title>${tt}</title><path d="M${ax.toFixed(0)} ${ay.toFixed(0)}Q${mx.toFixed(0)} ${my.toFixed(0)} ${bx.toFixed(0)} ${by.toFixed(0)}" style="stroke-width:${Math.min(14,2+n*.6)}px"/>${n>=3?`<text x="${mx.toFixed(0)}" y="${(my+10).toFixed(0)}" text-anchor="middle">${n} references</text>`:""}</g>`});
  /* trace token and flows */
  let tok="",flows="";
  if(A.trace&&METRICS[A.trace]){const m=METRICS[A.trace],t=LIN.trace(A.trace),ids=[...Lt.trace].filter(id=>L.pos[id]);
@@ -569,7 +572,7 @@ function legendItems(M){
  if(A.ov==="class")return [["Public",CLSC.public],["Internal",CLSC.internal],["Confidential",CLSC.confidential],["Restricted",CLSC.restricted],["Personal",CLSC.personal]];
  if(A.ov==="metrics")return COVN.map((n,i)=>[n,COVC[i]]);
  return [["Canonical, one copy",STC.canonical],["Duplicate, fix open",STC.duplicate],["Duplicate fixed in preview",STC.fixed],["Proposed, waiting for approval",STC.proposed],["Planned, not built",STC.planned]]}
-function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> reference</span>`}
+function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx at-lgrel"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> A line means a field in one entity points to a record in another. The arrow points to the entity being referenced. Thickness is how many fields. Use Relationships to show domain bundles, the selected entity, or all.</span>`}
 
 /* ----- breadcrumb ----- */
 function bcHTML(M){
@@ -711,7 +714,7 @@ const later=fn=>requestAnimationFrame(()=>requestAnimationFrame(fn));
 function drawAll(){
  const root=$r();if(!root)return;const M=model();LAY=layout(M);
  const act=document.activeElement;let fk=null;if(act&&root.contains(act)){const a=act.closest("[data-at-ent],[data-at-fld],[data-at-xp],[data-at-dom-go]");if(a)fk=[...a.attributes].filter(x=>/^data-at-(ent|fld|xp|dom-go)$/.test(x.name)).map(x=>`[${x.name}="${x.value}"]`)[0]}
- const w=worldEl();w.style.width=LAY.W+"px";w.style.height=LAY.H+"px";w.innerHTML=worldHTML(M,LAY);
+ const w=worldEl();w.innerHTML=worldHTML(M,LAY);w.dataset.rel=A.refs;w.style.width=LAY.W+"px";w.style.height=LAY.H+"px";
  root.querySelector("[data-at-mm]").innerHTML=miniHTML(M,LAY);
  const ins=root.querySelector("[data-at-insp]"),ih=inspHTML(M),open=!!ih&&A.panel;
  if(ins){ins.innerHTML=open?ih:"";ins.hidden=!open;root.querySelector(".at-wrap").classList.toggle("insp",open)}
@@ -806,6 +809,12 @@ document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closes
 document.addEventListener("pointermove",e=>{if(MMD)mmMove(e)});
 document.addEventListener("pointerup",()=>{MMD=false});
 
+/* ----- full screen toggle ----- */
+function fitFull(){const r=$r();if(!r||!A.full)return;r.style.cssText="";const b=r.getBoundingClientRect();if(Math.abs(b.left)>1||Math.abs(b.top)>1||Math.abs(b.width-innerWidth)>2||Math.abs(b.height-innerHeight)>2)r.style.cssText=`inset:auto;left:${(-b.left).toFixed(1)}px;top:${(-b.top).toFixed(1)}px;width:${innerWidth}px;height:${innerHeight}px`}
+window.addEventListener("resize",()=>{if(A.full)fitFull()});
+function setFull(on){A.full=!!on;const r=$r();if(!r)return;r.classList.toggle("full",A.full);if(A.full)fitFull();else r.style.cssText="";document.documentElement.classList.toggle("at-fs",A.full);const b=r.querySelector("[data-at-full]");if(b){b.setAttribute("aria-pressed",String(A.full));b.textContent=A.full?"Exit full screen":"Full screen"}later(()=>{if(vpEl())refit()});}
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-at-full]");if(t)setFull(!A.full)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&A.full&&$r()){setFull(false)}});
 /* ----- clicks ----- */
 document.addEventListener("click",e=>{
  const t=e.target.closest&&e.target.closest("[data-at-ent],[data-at-xp],[data-at-fld],[data-at-dom-go],[data-at-bc],[data-at-z],[data-at-ov],[data-at-fly],[data-at-itab],[data-at-close],[data-at-pick],[data-at-lin],[data-at-trace],[data-at-clear-trace],[data-at-more],[data-at-go],[data-at-expdom],[data-at-collapse],[data-at-viewreg],[data-go-reg],[data-at-panel]");
@@ -852,19 +861,20 @@ function plannedDrawer(){const M=model();
 function phoneHTML(M){
  return `<div class="at-phone" aria-label="Domains and tables as a list">${Object.keys(DC).filter(d=>M.byDom(d).length).map(d=>`<details class="at-pd" style="--c:var(${DC[d]})"><summary><i class="at-dot" style="background:var(${DC[d]})"></i><b>${E(dName(d))}</b><span class="muted small">${M.byDom(d).length} tables</span></summary><ul>${M.byDom(d).map(e=>`<li><button class="at-pr" data-at-ent="${e.id}"><span>${E(e.label.replace(/\s*\(.*$/,""))}</span><small class="muted">${e.ghost?"planned":e.nf+" fields"} · feeds ${LIN.feeds(e.id).length}</small></button></li>`).join("")}</ul></details>`).join("")}</div>`}
 function diagramPane(){
+ A.full=false;document.documentElement.classList.remove("at-fs");
  const M=model();LAY=layout(M);const st=LIN.stats(),ps=PLAT.stats();
  syncMetrics(st);
  const strip=typeof kpiRow==="function"?kpiRow([["Tables",M.list.filter(e=>!e.ghost).length,"CI classes shown as one box"],["Fields",N0(ps.nf),ps.extAuth+" external, "+ps.shared+" shared"],["Reference links",M.edges.length,M.edges.filter(e=>e.cross).length+" cross-domain"],["Metrics fully traced",st.pct+"%",st.full+" of "+st.n+" to fields",{metric:"m_atlas_trace",keep:true}],["Duplicates open",ps.dups,"fixes in the registry",{cls:ps.dups?"bad":"good",keep:true}]]):"";
  const ins=inspHTML(M),open=!!ins&&A.panel;
- return `<div class="at-root" data-at-root>
+ return `<div class="at-root${A.full?" full":""}" data-at-root>
  <div class="at-bar"><label class="at-search"><span class="sr">Search tables, fields and metrics</span><input type="search" class="txtin" data-at-q placeholder="Search tables, fields, metrics" value="${E(A.q)}" autocomplete="off" aria-label="Search tables, fields and metrics"><div class="at-sr" data-at-sr hidden></div></label>
   <div class="at-ovs" role="group" aria-label="Color the diagram by"><span class="muted small">Color by</span>${OVN.map(o=>`<button class="chip" data-at-ov="${o[0]}" aria-pressed="${A.ov===o[0]}">${o[1]}</button>`).join("")}</div>
-  <label class="at-refs muted small">References <select class="txtin" data-at-refs aria-label="Which references to draw"><option value="all">All</option><option value="cross">Across domains only</option><option value="sel">Selected only</option><option value="off">Hidden</option></select></label>
+  <label class="at-refs muted small">Relationships <select class="txtin" data-at-refs aria-label="Which relationships to draw"><option value="off"${A.refs==="off"?" selected":""}>Off</option><option value="domains"${A.refs==="domains"?" selected":""}>Domains</option><option value="sel"${A.refs==="sel"?" selected":""}>Selected entity</option><option value="all"${A.refs==="all"?" selected":""}>All</option></select></label>
   <details class="at-lgd"><summary class="btn quiet">Legend</summary><div class="at-legend at-lgpop" data-at-legend>${legendHTML(M)}</div></details></div>
  <div class="at-wrap${open?" insp":""}">
   <div class="at-main">
-   <div class="at-vpbox"><div class="at-bc" data-at-bc>${bcHTML(M)}</div><div class="at-vp" data-at-vp="dm" tabindex="0" role="application" aria-label="Master data model diagram. Drag to pan. Press plus and minus to zoom, zero to fit everything, arrow keys to move." data-lod="mid"><div class="at-world" data-at-world="dm" style="width:${LAY.W}px;height:${LAY.H}px">${worldHTML(M,LAY)}</div></div>
-    <div class="at-tools" role="group" aria-label="Zoom"><button class="btn quiet" data-at-z="in" aria-label="Zoom in">+</button><button class="btn quiet" data-at-z="out" aria-label="Zoom out">−</button><button class="btn quiet" data-at-z="fit">Fit all</button><button class="btn quiet" data-at-z="reset">Reset</button><button class="btn quiet" data-at-collapse="1">Collapse boxes</button><span class="muted small" data-at-zl>100%</span></div>
+   <div class="at-vpbox"><div class="at-bc" data-at-bc>${bcHTML(M)}</div><div class="at-vp" data-at-vp="dm" tabindex="0" role="application" aria-label="Master data model diagram. Drag to pan. Press plus and minus to zoom, zero to fit everything, arrow keys to move." data-lod="mid"><div class="at-world" data-at-world="dm" data-rel="${A.refs}" style="width:${LAY.W}px;height:${LAY.H}px">${worldHTML(M,LAY)}</div></div>
+    <div class="at-tools" role="group" aria-label="Zoom"><button class="btn quiet" data-at-z="in" aria-label="Zoom in">+</button><button class="btn quiet" data-at-z="out" aria-label="Zoom out">−</button><button class="btn quiet" data-at-z="fit">Fit</button><button class="btn quiet" data-at-z="reset">Reset</button><button class="btn quiet" data-at-collapse="1">Collapse boxes</button><button class="btn quiet" data-at-full="1" aria-pressed="${!!A.full}">${A.full?"Exit full screen":"Full screen"}</button><span class="muted small" data-at-zl>100%</span></div>
     <div class="at-mm" data-at-mm>${miniHTML(M,LAY)}</div><div class="at-cardbox" data-at-card>${cardHTML(M)}</div>
     <p class="at-hint muted small">Drag to pan. Ctrl and scroll, or pinch, to zoom. Select a domain name to zoom to it, a table to open its details, and the arrow on a table to show its fields.</p></div></div>
   <aside class="at-insp" data-at-insp ${open?"":"hidden"} aria-label="Details">${open?ins:""}</aside>

@@ -9,7 +9,7 @@ await out('checks',()=>FIN.gateChecks('PR4','G1').map(c=>[c.ok,c.hard,c.label]))
 await out('checks2',()=>FIN.gateChecks('PR1','G3').map(c=>[c.ok,c.hard,c.label]));
 await out('board',()=>FIN.gateBoard.board());
 await out('splits',()=>FIN.splits());
-await out('ask',()=>{let r=[];['which color funds RUN-HOST','color headroom for XR-P','run the spend order for PR3-HW','what changes under ASU 2025-06'].forEach(q=>{let hit=false;ASKX.forEach(f=>{try{if(!hit&&f(q))hit=true}catch(e){r.push('ERR '+e.message)}});r.push(hit)});return r});
+await out('ask',()=>{let r=[];['which color funds RUN-HOST','color headroom for XR-P','run the spend order for PR3-HW','what changes under Standards Update 2025-06'].forEach(q=>{let hit=false;ASKX.forEach(f=>{try{if(!hit&&f(q))hit=true}catch(e){r.push('ERR '+e.message)}});r.push(hit)});return r});
 await out('search',()=>searchIndex().filter(x=>x.g==='Finance').length);
 await out('work',()=>WORK.filter?0:0);
 await p.evaluate(()=>go('fin_gates'));

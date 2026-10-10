@@ -1,0 +1,1 @@
+(()=>{const ch=INBOX.items().find(x=>x.src==="chg");return {ch:ch&&{id:ch.id,sid:ch.sid,keys:Object.keys(ch).join(",")},g:ch&&String(ITSMX.getChange(ch.sid)).slice(0,40),g2:String(ITSMX.getChange("CHG0312")).slice(0,40)}})()

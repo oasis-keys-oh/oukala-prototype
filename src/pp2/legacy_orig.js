@@ -304,7 +304,7 @@ function seedCourses(){const C=(id,t,cat,mins,mods,q,pass,recur,aud,due,mand,rat
  C("C5","Privileged access and change control","Security awareness",40,["Least privilege","Break-glass access","Change records and freezes","Evidence for audit"],10,85,12,["Platform team","Ops team","Architecture"],"2026-10-23",true,.5,{cert:true}),
  C("C6","Using AI safely at Meridian","AI safe use",25,["What the assistants may see","Citing and checking","Tiers and who is accountable","Reporting a bad output"],8,80,12,["All"],"2026-10-30",true,.35),
  C("C7","Working with the AI drafting assistant","AI safe use",40,GEN.concat(["Prompt patterns for standards"]),6,75,0,["Editors"],"2026-11-20",false,.3),
- C("C8","Codification Platform: editor basics","Product training",60,["Signing in","Drafting","Review and comments","Publishing","Search","Troubleshooting"],10,75,0,["Editors"],"2026-11-13",false,.25),
+ C("C8","Standards Platform: editor basics","Product training",60,["Signing in","Drafting","Review and comments","Publishing","Search","Troubleshooting"],10,75,0,["Editors"],"2026-11-13",false,.25),
  C("C9","Incident response for the service desk","Product training",50,["Severity and impact","Runbooks","Communicating","Post-incident review"],10,80,12,["Ops team"],"2026-10-16",true,.5,{cert:true}),
  C("C10","Data handling and records retention","Compliance",30,["Classifying data","Retention schedules","Legal holds","Disposal"],8,80,12,["Data team","Finance","PMO"],"2026-09-25",true,.92)]}
 const PATHS0=[{id:"LP1",t:"New hire first week",c:["C1","C3","C6","C4"],a:"Everyone, within 5 days of starting"},{id:"LP2",t:"Editor certification",c:["C2","C8","C7"],a:"Standards editors before acceptance testing on Nov 13"},{id:"LP3",t:"Platform and operations access",c:["C5","C3","C9"],a:"Anyone with production access"},{id:"LP4",t:"AI champion",c:["C6","C7"],a:"One per team, supports peers"}];
@@ -478,10 +478,10 @@ function seedJ(){let n=0;const P=(t,sev)=>({id:"pn"+(++n),t,sev:sev||2,raised:fa
   S2("Filed and obligations tracked",4,["Store the signed copy","Track renewal dates"],["Contract Repository"],[["Renewal dates are typed in by hand",2]],["Extract dates and obligations automatically"],"Legal operations",["Contract Repository"])]},
  {id:"J3",n:"Subscriber renews a standards license",who:"Subscriber",story:"A library or company renews its subscription to the codified standards.",stages:[
   S2("Renewal notice",3,["Read the notice","Check the budget"],["Email","Subscriber portal"],[["The notice arrives 30 days out; buyers need 60",3]],["Notice at 90, 60 and 30 days with the usage report"],"Subscriptions",["Subscriber portal"]),
-  S2("Review what is included",3,["Check titles and seats","Compare with last year"],["Subscriber portal"],[["Seat counts are not visible in the portal",2]],["Show seats and usage on the renewal page"],"Subscriptions",["Codification Platform"]),
+  S2("Review what is included",3,["Check titles and seats","Compare with last year"],["Subscriber portal"],[["Seat counts are not visible in the portal",2]],["Show seats and usage on the renewal page"],"Subscriptions",["Standards Platform"]),
   S2("Quote and approval",2,["Request a quote","Internal approval"],["Email","Quote PDF"],[["Every quote is built by hand",3],["Discounts need two approvals",2]],["Instant quote with rules for discount approval"],"Sales operations",["CRM","Billing"]),
   S2("Payment",3,["Raise the purchase order","Pay the invoice"],["Invoice","Payment portal"],[["Purchase order number is rejected for format",1]],["Validate the PO as it is typed"],"Finance",["Billing (ERP)"]),
-  S2("Access restored",4,["Confirm access","Re-invite seats"],["Subscriber portal"],[["Access lapses for two days after payment",3]],["Extend access automatically while payment clears"],"Platform team",["Entra External ID","Codification Platform"]),
+  S2("Access restored",4,["Confirm access","Re-invite seats"],["Subscriber portal"],[["Access lapses for two days after payment",3]],["Extend access automatically while payment clears"],"Platform team",["Entra External ID","Standards Platform"]),
   S2("Usage review",3,["Review usage","Plan next year"],["Account manager call"],[],["Send a usage story before the next renewal"],"Subscriptions",["CRM"])]}]}
 st.jr=st.jr||{list:seedJ(),sel:"J1",raised:[],sev:null};
 const JR=()=>st.jr.list.find(j=>j.id===st.jr.sel);
@@ -538,7 +538,7 @@ st.decs=st.decs||[
  {id:"DEC-0412",f:"cab",d:"2026-09-30",t:"Approve hosting tier change CR-8841 for the weekend of Oct 17",why:"Portal availability is 99.62% against a 99.9% target. The larger tier removes the latency spikes.",by:"nb",st:"Approved"},
  {id:"DEC-0411",f:"cab",d:"2026-09-30",t:"Defer the Contract Repository connector change until after the Nov 16 freeze",why:"Three of nine open changes collide with the freeze. This one has no rollback test yet.",by:"nb",st:"Deferred"},
  {id:"DEC-0410",f:"arb",d:"2026-09-29",t:"Use the Taxonomy Data Hub as the single source for subject codes",why:"Three copies of the code list exist today. One owner, one API, others read from it.",by:"jl",st:"Approved"},
- {id:"DEC-0409",f:"arb",d:"2026-09-29",t:"Reject a second search vendor for the Codification Platform",why:"Lumen owns indexing under SOW-4. A second vendor would double integration work.",by:"jl",st:"Rejected"},
+ {id:"DEC-0409",f:"arb",d:"2026-09-29",t:"Reject a second search vendor for the Standards Platform",why:"Lumen owns indexing under SOW-4. A second vendor would double integration work.",by:"jl",st:"Rejected"},
  {id:"DEC-0408",f:"pc",d:"2026-09-10",t:"Fund Disaster recovery for the Portal ahead of the mobile app",why:"A Sev 2 showed there is no tested failover. Tier 1 availability depends on it.",by:"mo",st:"Approved"},
  {id:"DEC-0407",f:"pc",d:"2026-09-10",t:"Hold the Data warehouse consolidation until the Taxonomy hub pilot",why:"Both draw on the Data team in the same months.",by:"mo",st:"Deferred"},
  {id:"DEC-0406",f:"sec",d:"2026-09-16",t:"Require the privileged access course before any production role is granted",why:"Two access reviews found roles held without training.",by:"oh",st:"Approved"},

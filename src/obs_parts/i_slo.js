@@ -3,7 +3,7 @@
 function defSLO(){return [
  {id:"SL1",n:"Portal readers can load pages",svc:"svc_portal",tgt:99.9,sli:"Share of 5-minute periods with error rate under 2% and p95 latency under 3 seconds",own:"Tom Becker",good:[{ci:"ci_por4",m:"err",op:"<",th:2},{ci:"ci_por4",m:"lat",op:"<",th:3000}]},
  {id:"SL2",n:"Portal p95 latency under 2 seconds",svc:"svc_portal",tgt:99,sli:"Share of 5-minute periods with p95 latency under 2 seconds",own:"Tom Becker",good:[{ci:"ci_por4",m:"lat",op:"<",th:2000}]},
- {id:"SL3",n:"Editors can save drafts",svc:"svc_cod",tgt:99.9,sli:"Share of 5-minute periods with error rate under 2% and p95 latency under 3 seconds on the Codification Platform",own:"Priya Shah",good:[{ci:"ci_cod4",m:"err",op:"<",th:2},{ci:"ci_cod4",m:"lat",op:"<",th:3000}]},
+ {id:"SL3",n:"Editors can save drafts",svc:"svc_cod",tgt:99.9,sli:"Share of 5-minute periods with error rate under 2% and p95 latency under 3 seconds on the Standards Platform",own:"Priya Shah",good:[{ci:"ci_cod4",m:"err",op:"<",th:2},{ci:"ci_cod4",m:"lat",op:"<",th:3000}]},
  {id:"SL4",n:"Search index is fresh",svc:"svc_search",tgt:99.5,sli:"Share of 5-minute periods with indexer queue depth under 5,000 on both indexers",own:"Marco Ellis",good:[{ci:"ci_sea0",m:"queue",op:"<",th:5000},{ci:"ci_sea1",m:"queue",op:"<",th:5000}]},
  {id:"SL5",n:"Search API answers in under 1.5 seconds",svc:"svc_search",tgt:99.5,sli:"Share of 5-minute periods with search p95 latency under 1.5 seconds",own:"Marco Ellis",good:[{ci:"ci_sea2",m:"lat",op:"<",th:1500}]},
  {id:"SL6",n:"Sign-in works (Entra ID and MFA)",svc:"svc_id",tgt:99.95,sli:"Share of 5-minute periods with the MFA service available",own:"Rina Okafor",good:[{ci:"ci_mfa",m:"avail",op:">",th:99.5}]},

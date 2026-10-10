@@ -75,7 +75,7 @@ function recDrawer(id){const n=N(id)||KGN.find(x=>x.id===id);if(!n)return;const 
 
 /* ---- navigation ---- */
 function navHelpBtn(){return `<button class="navhelp" popovertarget="navHelp" title="How to read the navigation"><span aria-hidden="true">?</span> How to read this menu</button>`}
-function navHTML(){const P=PERSONAS[S.persona];const lab=Object.fromEntries(SCREENS.map(s=>[s[0],s]));const fav=["home"];
+function navHTML(){if(window.NAVX&&NAVX.html)return NAVX.html();const P=PERSONAS[S.persona];const lab=Object.fromEntries(SCREENS.map(s=>[s[0],s]));const fav=["home"];
  const gOf=k=>(window.NAVGRP&&NAVGRP[k])||lab[k][3];
  const item=k=>{const s=lab[k];const badge=k==="inv"?'<em class="badge">3</em>':k==="tower"?'<em class="badge">1</em>':"";return `<button class="navi" data-nav="${k}" ${S.screen===k?'aria-current="page"':""} title="${esc(s[1])}">${IC(s[2])}<span>${esc(s[1].replace(/\s*\([^)]*\)\s*$/,""))}</span>${badge.replace("<em","<b")}</button>`};
  const flat=window.matchMedia("(max-width:900px)").matches||($("#railCollapse")&&$("#railCollapse").checked);
@@ -89,7 +89,7 @@ function renderNav(){$("#nav").innerHTML=navHTML();$("#personaName").textContent
 function go(screen,arg){S.screen=screen;S.navOpen={};if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
 let _R={};
 function navReveal(){const n=$("#nav"),a=n&&n.querySelector("[aria-current=page]");if(!a)return;const nr=n.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.bottom>nr.bottom-8)n.scrollTop+=ar.bottom-nr.bottom+40;else if(ar.top<nr.top+8)n.scrollTop-=nr.top-ar.top+40}
-function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender()}
+function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.dataset.screen=S.screen;v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender()}
 function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */
@@ -105,7 +105,7 @@ function showSugg(){const q=$("#q").value.trim().toLowerCase(),box=$("#sugg");if
  h+=`<div class="grp eyebrow">Ask Oukala</div><button data-sr="ask"><i class="dotc" style="background:var(--accent)"></i><span>${esc($("#q").value.trim())}</span><span class="meta">Press Enter</span></button>`;box.innerHTML=h;box.classList.add("open")}
 const REPLY={
  hold:()=>({t:"Two invoices are worth a closer look. INV-20433 (Lumen, $62,900) should be held because accepted work is $390,000 and $412,000 is already paid. INV-20440 (Apex Print, $12,480) looks like a duplicate of one paid on Sep 12.",steps:["Searched 4 open invoices","Compared each to accepted work and prior payments","Applied your approver scope"],act:()=>go("inv","INV-20433")}),
- why:()=>({t:"The portfolio is amber because the Codification beta moved from Nov 4 to Nov 13. Lumen delivered the search indexer nine days late, and Vendor services is now $45,000 over commitment.",steps:["Traced Digital Publishing to its two projects","Followed the slip to Lumen SOW-4","Read the budget line commitments"],act:()=>go("trace","PR1")}),
+ why:()=>({t:"The portfolio is amber because the Standards beta moved from Nov 4 to Nov 13. Lumen delivered the search indexer nine days late, and Vendor services is now $45,000 over commitment.",steps:["Traced Digital Publishing to its two projects","Followed the slip to Lumen SOW-4","Read the budget line commitments"],act:()=>go("trace","PR1")}),
  cal:()=>({t:"Tomorrow you have the change advisory board at 10:00, a 1:1 with Tom Becker at 13:00, and Wednesday has no conflicts. First Officer has a pre-read ready for the board.",steps:["Read your calendar through Microsoft Graph","Matched meetings to records","Prepared pre-reads"],act:()=>go("fo")}),
  portal:()=>({t:"The portal has been slow since 09:12. Availability is 99.62% against 99.9%, and Ops Agent is running the failover runbook, which is 14 months old. A rehearsal is set for 16:00.",steps:["Read incident INC1 and service S1","Checked the runbook's review date","Looked up the open change request"],act:()=>go("trace","INC1")}),
  rule:()=>({t:"At $25,000 with all checks passing, 14 of the last 60 invoices would have cleared automatically with no overrides. Raising the limit to $50,000 adds 8 more but includes 2 that were later overridden.",steps:["Back-tested the rule on 60 invoices","Counted later overrides"],act:()=>{S.invTab=2;go("inv")}}),

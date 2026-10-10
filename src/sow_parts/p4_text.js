@@ -4,7 +4,7 @@ TXT.sow5=`STATEMENT OF WORK 5: SEARCH INDEXER PHASE 2
 Between Meridian Standards Foundation ("Meridian") and Lumen Data Partners ("Lumen"). Proposal version 2, dated September 29, 2026.
 
 1. Scope and deliverables
-1.1 Lumen shall deliver a production search indexer for the Codification Platform, including the index schema design document.
+1.1 Lumen shall deliver a production search indexer for the Standards Platform, including the index schema design document.
 1.2 Lumen shall deliver a relevance tuning report covering the top 500 standards queries by December 18, 2026.
 1.3 The desired outcome is that editors find the correct standard on the first page of results.
 
@@ -31,7 +31,7 @@ Between Meridian Standards Foundation ("Meridian") and Lumen Data Partners ("Lum
 5.1 Lumen assumes Meridian will provide production-like test data by January 15, 2027.
 5.2 Any delay in Meridian providing data, access or approvals automatically extends all dates and may result in additional fees.
 5.3 Meridian shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
-5.4 The indexer depends on the Codification Platform content API being stable and documented.
+5.4 The indexer depends on the Standards Platform content API being stable and documented.
 
 6. Acceptance and warranty
 6.1 Meridian shall review each deliverable within 10 business days of delivery.
@@ -67,7 +67,7 @@ Proposal version 2 from Lumen Data Partners to Meridian Standards Foundation, da
 
 1. Scope and deliverables
 1.1 Lumen shall deliver a taxonomy data model and the ingestion pipeline for the Taxonomy Data Hub.
-1.2 Lumen shall deliver the search indexer for the Codification Platform.
+1.2 Lumen shall deliver the search indexer for the Standards Platform.
 1.3 Lumen will provide 16 hours of operator training and a runbook.
 
 2. Milestones
@@ -113,7 +113,7 @@ Executed by Lumen Data Partners and Meridian Standards Foundation on February 27
 
 1. Scope and deliverables
 1.1 Lumen shall deliver a taxonomy data model and the ingestion pipeline for the Taxonomy Data Hub.
-1.2 Lumen shall deliver the search indexer for the Codification Platform.
+1.2 Lumen shall deliver the search indexer for the Standards Platform.
 1.3 Lumen will provide 8 hours of operator training and a runbook.
 
 2. Milestones

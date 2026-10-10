@@ -1,0 +1,21 @@
+(async()=>{const o={};
+o.sowch=SOWX.changes().slice(0,3);
+o.gateDec=GATE.decide.toString().slice(0,500);
+o.gateStatus=[...new Set(GATE.apps().map(a=>a.status))];
+o.gatePending=GATE.apps().filter(a=>/review|pending|submitted|awaiting/.test(a.status)).map(a=>({id:a.id,s:a.status,t:a.tier,own:a.owner}));
+o.fabq=FAB.quarantine&&(typeof FAB.quarantine==="function"?FAB.quarantine():FAB.quarantine);
+o.fabq0=JSON.stringify(FAB.quarantine).slice(0,600);o.fabrunsT=typeof FAB.runs;o.fabopen=String(FAB.open).slice(0,200);
+o.kcsItems=KCSX.items().filter(x=>/review|draft/i.test(x.st||x.status||"")).slice(0,2);
+o.kcsKeys=Object.keys(KCSX.items()[0]||{}); o.kcsSt=[...new Set(KCSX.items().map(x=>x.st||x.status))];
+o.pplPTO=PEOPLEX.requestResource.toString().slice(0,300);
+o.atlasProposed=PLAT.entities().filter(e=>e.status==="proposed"||e.proposed).map(e=>({id:e.id,label:e.label,s:e.status})).slice(0,5);
+o.entKeys=Object.keys(PLAT.entities()[0]);
+o.relStatus=[...new Set(RELX.releases.map(r=>r.st))];
+o.relpending=RELX.releases.filter(r=>/review|go/i.test(r.st)).map(r=>({id:r.id,st:r.st,rec:RELX.recommend(r.id),date:r.date})).slice(0,3);
+o.gngSig=RELX.goNoGo.toString().slice(0,700);
+o.doa=DOA.tiers();
+o.debtNew=DEBT.items().filter(d=>d.status!=="open"&&d.status!=="done").map(d=>d.status).slice(0,5);
+o.pplState=Object.keys(S.ppl2||S.people||{});
+o.state=Object.keys(S).join(",");
+o.ooo=S.flow&&S.flow.ooo;
+return o})()

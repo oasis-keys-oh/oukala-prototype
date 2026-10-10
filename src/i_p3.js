@@ -1,0 +1,23 @@
+(async()=>{const o={};
+o.capreqs=(typeof CAP!=="undefined"&&CAP.reqs||[]).slice(0,3);
+o.capKeys=typeof CAP!=="undefined"?Object.keys(CAP):null;
+o.fabproj=FAB.projects.slice(0,3).map(p=>({id:p.id,stage:p.stage,keys:Object.keys(p).join(","),route:p.route}));
+o.fabStages=[...new Set(FAB.projects.map(p=>p.stage))];
+o.proposed=Object.entries(DATAMODEL.tables).filter(([k,t])=>t.status==="proposed").map(([k,t])=>({k,label:t.label,src:t.source}));
+o.matcr=MAT.crRows().slice(0,2).map(r=>({key:r.key,state:r.state,n:r.n.name,p:r.p&&r.p.n,own:r.n.owner,keys:Object.keys(r).join(",")}));
+o.matStates=[...new Set(MAT.crRows().map(r=>r.state))];
+o.debtSt=[...new Set(DEBT.items().map(d=>d.status))];
+o.ooo=JSON.stringify(S.flow&&S.flow.ooo||null).slice(0,300);
+o.pto=Object.keys(window).filter(k=>/pto|leave|timeoff/i.test(k)).slice(0,10);
+o.oncallPto=typeof OCX!=="undefined"&&OCX.ptoForm?String(OCX.ptoForm).slice(0,300):null;
+o.meetings=MEETINGS.slice(0,2);
+o.appr=(S.ppl2&&Object.keys(S.ppl2))||null;
+o.pplpto=window.PEOPLE_PTO||null;
+o.req0=REQREG.filter(r=>r.state==="pending").length;
+o.reqApprovers=[...new Set(REQREG.filter(r=>r.state==="pending").flatMap(r=>Object.values(r.ap).filter(a=>a.st==="pending").map(a=>a.who)))];
+o.chgPend=ITSMX.changes.filter(c=>c.st==="Authorize").map(c=>c.id+":"+c.stages.flatMap(s=>s.ap.filter(a=>a.dec==="pending").map(a=>a.w+"/"+a.deleg)).join("|"));
+o.kcsRvw=KCSX.items().filter(x=>x.st==="In review").map(x=>x.id+":"+x.rvw);
+o.gateRev=GATE.apps().filter(a=>a.status==="review").map(a=>a.id+":"+a.owner);
+o.fino=FIN._h.F.gq.length;
+o.hasStatus=PLAT.entities().filter(e=>e.status!=="canonical").map(e=>e.id+":"+e.status+":"+e.proposed).slice(0,10);
+return o})()

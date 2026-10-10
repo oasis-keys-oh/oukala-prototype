@@ -14,7 +14,7 @@ await sub('itsm_inc',{caller:'X (Y)',svc:'Search and indexing',title:'t',desc:'d
 // change
 await p.evaluate(()=>{closeDrawer();S.v.itsm_chg=0;go('itsm_chg')});await W(300);await p.locator('[data-itsm-a="cnew"]').first().click();await W(400);
 const ci=await p.evaluate(()=>CIREG.find(c=>c.svc==='svc_portal').id);
-await sub('itsm_chg',{type:'Normal',t:'Test change',svc:'Codification Portal',cis:[ci],just:'j',impl:'i',back:'b',start:'2026-11-18',end:'2026-11-18',cost:5000,submit_now:true});
+await sub('itsm_chg',{type:'Normal',t:'Test change',svc:'Standards Portal',cis:[ci],just:'j',impl:'i',back:'b',start:'2026-11-18',end:'2026-11-18',cost:5000,submit_now:true});
 console.log('chg',await p.evaluate(()=>{const c=S.itsm.chg[0];return JSON.stringify({tr:c.tr,cost:c.cost,type:c.type,svc:c.svc,cis:c.cis,env:c.env,grp:c.grp})+c.id+' '+c.st+' stages='+c.stages.map(s=>s.n+':'+s.ap.map(a=>a.w).join('/')).join(' | ')}));
 await p.screenshot({path:'out_itsm/shots/d_chg.png'});
 // approve first

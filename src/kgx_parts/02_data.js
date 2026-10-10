@@ -2,7 +2,7 @@
 (function(){
 const G=window.GAAPDATA||{nodes:[],edges:[],unresolved:[]};
 const KX=()=>window.KCSX;
-const TSV={"Codification Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int","Codification Portal ":"svc_portal"};
+const TSV={"Standards Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int","Standards Portal ":"svc_portal"};
 const GROUPS={know:{l:"Knowledge item",c:"--p4"},svc:{l:"Service",c:"--accent"},ci:{l:"Configuration item",c:"--s3"},proc:{l:"Process",c:"--w1",shape:"square"},proj:{l:"Project",c:"--u3",shape:"square"},person:{l:"Person or agent",c:"--e4"},skill:{l:"Agent skill",c:"--good-f",shape:"diamond"},wf:{l:"Workflow",c:"--u1",shape:"square"},inc:{l:"Incident",c:"--bad-f"},prompt:{l:"Prompt",c:"--p2",shape:"diamond"},gap:{l:"Knowledge gap",c:"--warn-f"}};
 let cache=null,ckey="";
 function eco(){const x=KX();if(!x)return {nodes:[],edges:[]};const key=[SCALE.on,x.version(),WFX&&WFX.defs.length,x.skills().length].join("|");if(cache&&ckey===key)return cache;

@@ -9,7 +9,7 @@ const xday=w=>(WD[Math.max(0,Math.min(WD.length-1,w))]-CAL0)/DAYMS;
 const TODAY=wdOf("2026-10-06");
 
 const PROJ=[
- {id:"PR1",n:"Codification Platform Upgrade",short:"Codification",c:"--p4",owner:"Priya Shah",bac:1200,paid:740,rec:"PR1"},
+ {id:"PR1",n:"Standards Platform Upgrade",short:"Standards",c:"--p4",owner:"Priya Shah",bac:1200,paid:740,rec:"PR1"},
  {id:"PR2",n:"Taxonomy Data Hub",short:"Taxonomy",c:"--s3",owner:"Dev Rao",bac:860,paid:770,rec:"PR2"},
  {id:"PR3",n:"Portal Resilience",short:"Portal",c:"--e4",owner:"Tom Becker",bac:310,paid:120,rec:"S1"},
  {id:"PR4",n:"Contract Repository Refresh",short:"Contracts",c:"--u3",owner:"Maya Ortiz",bac:540,paid:60,rec:"R1"}];
@@ -111,7 +111,7 @@ T3|p1_19|Entra ID access model and security review|5|p1_18|100|Rina Okafor||Rina
 M2|p1_20|Design gate G1: baseline approved|0|p1_1,p1_17,p1_18|100|Omar Hamid||Omar Hamid:5|dv=Gate G1 record~acc=No open severity 1 design risks
 S1|-|Build||||Priya Shah|||d=Build the platform, the search indexer and the content migration.
 S2|-|Core platform||||Sam Patel
-T3|p1_2|Core platform build|45|p1_1,p1_14,p1_20|100|Priya Shah|Platform team:7|Sam Patel:100,Elise Park:100,Priya Shah:30|dv=Codification Platform release candidate 0.9~acc=All build stories accepted, no open severity 1 defects
+T3|p1_2|Core platform build|45|p1_1,p1_14,p1_20|100|Priya Shah|Platform team:7|Sam Patel:100,Elise Park:100,Priya Shah:30|dv=Standards Platform release candidate 0.9~acc=All build stories accepted, no open severity 1 defects
 T3|p1_21|Azure environments and CI/CD pipeline|10|p1_20|100|Sam Patel||Sam Patel:60,Contoso Cloud Operations:40|dv=Dev, test and production environments
 S3|-|Authoring workflow||||Priya Shah
 T4|p1_22|Authoring workflow configuration|15|p1_21|100|Priya Shah||Priya Shah:40,Elise Park:50
@@ -159,7 +159,7 @@ T2|p1_43|Cutover runbook|5|p1_5|0|Sam Patel||Sam Patel:50,Ravi Menon:30
 T2|p1_44|Change approval for the cutover window|2|p1_43|0|Nia Brooks||Nia Brooks:60,Change Risk Agent:80|dv=Approved change record
 T2|p1_8|Cutover rehearsal|8|p1_6,p1_7,p1_32,p1_39,p1_44|0|Priya Shah|Platform team:4,Ops team:2|Sam Patel:100,Ravi Menon:100,Nia Brooks:30|dv=Rehearsal report with timings~acc=Cutover completes inside the 6 hour window
 M2|p1_45|Go or no-go decision by the steering committee|0|p1_8,p1_41|0|Omar Hamid||Omar Hamid:5
-M2|p1_9|Go live|0|p1_8,p1_45|0|Priya Shah||Priya Shah:5|dv=Production release of Codification Platform~acc=Rehearsal passed, rollback tested, steering committee approval
+M2|p1_9|Go live|0|p1_8,p1_45|0|Priya Shah||Priya Shah:5|dv=Production release of Standards Platform~acc=Rehearsal passed, rollback tested, steering committee approval
 `,
 PR2:`
 S1|-|Initiation and governance||||Dev Rao|||d=Fund the work and sign the vendor statement of work.
@@ -174,7 +174,7 @@ S2|-|Canonical model workstreams||||Dev Rao
 T3|p2_15|Entity inventory and source mapping|10|p2_10|100|Dev Rao||Dev Rao:30,Knowledge Curator:60
 T3|p2_16|Reference data and code lists|8|p2_15|100|Jordan Lee||Jordan Lee:40
 T3|p2_17|Lineage and stewardship model|6|p2_16|100|Dev Rao||Dev Rao:40
-M2|p2_18|Taxonomy schema v1 published|0|p2_1,p2_17|100|Dev Rao||Dev Rao:5|dv=Schema v1 published to the catalog~acc=Feeds Codification integration test (PR1) and Taxonomy engineering
+M2|p2_18|Taxonomy schema v1 published|0|p2_1,p2_17|100|Dev Rao||Dev Rao:5|dv=Schema v1 published to the catalog~acc=Feeds Standards integration test (PR1) and Taxonomy engineering
 T2|p2_19|Data privacy impact assessment|5|p2_18|100|Rina Okafor||Rina Okafor:50
 S1|-|Pipeline and platform build||||Dev Rao|||d=Land source data, clean it and run it through the pipeline.
 S2|-|Landing zone and tooling||||Sam Patel
@@ -182,7 +182,7 @@ T3|p2_20|Azure Data Factory environment and landing zone|8|p2_18|100|Sam Patel||
 T3|p2_21|Access, secrets and network controls|5|p2_20,p2_19|100|Rina Okafor||Rina Okafor:50
 T3|p2_35|Metadata catalog in Microsoft Purview|10|p2_20|100|Hana Koval||Hana Koval:50,Knowledge Curator:40
 S2|-|Source connectors||||Dev Rao
-T3|p2_22|Codification Platform connector|10|p2_20|100|Dev Rao||Dev Rao:40,Hana Koval:50
+T3|p2_22|Standards Platform connector|10|p2_20|100|Dev Rao||Dev Rao:40,Hana Koval:50
 T3|p2_23|Contract Repository connector|10|p2_20|100|Dev Rao||Dev Rao:40,Test Agent:50
 T3|p2_36|Source system access requests|3|p2_20|100|Rina Okafor||Rina Okafor:40
 T3|p2_24|Lease subledger extract (ERP)|8|p2_21|40|Hana Koval||Hana Koval:60|note=Waiting on a read-only ERP account from Finance.
@@ -192,8 +192,8 @@ S3|-|Data quality||||Test Agent
 T4|p2_25|Data quality rules and profiling|12|p2_20|100|Test Agent||Test Agent:100,Dev Rao:20
 T4|p2_34|Quality scorecard in Power BI|6|p2_25|15|Dev Rao||Dev Rao:30,Knowledge Curator:40
 T4|p2_26|Entity resolution and matching (AI assisted)|13|p2_25|10|Knowledge Curator||Knowledge Curator:100,Hana Koval:40|dv=Entity matching model with measured precision
-S1|-|Taxonomy engineering (Lumen SOW-4)||||Dev Rao|||d=Lumen builds the taxonomy once its engineers finish the Codification search indexer.
-M2|p2_27|Lumen team released from the search indexer|0|p1_3|0|Marco Ellis||Marco Ellis:2|dv=Lumen staffing confirmation~note=Feeds from the Codification indexer. This is the link that carries the delay between projects.
+S1|-|Taxonomy engineering (Lumen SOW-4)||||Dev Rao|||d=Lumen builds the taxonomy once its engineers finish the Standards search indexer.
+M2|p2_27|Lumen team released from the search indexer|0|p1_3|0|Marco Ellis||Marco Ellis:2|dv=Lumen staffing confirmation~note=Feeds from the Standards indexer. This is the link that carries the delay between projects.
 T2|p2_2|Taxonomy engineering (Lumen SOW-4)|20|p2_1,p1_3,p2_27|0|Lumen|Lumen (vendor):4|Hana Koval:100,Lumen Search Services:50|ven=V1~dv=Taxonomy v1 with 6,200 controlled terms~acc=SOW-4 milestone 4: curated terms pass editor review~note=Starts when the same Lumen staff finish the search indexer.~lnk=SOW-4 milestone 4
 T2|p2_28|Synonym and ontology curation (Editors)|10|p2_27|0|Chief Editor||Chief Editor:30,Knowledge Curator:60
 T2|p2_29|Taxonomy review with the Chief Editor|5|p2_28|0|Chief Editor||Chief Editor:40
@@ -244,7 +244,7 @@ T3|p3_49|Service desk script for Portal outages|3|p3_3|0|Knowledge Curator||Know
 S1|-|Verification and closure||||Tom Becker|||d=Prove the failover works and close the problem record.
 T2|p3_41|Rehearsal plan and communications|3|p3_16|0|Tom Becker||Tom Becker:40,Nia Brooks:30
 T2|p3_4|Failover rehearsal|5|p3_2,p3_3,p3_16,p3_17,p3_18,p3_41,p3_39,p3_37,p3_40,p3_46,p3_48|0|Tom Becker|Ops team:3|Tom Becker:60,Sam Patel:100,Ravi Menon:100|dv=Rehearsal results~acc=Failover completes inside 15 minutes with no data loss
-M2|p3_20|Failover rehearsal passed|0|p3_4|0|Tom Becker||Tom Becker:2|dv=Rehearsal pass record~note=Feeds the Codification beta failover verification (PR1).
+M2|p3_20|Failover rehearsal passed|0|p3_4|0|Tom Becker||Tom Becker:2|dv=Rehearsal pass record~note=Feeds the Standards beta failover verification (PR1).
 M2|p3_21|Problem review board sign-off|0|p3_20|0|Tom Becker||Tom Becker:2
 M2|p3_5|Sev 2 problem closed|0|p3_4,p3_20,p3_21|0|Tom Becker||Tom Becker:5|dv=Closed problem record and updated known error database
 `,
@@ -268,7 +268,7 @@ S1|-|Migration design||||Maya Ortiz|||d=Design the target repository, the migrat
 T2|p4_2|Migration design|25|p4_1,p4_20|0|Maya Ortiz|Architecture:1,Platform team:1|Maya Ortiz:30,Jordan Lee:50|dv=Migration design document~acc=Design authority approval
 S2|-|Design components||||Jordan Lee
 T3|p4_21|Target metadata and retention model|10|p4_20,p4_14|0|Jordan Lee||Jordan Lee:50,Knowledge Curator:40
-T3|p4_22|Integration design: Codification, M365, Entra ID|8|p4_20|0|Jordan Lee||Jordan Lee:50,Sam Patel:30
+T3|p4_22|Integration design: Standards, M365, Entra ID|8|p4_20|0|Jordan Lee||Jordan Lee:50,Sam Patel:30
 T3|p4_23|Migration approach and wave plan|8|p4_21|0|Maya Ortiz||Maya Ortiz:30,Contract Analyst Agent:50
 T3|p4_24|Records retention and legal hold design|6|p4_21|0|Avery Chen||Avery Chen:30,Contract Analyst Agent:40
 T3|p4_37|Obligation and renewal alert model|5|p4_21|0|Contract Analyst Agent||Contract Analyst Agent:80,Maya Ortiz:20|dv=Alert rules for renewals and notice periods
@@ -533,7 +533,7 @@ const LOG0=[
  ["F02","Design","Shell","User profile and preferences.","Done","v2"],
  ["F03","Design","Visual","Liquid glass, floating layers, strong color contrast, hover effects everywhere, subtle animation, no text boxes or visible text boundaries.","Done","v2"],
  ["F04","Design","Visual","Use the supplied color palette. Name the app Oukala.","Done","v2"],
- ["F05","Design","Trace","Trace the business process like the Codification Publishing Flow, in a modern vector style, keeping the interactivity.","Done","v2"],
+ ["F05","Design","Trace","Trace the business process like the Standards Publishing Flow, in a modern vector style, keeping the interactivity.","Done","v2"],
  ["F06","Design","Trace","\"How to read this\" was unreadable and inconsistent.","Done","v2"],
  ["F07","Design","Table","Fix the inconsistent fonts and make the table less boring.","Done","v2"],
  ["F08","Design","Table","Clicking away from a row should close the drawer. The drawer should be floating liquid glass.","Done","v2"],

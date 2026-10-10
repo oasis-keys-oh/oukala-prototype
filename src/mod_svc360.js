@@ -36,7 +36,7 @@ const OBJS=()=>[...new Set(SVCREG.flatMap(s=>s.obj))];
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,28);
 
 /* ================= configuration items: CIREG plus scale data ================= */
-const scaleSvc={"Codification Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int"};
+const scaleSvc={"Standards Portal":"svc_portal","Search":"svc_search","Contract Repository":"svc_cr","Lease subledger":"svc_erp","Identity":"svc_id","Email and collaboration":"svc_m365","Data platform":"svc_data","Network and VPN":"svc_net","Endpoint":"svc_end","Integration hub":"svc_int"};
 let _sc=null,_scN=-1;
 const scaled=()=>{if(!(window.SCALE&&SCALE.on))return[];if(_sc&&_scN===SCALE.n.cis)return _sc;_sc=SCALE.cis().map(c=>Object.assign({},c,{svcI:scaleSvc[c.svc]||svcId(c.svc)||"svc_data",scaled:1}));_scN=SCALE.n.cis;return _sc};
 const scMap=()=>{const m={};scaled().forEach(c=>(m[c.svcI]=m[c.svcI]||[]).push(c));return m};
@@ -111,7 +111,7 @@ function drawMap(o){const {focus,dir,depth,fails,exp,onlyView}=o;const stf=propa
 SV.drawMap=drawMap;
 
 /* ================= linked records from other modules (guarded), with a small fallback so the screen is never empty ================= */
-const FB={inc:[["INC0412","Codification Portal slow for editors","svc_portal","In progress",1],["INC0408","Search returns outdated paragraphs","svc_search","In progress",2],["INC0405","Lease subledger rejects posting","svc_erp","On hold",2],["INC0409","Contract Repository upload fails for large PDFs","svc_cr","In progress",2]],chg:[["CHG0312","Raise portal hosting tier","svc_portal","Authorize","Normal","2026-10-14"],["CHG0313","Deploy Lumen indexer build 2.4","svc_search","Scheduled","Normal","2026-10-12"],["CHG0319","ERP patch","svc_erp","Scheduled","Standard","2026-10-20"]]};
+const FB={inc:[["INC0412","Standards Portal slow for editors","svc_portal","In progress",1],["INC0408","Search returns outdated paragraphs","svc_search","In progress",2],["INC0405","Lease subledger rejects posting","svc_erp","On hold",2],["INC0409","Contract Repository upload fails for large PDFs","svc_cr","In progress",2]],chg:[["CHG0312","Raise portal hosting tier","svc_portal","Authorize","Normal","2026-10-14"],["CHG0313","Deploy Lumen indexer build 2.4","svc_search","Scheduled","Normal","2026-10-12"],["CHG0319","ERP patch","svc_erp","Scheduled","Standard","2026-10-20"]]};
 function itsm(){const X=S.itsm||{};const inc=(X.inc&&X.inc.length)?X.inc.map(i=>({id:i.id,t:i.t,svc:svcId(i.svc),st:i.st,imp:i.imp,ci:i.ci,date:""})):(window.__noFB?[]:FB.inc.map(r=>({id:r[0],t:r[1],svc:r[2],st:r[3],imp:r[4]})));
  const chg=(X.chg&&X.chg.length)?X.chg.map(c=>({id:c.id,t:c.t,svc:svcId(c.svc),st:c.st,type:c.type,start:c.start,cis:c.cis||[]})):FB.chg.map(r=>({id:r[0],t:r[1],svc:r[2],st:r[3],type:r[4],start:r[5],cis:[]}));
  const prb=(X.prb||[]).map(p=>({id:p.id,t:p.t||p.title,svc:svcId(p.svc||p.service),st:p.st})),rel=(X.rel||[]).map(r=>({id:r.id,t:r.t||r.n,svc:svcId(r.svc||r.service),st:r.st}));return{inc,chg,prb,rel}}

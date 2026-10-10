@@ -13,7 +13,7 @@ await T('after',()=>({pend:FIN.gateBoard.pending().map(q=>q.pid+q.to+q.approver)
 await p.evaluate(()=>{S.v.fin_gates=2;render()});await p.waitForTimeout(200);
 await p.locator('[data-fin2=qok]').first().click();await p.waitForTimeout(300);
 await T('after approve',()=>FIN.gateBoard.board().map(x=>x.id+x.gate));
-// ASU toggle
+// Standards Update toggle
 await p.evaluate(()=>{S.v.fin_gates=1;render()});await p.locator('[data-fin=asu][data-id="1"]').first().click();await p.waitForTimeout(300);
 await T('asu',()=>({asu:FIN.asu(),cap:stats?0:0}));
 // split form

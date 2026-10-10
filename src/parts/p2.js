@@ -45,7 +45,7 @@ function qApprove(id){const x=I.queue.find(q=>q.id===id);if(!x)return;if(x.match
 /* ---------------- Events ---------------- */
 const SEV={1:["Sev 1","bad"],2:["Sev 2","bad"],3:["Sev 3","warn"],4:["Sev 4","info"]};
 const GRP=[
-{id:"G1",n:"Portal latency on Codification Portal",sev:2,al:17,rule:"Topology: shared SQL managed instance",rc:"C12",inc:"INC1",story:"Front Door, App Service and SQL alerts share one dependency, so they group into one candidate that matches INC1.",rb:"RB2",t:"09:12"},
+{id:"G1",n:"Portal latency on Standards Portal",sev:2,al:17,rule:"Topology: shared SQL managed instance",rc:"C12",inc:"INC1",story:"Front Door, App Service and SQL alerts share one dependency, so they group into one candidate that matches INC1.",rb:"RB2",t:"09:12"},
 {id:"G2",n:"Search indexer queue backlog",sev:3,al:9,rule:"Time and CI proximity",rc:"C2",inc:null,story:"Nine queue-depth alerts from the Lumen indexer VMs within 6 minutes.",rb:"RB2",t:"09:05"},
 {id:"G3",n:"Lease subledger batch duration",sev:3,al:7,rule:"Text similarity",rc:"C4",inc:null,story:"Journal post jobs take 3x longer. Month-end close starts Oct 28.",rb:"RB4",t:"10:41"},
 {id:"G4",n:"Entra sign-in failures spike",sev:3,al:12,rule:"Same application, same error",rc:"C9",inc:null,story:"Legacy authentication attempts blocked by CA-007; 12 alerts from one mail client.",rb:"RB3",t:"11:20"},
@@ -57,7 +57,7 @@ const GRP=[
 {id:"G10",n:"Packet loss on vnet-hub-eus",sev:3,al:11,rule:"Topology: network path",rc:"C6",inc:null,story:"Loss between the ERP subnet and the hub, 1.4% for 40 minutes.",rb:null,t:"10:02"},
 {id:"G11",n:"Backup job warnings",sev:4,al:14,rule:"Same job family",rc:"C5",inc:null,story:"Fourteen warnings from one nightly job family, no failures.",rb:null,t:"03:00"}];
 const ALERTS=[
-["A-5501",2,"Azure Monitor","appsvc-cod-prod","HTTP p95 latency 4.1 s (threshold 1.5 s)",31,"G1","09:12"],["A-5502",2,"Application Insights","Codification Portal","Failed request rate 6.8%",22,"G1","09:14"],["A-5503",3,"Azure Monitor","sqlmi-cod-prod","CPU 94% for 20 minutes",18,"G1","09:08"],["A-5504",3,"Azure Monitor","afd-meridian-prod","Origin latency 2.9 s",14,"G1","09:13"],
+["A-5501",2,"Azure Monitor","appsvc-cod-prod","HTTP p95 latency 4.1 s (threshold 1.5 s)",31,"G1","09:12"],["A-5502",2,"Application Insights","Standards Portal","Failed request rate 6.8%",22,"G1","09:14"],["A-5503",3,"Azure Monitor","sqlmi-cod-prod","CPU 94% for 20 minutes",18,"G1","09:08"],["A-5504",3,"Azure Monitor","afd-meridian-prod","Origin latency 2.9 s",14,"G1","09:13"],
 ["A-5505",3,"Lumen feed","vm-idx01","Queue depth 18,400 messages",9,"G2","09:05"],["A-5506",3,"Log Analytics","vm-erp-app01","Posting job duration 41 min (usual 12)",7,"G3","10:41"],["A-5507",3,"Entra ID","CA-007","Blocked legacy sign-ins: 212 in 10 min",12,"G4","11:20"],["A-5508",4,"Azure Monitor","stcontracts","Throttled requests 3%",6,"G5","12:02"],
 ["A-5509",4,"Azure Monitor","afd-meridian-prod","Certificate expires in 14 days",3,"G6","06:00"],["A-5510",3,"Azure Monitor","vm-erp-db01","Data disk 82% used",5,"G7","07:30"],["A-5511",3,"Network scan","vnet-hub-eus","Packet loss 1.4%",11,"G10","10:02"],["A-5512",4,"Intune","Editor laptops","8 devices fail encryption policy",8,"G8","08:15"]];
 I.rules=I.rules||[

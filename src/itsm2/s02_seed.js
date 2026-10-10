@@ -1,8 +1,8 @@
 
 /* ---------- seed fixes: every record carries a registry service, registry CIs, team assignment and measured impact inputs ---------- */
 const INC_FIX={
-INC0412:{svc:"Codification Platform",ci:"ci_por0",grp:"Ops team",own:"Sam Patel",ua:140,deg:85,txh:5000,reg:0,urg:2,role:"lead",swarm:["Tom Becker","Triage Agent"]},
-INC0413:{svc:"Codification Platform",ci:"ci_cod2",grp:"Platform team",own:"",ua:30,deg:60,txh:800,reg:0,urg:1,role:"lead",swarm:["Sam Patel","Elise Park"]},
+INC0412:{svc:"Standards Platform",ci:"ci_por0",grp:"Ops team",own:"Sam Patel",ua:140,deg:85,txh:5000,reg:0,urg:2,role:"lead",swarm:["Tom Becker","Triage Agent"]},
+INC0413:{svc:"Standards Platform",ci:"ci_cod2",grp:"Platform team",own:"",ua:30,deg:60,txh:800,reg:0,urg:1,role:"lead",swarm:["Sam Patel","Elise Park"]},
 INC0408:{svc:"Search and indexing",ci:"ci_sea0",grp:"Data team",own:"Jordan Lee",ua:60,deg:30,txh:0,reg:0,urg:2,role:"analyst",direct:{by:"Tom Becker",why:"The restart test needs the architect who wrote it, and the Data team has no free engineer this week."}},
 INC0405:{svc:"Lease subledger (ERP)",ci:"ci_erp2",grp:"Finance",own:"Avery Chen",ua:12,deg:40,txh:1500,reg:1,urg:2,role:"analyst"},
 INC0409:{svc:"Contract Repository",ci:"ci_cr2",grp:"Platform team",own:"Elise Park",ua:8,deg:25,txh:0,reg:0,urg:3,role:"analyst"},
@@ -12,7 +12,7 @@ INC0411:{svc:"Network and VPN",ci:"ci_vpn",grp:"Ops team",own:"Ravi Menon",st:"I
 INC0402:{svc:"Data platform",ci:"ci_dat3",grp:"Data team",own:"Dev Rao",ua:25,deg:15,txh:0,reg:0,urg:2,role:"analyst"},
 INC0406:{svc:"Endpoint management (Intune)",ci:"ci_end1",grp:"Service desk",own:"Northwind Managed Services",ua:20,deg:20,txh:0,reg:0,urg:3,role:"analyst"},
 INC0407:{svc:"Lease subledger (ERP)",ci:"ci_int1",grp:"Finance",own:"",ua:8,deg:15,txh:0,reg:1,urg:3,role:"analyst",ovr:{p:2,from:3,by:"Avery Chen",role:"owner",why:"The payment export feeds Friday's AP run, so the service owner raised the priority.",at:"Oct 6 09:40"}},
-INC0414:{svc:"Codification Portal",ci:"ci_por3",grp:"Platform team",own:"",ua:0,deg:0,txh:0,reg:1,urg:3,role:"analyst"},
+INC0414:{svc:"Standards Portal",ci:"ci_por3",grp:"Platform team",own:"",ua:0,deg:0,txh:0,reg:1,urg:3,role:"analyst"},
 INC0415:{svc:"Search and indexing",ci:"ci_sea2",grp:"Lumen (vendor)",own:"Marco Ellis",ua:40,deg:20,txh:0,reg:0,urg:3,role:"analyst"},
 INC0403:{svc:"Network and VPN",ci:"ci_az",grp:"Ops team",own:"Sam Patel",ua:0,deg:0,txh:0,reg:0,urg:4,role:"analyst"},
 INC0404:{svc:"Endpoint management (Intune)",ci:"ci_end0",grp:"Service desk",own:"Tom Becker",ua:4,deg:40,txh:0,reg:0,urg:3,role:"analyst"}};
@@ -70,6 +70,6 @@ function ensureState(){
  const TP=TPL0().map(t=>{t.svc=svM(t.svc);t.cis=t.cis.map(ciM);return t});
  const mi=MI0();mi.roles={ic:"Tom Becker",tech:"Sam Patel",comms:"",scribe:""};mi.tl=mi.tl.map(e=>[e[0],e[1]==="Ops Agent"?"Triage Agent":e[1],e[2],e[3]]);
  Object.assign(X,{inc:INCS,histI:HISTI.map(h=>Object.assign({},h,{svc:svM(h.svc)})),prb:PR,ke:KE,kb:KB,chg:CH,tpl:TP,mi,tasks:TASK0.slice(),kq:"",cm:"2026-10",sel:null,seq:{inc:418,prb:13,chg:324,ke:12,kb:220,t:9002,comm:4,pol:20,ap:12},ctype:"",cst:"",ovlog:[{id:"INC0407",from:3,to:2,by:"Avery Chen",role:"Service owner",why:"The payment export feeds Friday's AP run.",at:"Oct 6 09:40",appr:""}],fsel:{pid:"PRB0010",leaf:""},apsel:"",req:[
-  {id:"RITM0231",t:"Codification beta access for 12 editors",st:"good",svc:"Codification Platform"},{id:"RITM0244",t:"Increase mailbox size for the Board secretary",st:"info",svc:"Email and collaboration (M365)"},{id:"RITM0252",t:"New laptop for incoming analyst",st:"mute",svc:"Endpoint management (Intune)"}]});
+  {id:"RITM0231",t:"Standards beta access for 12 editors",st:"good",svc:"Standards Platform"},{id:"RITM0244",t:"Increase mailbox size for the Board secretary",st:"info",svc:"Email and collaboration (M365)"},{id:"RITM0252",t:"New laptop for incoming analyst",st:"mute",svc:"Endpoint management (Intune)"}]});
 }
 ensureState();

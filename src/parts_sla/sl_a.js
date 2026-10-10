@@ -114,7 +114,7 @@ const HT=(h,m,d)=>Date.UTC(2026,9,d||6,h,m);
 const HOT=()=>{const mk=(tbl,id,f,evs)=>({id,tbl,f:Object.assign({number:id,customer_tier:"Gold",assignment_group:"Service desk"},f),ev:evs.map((e,i)=>({t:e[0],set:i?e[1]:Object.assign({},f,{number:id,state:e[1].state})})),cause:f.cause||null,hot:true});
  const I=(id,pr,svc,ci,start,evs,x)=>mk("incident",id,Object.assign({priority:pr,service:svc,ci,impact:"2 - Major degradation",urgency:"2 - High",reassignment_count:0,contact_type:"Portal",title:""},x||{}),[[start,{state:"New"}]].concat(evs));
  return {incident:[
-  I("INC0004423","P1","Codification Platform","Publish queue workers",HT(10,5),[[HT(10,20),{state:"In progress"}]],{assignment_group:"Platform team",title:"Publish queue is stuck"}),
+  I("INC0004423","P1","Standards Platform","Publish queue workers",HT(10,5),[[HT(10,20),{state:"In progress"}]],{assignment_group:"Platform team",title:"Publish queue is stuck"}),
   I("INC0004417","P2","Contract Repository","Contract search index",HT(15,30,5),[[HT(15,50,5),{state:"In progress"}]],{assignment_group:"Data team",title:"Contract search timing out",cause:"Waiting on a vendor"}),
   I("INC0004421","P2","Network and VPN","Edge firewall pair",HT(8,30),[[HT(8,50),{state:"In progress"}]],{assignment_group:"Network team",title:"Teams call quality drops"}),
   I("INC0004409","P3","Lease subledger (ERP)","Lease subledger database",HT(10,0,2),[[HT(11,0,2),{state:"In progress"}],[HT(13,0,2),{state:"On hold"}],[HT(15,0,2),{state:"In progress"}]],{assignment_group:"Data team",title:"Export fails for the October close"}),

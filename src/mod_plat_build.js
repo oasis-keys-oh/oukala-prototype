@@ -76,7 +76,7 @@ function toApp(d){
  const ov=d.proc.tpl?null:procOverlap(d);
  return{id:"bld_tmp",n:d.name||"New module",purpose:d.purpose,tier:"team",status:"sandbox",builder:d.owner,owner:d.owner||"",reads,writes:[],
   newEnts:d.data.neu.map(n=>{const h=dupHit(n);return{id:n.id,why:n.why,dupOf:h?h.id+(h.kind==="planned"?" (planned)":""):undefined}}),connectors:[],
-  ai:d.sec.ai?[{model:d.sec.model,gw:!!d.sec.gw,cap:d.sec.gw?(+d.sec.cap||0):0,use:"Assist the "+(d.name||"module")+" process"}]:[],classes:[d.sec.cls],sunset:d.sunset||"",dupProc:ov?ov.id:"",
+  ai:d.sec.ai?[{model:d.sec.model,gw:!!d.sec.gw,cap:d.sec.gw?(+d.sec.cap||0):0,use:"Assist the "+(d.name||"module")+" process"}]:[],classes:[d.sec.cls],sunset:d.sunset||"",dupProc:ov?ov.id:"",contract:(window.CONTRACT&&CONTRACT.fromDraft?CONTRACT.fromDraft(d):undefined),
   m:{manifest:true,ownAuth:!d.sec.signin,ownNotify:!d.sec.notify,ownReport:!d.sec.report,secrets:!d.sec.secrets,labels,audit:!!d.sec.audit,a11y:"pass"}};
 }
 function runGate(d){
@@ -313,9 +313,9 @@ function drawSoft(){
 /* ---------- dashboard ---------- */
 const CONTRACTS=[
  ["Identity and permissions","You get","Platform sign-in, roles from Entra ID groups, attribute rules, shared preferences.","You declare","Roles, data classification, support owner.",["auth","owner","nowrite"]],
- ["Data model","You get","Registered entities with owners, stewards and field classes, and the duplicate check.","You declare","What you reuse, extend or propose, with authority and class per field.",["nodup","labels","manifest"]],
- ["Process and flows","You get","The process library, the module map and the workflow service.","You declare","Process steps, who acts, SLA, and the flows to other modules.",["noproc","notify"]],
- ["Metrics","You get","The metric framework: formula chips, popovers, trends and remediation play.","You declare","Each metric with formula, owner, target and remediation.",[]],
+ ["Data model","You get","Registered entities with owners, stewards and field classes, and the duplicate check.","You declare","What you reuse, extend or propose, with authority and class per field.",["nodup","labels","manifest","ct_data"]],
+ ["Process and flows","You get","The process library, the module map and the workflow service.","You declare","Process steps, who acts, SLA, and the flows to other modules.",["noproc","notify","ct_process","ct_links"]],
+ ["Metrics","You get","The metric framework: formula chips, popovers, trends and remediation play.","You declare","Each metric with formula, owner, target and remediation, and the maturity model and target.",["ct_metrics"]],
  ["Audit and AI governance","You get","Audit service, AI gateway with spend caps, secret store, accessibility checks.","You declare","Audit hooks, AI use with guardrails, a review or sunset date.",["audit","aigw","secrets","sunset","a11y"]]];
 function stageOf(){
  const out=SEEDS.map(s=>({id:s.id,name:s.name,owner:s.owner,stage:s.stage,reuse:s.reuse,ext:s.ext,neu:s.neu,conf:s.conf,next:s.next,band:s.band,purpose:s.purpose,seed:true}));
@@ -362,7 +362,7 @@ function manifestPane(){
  const d=D();
  if(!d)return `<div class="card glass"><p class="muted">Start or load a blueprint and the manifest is generated from your answers, live.</p><button class="btn primary" data-bld-act="loadex">Load the Facilities requests example</button></div>`;
  const json=JSON.stringify(manifest(d),null,2),mc=mcpArgs(d);
- const tools=["validate_manifest","check_reuse","get_entity","search_registry","run_conformance","request_exception"];
+ const tools=["validate_manifest","check_reuse","get_entity","search_registry","run_conformance","request_exception"].concat(window.MCPX&&MCPX.tools.some(t=>t.n==="run_feature_contract")?["run_feature_contract"]:[]);
  const out=B.mcp.out;
  return `<div class="grid g2" style="gap:16px;align-items:start">${card("Module manifest","oukala.module.json, generated from the blueprint. Copy it, or download it and commit it next to the code.",`<div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="btn primary" data-bld-act="copy">Copy JSON</button><button class="btn" data-bld-act="dl">Download file</button><span class="pill mute">oukala.module.json · ${json.length.toLocaleString("en-US")} bytes</span></div><pre class="gate-code bld-json" tabindex="0">${E(json)}</pre>`)}
  <div class="bld-mcpcol">${card("How an AI or coding client uses the same path","A person fills the wizard. An AI client calls the same checks as tools on the platform MCP server (Model Context Protocol), then opens a pull request. A human still clicks Register.",`<ol class="bld-ol"><li><b>search_registry</b> and <b>check_reuse</b> before it designs anything.</li><li><b>get_entity</b> to read owner, class and authority of what it will reuse.</li><li>Writes <code>oukala.module.json</code> from the answers.</li><li><b>validate_manifest</b> and <b>run_conformance</b> until nothing fails.</li><li><b>request_exception</b> only with a human owner and an expiry.</li><li>A person reviews and registers it here.</li></ol><p class="small muted">Prompt for a coding client: <i>"Read PLATFORM.md. Build a module called ${E(d.name||"my module")}. Call check_reuse first and validate_manifest before you finish."</i></p>${window.go?`<button class="btn" data-bld-act="tomcp">Open AI and coding clients</button>`:""}`)}
@@ -371,7 +371,7 @@ function manifestPane(){
 function mcpArgs(d){
  const ex=d.data.reuse[0]||(d.data.ext[0]||{}).ent||"person";
  let man={};try{man=manifest(d)}catch(e){}
- return{validate_manifest:{manifest:man},check_reuse:{name:d.data.neu[0]?d.data.neu[0].label:d.name,purpose:d.purpose,fields:d.data.neu[0]?d.data.neu[0].fields.map(f=>f.k).join(", "):""},get_entity:{id:ex},search_registry:{query:d.name||"request",kind:"any",limit:5},run_conformance:{app_id:"ca_budget"},request_exception:{app_id:"ca_budget",check_id:"nodup",reason:"Audit committee needs the old workbook",expires:iso(60)}};
+ return{validate_manifest:{manifest:man},check_reuse:{name:d.data.neu[0]?d.data.neu[0].label:d.name,purpose:d.purpose,fields:d.data.neu[0]?d.data.neu[0].fields.map(f=>f.k).join(", "):""},get_entity:{id:ex},search_registry:{query:d.name||"request",kind:"any",limit:5},run_conformance:{app_id:"ca_budget"},run_feature_contract:{manifest:(window.CONTRACT&&CONTRACT.fromDraft?CONTRACT.fromDraft(d):{})},request_exception:{app_id:"ca_budget",check_id:"nodup",reason:"Audit committee needs the old workbook",expires:iso(60)}};
 }
 /* ---------- example ---------- */
 function findLocation(){

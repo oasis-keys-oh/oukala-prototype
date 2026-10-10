@@ -45,7 +45,7 @@
 
 /* viewport */
 .at-vpbox{position:relative;border:1px solid var(--hair);border-radius:18px;background:var(--glass2);overflow:hidden}
-.at-vp{position:relative;height:max(520px,calc(100vh - 220px));overflow:hidden;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.at-vp{position:relative;height:clamp(380px,calc(100vh - 150px),1100px);height:clamp(380px,calc(100dvh - 150px),1100px);overflow:hidden;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
 .at-vp.pan{cursor:grabbing}
 .at-vp:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .at-world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
@@ -83,6 +83,8 @@
 .at-e.x{stroke:var(--accent);opacity:.55}
 .at-e.g{stroke-dasharray:5 6;stroke:var(--faint)}
 .at-e.hub{opacity:.18;stroke-width:1.2}
+.at-e.fade{opacity:.16;stroke-width:1.2}
+.at-e.fade.x{opacity:.2}
 .at-e.off{opacity:.05}
 .at-e.hot{stroke:var(--accent);stroke-width:3;opacity:1;stroke-dasharray:9 7;animation:at-dash 1s linear infinite}
 .at-e.fl{stroke-width:3.5}
@@ -90,8 +92,15 @@
 .at-arh{fill:var(--accent)}
 @keyframes at-dash{to{stroke-dashoffset:-32}}
 .at-gf{display:none}
-.at-fe path{fill:none;stroke:var(--accent);opacity:.35;stroke-linecap:round}
-.at-fe text{fill:var(--ink);font-size:34px;font-weight:700;paint-order:stroke;stroke:var(--glass2);stroke-width:8px}
+.at-svg path,.at-svg g.at-fe{pointer-events:stroke}
+.at-svg .at-e.hot,.at-svg .at-e.fade{pointer-events:stroke}
+[data-rel="domains"] .at-gf,[data-rel="all"] .at-gf{display:block}
+[data-rel="all"] .at-gf{opacity:.0;pointer-events:none}
+[data-rel="all"][data-lod="far"] .at-gf{opacity:1}
+.at-lgrel{max-width:520px;flex-basis:100%}
+.at-fe path{fill:none;stroke:var(--accent);opacity:.3;stroke-linecap:round}
+.at-fe:hover path{opacity:.8}
+.at-fe text{fill:var(--ink);font-size:26px;font-weight:700;paint-order:stroke;stroke:var(--glass2);stroke-width:8px}
 [data-lod="far"] .at-gf{display:block}
 [data-lod="far"] .at-ge{opacity:.12}
 
@@ -335,3 +344,30 @@
 .at-bd.prop{background:color-mix(in srgb,var(--p4) 28%,transparent);color:var(--ink);border:1px dashed var(--p4)}
 .at-propkey{display:inline-block;width:22px;height:12px;border-radius:5px;border:2px dashed var(--p4);flex:none}
 .at-propbox{margin:10px 0 0}
+
+/* Round 11: viewport fit, sticky tools, full screen. The app topbar is sticky (14px + about 62px), so the bar sits just below it. */
+.at-bar{position:sticky;top:84px;z-index:25;background:var(--bg);padding:6px 0;border-bottom:1px solid var(--hair)}
+.at-vp{height:clamp(360px,calc(100vh - 168px),1100px);height:clamp(360px,calc(100dvh - 168px),1100px)}
+.at-insp{top:140px;max-height:calc(100vh - 152px);max-height:calc(100dvh - 152px)}
+.at-tools{max-width:calc(100% - 270px)}
+.at-root.full{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;padding:8px 12px;gap:6px;overflow:hidden}
+.at-root.full .at-bar{position:static;flex:none}
+.at-root.full .at-wrap{flex:1;min-height:0;align-items:stretch;grid-template-rows:minmax(0,1fr)}
+.at-root.full .at-main,.at-root.full .at-vpbox{height:100%;min-height:0}
+.at-root.full .at-vp{height:100%}
+.at-root.full .at-insp{position:static;top:auto;max-height:100%;height:100%}
+.at-root.full .at-strip,.at-root.full .at-phone{display:none}
+@media (max-width:860px){.at-insp{top:auto;max-height:62vh}.at-root.full .at-insp{position:fixed;height:auto;max-height:62vh}}
+@media (max-width:640px){.at-bar{top:70px}.at-tools{max-width:calc(100% - 24px)}.at-vp{height:clamp(340px,calc(100dvh - 230px),900px)}.at-root.full .at-vp{height:100%}}
+@media (max-height:620px){.at-vp{height:clamp(280px,calc(100dvh - 150px),900px)}}
+/* the screen entrance animation keeps a transform after it ends, which makes fixed children (full screen, phone inspector) position against the page instead of the window */
+.screen:has(.at-root),.screen:has(.at-root) .pane{animation-fill-mode:backwards}
+@media (max-width:860px){.at-wrap.insp .at-tools{bottom:auto;top:58px}.at-wrap.insp .at-cardbox{top:112px}}
+.at-vpbox{scroll-margin-top:146px}
+@media (max-width:860px){.at-wrap.insp .at-tools{top:10px}.at-wrap.insp .at-bc{top:58px}.at-wrap.insp .at-cardbox{top:150px}}
+@media (max-width:640px){.at-vpbox{scroll-margin-top:132px}}
+@media (max-width:640px){.at-bar{position:static}.at-vpbox{scroll-margin-top:80px}.at-wrap.insp .at-bc{top:96px}.at-wrap.insp .at-cardbox{top:190px}}
+.at-wrap.insp .at-hint{display:none}
+[data-lod="near"] .at-fe text{display:none}[data-lod="near"] .at-fe path{opacity:.15}
+[data-rel="all"][data-lod="far"] .at-ge{opacity:.7}
+.at-refs select{min-width:150px}
