@@ -1,0 +1,66 @@
+/* ===== style6.css (Round 12, Agent A): type scale, KPI strip, Clarity lens markers, table type =====
+   Type scale tokens live in tokens.py: --fs-2xs 11, xs 12, sm 13, md 15, lg 18, xl 22, 2xl 28, 3xl 38.
+   Roles: eyebrow/th = 2xs label; pill/meta = xs; button/chip/kv label = sm; body/td = md; card title = xl; hero = 3xl.
+   :root:root raises specificity so module CSS cannot drift from the scale. */
+
+/* ---- type roles ---- */
+:root:root .eyebrow,:root:root th{font-family:var(--f-body);font-size:var(--fs-2xs);font-weight:var(--fw-label)}
+:root:root .pill{font-family:var(--f-body);font-size:var(--fs-xs);font-weight:var(--fw-label);font-variant-numeric:lining-nums tabular-nums}
+:root:root .btn,:root:root .chip{font-family:var(--f-body);font-size:var(--fs-sm);font-weight:var(--fw-ui)}
+:root:root .kv dt{font-size:var(--fs-sm);font-weight:var(--fw-ui)}
+:root:root .card>h3,:root:root .card h3.ct{font-size:var(--fs-xl)}
+
+/* ---- table type: one family (body), tabular figures, labels and totals share one weight ---- */
+:root:root td,:root:root td.tok.num,:root:root td.tok.tabular,:root:root td .num,:root:root td.num,:root:root td.tabular{font-family:var(--f-tab);font-variant-numeric:lining-nums tabular-nums;letter-spacing:0}
+:root:root td .num,:root:root td.num{font-size:inherit;font-weight:var(--fw-body)}
+:root:root td b,:root:root td strong,:root:root td .num b,:root:root td.tabular b{font-weight:var(--fw-strong)}
+:root:root td.num,:root:root td.tabular,:root:root td.tok.num,:root:root td.tok.tabular{text-align:right;white-space:nowrap}
+:root:root th.num,:root:root th.tabular{text-align:right}
+:root:root td.tok:not(.num):not(.tabular){font-family:var(--f-mono);font-size:var(--fs-xs)}
+/* money in a table row never uses mono, even when a module tagged it as a token */
+:root:root tr td.tok[data-money],:root:root td.tok:has(> .money){font-family:var(--f-tab)}
+
+/* ---- KPI strip: always visible; the formula chip is replaced by the inline card everywhere ---- */
+:root:root .fchip[data-k]{display:none}
+:root:root .fkpi{display:inline-flex;width:204px;max-width:100%;white-space:normal;vertical-align:top;background:var(--glass2);border:1px solid var(--hair)}
+:root:root .fkpi .fk-h{display:grid;grid-template-columns:minmax(0,1fr) 10px;align-items:start;gap:8px;min-height:2.5em}
+:root:root .fkpi .fk-n{display:block;white-space:normal;overflow:hidden;overflow-wrap:anywhere;hyphens:auto;line-height:1.25;font-size:var(--fs-xs);font-weight:var(--fw-label);color:var(--metric);-webkit-line-clamp:2;line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical}
+:root:root .fkpi .fk-d{width:10px;height:10px;margin-top:2px}
+:root:root .fkpi .fk-t{font-size:var(--fs-xs);white-space:nowrap}
+.row>.fkpi,.hero .fkpi{flex:0 0 auto}
+@media (max-width:700px){:root:root .fkpi{width:calc(50% - 8px);min-width:150px}}
+
+/* ---- Clarity lens: a small keyed marker instead of a tinted box; text is never covered ---- */
+:root:has(#lens:checked) [data-role="story"],:root:has(#lens:checked) [data-role="metric"],:root:has(#lens:checked) [data-role="none"]{background:none;box-shadow:none;outline:0;border-radius:0;text-decoration-line:underline;text-decoration-thickness:2px;text-underline-offset:5px;text-decoration-skip-ink:none}
+:root:has(#lens:checked) [data-role="story"]{text-decoration-style:solid;text-decoration-color:var(--story-f)}
+:root:has(#lens:checked) [data-role="metric"]{text-decoration-style:solid;text-decoration-color:var(--metric-f)}
+:root:has(#lens:checked) [data-role="none"]{text-decoration-style:dashed;text-decoration-color:var(--warn-f)}
+:root:has(#lens:checked) .fkpi{background:var(--glass2);box-shadow:inset 0 -3px 0 var(--metric-f)}
+.lensnote .k i{width:20px;height:0;border-radius:0;background:none!important;border-bottom:3px solid var(--story-f)}
+.lensnote .k:nth-of-type(2) i{border-bottom-color:var(--metric-f)}
+.lensnote .k:nth-of-type(3) i{border-bottom:3px dashed var(--warn-f)}
+.lensnote::after{content:"What is this? The lens underlines each sentence and number by where it comes from, so you can see what is explained, what is measured, and what has no reason to be on the page. Nothing is covered or hidden.";flex:1 0 100%;font-size:var(--fs-xs);line-height:1.45;color:var(--muted)}
+
+/* ---- Needs you link inside the approval toast ---- */
+.inbx-nlink{color:var(--accent);text-decoration:underline;text-underline-offset:2px;font-weight:700;border-radius:4px;cursor:pointer}
+.inbx-nlink:hover{text-decoration-thickness:2px}.inbx-nlink:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---- stragglers brought onto the scale ---- */
+:root:root .flw-tbl td,:root:root .mat-heat td{font-size:var(--fs-sm)}
+:root:root .chip,:root:root button.chip{font-size:var(--fs-sm)}
+:root:root .tile .lbl{font-size:var(--fs-sm)}
+:root:root .kv dd .num,:root:root .kv dd.num{font-family:var(--f-body);font-weight:var(--fw-strong);font-variant-numeric:lining-nums tabular-nums}
+:root:root .pill .num{font-family:var(--f-body)}
+/* figures inside running text use the body face, tabular, so a sentence never switches family mid-line */
+:root:root .need .muted b,:root:root .need span b{display:inline;font-size:inherit}
+:root:root .muted b.num,:root:root .small b.num,:root:root p b.num,:root:root .muted strong.num,:root:root span.muted .num{font-family:var(--f-body);font-weight:var(--fw-strong);font-size:inherit;letter-spacing:0}
+
+.inbx-banner .btn{white-space:nowrap}
+.inbx-banner small b,.inbx-banner .btn b,.inbx-bm small b{display:inline!important;font-size:inherit}
+/* the strip card never squeezes; inside table cells and narrow slots the compact chip is used instead */
+:root:root .fkpi{min-width:176px;flex-shrink:0}
+:root:root td .fchip[data-k],:root:root th .fchip[data-k],:root:root .kv .fchip[data-k]{display:inline-flex}
+:root:root td .fkpi,:root:root th .fkpi,:root:root .kv .fkpi{display:none}
+:root:root :is(.stat,.tile,.exe-tile,.itom-hc,.dev-dgrid,.cx-mt,.item,.need,.mini,small,em) .fchip[data-k]{display:inline-flex}
+:root:root :is(.stat,.tile,.exe-tile,.itom-hc,.dev-dgrid,.cx-mt,.item,.need,.mini,small,em) .fkpi{display:none}
+.inbx-focus{background:color-mix(in srgb,var(--bg) 97%,transparent)!important}

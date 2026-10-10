@@ -456,5 +456,7 @@ function ensure(){try{wire()}catch(e){}raidSync();M.sync();if(wired<4)setTimeout
 setTimeout(ensure,300);
 M.wired=()=>wired;
 M.addMeeting=addMeeting;M.normM=normM;M.fillAgenda=fillAgenda;
+/* Round 12: fix search subtitle "Oct -4" for meetings outside October. ui.js builds the subtitle from m.d (day of October); we wrap searchIndex and use the real date. */
+try{if(typeof searchIndex==="function"&&!window.__meetSearchFix){window.__meetSearchFix=1;const _si=searchIndex;searchIndex=function(){const out=_si.apply(this,arguments);let k=0;const ms=MEETINGS.slice();out.forEach(x=>{if(x.g==="Meetings"){const m=ms[k++];if(m&&m.dt)x.m=fd(m.dt)+(m.s!=null?" · "+tm(m.s):"")}});return out}}}catch(e){}
 M.sync();
 })();

@@ -9,6 +9,7 @@ LIGHT = """
 --good-f:#3A933C;--warn-f:#FFBA01;--bad-f:#E91224;--metric-f:#A53AA5;--story-f:#17899F;
 --good-s:rgba(14,125,16,.13);--warn-s:rgba(255,186,1,.24);--bad-s:rgba(233,18,36,.12);--metric-s:rgba(147,14,147,.11);--story-s:rgba(23,137,159,.14);
 --orb1:rgba(23,137,159,.45);--orb2:rgba(165,58,165,.28);--orb3:rgba(255,186,1,.30);--line-art:rgba(23,137,159,.28);--track:rgba(22,38,43,.10);
+--fs-2xs:11px;--fs-xs:12px;--fs-sm:13px;--fs-md:15px;--fs-lg:18px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:38px;--fw-label:700;--fw-ui:600;--fw-body:400;--fw-strong:600;--f-tab:var(--f-body);--f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
 """
 DARK = """
 --art-wash:rgba(6,17,22,.80);--art-wash2:rgba(6,17,22,.68);

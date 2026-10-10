@@ -18,7 +18,7 @@ js=[r(f) for f in core]
 for m in mods:
     if os.path.exists(m+'.js'): js.append('/* ===== '+m+' ===== */\n(function(){try{\n'+r(m+'.js')+'\n}catch(e){console.error("module '+m+' failed",e)}})();' if False else '/* ===== '+m+' ===== */\n'+r(m+'.js'))
 js.append(r("screens3.js"))
-css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.css")]+[r(m+'.css') for m in mods if os.path.exists(m+'.css')]
+css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.css"),r("style6.css")]+[r(m+'.css') for m in mods if os.path.exists(m+'.css')]
 js="\n".join(js)
 html=f'<title>Oukala</title>\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script>\n{js}\n</script>\n'
 open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)

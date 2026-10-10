@@ -131,3 +131,9 @@ function drawChat(){const P=PERSONAS[S.persona];$("#msgs").innerHTML=(S.chat.len
  document.addEventListener("pointermove",e=>{const c=chipOf(e.target);if(c){show(c)}else if(anchor||t)hide()},{passive:true});
  document.addEventListener("pointerleave",hide);document.addEventListener("scroll",hide,true);window.addEventListener("blur",hide);
  document.addEventListener("focusin",e=>{const c=chipOf(e.target);if(c)show(c)});document.addEventListener("focusout",hide);document.addEventListener("click",hide,true);document.addEventListener("keydown",e=>{if(e.key==="Escape")hide()})})();
+
+/* round 12: tables. Align a header to its figures: when every cell of a column is a number cell (.num or .tabular), the header takes the same right alignment */
+(function(){let q=0;const fix=root=>{(root||document).querySelectorAll("table").forEach(t=>{const h=t.tHead&&t.tHead.rows[0];if(!h||t.dataset.nal===String(t.rows.length))return;t.dataset.nal=t.rows.length;const rows=[...t.tBodies].flatMap(b=>[...b.rows]);if(!rows.length)return;[...h.cells].forEach((th,i)=>{if(th.colSpan>1)return;let n=0,tot=0;rows.forEach(r=>{const c=r.cells[i];if(!c||c.colSpan>1)return;if(!c.textContent.trim())return;tot++;if(c.classList.contains("num")||c.classList.contains("tabular"))n++});th.classList.toggle("num",tot>0&&n===tot)})})};
+ const sched=()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;try{fix()}catch(e){}})};
+ const start=()=>{const v=document.getElementById("view")||document.body;new MutationObserver(sched).observe(v,{childList:true,subtree:true});sched()};
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else setTimeout(start,0)})();

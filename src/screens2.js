@@ -3,12 +3,34 @@ const DOW=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const hh=h=>{const H=Math.floor(h),m=Math.round((h-H)*60);const ap=H>=12?"pm":"am";return (H%12||12)+(m?":"+String(m).padStart(2,"0"):"")+ap};
 const meetSt=m=>m.st==="done"?(m.rev?`<span class="st" style="color:var(--warn)">● ${m.rev} to review</span>`:`<span class="st" style="color:var(--good)">✓ Filed ${m.rec} records</span>`):`<span class="st" style="color:var(--story)">◌ Will attend${m.av?" · AV booked":""}</span>`;
 const evBtn=(m,pos)=>`<button class="ev" data-meet="${m.id}" style="--c:${col(MEET_TYPES[m.k][1])};${pos||""}"><b>${esc(m.t)}</b>${hh(m.s)}–${hh(m.e)}<br>${meetSt(m)}</button>`;
-function weekHTML(){const days=[5,6,7,8,9];const hrs=[];for(let h=8;h<18;h++)hrs.push(h);
- let g=`<div class="weekgrid"><div></div>${days.map(d=>`<div class="wh ${d===6?"today":""}">${DOW[new Date(2026,9,d).getDay()]}<span class="num">${d}</span></div>`).join("")}<div>${hrs.map(h=>`<div class="hr">${hh(h)}</div>`).join("")}</div>`;
- days.forEach(d=>{g+=`<div class="col ${d===6?"today":""}">${hrs.map((h,i)=>`<div class="hl" style="top:${i*56}px"></div>`).join("")}${d===6?`<div class="nowline" style="top:${(NOW.h-8)*56}px"></div>`:""}${MEETINGS.filter(m=>m.d===d).map(m=>evBtn(m,`top:${(m.s-8)*56+2}px;height:${(m.e-m.s)*56-4}px`)).join("")}</div>`});
- g+="</div>";
- return `<div class="card glass" style="padding:14px"><div style="overflow:auto">${g}</div></div>`}
-function dayHTML(){const ms=MEETINGS.filter(m=>m.d===6);return `<div class="card glass"><div class="cardhead"><h3>Today, ${NOW.day}</h3><span class="muted small">It is ${hh(NOW.h)}. First Officer handled the morning and is preparing for the afternoon.</span></div><div class="dayline">${ms.map(m=>`<div class="dl"><div class="t">${hh(m.s)}</div>${evBtn(m)}</div>`).join("")}</div></div>`}
+
+/* ===== CALKIT (Round 12): shared time-grid calendar. Header row, all-day strip and body share one column template, so columns always align. ===== */
+window.CALKIT=(function(){
+ const hl=h=>{const H=Math.floor(h),m=Math.round((h-H)*60);return (H%12||12)+(m?":"+String(m).padStart(2,"0"):"")+(H>=12?"pm":"am")};
+ /* assign overlap lanes: events that chain-overlap form a cluster; each gets a lane index and the cluster lane count */
+ function lanes(list){const L=list.slice().sort((a,b)=>a.s-b.s||b.e-a.e),out=[];let cl=[],end=-1;
+  const flush=()=>{const n=cl.reduce((x,e)=>Math.max(x,e.lane+1),1);cl.forEach(e=>e.n=n);cl=[]};
+  L.forEach(ev=>{const e={ev,s:ev.s,e:Math.max(ev.e,ev.s+.25),lane:0,n:1};if(cl.length&&e.s>=end){flush();end=-1}
+   const used=cl.filter(x=>x.e>e.s).map(x=>x.lane);while(used.includes(e.lane))e.lane++;cl.push(e);out.push(e);end=Math.max(end,e.e)});
+  if(cl.length)flush();return out}
+ /* cfg: days:[{key,dow,num,sub,today,we,col}], events(key)->[{id,s,e,html(style,cls)}], allday(key)->[html], now:{key,h}, h0,h1 */
+ function grid(cfg){const n=cfg.days.length,ph=cfg.ph||56;let h0=cfg.h0==null?8:cfg.h0,h1=cfg.h1==null?18:cfg.h1;
+  const evs={};cfg.days.forEach(d=>{evs[d.key]=lanes(cfg.events(d.key)||[]);evs[d.key].forEach(x=>{h0=Math.min(h0,Math.floor(x.s));h1=Math.max(h1,Math.ceil(x.e))})});
+  const rows=h1-h0,hrs=[];for(let h=h0;h<h1;h++)hrs.push(h);
+  const ad=cfg.days.map(d=>cfg.allday?cfg.allday(d.key)||[]:[]),anyAd=cfg.showAllDay||ad.some(a=>a.length);
+  const head=`<div class="cg-row cg-head"><div class="cg-gut"></div>${cfg.days.map(d=>`<div class="cg-hc${d.today?" cg-today":""}${d.we?" we":""}"><span class="cg-dow">${d.dow}</span><span class="cg-num">${d.num}</span>${d.sub?`<em>${d.sub}</em>`:""}</div>`).join("")}</div>`;
+  const all=anyAd?`<div class="cg-row cg-all"><div class="cg-gut">All day</div>${cfg.days.map((d,i)=>`<div class="cg-ac${d.today?" cg-today":""}">${ad[i].join("")}</div>`).join("")}</div>`:"";
+  const body=`<div class="cg-row cg-body" style="height:${rows*ph}px"><div class="cg-gut cg-hrs">${hrs.map((h,i)=>`<span style="top:${i*ph}px">${i?hl(h):""}</span>`).join("")}</div>${cfg.days.map(d=>{
+   const now=cfg.now&&cfg.now.key===d.key&&cfg.now.h>=h0&&cfg.now.h<=h1;
+   return `<div class="cg-col${d.today?" cg-today":""}${d.we?" we":""}" ${d.col||""}>${hrs.map((h,i)=>`<i class="cg-hl" style="top:${i*ph}px"></i>`).join("")}${evs[d.key].map(x=>{const top=(x.s-h0)*ph+1,hgt=Math.max(22,(x.e-x.s)*ph-2),w=100/x.n,cls="cg-ev "+(hgt<34?"cg-s":hgt<52?"cg-m":"cg-l")+(x.n>2?" cg-t":"");
+    return x.ev.html(`top:${top}px;height:${hgt}px;left:calc(${x.lane*w}% + 2px);width:calc(${w}% - 4px)`,cls,x.n>1)}).join("")}${now?`<i class="cg-now" style="top:${(cfg.now.h-h0)*ph}px"></i>`:""}</div>`}).join("")}</div>`;
+  return `<div class="cg-wrap"><div class="cg" style="--n:${n};--ph:${ph}px;--mw:${Math.max(560,n*(n>5?118:148)+58)}px">${head}${all}${body}</div></div>`}
+ return {lanes,grid,hl}})();
+function weekHTML(){const days=[5,6,7,8,9];
+ return `<div class="card glass" style="padding:14px">${CALKIT.grid({days:days.map(d=>({key:d,dow:DOW[new Date(2026,9,d).getDay()],num:d,today:d===6})),now:{key:6,h:NOW.h},h0:8,h1:18,
+  events:d=>MEETINGS.filter(m=>m.d===d).map(m=>({id:m.id,s:m.s,e:m.e,html:(sty,cls)=>`<button class="${cls} ev" data-meet="${m.id}" title="${esc(m.t)}, ${hh(m.s)} to ${hh(m.e)}" style="--c:${col(MEET_TYPES[m.k][1])};${sty}"><b>${esc(m.t)}</b><span class="cg-tm">${hh(m.s)} to ${hh(m.e)}</span><span class="cg-st">${meetSt(m)}</span></button>`}))})}</div>`}
+function dayHTML(){return `<div class="card glass" style="padding:14px"><div class="cardhead"><h3>Today, ${NOW.day}</h3><span class="muted small">It is ${hh(NOW.h)}. First Officer handled the morning and is preparing for the afternoon.</span></div>${CALKIT.grid({days:[{key:6,dow:"Tue",num:6,today:true}],now:{key:6,h:NOW.h},h0:8,h1:18,ph:64,
+  events:d=>MEETINGS.filter(m=>m.d===d).map(m=>({id:m.id,s:m.s,e:m.e,html:(sty,cls)=>`<button class="${cls} ev cg-wide" data-meet="${m.id}" title="${esc(m.t)}" style="--c:${col(MEET_TYPES[m.k][1])};${sty}"><b>${esc(m.t)}</b><span class="cg-tm">${hh(m.s)} to ${hh(m.e)}</span><span class="cg-st">${meetSt(m)}</span></button>`}))})}</div>`}
 function monthHTML(){const cells=[];const start=new Date(2026,8,27);for(let i=0;i<35;i++){const dt=new Date(start);dt.setDate(start.getDate()+i);cells.push(dt)}
  return `<div class="card glass"><div class="cardhead"><h3>October 2026</h3><span class="muted small">Colour shows the meeting type. Select one for its records or pre-read.</span></div><div class="monthgrid">${DOW.map(d=>`<div class="eyebrow" style="text-align:center">${d}</div>`).join("")}${cells.map(c=>{const inM=c.getMonth()===9,d=c.getDate();const ms=inM?MEETINGS.filter(m=>m.d===d):[];return `<div class="mcell ${inM?"":"out"} ${inM&&d===6?"today":""}"><span class="d">${d}</span>${ms.map(m=>`<button class="mev" data-meet="${m.id}" style="--c:${col(MEET_TYPES[m.k][1])}">${esc(m.t)}</button>`).join("")}</div>`}).join("")}</div></div>`}
 function reviewHTML(){const q=EXTRACTED.filter(x=>!x.auto&&!S.fo[x.id]);const done=EXTRACTED.filter(x=>x.auto||S.fo[x.id]);

@@ -958,11 +958,14 @@ REG("plat_map","Master process flow","platform",ICON,screen);
 let RO=null;
 function mount(){
  const vp=vpEl();if(!vp||!init())return;
+ const sizeVp=()=>{if(innerWidth>640)vp.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";else vp.style.height=""};sizeVp();
+ {const r=vp.getBoundingClientRect();if(r.bottom>innerHeight-8||r.top<120){try{vp.scrollIntoView({block:"start",behavior:"instant"})}catch(e){vp.scrollIntoView()}}}
+ if(!window.__mmRsz){window.__mmRsz=1;window.addEventListener("resize",()=>{const v=vpEl();if(!v||S.screen!=="plat_map")return;if(innerWidth>640)v.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";if(!MM.touched&&v.clientWidth>0){MM.view=clusterView()}applyView()})}
  drawStatic();update();
  if((!MM.view||!MM.touched)&&vp.clientWidth>0){MM.view=clusterView()}
  if(MM.view&&vp.clientWidth>0)applyView();
  if(MM.flyIds&&vp.clientWidth>0){const ids=MM.flyIds;MM.flyIds=null;if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);flyTo(j?j.steps:ids)}else flyTo(ids)}
- if(window.ResizeObserver){if(RO)RO.disconnect();let w0=vp.clientWidth;RO=new ResizeObserver(()=>{const w=vp.clientWidth;if(w>0&&!MM.touched&&(w0===0||Math.abs(w-w0)>30))MM.view=clusterView();if(w>0){applyView()}w0=w});RO.observe(vp)}
+ if(window.ResizeObserver){if(RO)RO.disconnect();let w0=vp.clientWidth;RO=new ResizeObserver(()=>{const w=vp.clientWidth;if(w>0&&!MM.touched&&(w0===0||Math.abs(w-w0)>30||Math.abs(vp.clientHeight-(vp._h0||0))>20))MM.view=clusterView();vp._h0=vp.clientHeight;if(w>0){applyView()}w0=w});RO.observe(vp)}
  /* wheel zoom needs a non-passive listener */
  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!MM.touched&&vpEl()===vp&&vp.clientWidth>0){MM.view=clusterView();applyView()}}));
  vp.addEventListener("wheel",ev=>{if(!(ev.ctrlKey||ev.metaKey))return;ev.preventDefault();const r=vp.getBoundingClientRect();zoomAt(ev.deltaY<0?1.12:1/1.12,ev.clientX-r.left,ev.clientY-r.top)},{passive:false});

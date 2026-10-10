@@ -78,7 +78,7 @@
 .at-rm{font-size:15px;color:var(--muted)}
 
 /* edges */
-.at-svg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.at-svg{position:absolute;left:0;top:0;pointer-events:none;overflow:hidden}
 .at-e{fill:none;stroke:var(--muted);stroke-width:1.6;opacity:.5;transition:opacity .2s}
 .at-e.x{stroke:var(--accent);opacity:.55}
 .at-e.g{stroke-dasharray:5 6;stroke:var(--faint)}
@@ -91,17 +91,12 @@
 .at-ar{fill:var(--muted)}
 .at-arh{fill:var(--accent)}
 @keyframes at-dash{to{stroke-dashoffset:-32}}
-.at-gf{display:none}
 .at-svg path,.at-svg g.at-fe{pointer-events:stroke}
 .at-svg .at-e.hot,.at-svg .at-e.fade{pointer-events:stroke}
-[data-rel="domains"] .at-gf,[data-rel="all"] .at-gf{display:block}
-[data-rel="all"] .at-gf{opacity:.0;pointer-events:none}
-[data-rel="all"][data-lod="far"] .at-gf{opacity:1}
 .at-lgrel{max-width:520px;flex-basis:100%}
 .at-fe path{fill:none;stroke:var(--accent);opacity:.3;stroke-linecap:round}
 .at-fe:hover path{opacity:.8}
-.at-fe text{fill:var(--ink);font-size:26px;font-weight:700;paint-order:stroke;stroke:var(--glass2);stroke-width:8px}
-[data-lod="far"] .at-gf{display:block}
+.at-fe path{opacity:.4}
 [data-lod="far"] .at-ge{opacity:.12}
 
 /* entity boxes */
@@ -160,7 +155,6 @@
 [data-lod="far"] .at-rh{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:0 28px}
 [data-lod="far"] .at-rt{font-size:60px;flex-basis:100%}
 [data-lod="far"] .at-rs,[data-lod="far"] .at-rm{font-size:36px}
-[data-lod="far"] .at-fe text{font-size:60px}
 [data-lod="far"] .at-layer span{font-size:44px;top:-70px}
 [data-lod="far"] .at-ent:not(.sel):not(.tr){opacity:.75}
 [data-lod="near"] .at-eh{background:color-mix(in srgb,var(--c) 4%,transparent)}
@@ -368,6 +362,14 @@
 @media (max-width:640px){.at-vpbox{scroll-margin-top:132px}}
 @media (max-width:640px){.at-bar{position:static}.at-vpbox{scroll-margin-top:80px}.at-wrap.insp .at-bc{top:96px}.at-wrap.insp .at-cardbox{top:190px}}
 .at-wrap.insp .at-hint{display:none}
-[data-lod="near"] .at-fe text{display:none}[data-lod="near"] .at-fe path{opacity:.15}
-[data-rel="all"][data-lod="far"] .at-ge{opacity:.7}
+[data-rel="all"][data-lod="far"] .at-ge{opacity:.4}
 .at-refs select{min-width:150px}
+
+/* domain bundle labels: a small pill on the line, scaled with the diagram (see --ls) */
+.at-bl{position:absolute;transform:translate(-50%,-50%);font-size:calc(var(--ls,14)*1px);line-height:1.2;padding:.12em .5em;border-radius:999px;background:var(--bg);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--hair));color:var(--ink);white-space:nowrap;font-weight:700;box-shadow:0 1px 4px color-mix(in srgb,var(--ink) 12%,transparent);z-index:2}
+.at-bl .at-blw{display:none;font-weight:500;color:var(--muted)}
+.at-world[data-w="1"] .at-bl .at-blw{display:inline}
+.at-bl:hover{border-color:var(--accent)}
+.at-vp[data-lod="far"]~.at-hint{display:none}
+[data-rel="all"][data-lod="far"] .at-ge{opacity:1}
+[data-rel="all"][data-lod="far"] .at-e.fade{opacity:.4;stroke-width:5px}

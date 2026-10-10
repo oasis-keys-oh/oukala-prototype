@@ -30,7 +30,7 @@ const reduced=()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").mat
 /* ---------- domains, colors, layers ---------- */
 const DC={service:"--p1",ops:"--e4",cmdb:"--w1",agree:"--u1",portfolio:"--u3",agile:"--s1",people:"--s4",fin:"--p5",money:"--p2",know:"--p6",gov:"--w3",plat:"--u4",planned:"--faint"};
 const DPOOL=["--p3","--e1","--s3","--p4"];
-const LAYERS=[["Plan and deliver",["portfolio","agile","fin","money"]],["Run and support",["service","agree","ops"]],["Foundation data",["people","cmdb"]],["Knowledge, AI, governance and platform",["know","gov","plat"]],["Planned entities",["planned"]]];
+const LAYERS=[["Plan and deliver",["portfolio","agile","fin","money"]],["Run and support",["service","agree","ops"]],["Foundation data and planned",["people","cmdb","planned"]],["Knowledge, AI, governance and platform",["know","gov","plat"]]];
 const dName=k=>k==="planned"?"Planned entities":((window.PLAT&&PLAT.DOM[k])?PLAT.DOM[k].n:k);
 const AUTHC={platform:"--p1",external:"--u3",shared:"--w1"};
 const AUTHN={platform:"Oukala owns it",external:"External system owns it",shared:"Shared, newest wins"};
@@ -423,7 +423,7 @@ const LIN={cache:new Map(),idx:null,
 /* =====================================================================
    THE DIAGRAM: layout, world markup, camera, minimap, inspector
    ===================================================================== */
-const BW=280,BH=108,GX=32,GY=30,PADR=30,HDR=112,FROW=26,MAXROWS=14,LEFT=90,TOP=170,LGAP=84;
+const BW=280,BH=108,GX=32,GY=30,PADR=30,HDR=112,FROW=26,MAXROWS=14,LEFT=90,TOP=170,LGAP=170;
 const ovColor=(e)=>{
  if(A.ov==="domain")return DC[e.domain]||"--faint";
  if(e.ghost&&A.ov!=="metrics")return "--faint";
@@ -449,7 +449,7 @@ function layout(M){
  const regs={},pos={},layers=[];let y=TOP,maxR=0;
  const known=new Set();LAYERS.forEach(l=>l[1].forEach(d=>known.add(d)));
  const extra=[...new Set(M.list.map(e=>e.domain))].filter(d=>!known.has(d));
- const LYS=extra.length?LAYERS.slice(0,-1).concat([["Added by modules",extra]],LAYERS.slice(-1)):LAYERS;
+ const LYS=extra.length?LAYERS.concat([["Added by modules",extra]]):LAYERS;
  LYS.forEach((ly,li)=>{
   let x=LEFT,lh=0;const rs=[];
   ly[1].forEach(d=>{
@@ -524,6 +524,50 @@ function entHTML(M,L,Lt,e){
  return h+`</div>`}
 const CLSRANK=c=>PLAT.CLS_ORDER.indexOf(c);
 
+/* ----- domain bundles: routed through the gutters between domain boxes, never through cards ----- */
+const BPILL={w:128,h:70};
+function roundPath(p,r){let d=`M${p[0][0].toFixed(0)} ${p[0][1].toFixed(0)}`;
+ for(let i=1;i<p.length-1;i++){const a=p[i-1],b=p[i],c=p[i+1],l1=Math.hypot(b[0]-a[0],b[1]-a[1]),l2=Math.hypot(c[0]-b[0],c[1]-b[1]),rr=Math.min(r,l1/2,l2/2);
+  if(rr<1){d+=`L${b[0].toFixed(0)} ${b[1].toFixed(0)}`;continue}
+  const p1=[b[0]+(a[0]-b[0])*rr/l1,b[1]+(a[1]-b[1])*rr/l1],p2=[b[0]+(c[0]-b[0])*rr/l2,b[1]+(c[1]-b[1])*rr/l2];
+  d+=`L${p1[0].toFixed(0)} ${p1[1].toFixed(0)}Q${b[0].toFixed(0)} ${b[1].toFixed(0)} ${p2[0].toFixed(0)} ${p2[1].toFixed(0)}`}
+ const z=p[p.length-1];return d+`L${z[0].toFixed(0)} ${z[1].toFixed(0)}`}
+function bundleRoutes(M,L){
+ const regs=Object.values(L.regs);
+ const layerOf=r=>L.layers.findIndex(l=>Math.abs(l.y-r.y)<2);
+ const byL=L.layers.map((l,i)=>regs.filter(r=>layerOf(r)===i).sort((a,b)=>a.x-b.x));
+ const gut=byL.map(rs=>{if(!rs.length)return[LEFT/2];const g=[rs[0].x-30];rs.forEach(r=>g.push(r.x+r.w+30));return g});
+ const lanes={},side={};
+ const chY=c=>{lanes[c]=(lanes[c]||0);const ln=lanes[c]++%4;return(c<0?36:L.layers[c].y+L.layers[c].h+38)+ln*12};
+ const sx=(r,s)=>{const k=r.d+s;side[k]=(side[k]||0);const n=side[k]++;return r.x+Math.min(r.w-70,70+n*46)};
+ const items=[];
+ Object.keys(M.pair).forEach(k=>{const [a,b]=k.split("|");if(a>=b&&M.pair[b+"|"+a])return;if(a===b)return;
+  const ra=L.regs[a],rb=L.regs[b];if(!ra||!rb)return;const l1=M.pair[k]||[],l2=M.pair[b+"|"+a]||[];items.push({a,b,ra,rb,l1,l2,n:l1.length+l2.length})});
+ items.sort((p,q)=>q.n-p.n);
+ const placed=[],cards=Object.values(L.pos);
+ const hit=(x,y)=>{const x1=x-BPILL.w/2,x2=x+BPILL.w/2,y1=y-BPILL.h/2,y2=y+BPILL.h/2;
+  if(x1<4||x2>L.W-4||y1<4||y2>L.H-4)return true;
+  if(placed.some(q=>x1<q.x2+6&&x2>q.x1-6&&y1<q.y2+6&&y2>q.y1-6))return true;
+  if(L.layers.some(l=>x1<860&&x2>80&&y1<l.y-14&&y2>l.y-80))return true;
+  return cards.some(c=>x1<c.x+c.w+8&&x2>c.x-8&&y1<c.y+c.h+8&&y2>c.y-8)};
+ return items.map(it=>{let ia=layerOf(it.ra),ib=layerOf(it.rb),A_=it.ra,B_=it.rb;
+  if(ia>ib||(ia===ib&&A_.x>B_.x)){A_=it.rb;B_=it.ra;const t=ia;ia=ib;ib=t}
+  let pts;
+  if(ia===ib){const lo=byL[ia],i1=lo.indexOf(A_),i2=lo.indexOf(B_);
+   if(i2-i1===1){lanes["s"+ia]=(lanes["s"+ia]||0)+1;const y=A_.y+34+(lanes["s"+ia]%5)*14;pts=[[A_.x+A_.w,y],[B_.x,y]]}
+   else{const y=chY(ia-1),x1=sx(A_,"t"),x2=sx(B_,"t");pts=[[x1,A_.y],[x1,y],[x2,y],[x2,B_.y]]}}
+  else{let x=sx(A_,"b");pts=[[x,A_.y+A_.h]];let y=chY(ia);pts.push([x,y]);
+   for(let k=ia+1;k<ib;k++){const gs=gut[k];let g=gs[0];gs.forEach(v=>{if(Math.abs(v-x)<Math.abs(g-x))g=v});lanes["g"+k]=(lanes["g"+k]||0)+1;g+=((lanes["g"+k]%5)-2)*8;
+    pts.push([g,y]);const y2=chY(k);pts.push([g,y2]);x=g;y=y2}
+   const xb=sx(B_,"t");pts.push([xb,y]);pts.push([xb,B_.y])}
+  const dd=pts.filter((q,i)=>i===0||Math.hypot(q[0]-pts[i-1][0],q[1]-pts[i-1][1])>0.5);
+  let lab=null;
+  if(it.n>=3){const c=[];for(let i=1;i<dd.length;i++){const a=dd[i-1],b=dd[i],len=Math.hypot(b[0]-a[0],b[1]-a[1]);if(len<70)continue;[.5,.3,.7,.15,.85].forEach((t,j)=>c.push({len:len-j*60,x:a[0]+(b[0]-a[0])*t,y:a[1]+(b[1]-a[1])*t}))}
+   c.sort((p,q)=>q.len-p.len);const ok=c.find(q=>!hit(q.x,q.y));if(ok){lab={x:ok.x,y:ok.y};placed.push({x1:ok.x-BPILL.w/2,x2:ok.x+BPILL.w/2,y1:ok.y-BPILL.h/2,y2:ok.y+BPILL.h/2})}}
+  const lst=it.l1.concat(it.l2).slice(0,12).map(x=>M.ent.get(x.from).label.replace(/\s*\(.*$/,"")+" points to "+M.ent.get(x.to).label.replace(/\s*\(.*$/,"")+" through "+(x.fields||[]).join(", ")).join("; ");
+  const n=it.n,tt=E(dName(it.a)+" and "+dName(it.b)+": "+n+" reference"+(n===1?"":"s")+" ("+it.l1.length+" from "+dName(it.a)+", "+it.l2.length+" from "+dName(it.b)+"). "+lst+(n>12?"; and "+(n-12)+" more":""));
+  return{n,d:roundPath(dd,16),lab,tt}})}
+
 function worldHTML(M,L){
  const Lt=lit(M);let h="";
  L.layers.forEach(ly=>{h+=`<div class="at-layer" style="top:${ly.y}px;height:${ly.h}px"><span>${E(ly.n)}</span></div>`});
@@ -532,27 +576,23 @@ function worldHTML(M,L){
   const dim=A.dom&&A.dom!==d&&!A.sel?" dim":"";
   h+=`<section class="at-reg${A.dom===d?" cur":""}${dim}" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px;--c:var(${DC[d]})" aria-label="${E(dName(d))}"><header class="at-rh"><button class="at-rt" data-at-dom-go="${d}">${E(dName(d))}</button><span class="at-rs">${d==="planned"?M.byDom(d).length+" shown of "+(M.byDom(d).length+M.more.length)+" planned":es.length+" tables · "+N0(nf)+" fields"}</span><span class="at-rm">${d==="planned"?"Not built yet":fed.size+" metrics read it"}</span></header></section>`});
  /* edges */
- if(A.refs==="cross"||A.refs==="all-faded")A.refs="all";if(!/^(off|domains|sel|all)$/.test(A.refs))A.refs="domains";const mode=A.refs;let eg="",fe="";
- M.edges.forEach((ed,i)=>{
+ if(A.refs==="cross"||A.refs==="all-faded")A.refs="all";if(!/^(off|domains|sel|all)$/.test(A.refs))A.refs="domains";const mode=A.refs;let eg="",fe="",fl="";
+ if(mode!=="off")M.edges.forEach((ed,i)=>{
   const hot=Lt.edges.has(i);
   if(!hot&&mode!=="all")return
   const g=edgeGeom(M,L,ed);if(!g)return;
   const c=["at-e",mode==="all"&&!hot?"fade":"",ed.cross?"x":"",ed.ghost?"g":"",M.hub.has(ed.to)?"hub":"",hot?"hot":(Lt.active?"off":"")].filter(Boolean).join(" ");
   eg+=`<path class="${c}" d="${g.d}" marker-end="url(#${hot?"at-arh":"at-ar"})"><title>${E(M.ent.get(ed.from).label+" points to "+M.ent.get(ed.to).label+" through "+ed.fields.join(", "))}</title></path>`});
- if(mode!=="off")Object.keys(M.pair).forEach(k=>{const [a,b]=k.split("|");if(a>=b&&M.pair[b+"|"+a])return;if(a===b)return;
-  const ra=L.regs[a],rb=L.regs[b];if(!ra||!rb)return;const l1=M.pair[k]||[],l2=M.pair[b+"|"+a]||[],n=l1.length+l2.length;
-  const nf=l1.concat(l2).reduce((q,x)=>q+(x.fields?x.fields.length:1),0);
-  const ax=ra.x+ra.w/2,ay=ra.y+ra.h/2,bx=rb.x+rb.w/2,by=rb.y+rb.h/2,mx=(ax+bx)/2+(ay-by)*.12,my=(ay+by)/2+(bx-ax)*.12;
-  const lst=l1.concat(l2).slice(0,12).map(x=>M.ent.get(x.from).label.replace(/\s*\(.*$/,"")+" points to "+M.ent.get(x.to).label.replace(/\s*\(.*$/,"")+" through "+(x.fields||[]).join(", ")).join("; ");
-  const tt=E(dName(a)+" and "+dName(b)+": "+n+" reference"+(n===1?"":"s")+" ("+l1.length+" from "+dName(a)+", "+l2.length+" from "+dName(b)+"). "+lst+(n>12?"; and "+(n-12)+" more":""));
-  fe+=`<g class="at-fe"><title>${tt}</title><path d="M${ax.toFixed(0)} ${ay.toFixed(0)}Q${mx.toFixed(0)} ${my.toFixed(0)} ${bx.toFixed(0)} ${by.toFixed(0)}" style="stroke-width:${Math.min(14,2+n*.6)}px"/>${n>=3?`<text x="${mx.toFixed(0)}" y="${(my+10).toFixed(0)}" text-anchor="middle">${n} references</text>`:""}</g>`});
+ if(mode==="domains")bundleRoutes(M,L).forEach(r=>{
+  fe+=`<g class="at-fe"><title>${r.tt}</title><path d="${r.d}" style="stroke-width:${Math.min(12,2+r.n*.5)}px"/></g>`;
+  if(r.lab)fl+=`<div class="at-bl" style="left:${r.lab.x.toFixed(0)}px;top:${r.lab.y.toFixed(0)}px" title="${r.tt}"><b>${r.n}</b><span class="at-blw"> references</span></div>`});
  /* trace token and flows */
  let tok="",flows="";
  if(A.trace&&METRICS[A.trace]){const m=METRICS[A.trace],t=LIN.trace(A.trace),ids=[...Lt.trace].filter(id=>L.pos[id]);
   const cx=L.W/2,cy=60;
   tok=`<div class="at-token" style="left:${cx-190}px;top:${cy-44}px"><span class="eyebrow">Metric being traced</span><b>${E(m.n)}</b><span class="at-tv num">${E(mfmt(m))}</span><small>reads ${ids.length} entit${ids.length===1?"y":"ies"}, ${t.st.src+t.st.weak+t.st.ghost} fields</small></div>`;
   ids.forEach(id=>{const p=L.pos[id];const x1=p.x+p.w/2,y1=p.y;flows+=`<path class="at-e hot fl" d="M${x1} ${y1}C${x1} ${y1-100},${cx} ${cy+120},${cx} ${cy+44}" marker-end="url(#at-arh)"/>`})}
- h+=`<svg class="at-svg" width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true" focusable="false"><defs><marker id="at-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 1L10 5L0 9z" class="at-ar"/></marker><marker id="at-arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 1L10 5L0 9z" class="at-arh"/></marker></defs><g class="at-ge">${eg}</g><g class="at-gf">${fe}</g><g class="at-gt">${flows}</g></svg>`;
+ h+=`<svg class="at-svg" width="${L.W}" height="${L.H}" viewBox="0 0 ${L.W} ${L.H}" aria-hidden="true" focusable="false"><defs><marker id="at-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 1L10 5L0 9z" class="at-ar"/></marker><marker id="at-arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="14" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 1L10 5L0 9z" class="at-arh"/></marker></defs><g class="at-ge">${eg}</g><g class="at-gf">${fe}</g><g class="at-gt">${flows}</g></svg>${fl}`;
  M.list.forEach(e=>{h+=entHTML(M,L,Lt,e)});
  if(M.more.length)h+=entHTML(M,L,Lt,{id:"__more",more:true});
  return h+tok}
@@ -684,6 +724,7 @@ function applyCam(){
  const v=vpEl(),w=worldEl();if(!v||!w||!A.cam)return;const c=A.cam;
  w.style.transform=`translate(${c.x.toFixed(1)}px,${c.y.toFixed(1)}px) scale(${c.k.toFixed(4)})`;
  const lod=lodOf(c.k);if(v.dataset.lod!==lod)v.dataset.lod=lod;
+ w.style.setProperty("--ls",clamp(11/c.k,13,46).toFixed(1));const wd=c.k>=.7?"1":"0";if(w.dataset.w!==wd)w.dataset.w=wd;
  const z=document.querySelector("[data-at-zl]");if(z)z.textContent=Math.round(c.k*100)+"%";
  const mv=document.querySelector("[data-at-mv]");if(mv){const s=vsize(v);mv.setAttribute("x",(-c.x/c.k).toFixed(0));mv.setAttribute("y",(-c.y/c.k).toFixed(0));mv.setAttribute("width",(s.w/c.k).toFixed(0));mv.setAttribute("height",(s.h/c.k).toFixed(0))}}
 function camFor(r,o){o=o||{};const s=vsize(),pad=o.pad==null?50:o.pad;
@@ -699,13 +740,11 @@ function fly(t,instant){
 function zoomAt(cx,cy,factor){const v=vpEl();if(!v||!A.cam)return;cancelAnimationFrame(ANIM);const r=v.getBoundingClientRect(),px=cx-r.left,py=cy-r.top,c=A.cam,k2=clamp(c.k*factor,KMIN,KMAX);
  A.cam={k:k2,x:px-(px-c.x)*k2/c.k,y:py-(py-c.y)*k2/c.k};applyCam()}
 function zoomCenter(f){const v=vpEl();if(!v)return;const r=v.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,f)}
-const fitAll=()=>camFor({x:0,y:0,w:LAY.W,h:LAY.H},{pad:24,kmax:1});
-function initialCam(M){const s=vsize(),W=LAY.W,H=LAY.H;
- const ka=Math.min((s.w-48)/W,(s.h-48)/H);
- if(ka*17>=11)return{k:ka,x:(s.w-W*ka)/2,y:(s.h-H*ka)/2};
- const r=LAY.regs[M.top]||LAY.regs.service;
- const k=clamp(Math.min((s.w-72)/r.w,(s.h-96)/r.h),.3,1.1);
- return{k,x:s.w/2-(r.x+r.w/2)*k,y:84-(r.y-60)*k}}
+function fitCam(){const s=vsize(),W=LAY.W,H=LAY.H,tp=46,bt=58,sd=16;
+ const k=clamp(Math.min((s.w-2*sd)/W,(s.h-tp-bt)/H),KMIN,1);
+ return{k,x:(s.w-W*k)/2,y:tp+((s.h-tp-bt)-H*k)/2}}
+const fitAll=()=>fitCam();
+function initialCam(M){return fitCam()}
 const entRect=id=>{const p=LAY.pos[id];return p?{x:p.x,y:p.y,w:p.w,h:p.h}:null};
 function unionRect(rs){rs=rs.filter(Boolean);if(!rs.length)return null;const x1=Math.min(...rs.map(r=>r.x)),y1=Math.min(...rs.map(r=>r.y)),x2=Math.max(...rs.map(r=>r.x+r.w)),y2=Math.max(...rs.map(r=>r.y+r.h));return{x:x1,y:y1,w:x2-x1,h:y2-y1}}
 const later=fn=>requestAnimationFrame(()=>requestAnimationFrame(fn));
@@ -737,7 +776,7 @@ function selectField(eid,k,o){const M=model(),e=M.ent.get(eid);if(!e)return;cons
  if(!same||(o&&o.fly))later(()=>{const r=entRect(eid);if(r)fly(camFor({x:r.x-24,y:r.y-16,w:r.w+48,h:r.h+32},{kmax:1.5,pad:26}))});
  audit("Selected a field",e.label+" · "+f.label)}
 function selectDom(d){A.dom=d;A.sel=null;A.fld=null;A.panel=true;drawAll();later(()=>{const r=LAY.regs[d];if(r)fly(camFor({x:r.x,y:r.y,w:r.w,h:r.h},{kmax:1.2,pad:30}))});audit("Zoomed to a domain",dName(d))}
-function clearAll(){A.sel=null;A.fld=null;A.dom=null;A.trace=null;A.q="";const q=document.querySelector("[data-at-q]");if(q)q.value="";drawAll();later(()=>fly(fitAll()))}
+function clearAll(){A.auto=true;A.sel=null;A.fld=null;A.dom=null;A.trace=null;A.q="";const q=document.querySelector("[data-at-q]");if(q)q.value="";drawAll();later(()=>fly(fitAll()))}
 function back(){
  if(A.fld){A.fld=null;drawAll();return}
  if(A.sel){const d=model().ent.get(A.sel).domain;A.sel=null;A.dom=d;drawAll();later(()=>{const r=LAY.regs[d];if(r)fly(camFor(r,{kmax:1.2,pad:30}))});return}
@@ -793,7 +832,7 @@ document.addEventListener("keydown",e=>{
  if(e.target.matches("input,select,textarea"))return;
  if(e.key==="+"||e.key==="="){e.preventDefault();zoomCenter(1.25);return}
  if(e.key==="-"||e.key==="_"){e.preventDefault();zoomCenter(.8);return}
- if(e.key==="0"){e.preventDefault();fly(fitAll());return}
+ if(e.key==="0"){e.preventDefault();A.auto=true;fly(fitAll());return}
  if(e.key==="Escape"){back();return}
  if(/^Arrow/.test(e.key)){
   if(onVp||e.shiftKey){e.preventDefault();const d=90;if(e.key==="ArrowLeft")A.cam.x+=d;if(e.key==="ArrowRight")A.cam.x-=d;if(e.key==="ArrowUp")A.cam.y+=d;if(e.key==="ArrowDown")A.cam.y-=d;applyCam();return}
@@ -826,7 +865,7 @@ document.addEventListener("click",e=>{
  if(d.atFld!==undefined){const [en,k]=d.atFld.split("|");selectField(en,k);return}
  if(d.atDomGo!==undefined){selectDom(d.atDomGo);return}
  if(d.atBc!==undefined){const M=model();if(d.atBc==="all")clearAll();else if(d.atBc==="back")back();else if(d.atBc==="dom"){selectDom(A.sel&&M.ent.get(A.sel)?M.ent.get(A.sel).domain:A.dom)}else if(d.atBc==="ent"){A.fld=null;drawAll()}return}
- if(d.atZ!==undefined){if(d.atZ==="in")zoomCenter(1.3);else if(d.atZ==="out")zoomCenter(1/1.3);else if(d.atZ==="fit")fly(fitAll());else if(d.atZ==="reset")fly(initialCam(model()));return}
+ if(d.atZ!==undefined){if(d.atZ==="in")zoomCenter(1.3);else if(d.atZ==="out")zoomCenter(1/1.3);else if(d.atZ==="fit"){A.auto=true;fly(fitAll())}else if(d.atZ==="reset")fly(initialCam(model()));return}
  if(d.atOv!==undefined){A.ov=d.atOv;audit("Colored the data diagram by",d.atOv);drawAll();return}
  if(d.atFly!==undefined){selectEnt(d.atFly,{keepTrace:!!A.trace});return}
  if(d.atClose!==undefined){if(A.sel){A.sel=null;A.fld=null}else A.dom=null;A.panel=true;drawAll();return}
@@ -881,9 +920,11 @@ function diagramPane(){
  </div>${phoneHTML(M)}
  <div class="at-strip">${strip}</div></div>`}
 
-function refit(){if(A.auto===false||A.sel||A.trace||A.dom||A.fld)return;const M=model();LAY=LAY||layout(M);A.cam=initialCam(M);applyCam()}
+function sizeVp(){const v=vpEl();if(!v||A.full)return;if(innerWidth<=640){v.style.height="";return}v.style.height=clamp(innerHeight-160,380,1100)+"px"}
+function showVp(){const v=vpEl();if(!v||A.full)return;const bx=v.closest(".at-vpbox"),r=bx.getBoundingClientRect();if(r.bottom>innerHeight-8||r.top<120){try{bx.scrollIntoView({block:"start",behavior:"instant"})}catch(e){bx.scrollIntoView()}}}
+function refit(){sizeVp();if(A.auto===false||A.sel||A.trace||A.dom||A.fld)return;const M=model();LAY=LAY||layout(M);A.cam=initialCam(M);applyCam()}
 function mount(){
- const v=vpEl();if(!v)return;const M=model();LAY=layout(M);
+ const v=vpEl();if(!v)return;sizeVp();showVp();[350,900].forEach(d=>setTimeout(()=>{try{if(S.screen==='plat_data'&&scrollY<40){sizeVp();showVp()}}catch(e){}},d));const M=model();LAY=layout(M);
  if(RO){try{RO.disconnect()}catch(e){}}
  PREVSZ=vsize(v);
  if(!A.cam||(A.auto!==false&&!A.sel&&!A.trace&&!A.dom&&!A.fld))A.cam=initialCam(M);
@@ -1116,7 +1157,7 @@ const taken=e=>{const v=e.target.closest&&e.target.closest(".at-vpbox");if(v){v.
 document.addEventListener("pointerdown",taken,true);document.addEventListener("wheel",taken,{capture:true,passive:true});
 document.addEventListener("keydown",e=>{if(e.target.closest&&e.target.closest("[data-at-vp]")&&/^(Arrow|\+|-|=|0)/.test(e.key))taken(e)},true);
 document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-at-ent],[data-at-dom-go],[data-at-z],[data-at-fly],[data-at-pick],[data-at-xp],[data-at-expdom],[data-at-bc]"))A.auto=false},true);
-window.addEventListener("resize",()=>{if(S.screen==="plat_data"&&vpEl())refit()});
+window.addEventListener("resize",()=>{if(S.screen==="plat_data"&&vpEl()){sizeVp();refit()}});
 /* ----- calculation canvas: pan and zoom ----- */
 let LDR=null;
 document.addEventListener("pointerdown",e=>{const v=e.target.closest&&e.target.closest("[data-at-lvp]");if(!v||e.button>0||!LN.cam)return;if(e.target.closest("button,a,input,select"))return;LDR={id:e.pointerId,sx:e.clientX,sy:e.clientY,cx:LN.cam.x,cy:LN.cam.y,v,moved:false}});

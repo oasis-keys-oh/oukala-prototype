@@ -527,7 +527,7 @@ Object.assign(METRICS,{
  m_intake:{n:"Demand decision time",f:"Date decided − Date submitted, in days",u:" days",cur:19,tgt:14,badAt:21,dir:"min",max:40,tr:[24,23,22,21,20,20,19,19],owner:"Portfolio office",use:["Demand and priorities"],rem:{kind:"agent",ref:"Portfolio Agent",title:"Nudge stalled reviews",agent:"Portfolio Agent",auto:true,state:"running",prog:"Reminded 2 sponsors about scores due this week"}}});
 
 /* Product log: every update and every piece of feedback, kept for future releases */
-const VERS=[["v1","2026-10-06","Prototype v1","Executive trace, invoice approval, First Officer, AI Control Tower."],["v2","2026-10-06","Oukala v2","Liquid glass shell, personas, process-flow trace, ledger and rule builder, calendars, Control Tower, metrics, knowledge graph."],["v3","2026-10-06","PPM and product log","Demand and priorities, integrated master schedule, project plans, Project Online coverage, this log."],["v4","2026-10-06","Everything on the feature list","Drag and drop, intake, contract ingestion, projects and RAID, vault graph, ITSM, ITOM, budgets, executive views, workflow, knowledge, people, admin."]];
+const VERS=[["v1","2026-10-06","Prototype v1","Executive trace, invoice approval, First Officer, AI Control Tower."],["v2","2026-10-06","Oukala v2","Liquid glass shell, personas, process-flow trace, ledger and rule builder, calendars, Control Tower, metrics, knowledge graph."],["v3","2026-10-06","PPM and product log","Demand and priorities, integrated master schedule, project plans, Project Online coverage, this log."],["v4","2026-10-06","Everything on the feature list","Drag and drop, intake, contract ingestion, projects and RAID, knowledge graph, ITSM, ITOM, budgets, executive views, workflow, knowledge, people, admin."]];
 const LOG0=[
  ["F01","Design","Shell","Floating, collapsible glass sidebar like Apple's menu, with a subtle background graphic.","Done","v2"],
  ["F02","Design","Shell","User profile and preferences.","Done","v2"],
@@ -560,7 +560,7 @@ const LOG0=[
  ["F29","Feature","Demand","Ingest a contract and extract milestones, agreements, SLAs, deliverables, budget and invoice schedule.","Done","v4"],
  ["F30","Bug","Visual","Spacing: tiles touched the cards below them in the impact report.","Done","v4"],
  ["F31","Feature","Schedule","Filter project schedules by project, assign project managers and individuals, see milestone progress and a RAID log.","Done","v4"],
- ["F32","Feature","Knowledge","Knowledge graph should feel like Obsidian. Rebuilt from the GAAP vault as a force graph with local graph, backlinks and stubs.","Done","v4"],
+ ["F32","Feature","Knowledge","Knowledge graph should feel like Obsidian. Rebuilt as a force graph with local graph and backlinks.","Done","v4"],
  ["F33","Feature","Service","Show ITSM components: incidents, problems, changes, releases, major incidents, catalog, SLAs, on-call, assets.","Done","v4"],
  ["F34","Feature","Finance","Show budgets overall, financial model, vendors and contracts, benefits and delegation of authority.","Done","v4"],
  ["F35","Feature","Executive","Show executive views: CEO, CFO, CIO, COO and Board, strategy alignment, risk heat map with Monte Carlo, application portfolio, board pack.","Done","v4"],
