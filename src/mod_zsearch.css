@@ -1,0 +1,32 @@
+/* mod_zsearch.css: result groups, row meta, preview fields, coverage card. Tokens only. */
+.nx-chips .zs-chip{white-space:nowrap}
+.nx-chips .zs-chip em{font-style:normal;margin-left:5px;font-size:11px;font-weight:700;color:var(--muted)}
+.nx-chips .zs-chip[aria-pressed="true"] em{color:inherit}
+.nx-chips .zs-chip.zs-off{opacity:.45}
+.nx-chips .zs-gpill{border-color:var(--accent);background:var(--accent-soft)}
+.nx-chips .zs-gpill b{margin-left:4px;font-weight:700}
+.zs-grp .zs-gname{font-weight:700}
+.zs-grp[data-fam] em{background:var(--accent-soft);color:var(--accent);border-radius:9px;padding:1px 7px}
+.zs-grp .nx-seeall{margin-left:0}
+.zs-grp .nx-seeall:first-of-type{margin-left:auto}
+.zs-opt{align-items:center}
+.zs-meta{display:flex;align-items:center;gap:8px;flex:none;max-width:44%}
+.zs-st{font-size:11px;font-weight:600;padding:2px 8px;border-radius:9px;background:var(--info-f,var(--accent-soft));color:var(--ink);background:color-mix(in srgb,var(--info-f,var(--accent)) 18%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.zs-amt{font-size:12.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.zs-opt mark,.zs-kv mark,.nx-prev mark{background:color-mix(in srgb,var(--warn-f) 45%,transparent);color:inherit;border-radius:4px;padding:0 1px}
+.nx-prev .zs-pv-pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.zs-kv{display:grid;grid-template-columns:minmax(0,max-content) minmax(0,1fr);gap:6px 14px;margin:0}
+.zs-kv dt{color:var(--muted);font-size:12px}
+.zs-kv dd{margin:0;font-weight:600;font-size:13px;overflow-wrap:break-word;min-width:0}
+.zs-why{margin:0}
+.zs-sugg{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.nx-zero .zs-sugg{display:flex}
+/* coverage card on the search settings screen */
+.zs-cov .statrow{margin-top:10px}
+.zs-gapdom{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:6px 10px;align-items:start;padding:8px 0;border-top:1px solid var(--hair)}
+
+.zs-gaplist{display:flex;gap:6px;flex-wrap:wrap}
+@media (max-width:760px){.zs-meta{max-width:38%}.zs-st{max-width:80px}.zs-gapdom{grid-template-columns:auto minmax(0,1fr)}.zs-gaplist{grid-column:1/-1}}
+/* keep the ownership strip (mod_own2) compact above grouped results */
+#nxPalList>.ownx-pal .ownx-pchips{display:flex;flex-wrap:wrap;gap:6px}
+#nxPalList>.ownx-pal{margin-bottom:4px}

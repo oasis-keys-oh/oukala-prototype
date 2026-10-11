@@ -595,6 +595,7 @@ window.MODMAP={
  refresh(){if(!READY)return true;READY=false;init();if(S.screen==="plat_map")render();return true},
  addModule(def){return addModule(def)},addFlows(arr){return addFlows(arr)}
 };
+MODMAP._cam={get:()=>MM.view,set:v=>{MM.touched=true;MM.view=v;applyView()},fit:()=>{MM.touched=true;setView(fitView(),true)},zoomAt:(f,cx,cy)=>zoomAt(f,cx,cy),bounds:()=>({x:GL-8,y:0,w:LAY.W-GL+8,h:LAY.H}),min:.2,max:2.2};
 const MODE_CODE={event:"e",batch:"b",human:"h",api:"e"};
 const clean=t=>String(t==null?"":t).replace(/[|\n\r]+/g," ").replace(/>/g,"-").trim();
 function flowLine(from,to,f){

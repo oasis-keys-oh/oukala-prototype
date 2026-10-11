@@ -557,7 +557,7 @@ function sigNow(){return [W.SCALE&&SCALE.on?1:0,SCREENS.length,G(()=>DIR.length)
 let buildTimer=0;
 function ensureIndex(force){const sg=sigNow();if(IDX.building)return;if(IDX.built&&!force&&!IDX.dirty&&IDX.sig===sg)return;
  IDX.building=true;IDX.heavyWait=0;IDX.dirty=false;IDX.sig=sg;const B={items:[],keys:new Set(),vocab:new Set(),n:0,cap:120000};const first=!IDX.built;const t0=performance.now();
- let L=sources();L=L.filter(s=>s[2]!=="heavy").concat(L.filter(s=>s[2]==="heavy"));IDX.total=L.length;IDX.done=0;IDX.timings=[];IDX.skipped=[];if(first){IDX.items=B.items;IDX.vocab=B.vocab;IDX.keys=B.keys}
+ let L=sources();try{if(NAVX.ext&&NAVX.ext.sources)L=L.concat(NAVX.ext.sources())}catch(e){}L=L.filter(s=>s[2]!=="heavy").concat(L.filter(s=>s[2]==="heavy"));IDX.total=L.length;IDX.done=0;IDX.timings=[];IDX.skipped=[];if(first){IDX.items=B.items;IDX.vocab=B.vocab;IDX.keys=B.keys}
  let i=0;const step=()=>{if(i>=L.length){IDX.items=B.items;IDX.vocab=B.vocab;IDX.keys=B.keys;IDX.built=true;IDX.building=false;IDX.buildMs=Math.round(performance.now()-t0);if(PAL.open)refreshPal();return}
   const s=L[i];if(s[2]==="heavy"&&W.SCALE&&SCALE.on){if(PAL.open){buildTimer=setTimeout(step,2500);return}if(!IDX.heavyWait){IDX.heavyWait=1;buildTimer=setTimeout(step,4000);return}}
   i++;const ts=performance.now();let n=0;
@@ -703,7 +703,7 @@ function emptyRows(){const s=st(),rows=[];const P=pref();
  sec("Quick actions",IDX.items.filter(i=>i.ty==="action").slice(0,6).map(a=>({ty:"action",t:a.t,m:a.m,f:a.f})));
  if(!IDX.items.length)rows.push({sec:"Quick actions"},{ty:"query",t:"Loading the search index",m:"One moment",icon:ICO.clock,f:()=>{},keep:true});
  return rows}
-function refreshPal(soft){if(!PAL.open)return;const ul=q1("#nxPalList");if(!ul)return;const raw=PAL.q;const T0=toks(raw.replace(/^in:\s*[a-z]+\s*/i,"").replace(/\s+in:\s*[a-z]+$/i,""),PAL.describe);
+function refreshPal(soft){if(!PAL.open)return;const ul=q1("#nxPalList");if(!ul)return;if(NAVX.ext&&NAVX.ext.refresh){try{if(NAVX.ext.refresh(soft))return}catch(e){console.error(e)}}const raw=PAL.q;const T0=toks(raw.replace(/^in:\s*[a-z]+\s*/i,"").replace(/\s+in:\s*[a-z]+$/i,""),PAL.describe);
  let rows=[],hdrs=[],html="",res=null;const P=pref();
  if(!raw.trim()){rows=emptyRows()}else{
   res=runSearch(raw,{scope:PAL.scope,describe:PAL.describe});PAL.res=res;const T=res.tokens;
@@ -729,7 +729,7 @@ function refreshPal(soft){if(!PAL.open)return;const ul=q1("#nxPalList");if(!ul)r
 
 /* ---------- preview pane ---------- */
 function timeLabel(h){return h?"Last opened "+ago(h.t)+(h.n>1?", "+h.n+" visits":""):"Not opened before"}
-function drawPrev(){const box=q1("#nxPrev");if(!box)return;const r=PAL.rows[PAL.sel];if(!r){box.innerHTML=`<div class="nx-pv-empty"><b>Search everything</b><p class="muted small">Screens, records, people, processes, data, metrics, knowledge and actions you can take.</p><ul class="nx-tips"><li><kbd>/</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd> opens search from anywhere</li><li>Type <b>in:people</b> to search one type</li><li>Describe it: “approve an invoice”, “who is on call”</li><li>Press <kbd>Ctrl</kbd>+<kbd>↵</kbd> to ask Oukala instead</li></ul></div>`;return}
+function drawPrev(){const box=q1("#nxPrev");if(!box)return;const r=PAL.rows[PAL.sel];if(r&&NAVX.ext&&NAVX.ext.preview){try{if(NAVX.ext.preview(box,r))return}catch(e){console.error(e)}}if(!r){box.innerHTML=`<div class="nx-pv-empty"><b>Search everything</b><p class="muted small">Screens, records, people, processes, data, metrics, knowledge and actions you can take.</p><ul class="nx-tips"><li><kbd>/</kbd> or <kbd>Ctrl</kbd>+<kbd>K</kbd> opens search from anywhere</li><li>Type <b>in:people</b> to search one type</li><li>Describe it: “approve an invoice”, “who is on call”</li><li>Press <kbd>Ctrl</kbd>+<kbd>↵</kbd> to ask Oukala instead</li></ul></div>`;return}
  const s=st();const hist=s.hist.find(h=>(r.sid&&h.id==="screen:"+r.sid)||h.title===r.t);let body="";const en=entryOf(r);const isFav=en&&s.fav.some(f=>f.id===en.id);
  const head=`<div class="nx-pv-h"><span class="nx-oi big" style="--c:var(${r.c||TYCOL[r.ty]||"--accent"})">${r.ty==="screen"&&r.sid&&screenRow(r.sid)?IC(screenRow(r.sid)[2]):SVG(r.icon||TYICO[r.ty]||ICO.doc,22,1.8)}</span><div><div class="eyebrow">${E(r.ty==="ask"?"Ask Oukala":(TYL[r.ty]||"Result").replace(/s and modules$/,"").replace(/ you can take$/,""))}</div><h3>${E(r.t)}</h3></div></div>`;
  try{
@@ -842,7 +842,7 @@ function studioMap(){const c=NAVX.check();const rows=SCREENS.map(s=>s[0]).filter
  <div class="card glass"><div class="cardhead"><div><h3>Menu map</h3><span class="muted small">Plain label first, formal module name second. Changes apply to the menu and to search at once and stay on this device.</span></div><label class="small">Show <select data-nx-sg aria-label="Show group"><option value="all">All groups</option>${opts(S.navs.g)}</select></label></div>
  <div class="tscroll"><table class="tbl nx-maptbl"><thead><tr><th>Menu label</th><th>Formal name</th><th>Group</th><th>Sub-heading</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><input class="fin nx-mapin" type="text" value="${E(r.m.l)}" data-nx-mvl="${r.id}" aria-label="Menu label for ${E(formal(r.id))}"></td><td class="muted">${E(formal(r.id))}<br><small>${E(r.id)}</small></td><td><select class="fin" data-nx-mvg="${r.id}" aria-label="Group for ${E(formal(r.id))}">${opts(r.m.g)}</select></td><td class="muted small">${E(r.m.sub||"")}</td><td>${r.m.unmapped?`<span class="pill warn">Unmapped</span>`:""}${r.m.edited?`<button type="button" class="btn quiet" data-nx-rst="${r.id}">Reset</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`}
 function studioSearch(){const ty={};IDX.items.forEach(i=>ty[i.ty]=(ty[i.ty]||0)+1);const s=st();const slow=IDX.timings.slice().sort((a,b)=>b[1]-a[1]).slice(0,8);
- return `${kpiRow([["Items indexed",IDX.items.length.toLocaleString("en-US"),IDX.built?"index is ready":"building"],["Sources",IDX.total||0,IDX.skipped.length?IDX.skipped.length+" skipped":"all answered"],["Index build",(IDX.buildMs||0)+" ms","one time, in small slices",{keep:true}],["Last search",IDX.lastMs+" ms","target under 100 ms",{keep:true}]])}
+ return (NAVX.ext&&NAVX.ext.studioTop?(()=>{try{return NAVX.ext.studioTop()}catch(e){return""}})():"")+`${kpiRow([["Items indexed",IDX.items.length.toLocaleString("en-US"),IDX.built?"index is ready":"building"],["Sources",IDX.total||0,IDX.skipped.length?IDX.skipped.length+" skipped":"all answered"],["Index build",(IDX.buildMs||0)+" ms","one time, in small slices",{keep:true}],["Last search",IDX.lastMs+" ms","target under 100 ms",{keep:true}]])}
  <div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><div><h3>What is searchable</h3><span class="muted small">Every registered screen, module, process, data entity, field, metric and person, plus each module's own records.</span></div></div>
  <div class="tscroll"><table class="tbl"><thead><tr><th>Type</th><th>Items</th></tr></thead><tbody>${TYORD.map(t=>`<tr><td>${E(TYL[t])}</td><td class="num">${(ty[t]||0).toLocaleString("en-US")}</td></tr>`).join("")}</tbody></table></div>
  <div class="row" style="margin-top:12px"><button class="btn" type="button" data-nx-rebuild>Rebuild index</button><button class="btn primary" type="button" data-nx-speed>Run speed test</button></div><p class="muted small" id="nxSpeedOut" role="status">${E(S.navs.speed||"The speed test runs a dozen typical and misspelled searches against the live index.")}</p></div>
@@ -881,5 +881,5 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
 NAVX.studio=()=>go("nav_studio");
 
 /* expose a few internals for tests and for other modules */
-NAVX.wrapGlobals=wrapGlobals;NAVX.ensureChrome=ensureChrome;NAVX.runSearch=runSearch;NAVX.visit=visit;NAVX.entryOf=entryOf;NAVX.mkScreen=mkScreen;NAVX.itemHTML=itemHTML;NAVX.menu=menu;NAVX.closePops=closePops;NAVX.drawer=()=>DR.cur;NAVX.stack=STK;NAVX.openPalette=openPalette;NAVX.syncStars=syncStars;
+NAVX.int={PAL,IDX,SCOPES,TYL,TYCOL,TYICO,SCOPE_ALIAS,SYN,pref,toks,alts,fixTok,mark,rowHTML,select,activate,askFrom,entryOf,setScope,drawPrev,refreshPal,emptyRows,screenRow,mkItem,E,SVG,ICO,q1,qa,st,tel,pushMetrics,toggleFav,syncStars};NAVX.wrapGlobals=wrapGlobals;NAVX.ensureChrome=ensureChrome;NAVX.runSearch=runSearch;NAVX.visit=visit;NAVX.entryOf=entryOf;NAVX.mkScreen=mkScreen;NAVX.itemHTML=itemHTML;NAVX.menu=menu;NAVX.closePops=closePops;NAVX.drawer=()=>DR.cur;NAVX.stack=STK;NAVX.openPalette=openPalette;NAVX.syncStars=syncStars;
 })();

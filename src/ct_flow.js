@@ -27,5 +27,5 @@ log.push(await ev("(()=>{try{MCPX.call('run_feature_contract',{feature_id:'nope'
 // 5 gate
 log.push(await ev("GATE.apps().map(a=>a.id+':'+GATE.conformance(a.id).rows.filter(r=>/^ct_/.test(r.id)).map(r=>r.r[0]).join('')).join(' ')"));
 log.push(await ev("JSON.stringify(MCPX.call('validate_manifest',{app_id:'ca_comments'}).checks.filter(c=>/^ct_/.test(c.id)))"));
-log.push(await ev("window.CONTRACT.naming('The FAF codification sample ASU')"));
+log.push(await ev("window.CONTRACT.naming('The FAF standards sample ASU')"));
 console.log(log.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('\n'));console.log('errors',errs);await b.close()})();

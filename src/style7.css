@@ -1,0 +1,159 @@
+/* ===== style7.css (Round 14, Agent F): UX/UI audit fixes =====
+   Order matters: this file loads after style6.css and before the module CSS, so module rules can still win on specifics;
+   rules that must hold everywhere use :root:root. Findings and status: docs/UXUI_AUDIT_R14.md. */
+
+/* ---- F-01 focus: programmatic focus (route change moves focus to #view) never draws a ring; real controls keep :focus-visible ---- */
+#view:focus,#view:focus-visible,main:focus,main:focus-visible,#view[tabindex="-1"]:focus,#view[tabindex="-1"]:focus-visible,
+:root :is(main,.screen,.hero,section,article,h1,h2,h3)[tabindex="-1"]:is(:focus,:focus-visible){outline:0!important;box-shadow:none}
+/* controls: a two-tone ring that holds against light, dark and glass surfaces (>= 3:1 on every surface) */
+:root:root :is(a,button,[role=button],[role=tab],[role=link],[role=switch],summary,select,input,textarea,.btn,.chip,.fchip,.fkpi,[tabindex="0"]):focus-visible{outline:2px solid var(--focus);outline-offset:2px;box-shadow:0 0 0 4px var(--focus-halo)}
+:root:root .switch input:focus-visible+span,:root:root .rng:focus-visible{outline:2px solid var(--focus);outline-offset:3px;box-shadow:0 0 0 4px var(--focus-halo)}
+:root:root :is(input,textarea,select):focus-visible{outline-offset:1px}
+
+/* ---- F-02 formulas wrap everywhere: popover, hover box, metric cards, drawers, tables, long unbroken tokens ---- */
+:root:root :is(.formula,.asm-formula,.fhov .formula,.pop .formula,.mcard .formula,#drawer .formula,[class*="formula"]):not(svg,svg *){white-space:pre-wrap;overflow-wrap:anywhere;word-break:normal;max-width:100%;min-width:0;overflow:visible;text-overflow:clip;-webkit-line-clamp:unset;line-clamp:unset}
+:root:root :is(.formula,.asm-formula){display:block;box-sizing:border-box;hyphens:manual}
+:root:root .formula[data-fc]{position:relative;padding-right:76px}
+:root:root .pop,:root:root .fhov,:root:root #drawer{overflow-wrap:anywhere}
+:root:root :is(.pop,.fhov,.mcard)>*{min-width:0;max-width:100%}
+.fcopy{position:absolute;top:8px;right:8px;font:inherit;font-family:var(--f-body);font-style:normal;font-size:var(--fs-xs);font-weight:var(--fw-label);line-height:1;letter-spacing:0;white-space:nowrap;color:var(--ink);background:var(--glass2);border:1px solid var(--cardline);border-radius:99px;padding:6px 11px;cursor:pointer;min-height:28px;transition:background .15s,transform .15s}
+.fcopy:hover{background:var(--accent-soft)}.fcopy:active{transform:scale(.96)}.fcopy[data-done]{color:var(--good);border-color:var(--good)}
+.fhov .fcopy{display:none}
+
+/* ---- F-03 cards in a row: equal heights, aligned footers, one padding/radius/shadow ---- */
+:root{--card-pad:20px;--card-gap:18px}
+:root:root .grid{align-items:stretch;gap:var(--card-gap)}
+:where(.grid>.card,.grid>.tile,.grid>.stat,.grid>.mini,.row>.card){display:flex;flex-direction:column;align-self:stretch;min-width:0}
+:where(.grid>.card,.row>.card)>:where(.row:last-child,.cardfoot,.foot,.actions,.btnrow){margin-top:auto}
+:where(.grid>.card,.row>.card)>:where(.row:last-child,.cardfoot,.foot,.actions,.btnrow):not(:only-child){padding-top:4px}
+:root:root .card{padding:var(--card-pad);border-radius:var(--r)}
+:root[data-density="compact"]{--card-pad:14px;--card-gap:12px}
+/* grids that the runtime fills (see mod_cardalign.js): the last row spans its cells so no blank slot remains */
+.grid[data-gf]>[data-gfs]{min-width:0}
+/* auto-fit tile strips that are not .grid: same rule */
+:where(.tiles,.kpis,.stats,.exe-kpis,.itsm-kpis){display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:var(--card-gap);align-items:stretch}
+
+/* ---- F-04 dark mode and contrast helpers (token values live in tokens.py) ---- */
+:root:root .muted,:root:root .small.muted{color:var(--muted)}
+:root:root .faint{color:var(--faint)}
+:root:root :disabled,:root:root [aria-disabled="true"]{cursor:not-allowed}
+:root:root .btn:disabled,:root:root button:disabled{opacity:1;color:var(--dis-ink);background:var(--dis-bg);border-color:var(--hair);box-shadow:none;transform:none}
+
+/* ---- F-05 sticky top bar: sections and anchors never land under it; sticky table heads sit below it ---- */
+:root{--tb-h:84px}
+html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
+#view :is([id],h2,h3,section,.card,.screen>*){scroll-margin-top:calc(var(--tb-h) + 12px)}
+.topbar{background:color-mix(in srgb,var(--glass) 70%,var(--bg))}
+@media (max-width:700px){:root{--tb-h:76px}}
+
+/* ---- F-06 truncation: single-line clamps always show the full text on hover/focus via title (set by kit.js) ---- */
+.trunc,.ellip{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+
+/* ---- F-07 empty and loading states share one look ---- */
+.empty,.emptystate,.nodata{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:28px 16px;border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;min-height:96px}
+.skel,.skeleton{position:relative;overflow:hidden;border-radius:10px;background:var(--track);min-height:14px;color:transparent}
+.skel::after,.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 9%,transparent),transparent);animation:skelslide 1.3s infinite}
+@keyframes skelslide{to{transform:translateX(100%)}}
+
+/* ---- F-08 phone: 44px tap targets, no horizontal page scroll, 16px gutters ---- */
+@media (max-width:700px){
+ :root:root :is(.btn,button.chip,.chip,.fchip,.pill[role=button],button.pill,[role=tab],.tab,summary,select,.herotog,.vsw label,.vsw>button,.nx-tb,.inbx-nlink,.switch){min-height:44px}
+ :root:root :is(.btn,.chip,button.chip,.fchip,[role=tab]){min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+ :root:root :is(input:not([type=checkbox],[type=radio],[type=range],[type=hidden]),select,textarea){min-height:44px;font-size:16px}
+ :root:root :is(input[type=checkbox],input[type=radio]){width:22px;height:22px}
+ :root:root :is(a[href],[data-nav],[data-go],[role=link],[role=button]):not(.btn,.chip,.pill,.fchip,.card,.row,.item,tr,td,li){position:relative}
+ :root:root :is(a[href],[data-nav],[data-go],[role=link],[role=button]):not(.btn,.chip,.pill,.fchip,.card,.row,.item,tr,td,li,svg,svg *)::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:44px;transform:translateY(-50%);min-width:44px}
+ :root:root .fcopy{min-height:44px;min-width:44px;top:4px;right:4px}
+ :root:root .formula[data-fc]{padding-right:60px}
+ #view{padding-left:0;padding-right:0}
+}
+
+/* ---- F-09 reduced motion: no transforms, no slides, instant state changes ---- */
+@media (prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+ .card:hover,.fchip:hover,.fkpi:hover,.bar:hover,.ev:hover{transform:none!important}
+ .skel::after,.skeleton::after{animation:none}
+}
+:root[data-motion="reduce"] *,:root[data-motion="reduce"] *::before,:root[data-motion="reduce"] *::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+
+/* ---- F-10 page header pattern: eyebrow, title, summary, actions, always in that order and rhythm ---- */
+:root:root .hero{display:flex;flex-direction:column;gap:6px;padding:2px 6px 0}
+:root:root .hero>.eyebrow{margin:0}
+:root:root .hero>h1{margin:0;font-family:var(--f-disp);font-weight:500;font-size:clamp(26px,2.5vw,34px);line-height:1.12}
+:root:root .hero>.story{margin:0}
+:root:root .grid:not([data-eq="off"])>:is(.card,.tile,.stat,.mini){align-self:stretch}
+
+/* ---- F-11 process step strip: connectors on every step, readable role labels, long words wrap ---- */
+:root:root .proc .ps{position:relative;overflow-wrap:anywhere}
+:root:root .proc .ps *{min-width:0}
+:root:root .proc .ps.human .who{color:var(--good)}
+:root:root .proc .ps.agent .who{color:var(--metric)}
+:root:root .proc .ps.auto .who{color:var(--accent)}
+:root:root .proc .ps.gate .who{color:var(--warn)}
+
+/* ---- F-12 skip link: visible only on keyboard focus ---- */
+.skiplink{position:fixed;left:12px;top:-72px;z-index:10000;padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
+.skiplink:focus,.skiplink:focus-visible{top:12px;outline:2px solid var(--focus);outline-offset:3px}
+
+/* ---- F-13 phone top bar fits the viewport (it was 33px too wide on every screen, forcing sideways page scroll) ---- */
+@media (max-width:700px){
+ :root:root .topbar{gap:0;padding:6px 8px 6px 10px;max-width:100%;overflow:hidden}
+ :root:root .topbar .search{display:none}
+ :root:root .tb-right{gap:2px;flex:1 1 auto;min-width:0;justify-content:space-between;flex-wrap:nowrap}
+ :root:root .tb-right>*{flex:0 0 auto}
+ :root:root .tb-right .btn{padding-left:8px;padding-right:8px;min-width:44px}
+ :root:root .tb-right .lensbtn{padding-left:10px;padding-right:10px;font-size:var(--fs-xs)}
+ :root:root .hero>.row,:root:root .hero>div:not(.eyebrow){flex-wrap:wrap;overflow:visible}
+ :root:root .nx-hstar,:root:root .nx-star{min-width:44px;min-height:44px}
+}
+
+/* ---- F-04b filled controls: white text holds 4.5:1 on both ends of the gradient in light and dark ---- */
+:root:root .btn.primary{background:linear-gradient(135deg,#0E6478,#13809A);color:#fff}
+:root:root .btn.danger{background:linear-gradient(135deg,#B00D1B,#E91224);color:#fff}
+
+/* ---- F-04c category colours used as TEXT (eyebrows, labels): mixed toward the ink so they hold 4.5:1 on light and dark ---- */
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p1)"]{color:color-mix(in srgb,var(--p1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p2)"]{color:color-mix(in srgb,var(--p2) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p3)"]{color:color-mix(in srgb,var(--p3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p4)"]{color:color-mix(in srgb,var(--p4) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p5)"]{color:color-mix(in srgb,var(--p5) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p6)"]{color:color-mix(in srgb,var(--p6) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w1)"]{color:color-mix(in srgb,var(--w1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w3)"]{color:color-mix(in srgb,var(--w3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e1)"]{color:color-mix(in srgb,var(--e1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e4)"]{color:color-mix(in srgb,var(--e4) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s1)"]{color:color-mix(in srgb,var(--s1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s3)"]{color:color-mix(in srgb,var(--s3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s4)"]{color:color-mix(in srgb,var(--s4) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u1)"]{color:color-mix(in srgb,var(--u1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u3)"]{color:color-mix(in srgb,var(--u3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u4)"]{color:color-mix(in srgb,var(--u4) 45%,var(--eb-mix))!important}
+/* light fills carry dark text */
+:root:root :is([style*="background:var(--w1)"],[style*="background:var(--w3)"],[style*="background: var(--w1)"]){color:#16262B!important}
+
+/* ---- F-14 phone overflow safety net and hit areas ---- */
+@media (max-width:700px){
+ #view{overflow-x:clip}
+ :root:root .persona-note{white-space:normal;overflow-wrap:anywhere;display:block;max-width:100%}
+ :root:root .kcs-f,:root:root .kcs-f *{min-width:0;max-width:100%}
+ :root:root select.fin,:root:root .fin{max-width:100%}
+ :root:root :is(.aichip,.stdchip,.pchipx,.mpo,.wfd-lnk,.itsm-link,.linkb,.ftog,.fin-cc,.flw-x,.bd-n){position:relative}
+ :root:root :is(.aichip,.stdchip,.pchipx,.mpo,.wfd-lnk,.itsm-link,.linkb,.ftog,.fin-cc,.flw-x,.bd-n)::after{content:"";position:absolute;left:0;right:0;top:50%;height:44px;min-width:44px;transform:translateY(-50%)}
+}
+/* compact status text on tinted chips keeps weight so it stays legible at 12px */
+:root:root .pill{font-weight:700}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--good-f)"]{color:color-mix(in srgb,var(--good-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--warn-f)"]{color:color-mix(in srgb,var(--warn-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--bad-f)"]{color:color-mix(in srgb,var(--bad-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--metric-f)"]{color:color-mix(in srgb,var(--metric-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--story-f)"]{color:color-mix(in srgb,var(--story-f) 45%,var(--eb-mix))!important}
+
+/* ---- F-07b empty states from every module share one look ---- */
+:root:root :is(.emptystate,.nx-empty,.vz-empty,.itom-empty,.inbx-empty,.gx-empty,.dev-empty,.empty,.nodata){border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;text-align:center}
+/* ---- F-15 pressed state, one rule for every button-like control ---- */
+:root:root :is(.btn,.chip,.fchip,.fkpi,button.pill):not(:disabled):active{transform:translateY(1px) scale(.98);transition-duration:.05s}
+/* ---- F-16 narrow desktop and tablet: nothing may widen the page; a 16px margin keeps rings and shadows from being cut ---- */
+@media (max-width:1100px){#view{overflow-x:clip;overflow-clip-margin:16px}}
+
+/* module grids that hold sibling cards also stretch (list/detail splits, kanban lanes and data-eq="off" are the intentional exceptions) */
+:root:root :is(div,section):has(>.card~.card):not(.dsplit,.listdet,.kan,.dfullgrid,[data-eq="off"]):is(.grid,[class*="-g2"],[class*="-two"],[class*="scg"],[class*="-g3"]){align-items:stretch}

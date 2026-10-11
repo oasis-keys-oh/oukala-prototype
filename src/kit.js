@@ -100,3 +100,29 @@ const grip=`<i class="grip" aria-hidden="true"><b></b><b></b><b></b><b></b><b></
 const SEARCHX=[],ASKX=[];
 const _siK=searchIndex;searchIndex=function(){const o=_siK();SEARCHX.forEach(fn=>{try{fn().forEach(x=>o.push(x))}catch(e){}});return o};
 const _askK=ask;ask=function(q){for(const fn of ASKX){try{if(fn(q))return}catch(e){}}return _askK(q)};
+
+/* ===== Round 14 (Agent F): formula copy buttons, truncation tooltips ===== */
+(function(){
+ const ok=()=>typeof document!=="undefined"&&document.body;
+ function copyText(t){try{if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(t)}catch(e){}return new Promise((res,rej)=>{try{const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.cssText="position:fixed;left:-9999px;top:0";document.body.appendChild(a);a.select();const r=document.execCommand("copy");a.remove();r?res():rej()}catch(e){rej(e)}})}
+ /* a formula longer than a short expression gets a Copy button (popover, metric card, drawer); the hover box stays read-only */
+ function enhance(root){if(!ok())return;const list=(root||document).querySelectorAll?(root||document).querySelectorAll(".formula:not([data-fc])"):[];let n=0;
+  for(const f of list){if(++n>300)break;if(f.closest(".fhov,svg,table,.fk-h"))continue;const txt=(f.textContent||"").replace(/\s+/g," ").trim();if(txt.length<18)continue;
+   if(!f.closest(".pop,.mcard,#drawer,dialog,.drawer,[popover],.card,.hero"))continue;
+   f.dataset.fc=txt;const b=document.createElement("button");b.type="button";b.className="fcopy";b.textContent="Copy";b.setAttribute("aria-label","Copy formula to clipboard");f.appendChild(b)}}
+ document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".fcopy");if(!b)return;e.stopPropagation();const f=b.closest(".formula");const t=f&&f.dataset.fc||"";
+  copyText(t).then(()=>{b.textContent="Copied";b.dataset.done="1";b.setAttribute("aria-label","Formula copied")},()=>{b.textContent="Press Ctrl C"}).finally(()=>setTimeout(()=>{b.textContent="Copy";delete b.dataset.done;b.setAttribute("aria-label","Copy formula to clipboard")},1600))},true);
+ document.addEventListener("toggle",e=>{if(e.newState==="open"&&e.target)enhance(e.target)},true);
+ let tm=0;const sched=()=>{clearTimeout(tm);tm=setTimeout(()=>enhance(document),160)};
+ function boot(){if(!ok())return setTimeout(boot,150);new MutationObserver(m=>{for(const x of m){if(x.addedNodes&&x.addedNodes.length){sched();return}}}).observe(document.body,{childList:true,subtree:true});sched()}
+ if(document.readyState!=="loading")boot();else document.addEventListener("DOMContentLoaded",boot);
+ window.formulaCopyEnhance=enhance;
+ /* truncated text: title shows the full string the first time the pointer or keyboard focus reaches it */
+ const trunc=el=>{for(let e=el,i=0;e&&e.nodeType===1&&i<4;e=e.parentElement,i++){if(e.hasAttribute("title")||e.closest("svg"))continue;const cs=getComputedStyle(e);const clamp=cs.webkitLineClamp&&cs.webkitLineClamp!=="none";const ell=cs.textOverflow==="ellipsis";
+   if((ell&&e.scrollWidth>e.clientWidth+1)||(clamp&&e.scrollHeight>e.clientHeight+1)){const t=(e.innerText||e.textContent||"").replace(/\s+/g," ").trim();if(t.length>3)e.setAttribute("title",t);return}}};
+ document.addEventListener("pointerover",e=>{if(e.pointerType==="touch")return;trunc(e.target)},{passive:true});
+ document.addEventListener("focusin",e=>trunc(e.target));
+})();
+/* Round 14: skip link so keyboard users reach the page without tabbing through the whole navigation */
+(function(){function add(){if(!document.body)return setTimeout(add,100);if(document.getElementById("skipLink"))return;const a=document.createElement("a");a.id="skipLink";a.className="skiplink";a.href="#view";a.textContent="Skip to main content";a.addEventListener("click",e=>{e.preventDefault();const v=document.getElementById("view");if(v){v.focus({preventScroll:false})}});document.body.insertBefore(a,document.body.firstChild)}
+ if(document.readyState!=="loading")add();else document.addEventListener("DOMContentLoaded",add)})();

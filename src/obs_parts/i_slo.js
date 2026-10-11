@@ -32,7 +32,7 @@ function sloPane(){const sel=O.slos.find(s=>s.id===O.slo.sel)||O.slos[0],c=sloCa
  ${card("All SLOs","Sorted by what needs attention.",T)}`}
 const SYND=()=>[
  {id:"SY1",n:"Portal home page",type:"HTTP",tgt:"https://standards.meridian.example/",ci:"ci_por4",every:1,loc:["East US","West US 2","West Europe","UK South"],svc:"svc_portal",as:["Status is 200","Body contains \"Standards\"","Response under 3 s"]},
- {id:"SY2",n:"Editor sign-in and open a draft",type:"Browser flow",tgt:"codification-platform (5 steps)",ci:"ci_cod4",every:5,loc:["East US","West US 2"],svc:"svc_cod",as:["Sign in with MFA test account","Open workspace","Open a draft","Save without error","Total under 8 s"],steps:[["Load sign-in",.7],["Entra ID redirect",1.1],["Workspace",1.4],["Open draft",.9],["Save draft",1.6]]},
+ {id:"SY2",n:"Editor sign-in and open a draft",type:"Browser flow",tgt:"standards-platform (5 steps)",ci:"ci_cod4",every:5,loc:["East US","West US 2"],svc:"svc_cod",as:["Sign in with MFA test account","Open workspace","Open a draft","Save without error","Total under 8 s"],steps:[["Load sign-in",.7],["Entra ID redirect",1.1],["Workspace",1.4],["Open draft",.9],["Save draft",1.6]]},
  {id:"SY3",n:"Search API query",type:"API",tgt:"GET /v1/search?q=lease",ci:"ci_sea2",every:1,loc:["East US","West Europe","UK South"],svc:"svc_search",as:["Status is 200","At least 1 result","Response under 1.5 s"]},
  {id:"SY4",n:"Standards API health",type:"API",tgt:"GET /v2/health",ci:"ci_cod4",every:1,loc:["East US","West US 2"],svc:"svc_cod",as:["Status is 200","version field present"]},
  {id:"SY5",n:"DNS resolution of the portal",type:"DNS",tgt:"standards.meridian.example",ci:"ci_dns",every:5,loc:["East US","West Europe"],svc:"svc_net",as:["Resolves to the Front Door address"]},

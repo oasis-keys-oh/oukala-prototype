@@ -175,3 +175,29 @@
 .org-acc td:first-child{min-width:200px}
 .org-aim .org-sp{font-size:10px}
 .org-card.ag{gap:8px}
+/* ===== R14: connectors drawn from rendered rects; contrast token; toggle moved off the line start ===== */
+:root{--org-line:#4f5f68;--org-line-dot:#1d6f8a;--org-line-mx:#9a5b00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--org-line:#c3d2da;--org-line-dot:#7fd3ee;--org-line-mx:#ffc46b}}
+:root[data-theme="dark"]{--org-line:#c3d2da;--org-line-dot:#7fd3ee;--org-line-mx:#ffc46b}
+.org-svg{z-index:0}
+.org-n{z-index:1}
+.org-ln{stroke:var(--org-line);stroke-width:1.75;opacity:1;stroke-linecap:butt;stroke-linejoin:miter;fill:none}
+.org-ln.dot{stroke:var(--org-line-dot);stroke-dasharray:6 5;opacity:.95;stroke-linejoin:round}
+.org-ln.mx{stroke:var(--org-line-mx);stroke-dasharray:14 6 3 6;opacity:.95;stroke-linejoin:round}
+.org-n .org-tg{left:auto;right:12px;bottom:-11px;transform:none;z-index:3}
+/* R14: agent profile as data blocks */
+.org-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:8px;margin:4px 0 12px}
+.org-fc{display:flex;flex-direction:column;gap:2px;min-width:0;padding:8px 10px;border-radius:12px;background:var(--glass2);box-shadow:0 0 0 1px var(--cardline) inset}
+.org-fc small{font-size:11.5px;color:var(--muted);line-height:1.2}
+.org-fc b{font-size:15px;line-height:1.25;overflow-wrap:break-word;color:var(--ink)}
+.org-fc em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.org-fc.good{box-shadow:0 0 0 1px var(--good-f) inset}.org-fc.warn{box-shadow:0 0 0 1px var(--warn-f) inset}.org-fc.bad{box-shadow:0 0 0 1px var(--bad-f) inset}
+.org-trends{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:0 0 12px}
+.org-tr{display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:12px;background:var(--glass2);box-shadow:0 0 0 1px var(--cardline) inset;min-width:0}
+.org-tr small,.org-tr em{font-size:11.5px;color:var(--muted);font-style:normal}
+.org-tr .num{font-size:17px;font-weight:700}
+.org-tr svg{width:100%;height:34px}
+.org-tc{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0 0 12px}
+.org-dt{width:100%}
+.org-dotend{fill:var(--org-line-dot);stroke:var(--bg,transparent);stroke-width:1}
+.org-dotend.mx{fill:var(--org-line-mx)}

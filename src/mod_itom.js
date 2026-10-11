@@ -674,6 +674,9 @@ function gKick(){if(!GVW.raf)GVW.raf=requestAnimationFrame(gDraw)}
 function gHit(mx,my){const V=GVW.V;if(!V)return-1;const {k,x,y}=GVW.view,gx=(mx-x)/k,gy=(my-y)/k;let best=-1,bd=1e9;V.nodes.forEach((n,i)=>{const r=(n.more?9:n.id===V.focus?14:6+Math.min(6,Math.sqrt(n.deg)*.9))+4/k,dx=n.x-gx,dy=n.y-gy,d=dx*dx+dy*dy;if(d<r*r&&d<bd){bd=d;best=i}});return best}
 function gBoot(){const G=GVW;G.cv=document.getElementById("itomCv");if(!G.cv)return;G.ctx=G.cv.getContext("2d");const r=G.cv.parentElement.getBoundingClientRect();G.W=r.width;G.H=r.height;G.dpr=Math.min(2,window.devicePixelRatio||1);G.cv.width=G.W*G.dpr;G.cv.height=G.H*G.dpr;G.cv.style.width=G.W+"px";G.cv.style.height=G.H+"px";G.tip=document.getElementById("itomTip");
  if(!G.V||G.seq!==I.gseq){G.prev=new Map();G.V=build();G.seq=I.gseq}G.view={k:1,x:G.W/2,y:G.H/2};gFit();gDraw(0);gPanel();gBind()}
+window.ITOMCAM={get:()=>GVW.view,size:()=>({w:GVW.W,h:GVW.H}),set:v=>{GVW.view=v;gDraw(performance.now())},fit:()=>{gFit();gDraw(performance.now())},min:.15,max:6,
+ zoomBy:f=>{const G=GVW,k=clamp(G.view.k*f,.15,6);G.view={k,x:G.W/2-(G.W/2-G.view.x)*k/G.view.k,y:G.H/2-(G.H/2-G.view.y)*k/G.view.k};gDraw(performance.now())},
+ bounds:()=>{const V=GVW.V;if(!V||!V.nodes.length)return{x:0,y:0,w:GVW.W,h:GVW.H};let a=1e9,b=-1e9,c=1e9,d=-1e9;V.nodes.forEach(n=>{a=Math.min(a,n.x);b=Math.max(b,n.x);c=Math.min(c,n.y);d=Math.max(d,n.y)});return{x:a-40,y:c-40,w:b-a+80,h:d-c+80}}};
 function gRebuild(keep){const G=GVW;G.prev=new Map();if(keep&&G.V)G.V.nodes.forEach(n=>G.prev.set(n.id,[n.x,n.y]));G.V=build();G.seq=I.gseq;if(!keep)gFit();gStats();gPanel();gDraw(0)}
 function gBind(){const G=GVW,cv=G.cv;if(!cv)return;const rect=()=>cv.getBoundingClientRect();
  cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);const r=rect(),mx=e.clientX-r.left,my=e.clientY-r.top;G.moved=false;G.drag={h:gHit(mx,my),mx,my,v0:{...G.view}}};

@@ -13,7 +13,7 @@ const go2=(s,a)=>`data-go="${s}${a?":"+a:""}"`;
 
 /* ---------------- strategy data ---------------- */
 const OBJ0=[
- {id:"O1",n:"Modernize standards publishing",sub:"Modernize codification",owner:"CEO office",c:"--p4",story:"Cut the time to publish a standard from 23 days to 15 by the end of FY27."},
+ {id:"O1",n:"Modernize standards publishing",sub:"Modernize standards",owner:"CEO office",c:"--p4",story:"Cut the time to publish a standard from 23 days to 15 by the end of FY27."},
  {id:"O2",n:"Reduce operating risk",sub:"Resilient operations",owner:"CFO",c:"--e4",story:"Keep Tier 1 services above 99.9% and every vendor above a 0.85 performance index."},
  {id:"O3",n:"Protect revenue through contract discipline",sub:"Contract discipline",owner:"CFO",c:"--w1",story:"Pay only for accepted work and find every contract obligation before it lapses."},
  {id:"O4",n:"Trusted AI",sub:"Trusted AI",owner:"CIO",c:"--u3",story:"Every AI action shows its sources, its guardrails and who is accountable for it."},

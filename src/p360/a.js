@@ -28,7 +28,7 @@ const EXT={
  svc_int:{rev:0,int:1,aud:"Application teams",cap:["Integration","API management"],rto:8,rpo:1,life:"Invest"},
  svc_desk:{rev:0,int:1,aud:"All staff",cap:["IT support","Knowledge"],rto:4,rpo:1,life:"Maintain"}};
 const ext=id=>EXT[id]||(EXT[id]={rev:0,int:1,aud:"Staff",cap:["Capability to define"],rto:8,rpo:4,life:"Maintain"});
-const ALIASX=[[/portal/i,"svc_portal"],[/search|indexer|lumen/i,"svc_search"],[/codification platform|^codification$|editor/i,"svc_cod"],[/contract/i,"svc_cr"],[/lease|erp/i,"svc_erp"],[/finance/i,"svc_fin"],[/entra|identity|sign-in/i,"svc_id"],[/email|m365|collab|teams|sharepoint/i,"svc_m365"],[/data platform|lakehouse|data hub|warehouse/i,"svc_data"],[/network|vpn|firewall/i,"svc_net"],[/endpoint|intune|laptop/i,"svc_end"],[/integration|api gateway/i,"svc_int"],[/service desk/i,"svc_desk"]];
+const ALIASX=[[/portal/i,"svc_portal"],[/search|indexer|lumen/i,"svc_search"],[/standards platform|^standards$|editor/i,"svc_cod"],[/contract/i,"svc_cr"],[/lease|erp/i,"svc_erp"],[/finance/i,"svc_fin"],[/entra|identity|sign-in/i,"svc_id"],[/email|m365|collab|teams|sharepoint/i,"svc_m365"],[/data platform|lakehouse|data hub|warehouse/i,"svc_data"],[/network|vpn|firewall/i,"svc_net"],[/endpoint|intune|laptop/i,"svc_end"],[/integration|api gateway/i,"svc_int"],[/service desk/i,"svc_desk"]];
 const svcId=x=>{if(!x)return null;if(typeof x==="object")x=x.id||x.n||"";const s=SVCREG.find(v=>v.id===x||v.n===x||v.n.toLowerCase()===String(x).toLowerCase());if(s)return s.id;const a=ALIASX.find(r=>r[0].test(String(x)));return a?a[1]:null};
 SV.svcId=svcId;
 const SVN=id=>(svcOf(id)||{n:id}).n;

@@ -573,7 +573,7 @@ function addProcess(def){
  const rec={id,name,module,family:def.family||(modOf(module)&&(modOf(module).band==="plt"?"gov":null))||"wf",owner:def.owner||"",trigger:def.trigger||"",steps,inputs:def.inputs||[],outputs:def.outputs||[],entities:ents,metrics:mets,model:def.model||"",std:def.std||[]};
  PL.custom.push(rec);
  PROC.reg(id,{title:name,std:rec.std.slice(),steps:steps.map(s=>Object.assign({},s))});
- bump();idx();
+ bump();
  audit("Process library: added process",name+" ("+w.length+" warning"+(w.length===1?"":"s")+")");
  return{ok:true,id,warnings:w};
 }

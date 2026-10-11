@@ -149,3 +149,28 @@
 .svc-forbar{flex-wrap:wrap}.svc-forbar .svc-forform{flex:1 1 280px;max-width:420px}
 .svc-hb .svc-bar,.svc-bar{min-width:60px}.svc-dg{align-items:start}
 .svc-gap2.row{justify-content:flex-start}
+
+/* ===== Round 14: linear "What happens next" timeline ===== */
+.svc-tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.svc-tlrow{position:relative;display:grid;grid-template-columns:minmax(104px,128px) minmax(0,1fr);gap:0 16px;padding-bottom:20px}
+.svc-tlrow:last-child{padding-bottom:4px}
+.svc-tlwhen{font-size:12px;font-weight:600;color:var(--muted);padding-top:6px;line-height:1.3;text-align:right}
+.svc-tlbody{position:relative;min-width:0}
+.svc-tlrow:not(:last-child)>.svc-tlbody::before{content:"";position:absolute;left:13px;top:34px;bottom:-20px;width:2px;background:var(--hair);z-index:0}
+.svc-tlrow:not(:last-child)>.svc-tlbody::after{content:"";position:absolute;left:8px;bottom:-22px;width:12px;height:12px;border-right:2px solid var(--hair);border-bottom:2px solid var(--hair);transform:rotate(45deg) scale(.7);transform-origin:center}
+.svc-tlrow.par:not(:last-child)>.svc-tlbody::before{top:100%}
+.svc-tln{position:relative;display:flex;gap:12px;align-items:flex-start;min-width:0}
+.svc-tln:not(:last-child){padding-bottom:18px}
+.svc-tln:not(:last-child)::after{content:"";position:absolute;left:13px;top:34px;bottom:-2px;width:2px;background:var(--hair)}
+.svc-tlnum{position:relative;z-index:1;flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;background:var(--glass2);color:var(--ink);border:1.5px solid var(--hair)}
+.svc-tlcard{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px;padding:8px 12px;border:1px solid var(--hair);border-radius:12px;background:var(--glass)}
+.svc-tlcard>b{overflow-wrap:break-word}
+.svc-tlmeta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12px;color:var(--muted)}
+.svc-tltype{display:inline-flex;align-items:center;gap:4px}
+.svc-tltype .svc-ty{width:16px;height:16px}
+.svc-tlpar{border:1.5px dashed var(--hair);border-radius:14px;padding:10px 12px 12px;display:flex;flex-direction:column;gap:10px;background:color-mix(in srgb,var(--accent) 4%,transparent)}
+.svc-tlparh{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.svc-tllanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
+.svc-tllane{display:flex;flex-direction:column;min-width:0}
+.svc-tlend{margin:14px 0 0}
+@media(max-width:560px){.svc-tlrow{grid-template-columns:minmax(0,1fr)}.svc-tlwhen{text-align:left;padding:0 0 6px 40px}.svc-tlrow:not(:last-child)>.svc-tlbody::before{top:34px}}

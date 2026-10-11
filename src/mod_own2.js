@@ -211,7 +211,7 @@ document.addEventListener("input",e=>{if(e.target&&e.target.id==="nxPalIn")sched
 
 /* ---------- Person 360 tab: what they own ---------- */
 tryv(()=>P360_TABS.push({label:"Owns",fn:rec=>{const n=rec.name;const mine=OW.records().filter(r=>r.ownerName===n),bk=OW.records().filter(r=>r.backupName===n);
- if(!mine.length&&!bk.length)return `<p class="muted">${E(n)} is not named as an owner or backup anywhere in the registry.</p>`;
+ if(!mine.length&&!bk.length)return `<div class="row"><span class="pill mute" data-role="metric">Owner of 0</span><span class="pill mute" data-role="metric">Backup for 0</span></div>`;
  const by={};mine.forEach(r=>(by[r.kind]=by[r.kind]||[]).push(r));
  return `<p class="small">Owns <b>${mine.length}</b> things and backs up <b>${bk.length}</b>. ${mine.filter(r=>r.gap).length} have a gap.</p>`+Object.keys(by).map(k=>`<div class="eyebrow" style="margin-top:10px">${E(OW.kinds[k].pl)} (${by[k].length})</div><div class="row" style="gap:6px;flex-wrap:wrap">${by[k].slice(0,8).map(r=>`<button type="button" class="chip" data-ownx-open="${E(r.key)}">${E(r.label)}</button>`).join("")}${by[k].length>8?`<span class="muted small">and ${by[k].length-8} more</span>`:""}</div>`).join("")}}),0);
 setTimeout(sched,900);

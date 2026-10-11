@@ -1237,6 +1237,7 @@ const _ATL={
 _ATL.addEntity=function(d){return window.COVER&&COVER.addEntity?COVER.addEntity(d):{ok:false,id:d&&d.id,duplicates:[],warnings:["The coverage module (mod_plat_cover) is not loaded in this build."]}};
 _ATL.coverage=function(o){return window.COVER&&COVER.coverage?COVER.coverage(o):{modules:[],stats:{}}};
 _ATL._dmv=()=>DMV;_ATL.color=d=>DC[d];_ATL.bump=function(){DMV++;LIN.bump();if(window.PLAT&&PLAT.refresh)PLAT.refresh();if(S.screen==="plat_data")render()};
+_ATL._cam={get:()=>A.cam,set:c=>{A.auto=false;cancelAnimationFrame(ANIM);A.cam=c;applyCam()},fit:()=>{A.auto=true;fly(fitAll())},zoomBy:f=>zoomCenter(f),bounds:()=>({x:0,y:0,w:LAY.W,h:LAY.H}),min:KMIN,max:KMAX};
 window.ATLAS=_ATL;window.LIN=LIN;
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-atlas-go]");if(!t)return;const v=t.dataset.atlasGo;closeDrawer();if(v.indexOf("m_")===0)_ATL.lineage(v);else _ATL.focus(v)});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-er-show]");if(!t||!model().ent.get(t.dataset.erShow))return;e.stopImmediatePropagation();e.preventDefault();closeDrawer();_ATL.focus(t.dataset.erShow)},true);

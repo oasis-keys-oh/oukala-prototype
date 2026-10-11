@@ -163,7 +163,7 @@ function connSVG(c,doc){
  const pts=D.route(doc,c);if(pts.length<2)return"";
  const d=D.pathD(pts),sel=ST.selC===c.id,assoc=c.kind==="assoc";
  const lp=c.lb?D.labelPt(pts):null;
- return `<g class="dr-c${sel?" sel":""}${assoc?" assoc":""}" data-dr-c="${c.id}" role="button" tabindex="${ST.ro?-1:0}" aria-label="${assoc?"Association":"Connector"} from ${H((D.getS(doc,c.a)||{}).n)} to ${H((D.getS(doc,c.b)||{}).n)}${c.lb?", labeled "+H(c.lb):""}"><path class="dr-chit" d="${d}"/><path class="dr-cp" d="${d}" ${(!assoc||c.arrow)?'marker-end="url(#drArr)"':""}/>${lp?`<g class="dr-clb" transform="translate(${lp[0]} ${lp[1]})"><rect x="${-(c.lb.length*3.4+8)}" y="-9" width="${c.lb.length*6.8+16}" height="18" rx="9"/><text text-anchor="middle" y="4">${H(c.lb)}</text></g>`:""}</g>`;
+ return `<g class="dr-c${sel?" sel":""}${assoc?" assoc":""}${ST.hov&&ST.hov.cid===c.id?" ins":""}" data-dr-c="${c.id}" role="button" tabindex="${ST.ro?-1:0}" aria-label="${assoc?"Association":"Connector"} from ${H((D.getS(doc,c.a)||{}).n)} to ${H((D.getS(doc,c.b)||{}).n)}${c.lb?", labeled "+H(c.lb):""}"><path class="dr-chit" d="${d}"/><path class="dr-cp" d="${d}" ${(!assoc||c.arrow)?'marker-end="url(#drArr)"':""}/>${lp?`<g class="dr-clb" transform="translate(${lp[0]} ${lp[1]})"><rect x="${-(c.lb.length*3.4+8)}" y="-9" width="${c.lb.length*6.8+16}" height="18" rx="9"/><text text-anchor="middle" y="4">${H(c.lb)}</text></g>`:""}</g>`;
 }
 function worldSVG(){
  const doc=ST.doc,v=D.validate(doc),lanes=doc.shapes.filter(s=>s.t==="swimlane"),rest=doc.shapes.filter(s=>s.t!=="swimlane");
@@ -171,11 +171,12 @@ function worldSVG(){
  if(ST.lay){lay=`<g class="dr-lay" aria-hidden="true">${doc.shapes.filter(s=>ST.lay.pos[s.id]).map(s=>{const p=ST.lay.pos[s.id];return `<rect x="${p[0]}" y="${p[1]}" width="${s.w}" height="${s.h}" rx="10"/><line x1="${s.x+s.w/2}" y1="${s.y+s.h/2}" x2="${p[0]+s.w/2}" y2="${p[1]+s.h/2}"/>`}).join("")}</g>`}
  let pv="";
  if(ST.prev){const p=ST.prev;pv=`<g class="dr-prev" aria-hidden="true"><rect x="${p.sh.x}" y="${p.sh.y}" width="${p.sh.w}" height="${p.sh.h}" rx="10"/>${p.line||""}</g>`}
+ const hv=hovSVG();
  const mq=ST.drag&&ST.drag.k==="marq"&&ST.drag.moved?`<rect class="dr-marq" x="${Math.min(ST.drag.x0,ST.drag.x1)}" y="${Math.min(ST.drag.y0,ST.drag.y1)}" width="${Math.abs(ST.drag.x1-ST.drag.x0)}" height="${Math.abs(ST.drag.y1-ST.drag.y0)}"/>`:"";
  const rb=ST.drag&&ST.drag.k==="conn"&&ST.drag.moved?`<path class="dr-rub" d="M${ST.drag.sx} ${ST.drag.sy}L${ST.drag.x1} ${ST.drag.y1}"/>`:"";
  return `<defs><marker id="drArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1.5L9 5 1 8.5z" class="dr-arrow"/></marker><pattern id="drGrid" width="${G}" height="${G}" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" class="dr-gdot"/></pattern><pattern id="drGridM" width="${G*5}" height="${G*5}" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.3" class="dr-gdot m"/></pattern></defs>
  <g id="drWorld" transform="translate(${ST.px} ${ST.py}) scale(${ST.k})"><rect class="dr-gridrect" x="-6000" y="-6000" width="12000" height="12000" fill="url(#drGrid)"/><rect class="dr-gridrect m" x="-6000" y="-6000" width="12000" height="12000" fill="url(#drGridM)"/>
- ${lanes.map(s=>shapeSVG(s,v)).join("")}${doc.conns.map(c=>connSVG(c,doc)).join("")}${rest.map(s=>shapeSVG(s,v)).join("")}${lay}${pv}${mq}${rb}</g>`;
+ ${lanes.map(s=>shapeSVG(s,v)).join("")}${doc.conns.map(c=>connSVG(c,doc)).join("")}${rest.map(s=>shapeSVG(s,v)).join("")}${lay}${pv}${hv}${mq}${rb}</g>`;
 }
 function viewPt(cx,cy){const r=$q("#drSvg").getBoundingClientRect();return[(cx-r.left-ST.px)/ST.k,(cy-r.top-ST.py)/ST.k]}
 let raf=0;
@@ -183,7 +184,7 @@ function paint(){cancelAnimationFrame(raf);raf=requestAnimationFrame(paintNow)}
 function paintNow(){
  const svg=$q("#drSvg");if(!svg||!ST.doc)return;
  const ae=document.activeElement,fid=ae&&ae.getAttribute&&ae.closest&&svg.contains(ae)?(ae.getAttribute("data-dr-s")||ae.getAttribute("data-dr-c")):null;
- svg.innerHTML=worldSVG();
+ svg.innerHTML=worldSVG();applyNudge();
  if(fid&&ST.kb){const el=svg.querySelector(`[data-dr-s="${fid}"],[data-dr-c="${fid}"]`);if(el)el.focus({preventScroll:true})}
  const em=$q("[data-dr-empty]");if(em)em.hidden=ST.doc.shapes.length>0;
  const z=$q("[data-dr-zoom]");if(z)z.textContent=Math.round(ST.k*100)+"%";
@@ -247,12 +248,17 @@ function placeShape(t,cx,cy,over,opt){
   const doc=ST.doc,fl=doc.shapes.filter(s=>isFlow(s.t));
   const ns=D.addShape(doc,t,snapV(cx-c.w/2),snapV(cy-c.h/2),over);
   if(!fl.length&&isFlow(t)&&t!=="start"){D.addShape(doc,"start",ns.x-48-72,Math.round(ns.y+ns.h/2-24));ST.msg="Start was added for you."}
-  const p=D.plan(doc,ns);
+  const hv=insertable(ns)?probeAt(ns,[ns.id]):null;
+  let p;
+  if(hv&&hv.kind==="conn"){const cn=doc.conns.find(x=>x.id===hv.cid);if(cn){const cs0=D.insertInto(doc,cn,ns);cs0.forEach(()=>{SD.conns++;SD.auto++});D.resolve(doc,[ns.id]);made={shape:ns,plan:{kind:"insert"},conns:cs0};return}}
+  if(hv&&hv.kind==="box"){const T=D.getS(doc,hv.id);if(T){const cs0=D.insertBox(doc,T,hv.zone,ns);cs0.forEach(()=>{SD.conns++;SD.auto++});D.resolve(doc,[ns.id]);made={shape:ns,plan:{kind:"insert"},conns:cs0};ST.msg="Placed "+hv.zone+" "+T.n+".";return}}
+  p=D.plan(doc,ns);
   if(p&&p.kind==="insert"){const A=D.getS(doc,p.via.a),B=D.getS(doc,p.via.b),bp=p.conn.bp;
    if(bp==="l"&&B.x>=A.x){const gap=B.x-(A.x+A.w),need=ns.w+110;if(gap<need){const sh=need-gap;doc.shapes.forEach(o=>{if(o.t!=="swimlane"&&o.x>=B.x-1)o.x+=sh})}const g2=B.x-(A.x+A.w);ns.x=Math.round(A.x+A.w+(g2-ns.w)/2);ns.y=Math.round(A.y+A.h/2-ns.h/2)}
    else if(bp==="t"&&B.y>=A.y){const gap=B.y-(A.y+A.h),need=ns.h+90;if(gap<need){const sh=need-gap;doc.shapes.forEach(o=>{if(o.t!=="swimlane"&&o.y>=B.y-1)o.y+=sh})}const g2=B.y-(A.y+A.h);ns.y=Math.round(A.y+A.h+(g2-ns.h)/2);ns.x=Math.round(A.x+A.w/2-ns.w/2)}
   }else D.settle(doc,ns,p);
   const cs=D.applyPlan(doc,ns,p);cs.forEach(()=>{SD.conns++;SD.auto++});
+  D.resolve(doc,[ns.id]);
   made={shape:ns,plan:p,conns:cs};
  });
  if(made){ST.sel=new Set([made.shape.id]);ST.selC=null;SD.drawn++;
@@ -361,13 +367,114 @@ function overSvg(cx,cy){const s=$q("#drSvg");if(!s)return false;const r=s.getBou
 function previewFor(type,cx,cy){
  const [wx,wy]=viewPt(cx,cy),c=BY[type],doc=ST.doc;
  const hypo={id:"__g",t:type,x:snapV(wx-c.w/2),y:snapV(wy-c.h/2),w:c.w,h:c.h,n:"x"};
+ const raw=Object.assign({},hypo);
  const tmp={shapes:doc.shapes.concat([hypo]),conns:doc.conns,seq:0};
  const p=D.plan(doc,hypo);D.settle({shapes:doc.shapes},hypo,p);
  let line="",src=null,via=null;
  if((p.kind==="flow"||p.kind==="assoc")&&p.conn){const cn=Object.assign({id:"__c"},p.conn);const pts=D.route(tmp,cn);line=`<path class="dr-prevline" d="${D.pathD(pts)}"/>`;src=p.src&&p.src.id;if(p.kind==="flow"&&p.src&&p.src.t==="gateway"&&p.conn.lb)line+=`<text class="dr-prevlb" x="${D.labelPt(pts)[0]}" y="${D.labelPt(pts)[1]-6}" text-anchor="middle">${H(p.conn.lb)}</text>`}
  else if(p.kind==="insert"){via=p.via.id;line=`<path class="dr-prevline" d="${D.pathD(D.route(doc,p.via))}"/>`}
  ST.prev={sh:hypo,line,src,via,kind:p.kind};
+ const hv=insertable(raw)?probeAt(raw,[raw.id]):null;ST.hov=hv;if(hv)ST.prev=null;
 }
+/* ===== R14: insert between, box nudge, hover handle, mini picker ===== */
+const reduceMo=()=>matchMedia("(prefers-reduced-motion: reduce)").matches||document.documentElement.dataset.motion==="reduced";
+const insertable=s=>!!s&&(D.ACT.has(s.t)||s.t==="gateway"||s.t==="parallel"||s.t==="merge"||s.t==="wait");
+function projPt(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy;let t=l?((p[0]-a[0])*dx+(p[1]-a[1])*dy)/l:0;t=Math.max(0,Math.min(1,t));return[a[0]+t*dx,a[1]+t*dy]}
+function probeAt(sh,self){
+ const doc=ST.doc;if(!doc)return null;const c0=D.ctr(sh);let T=null;
+ doc.shapes.forEach(o=>{if(self.includes(o.id)||!isFlow(o.t))return;if(c0[0]>=o.x&&c0[0]<=o.x+o.w&&c0[1]>=o.y&&c0[1]<=o.y+o.h)T=o});
+ if(T){const fx=(c0[0]-T.x)/T.w,zone=fx<.34?"before":fx>.66?"after":"branch";
+  const nudge=zone==="before"?[{id:T.id,dx:10,dy:0}]:zone==="after"?[{id:T.id,dx:-10,dy:0}]:[{id:T.id,dx:0,dy:-10}];
+  return{kind:"box",id:T.id,zone,nudge,pt:[T.x+T.w/2,T.y]}}
+ const skip=doc.conns.filter(c=>self.includes(c.a)||self.includes(c.b)).map(c=>c.id);
+ const hit=D.hitConn(doc,c0,18,skip);
+ if(hit){const c=hit.c,A=D.getS(doc,c.a),B=D.getS(doc,c.b),hor=B.x>A.x+A.w&&c.ap!=="b";
+  const pt=projPt(c0,hit.pts[hit.i-1],hit.pts[hit.i]);
+  return{kind:"conn",cid:c.id,pt,nudge:[{id:A.id,dx:hor?-10:0,dy:hor?0:-10},{id:B.id,dx:hor?10:0,dy:hor?0:10}]}}
+ return null;
+}
+function hovSVG(){
+ const h=ST.hov;if(!h||!ST.doc)return"";const k=1/ST.k;
+ if(h.kind==="conn"){const x=h.pt[0],y=h.pt[1];return `<g class="dr-hov" aria-hidden="true"><circle class="dr-insdot" cx="${x}" cy="${y}" r="${5*k}"/><g transform="translate(${x} ${y-24*k}) scale(${k})"><rect class="dr-inspill" x="-50" y="-12" width="100" height="24" rx="12"/><text class="dr-insl" text-anchor="middle" y="4.5">+ Insert here</text></g></g>`}
+ const T=D.getS(ST.doc,h.id);if(!T)return"";
+ const off=reduceMo()||!h.nudge?{dx:0,dy:0}:h.nudge[0],Z=[["before","Place before"],["branch","Branch"],["after","Place after"]],w=T.w/3;
+ const cells=Z.map((z,i)=>`<rect class="dr-zone${h.zone===z[0]?" on":""}" x="${T.x+off.dx+i*w}" y="${T.y+off.dy}" width="${w}" height="${T.h}" rx="${i===1?2:10}"/>`).join("");
+ const strip=Z.map((z,i)=>`<g class="dr-zp${h.zone===z[0]?" on":""}" transform="translate(${(i-1)*94} 0)"><rect x="-45" y="-12" width="90" height="24" rx="12"/><text text-anchor="middle" y="4.5">${z[1]}</text></g>`).join("");
+ return `<g class="dr-hov" aria-hidden="true">${cells}<g transform="translate(${T.x+off.dx+T.w/2} ${T.y+off.dy-24*k}) scale(${k})">${strip}</g></g>`;
+}
+function applyNudge(){
+ const h=ST.hov,svg=$q("#drSvg");if(!svg)return;
+ if(!h||!h.nudge||reduceMo()){ST.nk="";return}
+ const key=h.nudge.map(n=>n.id+":"+n.dx+":"+n.dy).join();
+ h.nudge.forEach(n=>{const el=svg.querySelector(`[data-dr-s="${n.id}"]`);if(!el)return;el.style.translate=n.dx+"px "+n.dy+"px";
+  if(ST.nk!==key&&el.animate)try{el.animate([{translate:"0px 0px"},{translate:(n.dx*1.7)+"px "+(n.dy*1.7)+"px",offset:.55},{translate:n.dx+"px "+n.dy+"px"}],{duration:320,easing:"cubic-bezier(.3,.9,.4,1)"})}catch(e){}});
+ ST.nk=key;
+}
+function finishMove(d){
+ const doc=ST.doc,hv=ST.hov;ST.hov=null;ST.nk="";
+ if(d.ids.length===1&&hv){const s=D.getS(doc,d.ids[0]);
+  if(insertable(s)){const tc=hv.kind==="conn"?doc.conns.find(x=>x.id===hv.cid):null,ts=hv.kind==="box"?D.getS(doc,hv.id):null;
+   if(tc||ts){if(D.detach(doc,s)){const cs=tc?D.insertInto(doc,tc,s):D.insertBox(doc,ts,hv.zone,s);SD.conns+=cs.length;SD.auto+=cs.length;announce("Moved "+s.n+" into the flow"+(ts?" ("+hv.zone+" "+ts.n+")":""))}
+    else toast_("That shape has several connectors, so it was moved but not inserted.","warn")}}}
+ D.resolve(doc,d.ids);
+}
+/* hover handle and the mini shape picker */
+const MINI=["task","gateway","approval","aistep","notification","wait"],MINI_L={task:"Task",gateway:"Decision",approval:"Approval",aistep:"AI step",notification:"Notify",wait:"Wait"};
+let mini=null,plusT=0;
+function closeMini(){if(mini){mini.remove();mini=null}}
+function insertAtConn(cid,type){
+ let made=null;
+ mut(()=>{const doc=ST.doc,c=doc.conns.find(x=>x.id===cid);if(!c)return;const ns=D.addShape(doc,type,0,0),cs=D.insertInto(doc,c,ns);SD.conns+=cs.length;SD.auto+=cs.length;D.resolve(doc,[ns.id]);made=ns});
+ if(made){ST.sel=new Set([made.id]);ST.selC=null;SD.drawn++;announce("Inserted "+BY[type].name+" into the connector");paint();openProps()}
+ return made;
+}
+function openMini(cid){
+ closeMini();const doc=ST.doc,c=doc&&doc.conns.find(x=>x.id===cid);if(!c||c.kind!=="flow"||ST.ro)return;
+ const m=D.midPt(doc,c,c.lb?.62:.5),svg=$q("#drSvg");if(!m||!svg)return;const r=svg.getBoundingClientRect();
+ const sx=r.left+ST.px+m[0]*ST.k,sy=r.top+ST.py+m[1]*ST.k;
+ const el=document.createElement("div");el.className="dr-mini";el.setAttribute("role","menu");el.setAttribute("aria-label","Insert a step here");el.dataset.cid=cid;
+ el.innerHTML=`<div class="dr-mini-t">Insert here</div><div class="dr-mini-g">${MINI.map(t=>`<button type="button" role="menuitem" class="dr-mini-b" data-dr-mini="${t}" data-cid="${cid}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${BY[t].ic}"/></svg><span>${MINI_L[t]}</span></button>`).join("")}</div>`;
+ document.body.appendChild(el);const w=el.offsetWidth,h=el.offsetHeight;
+ el.style.left=Math.max(8,Math.min(innerWidth-w-8,sx-w/2))+"px";el.style.top=(sy+20+h>innerHeight-8?Math.max(8,sy-20-h):sy+20)+"px";
+ mini=el;hidePlus();const b=el.querySelector("button");if(b)b.focus();
+}
+function hidePlus(){clearTimeout(plusT);const e=$q("#drWorld .dr-plus");if(e)e.remove()}
+function showPlus(cid){
+ if(ST.drag||ST.ro||!ST.doc||mini)return;const w=$q("#drWorld");if(!w)return;
+ const ex=w.querySelector(".dr-plus");if(ex&&ex.dataset.drPlus===cid){clearTimeout(plusT);return}
+ hidePlus();const c=ST.doc.conns.find(x=>x.id===cid);if(!c||c.kind!=="flow")return;const m=D.midPt(ST.doc,c,c.lb?.62:.5);if(!m)return;
+ w.insertAdjacentHTML("beforeend",`<g class="dr-plus" data-dr-plus="${cid}" transform="translate(${m[0]} ${m[1]}) scale(${1/ST.k})" role="button" tabindex="0" aria-label="Insert a step here"><title>Insert a step here</title><circle r="13" class="dr-plus-bg"/><path d="M-5.5 0H5.5M0 -5.5V5.5"/></g>`);
+}
+document.addEventListener("mouseover",e=>{
+ if(S.screen!=="draw_studio"||!ST.doc||ST.drag)return;const t=e.target;if(!t.closest)return;
+ const cn=t.closest("#drSvg [data-dr-c]"),pl=t.closest(".dr-plus");
+ if(cn&&!cn.classList.contains("assoc"))showPlus(cn.dataset.drC);else if(pl)clearTimeout(plusT);else if($q("#drWorld .dr-plus")){clearTimeout(plusT);plusT=setTimeout(hidePlus,320)}
+},true);
+document.addEventListener("focusin",e=>{if(S.screen!=="draw_studio"||!ST.doc)return;const cn=e.target.closest&&e.target.closest("#drSvg [data-dr-c]");if(cn&&!cn.classList.contains("assoc"))showPlus(cn.dataset.drC)});
+document.addEventListener("pointerdown",e=>{
+ if(S.screen!=="draw_studio")return;const t=e.target;if(!t.closest)return;
+ const pl=t.closest("[data-dr-plus]");if(pl){e.preventDefault();e.stopImmediatePropagation();openMini(pl.dataset.drPlus);return}
+ if(mini&&!t.closest(".dr-mini"))closeMini();
+},true);
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-dr-mini]");if(!b)return;e.preventDefault();const cid=b.dataset.cid,t=b.dataset.drMini;closeMini();insertAtConn(cid,t);const s=$q("#drSvg");if(s)s.focus({preventScroll:true})},true);
+document.addEventListener("keydown",e=>{
+ const t=e.target;
+ if(mini&&t.closest&&t.closest(".dr-mini")){
+  if(e.key==="Escape"){e.preventDefault();e.stopPropagation();const id=mini.dataset.cid;closeMini();const s=$q("#drSvg");if(s)s.focus({preventScroll:true});ST.selC=id;return}
+  const bs=$$q(".dr-mini-b",mini),i=bs.indexOf(t);
+  if(/^Arrow/.test(e.key)&&i>=0){e.preventDefault();e.stopPropagation();const n=(e.key==="ArrowRight"||e.key==="ArrowDown")?(i+1)%bs.length:(i-1+bs.length)%bs.length;bs[n].focus()}
+  return;
+ }
+ if(S.screen!=="draw_studio"||!ST.doc||ST.ro)return;
+ if(t.closest&&t.closest(".dr-plus")&&(e.key==="Enter"||e.key===" ")){e.preventDefault();e.stopPropagation();openMini(t.closest(".dr-plus").dataset.drPlus);return}
+ if(e.key==="Enter"||e.key==="+"||e.key==="="){
+  const typing=t.matches&&t.matches("input,textarea,select,[contenteditable='true']");if(typing||e.ctrlKey||e.metaKey)return;
+  const cel=t.closest&&t.closest("#drSvg [data-dr-c]"),inCanvas=t===document.body||(t.closest&&(t.closest("#drSvg")||!t.closest("button,a,summary,[role=button],[role=menuitem]")));
+  const id=cel?cel.dataset.drC:(ST.selC&&inCanvas?ST.selC:null);
+  if(id){const c=ST.doc.conns.find(x=>x.id===id);if(c&&c.kind==="flow"){e.preventDefault();e.stopPropagation();ST.selC=id;ST.sel.clear();openMini(id)}}
+ }
+},true);
+window.addEventListener("scroll",closeMini,true);
 document.addEventListener("pointerdown",e=>{
  if(!ST.doc||S.screen!=="draw_studio")return;
  if(e.pointerType==="mouse"&&e.button>1)return;
@@ -388,7 +495,7 @@ document.addEventListener("pointerdown",e=>{
   ids.forEach(i=>{const o=D.getS(ST.doc,i);if(o)orig[i]=[o.x,o.y]});
   ST.drag={k:"move",ids,orig,cx0:e.clientX,cy0:e.clientY,moved:false,snapshot:snap(),sid:id};paint();return;
  }
- if(cn&&!(ST.tool==="pan"||space)){e.preventDefault();ST.selC=cn.dataset.drC;ST.sel.clear();paint();openProps();return}
+ if(cn&&!(ST.tool==="pan"||space)){e.preventDefault();ST.selC=cn.dataset.drC;ST.sel.clear();paint();openProps();setTimeout(()=>{const sv=$q("#drSvg");if(sv&&ST.selC&&!ST.edit&&!(document.activeElement&&document.activeElement.matches&&document.activeElement.matches("input,textarea,select")))sv.focus({preventScroll:true})},90);return}
  if(ST.tool==="pan"||space||e.button===1){e.preventDefault();ST.drag={k:"pan",cx0:e.clientX,cy0:e.clientY,px:ST.px,py:ST.py,moved:false};svg.classList.add("panning");return}
  const [wx,wy]=viewPt(e.clientX,e.clientY);
  if(!(e.shiftKey||e.ctrlKey||e.metaKey)){ST.sel.clear();ST.selC=null;closeProps()}
@@ -399,12 +506,12 @@ document.addEventListener("pointermove",e=>{
  const dx=e.clientX-(d.cx0!=null?d.cx0:d.x0),dy=e.clientY-(d.cy0!=null?d.cy0:d.y0);
  if(d.k==="pal"){
   if(!d.moved&&Math.hypot(dx,dy)>5){d.moved=true;ghost=document.createElement("div");ghost.className="dr-ghost";const it=BY[d.type];ghost.innerHTML=`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${it.ic}"/></svg><span>${H(it.name)}</span>`;document.body.appendChild(ghost);document.body.classList.add("dr-dragging")}
-  if(d.moved){ghost.style.transform=`translate(${e.clientX+12}px,${e.clientY+12}px)`;const over=overSvg(e.clientX,e.clientY);ghost.classList.toggle("ok",over);if(over){previewFor(d.type,e.clientX,e.clientY)}else ST.prev=null;paint()}
+  if(d.moved){ghost.style.transform=`translate(${e.clientX+12}px,${e.clientY+12}px)`;const over=overSvg(e.clientX,e.clientY);ghost.classList.toggle("ok",over);if(over){previewFor(d.type,e.clientX,e.clientY)}else{ST.prev=null;ST.hov=null}paint()}
   return;
  }
  if(!d.moved&&Math.hypot(dx,dy)>3){d.moved=true;if(d.k==="move"){ST.undo.push(d.snapshot);if(ST.undo.length>100)ST.undo.shift();ST.redo=[];}}
  if(!d.moved)return;
- if(d.k==="move"){d.ids.forEach(i=>{const o=D.getS(ST.doc,i);if(o){o.x=snapV(d.orig[i][0]+dx/ST.k);o.y=snapV(d.orig[i][1]+dy/ST.k)}});paint()}
+ if(d.k==="move"){d.ids.forEach(i=>{const o=D.getS(ST.doc,i);if(o){o.x=snapV(d.orig[i][0]+dx/ST.k);o.y=snapV(d.orig[i][1]+dy/ST.k)}});const ms=d.ids.length===1?D.getS(ST.doc,d.ids[0]):null;ST.hov=ms&&insertable(ms)?probeAt(ms,[ms.id]):null;paint()}
  else if(d.k==="pan"){ST.px=d.px+dx;ST.py=d.py+dy;paint()}
  else if(d.k==="marq"){const p=viewPt(e.clientX,e.clientY);d.x1=p[0];d.y1=p[1];paint()}
  else if(d.k==="conn"){const p=viewPt(e.clientX,e.clientY);d.x1=p[0];d.y1=p[1];const t=document.elementFromPoint(e.clientX,e.clientY),sh=t&&t.closest&&t.closest("[data-dr-s]");const tid=sh&&sh.dataset.drS!==d.from?sh.dataset.drS:null;if(d.over!==tid){d.over=tid;$$q("#drSvg .dr-s.drop").forEach(x=>x.classList.remove("drop"));if(tid){const el=$q(`#drSvg [data-dr-s="${tid}"]`);if(el)el.classList.add("drop")}}paint()}
@@ -412,13 +519,13 @@ document.addEventListener("pointermove",e=>{
 document.addEventListener("pointerup",e=>{
  const d=ST.drag;if(!d)return;ST.drag=null;document.body.classList.remove("dr-dragging");const svg=$q("#drSvg");if(svg)svg.classList.remove("panning");
  if(d.k==="pal"){
-  if(ghost){ghost.remove();ghost=null}ST.prev=null;
+  if(ghost){ghost.remove();ghost=null}ST.prev=null;ST.hov=null;
   if(d.moved){clickGuard=Date.now();if(overSvg(e.clientX,e.clientY)){const [wx,wy]=viewPt(e.clientX,e.clientY);placeShape(d.type,wx,wy)}else{paint();toast_("Drop the shape on the canvas to add it.","warn")}}
   else{clickGuard=Date.now();addAuto(d.type);const b=$q(`[data-dr-pi="${d.type}"]`);if(b)b.focus()}
   return;
  }
  if(d.k==="move"){
-  if(d.moved){ST.dirty=true;ST.doc.rev++;persist();refresh();const dr=drawerEl();if(dr&&dr.dataset.dr)openProps()}
+  if(d.moved){finishMove(d);ST.dirty=true;ST.doc.rev++;persist();refresh();const dr=drawerEl();if(dr&&dr.dataset.dr)openProps()}
   else{if(ST.sel.size===1)openProps();else closeProps();paint()}
  }
  else if(d.k==="pan"){paint()}
@@ -461,7 +568,7 @@ document.addEventListener("keydown",e=>{
  const tg=e.target,typing=tg.matches&&tg.matches("input,textarea,select,[contenteditable='true']");
  if(e.key==="Escape"){
   if(ST.edit){return}
-  if(ST.drag){if(ghost){ghost.remove();ghost=null}document.body.classList.remove("dr-dragging");ST.drag=null;ST.prev=null;paint();return}
+  if(ST.drag){if(ghost){ghost.remove();ghost=null}document.body.classList.remove("dr-dragging");ST.drag=null;ST.prev=null;ST.hov=null;paint();return}
   if(ST.lay){ST.lay=null;paint();return}
   if(ST.sel.size||ST.selC||(drawerEl()&&drawerEl().dataset.dr)){ST.sel.clear();ST.selC=null;closeProps();paint();const s=$q("#drSvg");if(s)s.focus({preventScroll:true})}
   return;

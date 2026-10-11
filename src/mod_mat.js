@@ -5,7 +5,7 @@ const M=S.mat=S.mat||{tab:0,sel:"asd",obj:"O1",cap:"ASD.1",wi:{node:"ASD",lvl:4,
 const H=esc,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),r1=v=>Math.round(v*10)/10,r2=v=>Math.round(v*100)/100;
 const SVID=k=>"svc_"+k;
 const OBJN={O1:"Modernize standards publishing",O2:"Reduce operating risk",O3:"Contract discipline",O4:"Trusted AI",O5:"Editor experience"};
-const objs=()=>(window.EXE&&EXE.E&&EXE.E.objs&&EXE.E.objs.length?EXE.E.objs:[{id:"O1",n:OBJN.O1,sub:"Modernize codification",owner:"CEO office",c:"--p4"},{id:"O2",n:OBJN.O2,sub:"Resilient operations",owner:"CFO",c:"--e4"},{id:"O3",n:OBJN.O3,sub:"Contract discipline",owner:"CFO",c:"--w1"},{id:"O4",n:OBJN.O4,sub:"Trusted AI",owner:"CIO",c:"--u3"},{id:"O5",n:OBJN.O5,sub:"Editor experience",owner:"COO",c:"--s3"}]);
+const objs=()=>(window.EXE&&EXE.E&&EXE.E.objs&&EXE.E.objs.length?EXE.E.objs:[{id:"O1",n:OBJN.O1,sub:"Modernize standards",owner:"CEO office",c:"--p4"},{id:"O2",n:OBJN.O2,sub:"Resilient operations",owner:"CFO",c:"--e4"},{id:"O3",n:OBJN.O3,sub:"Contract discipline",owner:"CFO",c:"--w1"},{id:"O4",n:OBJN.O4,sub:"Trusted AI",owner:"CIO",c:"--u3"},{id:"O5",n:OBJN.O5,sub:"Editor experience",owner:"COO",c:"--s3"}]);
 const objOf=id=>objs().find(o=>o.id===id)||{id,n:id,sub:id,c:"--faint",owner:""};
 /* work-day calendar extended past the shared calendar so 3 and 5 year horizons exist */
 const LASTWD=WD.length-1,LASTT=WD[LASTWD];

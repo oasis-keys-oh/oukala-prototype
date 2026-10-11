@@ -342,4 +342,89 @@ function fromJSON(txt){let o;try{o=JSON.parse(txt)}catch(e){return{ok:false,msg:
 }
 D.toJSON=toJSON;D.fromJSON=fromJSON;
 D.sig=steps=>{let h=0;const t=JSON.stringify((steps||[]).map(s=>[s.n,s.who,s.owner,s.sla]));for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return h};
+
+/* ---------- R14: collision avoidance and insert-between ---------- */
+const solid=s=>s.t!=="swimlane",loose=s=>ANN.has(s.t)||DATA.has(s.t);
+function gapFor(doc,a,b){if(loose(a)||loose(b))return[0,0];const lab=s=>s.t==="gateway"&&outs(doc,s.id).length>0;return[lab(a)||lab(b)?60:36,24]}
+function boxHit(doc,a,b){const g=gapFor(doc,a,b);return a.x<b.x+b.w+g[0]&&b.x<a.x+a.w+g[0]&&a.y<b.y+b.h+g[1]&&b.y<a.y+a.h+g[1]}
+function downOf(doc,id){const seen=new Set([id]),q=[id];while(q.length){const i=q.pop();outs(doc,i).forEach(c=>{if(!seen.has(c.b)){seen.add(c.b);q.push(c.b)}})}return seen}
+/* strict list of overlapping pairs among real shapes (used by the tests and the checker) */
+function overlaps(doc){const L=doc.shapes.filter(s=>solid(s)&&!loose(s)),r=[];for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const a=L[i],b=L[j];if(a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h)r.push([a.id,b.id])}return r}
+/* resolve(doc,pinned): pinned shapes never move (unless they sit upstream of what they hit); everything downstream of a collision slides away */
+function resolve(doc,pin){
+ pin=new Set(pin||[]);const touched=new Set(pin);let n=0;
+ for(let it=0;it<90;it++){
+  const L=doc.shapes.filter(solid);let P=null,M=null;
+  for(let i=0;i<L.length&&!P;i++)for(let j=i+1;j<L.length;j++){
+   const a=L[i],b=L[j];if(!(touched.has(a.id)||touched.has(b.id)))continue;if(pin.has(a.id)&&pin.has(b.id))continue;if(!boxHit(doc,a,b))continue;
+   if(pin.has(a.id)){P=a;M=b}else if(pin.has(b.id)){P=b;M=a}
+   else if(touched.has(a.id)&&!touched.has(b.id)){P=a;M=b}else if(touched.has(b.id)&&!touched.has(a.id)){P=b;M=a}
+   else{if(a.x+a.y<=b.x+b.y){P=a;M=b}else{P=b;M=a}}
+   break}
+  if(!P)break;
+  const g=gapFor(doc,P,M),dx=ctr(M)[0]-ctr(P)[0],dy=ctr(M)[1]-ctr(P)[1];
+  const hor=Math.abs(dx)/((P.w+M.w)/2)>=Math.abs(dy)/((P.h+M.h)/2);
+  if(hor){
+   if(dx>=0){const d=Math.ceil(P.x+P.w+g[0]-M.x);doc.shapes.forEach(o=>{if(solid(o)&&!pin.has(o.id)&&o.id!==P.id&&o.x>=M.x-1){o.x+=d;touched.add(o.id)}});if(d>0)n++}
+   else{P.x=Math.ceil(M.x+M.w+g[0]);touched.add(P.id);n++}
+  }else{
+   if(dy>=0){const d=Math.ceil(P.y+P.h+g[1]-M.y),set=downOf(doc,M.id);set.add(M.id);doc.shapes.forEach(o=>{if(solid(o)&&set.has(o.id)&&!pin.has(o.id)&&o.id!==P.id){o.y+=d;touched.add(o.id)}});n++}
+   else{P.y=Math.ceil(M.y+M.h+g[1]);touched.add(P.id);n++}
+  }
+ }
+ return n;
+}
+/* insert shape ns into connector c (a to b): re-wire both halves, keep the branch label on the first half, slide downstream shapes apart */
+function insertInto(doc,c,ns){
+ const A=getS(doc,c.a),B=getS(doc,c.b);if(!A||!B)return[];
+ const G=A.t==="gateway"?74:60;
+ doc.conns=doc.conns.filter(x=>x.id!==c.id);
+ let ap1=c.ap,bp1,ap2,bp2=c.bp;
+ if(B.x>A.x+A.w&&c.ap!=="b"&&c.ap!=="t"){
+  const gap=B.x-(A.x+A.w),need=ns.w+2*G;if(gap<need){const sh=need-gap;doc.shapes.forEach(o=>{if(solid(o)&&o.id!==ns.id&&o.x>=B.x-1)o.x+=sh})}
+  const g2=B.x-(A.x+A.w);ns.x=Math.round(A.x+A.w+(g2-ns.w)/2);ns.y=Math.round(A.y+A.h/2-ns.h/2);bp1="l";ap2="r";if(bp2==="r"||bp2==="b"||bp2==="t")bp2="l";
+ }else if(B.y>A.y+A.h&&c.ap!=="l"){
+  const gap=B.y-(A.y+A.h),need=ns.h+2*52;if(gap<need){const sh=need-gap,set=downOf(doc,B.id);doc.shapes.forEach(o=>{if(solid(o)&&o.id!==ns.id&&set.has(o.id))o.y+=sh})}
+  const g2=B.y-(A.y+A.h);ns.y=Math.round(A.y+A.h+(g2-ns.h)/2);ns.x=Math.round(A.x+A.w/2-ns.w/2);bp1="t";ap2="b";if(bp2!=="t")bp2="t";
+ }else{
+  const p1=portPt(A,c.ap),p2=portPt(B,c.bp);ns.x=Math.round((p1[0]+p2[0])/2-ns.w/2);ns.y=Math.round((p1[1]+p2[1])/2-ns.h/2);
+  const f1=ns.x>=A.x+A.w?["r","l"]:ns.y>=A.y+A.h?["b","t"]:["l","r"];bp1=f1[1];ap2=OPP[bp1]}
+ return[addConn(doc,A.id,ns.id,ap1,bp1,{lb:c.lb||"",auto:true}),addConn(doc,ns.id,B.id,ap2,bp2,{lb:ns.t==="gateway"?"Yes":"",auto:true})];
+}
+/* lift a connected shape out of its place (bridging its neighbours) so it can be inserted elsewhere. false when it has a real fan-in or fan-out */
+function detach(doc,s){
+ const I=ins(doc,s.id),O=outs(doc,s.id);if(I.length>1||O.length>1)return false;
+ doc.conns=doc.conns.filter(c=>!(c.kind==="flow"&&(c.a===s.id||c.b===s.id)));
+ if(I.length&&O.length)addConn(doc,I[0].a,O[0].b,I[0].ap,O[0].bp,{lb:I[0].lb||"",auto:true});
+ return true;
+}
+/* drop a shape on a box: zone is "before", "after" or "branch" */
+function insertBox(doc,T,zone,ns){
+ const I=ins(doc,T.id),O=outs(doc,T.id),G=68;
+ if(zone==="before"&&T.t==="start")zone="after";
+ if(zone==="after"&&T.t==="end")zone="before";
+ if(zone==="before"){
+  if(I.length)return insertInto(doc,I[0],ns);
+  ns.x=T.x-ns.w-G;ns.y=Math.round(T.y+T.h/2-ns.h/2);return[addConn(doc,ns.id,T.id,"r","l",{auto:true})];
+ }
+ if(zone==="after"){
+  if(O.length)return insertInto(doc,O[0],ns);
+  ns.x=T.x+T.w+G;ns.y=Math.round(T.y+T.h/2-ns.h/2);return[addConn(doc,T.id,ns.id,"r","l",{lb:branchLabel(doc,T),auto:true})];
+ }
+ /* branch */
+ if(T.t==="gateway"||T.t==="parallel"||!I.length){
+  const ap=freePort(doc,T,"b",true)||"b";ns.y=T.y+T.h+54;ns.x=ap==="b"?Math.round(T.x+T.w/2-ns.w/2):T.x+T.w+G;
+  if(ap==="r"){ns.y=Math.round(T.y+T.h/2-ns.h/2)}
+  return[addConn(doc,T.id,ns.id,ap,OPP[ap],{lb:branchLabel(doc,T),auto:true})];
+ }
+ const P=getS(doc,I[0].a),out=[];ns.x=T.x;ns.y=T.y+T.h+54;
+ const ap=freePort(doc,P,P.t==="gateway"?"b":"r",true)||"b";
+ out.push(addConn(doc,P.id,ns.id,ap,ap==="b"?"t":"l",{lb:branchLabel(doc,P),auto:true}));
+ if(O.length)out.push(addConn(doc,ns.id,O[0].b,"r",O[0].bp,{auto:true}));
+ return out;
+}
+D.resolve=resolve;D.overlaps=overlaps;D.insertInto=insertInto;D.insertBox=insertBox;D.detach=detach;D.boxHit=boxHit;D.downOf=downOf;
+/* middle point of a connector along its length */
+function midPt(doc,c,fr){const pts=route(doc,c);if(pts.length<2)return null;let tot=0;for(let i=1;i<pts.length;i++)tot+=dist(pts[i-1],pts[i]);let h=tot*(fr==null?.5:fr);for(let i=1;i<pts.length;i++){const l=dist(pts[i-1],pts[i]);if(h<=l||i===pts.length-1){const t=l?h/l:0;return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t,pts]}h-=l}return null}
+D.midPt=midPt;
 })();

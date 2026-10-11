@@ -3,6 +3,7 @@
 const O=window.ORGX,OS=S.org;
 const H=s=>esc(s==null?"":String(s));
 const first=n=>String(n).split(" ")[0];
+const AD=n=>O.agentDisplay?O.agentDisplay(n):{first:n,title:"",full:n};
 const pctCls=p=>p>95?"bad":p>75?"warn":"good";
 const lvlCls=l=>l>=4?"bad":l===3?"warn":l>=1?"info":"mute";
 const root="Catherine Doyle";
@@ -37,32 +38,25 @@ function put(nd,x,d,o){nd.y=PAD+d*(CH+GY);o.cards.push(nd);o.maxD=Math.max(o.max
  if(!nd.kids.length){nd.x=x+(nd.w-CW)/2;return}
  let cx=x+(nd.w-nd.tw)/2;nd.kids.forEach(k=>{put(k,cx,d+1,o);cx+=k.w+GX});
  const f=nd.kids[0],l=nd.kids[nd.kids.length-1];nd.x=Math.round((f.x+l.x)/2);
- const px=nd.x+CW/2,busY=nd.y+CH+GY/2,by=nd.y+CH+GY,xs=nd.kids.map(k=>k.x+CW/2);
- o.e.push("M"+px+" "+(nd.y+CH)+"V"+busY);
- if(nd.kids.length>1||Math.abs(xs[0]-px)>.5){const lo=Math.min(px,...xs),hi=Math.max(px,...xs);o.e.push("M"+lo+" "+busY+"H"+hi)}
- xs.forEach(x=>o.e.push("M"+x+" "+busY+"V"+by))}
-function layout(){const t=buildTree();lay(t);const o={cards:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=PAD*2+(o.maxD+1)*CH+o.maxD*GY;o.root=t;
+ nd.kids.forEach(k=>o.edges.push({f:nd.id,t:k.id,k:"line"}))}
+function layout(){const t=buildTree();lay(t);const o={cards:[],edges:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=PAD*2+(o.maxD+1)*CH+o.maxD*GY;o.root=t;
  const by={};o.cards.forEach(c=>by[c.id]=c);o.by=by;
- /* dotted and matrix lines leave from the facing side edge, centered on the card, and sit behind the cards */
- const curve=(a,b,cls,id)=>{if(!a||!b)return;const ln=cls==="mx"?24:14;let d;
-  if(a.y===b.y){const x1=a.x+CW/2,x2=b.x+CW/2,yb=a.y+CH;d=`M${x1} ${yb}V${yb+ln}H${x2}V${yb}`}
-  else{const lo=a.y>b.y?a:b,hi=a.y>b.y?b:a;const x1=lo.x+CW/2,x2=hi.x+CW/2,y1=lo.y,y2=hi.y+CH,my=y1-ln;d=`M${x1} ${y1}V${my}H${x2}V${y2}`}
-  return `<path class="org-ln ${cls}" data-for="${H(id)}" d="${d}"/>`};
- if(OS.lines.dotted)O.staff.forEach(p=>{if(p.dot&&o.by[p.n]&&o.by[p.dot])o.dot.push(curve(o.by[p.n],o.by[p.dot],"dot",p.n))});
- if(OS.lines.matrix)O.staff.forEach(p=>p.mx.forEach(m=>{const l=PLEAD(m.p);if(l&&l!==p.n&&o.by[p.n]&&o.by[l])o.mx.push(curve(o.by[p.n],o.by[l],"mx",p.n))}));
+ /* dotted and matrix links are edges too: drawn after paint from the real rendered rects */
+ if(OS.lines.dotted)O.staff.forEach(p=>{if(p.dot&&o.by[p.n]&&o.by[p.dot])o.edges.push({f:p.dot,t:p.n,k:"dot"})});
+ if(OS.lines.matrix)O.staff.forEach(p=>p.mx.forEach(m=>{const l=PLEAD(m.p);if(l&&l!==p.n&&o.by[p.n]&&o.by[l])o.edges.push({f:l,t:p.n,k:"mx"})}));
  return o}
 /* ---------- cards ---------- */
 function loadOf(n){try{return workload(n).pct}catch(e){return 60}}
 function cardHTML(c,sel){
  const pos=`left:${c.x}px;top:${c.y}px;width:${CW}px;height:${CH}px`;
  if(c.t==="a"){const a=c.a,L=O.LVL[a.autonomy];
-  return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" style="${pos}"><button type="button" class="org-card ag is-agent" data-org-agent="${H(a.name)}" aria-label="${H(a.name)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${hexAv(a.name,32)}<span class="org-t"><b>${H(a.name)}</b><small>${H(L.short)} · ${a.hrs} h/wk back</small><span class="org-m org-aim">${aiChip2("AI")}<span class="org-sp" title="Sponsor: ${H(a.sponsor)}">Sponsor: ${H(a.sponsor)}</span></span></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
+  return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card ag is-agent" data-org-agent="${H(a.name)}" aria-label="${H(AD(a.name).full)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${hexAv(a.name,32)}<span class="org-t" data-noag><b>${H(AD(a.name).first)}</b><small>${H(AD(a.name).title||L.short)} · AI</small><span class="org-m org-aim">${aiChip2("AI")}<span class="org-sp" title="Sponsor: ${H(a.sponsor)}">Sponsor: ${H(a.sponsor)}</span></span></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
  const p=c.p,l=loadOf(p.n),sp=O.kids(p.n).length;
  const cls=["org-n org-hu",c.hit?"hit":"",c.dim?"dim":"",sel===p.n?"sel":""].join(" ");
  const tg=(c.nKids||c.nAg)?`<button type="button" class="org-tg" data-org-tg="${H(p.n)}" aria-expanded="${c.col?"false":"true"}" aria-label="${c.col?"Expand":"Collapse"} ${H(p.n)}'s team" title="${c.col?"Show "+c.hidden+" below":"Hide the team below"}">${c.col?"+"+c.hidden:"−"}</button>`:"";
- return `<div class="${cls}" style="${pos}"><button type="button" class="org-card" data-org-open="${H(p.n)}" title="${H(p.n)}, ${H(p.role)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:40})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&OS.mode==="human"?`<em class="ai">AI ${c.nAg}</em>`:""}</span></span></button>${tg}</div>`}
+ return `<div class="${cls}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card" data-org-open="${H(p.n)}" title="${H(p.n)}, ${H(p.role)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:40})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&OS.mode==="human"?`<em class="ai">AI ${c.nAg}</em>`:""}</span></span></button>${tg}</div>`}
 function chartInner(o){
- const sel=OS.sel;return `<svg class="org-svg" width="${o.W}" height="${o.H}" viewBox="0 0 ${o.W} ${o.H}" aria-hidden="true"><path class="org-ln" d="${o.e.join("")}"/>${o.dot.join("")}${o.mx.join("")}</svg>${o.cards.map(c=>cardHTML(c,sel)).join("")}`}
+ const sel=OS.sel;return `<svg class="org-svg" width="${o.W}" height="${o.H}" viewBox="0 0 ${o.W} ${o.H}" aria-hidden="true"></svg>${o.cards.map(c=>cardHTML(c,sel)).join("")}`}
 /* outline: the accessible, phone-friendly view of the same tree */
 function outline(nd,lvl){
  if(nd.t==="a"){const a=nd.a;return `<li role="treeitem" class="org-ol-a"><button type="button" class="org-ol is-agent" data-org-agent="${H(a.name)}">${hexAv(a.name,26)}<span><b>${H(a.name)} ${aiChip2("AI")}</b><small>Sponsor ${H(a.sponsor)} · ${H(O.LVL[a.autonomy].n)} · ${a.status}</small></span></button></li>`}
@@ -89,15 +83,33 @@ function chartPane(){
  <div class="org-lg">${legend([["Solid line: reports to","--ink"],["Dashed: dotted-line (functional) report","--accent"],["Long dash: project matrix lead","--warn-f"],["Dashed card: AI agent, sponsored by the person above","--p4"]])}</div>`}
 /* ---------- pan and zoom (direct DOM, no re-render) ---------- */
 let LAST=null;
+/* ---------- connectors: one SVG path per edge, from the REAL rendered rects (parent bottom-center to child top-center via a bus in the gap) ---------- */
+function rectOf(cv,id){const el=cv.querySelector('.org-n[data-oid="'+(window.CSS&&CSS.escape?CSS.escape(id):id)+'"]');return el?{x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight}:null}
+function drawLines(){const cv=document.getElementById("orgcv");if(!cv||!LAST)return;const svg=cv.querySelector(".org-svg");if(!svg)return;
+ const R={};const rr=id=>R[id]||(R[id]=rectOf(cv,id));const edges=LAST.edges||[];
+ const minTop={};edges.filter(e=>e.k==="line").forEach(e=>{const c=rr(e.t);if(c)minTop[e.f]=Math.min(minTop[e.f]==null?1e9:minTop[e.f],c.y)});
+ const out=[],laneN={};
+ edges.forEach(e=>{const a=rr(e.f),b=rr(e.t);if(!a||!b)return;let d,pts=null;
+  if(e.k==="line"){const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y,by=Math.round(y1+(minTop[e.f]-y1)/2);d=x1===x2?`M${x1} ${y1}V${y2}`:`M${x1} ${y1}V${by}H${x2}V${y2}`}
+  else{const ln=(e.k==="mx"?41:10)+(laneN[e.k]=(laneN[e.k]||0)+1)%3*4;
+   if(Math.abs(a.y-b.y)<2){const x1=a.x+a.w/2,x2=b.x+b.w/2,yb=a.y+a.h;d=`M${x1} ${yb}V${yb+ln}H${x2}V${yb}`;pts=[[x1,yb],[x2,yb]]}
+   else{const up=b.y+b.h<=a.y;if(up){const x1=a.x+a.w/2,y1=a.y,x2=b.x+b.w/2,y2=b.y+b.h;d=`M${x1} ${y1}V${y1-ln}H${x2}V${y2}`;pts=[[x1,y1],[x2,y2]]}
+    else{const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y;d=`M${x1} ${y1}V${y1+ln}H${x2}V${y2}`;pts=[[x1,y1],[x2,y2]]}}}
+  out.push(`<path class="org-ln ${e.k==="line"?"":e.k}" data-from="${H(e.f)}" data-to="${H(e.t)}" data-k="${e.k}" d="${d}"/>`);
+  if(pts&&e.k!=="line")pts.forEach(q=>out.push(`<circle class="org-dotend ${e.k}" cx="${q[0]}" cy="${q[1]}" r="3.5"/>`))});
+ svg.innerHTML=out.join("")}
+O.drawLines=drawLines;
+
 function applyT(){const cv=document.getElementById("orgcv");if(!cv)return;cv.style.transform=`translate(${OS.x}px,${OS.y}px) scale(${OS.k})`;const z=document.querySelector(".org-zoom");if(z)z.dataset.k=Math.round(OS.k*100)}
 function vp(){return document.getElementById("orgvp")}
 function fit(top){const v=vp();if(!v||!LAST)return;const w=v.clientWidth,h=v.clientHeight;let k=Math.min(w/LAST.W,h/LAST.H,1);
  if(top){k=Math.max(Math.min(w/LAST.W,1),w<700?.5:w<1000?.62:.78);k=Math.min(k,1);const root=LAST.by[LAST.root.id];OS.k=k;OS.x=Math.round(w/2-(root.x+CW/2)*k);OS.y=12}
  else{k=Math.max(.1,k);OS.k=k;OS.x=Math.round((w-LAST.W*k)/2);OS.y=Math.round((h-LAST.H*k)/2)}applyT()}
 function zoomAt(f,cx,cy){const v=vp();if(!v)return;const r=v.getBoundingClientRect();cx=cx==null?r.width/2:cx-r.left;cy=cy==null?r.height/2:cy-r.top;const k0=OS.k,k1=Math.max(.1,Math.min(1.6,k0*f));OS.x=cx-(cx-OS.x)*(k1/k0);OS.y=cy-(cy-OS.y)*(k1/k0);OS.k=k1;applyT()}
-function paintChart(){const cv=document.getElementById("orgcv");if(!cv){render();return}LAST=layout();cv.style.width=LAST.W+"px";cv.style.height=LAST.H+"px";cv.innerHTML=chartInner(LAST);applyT()}
+O.cam={get:()=>({k:OS.k||1,x:OS.x||0,y:OS.y||0,W:LAST?LAST.W:0,H:LAST?LAST.H:0,vw:(vp()||{}).clientWidth||0,vh:(vp()||{}).clientHeight||0}),set:(x,y)=>{OS.x=x;OS.y=y;applyT()},zoomAt:(f,cx,cy)=>zoomAt(f,cx,cy),fit:()=>fit(false),min:.1,max:1.6};
+function paintChart(){const cv=document.getElementById("orgcv");if(!cv){render();return}LAST=layout();cv.style.width=LAST.W+"px";cv.style.height=LAST.H+"px";cv.innerHTML=chartInner(LAST);drawLines();applyT()}
 function mount(){
- if(S.screen!=="org_chart"||OS.tab!=="chart"||OS.outline)return;const v=vp();if(!v)return;LAST=layout();
+ if(S.screen!=="org_chart"||OS.tab!=="chart"||OS.outline)return;const v=vp();if(!v)return;LAST=layout();drawLines();
  if(!OS.k||OS.k<=0)fit(true);else applyT();
  if(OS.q){const q=OS.q.toLowerCase(),m=O.staff.find(p=>hit(p,q));const c=m&&LAST.by[m.n];if(c){OS.x=Math.round(v.clientWidth/2-(c.x+CW/2)*OS.k);OS.y=Math.round(v.clientHeight/3-c.y*OS.k);applyT()}}}
 const _ca=window.coreAfter;window.coreAfter=function(){if(_ca)_ca.apply(this,arguments);try{mount()}catch(e){console.error("org mount",e)}};
@@ -267,7 +279,7 @@ function orgScreen(){
  O.ensureDir();if(O.wire)O.wire();O.sync();const st=O.stats();
  if(!O.tabs.some(t=>t[0]===OS.tab))OS.tab="chart";
  const pane=OS.tab==="chart"?chartPane():OS.tab==="report"?reportPane():OS.tab==="dir"?dirPane():OS.tab==="own"?ownPane():OS.tab==="acct"?acctPane():(O.studioPane?O.studioPane():"");
- const story=`Meridian has <b>${st.heads} people</b> in <b>${st.layers} layers</b> and <b>${st.agents} AI teammates</b>, each sponsored by a named person. Agents are returning <b>${st.returned} hours a week</b> to the people they support; another <b>${st.open} hours</b> is on the table. The goal is to supercharge good people, not replace them.`;
+ const story=`<b>${st.heads}</b> people · <b>${st.layers}</b> layers · <b>${st.agents}</b> AI agents, each with a named sponsor · <b>${st.returned} h/wk</b> returned · <b>${st.open} h/wk</b> open opportunity`;
  return `<div class="screen">${hero("People and teams","Who does what, and who supports them",story,`<div class="row">${fchip("m_org_cap")}${fchip("m_org_gov")}${fchip("m_org_own")}${fchip("m_org_span")}${stdChip("togaf","Org and capability model in the chart")}${stdChip("agentic","Agent autonomy levels and sponsor accountability")}</div>`)}${lensNote()}
  ${OS.tab==="chart"?`<div class="org-strip" role="list"><span role="listitem"><b data-role="metric">${st.heads}</b> people</span><span role="listitem"><b data-role="metric">${st.mgrs}</b> managers</span><span role="listitem"><b data-role="metric">${st.avgSpan}</b> average span (widest ${st.maxSpan})</span><span role="listitem"><b data-role="metric">${st.layers}</b> layers</span><span role="listitem"><b data-role="metric">${st.agents}</b> AI agents</span><span role="listitem"><b data-role="metric">${st.returned} h</b> a week returned</span></div>`:kpiRow([["People",String(st.heads),st.mgrs+" managers, "+st.layers+" layers"],["AI teammates",String(st.agents),st.covered+" sponsors"],["Average span",String(st.avgSpan),"max "+st.maxSpan+" direct reports",{metric:"m_org_span"}],["Hours returned",st.returned+" h","a week by agents",{metric:"m_org_cap"}],["Ownership",st.ownPct+"%","of registry items name a person",{metric:"m_org_own"}]])}
  <div class="org-tabs" role="tablist" aria-label="Org chart sections">${O.tabs.map(t=>`<button type="button" role="tab" class="org-tab" aria-selected="${OS.tab===t[0]}" data-org-tab="${t[0]}">${t[1]}</button>`).join("")}</div>

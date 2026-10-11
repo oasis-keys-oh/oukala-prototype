@@ -55,7 +55,7 @@ Next actions: ...
 ```
 
 ## Naming rule
-Never use FAF, Codification or ASU (or ASC, FASB, GASB) in anything you write. This is a standalone product that may be shown to peers of the first customer. The sample customer is Meridian Standards Foundation, with the Standards Portal and the Standards Platform as sample systems. Other organizations' processes are added later as process content.
+Never use FAF, Standards or ASU (or ASC, FASB, GASB) in anything you write. This is a standalone product that may be shown to peers of the first customer. The sample customer is Meridian Standards Foundation, with the Standards Portal and the Standards Platform as sample systems. Other organizations' processes are added later as process content.
 
 ## Style
 Plain American English, define acronyms on first use, no em dashes. AI-generated drafts are labeled and a person accepts them.

@@ -29,7 +29,7 @@ function studioHTML(n,inDrawer){
  const c=O.capacity(n),ag=O.agentsOf(n),ops=O.opps(n),open=ops.filter(o=>!o.cov&&!o.builtBy);const pick=new Set(OS.pick[n]||[]);
  const rec=open.filter(o=>o.risk!=="high").slice(0,3);const recH=rec.reduce((s,o)=>s+o.hrs,0);
  const after=+(c.returned+recH).toFixed(1);
- const frame=`<div class="org-frame"><b>Supercharge ${H(first(n))}, do not replace ${H(first(n))}.</b> Agents take routine preparation off ${H(first(n))}'s plate; the hours come back to ${H(first(n))}, to spend on ${H(O.reinvest(n))}. No agent is ever sized against headcount.</div>`;
+ const frame=`<div class="org-frame"><span class="pill info">Sponsor ${H(n)}</span> <span class="pill mute">Reinvest in: ${H(O.reinvest(n))}</span> <span class="pill mute">Sizing basis: hours, not headcount</span></div>`;
  const bar=`<div class="org-capb" role="img" aria-label="${c.returned} hours returned, ${c.available} hours available, of ${c.cap}"><i class="r" style="width:${Math.min(100,100*c.returned/c.cap)}%"></i><i class="a" style="width:${Math.min(100-100*c.returned/c.cap,100*c.available/c.cap)}%"></i></div>${legend([["Returned to "+first(n)+" by agents now ("+c.returned+" h)","--good-f"],["Available in ranked opportunities ("+c.available+" h)","--p4"]])}`;
  return `${frame}
  <div class="p360grid">${[["Returned now",c.returned+" h","a week, "+c.pctReturned+"% of "+c.cap],["Still available",c.available+" h","a week in "+open.length+" opportunities"],["Agents",String(ag.length),ag.length?"sponsored by "+first(n):"none yet"],["If you build the top "+rec.length,after+" h","back to "+first(n)+", "+Math.round(100*after/c.cap)+"% of the week"]].map(x=>`<div class="stat"><small>${x[0]}</small><span class="num" data-role="metric">${x[1]}</span><em>${x[2]}</em></div>`).join("")}</div>
@@ -116,7 +116,7 @@ function oppById(id){const n=String(id).split(":")[0];return O.opps(n).find(o=>o
 SEARCHX.push(()=>{const o=[{g:"People and teams",t:"Org chart",m:"Reporting lines, agents, permissions, ownership",c:"--p4",f:()=>{OS.tab="chart";go("org_chart")},k:"org_chart org chart reporting structure hierarchy headcount span of control dotted line matrix human ai"},
   {g:"People and teams",t:"Agent studio",m:"Automation opportunities and agent builder",c:"--p4",f:()=>{OS.tab="studio";go("org_chart")},k:"org_chart agent studio automation opportunities build agent supercharge assistant"}];
  O.staff.forEach(p=>o.push({g:"People and teams",t:p.n,m:p.role+" · "+p.unit,c:"--p3",f:()=>O.openProfile(p.n),k:"org_chart person profile "+p.role+" "+p.unit+" "+p.fn.join(" ")}));
- O.agents().forEach(a=>o.push({g:"AI agents",t:a.name,m:"Agent sponsored by "+a.sponsor+" · "+O.LVL[a.autonomy].n,c:"--p4",f:()=>O.openAgent(a.name),k:"org_chart agent "+a.does+" "+a.sponsor}));return o});
+ O.agents().forEach(a=>o.push({g:"AI agents",t:(O.agentDisplay?O.agentDisplay(a.name).full:a.name),m:"Agent sponsored by "+a.sponsor+" · "+O.LVL[a.autonomy].n,c:"--p4",f:()=>O.openAgent(a.name),k:"org_chart agent "+a.name+" "+(O.agentDisplay?O.agentDisplay(a.name).first:"")+" "+a.does+" "+a.sponsor}));return o});
 const norm=s=>String(s||"").toLowerCase().replace(/['’]s\b/g,"").replace(/[?.!,]/g," ").replace(/\s+/g," ").trim();
 function findPerson(t){t=norm(t);if(!t)return null;let hit=O.staff.find(p=>norm(p.n)===t)||O.staff.find(p=>t.indexOf(norm(p.n))>=0);if(hit)return hit.n;
  const f=O.staff.filter(p=>norm(first(p.n))===t||t.split(" ").indexOf(norm(first(p.n)))>=0);if(f.length===1)return f[0].n;
