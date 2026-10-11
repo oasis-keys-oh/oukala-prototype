@@ -48,11 +48,11 @@
 .gsum .glab b{font-size:13.5px}.gsum .glab{font-weight:800}
 .gbar{position:relative;height:100%;flex:none}
 .ghd .gbar span{position:absolute;top:22px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.bar{position:absolute;top:9px;height:20px;border-radius:99px;background:color-mix(in srgb,var(--c) 38%,transparent);border:1.5px solid var(--c);overflow:hidden;padding:0;transition:transform .18s var(--ease),box-shadow .18s,filter .18s}
-.bar u{position:absolute;left:0;top:0;bottom:0;background:var(--c);opacity:.95;border-radius:99px 0 0 99px}
-.bar.crit{border-color:var(--bad-f);background:color-mix(in srgb,var(--bad-f) 30%,transparent)}.bar.crit u{background:var(--bad-f)}
-.bar.done{filter:saturate(.6);opacity:.8}
-.bar:hover,.bar:focus-visible{transform:translateY(-2px) scaleY(1.12);box-shadow:0 8px 20px var(--shade);outline:0;z-index:3}
+.gbar .bar{position:absolute;top:9px;height:20px;border-radius:99px;background:color-mix(in srgb,var(--c) 38%,transparent);border:1.5px solid var(--c);overflow:hidden;padding:0;transition:transform .18s var(--ease),box-shadow .18s,filter .18s}
+.gbar .bar u{position:absolute;left:0;top:0;bottom:0;background:var(--c);opacity:.95;border-radius:99px 0 0 99px}
+.gbar .bar.crit{border-color:var(--bad-f);background:color-mix(in srgb,var(--bad-f) 30%,transparent)}.gbar .bar.crit u{background:var(--bad-f)}
+.gbar .bar.done{filter:saturate(.6);opacity:.8}
+.gbar .bar:hover,.gbar .bar:focus-visible{transform:translateY(-2px) scaleY(1.12);box-shadow:0 8px 20px var(--shade);outline:0;z-index:3}
 .bbar{position:absolute;top:31px;height:4px;border-radius:4px;background:var(--faint);opacity:.7}
 .sumbar{position:absolute;top:13px;height:12px;border-radius:4px;background:color-mix(in srgb,var(--c) 30%,transparent);border-left:3px solid var(--c);border-right:3px solid var(--c)}.sumbar u{position:absolute;left:0;top:0;bottom:0;background:var(--c)}
 .ms{position:absolute;top:11px;width:16px;height:16px;margin-left:-8px;transform:rotate(45deg);border-radius:3px;background:var(--good-f);border:2px solid #fff;box-shadow:0 2px 8px var(--shade);transition:transform .18s var(--ease);padding:0;display:block}

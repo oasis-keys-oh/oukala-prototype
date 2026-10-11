@@ -22,7 +22,7 @@
    parents.forEach(kids=>{if(kids.length<2||kids.length>40)return;const fam={};kids.forEach(k=>{if(k.tagName==="SECTION")return;const key=k.tagName+"."+[...k.classList].filter(c=>!/^(on|sel|open|active|st-|is-)/.test(c)).sort().join(".");(fam[key]=fam[key]||[]).push(k)});
     Object.values(fam).forEach(list=>{if(list.length<2)return;const rows={};list.forEach(k=>{const t=Math.round(k.getBoundingClientRect().top/6);(rows[t]=rows[t]||[]).push(k)});
      Object.values(rows).forEach(row=>{if(row.length<2||!cardish(row[0]))return;const cc=row.map(k=>k.children.length);const m=Math.min(...cc);if(m<2||Math.max(...cc)>10)return;
-      for(let i=0;i<m;i++){if(new Set(row.map(k=>k.children[i].className)).size!==1)break;const hs=row.map(k=>k.children[i].getBoundingClientRect().height);const mx=Math.max(...hs);if(mx-Math.min(...hs)>2&&mx<400)row.forEach((k,j)=>{const c=k.children[i];if(getComputedStyle(c).position==="absolute")return;c.style.minHeight=mx+"px";c.dataset.ca="1"})}
+      for(let i=0;i<m;i++){if(new Set(row.map(k=>k.children[i].className)).size!==1)break;const hs=row.map(k=>k.children[i].getBoundingClientRect().height);const mx=Math.max(...hs);if(mx-Math.min(...hs)>2&&mx<400&&!(row[0].children[i].classList.contains("cardhead")&&mx-Math.min(...hs)>24))row.forEach((k,j)=>{const c=k.children[i];if(getComputedStyle(c).position==="absolute")return;c.style.minHeight=mx+"px";c.dataset.ca="1"})}
       const hs=row.map(k=>k.getBoundingClientRect().height),mx=Math.max(...hs);if(mx-Math.min(...hs)>3)row.forEach(k=>{k.style.minHeight=mx+"px";k.dataset.ca="1"})})})})
   }catch(e){}finally{busy=false;if(obs)obs.observe(v,{childList:true,subtree:true})}}
  const sched=()=>{clearTimeout(timer);timer=setTimeout(()=>{requestAnimationFrame(run)},60)};
