@@ -18,7 +18,7 @@ const K1=n=>"$"+(n/1000).toFixed(1)+"K";
 const T2=h=>{const x=Math.floor(h),m=Math.round((h-x)*60);return (x<10?"0":"")+x+":"+(m<10?"0":"")+m};
 const stp=(s)=>s==="good"?"good":s==="warn"?"warn":"bad";
 const sp=(v,c)=>spark(v,110,30,col(c||"--accent"));
-const me=()=>PERSONAS[S.persona].n;
+const me=()=>(window.CURUSER?CURUSER.name():PERSONAS[S.persona].n);
 const nowT=()=>new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
 const tbl=(head,rows,min)=>`<div class="tablewrap itom-tw"><table style="min-width:${min||640}px"><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.join("")}</tbody></table></div>`;
 /* line and bar chart helpers (kept from v4 for the FinOps screen) */
@@ -1043,6 +1043,7 @@ ASKX.push(q=>{const l=q.toLowerCase();ensure();health();
 function cxFind(x){ensure();if(!x)return null;if(typeof x==="object")return x;let c=ciOf(x);if(c)return c;const l=String(x).toLowerCase();c=CIREG.find(k=>!k.merged&&(k.name||"").toLowerCase()===l);if(c)return c;try{c=matchCI(x)}catch(e){}return c||null}
 window.ciByName=n=>cxFind(n);
 window.CMDBX={
+ all:()=>{ensure();return CIREG.filter(c=>!c.merged&&!c.isSvc)},count:()=>CIREG.length,
  ci:x=>{const c=cxFind(x);if(!c)return null;return{id:c.id,name:c.name,cls:c.cls,class:c.class,service:c.svc?svName(c.svc):"",env:c.env,status:c.status,owner:c.owner,group:c.grp,criticality:c.crit,uptime:c.uptime,isService:!!c.isSvc}},
  impact:x=>{const c=cxFind(x);if(!c)return null;const i=impactSum(c.id);return{id:c.id,name:c.name,services:i.svcs.map(s=>s.n),tier1:i.tier1,users:i.users,cost:i.cost,cis:i.cis,projects:i.projects,blastRadius:Math.max(0,reach(c.id,"impact",6).size-1)}},
  create:o=>{o=o||{};if(!o.name)return null;ensure();const cls=o.cls||"cmdb_ci_vm_instance",cl=CLM[cls]||{label:"Configuration item"},id="ci_n"+(++I.seq);const nc={id,name:o.name,class:(Object.entries(LEGACY).find(x=>x[1]===cls)||[cl.label])[0],cls,svc:o.service||o.svc||"",env:o.env||"Production",status:o.status||"Operational",life:o.life||"Operational",owner:o.owner||"",grp:o.group||"",crit:o.crit||"",uptime:100,ip:o.ip||"",disc:"Oct 8",src:"manual",seen:0,first:dayStr(0),usrc:"none",a:{},x:1,isSvc:0,_p:1,short:o.short};CIREG.push(nc);logChange(nc,"created","","API","person");bump();health();audit("created CI",nc.name);return nc.id},

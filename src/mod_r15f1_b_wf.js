@@ -84,7 +84,7 @@ const modeOf=t=>({human:"human",approval:"human",assessment:"human",agent:"agent
 const DEFC={};function getDefCached(i){const k=i.def;if(!DEFC[k]||DEFC[k].t<Date.now()-4000)DEFC[k]={t:Date.now(),d:getDef(k)};return DEFC[k].d}
 function newTok(i,node,now){const d=getDefCached(i),n=nodeOf(d,node);const t={id:"k"+(++i.tk),node,name:n.n,type:n.t,st:"ready",t0:now,attempt:1};return t}
 function who(i,n){const a=n.a||{},p=n.p||{},asg=p.asg||{};
- if(n.t==="approval"){if(a.tiers==="doa"){const amt=+lookup(i,a.amountField||"rec.amount")||+(i.ctx.rec||{}).amount||0;const tiers=G(()=>S.bud.doa,[]);const t=tiers.find(x=>amt<=x.max)||tiers[tiers.length-1]||{role:"Budget owner"};return[t.role]}return(a.approvers||[]).length?a.approvers.slice():[asg.person||asg.team||"Approver"]}
+ if(n.t==="approval"){if(a.rule&&window.APPR&&APPR.wfWho){const w=APPR.wfWho(i,n);if(w&&w.length)return w}if(a.tiers==="doa"){const amt=+lookup(i,a.amountField||"rec.amount")||+(i.ctx.rec||{}).amount||0;const tiers=G(()=>S.bud.doa,[]);const t=tiers.find(x=>amt<=x.max)||tiers[tiers.length-1]||{role:"Budget owner"};return[t.role]}return(a.approvers||[]).length?a.approvers.slice():[asg.person||asg.team||"Approver"]}
  if(n.t==="assessment")return(a.sme&&a.sme.length?a.sme:[asg.person||asg.team||"Assessor"]);
  if(n.t==="agent")return[a.agent||"AI agent"];
  return[asg.person||asg.team||"Service desk"]}
@@ -127,7 +127,7 @@ function execTok(i,tok,now){const d=getDefCached(i),n=nodeOf(d,tok.node),a=n.a||
  switch(n.t){
   case"trigger":return complete(i,tok,"next",now,{result:"Started",detail:"Trigger: "+(a.ev||a.src||"manual")});
   case"human":{tok.detail="Task for "+tok.who.join(", ");const due=i.autoTasks?now+Math.max(.25,durH(n)*.7)*HR:null;return waitOn(i,tok,"human",due,now,{auto:i.autoTasks,outs:a.outcomes||["Done"]})}
-  case"approval":{tok.detail="Approval by "+tok.who.join(", ");const due=i.autoTasks?now+Math.max(.5,durH(n)*.6)*HR:null;return waitOn(i,tok,"approval",due,now,{auto:i.autoTasks})}
+  case"approval":{if(a.rule&&window.APPR&&APPR.wfAuto){const ar=APPR.wfAuto(i,n);if(ar)return complete(i,tok,ar,now,{result:"Approval rule: "+ar,detail:"The rule needed no further decision"})}tok.detail="Approval by "+tok.who.join(", ");const due=i.autoTasks?now+Math.max(.5,durH(n)*.6)*HR:null;return waitOn(i,tok,"approval",due,now,{auto:i.autoTasks})}
   case"assessment":{const sc=parseInt(ST()._h53(i.id+n.id,3).slice(-6),16)%61+40,pass=a.pass||60,ok=sc>=pass;const port=a.gate==="advisory"?"next":ok?"Pass":"Fail";tok.detail="Score "+sc+" against pass mark "+pass+" (simulated answers)";return complete(i,tok,port,now,{result:ok?"Passed":"Below pass mark",detail:tok.detail,who:"Assessment (simulated)"})}
   case"decision":{let port="Else",why="No branch condition was true";for(const b of a.branches||[]){const r=evalCond(i,b.c);if(r.ok&&!r.empty){port=b.label;why="Condition for “"+b.label+"” is true";break}}
    if(a.mode==="dmn"){const r=dmnPort(i,n);port=r.port;why=r.why}
@@ -205,6 +205,7 @@ W.control=setState;
 function decideTok(id,tokId,how,note,onBehalf){const i=inst(id);if(!i)return{ok:false,why:"No instance"};const t=i.tokens.find(x=>x.id===tokId);if(!t||t.st!=="wait")return{ok:false,why:"Step is no longer waiting"};
  if(i.state==="paused")return{ok:false,why:"The instance is paused"};
  if(t.kind==="approval"&&i.by===me()&&!onBehalf&&!t.agentGate)return{ok:false,why:"Separation of duties: the requester cannot approve their own request"};
+ if(t.kind==="approval"&&window.APPR&&APPR.wfDecide&&i.ctx["appr."+t.node]){const ar=APPR.wfDecide(i,t,how,me(),note,onBehalf);if(ar&&ar.err)return{ok:false,why:ar.err};if(ar&&ar.pending){t.who=ar.who;t.detail="Approval by "+ar.who.join(", ")+" ("+ar.detail+")";save(i);return{ok:true,state:i.state,pending:true}}if(ar&&ar.done)how=Object.assign({},how,{decision:ar.decision})}
  const by=onBehalf?(t.who[0]||"")+" (recorded by "+me()+")":me();resolveTok(i,t,SIM(),how,by,note);stepInst(i,SIM());save(i);audit("Workflow step decided",i.name+" · "+t.name+" · "+((how&&(how.decision||how.outcome))||"Done"));return{ok:true,state:i.state}}
 W.decide=decideTok;W.instances=()=>allInst();W.get=inst;W.steps=stepsOf;W.tick=tick;
 /* ---------------- replace the simulated FLOWX.start ---------------- */
@@ -214,10 +215,10 @@ function inboxAdapter(){if(!(window.INBOX&&INBOX.adapters)||INBOX.adapters.wfrun
  const mkI=o=>{const it=Object.assign({kind:"approval",cat:"Workflow task",ic:"task",title:"",req:"",ageH:0,dueH:96,amt:null,risk:"low",why:"",ai:null,guard:"",ev:[],extra:"",can:{approve:false,reject:false,delegate:false},blk:"",rec:"",needNote:false,vendor:"",sim:false,openLabel:"Open run",open:()=>{}},o);const g=h=>h<0?"Overdue":h<=24?"Due today":h<=168?"This week":"Later";it.group=g(it.dueH);it.urgent=it.dueH<0||it.dueH<4;it.sc=(it.urgent?0:1)*1e6+(it.kind==="approval"?0:1)*1e4+Math.max(-48,it.dueH);return it};
  INBOX.adapters.wfrun={key:"wfrun",label:"Workflow runs",mod:"Run monitor",fn:"WF.decide",wired:true,
   list(meName){const now=SIM(),out=[];allInst().forEach(i=>{if(i.state==="paused"||i.state==="completed"||i.state==="cancelled")return;i.tokens.forEach(t=>{if(t.st!=="wait"||(t.kind!=="human"&&t.kind!=="approval"))return;
-    const mine=t.who.some(w=>w===meName)||t.who.some(w=>!isPerson(w));if(!mine)return;
+    const mine=t.who.some(w=>w===meName)||t.who.some(w=>window.APG&&APG.byName(w)?APG.isMember(w,meName,{requester:i.by}):!isPerson(w));if(!mine)return;
     const dueH=t.slaDue?(t.slaDue-now)/HR:96,sod=t.kind==="approval"&&i.by===meName&&!t.agentGate;
     out.push(mkI({id:"wfrun:"+i.id+":"+t.id,src:"wfrun",sid:i.id+":"+t.id,cat:t.kind==="approval"?"Workflow approval":"Workflow task",ic:t.kind==="approval"?"check":"task",title:t.name+" · "+i.name,req:i.by,ageH:Math.max(0,(now-t.t0)/HR),slaH:t.slaDue?(t.slaDue-t.t0)/HR:96,dueH,risk:"low",
-     why:"Assigned to "+t.who.join(", ")+" by "+i.id+". "+t.detail,guard:sod?"Separation of duties: you started this run, so someone else must approve it.":"Decision is written to the run trace and the audit log.",ev:[["Instance",i.id,""],["Definition",i.name,""],["Waiting since",fmtSim(t.t0),""]],blk:sod?"You started this run; another approver must decide.":"",
+     why:"Assigned to "+t.who.join(", ")+" by "+i.id+". "+t.detail,guard:sod?"Separation of duties: you started this run, so someone else must approve it.":"Decision is written to the run trace and the audit log.",ev:[["Instance",i.id,""],["Definition",i.name,""],["Waiting since",fmtSim(t.t0),""]].concat(window.APPR&&APPR.wfEv?APPR.wfEv(i,t):[]),blk:sod?"You started this run; another approver must decide.":"",
      can:{approve:!sod,reject:t.kind==="approval",delegate:false},needNote:false,flag:false,open:()=>{go("wf_runs");setTimeout(()=>openInst(i.id),50)}}))})});return out},
   approve(it,note){const [id,tk]=it.sid.split(":");const t=inst(id).tokens.find(x=>x.id===tk);return decideTok(id,tk,t&&t.kind==="approval"?{decision:"Approved"}:{outcome:(t&&t.outs&&t.outs[0])||"Done"},note)},
   reject(it,why){const [id,tk]=it.sid.split(":");return decideTok(id,tk,{decision:"Rejected"},why)},

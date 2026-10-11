@@ -89,3 +89,4 @@
 :root:root .card .tablewrap:not([style*="max-height"]),:root:root .card .bud-tw{max-height:none;overflow-y:visible}
 :root:root .card .tablewrap.glass::before,:root:root .card .tablewrap.glass::after{display:none}
 :root:root .at-world .at-reg{margin:0 2px 2px 0}
+.feed>.fi+.fi{margin-top:5px}

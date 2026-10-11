@@ -261,10 +261,10 @@ function pTime(p){
  ${legend(rows.map((r,i)=>[r.k+" "+r.pct+"%",TCOL[i]]))}
  <div class="tscroll"><table><thead><tr><th>Where the week goes</th><th>Hours</th><th>Agent could prepare</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${H(r.k)}</td><td class="num">${r.hrs}</td><td class="num">${r.auto?r.auto+" h":"<span class='muted'>0</span>"}</td></tr>`).join("")}</tbody></table></div>
  <p class="muted small">Split is the role template adjusted by this person's real meetings and pending work. "Could be prepared" is limited to ranked, low and medium risk opportunities.</p>`}
-const PTABS=["Overview","Access","Owns","Performance","Pending","Time","Agents","Pay and PTO"];
+const PTABS=["Overview","Access","Owns","Performance","Pending","Time","Agents","Pay and PTO","Status"];
 function profileHTML(n){
  const p=O.P(n);const rec=O.dir(n)||{};
- const panes=[pOverview(p),pPerms(p),pOwns(p),pPerf(p),pPending(p),pTime(p),(O.studioHTML?O.studioHTML(n,true):"<p class='muted'>Agent studio is loading.</p>"),(O.compPane?O.compPane(p):"")];
+ const panes=[pOverview(p),pPerms(p),pOwns(p),pPerf(p),pPending(p),pTime(p),(O.studioHTML?O.studioHTML(n,true):"<p class='muted'>Agent studio is loading.</p>"),(O.compPane?O.compPane(p):""),(O.statusPane?O.statusPane(p):"<p class='muted'>Status is loading.</p>")];
  return `<div class="org-dr"><div class="p360h">${avatar(n,{size:76})}<div><h2>${H(n)}</h2><div class="p360kv"><span>${H(p.role)}</span><span>${H(p.unit)}</span>${kindPill("human")}</div>${O.profActions?O.profActions(n):""}</div></div>${views("org_p",PTABS,panes)}</div>`}
 function openProfile(n,tab){
  if(!O.P(n)){if(window.person360)person360(n);return}

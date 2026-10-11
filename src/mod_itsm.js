@@ -12,7 +12,7 @@ const hmAt=a=>{const d=new Date(NOWMS-a*36e5);return z2(d.getUTCHours())+":"+z2(
 const fH=h=>{const m=Math.round(Math.abs(h)*60);if(m<60)return m+"m";if(m<2880)return Math.floor(m/60)+"h"+(m%60?" "+(m%60)+"m":"");const dd=Math.floor(m/1440),hh=Math.round((m%1440)/60);return dd+"d"+(hh?" "+hh+"h":"")};
 const N0=n=>Math.round(n).toLocaleString("en-US");
 const mkN=(a,w,k,x)=>({a,w,k,x});
-const ME="Tom Becker";
+const ME=()=>(window.CURUSER?CURUSER.name():"Tom Becker");
 /* ---------- shared registry helpers (one service and CI graph for the whole platform) ---------- */
 const SV=n=>SVCREG.find(s=>s.n===n||s.id===n)||null;
 const SVN=SVCREG.map(s=>s.n);
@@ -282,7 +282,7 @@ function ensureState(){
  if(X.inc)return;
  const FIXS=INC0().map(i=>{const f=INC_FIX[i.id]||{};const o=Object.assign({},i,f);delete o.imp;o.svc=svM(o.svc);o.ci=ciM(o.ci);o.notes=o.notes.map(n=>Object.assign({},n,{w:n.w==="Ops Agent"?"Triage Agent":n.w}));if(o.parent==null)delete o.parent;return o});
  const INCS=FIXS.concat(INC_NEW());
- INCS.forEach(i=>{if(i.own&&!i.direct){const m=who(i.own);if(!m||(m.team!==i.grp&&m.kind==="human"))i.direct=i.direct||{by:ME,why:"Named person has the context for this service."}}});
+ INCS.forEach(i=>{if(i.own&&!i.direct){const m=who(i.own);if(!m||(m.team!==i.grp&&m.kind==="human"))i.direct=i.direct||{by:ME(),why:"Named person has the context for this service."}}});
  const PR=PRB0().map(p=>{p.svc=svM(p.svc);return p});
  const CH=CHG0().concat(CHGH).map(c=>{c.svc=svM(c.svc);c.cis=(c.cis||[]).map(ciM);c.env=c.env||"Production";c.ok=(c.appr||[]).filter(a=>a.dec==="approved").map(a=>a.w==="CIO"?"Casey Rowan":a.w);return c});
  const KE=KE0().map(k=>{k.svc=svM(k.svc);return k});
@@ -310,7 +310,7 @@ function genInc(){if(X._gi)return X._gi;const r=RNG("itsm-inc"),pick=a=>a[Math.f
    prb:r()<.14?(r()<.5?pick(hot):pick(allP)):"",chg:"",kb:"",maj:false,notes:[]};
   if(st==="On hold"){i.pausedH=Math.round(age*.5*10)/10;i.hold="Waiting on vendor"}
   if(st==="Resolved"){i.resH=Math.round(Math.max(.2,Math.min(age,r()*r()*40+.5))*10)/10;i.code="Solved (permanently)";i.resNotes="Generated record.";i.age=Math.max(age,i.resH)}
-  if(o&&!members(tm).some(m=>m.name===o))i.direct={by:ME,why:"Skills match"};
+  if(o&&!members(tm).some(m=>m.name===o))i.direct={by:ME(),why:"Skills match"};
   out.push(i)}
  return X._gi=out}
 function genChg(){if(X._gc)return X._gc;const r=RNG("itsm-chg"),pick=a=>a[Math.floor(r()*a.length)];const out=[];const things=["patching","configuration update","capacity change","certificate renewal","version upgrade","firewall rule change","access policy update","backup job change"];
@@ -354,7 +354,7 @@ function classify(text,skip){const t=text||"";const hit=TRULES.find(r=>r[0].test
 /* ---------- assignment: team first, a person only by claiming or with a reason ---------- */
 function asg(i){const m=i.own?who(i.own):null,inTeam=!!(m&&m.team===i.grp);return {team:i.grp,person:i.own||"",kind:i.own?kindOf(i.own):"",inTeam,direct:!!(i.own&&(i.direct||(!inTeam&&m&&m.kind==="human"))),type:!i.own?"Team queue":i.direct?"Direct assignment":m&&m.kind==="ai"?"Agent":"Claimed from the team queue"}}
 const ITILNOTE="ITIL 5 practice guidance: route work to a team and let a member claim it, so the work survives absence and the whole team owns the service. Name an individual only when their knowledge is unique, and say why. Swarm when the problem needs more than one skill.";
-function claim(i,name,why,direct){i.own=name;if(i.st==="New")i.st="In progress";if(i.respH==null)i.respH=i.age;if(direct){i.direct={by:ME,why:why}}else delete i.direct;i.notes.push({a:0,w:name,k:"System",x:direct?"Assigned directly to "+name+". Reason: "+why:"Claimed from the "+i.grp+" queue."})}
+function claim(i,name,why,direct){i.own=name;if(i.st==="New")i.st="In progress";if(i.respH==null)i.respH=i.age;if(direct){i.direct={by:ME(),why:why}}else delete i.direct;i.notes.push({a:0,w:name,k:"System",x:direct?"Assigned directly to "+name+". Reason: "+why:"Claimed from the "+i.grp+" queue."})}
 
 /* ---------- metrics tied to records ---------- */
 function syncM(){const A=ALLI();let open=0,el=0,res=0,resh=0,met=0,tm=0,ov=0,rep=0;const openP=new Set(ALLP().filter(p=>p.st!=="Resolved").map(p=>p.id));
@@ -453,10 +453,10 @@ function boardHTML(){const mpb=mpHTML({id:"itsm_bd_svc",label:"Services",opts:SV
  const tg=TEAMN.map(t=>`<div class="itsm-as" data-dnd="grp:${esc(t)}" data-dnd-scope="itsm_inc"><span><b>${esc(t)}</b><small class="muted">${N0(open.filter(i=>i.grp===t).length)} open</small></span></div>`).join("");
  const tot=A.length;
  return `<div class="row sp" style="flex-wrap:wrap;gap:10px">${mpb}<span class="row" style="gap:8px">${stdChip("itil5","Work is routed to teams, not individuals; the board makes team reassignment a single drag.")}<button class="chip" popovertarget="itsm_bd_how">How the board works</button></span></div>
- <div popover id="itsm_bd_how" class="pop glass"><div class="eyebrow">Board</div><p class="muted">Drag a card to a column to change its state. Drag it onto a team to reassign it to that team (a named person stays only if they belong to the new team). Drop it on "Claim for ${esc(ME)}" to claim it. Keyboard: focus a card, then Alt plus arrow keys. Resolving or holding asks for the required details.</p><button class="btn" popovertarget="itsm_bd_how" popovertargetaction="hide">Close</button></div>
+ <div popover id="itsm_bd_how" class="pop glass"><div class="eyebrow">Board</div><p class="muted">Drag a card to a column to change its state. Drag it onto a team to reassign it to that team (a named person stays only if they belong to the new team). Drop it on "Claim for ${esc(ME())}" to claim it. Keyboard: focus a card, then Alt plus arrow keys. Resolving or holding asks for the required details.</p><button class="btn" popovertarget="itsm_bd_how" popovertargetaction="hide">Close</button></div>
  ${tot?"":`<div class="card glass muted">No incidents match the selected services. Choose All services to see every open and resolved incident.</div>`}
  <div class="itsm-board">${cols}</div>${legend([["Column = incident state; drop a card to change it","--accent"],["P1 to P4 chip: calculated priority (red P1, amber P2, blue P3, grey P4)","--bad-f"],["SLA chip: green on track, amber under 25% left, red breached","--good-f"]])}
- <div class="eyebrow">Drop a card on a team to reassign it, or on yourself to claim it</div><div class="itsm-assign slim"><div class="itsm-as me" data-dnd="claim:me" data-dnd-scope="itsm_inc">${avatar(ME,{size:24})}<span><b>Claim for ${esc(ME)}</b></span></div>${tg}</div>`}
+ <div class="eyebrow">Drop a card on a team to reassign it, or on yourself to claim it</div><div class="itsm-assign slim"><div class="itsm-as me" data-dnd="claim:me" data-dnd-scope="itsm_inc">${avatar(ME(),{size:24})}<span><b>Claim for ${esc(ME())}</b></span></div>${tg}</div>`}
 
 /* ---------- priority calculator and policy tabs ---------- */
 const CDEF={svc:"Standards Platform",ua:140,deg:85,txh:5000,reg:0,urg:2,role:"analyst",vip:"",apprBy:""};
@@ -493,18 +493,18 @@ function slaTab(){const open=ALLI().filter(isOpen).map(i=>slaOf(i)),br=open.filt
 
 /* ---------- incident forms ---------- */
 const tmpI=v=>({svc:v.svc||"",ua:+v.ua||0,deg:+v.deg||0,txh:+v.txh||0,reg:+v.reg||0,urg:+v.urg||3,role:v.role||"analyst",vip:v.vip||"",apprBy:v.apprBy||""});
-const ownOpts=(grp,own)=>{const mem=members(grp).filter(m=>m.name!==ME),meIn=members(grp).some(m=>m.name===ME);const lab=m=>m.name+" · "+KINDS[m.kind];
- const oth=DIR.filter(d=>!d.generated&&d.team!==grp&&d.name!==ME).map(d=>[d.name,lab(d)+" (other team)"]);
- return [["","Leave it in the team queue (recommended)"]].concat(meIn?[[ME,"Claim it myself ("+ME+")"]]:[]).concat(mem.slice(0,40).map(m=>[m.name,lab(m)])).concat(oth)};
+const ownOpts=(grp,own)=>{const mem=members(grp).filter(m=>m.name!==ME()),meIn=members(grp).some(m=>m.name===ME());const lab=m=>m.name+" · "+KINDS[m.kind];
+ const oth=DIR.filter(d=>!d.generated&&d.team!==grp&&d.name!==ME()).map(d=>[d.name,lab(d)+" (other team)"]);
+ return [["","Leave it in the team queue (recommended)"]].concat(meIn?[[ME(),"Claim it myself ("+ME()+")"]]:[]).concat(mem.slice(0,40).map(m=>[m.name,lab(m)])).concat(oth)};
 const roleOpts=()=>X.pol.roles.map(r=>[r.id,r.n]);
 const vipOpts=()=>X.pol.vip.map(v=>[v.id,v.n+(v.exp&&v.exp<TODAYI?" (expired)":"")]);
 function incForm(init){
  const live=v=>{if(!v.svc)return `<p class="muted small">Choose a service and the priority is calculated as you fill the form.</p>`;const t=tmpI(v),c=classify((v.title||"")+" "+(v.desc||""));
   const sug=c.conf>0?`<div class="itsm-ai">${aiChip({model:"Triage Agent",conf:c.conf,title:"AI triage suggestion",note:"Matched on words in the title and description, then compared with "+(X.inc.length+X.histI.length)+" past incidents. It suggests; you confirm.",src:["Title and description","Resolved incidents","Service registry"],guards:["Suggestion only","You confirm before it applies","Agentic actions are audited (ITIL 5 AI governance)"]})}<span class="small"><b>${esc(c.cat)}</b> · team <b>${esc(c.grp)}</b>${c.svc?" · service "+esc(c.svc):""} · about ${c.ua} users affected, ${c.deg}% of the function lost</span><button type="button" class="btn" data-itsm-a="applyai">Apply suggestions</button></div>${c.sim.length?`<div class="eyebrow">Similar past incidents</div>${c.sim.map(s=>`<div class="itsm-sim small"><b>${s.id}</b> ${esc(s.t)} <span class="pill info">${Math.round(Math.min(.95,s.sc+.35)*100)}% match</span><div class="muted">${esc(s.res)}</div></div>`).join("")}`:""}`:`<small class="muted">Type a short description and the Triage Agent will suggest a category, a team and the impact inputs.</small>`;
-  const dn=v.own&&v.own!==ME?`<div class="itsm-warn warn"><b>Direct assignment.</b> ${esc(ITILNOTE)}</div>`:"";
+  const dn=v.own&&v.own!==ME()?`<div class="itsm-warn warn"><b>Direct assignment.</b> ${esc(ITILNOTE)}</div>`:"";
   return `<div class="itsm-lv glass">${prioPanel(t)}${dn}${sug}</div>`};
  openForm({id:"itsm_inc",title:"Log an incident",story:"Capture what happened and who is affected. Oukala calculates the priority from measured impact and a bounded urgency, starts the SLA clocks and routes the work to a team. A person claims it from the team queue.",submit:"Log incident",live,
- defaults:{role:"analyst",urg:"3",reg:"0",ua:1,deg:30,txh:0,vip:"",ch:"Portal",caller:(window.PICK?PICK.me():ME)},
+ defaults:{role:"analyst",urg:"3",reg:"0",ua:1,deg:30,txh:0,vip:"",ch:"Portal",caller:(window.PICK?PICK.me():ME())},
  fields:[{section:"Who and how"},{k:"caller",label:"Caller",type:"people",req:true,help:"Defaults to you. Pick someone else if you are logging it for them."},{k:"ch",label:"Channel",type:"chips",opts:CHAN},
  {k:"role",label:"You are logging as",type:"select",req:true,opts:roleOpts(),help:"Your role sets how urgent a request you may call. Try a caller to see the bound."},{k:"vip",label:"Caller VIP level",type:"select",opts:vipOpts(),help:"Applies a documented urgency rule that expires. Most callers are Standard."},
  {section:"What is affected"},{k:"svc",label:"Service",type:"select",req:true,ph:"Choose a service",opts:SVN},{k:"ci",label:"Configuration item",type:"select",ph:"Choose a CI",get opts(){return ciOpts(FORMST.itsm_inc.vals.svc)},help:"From the CMDB. The blast radius is traced from here."},
@@ -512,10 +512,10 @@ function incForm(init){
  {section:"Urgency: what can the customer decide?"},{k:"urg",label:"Urgency",type:"chips",req:true,opts:[1,2,3,4].map(u=>[String(u),URGN[u]]),help:"Critical: stopped, no workaround. High: badly slowed. Medium: workaround exists. Low: can wait."},{k:"apprBy",label:"Lead who agrees to Critical",type:"select",show:v=>+v.urg===1&&!(X.pol.roles.find(r=>r.id===v.role)||{}).critOK,req:true,ph:"Choose a lead",opts:[["Tom Becker","Tom Becker (service desk lead)"],["Nia Brooks","Nia Brooks (change manager)"],["Casey Rowan","Casey Rowan (CIO)"]],help:"Your role cannot call Critical alone."},
  {section:"The problem"},{k:"title",label:"Short description",type:"text",req:true,ph:"One line anyone can understand",ai:{label:"Rewrite clearly",fn:v=>v.title?v.title.charAt(0).toUpperCase()+v.title.slice(1).replace(/\.$/,"")+(v.svc?" ("+v.svc+")":""):null}},{k:"desc",label:"Description",type:"longtext",ph:"What did the caller see? Since when? How many people?",wide:true},
  {section:"Routing: team first, a person only by claiming or with a reason"},{k:"cat",label:"Category",type:"select",ph:"Choose a category",opts:CATS,ai:{label:"Suggest",fn:v=>classify((v.title||"")+" "+(v.desc||"")).cat}},{k:"grp",label:"Assignment team",type:"select",req:true,ph:"Choose a team",opts:TEAMN,ai:{label:"Suggest",fn:v=>classify((v.title||"")+" "+(v.desc||"")).grp}},
- {k:"own",label:"Assign to a person (optional)",type:"select",get opts(){const v=FORMST.itsm_inc.vals;return ownOpts(v.grp)},help:"Humans, AI agents, contractors and managed service providers all appear. Leave it with the team unless there is a reason."},{k:"why",label:"Why a named person?",type:"longtext",wide:true,show:v=>v.own&&v.own!==ME,req:true,ph:"For example: only she knows the indexer restart test"},
+ {k:"own",label:"Assign to a person (optional)",type:"select",get opts(){const v=FORMST.itsm_inc.vals;return ownOpts(v.grp)},help:"Humans, AI agents, contractors and managed service providers all appear. Leave it with the team unless there is a reason."},{k:"why",label:"Why a named person?",type:"longtext",wide:true,show:v=>v.own&&v.own!==ME(),req:true,ph:"For example: only she knows the indexer restart test"},
  {k:"maj",label:"Declare as a major incident",type:"toggle",show:v=>{const t=tmpI(v);return v.svc&&prio(t)<=2},help:"Opens the war room and starts stakeholder communications."}],
  onSubmit:v=>{const id=nextId("inc","INC"),t=tmpI(v);const i=Object.assign({id,t:v.title,d:v.desc||v.title,caller:v.caller,ch:v.ch||"Portal",cat:v.cat||"Other",grp:v.grp,own:"",st:"New",age:0,respH:null,prb:"",chg:"",kb:"",maj:!!v.maj,ci:v.ci||"",notes:[{a:0,w:v.caller.split(" (")[0],k:"Comment",x:v.desc||v.title}]},t);
-  X.inc.unshift(i);pidxReset();if(v.own){if(v.own===ME)claim(i,ME,"",false);else claim(i,v.own,v.why,true)}
+  X.inc.unshift(i);pidxReset();if(v.own){if(v.own===ME())claim(i,ME(),"",false);else claim(i,v.own,v.why,true)}
   i.notes.push({a:0,w:"System",k:"System",x:"Priority P"+prio(i)+" calculated: impact "+BANDN[calc(i).band]+" (score "+calc(i).score+"), urgency "+URGN[calc(i).u]+". Routed to "+i.grp+"."});
   if(v.maj&&!X.mi.on){X.mi=Object.assign(MI0(),{inc:id,start:0,declared:0,restored:null,roles:{ic:"",tech:"",comms:"",scribe:""},tl:[[0,"System","Decision","Major incident declared from "+id+"."]],comms:[],comp:COMP0.map(c=>c.slice()),pub:COMP0.map(c=>c.slice()),on:true,pir:null})}
   done("Incident logged",id+" · P"+prio(i)+" · "+i.grp);incDrawer(id);return {close:false,toast:id+" logged as P"+prio(i)+" and routed to "+i.grp+". SLA clocks started.",audit:id}}},init||{})}
@@ -537,8 +537,8 @@ function ovrForm(id){const i=INC(id);if(!i)return;const c=calc(i),cur=prio(i);
  fields:[{k:"role",label:"Acting as",type:"select",req:true,opts:X.pol.roles.filter(r=>r.ovr).map(r=>[r.id,r.n]),help:"Only roles with the override right appear."},{k:"p",label:"New priority",type:"chips",req:true,opts:[["1","P1"],["2","P2"],["3","P3"],["4","P4"]]},{k:"why",label:"Reason",type:"longtext",req:true,wide:true,ph:"What do you know that the measured inputs do not show?"},{k:"appr",label:"Second approver (P1 downgrade)",type:"select",show:v=>cur===1&&+v.p>1,req:true,ph:"Choose an approver",opts:[["Nia Brooks","Nia Brooks (change manager)"],["Casey Rowan","Casey Rowan (CIO)"],["Rina Okafor","Rina Okafor (security lead)"]]},{k:"clear",label:"Remove the override and return to the calculated priority",type:"toggle",show:()=>!!i.ovr}],
  onSubmit:v=>{if(v.clear){const f=i.ovr;delete i.ovr;i.notes.push({a:0,w:"System",k:"System",x:"Override removed; calculated priority P"+calc(i).p+" applies."});done("Override removed",id);incDrawer(id);return {close:false}}
   const to=+v.p;if(to===prio(i)){toast("That is already the priority","warn");return {close:false}}
-  const role=X.pol.roles.find(r=>r.id===v.role);i.ovr={p:to,from:cur,by:ME,role:role.n,why:v.why,at:"Oct 6 "+hmAt(0),appr:v.appr||""};X.ovlog.unshift({id,from:cur,to,by:ME,role:role.n,why:v.why,at:"Oct 6 "+hmAt(0),appr:v.appr||""});
-  i.notes.push({a:0,w:ME,k:"System",x:"Priority overridden from P"+cur+" to P"+to+" ("+role.n+"). Reason: "+v.why+(v.appr?" Approved by "+v.appr+".":"")});done("Priority overridden",id+" P"+cur+" → P"+to);incDrawer(id);return {close:false,toast:id+" is now P"+to+". The override is audited."}}})}
+  const role=X.pol.roles.find(r=>r.id===v.role);i.ovr={p:to,from:cur,by:ME(),role:role.n,why:v.why,at:"Oct 6 "+hmAt(0),appr:v.appr||""};X.ovlog.unshift({id,from:cur,to,by:ME(),role:role.n,why:v.why,at:"Oct 6 "+hmAt(0),appr:v.appr||""});
+  i.notes.push({a:0,w:ME(),k:"System",x:"Priority overridden from P"+cur+" to P"+to+" ("+role.n+"). Reason: "+v.why+(v.appr?" Approved by "+v.appr+".":"")});done("Priority overridden",id+" P"+cur+" → P"+to);incDrawer(id);return {close:false,toast:id+" is now P"+to+". The override is audited."}}})}
 function resolveForm(id){const i=INC(id);if(!i)return;const sim=classify(i.t+" "+i.d,id);
  openForm({id:"itsm_res",title:"Resolve "+id,story:"Record how it was fixed so the next person finds it in seconds. Resolving stops the SLA clock, notifies the caller and, if you choose, turns your notes into a draft knowledge article.",submit:"Resolve incident",
  fields:[{k:"code",label:"Resolution code",type:"chips",req:true,opts:["Solved (permanently)","Solved (workaround)","Not reproducible","Solved by caller","Duplicate"]},{k:"cause",label:"Cause",type:"select",req:true,ph:"Choose a cause",opts:["Capacity","Configuration","Software defect","Vendor","Human error","Hardware failure","Unknown"]},
@@ -547,8 +547,8 @@ function resolveForm(id){const i=INC(id);if(!i)return;const sim=classify(i.t+" "
  {k:"mkprb",label:"Open a problem record",type:"toggle",help:sim.sim.length>=2?"Found "+sim.sim.length+" similar incidents, so a root cause investigation is worth it.":"Use this when the same issue is likely to come back."},{k:"notify",label:"Notify the caller",type:"toggle"}],defaults:{notify:true,kb:true,kbt:"How to fix: "+i.t.charAt(0).toLowerCase()+i.t.slice(1)},
  onSubmit:v=>{i.st="Resolved";i.resH=i.age-(i.pausedH||0);i.code=v.code;i.resNotes=v.notes;i.notes.push({a:0,w:i.own||i.grp,k:"Resolution",x:v.code+": "+v.notes});if(i.respH==null)i.respH=i.age;
   if(v.kb){const kid=nextId("kb","KB");X.kb.unshift({id:kid,t:v.kbt||i.t,svc:i.svc,upd:"Today (draft)",by:i.own||i.grp});i.kb=kid}
-  if(v.mkprb&&!i.prb){const p=newProblem({t:i.t,svc:i.svc,pr:Math.min(4,prio(i)+1),owner:i.own&&kindOf(i.own)==="human"?i.own:ME,inc:[i.id]});i.prb=p.id}
-  if(X.mi.on&&X.mi.inc===id&&X.mi.restored==null){X.mi.restored=0;X.mi.tl.push([0,i.own||ME,"Restored","Service restored. "+v.notes]);X.mi.comp=X.mi.comp.map(c=>[c[0],"Operational"]);audit("restored major incident",id)}
+  if(v.mkprb&&!i.prb){const p=newProblem({t:i.t,svc:i.svc,pr:Math.min(4,prio(i)+1),owner:i.own&&kindOf(i.own)==="human"?i.own:ME(),inc:[i.id]});i.prb=p.id}
+  if(X.mi.on&&X.mi.inc===id&&X.mi.restored==null){X.mi.restored=0;X.mi.tl.push([0,i.own||ME(),"Restored","Service restored. "+v.notes]);X.mi.comp=X.mi.comp.map(c=>[c[0],"Operational"]);audit("restored major incident",id)}
   done("Incident resolved",id+" · "+v.code);incDrawer(id);return {close:false,toast:id+" resolved"+(v.kb?" and a knowledge draft was created":"")}}})}
 function holdForm(id){const i=INC(id);openForm({id:"itsm_hold",title:"Put "+id+" on hold",story:"The SLA clock pauses while the incident waits. It restarts the moment you move it back to In progress.",submit:"Put on hold",fields:[{k:"why",label:"Reason",type:"chips",req:true,opts:["Waiting on caller","Waiting on vendor","Waiting on change","Waiting on problem fix"]},{k:"note",label:"What are we waiting for?",type:"longtext",req:true,ph:"Who, what, and by when?",wide:true}],onSubmit:v=>{i.st="On hold";i.hold=v.why+": "+v.note;i.notes.push({a:0,w:i.own||i.grp,k:"Work note",x:"On hold. "+i.hold});done("Incident on hold",id);incDrawer(id);return {close:false}}})}
 function linkForm(id){const i=INC(id);openForm({id:"itsm_ilink",title:"Link a record to "+id,story:"Links make the cause traceable: a problem for the root cause, a change for the fix or the trigger, an article for the answer.",submit:"Link",defaults:{kind:"Problem"},
@@ -601,11 +601,11 @@ function incAct(a,id,el){const i=INC(id);if(!i)return;const d=el&&el.dataset||{}
  if(a==="start"){setState(i,"In progress");return incDrawer(id)}
  if(a==="ack"){i.respH=i.age;i.notes.push({a:0,w:i.own||i.grp,k:"Comment",x:"Hello, we have your report and are looking into it."});done("Response recorded",id);return incDrawer(id)}
  if(a==="hold")return holdForm(id);if(a==="resolve")return resolveForm(id);if(a==="assign")return assignForm(id);if(a==="link")return linkForm(id);if(a==="ovr")return ovrForm(id);
- if(a==="claim"){if(members(i.grp).some(m=>m.name===ME)){claim(i,ME,"",false);done("Claimed",id+" by "+ME);return incDrawer(id)}toast(ME+" is not in "+i.grp+". Swarm, or assign a named person with a reason.","warn");return assignForm(id)}
+ if(a==="claim"){if(members(i.grp).some(m=>m.name===ME())){claim(i,ME(),"",false);done("Claimed",id+" by "+ME());return incDrawer(id)}toast(ME()+" is not in "+i.grp+". Swarm, or assign a named person with a reason.","warn");return assignForm(id)}
  if(a==="reopen"){setState(i,"In progress");return incDrawer(id)}
  if(a==="impact")return openImp("incident",id,i.svc,i.ci);
  if(a==="applyai2"){const c=classify(i.t+" "+i.d,id);i.cat=c.cat;i.grp=c.grp;i.notes.push({a:0,w:"Triage Agent",k:"System",x:"Suggestion applied by a person: "+c.cat+", "+c.grp+"."});done("AI triage applied",id);return incDrawer(id)}
- if(a==="prb")return prbForm({t:i.t,svc:i.svc,pr:String(Math.min(4,prio(i)+1)),owner:i.own&&kindOf(i.own)==="human"?i.own:ME,incs:[id]});
+ if(a==="prb")return prbForm({t:i.t,svc:i.svc,pr:String(Math.min(4,prio(i)+1)),owner:i.own&&kindOf(i.own)==="human"?i.own:ME(),incs:[id]});
  if(a==="chg")return chgForm({svc:i.svc,cis:i.ci?[i.ci]:[],inc:id,type:prio(i)<=1&&i.maj?"Emergency":"Normal",t:"Fix for "+id+": "+i.t,just:"Resolves "+id+". "+i.d});
  if(a==="major"){if(X.mi.on){toast("A major incident is already active ("+X.mi.inc+")","warn");return}midecl(id)}}
 
@@ -633,7 +633,7 @@ function mkFish(p){if(p.fish)return p.fish;const f={};FBC.forEach(c=>f[c]=[]);co
  p.fish=f;return f}
 const leafOf=(p,id)=>{const f=mkFish(p);for(const c of FBC){const l=f[c].find(x=>x.id===id);if(l)return {l,c}}return null};
 const nLeaves=p=>FBC.reduce((a,c)=>a+mkFish(p).hasOwnProperty(c)*mkFish(p)[c].length,0);
-function newProblem(o){const p={id:nextId("prb","PRB"),t:o.t,svc:o.svc,pr:o.pr||3,st:"New",owner:o.owner||ME,opened:TODAYI,users:0,why:["","","","",""],fb:{},cause:"",workaround:"",fix:"",chg:"",past:[0,0,0,0,0,0,0,0],kb:""};mkFish(p);X.prb.unshift(p);(o.inc||[]).forEach(id=>{const i=INC(id);if(i)i.prb=p.id});pidxReset();return p}
+function newProblem(o){const p={id:nextId("prb","PRB"),t:o.t,svc:o.svc,pr:o.pr||3,st:"New",owner:o.owner||ME(),opened:TODAYI,users:0,why:["","","","",""],fb:{},cause:"",workaround:"",fix:"",chg:"",past:[0,0,0,0,0,0,0,0],kb:""};mkFish(p);X.prb.unshift(p);(o.inc||[]).forEach(id=>{const i=INC(id);if(i)i.prb=p.id});pidxReset();return p}
 const wrapT=(s,n,max)=>{const w=String(s).split(/\s+/),o=[];let l="";w.forEach(x=>{if((l+" "+x).trim().length>n){if(l)o.push(l);l=x}else l=(l+" "+x).trim()});if(l)o.push(l);if(o.length>max){o.length=max;o[max-1]=o[max-1].slice(0,n-1)+"…"}return o};
 const trunc=(s,n)=>s.length>n?s.slice(0,n-1)+"…":s;
 const FXS=[205,445,685];
@@ -671,7 +671,7 @@ document.addEventListener("pointerup",e=>{if(!DR)return;const d=DR;DR=null;try{d
 document.addEventListener("keydown",e=>{const g=e.target.closest&&e.target.closest("[data-itsm-leaf]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();const bx=g.closest("[data-itsm-fishbox]");X.fsel={pid:bx.dataset.itsmFishbox,leaf:g.dataset.itsmLeaf};refreshFish(bx.dataset.itsmFishbox)}});
 
 /* ---------- problem forms ---------- */
-function prbForm(init,editId){const e=editId&&PRB(editId),base=Object.assign({pr:"3",st:"New",owner:ME,incs:[]},init||{});
+function prbForm(init,editId){const e=editId&&PRB(editId),base=Object.assign({pr:"3",st:"New",owner:ME(),incs:[]},init||{});
  if(e){Object.assign(base,{t:e.t,svc:e.svc,pr:String(e.pr),st:e.st,owner:e.owner,incs:incsOf(e).filter(isOpen).slice(0,20).map(i=>i.id),cause:e.cause,workaround:e.workaround,fix:e.fix,chg:e.chg,ke:!!X.ke.find(k=>k.prb===e.id&&k.st==="Published")});e.why.forEach((w,n)=>base["w"+(n+1)]=w)}
  const wh=n=>({k:"w"+n,label:"Why "+n,type:"text",ph:n===1?"Start with what users see":"Because…",ai:n>1?{label:"Suggest",fn:v=>{const pv=v["w"+(n-1)];return pv?"Because no check or alert existed for: "+pv.charAt(0).toLowerCase()+pv.slice(1):null}}:null});
  openForm({id:"itsm_prb",title:e?"Edit "+e.id:"New problem record",story:"A problem is the root cause behind one or more incidents. Describe it here, then build the fishbone and the five whys to find the cause, and record a workaround so the service desk can help people today. Publishing a known error puts the workaround in the searchable database.",submit:e?"Save problem":"Create problem",
@@ -836,7 +836,7 @@ function seedApprovals(){X.cablog=X.cablog||[];
 
 /* ============ changes: forms, drawer, calendar, approval policy UI ============ */
 const rqFields=()=>RQ.map(q=>({k:"rq_"+q.k,label:q.q,type:"chips",opts:q.o.map((o,n)=>[""+n,o[0]])}));
-const tmpChg=(v,id)=>({id:id||"NEW",type:v.type||"Normal",svc:v.svc||"",cis:v.cis||[],start:v.start||"",end:v.end||v.start||"",st:"Draft",cost:+v.cost||0,env:v.env||"Production",grp:v.grp||"Ops team",req:ME,tpl:v.tpl||"",rq:Object.fromEntries(RQ.map(q=>[q.k,v["rq_"+q.k]!=null&&v["rq_"+q.k]!==""?v["rq_"+q.k]:"0"])),hist:0});
+const tmpChg=(v,id)=>({id:id||"NEW",type:v.type||"Normal",svc:v.svc||"",cis:v.cis||[],start:v.start||"",end:v.end||v.start||"",st:"Draft",cost:+v.cost||0,env:v.env||"Production",grp:v.grp||"Ops team",req:ME(),tpl:v.tpl||"",rq:Object.fromEntries(RQ.map(q=>[q.k,v["rq_"+q.k]!=null&&v["rq_"+q.k]!==""?v["rq_"+q.k]:"0"])),hist:0});
 const etaH=stg=>{let end=0;const ends=[];stg.forEach((s,k)=>{const start=s.seq?Math.max(0,...ends):0;const e=start+(s.sla||0)*(s.mode==="sequential"?s.ap.length:1);ends.push(e);end=Math.max(end,e)});return end};
 const slaTxt=(c,s)=>{if(!s.sla)return "no SLA";const left=s.sla-(c.subH||0);return left>=0?"decide within "+fH(left):"overdue by "+fH(-left)};
 function routeHTML(r,c,compact){if(r.auto){const p=r.trace.find(t=>t.hit&&t.p.auto).p;return `<div class="itsm-warn good"><b>Auto-approved.</b> Policy ${p.id} "${esc(p.n)}" applies, so no CAB vote is needed. The change only needs a calendar slot.</div>`}
@@ -849,7 +849,7 @@ function chgLive(v){const c=tmpChg(v,v._id),r=risk(c),a=advisor(c),cl=c.start?co
  ${hard.length?`<div class="itsm-warn bad"><b>Collision.</b> ${hard.map(x=>x.o.id+" touches "+esc(x.sh.map(ciN).join(", "))+" on "+fd(x.o.start)).join("; ")}.</div>`:""}${soft.length?`<div class="itsm-warn warn"><b>Same service, same window:</b> ${soft.map(x=>x.o.id).join(", ")}.</div>`:""}${fz.length?`<div class="itsm-warn bad"><b>Freeze.</b> ${fz.map(f=>esc(f.n)+" ("+fd(f.from)+" to "+fd(f.to)+")").join("; ")}. The freeze policy adds an executive exception.</div>`:""}${sd?`<div class="itsm-warn info"><b>Claude suggests ${wk(sd)} ${fd(sd)}</b>, the next day with no collision and no freeze.</div>`:""}
  <div class="eyebrow" style="margin-top:8px">Approval route from your policies</div>${routeHTML(rt,c)}
  <div class="itsm-ai">${aiChip({model:"Claude Sonnet",conf:a.conf,title:"AI risk advisor",note:"Scores the answers with the same formula, adds collision and freeze checks, and compares with "+a.sim+" similar past changes.",src:["Risk answers","Change calendar","Past changes on this service"],guards:["Advisory only: the change manager decides","The formula is shown, never hidden"]})}<span class="small">${a.red.length?"Biggest levers: "+a.red.map(x=>"set “"+esc(x.q.toLowerCase())+"” to “"+esc(x.to)+"” (−"+x.d+")").join(", ")+". Score would drop to "+a.after+".":"Nothing obvious to reduce further."}</span></div></div>`}
-function chgForm(init,editId){const e=editId&&CHGB(editId);const base=Object.assign({type:"Normal",submit_now:true,win:WINS[0],start:addD(TODAYI,7),own:"Sam Patel",env:"Production",grp:(who(ME)||{}).team||"Service desk"},init||{});
+function chgForm(init,editId){const e=editId&&CHGB(editId);const base=Object.assign({type:"Normal",submit_now:true,win:WINS[0],start:addD(TODAYI,7),own:"Sam Patel",env:"Production",grp:(who(ME())||{}).team||"Service desk"},init||{});
  if(e){Object.assign(base,{t:e.t,type:e.type,svc:e.svc,cis:e.cis.slice(),just:e.just,impl:e.impl,back:e.back,test:e.test,start:e.start,end:e.end,win:e.win,own:e.own,inc:e.inc,prb:e.prb,cost:e.cost,env:e.env,grp:e.grp,tpl:e.tpl||"",submit_now:false,_id:e.id});RQ.forEach(q=>base["rq_"+q.k]=e.rq[q.k])}else{RQ.forEach(q=>{if(base["rq_"+q.k]==null)base["rq_"+q.k]="1"})}
  if(!base.end)base.end=base.start;
  openForm({id:"itsm_chg",title:e?"Edit "+e.id:"Request a change",story:"Describe the change, say how it will be tested and undone, and answer the risk questions. Oukala computes the risk score with a visible formula, checks the calendar for collisions and freezes, and routes the approvals from your approval policies (Changes, Approval policies). Standard changes from an approved template are pre-approved.",submit:e?"Save change":"Submit change",live:chgLive,
@@ -861,7 +861,7 @@ function chgForm(init,editId){const e=editId&&CHGB(editId);const base=Object.ass
  onSubmit:v=>{if(v.end<v.start)v.end=v.start;const rqv=Object.fromEntries(RQ.map(q=>[q.k,v["rq_"+q.k]||"0"]));let c=e;
   const set=o=>Object.assign(o,{t:v.t,type:v.type,svc:v.svc,cis:v.cis||[],just:v.just,impl:v.impl,back:v.back,test:v.test||"",start:v.start,end:v.end,win:v.win,own:v.own||"Sam Patel",inc:v.inc||"",prb:v.prb||"",cost:+v.cost||0,env:v.env||"Production",grp:v.grp||"Ops team",tpl:v.type==="Standard"?(v.tpl||""):"",rq:rqv});
   if(e){set(e);if(e.st==="Authorize"){applyRoute(e,route(e))}}
-  else{c=set({id:nextId("chg","CHG"),st:"Draft",req:(window.PICK?PICK.me():ME),rel:"",proj:"",appr:[],stages:[],ok:[]});X.chg.unshift(c);ALLC();
+  else{c=set({id:nextId("chg","CHG"),st:"Draft",req:(window.PICK?PICK.me():ME()),rel:"",proj:"",appr:[],stages:[],ok:[]});X.chg.unshift(c);ALLC();
    if(v.type==="Emergency"||v.submit_now||v.type==="Standard")submitChange(c)}
   const cl=collisions(c).filter(x=>x.kind==="hard").length,fz=freezeHits(c).length,rr=risk(c);
   done(e?"Change updated":"Change submitted",c.id+" · risk "+rr.score+" "+rr.band+(cl?" · "+cl+" collision"+(cl>1?"s":""):"")+(fz?" · inside a freeze":""));chgDrawer(c.id);return {close:false,toast:c.id+(c.st==="Scheduled"?" scheduled (pre-approved)":c.st==="Authorize"?" routed to "+c.stages.length+" approval stage"+(c.stages.length===1?"":"s"):" saved")}}},base)}
@@ -1055,7 +1055,7 @@ const calcPrefill=()=>{const c=X.calc||CDEF;return {svc:c.svc,ua:+c.ua||0,deg:+c
 function gotoTab(scr,tab){S.v[scr]=tab;if(S.screen!==scr)go(scr);else render()}
 /* ---------- drag and drop ---------- */
 DND.on("itsm_inc",(id,from,to)=>{const i=INC(id);if(!i)return;
- if(to==="claim:me"){if(members(i.grp).some(m=>m.name===ME)){claim(i,ME,"",false);return done("Claimed",id+" by "+ME)}toast(ME+" is not in "+i.grp+". Drop it on a team, or open it and swarm or assign with a reason.","warn");render();return}
+ if(to==="claim:me"){if(members(i.grp).some(m=>m.name===ME())){claim(i,ME(),"",false);return done("Claimed",id+" by "+ME())}toast(ME()+" is not in "+i.grp+". Drop it on a team, or open it and swarm or assign with a reason.","warn");render();return}
  if(to.startsWith("grp:")){const t=to.slice(4);if(t===i.grp){render();return}const old=i.grp;i.grp=t;const m=i.own&&who(i.own);let cleared="";if(m&&m.kind==="human"&&m.team!==t&&!(i.direct)){cleared=i.own;i.own="";}else if(m&&m.kind==="human"&&m.team!==t&&i.direct){/* keep, with its documented reason */}
   i.notes.push({a:0,w:"System",k:"System",x:"Reassigned from "+old+" to "+t+" by drag and drop."+(cleared?" "+cleared+" is not in "+t+", so the incident returns to the team queue.":"")});return done("Incident reassigned to a team",id+" → "+t+(cleared?" (back in the team queue)":""))}
  if(to.startsWith("st:")){const s=to.slice(3);if(s===i.st){render();return}if(s==="Resolved"){render();return resolveForm(id)}if(s==="On hold"){render();return holdForm(id)}setState(i,s)}});
@@ -1075,7 +1075,7 @@ const INCACT=["start","ack","hold","resolve","assign","link","ovr","claim","reop
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-itsm-a]");if(!t)return;const d=t.dataset,a=d.itsmA,id=d.id;
  if(a==="new")return incForm(d.from==="calc"?calcPrefill():undefined);
  if(a==="applyai"){const st=FORMST.itsm_inc;if(!st)return;const v=st.vals,c=classify((v.title||"")+" "+(v.desc||""));v.cat=c.cat;v.grp=c.grp;if(!v.svc&&c.svc)v.svc=c.svc;if((+v.ua||0)<=1&&c.ua)v.ua=c.ua;if((+v.deg||0)===30&&c.deg)v.deg=c.deg;refreshForm("itsm_inc");audit("applied AI triage",c.cat+" · "+c.grp);toast("Applied AI triage: "+c.cat+", "+c.grp+". Review before saving.","info");return}
- if(a==="note"){const ta=$("#itsmNoteTxt"),x=ta&&ta.value.trim();if(!x){ta&&ta.focus();toast("Write the note first","warn");return}const i=INC(id);i.notes.push({a:0,w:i.own||ME,k:d.k,x});if(d.k==="Comment"&&i.respH==null)i.respH=i.age;audit("added "+d.k.toLowerCase(),id);toast(d.k+" added");render();return incDrawer(id)}
+ if(a==="note"){const ta=$("#itsmNoteTxt"),x=ta&&ta.value.trim();if(!x){ta&&ta.focus();toast("Write the note first","warn");return}const i=INC(id);i.notes.push({a:0,w:i.own||ME(),k:d.k,x});if(d.k==="Comment"&&i.respH==null)i.respH=i.age;audit("added "+d.k.toLowerCase(),id);toast(d.k+" added");render();return incDrawer(id)}
  if(a==="open"){return incDrawer(id)}
  if(a==="impact")return openImp(d.t||"incident",id,d.svc,d.ci);
  if(a==="midecl"){if(X.mi.on&&!id){go("itsm_mi");return}return midecl(id)}
@@ -1198,26 +1198,26 @@ syncM();
 /* ============ R8: programmatic contract used by chat, DevOps, observability, flow ============ */
 const _ok=(o)=>Object.assign({ok:true},o),_err=m=>({ok:false,error:m});
 window.ITSMX={
- get incidents(){return ALLI()},get changes(){return ALLC()},get problems(){return ALLP()},
+ get freezes(){return FREEZE},get incidents(){return ALLI()},get changes(){return ALLC()},get problems(){return ALLP()},
  getIncident:id=>INC(id)||null,getChange:id=>CHGB(id)||null,getProblem:id=>PRB(id)||null,
  createIncident(o){o=o||{};if(!o.title&&!o.t)return _err("title is required");const sv=SV(o.svc||o.service)?(o.svc||o.service):SVN[0];
-  const v={title:o.title||o.t,desc:o.desc||o.description||"",caller:o.caller||ME,ch:o.ch||"Portal",role:o.role||"analyst",vip:o.vip||"",svc:sv,ci:o.ci||"",ua:o.ua!=null?o.ua:1,deg:o.deg!=null?o.deg:30,txh:o.txh||0,reg:o.reg||0,urg:o.urg||3,cat:o.cat||classify((o.title||o.t)+" "+(o.desc||"")).cat,grp:o.grp||o.team||classify((o.title||o.t)+" "+(o.desc||"")).grp};
+  const v={title:o.title||o.t,desc:o.desc||o.description||"",caller:o.caller||ME(),ch:o.ch||"Portal",role:o.role||"analyst",vip:o.vip||"",svc:sv,ci:o.ci||"",ua:o.ua!=null?o.ua:1,deg:o.deg!=null?o.deg:30,txh:o.txh||0,reg:o.reg||0,urg:o.urg||3,cat:o.cat||classify((o.title||o.t)+" "+(o.desc||"")).cat,grp:o.grp||o.team||classify((o.title||o.t)+" "+(o.desc||"")).grp};
   const id=nextId("inc","INC");const i=Object.assign({id,t:v.title,d:v.desc||v.title,caller:v.caller,ch:v.ch,cat:v.cat,grp:v.grp,own:"",st:"New",age:0,respH:null,prb:"",chg:"",kb:"",maj:!!o.major,ci:v.ci,notes:[{a:0,w:String(v.caller).split(" (")[0],k:"Comment",x:v.desc||v.title}]},tmpI(v));
-  X.inc.unshift(i);pidxReset();if(o.owner||o.own){const w=o.owner||o.own;if(w===ME)claim(i,ME,"",false);else claim(i,w,o.why||"Assigned by an automated process",true)}
+  X.inc.unshift(i);pidxReset();if(o.owner||o.own){const w=o.owner||o.own;if(w===ME())claim(i,ME(),"",false);else claim(i,w,o.why||"Assigned by an automated process",true)}
   i.notes.push({a:0,w:"System",k:"System",x:"Priority P"+prio(i)+" calculated: impact "+BANDN[calc(i).band]+" (score "+calc(i).score+"), urgency "+URGN[calc(i).u]+". Routed to "+i.grp+"."});
   if(o.source)i.notes.push({a:0,w:"System",k:"System",x:"Opened by "+o.source+"."});
   done("Incident logged",id+" · P"+prio(i)+" · "+i.grp);return _ok({id,priority:prio(i),team:i.grp,service:i.svc})},
  setPriority(id,p,why,by){const i=INC(id);if(!i)return _err("Unknown incident "+id);const to=+String(p).replace(/\D/g,"");if(!(to>=1&&to<=4))return _err("Priority must be 1 to 4");const cur=prio(i);if(to===cur)return _ok({id,priority:cur,unchanged:true});
   if(cur===1&&to>1&&!(arguments[4]))return _err("Downgrading a P1 needs a second approver (pass it as the fifth argument)");
-  const role=(X.pol.roles.find(r=>r.ovr)||{n:"Incident manager"});i.ovr={p:to,from:cur,by:by||ME,role:role.n,why:why||"Set by an automated process",at:"Oct 8 "+hmAt(0),appr:arguments[4]||""};X.ovlog.unshift({id,from:cur,to,by:by||ME,role:role.n,why:i.ovr.why,at:i.ovr.at,appr:i.ovr.appr});
-  i.notes.push({a:0,w:by||ME,k:"System",x:"Priority overridden from P"+cur+" to P"+to+". Reason: "+i.ovr.why});done("Priority overridden",id+" · P"+cur+" to P"+to);return _ok({id,priority:to,from:cur})},
+  const role=(X.pol.roles.find(r=>r.ovr)||{n:"Incident manager"});i.ovr={p:to,from:cur,by:by||ME(),role:role.n,why:why||"Set by an automated process",at:"Oct 8 "+hmAt(0),appr:arguments[4]||""};X.ovlog.unshift({id,from:cur,to,by:by||ME(),role:role.n,why:i.ovr.why,at:i.ovr.at,appr:i.ovr.appr});
+  i.notes.push({a:0,w:by||ME(),k:"System",x:"Priority overridden from P"+cur+" to P"+to+". Reason: "+i.ovr.why});done("Priority overridden",id+" · P"+cur+" to P"+to);return _ok({id,priority:to,from:cur})},
  assign(id,target,why){const i=INC(id);if(!i)return _err("Unknown incident "+id);if(!target)return _err("Name a team or a person");
   if(TEAMN.includes(target)){if(target!==i.grp){i.notes.push({a:0,w:"System",k:"System",x:"Reassigned from "+i.grp+" to "+target+"."});i.grp=target;if(i.own&&(who(i.own)||{}).team!==target&&kindOf(i.own)==="human"){i.notes.push({a:0,w:"System",k:"System",x:i.own+" is not in "+who+"; returned to the team queue."});i.own="";if(i.st==="In progress")i.st="New"}}done("Assigned to team",id+" · "+target);return _ok({id,team:target,owner:i.own})}
-  const mem=(members(i.grp)||[]).some(m=>m.name===target);if(target===ME||mem)claim(i,target,"",false);else claim(i,target,why||"Assigned by an automated process",true);
+  const mem=(members(i.grp)||[]).some(m=>m.name===target);if(target===ME()||mem)claim(i,target,"",false);else claim(i,target,why||"Assigned by an automated process",true);
   done("Assigned",id+" · "+target);return _ok({id,team:i.grp,owner:i.own,direct:!!i.direct})},
  createChange(o){o=o||{};if(!(o.t||o.title))return _err("title is required");const type=o.type||"Normal";const st=o.start||addD(TODAYI,7);
   const svc=SV(o.svc||o.service)?(o.svc||o.service):SVN[0];const rqv=Object.fromEntries(RQ.map(q=>[q.k,(o.rq&&o.rq[q.k])||"0"]));
-  const c={id:nextId("chg","CHG"),t:o.t||o.title,type,svc,cis:o.cis||[],just:o.just||o.justification||"Raised by "+(o.source||"an automated process"),impl:o.impl||"See linked pipeline or runbook.",back:o.back||o.rollback||"Redeploy the previous version.",test:o.test||"",start:st,end:o.end||st,win:o.win||"Off-hours: 22:00 to 02:00",own:o.own||o.owner||"Sam Patel",inc:o.inc||"",prb:o.prb||"",cost:+o.cost||0,env:o.env||"Production",grp:o.grp||"Ops team",tpl:type==="Standard"?(o.tpl||""):"",rq:rqv,st:"Draft",req:o.req||ME,rel:o.rel||"",proj:o.proj||"",appr:[],stages:[],ok:[]};
+  const c={id:nextId("chg","CHG"),t:o.t||o.title,type,svc,cis:o.cis||[],just:o.just||o.justification||"Raised by "+(o.source||"an automated process"),impl:o.impl||"See linked pipeline or runbook.",back:o.back||o.rollback||"Redeploy the previous version.",test:o.test||"",start:st,end:o.end||st,win:o.win||"Off-hours: 22:00 to 02:00",own:o.own||o.owner||"Sam Patel",inc:o.inc||"",prb:o.prb||"",cost:+o.cost||0,env:o.env||"Production",grp:o.grp||"Ops team",tpl:type==="Standard"?(o.tpl||""):"",rq:rqv,st:"Draft",req:o.req||ME(),rel:o.rel||"",proj:o.proj||"",appr:[],stages:[],ok:[]};
   if(o.source)c.src=o.source;X.chg.unshift(c);ALLC();submitChange(c);const rr=risk(c);done("Change submitted",c.id+" · risk "+rr.score+" "+rr.band);return _ok({id:c.id,state:c.st,risk:rr.score,band:rr.band,stages:(c.stages||[]).length})},
  approve(id,approver,why){const c=CHGB(id);if(!c)return _err("Unknown change "+id);if(c.st!=="Authorize")return _err(id+" is "+c.st+", not awaiting approval");
   for(let si=0;si<c.stages.length;si++){const ap=c.stages[si].ap;for(let ai=0;ai<ap.length;ai++){const a=ap[ai];if(a.dec==="approved"||a.dec==="rejected")continue;if(approver&&a.w!==approver&&a.deleg!==approver)continue;if(a.w===c.req||approver===c.req)return _err("The requester cannot approve their own change");cabDecide(c,si,ai,"approved",why||"");return _ok({id,state:c.st,by:a.w})}}

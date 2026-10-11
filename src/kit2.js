@@ -237,7 +237,12 @@ window.legend=items=>`<div class="legend" role="note">${items.map(i=>`<span><i s
 /* ---------------- table safety: wrap tables so columns scroll instead of squeezing; id tokens never break ---------------- */
 let tfq=0;
 function tableFix(){tfq=0;document.querySelectorAll("#view table,#drawer table").forEach(t=>{if(t.closest(".tscroll,.bt-scroll"))return;const p=t.parentElement;if(!p)return;const ox=getComputedStyle(p).overflowX;if(ox==="auto"||ox==="scroll")return;const w=document.createElement("div");w.className="tscroll";p.insertBefore(w,t);w.appendChild(t)});
- document.querySelectorAll("#view td,#drawer td").forEach(td=>{if(td.classList.contains("tok")||td.children.length>0)return;const s=td.textContent.trim();if(s.length>=6&&s.length<=26&&!/\s/.test(s))td.classList.add("tok")})}
+ /* R16 Agent I: id tokens are monospace per COLUMN, never per cell: a column is an id column when most of its cells are single identifier-like tokens; plain words and numbers never are, so no column mixes families */
+ const NUM=/^[\s$€£+\-−~≈≤≥<>(]*\d[\d.,]*\s*(%|[KMBkmb]|ms|s|h|d|min|x|pts?)?\)?$|^\d+(\.\d+)+$|^[\d/.:-]+$/;
+ document.querySelectorAll("#view table,#drawer table").forEach(t=>{const cols={};[...t.tBodies].forEach(b=>[...b.rows].forEach(r=>{if(r.cells.length<2)return;[...r.cells].forEach((td,ci)=>{if(td.colSpan>1||td.tagName!=="TD")return;const x=td.textContent.trim();if(x)(cols[ci]=cols[ci]||[]).push([td,x])})}));
+  Object.values(cols).forEach(list=>{const one=list.filter(([td,x])=>td.children.length===0&&x.length<=26&&!/\s/.test(x)&&!NUM.test(x));const idl=one.some(([td,x])=>(/[\d_\-.\/:@#]/.test(x)&&/[A-Za-z]/.test(x))||(/^[A-Z][A-Z0-9]+$/.test(x)&&x.length>=6));
+   const auto=idl&&one.length>=Math.max(2,list.length*0.6);const vote=list.filter(([td])=>(td.classList.contains("tok")&&!td.dataset.tokauto)||td.dataset.tokoff).length;const want=vote>0?vote>=list.length*0.6:auto;
+   list.forEach(([td,x])=>{if(want){if(!td.classList.contains("tok")){td.classList.add("tok");td.dataset.tokauto="1";delete td.dataset.tokoff}}else if(td.classList.contains("tok")){td.classList.remove("tok");if(!td.dataset.tokauto)td.dataset.tokoff="1";delete td.dataset.tokauto}})})})}
 new MutationObserver(()=>{if(!tfq)tfq=requestAnimationFrame(tableFix)}).observe(document.documentElement,{childList:true,subtree:true});
 
 /* ---------------- scale: switch to enterprise volumes ---------------- */

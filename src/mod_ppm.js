@@ -225,7 +225,7 @@ const PJC=new Map();let PLN=null,PINF={},WLC={},ISS=null,HEAT=null,RCN=null;
 function resetC(){PLN=null;PINF={};WLC={};ISS=null;HEAT=null;RCN=null;_pjl=null}
 const curPlan=()=>PLN||(PLN=plan(S.ims.scen));
 let _pjl=null;
-function allProj(){if(_pjl&&_pjl.n===PROJ.length+(SCALE.on?1:0))return _pjl.a;const out=PROJ.slice();if(SCALE.on)SCALE.projects().forEach((p,i)=>{if(!p.scaled){p.c=COLS[i%COLS.length];p.scaled=1;p.paid=Math.round(p.bac*p.pct/100*.85);p.full=p.n;p.short=p.n.length>24?p.n.slice(0,23)+"…":p.n}out.push(p)});_pjl={n:PROJ.length+(SCALE.on?1:0),a:out};return out}
+function allProj(){const key=PROJ.length+(SCALE.on?1+SCALE.n.projects:0);if(_pjl&&_pjl.n===key)return _pjl.a;const out=window.LISTS?LISTS.projects().slice():PROJ.slice();if(SCALE.on)(window.LISTS?out.slice(PROJ.length):SCALE.projects()).forEach((p,i)=>{if(!p.scaled){p.c=COLS[i%COLS.length];p.scaled=1;p.paid=Math.round(p.bac*p.pct/100*.85);p.full=p.n;p.short=p.n.length>24?p.n.slice(0,23)+"…":p.n}if(!window.LISTS)out.push(p)});_pjl={n:key,a:out};return out}
 const prjOf=id=>{let p=PJC.get(id);if(!p){p=allProj().find(x=>x.id===id);if(p)PJC.set(id,p)}return p};
 const fmtISO=iso=>iso?new Date(iso+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"Open";
 const wlOf=n=>WLC[n]||(WLC[n]=workload(n));

@@ -3,7 +3,7 @@
 (function(){
 const M=window.MEETX;if(!M)return;
 const T=M.TYPES,E=esc,TODAY=M.TODAY,fd=M.fd,fdw=M.fdw,tm=M.tm,addD=M.addD,dOf=M.dOf,isoOf=M.isoOf,dowOf=M.dowOf,DN=M.DN;
-const ME="Casey Rowan";
+const ME=()=>(window.CURUSER?CURUSER.name():"Casey Rowan");
 S.meet=S.meet||{};Object.assign(S.meet,{cal:S.meet.cal||"week",cur:S.meet.cur||TODAY,av:S.meet.av||"board"});
 const tc=t=>"var("+((T[t]||{}).c||"--p4")+")";
 const tpill=t=>`<span class="pill meet-tp" style="--c:${tc(t)}">${E((T[t]||{n:t}).n)}</span>`;
@@ -57,7 +57,7 @@ function overviewPane(){const s=M.stats(),sev=addD(TODAY,7);
  return `${tiles}<div class="grid g2" style="align-items:start">${cal}${attn}</div><div class="grid g2" style="align-items:start">${actCard}${dec}</div><div class="grid g2" style="align-items:start">${load}${cost}</div>${contractCardSmall()}`}
 
 /* ---------- calendar ---------- */
-function calList(from,to){const ts=sel("meet_f_type",Object.keys(T).length),mine=S.meet.mine;return M.meetings().filter(m=>m.dt>=from&&m.dt<=to&&(!ts||ts.has(m.type))&&(!mine||m.inv.some(i=>i.n===ME))).sort((a,b)=>a.dt<b.dt?-1:a.dt>b.dt?1:a.s-b.s)}
+function calList(from,to){const ts=sel("meet_f_type",Object.keys(T).length),mine=S.meet.mine;return M.meetings().filter(m=>m.dt>=from&&m.dt<=to&&(!ts||ts.has(m.type))&&(!mine||m.inv.some(i=>i.n===ME()))).sort((a,b)=>a.dt<b.dt?-1:a.dt>b.dt?1:a.s-b.s)}
 function confOf(list){const c=new Set();for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++){const a=list[i],b=list[j];if(a.cancel||b.cancel)continue;if(a.s<b.e&&b.s<a.e&&a.inv.some(x=>x.role!=="info"&&b.inv.some(y=>y.role!=="info"&&y.n===x.n))){c.add(a.id);c.add(b.id)}}return c}
 function evCard(m,conf){return `<div class="meet-ev ${m.cancel?"x":""} ${m.st==="done"?"held":""}" data-dnd-id="${m.id}" tabindex="0" style="--c:${tc(m.type)}"><i class="grip" aria-hidden="true"></i><button class="meet-evb" data-mt="open|${m.id}" aria-label="${E(m.t)}, ${fd(m.dt)} ${tm(m.s)}"><b>${E(m.t)}</b><span>${tm(m.s)} to ${tm(m.e)}${m.series?" · repeats":""}${m.exc?" · exception":""}${conf&&conf.has(m.id)?" · overlap":""}</span></button>${conf&&conf.has(m.id)?'<em class="meet-cf" title="Shares a required invitee with another meeting at the same time">!</em>':""}</div>`}
 function cgEv(m,cf){return (sty,cls,shared)=>`<div class="${cls} meet-ev ${m.cancel?"x":""} ${m.st==="done"?"held":""}${cf&&cf.has(m.id)?" cg-cf":""}" data-dnd-id="${m.id}" tabindex="0" style="--c:${tc(m.type)};${sty}" title="${E(m.t)}, ${tm(m.s)} to ${tm(m.e)}"><button class="meet-evb" data-mt="open|${m.id}" aria-label="${E(m.t)}, ${fd(m.dt)} ${tm(m.s)}"><b>${E(m.t)}</b><span class="cg-tm">${tm(m.s)} to ${tm(m.e)}${m.series?" · repeats":""}${m.exc?" · exception":""}</span></button>${cf&&cf.has(m.id)?'<em class="meet-cf" title="Shares a required invitee with another meeting at the same time">!</em>':""}</div>`}

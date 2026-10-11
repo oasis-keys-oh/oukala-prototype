@@ -493,7 +493,7 @@ try{if(!B.ITEM("facevent")){const base=B.ITEM("av");if(base)B.CAT.push(Object.as
 const W={},WS={};
 const tryv=(f,d)=>{try{return f()}catch(e){return d}};
 function wire(){try{
- if(window.NAVX&&NAVX.add&&!W.nav){NAVX.add("svc_guides",{group:"help",label:"Order several things at once",hint:"Order guides: new hire, leaver, move, project, event",sub:"",kw:"order guide multi part onboarding offboarding new hire leaver role change location move project kickoff office event requested for on behalf delegate swimlane critical path"});W.nav=true}
+ if(window.NAVX&&NAVX.add&&!W.nav){NAVX.add("svc_guides",{group:"help",label:"Order several things at once",hint:"Order guides: new hire, offboarding and status change, move, project, event",sub:"",kw:"order guide multi part onboarding offboarding new hire leaver role change location move project kickoff office event requested for on behalf delegate swimlane critical path"});W.nav=true}
  if(!W.ent&&window.ATLAS&&ATLAS.addEntity&&window.COVER&&COVER.recs){
   const fld=(k,label,type,cls,req,au)=>({k,label,type,authority:au||"platform",classification:cls||"internal",req:!!req});
   const defs=[{id:"order_guide_part",label:"Order guide part",domain:"service",source:"Order guides",ownerApp:"svc_guides",ownerMod:"svc_guides",status:"proposed",note:"A part template on an order guide: the group that fulfills it, its owner, planned duration, SLA, the parts it waits for, the condition on the answers that includes it, and its process.",

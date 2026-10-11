@@ -66,7 +66,7 @@ const NEW9={
    {n:"Approve privileged access",d:"Privileged roles need the security lead to approve.",who:"gate",owner:"Security lead"},
    {n:"Provision and log",d:"Access is granted and the grant is logged.",who:"auto",owner:"Entra ID",out:"Granted access with log entry"},
    {n:"Review access each quarter",d:"Managers confirm or remove each person's access.",who:"human",owner:"Security lead",sla:"Quarterly"},
-   {n:"Revoke on leave or move",d:"A leaver or mover loses access that no longer fits.",who:"auto",owner:"Entra ID"}]},
+   {n:"Revoke on leave or move",d:"A person who separates or moves loses access that no longer fits.",who:"auto",owner:"Entra ID"}]},
  adm_audit:{name:"Audit and compliance evidence",family:"gov",trigger:"An audit period opens or a control test is due",owner:"Compliance lead",entities:["audit_event","control","policy","exception"],metrics:[],model:"nist",std:[],
   steps:[{n:"Select the control and period",d:"The compliance lead picks the control set and period to test.",who:"human",owner:"Compliance lead"},
    {n:"Collect the evidence",d:"An agent gathers logs, approvals and screenshots from the source systems.",who:"agent",owner:"Registry Agent",out:"Evidence set"},
@@ -238,7 +238,7 @@ function finish(P){
 }
 let IDXOLD=null,LASTB=0,IDXQ=0;
 function idx(){
- if(!IDX&&IDXOLD&&performance.now()<20000&&performance.now()-LASTB<1500){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},1600)}return IDXOLD}
+ if(!IDX&&IDXOLD&&performance.now()<40000&&performance.now()-LASTB<7000){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},7100-(performance.now()-LASTB))}return IDXOLD}
  const key=[PROC_IDS().length,PL.custom.length,modsAll().length,window.PLAT&&PLAT.entities?PLAT.entities().length:0,Object.keys(S.proc||{}).map(k=>(S.proc[k]||[]).length).join(","),VER,matReady()?MAT.M.xmodels.length:0,window.LINKS?LINKS.processEdges().length:0].join("|");
  if(IDX&&IDXK===key)return IDX;
  const list=build();IDX={list,by:{}};list.forEach(P=>IDX.by[P.id]=P);IDXK=key;LASTB=performance.now();IDXOLD=IDX;

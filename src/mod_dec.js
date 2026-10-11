@@ -18,7 +18,7 @@ const hash=s=>{let h=7;s=String(s);for(let i=0;i<s.length;i++)h=(h*31+s.charCode
 const G=(fn,d)=>{try{return fn()}catch(e){return d}};
 const who_=n=>G(()=>window.who&&who(n),null);
 const chip=n=>n?(who_(n)&&typeof pchip==="function"?pchip(n):`<span class="chip">${E(n)}</span>`):'<span class="pill warn">No owner</span>';
-const me=()=>G(()=>S.persona==="exec"?"Casey Rowan":PERSONAS[S.persona].n,"Casey Rowan");
+const me=()=>G(()=>window.CURUSER?CURUSER.name():(S.persona==="exec"?"Casey Rowan":PERSONAS[S.persona].n),"Casey Rowan");
 const fD=s=>s?G(()=>new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}),s):"open";
 
 /* ---------- decision table evaluation (uses the Decision tables engine when mod_flow exposes it) ---------- */

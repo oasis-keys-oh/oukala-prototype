@@ -1,0 +1,17 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+process.cwd()+'/out_v16b/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(3000);
+const r=await p.evaluate(()=>{const o={};const cut=(v,n=700)=>{let s;try{s=JSON.stringify(v,(k,x)=>typeof x==='function'?'fn':x)}catch(e){s='ERR '+e.message}return s&&s.length>n?s.slice(0,n)+'…('+s.length+')':s};
+o.PERM_roles=cut(PERM.roles,600);o.PERM_groups=cut(PERM.groups,600);o.PERM_state=cut(PERM.state,900);o.PERM_personaRoles=cut(PERM.personaRoles,500);o.PERM_approverOf=cut(PERM.approverOf,300);o.fieldsCatalog=cut(PERM.fieldsCatalog,500);
+o.GUARD_actions=cut(GUARD.actions,500);o.GUARD_caps=cut(GUARD.caps,500);o.GUARD_sets=cut(GUARD.sets,400);o.GUARD_state=cut(GUARD.state,400);o.sod=cut(GUARD.sod,300);
+o.ATLAS_lin=cut(ATLAS.lin,600);o.ATLAS_cov=cut(ATLAS.coverage&&ATLAS.coverage(),400);
+o.DM_tables=cut(DATAMODEL.tables,900);o.DM_list=cut(DATAMODEL.list&&DATAMODEL.list(),600);
+o.PL_list=cut(PROCLIB.list&&PROCLIB.list(),900);o.PL_get=cut(PROCLIB.get&&PROCLIB.get(PROCLIB.list()[0].id||PROCLIB.list()[0]),1500);
+o.PROC_reg=cut(PROC.reg,600);o.PROC_defs=cut(PROC.defs,600);
+o.MET=cut(METRICS.m_delivery,800);
+o.EV_cat=cut(EVENTS.catalog,600);o.EV_list=cut(EVENTS.list&&EVENTS.list(),800);o.EV_rules=cut(EVENTS.rules,900);
+o.ORG_agents=cut(ORGX.agents,500);o.AGS=cut(AGENTS,500);o.AGS_list=cut(AGENTS_STATE.list&&AGENTS_STATE.list(),500);
+o.PERSONAS=cut(PERSONAS.exec,500);o.MODMAP_modules=cut(MODMAP.modules,400);
+o.glob=Object.keys(window).filter(k=>/^[A-Z][A-Z0-9_]{2,}$/.test(k)).join(',');
+return o});
+for(const k in r)console.log('##',k,'\n',r[k]);await b.close()})();

@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+process.cwd()+'/out_v16b/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(3000);
+const r=await p.evaluate(()=>{const o={};const cut=(v,n=500)=>{let s;try{s=JSON.stringify(v,(k,x)=>typeof x==='function'?'fn':x)}catch(e){s='ERR '+e.message}return s&&s.length>n?s.slice(0,n)+'…('+s.length+')':s};
+const keys=(n)=>{try{const v=eval(n);return typeof v==='function'?'fn:'+Object.keys(v).join(','):(Array.isArray(v)?'arr'+v.length+' '+cut(v[0],300):Object.keys(v).slice(0,40).join(','))}catch(e){return 'ERR'}};
+for(const n of ['REG','PLAT','FAB','BCX','R16M','APG','APPR','ADMX','DASHX','CIOWN','STATUS','SCALE','STD','LISTS','NOTIF','R16I','R16J_SITES','MCPX','COVER','DEBT','FIN','SVCREG','CIREG','NAVGRP','NAVSUB','DOA','EXE','ASSESSX','GRCX','R16K','R16H','AGENTRT','FLOWX','WFX','LINKS'])o[n]=keys(n);
+o.ATLASents=cut(typeof ATLAS._dmv==='function'?'fn':ATLAS._dmv,200);
+o.REGsample=cut(REG,400);
+o.SCREEN_row=cut(SCREENS[5]);
+o.PERMcan=cut(PERM.can.toString().slice(0,300));
+o.NAVX_groups=cut(NAVX.groups,500);o.NAVX_map=cut(Object.entries(NAVX.map).slice(0,3),600);
+o.docsents=cut(Object.keys(DATAMODEL.tables).length);
+const t=DATAMODEL.tables;const k=Object.keys(t)[0];o.t0=cut(Object.keys(t[k]));o.t0f=cut(t[k].fields[0]);
+return o});
+for(const k in r)console.log('##',k,'\n',r[k]);await b.close()})();

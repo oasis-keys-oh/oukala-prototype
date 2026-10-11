@@ -1,0 +1,33 @@
+/* Round 16 J: Admin studio at scale */
+.admx-pick{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:6px 0 12px}
+.admx-pick .pk2{width:340px;max-width:100%}
+.admx{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:16px;align-items:start}
+.admx-left,.admx-right{min-width:0}
+.admx-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.admx-f{display:flex;flex-direction:column;gap:3px;min-width:0}
+.admx-f select{width:100%;min-width:0}
+.admx-subs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.admx-th{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.admx-th h3{margin:0 0 2px}
+.admx-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}
+.admx-q{flex:1 1 220px;min-width:0}
+.admx-chk{display:inline-flex;gap:6px;align-items:center;font-size:13px}
+.admx-bulk{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 12px;border:1px solid var(--accent);border-radius:12px;background:var(--accent-soft,var(--glass2));margin-bottom:10px}
+.admx-tbl{min-width:640px}
+.admx-more{margin-top:10px}
+.admx-sec{border:1px solid var(--edge);border-radius:14px;padding:10px 12px;margin:10px 0;background:var(--glass2)}
+.admx-sech{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.admx-fr{display:flex;align-items:center;gap:8px;padding:6px 4px;border-top:1px solid var(--hair)}
+.admx-fr.bad{opacity:.6}
+.admx-fl{display:flex;flex-direction:column;min-width:0;flex:1}
+.admx-fl code{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admx-empty{padding:8px 4px}
+.admx-fp{margin-top:14px}
+.admx-crumb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px;margin-top:2px}
+.linklike{border:0;background:transparent;color:var(--accent);cursor:pointer;font:inherit;padding:0;text-decoration:underline}
+.admx-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.admx-cov{display:flex;flex-direction:column;gap:2px;max-height:520px;overflow:auto}
+.admx-cr{display:flex;align-items:center;gap:10px;padding:8px 6px;border-radius:10px}
+.admx-cr:hover{background:var(--glass2)}
+.admx-cr span{display:flex;flex-direction:column;flex:1;min-width:0}
+@media (max-width:1000px){.admx{grid-template-columns:1fr}.admx-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}

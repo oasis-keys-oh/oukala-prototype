@@ -3,7 +3,7 @@
 (function(){
 const M=window.MEETX;if(!M||!M.hubReady)return;
 const T=M.TYPES,E=esc,TODAY=M.TODAY,fd=M.fd,fdw=M.fdw,tm=M.tm,addD=M.addD,dOf=M.dOf,DN=M.DN;
-const ME="Casey Rowan";
+const ME=()=>(window.CURUSER?CURUSER.name():"Casey Rowan");
 const tc=t=>"var("+((T[t]||{}).c||"--p4")+")";
 const pl=(n,w)=>n+" "+w+(n===1?"":"s");
 const hrsOpts=()=>{const o=[];for(let h=7;h<=18;h+=.5)o.push([String(h),tm(h)]);return o};
@@ -101,12 +101,12 @@ function actForm(m,pre){openForm({id:"meet_actf",title:"Add an action",story:"Th
  fields:[{k:"t",label:"What needs to happen",type:"text",req:true,wide:true,ph:"Start with a verb",ai:{label:"Suggest from the notes",fn:()=>{const p=parseNotes(m)[0];return p?p.txt:"Confirm the next steps with the owner"}}},{k:"own",label:"Owner",type:"select",req:true,opts:peopleOpts()},{k:"due",label:"Due",type:"date",req:true},{k:"pri",label:"Priority",type:"chips",opts:["High","Medium","Low"]},
   {k:"lk",label:"Linked ticket or task (id)",type:"text",ph:"INC0412, CHG0312, p1_3",help:"Optional. Incident, change, problem, request or project task."},{k:"raid",label:"Also add to the RAID log",type:"toggle"}],
  live:v=>`${v.own?kindPill(M.kindOf(v.own))+" ":""}Will be assigned to <b>${E(v.own||"nobody yet")}</b>${v.due?", due "+fd(v.due):""}. Owners are reminded two days before and on the due date.`,
- defaults:Object.assign({own:m.chair||ME,due:addD(TODAY,7),pri:"Medium",raid:false},pre||{}),
+ defaults:Object.assign({own:m.chair||ME(),due:addD(TODAY,7),pri:"Medium",raid:false},pre||{}),
  onSubmit:v=>{const lk=String(v.lk||"").trim();const k=/^INC/.test(lk)?"incident":/^CHG/.test(lk)?"change":/^PRB/.test(lk)?"problem":/^RITM/.test(lk)?"request":lk?"task":null;const a=M.addAction(m,{t:v.t,own:v.own,due:v.due,pri:v.pri,link:k?{k,id:lk}:null});if(v.raid)M.toRaid("act",a.id);setTimeout(repaint,0);return {toast:a.id+" added for "+v.own,audit:"action "+a.id}}})}
 function decForm(m){openForm({id:"meet_decf",title:"Record a decision",story:"A decision needs a statement, the reason, what else was considered and who decided. Governance decisions then wait for ratification.",submit:"Record decision",
  fields:[{k:"t",label:"Decision",type:"longtext",req:true,wide:true,rows:2},{k:"why",label:"Rationale",type:"longtext",req:true,wide:true,rows:2},{k:"alts",label:"Alternatives considered (one per line)",type:"longtext",wide:true,rows:2},{k:"by",label:"Decider",type:"select",req:true,opts:peopleOpts()},{k:"eff",label:"Effective date",type:"date",req:true},{k:"rev",label:"Can it be reversed later",type:"toggle"},{k:"raid",label:"Add to the RAID log as a decision item",type:"toggle"}],
  live:v=>(T[m.type]||{}).gov?"This is a governance forum, so the decision will wait for ratification by the person or body in the charter.":"This forum does not need ratification.",
- defaults:{by:m.chair||ME,eff:addD(TODAY,3),rev:true,raid:true},
+ defaults:{by:m.chair||ME(),eff:addD(TODAY,3),rev:true,raid:true},
  onSubmit:v=>{const d=M.addDecision(m,{t:v.t,why:v.why,alts:String(v.alts||"").split("\n").map(x=>x.trim()).filter(Boolean),by:v.by,eff:v.eff,rev:!!v.rev,src:"manual"});if(v.raid)M.toRaid("dec",d.id);setTimeout(repaint,0);return {toast:d.id+" recorded",audit:"decision "+d.id}}})}
 function editForm(m){openForm({id:"meet_editf",title:"Edit meeting details",submit:"Save",story:"Changing the chair or room is recorded in the audit trail. Date and time are changed with Reschedule.",
  fields:[{k:"t",label:"Title",type:"text",req:true,wide:true},{k:"chair",label:"Chair",type:"select",opts:peopleOpts()},{k:"secy",label:"Secretary",type:"select",opts:[["","None"]].concat(peopleOpts())},{k:"room",label:"Room",type:"select",opts:ROOMS.map(r=>[r,r])},{k:"online",label:"Online link",type:"text",ph:"https://"}],
@@ -115,7 +115,7 @@ function editForm(m){openForm({id:"meet_editf",title:"Edit meeting details",subm
 function cancelForm(m){openForm({id:"meet_cancelf",title:"Cancel "+m.t,submit:"Cancel meeting",story:"Invitees are told, open actions stay with their owners, and the cancellation is kept as an exception on the series.",fields:[{k:"why",label:"Reason",type:"text",req:true,wide:true,ph:"For example: no changes submitted"}],
  onSubmit:v=>{m.cancel=true;m.exc="Cancelled: "+v.why;M.maud(m,"Meeting cancelled",v.why+". "+m.inv.filter(i=>i.role!=="info").length+" people notified");M.sync();setTimeout(()=>{S.meet.sel=m.id;repaint()},0);return {toast:"Cancelled. Invitees notified."}}})}
 function fileForm(m){openForm({id:"meet_filef",title:"Attach a file",submit:"Attach",story:"Pre-reads are sent with the invitation. Other files attach to the meeting and its linked records.",fields:[{k:"doc",label:"File",type:"file",req:true},{k:"kind",label:"Kind",type:"chips",opts:["Pre-read","Deck","Minutes","Recording","Other"]}],defaults:{kind:"Pre-read"},
- onSubmit:v=>{m.files.push({n:v.doc||"document.pdf",kind:v.kind||"Other",size:"0.4 MB",by:ME});M.maud(m,"File attached",v.doc);setTimeout(()=>{S.meet.sel=m.id;repaint()},0);return {toast:"Attached"}}})}
+ onSubmit:v=>{m.files.push({n:v.doc||"document.pdf",kind:v.kind||"Other",size:"0.4 MB",by:ME()});M.maud(m,"File attached",v.doc);setTimeout(()=>{S.meet.sel=m.id;repaint()},0);return {toast:"Attached"}}})}
 function agForm(m){openForm({id:"meet_agf",title:"Add an agenda item",submit:"Add",story:"Each item has one owner and a time box. The timer on the meeting page counts against it.",fields:[{k:"t",label:"Item",type:"text",req:true,wide:true},{k:"min",label:"Minutes",type:"number",min:1,max:120,req:true},{k:"own",label:"Owner",type:"select",opts:m.inv.map(i=>[i.n,i.n])}],defaults:{min:10,own:m.chair||(m.inv[0]||{}).n},
  onSubmit:v=>{m.agenda.push({id:m.id+"_g"+Date.now().toString(36),t:v.t,min:+v.min,own:v.own,note:"",st:"todo"});M.maud(m,"Agenda item added",v.t);setTimeout(()=>{S.meet.sel=m.id;repaint()},0);return {toast:"Item added"}}})}
 function dlgForm(m,k){const i=m.inv[k];const alt=DIR.filter(d=>d.kind==="human"&&!m.inv.some(x=>x.n===d.name)).slice(0,60);openForm({id:"meet_dlgf",title:"Delegate for "+i.n,submit:"Set delegate",story:"A delegate counts toward quorum only if they hold the same role.",fields:[{k:"d",label:"Delegate",type:"select",req:true,opts:alt.map(d=>[d.name,d.name+" ("+d.role+")"]),ph:"Pick a person"}],
@@ -155,7 +155,7 @@ function serForm(s){const q=(T[s.type]||{}).quorum||{min:0,roles:[]};openForm({i
  onSubmit:v=>{Object.assign(s,{purpose:v.purpose,chair:v.chair,secy:v.secy,cad:v.cad,rights:v.rights,esc:v.esc});if(T[s.type].quorum)T[s.type].quorum.min=+v.min;audit("Meetings: charter edited",s.n);M.sync();setTimeout(()=>{M.serDrawer(s.id);render()},0);return {toast:"Charter saved",close:false}}})}
 
 /* ---------- composer ---------- */
-function newDraft(pre){pre=pre||{};const ty=pre.type||"design",Tm=T[ty];const d={type:ty,title:pre.title||Tm.n,dt:pre.dt||addD(TODAY,1),s:pre.s||10,dur:Tm.dur,room:pre.room||"Teams",online:true,rep:"none",repN:4,ser:"",inv:[{n:ME,role:"req"}],ag:Tm.ag.map(a=>({t:a[0],min:a[1],own:ME})),links:[],files:[],prep:true,fromSeries:""};(pre.people||[]).forEach(n=>{if(!d.inv.some(i=>i.n===n))d.inv.push({n,role:"req"})});return d}
+function newDraft(pre){pre=pre||{};const ty=pre.type||"design",Tm=T[ty];const d={type:ty,title:pre.title||Tm.n,dt:pre.dt||addD(TODAY,1),s:pre.s||10,dur:Tm.dur,room:pre.room||"Teams",online:true,rep:"none",repN:4,ser:"",inv:[{n:ME(),role:"req"}],ag:Tm.ag.map(a=>({t:a[0],min:a[1],own:ME()})),links:[],files:[],prep:true,fromSeries:""};(pre.people||[]).forEach(n=>{if(!d.inv.some(i=>i.n===n))d.inv.push({n,role:"req"})});return d}
 M.compose=function(pre){S.meet.draft=newDraft(pre);S.meet.sel=null;paintComposer(true)};
 function draftConf(d){const mine=d.inv.filter(i=>i.role!=="info").map(i=>i.n);const fake={id:"draft",s:+d.s,e:+d.s+d.dur,inv:d.inv.map(i=>Object.assign({},i)),room:d.room};return M.conflicts(fake,d.dt,+d.s)}
 function draftCost(d){let c=0;d.inv.forEach(i=>{if(i.role!=="info"||M.kindOf(i.n)==="ai")c+=M.rateOf(i.n)*d.dur});return Math.round(c)}
@@ -187,10 +187,10 @@ function dfLinkRes(q){const d=S.meet.draft,have=new Set(d.links.map(l=>l.k+":"+l
 function paintComposer(first){const d=q$("#drawer");const sc=d?d.scrollTop:0;openDrawer(composerHTML());if(d&&!first)d.scrollTop=sc}
 function createFromDraft(){const d=S.meet.draft;if(!d.title.trim()){toast("Give the meeting a title","warn");return}if(d.inv.filter(i=>i.role!=="info").length<2){toast("Invite at least one other person","warn");return}
  const n=d.rep==="none"?1:d.repN,step=d.rep==="weekly"?7:d.rep==="biweekly"?14:28;let ser=null;
- if(d.rep!=="none"){ser={id:"sr_u"+Date.now().toString(36),n:d.title,type:d.type,chair:ME,secy:"",cad:({weekly:"Weekly",biweekly:"Every other week",monthly:"Monthly"})[d.rep]+", "+DN[M.dowOf(d.dt)]+" "+tm(+d.s),s:+d.s,e:+d.s+d.dur,room:d.room,purpose:"Created from a template on "+fd(TODAY)+".",rights:"To be set by the chair.",esc:"",mem:d.inv.map(i=>[i.n,i.role]),dates:[],mids:{},ex:{},links:d.links.map(l=>[l.k,l.id])};M.series.push(ser)}
+ if(d.rep!=="none"){ser={id:"sr_u"+Date.now().toString(36),n:d.title,type:d.type,chair:ME(),secy:"",cad:({weekly:"Weekly",biweekly:"Every other week",monthly:"Monthly"})[d.rep]+", "+DN[M.dowOf(d.dt)]+" "+tm(+d.s),s:+d.s,e:+d.s+d.dur,room:d.room,purpose:"Created from a template on "+fd(TODAY)+".",rights:"To be set by the chair.",esc:"",mem:d.inv.map(i=>[i.n,i.role]),dates:[],mids:{},ex:{},links:d.links.map(l=>[l.k,l.id])};M.series.push(ser)}
  let first=null;for(let k=0;k<n;k++){const dt=addD(d.dt,k*step);if(ser)ser.dates.push(dt);
-  const m=M.addMeeting({t:d.title,type:d.type,series:ser?ser.id:"",dt,s:+d.s,e:+d.s+d.dur,room:d.room,online:/Teams|Webex|bridge/.test(d.room)||d.online?"https://teams.example/meet/"+Date.now().toString(36)+k:"",inv:d.inv.map(i=>({n:i.n,role:i.role,rsvp:i.n===ME?"yes":"none",att:null,dlg:"",tz:M.tzOf(i.n)})),links:d.links.map(l=>({k:l.k,id:l.id})),chair:ME,secy:"",st:"next",
-   agenda:d.ag.map((a,i)=>({id:"",t:a.t,min:+a.min,own:a.own,note:"",st:"todo"})),files:d.files.map(f=>({n:f,kind:"Pre-read",size:"0.4 MB",by:ME})),prep:d.prep?{at:"Oct 6 "+tm(M.NOWH),conf:.84}:null,idx:k,occ:k+1});
+  const m=M.addMeeting({t:d.title,type:d.type,series:ser?ser.id:"",dt,s:+d.s,e:+d.s+d.dur,room:d.room,online:/Teams|Webex|bridge/.test(d.room)||d.online?"https://teams.example/meet/"+Date.now().toString(36)+k:"",inv:d.inv.map(i=>({n:i.n,role:i.role,rsvp:i.n===ME()?"yes":"none",att:null,dlg:"",tz:M.tzOf(i.n)})),links:d.links.map(l=>({k:l.k,id:l.id})),chair:ME(),secy:"",st:"next",
+   agenda:d.ag.map((a,i)=>({id:"",t:a.t,min:+a.min,own:a.own,note:"",st:"todo"})),files:d.files.map(f=>({n:f,kind:"Pre-read",size:"0.4 MB",by:ME()})),prep:d.prep?{at:"Oct 6 "+tm(M.NOWH),conf:.84}:null,idx:k,occ:k+1});
   m.agenda.forEach((a,i)=>a.id=m.id+"_g"+i);M.maud(m,"Meeting scheduled",(ser?"Series of "+n+". ":"")+m.inv.length+" invited");if(!first)first=m}
  M.sync();S.meet.draft=null;S.meet.cur=first.dt;toast((n>1?n+" meetings":"Meeting")+" scheduled for "+fdw(first.dt),"good");go("meet_hub");S.v.meet=1;render();setTimeout(()=>M.open(first.id),80)}
 

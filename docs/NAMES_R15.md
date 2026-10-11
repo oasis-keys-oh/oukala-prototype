@@ -7,7 +7,8 @@ Merged families: one menu entry with a view switcher at the top of each member. 
 | Screen id | Group | Name (sidebar = headline = breadcrumb = tab title) | Was in the sidebar | Was the page headline | Formal name (tooltip only) | Change |
 |---|---|---|---|---|---|---|
 | `home` | Home | **Home** | Home | Good afternoon, Casey | Home | headline moved to subtitle |
-| `trace` | Strategy and performance | **Trace goals to money and work** | Trace goals to money and work | From budget to operations | Executive trace | headline moved to subtitle |
+| `trace` | Strategy and performance | **Strategy to execution** (alias of `strat_exec`) | Trace goals to money and work | From budget to operations | Executive trace | R16: the old id aliases to `strat_exec` through `R15.alias`; links `go("trace",record)` open the Record chain view of the same screen |
+| `strat_exec` | Strategy and performance | **Strategy to execution** | (new in R16) | Goals to capabilities, maturity roadmap, projects, money and work | Strategy to execution | New canonical screen. Views: Tree, Trace graph, Gaps, Mapping, Record chain (the old Executive trace) |
 | `inv` | Money and contracts | **Approve invoices** | Approve invoices | Pay what was earned | Invoice approval | headline moved to subtitle |
 | `fo` | My work | **Meetings: Calendar and follow-ups** | My meetings, calendar and follow-ups | Meetings that file themselves | First Officer | renamed; merged into "Meetings" as view "Calendar and follow-ups"; hidden from menu; headline moved to subtitle |
 | `tower` | AI and governance | **AI agents** | Watch and control AI agents | Everything AI, in one place | AI Control Tower | renamed; family anchor, switcher added; headline moved to subtitle |
@@ -156,3 +157,15 @@ Merged families: one menu entry with a view switcher at the top of each member. 
 | `zl_conn` | Platform and administration | **Connections and gaps** | Connections and gaps | Connections and gaps | Connections and gaps | same |
 
 Totals: 148 screens, 33 sidebar labels changed, 23 screens merged into families (menu entries removed), 1 redirect.
+
+## Round 16 additions (Agent K)
+
+Aliases: `trace` -> `strat_exec` (`R15.alias.trace`, hidden from the menu, old labels resolve through `NAVX.alias`).
+
+New merged families (same mechanism as `mod_r15c_merge.js`, applied in `mod_r16k_fix.js`):
+
+| Anchor | Menu label | Views | Members that left the menu |
+|---|---|---|---|
+| `exe_dash` | **Dashboards** | Leadership, Operations and metrics, Build a chart | `obs_dash` ("Dashboards: Operations and metrics"), `kcs_viz` ("Dashboards: Build a chart") |
+| `exe_risk` | **Risk** | Heat map and Monte Carlo, Risk register, Third-party risk | `grc_risk`, `grc_ven` |
+| `svc_notify` | **Notifications** | Rules, templates and delivery, Alerts and inbox | `inbox` (moved from "My approvals") |

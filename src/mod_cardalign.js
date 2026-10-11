@@ -9,7 +9,7 @@
  function fillGrids(v){v.querySelectorAll("[data-gfs]").forEach(e=>{e.style.gridColumn="";e.removeAttribute("data-gfs")});v.querySelectorAll("[data-gf]").forEach(e=>e.removeAttribute("data-gf"));
   const NAMED=".grid,[class*='kpi'],[class*='tiles'],[class*='stats'],[class*='statrow'],[class*='-tiles']";let _gn=0;v.querySelectorAll("*").forEach(g=>{if(++_gn>5000||g.offsetParent===null||g.closest("[data-eq=off],table,.tscroll"))return;const cs=getComputedStyle(g);if(cs.display!=="grid")return;
    /* R15: any other grid of card-like children (itsm-go, meet-fgrid, obs-wall, er-doms, bld-cts, viz-gal, bld-mods ...) gets the same flush last row; calendars and heat maps (cells, not cards) are left alone */
-   if(!g.matches(NAMED)){const k0=g.firstElementChild;if(!k0||!cardish(k0)||k0.getBoundingClientRect().width<130||g.children.length>60)return}
+   if(!g.matches(NAMED)){const k0=g.firstElementChild;if(!k0||!cardish(k0)||k0.getBoundingClientRect().width<130||g.children.length>200)return}
    if(/subgrid|masonry/.test(cs.gridTemplateColumns)||cs.gridTemplateRows.includes("subgrid"))return;
    const cols=cs.gridTemplateColumns.split(" ").filter(x=>x&&x!=="none").length;if(cols<2)return;
    const kids=[...g.children].filter(k=>k.offsetParent!==null&&getComputedStyle(k).position!=="absolute");if(kids.length<cols+1)return;

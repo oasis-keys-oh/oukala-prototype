@@ -61,6 +61,7 @@ const GROUPS=[
  ["people","People and teams",ICO.people,"Who works where, skills and performance."],
  ["strat","Strategy and performance",ICO.strat,"Goals, risk, maturity, measures and board material."],
  ["grc","Governance, risk and compliance",ICO.strat,"Risks, controls, findings, policies, audits, vendors and exceptions."],
+ ["res","Resilience",ICO.fix,"Continuity and disaster recovery: framework, tiers, plans, exercises, traceability and metrics."],
  ["auto","Automate",ICO.auto,"Design workflows, rules, notifications and automatic fixes."],
  ["ai","AI and governance",ICO.ai,"Watch, test, govern and connect AI agents."],
  ["plat","Platform and administration",ICO.plat,"Data model, processes, building blocks, security and licensing."],
@@ -155,6 +156,7 @@ exe_risk|strat|Risk heat map|Risk heat map and Monte Carlo||risk heat map monte 
 exe_scen|strat|Compare what-if scenarios|Scenario compare||scenario compare what if plan
 exe_board|strat|Board pack|Board pack||board pack report directors meeting
 kcs_viz|strat|Build a chart|Visualization builder||chart visual builder graph report
+r16j_dash|strat|Dashboards and charts|Saved charts, layouts, defaults||dashboard layout saved chart default publish library reorder
 flw_design|auto|Design a workflow|Workflow designer||workflow designer automation process build
 flw_bpmn|auto|Draw a process|Process models (BPMN)||bpmn process model diagram draw
 flw_dmn|auto|Decision rules|Decision tables||decision table dmn rules logic

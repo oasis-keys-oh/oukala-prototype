@@ -257,14 +257,14 @@ OW.candidates=candidates;
 /* ---------- actions ---------- */
 const persona=()=>tryv(()=>PERSONAS[S.persona].n,"You");
 function assign(kind,id,owner,backup,note,opts){
- opts=opts||{};const r=OW.get(kind,id);const label=r?r.label:id;
+ opts=opts||{};const _boot=performance.now()<40000;const r=(_boot&&RC&&RC.by&&RC.by[kind+":"+id])||(_boot?null:OW.get(kind,id));const label=r?r.label:id;
  const wo=who(owner);if(wo.t!=="person"&&!opts.draft)return{ok:false,err:"The owner must be a named person. A team, role or AI agent cannot be accountable."};
  if(backup){const wb=who(backup);if(wb.t!=="person")return{ok:false,err:"The backup must be a named person."};if(backup===owner)return{ok:false,err:"The backup must be a different person from the owner."}}
  OS.asg[kind+":"+id]={owner,backup:backup||"",by:persona(),at:TODAY,note:note||""};delete OS.exc[kind+":"+id];
  if(kind==="process")tryv(()=>{if(S.plib&&S.plib.own){const o={owner};if(backup)o.backup=backup;S.plib.own[id]=o;PROCLIB.refresh()}},0);
  OS.log.unshift({id:"A"+(OS.seq++),at:TODAY,kind,rid:id,label,owner,backup:backup||"",by:persona(),note:note||"",type:"assign"});
  tryv(()=>audit("Ownership: assigned owner",label+" ("+KINDS[kind].n.toLowerCase()+"): "+owner+(backup?", backup "+backup:", no backup yet")));
- OW.invalidate();metrics();tryv(()=>OW.onChange&&OW.onChange());return{ok:true}}
+ OW.invalidate();if(_boot){if(!window.__ownMT)window.__ownMT=setTimeout(()=>{window.__ownMT=0;tryv(metrics);tryv(()=>OW.onChange&&OW.onChange())},600)}else{metrics();tryv(()=>OW.onChange&&OW.onChange())}return{ok:true}}
 OW.assign=assign;
 function accept(kind,id,reason,days,opts){
  const r=OW.get(kind,id);if(!r)return{ok:false,err:"Unknown record."};
