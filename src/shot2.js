@@ -10,7 +10,7 @@ await p.mouse.click(700,20);await p.waitForTimeout(400);console.log('drawer open
 await p.evaluate(()=>go('fo'));await p.waitForTimeout(300);await p.screenshot({path:'d_fo.png'});
 await p.fill('#q','gaap');await p.waitForTimeout(300);await p.screenshot({path:'d_search.png'});
 await p.fill('#q','');
-await p.click('label[for=chatOpen].btn');await p.waitForTimeout(300);await p.fill('#chatq','what is the impact of changing ASC 842');await p.press('#chatq','Enter');await p.waitForTimeout(800);await p.screenshot({path:'d_chat.png'});
+await p.click('label[for=chatOpen].btn');await p.waitForTimeout(300);await p.fill('#chatq','what is the impact of changing Standard 842');await p.press('#chatq','Enter');await p.waitForTimeout(800);await p.screenshot({path:'d_chat.png'});
 await c.close();
 c=await b.newContext({viewport:{width:400,height:820},colorScheme:'light'});p=await c.newPage();p.on('pageerror',e=>errs.push('PE '+e.message));
 await p.goto('file://'+process.cwd()+'/full.html');await p.waitForTimeout(600);

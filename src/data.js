@@ -140,7 +140,7 @@ const AGENTS=[
 const AUTO_LEVELS=["Suggest","Draft","Act with approval","Act within rules"];
 const SCOPES=[["run","One run","Stops a single execution"],["agent","One agent","Pauses all of an agent's work"],["capability","A capability","Such as every finance agent"],["provider","A provider","Switch off one model vendor"],["tenant","This tenant","Everything for Meridian"],["platform","Platform","Every tenant (operator only)"]];
 const SPEND30=[3.2,3.8,3.5,4.1,4.4,3.9,4.8,5.2,4.6,5.0,5.5,5.1,5.9,6.3,5.8,6.1,6.8,6.4,7.0,7.3,6.9,7.6,8.1,7.7,8.4,8.9,8.2,9.0,9.4,9.8];
-const EVENTS=[["13:29","good","Invoice Advisor scored INV-20451: approve, 91%"],["13:27","info","First Officer filed 3 records from IT operations daily"],["13:24","warn","Guardrail: redacted a personal phone number in a transcript"],["13:20","good","Test Agent passed 24 of 24 invoice flow checks"],["13:12","bad","Knowledge Curator blocked: output cited no source"],["13:05","info","Forecast Agent drafted a reforecast for FY26 Vendor services"]];
+const LIVEEVENTS=[["13:29","good","Invoice Advisor scored INV-20451: approve, 91%"],["13:27","info","First Officer filed 3 records from IT operations daily"],["13:24","warn","Guardrail: redacted a personal phone number in a transcript"],["13:20","good","Test Agent passed 24 of 24 invoice flow checks"],["13:12","bad","Knowledge Curator blocked: output cited no source"],["13:05","info","Forecast Agent drafted a reforecast for FY26 Vendor services"]];
 const PROV_SHARE=[["Anthropic",52,"--p4"],["OpenAI",31,"--w1"],["Google",13,"--u3"],["Other",4,"--faint"]];
 
 /* ---- personas: same data, different story ---- */
@@ -174,7 +174,7 @@ const UNUSED=[["Cost center code","Appears on 3 record types. In no story, no me
 /* ============ Knowledge graph: one graph for standards, policies, procedures, controls, CIs, data, reports ============ */
 const KT={std:["Standard","--u1"],par:["Paragraph","--u4"],pol:["Policy","--p4"],sop:["Procedure","--p5"],ctl:["Control","--w1"],ci:["Configuration item","--s3"],dat:["Data element","--p1"],rpt:["Report","--e4"],file:["Source file","--faint"]};
 const KGN=[
-{id:"std1",t:"std",n:"ASC 842 Leases",owner:"Controller",x:30,y:250,sub:"FASB Standards topic",hrs:0},
+{id:"std1",t:"std",n:"Standard 842 Leases",owner:"Controller",x:30,y:250,sub:"standards board Standards topic",hrs:0},
 {id:"par1",t:"par",n:"842-20-25 Lessee recognition",owner:"Controller",x:215,y:130,sub:"Initial and subsequent measurement",hrs:2},
 {id:"par2",t:"par",n:"842-20-50 Disclosures",owner:"Controller",x:215,y:370,sub:"Footnote requirements",hrs:2},
 {id:"pol1",t:"pol",n:"Lease accounting policy",owner:"Controller",x:420,y:60,sub:"v4, approved Mar 2026",hrs:6},
@@ -198,5 +198,5 @@ const KGE=[["std1","par1","contains"],["std1","par2","contains"],["par1","pol1",
 const ALLN=()=>[...NODES.map(n=>({...n,x:null})),...KGN];
 const ANODE=id=>KGN.find(n=>n.id===id)||NODES.find(n=>n.id===id);
 const ALLE=()=>[...EDGES,...KGE,...(window.KG_EXTRA||[])];
-const KSCEN=[["std1","FASB amends ASC 842 (hypothetical amendment, effective Jan 1, 2027)"],["ci1","Replace the lease subledger"],["ci2","Contract repository maintenance window"],["S1","Standards Portal major release"],["pol1","Rewrite the lease accounting policy"]];
-const TREE=[["Accounting",[["Policies",[["Lease Accounting Policy v4.docx","linked","f1"],["Capitalization Threshold Policy v2.docx","linked","pol2"],["Revenue Recognition Policy v3.docx","unlinked"]]],["Checklists",[["Lease classification checklist.xlsx","linked","f2"],["Month-end close checklist.xlsx","suggest","sop2","Month-end close for leases (88%)"]]],["Standards",[["FASB ASC 842 summary.pdf","suggest","std1","ASC 842 Leases (96%)"],["GASB 87 comparison.pdf","unlinked"]]]]],["Vendor management",[["Lumen SOW-4 signed.pdf","suggest","V2","Lumen Data Partners SOW-4 (93%)"],["Vendor scorecard template.xlsx","unlinked"]]],["IT operations",[["Portal failover runbook v7.docx","linked","K1"],["Change request template.docx","unlinked"]]]];
+const KSCEN=[["std1","standards board amends Standard 842 (hypothetical amendment, effective Jan 1, 2027)"],["ci1","Replace the lease subledger"],["ci2","Contract repository maintenance window"],["S1","Standards Portal major release"],["pol1","Rewrite the lease accounting policy"]];
+const TREE=[["Accounting",[["Policies",[["Lease Accounting Policy v4.docx","linked","f1"],["Capitalization Threshold Policy v2.docx","linked","pol2"],["Revenue Recognition Policy v3.docx","unlinked"]]],["Checklists",[["Lease classification checklist.xlsx","linked","f2"],["Month-end close checklist.xlsx","suggest","sop2","Month-end close for leases (88%)"]]],["Standards",[["Standard 842 summary.pdf","suggest","std1","Standard 842 Leases (96%)"],["public-sector standards board 87 comparison.pdf","unlinked"]]]]],["Vendor management",[["Lumen SOW-4 signed.pdf","suggest","V2","Lumen Data Partners SOW-4 (93%)"],["Vendor scorecard template.xlsx","unlinked"]]],["IT operations",[["Portal failover runbook v7.docx","linked","K1"],["Change request template.docx","unlinked"]]]];

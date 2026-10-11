@@ -12,13 +12,13 @@ os.makedirs(out,exist_ok=True)
 r=lambda f:open(f,encoding='utf-8').read()
 mods=sorted(set(os.path.splitext(f)[0] for f in glob.glob('mod_*.js')+glob.glob('mod_*.css')))
 if only is not None: mods=[m for m in mods if m in only or m.replace('mod_','') in only]
-fonts='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">'
+fonts='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"></noscript>'
 core=["data.js","data2.js","ui.js","kit.js","kit2.js","screens1.js","screens2.js","screens4.js"]
 js=[r(f) for f in core]
 for m in mods:
     if os.path.exists(m+'.js'): js.append('/* ===== '+m+' ===== */\n(function(){try{\n'+r(m+'.js')+'\n}catch(e){console.error("module '+m+' failed",e)}})();' if False else '/* ===== '+m+' ===== */\n'+r(m+'.js'))
 js.append(r("screens3.js"))
-css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.css"),r("style6.css"),r("style7.css")]+[r(m+'.css') for m in mods if os.path.exists(m+'.css')]
+css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.css"),r("style6.css"),r("style7.css")]+([r("style8.css")] if os.path.exists("style8.css") else [])+[r(m+'.css') for m in mods if os.path.exists(m+'.css')]
 js="\n".join(js)
 html=f'<title>Oukala</title>\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script>\n{js}\n</script>\n'
 open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)

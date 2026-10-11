@@ -116,7 +116,8 @@ const breach=(r,c,t,lv)=>{const v=val(c.id,r.m,t);
 const winHit=(c,t)=>{for(const w of O.wins){if(!w.on||!w.cis.includes(c.id))continue;const md=((t%DAYMIN)+DAYMIN)%DAYMIN;if(w.kind==="daily"&&md>=w.from&&md<=w.to)return w;if(w.kind==="weekly"&&dowOf(t)===w.dow&&md>=w.from&&md<=w.to)return w;if(w.kind==="once"&&t>=w.from&&t<=w.to)return w}return null};
 /* episodes of a rule on one CI between t0 and t1; returns [{from,fired,to,peak,lvl,count,flaps,sup}] */
 const EPC={};
-function episodes(r,c,t0,t1,step){const k=[r.id,r.m,r.kind,r.op,r.warn,r.crit,r.sens,r.forMin,c.id,t0,t1,step,O.wins.map(w=>w.on+w.cis.join()+w.from+w.to).join("~")].join("|");const h=EPC[k];if(h)return h.map(e=>Object.assign({},e));return (EPC[k]=episodes0(r,c,t0,t1,step)).map(e=>Object.assign({},e))}
+function episodes(r,c,t0,t1,step){if(c&&c.gen&&SCALE.on)return[]; /* r15d perf: enterprise-scale CIs carry their own synthetic alerts (scaleAlerts); evaluating 12 rules x 2,600 CIs x 1,000 steps cost about 9 s */
+ const k=[r.id,r.m,r.kind,r.op,r.warn,r.crit,r.sens,r.forMin,c.id,t0,t1,step,O.wins.map(w=>w.on+w.cis.join()+w.from+w.to).join("~")].join("|");const h=EPC[k];if(h)return h.map(e=>Object.assign({},e));return (EPC[k]=episodes0(r,c,t0,t1,step)).map(e=>Object.assign({},e))}
 function episodes0(r,c,t0,t1,step){step=step||10;const raw=[];let cur=null;
  for(let t=t0;t<=t1;t+=step){const w=breach(r,c,t,"warn");if(w){if(!cur)cur={from:t,to:t,peak:val(c.id,r.m,t),crit:false};cur.to=t;const v=val(c.id,r.m,t);cur.peak=r.op==="<"?Math.min(cur.peak,v):Math.max(cur.peak,v);if(r.kind==="static"?breach(r,c,t,"crit"):breach(r,c,t,"crit"))cur.crit=true}else if(cur){raw.push(cur);cur=null}}
  if(cur)raw.push(cur);

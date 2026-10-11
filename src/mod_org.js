@@ -7,7 +7,7 @@ const O=window.ORGX=window.ORGX||{};
 S.org=S.org||{};
 Object.assign(S.org,Object.assign({tab:"chart",mode:"both",collapsed:{},sel:null,q:"",f:{team:"",agents:"",load:""},lines:{dotted:false,matrix:false},k:0,x:0,y:0,outline:false,stud:null,log:[],built:[],ptab:0,seq:1,ov:{}},S.org));
 const OS=S.org;
-const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const _slugC=new Map();const slug=s=>{const k=String(s);let v=_slugC.get(k);if(v===undefined){v=k.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");if(_slugC.size<20000)_slugC.set(k,v)}return v};
 const first=n=>String(n).split(" ")[0];
 const rnd=(seed)=>RNG(seed);
 const TODAY="2026-10-10";
@@ -142,7 +142,7 @@ const AG_SEED={
  "Learning Coach":{sp:"Nia Brooks",hrs:1.5,does:"Nudges people on assigned training and answers course questions."},
  "Forecast Agent":{sp:"Avery Chen",hrs:3,does:"Drafts financial reforecasts for the controller to approve."}};
 const LVL={suggest:{n:"Suggest",auto:0,short:"Suggest"},approval:{n:"Act with approval",auto:2,short:"Approve"},act:{n:"Act within rules",auto:3,short:"Act"}};
-O.LVL=LVL;
+O.LVL=LVL;O.agSeed=AG_SEED;
 const lvlOfAuto=a=>a>=3?"act":a>=2?"approval":"suggest";
 function seedAgents(){
  return DIR.filter(d=>d.kind==="ai"&&AG_SEED[d.name]).map(d=>{const s=AG_SEED[d.name],g=(window.S&&S.agents||[]).find(a=>a.id===d.agent||a.n===d.name);
@@ -285,7 +285,7 @@ function stats(){return memoF("stats",()=>{
  const ret=ag.filter(a=>a.status!=="killed").reduce((s,a)=>s+(a.realized!=null?a.realized:a.hrs),0);
  const open=STAFF.reduce((s,p)=>s+O.openOpps(p.n).reduce((q,o)=>q+o.hrs,0),0);
  const gov=ag.filter(a=>a.sponsor&&a.guards&&a.guards.length&&a.kill).length;
- let vac=0;try{vac=((S.ppl&&S.ppl.vac)||[]).filter(v=>v.st!=="filled").length}catch(e){}
+ let vac=0;try{vac=O.vacOpen?O.vacOpen().length:((S.pp2&&S.pp2.vac)||[]).filter(v=>v.status!=="Filled").length}catch(e){}
  return{heads:STAFF.length,agents:ag.length,mgrs:mgrs.length,avgSpan:+(spans.reduce((a,b)=>a+b,0)/Math.max(1,spans.length)).toFixed(1),maxSpan:Math.max(...spans),layers:layers(),over:loads.filter(x=>x>95).length,returned:+ret.toFixed(1),open:+open.toFixed(1),govPct:ag.length?Math.round(100*gov/ag.length):100,dotted:STAFF.filter(p=>p.dot).length,matrix:STAFF.filter(p=>p.mx.length).length,vac,
   covered:STAFF.filter(p=>agentsOf(p.n).length).length,unowned:ownIndex().total-ownIndex().named,ownPct:ownIndex().pct,
   accept:(()=>{const q=ag.filter(a=>a.eval&&a.eval.accept!=null);return q.length?Math.round(q.reduce((s,a)=>s+a.eval.accept,0)/q.length):0})(),
@@ -350,11 +350,12 @@ comms|Communications|communications,comms,announcements,newsletter,release notes
 const pid2=n=>n?slug(n):"";
 const DOMAINS=DOM_RAW.split("\n").map(l=>{const c=l.split("|");return{id:c[0],label:c[1],aliases:c[2].split(",").map(x=>x.trim()).filter(Boolean),ownerId:c[3]?pid2(c[3]):"",backupId:c[4]?pid2(c[4]):""}});
 const DOMBY={};DOMAINS.forEach(d=>DOMBY[d.id]=d);
-const PBYID={};STAFF.forEach(p=>PBYID[slug(p.n)]=p);
+const PBYID={};STAFF.forEach(p=>PBYID[slug(p.n)]=p);O.PBYID=PBYID;
 const personRec=idOrName=>{if(!idOrName)return null;const k=String(idOrName);const h=PBYID[k]||PBYID[slug(k)]||null;if(h)return{id:slug(h.n),name:h.n,title:h.role,kind:"human",sponsor:null,unit:h.unit};
  const a=agentsAll().find(x=>x.name===k||x.id===k||slug(x.name)===k);return a?{id:a.id,name:a.name,title:"AI agent",kind:"agent",sponsor:a.sponsor,unit:"AI agents"}:null};
 Object.defineProperty(O,"people",{configurable:true,enumerable:true,get(){return STAFF.map(p=>personRec(p.n)).concat(agentsAll().map(a=>personRec(a.id)))}});
 O.domains=DOMAINS;
+O.addDomain=d=>{if(!d||!d.id)return null;if(DOMBY[d.id])return DOMBY[d.id];const x=Object.assign({aliases:[],ownerId:"",backupId:""},d);DOMAINS.push(x);DOMBY[x.id]=x;try{if(O.bump)O.bump()}catch(e){}return x};
 O.person=personRec;
 O.ownerOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.ownerId):null};
 O.backupOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.backupId):null};

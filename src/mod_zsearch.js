@@ -240,6 +240,7 @@ function scoreIt(it,T,qn,P){const z=zinfo(it);let sc=0;
  if(z.lab.toLowerCase().indexOf(qn)===0)sc+=40;
  sc-=Math.min(14,it.t.length/12);
  const bs=P.hs.get(it.key)||P.hs.get(it.tl);if(bs)sc+=10+bs*.4;if(P.fav.has(it.key)||P.fav.has(it.tl))sc+=30;
+ if(window.R15){if(R15.hideItem&&R15.hideItem(it,qn))return 0;if(R15.itemBoost)sc+=R15.itemBoost(it,qn)}
  return sc}
 
 function search(raw,opt){opt=opt||{};const ni=NI();const t0=performance.now();const pq=parseQuery(raw);const out={raw,q:pq.q,scope:pq.scope,owner:pq.owner,groups:[],fams:{},total:0,fixed:null,ms:0,T:[]};
@@ -249,7 +250,7 @@ function search(raw,opt){opt=opt||{};const ni=NI();const t0=performance.now();co
  run(T,0);let total=0;for(const k in gm)total+=gm[k].n;
  if(total<5){const T2=T.map(x=>{const f=ni.fixTok(x.t);if(f&&f!==x.t){const a=tokenize(f)[0];return a||x}return x});if(T2.some((x,i)=>x!==T[i])){for(const k in gm)delete gm[k];run(T2,22);out.fixed=T2.map(x=>x.t).join(" ");out.T=T2;total=0;for(const k in gm)total+=gm[k].n;if(!total)out.fixed=null}}
  const arr=Object.keys(gm).map(k=>gm[k]);arr.forEach(g=>g.items.sort((a,b)=>b.sc-a.sc));
- arr.forEach(g=>{const al=norm(ALIASOF[g.lab]||"");const intent=PRIOR[g.fam]>=40&&(g.lab.toLowerCase().split(" ").some(w=>w.indexOf(qn)===0)||(" "+al+" ").indexOf(" "+qn+" ")>=0||(" "+al+" ").indexOf(" "+qn)>=0&&qn.length>=4);g.rank=Math.min(g.best,140)+(PRIOR[g.fam]||0)+(intent?300:0)+(intent&&PRI.has(g.lab)?70:0)+Math.min(20,Math.log2(g.n+1)*4)});
+ arr.forEach(g=>{const al=norm(ALIASOF[g.lab]||"");const intent=PRIOR[g.fam]>=40&&(g.lab.toLowerCase().split(" ").some(w=>w.indexOf(qn)===0)||(" "+al+" ").indexOf(" "+qn+" ")>=0||(" "+al+" ").indexOf(" "+qn)>=0&&qn.length>=4);g.rank=Math.min(g.best,140)+(g.best>=420&&window.R15&&R15.itemBoost?900:0)+(PRIOR[g.fam]||0)+(intent?300:0)+(intent&&PRI.has(g.lab)?70:0)+Math.min(20,Math.log2(g.n+1)*4)});
  arr.sort((a,b)=>b.rank-a.rank||FAMORD.indexOf(a.fam)-FAMORD.indexOf(b.fam));
  out.groups=arr;out.total=total;arr.forEach(g=>{out.fams[g.fam]=(out.fams[g.fam]||0)+g.n});
  /* owners of a domain: "who owns budget" */

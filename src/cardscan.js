@@ -6,6 +6,7 @@
 //  G  (R14) = a grid whose last row leaves blank cells (>40px short of the container edge)
 //  options: --theme dark|light
 // Run it with every UI change; zero findings is the bar for shipping.
+//  N  (R15) = a table wrapper inside a bordered card that has its own border/shadow/fill and scrolls (double outline). Run nestscan.js for rule N.
 const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
 (async()=>{const a=process.argv.slice(2);const dir=path.resolve(a[0]);const w=a.includes('--w')?+a[a.indexOf('--w')+1]:1440;const only=a.includes('--only')?a[a.indexOf('--only')+1].split(','):null;
 const theme=a.includes('--theme')?a[a.indexOf('--theme')+1]:'light';const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:w,height:900},colorScheme:theme})).newPage();

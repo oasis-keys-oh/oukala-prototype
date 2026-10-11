@@ -4,7 +4,8 @@ const WD=[];(function(){const d=new Date(Date.UTC(2026,6,1)),end=Date.UTC(2028,0
 const DAYMS=864e5,CAL0=Date.UTC(2026,6,1);
 const wdOf=iso=>{const t=Date.parse(iso+"T00:00:00Z");let lo=0,hi=WD.length-1;while(lo<hi){const m=(lo+hi)>>1;if(WD[m]<t)lo=m+1;else hi=m}return lo};
 const dateOf=w=>new Date(WD[Math.max(0,Math.min(WD.length-1,w))]);
-const fmtD=(w,y)=>dateOf(w).toLocaleDateString("en-US",{month:"short",day:"numeric",...(y?{year:"numeric"}:{}),timeZone:"UTC"});
+const _fmtDc=new Map();/* r15d perf: pure and called thousands of times at enterprise scale */
+const fmtD=(w,y)=>{const k=w+(y?"y":"");let v=_fmtDc.get(k);if(v===undefined){v=dateOf(w).toLocaleDateString("en-US",{month:"short",day:"numeric",...(y?{year:"numeric"}:{}),timeZone:"UTC"});_fmtDc.set(k,v)}return v};
 const xday=w=>(WD[Math.max(0,Math.min(WD.length-1,w))]-CAL0)/DAYMS;
 const TODAY=wdOf("2026-10-06");
 
@@ -506,7 +507,7 @@ const DSTAGES=["Submitted","Screening","Scoring","Review board"];
 const DEMAND=[
  {id:"D1",n:"Public comment portal",who:"Editorial",sp:"Chief Editor",cost:420,ben:1100,strat:5,risk:2,urg:3,pm:14,st:3,res:[["Platform team",4]],m0:6,mo:5,why:"Lets stakeholders comment on drafts online. A regulator expects it before the Q2 comment window.",obj:"O1"},
  {id:"D2",n:"Reviewer workload dashboard",who:"Editorial",sp:"Chief Editor",cost:120,ben:340,strat:3,risk:1,urg:2,pm:4,st:2,res:[["Data team",1]],m0:6,mo:3,why:"Shows who is overloaded with reviews so deadlines stop slipping.",obj:"O1",dup:"D10"},
- {id:"D3",n:"Retire the legacy lease subledger",who:"Finance",sp:"CFO",cost:680,ben:910,strat:4,risk:5,urg:4,pm:22,st:3,res:[["Platform team",2],["Architecture",1]],m0:3,mo:6,why:"The old subledger cannot support the ASC 842 amendment effective Jan 1, 2027.",obj:"O2",kg:"std1"},
+ {id:"D3",n:"Retire the legacy lease subledger",who:"Finance",sp:"CFO",cost:680,ben:910,strat:4,risk:5,urg:4,pm:22,st:3,res:[["Platform team",2],["Architecture",1]],m0:3,mo:6,why:"The old subledger cannot support the Standard 842 amendment effective Jan 1, 2027.",obj:"O2",kg:"std1"},
  {id:"D4",n:"Mobile app for editors",who:"Editorial",sp:"Chief Editor",cost:540,ben:480,strat:2,risk:1,urg:1,pm:16,st:1,res:[["Platform team",3]],m0:7,mo:6,why:"Lets editors approve changes from a phone.",obj:"O1"},
  {id:"D5",n:"Vendor risk scorecards",who:"Procurement",sp:"CFO",cost:210,ben:600,strat:4,risk:4,urg:3,pm:7,st:2,res:[["Data team",2]],m0:4,mo:3,why:"Turns the vendor index into a monthly scorecard before renewals.",obj:"O2"},
  {id:"D6",n:"AI drafting assistant for standards",who:"Editorial",sp:"CEO office",cost:350,ben:1400,strat:5,risk:2,urg:3,pm:10,st:2,res:[["Platform team",2],["Data team",1]],m0:5,mo:5,why:"Drafts first versions of standards from approved source text, with every sentence cited.",obj:"O1"},

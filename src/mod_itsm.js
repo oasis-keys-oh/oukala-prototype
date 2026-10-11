@@ -504,8 +504,8 @@ function incForm(init){
   const dn=v.own&&v.own!==ME?`<div class="itsm-warn warn"><b>Direct assignment.</b> ${esc(ITILNOTE)}</div>`:"";
   return `<div class="itsm-lv glass">${prioPanel(t)}${dn}${sug}</div>`};
  openForm({id:"itsm_inc",title:"Log an incident",story:"Capture what happened and who is affected. Oukala calculates the priority from measured impact and a bounded urgency, starts the SLA clocks and routes the work to a team. A person claims it from the team queue.",submit:"Log incident",live,
- defaults:{role:"analyst",urg:"3",reg:"0",ua:1,deg:30,txh:0,vip:"",ch:"Portal"},
- fields:[{section:"Who and how"},{k:"caller",label:"Caller",type:"text",req:true,ph:"Name and team",help:"The person reporting it, not necessarily the person affected."},{k:"ch",label:"Channel",type:"chips",opts:CHAN},
+ defaults:{role:"analyst",urg:"3",reg:"0",ua:1,deg:30,txh:0,vip:"",ch:"Portal",caller:(window.PICK?PICK.me():ME)},
+ fields:[{section:"Who and how"},{k:"caller",label:"Caller",type:"people",req:true,help:"Defaults to you. Pick someone else if you are logging it for them."},{k:"ch",label:"Channel",type:"chips",opts:CHAN},
  {k:"role",label:"You are logging as",type:"select",req:true,opts:roleOpts(),help:"Your role sets how urgent a request you may call. Try a caller to see the bound."},{k:"vip",label:"Caller VIP level",type:"select",opts:vipOpts(),help:"Applies a documented urgency rule that expires. Most callers are Standard."},
  {section:"What is affected"},{k:"svc",label:"Service",type:"select",req:true,ph:"Choose a service",opts:SVN},{k:"ci",label:"Configuration item",type:"select",ph:"Choose a CI",get opts(){return ciOpts(FORMST.itsm_inc.vals.svc)},help:"From the CMDB. The blast radius is traced from here."},
  {k:"ua",label:"Users affected",type:"number",min:0,help:"A count, from monitoring or the callers."},{k:"deg",label:"Function lost",type:"range",min:0,max:100,step:5,unit:"%"},{k:"txh",label:"Transactions or revenue at risk an hour",type:"money",step:500,help:"Use the service's value per hour if known."},{k:"reg",label:"Regulatory exposure",type:"select",opts:X.pol.regN.map((n,k)=>[String(k),n])},
@@ -861,7 +861,7 @@ function chgForm(init,editId){const e=editId&&CHGB(editId);const base=Object.ass
  onSubmit:v=>{if(v.end<v.start)v.end=v.start;const rqv=Object.fromEntries(RQ.map(q=>[q.k,v["rq_"+q.k]||"0"]));let c=e;
   const set=o=>Object.assign(o,{t:v.t,type:v.type,svc:v.svc,cis:v.cis||[],just:v.just,impl:v.impl,back:v.back,test:v.test||"",start:v.start,end:v.end,win:v.win,own:v.own||"Sam Patel",inc:v.inc||"",prb:v.prb||"",cost:+v.cost||0,env:v.env||"Production",grp:v.grp||"Ops team",tpl:v.type==="Standard"?(v.tpl||""):"",rq:rqv});
   if(e){set(e);if(e.st==="Authorize"){applyRoute(e,route(e))}}
-  else{c=set({id:nextId("chg","CHG"),st:"Draft",req:ME,rel:"",proj:"",appr:[],stages:[],ok:[]});X.chg.unshift(c);ALLC();
+  else{c=set({id:nextId("chg","CHG"),st:"Draft",req:(window.PICK?PICK.me():ME),rel:"",proj:"",appr:[],stages:[],ok:[]});X.chg.unshift(c);ALLC();
    if(v.type==="Emergency"||v.submit_now||v.type==="Standard")submitChange(c)}
   const cl=collisions(c).filter(x=>x.kind==="hard").length,fz=freezeHits(c).length,rr=risk(c);
   done(e?"Change updated":"Change submitted",c.id+" · risk "+rr.score+" "+rr.band+(cl?" · "+cl+" collision"+(cl>1?"s":""):"")+(fz?" · inside a freeze":""));chgDrawer(c.id);return {close:false,toast:c.id+(c.st==="Scheduled"?" scheduled (pre-approved)":c.st==="Authorize"?" routed to "+c.stages.length+" approval stage"+(c.stages.length===1?"":"s"):" saved")}}},base)}

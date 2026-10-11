@@ -1,0 +1,49 @@
+/* Round 15 Agent D */
+.r15d-agstrip{display:flex;flex-wrap:wrap;gap:var(--sp-2,8px);align-items:center;margin:0 0 var(--sp-4,16px)}
+.r15d-agt{font-size:13px;color:var(--muted);margin-right:4px}
+.r15d-ags.working{border-color:var(--good-f)}
+.r15d-defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.r15d-defs>div{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.r15d-hr{display:inline-flex;gap:8px;align-items:center;font-size:13px}
+.r15d-agfilters{display:flex;flex-wrap:wrap;gap:6px}
+.linkish{background:none;border:0;padding:0;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.linkish:hover b{text-decoration:underline}
+.r15d-vashost{display:inline-flex}
+.r15d-vas b{max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.r15d-vaspop{width:min(440px,calc(100vw - 24px));max-height:min(80vh,720px);overflow:auto}
+.r15d-fam{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.r15d-role{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;padding:10px 14px;border-radius:14px;border:1px solid var(--hair);background:var(--glass);color:var(--ink);cursor:pointer;font:inherit}
+.r15d-role small{color:var(--muted);font-size:12.5px}
+.r15d-role[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.r15d-pins{margin:6px 0 10px;padding:8px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.r15d-pinh{display:flex;flex-direction:column;padding:2px 12px 6px}
+.r15d-pinh small{color:var(--muted);font-size:12px}
+.r15d-more>summary{cursor:pointer;display:flex;justify-content:space-between;gap:8px;padding:10px 12px;font-weight:700;list-style:none}
+.r15d-more>summary em{font-style:normal;font-weight:500;color:var(--muted);font-size:12px}
+.r15d-more[open]>summary{border-bottom:1px solid var(--hair)}
+.r15d-kpis{margin-bottom:var(--sp-5,24px)}
+.r15d-starters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+/* notification dock: bottom right, one card, never over the hero or KPI row */
+#inbxBanners{top:auto!important;bottom:calc(88px + env(safe-area-inset-bottom,0px))!important;right:18px;width:min(380px,calc(100vw - 24px))}
+.inbx-banner{padding:12px 14px}
+.inbx-banner.r15d-out{opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s}
+.r15d-ntf-note,.r15d-ntf-more{display:block;color:var(--muted);font-size:12.5px;margin-top:4px}
+.inbx-bell.r15d-pulse{animation:r15dpulse 1.2s ease 1}
+@keyframes r15dpulse{0%{box-shadow:0 0 0 0 var(--accent)}100%{box-shadow:0 0 0 14px transparent}}
+@media(max-width:900px){#inbxBanners{left:12px!important;right:12px!important;width:auto;bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}}
+@media(prefers-reduced-motion:reduce){.inbx-banner.r15d-out{transition:none}.inbx-bell.r15d-pulse{animation:none}}
+.r15d-ai{font-variant-numeric:tabular-nums}
+.r15d-facts{flex-wrap:wrap}
+.r15d-fwlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.r15d-fwlist>div{display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid var(--hair);border-radius:14px;background:var(--glass)}
+.r15d-reqrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.r15d-week{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.r15d-week li{display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid var(--hair);border-radius:14px;background:var(--glass)}
+.r15d-exgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.r15d-ex{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:14px;border:1px solid var(--hair);border-radius:14px;background:var(--glass)}
+.r15d-evtabs{margin-bottom:var(--sp-4,16px);flex-wrap:wrap}
+.r15d-evbody>*+*{margin-top:var(--sp-5,24px)}
+html[data-r15d-ro] .btn.primary[data-decide],html[data-r15d-ro] [data-inbx-ban=approve]{opacity:.5}
+.tbl td small{display:block;margin-top:2px}
+@media(max-width:1700px){.tb-right .nx-tb .lbl-long,.tb-right .r15d-vas .lbl-long{display:none}.topbar .search{min-width:240px}}
+@media(max-width:1500px){.tb-right .live .lbl-long{max-width:128px}}

@@ -8,6 +8,7 @@ if(!K())return;
 const E=s=>esc(String(s==null?"":s));
 const SHARE=()=>{const k=K(),t=k.sum(k.ACTM,x=>x);return k.ACTM.map(v=>v/t)};
 const LV={"PR1-VEN":"LUM","PR2-VEN":"LUM","PR1-CLD":"NWC","PR3-CLD":"MSF","PR2-CLD":"MSF","PR1-LIC":"MSF","PR3-VEN":"NWC","PR1-LAB":"BRT"};
+if(window.BUDX)window.BUDX.LV=LV;
 const POOL={Labor:"Labor",Vendor:"Vendor and outside services",Hardware:"Hardware",Cloud:"Cloud services",Licences:"Software and licences"};
 const GLA={Labor:["6110","Salaries and wages, IT"],Vendor:["6420","Consulting and implementation"],Hardware:["6210","Computer hardware, expensed"],Cloud:["6510","Azure consumption"],Licences:["6310","Software and licences"]};
 const TYPE={Labor:"Payroll and timesheet allocation",Vendor:"Vendor invoice posting",Hardware:"Accounts payable invoice",Cloud:"Cloud consumption allocation",Licences:"Subscription invoice"};
@@ -206,7 +207,7 @@ V.inv=function(id){const k=K(),i=INVOICES.find(x=>x.id===id);if(!i)return head("
  eb("Checks")+tbl(["Check","Result","Detail"],i.checks.map(x=>`<tr><td><b>${E(x[0])}</b></td><td>${pill(x[1]==="good"?"Pass":x[1]==="bad"?"Fail":"Watch",x[1])}</td><td class="small" style="white-space:normal">${E(x[2])}</td></tr>`),480)+
  foot(`<button type="button" class="btn primary" data-go="inv:${i.id}">Open in Invoice approval</button>`+(c?dn("Open the contract","ct:"+c.id,"btn"):""))};
 
-V.led=function(id,foc){const k=K(),e=k.B().led.find(x=>x.id===id);if(!e)return head("","Unknown entry");const l=e.line&&k.LN(e.line),r=e.t==="draw"?k.whoApproves(-e.amt,"Reserve release",e.req,{proj:e.p}):null,can=e.st==="Pending"&&e.t==="draw"&&k.omarCan(-e.amt,"Reserve release",e.req,{proj:e.p});
+V.led=function(id,foc){const k=K(),e=k.B().led.find(x=>x.id===id);if(!e)return head("","Unknown entry");const l=e.line&&k.LN(e.line),r=e.t==="draw"?k.whoApproves(-e.amt,"Reserve release",e.req,{proj:e.p}):null,can=e.st==="Pending"&&e.t==="draw"&&k.ownerCan(-e.amt,"Reserve release",e.req,{proj:e.p});
  let run=0;k.B().led.slice(0,k.B().led.indexOf(e)+1).forEach(x=>{if(x.st==="Approved")run+=x.amt});
  return head(pill(e.st,e.st==="Approved"?"good":e.st==="Pending"?"warn":"bad")+" "+pill(e.t==="open"?"Opening balance":"Reserve draw","mute"),`${E(e.id)}: <span class="num bd-big">${e.amt<0?"−":"+"}${D$(Math.abs(e.amt))}</span>`,E(e.why))+
  `<dl class="kv"><dt>Date</dt><dd>${k.dfmt(e.d)}</dd><dt>Requested by</dt><dd>${pchip(e.req)}${e.ai?" "+pill("Drafted by an agent","info"):""}</dd><dt>Project</dt><dd>${e.p?dn(E(k.PJ(e.p).short),"proj:"+e.p):"Portfolio"}</dd><dt>Budget line</dt><dd>${l?dn(`<b>${E(l.id)}</b> ${E(l.n)}`,"line:"+l.id):"<span class='muted'>None, whole portfolio</span>"}</dd><dt>Approver</dt><dd>${E(e.apr)}</dd><dt>Balance after this entry</dt><dd data-role="metric">${e.st==="Approved"?dn(D$(run),"m:bal"):"Not posted"}</dd></dl>`+

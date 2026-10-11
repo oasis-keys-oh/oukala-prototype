@@ -18,7 +18,7 @@ const HARNESS=/*HARNESS_DATA*/{"before":{"checks":{"d_noscreen":0,"d_noproc":0,"
 
 /* ---------- people, agents, teams, roles: one resolver ---------- */
 let _actors=null,_actV="",_actMemo=new Map();
-function actorIdx(){const v=[DIR.length,G(()=>ORGX.people.length,0),G(()=>ORGX.domains.length,0),Z.alias.length].join(",");
+function actorIdx(){const v=[DIR.length,G(()=>ORGX.people.length,0),G(()=>ORGX.domains.length,0),Z.alias.length,G(()=>R15E.roles.version(),0)].join(",");
  if(_actors&&_actV===v)return _actors;_actV=v;_actMemo=new Map();
  const m=new Map();const put=(n,k)=>{if(n)m.set(norm(n),k)};
  DIR.forEach(d=>put(d.name,d.kind==="ai"?"agent":d.kind==="human"?"person":d.kind));
@@ -31,7 +31,7 @@ function actorIdx(){const v=[DIR.length,G(()=>ORGX.people.length,0),G(()=>ORGX.d
  return _actors=m}
 /* returns person|agent|team|role|queue|contractor|msp|skill|service or "" when the text resolves to nothing */
 function actor(text){const t=norm(text);if(!t)return"";const m=actorIdx();if(m.has(t))return m.get(t);if(_actMemo.has(t))return _actMemo.get(t);
- let r="";const al=Z.alias.find(a=>a.k===t);if(al)r="role";else{const dom=G(()=>ORGX.byDomain(text),null);if(dom&&(dom.ownerId||dom.owner||dom.ownerName||dom.person||dom.length))r="role"}
+ let r="";const al=Z.alias.find(a=>a.k===t);if(al||G(()=>R15E.roles.find(text),null))r="role";else{const dom=G(()=>ORGX.byDomain(text),null);if(dom&&(dom.ownerId||dom.owner||dom.ownerName||dom.person||dom.length))r="role"}
  _actMemo.set(t,r);return r}
 const isHuman=n=>{const k=actor(n);return k==="person"||k==="contractor"||k==="msp"};
 
@@ -39,7 +39,7 @@ const isHuman=n=>{const k=actor(n);return k==="person"||k==="contractor"||k==="m
 let _uni=null,_uniV="";
 const itsm=()=>window.ITSMX||{incidents:[],changes:[],problems:[]};
 let _uvT=0,_uvV="";
-function uniVersion(){if(_uvV&&Date.now()-_uvT<2000)return _uvV;_uvT=Date.now();return _uvV=[PROJ.length,TASKS.length,DEMAND.length,INVOICES.length,MEETINGS.length,DIR.length,G(()=>itsm().incidents.length,0),G(()=>itsm().changes.length,0),G(()=>SEARCHX.length,0),G(()=>Object.keys(METRICS).length,0),G(()=>PROCLIB.list().length,0),G(()=>FLOWX.flows().length,0),G(()=>S.bud.po.length,0),(window.SCALE&&SCALE.on)?1:0].join(",")}
+function uniVersion(){if(_uvV&&Date.now()-_uvT<2000)return _uvV;_uvT=Date.now();return _uvV=[PROJ.length,TASKS.length,DEMAND.length,INVOICES.length,MEETINGS.length,DIR.length,G(()=>itsm().incidents.length,0),G(()=>itsm().changes.length,0),G(()=>SEARCHX.length,0),G(()=>Object.keys(METRICS).length,0),G(()=>PROCLIB.list().length,0),G(()=>FLOWX.flows().length,0),G(()=>S.bud.po.length,0),G(()=>(S.kcsx.created||[]).length,0),G(()=>R15E.runLines.length,0),(window.SCALE&&SCALE.on)?1:0].join(",")}
 function universe(){const v=uniVersion();if(_uni&&_uniV===v)return _uni;_uniV=v;const U=new Map();
  const add=(id,t,label,extra)=>{if(id==null||id==="")return;U.set(String(id),Object.assign({id:String(id),t,label:label||String(id)},extra||{}))};
  PROJ.forEach(p=>add(p.id,"project",p.n,{owner:p.owner}));
@@ -58,7 +58,7 @@ function universe(){const v=uniVersion();if(_uni&&_uniV===v)return _uni;_uniV=v;
  Object.keys(METRICS).forEach(k=>add(k,"metric",METRICS[k].n,{owner:METRICS[k].owner}));
  arr(G(()=>PROCLIB.list(),[])).forEach(p=>add(p.id,"process",p.name,{owner:p.owner}));
  arr(G(()=>FLOWX.flows(),[])).forEach(f=>add(f.id,"workflow",f.name,{owner:f.owner}));
- G(()=>{S.bud.po.forEach(p=>add(p.id,"po",p.d,{vendor:p.v}));S.bud.con.forEach(c=>add(c.id,"contract",c.n,{owner:c.own}));S.bud.vend.forEach(v=>add(v.id,"vendor",v.n,{owner:v.own}));S.bud.lines.forEach(l=>add(l.id,"budget_line",l.n,{owner:l.own}))});
+ G(()=>{S.bud.po.forEach(p=>add(p.id,"po",p.d,{vendor:p.v}));S.bud.con.forEach(c=>add(c.id,"contract",c.n,{owner:c.own}));S.bud.vend.forEach(v=>add(v.id,"vendor",v.n,{owner:v.own}));S.bud.lines.forEach(l=>add(l.id,"budget_line",l.n,{owner:l.own}));arr(R15E.runLines).forEach(l=>add(l.id,"budget_line",l.n,{owner:l.own}))});
  arr(G(()=>PPMRAID,[])).forEach(r=>add(r.id,"raid",r.t||r.n||r.title,{owner:r.own||r.owner}));
  arr(G(()=>typeof KCSX.items==="function"?KCSX.items():KCSX.items,[])).forEach(k=>add(k.id,"article",k.t||k.n));
  /* the search index is the app's own list of openable records: anything it names starting with an id token is real */
@@ -130,6 +130,7 @@ function relations(){const R=[];
  rel("wf_apr","Workflow approver","workflow","actor",()=>G(()=>FLOWX.flows().flatMap(f=>f.nodes.filter(n=>n.t==="approval").flatMap(n=>arr(n.a.approvers).map(a=>[f.id+"/"+n.id,a]))),[]),"actor");
  rel("wf_agent","Workflow agent step","workflow","agent",()=>G(()=>FLOWX.flows().flatMap(f=>f.nodes.filter(n=>n.t==="agent"&&n.a.agent).map(n=>[f.id+"/"+n.id,n.a.agent])),[]),"actor");
  rel("wf_edge","Workflow edge","workflow","step",()=>G(()=>FLOWX.flows().flatMap(f=>{const ids=new Set(f.nodes.map(n=>n.id));return arr(f.edges).flatMap(e=>{const a=e.from||e[0],b=e.to||e[1];return [[f.id+"/"+a,ids.has(a)?a:""],[f.id+"/"+b,ids.has(b)?b:""]]})}),[]),"edge");
+ try{(window.ZLINK_REL_HOOKS||[]).forEach(f=>f(rel))}catch(e){}
  return R}
 const SCRN=()=>new Set(SCREENS.map(s=>s[0]));
 const SCRNAME=()=>new Set(SCREENS.map(s=>lc(s[1])));
@@ -143,7 +144,7 @@ function resolves(kind,ref){ref=ref==null?"":String(ref);if(!ref)return null; /*
  if(kind==="edge")return !!ref;
  return has(ref)}
 let _dl=null,_dlK="";
-function deadLinks(){const key=uniVersion()+"|"+Z.alias.length+"|"+(Z.dlRev||0);if(_dl&&_dlK===key)return _dl;_dlK=key;const out=[];let total=0;const by={};
+function deadLinks(){const key=uniVersion()+"|"+Z.alias.length+"|"+(Z.dlRev||0)+"|"+G(()=>R15E.roles.version(),0);if(_dl&&_dlK===key)return _dl;_dlK=key;const out=[];let total=0;const by={};
  relations().forEach(r=>{let rows=[];try{rows=r.rows()}catch(e){rows=[]}const b=by[r.id]={total:0,bad:0};
   rows.forEach(([from,ref])=>{if(ref==null||ref==="")return;total++;b.total++;const ok=resolves(r.kind==="id"?r.to:r.kind,ref);if(ok===false){b.bad++;const fr=universe().get(String(from).split("/")[0]);out.push({rel:r.id,name:r.name,from:String(from),fromT:r.from,ref:String(ref),to:r.to,kind:r.kind,label:fr?fr.label:String(from)})}})});
  return _dl={out,total,by}}
@@ -230,7 +231,7 @@ function audit(){const A=[];const add=(area,id,name,total,items,o)=>{o=o||{};A.p
  const wk=arr(G(()=>WORK,[]));const dropped=wk.filter(w=>!HANDLED_RX.test(w.kind)&&!WK_RX.some(r=>r.test(w.kind)));
  add("Approvals","a_work","Assigned-work providers the inbox never shows",wk.length,(adpKeys.includes("zl_work")?[]:dropped).map(w=>E(w.tag,w.kind,"Registered in Person 360, missing from the inbox")),{rem:"Add an inbox adapter for the provider",std:"itil5"});
  const gateScr=Object.keys(G(()=>PROC.defs,{})).filter(k=>arr(PROC.defs[k].steps).some(s=>s.who==="gate")&&SCRN().has(k));
- const adpOK=k=>ADP_SCREEN[k]&&adpKeys.includes(ADP_SCREEN[k])||(Z.fixed.gate_inbox&&Z.gateCovered&&Z.gateCovered[k]);
+ const adpOK=k=>ADP_SCREEN[k]&&adpKeys.includes(ADP_SCREEN[k])||(Z.fixed.gate_inbox&&Z.gateCovered&&Z.gateCovered[k])||G(()=>R15E.gateCovered(k),false);
  add("Approvals","a_gate","Screens with a gate step that do not register in the inbox",gateScr.length,gateScr.filter(k=>!adpOK(k)).map(k=>E(k,(SCREENS.find(s=>s[0]===k)||[0,k])[1],arr(PROC.defs[k].steps).filter(s=>s.who==="gate").map(s=>s.n).join(", "),()=>go(k))),{rem:"Register gate items in the inbox adapter",std:"itil5"});
  const tpl=[];G(()=>SEARCHX.forEach(fn=>G(()=>fn(),[]).forEach(r=>{if(/notification/i.test(r.g||""))tpl.push(String(r.t))})),0);
  add("Approvals","n_events","Business events with no notification",BUS_EVENTS.length,BUS_EVENTS.filter(e=>!tpl.some(t=>e[2].test(t))&&!(Z.fixed.notify&&Z.notifyReg&&Z.notifyReg[e[0]])).map(e=>E(e[0],e[1],"No template in the notification engine")),{rem:"Register the event and a template",std:"itil5"});
@@ -371,7 +372,7 @@ function fixMetricUse(){const names=SCREENS.map(s=>s[1]);let n=0,left=0;
 function fixStepIO(){const defs=G(()=>PROC.defs,{});let n=0;
  G(()=>PROCLIB.list()).forEach(p=>{const d=defs[p.id];if(!d||!Array.isArray(d.steps))return;const st=d.steps;st.forEach((s,i)=>{if(!s.in&&i>0&&st[i-1].out){s.in=st[i-1].out;s.inInferred=1;n++}if(!s.out&&i<st.length-1&&(st[i+1].in||st[i+1].n)){s.out=st[i+1].in||st[i+1].n;s.outInferred=1;n++}})});
  G(()=>PROCLIB.refresh());FIXLOG("fx_stepio","Filled step inputs and outputs from the neighboring step (flagged inferred)",n,"partial: first and last steps need the real source and result");return n}
-function roleToPerson(n){const t=norm(String(n).replace(/^the\s+/i,""));if(!t)return null;const e=expand(t);
+function roleToPerson(n){const t=norm(String(n).replace(/^the\s+/i,""));if(!t)return null;const e=expand(t);const rh=G(()=>R15E.roles.holderOf(n),"");if(rh&&DIR.some(x=>norm(x.name)===norm(rh)))return rh;
  let d=DIR.find(x=>norm(x.name)===t);if(d)return d.name;d=DIR.find(x=>x.kind==="human"&&(norm(x.role)===t||norm(x.role)===e));if(d)return d.name;
  const p=arr(G(()=>ORGX.people,[])).find(x=>x.kind!=="agent"&&(norm(x.title)===t||norm(x.title)===e));return p&&DIR.some(x=>norm(x.name)===norm(p.name))?p.name:null}
 function fixPeople(){if(window.who&&window.who.__zlp)return 0;const ow=window.who,op=window.person360;if(typeof ow!=="function")return 0;
@@ -456,7 +457,7 @@ function fixDebt(a){if(!G(()=>DEBT.add,0)||Z.fixed.debt)return 0;Z.fixed.debt=1;
  FIXLOG("fx_debt","Routed remaining findings to Technical debt (one item per check)",n,"applied");return n}
 let _fixing=false;
 function fixAll(){if(NOFIX||_fixing)return;_fixing=true;
- try{[["fx_ref",fixRefs],["fx_wfsvc",fixWfService],["fx_people",fixPeople],["fx_alias",fixAliases],["fx_metricuse",fixMetricUse],["fx_stepio",fixStepIO],["fx_flows",fixFlows],["fx_lineage",fixLineage],["fx_inbox",fixInbox],["fx_mcp",fixMcp]].forEach(([id,f])=>{if(!Z.fixed[id]){try{f();Z.fixed[id]=1}catch(e){console.error("zlink fix",id,e)}}});
+ try{[["fx_r15e_a",()=>G(()=>R15E.phaseA(),0)],["fx_ref",fixRefs],["fx_wfsvc",fixWfService],["fx_people",fixPeople],["fx_alias",fixAliases],["fx_metricuse",fixMetricUse],["fx_stepio",fixStepIO],["fx_flows",fixFlows],["fx_lineage",fixLineage],["fx_inbox",fixInbox],["fx_mcp",fixMcp],["fx_r15e_b",()=>G(()=>R15E.phaseB(),0)],["fx_r15e_c",()=>G(()=>R15E.phaseC(),0)],["fx_r15e_n",()=>G(()=>R15E.phaseN(),0)]].forEach(([id,f])=>{if(!Z.fixed[id]){try{f();Z.fixed[id]=1}catch(e){console.error("zlink fix",id,e)}}});
   fixSearch();fixAsk();hookAudit();watchDrawer();Z.ip=null;Z.ipStale=true}finally{_fixing=false}}
 
 /* ---------- metrics ---------- */
@@ -469,10 +470,10 @@ function syncMetrics(a){const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cu
  const dl=deadLinks();set("m_zl_score",scoreOf(a));set("m_zl_dead",Math.round(1000*dl.out.length/Math.max(1,dl.total))/10);
  const ip=Z.ip;if(ip)set("m_zl_fanout",Math.round(100*ip.consumers.filter(c=>c.updated).length/Math.max(1,ip.consumers.length)));
  const g=id=>(a.checks.find(c=>c.id===id)||{bad:0}).bad;set("m_zl_orphans",g("d_noscreen")+g("p_nomodule")+g("m_noin")+g("m_noout"))}
-function getAudit(force){if(!force&&Z.last&&Date.now()-(Z.lastT||0)<4000)return Z.last;const a=audit();Z.last=a;Z.lastT=Date.now();G(()=>syncMetrics(a));return a}
+function getAudit(force){if(!NOFIX&&Z.fixed.fx_r15e_c)G(()=>R15E.refresh());if(!force&&Z.last&&Date.now()-(Z.lastT||0)<4000)return Z.last;const a=audit();Z.last=a;Z.lastT=Date.now();G(()=>syncMetrics(a));return a}
 
 /* ---------- screen ---------- */
-const BEFORE=HARNESS.before||{checks:{},score:null,findings:null};
+const BEFORE={checks:{"d_noscreen":0,"d_noproc":0,"d_noowner":0,"d_orphan_tbl":0,"d_undecl":55,"d_ref_untargeted":68,"d_dup":6,"d_metric_untraced":80,"d_planned":5,"p_noowner":9,"p_nobackup":119,"p_nometric":10,"p_fewsteps":0,"p_stepowner":26,"p_stepio":85,"p_noentity":23,"p_nomodule":0,"p_screen_noproc":19,"m_noin":0,"m_noout":0,"m_nodata":23,"m_nononown":11,"w_owner":11,"w_service":60,"w_table":0,"w_assignee":199,"w_approver":36,"w_agent":0,"w_edge":0,"w_dec_owner":27,"task_proj":0,"task_pred":0,"task_own":0,"proj_own":0,"proj_rec":0,"dem_obj":0,"dem_sp":2,"dem_svc":0,"inv_node":0,"inv_con":0,"inv_vend":0,"meet_link":0,"meet_att":0,"meet_chair":0,"inc_svc":0,"inc_ci":0,"inc_own":0,"inc_prb":0,"inc_chg":0,"inc_kb":4,"inc_node":0,"chg_svc":0,"chg_ci":0,"chg_own":0,"prb_svc":0,"prb_inc":0,"svc_own":0,"svc_sme":0,"svc_proj":0,"svc_dep":0,"ci_svc":0,"ci_own":0,"ciedge":0,"po_vend":0,"po_con":0,"po_line":6,"con_inv":0,"con_proj":0,"con_own":0,"line_proj":0,"line_own":0,"vend_own":0,"raid_own":0,"raid_proj":0,"metric_use":33,"metric_agent":12,"metric_rem":22,"proc_own":3,"proc_bak":0,"proc_met":0,"proc_mod":0,"k_mcp":0,"k_mcp_write":0,"s_groups":0,"c_questions":0,"a_work":0,"a_gate":79,"n_events":0,"i_invoice":0,"i_flows":0},score:92,findings:1031,dead:329,label:"Round 14 build"};
 const AREAS=["Data","Process","Workflow","Links","People","Platform","Search and chat","Approvals","Interoperability"];
 const fixOf=id=>({d_ref_untargeted:"fx_ref",w_service:"fx_wfsvc",w_approver:"fx_alias",w_assignee:"fx_alias",m_nodata:"fx_flows",i_flows:"fx_flows",d_metric_untraced:"fx_lineage",a_work:"fx_inbox",k_mcp:"fx_mcp",k_mcp_write:"fx_mcp",s_groups:"fx_search",c_questions:"fx_ask",n_events:"fx_search",i_invoice:"fx_events",proc_own:"fx_alias",p_stepio:"fx_stepio",metric_use:"fx_metricuse"})[id]||null;
 const stateOf=c=>{if(c.bad===0)return["good","Clean"];const f=fixOf(c.id);const b=BEFORE.checks[c.id];if(f&&Z.fixed[f]&&b!=null&&c.bad<b)return["info","Reduced from "+b];if(c.bad>0&&["d_undecl","d_noowner","p_noowner","p_nobackup","p_stepowner","d_dup","d_planned","a_gate"].includes(c.id))return["warn","Needs a human owner"];return["warn","Open"]};
@@ -506,8 +507,8 @@ function paneFixes(){return card("What was fixed","Each fix uses a registration 
 function paneMetrics(){return card("Connectivity metrics","Formula, owner, target and remediation on each chip",`<div class="row">${["m_zl_score","m_zl_dead","m_zl_fanout","m_zl_orphans"].map(k=>fchip(k)).join("")}</div>`)+card("Maturity","Process maturity of this screen's process on the CMMI scale, rolled up in Maturity models",`<p class="small">${G(()=>{const m=PROCLIB.get("connectivity_audit");return m?"Level "+m.level+" of target "+m.target+" ("+m.model+")":"Process registers with the library once it loads."},"")}</p>`)}
 function screenFn(){const a=getAudit(true);Z.last=a;
  const tot=a.checks.reduce((n,c)=>n+c.bad,0),dl=deadLinks();
- return `<div class="screen zl">${hero("Platform · connectivity","Connections and gaps",`<b>${scoreOf(a)}</b> connectivity score. <b>${tot}</b> findings in <b>${a.checks.filter(c=>c.bad).length}</b> of ${a.checks.length} checks; <b>${dl.out.length}</b> of ${dl.total} cross-module references do not resolve${BEFORE.findings!=null?`. Baseline build: ${BEFORE.findings} findings, score ${BEFORE.score}`:""}.`,`<div class="row">${fchip("m_zl_score")}<button class="btn primary" data-zl-rerun>Re-run the audit</button>${stdChip("togaf","Interoperability and data-architecture views")}${stdChip("dmbok","Data lineage, ownership and reference data checks")}</div>`)}${lensNote()}
- ${views("zl_v",["Overview","Gaps by check","Dead links","Orphans","Event fan-out","Fixes and resolvers","Metrics"],[paneOverview(a),paneGaps(a),paneDead(a),paneOrphans(a),paneFan(a),paneFixes(),paneMetrics()])}</div>`}
+ return `<div class="screen zl">${hero("Platform · connectivity","Connections and gaps",`<b>${scoreOf(a)}</b> connectivity score. <b>${tot}</b> findings in <b>${a.checks.filter(c=>c.bad).length}</b> of ${a.checks.length} checks; <b>${dl.out.length}</b> of ${dl.total} cross-module references do not resolve${BEFORE.findings!=null?`. Round 14 build: ${BEFORE.findings} findings, ${BEFORE.dead} unresolved references, score ${BEFORE.score}`:""}.`,`<div class="row">${fchip("m_zl_score")}<button class="btn primary" data-zl-rerun>Re-run the audit</button>${stdChip("togaf","Interoperability and data-architecture views")}${stdChip("dmbok","Data lineage, ownership and reference data checks")}</div>`)}${lensNote()}
+ ${(()=>{const X=G(()=>ZLINK15.tabs(a),{t:[],p:[]});return views("zl_v",["Overview","Gaps by check","Dead links","Orphans","Event fan-out","Fixes and resolvers","Metrics"].concat(X.t),[paneOverview(a),paneGaps(a),paneDead(a),paneOrphans(a),paneFan(a),paneFixes(),paneMetrics()].concat(X.p))})()}</div>`}
 REG("zl_conn","Connections and gaps","platform","M5 12h4M15 12h4M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0zM3 6v12M21 6v12",screenFn);
 document.addEventListener("click",e=>{let t;
  if(t=e.target.closest("[data-zl-sel]")){Z.sel=t.dataset.zlSel;S.v.zl_v=1;render();return}
@@ -544,6 +545,9 @@ function wire(){const W=Z.wired=Z.wired||{};
  if(W.mod&&window.MODMAP&&MODMAP.refresh&&!W.fl){W.fl=1;G(()=>MODMAP.refresh())}}
 SEARCHX.push(()=>[{g:"Platform",t:"Connections and gaps",m:"Connectivity score and dead links",c:"--accent",f:()=>go("zl_conn"),k:"connectivity audit gaps dead links orphans reverse links backlinks interoperability"}]);
 function boot(){if(NOFIX)return;wire();fixAll();wire();G(()=>{const a=getAudit(true);fixDebt(a);Z.last=null})}
+/* R15 speed: run the same work in three idle slices after first paint so no single task blocks input for seconds */
+const idleRun=(f,ms)=>{const run=()=>{try{f()}catch(e){console.error("zlink idle",e)}};setTimeout(()=>{if(window.requestIdleCallback)requestIdleCallback(run,{timeout:6000});else run()},ms)};
+function bootStaged(){if(NOFIX)return;idleRun(()=>{wire();fixAll()},1800);idleRun(()=>{wire()},2600);idleRun(()=>{G(()=>{const a=getAudit(true);fixDebt(a);Z.last=null})},3200)}
 window.ZLINK={_fx:{fixRefs,fixWfService,fixAliases,fixMetricUse,fixStepIO,fixFlows,fixLineage,fixInbox,fixMcp,fixSearch,fixAsk,fixDebt,hookAudit,watchDrawer},audit:()=>getAudit(true),deadLinks,universe,graph,connected,open:openRec,interop:runIP,fixAll,score:()=>scoreOf(getAudit(true)),log:()=>Z.log,state:Z,relations,actor,wire,boot};
-if(!NOFIX){setTimeout(boot,1500);setTimeout(()=>{wire();watchDrawer();G(()=>{const l=Z.log.find(x=>x.id==='fx_lineage'),keep=l?l.n:0;fixLineage();const l2=Z.log.find(x=>x.id==='fx_lineage');if(l2)l2.n+=keep});Z.last=null},4000)}
+if(!NOFIX){bootStaged();idleRun(()=>{wire();watchDrawer();G(()=>{const l=Z.log.find(x=>x.id==='fx_lineage'),keep=l?l.n:0;fixLineage();const l2=Z.log.find(x=>x.id==='fx_lineage');if(l2)l2.n+=keep});Z.last=null},4200)}
 })();

@@ -1,0 +1,10 @@
+.zv-t code{white-space:normal;overflow-wrap:anywhere;display:inline-block;max-width:340px}
+.zv-t td{vertical-align:top}
+.zv-rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr));gap:var(--gap,16px)}
+.zv-rule{display:flex;flex-direction:column;gap:12px}
+.zv-rh{align-items:center;flex-wrap:wrap;gap:8px}.zv-sp{flex:1}
+.zv-off{opacity:.65}.zv-bar{align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.zv-kv{margin:0}
+.zv-ch{display:flex;flex-wrap:wrap;gap:4px 10px;margin-bottom:4px}.zv-chb{display:inline-flex;align-items:center;gap:4px;font-size:12px;white-space:nowrap}
+.zv-tiles{margin-bottom:16px}
+.zv-fl{max-width:360px;overflow-wrap:break-word}.zv-act{white-space:nowrap}.zv-act .btn{margin-right:4px}

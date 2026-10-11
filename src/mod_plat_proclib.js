@@ -236,15 +236,17 @@ function finish(P){
   below:mlv<tg[0],hasOwner:oi.named,hasMetric:a.sig.mets.length>0});
  return P;
 }
+let IDXOLD=null,LASTB=0,IDXQ=0;
 function idx(){
+ if(!IDX&&IDXOLD&&performance.now()<20000&&performance.now()-LASTB<1500){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},1600)}return IDXOLD}
  const key=[PROC_IDS().length,PL.custom.length,modsAll().length,window.PLAT&&PLAT.entities?PLAT.entities().length:0,Object.keys(S.proc||{}).map(k=>(S.proc[k]||[]).length).join(","),VER,matReady()?MAT.M.xmodels.length:0,window.LINKS?LINKS.processEdges().length:0].join("|");
  if(IDX&&IDXK===key)return IDX;
- const list=build();IDX={list,by:{}};list.forEach(P=>IDX.by[P.id]=P);IDXK=key;
+ const list=build();IDX={list,by:{}};list.forEach(P=>IDX.by[P.id]=P);IDXK=key;LASTB=performance.now();IDXOLD=IDX;
  syncMat();list.forEach(finish);list.forEach(snap);
  refreshMetrics();
  return IDX;
 }
-const bump=()=>{VER++;IDX=null};
+const bump=()=>{VER++;if(IDX)IDXOLD=IDX;IDX=null};
 /* ---------- registering every process as a capability in the Maturity models engine ---------- */
 let BY=null;
 function getBY(){
@@ -679,7 +681,7 @@ window.PROCLIB={
  get(id){const P=gof(id)||primaryOf(id);if(!P)return null;return Object.assign(summary(P),{title:P.title,stepsList:P.steps.map(s=>Object.assign({},s)),entities:{r:P.ent.r.slice(),w:P.ent.w.slice()},trigger:trigOf(P),override:P.override?Object.assign({},P.override):null,history:(PL.hist[P.id]||[]).map(h=>Object.assign({},h)),capability:P.cap?P.cap.id:null,assessment:{avg:r1(P.a.avg),raw:P.a.raw,weakest:P.a.weak,capped:P.a.capped,evidence:Object.assign({},P.a.ev)}})},
  addProcess,setSteps,maturity:maturityOf,stats(){const s=stats();return{processes:s.processes,modules:s.modules,modulesCovered:s.covered,avgMaturity:s.avg,belowTarget:s.below,noOwner:s.noOwner,noMetric:s.noMetric,noBackup:s.noBackup,byLevel:s.byLevel,dimensionAverage:s.dimAvg}},
  moduleMaturity,forModule:mid=>idx().list.filter(P=>P.module===mid).map(summary),primary:mid=>{const P=primaryOf(mid);return P?P.id:null},find:q=>{const P=findProc(q);return P?P.id:null},
- refresh(){bump();idx();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()}))
+ refresh(){bump();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()}))
 };
 setTimeout(()=>{try{idx();if(window.MODMAP&&MODMAP.refresh)MODMAP.refresh()}catch(e){console.error("proclib init",e)}},0);
 })();

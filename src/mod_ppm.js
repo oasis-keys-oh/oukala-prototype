@@ -179,7 +179,7 @@ DND.on("ppmst",(id,from,to)=>{const f=+from.split(":")[1],t=+to.split(":")[1],d=
 const tok=s=>new Set((s||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3&&!/^(that|this|with|from|have|will|their|them|than|more|into|your|they|when)$/.test(w)));
 function dupOf(v){const a=tok((v.title||"")+" "+(v.why||""));if(a.size<2)return null;let best=null,bs=0;DEMAND.forEach(d=>{const b=tok(d.n+" "+d.why),i=[...a].filter(x=>b.has(x)).length,s=i/Math.max(3,Math.min(a.size,b.size));if(s>bs){bs=s;best=d}});return bs>=.28?{d:best,pct:Math.min(96,Math.round(bs*130))}:null}
 const OBJS=()=>["O1","O2"].map(o=>[o,N(o).n]);
-function suggest(v){const t=((v.title||"")+" "+(v.why||"")).toLowerCase();let s=2,r=1,u=2;if(/publish|standard|editor|codif|reader|comment|public/.test(t))s=4;if(/strategic|board|objective|modern/.test(t))s=5;if(/risk|audit|control|security|resilien|outage|compliance|regulat|fasb|asc/.test(t))r=4;if(/regulat|deadline|effective|mandate|expires?|renew/.test(t))u=5;else if(/before|by q|quarter|window/.test(t))u=3;return {s,r,u}}
+function suggest(v){const t=((v.title||"")+" "+(v.why||"")).toLowerCase();let s=2,r=1,u=2;if(/publish|standard|editor|codif|reader|comment|public/.test(t))s=4;if(/strategic|board|objective|modern/.test(t))s=5;if(/risk|audit|control|security|resilien|outage|compliance|regulat|standards board|asc/.test(t))r=4;if(/regulat|deadline|effective|mandate|expires?|renew/.test(t))u=5;else if(/before|by q|quarter|window/.test(t))u=3;return {s,r,u}}
 
 /* ---------- fund and create a project ---------- */
 const COLS=["--p2","--s4","--e1","--u4","--p6","--w3"];let pnum=4;

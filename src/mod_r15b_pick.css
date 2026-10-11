@@ -1,0 +1,98 @@
+/* Round 15 B: person picklist */
+.pk{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
+.pk-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:8px 12px;border-radius:14px;background:var(--glass2);border:1px solid var(--edge);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.pk-btn:hover{border-color:var(--accent)}
+.pk-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pk-btn>svg{margin-left:auto;flex:none;color:var(--muted)}
+.pk-av{flex:none;display:inline-flex}
+.pk-t{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+.pk-t b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk-t b.pk-ph{color:var(--muted);font-weight:500}
+.pk-t small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk-pop{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:80;background:var(--bg);border:1px solid var(--edge);border-radius:16px;box-shadow:0 18px 50px var(--shade);padding:8px;display:flex;flex-direction:column;gap:6px}
+.pk-pop[hidden]{display:none}
+.pk-pop.up{top:auto;bottom:calc(100% + 6px)}
+.pk-q{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--edge);background:var(--glass2);color:var(--ink);font:inherit}
+.pk-list{max-height:300px;overflow:auto;display:flex;flex-direction:column;gap:2px}
+.pk-g{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 10px 2px}
+.pk-o{display:flex;align-items:center;gap:10px;justify-content:space-between;width:100%;padding:8px 10px;border-radius:10px;background:transparent;border:0;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.pk-o:hover,.pk-o.act{background:var(--glass2);outline:1px solid var(--edge)}
+.pk-o[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--accent)}
+.pk-ono{display:flex;flex-direction:column;min-width:0}
+.pk-ono small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk-cc{flex:none;font-size:11.5px;font-weight:700;color:var(--muted);border:1px solid var(--hair);border-radius:99px;padding:2px 8px}
+.pk-none,.pk-ft{font-size:12.5px;color:var(--muted);padding:6px 10px}
+.pk-tags{display:flex;flex-wrap:wrap;gap:6px}
+.pk-tag{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 10px;border-radius:99px;background:var(--glass2);border:1px solid var(--edge);font-size:13px}
+.pk-tag button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
+.fld.t-people{position:relative}
+
+/* ===== Round 15 B: no nested bordered containers. A table wrapper inside a card is flat: no second border, no shadow, no inner vertical scroll. ===== */
+.card .tablewrap,.card .tablewrap.glass,.card .tablewrap.bud-tw,.bud-tw{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:0;max-height:none;overflow-x:auto;overflow-y:visible}
+.card .tablewrap table,.bud-tw table{min-width:0}
+/* ===== Round 15 B: All budget lines ===== */
+.bl-wrap{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bl-bar{display:flex;flex-wrap:wrap;gap:10px 12px;align-items:flex-end}
+.bl-q{flex:1 1 260px;min-width:0;max-width:420px}
+.bl-f{display:flex;flex-direction:column;gap:3px;font-weight:600}
+.bl-f select,.bl-pager select{padding:8px 10px;border-radius:10px;border:1px solid var(--edge);background:var(--glass2);color:var(--ink);font:inherit;max-width:170px}
+.bl-cols{position:relative}
+.bl-cols summary{list-style:none;cursor:pointer}
+.bl-cols summary::-webkit-details-marker{display:none}
+.bl-colpop{position:absolute;z-index:70;top:calc(100% + 6px);left:0;min-width:220px;max-height:340px;overflow:auto;padding:12px;border-radius:16px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--edge);box-shadow:0 18px 50px var(--shade)}
+.bl-colpop label{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
+.bl-scroll{overflow:auto;max-height:min(68vh,720px);border-radius:0;position:relative}
+.bl-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bl-t{width:100%;min-width:900px;border-collapse:separate;border-spacing:0}
+.bl-t th{position:sticky;top:0;z-index:3;background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-radius:0;padding:0;border-bottom:1px solid var(--edge)}
+.bl-t th button{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 8px;cursor:pointer;white-space:nowrap}
+.bl-t th.num button{text-align:right}
+.bl-t th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.bl-t th .sar{margin-left:4px;font-size:10px}
+.bl-t td{padding:8px 8px;font-size:13px;border-radius:0!important;background:transparent;border-bottom:1px solid var(--hair);white-space:nowrap}
+.bl-t td.wrap{white-space:normal;min-width:170px;max-width:210px}
+.bl-t td.num,.bl-t th.num{text-align:right}
+.bl-t tbody tr:hover td{background:var(--glass2)}
+.bl-t tfoot td{position:sticky;bottom:0;z-index:3;background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-top:2px solid var(--edge);border-bottom:0;padding:11px 10px}
+.bl-grp td{background:var(--glass2);padding:0}
+.bl-grp button{all:unset;box-sizing:border-box;display:flex;gap:8px;align-items:center;width:100%;padding:10px 14px;cursor:pointer}
+.bl-grp button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.bl-pager{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.bl-scale{display:inline-flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
+.bl-col[data-c="BD-C"],.bl-col[data-c="BD-O"]{border-color:var(--p4)}
+.bl-col[data-c="XR-P"],.bl-col[data-c="CT-R"]{border-color:var(--w1)}
+/* ===== Round 15 B: Cost center mapping ===== */
+.ccm-stats{margin-bottom:var(--gap,16px)}
+.ccm-u{white-space:normal;min-width:200px;width:320px;max-width:320px}
+.ccm-un{cursor:pointer;border:1px solid var(--hair);margin:2px 2px 2px 0}
+.ccm-un:hover{border-color:var(--accent)}
+.ccm-tot td{border-top:2px solid var(--edge)}
+.ccm-steps{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:12px}
+.ccm-steps li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px}
+.ccm-steps i{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;background:var(--glass2);border:2px solid var(--hair)}
+/* ===== Round 15 B: New menu ===== */
+.nw-btn{display:inline-flex;align-items:center;gap:6px}
+.nw-btn svg{flex:none}
+.nw-pop{position:fixed;inset:auto;margin:0;width:min(340px,calc(100vw - 24px));max-height:78vh;overflow:auto;border-radius:20px;padding:10px;color:var(--ink);border:1px solid var(--edge);top:calc(var(--nw-top,76px));left:auto;right:var(--nw-right,16px)}
+.nw-pop::backdrop{background:transparent}
+.nw-h{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:8px 10px 4px}
+.nw-i{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:12px;background:transparent;border:0;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.nw-i:hover,.nw-i:focus-visible{background:var(--glass2);outline:1px solid var(--edge)}
+.nw-i i{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--glass2);border:1px solid var(--hair)}
+.nw-i span{display:flex;flex-direction:column;min-width:0}
+.nw-i small{color:var(--muted);font-size:12px}
+@media(max-width:700px){.nw-btn .lbl-long{display:none}}
+
+.ccm-t td,.ccm-t th{padding:11px 9px}
+.ccm-t .sub{display:block;font-size:12.5px;color:var(--muted)}
+
+.tb-right .nw-rb{display:inline-flex;align-items:center;gap:6px;padding-inline:11px}
+.nw-rb .lbl-rb{display:none}
+@media(min-width:1700px){.nw-rb .lbl-rb{display:inline}}
+@media(max-width:700px){:root:root .tb-right .nw-rb{display:none}}
+
+:root:root #view .bl-scroll .bl-t thead>tr>th{top:0!important}
+
+.nw-btn .lbl-long{display:none}
+@media(min-width:1600px){.nw-btn .lbl-long{display:inline}}
+.tb-right .nw-btn{padding-inline:12px}

@@ -60,6 +60,7 @@ const GROUPS=[
  ["learn","Knowledge and learning",ICO.learn,"Articles, connected knowledge and training."],
  ["people","People and teams",ICO.people,"Who works where, skills and performance."],
  ["strat","Strategy and performance",ICO.strat,"Goals, risk, maturity, measures and board material."],
+ ["grc","Governance, risk and compliance",ICO.strat,"Risks, controls, findings, policies, audits, vendors and exceptions."],
  ["auto","Automate",ICO.auto,"Design workflows, rules, notifications and automatic fixes."],
  ["ai","AI and governance",ICO.ai,"Watch, test, govern and connect AI agents."],
  ["plat","Platform and administration",ICO.plat,"Data model, processes, building blocks, security and licensing."],

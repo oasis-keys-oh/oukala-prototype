@@ -328,7 +328,7 @@ function requestForm(init){
    {section:"Value and risk"},{k:"ben",label:"Benefit per year",type:"money",help:"Money saved, avoided or earned each year. Leave blank if not measurable."},{k:"risk",label:"Risk if we do not fund it",type:"chips",opts:["Low","Medium","High"],req:true},
    {k:"alt",label:"Alternatives considered",type:"longtext",req:true,help:"At least one, and why it was not chosen."},
    {section:"Who"},{k:"req",label:"Requested by",type:"people",req:true},{k:"sp",label:"Sponsor (a person who is accountable)",type:"people",req:true,help:"AI agents cannot be sponsors."},{k:"cc",label:"Cost center",type:"select",opts:ccs,req:true},{k:"att",label:"Attach a quote or document",type:"file"}],
-  defaults:Object.assign({type:"Increase",yrs:"1",src:"Operating budget",risk:"Medium",req:"Priya Shah",sp:"Priya Shah",cc:"CC-4411",color:"OP-U",proj:"PR1"},init),
+  defaults:Object.assign({type:"Increase",yrs:"1",src:"Operating budget",risk:"Medium",req:ME(),sp:"Priya Shah",cc:"CC-4411",color:"OP-U",proj:"PR1"},init),
   live,
   onSubmit:v=>{const a=+v.amt,tot=sum(CATS,c=>+v["c_"+c]||0),bad=m=>({close:false,toast:m,audit:"rejected budget request: "+m});
    if(!(a>0))return bad("Enter an amount above zero.");if(!sponsorHuman(v.sp))return bad("The sponsor must be a person. AI agents can draft but not sponsor.");
