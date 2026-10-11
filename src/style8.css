@@ -90,3 +90,7 @@
 :root:root .card .tablewrap.glass::before,:root:root .card .tablewrap.glass::after{display:none}
 :root:root .at-world .at-reg{margin:0 2px 2px 0}
 .feed>.fi+.fi{margin-top:5px}
+/* Round 16 fix: full-screen drawer keeps the art as a light wash and lets wide detail grids use wide columns */
+#drawer.dfull{background-image:linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 90%,transparent) 100%),var(--art-drawer)}
+#drawer.dfull .bc-pd{grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:18px}
+#drawer.dfull .bc-pd>div:has(table){grid-column:1/-1}
