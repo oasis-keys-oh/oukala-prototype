@@ -26,6 +26,6 @@ const R_=(src)=>new RegExp(src.replace(/NUM/g,NUMW));
 const pctOf=s=>m1(s,/(\d+(?:\.\d+)?)\s*(?:percent|%)/);
 /* ---------- people used here ---------- */
 const LEGAL="Meridian Legal";
-const TIERS=[{id:"T1",max:10000,role:"Budget owner",who:"Maya Ortiz"},{id:"T2",max:25000,role:"Portfolio lead",who:"Maya Ortiz"},{id:"T3",max:100000,role:"CIO",who:"Omar Hamid"},{id:"T4",max:250000,role:"CFO",who:"CFO"},{id:"T5",max:1000000,role:"CEO",who:"CEO"},{id:"T6",max:Infinity,role:"Board finance committee",who:"Board finance committee"}];
+const TIERS=[{id:"T1",max:10000,role:"Budget owner",who:"Maya Ortiz"},{id:"T2",max:25000,role:"Portfolio lead",who:"Maya Ortiz"},{id:"T3",max:100000,role:"CIO",who:"Casey Rowan"},{id:"T4",max:250000,role:"CFO",who:"CFO"},{id:"T5",max:1000000,role:"CEO",who:"CEO"},{id:"T6",max:Infinity,role:"Board finance committee",who:"Board finance committee"}];
 const tierOf=amt=>TIERS.find(t=>Math.abs(amt)<=t.max)||TIERS[5];
 const chainFor=amt=>{const t=tierOf(amt),out=[{r:"Contract owner",who:null,why:"Confirms the business need"},{r:LEGAL,who:null,why:"Reviews any change to legal terms"}];if(Math.abs(amt)>10000)out.push({r:"Controller",who:"Avery Chen",why:"Orders above $10,000 need finance review"});out.push({r:t.role,who:t.who,why:"Delegation of authority "+t.id+" covers up to "+(t.max===Infinity?"any amount":D$(t.max))});return out};

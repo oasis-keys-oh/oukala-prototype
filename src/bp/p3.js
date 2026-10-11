@@ -10,7 +10,7 @@ const apprChip=r=>`<span class="pill ${r.idx<=CIOIDX()?"good":"warn"}">${esc(r.f
 function chainHTML(r){return `<ol class="bud-chain">${r.chain.map((c,i)=>`<li class="${c.k}"><i>${i+1}</i><div><b>${esc(c.n)}</b> <span class="muted small">${esc(c.role)}</span><div class="small muted">${esc(c.why)}</div></div></li>`).join("")}</ol>`}
 const lineName=l=>`<b>${esc(l.id)}</b><span class="sub">${esc(l.n)}</span>`;
 function stat(label,val,sub,cls){return `<div class="tile glass"><span class="lbl">${label}</span><span class="big num" data-role="metric">${val}</span><span class="delta ${cls||"good"}">${sub}</span></div>`}
-const delegateCan=(amt,cat,req,o)=>{if(req==="Omar (CIO)")return false;return omarCan(amt,cat,req,o)};
+const delegateCan=(amt,cat,req,o)=>{if(req==="Casey (CIO)")return false;return omarCan(amt,cat,req,o)};
 function addLed(e){const n=B().nx.led++;const x=Object.assign({id:"RL-"+String(n).padStart(2,"0"),d:iso(TODAYD)},e);B().led.push(x);return x}
 
 /* ---------- 1. Budgets overall ---------- */

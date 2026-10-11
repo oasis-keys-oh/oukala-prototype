@@ -5,7 +5,7 @@
 const H=s=>esc(s==null?"":String(s));
 const O=window.ORGX=window.ORGX||{};
 S.org=S.org||{};
-Object.assign(S.org,Object.assign({tab:"chart",mode:"both",collapsed:{},sel:null,q:"",f:{team:"",agents:"",load:""},lines:{dotted:true,matrix:false},k:0,x:0,y:0,outline:false,stud:null,log:[],built:[],ptab:0,seq:1,ov:{}},S.org));
+Object.assign(S.org,Object.assign({tab:"chart",mode:"both",collapsed:{},sel:null,q:"",f:{team:"",agents:"",load:""},lines:{dotted:false,matrix:false},k:0,x:0,y:0,outline:false,stud:null,log:[],built:[],ptab:0,seq:1,ov:{}},S.org));
 const OS=S.org;
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const first=n=>String(n).split(" ")[0];
@@ -14,46 +14,46 @@ const TODAY="2026-10-10";
 
 /* ---------- the 45 staff of Meridian Standards Foundation. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
 const RAW=`Catherine Doyle|Chief executive|-|Executive office|ceo|||Board relations and annual priorities;The final call when two departments disagree;Member and regulator relationships|Keeps 300 member organizations confident that the standards they rely on are independent, current and trusted.|Norwalk, CT|3
-Omar Hamid|Chief information officer|Catherine Doyle|Technology|cio|||Technology strategy and the portfolio;Spend above $25,000 on technology;Escalated vendor problems|Turns the Foundation's publishing mission into systems that work, and protects every dollar of technology spend.|Norwalk, CT|6
+Casey Rowan|Chief information officer|Catherine Doyle|Technology|cio|||Technology strategy and the portfolio;Spend above $25,000 on technology;Escalated vendor problems|Turns the Foundation's publishing mission into systems that work, and protects every dollar of technology spend.|Norwalk, CT|6
 Marcus Reid|Chief financial officer|Catherine Doyle|Finance|cfo|||Budget and forecast questions;Audit, tax and treasury;Spend above $100,000|Gives the board a single, trusted view of the Foundation's money and keeps it audit-ready.|Norwalk, CT|5
 Elena Marsh|Chief editor|Catherine Doyle|Editorial|chiefed|||Whether a draft standard is ready to publish;Editorial policy and the style guide;Disputes with technical committees|Guards the quality and independence of every published standard, which is what members pay for.|Norwalk, CT|12
 Joanna Pierce|Head of People Operations|Catherine Doyle|People operations|hr|||Hiring, onboarding and role changes;Leave, benefits and policy questions;Review cycles and calibration|Makes sure the right people are in the right roles, and that every employee knows what good looks like.|Norwalk, CT|4
 Theo Marlowe|General counsel|Catherine Doyle|Legal and compliance|legal|||Contract terms and liability;Conflict-of-interest and antitrust questions;Regulatory filings|Protects the Foundation's independence and signs off on every commitment that binds it.|Washington, DC|7
-Maya Ortiz|Portfolio lead|Omar Hamid|Portfolio and delivery|pmo|||Which projects are funded and in what order;Project status and risks across the portfolio;Resource conflicts between projects|Makes sure the four most important projects get the people and money they need, in the right order.|Washington, DC|7
+Maya Ortiz|Portfolio lead|Casey Rowan|Portfolio and delivery|pmo|||Which projects are funded and in what order;Project status and risks across the portfolio;Resource conflicts between projects|Makes sure the four most important projects get the people and money they need, in the right order.|Washington, DC|7
 Priya Shah|Project manager|Maya Ortiz|Portfolio and delivery|pm|||Standards Platform Upgrade plan and dates;Release readiness;Lumen delivery follow-up|Keeps the Standards Platform Upgrade on a plan the vendor and the editors both believe.|Norwalk, CT|5
 Dev Rao|Project manager|Maya Ortiz|Portfolio and delivery|pm|||Taxonomy Data Hub plan and dates;Data migration sequencing;Taxonomy workshops|Delivers the Taxonomy Data Hub so search, publishing and reporting use one vocabulary.|Chicago, IL|4
 Hannah Lowe|Scrum master|Maya Ortiz|Portfolio and delivery|pm|||Sprint ceremonies and team health;Removing blockers fast;Agile coaching for the editors|Keeps the delivery teams shipping every two weeks without burning out.|Remote|2
 Leila Haddad|Communications lead|Maya Ortiz|Portfolio and delivery|comms|Elena Marsh||Announcements to members and staff;Release notes and newsletters;Change communications|Makes sure members and staff hear about changes from us first, in plain language.|Remote|2
 Owen Pryce|Organizational change manager|Maya Ortiz|Portfolio and delivery|comms|Nia Brooks||Adoption plans and training for new tools;Stakeholder readiness checks;Resistance and feedback|Gets people to actually use what the projects deliver, so the benefit shows up.|Remote|2
-Jordan Lee|Chief architect|Omar Hamid|Architecture|arch|||Whether a design fits the target architecture;Integration patterns and standards;Technology decisions that last five years|Stops the Foundation from building the same thing twice and keeps systems able to talk to each other.|Remote|8
+Jordan Lee|Chief architect|Casey Rowan|Architecture|arch|||Whether a design fits the target architecture;Integration patterns and standards;Technology decisions that last five years|Stops the Foundation from building the same thing twice and keeps systems able to talk to each other.|Remote|8
 Rina Kovacs|Solutions architect|Jordan Lee|Architecture|arch||PR1:20|Search and indexing design;Data model reviews;API contracts with vendors|Turns requirements into designs that engineers and vendors can build without guessing.|Remote|6
 Aaron Whitfield|Security architect|Jordan Lee|Architecture|arch|Rina Okafor||Threat models for new systems;Identity and encryption patterns;Security design review|Builds security into designs early, when it is cheapest.|Remote|9
-Sam Patel|Platform engineering lead|Omar Hamid|Platform engineering|eng|||Production platform health and on-call;Azure cost and capacity;Anything that needs a release to production|Keeps the Standards Platform up for 420 editors and thousands of readers.|Remote|5
+Sam Patel|Platform engineering lead|Casey Rowan|Platform engineering|eng|||Production platform health and on-call;Azure cost and capacity;Anything that needs a release to production|Keeps the Standards Platform up for 420 editors and thousands of readers.|Remote|5
 Leah Moss|Platform engineer|Sam Patel|Platform engineering|eng||PR1:40|Search index jobs and relevance deployments;Pipelines;Environment problems|Ships search relevance changes safely and quickly.|Remote|2
 Ben Ito|Platform engineer|Sam Patel|Platform engineering|eng||PR1:30,PR3:30|Failover and resilience tests;Kubernetes upgrades;Monitoring dashboards|Makes the portal resilient so an outage does not stop a publication date.|Remote|4
 Carla Reyes|Platform engineer|Sam Patel|Platform engineering|eng||PR1:50|Integrations with the Contract Repository;API gateway;Service accounts|Connects the Foundation's systems so data moves once and stays correct.|Remote|9
 Anita Cole|Developer|Sam Patel|Platform engineering|dev||PR1:60|Editor workspace features;Front-end fixes;Pull request reviews|Builds the features editors use every day.|Remote|2
 Ben Alvarez|QA analyst|Sam Patel|Platform engineering|dev||PR1:30,PR4:20|Test plans and acceptance testing;Regression results;Whether a release is safe|Finds the defect before a member does.|Remote|2
-Anil Mehta|Data engineering lead|Omar Hamid|Data and analytics|data|||Data pipeline priorities;Data quality rules;Who may see which dataset|Gives the Foundation data it can trust, and gives every team one version of the numbers.|Chicago, IL|3
+Anil Mehta|Data engineering lead|Casey Rowan|Data and analytics|data|||Data pipeline priorities;Data quality rules;Who may see which dataset|Gives the Foundation data it can trust, and gives every team one version of the numbers.|Chicago, IL|3
 Yuki Tanaka|Data engineer|Anil Mehta|Data and analytics|data||PR2:50|Taxonomy loading jobs;Pipeline failures;Azure Data Factory|Keeps the Taxonomy Data Hub fed with clean, current data.|Chicago, IL|5
 Rosa Delgado|Data engineer|Anil Mehta|Data and analytics|data||PR2:40|Data catalog and lineage;Data steward questions;Master data matching|Makes it possible to answer "where did this number come from?" in a minute.|Chicago, IL|7
 Femi Adeyemi|Data analyst|Anil Mehta|Data and analytics|data|Maya Ortiz|PR2:20|Portfolio and service reports;Ad hoc analysis;Dashboards|Turns operational data into answers leaders can act on.|Remote|3
-Tom Becker|Service desk lead|Omar Hamid|Service desk and operations|desk|||Incidents and major incident command;Service desk staffing and queues;Request fulfilment problems|Gets staff and editors working again fast, and spots the problem behind the problem.|Norwalk, CT|9
+Tom Becker|Service desk lead|Casey Rowan|Service desk and operations|desk|||Incidents and major incident command;Service desk staffing and queues;Request fulfilment problems|Gets staff and editors working again fast, and spots the problem behind the problem.|Norwalk, CT|9
 Maribel Cruz|Service desk analyst|Tom Becker|Service desk and operations|desk|||First-line help for editors;Password and access requests;Ticket status|Is the friendly first answer when something breaks.|Norwalk, CT|6
 Priti Joshi|Tier 2 support analyst|Tom Becker|Service desk and operations|desk|||Escalated incidents;Problem records and workarounds;Service level reporting|Solves the harder tickets and writes the fix down so it is solved once.|Norwalk, CT|8
 Ines Duarte|Operations engineer|Tom Becker|Service desk and operations|ops|||The configuration database;Backup and restore tests;Hardware and AV lifecycle|Keeps the map of what we run accurate, so every impact analysis is right.|Norwalk, CT|6
 Paula Grant|Operations engineer|Tom Becker|Service desk and operations|ops|||On-call rota and handoffs;Patching windows;Endpoint management|Makes sure someone competent is always on call and ready.|Norwalk, CT|1
 Wes Hartley|Service desk analyst|Tom Becker|Service desk and operations|desk|||Facilities and room bookings;Onboarding laptops;Meeting room AV|Gets new starters productive on day one.|Norwalk, CT|8
-Rina Okafor|Security lead|Omar Hamid|Security|sec|||Access requests for restricted data;Security incidents;Quarterly access reviews|Keeps member and staff data safe, and proves it to auditors.|Remote|4
+Rina Okafor|Security lead|Casey Rowan|Security|sec|||Access requests for restricted data;Security incidents;Quarterly access reviews|Keeps member and staff data safe, and proves it to auditors.|Remote|4
 Imran Sheikh|Security analyst|Rina Okafor|Security|sec|Tom Becker||Alert triage;Phishing reports;Vulnerability follow-up|Watches the alerts so nobody else has to.|Remote|3
 Colette Brandt|Identity engineer|Rina Okafor|Security|sec|||Entra ID groups and conditional access;Joiner, mover, leaver automation;Privileged access|Makes sure people have exactly the access they need and no more.|Remote|9
-Nia Brooks|Change manager|Omar Hamid|Change and release|chg|Maya Ortiz||Whether a change can go in this week;The change calendar and freezes;CAB agenda|Prevents Friday-afternoon surprises by making every change visible before it happens.|Norwalk, CT|3
+Nia Brooks|Change manager|Casey Rowan|Change and release|chg|Maya Ortiz||Whether a change can go in this week;The change calendar and freezes;CAB agenda|Prevents Friday-afternoon surprises by making every change visible before it happens.|Norwalk, CT|3
 Hollis Grey|Release coordinator|Nia Brooks|Change and release|chg|||Release schedules;Go-live checklists;Rollback plans|Makes releases boring, which is the goal.|Norwalk, CT|9
 Avery Chen|Controller|Marcus Reid|Finance|ctrl|||Month-end close and journal entries;Invoice approval exceptions;Audit evidence and accounting policy|Closes the books accurately and on time, so the board and auditors trust every number.|Norwalk, CT|6
 Noelle Park|Accounts payable lead|Avery Chen|Finance|apfa|||Why an invoice has not been paid;Vendor payment runs;Three-way match exceptions|Pays vendors correctly and on time, and catches duplicates before the money leaves.|Norwalk, CT|6
-Victor Amaya|Financial analyst|Avery Chen|Finance|apfa|Maya Ortiz||Budget versus actual;Forecast updates;Technology business management reports|Explains where the money went and where it is going.|Norwalk, CT|5
+Victor Amaya|Finance and budget lead|Avery Chen|Finance|apfa|Maya Ortiz||Budget versus actual;Forecast updates;Technology business management reports|Explains where the money went and where it is going.|Norwalk, CT|5
 Camille Ortega|Procurement lead|Marcus Reid|Finance|legal|Theo Marlowe||Vendor selection and quotes;Purchase orders over $25,000;Contract renewals calendar|Gets the Foundation better terms and no surprise auto-renewals.|Norwalk, CT|6
-Kenji Watanabe|AI platform lead|Omar Hamid|Technology|ai|Theo Marlowe||Whether an AI agent may go live;Guardrails, models and spend caps;AI incident reviews|Lets the Foundation use AI aggressively and safely, with every agent sponsored and governed.|Remote|2
+Kenji Watanabe|AI platform lead|Casey Rowan|Technology|ai|Theo Marlowe||Whether an AI agent may go live;Guardrails, models and spend caps;AI incident reviews|Lets the Foundation use AI aggressively and safely, with every agent sponsored and governed.|Remote|2
 Noor Haddad|Standards editor|Elena Marsh|Editorial|editor|||Edits to a standard in progress;Comment-letter responses;Terminology questions|Turns committee drafts into clear, consistent standards.|Norwalk, CT|1
 Pierce Caldwell|Standards editor|Elena Marsh|Editorial|editor|||Cross-reference and numbering checks;Redlines and change logs;Final proofs|Makes sure a standard says the same thing everywhere it appears.|Norwalk, CT|9
 Isla Fenn|Associate editor|Elena Marsh|Editorial|editor|||Comment tracking;Meeting minutes for technical committees;Style-guide lookups|Keeps every public comment answered and on the record.|Norwalk, CT|3
@@ -95,7 +95,7 @@ const ALIAS={};
 const A=(who,list)=>list.split(",").forEach(k=>ALIAS[k.trim().toLowerCase()]=who);
 A("Sam Patel","platform team,platform owner,platform lead,release train engineers");A("Tom Becker","service desk,service desk lead,service desk manager,ops team,it ops,operations,operations lead,incident commander,incident manager,service owners");
 A("Maya Ortiz","pmo,pmo director,portfolio office,portfolio office lead,resource office,resource management,resource manager,capacity planning,benefit owners,pmo and procurement");A("Avery Chen","finance,controller,finance controller,accounting policy,finance and it ops,finance (controller)");
-A("Marcus Reid","cfo,cfo office");A("Omar Hamid","cio office,executive office");A("Catherine Doyle","chief strategy officer,strategy office,chief of staff");A("Anil Mehta","data council,data council chair");A("Rosa Delgado","data governance,data stewards,field stewards");
+A("Marcus Reid","cfo,cfo office");A("Casey Rowan","cio office,executive office");A("Catherine Doyle","chief strategy officer,strategy office,chief of staff");A("Anil Mehta","data council,data council chair");A("Rosa Delgado","data governance,data stewards,field stewards");
 A("Kenji Watanabe","ai governance,ai governance board,ai platform lead,ai governance lead,governance office");A("Noor Haddad","knowledge,knowledge manager,knowledge office,knowledge and automation");A("Nia Brooks","change manager,change management,process governance lead,process office,process owners");
 A("Hollis Grey","release management,release manager,release office");A("Camille Ortega","vendor management,vendor mgmt,vendor manager,contract owners,procurement lead");A("Theo Marlowe","compliance lead,meridian legal,procurement and legal,general counsel delegate,internal audit");
 A("Leila Haddad","experience office");A("Rina Kovacs","data architect");A("Jordan Lee","architecture,enterprise architect");A("Noelle Park","finance operations,accounts payable");A("Joanna Pierce","people office,head of people operations");A("Ines Duarte","cmdb owner,cmdb team,configuration manager,it asset management");
@@ -109,6 +109,9 @@ const COLS=["--p1","--p2","--p3","--p4","--s2","--s3","--e3","--e4","--u2","--u3
 function ensureDir(){
  STAFF.forEach((p,i)=>{if(window.who&&who(p.n))return;
   const id=slug(p.n);DIR.push({id,name:p.n,kind:"human",role:p.role,team:p.unit,org:"Meridian Standards Foundation",skills:(SKILL_BY[p.rt]||[]).slice(),loc:p.loc,hrs:40,rate:0,c:COLS[i%COLS.length],email:id.replace(/-/g,".")+"@meridian.example",mgr:p.mgr||undefined,tenure:p.yrs})})}
+/* data hygiene: a person must never carry a role as a name. The seeded directory had "Chief Editor" as a person; the person is Elena Marsh. */
+(function(){const d=DIR.find(x=>x.name==="Chief Editor"&&x.kind==="human");if(d){Object.assign(d,{name:"Elena Marsh",id:"elena-marsh",role:"Chief editor",team:"Editorial",email:"elena.marsh@meridian.example",mgr:"Catherine Doyle"})}
+ const c=DIR.find(x=>x.name==="Casey Rowan");if(c)c.email="casey.rowan@meridian.example"})();
 ensureDir();
 O.ensureDir=ensureDir;
 const dirRec=n=>(window.who&&who(n))||null;
@@ -127,7 +130,7 @@ const AG_SEED={
  "Invoice Advisor":{sp:"Avery Chen",hrs:2.5,does:"Scores invoices against the PO, contract and history; recommends approve, hold or reject."},
  "Knowledge Curator":{sp:"Tom Becker",hrs:2,does:"Drafts knowledge articles from resolved incidents for an owner to publish."},
  "Test Agent":{sp:"Sam Patel",hrs:3,does:"Generates and runs sandbox tests; a second model validates results."},
- "Personal assistant":{sp:"Omar Hamid",hrs:3.5,does:"Prepares briefings and drafts replies from the executive's own calendar and tasks."},
+ "Personal assistant":{sp:"Casey Rowan",hrs:3.5,does:"Prepares briefings and drafts replies from the executive's own calendar and tasks."},
  "Triage Agent":{sp:"Tom Becker",hrs:5,does:"Classifies and routes incidents; finds similar past incidents."},
  "PMO Agent":{sp:"Maya Ortiz",hrs:4,does:"Drafts status, checks critical path and forecasts finish dates."},
  "Change Risk Agent":{sp:"Nia Brooks",hrs:2.5,does:"Scores change risk and detects collisions with freezes and other changes."},
@@ -169,7 +172,7 @@ function ownIndex(){return memoF("own",()=>{
  const bad=un.metrics.length+un.procs.length+un.ents.length+un.svcs.length;
  return{by:o,un,total:tot,named:tot-bad,pct:tot?Math.round(100*(tot-bad)/tot):100}})}
 O.ownIndex=ownIndex;
-O.owns=n=>ownIndex().by[n]||{metrics:[],procs:[],ents:[],svcs:[],projs:[],raid:[],backup:[]};
+O.ownRecs=n=>ownIndex().by[n]||{metrics:[],procs:[],ents:[],svcs:[],projs:[],raid:[],backup:[]};
 /* ---------- permissions: from the access roles in Admin, the DOA tiers in Budgets and the role template ---------- */
 const CAPL={view:"View records",fin:"View finance records",contract:"Manage contracts",restricted:"View restricted data",edit:"Edit records",approve:"Approve invoices",agents:"Run AI agents",export:"Export data",config:"Change configuration",secadm:"Manage security"};
 function doaFor(n){
@@ -196,7 +199,7 @@ O.perms=perms;O.MG=MG;O.LV=LV;O.DC=DC;O.DA=DA;
 function pending(n){return memoF("pend:"+n,()=>{try{return workFor(n)}catch(e){return[]}})}
 O.pending=pending;
 function perf(n){
- const p=BY[n],r=rnd(n+"perf"),own=O.owns(n),wl=(()=>{try{return workload(n)}catch(e){return{pct:60,hrs:20,cap:40,items:0}}})();
+ const p=BY[n],r=rnd(n+"perf"),own=O.ownRecs(n),wl=(()=>{try{return workload(n)}catch(e){return{pct:60,hrs:20,cap:40,items:0}}})();
  const ms=own.metrics.map(id=>METRICS[id]).filter(Boolean);
  const ratio=m=>{const c=+m.cur,t=+m.tgt;if(!t&&t!==0)return 1;if(m.dir==="max")return Math.min(1,c/t);return c<=t?1:Math.max(0,t/c)};
  const att=ms.length?Math.round(100*ms.reduce((a,m)=>a+ratio(m),0)/ms.length):Math.round(78+r()*18);
@@ -266,15 +269,15 @@ function build(o){
  try{S.agents.push({id,n:nm,kind:"Personal agent",prov:"Anthropic",model:rec.model,cap:"personal",auto:LVL[al].auto,runs:0,spend:0,"cap$":5,hits:0,st:"running",owner:p.unit,tools:tools.slice(0,6),data:data.slice(0,6),guards:guards.slice(0,5),act:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],sponsor:n,orgBuilt:true})}catch(e){}
  try{if(!(window.who&&who(nm)))DIR.push({id:slug(nm),name:nm,kind:"ai",role:"Agent sponsored by "+n+": "+sel[0].dom.toLowerCase()+" assistant",team:"AI agents",org:"",skills:sel.map(x=>x.dom),loc:"",hrs:168,rate:0,c:"--p4",agent:id,mgr:n})}catch(e){}
  try{const pp=S.ppl&&S.ppl.people&&S.ppl.people.find(q=>q.n===n);if(pp&&S.ppl.agents)S.ppl.agents.push({id,n:nm,tier:al==="act"?3:al==="approval"?2:1,model:rec.model,owner:pp.id,scope:data.slice(0,4),cap:20,base:0,kill:rec.kill,guards:guards.slice(0,4),does:rec.does,kind:"agent",c:"--p4"})}catch(e){}
- OS.log.unshift({t:Date.now(),agent:nm,sponsor:n,what:"Agent created in "+LVL[al].n+" mode with "+sel.length+" capability"+(sel.length===1?"":"ies").replace("ies","ies")+" ("+hrs+" h/week estimated)",by:"Omar Hamid"});
+ OS.log.unshift({t:Date.now(),agent:nm,sponsor:n,what:"Agent created in "+LVL[al].n+" mode with "+sel.length+" capability"+(sel.length===1?"":"ies").replace("ies","ies")+" ("+hrs+" h/week estimated)",by:"Casey Rowan"});
  audit("Agent built",nm+" sponsored by "+n+", "+LVL[al].n+", "+hrs+" h/week");
  if(window.ATLAS&&ATLAS.bump)try{ATLAS.bump()}catch(e){}
  return{ok:true,agent:rec}}
 O.build=build;
 function setAutonomy(name,al){const a=agentsAll().find(x=>x.name===name);if(!a)return false;const opp=opps(a.sponsor).filter(o=>(a.opps||[]).indexOf(o.id)>=0);if(al==="act"&&opp.some(o=>o.risk==="high"))return false;a.autonomy=al;try{const g=S.agents.find(x=>x.id===a.id);if(g)g.auto=LVL[al].auto}catch(e){}
- OS.log.unshift({t:Date.now(),agent:name,sponsor:a.sponsor,what:"Autonomy changed to "+LVL[al].n,by:"Omar Hamid"});audit("Agent autonomy",name+": "+LVL[al].n);bump();return true}
+ OS.log.unshift({t:Date.now(),agent:name,sponsor:a.sponsor,what:"Autonomy changed to "+LVL[al].n,by:"Casey Rowan"});audit("Agent autonomy",name+": "+LVL[al].n);bump();return true}
 function setState(name,st){const a=agentsAll().find(x=>x.name===name);if(!a)return false;a.status=st;try{const g=S.agents.find(x=>x.id===a.id);if(g)g.st=st}catch(e){}
- OS.log.unshift({t:Date.now(),agent:name,sponsor:a.sponsor,what:st==="running"?"Restored to running":st==="paused"?"Paused by the sponsor (kill switch, this agent)":"Stopped (kill switch, this agent)",by:"Omar Hamid"});audit("Agent "+st,name);bump();return true}
+ OS.log.unshift({t:Date.now(),agent:name,sponsor:a.sponsor,what:st==="running"?"Restored to running":st==="paused"?"Paused by the sponsor (kill switch, this agent)":"Stopped (kill switch, this agent)",by:"Casey Rowan"});audit("Agent "+st,name);bump();return true}
 O.setAutonomy=setAutonomy;O.setState=setState;
 /* ---------- roll-ups used by the screens and the metrics ---------- */
 function stats(){return memoF("stats",()=>{
@@ -303,4 +306,67 @@ O.sync=function(){const s=stats();const set=(id,v)=>{const m=METRICS[id];if(!m)r
 P360_TABS.push({label:"Role and agents",fn:r=>{const p=BY[r.name];if(r.kind==="ai"){const a=agentsAll().find(x=>x.name===r.name);return a?`<p class="story" data-role="story">${H(a.name)} is sponsored by <b>${H(a.sponsor)}</b> and runs in <b>${H(LVL[a.autonomy].n)}</b> mode. It returns about ${a.hrs} hours a week to ${H(first(a.sponsor))}.</p><div class="row"><button class="btn primary" data-org-open="${H(a.sponsor)}" data-org-tab="6">Open ${H(first(a.sponsor))}'s agent studio</button></div>`:"<p class='muted'>Not in the org chart.</p>"}
  if(!p)return "<p class='muted'>This person is not on the Meridian org chart.</p>";const c=capacity(p.n);
  return `<p class="story" data-role="story"><b>Go to ${H(first(p.n))} for:</b> ${p.fn.map(H).join("; ")}.</p><p class="muted">${H(p.value)}</p><div class="row"><span class="pill info">${agentsOf(p.n).length} agent${agentsOf(p.n).length===1?"":"s"}</span><span class="pill good">${c.returned} h/week returned</span><span class="pill warn">${c.available} h/week still available</span></div><div class="row" style="margin-top:12px"><button class="btn primary" data-org-open="${H(p.n)}">Open org profile</button><button class="btn" data-org-open="${H(p.n)}" data-org-tab="6">Agent studio</button></div>`}});
+
+/* ---------- ORGX contract (Round 13): people, accountability domains, ownerOf, byDomain, owns. Consumed by search, gap detection and the budget funnel. ---------- */
+const DOM_RAW=`budget|Budget|budget,budgets,forecast,forecasting,funding,fund,spend,cost,costs,money,financial plan,variance|Victor Amaya|Marcus Reid
+close|Financial close and reporting|close,month end,month-end,journal,journals,general ledger,financial statements|Avery Chen|Marcus Reid
+ap|Accounts payable and invoices|invoice,invoices,payables,payment,payments,three-way match,vendor payment|Noelle Park|Avery Chen
+proc|Procurement and purchasing|purchase,purchase order,po,sourcing,quotes,buying|Camille Ortega|Marcus Reid
+vendor|Vendor management|vendor,vendors,supplier,suppliers,lumen,renewal,renewals|Camille Ortega|Maya Ortiz
+contract|Contracts|contract,contracts,sow,terms,clauses,obligations,msa|Theo Marlowe|Camille Ortega
+legal|Legal and regulatory|legal,regulatory,regulator,antitrust,conflict of interest,liability|Theo Marlowe|Catherine Doyle
+audit|Audit and compliance|audit,auditor,compliance,controls,evidence,sox|Avery Chen|Theo Marlowe
+risk|Enterprise risk|risk,risks,raid,risk register,exposure|Rina Okafor|Theo Marlowe
+security|Information security|security,cyber,vulnerability,vulnerabilities,threat,phishing,encryption|Rina Okafor|Aaron Whitfield
+access|Identity and access|access,identity,entra,permissions,joiner,leaver,privileged,entitlement|Colette Brandt|Rina Okafor
+datagov|Data governance|data governance,governance,stewardship,data owner,data classification,lineage|Anil Mehta|Rosa Delgado
+dataq|Data quality|data quality,quality rules,master data,duplicates,dq|Rosa Delgado|Yuki Tanaka
+arch|Architecture and standards|architecture,design,integration pattern,target architecture,tech standards|Jordan Lee|Rina Kovacs
+integ|Integrations and APIs|integration,integrations,api,interfaces,gateway,connectors|Carla Reyes|Rina Kovacs
+know|Knowledge management|knowledge,articles,kb,runbook,runbooks,how-to,documentation|Noor Haddad|
+change|Change enablement|change,changes,cab,change calendar,freeze,freezes,change request|Nia Brooks|Hollis Grey
+adopt|Adoption and organizational change|adoption,training rollout,readiness,change management people,stakeholder readiness|Owen Pryce|Leila Haddad
+incident|Incident management|incident,incidents,outage,major incident,p1,sev1,restore|Tom Becker|Priti Joshi
+problem|Problem management|problem,problems,root cause,workaround,known error|Priti Joshi|Tom Becker
+request|Service desk and requests|service desk,request,requests,catalog,helpdesk,help desk,tickets|Tom Becker|Maribel Cruz
+sla|Service levels|sla,slas,service level,service levels,response time,targets|Priti Joshi|Tom Becker
+release|Release management|release,releases,go-live,go live,rollback,deployment schedule|Hollis Grey|Nia Brooks
+platform|Platform operations and availability|platform,uptime,availability,production,on-call platform,azure,capacity|Sam Patel|Ben Ito
+cmdb|Configuration management|cmdb,configuration items,ci,assets,configuration database|Ines Duarte|Paula Grant
+oncall|On-call and coverage|on-call,on call,rota,escalation,pager,coverage|Paula Grant|Sam Patel
+finops|Cloud cost (FinOps)|cloud cost,finops,azure cost,azure spend,cost anomalies|Sam Patel|
+bcdr|Business continuity and disaster recovery|continuity,disaster recovery,dr,bcp,backup,restore test,resilience||Sam Patel
+portfolio|Portfolio management|portfolio,prioritization,funding order,stage gate,demand,pipeline|Maya Ortiz|Casey Rowan
+delivery|Project delivery and status|project,projects,delivery,status,schedule,milestone,plan dates|Priya Shah|Maya Ortiz
+qa|Testing and quality assurance|testing,qa,test plan,acceptance,regression,defects|Ben Alvarez|Anita Cole
+strategy|Strategy and objectives|strategy,objectives,okr,okrs,board,priorities,annual plan|Catherine Doyle|Casey Rowan
+techstrat|Technology strategy|technology strategy,roadmap,tech roadmap,digital strategy|Casey Rowan|Jordan Lee
+aigov|AI governance|ai governance,ai policy,guardrails,model risk,ai risk,responsible ai|Kenji Watanabe|Theo Marlowe
+aiops|AI agent operations|agents,ai agents,agent go-live,kill switch,autonomy,agent spend|Kenji Watanabe|Casey Rowan
+people|People and HR|hr,hiring,onboarding,leave,benefits,performance review,headcount,people operations|Joanna Pierce|Grace Whitfield
+skills|Training and skills|training,skills,courses,learning,certification|Grace Whitfield|Joanna Pierce
+editorial|Editorial quality and publishing|editorial,publish,publishing,style guide,standards content,drafts|Elena Marsh|Pierce Caldwell
+comms|Communications|communications,comms,announcements,newsletter,release notes,members|Leila Haddad|Elena Marsh`;
+const pid2=n=>n?slug(n):"";
+const DOMAINS=DOM_RAW.split("\n").map(l=>{const c=l.split("|");return{id:c[0],label:c[1],aliases:c[2].split(",").map(x=>x.trim()).filter(Boolean),ownerId:c[3]?pid2(c[3]):"",backupId:c[4]?pid2(c[4]):""}});
+const DOMBY={};DOMAINS.forEach(d=>DOMBY[d.id]=d);
+const PBYID={};STAFF.forEach(p=>PBYID[slug(p.n)]=p);
+const personRec=idOrName=>{if(!idOrName)return null;const k=String(idOrName);const h=PBYID[k]||PBYID[slug(k)]||null;if(h)return{id:slug(h.n),name:h.n,title:h.role,kind:"human",sponsor:null,unit:h.unit};
+ const a=agentsAll().find(x=>x.name===k||x.id===k||slug(x.name)===k);return a?{id:a.id,name:a.name,title:"AI agent",kind:"agent",sponsor:a.sponsor,unit:"AI agents"}:null};
+Object.defineProperty(O,"people",{configurable:true,enumerable:true,get(){return STAFF.map(p=>personRec(p.n)).concat(agentsAll().map(a=>personRec(a.id)))}});
+O.domains=DOMAINS;
+O.person=personRec;
+O.ownerOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.ownerId):null};
+O.backupOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.backupId):null};
+const dview=d=>({id:d.id,label:d.label,aliases:d.aliases,ownerId:d.ownerId||null,backupId:d.backupId||null,owner:personRec(d.ownerId),backup:personRec(d.backupId),gap:!d.ownerId?"no owner":!d.backupId?"no backup":""});
+O.domainView=dview;
+function scoreDom(d,q,toks){let s=0;const L=d.label.toLowerCase();if(L===q||d.id===q)s+=100;if(L.indexOf(q)>=0)s+=40;
+ d.aliases.forEach(a=>{if(a===q)s+=300;else if(q.indexOf(a)>=0&&a.length>2)s+=30+a.length;else if(a.indexOf(q)>=0&&q.length>2)s+=25});
+ toks.forEach(t=>{if(t.length<3)return;if(L.indexOf(t)>=0)s+=12;d.aliases.forEach(a=>{if(a.split(" ").indexOf(t)>=0||a===t)s+=14;else if(a.indexOf(t)>=0&&t.length>3)s+=6})});return s}
+O.searchDomains=text=>{const q=String(text||"").toLowerCase().trim();if(!q)return [];const toks=q.split(/[^a-z0-9&-]+/).filter(Boolean);return DOMAINS.map(d=>({d,s:scoreDom(d,q,toks)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).map(x=>dview(x.d))};
+O.byDomain=text=>{const r=O.searchDomains(text);return r.length?r[0]:null};
+O.owns=idOrName=>{const p=personRec(idOrName);if(!p)return [];return DOMAINS.filter(d=>d.ownerId===p.id||d.backupId===p.id).map(d=>({domainId:d.id,label:d.label,role:d.ownerId===p.id?"owner":"backup",other:personRec(d.ownerId===p.id?d.backupId:d.ownerId)}))};
+O.gaps=()=>DOMAINS.filter(d=>!d.ownerId||!d.backupId).map(dview);
+O.ownerLine=n=>{const r=O.owns(n).filter(x=>x.role==="owner");return r.map(x=>x.label+(x.other?" (backup: "+x.other.name+")":" (no backup)")).join("; ")};
+
 })();

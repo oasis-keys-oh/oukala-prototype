@@ -3,7 +3,7 @@
 (function(){
 const M=window.MEETX;if(!M)return;
 const T=M.TYPES,E=esc,TODAY=M.TODAY,fd=M.fd,fdw=M.fdw,tm=M.tm,addD=M.addD,dOf=M.dOf,isoOf=M.isoOf,dowOf=M.dowOf,DN=M.DN;
-const ME="Omar Hamid";
+const ME="Casey Rowan";
 S.meet=S.meet||{};Object.assign(S.meet,{cal:S.meet.cal||"week",cur:S.meet.cur||TODAY,av:S.meet.av||"board"});
 const tc=t=>"var("+((T[t]||{}).c||"--p4")+")";
 const tpill=t=>`<span class="pill meet-tp" style="--c:${tc(t)}">${E((T[t]||{n:t}).n)}</span>`;

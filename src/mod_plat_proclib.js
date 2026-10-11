@@ -432,7 +432,7 @@ function procPage(P){
  <h2 class="pl-title">${E(P.name)}</h2>
  <div class="row">${lvPill(P)}<span class="pill ${P.below?"warn":"good"}">${P.below?"Below target":"Meets target"} (Year 1: ${P.target})</span>${mix}<span class="pill mute">${E(P.mix)}</span></div>
  <p class="story" data-role="story">${story(P)}</p>
- <div class="row">${hasScr(P.id)?`<button class="btn primary" data-pl-goscreen="${E(P.id)}">Open the screen</button>`:""}${mod?`<button class="btn" data-pl-map="${E(P.module)}">Show module on the map</button>`:""}<button class="btn" data-pl-owner="${E(P.id)}">Assign owner and backup</button><button class="btn" data-pl-ovr="${E(P.id)}">Override maturity</button></div>
+ <div class="row">${hasScr(P.id)?`<button class="btn primary" data-pl-goscreen="${E(P.id)}">Open the screen</button>`:""}${mod?`<button class="btn" data-pl-map="${E(P.module)}">Show module on the map</button>`:""}${window.DRAW&&DRAW.btn?DRAW.btn(P.id,"Draw this process","primary"):""}<button class="btn" data-pl-owner="${E(P.id)}">Assign owner and backup</button><button class="btn" data-pl-ovr="${E(P.id)}">Override maturity</button></div>
  <div class="dfullgrid pl-sec">
   <div class="pl-card glass">${maturityPanel(P)}</div>
  </div>
@@ -534,7 +534,7 @@ function whereCard(){return `<div class="card glass"><div class="eyebrow">Where 
 function screen(){
  const s=stats();
  const hero_=hero("Process library",`${s.processes} processes, ${s.covered} of ${s.modules} modules covered`,`Every module now has a defined process, <b data-role="metric">${s.processes}</b> in all. Average maturity is <b data-role="metric">${s.avg} of 5</b>, <b data-role="metric">${s.below}</b> are below their Year 1 target, <b data-role="metric">${s.noOwner}</b> have no named owner and <b data-role="metric">${s.noMetric}</b> have no metric. Levels come from observable platform signals across six dimensions, not from opinion; anyone can override a level with evidence.`,
-  `<div class="row">${fchip("m_pl_avg")}${fchip("m_pl_below")}${fchip("m_pl_cov")}${stdChip("cmmi")}${stdChip("iso33k")}${stdChip("bpmn")}<button class="btn" data-pl-goscreen="plat_map">Master process flow</button></div>`);
+  `<div class="row">${fchip("m_pl_avg")}${fchip("m_pl_below")}${fchip("m_pl_cov")}${stdChip("cmmi")}${stdChip("iso33k")}${stdChip("bpmn")}${window.DRAW&&DRAW.btn?DRAW.btn("","Draw a process"):""}<button class="btn" data-pl-goscreen="plat_map">Master process flow</button></div>`);
  return `<div class="screen pl-screen">${hero_}${lensNote()}${views("pl_v",["Library","Maturity","Where to click"],[libPane(),matPane(),whereCard()])}${procCard("plat_proc")}</div>`;
 }
 PROC.reg("plat_proc",{title:"How a process gets into the library and gets a level",std:["cmmi","iso33k","bpmn"],steps:[
@@ -576,6 +576,16 @@ function addProcess(def){
  bump();idx();
  audit("Process library: added process",name+" ("+w.length+" warning"+(w.length===1?"":"s")+")");
  return{ok:true,id,warnings:w};
+}
+/* Round 13: the Process drawing studio writes steps back here (guarded caller: DRAW). Keeps PROC.defs, S.proc and any added-process record in step. */
+function setSteps(id,steps,meta){
+ meta=meta||{};if(!id||!Array.isArray(steps))return false;
+ const cp=steps.map(s=>Object.assign({},s));
+ if(!PROC.defs[id])PROC.reg(id,{title:meta.name||id,std:["bpmn"],steps:cp.map(s=>Object.assign({},s))});
+ S.proc=S.proc||{};S.proc[id]=cp;
+ const cu=PL.custom.find(c=>c.id===id);if(cu){cu.steps=cp.map(s=>({n:s.n,d:s.d||"",who:s.who||"human",owner:s.owner||"",sla:s.sla||"",in:s.in||"",out:s.out||""}));if(meta.name)cu.name=meta.name}
+ bump();idx();audit("Process library: steps updated from the drawing studio",(meta.name||id)+" ("+cp.length+" steps)");
+ return true;
 }
 const moduleMaturity=mid=>{const ps=idx().list.filter(P=>P.module===mid);if(!ps.length)return null;const a=avg(ps.map(P=>P.level/P.max*5));return{n:ps.length,avg:r1(a),level:Math.max(1,Math.min(5,Math.round(a))),min:Math.min.apply(null,ps.map(P=>P.level/P.max*5)),below:ps.filter(P=>P.below).length,ids:ps.map(P=>P.id)}};
 function findProc(q){
@@ -667,7 +677,7 @@ window.PROCLIB={
  open:openProc,openLibrary:openLib,pane:libPane,
  list(){return idx().list.map(summary)},
  get(id){const P=gof(id)||primaryOf(id);if(!P)return null;return Object.assign(summary(P),{title:P.title,stepsList:P.steps.map(s=>Object.assign({},s)),entities:{r:P.ent.r.slice(),w:P.ent.w.slice()},trigger:trigOf(P),override:P.override?Object.assign({},P.override):null,history:(PL.hist[P.id]||[]).map(h=>Object.assign({},h)),capability:P.cap?P.cap.id:null,assessment:{avg:r1(P.a.avg),raw:P.a.raw,weakest:P.a.weak,capped:P.a.capped,evidence:Object.assign({},P.a.ev)}})},
- addProcess,maturity:maturityOf,stats(){const s=stats();return{processes:s.processes,modules:s.modules,modulesCovered:s.covered,avgMaturity:s.avg,belowTarget:s.below,noOwner:s.noOwner,noMetric:s.noMetric,noBackup:s.noBackup,byLevel:s.byLevel,dimensionAverage:s.dimAvg}},
+ addProcess,setSteps,maturity:maturityOf,stats(){const s=stats();return{processes:s.processes,modules:s.modules,modulesCovered:s.covered,avgMaturity:s.avg,belowTarget:s.below,noOwner:s.noOwner,noMetric:s.noMetric,noBackup:s.noBackup,byLevel:s.byLevel,dimensionAverage:s.dimAvg}},
  moduleMaturity,forModule:mid=>idx().list.filter(P=>P.module===mid).map(summary),primary:mid=>{const P=primaryOf(mid);return P?P.id:null},find:q=>{const P=findProc(q);return P?P.id:null},
  refresh(){bump();idx();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()}))
 };

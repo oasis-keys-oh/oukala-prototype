@@ -1,6 +1,6 @@
 
 /* ---------- master data model ---------- */
-const DOMS=[["ITSM","--p4","Tom Becker"],["PPM","--p1","Priya Shah"],["CMDB","--s3","Sam Patel"],["Catalog","--u3","Grace Whitfield"],["SLA","--e4","Nia Brooks"],["Contract","--w1","Maya Ortiz"],["Finance","--p5","Avery Chen"],["People","--s1","Leila Haddad"],["Knowledge","--u1","Knowledge Curator"],["Observability and DevOps","--e1","Omar Hamid"]];
+const DOMS=[["ITSM","--p4","Tom Becker"],["PPM","--p1","Priya Shah"],["CMDB","--s3","Sam Patel"],["Catalog","--u3","Grace Whitfield"],["SLA","--e4","Nia Brooks"],["Contract","--w1","Maya Ortiz"],["Finance","--p5","Avery Chen"],["People","--s1","Leila Haddad"],["Knowledge","--u1","Knowledge Curator"],["Observability and DevOps","--e1","Casey Rowan"]];
 const DOMC=Object.fromEntries(DOMS.map(d=>[d[0],d[1]])),DOMO=Object.fromEntries(DOMS.map(d=>[d[0],d[2]]));
 function domOf(k,t){const s=(t&&t.source||"").toLowerCase();
  if(/^(alert|correlation_group|maintenance_window|false_positive|automation_rule|standard_change|runbook|slo$|synthetic|metric_series|dashboard|log_pattern|pull_request|release$|release_task)/.test(k))return "Observability and DevOps";

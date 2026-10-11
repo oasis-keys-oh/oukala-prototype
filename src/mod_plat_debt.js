@@ -152,7 +152,7 @@ function ensureTasks0(){
  build().filter(x=>x.type==="expired"&&x.status!=="resolved").forEach(x=>{
   if(D.taskDone[x.id])return;D.taskDone[x.id]=1;
   const t={id:"DT-"+(D.tasks.length+1),item:x.id,title:"Fix or decommission: "+x.title.replace(/^Expired: /,""),due:iso(14),owner:x.owner,kind:"Fix or decommission"};
-  D.tasks.push(t);try{if(window.addDemand)addDemand({title:t.title,reason:"Exception "+x.id+" expired on "+fD(x.exp),source:"Debt ledger",cost:Math.max(5,Math.round(x.principal*RATE/1000)),kind:"Platform build",pm:"Omar Hamid"})}catch(e){}
+  D.tasks.push(t);try{if(window.addDemand)addDemand({title:t.title,reason:"Exception "+x.id+" expired on "+fD(x.exp),source:"Debt ledger",cost:Math.max(5,Math.round(x.principal*RATE/1000)),kind:"Platform build",pm:"Casey Rowan"})}catch(e){}
   audit("Task created for expired exception",x.id+" "+t.title)})
 }
 /* ---------- metrics ---------- */
@@ -308,7 +308,7 @@ function actForm(act,id){
  if(act==="assign")openForm({id:"debt_as",title:"Assign this debt item",submit:"Assign",story:"Assign to a team first. An individual is fine when they claim it or there is a reason. The assignee sees it in Person 360.",fields:[{k:"who",label:"Assign to",type:"people",req:true},{k:"why",label:"Reason",type:"text",ph:"Knows the integration"},{k:"go",label:"Start work now",type:"toggle"}],
   onSubmit:v=>{D.ov[id]=Object.assign(D.ov[id]||{},{assignee:v.who});if(v.go&&x.status==="open")D.ov[id].st="progress";bump();audit("Debt assigned",id+" to "+v.who);toast("Assigned to "+v.who,"good");closeDrawer();reopenScreen()}});
  if(act==="demand")openForm({id:"debt_dm",title:"Create a project or demand",submit:"Create",story:"Creates a demand record in Portfolio so the fix is funded and scheduled. The debt item moves to in progress and links to it.",fields:[{k:"kind",label:"Create as",type:"chips",opts:["Demand","Project"]},{k:"title",label:"Title",type:"text",req:true},{k:"cost",label:"Estimated cost",type:"money"}],defaults:{kind:"Demand",title:"Pay down: "+x.title,cost:x.principal*RATE},
-  onSubmit:v=>{let ref="DT-"+(D.tasks.length+1);try{if(window.addDemand){const r=addDemand({title:v.title,reason:"Debt item "+id,source:"Debt ledger",cost:Math.max(1,Math.round((v.cost||0)/1000)),kind:"Platform build",pm:"Omar Hamid"});if(r&&r.id)ref=r.id}}catch(e){}
+  onSubmit:v=>{let ref="DT-"+(D.tasks.length+1);try{if(window.addDemand){const r=addDemand({title:v.title,reason:"Debt item "+id,source:"Debt ledger",cost:Math.max(1,Math.round((v.cost||0)/1000)),kind:"Platform build",pm:"Casey Rowan"});if(r&&r.id)ref=r.id}}catch(e){}
    D.tasks.push({id:ref,item:id,title:v.title,due:iso(30),owner:x.owner,kind:v.kind});D.ov[id]=Object.assign(D.ov[id]||{},{st:"progress",note:v.kind+" "+ref+" created"});bump();audit("Debt demand created",id+" "+ref);toast(v.kind+" created: "+ref,"good");closeDrawer();reopenScreen()}});
  if(act==="resolve")openForm({id:"debt_rs",title:"Mark resolved",submit:"Mark resolved",story:"Closes the item and removes its interest from the ledger. Evidence is kept in the audit trail.",fields:[{k:"how",label:"How was it resolved",type:"select",opts:["Fixed in the registry","Fixed in the app","Merged into the platform entity","App decommissioned","Not debt after review"]},{k:"ev",label:"Evidence",type:"text",ph:"Pull request, change record or link"}],
   onSubmit:v=>{D.ov[id]=Object.assign(D.ov[id]||{},{st:"resolved",closedBy:v.how,closed:TODAY});bump();audit("Debt resolved",id+" "+v.how);toast("Resolved: "+id,"good");closeDrawer();reopenScreen()}});

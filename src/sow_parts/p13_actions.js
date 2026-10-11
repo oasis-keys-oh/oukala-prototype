@@ -1,5 +1,5 @@
 /* ---------- actions ---------- */
-const ME="Omar Hamid";
+const ME="Casey Rowan";
 const addWD=(iso,n)=>{try{return dateOf(wdOf(iso)+n).toISOString().slice(0,10)}catch(e){return addD(iso,Math.round(n*1.4))}};
 function mkReview(l,route,part,due,msg){let r=REV.find(x=>x.line===l.id);if(!r){r={id:"RV-"+(201+REV.length),ct:l.ct,line:l.id,route:route,st:"Open",due:due,part:part,opened:TDY,thread:[]};REV.push(r)}else{r.route=route;r.due=due;r.part=part;if(r.st==="Agreed")r.st="Open"}
  if(msg)r.thread.push({who:ME,t:msg,at:"Oct 6"});l.route=route;if(l.status==="proposed")l.status="negotiating";l.by=(route==="legal"?"Sent to Meridian Legal":"Shared review opened")+" by "+ME;aud(ME,route==="legal"?"Sent line to legal":"Opened shared review",l.ct,r.id+" for §"+l.ref+", due "+fdt(due,1)+".");return r}

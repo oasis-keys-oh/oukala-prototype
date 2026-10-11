@@ -64,7 +64,7 @@ function ensureState(){
  const INCS=FIXS.concat(INC_NEW());
  INCS.forEach(i=>{if(i.own&&!i.direct){const m=who(i.own);if(!m||(m.team!==i.grp&&m.kind==="human"))i.direct=i.direct||{by:ME,why:"Named person has the context for this service."}}});
  const PR=PRB0().map(p=>{p.svc=svM(p.svc);return p});
- const CH=CHG0().concat(CHGH).map(c=>{c.svc=svM(c.svc);c.cis=(c.cis||[]).map(ciM);c.env=c.env||"Production";c.ok=(c.appr||[]).filter(a=>a.dec==="approved").map(a=>a.w==="CIO"?"Omar Hamid":a.w);return c});
+ const CH=CHG0().concat(CHGH).map(c=>{c.svc=svM(c.svc);c.cis=(c.cis||[]).map(ciM);c.env=c.env||"Production";c.ok=(c.appr||[]).filter(a=>a.dec==="approved").map(a=>a.w==="CIO"?"Casey Rowan":a.w);return c});
  const KE=KE0().map(k=>{k.svc=svM(k.svc);return k});
  const KB=KB0().map(k=>{k.svc=svM(k.svc);return k});
  const TP=TPL0().map(t=>{t.svc=svM(t.svc);t.cis=t.cis.map(ciM);return t});

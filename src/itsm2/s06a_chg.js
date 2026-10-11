@@ -12,7 +12,7 @@ const riskPill=c=>{const r=riskC(c);return `<span class="pill ${r.cls}" title="$
 const chgPill=s=>`<span class="pill ${CHSC[s]}" title="${esc(CHSD[s]||s)}">${s}</span>`;
 /* ---------- approval policy engine ---------- */
 const ROLES=["Change manager","Service owner","Architecture","Finance","Executive","Security","Incident commander"];
-const ROLEP={"Change manager":"Nia Brooks","Architecture":"Jordan Lee","Finance":"Avery Chen","Executive":"Omar Hamid","Security":"Rina Okafor","Incident commander":"Tom Becker"};
+const ROLEP={"Change manager":"Nia Brooks","Architecture":"Jordan Lee","Finance":"Avery Chen","Executive":"Casey Rowan","Security":"Rina Okafor","Incident commander":"Tom Becker"};
 const BK={"Tom Becker":"Jordan Lee","Nia Brooks":"Jordan Lee"};
 const roleWho=(role,c)=>role==="Service owner"?((SV(c.svc)||{}).owner||"Tom Becker"):(ROLEP[role]||"Nia Brooks");
 const byOpts=()=>ROLES.map(r=>["role:"+r,"Role: "+r]).concat(TEAMN.filter(t=>t!=="AI agents").map(t=>["grp:"+t,"Group lead: "+t]));

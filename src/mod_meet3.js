@@ -3,11 +3,11 @@
 (function(){
 const M=window.MEETX;if(!M||!M.hubReady)return;
 const T=M.TYPES,E=esc,TODAY=M.TODAY,fd=M.fd,fdw=M.fdw,tm=M.tm,addD=M.addD,dOf=M.dOf,DN=M.DN;
-const ME="Omar Hamid";
+const ME="Casey Rowan";
 const tc=t=>"var("+((T[t]||{}).c||"--p4")+")";
 const pl=(n,w)=>n+" "+w+(n===1?"":"s");
 const hrsOpts=()=>{const o=[];for(let h=7;h<=18;h+=.5)o.push([String(h),tm(h)]);return o};
-const ROOMS=["Teams","Webex","Aspen room (hybrid)","Boardroom","Omar's office","Cedar room","Phone bridge"];
+const ROOMS=["Teams","Webex","Aspen room (hybrid)","Boardroom","Casey's office","Cedar room","Phone bridge"];
 const kindName={human:"Employee",ai:"AI agent",contractor:"Contractor",msp:"Managed service provider"};
 const roleName={req:"Required",opt:"Optional",info:"Informational"};
 const rsvpL={yes:"Accepted",maybe:"Maybe",no:"Declined",none:"No reply"};

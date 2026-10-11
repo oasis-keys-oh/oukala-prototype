@@ -16,7 +16,7 @@ const mon=n=>"$"+N0(n);
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const plain=h=>String(h==null?"":h).replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/\s+/g," ").trim();
 let SEQ=0;const uid=p=>p+(++SEQ).toString(36)+Math.floor(Math.random()*46656).toString(36);
-const ME_NAME="Omar Hamid";
+const ME_NAME="Casey Rowan";
 
 /* ---------------- state ---------------- */
 const DEF_POL=[

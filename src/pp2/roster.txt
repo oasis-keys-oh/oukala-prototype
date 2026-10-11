@@ -1,6 +1,6 @@
 const ROSTER0=[
 ["cd","Catherine Doyle","Chief executive","Leadership",null,1,"employee","pm3 vc2",60],
-["oh","Omar Hamid","Chief information officer","Leadership","cd",1,"employee","pm3 sa2 vc3",70],
+["oh","Casey Rowan","Chief information officer","Leadership","cd",1,"employee","pm3 sa2 vc3",70],
 ["mr","Marcus Reid","Chief financial officer","Finance","cd",1,"employee","vc3 pm2",60],
 ["ac","Avery Chen","Controller","Finance","mr",1,"employee","vc3 pm2",80],
 ["em","Elena Marsh","Chief Editor","Editors","cd",1,"employee","er3 tx2 pm2",40],

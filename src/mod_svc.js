@@ -76,8 +76,8 @@ const GRPS={
 };
 const GN=Object.keys(GRPS);
 /* approver resolution: who approves is a rule over data, not a hard-coded name */
-const MGRS=n=>{const r=who(n);return(r&&r.mgr)||"Omar Hamid"};
-const LEVEL=n=>{const r=who(n);if(!r)return"Staff";const t=r.role||"";if(/chief|officer|Chief information/i.test(t)||n==="Omar Hamid")return"Executive";if(/lead|manager|controller|portfolio/i.test(t))return"Manager";if(/architect|senior|engineer|analyst/i.test(t))return"Senior";return"Staff"};
+const MGRS=n=>{const r=who(n);return(r&&r.mgr)||"Casey Rowan"};
+const LEVEL=n=>{const r=who(n);if(!r)return"Staff";const t=r.role||"";if(/chief|officer|Chief information/i.test(t)||n==="Casey Rowan")return"Executive";if(/lead|manager|controller|portfolio/i.test(t))return"Manager";if(/architect|senior|engineer|analyst/i.test(t))return"Senior";return"Staff"};
 const REGION=n=>{const r=who(n);return r&&/Prague|Europe|London|Berlin/i.test(r.loc||"")?"EU":"US"};
 const WORKER=n=>{const r=who(n);return r?({human:"Employee",contractor:"Contractor",msp:"Vendor staff",ai:"AI agent"})[r.kind]:"Employee"};
 const RESOLVE={
@@ -88,7 +88,7 @@ const RESOLVE={
  security:{n:"Security lead",f:()=>"Rina Okafor"},
  serviceOwner:{n:"Service owner of the offering",f:c=>{const s=svcOf(c.svc);const o=s&&s.owner;const r=who(o);return r&&r.kind==="msp"?(s.processOwner||"Tom Becker"):(o||"Tom Becker")}},
  dataOwner:{n:"Data owner of the system",f:c=>c.vals&&/Lease|Finance/.test(c.vals.system||"")?"Avery Chen":"Maya Ortiz"},
- cio:{n:"Chief information officer",f:()=>"Omar Hamid"},
+ cio:{n:"Chief information officer",f:()=>"Casey Rowan"},
  aigov:{n:"AI governance lead",f:()=>"Jordan Lee"},
  legal:{n:"Contracts and legal",f:()=>"Maya Ortiz"},
  pmo:{n:"Portfolio lead",f:()=>"Maya Ortiz"},

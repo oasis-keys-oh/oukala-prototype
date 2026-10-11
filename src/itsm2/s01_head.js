@@ -73,8 +73,8 @@ const POL0=()=>({ver:1,
   {id:"exec",n:"Executive (CIO or delegate)",cap:1,critOK:true,ovr:true,note:"Can override any priority. Every override is audited and reported monthly."}],
  vip:[
   {id:"",n:"Standard",steps:0,floor:4,exp:"",basis:"No adjustment. Priority comes from impact and urgency only.",owner:""},
-  {id:"board",n:"Level 1: Board and CEO",steps:2,floor:2,exp:"2027-06-30",basis:"Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months.",owner:"Omar Hamid"},
-  {id:"exec",n:"Level 2: Executive team",steps:1,floor:3,exp:"2027-03-31",basis:"Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months.",owner:"Omar Hamid"},
+  {id:"board",n:"Level 1: Board and CEO",steps:2,floor:2,exp:"2027-06-30",basis:"Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months.",owner:"Casey Rowan"},
+  {id:"exec",n:"Level 2: Executive team",steps:1,floor:3,exp:"2027-03-31",basis:"Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months.",owner:"Casey Rowan"},
   {id:"crit",n:"Level 3: Critical role in a time-boxed window",steps:1,floor:3,exp:"2026-11-20",basis:"Chief Editor and senior editors during the Standards beta publishing windows (PR1). Expires when the window closes.",owner:"Maya Ortiz"}]
 });
 if(!X.pol)X.pol=POL0();

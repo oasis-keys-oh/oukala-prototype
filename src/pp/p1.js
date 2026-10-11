@@ -33,7 +33,7 @@ const effText=f=>f.before==null?`${pctT(f.after)} (on leave that week)`:`${pctT(
 function bestAlt(item,skip){const tag=item.tag;const c=st.people.filter(p=>p.id!==skip&&p.type!=="vendor"&&p.kind==="human").map(p=>({p,u:util(p,item.w0,item)})).filter(x=>x.u!=null&&x.u<=100).sort((a,b)=>a.u-b.u);return c[0]}
 /* ---------- assign / reassign with audit ---------- */
 function doAssign(item,toId,why,by){const from=item.owner,e=ENT(toId),f=effect(item,e);item.owner=toId;
- st.reassign.unshift({t:nowT(),item:item.t,iid:item.id,from:from,to:toId,before:f.before,after:f.after,by:by||"Omar Hamid",why:why||"Dragged on the org chart"});
+ st.reassign.unshift({t:nowT(),item:item.t,iid:item.id,from:from,to:toId,before:f.before,after:f.after,by:by||"Casey Rowan",why:why||"Dragged on the org chart"});
  audit("reassigned work",item.t+" → "+e.n+" ("+effText(f)+")");toast(item.t.slice(0,38)+" now with "+e.n+". "+e.n.split(" ")[0]+" at "+pctT(f.after),f.over?"warn":"good");render()}
 function tryAssign(item,toId,viaForm){const e=ENT(toId);if(!e||item.owner===toId)return;const f=effect(item,e);
  if(f.rule&&f.rule[0]==="no"){toast(f.rule[1],"bad");audit("blocked assignment",item.t+" → "+e.n+": "+f.rule[1]);return}

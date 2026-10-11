@@ -50,9 +50,9 @@ const LED0=[
 {id:"RL-04",d:"2026-10-06",t:"draw",amt:-48000,p:"PR1",line:"PR1-CLD",why:"Next hosting tier after the Oct 5 latency incident. Drafted by the Forecast Agent from the Northwind quote.",req:"Forecast Agent",ai:true,apr:"CIO",st:"Pending"},
 {id:"RL-05",d:"2026-10-02",t:"draw",amt:-45000,p:"PR2",line:"PR2-VEN",why:"Lumen change order CO-2 signed above the approved vendor budget.",req:"Dev Rao",apr:"CIO",st:"Pending"}];
 /* delegation of authority */
-const ROLEH={"Budget owner":"the project's budget owner","Portfolio lead":"Maya Ortiz","CIO":"Omar (CIO)","CFO":"the CFO","CEO":"the CEO","Board finance committee":"the Board finance committee","Controller":"Avery Chen"};
+const ROLEH={"Budget owner":"the project's budget owner","Portfolio lead":"Maya Ortiz","CIO":"Casey (CIO)","CFO":"the CFO","CEO":"the CEO","Board finance committee":"the Board finance committee","Controller":"Avery Chen"};
 const ROLES=["Budget owner","Portfolio lead","CIO","CFO","CEO","Board finance committee"];
-const PROLE={"Maya Ortiz":"Portfolio lead","Omar (CIO)":"CIO","Priya Shah":"Budget owner","Dev Rao":"Budget owner","Tom Becker":"Budget owner","Avery Chen":"Controller"};
+const PROLE={"Maya Ortiz":"Portfolio lead","Casey (CIO)":"CIO","Priya Shah":"Budget owner","Dev Rao":"Budget owner","Tom Becker":"Budget owner","Avery Chen":"Controller"};
 const DOA0=[{id:"T1",max:10000,role:"Budget owner"},{id:"T2",max:25000,role:"Portfolio lead"},{id:"T3",max:100000,role:"CIO"},{id:"T4",max:250000,role:"CFO"},{id:"T5",max:1000000,role:"CEO"},{id:"T6",max:Infinity,role:"Board finance committee"}];
 const DCATS=["Labor","Vendor services","Hardware","Cloud","Licences","Reserve release","Budget transfer","Contract renewal"];
 const CR0=[
@@ -91,7 +91,7 @@ const CON=[
  ms:[["M1 Design accepted","2026-07-15",50000,"Paid"],["M2 Indexer build, 7 work days late","2026-09-08",125000,"Paid"],["M3 Performance tuning","2026-11-20",50000,"Scheduled"],["M4 Acceptance and handover","2027-01-20",25000,"Scheduled"]],inv:[],rate:"Fixed price"},
 {id:"CT-104",v:"LUM",n:"Lumen SOW-4 taxonomy data engineering",ty:"SOW",s:"2026-03-01",e:"2027-03-31",rn:"2027-03-31",rnTy:"Term end",tcv:655000,ann:655000,co:45000,ntc:60,auto:false,own:"Dev Rao",proj:"PR2",line:"PR2-VEN",
  sla:[["Milestones on time",90,67,"%",1],["Defect escape rate",3,4.8,"%",0],["Response to a blocker",4,6.2,"h",0]],
- obl:[["Accept milestone 3 (Thu Oct 8, 14:00)","Priya Shah","2026-10-08",0],["Approve PO for change order CO-2","Omar (CIO)","2026-10-09",0],["Deliver pilot readiness support","Lumen","2026-12-02",0]],
+ obl:[["Accept milestone 3 (Thu Oct 8, 14:00)","Priya Shah","2026-10-08",0],["Approve PO for change order CO-2","Casey (CIO)","2026-10-09",0],["Deliver pilot readiness support","Lumen","2026-12-02",0]],
  ms:[["M1 Data model accepted","2026-04-10",122000,"Paid"],["M2 Taxonomy engineering part 1 (9 days late; $22K billed ahead of acceptance)","2026-07-31",290000,"Paid"],["M3 Taxonomy engineering part 2 (INV-20433)","2026-10-19",62900,"On hold"],["M4 Pilot readiness support","2026-12-04",80100,"Scheduled"],["M5 Final acceptance","2027-03-15",55000,"Scheduled"],["CO-2 Mapping for three more sources","2026-12-15",45000,"Pending approval"]],inv:["INV-20433"],rate:"Milestone fixed price"},
 {id:"CT-105",v:"MSF",n:"Microsoft Enterprise Agreement (M365 E5, Azure, Entra ID)",ty:"Enterprise agreement",s:"2025-07-01",e:"2028-06-30",rn:"2027-07-01",rnTy:"Annual true-up",tcv:1236000,ann:412000,co:0,ntc:90,auto:true,own:"Jordan Lee",proj:"",line:"Run budget RB-IT-PLAT",
  sla:[["M365 uptime",99.9,99.97,"%",1],["Premier response (Sev A)",60,35,"min",0]],
@@ -184,7 +184,7 @@ function holder(role,proj){if(role==="Budget owner")return proj&&PJ(proj)?PJ(pro
 function whoApproves(amt,cat,req,o){o=o||{};const t=B().doa,proj=o.proj||"",why=[],chain=[];let i=tierIdx(amt);const base=i;
  const reqName=req||"the requester";
  let guard=0;
- while(guard++<6){const r=t[i].role,h=holder(r,proj);const same=h===reqName||(r==="CIO"&&reqName==="Omar (CIO)")||(r==="Portfolio lead"&&reqName==="Maya Ortiz");
+ while(guard++<6){const r=t[i].role,h=holder(r,proj);const same=h===reqName||(r==="CIO"&&reqName==="Casey (CIO)")||(r==="Portfolio lead"&&reqName==="Maya Ortiz");
   if(same&&i<t.length-1){why.push(`${reqName} would be approving their own request, so it moves up to ${t[i+1].role}.`);i++}else break}
  const ap=t[i];
  const revs=[];

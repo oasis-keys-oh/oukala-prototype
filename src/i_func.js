@@ -17,7 +17,7 @@ const ch=INBOX.items().find(x=>x.src==="chg");if(ch){const c0=ITSMX.getChange(ch
 const ct=INBOX.items().filter(x=>x.src==="cat");if(ct.length){const a=ct[0];R.cat={id:a.sid,before:svcStatus(a.sid).state+"/"+svcStatus(a.sid).approvals.map(x=>x.state).join(",")};INBOX.decide(a.id,"approve",{});INBOX.flush();R.cat.after=svcStatus(a.sid).state+"/"+svcStatus(a.sid).approvals.map(x=>x.state).join(",");
  if(ct[1]){const b=ct[1];R.catRej={id:b.sid,before:svcStatus(b.sid).state};INBOX.decide(b.id,"reject",{note:"Use the standard model"});INBOX.flush();R.catRej.after=svcStatus(b.sid).state}}
 // 5 funding gate
-const F=FIN._h.F;F.gq.push({id:"GQ-TEST1",pid:"PR2",to:"G2",note:"Move to design gate",pis:"",amt:48000,approver:"Omar (CIO)",role:"CIO",t:"2026-10-06"});INBOX.refresh();const g=INBOX.items().find(x=>x.src==="gate");
+const F=FIN._h.F;F.gq.push({id:"GQ-TEST1",pid:"PR2",to:"G2",note:"Move to design gate",pis:"",amt:48000,approver:"Casey (CIO)",role:"CIO",t:"2026-10-06"});INBOX.refresh();const g=INBOX.items().find(x=>x.src==="gate");
 R.gate={found:!!g};if(g){const gm0=F.gmoves.length,gq0=F.gq.length,gate0=F.proj.PR2&&F.proj.PR2.gate;INBOX.decide(g.id,"approve",{});INBOX.flush();R.gate.gq=[gq0,F.gq.length];R.gate.moves=[gm0,F.gmoves.length];R.gate.projGate=[gate0,F.proj.PR2&&F.proj.PR2.gate]}
 // 6 release
 const rl=INBOX.items().find(x=>x.src==="rel");if(rl){const r0=RELX.releases.find(x=>x.id===rl.sid);R.rel={id:rl.sid,before:r0.st+"/"+r0.gng.length};INBOX.decide(rl.id,"approve",{});INBOX.flush();R.rel.after=r0.st+"/"+r0.gng.length}

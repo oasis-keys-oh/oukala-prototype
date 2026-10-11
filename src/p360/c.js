@@ -28,7 +28,7 @@ const RACI_ACT=["Approve changes","Own and resolve incidents","Fund and budget",
 const RACI_ROLES=["Service owner","Process owner","Subject matter expert","Business users","Executive sponsor"];
 const RACI0=[["A","R","C","I","I"],["A","R","C","I","I"],["R","I","I","I","A"],["R","C","C","C","A"],["A","R","C","I","I"],["R","C","C","I","A"]];
 SV.stake=SV.stake||{};SV.raci=SV.raci||{};
-function stake(id){const s=svcOf(id);if(!SV.stake[id]){const e=ext(id);SV.stake[id]=[{role:"Service owner",name:s.owner},{role:"Process owner",name:s.processOwner},...s.sme.map(n=>({role:"Subject matter expert",name:n})),{role:"Business users",name:e.aud,n:s.users},{role:"Executive sponsor",name:"Omar Hamid"}]}return SV.stake[id]}
+function stake(id){const s=svcOf(id);if(!SV.stake[id]){const e=ext(id);SV.stake[id]=[{role:"Service owner",name:s.owner},{role:"Process owner",name:s.processOwner},...s.sme.map(n=>({role:"Subject matter expert",name:n})),{role:"Business users",name:e.aud,n:s.users},{role:"Executive sponsor",name:"Casey Rowan"}]}return SV.stake[id]}
 function raci(id){if(!SV.raci[id])SV.raci[id]=RACI0.map(r=>r.slice());return SV.raci[id]}
 
 /* ================= project relationships ================= */

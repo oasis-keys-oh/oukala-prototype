@@ -15,7 +15,8 @@ function match(p){const f=OS.f;if(f.team&&p.unit!==f.team)return false;const n=(
 function filtersOn(){const f=OS.f;return !!(f.team||f.agents||f.load)}
 function forceOpenSet(){const q=(OS.q||"").trim().toLowerCase(),s=new Set();if(!q)return s;O.staff.forEach(p=>{if(hit(p,q))O.up(p.n).forEach(u=>s.add(u))});return s}
 function hit(p,q){return (p.n+" "+p.role+" "+p.unit+" "+p.fn.join(" ")).toLowerCase().indexOf(q)>=0}
-function buildTree(){
+function seedCollapse(){if(OS.seed13)return;OS.seed13=true;O.staff.forEach(p=>{if(O.kids(p.n).length&&O.depth(p.n)>=2)OS.collapsed[p.n]=true})}
+function buildTree(){seedCollapse();
  const mode=OS.mode,ag=agBySponsor(),fo=forceOpenSet(),q=(OS.q||"").trim().toLowerCase();
  const keep=n=>mode!=="ai"||(ag[n]&&ag[n].length)||O.kids(n).some(keep);
  const total=n=>{let t=0;const g=x=>O.kids(x).forEach(k=>{t++;g(k)});g(n);return t};
@@ -24,44 +25,47 @@ function buildTree(){
   nd.nKids=O.kids(n).filter(keep).length;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0):0;nd.nAg=(ag[n]||[]).length;
   nd.hit=!!q&&hit(p,q);nd.dim=(filtersOn()&&!match(p))||(!!q&&!nd.hit&&false);return nd};
  return node(root)}
-const CW=224,CH=78,AH=62,GX=22,GY=48,IND=28,SG=10;
-const sz=nd=>nd.t==="a"?AH:CH;
-function lay(nd){const h=sz(nd);if(!nd.kids.length){nd.w=CW;nd.h=h;nd.blocks=[];nd.tw=CW;return}
- nd.kids.forEach(lay);const lv=nd.kids.filter(k=>!k.kids.length),sb=nd.kids.filter(k=>k.kids.length),bl=[];
- if(lv.length)bl.push({s:1,items:lv,w:CW+IND,h:lv.reduce((a,k)=>a+sz(k),0)+SG*(lv.length-1)});
- sb.forEach(k=>bl.push({s:0,node:k,w:k.w,h:k.h}));
- nd.tw=bl.reduce((a,b)=>a+b.w,0)+GX*(bl.length-1);nd.blocks=bl;nd.w=Math.max(CW,nd.tw);nd.h=h+GY+Math.max(...bl.map(b=>b.h))}
-function put(nd,x,y,o){const h=sz(nd);nd.y=y;o.cards.push(nd);
+const CW=232,CH=88,GX=18,GY=56,PAD=28;
+const hexAv=(name,size)=>`<span class="av-hex" style="width:${size+4}px;height:${size+4}px">${avatar(name,{size})}</span>`;
+O.hexAvatar=hexAv;
+const aiChip2=t=>`<span class="ai-chip" title="AI agent: sponsored by a named person, runs inside guardrails"><i></i>${t||"AI"}</span>`;
+O.aiChip=aiChip2;
+/* Layout is deterministic: every card is CW by CH; layer d sits at y = PAD + d*(CH+GY); a subtree is as wide as its children side by side (or one card); a parent is centered over its first and last child. */
+function lay(nd){if(!nd.kids.length){nd.w=CW;return}
+ nd.kids.forEach(lay);nd.tw=nd.kids.reduce((a,k)=>a+k.w,0)+GX*(nd.kids.length-1);nd.w=Math.max(CW,nd.tw)}
+function put(nd,x,d,o){nd.y=PAD+d*(CH+GY);o.cards.push(nd);o.maxD=Math.max(o.maxD,d);
  if(!nd.kids.length){nd.x=x+(nd.w-CW)/2;return}
- const bx0=x+(nd.w-nd.tw)/2,single=nd.blocks.length===1&&nd.blocks[0].s;
- nd.x=single?bx0:x+(nd.w-CW)/2;
- const by=y+h+GY,busY=y+h+GY/2,px=nd.x+CW/2,drops=[];let cx=bx0;
- nd.blocks.forEach(b=>{
-  if(b.s){const sx=cx+14;let cy=by,lastMid=by;b.items.forEach(k=>{k.x=cx+IND;k.y=cy;o.cards.push(k);lastMid=cy+sz(k)/2;o.e.push("M"+sx+" "+lastMid+"H"+k.x);cy+=sz(k)+SG});
-   o.e.push("M"+sx+" "+(single?y+h:busY)+"V"+lastMid);if(!single)drops.push(sx)}
-  else{put(b.node,cx,by,o);const cxp=b.node.x+CW/2;drops.push(cxp);o.e.push("M"+cxp+" "+busY+"V"+by)}
-  cx+=b.w+GX});
- if(!single){const lo=Math.min(px,...drops),hi=Math.max(px,...drops);o.e.push("M"+px+" "+(y+h)+"V"+busY);o.e.push("M"+lo+" "+busY+"H"+hi)}}
-function layout(){const t=buildTree();lay(t);const o={cards:[],e:[],dot:[],mx:[]};put(t,20,20,o);o.W=t.w+40;o.H=t.h+40;o.root=t;
+ let cx=x+(nd.w-nd.tw)/2;nd.kids.forEach(k=>{put(k,cx,d+1,o);cx+=k.w+GX});
+ const f=nd.kids[0],l=nd.kids[nd.kids.length-1];nd.x=Math.round((f.x+l.x)/2);
+ const px=nd.x+CW/2,busY=nd.y+CH+GY/2,by=nd.y+CH+GY,xs=nd.kids.map(k=>k.x+CW/2);
+ o.e.push("M"+px+" "+(nd.y+CH)+"V"+busY);
+ if(nd.kids.length>1||Math.abs(xs[0]-px)>.5){const lo=Math.min(px,...xs),hi=Math.max(px,...xs);o.e.push("M"+lo+" "+busY+"H"+hi)}
+ xs.forEach(x=>o.e.push("M"+x+" "+busY+"V"+by))}
+function layout(){const t=buildTree();lay(t);const o={cards:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=PAD*2+(o.maxD+1)*CH+o.maxD*GY;o.root=t;
  const by={};o.cards.forEach(c=>by[c.id]=c);o.by=by;
- const curve=(a,b,cls,id)=>{if(!a||!b)return;const aR=a.x>b.x;const x1=aR?a.x:a.x+CW,y1=a.y+sz(a)/2,x2=aR?b.x+CW:b.x,y2=b.y+sz(b)/2;const dx=Math.max(50,Math.abs(x2-x1)*.35)*(aR?-1:1);return `<path class="org-ln ${cls}" data-for="${H(id)}" d="M${x1} ${y1}C${x1+dx} ${y1} ${x2-dx} ${y2} ${x2} ${y2}"/>`};
+ /* dotted and matrix lines leave from the facing side edge, centered on the card, and sit behind the cards */
+ const curve=(a,b,cls,id)=>{if(!a||!b)return;const ln=cls==="mx"?24:14;let d;
+  if(a.y===b.y){const x1=a.x+CW/2,x2=b.x+CW/2,yb=a.y+CH;d=`M${x1} ${yb}V${yb+ln}H${x2}V${yb}`}
+  else{const lo=a.y>b.y?a:b,hi=a.y>b.y?b:a;const x1=lo.x+CW/2,x2=hi.x+CW/2,y1=lo.y,y2=hi.y+CH,my=y1-ln;d=`M${x1} ${y1}V${my}H${x2}V${y2}`}
+  return `<path class="org-ln ${cls}" data-for="${H(id)}" d="${d}"/>`};
  if(OS.lines.dotted)O.staff.forEach(p=>{if(p.dot&&o.by[p.n]&&o.by[p.dot])o.dot.push(curve(o.by[p.n],o.by[p.dot],"dot",p.n))});
  if(OS.lines.matrix)O.staff.forEach(p=>p.mx.forEach(m=>{const l=PLEAD(m.p);if(l&&l!==p.n&&o.by[p.n]&&o.by[l])o.mx.push(curve(o.by[p.n],o.by[l],"mx",p.n))}));
  return o}
 /* ---------- cards ---------- */
 function loadOf(n){try{return workload(n).pct}catch(e){return 60}}
 function cardHTML(c,sel){
+ const pos=`left:${c.x}px;top:${c.y}px;width:${CW}px;height:${CH}px`;
  if(c.t==="a"){const a=c.a,L=O.LVL[a.autonomy];
-  return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" style="left:${c.x}px;top:${c.y}px;width:${CW}px;height:${AH}px"><button type="button" class="org-card ag" data-org-agent="${H(a.name)}" aria-label="${H(a.name)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${avatar(a.name,{size:30})}<span class="org-t"><b>${H(a.name)}</b><small>${H(L.n)} · ${a.hrs} h/week back</small></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
+  return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" style="${pos}"><button type="button" class="org-card ag is-agent" data-org-agent="${H(a.name)}" aria-label="${H(a.name)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${hexAv(a.name,32)}<span class="org-t"><b>${H(a.name)}</b><small>${H(L.short)} · ${a.hrs} h/wk back</small><span class="org-m org-aim">${aiChip2("AI")}<span class="org-sp" title="Sponsor: ${H(a.sponsor)}">Sponsor: ${H(a.sponsor)}</span></span></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
  const p=c.p,l=loadOf(p.n),sp=O.kids(p.n).length;
- const cls=["org-n",c.hit?"hit":"",c.dim?"dim":"",sel===p.n?"sel":""].join(" ");
- const tg=(c.nKids||c.nAg)&&(c.nKids||(OS.mode!=="human"?0:0))?`<button type="button" class="org-tg" data-org-tg="${H(p.n)}" aria-expanded="${c.col?"false":"true"}" aria-label="${c.col?"Expand":"Collapse"} ${H(p.n)}'s team">${c.col?"+"+c.hidden:"−"}</button>`:"";
- return `<div class="${cls}" style="left:${c.x}px;top:${c.y}px;width:${CW}px;height:${CH}px"><button type="button" class="org-card" data-org-open="${H(p.n)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:38})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&OS.mode==="human"?`<em class="ai">AI ${c.nAg}</em>`:""}${p.dot?`<em class="dt" title="Dotted line to ${H(p.dot)}">dotted</em>`:""}</span></span></button>${tg}</div>`}
+ const cls=["org-n org-hu",c.hit?"hit":"",c.dim?"dim":"",sel===p.n?"sel":""].join(" ");
+ const tg=(c.nKids||c.nAg)?`<button type="button" class="org-tg" data-org-tg="${H(p.n)}" aria-expanded="${c.col?"false":"true"}" aria-label="${c.col?"Expand":"Collapse"} ${H(p.n)}'s team" title="${c.col?"Show "+c.hidden+" below":"Hide the team below"}">${c.col?"+"+c.hidden:"−"}</button>`:"";
+ return `<div class="${cls}" style="${pos}"><button type="button" class="org-card" data-org-open="${H(p.n)}" title="${H(p.n)}, ${H(p.role)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:40})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&OS.mode==="human"?`<em class="ai">AI ${c.nAg}</em>`:""}</span></span></button>${tg}</div>`}
 function chartInner(o){
  const sel=OS.sel;return `<svg class="org-svg" width="${o.W}" height="${o.H}" viewBox="0 0 ${o.W} ${o.H}" aria-hidden="true"><path class="org-ln" d="${o.e.join("")}"/>${o.dot.join("")}${o.mx.join("")}</svg>${o.cards.map(c=>cardHTML(c,sel)).join("")}`}
 /* outline: the accessible, phone-friendly view of the same tree */
 function outline(nd,lvl){
- if(nd.t==="a"){const a=nd.a;return `<li role="treeitem" class="org-ol-a"><button type="button" class="org-ol" data-org-agent="${H(a.name)}">${avatar(a.name,{size:26})}<span><b>${H(a.name)}</b><small>AI agent · ${H(O.LVL[a.autonomy].n)} · ${a.status}</small></span></button></li>`}
+ if(nd.t==="a"){const a=nd.a;return `<li role="treeitem" class="org-ol-a"><button type="button" class="org-ol is-agent" data-org-agent="${H(a.name)}">${hexAv(a.name,26)}<span><b>${H(a.name)} ${aiChip2("AI")}</b><small>Sponsor ${H(a.sponsor)} · ${H(O.LVL[a.autonomy].n)} · ${a.status}</small></span></button></li>`}
  const p=nd.p,l=loadOf(p.n);const hasK=nd.nKids||nd.nAg;
  return `<li role="treeitem" aria-expanded="${hasK?!nd.col:"true"}"><div class="org-olrow">${hasK?`<button type="button" class="org-tg sm" data-org-tg="${H(p.n)}" aria-label="${nd.col?"Expand":"Collapse"} ${H(p.n)}">${nd.col?"+":"−"}</button>`:`<span class="org-tgsp"></span>`}<button type="button" class="org-ol ${nd.hit?"hit":""}" data-org-open="${H(p.n)}">${avatar(p.n,{size:30})}<span><b>${H(p.n)}</b><small>${H(p.role)} · ${l}% load${nd.nKids?` · ${nd.nKids} direct`:""}${nd.nAg?` · ${nd.nAg} agent${nd.nAg===1?"":"s"}`:""}</small></span></button></div>${nd.kids.length?`<ul role="group">${nd.kids.map(k=>outline(k)).join("")}</ul>`:""}</li>`}
 /* ---------- the chart panel ---------- */
@@ -77,6 +81,7 @@ function chartPane(){
   <div class="org-chips" role="group" aria-label="Filters"><button type="button" class="chip" data-org-f="agents:has" aria-pressed="${OS.f.agents==="has"}">Has agents</button><button type="button" class="chip" data-org-f="agents:none" aria-pressed="${OS.f.agents==="none"}">No agents yet</button><button type="button" class="chip" data-org-f="load:over" aria-pressed="${OS.f.load==="over"}">Over 90% load</button></div>
   <div class="org-chips" role="group" aria-label="Lines"><button type="button" class="chip" data-org-ln="dotted" aria-pressed="${OS.lines.dotted}">Dotted lines</button><button type="button" class="chip" data-org-ln="matrix" aria-pressed="${OS.lines.matrix}">Project matrix</button></div>
   <div class="org-chips"><button type="button" class="chip" data-org-all="collapse">Collapse all</button><button type="button" class="chip" data-org-all="expand">Expand all</button><button type="button" class="chip" data-org-outline aria-pressed="${!!OS.outline}">Outline</button></div>
+  <div class="org-key" role="group" aria-label="Legend"><span><i class="kh"></i>Person: round, solid</span><span><i class="kx"></i>AI agent: hexagon, dashed card, AI badge, sponsor named</span><span><i class="kb"></i>Reports to</span></div>
  </div>
  ${OS.outline?`<div class="card glass org-outline"><ul role="tree" aria-label="Organization outline">${outline(o.root)}</ul></div>`:`<div class="org-wrap card glass"><div class="org-vp" id="orgvp" tabindex="0" role="group" aria-label="Org chart. Drag to pan, use the buttons or plus and minus to zoom, arrow keys to move."><div class="org-cv" id="orgcv" style="width:${o.W}px;height:${o.H}px">${chartInner(o)}</div></div>
   <div class="org-zoom" role="group" aria-label="Zoom"><button type="button" class="btn" data-org-z="in" aria-label="Zoom in">+</button><button type="button" class="btn" data-org-z="out" aria-label="Zoom out">−</button><button type="button" class="btn" data-org-z="fit">Fit</button><button type="button" class="btn" data-org-z="reset">Top</button></div>
@@ -87,9 +92,9 @@ let LAST=null;
 function applyT(){const cv=document.getElementById("orgcv");if(!cv)return;cv.style.transform=`translate(${OS.x}px,${OS.y}px) scale(${OS.k})`;const z=document.querySelector(".org-zoom");if(z)z.dataset.k=Math.round(OS.k*100)}
 function vp(){return document.getElementById("orgvp")}
 function fit(top){const v=vp();if(!v||!LAST)return;const w=v.clientWidth,h=v.clientHeight;let k=Math.min(w/LAST.W,h/LAST.H,1);
- if(top){k=Math.max(Math.min(w/LAST.W,1),w<700?.5:.66);k=Math.min(k,1);const root=LAST.by[LAST.root.id];OS.k=k;OS.x=Math.round(w/2-(root.x+CW/2)*k);OS.y=12}
- else{k=Math.max(.22,k);OS.k=k;OS.x=Math.round((w-LAST.W*k)/2);OS.y=Math.round((h-LAST.H*k)/2)}applyT()}
-function zoomAt(f,cx,cy){const v=vp();if(!v)return;const r=v.getBoundingClientRect();cx=cx==null?r.width/2:cx-r.left;cy=cy==null?r.height/2:cy-r.top;const k0=OS.k,k1=Math.max(.2,Math.min(1.6,k0*f));OS.x=cx-(cx-OS.x)*(k1/k0);OS.y=cy-(cy-OS.y)*(k1/k0);OS.k=k1;applyT()}
+ if(top){k=Math.max(Math.min(w/LAST.W,1),w<700?.5:w<1000?.62:.78);k=Math.min(k,1);const root=LAST.by[LAST.root.id];OS.k=k;OS.x=Math.round(w/2-(root.x+CW/2)*k);OS.y=12}
+ else{k=Math.max(.1,k);OS.k=k;OS.x=Math.round((w-LAST.W*k)/2);OS.y=Math.round((h-LAST.H*k)/2)}applyT()}
+function zoomAt(f,cx,cy){const v=vp();if(!v)return;const r=v.getBoundingClientRect();cx=cx==null?r.width/2:cx-r.left;cy=cy==null?r.height/2:cy-r.top;const k0=OS.k,k1=Math.max(.1,Math.min(1.6,k0*f));OS.x=cx-(cx-OS.x)*(k1/k0);OS.y=cy-(cy-OS.y)*(k1/k0);OS.k=k1;applyT()}
 function paintChart(){const cv=document.getElementById("orgcv");if(!cv){render();return}LAST=layout();cv.style.width=LAST.W+"px";cv.style.height=LAST.H+"px";cv.innerHTML=chartInner(LAST);applyT()}
 function mount(){
  if(S.screen!=="org_chart"||OS.tab!=="chart"||OS.outline)return;const v=vp();if(!v)return;LAST=layout();
@@ -112,7 +117,7 @@ document.addEventListener("click",e=>{
  if(OS._moved&&Date.now()-OS._moved<250&&g.closest("#orgvp")){e.preventDefault();e.stopPropagation();return}
  const d=g.dataset;
  if(d.orgTg!=null){e.preventDefault();e.stopPropagation();const n=d.orgTg;OS.collapsed[n]=!OS.collapsed[n];audit("Org chart",(OS.collapsed[n]?"Collapsed ":"Expanded ")+n+"'s team");if(OS.outline)render();else paintChart();return}
- if(d.orgMode){OS.mode=d.orgMode;OS.k=0;audit("Org chart view",d.orgMode);render();return}
+ if(d.orgMode){OS.mode=d.orgMode;if(d.orgMode==="ai")OS.collapsed={};OS.k=0;audit("Org chart view",d.orgMode);render();return}
  if(d.orgF!=null){const v=d.orgF;if(v.indexOf(":")>0){const [k,x]=v.split(":");OS.f[k]=OS.f[k]===x?"":x;render()}return}
  if(d.orgLn){OS.lines[d.orgLn]=!OS.lines[d.orgLn];render();return}
  if(d.orgAll){O.staff.forEach(p=>{if(O.kids(p.n).length)OS.collapsed[p.n]=d.orgAll==="collapse"&&p.n!==root});OS.k=0;render();return}
@@ -153,28 +158,50 @@ function reportPane(){
  return `<div class="row sp" style="margin-bottom:12px">${seg}<span class="muted small">${st.heads} people, ${st.agents} AI agents, ${st.mgrs} managers, ${st.layers} layers, average span ${st.avgSpan}.</span></div>${body}`}
 /* ---------- tab 3: people directory ---------- */
 function dirPane(){
- const rows=()=>O.staff.map(p=>{const w=O.owns(p.n),n=w.metrics.length+w.procs.length+w.ents.length+w.svcs.length;return{n:p.n,role:p.role,unit:p.unit,mgr:p.mgr||"",loc:p.loc,direct:O.kids(p.n).length,ag:O.agentsOf(p.n).length,load:loadOf(p.n),owns:n,rl:(O.perms(p.n).role||{}).n||""}});
- return card("People directory","Everyone on the org chart, read from the people directory. Click a row for the full profile.",btHTML({id:"org_dir",cols:[{k:"n",label:"Person",fmt:r=>`<span class="org-dn">${avatar(r.n,{size:26})}<b>${H(r.n)}</b></span>`,val:r=>r.n},{k:"role",label:"Role"},{k:"unit",label:"Team"},{k:"mgr",label:"Reports to"},{k:"direct",label:"Direct",val:r=>r.direct},{k:"ag",label:"Agents",val:r=>r.ag},{k:"load",label:"Load",fmt:r=>`<span class="pill ${pctCls(r.load)}">${r.load}%</span>`,val:r=>r.load},{k:"owns",label:"Owns",val:r=>r.owns},{k:"rl",label:"Access role"}],rows,key:"n",h:560,rowH:46,facets:["unit","rl"],exportName:"meridian-org",open:id=>openProfile(id)}))}
+ const rows=()=>O.staff.map(p=>{const w=O.ownRecs(p.n),n=w.metrics.length+w.procs.length+w.ents.length+w.svcs.length;return{isAg:false,n:p.n,role:p.role,unit:p.unit,mgr:p.mgr||"",loc:p.loc,direct:O.kids(p.n).length,ag:O.agentsOf(p.n).length,load:loadOf(p.n),owns:n,rl:(O.perms(p.n).role||{}).n||""}}).concat(O.agents().map(a=>({isAg:true,n:a.name,role:"AI agent, "+O.LVL[a.autonomy].n.toLowerCase(),unit:"AI agents",mgr:a.sponsor,loc:"",direct:0,ag:0,load:null,owns:0,rl:"AI agent (sponsored)"})));
+ return card("People directory","Everyone on the org chart plus the AI agents (hexagon, AI badge, sponsor in the Reports to column). Click a row for the full profile.",btHTML({id:"org_dir",cols:[{k:"n",label:"Person or agent",fmt:r=>r.isAg?`<span class="org-dn">${hexAv(r.n,24)}<b>${H(r.n)}</b>${aiChip2("AI")}</span>`:`<span class="org-dn">${avatar(r.n,{size:26})}<b>${H(r.n)}</b></span>`,val:r=>r.n},{k:"role",label:"Role"},{k:"unit",label:"Team"},{k:"mgr",label:"Reports to"},{k:"direct",label:"Direct",val:r=>r.direct},{k:"ag",label:"Agents",val:r=>r.ag},{k:"load",label:"Load",fmt:r=>r.load==null?`<span class="muted">n/a</span>`:`<span class="pill ${pctCls(r.load)}">${r.load}%</span>`,val:r=>r.load==null?-1:r.load},{k:"owns",label:"Owns",val:r=>r.owns},{k:"rl",label:"Access role"}],rows,key:"n",h:560,rowH:46,facets:["unit","rl"],exportName:"meridian-org",open:id=>O.agentByName(id)?openAgent(id):openProfile(id)}))}
 /* ---------- tab 5: ownership ---------- */
 function ownPane(){
  const oi=O.ownIndex(),st=O.stats();const un=oi.un;
  const unTbl=k=>{const m={};un[k].forEach(x=>{m[x.owner||"(blank)"]=(m[x.owner||"(blank)"]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,8)};
  const kinds=[["metrics","Metrics"],["procs","Processes"],["ents","Data entities"],["svcs","Services"]];
- const rows=O.staff.map(p=>{const w=O.owns(p.n);return{p,w,t:w.metrics.length+w.procs.length+w.ents.length+w.svcs.length}}).filter(r=>r.t).sort((a,b)=>b.t-a.t);
+ const rows=O.staff.map(p=>{const w=O.ownRecs(p.n);return{p,w,t:w.metrics.length+w.procs.length+w.ents.length+w.svcs.length}}).filter(r=>r.t).sort((a,b)=>b.t-a.t);
  return `<div class="statrow">${kpi("Ownership coverage",oi.pct+"%","items owned by a named person",{metric:"m_org_own"})}${kpi("Items with a named owner",String(oi.named),"of "+oi.total+" metrics, processes, entities, services")}${kpi("Owner is a role or team",String(oi.total-oi.named),"fix by naming a person",{cls:oi.total-oi.named?"warn":""})}</div>
- <div class="grid g2" style="align-items:start">${card("Who owns the most","Computed from the owner fields in Metrics, the process library, the data registry and the service registry.",`<div class="tscroll"><table><thead><tr><th>Person</th><th>Metrics</th><th>Processes</th><th>Entities</th><th>Services</th></tr></thead><tbody>${rows.slice(0,14).map(r=>`<tr><td>${pchip(r.p.n)}</td><td class="num">${r.w.metrics.length}</td><td class="num">${r.w.procs.length}</td><td class="num">${r.w.ents.length}</td><td class="num">${r.w.svcs.length}</td></tr>`).join("")}</tbody></table></div>`)}
+ <div class="grid g2" style="align-items:start">${card("Who owns the most","Computed from the owner fields in Metrics, the process library, the data registry and the service registry.",`<div class="tscroll"><table><thead><tr><th>Person</th><th>Metrics</th><th>Processes</th><th>Entities</th><th>Services</th><th>Agents they sponsor</th></tr></thead><tbody>${rows.slice(0,14).map(r=>`<tr><td>${pchip(r.p.n)}</td><td class="num">${r.w.metrics.length}</td><td class="num">${r.w.procs.length}</td><td class="num">${r.w.ents.length}</td><td class="num">${r.w.svcs.length}</td><td>${O.agentsOf(r.p.n).map(a=>`<span class="org-ar is-agent">${hexAv(a.name,18)}<small>${H(a.name)}</small></span>`).join(" ")||`<span class="muted small">none</span>`}</td></tr>`).join("")}</tbody></table></div>`)}
  ${card("Owner fields that do not name a person","These registry items name a team or a distributed role. Open the person who should own them and assign it.",kinds.map(([k,l])=>`<div class="eyebrow" style="margin:10px 0 6px">${l}: ${un[k].length}</div><div class="row">${unTbl(k).map(x=>`<span class="pill mute">${H(x[0])} · ${x[1]}</span>`).join("")||'<span class="muted small">None</span>'}</div>`).join(""))}</div>`}
+
+/* ---------- accountability map: domain x owner and backup, with gap detection ---------- */
+const mine=r=>r&&r.name?`<button type="button" class="org-lnk org-ar" data-org-open="${H(r.name)}">${avatar(r.name,{size:26})}<span><b>${H(r.name)}</b><small>${H(r.title)}</small></span></button>`:"";
+function ownLine(p){const rows=O.owns(p.n);if(!rows.length)return `<div class="org-own-line"><span class="eyebrow">Accountable for</span><br><span class="muted">No accountability domain yet. Assign one in the Accountability map.</span></div>`;
+ const own=rows.filter(r=>r.role==="owner"),bk=rows.filter(r=>r.role==="backup");
+ return `<div class="org-own-line" data-role="story">${own.length?`<span class="eyebrow">Owns</span><br>${own.map(r=>`<b>${H(r.label)}</b> <span class="muted">(${r.other?"backup: "+H(r.other.name):"no backup"})</span>`).join("; ")}`:""}${bk.length?`${own.length?"<br>":""}<span class="eyebrow">Backup for</span><br>${bk.map(r=>`<b>${H(r.label)}</b> <span class="muted">(owner: ${r.other?H(r.other.name):"none"})</span>`).join("; ")}`:""}</div>`}
+function acctRows(){return O.domains.map(d=>O.domainView(d))}
+function acctPane(){
+ const all=acctRows(),gaps=all.filter(d=>d.gap),noOwn=all.filter(d=>!d.ownerId).length,noBk=all.filter(d=>d.ownerId&&!d.backupId).length;
+ const rows=OS.accGap?gaps:all;
+ const pct=Math.round(100*(all.length-gaps.length)/all.length);
+ return `<div class="statrow">${kpi("Accountability domains",String(all.length),"each needs a named owner and a backup")}${kpi("Fully covered",pct+"%",(all.length-gaps.length)+" of "+all.length+" have owner and backup",{cls:gaps.length?"warn":""})}${kpi("No owner",String(noOwn),"nobody is accountable",{cls:noOwn?"bad":""})}${kpi("No backup",String(noBk),"single point of failure",{cls:noBk?"warn":""})}</div>
+ ${card("Accountability map","Who is accountable for each area of the Foundation, and who covers when they are out. Ask 'who owns the budget?' in chat or search and this map answers. Gaps are flagged.",`<div class="row" style="margin-bottom:12px"><button type="button" class="chip" data-org-accf="all" aria-pressed="${!OS.accGap}">All domains · ${all.length}</button><button type="button" class="chip" data-org-accf="gap" aria-pressed="${!!OS.accGap}">Gaps only · ${gaps.length}</button><span class="muted small">Aliases such as budget, forecast, funding, spend and cost all resolve to the Budget domain.</span></div>
+ <div class="tscroll"><table class="org-acc"><thead><tr><th>Domain</th><th>Owner</th><th>Backup</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(d=>`<tr><td><b>${H(d.label)}</b><div class="muted small">${H(d.aliases.slice(0,4).join(", "))}</div></td><td>${d.owner?mine(d.owner):`<span class="muted small">Nobody</span>`}</td><td>${d.backup?mine(d.backup):`<span class="muted small">Nobody</span>`}</td><td>${d.gap?`<span class="org-gap ${d.ownerId?"warn":""}">GAP: ${H(d.gap)}</span>`:`<span class="pill good">Covered</span>`}</td><td><button type="button" class="btn quiet" data-org-assign="${H(d.id)}">${d.gap?"Assign":"Change"}</button></td></tr>`).join("")||`<tr><td colspan="5" class="muted">No gaps. Every domain has an owner and a backup.</td></tr>`}</tbody></table></div>`)}`}
+document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-org-accf]");if(f){OS.accGap=f.dataset.orgAccf==="gap";render();return}
+ const a=e.target.closest&&e.target.closest("[data-org-assign]");if(!a)return;const d=O.domains.find(x=>x.id===a.dataset.orgAssign);if(!d)return;
+ const opts=[["","(none)"]].concat(O.staff.map(p=>[O.slug(p.n),p.n+" · "+p.role]));
+ openForm({id:"org_assign",title:"Assign accountability: "+d.label,story:"Every domain needs one named owner and a different named backup. Saving updates the map, search and chat answers, and the audit log.",submit:"Save accountability",
+  fields:[{k:"owner",label:"Owner",type:"select",opts,req:true,help:"The one person who answers for this area."},{k:"backup",label:"Backup",type:"select",opts,help:"Covers when the owner is out. Must be someone else."}],defaults:{owner:d.ownerId,backup:d.backupId},
+  live:v=>v.owner&&v.owner===v.backup?"<span class='pill warn'>Owner and backup are the same person</span>":"",
+  onSubmit:v=>{if(!v.owner){toast("Pick an owner","warn");return false}if(v.owner===v.backup){toast("Backup must be a different person","warn");return false}d.ownerId=v.owner;d.backupId=v.backup||"";audit("Accountability",d.label+": owner "+v.owner+(v.backup?", backup "+v.backup:""));toast(d.label+" now has an owner"+(v.backup?" and a backup":""),"good");closeDrawer();render()}})});
 /* ---------- the person profile drawer ---------- */
 function stat(l,v,sub,cls){return `<div class="stat ${cls||""}"><small>${l}</small><span class="num" data-role="metric">${v}</span><em>${sub}</em></div>`}
 function lvlBar(l){return `<span class="org-lb" aria-hidden="true">${[1,2,3,4].map(i=>`<i class="${i<=l?"on "+lvlCls(l):""}"></i>`).join("")}</span>`}
 function pOverview(p){
- const w=O.owns(p.n),ag=O.agentsOf(p.n),c=O.capacity(p.n),l=loadOf(p.n),kids=O.kids(p.n),rec=O.dir(p.n)||{};
+ const w=O.ownRecs(p.n),ag=O.agentsOf(p.n),c=O.capacity(p.n),l=loadOf(p.n),kids=O.kids(p.n),rec=O.dir(p.n)||{};
  const lines=[`<dt>Reports to</dt><dd>${p.mgr?pchip(p.mgr):'<span class="muted">Board of directors</span>'}</dd>`];
  if(p.dot)lines.push(`<dt>Dotted line to</dt><dd>${pchip(p.dot)} <span class="muted small">${H(DWHY[p.n]||"")}</span></dd>`);
  if(p.mx.length)lines.push(`<dt>Project matrix</dt><dd>${p.mx.map(m=>`<span class="pill info">${H(PNAME(m.p))} ${m.pct}%</span> <span class="muted small">led by ${H(PLEAD(m.p))}</span>`).join("<br>")}</dd>`);
  if(kids.length)lines.push(`<dt>Direct reports</dt><dd><div class="row">${kids.map(k=>pchip(k)).join("")}</div></dd>`);
  lines.push(`<dt>Team</dt><dd>${H(p.unit)}</dd><dt>Location</dt><dd>${H(p.loc)}, ${p.yrs} year${p.yrs===1?"":"s"} at Meridian</dd>`);
  return `<div class="p360grid">${stat("Load",l+"%",loadHrs(p.n),l>95?"crit":"")}${stat("Open items",String(O.pending(p.n).reduce((s,g)=>s+g.rows.length,0)),"across "+O.pending(p.n).length+" areas")}${stat("AI agents",String(ag.length),ag.length?c.returned+" h/week returned":"none yet")}${stat("Still available",c.available+" h","a week in ranked opportunities")}</div>
+ ${ownLine(p)}
  <div class="org-go"><div class="eyebrow">Go to ${H(first(p.n))} for</div><ul>${p.fn.map(f=>`<li>${H(f)}</li>`).join("")}</ul></div>
  <div class="org-val"><div class="eyebrow">Why this role matters</div><p class="story" data-role="story">${H(p.value)}</p></div>
  <dl class="kv">${lines.join("")}<dt>Skills</dt><dd><div class="row">${(rec.skills||[]).map(s=>`<span class="pill info">${H(s)}</span>`).join("")||'<span class="muted">None recorded</span>'}</div></dd>${ag.length?`<dt>AI agents</dt><dd><div class="row">${ag.map(a=>`<button type="button" class="chip" data-org-agent="${H(a.name)}">${H(a.name)} · ${H(O.LVL[a.autonomy].short)}</button>`).join("")}</div></dd>`:""}</dl>
@@ -189,7 +216,7 @@ function pPerms(p){
  <div class="eyebrow" style="margin-top:16px">Approvals and limits</div>${x.app.length?`<div class="tscroll"><table><thead><tr><th>Can approve</th><th>Limit</th><th>Basis</th></tr></thead><tbody>${x.app.map(a=>`<tr><td><b>${H(a.what)}</b></td><td>${H(a.limit)}</td><td class="muted small">${H(a.basis)}</td></tr>`).join("")}</tbody></table></div>`:'<p class="muted">No approval authority.</p>'}
  <div class="row" style="margin-top:14px"><button class="btn" data-org-act="access" data-n="${H(p.n)}">Request an access change</button><button class="btn quiet" data-org-act="review" data-n="${H(p.n)}">Add to the next access review</button></div>`}
 function pOwns(p){
- const w=O.owns(p.n),gr=[];
+ const w=O.ownRecs(p.n),gr=[];
  gr.push({key:"m",label:"Metrics",rows:w.metrics.map(id=>{const m=METRICS[id];return{id,t:m.n,sub:m.f.slice(0,70),tag:mstat(m)==="good"?"On trend":"Off trend",st:mstat(m)==="good"?"good":"warn",go:()=>{closeDrawer();S.metricSel=id;go("metrics")}}})});
  gr.push({key:"p",label:"Processes",rows:w.procs.map(id=>{let pr=null;try{pr=PROCLIB.get(id)}catch(e){}return{id,t:pr?pr.name:id,sub:"Process library"+(pr&&pr.level!=null?", maturity "+pr.level+" of "+pr.target:""),tag:"Owner",st:"info",go:()=>{closeDrawer();try{PROCLIB.open(id)}catch(e){go("plat_proclib")}}}})});
  if(w.backup.length)gr.push({key:"pb",label:"Processes as backup owner",rows:w.backup.map(id=>({id,t:id,sub:"Backup",tag:"Backup",st:"mute",go:()=>{closeDrawer();try{PROCLIB.open(id)}catch(e){}}}))});
@@ -235,11 +262,11 @@ document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest
  const g=e.target.closest&&e.target.closest("[data-org-go]");if(g){closeDrawer();go(g.dataset.orgGo)}});
 document.addEventListener("pointerdown",()=>{},{passive:true});
 /* ---------- the screen ---------- */
-O.tabs=[["chart","Org chart"],["report","Reporting structures"],["dir","People directory"],["own","Ownership"],["studio","Agent studio"]];
+O.tabs=[["chart","Org chart"],["report","Reporting structures"],["dir","People directory"],["own","Ownership"],["acct","Accountability map"],["studio","Agent studio"]];
 function orgScreen(){
  O.ensureDir();if(O.wire)O.wire();O.sync();const st=O.stats();
  if(!O.tabs.some(t=>t[0]===OS.tab))OS.tab="chart";
- const pane=OS.tab==="chart"?chartPane():OS.tab==="report"?reportPane():OS.tab==="dir"?dirPane():OS.tab==="own"?ownPane():(O.studioPane?O.studioPane():"");
+ const pane=OS.tab==="chart"?chartPane():OS.tab==="report"?reportPane():OS.tab==="dir"?dirPane():OS.tab==="own"?ownPane():OS.tab==="acct"?acctPane():(O.studioPane?O.studioPane():"");
  const story=`Meridian has <b>${st.heads} people</b> in <b>${st.layers} layers</b> and <b>${st.agents} AI teammates</b>, each sponsored by a named person. Agents are returning <b>${st.returned} hours a week</b> to the people they support; another <b>${st.open} hours</b> is on the table. The goal is to supercharge good people, not replace them.`;
  return `<div class="screen">${hero("People and teams","Who does what, and who supports them",story,`<div class="row">${fchip("m_org_cap")}${fchip("m_org_gov")}${fchip("m_org_own")}${fchip("m_org_span")}${stdChip("togaf","Org and capability model in the chart")}${stdChip("agentic","Agent autonomy levels and sponsor accountability")}</div>`)}${lensNote()}
  ${OS.tab==="chart"?`<div class="org-strip" role="list"><span role="listitem"><b data-role="metric">${st.heads}</b> people</span><span role="listitem"><b data-role="metric">${st.mgrs}</b> managers</span><span role="listitem"><b data-role="metric">${st.avgSpan}</b> average span (widest ${st.maxSpan})</span><span role="listitem"><b data-role="metric">${st.layers}</b> layers</span><span role="listitem"><b data-role="metric">${st.agents}</b> AI agents</span><span role="listitem"><b data-role="metric">${st.returned} h</b> a week returned</span></div>`:kpiRow([["People",String(st.heads),st.mgrs+" managers, "+st.layers+" layers"],["AI teammates",String(st.agents),st.covered+" sponsors"],["Average span",String(st.avgSpan),"max "+st.maxSpan+" direct reports",{metric:"m_org_span"}],["Hours returned",st.returned+" h","a week by agents",{metric:"m_org_cap"}],["Ownership",st.ownPct+"%","of registry items name a person",{metric:"m_org_own"}]])}

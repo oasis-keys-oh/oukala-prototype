@@ -22,7 +22,7 @@ function refcForm(lineId){const l0=lineId?LN(lineId):B().lines.find(l=>l.id==="P
   const res=v.src==="Management reserve"?+v.res||0:0;const old=l.fcst;
   if(res>resBal()-resPend())return {close:false,toast:"The reserve has "+D$(resBal()-resPend())+" free. Lower the amount or choose another source.",audit:"rejected: reserve too low"};
   l.fcst=+v.newf;l.why=v.why;let msg=l.id+" forecast "+D$(old)+" to "+D$(l.fcst);
-  if(res>0){const can=delegateCan(res,"Reserve release",v.req,{proj:l.p}),r=whoApproves(res,"Reserve release",v.req,{proj:l.p});const e=addLed({t:"draw",amt:-res,p:l.p,line:l.id,why:v.why,req:v.req,apr:can?"Omar (CIO)":r.final,st:can?"Approved":"Pending"});msg+=`; ${e.id} ${can?"approved by you":"pending "+r.final}`}
+  if(res>0){const can=delegateCan(res,"Reserve release",v.req,{proj:l.p}),r=whoApproves(res,"Reserve release",v.req,{proj:l.p});const e=addLed({t:"draw",amt:-res,p:l.p,line:l.id,why:v.why,req:v.req,apr:can?"Casey (CIO)":r.final,st:can?"Approved":"Pending"});msg+=`; ${e.id} ${can?"approved by you":"pending "+r.final}`}
   render();return {toast:msg,audit:msg}}})}
 function xferForm(lineId,to){const l=LN(lineId);if(!l||l.p===to)return;const from=l.p,hr=Math.max(0,l.appr-l.comm);
  openF({id:"bud_xfer",title:`Move budget from ${from} to ${to}`,story:`You dropped ${esc(l.id)} (${esc(l.n)}) onto ${esc(PJ(to).short)}. Only money that is not yet committed can move. Nothing changes until you confirm below.`,submit:"Confirm the transfer",
@@ -33,7 +33,7 @@ function xferForm(lineId,to){const l=LN(lineId);if(!l||l.p===to)return;const fro
   <div class="rem"><div class="ico ${can?"":"warn"}">${ico(can?"check":"warn")}</div><div><b>${can?"Inside your authority":"Needs "+esc(r.fname)}</b><div class="small muted">${esc(r.why.join(" "))}</div>${a>hr?`<div class="small" style="color:var(--bad);margin-top:4px">${D$(a)} is more than the ${D$(hr)} uncommitted.</div>`:""}${over&&a<=hr?`<div class="small" style="color:var(--warn);margin-top:4px">This leaves ${esc(l.id)} forecast above its approved amount.</div>`:""}</div></div>`)},
  onSubmit:v=>{const a=+v.amt;if(a<=0||a>hr)return {close:false,toast:"Amount must be between $1 and the "+D$(hr)+" uncommitted.",audit:"rejected transfer"};
   const can=delegateCan(a,"Budget transfer",v.req,{proj:from}),r=whoApproves(a,"Budget transfer",v.req,{proj:from});
-  const x={id:"TR-"+String(B().nx.tr++).padStart(2,"0"),d:iso(TODAYD),from,to,line:l.id,amt:a,why:v.why,req:v.req,apr:can?"Omar (CIO)":r.final,st:can?"Approved":"Pending"};B().xf.push(x);if(can)applyXf(x);
+  const x={id:"TR-"+String(B().nx.tr++).padStart(2,"0"),d:iso(TODAYD),from,to,line:l.id,amt:a,why:v.why,req:v.req,apr:can?"Casey (CIO)":r.final,st:can?"Approved":"Pending"};B().xf.push(x);if(can)applyXf(x);
   render();return {toast:can?`${C$(a)} moved from ${from} to ${to}`:`Transfer ${x.id} sent to ${r.final}`,audit:`${x.id} ${from} to ${to} ${D$(a)} ${x.st}`}}})}
 function applyXf(x){const l=LN(x.line);l.appr-=x.amt;let t=B().lines.find(q=>q.p===x.to&&q.cat===l.cat);if(!t){t={id:x.to+"-"+l.cat.slice(0,3).toUpperCase(),p:x.to,cat:l.cat,n:l.cat+" (moved from "+x.from+")",dept:PJ(x.to).id==="PR4"?"FN":"IT",appr:0,comm:0,act:0,fcst:0,own:PJ(x.to).owner,why:"",fix:""};B().lines.push(t)}t.appr+=x.amt;x.st="Approved"}
 DND.on("budmove",(id,from,to)=>{if(from===to)return;xferForm(id,to)});
@@ -42,8 +42,8 @@ document.addEventListener("click",e=>{
  let t=e.target.closest("[data-bud-edit]");if(t){editForm(t.dataset.budEdit);return}
  t=e.target.closest("[data-bud-refc]");if(t){refcForm();return}
  t=e.target.closest("[data-bud-led]");if(t){const [id,a]=t.dataset.budLed.split(":"),en=B().led.find(x=>x.id===id);if(!en||en.st!=="Pending")return;
-  if(a==="ok"){if(-en.amt>resBal()){toast("The reserve balance is "+D$(resBal())+", below this request.","bad");return}en.st="Approved";en.apr="Omar (CIO)";audit("approved reserve draw",en.id+" "+D$(-en.amt)+" to "+en.p);toast(en.id+" approved. Reserve balance is now "+D$(resBal()),"good")}
-  else{en.st="Rejected";en.apr="Omar (CIO)";audit("rejected reserve draw",en.id);toast(en.id+" rejected. The forecast stays unfunded.","warn")}render();return}
+  if(a==="ok"){if(-en.amt>resBal()){toast("The reserve balance is "+D$(resBal())+", below this request.","bad");return}en.st="Approved";en.apr="Casey (CIO)";audit("approved reserve draw",en.id+" "+D$(-en.amt)+" to "+en.p);toast(en.id+" approved. Reserve balance is now "+D$(resBal()),"good")}
+  else{en.st="Rejected";en.apr="Casey (CIO)";audit("rejected reserve draw",en.id);toast(en.id+" rejected. The forecast stays unfunded.","warn")}render();return}
  t=e.target.closest("[data-bud-xf]");if(t){const [id,a]=t.dataset.budXf.split(":"),x=B().xf.find(q=>q.id===id);if(!x||x.st!=="Pending")return;if(a==="ok"){applyXf(x);audit("recorded approval",x.id+" by "+x.apr);toast(x.id+" applied: "+D$(x.amt)+" moved","good")}else{x.st="Rejected";audit("recorded rejection",x.id);toast(x.id+" rejected","warn")}render();return}
 });
 /* kit re-renders the form on blur, which steals focus when the user clicks the next field. For bud_ forms store the value here and re-render later, only when other fields depend on it. */

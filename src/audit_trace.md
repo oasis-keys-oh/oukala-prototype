@@ -42,7 +42,7 @@ Method: Playwright against the running build. Every screen visited via go(id) at
 | C1 | DONE | Calendar header, legend and grid spaced; legend between | - |
 | C2 | DONE | Impact analysis on change (CHG0314 map) | - |
 | C3 | DONE | Approval policies tab: 11 policies matching service, CI, class, type, risk, group, env, cost; reorder/copy/delete/new/reset | - |
-| C4 | DONE | Calendar legend explains stripe (type), dot (risk), chip style (state), day backgrounds with hover. Note: confirm Omar meant this bar | - |
+| C4 | DONE | Calendar legend explains stripe (type), dot (risk), chip style (state), day backgrounds with hover. Note: confirm Casey meant this bar | - |
 | R1 | DONE | agile_board (sprints, backlogs, burndown charts, teams, ceremonies), agile_art (PI planning, objectives, system demo, I&A, trains) | - |
 | R2 | DONE | Dashboard, pull requests, quality and tests, clash register, exit criteria, go/no-go | - |
 | R3 | DONE | Readiness tree and checklist (training, comms, OCM) generated as child tasks and pushed through PPMX.addTasks | - |

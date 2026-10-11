@@ -98,7 +98,7 @@ M2|p1_10|Project kickoff|0||100|Priya Shah||Priya Shah:100|dv=Kickoff deck and d
 T2|p1_11|Charter and business case|3|p1_10|100|Priya Shah||Priya Shah:60,Maya Ortiz:20|dv=Signed project charter~acc=Charter signed by the CIO and Chief Editor
 T2|p1_12|Steering committee, RACI and RAID log setup|4|p1_11|100|Maya Ortiz||Maya Ortiz:40,PMO Agent:50|dv=Governance calendar, RACI, RAID log
 T2|p1_13|Lumen SOW-4 statement of work and onboarding|5|p1_11|100|Maya Ortiz||Contract Analyst Agent:60,Maya Ortiz:30|ven=V1~dv=Signed SOW-4 and vendor access~acc=Obligations loaded into the contract register
-M2|p1_14|Funding approved by the steering committee|0|p1_12,p1_13|100|Omar Hamid||Omar Hamid:5|dv=Funding decision minute
+M2|p1_14|Funding approved by the steering committee|0|p1_12,p1_13|100|Casey Rowan||Casey Rowan:5|dv=Funding decision minute
 S1|-|Requirements and design||||Priya Shah|||d=Agree what the platform must do and how it will be built.
 T2|p1_1|Requirements and design|20|p1_11|100|Priya Shah|Architecture:2,Editors:1|Priya Shah:50,Jordan Lee:50,Chief Editor:30|snet=2026-07-06~dv=Approved requirements and design baseline~acc=Design review board approval, traceability matrix complete
 S2|-|Editorial requirements||||Chief Editor
@@ -108,7 +108,7 @@ T3|p1_17|Service levels and non-functional requirements|5|p1_16|100|Jordan Lee||
 S2|-|Architecture and security design||||Jordan Lee
 T3|p1_18|Solution architecture decision records|5|p1_16|100|Jordan Lee||Jordan Lee:60|dv=Architecture decision records ADR-01 to ADR-09
 T3|p1_19|Entra ID access model and security review|5|p1_18|100|Rina Okafor||Rina Okafor:40|dv=Access model and threat model
-M2|p1_20|Design gate G1: baseline approved|0|p1_1,p1_17,p1_18|100|Omar Hamid||Omar Hamid:5|dv=Gate G1 record~acc=No open severity 1 design risks
+M2|p1_20|Design gate G1: baseline approved|0|p1_1,p1_17,p1_18|100|Casey Rowan||Casey Rowan:5|dv=Gate G1 record~acc=No open severity 1 design risks
 S1|-|Build||||Priya Shah|||d=Build the platform, the search indexer and the content migration.
 S2|-|Core platform||||Sam Patel
 T3|p1_2|Core platform build|45|p1_1,p1_14,p1_20|100|Priya Shah|Platform team:7|Sam Patel:100,Elise Park:100,Priya Shah:30|dv=Standards Platform release candidate 0.9~acc=All build stories accepted, no open severity 1 defects
@@ -158,7 +158,7 @@ S1|-|Cutover and go live||||Priya Shah|||d=Rehearse, approve and cut over to the
 T2|p1_43|Cutover runbook|5|p1_5|0|Sam Patel||Sam Patel:50,Ravi Menon:30
 T2|p1_44|Change approval for the cutover window|2|p1_43|0|Nia Brooks||Nia Brooks:60,Change Risk Agent:80|dv=Approved change record
 T2|p1_8|Cutover rehearsal|8|p1_6,p1_7,p1_32,p1_39,p1_44|0|Priya Shah|Platform team:4,Ops team:2|Sam Patel:100,Ravi Menon:100,Nia Brooks:30|dv=Rehearsal report with timings~acc=Cutover completes inside the 6 hour window
-M2|p1_45|Go or no-go decision by the steering committee|0|p1_8,p1_41|0|Omar Hamid||Omar Hamid:5
+M2|p1_45|Go or no-go decision by the steering committee|0|p1_8,p1_41|0|Casey Rowan||Casey Rowan:5
 M2|p1_9|Go live|0|p1_8,p1_45|0|Priya Shah||Priya Shah:5|dv=Production release of Standards Platform~acc=Rehearsal passed, rollback tested, steering committee approval
 `,
 PR2:`
@@ -167,7 +167,7 @@ T2|p2_11|Business case and funding approval|5||100|Dev Rao||Dev Rao:60,Avery Che
 M2|p2_10|Project kickoff|0|p2_11|100|Dev Rao||Dev Rao:10|snet=2026-08-03
 T2|p2_12|Data governance council charter|5|p2_10|100|Dev Rao||Dev Rao:30,Maya Ortiz:20|dv=Council charter and decision rights
 T2|p2_13|Lumen SOW-4 contracting and security review|10|p2_11|100|Maya Ortiz||Contract Analyst Agent:70,Maya Ortiz:30,Rina Okafor:20|ven=V1~dv=Signed SOW-4
-M2|p2_14|Funding and SOW-4 signed|0|p2_12,p2_13|100|Omar Hamid||Omar Hamid:5
+M2|p2_14|Funding and SOW-4 signed|0|p2_12,p2_13|100|Casey Rowan||Casey Rowan:5
 S1|-|Design and data modeling||||Dev Rao|||d=Design the canonical taxonomy model that every system will share.
 T2|p2_1|Data model design|25|p2_10|100|Dev Rao|Architecture:1,Data team:2|Dev Rao:50,Jordan Lee:50,Hana Koval:40|snet=2026-08-03~dv=Canonical taxonomy data model~acc=Approved by the data governance council
 S2|-|Canonical model workstreams||||Dev Rao
@@ -203,7 +203,7 @@ T2|p2_30|Test data and scripts|8|p2_22,p2_23|35|Test Agent||Test Agent:100,Dev R
 T2|p2_31|Performance and volume test|6|p2_26,p2_30|0|Sam Patel||Sam Patel:50,Test Agent:80
 T2|p2_32|Pilot user training and runbook|6|p2_31|0|Knowledge Curator||Knowledge Curator:60,Nia Brooks:30
 T2|p2_4|Pilot readiness test|6|p2_2,p2_3,p2_29,p2_32|0|Dev Rao|Data team:3,Platform team:1|Dev Rao:60,Test Agent:100,Hana Koval:50|dv=Pilot readiness report~acc=Exit criteria met for data quality and performance
-M2|p2_33|Pilot go or no-go|0|p2_4|0|Omar Hamid||Omar Hamid:3
+M2|p2_33|Pilot go or no-go|0|p2_4|0|Casey Rowan||Casey Rowan:3
 M2|p2_5|Pilot|0|p2_4,p2_33|0|Dev Rao||Dev Rao:5|snet=2026-12-02~dv=Pilot start with 15 editors~note=Committed date. The pilot cannot start before Dec 2.
 `,
 PR3:`
@@ -255,7 +255,7 @@ M2|p4_11|Project kickoff|0|p4_10|100|Maya Ortiz||Maya Ortiz:10
 T2|p4_12|Charter, RACI and steering cadence|3|p4_11|100|Maya Ortiz||Maya Ortiz:50,PMO Agent:40
 T2|p4_13|Stakeholder interviews: Legal, Procurement, Finance|5|p4_11|100|Maya Ortiz||Maya Ortiz:50,First Officer:40
 T2|p4_14|Contract inventory and data quality scan|8|p4_11|75|Contract Analyst Agent||Contract Analyst Agent:100,Knowledge Curator:30|dv=Inventory of 6,900 contracts with data quality score
-M2|p4_15|Funding released for phase 1|0|p4_12|100|Omar Hamid||Omar Hamid:3
+M2|p4_15|Funding released for phase 1|0|p4_12|100|Casey Rowan||Casey Rowan:3
 S1|-|Vendor selection||||Maya Ortiz|||d=Choose the replacement repository product and sign the contract.
 T2|p4_1|Vendor selection|20|p4_12,p4_13,p4_15|35|Maya Ortiz|Architecture:1|Maya Ortiz:50,Contract Analyst Agent:40|snet=2026-10-05~dv=Selection recommendation and scoring~acc=Steering committee approval~fx=18
 S2|-|Evaluation||||Maya Ortiz
@@ -263,7 +263,7 @@ T3|p4_16|Evaluation criteria and scoring model|5|p4_13|20|Maya Ortiz||Maya Ortiz
 T3|p4_17|Vendor demonstrations and reference checks|8|p4_16|0|Jordan Lee||Jordan Lee:40,Maya Ortiz:30
 T3|p4_18|Security and privacy review of finalists|6|p4_16|0|Rina Okafor||Rina Okafor:50
 T3|p4_19|Commercial negotiation and contract terms|5|p4_17,p4_18|0|Maya Ortiz||Maya Ortiz:40,Contract Analyst Agent:60
-M2|p4_20|Vendor selected and contract signed|0|p4_1,p4_19|0|Omar Hamid||Omar Hamid:3|dv=Executed contract and order form
+M2|p4_20|Vendor selected and contract signed|0|p4_1,p4_19|0|Casey Rowan||Casey Rowan:3|dv=Executed contract and order form
 S1|-|Migration design||||Maya Ortiz|||d=Design the target repository, the migration waves and the integrations.
 T2|p4_2|Migration design|25|p4_1,p4_20|0|Maya Ortiz|Architecture:1,Platform team:1|Maya Ortiz:30,Jordan Lee:50|dv=Migration design document~acc=Design authority approval
 S2|-|Design components||||Jordan Lee
@@ -272,8 +272,8 @@ T3|p4_22|Integration design: Standards, M365, Entra ID|8|p4_20|0|Jordan Lee||Jor
 T3|p4_23|Migration approach and wave plan|8|p4_21|0|Maya Ortiz||Maya Ortiz:30,Contract Analyst Agent:50
 T3|p4_24|Records retention and legal hold design|6|p4_21|0|Avery Chen||Avery Chen:30,Contract Analyst Agent:40
 T3|p4_37|Obligation and renewal alert model|5|p4_21|0|Contract Analyst Agent||Contract Analyst Agent:80,Maya Ortiz:20|dv=Alert rules for renewals and notice periods
-T3|p4_25|Design authority review|3|p4_22,p4_23,p4_24|0|Omar Hamid||Omar Hamid:20,Jordan Lee:30
-M2|p4_26|Design approved|0|p4_2,p4_25|0|Omar Hamid||Omar Hamid:3
+T3|p4_25|Design authority review|3|p4_22,p4_23,p4_24|0|Casey Rowan||Casey Rowan:20,Jordan Lee:30
+M2|p4_26|Design approved|0|p4_2,p4_25|0|Casey Rowan||Casey Rowan:3
 S1|-|Build and migrate||||Maya Ortiz|||d=Stand up the new repository and move the contracts in waves.
 T2|p4_3|Build and migrate|40|p4_2,p4_26|0|Maya Ortiz|Platform team:3|Sam Patel:100,Maya Ortiz:20|dv=New repository populated and validated~acc=Reconciliation shows 100 percent of active contracts migrated
 S2|-|Environment||||Sam Patel
@@ -289,7 +289,7 @@ T3|p4_32|User acceptance testing (Legal and Procurement)|6|p4_29|0|Maya Ortiz||M
 T3|p4_33|Training for Legal and Procurement|5|p4_32|0|Nia Brooks||Nia Brooks:50
 T3|p4_35|Communications to contract owners|3|p4_32|0|Nia Brooks||Nia Brooks:30,First Officer:40
 T3|p4_36|Service desk handover and knowledge articles|4|p4_32|0|Knowledge Curator||Knowledge Curator:70,Northwind Managed Services:30
-M3|p4_34|Cutover readiness review passed|0|p4_31,p4_33,p4_28|0|Omar Hamid||Omar Hamid:3
+M3|p4_34|Cutover readiness review passed|0|p4_31,p4_33,p4_28|0|Casey Rowan||Casey Rowan:3
 S1|-|Cutover and decommission||||Maya Ortiz|||d=Switch over in a maintenance window and retire the old system.
 T2|p4_4|Maintenance window cutover|3|p4_3,p4_34|0|Maya Ortiz|Platform team:4,Ops team:2|Sam Patel:100,Ravi Menon:100,Contoso Cloud Operations:50|snet=2027-01-11~dv=Cutover record~acc=Cutover inside the approved window, rollback not needed
 S2|-|Decommission||||Maya Ortiz

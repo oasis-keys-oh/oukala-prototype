@@ -45,7 +45,7 @@ const capOf=(t,sp)=>Math.round(sum(t.mem,m=>memCap(m,sp===CURSP||!sp?m.pto:0))/t
 TEAM.forEach(t=>{const r=RNG("vel"+t.id),cap=capOf(t,"x");t.cap=cap;t.vel=PASTSP.map((s,i)=>Math.round(cap*(.8+.08*r()+t.tr*i+(i===3?-.05:0))));});
 
 /* ---------- portfolio epics, capabilities, features ---------- */
-const EPICS=[{id:"EP1",n:"Modernize standards publishing",kind:"Business epic",obj:"Modernize standards publishing",proj:["PR1","PR2"],ben:"Editors publish a standard in days, not weeks, and readers find it faster.",inv:2060,own:"Omar Hamid"},
+const EPICS=[{id:"EP1",n:"Modernize standards publishing",kind:"Business epic",obj:"Modernize standards publishing",proj:["PR1","PR2"],ben:"Editors publish a standard in days, not weeks, and readers find it faster.",inv:2060,own:"Casey Rowan"},
  {id:"EP2",n:"Reduce operating risk",kind:"Business epic",obj:"Reduce operating risk",proj:["PR3"],ben:"No severity 1 outage from known causes; a rehearsed failover.",inv:310,own:"Tom Becker"},
  {id:"EP3",n:"Protect revenue through contract discipline",kind:"Business epic",obj:"Protect revenue through contract discipline",proj:["PR4"],ben:"Renewals and obligations are tracked, with fewer missed dates.",inv:540,own:"Maya Ortiz"},
  {id:"EP4",n:"Engineering excellence",kind:"Enabler epic",obj:"Reduce operating risk",proj:[],ben:"Every release can be built, tested and deployed through one automated pipeline.",inv:240,own:"Jordan Lee"}];

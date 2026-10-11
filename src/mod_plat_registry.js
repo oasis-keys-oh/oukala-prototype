@@ -267,7 +267,7 @@ document.addEventListener("click",e=>{
    fields:[{section:"What is it"},{k:"label",label:"Entity name",type:"text",req:true,ph:"Budget line"},{k:"purpose",label:"What it records",type:"longtext",req:true,ph:"One sentence"},{k:"fields",label:"Main fields",type:"text",ph:"amount, owner, period"},
    {k:"domain",label:"Domain",type:"select",opts:Object.keys(DOM).map(k=>[k,DOM[k].n])},{k:"steward",label:"Steward",type:"people"},{k:"why",label:"Why existing entities do not fit",type:"longtext",req:true}],
    live:v=>{const h=reuseCheck(v.label,(v.fields||"")+" "+(v.purpose||""));return h.length?`<div class="story"><b>Reuse check:</b> ${h.map(x=>`${E(x.label)} (${x.kind}, ${Math.round(x.sc*100)}% match)`).join("; ")}. Explain why these do not fit, or reuse one.</div>`:`<div class="story"><b>Reuse check:</b> no close match found.</div>`},
-   onSubmit:v=>{const id=(v.label||"entity").toLowerCase().replace(/[^a-z0-9]+/g,"_");S.plat.proposals.push({id,label:v.label,domain:v.domain||"portfolio",steward:v.steward||"Data council chair",why:v.why,by:"Omar Hamid"});audit("Entity proposed",v.label);toast("Sent to the data council","good");closeDrawer();render()}});return}
+   onSubmit:v=>{const id=(v.label||"entity").toLowerCase().replace(/[^a-z0-9]+/g,"_");S.plat.proposals.push({id,label:v.label,domain:v.domain||"portfolio",steward:v.steward||"Data council chair",why:v.why,by:"Casey Rowan"});audit("Entity proposed",v.label);toast("Sent to the data council","good");closeDrawer();render()}});return}
 });
 REG("plat_reg","Platform registry","platform","M4 5h16v4H4zM4 11h16v4H4zM4 17h10v3H4z",regScreen);
 PROC.reg("plat_reg",{title:"How the registry stays true",std:["dmbok","togaf"],steps:[

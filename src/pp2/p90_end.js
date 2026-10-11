@@ -40,7 +40,7 @@ window.PEOPLEX={
   const names=namesOf(nameOrTeam||null,null);const A=agg(names,"px:"+(nameOrTeam||"*")+"|"+DIR.length+"|"+(st.mv||0));return {team:nameOrTeam||"All",people:names.length,util:+avgU(A,w0,w1).toFixed(3),over:ovStats(names,w0,w1)}},
  performance(n){const r=who(n);if(!r)return null;const o=perfOf(n);return {name:r.name,index:o.idx,peers:o.peers,flags:o.flags.map(f=>f[1]),rows:o.rows.map(x=>({metric:x.lab,value:x.v,peerMedian:x.med==null?null:x.med,band:x.band}))}},
  plate(n){return plate(n).map(x=>({type:x.type,id:x.id,title:x.t,sub:x.sub}))},
- requestResource(o){o=o||{};const tms=teamList();const q={id:"RQ"+(CAP.reqs.length+1),title:o.title||("Extra capacity for "+(o.team||tms[0])),team:o.team||tms[0],role:o.role||"Engineer or architect",kind:o.kind||"any",skills:o.skills||[],fte:+o.fte||1,from:o.from||"2026-11-02",to:o.to||"2027-01-29",status:"Submitted",by:o.by||"Omar Hamid",why:o.why||"Requested through the API.",at:"2026-10-08"};CAP.reqs.unshift(q);bumpMv();try{audit("resource request",q.title)}catch(e){}return q}
+ requestResource(o){o=o||{};const tms=teamList();const q={id:"RQ"+(CAP.reqs.length+1),title:o.title||("Extra capacity for "+(o.team||tms[0])),team:o.team||tms[0],role:o.role||"Engineer or architect",kind:o.kind||"any",skills:o.skills||[],fte:+o.fte||1,from:o.from||"2026-11-02",to:o.to||"2027-01-29",status:"Submitted",by:o.by||"Casey Rowan",why:o.why||"Requested through the API.",at:"2026-10-08"};CAP.reqs.unshift(q);bumpMv();try{audit("resource request",q.title)}catch(e){}return q}
 };
 window.pp2Debug={PM,agg,overWeeks,levelOpts,verdict,perfOf,assess,JY,CAP,PF,st,HX};
 })();

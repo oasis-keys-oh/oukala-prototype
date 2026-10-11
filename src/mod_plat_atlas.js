@@ -1139,7 +1139,7 @@ function mapForm(mid,gapIdx,preset){
    {k:"note",label:"Why this field",type:"longtext",ph:"One sentence for the next reader",wide:true}],
   defaults:{term,ref:preset||""},
   live:v=>{if(!v.ref)return `<div class="story">After saving, this metric is re-traced and the percent traced updates.</div>`;const [en,fk]=String(v.ref).split(".");const f=PLAT.fieldsAll().find(x=>x.ent===en&&x.k===fk);return f?`<div class="story"><b>${E(f.entLabel)}</b> field <b>${E(f.label)}</b> is ${E(AUTHN[f.auth].toLowerCase())}, freshness ${E(f.fresh)}, class ${E(f.cls)}. It will count as a traced source for this metric.</div>`:""},
-  onSubmit:v=>{A.ovr[mid+"|"+normP(v.term)]={ref:v.ref,by:"Omar Hamid",at:new Date().toISOString().slice(0,10),note:v.note||""};LIN.bump();_six=null;
+  onSubmit:v=>{A.ovr[mid+"|"+normP(v.term)]={ref:v.ref,by:"Casey Rowan",at:new Date().toISOString().slice(0,10),note:v.note||""};LIN.bump();_six=null;
    setTimeout(()=>{refreshLineage(true);if(vpEl()){drawAll()}},0);return{toast:"Mapped “"+trunc(v.term,30)+"” to "+v.ref.replace("."," · "),audit:METRICS[mid].n+": "+v.term+" → "+v.ref}}})}
 
 document.addEventListener("click",e=>{
@@ -1148,7 +1148,7 @@ document.addEventListener("click",e=>{
  if(d.atLopen!==undefined){openLineage(d.atLopen,{hist:true});return}
  if(d.atLback!==undefined){const p=LN.hist.pop();if(p){A.metric=p;refreshLineage()}return}
  if(d.atLmap!==undefined){mapForm(A.metric,+d.atLmap);return}
- if(d.atLapply!==undefined){const i=d.atLapply.indexOf("|"),key=d.atLapply.slice(0,i),ref=d.atLapply.slice(i+1);A.ovr[A.metric+"|"+key]={ref,by:"Omar Hamid",at:new Date().toISOString().slice(0,10),note:"Accepted the suggested field"};LIN.bump();_six=null;audit("Mapped a metric term",METRICS[A.metric].n+": "+key+" → "+ref);toast("Mapped to "+ref.replace("."," · "),"good");refreshLineage(true);return}
+ if(d.atLapply!==undefined){const i=d.atLapply.indexOf("|"),key=d.atLapply.slice(0,i),ref=d.atLapply.slice(i+1);A.ovr[A.metric+"|"+key]={ref,by:"Casey Rowan",at:new Date().toISOString().slice(0,10),note:"Accepted the suggested field"};LIN.bump();_six=null;audit("Mapped a metric term",METRICS[A.metric].n+": "+key+" → "+ref);toast("Mapped to "+ref.replace("."," · "),"good");refreshLineage(true);return}
  if(d.atLunmap!==undefined){delete A.ovr[d.atLunmap];LIN.bump();_six=null;audit("Removed a metric mapping",d.atLunmap);toast("Mapping removed","info");refreshLineage(true);return}
  if(d.atViewent!==undefined){ATLAS.focus(d.atViewent)}});
 

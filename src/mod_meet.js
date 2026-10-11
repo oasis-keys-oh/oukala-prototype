@@ -35,8 +35,8 @@ M.TYPES=TYPES;
 
 /* ---------- series and governance forums ---------- */
 const SER=[
- {id:"sr_steer",n:"Standards steering group",type:"steer",chair:"Omar Hamid",secy:"Maya Ortiz",cad:"Every other Monday, 10:00 AM",s:10,e:11,room:"Teams",purpose:"Steers the Standards Platform Upgrade and the Taxonomy Data Hub: scope, dates and money.",rights:"Approves scope, date and budget changes up to $100,000. Larger changes go to the executive team.",esc:"Executive committee within 2 working days",
-  mem:[["Omar Hamid","req"],["Maya Ortiz","req"],["Priya Shah","req"],["Dev Rao","req"],["Tom Becker","req"],["Avery Chen","opt"],["Chief Editor","opt"],["First Officer","info"]],
+ {id:"sr_steer",n:"Standards steering group",type:"steer",chair:"Casey Rowan",secy:"Maya Ortiz",cad:"Every other Monday, 10:00 AM",s:10,e:11,room:"Teams",purpose:"Steers the Standards Platform Upgrade and the Taxonomy Data Hub: scope, dates and money.",rights:"Approves scope, date and budget changes up to $100,000. Larger changes go to the executive team.",esc:"Executive committee within 2 working days",
+  mem:[["Casey Rowan","req"],["Maya Ortiz","req"],["Priya Shah","req"],["Dev Rao","req"],["Tom Becker","req"],["Avery Chen","opt"],["Chief Editor","opt"],["First Officer","info"]],
   dates:["2026-09-08","2026-09-21","2026-10-05","2026-10-19","2026-11-02"],mids:{"2026-10-05":"m1"},ex:{"2026-09-08":"Moved from Monday Sep 7 (Labor Day)"},links:[["project","PR1"],["objective","O1"]]},
  {id:"sr_cab",n:"Change advisory board",type:"cab",chair:"Nia Brooks",secy:"Sam Patel",cad:"Weekly, Wednesday 10:00 AM",s:10,e:11,room:"Teams",purpose:"Assesses and authorizes normal changes and emergency changes after the fact.",rights:"Authorizes normal changes. Emergency changes need the chair and one of Security or Operations.",esc:"CIO for any change that touches a freeze period",
   mem:[["Nia Brooks","req"],["Rina Okafor","req"],["Sam Patel","req"],["Tom Becker","req"],["Jordan Lee","opt"],["Priya Shah","opt"],["Change Risk Agent","info"],["Northwind Managed Services","info"]],
@@ -50,19 +50,19 @@ const SER=[
  {id:"sr_design",n:"Taxonomy design review",type:"design",chair:"Dev Rao",secy:"Hana Koval",cad:"Every other Tuesday, 3:00 PM",s:15,e:16,room:"Aspen room (hybrid)",purpose:"Reviews the taxonomy model, interfaces and pipeline design before they are built.",rights:"Approves design changes inside the agreed scope.",esc:"Steering committee",
   mem:[["Dev Rao","req"],["Hana Koval","req"],["Marco Ellis","req"],["Jordan Lee","req"],["Lumen Search Services","opt"],["Knowledge Curator","info"]],
   dates:["2026-09-22","2026-10-06","2026-10-20","2026-11-03"],mids:{"2026-10-06":"m5"},ex:{},links:[["project","PR2"],["objective","O1"]]},
- {id:"sr_one",n:"One-on-one: Omar and Tom",type:"one",chair:"Omar Hamid",secy:"",cad:"Weekly, Wednesday 1:00 PM",s:13,e:13.5,room:"Omar's office",purpose:"Priorities, blockers and development.",rights:"None. Not a decision forum.",esc:"",
-  mem:[["Omar Hamid","req"],["Tom Becker","req"]],dates:["2026-09-23","2026-09-30","2026-10-07","2026-10-14"],mids:{"2026-10-07":"m7"},ex:{},links:[]},
+ {id:"sr_one",n:"One-on-one: Casey and Tom",type:"one",chair:"Casey Rowan",secy:"",cad:"Weekly, Wednesday 1:00 PM",s:13,e:13.5,room:"Casey's office",purpose:"Priorities, blockers and development.",rights:"None. Not a decision forum.",esc:"",
+  mem:[["Casey Rowan","req"],["Tom Becker","req"]],dates:["2026-09-23","2026-09-30","2026-10-07","2026-10-14"],mids:{"2026-10-07":"m7"},ex:{},links:[]},
  {id:"sr_vendor",n:"Lumen vendor review",type:"vendor",chair:"Maya Ortiz",secy:"Priya Shah",cad:"Monthly, second Thursday",s:14,e:15,room:"Teams",purpose:"Reviews Lumen delivery against SOW-4, quality, and invoices before they are paid.",rights:"Accepts milestones and releases or holds payments up to $100,000.",esc:"Steering committee",
   mem:[["Maya Ortiz","req"],["Priya Shah","req"],["Marco Ellis","req"],["Hana Koval","opt"],["Lumen Search Services","opt"],["Avery Chen","opt"],["Contract Analyst Agent","info"]],
   dates:["2026-09-10","2026-10-08"],mids:{"2026-10-08":"m9"},ex:{},links:[["contract","V2"],["project","PR1"]]},
- {id:"sr_board",n:"Board and audit preparation",type:"board",chair:"Omar Hamid",secy:"Maya Ortiz",cad:"Monthly, second Thursday",s:9.5,e:11,room:"Boardroom",purpose:"Prepares the technology material for the board and the audit committee.",rights:"Approves what technology reports to the board.",esc:"Chief executive",
-  mem:[["Omar Hamid","req"],["Maya Ortiz","req"],["Avery Chen","req"],["Tom Becker","req"],["Rina Okafor","opt"],["Chief Editor","opt"]],
+ {id:"sr_board",n:"Board and audit preparation",type:"board",chair:"Casey Rowan",secy:"Maya Ortiz",cad:"Monthly, second Thursday",s:9.5,e:11,room:"Boardroom",purpose:"Prepares the technology material for the board and the audit committee.",rights:"Approves what technology reports to the board.",esc:"Chief executive",
+  mem:[["Casey Rowan","req"],["Maya Ortiz","req"],["Avery Chen","req"],["Tom Becker","req"],["Rina Okafor","opt"],["Chief Editor","opt"]],
   dates:["2026-09-10","2026-10-08"],mids:{"2026-10-08":"m8"},ex:{},links:[["objective","O2"]]},
  {id:"sr_budget",n:"Finance and budget review",type:"budget",chair:"Avery Chen",secy:"Maya Ortiz",cad:"Monthly, third Thursday",s:13,e:14,room:"Teams",purpose:"Spend against budget, reforecasts and vendor commitments.",rights:"Approves reforecasts that move less than $50,000 between lines.",esc:"CFO",
-  mem:[["Avery Chen","req"],["Tom Becker","req"],["Maya Ortiz","req"],["Omar Hamid","opt"],["Invoice Advisor","info"]],
+  mem:[["Avery Chen","req"],["Tom Becker","req"],["Maya Ortiz","req"],["Casey Rowan","opt"],["Invoice Advisor","info"]],
   dates:["2026-09-17","2026-10-15"],mids:{"2026-10-15":"m11"},ex:{},links:[["budget","B1"],["budget","B2"]]},
- {id:"sr_gate",n:"Standards Portal beta gate",type:"gonogo",chair:"Omar Hamid",secy:"Priya Shah",cad:"Gate reviews, as scheduled",s:11,e:12,room:"Teams",purpose:"Decides whether the Standards Portal beta can start on the planned date.",rights:"Go, conditional go, or no-go on the beta date.",esc:"Executive committee",
-  mem:[["Omar Hamid","req"],["Priya Shah","req"],["Maya Ortiz","req"],["Sam Patel","req"],["Chief Editor","req"],["Rina Okafor","opt"],["Test Agent","info"]],
+ {id:"sr_gate",n:"Standards Portal beta gate",type:"gonogo",chair:"Casey Rowan",secy:"Priya Shah",cad:"Gate reviews, as scheduled",s:11,e:12,room:"Teams",purpose:"Decides whether the Standards Portal beta can start on the planned date.",rights:"Go, conditional go, or no-go on the beta date.",esc:"Executive committee",
+  mem:[["Casey Rowan","req"],["Priya Shah","req"],["Maya Ortiz","req"],["Sam Patel","req"],["Chief Editor","req"],["Rina Okafor","opt"],["Test Agent","info"]],
   dates:["2026-10-09","2026-10-22","2026-10-29"],mids:{"2026-10-09":"m10","2026-10-22":"m12"},ex:{},links:[["project","PR1"],["service","Standards Portal"]]}
 ];
 M.series=SER;
@@ -133,7 +133,7 @@ M.linkGo=function(l){try{
 function openDrawerRec(id){if(typeof recDrawer==="function")recDrawer(id)}
 
 /* ---------- audit trail on the meeting ---------- */
-function maud(m,what,detail,by){m.aud=m.aud||[];m.aud.unshift({at:"Oct 6 "+tm(NOWH),by:by||(S.persona&&PERSONAS[S.persona]?PERSONAS[S.persona].n:"Omar Hamid"),a:what,d:detail||""});if(m.aud.length>60)m.aud.length=60;audit("Meetings: "+what,(m.t||"")+(detail?" · "+detail:""))}
+function maud(m,what,detail,by){m.aud=m.aud||[];m.aud.unshift({at:"Oct 6 "+tm(NOWH),by:by||(S.persona&&PERSONAS[S.persona]?PERSONAS[S.persona].n:"Casey Rowan"),a:what,d:detail||""});if(m.aud.length>60)m.aud.length=60;audit("Meetings: "+what,(m.t||"")+(detail?" · "+detail:""))}
 M.maud=maud;
 
 /* ---------- seed: patch the existing 12 meetings and add the rest ---------- */
@@ -195,13 +195,13 @@ MEETINGS.forEach((m,i)=>{
 
 /* ---------- actions and decisions ---------- */
 const AT={
- steer:[["Confirm acceptance criteria for milestone 3 with Lumen","Priya Shah",4,"High"],["Bring the hosting tier cost estimate to the finance review","Tom Becker",9,"High"],["Draft the revised {p} schedule with the Nov 13 beta date","Priya Shah",7,"High"],["Brief the executive team on the {p} risk exposure","Maya Ortiz",6,"Medium"],["Request two more Lumen engineers through the change process","Maya Ortiz",10,"Medium"],["Share the reviewer testing calendar with the Chief Editor","Priya Shah",5,"Medium"],["Update the benefits case for {o}","Avery Chen",14,"Low"],["Confirm editor availability during the November close","Chief Editor",8,"Medium"],["Publish the steering decisions log to all sponsors","Maya Ortiz",2,"Low"],["Review the Lumen vendor index before the next steering meeting","Omar Hamid",12,"Medium"],["Agree the cutover window with Operations","Sam Patel",9,"High"],["Send the weekly {p} status to sponsors","Priya Shah",3,"Low"]],
+ steer:[["Confirm acceptance criteria for milestone 3 with Lumen","Priya Shah",4,"High"],["Bring the hosting tier cost estimate to the finance review","Tom Becker",9,"High"],["Draft the revised {p} schedule with the Nov 13 beta date","Priya Shah",7,"High"],["Brief the executive team on the {p} risk exposure","Maya Ortiz",6,"Medium"],["Request two more Lumen engineers through the change process","Maya Ortiz",10,"Medium"],["Share the reviewer testing calendar with the Chief Editor","Priya Shah",5,"Medium"],["Update the benefits case for {o}","Avery Chen",14,"Low"],["Confirm editor availability during the November close","Chief Editor",8,"Medium"],["Publish the steering decisions log to all sponsors","Maya Ortiz",2,"Low"],["Review the Lumen vendor index before the next steering meeting","Casey Rowan",12,"Medium"],["Agree the cutover window with Operations","Sam Patel",9,"High"],["Send the weekly {p} status to sponsors","Priya Shah",3,"Low"]],
  cab:[["Attach the rollback test evidence to {c}","Sam Patel",3,"High"],["Re-score the risk for {c} after the collision check","Change Risk Agent",2,"Medium"],["Confirm the maintenance window for {c} with Northwind","Nia Brooks",4,"High"],["Add the security review result to {c}","Rina Okafor",5,"High"],["Notify affected editors about the {c} window","Tom Becker",3,"Medium"],["Update the standard change catalog entry used by {c}","Nia Brooks",9,"Low"],["Schedule a post-implementation review for {c}","Sam Patel",14,"Medium"],["Confirm there is no freeze conflict for {c}","Nia Brooks",2,"High"]],
  standup:[["Update {i} with the customer impact count","Tom Becker",1,"High"],["Rehearse the failover for the Standards Portal","Sam Patel",3,"High"],["Link {i} to the open problem record","Triage Agent",2,"Medium"],["Review overnight alerts for the Taxonomy API","Ravi Menon",1,"Medium"],["Close {i} once the editors confirm the fix","Tom Becker",4,"Medium"],["Check backup success for the Contract Repository","Contoso Cloud Operations",2,"Low"]],
  retro:[["Write down the test environment hand-off steps","Elise Park",10,"Medium"],["Agree a definition of done for the search work","Priya Shah",7,"Medium"],["Try pairing on the failover rehearsal","Sam Patel",14,"Low"],["Cut the stand-up to 15 minutes","Priya Shah",5,"Low"],["Move the flaky tests to the quarantine list","Test Agent",6,"Medium"],["Document how reviewers are chosen","Jordan Lee",12,"Low"]],
  design:[["Freeze the taxonomy model after reviewer feedback","Dev Rao",7,"High"],["Share the indexer interface contract with the Data team","Marco Ellis",5,"High"],["Prototype the two new categories","Hana Koval",9,"Medium"],["Review the API versioning approach","Jordan Lee",8,"Medium"],["Estimate the pipeline test effort","Elise Park",6,"Medium"]],
  vendor:[["Send the milestone 3 acceptance checklist to Lumen","Priya Shah",3,"High"],["Ask Lumen for a recovery plan for the indexer slip","Maya Ortiz",4,"High"],["Confirm the next Lumen invoice is held until acceptance","Avery Chen",2,"High"],["Review SOW-4 obligations with the Contract Analyst Agent","Maya Ortiz",10,"Medium"],["Agree a weekly checkpoint with the Lumen delivery lead","Priya Shah",5,"Medium"],["Share Lumen engineer availability for December","Marco Ellis",7,"Medium"]],
- board:[["Prepare the Tier 1 availability chart for the audit committee","Tom Becker",6,"High"],["Summarize vendor index trends for the board pack","Maya Ortiz",6,"Medium"],["Confirm the audit evidence list with Finance","Avery Chen",8,"High"],["Draft the risk appetite statement update","Omar Hamid",14,"Medium"],["Collect the access review results","Rina Okafor",9,"High"]],
+ board:[["Prepare the Tier 1 availability chart for the audit committee","Tom Becker",6,"High"],["Summarize vendor index trends for the board pack","Maya Ortiz",6,"Medium"],["Confirm the audit evidence list with Finance","Avery Chen",8,"High"],["Draft the risk appetite statement update","Casey Rowan",14,"Medium"],["Collect the access review results","Rina Okafor",9,"High"]],
  budget:[["Reforecast hosting contingency for two extra engineers","Avery Chen",5,"High"],["Explain the $45,000 vendor services overage","Tom Becker",4,"High"],["Update the commitment report with SOW-4 changes","Avery Chen",7,"Medium"],["Validate the cloud cost forecast with Contoso","Contoso Cloud Operations",9,"Medium"],["Prepare the benefits realization update","Maya Ortiz",12,"Low"]],
  one:[["Share the on-call coverage plan for December","Tom Becker",7,"Medium"],["Draft the service desk improvement plan","Tom Becker",14,"Medium"],["Nominate two people for the incident command course","Tom Becker",10,"Low"]],
  gonogo:[["Close the open severity 1 and 2 defects","Priya Shah",6,"High"],["Confirm the rollback plan with Operations","Sam Patel",4,"High"],["Get editor sign-off on acceptance testing","Chief Editor",7,"High"]]
@@ -254,7 +254,7 @@ heldMs.forEach((m,i)=>{
   let rat=t[4];if(m.dt>="2026-10-02"&&rat==="ratified")rat="pending";
   const d={id:"MD-"+String(++dseq).padStart(3,"0"),mid:m.id,t:fill(t[0],ctx),why:fill(t[1],ctx),alts:t[2].slice(),by:m.chair,dt:m.dt,eff:addD(m.dt,m.type==="cab"?1:3),rev:t[3],raid:"",rat,ratBy:"",ratAt:"",links:m.links.slice(0,2).map(l=>({k:l.k,id:l.id})),src:chance(.5)?"ai":"note",conf:0,gov};
   if(d.src==="ai")d.conf=+(0.8+R()*.18).toFixed(2);
-  if(d.rat==="ratified"){d.ratBy=m.type==="board"?"Board chair":"Omar Hamid";d.ratAt=addD(m.dt,2+Math.floor(R()*7));if(d.ratAt>TODAY)d.ratAt=TODAY}
+  if(d.rat==="ratified"){d.ratBy=m.type==="board"?"Board chair":"Casey Rowan";d.ratAt=addD(m.dt,2+Math.floor(R()*7));if(d.ratAt>TODAY)d.ratAt=TODAY}
   if(m.type==="cab"){d.links=[{k:"change",id:ctx.c}]}
   DECS.push(d)}
 });
@@ -284,10 +284,10 @@ MEETINGS.forEach(m=>{if(m.st!=="done"||m.cancel){return}
  else if(age>=5||m.type==="one"){m.minutes={st:"published",by:m.secy||m.chair,at:addD(m.dt,1),appr:m.chair,apprAt:addD(m.dt,1),dist:m.inv.filter(x=>x.role!=="info").map(x=>x.n)}}
  else if(age>=2){m.minutes={st:chance(.5)?"review":"draft",by:m.secy||m.chair,at:addD(m.dt,1)}}
  else{m.minutes={st:"none"}}
- if(m.id==="m1"){m.minutes={st:"published",by:"Maya Ortiz",at:"2026-10-06",appr:"Omar Hamid",apprAt:"2026-10-06",dist:m.inv.filter(x=>x.role!=="info").map(x=>x.n)}}
+ if(m.id==="m1"){m.minutes={st:"published",by:"Maya Ortiz",at:"2026-10-06",appr:"Casey Rowan",apprAt:"2026-10-06",dist:m.inv.filter(x=>x.role!=="info").map(x=>x.n)}}
  /* pending AI proposals on the two most recent meetings */
  if(m.id==="m3"||m.id==="m4"){m.prop=[{id:m.id+"_p1",kind:"Action",txt:"Tom Becker to confirm the failover rehearsal time with Northwind",own:"Tom Becker",due:addD(m.dt,2),conf:.91,line:3},{id:m.id+"_p2",kind:"Decision",txt:"Keep the failover rehearsal at 16:00 today",own:"",due:"",conf:.74,line:5}]}
- m.aud=[{at:fd(m.dt)+" "+tm(m.s),by:m.chair||"Omar Hamid",a:"Meeting held",d:m.inv.filter(x=>x.att==="present"||x.att==="delegate").length+" attended"}];
+ m.aud=[{at:fd(m.dt)+" "+tm(m.s),by:m.chair||"Casey Rowan",a:"Meeting held",d:m.inv.filter(x=>x.att==="present"||x.att==="delegate").length+" attended"}];
  if(m.minutes.st==="published")m.aud.unshift({at:fd(m.minutes.at),by:m.minutes.appr||m.chair,a:"Minutes published",d:"Sent to "+(m.minutes.dist||[]).length+" people"});
 });
 /* a few older actions refer to the removed no-outcome meetings; fix numbering gaps is not needed, ids stay unique */
@@ -332,7 +332,7 @@ M.addAction=function(m,o){const a=Object.assign({id:M.nextA(),mid:m.id,t:"",own:
  M.sync();return a};
 M.addDecision=function(m,o){const d=Object.assign({id:M.nextD(),mid:m.id,t:"",why:"",alts:[],by:m.chair,dt:m.dt,eff:addD(m.dt,3),rev:true,raid:"",rat:"na",ratBy:"",ratAt:"",links:(m.links||[]).slice(0,2).map(l=>({k:l.k,id:l.id})),src:"manual",conf:0,gov:!!(TYPES[m.type]||{}).gov},o);DECS.push(d);maud(m,"Decision recorded",d.id+": "+d.t);
  if(d.gov&&d.rat==="na")d.rat="pending";M.sync();return d};
-M.ratify=function(id,ok,by){const d=dById(id);if(!d)return;d.rat=ok?"ratified":"rejected";d.ratBy=by||"Omar Hamid";d.ratAt=TODAY;const m=mById(d.mid);if(m)maud(m,ok?"Decision ratified":"Decision rejected",d.id+" by "+d.ratBy);
+M.ratify=function(id,ok,by){const d=dById(id);if(!d)return;d.rat=ok?"ratified":"rejected";d.ratBy=by||"Casey Rowan";d.ratAt=TODAY;const m=mById(d.mid);if(m)maud(m,ok?"Decision ratified":"Decision rejected",d.id+" by "+d.ratBy);
  if(d.raid&&window.PPMRAID){const r=PPMRAID.find(x=>x.id===d.raid);if(r){r.s=ok?"done":"open";r.mit=(r.mit||"")+" "+(ok?"Ratified by ":"Rejected by ")+d.ratBy+" on "+fd(TODAY)+"."}}M.sync();return d};
 M.reschedule=function(id,dt,s){const m=mById(id);if(!m)return;const old=m.dt;m.dt=dt;m.d=dOf(dt);if(s!=null){const du=m.e-m.s;m.s=s;m.e=s+du}maud(m,"Rescheduled",fd(old)+" to "+fd(dt)+(s!=null?" at "+tm(m.s):""));if(m.st==="next")m.exc=(m.exc?m.exc+"; ":"")+"Moved from "+fd(old);M.sync();return m};
 M.conflicts=function(m,dt,s){const e=s+(m.e-m.s);const out=[];const mine=new Set(m.inv.filter(x=>x.role!=="info").map(x=>x.n));
@@ -344,7 +344,7 @@ M.quorum=function(m){const s=serById(m.series),q=(s&&s.type&&TYPES[s.type].quoru
 M.minutesText=function(m){const acts=allA().filter(a=>a.mid===m.id),decs=allD().filter(d=>d.mid===m.id);const present=m.inv.filter(x=>x.att==="present"||x.att==="delegate").map(x=>x.n+(x.att==="delegate"&&x.dlg?" (delegate: "+x.dlg+")":""));
  return ["Minutes: "+m.t,fdw(m.dt)+", "+tm(m.s)+" to "+tm(m.e)+", "+m.room,"","Present: "+(present.join(", ")||"not recorded"),"Absent: "+(m.inv.filter(x=>x.att==="absent").map(x=>x.n).join(", ")||"none"),"","Decisions",...(decs.length?decs.map(d=>"- "+d.id+" "+d.t+" (decided by "+d.by+", effective "+fd(d.eff)+", "+(d.rev?"reversible":"not reversible")+")"):["- None"]),"","Actions",...(acts.length?acts.map(a=>"- "+a.id+" "+a.own+": "+a.t+" by "+fd(a.due)):["- None"]),"",m.sum?"Summary: "+m.sum:""].join("\n")};
 M.followUp=function(m){const acts=allA().filter(a=>a.mid===m.id),decs=allD().filter(d=>d.mid===m.id);const to=m.inv.filter(x=>x.role!=="info"&&kindOf(x.n)==="human").map(x=>x.n.split(" ")[0]);
- return "Subject: Follow-up: "+m.t+", "+fd(m.dt)+"\n\nHello "+(to.slice(0,4).join(", ")||"all")+",\n\nThank you for joining. "+(m.sum||"")+"\n\n"+(decs.length?"Decisions\n"+decs.map(d=>"  - "+d.t).join("\n")+"\n\n":"")+(acts.length?"Your actions\n"+acts.map(a=>"  - "+a.own+": "+a.t+" (due "+fd(a.due)+")").join("\n")+"\n\n":"")+"Full minutes: Meetings, "+m.t+", "+fd(m.dt)+".\n\nBest regards,\n"+(m.secy||m.chair||"Omar Hamid")};
+ return "Subject: Follow-up: "+m.t+", "+fd(m.dt)+"\n\nHello "+(to.slice(0,4).join(", ")||"all")+",\n\nThank you for joining. "+(m.sum||"")+"\n\n"+(decs.length?"Decisions\n"+decs.map(d=>"  - "+d.t).join("\n")+"\n\n":"")+(acts.length?"Your actions\n"+acts.map(a=>"  - "+a.own+": "+a.t+" (due "+fd(a.due)+")").join("\n")+"\n\n":"")+"Full minutes: Meetings, "+m.t+", "+fd(m.dt)+".\n\nBest regards,\n"+(m.secy||m.chair||"Casey Rowan")};
 
 /* ---------- metrics ---------- */
 Object.assign(METRICS,{

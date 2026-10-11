@@ -21,7 +21,7 @@ const SK=Object.fromEntries(SKILLS);
 /* ---------- people ---------- */
 const ROSTER=[
 ["cd","Catherine Doyle","Chief executive","Leadership",null,1,"employee","pm3 vc2",60],
-["oh","Omar Hamid","Chief information officer","Leadership","cd",1,"employee","pm3 sa2 vc3",70],
+["oh","Casey Rowan","Chief information officer","Leadership","cd",1,"employee","pm3 sa2 vc3",70],
 ["mr","Marcus Reid","Chief financial officer","Finance","cd",1,"employee","vc3 pm2",60],
 ["ac","Avery Chen","Controller","Finance","mr",1,"employee","vc3 pm2",80],
 ["em","Elena Marsh","Chief Editor","Editors","cd",1,"employee","er3 tx2 pm2",40],
@@ -70,7 +70,7 @@ function seedAgents(){const A=(id,n,tier,model,owner,scope,cap,base,kill,guards,
  A("ia","Invoice Advisor",1,"GPT (OpenAI)","ac",["finance","invoices"],30,14,"capability",["Cannot execute payments","Reads only approver-scoped data"],"Scores invoices and recommends approve, hold or reject."),
  A("kc","Knowledge Curator",1,"Gemini (Google)","tb",["knowledge","docs"],40,24,"agent",["Drafts only, the owner publishes","Must cite a source"],"Finds stale articles and drafts refreshes."),
  A("tq","Test Agent",2,"Claude Sonnet","sp",["testing","platform"],60,38,"agent",["Sandbox only","A second model validates results"],"Runs regression and flow checks."),
- A("pa","Personal assistant",1,"Claude Sonnet","oh",["personal","calendar"],20,9,"agent",["Acts as Omar, never above Omar"],"Handles Omar's calendar and task nudges."),
+ A("pa","Personal assistant",1,"Claude Sonnet","oh",["personal","calendar"],20,9,"agent",["Acts as Casey, never above Casey"],"Handles Casey's calendar and task nudges."),
  A("oa","Ops Agent",2,"Claude Sonnet","tb",["ops","runbooks","incidents"],30,22,"agent",["Runs only approved runbooks","Cannot change production without a change record"],"Runs runbook steps such as RB-031 failover."),
  A("pm","PMO Agent",2,"Claude Sonnet","mo",["schedule","projects","reports"],30,17,"agent",["Cannot move a baseline date","Re-plans are drafts for the project manager"],"Re-plans slipped work and drafts status reports."),
  A("ra","Resource Agent",2,"Claude Haiku","mo",["capacity","people"],20,6,"agent",["Proposes moves, never changes leave","Cannot see pay or performance data"],"Levels overloaded teams and ranks candidates."),

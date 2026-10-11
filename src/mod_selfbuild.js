@@ -18,15 +18,15 @@ function seed(){
  if(done)return;done=true;const _t=window.toast;window.toast=function(){};
  try{
  let pid=null;
- try{ if(window.addProject){const r=window.addProject({name:"Oukala platform build: prototype to pilot",short:"Oukala build",pm:"Omar Hamid",cost:1850,src:"self-build"});pid=r&&r.id||(PROJ[PROJ.length-1]||{}).id}}catch(e){console.warn("selfbuild project",e)}
+ try{ if(window.addProject){const r=window.addProject({name:"Oukala platform build: prototype to pilot",short:"Oukala build",pm:"Casey Rowan",cost:1850,src:"self-build"});pid=r&&r.id||(PROJ[PROJ.length-1]||{}).id}}catch(e){console.warn("selfbuild project",e)}
  if(pid&&window.PPMX&&PPMX.addTasks){
-  try{WS.forEach(w=>{PPMX.addTasks(pid,w[2].map((n,i)=>({n:w[0]+": "+n,dur:3+i*2,own:"Omar Hamid"})),{phase:w[0],own:"Omar Hamid"})})}catch(e){console.warn("selfbuild tasks",e)}
+  try{WS.forEach(w=>{PPMX.addTasks(pid,w[2].map((n,i)=>({n:w[0]+": "+n,dur:3+i*2,own:"Casey Rowan"})),{phase:w[0],own:"Casey Rowan"})})}catch(e){console.warn("selfbuild tasks",e)}
  }
  try{(window.PPMRAID||[]).push(
-  {id:"R-OB1",t:"R",p:pid||"PR1",n:"Prototype data is in memory only; a pilot needs a persistence layer",d:"Every record disappears on reload.",pr:4,im:5,cost:0,own:"Omar Hamid",acc:"Omar Hamid",s:"open",due:"2026-11-30"},
-  {id:"R-OB2",t:"R",p:pid||"PR1",n:"No real authentication or row-level security",d:"Personas are simulated.",pr:3,im:5,cost:0,own:"Omar Hamid",acc:"Omar Hamid",s:"open",due:"2026-12-15"},
-  {id:"R-OB3",t:"R",p:pid||"PR1",n:"Screens slow at Enterprise scale",d:"Several screens exceed 800 ms.",pr:4,im:3,cost:0,own:"Omar Hamid",acc:"Omar Hamid",s:"open",due:"2026-11-15"})}catch(e){}
- try{if(window.addDemand)GAPS.filter(g=>g[0]!=="P3").forEach(g=>addDemand({title:g[1]+": "+g[2],reason:g[3],source:"Self-build gap analysis",cost:60,kind:"Platform build",pm:"Omar Hamid"}))}catch(e){}
+  {id:"R-OB1",t:"R",p:pid||"PR1",n:"Prototype data is in memory only; a pilot needs a persistence layer",d:"Every record disappears on reload.",pr:4,im:5,cost:0,own:"Casey Rowan",acc:"Casey Rowan",s:"open",due:"2026-11-30"},
+  {id:"R-OB2",t:"R",p:pid||"PR1",n:"No real authentication or row-level security",d:"Personas are simulated.",pr:3,im:5,cost:0,own:"Casey Rowan",acc:"Casey Rowan",s:"open",due:"2026-12-15"},
+  {id:"R-OB3",t:"R",p:pid||"PR1",n:"Screens slow at Enterprise scale",d:"Several screens exceed 800 ms.",pr:4,im:3,cost:0,own:"Casey Rowan",acc:"Casey Rowan",s:"open",due:"2026-11-15"})}catch(e){}
+ try{if(window.addDemand)GAPS.filter(g=>g[0]!=="P3").forEach(g=>addDemand({title:g[1]+": "+g[2],reason:g[3],source:"Self-build gap analysis",cost:60,kind:"Platform build",pm:"Casey Rowan"}))}catch(e){}
  try{if(window.audit)audit("Self-build loaded","Oukala backlog loaded into Demand, Projects, WBS and RAID")}catch(e){}
  }finally{window.toast=_t}
 }

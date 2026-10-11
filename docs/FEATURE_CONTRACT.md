@@ -6,7 +6,7 @@ One line: **a feature is not done until it has a process model, a data model wit
 
 Screen: Platform, Feature contract (`plat_contract`). Programmatic API: `window.CONTRACT {rules, agents, evaluate(featureId), matrix(), run(featureId|manifest), stats()}`. MCP tool: `run_feature_contract`.
 
-## The four rules
+## The five rules (rules 1 to 4 are scored; rule 5 is a gate)
 
 ### Rule 1. Process model (editable in the tool)
 
@@ -53,6 +53,20 @@ Artifacts, exactly:
 
 Needs: valid flows both ways using registered entities; searchable; askable in chat; platform services used for approvals, notifications and audit (no private copies).
 
+### Rule 5. Every feature has a named human owner and backup
+
+Every feature, module, process, metric, entity, agent, policy, budget line, vendor, contract, risk and knowledge item has one accountable human owner and a different named backup. A team, a role or an AI agent does not count: an AI agent needs a human sponsor, and a contractor or managed provider needs an employee who answers for the work.
+
+Artifacts, exactly:
+- An entry in the ownership registry `window.OWNX` (screen: Platform and administration, Ownership and gaps, `own_gaps`). Owners come from the record itself (process owner, entity owner, metric owner, budget line, contract), resolved to people through the org chart `ORGX` (people, accountability domains with `ownerId` and `backupId`, `ownerOf`, `byDomain`). Where a record names only a team or role the owner is inferred and flagged until a person confirms it.
+- Backups come from the record, or are inherited from the accountability domain or the owner's team. If neither exists the record shows a "No backup" badge.
+- Gaps are never hidden: the badge `OWNX.badge(kind,id)` appears on screen headers, process pages, metric cards, entity tables and nav entries. An accepted gap is a time-limited exception (at most 90 days) with a reason, an owner and a Technical debt item.
+- A search provider and chat intent answer "who owns X" and "who do I go to for X", and the MCP tool `find_owner` answers the same for coding agents.
+
+Needs: owner is a named person (human), backup is a named person other than the owner, both resolvable in the directory.
+
+Enforcement: gate check `ownx` ("Named human owner and backup") runs on every citizen app and every module draft in Build a module. Register stays disabled until it passes or an exception is raised. Scoring: the Feature contract screen still scores 0 to 4 on rules 1 to 4; rule 5 is enforced at the gate and reported on Ownership and gaps (metric `m_own_cov`).
+
 ## Definition of done (checklist)
 
 - [ ] 1. Process registered with `PROC.reg` and `PROCLIB.addProcess`; at least 3 steps, each with owner, input, output; trigger; owner and backup named; standard cited.
@@ -61,7 +75,8 @@ Needs: valid flows both ways using registered entities; searchable; askable in c
 - [ ] 4. Flow in and flow out on the map; search record; chat intent; approvals, notifications and audit through platform services; debt findings route to the ledger.
 - [ ] 5. Naming rule clean (see below).
 - [ ] 6. `run_feature_contract` returns all four rules as pass (or waived with an expiry).
-- [ ] 7. Hero, lens note, `procCard`, AI lineage chips, legends and the rest of `MODULE_GUIDE.md` still apply.
+- [ ] 7. A named human owner and a different named backup are recorded (rule 5); gate check `ownx` passes.
+- [ ] 8. Hero, lens note, `procCard`, AI lineage chips, legends and the rest of `MODULE_GUIDE.md` still apply.
 
 ## Evidence the platform checks by itself
 
@@ -71,6 +86,7 @@ Needs: valid flows both ways using registered entities; searchable; askable in c
 | 2 Data | `ct_data` | `ATLAS.coverage()` record sets and module entities, `PLAT.reuseCheck()` duplicates, `DATAMODEL.tables` |
 | 3 Metrics | `ct_metrics` | `METRICS` (formula, owner, target, remediation), `PROCLIB.maturity()` |
 | 4 Links | `ct_links` | `MODMAP.modules` flows in and out, the `SEARCHX` index, declared links |
+| 5 Owner | `ownx` | `OWNX.records()`, `ORGX.people`, `ORGX.domains`, app `owner` and `backup` |
 
 Scoring: 0 to 4 per feature. Met is 1, partly met or waived is 0.5, gap is 0. Levels: Full contract (4), Strong (3 or more), Partial (2 or more), Weak (1 or more), None. The Feature contract screen scores every screen, every module without a screen and every citizen app (the retrofit matrix). Chat intents cannot be introspected for legacy features, so for those the check counts the search record and the flows; new features declare their chat intent in the manifest.
 

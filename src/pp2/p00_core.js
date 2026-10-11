@@ -51,8 +51,8 @@ const ROSTER_TEXT_PLACEHOLDER=0;
 /*ROSTER*/
 const SKN={si:"Search and indexing",dm:"Data modeling",tx:"Taxonomy",cf:"Cloud and failover",ia:"Integration and APIs",ir:"Incident response",er:"Editorial review",sa:"Security architecture",pm:"Project management",vc:"Vendor and contracts"};
 const COLS=["--p4","--s3","--u3","--e4","--w1","--p2","--s2","--u2"];
-const MGR={"Omar Hamid":"Catherine Doyle","Avery Chen":"Marcus Reid","Chief Editor":"Catherine Doyle"};
-const ACCT={"First Officer":"Maya Ortiz","Invoice Advisor":"Avery Chen","Knowledge Curator":"Tom Becker","Test Agent":"Sam Patel","Triage Agent":"Tom Becker","PMO Agent":"Maya Ortiz","Change Risk Agent":"Nia Brooks","Contract Analyst Agent":"Avery Chen","Ops Agent":"Tom Becker","Resource Agent":"Maya Ortiz","Room Scheduler":"Tom Becker","Learning Coach":"Nia Brooks","Forecast Agent":"Avery Chen","Personal assistant":"Omar Hamid"};
+const MGR={"Casey Rowan":"Catherine Doyle","Avery Chen":"Marcus Reid","Chief Editor":"Catherine Doyle"};
+const ACCT={"First Officer":"Maya Ortiz","Invoice Advisor":"Avery Chen","Knowledge Curator":"Tom Becker","Test Agent":"Sam Patel","Triage Agent":"Tom Becker","PMO Agent":"Maya Ortiz","Change Risk Agent":"Nia Brooks","Contract Analyst Agent":"Avery Chen","Ops Agent":"Tom Becker","Resource Agent":"Maya Ortiz","Room Scheduler":"Tom Becker","Learning Coach":"Nia Brooks","Forecast Agent":"Avery Chen","Personal assistant":"Casey Rowan"};
 const ATIER={"First Officer":3,"Invoice Advisor":1,"Knowledge Curator":1,"Test Agent":2,"Triage Agent":2,"PMO Agent":2,"Change Risk Agent":2,"Contract Analyst Agent":1,"Ops Agent":2,"Resource Agent":2,"Room Scheduler":3,"Learning Coach":1,"Forecast Agent":2,"Personal assistant":1};
 const SPON={"Marco Ellis":"Priya Shah","Hana Koval":"Dev Rao","Ravi Menon":"Sam Patel","Elise Park":"Priya Shah","Lumen Search Services":"Maya Ortiz","Northwind Managed Services":"Tom Becker","Contoso Cloud Operations":"Sam Patel","Marta Kessler":"Maya Ortiz"};
 const MSPH={"Lumen Search Services":120,"Northwind Managed Services":420,"Contoso Cloud Operations":240};
@@ -88,12 +88,12 @@ const lvRank={IC2:2,IC3:3,IC4:4,IC5:5,M1:4,M2:5,M3:6,Exec:7};
 /* ---------- hierarchy: managers, accountable humans for agents, sponsors for contractors and providers ---------- */
 let HXK="",HXV=null;
 function parentOf(r){if(r.name===ROOT)return null;let p=MGR[r.name];if(!p){if(r.kind==="ai")p=ACCT[r.name];else if(r.kind==="contractor"||r.kind==="msp")p=SPON[r.name]||r.mgr;else p=r.mgr}
- if(!p||p===r.name||!who(p)){p=(r.team&&TEAMMGR(r.team))||"Omar Hamid";if(p===r.name||!who(p))p="Omar Hamid"}
+ if(!p||p===r.name||!who(p)){p=(r.team&&TEAMMGR(r.team))||"Casey Rowan";if(p===r.name||!who(p))p="Casey Rowan"}
  return who(p).name}
 function scaleOverlay(){/* in Enterprise mode: group generated people under team leads so spans stay realistic */
  Object.keys(ROLEOV).forEach(k=>{if(who(k)&&who(k).generated)delete ROLEOV[k]});Object.keys(MGR).forEach(k=>{if(who(k)&&who(k).generated)delete MGR[k]});
  const byTeam={};DIR.filter(d=>d.generated&&d.kind==="human").forEach(d=>(byTeam[d.team]=byTeam[d.team]||[]).push(d));
- Object.entries(byTeam).forEach(([t,L])=>{const tm=TEAMMGR(t)||"Omar Hamid";for(let i=0;i<L.length;i+=9){const lead=L[i];ROLEOV[lead.name]="Team lead, "+lead.role.toLowerCase();MGR[lead.name]=tm;for(let j=i+1;j<Math.min(L.length,i+9);j++)MGR[L[j].name]=lead.name}});
+ Object.entries(byTeam).forEach(([t,L])=>{const tm=TEAMMGR(t)||"Casey Rowan";for(let i=0;i<L.length;i+=9){const lead=L[i];ROLEOV[lead.name]="Team lead, "+lead.role.toLowerCase();MGR[lead.name]=tm;for(let j=i+1;j<Math.min(L.length,i+9);j++)MGR[L[j].name]=lead.name}});
  DIR.filter(d=>d.generated&&d.kind!=="human").forEach(d=>{const L=byTeam[d.team]||[];if(L.length){const lead=L[Math.floor(hs(d.name)*L.length/9)*9]||L[0];MGR[d.name]=lead.name}})}
 let SCK=-1;
 function HX(){const k=DIR.length+"|"+(st.hv||0);if(HXV&&HXK===k)return HXV;
@@ -104,7 +104,7 @@ function HX(){const k=DIR.length+"|"+(st.hv||0);if(HXV&&HXK===k)return HXV;
  const size=new Map(),depth=new Map(),seen=new Set();
  const walk=(n,d)=>{if(seen.has(n))return 0;seen.add(n);depth.set(n,d);let s=0;(kids.get(n)||[]).forEach(c=>{s+=1+walk(c,d+1)});size.set(n,s);return s};
  walk(ROOT,0);
- DIR.forEach(r=>{if(!seen.has(r.name)){/* orphan: attach to CIO */const p="Omar Hamid";par.set(r.name,p);(kids.get(p)||kids.set(p,[]).get(p)).push(r.name);walk(r.name,2)}});
+ DIR.forEach(r=>{if(!seen.has(r.name)){/* orphan: attach to CIO */const p="Casey Rowan";par.set(r.name,p);(kids.get(p)||kids.set(p,[]).get(p)).push(r.name);walk(r.name,2)}});
  /* recompute sizes bottom-up for attached orphans */
  const comp=n=>{let s=0;(kids.get(n)||[]).forEach(c=>{s+=1+comp(c)});size.set(n,s);return s};comp(ROOT);
  HXV={par,kids,size,depth};HXK=k;return HXV}

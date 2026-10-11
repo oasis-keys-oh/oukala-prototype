@@ -7,8 +7,8 @@
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const H=s=>esc(s==null?"":String(s));
 const NOW0=Date.UTC(2026,9,6,16,0,0);          /* the prototype's "today": Tue Oct 6 2026 */
-const USERS={exec:"Omar Hamid",fin:"Avery Chen",pm:"Priya Shah",ops:"Tom Becker"};
-const ME=()=>USERS[S.persona]||"Omar Hamid";
+const USERS={exec:"Casey Rowan",fin:"Avery Chen",pm:"Priya Shah",ops:"Tom Becker"};
+const ME=()=>USERS[S.persona]||"Casey Rowan";
 const FIRST=n=>String(n||"").split(/[ (]/)[0];
 const UNDO_MS=8000;
 const I=S.inbox=S.inbox||{};
@@ -92,7 +92,7 @@ defAdp("inv",{label:"Invoice approval",mod:"Invoice approval screen",fn:"data-de
 /* Changes: CAB approvals (ITSMX) */
 defAdp("chg",{label:"Change approvals (CAB)",mod:"Changes",fn:"ITSMX.approve, change approval form",wired:true,
  list(me){if(!(window.ITSMX&&ITSMX.changes))return[];const out=[];const all=ITSMX.changes;
-  all.filter(c=>c.st==="Authorize"&&c.req!==me).forEach(c=>{(c.stages||[]).forEach((s,si)=>(s.ap||[]).forEach((a,ai)=>{if(a.dec!=="pending")return;if(!(a.w===me||a.deleg===me||(a.w==="CIO"&&me==="Omar Hamid")))return;
+  all.filter(c=>c.st==="Authorize"&&c.req!==me).forEach(c=>{(c.stages||[]).forEach((s,si)=>(s.ap||[]).forEach((a,ai)=>{if(a.dec!=="pending")return;if(!(a.w===me||a.deleg===me||(a.w==="CIO"&&me==="Casey Rowan")))return;
     const sod=a.sod?a.sod:"";const left=(s.sla||24)-(c.subH||0);const clash=all.filter(o=>o.id!==c.id&&o.svc===c.svc&&o.st!=="Closed"&&o.st!=="Cancelled"&&o.start&&c.start&&o.start<=c.end&&o.end>=c.start).map(o=>o.id+" "+o.t);
     const hi=c.type==="Emergency"||(c.env==="Production"&&(c.cost||0)>=40000);const risk=hi?"high":c.type==="Standard"?"low":"med";
     out.push(mk({id:"chg:"+c.id+":"+si+":"+ai,src:"chg",sid:c.id,sx:si,ax:ai,cat:"Change",ic:"change",title:c.id+" "+c.t,req:c.req,ageH:c.subH||0,slaH:s.sla||24,dueH:left,amt:c.cost||null,risk,
@@ -123,7 +123,7 @@ defAdp("cat",{label:"Catalog requests",mod:"Service catalog",fn:"svcApprove, req
 
 /* Release go or no-go (RELX) */
 defAdp("rel",{label:"Release go or no-go",mod:"Releases",fn:"RELX.goNoGo",wired:true,
- list(me){if(!(window.RELX&&RELX.releases&&RELX.goNoGo))return[];const out=[];RELX.releases.filter(r=>r.st==="Readiness review"&&(r.rm===me||me==="Omar Hamid"&&r.svc)).forEach(r=>{const rec=G(()=>RELX.recommend(r.id),["Go","good",""]);const rd=G(()=>RELX.readiness(r.id),0);const crit=G(()=>RELX.exitCriteria(r.id),[]);const cl=G(()=>RELX.clashes(r.id),[]);
+ list(me){if(!(window.RELX&&RELX.releases&&RELX.goNoGo))return[];const out=[];RELX.releases.filter(r=>r.st==="Readiness review"&&(r.rm===me||me==="Casey Rowan"&&r.svc)).forEach(r=>{const rec=G(()=>RELX.recommend(r.id),["Go","good",""]);const rd=G(()=>RELX.readiness(r.id),0);const crit=G(()=>RELX.exitCriteria(r.id),[]);const cl=G(()=>RELX.clashes(r.id),[]);
    out.push(mk({id:"rel:"+r.id,src:"rel",sid:r.id,cat:"Release",ic:"release",title:r.id+" "+r.n+" go or no-go",req:r.rm,ageH:30,slaH:48,dueH:dueFromISO(r.date,24),amt:null,risk:rec[0]==="Go"?"low":"med",
     why:r.rm===me?"You are the release manager.":"As CIO you accept the risk on Tier 1 service releases.",
     ai:mkAI(rec[2],rec[0]==="Go"?.9:.7,"Release Advisor",["Exit criteria","Defect list","Change calendar"],rec[0]==="Go"?"approve":"conditions"),rec:rec[0]==="Go"?"approve":"conditions",needNote:rec[0]!=="Go",
@@ -158,7 +158,7 @@ defAdp("kcs",{label:"Knowledge reviews",mod:"Knowledge management",fn:"KCSX.publ
 
 /* Proposed data entities (ATLAS / COVER.approve) */
 defAdp("ent",{label:"Proposed data entities",mod:"Data atlas",fn:"COVER.approve",wired:true,
- list(me){if(!(window.DATAMODEL&&window.COVER&&COVER.approve))return[];if(me!=="Omar Hamid")return[];return Object.entries(DATAMODEL.tables).filter(([k,t])=>t.status==="proposed"&&t.seed===false).map(([k,t])=>mk({id:"ent:"+k,src:"ent",sid:k,cat:"Proposed entity",ic:"data",title:"Approve new entity "+(t.label||k),req:t.source||"",ageH:30,slaH:120,dueH:96,risk:"low",
+ list(me){if(!(window.DATAMODEL&&window.COVER&&COVER.approve))return[];if(me!=="Casey Rowan")return[];return Object.entries(DATAMODEL.tables).filter(([k,t])=>t.status==="proposed"&&t.seed===false).map(([k,t])=>mk({id:"ent:"+k,src:"ent",sid:k,cat:"Proposed entity",ic:"data",title:"Approve new entity "+(t.label||k),req:t.source||"",ageH:30,slaH:120,dueH:96,risk:"low",
    why:"As CIO and platform admin you approve new entities in the data atlas.",ai:mkAI("Reuse first: "+(t.note||"Defined by "+(t.source||"a module"))+" Fields: "+((t.fields||[]).length)+".",.82,"Data Steward Agent",["Entity registry","Duplicate check"],"approve"),rec:"approve",
    guard:"Duplicate fields are flagged before approval. Approving makes the table live in the master data model.",ev:[["Owner app",t.source||"",""],["Fields",String((t.fields||[]).length),""],["Status","Proposed",""]],can:{approve:true,reject:false,delegate:false},rejectWhy:"Reject by editing or retiring the entity in the data atlas.",delegateWhy:"Entity approval belongs to the platform data steward.",
    open:()=>go("plat_data")}))},
@@ -170,15 +170,15 @@ defAdp("mat",{label:"Maturity capability reviews",mod:"Maturity models",fn:"MAT.
    why:"You own the "+r.n.name+" capability, so you accept the deliverable.",ai:mkAI("The deliverable is finished. Acceptance counts it toward the capability level.",.8,"Maturity Agent",["Milestones","Evidence"],"approve"),guard:"Acceptance needs evidence. It is recorded in the maturity model, not here.",
    ev:[["Capability",r.n.name,""],["Raises to","Level "+r.c.to,""],["Project",(r.p||{}).n||"",""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to accept",open:()=>{go("exe_mat");if(MAT.openCap)MAT.openCap(r.n.id)}}))}});
 defAdp("sow",{label:"SOW changes",mod:"SOW and contract analyzer",fn:"SOWX.open (record drawer)",wired:false,
- list(me){if(!(window.SOWX&&SOWX.changes))return[];if(me!=="Omar Hamid"&&me!=="Avery Chen")return[];return SOWX.changes().filter(c=>c.stage==="Approval").map(c=>mk({id:"sow:"+c.id,src:"sow",sid:c.id,cat:"Contract change",ic:"contract",title:c.id+" "+c.title,req:c.contract,ageH:50,slaH:96,dueH:46,amt:c.amount||null,risk:Math.abs(c.amount||0)>=50000?"med":"low",
+ list(me){if(!(window.SOWX&&SOWX.changes))return[];if(me!=="Casey Rowan"&&me!=="Avery Chen")return[];return SOWX.changes().filter(c=>c.stage==="Approval").map(c=>mk({id:"sow:"+c.id,src:"sow",sid:c.id,cat:"Contract change",ic:"contract",title:c.id+" "+c.title,req:c.contract,ageH:50,slaH:96,dueH:46,amt:c.amount||null,risk:Math.abs(c.amount||0)>=50000?"med":"low",
    why:"Contract changes over your tier route to you for approval.",ai:mkAI(c.type+": "+c.title+".",.78,"Contract Analyst",["Contract","Rate card"],"conditions"),guard:"Approved in the SOW and contract analyzer, where the clause diff is shown.",ev:[["Contract",c.contract,""],["Type",c.type,""],["Amount",money0(c.amount||0),""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>{go("ppm_sow");if(SOWX.open)SOWX.open(c.contract)}}))}});
 defAdp("fab",{label:"Fabric connector requests",mod:"Integration fabric",fn:"FAB.openProject (record drawer)",wired:false,
- list(me){if(!(window.FAB&&FAB.projects))return[];const p0=FAB.projects.filter(p=>(p.stage==="awaiting"&&me==="Omar Hamid")||((p.stage==="evaluating"||p.stage==="proposed")&&me==="Tom Becker"));return p0.map(p=>mk({id:"fab:"+p.id,src:"fab",sid:p.id,cat:"Connector request",ic:"plug",title:p.id+" "+p.t,req:p.owner||p.by,ageH:(p.created||2)*12,slaH:72,dueH:72-(p.created||2)*12,risk:p.risk==="High"||p.risk==="high"?"high":"med",
+ list(me){if(!(window.FAB&&FAB.projects))return[];const p0=FAB.projects.filter(p=>(p.stage==="awaiting"&&me==="Casey Rowan")||((p.stage==="evaluating"||p.stage==="proposed")&&me==="Tom Becker"));return p0.map(p=>mk({id:"fab:"+p.id,src:"fab",sid:p.id,cat:"Connector request",ic:"plug",title:p.id+" "+p.t,req:p.owner||p.by,ageH:(p.created||2)*12,slaH:72,dueH:72-(p.created||2)*12,risk:p.risk==="High"||p.risk==="high"?"high":"med",
    why:"Routed to "+((p.route||{}).n||"the platform team")+" by the machine-to-machine rules: "+((p.route||{}).why||"standard risk")+".",ai:mkAI(p.purpose||"",.8,"Integration Advisor",["Connector catalog","Data classes"],"conditions"),guard:"Approval creates a connector with the scope you pick. Decide it in the fabric.",ev:[["Systems",(p.systems||[]).join(", "),""],["Direction",p.dir||"",""],["Volume",p.vol||"",""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>{go("plat_fab");if(FAB.openProject)FAB.openProject(p.id)}}))}});
 defAdp("gapp",{label:"Citizen app certification",mod:"Citizen apps",fn:"go plat_gate (screen)",wired:false,
- list(me){if(!(window.GATE&&GATE.apps)||me!=="Omar Hamid")return[];return GATE.apps().filter(a=>a.status==="review").map(a=>{const c=G(()=>GATE.conformance(a.id),{rows:[]});const fail=(c.rows||[]).filter(r=>r.r==="fail");return mk({id:"gapp:"+a.id,src:"gapp",sid:a.id,cat:"App certification",ic:"gate",title:"Certify "+a.n+" at the "+a.tier+" tier",req:a.builder,ageH:96,slaH:240,dueH:120,risk:fail.length?"med":"low",
+ list(me){if(!(window.GATE&&GATE.apps)||me!=="Casey Rowan")return[];return GATE.apps().filter(a=>a.status==="review").map(a=>{const c=G(()=>GATE.conformance(a.id),{rows:[]});const fail=(c.rows||[]).filter(r=>r.r==="fail");return mk({id:"gapp:"+a.id,src:"gapp",sid:a.id,cat:"App certification",ic:"gate",title:"Certify "+a.n+" at the "+a.tier+" tier",req:a.builder,ageH:96,slaH:240,dueH:120,risk:fail.length?"med":"low",
    why:"You chair the certification board for citizen apps.",ai:mkAI(a.purpose+" "+(fail.length?fail.length+" check"+(fail.length>1?"s":"")+" failing.":"All checks pass."),fail.length?.6:.9,"Platform Governance Agent",["12 conformance checks"],fail.length?"conditions":"approve"),guard:"Hard-stop checks must pass for the tier. Waivers expire.",
    ev:(c.rows||[]).filter(r=>r.r!=="pass").slice(0,5).map(r=>[r.n,r.ev,r.r==="fail"?"bad":"warn"]),can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>go("plat_gate")})})}});
 defAdp("debt",{label:"Platform exceptions and debt",mod:"Technical debt ledger",fn:"go plat_debt (screen)",wired:false,
- list(me){if(!(window.DEBT&&DEBT.items)||me!=="Omar Hamid")return[];return DEBT.items().filter(d=>d.status==="open"&&(d.sev==="High"||d.sev==="Critical")).slice(0,6).map(d=>mk({id:"debt:"+d.id,src:"debt",sid:d.id,cat:"Debt decision",ic:"debt",title:"Accept, schedule or fix: "+d.title,req:d.owner,ageH:d.age*24,slaH:90*24,dueH:dueFromISO(d.due,0),risk:d.sev==="High"||d.sev==="Critical"?"high":"med",
+ list(me){if(!(window.DEBT&&DEBT.items)||me!=="Casey Rowan")return[];return DEBT.items().filter(d=>d.status==="open"&&(d.sev==="High"||d.sev==="Critical")).slice(0,6).map(d=>mk({id:"debt:"+d.id,src:"debt",sid:d.id,cat:"Debt decision",ic:"debt",title:"Accept, schedule or fix: "+d.title,req:d.owner,ageH:d.age*24,slaH:90*24,dueH:dueFromISO(d.due,0),risk:d.sev==="High"||d.sev==="Critical"?"high":"med",
    why:"As CIO you decide whether to accept this platform debt or fund the fix.",ai:mkAI("Interest is about "+d.interest+" hours a month. "+d.iformula,.7,"Debt Advisor",["Debt ledger"],"conditions"),guard:"Accepting debt is a recorded risk decision with an expiry.",ev:[["Severity",d.sev,d.sev==="High"?"bad":"warn"],["Owner",d.owner,""],["Open for",d.age+" days",""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>go("plat_debt")}))}});
