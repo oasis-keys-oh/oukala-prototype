@@ -38,13 +38,13 @@
 .r18-bt-l li>b{font-size:15px}
 
 /* History and Favorites: same dark watercolor treatment as the rail */
-:root:root .nx-pop{--ink:#eaf3f5;--muted:#a9bec4;--faint:#8aa2a9;--hair:rgba(255,255,255,.14);--edge:rgba(255,255,255,.18);--glass:rgba(255,255,255,.07);--glass2:rgba(255,255,255,.10);--accent:#63d3df;--accent-soft:rgba(99,211,223,.18);--accent-ink:#06222a;--bg:#0b2140;--shade:rgba(0,0,0,.35);--good-f:#7fdc9c;--warn-f:#f0c46a;--bad-f:#ff8f86;color:var(--ink);background:linear-gradient(180deg,rgba(8,24,46,.58),rgba(8,24,46,.80)),var(--r20-img) center top/cover no-repeat,#0b2140;border:1px solid rgba(255,255,255,.22);box-shadow:0 22px 56px rgba(4,14,30,.5),inset 0 1px 0 rgba(255,255,255,.26)}
-:root:root .nx-pop h3,:root:root .nx-pop b,:root:root .nx-pop .eyebrow{color:#eef6f8}
-:root:root .nx-pop .nx-pq,:root:root .nx-pop input[type=search],:root:root .nx-pop input{background:rgba(255,255,255,.09);color:#eef6f8;border-color:rgba(255,255,255,.22)}
-:root:root .nx-pop input::placeholder{color:#a9bec4}
-:root:root .nx-pop .btn.quiet,:root:root .nx-pop .chip{background:rgba(255,255,255,.10);color:#eef6f8;border-color:transparent}
-:root:root .nx-pop .btn.primary{background:linear-gradient(135deg,#1f9bb0,#2c6fb5);color:#fff}
-:root:root .nx-pop [aria-pressed=true]{background:#63d3df;color:#06222a}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel){--ink:#eaf3f5;--muted:#a9bec4;--faint:#8aa2a9;--hair:rgba(255,255,255,.14);--edge:rgba(255,255,255,.18);--glass:rgba(255,255,255,.07);--glass2:rgba(255,255,255,.10);--accent:#63d3df;--accent-soft:rgba(99,211,223,.18);--accent-ink:#06222a;--bg:#0b2140;--shade:rgba(0,0,0,.35);--good-f:#7fdc9c;--warn-f:#f0c46a;--bad-f:#ff8f86;color:var(--ink);background:linear-gradient(180deg,rgba(8,24,46,.58),rgba(8,24,46,.80)),var(--r20-img) center top/cover no-repeat,#0b2140;border:1px solid rgba(255,255,255,.22);box-shadow:0 22px 56px rgba(4,14,30,.5),inset 0 1px 0 rgba(255,255,255,.26)}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) h3,:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) b,:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .eyebrow{color:#eef6f8}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .nx-pq,:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) input[type=search],:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) input{background:rgba(255,255,255,.09);color:#eef6f8;border-color:rgba(255,255,255,.22)}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) input::placeholder{color:#a9bec4}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .btn.quiet,:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .chip{background:rgba(255,255,255,.10);color:#eef6f8;border-color:transparent}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .btn.primary{background:linear-gradient(135deg,#1f9bb0,#2c6fb5);color:#fff}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) [aria-pressed=true]{background:#63d3df;color:#06222a}
 
 /* top bar: icon-only controls with a tooltip, pi symbol for the tour */
 :root:root .tb-right .nx-tb .lbl-long{display:none!important}
@@ -60,3 +60,37 @@
 :root.chx-open .r20-pi{display:none}
 @media(max-width:1100px){.r20-pi{bottom:calc(88px + env(safe-area-inset-bottom,0px));right:76px}}
 @media(prefers-reduced-motion:reduce){.r20-pi{transition:none}}
+
+/* hero action buttons stay their natural size beside KPI tiles */
+:root:root .hero .row>.btn,:root:root .hero .row>button.btn{align-self:center}
+
+/* chat: dark purple gradient, liquid glass */
+:root:root .chx{--ink:#f1ecfb;--muted:#c3b7dd;--faint:#a597c6;--hair:rgba(255,255,255,.16);--edge:rgba(255,255,255,.22);--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.13);--accent:#c9a8ff;--accent-soft:rgba(201,168,255,.22);--accent-ink:#1d0c3a;--bg:#1a0f35;--shade:rgba(0,0,0,.4);--good-f:#8fe3a8;--warn-f:#f3cd7c;--bad-f:#ff9a92;color:var(--ink);
+ background:radial-gradient(120% 60% at 85% -8%,rgba(176,120,255,.80),transparent 60%),radial-gradient(90% 55% at 0% 105%,rgba(96,76,230,.70),transparent 64%),linear-gradient(165deg,rgba(54,24,104,.88) 0%,rgba(30,16,70,.92) 52%,rgba(18,10,48,.94) 100%);
+ -webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
+ border:1px solid rgba(255,255,255,.26);box-shadow:0 28px 70px rgba(14,6,40,.55),inset 0 1.5px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.08),inset 0 0 40px rgba(190,150,255,.10)}
+:root:root .chx::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 28%,rgba(255,255,255,0) 72%,rgba(255,255,255,.07) 100%);z-index:0}
+:root:root .chx>*{position:relative;z-index:1}
+:root:root .chx h1,:root:root .chx h2,:root:root .chx h3,:root:root .chx b,:root:root .chx strong,:root:root .chx label{color:#f6f1ff}
+:root:root .chx .muted,:root:root .chx small{color:var(--muted)}
+:root:root .chx .btn,:root:root .chx button.tab,:root:root .chx .chip,:root:root .chx .sugs .chip{background:rgba(255,255,255,.10);color:#f1ecfb;border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
+:root:root .chx .btn:hover,:root:root .chx .chip:hover{background:rgba(255,255,255,.18)}
+:root:root .chx .btn.primary,:root:root .chx #chatForm .btn{background:linear-gradient(135deg,#9a6bff,#6a4de0);color:#fff;border-color:rgba(255,255,255,.3)}
+:root:root .chx [aria-selected=true],:root:root .chx [aria-pressed=true],:root:root .chx .on,:root:root .chx .active{background:rgba(201,168,255,.30);color:#fff}
+:root:root .chx .msgs>*,:root:root .chx .msg,:root:root .chx .bubble,:root:root .chx .cx-cc,:root:root .chx .cx-plan,:root:root .chx .cx-res{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.2);color:#f1ecfb;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+:root:root .chx .cx-in .txtin,:root:root .chx input,:root:root .chx select,:root:root .chx textarea{color:#f6f1ff;background:transparent}
+:root:root .chx input::placeholder{color:#b9aad8}
+:root:root .chx select option{color:#1a0f35;background:#fff}
+
+/* dark dropdowns: readable pills, selected rows and key caps */
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill{border-color:transparent}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill.info{background:rgba(99,211,223,.20);color:#a6ecf4}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill.bad{background:rgba(255,143,134,.22);color:#ffb9b3}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill.warn{background:rgba(240,196,106,.22);color:#f8da98}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill.good{background:rgba(127,220,156,.22);color:#aef0c3}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) .pill.mute{background:rgba(255,255,255,.12);color:#d6e2e6}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) kbd{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.24)}
+:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) [aria-pressed=true] *,:root:root :is(.nx-pop,.nw-pop,#profilePop,#r15dVas,#r18LensPop,#r16WhyPop,#inbxPanel) [aria-selected=true] *{color:#06222a}
+:root:root #inbxPanel .inbx-aih,:root:root #inbxPanel .inbx-aih *{color:#bfeff5}
+:root:root #inbxPanel .inbx-aih .pill.warn{color:#f8da98}
+:root:root .hero .row>*{align-self:center}
