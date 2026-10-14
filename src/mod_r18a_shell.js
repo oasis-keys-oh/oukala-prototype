@@ -71,8 +71,10 @@ const ROLE_FAM={exec:["Strategy and portfolio","AI governance"],finance:["Financ
 const meName=()=>G(()=>R15D.me().name,"Casey Rowan");
 function workBlock(){
  const me=meName();const role=G(()=>PERSONAS[S.persona].role,"exec");const fams=ROLE_FAM[role]||ROLE_FAM.exec;
- let list=G(()=>PROCLIB.list(),[]);const mine=list.filter(p=>p.owner===me||p.backup===me);
- const area=list.filter(p=>fams.indexOf(p.familyName)>=0&&mine.indexOf(p)<0).sort((a,b)=>(a.level-b.level)||String(a.name).localeCompare(b.name));
+ let list=G(()=>PROCLIB.list(),[]);let mine=list.filter(p=>p.owner===me||p.backup===me);
+ const BIZP={cfo:["biz_dues","biz_audit","biz_contract","biz_hire"],coo:["biz_comment","biz_ballot","biz_publish","biz_committee","biz_license"],board:["biz_audit","biz_renew","biz_ballot","biz_conf"],audit:["biz_audit","biz_contract","biz_ballot"],emp:["biz_hire","biz_conf","biz_comment"],newhire:["biz_hire","biz_conf"],guest:["biz_contract"]};
+ const bz=BIZP[S.persona];if(bz)mine=mine.filter(p=>/^biz_/.test(p.id));
+ const area=bz?bz.map(id=>list.find(p=>p.id===id)).filter(p=>p&&mine.indexOf(p)<0):list.filter(p=>fams.indexOf(p.familyName)>=0&&mine.indexOf(p)<0).sort((a,b)=>(a.level-b.level)||String(a.name).localeCompare(b.name));
  const rows=mine.concat(area).slice(0,6);
  const builds=R18.apps().filter(a=>a.builder===me||a.owner===me);
  const pr=rows.map(p=>`<div class="r18-wr"><span class="r18-wn"><b>${H(p.name)}</b><small>${H(p.familyName)} · ${p.owner===me?"you own it":p.backup===me?"you are the backup":"in your area"} · maturity ${p.level} of 5</small></span><button type="button" class="btn quiet" data-r18-proc="${H(p.id)}">Open</button></div>`).join("");

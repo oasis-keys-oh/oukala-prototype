@@ -12,7 +12,7 @@ const first=n=>String(n).split(" ")[0];
 const rnd=(seed)=>RNG(seed);
 const TODAY="2026-10-10";
 
-/* ---------- the 45 staff of Meridian Standards Foundation. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
+/* ---------- the 59 staff of Meridian Standards Foundation. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
 const RAW=`Catherine Doyle|Chief executive|-|Executive office|ceo|||Board relations and annual priorities;The final call when two departments disagree;Member and regulator relationships|Keeps 300 member organizations confident that the standards they rely on are independent, current and trusted.|Norwalk, CT|3
 Casey Rowan|Chief information officer|Catherine Doyle|Technology|cio|||Technology strategy and the portfolio;Spend above $25,000 on technology;Escalated vendor problems|Turns the Foundation's publishing mission into systems that work, and protects every dollar of technology spend.|Norwalk, CT|6
 Marcus Reid|Chief financial officer|Catherine Doyle|Finance|cfo|||Budget and forecast questions;Audit, tax and treasury;Spend above $100,000|Gives the board a single, trusted view of the Foundation's money and keeps it audit-ready.|Norwalk, CT|5
@@ -57,7 +57,21 @@ Kenji Watanabe|AI platform lead|Casey Rowan|Technology|ai|Theo Marlowe||Whether 
 Noor Haddad|Standards editor|Elena Marsh|Editorial|editor|||Edits to a standard in progress;Comment-letter responses;Terminology questions|Turns committee drafts into clear, consistent standards.|Norwalk, CT|1
 Pierce Caldwell|Standards editor|Elena Marsh|Editorial|editor|||Cross-reference and numbering checks;Redlines and change logs;Final proofs|Makes sure a standard says the same thing everywhere it appears.|Norwalk, CT|9
 Isla Fenn|Associate editor|Elena Marsh|Editorial|editor|||Comment tracking;Meeting minutes for technical committees;Style-guide lookups|Keeps every public comment answered and on the record.|Norwalk, CT|3
-Grace Whitfield|Training lead|Joanna Pierce|People operations|hr||PR4:20|Training paths and compliance courses;New-hire onboarding sessions;Skills gaps|Builds the skills the next three years of work will need.|Remote|2`;
+Grace Whitfield|Training lead|Joanna Pierce|People operations|hr||PR4:20|Training paths and compliance courses;New-hire onboarding sessions;Skills gaps|Builds the skills the next three years of work will need.|Remote|2
+Priya Raman|Director of standards development|Elena Marsh|Standards development|pm|||Which committees are active and on what schedule;Whether a draft is ready for public comment;Ballot calendar conflicts|Keeps every standard moving from proposal to publication on a schedule members can trust.|Norwalk, CT|11
+Greta Halloran|Ballot and comment coordinator|Priya Raman|Standards development|editor|||Opening and closing comment periods;Ballot tallies and quorum;Who may vote|Makes sure every comment is logged and every ballot is counted correctly.|Norwalk, CT|6
+Owen Prescott|Committee liaison|Priya Raman|Standards development|pm|||Committee rosters and charters;Meeting schedules and minutes;Volunteer onboarding|Keeps volunteer committees staffed, informed and productive.|Remote|8
+Daniel Okoye|Director of membership|Catherine Doyle|Membership|comms|||Member renewals and lapses;Member benefits and tiers;Member complaints|Keeps the member organizations who fund the Foundation engaged and renewing.|Norwalk, CT|9
+Sofia Lindqvist|Member services manager|Daniel Okoye|Membership|comms|||New member onboarding;Member questions and access;Renewal outreach|Is the first call for any member organization with a question.|Norwalk, CT|5
+Tariq Bashir|Dues and renewals analyst|Daniel Okoye|Membership|apfa|||Dues tiers and invoices;Renewal forecasts;Lapse reasons|Forecasts dues revenue early enough to act on it.|Remote|3
+Lucia Ferrante|Publishing manager|Elena Marsh|Publishing and licensing|editor|||Publication dates and formats;Print and digital releases;Errata|Gets finished standards into members' hands in every format they need.|Norwalk, CT|10
+Graham Wells|Licensing specialist|Lucia Ferrante|Publishing and licensing|comms|||Copyright and reuse requests;Licence terms and fees;Translations|Protects the Foundation's publications while making them easy to license.|Remote|4
+Beatrice Nolan|Financial reporting manager|Avery Chen|Finance|ctrl|||Annual audit support;Financial statements;Dues revenue recognition|Produces statements the board and auditors trust.|Norwalk, CT|8
+Dev Anand|Dues billing and collections analyst|Noelle Park|Finance|apfa|||Dues invoices;Overdue member accounts;Payment plans|Gets dues billed on time and collected without friction.|Norwalk, CT|4
+Harriet Yu|Events and conference manager|Catherine Doyle|Executive office|comms|||Annual conference planning;Venues and speakers;Registration|Turns the annual conference into a reason for members to renew.|Remote|7
+Ruben Castillo|Facilities and office manager|Joanna Pierce|People operations|hr|||Office space and leases;Safety and access badges;Mail and supplies|Keeps the Norwalk office running so staff can focus on the work.|Norwalk, CT|12
+Naomi Fields|Talent acquisition partner|Joanna Pierce|People operations|hr|||Open roles and interviews;Offer approvals;Onboarding paperwork|Finds and welcomes the people the Foundation needs.|Remote|3
+Julian Park|Contracts paralegal|Theo Marlowe|Legal and compliance|legal|||Contract drafts and redlines;Renewal calendar;Signature routing|Keeps every contract on file, current and signed by the right person.|Norwalk, CT|6`;
 
 /* ---------- role templates: access level per module group, data class access, approvals, recurring tasks ---------- */
 const MG=["Portfolio and delivery","Service and support","Operations and monitoring","Knowledge and learning","People and teams","Money and contracts","Strategy and performance","AI and governance","Platform and admin"];

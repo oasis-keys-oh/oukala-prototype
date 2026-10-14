@@ -575,6 +575,7 @@ function addProcess(def){
  if(!ents.length)w.push("No entities named. Say which records it reads and writes.");
  const rec={id,name,module,family:def.family||(modOf(module)&&(modOf(module).band==="plt"?"gov":null))||"wf",owner:def.owner||"",trigger:def.trigger||"",steps,inputs:def.inputs||[],outputs:def.outputs||[],entities:ents,metrics:mets,model:def.model||"",std:def.std||[]};
  PL.custom.push(rec);
+ if(def.backup&&def.owner&&def.backup!==def.owner&&!PL.own[id])PL.own[id]={owner:def.owner,backup:def.backup};
  PROC.reg(id,{title:name,std:rec.std.slice(),steps:steps.map(s=>Object.assign({},s))});
  bump();
  audit("Process library: added process",name+" ("+w.length+" warning"+(w.length===1?"":"s")+")");

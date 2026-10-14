@@ -45,3 +45,18 @@
 :root:root .nx-pop .btn.quiet,:root:root .nx-pop .chip{background:rgba(255,255,255,.10);color:#eef6f8;border-color:transparent}
 :root:root .nx-pop .btn.primary{background:linear-gradient(135deg,#1f9bb0,#2c6fb5);color:#fff}
 :root:root .nx-pop [aria-pressed=true]{background:#63d3df;color:#06222a}
+
+/* top bar: icon-only controls with a tooltip, pi symbol for the tour */
+:root:root .tb-right .nx-tb .lbl-long{display:none!important}
+.tb-right .r20-ico{position:relative;min-width:38px;padding-inline:10px;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.lensbtn.r20-ico{background:transparent;box-shadow:none;border:0}
+:root:has(#lens:checked) .lensbtn.r20-ico{background:var(--accent-soft);color:var(--accent)}
+[data-tip]{position:relative}
+.r20-ico[data-tip]:hover::after,.r20-ico[data-tip]:focus-visible::after,.r20-pi[data-tip]:hover::after,.r20-pi[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;z-index:80;white-space:normal;width:max-content;max-width:240px;padding:7px 11px;border-radius:12px;font:500 12px/1.35 var(--f-body,system-ui);color:#eef6f8;background:rgba(10,28,52,.94);box-shadow:0 8px 24px rgba(4,14,30,.35);pointer-events:none}
+.r20-ico[data-tip]:hover::after,.r20-ico[data-tip]:focus-visible::after{top:calc(100% + 10px);right:0}
+.r20-pi{position:fixed;z-index:60;right:76px;bottom:20px;width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;font:italic 500 24px/1 Georgia,"Times New Roman",serif;color:var(--ink);background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);box-shadow:0 6px 18px rgba(8,24,46,.18),inset 0 0 0 1px color-mix(in srgb,var(--ink) 14%,transparent);opacity:.72;transition:opacity .2s,transform .2s}
+.r20-pi:hover,.r20-pi:focus-visible{opacity:1;transform:translateY(-2px)}
+.r20-pi[data-tip]:hover::after,.r20-pi[data-tip]:focus-visible::after{bottom:calc(100% + 10px);right:0}
+:root.chx-open .r20-pi{display:none}
+@media(max-width:1100px){.r20-pi{bottom:calc(88px + env(safe-area-inset-bottom,0px));right:76px}}
+@media(prefers-reduced-motion:reduce){.r20-pi{transition:none}}

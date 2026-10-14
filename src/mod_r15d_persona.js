@@ -165,7 +165,7 @@ R15D.storyFor=function(k){
   case "arch":return `Field mapping coverage is <b>${mv("m_fab_cov")}</b>, contract coverage <b>${mv("m_contract_cov")}</b>, and the median open debt item is <b>${mv("m_debt_age")}</b> old.`;
   case "admin":return `Average conformance is <b>${mv("m_gate_conf")}</b>. Ownership coverage in the registry is <b>${mv("m_own_cov")}</b>. <b>${c.working}</b> of <b>${c.registered}</b> agents are working now.`;
   case "audit":return `Read-only view. <b>${mv("m_grc_ctl_cov")}</b> of controls have current evidence. Everything on the evidence room can be exported with its source.`;
-  case "board":return `Delivery health is <b>${mv("m_delivery")}</b>, financial health <b>${mv("m_fin")}</b>, operational health <b>${mv("m_ops")}</b>. Agent override rate is <b>${mv("m_override")}</b>.`;
+  case "board":return `Member renewal is <b>${mv("m_biz_renew")}</b> against a goal of <b>${G(()=>mfmt(M("m_biz_renew"),M("m_biz_renew").tgt),"")}</b>. Ballots reach quorum on the first call <b>${mv("m_biz_ballot")}</b> of the time, and a standard takes <b>${mv("m_biz_cycle")}</b> to reach publication. Spending is <b>${mv("m_spend_var")}</b> against plan.`;
   default:return "";
  }};
 
