@@ -202,6 +202,8 @@ function applyEdit(c,k,v){
  if(String(from||"")===String(v||"")){toast("No change","info");return}
  if(k==="backup"&&v&&v===(s.edits.owner!=null?s.edits.owner:ob.o)){toast("The backup must be a different person from the owner","warn");return}
  if(k==="owner"&&v&&v===(s.edits.backup!=null?s.edits.backup:ob.b)){toast("The owner must be a different person from the backup","warn");return}
+ const _rp=window.RULES&&window.RULES.recEdit?window.RULES.recEdit(c.e,c.id,k,v,from):null;/* R17 Agent S: rules engine, before save */
+ if(_rp&&_rp.block)return;if(_rp&&_rp.v!==undefined)v=_rp.v;
  s.edits[k]=v;
  const lab=k==="owner"?"Owner":k==="backup"?"Backup":k==="status"?"Status":(arr(r.fields).find(q=>q.k===k)||{l:k}).l;
  logHist(c,"changed "+lab,(from||"none")+" to "+(v||"none"),{field:lab,from,to:v});
@@ -211,6 +213,7 @@ function applyEdit(c,k,v){
  audit("Record edited",c.e+" "+c.id+": "+lab+" "+(from||"none")+" to "+(v||"none"));
  const S_=STORE();if(S_){try{const patch={id:c.id};patch[k]=v;S_.put(c.e,Object.assign({},G(()=>S_.get(c.e,c.id),{})||{},patch))}catch(x){}}
  save(c.e,c.id);emit("record.field_changed","Record field changed",{record:c.id,entity:c.e,actor:ME(),detail:lab+": "+(from||"none")+" to "+(v||"none")});
+ if(window.RULES&&window.RULES.recDone)window.RULES.recDone(c.e,c.id,k,v,_rp);/* R17 Agent S: rules engine, after save */
  RS.ed=null;toast(lab+" updated"+(S_?" and saved":" (this session only)"),"good");
  if(typeof render==="function"&&c.a.rerender)render();
  repaintAll()}

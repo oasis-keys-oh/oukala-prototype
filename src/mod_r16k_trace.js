@@ -144,7 +144,7 @@ function view(D){
 
 /* ---------------- tree ---------------- */
 const KL={goal:"Goal",cap:"Capability",road:"Roadmap",proj:"Project",direct:"Direct",orphan:"Orphan"};
-const isOpen=nd=>SX.open[nd.k]!==undefined?SX.open[nd.k]:(nd.kind==="goal"||nd.kind==="orphan"&&false);
+const isOpen=nd=>SX.open[nd.k]!==undefined?SX.open[nd.k]:((nd.kind==="goal"&&innerWidth>600)||nd.kind==="orphan"&&false);
 function levelCell(D,nd){
  if(nd.kind==="cap"){const mx=5;return `<span class="sx-lv" title="Level ${MAT.fv(nd.cur)} now, ${MAT.fv(nd.t1)} Year 1 target"><i style="width:${Math.min(100,nd.cur/mx*100)}%"></i><b style="left:${Math.min(100,nd.t1/mx*100)}%"></b></span><span class="sx-lt">${MAT.fv(nd.cur)} to ${MAT.fv(nd.t1)}${nd.gap>.001?` <em>gap ${MAT.fv(nd.gap)}</em>`:""}</span>`}
  if(nd.kind==="goal"){const R=G(()=>MAT.roll(nd.kids.filter(k=>k.kind==="cap").map(k=>k.n)),null);return R&&R.n?`<span class="sx-lt">${MAT.fv(R.cur)} to ${MAT.fv(R.t1)} <em>${R.n} capabilities</em></span>`:`<span class="sx-lt muted">none</span>`}
@@ -323,6 +323,8 @@ function screen(){
   ${typeof procCard==="function"?procCard("strat_exec"):""}</div>`}
 
 REG("strat_exec","Strategy to execution","portfolio","M4 5h4v4H4zM4 15h4v4H4zM16 10h4v4h-4zM8 7h4a2 2 0 0 1 2 2v1M8 17h4a2 2 0 0 0 2-2v-1",screen);
+/* Round 17 Q: read-only summary for the Value screen (computed lazily, cached by build()) */
+W.SXSUM=function(){const D=build();return D?{cover:D.cover,trAppr:D.trAppr,orAppr:D.orAppr,total:D.T.appr,nOrphan:D.nOrphan,traced:D.traced,nFunded:D.nFunded,goals:D.goals.length,nBelow:D.nBelow,nNoRoad:D.nNoRoad}:null};
 
 /* ---------------- events ---------------- */
 function refreshTree(){const el=document.getElementById("sx-tree"),D=build();if(el&&D)el.innerHTML=treeHTML(D)}

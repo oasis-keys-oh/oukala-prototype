@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(4000);
+const r=await p.evaluate(()=>{const o={};const J=(x)=>{try{return JSON.stringify(x)}catch(e){return 'ERR'}};
+o.sAgent=J(S.agents[0]);o.nS=S.agents.length;o.orgAgent=J(ORGX.agents()[0]);o.nO=ORGX.agents().length;o.dirAi=J(DIR.filter(d=>d.kind==='ai').slice(0,2));o.nDirAi=DIR.filter(d=>d.kind==='ai').length;
+o.reg=J(AGENTRT.registry().slice(0,2));o.runs=J(AGENTRT.runs().slice(0,2));o.nruns=AGENTRT.runs().length;
+o.permKeys=Object.keys(PERM);o.roles=J(PERM.roles).slice(0,900);o.gr=J(PERM.groups).slice(0,600);o.por=J(PERM.principalOfRoles&&PERM.principalOfRoles('Casey Rowan'));
+o.atlas=Object.keys(ATLAS);o.flowx=Object.keys(FLOWX).slice(0,40);o.pl=J(S.ppl&&S.ppl.agents&&S.ppl.agents[0]);
+o.inbox=Object.keys(INBOX);o.who=J(who('Iris'));o.stor=Object.keys(STORE).slice(0,30);
+o.wfx=typeof WFX!=='undefined'?Object.keys(WFX):null;
+return o});
+for(const k in r)console.log(k,'=',typeof r[k]==='string'?r[k].slice(0,1500):JSON.stringify(r[k]).slice(0,1500));console.log(errs);await b.close()})();

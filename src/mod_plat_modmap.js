@@ -43,7 +43,7 @@ svc_req|Requests|ops|Service desk manager|request,requests,fulfillment||
 svc_sla|SLAs|ops|Service level manager|sla,slas,olas,xla||
 svc_360|Service 360|ops|Service portfolio manager|service 360,service portfolio,services,business service|business_service,service_offering,cmdb_rel_ci|business_service
 itom_cmdb|CMDB|inf|Configuration manager|cmdb,configuration,ci,cis||
-itom_graph|Dependency views|inf|Configuration manager|dependency,dependencies,topology,dependency views|cmdb_rel_ci,cmdb_ci|
+itom_graph|Impact Explorer|inf|Configuration manager|dependency,dependencies,topology,dependency views|cmdb_rel_ci,cmdb_ci|
 itom_disc|Discovery|inf|Configuration manager|discovery|cmdb_ci|cmdb_ci
 itom_health|CMDB health|inf|Configuration manager|cmdb health,data quality|cmdb_ci|
 svc_asset|Assets and licenses|inf|Asset manager|asset,assets,licenses,software licenses|contract,invoice|asset
@@ -482,7 +482,7 @@ Object.assign(METRICS,{
 let READY=false,MODS=[],MB={},FL=[],OUT={},INN={},PLN={},DROP=[],PAIRN=new Map(),LAY=null;
 const FRESH=["live","near-live","hourly","daily"],MODEN={e:"event",b:"batch",h:"human"};
 const XMODS=[];
-const NW=150,NH=54,GX=22,GL=104,ROWP=80,LTOP=40,LGAP=12,MAXC=8;
+const NW=150,NH=54,GX=22,GL=104,ROWP=80,LTOP=40,LGAP=12,MAXC=10;
 const hasScreen=id=>SCREENS.some(x=>x[0]===id);
 const scName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:id};
 const stepsOf=id=>{const d=window.PROC&&PROC.defs[id];return d?(S.proc&&S.proc[id])||d.steps||[]:null};
@@ -538,7 +538,7 @@ function init(){
 function layout(){
  const rowsOf=[];let y=0;const lanes=[];
  BANDS.forEach((bd,bi)=>{
-  const ms=MODS.filter(m=>m.band===bd[0]);const per=ms.length>MAXC?Math.ceil(ms.length/2):MAXC;const rows=Math.max(1,Math.ceil(ms.length/per));
+  const ms=MODS.filter(m=>m.band===bd[0]);const rows=Math.max(1,Math.ceil(ms.length/MAXC));const per=Math.max(1,Math.ceil(ms.length/rows));
   const h=LTOP+rows*ROWP-14+14;
   ms.forEach((m,i)=>{const r=Math.floor(i/per),c=i%per;m.col=c;m.row=r;m.x=GL+18+c*(NW+GX);m.y=y+LTOP+r*ROWP;m.cx=m.x+NW/2;m.cy=m.y+NH/2});
   lanes.push({b:bd[0],name:bd[1],bi,y,h,n:ms.length});y+=h+LGAP;

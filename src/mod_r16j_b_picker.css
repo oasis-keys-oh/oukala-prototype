@@ -1,6 +1,6 @@
 /* Round 16 J: scalable picker (PICKER). Tokens only, light and dark. */
 .pk2{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0;width:100%}
-.pk2-up{display:block;min-width:220px;max-width:360px;flex:0 1 320px}
+.pk2-up{display:block;min-width:220px;max-width:360px;width:320px;flex:0 1 auto}
 [data-pk-up]{display:none!important}
 .pk2-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:8px 12px;border-radius:14px;background:var(--glass2);border:1px solid var(--edge);color:var(--ink);text-align:left;cursor:pointer;font:inherit}
 .pk2-btn:hover{border-color:var(--accent)}

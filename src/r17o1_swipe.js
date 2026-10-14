@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2});const p=await c.newPage();p.setDefaultTimeout(120000);
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+path.resolve(process.argv[2])+'/full.html',{waitUntil:'domcontentloaded'});
+await p.waitForFunction(()=>window.go&&document.querySelector('#view').children.length>0);await p.waitForTimeout(1500);
+const cdp=await c.newCDPSession(p);
+const drag=async(x,y0,y1)=>{await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y:y0}]});for(let i=1;i<=10;i++){await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y0+(y1-y0)*i/10}]});await p.waitForTimeout(16)}await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await p.waitForTimeout(600)};
+await p.tap('[data-r17o1-more]');await p.waitForTimeout(600);
+console.log('sheet open',await p.evaluate(()=>document.querySelector('#r17o1Sheet').classList.contains('is-on')),'lock',await p.evaluate(()=>document.documentElement.classList.contains('r17o1-lock')),'inert',await p.evaluate(()=>document.querySelector('.app').inert));
+const top=await p.evaluate(()=>document.querySelector('.r17o1-grab').getBoundingClientRect().top+10);
+await drag(195,top,top+320);
+console.log('after swipe: open?',await p.evaluate(()=>document.querySelector('#r17o1Sheet').classList.contains('is-open')),'lock',await p.evaluate(()=>document.documentElement.classList.contains('r17o1-lock')),'inert',await p.evaluate(()=>document.querySelector('.app').inert));
+await p.evaluate(()=>go('inv'));await p.waitForTimeout(600);await p.evaluate(()=>{document.querySelector('#view [data-rec]').click()});await p.waitForTimeout(800);
+console.log('drawer open',await p.evaluate(()=>document.querySelector('#drawer').matches(':popover-open')));
+const dt=await p.evaluate(()=>document.querySelector('#drawer').getBoundingClientRect().top+30);
+await drag(150,dt,dt+350);
+console.log('drawer after swipe open?',await p.evaluate(()=>document.querySelector('#drawer').matches(':popover-open')));
+await b.close()})();

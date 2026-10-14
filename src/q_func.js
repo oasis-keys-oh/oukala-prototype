@@ -1,0 +1,27 @@
+const {chromium}=require('playwright');const path=require('path');const fs=require('fs');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:1000},acceptDownloads:true});const p=await c.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.route(/^https?:/,r=>r.abort());const t0=Date.now();await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:240000});
+await p.waitForFunction(()=>window.PERM&&window.NAVX&&document.querySelector('#view'),null,{timeout:240000});console.log('load ms',Date.now()-t0);await p.waitForTimeout(8000);
+const r=await p.evaluate(()=>{const o={};for(const id of["r17q_value","r17q_thinking"]){const e=CONTRACT.evaluate(id);o[id]=e&&{score:e.score,rules:e.rules.map(x=>x.id+":"+x.st),owner:e.owner}}
+o.lin=Object.keys(METRICS).filter(k=>/^m_val_/.test(k)).map(k=>k+":"+LIN.trace(k).status);o.zl=ZLINK.score();o.untraced=ZLINK.audit().checks.find(c=>c.id==="d_metric_untraced").bad;
+o.own=["r17q_value","r17q_thinking"].map(i=>JSON.stringify([OWNX.get("module",i).ownerName,OWNX.get("module",i).backupName,OWNX.get("module",i).gap]));
+o.perm=["exec","fin","ops","guest","board","emp","audit"].map(pp=>pp+":"+(PERM.can(PERM.personaUser[pp]||pp,"read","screen:r17q_value").ok?1:0));
+o.nav=!!document.querySelector('#nav [data-nx-it="r17q_value"]');o.alias=(R15.alias.value||{}).to;return o});
+console.log(JSON.stringify(r,null,1));
+await p.evaluate(()=>{go('value')});await p.waitForTimeout(800);console.log('screen after alias go:',await p.evaluate(()=>S.screen));
+await p.evaluate(()=>{S.v.r17qv=1;render()});await p.waitForTimeout(500);
+const before=await p.evaluate(()=>document.querySelector('#r17q-res').innerText.match(/net present value\n?[^\n]*/i));
+await p.fill('[data-r17q-in="users"]','5000');await p.waitForTimeout(300);
+console.log('npv tile after users=5000:',await p.evaluate(()=>[...document.querySelectorAll('#r17q-res .stat,#r17q-res .tile')].map(e=>e.innerText.replace(/\n+/g,' | ')).join(' || ')));
+console.log('tag',await p.textContent('[data-r17q-tag="users"]'),'cov',await p.evaluate(()=>R17Q.coverage()));
+await p.evaluate(()=>{S.v.r17qv=2;render()});await p.waitForTimeout(400);
+await p.fill('#r17q-name','Five thousand users');await p.click('.r17q-sv [data-r17q-save]');await p.waitForTimeout(600);
+console.log('saved',await p.evaluate(()=>S.r17q.scn.length),'store',await p.evaluate(()=>(STORE.all('value_scenario')||[]).length));
+await p.evaluate(()=>{S.r17q.cmpB=S.r17q.scn[0].id;S.r17q.cmpA='__cur';S.r17q.inp={};render()});await p.waitForTimeout(500);
+console.log('compare rows',await p.evaluate(()=>document.querySelectorAll('.r17q-cmp tbody tr').length));
+const [d]=await Promise.all([p.waitForEvent('download'),p.click('.r17q-exb [data-r17q-csv]')]);const f=await d.path();console.log('csv',d.suggestedFilename(),fs.readFileSync(f,'utf8').split('\n').length,'lines');
+await p.click('#view [data-r17q-print] >> visible=true');await p.waitForTimeout(500);
+await p.screenshot({path:'r17_shots/q_print_view.png'});
+await p.emulateMedia({media:'print'});await p.pdf({path:'r17_shots/q_print.pdf',format:'Letter',printBackground:true});
+console.log('errors',errs);await b.close()})();

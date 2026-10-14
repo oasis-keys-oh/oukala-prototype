@@ -19,12 +19,12 @@ function hit(p,q){return (p.n+" "+p.role+" "+p.unit+" "+p.fn.join(" ")).toLowerC
 function seedCollapse(){if(OS.seed13)return;OS.seed13=true;O.staff.forEach(p=>{if(O.kids(p.n).length&&O.depth(p.n)>=2)OS.collapsed[p.n]=true})}
 function buildTree(){seedCollapse();
  const mode=OS.mode,ag=agBySponsor(),fo=forceOpenSet(),q=(OS.q||"").trim().toLowerCase();
- const keep=n=>mode!=="ai"||(ag[n]&&ag[n].length)||O.kids(n).some(keep);
+ const aiMode=mode==="ai"||mode==="aionly";const keep=n=>!aiMode||(ag[n]&&ag[n].length)||O.kids(n).some(keep);
  const total=n=>{let t=0;const g=x=>O.kids(x).forEach(k=>{t++;g(k)});g(n);return t};
  const node=n=>{const p=O.P(n),col=!!OS.collapsed[n]&&!fo.has(n);const nd={id:n,t:"h",p,kids:[],col};
-  if(!col){O.kids(n).filter(keep).forEach(k=>nd.kids.push(node(k)));if(mode!=="human")(ag[n]||[]).forEach(a=>nd.kids.push({id:"ag:"+a.name,t:"a",a,kids:[]}));if(mode!=="ai"&&O.vacFor)O.vacFor(n).forEach(v=>nd.kids.push(O.vacNode(v)))}
-  const nv=(mode!=="ai"&&O.vacFor)?O.vacFor(n).length:0;nd.nKids=O.kids(n).filter(keep).length+nv;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0)+nv:0;nd.nAg=(ag[n]||[]).length;
-  nd.hit=!!q&&hit(p,q);nd.dim=(filtersOn()&&!match(p))||(!!q&&!nd.hit&&false);return nd};
+  if(!col){O.kids(n).filter(keep).forEach(k=>nd.kids.push(node(k)));if(mode!=="human")(ag[n]||[]).forEach(a=>nd.kids.push({id:"ag:"+a.name,t:"a",a,kids:[]}));if(!aiMode&&O.vacFor)O.vacFor(n).forEach(v=>nd.kids.push(O.vacNode(v)))}
+  const nv=(!aiMode&&O.vacFor)?O.vacFor(n).length:0;nd.nKids=O.kids(n).filter(keep).length+nv;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0)+nv:0;nd.nAg=(ag[n]||[]).length;
+  nd.hit=!!q&&hit(p,q);nd.dim=(filtersOn()&&!match(p))||(!!q&&!nd.hit&&false);nd.ctx=mode==="aionly"&&!nd.nAg;return nd};
  return node(root)}
 const CW=232,CH=88,GX=18,GY=56,PAD=28;
 const hexAv=(name,size)=>`<span class="av-hex" style="width:${size+4}px;height:${size+4}px">${avatar(name,{size})}</span>`;
@@ -38,10 +38,11 @@ function put(nd,x,d,o){nd.y=PAD+d*(CH+GY);o.cards.push(nd);o.maxD=Math.max(o.max
  if(!nd.kids.length){nd.x=x+(nd.w-CW)/2;return}
  let cx=x+(nd.w-nd.tw)/2;nd.kids.forEach(k=>{put(k,cx,d+1,o);cx+=k.w+GX});
  const f=nd.kids[0],l=nd.kids[nd.kids.length-1];nd.x=Math.round((f.x+l.x)/2);
- nd.kids.forEach(k=>o.edges.push({f:nd.id,t:k.id,k:"line"}))}
+ nd.kids.forEach(k=>o.edges.push({f:nd.id,t:k.id,k:k.t==="a"?"ag":"line"}))}
 function layout(){const t=buildTree();lay(t);const o={cards:[],edges:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=PAD*2+(o.maxD+1)*CH+o.maxD*GY;o.root=t;
  const by={};o.cards.forEach(c=>by[c.id]=c);o.by=by;
  /* dotted and matrix links are edges too: drawn after paint from the real rendered rects */
+if(OS.lines.svc!==false)o.edges.filter(e=>e.k==="ag").forEach(e=>{const par=o.by[e.f];const h=par&&par.kids.find(k=>k.t==="h");if(h)o.edges.push({f:e.t,t:h.id,k:"svc"})});
  if(OS.lines.dotted)O.staff.forEach(p=>{if(p.dot&&o.by[p.n]&&o.by[p.dot])o.edges.push({f:p.dot,t:p.n,k:"dot"})});
  if(OS.lines.matrix)O.staff.forEach(p=>p.mx.forEach(m=>{const l=PLEAD(m.p);if(l&&l!==p.n&&o.by[p.n]&&o.by[l])o.edges.push({f:l,t:p.n,k:"mx"})}));
  return o}
@@ -50,22 +51,24 @@ function loadOf(n){try{return workload(n).pct}catch(e){return 60}}
 function cardHTML(c,sel){
  const pos=`left:${c.x}px;top:${c.y}px;width:${CW}px;height:${CH}px`;
  if(c.t==="v"&&O.vacCard)return O.vacCard(c,pos);
+ if(c.t==="a"&&O.agCard)return O.agCard(c,pos);
  if(c.t==="a"){const a=c.a,L=O.LVL[a.autonomy];
   return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card ag is-agent" data-org-agent="${H(a.name)}" aria-label="${H(AD(a.name).full)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${hexAv(a.name,32)}<span class="org-t" data-noag><b>${H(AD(a.name).first)}</b><small>${H(AD(a.name).title||L.short)} · AI</small><span class="org-m org-aim">${aiChip2("AI")}<span class="org-sp" title="Sponsor: ${H(a.sponsor)}">Sponsor: ${H(a.sponsor)}</span></span></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
  const p=c.p,l=loadOf(p.n),sp=O.kids(p.n).length;
- const cls=["org-n org-hu",c.hit?"hit":"",c.dim?"dim":"",sel===p.n?"sel":""].join(" ");
+ const cls=["org-n org-hu",c.hit?"hit":"",c.dim?"dim":"",c.ctx?"r17t-ctx":"",sel===p.n?"sel":""].join(" ");
  const tg=(c.nKids||c.nAg)?`<button type="button" class="org-tg" data-org-tg="${H(p.n)}" aria-expanded="${c.col?"false":"true"}" aria-label="${c.col?"Expand":"Collapse"} ${H(p.n)}'s team" title="${c.col?"Show "+c.hidden+" below":"Hide the team below"}">${c.col?"+"+c.hidden:"−"}</button>`:"";
- return `<div class="${cls}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card" data-org-open="${H(p.n)}" title="${H(p.n)}, ${H(p.role)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:40})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&OS.mode==="human"?`<em class="ai">AI ${c.nAg}</em>`:""}</span></span></button>${tg}${O.etBadge?O.etBadge(p.n):""}</div>`}
+ return `<div class="${cls}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card" data-org-open="${H(p.n)}" title="${H(p.n)}, ${H(p.role)}" aria-label="${H(p.n)}, ${H(p.role)}, ${sp} direct reports, load ${l} percent">${avatar(p.n,{size:40})}<span class="org-t"><b>${H(p.n)}</b><small>${H(p.role)}</small><span class="org-m"><em class="${pctCls(l)}">${l}% load</em>${sp?`<em>${sp} report${sp===1?"":"s"}</em>`:""}${c.nAg&&(OS.mode==="human"||c.col)?`<em class="ai">${O.agTag?O.agTag(c.nAg):"AI "+c.nAg}</em>`:""}</span></span></button>${tg}${O.etBadge?O.etBadge(p.n):""}</div>`}
 function chartInner(o){
  const sel=OS.sel;return `<svg class="org-svg" width="${o.W}" height="${o.H}" viewBox="0 0 ${o.W} ${o.H}" aria-hidden="true"></svg>${o.cards.map(c=>cardHTML(c,sel)).join("")}`}
 /* outline: the accessible, phone-friendly view of the same tree */
 function outline(nd,lvl){
  if(nd.t==="v"&&O.vacOutline)return O.vacOutline(nd.v);
+ if(nd.t==="a"&&O.agOutline)return O.agOutline(nd.a);
  if(nd.t==="a"){const a=nd.a;return `<li role="treeitem" class="org-ol-a"><button type="button" class="org-ol is-agent" data-org-agent="${H(a.name)}">${hexAv(a.name,26)}<span><b>${H(a.name)} ${aiChip2("AI")}</b><small>Sponsor ${H(a.sponsor)} · ${H(O.LVL[a.autonomy].n)} · ${a.status}</small></span></button></li>`}
  const p=nd.p,l=loadOf(p.n);const hasK=nd.nKids||nd.nAg;
  return `<li role="treeitem" aria-expanded="${hasK?!nd.col:"true"}"><div class="org-olrow">${hasK?`<button type="button" class="org-tg sm" data-org-tg="${H(p.n)}" aria-label="${nd.col?"Expand":"Collapse"} ${H(p.n)}">${nd.col?"+":"−"}</button>`:`<span class="org-tgsp"></span>`}<button type="button" class="org-ol ${nd.hit?"hit":""}" data-org-open="${H(p.n)}">${avatar(p.n,{size:30})}<span><b>${H(p.n)}</b><small>${H(p.role)} · ${l}% load${nd.nKids?` · ${nd.nKids} direct`:""}${nd.nAg?` · ${nd.nAg} agent${nd.nAg===1?"":"s"}`:""}</small></span></button></div>${nd.kids.length?`<ul role="group">${nd.kids.map(k=>outline(k)).join("")}</ul>`:""}</li>`}
 /* ---------- the chart panel ---------- */
-const MODES=[["human","Human","People and their reporting lines"],["ai","AI","Agents under the person who sponsors them"],["both","Human + AI","The whole team: people and their agents"]];
+const MODES=[["both","Show all","Everyone: people and their AI teammates"],["human","People only","People and their reporting lines"],["aionly","AI only","AI teammates, with their sponsors faded for context"],["ai","People with their AI teammates","Only people who sponsor an AI teammate, and the teammates"]];
 function chartPane(){
  const st=O.stats(),o=layout();const teams=[...new Set(O.staff.map(p=>p.unit))].sort();
  const phone=window.innerWidth<700;if(OS.outline==null||OS.outline===undefined)OS.outline=phone;
@@ -76,29 +79,30 @@ function chartPane(){
   <label class="org-sel"><span class="org-so">Filter by team</span><select class="txtin" data-org-f="team" aria-label="Filter by team"><option value="">All teams</option>${teams.map(t=>`<option ${OS.f.team===t?"selected":""}>${H(t)}</option>`).join("")}</select></label>
   <div class="org-chips" role="group" aria-label="Filters"><button type="button" class="chip" data-org-f="agents:has" aria-pressed="${OS.f.agents==="has"}">Has agents</button><button type="button" class="chip" data-org-f="agents:none" aria-pressed="${OS.f.agents==="none"}">No agents yet</button><button type="button" class="chip" data-org-f="load:over" aria-pressed="${OS.f.load==="over"}">Over 90% load</button></div>
   ${O.barX?O.barX():""}
-  <div class="org-chips" role="group" aria-label="Lines"><button type="button" class="chip" data-org-ln="dotted" aria-pressed="${OS.lines.dotted}">Dotted lines</button><button type="button" class="chip" data-org-ln="matrix" aria-pressed="${OS.lines.matrix}">Project matrix</button></div>
+  <div class="org-chips" role="group" aria-label="Lines"><button type="button" class="chip" data-org-ln="dotted" aria-pressed="${OS.lines.dotted}">Dotted lines</button><button type="button" class="chip" data-org-ln="matrix" aria-pressed="${OS.lines.matrix}">Project matrix</button><button type="button" class="chip" data-org-ln="svc" aria-pressed="${OS.lines.svc!==false}" title="A thin dotted line joins an AI teammate to the team it serves">AI team lines</button></div>
   <div class="org-chips"><button type="button" class="chip" data-org-all="collapse">Collapse all</button><button type="button" class="chip" data-org-all="expand">Expand all</button><button type="button" class="chip" data-org-outline aria-pressed="${!!OS.outline}">Outline</button></div>
-  <div class="org-key" role="group" aria-label="Legend"><span><i class="kh"></i>Person: round, solid</span><span><i class="kx"></i>AI agent: hexagon, dashed card, AI badge, sponsor named</span><span><i class="kb"></i>Reports to</span></div>
+  ${O.legendX?O.legendX():""}
  </div>
  ${OS.outline?`<div class="card glass org-outline"><ul role="tree" aria-label="Organization outline">${outline(o.root)}</ul></div>`:`<div class="org-wrap card glass"><div class="org-vp" id="orgvp" tabindex="0" role="group" aria-label="Org chart. Drag to pan, use the buttons or plus and minus to zoom, arrow keys to move."><div class="org-cv" id="orgcv" style="width:${o.W}px;height:${o.H}px">${chartInner(o)}</div></div>
   <div class="org-zoom" role="group" aria-label="Zoom"><button type="button" class="btn" data-org-z="in" aria-label="Zoom in">+</button><button type="button" class="btn" data-org-z="out" aria-label="Zoom out">−</button><button type="button" class="btn" data-org-z="fit">Fit</button><button type="button" class="btn" data-org-z="reset">Top</button></div>
   <div class="org-hint muted small">Drag to pan. Ctrl or Command with scroll to zoom. Cards open the person profile.</div></div>`}
- <div class="org-lg">${legend([["Solid line: reports to","--ink"],["Dashed: dotted-line (functional) report","--accent"],["Long dash: project matrix lead","--warn-f"],["Dashed card: AI agent, sponsored by the person above","--p4"]])}</div>`}
+ <div class="org-lg">${legend([["Solid line: reports to","--ink"],["Dashed: dotted-line (functional) report","--accent"],["Long dash: project matrix lead","--warn-f"],["Dashed violet line: AI teammate, sponsored by the person above","--r17t-ai"],["Thin dotted line: the team the AI teammate serves","--r17t-ai"]])}</div>`}
 /* ---------- pan and zoom (direct DOM, no re-render) ---------- */
 let LAST=null;
 /* ---------- connectors: one SVG path per edge, from the REAL rendered rects (parent bottom-center to child top-center via a bus in the gap) ---------- */
 function rectOf(cv,id){const el=cv.querySelector('.org-n[data-oid="'+(window.CSS&&CSS.escape?CSS.escape(id):id)+'"]');return el?{x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight}:null}
 function drawLines(){const cv=document.getElementById("orgcv");if(!cv||!LAST)return;const svg=cv.querySelector(".org-svg");if(!svg)return;
  const R={};const rr=id=>R[id]||(R[id]=rectOf(cv,id));const edges=LAST.edges||[];
- const minTop={};edges.filter(e=>e.k==="line").forEach(e=>{const c=rr(e.t);if(c)minTop[e.f]=Math.min(minTop[e.f]==null?1e9:minTop[e.f],c.y)});
+ const minTop={};edges.filter(e=>e.k==="line"||e.k==="ag").forEach(e=>{const c=rr(e.t);if(c)minTop[e.f]=Math.min(minTop[e.f]==null?1e9:minTop[e.f],c.y)});
  const out=[],laneN={};
  edges.forEach(e=>{const a=rr(e.f),b=rr(e.t);if(!a||!b)return;let d,pts=null;
-  if(e.k==="line"){const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y,by=Math.round(y1+(minTop[e.f]-y1)/2);d=x1===x2?`M${x1} ${y1}V${y2}`:`M${x1} ${y1}V${by}H${x2}V${y2}`}
+  if(e.k==="svc"){const x1=a.x+a.w/2,yb=a.y+a.h+9,x2=b.x+b.w/2;out.push(`<path class="org-ln svc" d="M${x1} ${a.y+a.h}V${yb}H${x2}V${b.y+b.h}"/>`);return}
+  if(e.k==="line"||e.k==="ag"){const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y,by=Math.round(y1+(minTop[e.f]-y1)/2);d=x1===x2?`M${x1} ${y1}V${y2}`:`M${x1} ${y1}V${by}H${x2}V${y2}`}
   else{const ln=(e.k==="mx"?41:10)+(laneN[e.k]=(laneN[e.k]||0)+1)%3*4;
    if(Math.abs(a.y-b.y)<2){const x1=a.x+a.w/2,x2=b.x+b.w/2,yb=a.y+a.h;d=`M${x1} ${yb}V${yb+ln}H${x2}V${yb}`;pts=[[x1,yb],[x2,yb]]}
    else{const up=b.y+b.h<=a.y;if(up){const x1=a.x+a.w/2,y1=a.y,x2=b.x+b.w/2,y2=b.y+b.h;d=`M${x1} ${y1}V${y1-ln}H${x2}V${y2}`;pts=[[x1,y1],[x2,y2]]}
     else{const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y;d=`M${x1} ${y1}V${y1+ln}H${x2}V${y2}`;pts=[[x1,y1],[x2,y2]]}}}
-  out.push(`<path class="org-ln ${e.k==="line"?"":e.k}" data-from="${H(e.f)}" data-to="${H(e.t)}" data-k="${e.k}" d="${d}"/>`);
+  out.push(`<path class="org-ln ${e.k==="line"?"":e.k}${e.k==="ag"&&O.agLine?" "+O.agLine(e.t):""}" data-from="${H(e.f)}" data-to="${H(e.t)}" data-k="${e.k}" d="${d}"/>`);if(e.k==="ag"&&O.agLabel)out.push(O.agLabel(b.x+b.w/2,b.y-8));
   if(pts&&e.k!=="line")pts.forEach(q=>out.push(`<circle class="org-dotend ${e.k}" cx="${q[0]}" cy="${q[1]}" r="3.5"/>`))});
  svg.innerHTML=out.join("")}
 O.drawLines=drawLines;
@@ -132,7 +136,7 @@ document.addEventListener("click",e=>{
  if(OS._moved&&Date.now()-OS._moved<250&&g.closest("#orgvp")){e.preventDefault();e.stopPropagation();return}
  const d=g.dataset;
  if(d.orgTg!=null){e.preventDefault();e.stopPropagation();const n=d.orgTg;OS.collapsed[n]=!OS.collapsed[n];audit("Org chart",(OS.collapsed[n]?"Collapsed ":"Expanded ")+n+"'s team");if(OS.outline)render();else paintChart();return}
- if(d.orgMode){OS.mode=d.orgMode;if(d.orgMode==="ai")OS.collapsed={};OS.k=0;audit("Org chart view",d.orgMode);render();return}
+ if(d.orgMode){OS.mode=d.orgMode;if(d.orgMode==="ai"||d.orgMode==="aionly")OS.collapsed={};OS.k=0;audit("Org chart view",d.orgMode);render();return}
  if(d.orgF!=null){const v=d.orgF;if(v.indexOf(":")>0){const [k,x]=v.split(":");OS.f[k]=OS.f[k]===x?"":x;render()}return}
  if(d.orgLn){OS.lines[d.orgLn]=!OS.lines[d.orgLn];render();return}
  if(d.orgAll){O.staff.forEach(p=>{if(O.kids(p.n).length)OS.collapsed[p.n]=d.orgAll==="collapse"&&p.n!==root});OS.k=0;render();return}
@@ -174,7 +178,7 @@ function reportPane(){
 /* ---------- tab 3: people directory ---------- */
 function dirPane(){
  const rows=()=>O.staff.map(p=>{const w=O.ownRecs(p.n),n=w.metrics.length+w.procs.length+w.ents.length+w.svcs.length;return{isAg:false,n:p.n,role:p.role,unit:p.unit,mgr:p.mgr||"",loc:p.loc,direct:O.kids(p.n).length,ag:O.agentsOf(p.n).length,load:loadOf(p.n),owns:n,rl:(O.perms(p.n).role||{}).n||""}}).concat(O.agents().map(a=>({isAg:true,n:a.name,role:"AI agent, "+O.LVL[a.autonomy].n.toLowerCase(),unit:"AI agents",mgr:a.sponsor,loc:"",direct:0,ag:0,load:null,owns:0,rl:"AI agent (sponsored)"})));
- return card("People directory","Everyone on the org chart plus the AI agents (hexagon, AI badge, sponsor in the Reports to column). Click a row for the full profile.",btHTML({id:"org_dir",cols:[{k:"n",label:"Person or agent",fmt:r=>r.isAg?`<span class="org-dn">${hexAv(r.n,24)}<b>${H(r.n)}</b>${aiChip2("AI")}</span>`:`<span class="org-dn">${avatar(r.n,{size:26})}<b>${H(r.n)}</b></span>`,val:r=>r.n},{k:"role",label:"Role"},{k:"unit",label:"Team"},{k:"mgr",label:"Reports to"},{k:"direct",label:"Direct",val:r=>r.direct},{k:"ag",label:"Agents",val:r=>r.ag},{k:"load",label:"Load",fmt:r=>r.load==null?`<span class="muted">n/a</span>`:`<span class="pill ${pctCls(r.load)}">${r.load}%</span>`,val:r=>r.load==null?-1:r.load},{k:"owns",label:"Owns",val:r=>r.owns},{k:"rl",label:"Access role"}],rows,key:"n",h:560,rowH:46,facets:["unit","rl"],exportName:"meridian-org",open:id=>O.agentByName(id)?openAgent(id):openProfile(id)}))}
+ return card("People directory","Everyone on the org chart plus the AI agents (hexagon, AI badge, sponsor in the Reports to column). Click a row for the full profile.",btHTML({id:"org_dir",cols:[{k:"n",label:"Person or agent",fmt:r=>window.R17T&&R17T.actorInline?R17T.actorInline(r.n):(r.isAg?`<span class="org-dn">${hexAv(r.n,24)}<b>${H(r.n)}</b>${aiChip2("AI")}</span>`:`<span class="org-dn">${avatar(r.n,{size:26})}<b>${H(r.n)}</b></span>`),val:r=>r.n},{k:"role",label:"Role"},{k:"unit",label:"Team"},{k:"mgr",label:"Reports to",fmt:r=>r.isAg?`<span class="small muted">sponsored by</span> ${H(r.mgr)}`:H(r.mgr)},{k:"direct",label:"Direct",val:r=>r.direct},{k:"ag",label:"Agents",val:r=>r.ag},{k:"load",label:"Load",fmt:r=>r.load==null?`<span class="muted">n/a</span>`:`<span class="pill ${pctCls(r.load)}">${r.load}%</span>`,val:r=>r.load==null?-1:r.load},{k:"owns",label:"Owns",val:r=>r.owns},{k:"rl",label:"Access role"}],rows,key:"n",h:560,rowH:46,facets:["unit","rl"],exportName:"meridian-org",open:id=>O.agentByName(id)?openAgent(id):openProfile(id)}))}
 /* ---------- tab 5: ownership ---------- */
 function ownPane(){
  const oi=O.ownIndex(),st=O.stats();const un=oi.un;
@@ -286,6 +290,7 @@ function orgScreen(){
  const story=`<b>${st.heads}</b> people · <b>${st.layers}</b> layers · <b>${st.agents}</b> AI agents, each with a named sponsor · <b>${st.returned} h/wk</b> returned · <b>${st.open} h/wk</b> open opportunity`;
  return `<div class="screen">${hero("People and teams","Who does what, and who supports them",story,`<div class="row">${fchip("m_org_cap")}${fchip("m_org_gov")}${fchip("m_org_own")}${fchip("m_org_span")}${stdChip("togaf","Org and capability model in the chart")}${stdChip("agentic","Agent autonomy levels and sponsor accountability")}</div>`)}${lensNote()}
  ${OS.tab==="chart"?`<div class="org-strip" role="list"><span role="listitem"><b data-role="metric">${st.heads}</b> people</span><span role="listitem"><b data-role="metric">${st.mgrs}</b> managers</span><span role="listitem"><b data-role="metric">${st.avgSpan}</b> average span (widest ${st.maxSpan})</span><span role="listitem"><b data-role="metric">${st.layers}</b> layers</span><span role="listitem"><b data-role="metric">${st.agents}</b> AI agents</span><span role="listitem"><b data-role="metric">${st.returned} h</b> a week returned</span></div>`:kpiRow([["People",String(st.heads),st.mgrs+" managers, "+st.layers+" layers"],["AI teammates",String(st.agents),st.covered+" sponsors"],["Average span",String(st.avgSpan),"max "+st.maxSpan+" direct reports",{metric:"m_org_span"}],["Hours returned",st.returned+" h","a week by agents",{metric:"m_org_cap"}],["Ownership",st.ownPct+"%","of registry items name a person",{metric:"m_org_own"}]])}
+ ${O.workBand&&OS.tab==="chart"?O.workBand():""}
  <div class="org-tabs" role="tablist" aria-label="Org chart sections">${O.tabs.map(t=>`<button type="button" role="tab" class="org-tab" aria-selected="${OS.tab===t[0]}" data-org-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
  <div class="org-pane" role="tabpanel">${pane}</div>${procCard("org_chart")}</div>`}
 REG("org_chart","Org chart","people","M12 3h-3v5h3M9 5.5H5v4M15 5.5h4v4M5 14h3v5H5zM16 14h3v5h-3zM10.5 14h3v5h-3zM12 8v3M6.5 11h11v3",orgScreen);

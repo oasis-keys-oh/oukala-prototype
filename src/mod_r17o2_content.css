@@ -1,0 +1,82 @@
+/* Round 17, Agent O2: phone content patterns (prefix r17o2). Everything lives inside max-width:600px or hover:none, so desktop is untouched. */
+@media (max-width:600px){
+ :root{--card-pad:14px;--card-gap:12px;--r17o2-gap:12px}
+ /* (h) type scale */
+ #view h1,#view .hero>h1{font-size:clamp(23px,6.6vw,29px);line-height:1.15;overflow-wrap:break-word}
+ #view h2{font-size:clamp(19px,5.4vw,23px);line-height:1.2;overflow-wrap:break-word}
+ #view .card h3,#view h3{font-size:clamp(17px,4.8vw,20px);line-height:1.25;overflow-wrap:break-word}
+ #view :is(p,li,dd,.story,.muted:not(small,.small)){font-size:max(15px,1em);line-height:1.5}
+ #view :is(.eyebrow,.cardhead)>*{min-width:0}
+ /* (e) cards */
+ :root:root #view .card{padding:14px}
+ :root:root #view .screen,:root:root #view .pane{gap:var(--r17o2-gap)}
+ :root:root #view .cardhead{flex-wrap:wrap;gap:8px}
+ :root:root #view :is(.row,.chips,.tags,.r15-fc,.cardhead,.fact,.btnrow){flex-wrap:wrap}
+ :root:root #view :is(.chip,.pill,.fchip){max-width:100%;overflow-wrap:break-word}
+ /* (b) grids */
+ :root:root #view .grid{gap:var(--r17o2-gap)}
+ :root:root #view .grid:is(.g2){grid-template-columns:minmax(0,1fr)}
+ :root:root #view .grid:is(.g3,.g4){grid-template-columns:minmax(0,1fr)}
+ :root:root #view .grid:is(.g3,.g4):has(>:is(.tile,.stat,.mini,.fkpi,.kpi)){grid-template-columns:repeat(2,minmax(0,1fr))}
+ :root:root #view :is(.statrow,.tiles){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--r17o2-gap);overflow:visible;scroll-snap-type:none;padding-bottom:0}
+ :root:root #view :is(.statrow,.tiles)>.stat,:root:root #view :is(.statrow,.tiles)>*{flex:none;min-width:0;width:auto}
+ :root:root #view .statrow>.stat:last-child:nth-child(odd){grid-column:1/-1}
+ /* (a) responsive tables */
+ :root:root #view .tscroll:has(>table.r17o2-stack),:root:root #view .tablewrap:has(>table.r17o2-stack){overflow:visible;-webkit-mask-image:none;mask-image:none;border:0;background:none;box-shadow:none;padding:0}
+ :root:root #view table.r17o2-stack{display:block;width:100%!important;min-width:0!important;max-width:100%;border:0}
+ :root:root #view table.r17o2-stack :is(tbody,tfoot){display:flex;flex-direction:column;gap:10px}
+ :root:root #view table.r17o2-stack thead{display:none}
+ :root:root #view table.r17o2-stack tr{display:block;border:1px solid var(--cardline);border-radius:14px;padding:6px 12px;background:var(--glass2)}
+ :root:root #view table.r17o2-stack td{display:block;border:0;border-bottom:1px solid var(--hair,var(--cardline));padding:8px 0;white-space:normal;max-width:none;min-width:0;text-align:left;overflow:visible;overflow-wrap:break-word;background:none}
+ :root:root #view table.r17o2-stack td:last-child{border-bottom:0}
+ :root:root #view table.r17o2-stack td:first-child{min-width:0;font-weight:600}
+ :root:root #view table.r17o2-stack td[data-label]::before{display:block;margin-bottom:2px;content:attr(data-label);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:break-word}
+ :root:root #view table.r17o2-stack td:not([data-label]),:root:root #view table.r17o2-stack td.r17o2-span{display:block}
+ :root:root #view table.r17o2-stack td:empty{display:none}
+ :root:root #view table.r17o2-stack td.num{text-align:left}
+ /* wider tables: bordered scroller, sticky first column, edge fade */
+ :root:root #view :is(.tscroll,.tablewrap):has(>table.r17o2-scr){border:1px solid var(--cardline);border-radius:14px;background:var(--glass2);position:relative}
+ :root:root #view table.r17o2-scr :is(th,td):first-child{position:sticky;left:0;z-index:2;background:var(--bg);min-width:min(172px,48vw);max-width:min(58vw,240px);box-shadow:1px 0 0 var(--cardline)}
+ :root:root #view table.r17o2-scr thead th:first-child{z-index:4}
+ .r17o2-more{display:flex;align-items:center;justify-content:center;width:100%;margin-top:10px}
+ .r17o2-hid{display:none!important}
+ /* nested scroll boxes: let plain tables flow with the page (virtualised big tables keep their own scroller) */
+ :root:root #view .tablewrap:not(.r17o2-keep),:root:root #view .bl-scroll,:root:root #view .itom-tree,:root:root #view .bc-pkres,:root:root #view .stream,:root:root #view .ppl-heatwrap{max-height:none}
+ :root:root #view .bt-scroll{max-height:min(var(--bt-h,520px),66vh)}
+ /* (c) forms */
+ :root:root #view .fgrid{grid-template-columns:minmax(0,1fr);gap:14px}
+ :root:root #view .fld>label,:root:root #view .fld .flab{font-size:13px}
+ :root:root #view :is(.fin,.fld input:not([type=checkbox],[type=radio],[type=range]),.fld select,.fld textarea,input.fin,select.fin,textarea.fin){font-size:16px;min-height:44px}
+ :root:root #view .fform .fact{position:sticky;bottom:calc(var(--r17-nav-h,84px) + env(safe-area-inset-bottom,0px));z-index:6;display:flex;gap:8px;padding:10px 0;background:linear-gradient(0deg,var(--bg) 70%,transparent)}
+ :root:root #view .fform .fact .btn{flex:1 1 auto}
+ /* (d) canvases */
+ .r17o2-fitbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px;font-size:12px;color:var(--muted)}
+ .r17o2-fitbar button{min-height:44px;min-width:44px}
+ :root:root #view svg.r17o2-fit{width:100%!important;min-width:0!important;max-width:100%!important;height:auto!important}
+ :root:root #view .r17o2-fitw{overflow-x:hidden}
+ :root:root #view svg[viewBox]:not(.r17o2-nofit){max-width:none}
+ :root:root #view :is(.org-tg.sm,.org-tg){min-width:44px;min-height:44px}
+ /* (f) charts */
+ :root:root #view :is(.chart,.lc,.linechart)>svg,:root:root #view svg.lc{max-width:100%;height:auto}
+ :root:root #view svg text.tick:nth-of-type(even){display:none}
+ /* tap to expand truncated names that carry a title */
+ :root:root #view .r17o2-open{white-space:normal!important;max-width:none!important;text-overflow:clip!important;overflow:visible!important}
+ :root:root #view [title]{-webkit-tap-highlight-color:transparent}
+ /* small text floor */
+ :root:root #view .r17o2-sm{font-size:12px!important}
+ :root:root #view :is(th,small,.who,.pmode,.sx-kind,dt,code,.eyebrow,.fchip,i.pre,i.ai,i.hum,.hn,.mm-md,.org5-et){font-size:max(12px,.75rem)}
+ :root:root #view :is(.itsm-sla,.itsm-sla *,.cg-tm,.st,.ppm-wk,.muted.small,.small.muted,.oc-k,.bc-pt,.cg-tm){font-size:max(12px,.75rem)}
+ :root:root #view :is(.rel-hbt,.rel-pb) u{max-width:100%}
+ :root:root #view :is(.nx-mapin,.fin){max-width:100%;min-width:0}
+ :root:root #view .fkpi{min-width:0}
+ :root:root #view .cardhead .fkpi{max-width:100%;flex-wrap:wrap;row-gap:2px}
+ /* tap targets */
+ :root:root #view :is(.r17o2-tap,summary,.chip,button.pill,.fchip,.org-tg){min-height:44px;min-width:44px}
+}
+/* (g) hover-only affordances get a visible touch version */
+@media (hover:none){
+ :root:root :is(.dr-s .dr-port,.r16r-plus,.pk2-star,.nx-pen){opacity:1}
+ :root:root .scw .scpop{display:none}
+ :root:root .scw:focus-within .scpop,:root:root .scw:active .scpop{display:flex}
+ :root:root .exe-cite{text-decoration:underline dotted}
+}

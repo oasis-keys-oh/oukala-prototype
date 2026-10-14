@@ -1,0 +1,32 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1440,height:900}});
+await p.route(/^https?:/,r=>r.abort());const errs=[];
+p.on('pageerror',e=>errs.push('PE '+e.message));p.on('console',m=>{if(m.type()==='error'&&!/ERR_FAILED|net::/.test(m.text()))errs.push(m.text())});
+await p.goto('file://'+process.cwd()+'/out_s17/full.html');await p.waitForTimeout(3500);
+const L=(k,v)=>console.log(k,typeof v==='string'?v:JSON.stringify(v));
+const logTail=()=>p.evaluate(()=>window.RULES.data.log.filter(l=>!l.dry).slice(0,8).map(l=>l.rule+':'+l.outcome));
+await p.evaluate(()=>{go('itsm_inc')});await p.waitForTimeout(500);await p.click('[data-itsm-a="new"]');await p.waitForTimeout(600);
+await p.click('[data-fchip="itsm_inc:urg:1"]');await p.waitForTimeout(400);
+await p.fill('[data-fk="itsm_inc:ua"]','300');await p.waitForTimeout(400);
+L('0101 banner/req',await p.evaluate(()=>({b:[...document.querySelectorAll('.r17s-banner')].map(x=>x.innerText.slice(0,80)),req:[...document.querySelectorAll('.fld')].filter(x=>/Description/.test(x.innerText.slice(0,30))).map(x=>x.innerText.slice(0,40))})));
+const svc=await p.evaluate(()=>[...document.querySelectorAll('[data-fk="itsm_inc:svc"] option')].map(o=>o.value).filter(Boolean)[0]);
+L('svc',svc);await p.selectOption('[data-fk="itsm_inc:svc"]',svc,{timeout:3000});await p.fill('[data-fk="itsm_inc:title"]','Live rules test').catch(()=>{});
+await p.fill('[data-fk="itsm_inc:desc"]','Users cannot sign in since 9am').catch(e=>L('descerr',e.message.slice(0,60)));await p.evaluate(()=>{FORMST.itsm_inc.vals.role='executive'});
+const cats=await p.evaluate(()=>[...document.querySelectorAll('[data-fk="itsm_inc:cat"] option')].map(o=>o.value).filter(Boolean));L('cats',cats.slice(0,5));
+if(cats[0])await p.selectOption('[data-fk="itsm_inc:cat"]',cats[0]).catch(e=>L('caterr',e.message.slice(0,80)));
+await p.waitForTimeout(300);
+L('0102 team opts',await p.evaluate(()=>{const f=FORMSPEC.itsm_inc.fields.find(x=>x.k==='grp');return (f.opts||[]).map(o=>o[0]||o).slice(0,6)}));
+for(const k of ['grp','apprBy']){const v=await p.evaluate(k=>[...document.querySelectorAll('[data-fk="itsm_inc:'+k+'"] option')].map(o=>o.value).filter(Boolean)[0],k);if(v)await p.selectOption('[data-fk="itsm_inc:'+k+'"]',v,{timeout:3000}).catch(e=>L(k+'err',e.message.slice(0,60)));}
+const before=await p.evaluate(()=>window.RULES.entity('incident').list().length);
+L('descval',await p.evaluate(()=>FORMST.itsm_inc.vals.desc));await p.fill('[data-fk="itsm_inc:desc"]','Users cannot sign in since 9am');await p.fill('[data-fk="itsm_inc:title"]','Live rules test').catch(()=>{});await p.waitForTimeout(300);await p.click('[data-fsubmit]');await p.waitForTimeout(800);
+L('submit',await p.evaluate(b=>({n:window.RULES.entity('incident').list().length-b,form:!!document.querySelector('[data-form="itsm_inc"]'),vals:FORMST.itsm_inc&&FORMST.itsm_inc.err}),before));
+L('log',await logTail());
+L('digest/notifs',await p.evaluate(()=>window.RULES.data.digest.length));
+// RECSHELL contract edit 0109
+L('0109 test',await p.evaluate(()=>{const r=window.RULES.test({entity:'contract',trigger:'before_save',ruleId:'RUL-0109',recId:'CT-106'});return {b:r.blocked&&r.blocked.text,c:r.checked,e:r.errors.length}}));
+L('0105 test',await p.evaluate(()=>{const r=window.RULES.test({entity:'change',trigger:'load',ruleId:'RUL-0105',recId:window.RULES.entity('change').list()[0]});return {hide:Object.keys(r.fx.hide),c:r.checked}}));
+L('0107 test',await p.evaluate(()=>{const e=window.RULES.entity('ci');const r=window.RULES.test({entity:'ci',trigger:'submit',ruleId:'RUL-0107',recId:e.list()[0],overrides:{new_state:'Retired'}});return {conf:r.confirm&&r.confirm.text}}));
+L('0104 test',await p.evaluate(()=>{const e=window.RULES.entity('change');const ids=e.list();const out=[];for(const id of ids){const r=window.RULES.test({entity:'change',trigger:'status_change',ruleId:'RUL-0104',recId:id,overrides:{new_state:'Closed'}});if(r.blocked){out.push(id+': '+r.blocked.text);break}}return out}));
+L('0108 run',await p.evaluate(()=>{const r=window.RULES.runSchedule?window.RULES.runSchedule(true):null;return JSON.stringify(r).slice(0,150)}));
+L('log2',await logTail());
+L('ERRS',errs.slice(0,8));await b.close()})();

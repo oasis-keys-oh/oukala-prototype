@@ -233,7 +233,7 @@ const planQ=(b,i)=>i<b.start?0:(i<b.start+2?.5:1)*annual(b)/4;
 const qLab=i=>"Q"+(i%4+1)+" FY"+(27+Math.floor(i/4));
 const qMon=i=>["Jul to Sep","Oct to Dec","Jan to Mar","Apr to Jun"][i%4]+" "+(2026+Math.floor((i+2)/4));
 const CURQ=1;
-const benToDate=()=>({plan:sum(B().ben,b=>planQ(b,0)),real:sum(B().ben,b=>b.real[0]||0)});
+const benToDate=()=>window.R17U&&R17U.benToDate?R17U.benToDate():({plan:sum(B().ben,b=>planQ(b,0)),real:sum(B().ben,b=>b.real[0]||0)}); /* R17U: planned and recorded to date */
 const benFY=(p,y,sc)=>sum(B().ben.filter(b=>!p||p==="all"||b.p===p),b=>sum([0,1,2,3],k=>planQ(b,y*4+k)))*SCEN[sc||B().scen][1];
 /* ---- financial model ---- */
 const cpCost=r=>r[1]*r[2]*r[3];
@@ -801,7 +801,7 @@ SEARCHX.push(()=>{const o=[];
  B().vend.forEach(v=>o.push({g:"Vendors",t:v.n,m:"Scorecard "+vScore(v).sc.toFixed(2),c:"--u3",f:()=>{S.v.budx=0;go("bud_ven");setTimeout(()=>vendorDrawer(v.id),60)},k:v.cat}));
  B().con.forEach(c=>o.push({g:"Contracts",t:c.id+" "+c.n,m:"Ends "+dshort(c.rn),c:"--s3",f:()=>{S.v.budx=1;go("bud_ven");setTimeout(()=>contractDrawer(c.id),60)},k:VID(c.v).n+" renewal"}));
  B().po.forEach(p=>o.push({g:"Purchase orders",t:p.id+" "+p.d,m:m3(p)[0],c:m3(p)[1]==="bad"?"--bad-f":"--s3",f:()=>{S.v.budx=4;go("bud_ven")},k:VID(p.v).n}));
- B().ben.forEach(b=>o.push({g:"Benefits",t:b.id+" "+b.n,m:D$(annual(b))+" a year",c:"--s3",f:()=>{S.v.budb=0;go("bud_ben");setTimeout(()=>benDrawer(b.id),60)},k:b.ty+" "+PJ(b.p).short}));
+ B().ben.forEach(b=>o.push({g:"Benefits",t:b.id+" "+b.n,m:D$(annual(b))+" a year",c:"--s3",f:()=>{S.v.budb=0;go("bud_ben");setTimeout(()=>window.R17U&&R17U.openBen?R17U.openBen(b.id):benDrawer(b.id),60)},k:b.ty+" "+PJ(b.p).short}));
  return o});
 /* ---------- invoice approval overlay (core screen _R.inv): fixes chart scale, adds a dashboard above the queue ---------- */
 (function(){

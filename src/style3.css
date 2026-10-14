@@ -50,5 +50,5 @@ body.dnding{cursor:grabbing;user-select:none}
 .navgd .navi{padding:8px 14px;font-size:14px}
 #nav{min-height:0;flex:1}
 .rail{min-height:0}
-@media(max-width:900px){#nav{height:64px}}
+@media (max-width:700px),(max-height:500px) and (max-width:950px){#nav{height:64px}}
 .flive:empty{display:none}.flive{margin-top:14px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 7%,transparent);font-size:14px;line-height:1.5}

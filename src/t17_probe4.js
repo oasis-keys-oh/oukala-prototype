@@ -1,0 +1,20 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded'});await p.waitForFunction(()=>window.AGENTRT&&AGENTRT.booted,null,{timeout:30000});
+const r=await p.evaluate(()=>{const o={};const J=(x)=>{try{return JSON.stringify(x)}catch(e){return 'ERR'}};
+for(const s of ['org_chart','ppl_org','r15d_agents','ai_runtime'])try{o['c_'+s]=J(CONTRACT.evaluate(s)).slice(0,1200)}catch(e){o['c_'+s]='ERR '+e.message}
+o.skAI=J(SKILLSDB.of('Invoice Advisor'));o.skAI2=J(SKILLSDB.of('Iris'));o.skAI3=J(SKILLSDB.of('First Officer'));
+o.pperm=J(PERM.principalOfUser('Invoice Advisor').roles);
+o.rolesIds=J(PERM.roles.map(r=>r.id));
+o.entCls=J(['invoice','incident','person','project'].map(e=>[e,PERM.entityClass(e)]));
+o.sagent=J(S.agents.map(a=>[a.id,a.n,a.spend,a['cap$'],a.runs,a.st]));
+o.states=J(AGENTS_STATE.rows().map(a=>[a.name,a.state,a.runsToday,a.sponsor]));
+o.regs=J(AGENTRT.registry().map(r=>[r.name,r.lifecycle,r.tier,r.sponsor,r.backup,r.budget_cap,r.confidence_floor]));
+o.dmTables=J(Object.keys(DATAMODEL.tables).slice(0,60));
+o.who2=J([who('Iris'),who('Nova')].map(x=>x&&x.name));
+o.tryReg=String(R15F1.tryReg).slice(0,1800);
+o.mmfn=String(MODMAP.addModule).slice(0,300);
+o.pl=String(PROCLIB.addProcess).slice(0,500);
+return o});
+for(const k in r)console.log(k,'=',String(r[k]).slice(0,1900));await b.close()})();

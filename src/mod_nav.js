@@ -111,7 +111,7 @@ svc_360|tech|Services we run and how they connect|Service portfolio and map|Serv
 exe_apps|tech|Applications we run|Application portfolio|Services and records|application apps software portfolio rationalize
 itom_cmdb|tech|Servers, apps and other technology items|CMDB|Services and records|cmdb configuration item ci server asset inventory
 svc_asset|tech|Assets and software licenses|Assets and software licenses|Services and records|asset license software hardware laptop renewal
-itom_graph|tech|What depends on what|Dependency views|Services and records|dependency graph topology upstream downstream map
+itom_graph|tech|Impact Explorer|Impact Explorer|Services and records|impact explorer dependency graph topology upstream downstream blast radius map
 kg|tech|What a change would affect|Impact graph|Services and records|impact analysis blast radius ripple change affects
 itom_model|tech|How technology records are structured|CMDB data model|Data quality|cmdb model classes relationships
 itom_disc|tech|Scan and import technology|Discovery and ingestion|Data quality|discovery scan ingest import connector
@@ -173,7 +173,7 @@ plat_mcp|ai|Connect AI and coding tools|AI and coding clients||mcp ai coding cli
 plat_data|plat|The platform's data model|Master data model|Data and processes|data model entity field table lineage atlas
 plat_data_old|plat|Data tables and checks|Data tables and model checks|Data and processes|data tables checks model coverage
 plat_dmap|plat|Where data flows|Data connections|Data and processes|data connections flows between modules
-plat_map|plat|How modules work together|Master process flow|Data and processes|process flow modules map between
+plat_map|plat|How modules work together|Master process flow|Data and processes|platform maps data architecture data model entities data flows process flow modules map between
 plat_pmap|plat|How processes connect|Process connections|Data and processes|process connections links
 plat_proc|plat|Process library|Process library|Data and processes|process library maturity steps owner
 plat_reg|plat|Platform registry|Platform registry|Data and processes|registry canonical entities catalog
@@ -391,7 +391,7 @@ function syncStars(){qa("[data-nx-star]").forEach(b=>{const on=isFavRef(b.datase
 function decorateHero(){const h=q1("#view .hero,#view .hero-x");if(!h||h.querySelector(".nx-hstar"))return;h.insertAdjacentHTML("beforeend",starBtn("screen:"+S.screen,"nx-hstar",labelOf(S.screen)))}
 
 /* ---------- navigation HTML (called by ui.js navHTML) ---------- */
-const phoneMQ=matchMedia("(max-width:900px)");
+const phoneMQ=matchMedia("(max-width:700px),(max-height:500px) and (max-width:950px)");/* R17: phone shell (portrait + short landscape); 701 to 900 wide is the tablet, collapsed rail */
 const collapsed=()=>!phoneMQ.matches&&!!(q1("#railCollapse")&&q1("#railCollapse").checked);
 function typeIcon(t){t=String(t||"");if(/person|people|contractor/i.test(t))return ICO.user;if(/process|workflow/i.test(t))return ICO.flow;if(/data|field|entity|table/i.test(t))return ICO.table;if(/metric|measure/i.test(t))return ICO.chart;if(/knowledge|article|book/i.test(t))return ICO.doc;if(/module/i.test(t))return ICO.plat;return ICO.doc}
 const BADGE={inv:3,tower:1};

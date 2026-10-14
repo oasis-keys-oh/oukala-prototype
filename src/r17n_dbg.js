@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+process.cwd()+'/out_n17/full.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1000);
+await p.evaluate(()=>{toast('Saved','good');toast('Saved','good');toast('Plan exported','info');toast('Invoice INV-2207 is waiting for the Finance approver group','info')});await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>[...document.querySelectorAll('.r17n-card')].map(c=>c.getAttribute('aria-label')+' '+c.className)));
+await p.screenshot({path:'r17_shots/n_desktop_light_toasts.png',clip:{x:1000,y:60,width:440,height:360}});
+await p.keyboard.press('Tab');await p.keyboard.press('Escape');await p.waitForTimeout(500);
+console.log('after esc',await p.evaluate(()=>R17N.count()));
+await b.close()})();

@@ -395,7 +395,7 @@ td .sub{display:block;color:var(--muted);font-size:12.5px}
 :root[data-density="compact"] .card{padding:14px}:root[data-density="compact"] .grid,:root[data-density="compact"] main,:root[data-density="compact"] .screen{gap:12px}
 
 /* responsive shell */
-@media(max-width:900px){
+@media (max-width:700px),(max-height:500px) and (max-width:950px){
   .app{grid-template-columns:minmax(0,1fr);padding:10px}
   .rail{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));top:auto;height:auto;border-radius:30px;padding:6px;flex-direction:row;z-index:40}
   .rail{max-height:82px;gap:0}.rail .brand,.rail .railfoot,.navgrp,.collapse{display:none}

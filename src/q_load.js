@@ -1,0 +1,2 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});for(const d of process.argv.slice(2)){const p=await(await b.newContext()).newPage();await p.route(/^https?:/,r=>r.abort());const t=Date.now();await p.goto('file://'+path.resolve(d)+'/full.html',{waitUntil:'domcontentloaded',timeout:240000});await p.waitForFunction(()=>window.PERM&&window.NAVX&&document.querySelector('#view .screen'),null,{timeout:240000});console.log(d,Date.now()-t,'ms');await p.close()}await b.close()})();
