@@ -91,3 +91,9 @@ setTimeout(()=>{apply();try{ensureLens()}catch(e){}},50);setInterval(()=>{try{en
  const fit=()=>{if(!p.matches(":popover-open"))return;const vh=innerHeight,vw=innerWidth;p.style.maxHeight=Math.max(240,vh-32)+"px";const r=p.getBoundingClientRect();let top=r.top,left=r.left;if(r.bottom>vh-16)top=vh-16-r.height;if(top<16)top=16;if(r.right>vw-12)left=vw-12-r.width;if(left<12)left=12;
   if(Math.abs(top-r.top)>1||Math.abs(left-r.left)>1){p.style.inset=top+"px auto auto "+left+"px";p.style.margin="0"}};
  requestAnimationFrame(()=>{fit();setTimeout(fit,120)})},true)})();
+
+/* History, Favorites and Notifications hang from the right edge of the top bar instead of floating mid-page */
+(function(){const D=document;D.addEventListener("toggle",e=>{const p=e.target;if(!p.matches||!p.matches(".nx-pop,.nw-pop")||e.newState!=="open"||innerWidth<1100)return;
+ const place=()=>{if(!p.matches(":popover-open"))return;const tb=D.querySelector(".topbar");if(!tb)return;const r=tb.getBoundingClientRect(),w=Math.min(p.getBoundingClientRect().width||430,430),top=Math.round(r.bottom+8);
+  p.style.setProperty("inset","auto","important");p.style.setProperty("top",top+"px","important");p.style.setProperty("left",Math.max(12,Math.round(r.right-w))+"px","important");p.style.setProperty("right","auto","important");p.style.setProperty("bottom","auto","important");p.style.setProperty("margin","0","important");p.style.setProperty("max-height",Math.max(260,innerHeight-top-16)+"px","important")};
+ place();requestAnimationFrame(place);setTimeout(place,60);setTimeout(place,200)},true)})();
