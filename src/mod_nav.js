@@ -32,6 +32,13 @@ const ICO={
  ai:"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z",
  plat:"M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5",
  new:"M12 5v14M5 12h14",
+ make:"M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.4 2.4-2.6-.6-.6-2.6z",
+ kit:"M4 7h6V4H4zM14 7h6V4h-6zM4 20h6v-9H4zM14 20h6v-9h-6z",
+ lens:"M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+ reg:"M12 3l9 5-9 5-9-5zM3 13l9 5 9-5",
+ story:"M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM9 9h6M9 13h6",
+ grc:"M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z",
+ res:"M3 12h4l3-7 4 14 3-7h4",
  star:"M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z",
  clock:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",
  search:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4",
@@ -51,26 +58,30 @@ NAVX.svg=SVG;NAVX.icons=ICO;
 
 const GROUPS=[
  ["home","Home",ICO.home,"Your starting point."],
+ ["story","Story and demo",ICO.story,"The guided tour, and how this platform was built."],
  ["my","My work",ICO.my,"Things waiting on you: approvals, meetings, follow-ups."],
  ["help","Get help or ask for something",ICO.help,"Report a problem, order something, or find an answer."],
- ["plan","Plan and deliver projects",ICO.plan,"Choose the work, plan it, staff it and ship it."],
- ["fix","Fix and support services",ICO.fix,"Incidents, root causes, changes, requests and on-call."],
- ["tech","Know our technology",ICO.tech,"Services, systems, dependencies, alerts and pipelines."],
+ ["plan","Projects and delivery",ICO.plan,"Choose the work, plan it, staff it and ship it."],
+ ["fix","Service and support",ICO.fix,"Incidents, root causes, changes, requests and on-call."],
  ["money","Money and contracts",ICO.money,"Invoices, budgets, funding, vendors and cost transparency."],
- ["learn","Knowledge and learning",ICO.learn,"Articles, connected knowledge and training."],
  ["people","People and teams",ICO.people,"Who works where, skills and performance."],
- ["strat","Strategy and performance",ICO.strat,"Goals, risk, maturity, measures and board material."],
- ["grc","Governance, risk and compliance",ICO.strat,"Risks, controls, findings, policies, audits, vendors and exceptions."],
- ["res","Resilience",ICO.fix,"Continuity and disaster recovery: framework, tiers, plans, exercises, traceability and metrics."],
- ["auto","Automate",ICO.auto,"Design workflows, rules, notifications and automatic fixes."],
- ["ai","AI and governance",ICO.ai,"Watch, test, govern and connect AI agents."],
- ["plat","Platform and administration",ICO.plat,"Data model, processes, building blocks, security and licensing."],
+ ["learn","Knowledge and learning",ICO.learn,"Articles, connected knowledge and training."],
+ ["make","My builds and access",ICO.make,"What you built, whether it is safe to scale, and the data it needs."],
+ ["kit","Design, data and controls",ICO.kit,"Process, data, security, rules and AI skills that every build uses."],
+ ["lens","Executive lenses",ICO.lens,"Value against cost and risk, seen the way each executive weighs it."],
+ ["strat","Strategy and value",ICO.strat,"Goals, measures, value realized, cost and board material."],
+ ["grc","Risk and control",ICO.grc,"Risks, controls, findings, policies, audits and exceptions."],
+ ["res","Resilience",ICO.res,"Continuity and disaster recovery: framework, tiers, plans, exercises, traceability and metrics."],
+ ["ai","AI oversight",ICO.ai,"Watch, test and govern AI agents."],
+ ["reg","Registry and truth",ICO.reg,"What exists, who owns it, and which source is authoritative."],
+ ["tech","Enterprise IT",ICO.tech,"Services, systems, dependencies, alerts and pipelines."],
+ ["plat","Platform admin",ICO.plat,"Navigation, setup, deployment, environments, licensing and the product log."],
  ["new","New and unsorted",ICO.new,"Screens that have not been placed in a group yet."]
 ];
 NAVX.groups=GROUPS.map(g=>({id:g[0],label:g[1],icon:g[2],blurb:g[3]}));
 const GID={};GROUPS.forEach((g,i)=>GID[g[0]]=i);
 /* old product-suite groups (REG group strings) fall back to a functional group */
-const OLDG={portfolio:"plan",service:"fix",ops:"tech",know:"learn",people:"people",automate:"auto",ai:"ai",platform:"plat"};
+const OLDG={portfolio:"plan",service:"fix",ops:"tech",know:"learn",people:"people",automate:"kit",ai:"ai",platform:"plat"};
 const OLDGN={portfolio:"Portfolio and delivery",service:"Service management",ops:"Operations",know:"Knowledge",people:"People and work",automate:"Automation",ai:"AI and governance",platform:"Platform"};
 
 /* screen id | group | plain label | formal name (blank = the module's own name) | sub-heading | words people might use */

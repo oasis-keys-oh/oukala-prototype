@@ -9,7 +9,7 @@ const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const M=id=>G(()=>METRICS[id],null);
 const mv=id=>{const m=M(id);return m?mfmt(m):"n/a"};
-const ALLG=["my","help","plan","fix","tech","money","learn","people","strat","auto","ai","plat","new"];
+const ALLG=["my","help","plan","fix","money","people","learn","make","kit","lens","strat","grc","res","ai","reg","tech","plat","story","new"];/* R18: groups follow the Make / Work / Oversee structure */
 const order=(first)=>first.concat(ALLG.filter(g=>!first.includes(g)));
 
 /* ---------- definitions ---------- */
@@ -41,6 +41,10 @@ const DEFS={
  emp:{n:"Employee",who:"Orders equipment and access, tracks requests, finds answers",role:"guest",family:"request",as:"Casey Rowan",groups:["help","my","learn","people"],pin:["svc_portal","svc_req","svc_guides","kcs_ask"],kpis:[]},
  newhire:{n:"New hire",who:"First week: accounts, equipment, training, who to ask",role:"guest",family:"request",as:"Rosa Delgado",groups:["help","my","learn","people"],pin:["r15d_firstweek","svc_portal","ppl_train","kcs_ask"],kpis:[]}
 };
+/* R18: translate the old group ids in each role to the new Make / Work / Oversee groups, then add what the role family needs */
+(function(){const O2N={my:["my"],help:["help"],plan:["plan"],fix:["fix"],tech:["tech"],money:["money"],learn:["learn"],people:["people"],strat:["strat"],auto:["kit"],ai:["ai"],plat:["plat"],grc:["grc"],res:["res"],new:["new"]};
+ const EXTRA={decide:["lens","reg","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
+ Object.keys(DEFS).forEach(k=>{const d=DEFS[k],out=[];(d.groups||[]).forEach(g=>(O2N[g]||[g]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)}));(EXTRA[d.family]||[]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)});if(!d.readonly&&out.indexOf("make")<0)out.push("make");d.groups=out})})();
 const FAM={decide:"Decide",operate:"Operate",build:"Build and plan",assure:"Assure",request:"Request"};
 Object.keys(DEFS).forEach(k=>{
  const d=DEFS[k];
@@ -76,7 +80,7 @@ if(NP){
 
 /* ---------- sidebar: order, visibility, role pins ---------- */
 if(W.NAVX&&NAVX.html&&!NAVX._r15d){
- NAVX._r15d=true;const _html=NAVX.html;
+ NAVX._r15d=true;const _html=NAVX.html;NAVX._baseHtml=_html;/* R18: the shell rebuilds the rail from the base html */
  NAVX.html=function(){
   const raw=_html.apply(this,arguments);
   try{
