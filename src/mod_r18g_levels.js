@@ -28,14 +28,26 @@ function simple(){const k=S.persona,P=PERSONAS[k];const sm=G(()=>R18.spend.stats
  ${lh}
  <section class="card glass"><div class="cardhead"><h3>How we're doing</h3><span class="muted small">Three scores. Select one for its formula and trend.</span></div><div class="rings">${arr(P.rings).slice(0,3).map(id=>G(()=>metricRing(id,132),"")).join("")}</div></section>
  ${arr(P.needs).length?BLK.needs(needs):""}${drill()}</div>`}
+const OWNFN={portfolio:"Standards",pm:"Standards",fin:"Finance",ops:"IT service",change:"Technology"};
+/* directors and managers see the functions their own work connects to, summarized, with a way in */
+function connected(){const fn=OWNFN[S.persona];if(!fn)return"";const B=R18.BIZ||{};const rows=G(()=>R18.portfolio().rows,[]);const mine=rows.filter(r=>r.m.fn===fn);const objs=new Set(mine.map(r=>r.m.obj).filter(Boolean));if(!objs.size)return"";
+ const ADJ={Standards:{Membership:"Members who ballot also renew",Finance:"Publishing revenue and dues",Technology:"The standards platform"},"IT service":{Standards:"Runs the systems standards work depends on"},Technology:{Standards:"Builds for standards work"}};const fns=[...new Set(rows.map(r=>r.m.fn))].filter(x=>x&&x!==fn);const items=[];
+ fns.forEach(f2=>{let sh=rows.filter(r=>r.m.fn===f2&&objs.has(r.m.obj));let on=[...new Set(sh.map(r=>(R18.objective(r.m.obj)||{}).n||r.m.obj))];const why=(ADJ[fn]||{})[f2];if(!sh.length&&why){sh=rows.filter(r=>r.m.fn===f2);on=[why]}if(!sh.length)return;const top=sh.find(r=>B[r.a.id]&&B[r.a.id].kpi)||sh[0];const b=B[top.a.id]||{};
+  items.push({f2,on,top,b,n:sh.length,users:sh.reduce((s,r)=>s+(r.a.users||0),0)})});
+ if(!items.length)return"";
+ const fmt=b=>b.money?R18.usd(b.vol):Math.round(b.vol).toLocaleString("en-US");
+ return `<section class="card glass r18-conn" aria-label="Connected functions"><div class="cardhead"><div><h3>Connected to your work</h3><span class="muted small">Other functions summarized because they advance the same objective as ${H(fn)}. Open one for the detail you are allowed to see.</span></div><button type="button" class="btn quiet" data-go="r18_strategy">All functions</button></div><div class="r18-cg">${items.slice(0,4).map(i=>`<article class="r18-cc"><div class="r18-cc-h"><b>${H(i.f2)}</b><span class="muted small">${i.n} ${i.n===1?"tool":"tools"} · ${i.users} ${i.users===1?"person":"people"}</span></div><p class="r18-cc-t">${i.b.did?`<b>${H(fmt(i.b))}</b> ${H(i.b.did.toLowerCase())} ${H(i.b.per||"")}`:H(i.top.a.n)}</p>${i.b.kpi?`<p class="small muted">${H(i.b.kpi)}: ${H(R18.chgText?R18.chgText(i.b):i.b.from+" to "+i.b.to)}</p>`:""}<p class="small muted">Connected through: ${H(i.on.join("; "))}</p><div class="r18-cc-f"><span>${H(i.top.m.owner||"")}</span><button type="button" class="btn quiet" data-r18-app="${H(i.top.a.id)}">Open</button></div></article>`).join("")}</div></section>`}
 function install(){const prev=_R.home;if(!prev||prev.__r18g)return;const f=function(){const k=S.persona;if(lvl()==="exec"&&!ST.fullHome&&(k==="exec"||k==="board")&&PERSONAS[k]&&!PERSONAS[k].generic){try{return simple()}catch(e){console.error("r18 simple home",e)}}
   let h=prev.apply(this,arguments);
+  if(OWNFN[S.persona]){try{const c=connected();const i=h.indexOf("</section>");if(c&&i>0)h=h.slice(0,i+10)+c+h.slice(i+10)}catch(e){console.error('r18 connected',e)}}
   if(ST.fullHome&&lvl()==="exec"){h=h.replace(/<div class="screen([^"]*)">/,m=>m+`<p class="small muted r18-simplelink">You are seeing the full working home. <button type="button" class="r18-lk" data-r18-full="0">Back to the simple view</button></p>`)}
   return h};f.__r18g=1;_R.home=f}
 install();
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r18-full]");if(b){ST.fullHome=b.dataset.r18Full==="1";render();return}
  const r=e.target.closest&&e.target.closest("[data-r15d-role]");if(r){setTimeout(()=>{ST.lensBy=null;applyLens();render()},30)}});
 applyLens();
+/* the dashboards family reads Leadership first, then Operations, then the builders */
+G(()=>{const f=R15.famOf.exe_dash;if(f){const ord=["exe_dash","obs_dash","r17u_dash","kcs_viz","r16j_dash"];f.views.sort((a,b)=>ord.indexOf(a[0])-ord.indexOf(b[0]))}});
 /* tabs of the Dashboards family that belong to directors and managers are not shown at executive level */
 function tag(){D.documentElement.dataset.r18lvl=lvl();applyLens()}
 const _render=W.render;W.render=function(){tag();const r=_render.apply(this,arguments);try{execNote()}catch(x){}return r};

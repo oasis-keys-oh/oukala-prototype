@@ -110,5 +110,5 @@ R18.lensHome=function(){const l=cur(),f=F();const k=l.v[1](f)[0],c=l.c[1](f)[0],
 
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r18-pb]");if(b){ST.showPb=true;render()}});
 
-R18.lensFigs=F;
+R18.lensFigs=F;R18.playbook=playbook;
 })();

@@ -26,7 +26,9 @@ function compose(){
  /* permission filter (same rule as the enforcement module): remove screens this role may not open before regrouping */
  try{const PM=W.PERM;if(PM&&PM.state&&PM.state.enforce){const r0=D.createElement("div");r0.innerHTML=raw;r0.querySelectorAll("[data-nx-it]").forEach(el=>{const id=el.dataset.nxIt;if(id&&id!=="home"&&!PM.can(null,"read","screen:"+id).ok)el.remove()});
   r0.querySelectorAll("details.navgd").forEach(g=>{if(!g.querySelector("[data-nx-it]"))g.remove();else{const c=g.querySelector(".nx-gc");if(c&&/^\d+$/.test(c.textContent.trim()))c.textContent=g.querySelectorAll("[data-nx-it]").length}});raw=r0.innerHTML}}catch(e){}
- const NP=NAVX.persona||{};const vis=(NP.visible?NP.visible():[]).slice();const order=NP.groups?NP.groups():[];const all=!!ST.showAll;
+ const NP=NAVX.persona||{};let vis=(NP.visible?NP.visible():[]).slice();const order=NP.groups?NP.groups():[];const all=!!ST.showAll;
+ /* executive level keeps four areas on the rail; everything else is one step away under More areas */
+ if(!all&&G(()=>R18.levelOf()==='exec',false)){const keep=['lens','money','strat','my'];const f=vis.filter(g=>keep.indexOf(g)>=0);if(f.length)vis=f}
  const root=D.createElement("div");root.innerHTML=raw;
  const gs=[...root.querySelectorAll(":scope > details.navgd")];
  if(!gs.length){/* collapsed rail: keep only the groups this role uses, with a rule between surfaces */
@@ -84,7 +86,8 @@ D.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data
 const _render=W.render;W.render=function(){const r=_render.apply(this,arguments);try{ensureLens()}catch(e){console.error("r18 lens",e)}return r};
 setTimeout(()=>{apply();try{ensureLens()}catch(e){}},50);setInterval(()=>{try{ensureLens()}catch(e){}},500);
 })();
-/* anchored popovers (metric formulas and others): measure after layout so a tall sheet never runs off the bottom of the screen */
+/* popovers (metric formulas, AI notes, standards and others): after layout, fit inside the window, never run off an edge */
 (function(){const D=document;D.addEventListener("toggle",e=>{const p=e.target;if(!p.classList||!p.classList.contains("pop")||e.newState!=="open")return;
- const fit=()=>{if(!p.classList.contains("anch"))return;const vh=innerHeight;p.style.maxHeight=Math.max(240,vh-32)+"px";const r=p.getBoundingClientRect();let top=r.top;if(r.bottom>vh-16)top=vh-16-r.height;if(top<16)top=16;p.style.top=top+"px";p.style.bottom="auto"};
+ const fit=()=>{if(!p.matches(":popover-open"))return;const vh=innerHeight,vw=innerWidth;p.style.maxHeight=Math.max(240,vh-32)+"px";const r=p.getBoundingClientRect();let top=r.top,left=r.left;if(r.bottom>vh-16)top=vh-16-r.height;if(top<16)top=16;if(r.right>vw-12)left=vw-12-r.width;if(left<12)left=12;
+  if(Math.abs(top-r.top)>1||Math.abs(left-r.left)>1){p.style.inset=top+"px auto auto "+left+"px";p.style.margin="0"}};
  requestAnimationFrame(()=>{fit();setTimeout(fit,120)})},true)})();

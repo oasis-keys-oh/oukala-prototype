@@ -7,11 +7,12 @@ const W=window,D=document;const R18=W.R18;if(!R18)return;
 const {G,H,arr,pill,usd}=R18;const ST=R18.st;
 const SP=ST.sp=ST.sp||{owners:null,showback:true,view:0};
 /* domain per department code (budget DEPTS) and its default executive owner */
-const DOM={ED:["Publishing","CTO"],SD:["Standards development","COO"],DO:["Data","CIO"],FN:["Finance and legal operations","CFO"],IT:["IT operations","CTO"],MS:["Membership and sales","CEO"]};
-const EXECS=["CEO","CFO","COO","CIO","CTO","CAIO","CHRO","CISO"];
+const DOM={ED:["Editorial","COO"],SD:["Standards development","COO"],DO:["Data office","CIO"],FN:["Finance and legal operations","CFO"],IT:["IT operations","CIO"],MS:["Membership and sales","CEO"]};
+const EXECS=["CEO","CFO","COO","CIO","CTO","CAIO","CHRO","CISO","CLO"];
 const owners=()=>{if(!SP.owners){SP.owners={};Object.keys(DOM).forEach(k=>SP.owners[k]=DOM[k][1])}return SP.owners};
-const EXEC_NAME={CEO:"Chief Executive",CFO:"Marcus Reid",COO:"Victor Amaya",CIO:"Casey Rowan",CTO:"Carla Reyes",CAIO:"Chief AI Officer",CHRO:"Chief People Officer",CISO:"Rina Okafor"};
-const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO",cto:"CTO"};
+const EXEC_NAME={CEO:"Catherine Doyle",CFO:"Marcus Reid",COO:"Elena Marsh",CIO:"Casey Rowan",CTO:"Jordan Lee",CAIO:"Kenji Watanabe",CHRO:"Joanna Pierce",CISO:"Rina Okafor",CLO:"Theo Marlowe"};
+const staffOf=n=>G(()=>ORGX.staff.find(x=>x.n===n),null);
+const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO"};
 const lines=()=>G(()=>BUDX.B().lines,[]);
 const deptName=k=>G(()=>BUDX.DN(k),k);
 const heads=()=>{const o={};arr(G(()=>BUDX.DEPTS,[])).forEach(d=>o[d[0]]=d[3]);return o};
@@ -36,6 +37,17 @@ R18.spend={model,owners,DOM,EXECS,PERSONA_EXEC,stats(){const m=model();const A=s
 function me(){return PERSONA_EXEC[S.persona]||""}
 function tbl(rows,sub){return `<div class="tscroll"><table class="tbl r18-t"><thead><tr><th>${sub?"Domain":"Executive and domains"}</th><th>Cost centers</th><th class="n">Approved</th><th class="n">Committed</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${rows}</tbody></table></div>`}
 const num=v=>`<td class="n num">${usd(v)}</td>`;
+function byOrgTab(st){const mine=me();const L=lines();const hcOf=r=>r.hc||0;
+ const ceo=EXEC_NAME.CEO;const order=st.execs.slice().sort((a,b)=>(a.exec==="CEO"?-1:b.exec==="CEO"?1:0)||b.fcst-a.fcst);
+ const per=(f,h)=>h?usd(f/h):"";
+ const row=(cls,lvl,name,sub,cc,fte,a,c,ac,f,h)=>{const v=varPct(f,a);return `<tr class="r18-og ${cls}"><td class="r18-ol${lvl}"><b>${H(name)}</b>${sub?`<small class="muted">${H(sub)}</small>`:""}</td><td>${H(cc||"")}</td><td class="n num">${fte?fte:""}</td>${num(a)}${num(ac)}${num(f)}<td class="n num">${per(f,fte)}</td><td class="n">${pill(fv(v),tone(v))}</td></tr>`};
+ let body=row("root",0,ceo,(staffOf(ceo)||{}).role||"Chief executive","",sum(st.rows,"hc"),st.A,sum(st.rows,"comm"),sum(st.rows,"act"),st.F);
+ order.forEach(e=>{const nm=EXEC_NAME[e.exec];const st1=staffOf(nm);const hc=sum(e.rows,"hc");const own=e.exec===mine?"on":"";
+  if(e.exec!=="CEO")body+=row("ex "+own,1,nm,(st1?st1.role:e.exec),"",hc,e.appr,sum(e.rows,"comm"),sum(e.rows,"act"),e.fcst);
+  e.rows.forEach(r=>{body+=row("dm",e.exec==="CEO"?1:2,r.dom,"Cost center "+r.cc,r.cc,r.hc,r.appr,r.comm,r.act,r.fcst);
+   const dept=r.k;const owners={};L.filter(l=>l.dept===dept).forEach(l=>{const o=owners[l.own]=owners[l.own]||{n:l.own,appr:0,comm:0,act:0,fcst:0};o.appr+=+l.appr||0;o.comm+=+l.comm||0;o.act+=+l.act||0;o.fcst+=+l.fcst||0});
+   Object.values(owners).sort((a,b)=>b.fcst-a.fcst).forEach(o=>{const so=staffOf(o.n);body+=row("ow",e.exec==="CEO"?2:3,o.n,so?so.role+" · budget owner":"Budget owner","","",o.appr,o.comm,o.act,o.fcst)})})});
+ return `<section class="card glass"><div class="cardhead"><div><h3>Spend along the org chart</h3><span class="muted small">Starts at the chief executive and follows who reports to whom. Each executive's total is the sum of the domains they own; under each domain are the people who own its budget. Cost per head is forecast divided by the department's staff.</span></div></div><div class="tscroll"><table class="tbl r18-t r18-org"><thead><tr><th>Org chart</th><th>Cost center</th><th class="n">Staff</th><th class="n">Approved</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Per head</th><th class="n">Vs approved</th></tr></thead><tbody>${body}</tbody></table></div></section>`}
 function byExecTab(st){const mine=me();
  const rows=st.execs.slice().sort((a,b)=>(a.exec===mine?-1:b.exec===mine?1:0)||b.fcst-a.fcst).map(e=>{const v=varPct(e.fcst,e.appr);
   const head=`<tr class="r18-sp-h ${e.exec===mine?"on":""}"><td><b>${H(e.exec)}</b> <span class="muted small">${H(EXEC_NAME[e.exec]||"")}</span><small class="muted">${e.rows.length>1?"Owns "+e.rows.length+" domains: "+H(e.rows.map(r=>r.dom).join(" and ")):"Owns "+H(e.rows[0].dom)}</small></td><td></td>${num(e.appr)}${num(sum(e.rows,"comm"))}${num(sum(e.rows,"act"))}${num(e.fcst)}<td class="n">${pill(fv(v),tone(v))}</td></tr>`;
@@ -53,9 +65,9 @@ function ownersTab(){const o=owners();const rows=Object.keys(DOM).map(k=>`<tr><t
 function screen(){const st=R18.spend.stats();const mine=me();const my=st.execs.find(e=>e.exec===mine);
  const note=my?`<section class="card glass r18-mine"><div class="eyebrow">Your domains</div><h3>${my.rows.length>1?"You own "+my.rows.map(r=>H(r.dom)).join(" and "):"You own "+H(my.rows[0].dom)}</h3><p>Forecast <b>${usd(my.fcst)}</b> against <b>${usd(my.appr)}</b> approved, ${pill(fv(varPct(my.fcst,my.appr)),tone(varPct(my.fcst,my.appr)))}. The rest of the enterprise is below.</p></section>`:"";
  const worst=st.rows.slice().sort((a,b)=>b.var-a.var)[0]||{dom:"",var:0};
- return `<div class="screen r18-screen">${hero("Strategy and value · Spend","Where the money goes across the enterprise","Every domain, grouped by the executive who owns it, with forecast against approved. This is the enterprise view; technology cost transparency is the IT depth beneath it.")}
+ return `<div class="screen r18-screen">${hero("Strategy and value · Spend","Where the money goes across the enterprise","Follows the org chart from the chief executive down: every domain, the executive who owns it, and the people who own its budget, with forecast against approved. Technology cost transparency is the IT depth beneath it.")}
  ${typeof kpiRow==="function"?kpiRow([["Approved",usd(st.A),"all domains"],["Forecast",usd(st.F),"all domains"],["Forecast against approved",fv(st.v),"enterprise",{cls:st.v>5?"crit":st.v>0?"warn":""}],["Largest overrun",worst.dom,fv(worst.var)+" against approved",{cls:worst.var>5?"warn":""}]]):""}
- ${note}${typeof views==="function"?views("r18spv",["By executive","By domain","By type","Domains and owners"],[byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()]):byExecTab(st)}
+ ${note}${typeof views==="function"?views("r18spv",["By org chart","By executive","By domain","By type","Domains and owners"],[byOrgTab(st),byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()]):byExecTab(st)}
  ${typeof procCard==="function"?procCard("r18_spend"):""}</div>`}
 REG("r18_spend","Enterprise spend","money","M12 2v20M17 6.5C17 4.6 14.8 4 12 4S7 5 7 7c0 4.5 10 2.5 10 7 0 2.2-2.2 3-5 3s-5-.9-5-3",screen);
 
