@@ -128,7 +128,7 @@ R18.facets=id=>{const a=R18.app(id);if(!a)return[];const c=R18.conf(id),m=R18.me
  F.metrics={s:done?"active":"drafted",d:me.length+" metrics with formulas, targets and a rule for acting on the trend"};
  F.maturity={s:mt.lvl>=3?"active":"drafted",d:"Level "+mt.lvl+" of 5, target "+mt.tgt+(mt.next.length?"; next: "+mt.next[0]:"")};
  F.risk={s:dt.some(d=>d.sev==="High")?"missing":dt.length?"drafted":"active",d:dt.length?dt.length+" open debt "+(dt.length===1?"item":"items")+", "+dt.filter(d=>d.sev==="High").length+" high":"No open debt"};
- F.security={s:worst(chk(["auth","secrets","labels","aigw"]).concat(ac.ok?[]:["warn"])),d:c.fail?c.fail+" gate checks failing":c.warn?c.warn+" gate warnings":"All gate checks pass"};
+ F.security={s:c.fail?"missing":(c.warn||!ac.ok)?"drafted":"active",d:c.fail?c.fail+" gate checks failing":c.warn?c.warn+" gate warnings":"All gate checks pass"};
  const kill=R18.kill.on(id);
  F.controls={s:m.owner&&m.backup&&a.sunset?(R18.kill.tested(id)?"active":"drafted"):"missing",d:(m.owner?"Owner "+m.owner:"No owner")+(m.backup?", backup "+m.backup:", no backup")+(a.sunset?", review "+fD(a.sunset):", no review date")+(kill?". Kill switch is ON.":"")};
  F.ops={s:worst(chk(["notify"])),d:(arr(a.connectors).length?arr(a.connectors).length+" connector"+(arr(a.connectors).length>1?"s":"")+", ":"")+(a.m.ownNotify||a.m.ownReport?"own messages and reports (should use the platform)":"platform notifications, reporting and audit")};

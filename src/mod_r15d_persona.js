@@ -15,7 +15,7 @@ const order=(first)=>first.concat(ALLG.filter(g=>!first.includes(g)));
 /* ---------- definitions ---------- */
 /* family: decide, operate, build, assure, request */
 const DEFS={
- exec:{role:"exec",family:"decide",groups:["strat","money","plan","ai","my","fix"],pin:["trace","exe_dash","inv","tower"],kpis:["m_delivery","m_fin","m_ops","m_override"]},
+ exec:{role:"exec",family:"decide",groups:["strat","money","ai","my"],pin:["trace","exe_dash","inv","tower"],kpis:["m_delivery","m_fin","m_ops","m_override"]},
  fin:{role:"finance",family:"decide",groups:["money","my","strat","plan","ai"],pin:["inv","bud_over","fin_budget","bud_ven"],kpis:["m_fin","m_cycle","m_auto","m_burn"]},
  pm:{role:"pm",family:"build",groups:["plan","my","money","fix","learn"],pin:["ims","ppm_raid","ppm_proj","fo"],kpis:["m_delivery","m_vendor","m_ontime","m_spi"]},
  ops:{role:"desk",family:"operate",groups:["fix","help","tech","learn","my"],pin:["itsm_inc","itsm_mi","svc_oncall","kcs_home"],kpis:["m_ops","m_avail","m_kb","m_itsm_sla"]},
@@ -37,13 +37,25 @@ const DEFS={
  board:{n:"Board member (read only)",who:"Reads the quarterly pack and AI oversight; cannot change anything",role:"audit",family:"assure",readonly:true,groups:["strat","money","ai","plan"],pin:["exe_board","r15d_evidence","exe_risk","exe_dash"],kpis:["m_delivery","m_fin","m_ops","m_riskexp"],
   actions:[()=>["Read the board pack","Sections cite the records behind each claim.",["exe_board"],"Open"],()=>["See AI oversight","Override rate is "+mv("m_override")+"; spend is "+mv("m_aispend")+" of the daily cap.",["tower"],"Open"],()=>["Open the board evidence view","Controls, decisions and approvals behind the pack.",["r15d_evidence"],"Open"]],
   sugg:["What changed since last quarter?","Show top risks","Is AI spend within its cap?"]},
+ cfo:{n:"CFO",who:"Chief Financial Officer: spend against profitability across every domain",role:"finance",family:"decide",as:"Marcus Reid",groups:["lens","money","strat","grc","my"],pin:["r18_spend","exe_dash","inv","bud_over"],kpis:["m_fin","m_burn","m_cycle"],
+  actions:[()=>["See where the money goes","Spend by domain and by executive across the whole enterprise, with forecast against approved.",["r18_spend"],"Open"],()=>["Release or hold the largest invoice","Invoice Advisor recommends the action with its evidence.",["inv"],"Open"],()=>["Check the CFO lens","Spend, value realized and spend outside control.",["r18_lens"],"Open"]],
+  sugg:["Where is spend over forecast?","Who owns the most spend?","Show invoices on hold"]},
+ coo:{n:"COO",who:"Chief Operating Officer: throughput against cost to serve",role:"exec",family:"decide",as:"Victor Amaya",groups:["lens","strat","plan","fix","res","my"],pin:["r18_lens","r18_strategy","exe_dash","trace"],kpis:["m_delivery","m_ops","m_ontime"],
+  actions:[()=>["See how each function enables the strategy","Function by objective, with the gaps.",["r18_strategy"],"Open"],()=>["Look at the COO lens","Where work stalls and what is ready to scale.",["r18_lens"],"Open"],()=>["Review the delivery schedule","Milestones and the schedule index.",["trace"],"Open"]],
+  sugg:["Where does work stall?","Which builds are ready to scale?","Which objectives have no work?"]},
+ cto:{n:"CTO",who:"Owns two domains, IT Operations and Editorial; sees each domain and the combined total",role:"exec",family:"decide",as:"Carla Reyes",groups:["lens","strat","money","ai","tech","my"],pin:["r18_spend","exe_dash","tower","r18_lens"],kpis:["m_ops","m_burn","m_delivery"],
+  actions:[()=>["See spend across both domains","IT Operations and Editorial, each with its own cost centers, plus the combined total.",["r18_spend"],"Open"],()=>["Watch AI agents","Usage, cost and the override rate.",["tower"],"Open"],()=>["Check the CIO lens","Productivity against cost, sprawl and debt.",["r18_lens"],"Open"]],
+  sugg:["How much do IT and Editorial cost together?","Which domain is over forecast?","Show shared platform costs"]},
+ dir:{n:"Director, Editorial",who:"Runs one department: sees its budget, projects, people and requests",role:"pm",family:"operate",as:"Priya Shah",groups:["plan","money","people","my","make"],pin:["ims","bud_over","ppl_cap","r18_builds"],kpis:["m_delivery","m_vendor","m_ontime"],
+  actions:[()=>["Check the department budget","Approved, committed, actual and forecast for your cost centers.",["r18_spend"],"Open"],()=>["Review project risks","RAID items in your projects.",["ppm_raid"],"Open"],()=>["See what your team built","Builds, guardrails and access requests.",["r18_builds"],"Open"]],
+  sugg:["Is Editorial over forecast?","Which projects are behind?","What did my team build?"]},
  guest:{n:"Vendor guest",who:"Sees only what has been shared with the vendor",role:"guest",family:"request",readonly:true,groups:["help","my"],pin:["svc_portal","svc_req"],kpis:[]},
  emp:{n:"Employee",who:"Orders equipment and access, tracks requests, finds answers",role:"guest",family:"request",as:"Casey Rowan",groups:["help","my","learn","people"],pin:["svc_portal","svc_req","svc_guides","kcs_ask"],kpis:[]},
  newhire:{n:"New hire",who:"First week: accounts, equipment, training, who to ask",role:"guest",family:"request",as:"Rosa Delgado",groups:["help","my","learn","people"],pin:["r15d_firstweek","svc_portal","ppl_train","kcs_ask"],kpis:[]}
 };
 /* R18: translate the old group ids in each role to the new Make / Work / Oversee groups, then add what the role family needs */
 (function(){const O2N={my:["my"],help:["help"],plan:["plan"],fix:["fix"],tech:["tech"],money:["money"],learn:["learn"],people:["people"],strat:["strat"],auto:["kit"],ai:["ai"],plat:["plat"],grc:["grc"],res:["res"],new:["new"]};
- const EXTRA={decide:["lens","reg","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
+ const EXTRA={decide:["lens","grc","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
  Object.keys(DEFS).forEach(k=>{const d=DEFS[k],out=[];(d.groups||[]).forEach(g=>(O2N[g]||[g]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)}));(EXTRA[d.family]||[]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)});if(!d.readonly&&out.indexOf("make")<0)out.push("make");d.groups=out})})();
 const FAM={decide:"Decide",operate:"Operate",build:"Build and plan",assure:"Assure",request:"Request"};
 Object.keys(DEFS).forEach(k=>{

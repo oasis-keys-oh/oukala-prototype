@@ -84,3 +84,7 @@ D.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data
 const _render=W.render;W.render=function(){const r=_render.apply(this,arguments);try{ensureLens()}catch(e){console.error("r18 lens",e)}return r};
 setTimeout(()=>{apply();try{ensureLens()}catch(e){}},50);setInterval(()=>{try{ensureLens()}catch(e){}},500);
 })();
+/* anchored popovers (metric formulas and others): measure after layout so a tall sheet never runs off the bottom of the screen */
+(function(){const D=document;D.addEventListener("toggle",e=>{const p=e.target;if(!p.classList||!p.classList.contains("pop")||e.newState!=="open")return;
+ const fit=()=>{if(!p.classList.contains("anch"))return;const vh=innerHeight;p.style.maxHeight=Math.max(240,vh-32)+"px";const r=p.getBoundingClientRect();let top=r.top;if(r.bottom>vh-16)top=vh-16-r.height;if(top<16)top=16;p.style.top=top+"px";p.style.bottom="auto"};
+ requestAnimationFrame(()=>{fit();setTimeout(fit,120)})},true)})();

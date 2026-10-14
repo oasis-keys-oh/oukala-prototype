@@ -1,0 +1,67 @@
+/* ===== Round 18, H: enterprise spend. Where the money goes across every domain, grouped by the executive who owns each domain.
+   A cost center belongs to exactly one domain, a domain to exactly one executive, so nothing is counted twice. An executive may own several domains.
+   Shared IT costs can be shown allocated to the domains that consume them (showback by headcount). Screen r18_spend. IT depth stays in the cost transparency screen. ===== */
+(function(){
+"use strict";
+const W=window,D=document;const R18=W.R18;if(!R18)return;
+const {G,H,arr,pill,usd}=R18;const ST=R18.st;
+const SP=ST.sp=ST.sp||{owners:null,showback:true,view:0};
+/* domain per department code (budget DEPTS) and its default executive owner */
+const DOM={ED:["Publishing","CTO"],SD:["Standards development","COO"],DO:["Data","CIO"],FN:["Finance and legal operations","CFO"],IT:["IT operations","CTO"],MS:["Membership and sales","CEO"]};
+const EXECS=["CEO","CFO","COO","CIO","CTO","CAIO","CHRO","CISO"];
+const owners=()=>{if(!SP.owners){SP.owners={};Object.keys(DOM).forEach(k=>SP.owners[k]=DOM[k][1])}return SP.owners};
+const EXEC_NAME={CEO:"Chief Executive",CFO:"Marcus Reid",COO:"Victor Amaya",CIO:"Casey Rowan",CTO:"Carla Reyes",CAIO:"Chief AI Officer",CHRO:"Chief People Officer",CISO:"Rina Okafor"};
+const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO",cto:"CTO"};
+const lines=()=>G(()=>BUDX.B().lines,[]);
+const deptName=k=>G(()=>BUDX.DN(k),k);
+const heads=()=>{const o={};arr(G(()=>BUDX.DEPTS,[])).forEach(d=>o[d[0]]=d[3]);return o};
+const SHARED_CATS=["Cloud","Licences"];
+/* model: per department direct and allocated cost */
+function model(){const L=lines(),hc=heads(),own=owners();const by={};
+ Object.keys(DOM).forEach(k=>by[k]={k,dom:DOM[k][0],exec:own[k],appr:0,comm:0,act:0,fcst:0,sh:{appr:0,comm:0,act:0,fcst:0},cc:G(()=>BUDX.DEPTS.find(d=>d[0]===k)[2],"")});
+ L.forEach(l=>{const d=by[l.dept];if(!d)return;const shared=l.dept==="IT"&&SHARED_CATS.indexOf(l.cat)>=0;
+  const tgt=shared?d.sh:d;["appr","comm","act","fcst"].forEach(f=>tgt[f]+=+l[f]||0)});
+ /* allocation of IT shared pool by headcount */
+ const tot=Object.keys(by).reduce((s,k)=>s+(hc[k]||0),0)||1;const pool=by.IT?by.IT.sh:{appr:0,comm:0,act:0,fcst:0};
+ Object.keys(by).forEach(k=>{const d=by[k];const share=(hc[k]||0)/tot;d.alloc={};["appr","comm","act","fcst"].forEach(f=>d.alloc[f]=pool[f]*share);d.hc=hc[k]||0});
+ const rows=Object.keys(by).map(k=>{const d=by[k];const sb=SP.showback;const v=f=>d[f]+(sb?d.alloc[f]:0);const r={k,dom:d.dom,exec:d.exec,cc:d.cc,hc:d.hc,appr:v("appr"),comm:v("comm"),act:v("act"),fcst:v("fcst"),direct:{appr:d.appr,fcst:d.fcst},alloc:d.alloc.fcst};r.var=r.appr?(r.fcst-r.appr)/r.appr*100:0;return r});
+ return{rows,pool}}
+const sum=(a,f)=>a.reduce((s,x)=>s+x[f],0);
+const varPct=(f,a)=>a?((f-a)/a*100):0;
+const fv=v=>(v>=0?"+":"")+v.toFixed(1)+"%";
+const tone=v=>v>5?"bad":v>0?"warn":"good";
+R18.spend={model,owners,DOM,EXECS,PERSONA_EXEC,stats(){const m=model();const A=sum(m.rows,"appr"),F=sum(m.rows,"fcst");const ex={};m.rows.forEach(r=>{(ex[r.exec]=ex[r.exec]||{exec:r.exec,rows:[],appr:0,fcst:0});ex[r.exec].rows.push(r);ex[r.exec].appr+=r.appr;ex[r.exec].fcst+=r.fcst});
+ const unowned=m.rows.filter(r=>!r.exec).length;return{A,F,v:varPct(F,A),execs:Object.values(ex),unowned,rows:m.rows}}};
+
+function me(){return PERSONA_EXEC[S.persona]||""}
+function tbl(rows,sub){return `<div class="tscroll"><table class="tbl r18-t"><thead><tr><th>${sub?"Domain":"Executive and domains"}</th><th>Cost centers</th><th class="n">Approved</th><th class="n">Committed</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${rows}</tbody></table></div>`}
+const num=v=>`<td class="n num">${usd(v)}</td>`;
+function byExecTab(st){const mine=me();
+ const rows=st.execs.slice().sort((a,b)=>(a.exec===mine?-1:b.exec===mine?1:0)||b.fcst-a.fcst).map(e=>{const v=varPct(e.fcst,e.appr);
+  const head=`<tr class="r18-sp-h ${e.exec===mine?"on":""}"><td><b>${H(e.exec)}</b> <span class="muted small">${H(EXEC_NAME[e.exec]||"")}</span><small class="muted">${e.rows.length>1?"Owns "+e.rows.length+" domains: "+H(e.rows.map(r=>r.dom).join(" and ")):"Owns "+H(e.rows[0].dom)}</small></td><td></td>${num(e.appr)}${num(sum(e.rows,"comm"))}${num(sum(e.rows,"act"))}${num(e.fcst)}<td class="n">${pill(fv(v),tone(v))}</td></tr>`;
+  const kids=e.rows.length>1?e.rows.map(r=>`<tr class="r18-sp-k"><td class="r18-ind">${H(r.dom)}</td><td>${H(r.cc)}</td>${num(r.appr)}${num(r.comm)}${num(r.act)}${num(r.fcst)}<td class="n">${pill(fv(r.var),tone(r.var))}</td></tr>`).join(""):"";
+  return head+kids}).join("");
+ const foot=`<tr class="r18-sp-t"><td><b>Whole enterprise</b></td><td></td>${num(st.A)}${num(sum(st.rows,"comm"))}${num(sum(st.rows,"act"))}${num(st.F)}<td class="n">${pill(fv(st.v),tone(st.v))}</td></tr>`;
+ return `<section class="card glass"><div class="cardhead"><div><h3>Spend by executive</h3><span class="muted small">Each cost center belongs to one domain and each domain to one executive, so no dollar is counted twice. An executive who owns several domains sees each one and the combined total.</span></div></div>${tbl(rows+foot)}</section>`}
+function byDomainTab(st){const rows=st.rows.slice().sort((a,b)=>b.fcst-a.fcst).map(r=>`<tr><td><b>${H(r.dom)}</b><small class="muted">${H(deptName(r.k))}</small></td><td>${H(r.cc)}</td>${num(r.appr)}${num(r.comm)}${num(r.act)}${num(r.fcst)}<td class="n">${pill(fv(r.var),tone(r.var))}</td></tr>`).join("");
+ return `<section class="card glass"><div class="cardhead"><div><h3>Spend by domain</h3><span class="muted small">${SP.showback?"Shared IT costs (cloud and licences) are allocated to the domains that use them, by headcount.":"Direct spend only. Shared IT costs stay in IT operations."}</span></div><label class="r18-sw"><input type="checkbox" data-r18-showback ${SP.showback?"checked":""}> Allocate shared IT costs</label></div>${tbl(rows,true)}
+ <p class="small muted">For IT in depth, with towers, cost pools and unit cost, open <button class="r18-lk" type="button" data-go="tbm_model">Technology cost transparency</button>.</p></section>`}
+function byTypeTab(){const L=lines();const cats=G(()=>BUDX.CATS,[]);const rows=cats.map(c=>{const l=L.filter(x=>x.cat===c);const a=sum(l,"appr"),f=sum(l,"fcst");return `<tr><td><b>${H(c)}</b></td><td class="n num">${l.length}</td>${num(a)}${num(sum(l,"act"))}${num(f)}<td class="n">${pill(fv(varPct(f,a)),tone(varPct(f,a)))}</td></tr>`}).join("");
+ return `<section class="card glass"><div class="cardhead"><div><h3>Spend by type</h3><span class="muted small">Labor, vendors, hardware, cloud and licences across all domains.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Type</th><th class="n">Lines</th><th class="n">Approved</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
+function ownersTab(){const o=owners();const rows=Object.keys(DOM).map(k=>`<tr><td><b>${H(DOM[k][0])}</b><small class="muted">${H(deptName(k))}</small></td><td>${H(G(()=>BUDX.DEPTS.find(d=>d[0]===k)[2],""))}</td><td><select class="fin" data-r18-owner="${k}" aria-label="Executive owner of ${H(DOM[k][0])}">${EXECS.map(e=>`<option ${e===o[k]?"selected":""}>${e}</option>`).join("")}</select></td><td>${H(EXEC_NAME[o[k]]||"")}</td></tr>`).join("");
+ return `<section class="card glass"><div class="cardhead"><div><h3>Domains and owners</h3><span class="muted small">Reassign a domain and every view follows. Changes are written to the audit trail. An owner of several domains sees the combined total.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Domain</th><th>Cost centers</th><th>Executive owner</th><th>Name</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
+function screen(){const st=R18.spend.stats();const mine=me();const my=st.execs.find(e=>e.exec===mine);
+ const note=my?`<section class="card glass r18-mine"><div class="eyebrow">Your domains</div><h3>${my.rows.length>1?"You own "+my.rows.map(r=>H(r.dom)).join(" and "):"You own "+H(my.rows[0].dom)}</h3><p>Forecast <b>${usd(my.fcst)}</b> against <b>${usd(my.appr)}</b> approved, ${pill(fv(varPct(my.fcst,my.appr)),tone(varPct(my.fcst,my.appr)))}. The rest of the enterprise is below.</p></section>`:"";
+ const worst=st.rows.slice().sort((a,b)=>b.var-a.var)[0]||{dom:"",var:0};
+ return `<div class="screen r18-screen">${hero("Strategy and value · Spend","Where the money goes across the enterprise","Every domain, grouped by the executive who owns it, with forecast against approved. This is the enterprise view; technology cost transparency is the IT depth beneath it.")}
+ ${typeof kpiRow==="function"?kpiRow([["Approved",usd(st.A),"all domains"],["Forecast",usd(st.F),"all domains"],["Forecast against approved",fv(st.v),"enterprise",{cls:st.v>5?"crit":st.v>0?"warn":""}],["Largest overrun",worst.dom,fv(worst.var)+" against approved",{cls:worst.var>5?"warn":""}]]):""}
+ ${note}${typeof views==="function"?views("r18spv",["By executive","By domain","By type","Domains and owners"],[byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()]):byExecTab(st)}
+ ${typeof procCard==="function"?procCard("r18_spend"):""}</div>`}
+REG("r18_spend","Enterprise spend","money","M12 2v20M17 6.5C17 4.6 14.8 4 12 4S7 5 7 7c0 4.5 10 2.5 10 7 0 2.2-2.2 3-5 3s-5-.9-5-3",screen);
+
+D.addEventListener("change",e=>{const t=e.target;if(!t.closest)return;
+ const o=t.closest("[data-r18-owner]");if(o){owners()[o.dataset.r18Owner]=o.value;G(()=>audit("Changed domain owner",DOM[o.dataset.r18Owner][0]+" to "+o.value));G(()=>EVENTS.emit&&EVENTS.emit("spend.owner_changed",{domain:o.dataset.r18Owner,owner:o.value,actor:G(()=>R15D.me().name,"")}));G(()=>toast("Owner changed. Every spend view follows.","good"));render();return}
+ const s=t.closest("[data-r18-showback]");if(s){SP.showback=s.checked;render()}});
+/* IT depth screen points back to the enterprise view */
+const _r=W.render;W.render=function(){const r=_r.apply(this,arguments);try{if(S.screen==="tbm_model"||S.cur==="tbm_model"){const v=D.getElementById("view");if(v&&!v.querySelector(".r18-tbmnote")){const h=v.querySelector(".hero");if(h)h.insertAdjacentHTML("afterend",`<p class="small muted r18-tbmnote">This is the IT depth. For every domain and executive, including domains that are not IT, open <button class="r18-lk" type="button" data-go="r18_spend">Enterprise spend</button>.</p>`)}}}catch(x){}return r};
+})();
