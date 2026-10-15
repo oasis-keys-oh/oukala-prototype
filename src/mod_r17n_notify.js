@@ -76,8 +76,8 @@ function notify(o){o=Object.assign({kind:"info"},o||{});ensure();place();o.title
  c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);
  layer.insertBefore(c,layer.firstChild);
  layout();arm(c);record(o);
- /* hard cap: never more than 12 live cards */
- qa(".r17n-card:not(.r17n-out)",layer).slice(12).forEach(x=>dismiss(x));
+ /* hard cap: never more than 3 live cards */
+ qa(".r17n-card:not(.r17n-out)",layer).slice(3).forEach(x=>dismiss(x));
  if(!tickT)tickT=setInterval(()=>{const cs=qa(".r17n-card",layer||D);if(!cs.length){clearInterval(tickT);tickT=0;return}cs.forEach(x=>{const w=q1(".r17n-when",x);if(w)w.textContent=relT(x._ts)})},20000);
  return c}
 
