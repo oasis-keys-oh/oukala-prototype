@@ -4,14 +4,14 @@
 "use strict";
 const W=window,D=document;const R18=W.R18;if(!R18)return;
 const {G,H,arr,pill}=R18;const ST=R18.st;
-const LV={exec:"exec",cfo:"exec",coo:"exec",cto:"exec",board:"exec",portfolio:"director",dir:"director",fin:"manager",pm:"manager",ops:"manager",change:"manager",arch:"specialist",admin:"specialist",audit:"specialist",emp:"contributor",newhire:"contributor",guest:"contributor"};
+const LV={exec:"exec",cfo:"exec",coo:"exec",ceo:"exec",chro:"exec",ciso:"exec",caio:"exec",clo:"exec",cto:"exec",board:"exec",portfolio:"director",dir:"director",fin:"manager",pm:"manager",ops:"manager",change:"manager",arch:"specialist",admin:"specialist",audit:"specialist",emp:"contributor",newhire:"contributor",guest:"contributor"};
 const LEVELS=[
  {id:"exec",n:"Executive",who:"CEO, CFO, COO, CTO, CIO, board",see:"A headline, three scores, up to three decisions that need you, and tiles that lead to the next level of detail.",ctl:"Approve, decline and delegate. Open anything; nothing is hidden, it is one step down.",not:"Queues, builders, ledgers and configuration live with the roles that run them."},
  {id:"director",n:"Director",who:"Portfolio director, function directors",see:"Everything in their function: delivery, spend, risks, builds, approvals and the numbers behind each.",ctl:"Reassign owners, set targets, approve within their limit, change process settings for their function.",not:"Other functions appear as summaries."},
  {id:"manager",n:"Manager",who:"Finance, project, operations and change managers",see:"Their queues, projects and approvals with the working detail, history and evidence.",ctl:"Work items, decide inside delegated limits, edit the records they own.",not:"Enterprise totals and other teams' queues."},
  {id:"specialist",n:"Specialist",who:"Architects, platform administrators, auditors",see:"The tools and records for their craft: catalogs, controls, evidence, configuration.",ctl:"Configure, review and attest within their scope. Auditors are read only.",not:"Business decisions outside their remit."},
  {id:"contributor",n:"Contributor",who:"Employees, new hires, guests",see:"Their own tasks, requests, learning and the apps they can use.",ctl:"Start requests, complete assigned steps, build within guardrails.",not:"Anything outside their part of the work."}];
-const LENS_OF={exec:"cio",cfo:"cfo",coo:"coo",cto:"cio",board:"ceo",portfolio:"coo",dir:"coo"};
+const LENS_OF={exec:"cio",cfo:"cfo",coo:"coo",ceo:"ceo",chro:"chro",ciso:"ciso",caio:"caio",clo:"ceo",cto:"cio",board:"ceo",portfolio:"coo",dir:"coo"};
 R18.levels=LEVELS;
 R18.levelOf=k=>LV[k||S.persona]||"manager";
 const lvl=()=>R18.levelOf();

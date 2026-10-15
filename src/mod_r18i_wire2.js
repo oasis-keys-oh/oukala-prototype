@@ -6,7 +6,7 @@ const W=window;const R18=W.R18;if(!R18)return;
 const {G,arr}=R18;
 const OWN={spend:["Avery Chen","Maya Ortiz"],lvl:["Jordan Lee","Priya Shah"]};
 /* new personas reuse the existing roles: executives are executive + people manager, the director is a portfolio lead */
-G(()=>{if(W.PERM&&PERM.personaRoles){const X=["executive","people_manager","employee"];["cfo","coo"].forEach(k=>{PERM.personaRoles[k]=X.slice()});Object.assign(PERM.personaUser,{cfo:"Marcus Reid",coo:"Elena Marsh"})}});
+G(()=>{if(W.PERM&&PERM.personaRoles){const X=["executive","people_manager","employee"];["cfo","coo","ceo","chro","ciso","caio","clo"].forEach(k=>{PERM.personaRoles[k]=X.slice()});Object.assign(PERM.personaUser,{cfo:"Marcus Reid",coo:"Elena Marsh",ceo:"Catherine Doyle",chro:"Joanna Pierce",ciso:"Rina Okafor",caio:"Kenji Watanabe",clo:"Theo Marlowe"})}});
 const PSX=s=>({n:s[0],d:s[1],who:s[2],owner:s[3],sla:s[4],in:s[5],out:s[6]});
 const PROCS=[
  {id:"r18_spend_view",screen:"r18_spend",name:"How enterprise spend is shown by executive and domain",owner:OWN.spend,steps:[

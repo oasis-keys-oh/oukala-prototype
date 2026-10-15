@@ -12,7 +12,7 @@ const EXECS=["CEO","CFO","COO","CIO","CTO","CAIO","CHRO","CISO","CLO"];
 const owners=()=>{if(!SP.owners){SP.owners={};Object.keys(DOM).forEach(k=>SP.owners[k]=DOM[k][1])}return SP.owners};
 const EXEC_NAME={CEO:"Catherine Doyle",CFO:"Marcus Reid",COO:"Elena Marsh",CIO:"Casey Rowan",CTO:"Jordan Lee",CAIO:"Kenji Watanabe",CHRO:"Joanna Pierce",CISO:"Rina Okafor",CLO:"Theo Marlowe"};
 const staffOf=n=>G(()=>ORGX.staff.find(x=>x.n===n),null);
-const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO"};
+const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO",ceo:"CEO",chro:"CHRO",ciso:"CISO",caio:"CAIO",clo:"CLO"};
 const lines=()=>G(()=>BUDX.B().lines,[]);
 const deptName=k=>G(()=>BUDX.DN(k),k);
 const heads=()=>{const o={};arr(G(()=>BUDX.DEPTS,[])).forEach(d=>o[d[0]]=d[3]);return o};

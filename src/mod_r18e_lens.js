@@ -109,7 +109,7 @@ REG("r18_strategy","Strategy enablement","lens","M3 3h18v18H3zM3 9h18M3 15h18M9 
 /* ---------- strip on every home ---------- */
 R18.lensHome=function(){const l=cur(),f=F();const k=l.v[1](f)[0],c=l.c[1](f)[0],r=l.r[1](f)[0];
  const t=(tone,x)=>`<div class="r18-hs r18-hs-${tone}"><span class="r18-vk">${tone==="v"?"Value":tone==="c"?"Cost":"Risk"}</span><b>${H(x[1])}</b><span class="small muted">${H(x[0])}</span></div>`;
- return `<section class="card glass r18-homelens" aria-label="Executive lens"><div class="r18-hl-h"><div><div class="eyebrow">${H(l.short)} lens</div><h3>${H(l.q)}</h3></div><button type="button" class="btn quiet" data-go="r18_lens">Open</button></div><div class="r18-hl-row">${t("v",k)}${t("c",c)}${t("r",r)}</div></section>`};
+ return `<section class="card glass r18-homelens" aria-label="Executive lens"><div class="r18-hl-h"><div><div class="eyebrow">${H(l.short)} lens</div><h3>${H(l.q)}</h3></div><button type="button" class="btn quiet" data-go="r18_lens">Open</button></div><p class="small muted r18-hl-x">A lens is how one executive weighs value, cost and risk. It changes the question and these three figures, never what you can open or change. Switch it from the Lens button in the top bar.</p><div class="r18-hl-row">${t("v",k)}${t("c",c)}${t("r",r)}</div></section>`};
 
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r18-pb]");if(b){ST.showPb=true;render()}});
 

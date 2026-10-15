@@ -91,6 +91,6 @@ function lensScreen(){const l=lensOf(),f=figs();const pb=l.id==="caio"||ST.showP
 REG("r18_lens","Executive lenses","lens","M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",lensScreen);
 R18.lensHome=function(){const l=lensOf(),f=figs();const k=l.v[1](f)[0],c=l.c[1](f)[0],r=l.r[1](f)[0];
  const t=(tone,x)=>`<div class="r18-hs r18-hs-${tone}"><span class="r18-vk">${tone==="v"?"Value":tone==="c"?"Cost":"Risk"}</span><b>${H(x[1])}</b><span class="small muted">${H(x[0])}</span></div>`;
- return `<section class="card glass r18-homelens" aria-label="Executive lens"><div class="r18-hl-h"><div><div class="eyebrow">${H(l.short)} lens · ${H(l.exec||"")}</div><h3>${H(l.q)}</h3></div><button type="button" class="btn quiet" data-go="r18_lens">Open</button></div><div class="r18-hl-row">${t("v",k)}${t("c",c)}${t("r",r)}</div></section>`};
+ return `<section class="card glass r18-homelens" aria-label="Executive lens"><div class="r18-hl-h"><div><div class="eyebrow">${H(l.short)} lens · ${H(l.exec||"")}</div><h3>${H(l.q)}</h3></div><button type="button" class="btn quiet" data-go="r18_lens">Open</button></div><p class="small muted r18-hl-x">A lens is how one executive weighs value, cost and risk. It changes the question and these three figures, never what you can open or change. Switch it from the Lens button in the top bar.</p><div class="r18-hl-row">${t("v",k)}${t("c",c)}${t("r",r)}</div></section>`};
 /* grammar on lens screens everywhere */
 })();
