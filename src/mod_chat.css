@@ -252,3 +252,6 @@ button.cx-cc.add:hover{color:var(--ink);border-color:var(--accent)}
 .cx-tt b,.cx-tt small{overflow:hidden;text-overflow:ellipsis}
 .cx-suite{margin-top:14px;overflow:auto}.cx-bad{color:var(--bad-f)}
 @media(max-width:900px){.chx{position:fixed;inset:0;width:100vw;height:100dvh;border-radius:0;background:var(--bg);box-shadow:none}.chx .cx-picker{inset:50px 8px 8px 8px}.chx .cx-fgrid{grid-template-columns:1fr}:root.chx-open body{overflow:hidden}}
+.cx-min{min-width:34px;display:inline-grid;place-items:center;padding:7px 9px!important;border:1px solid color-mix(in srgb,currentColor 28%,transparent)!important;border-radius:999px}
+.cx-min:hover{background:color-mix(in srgb,currentColor 14%,transparent)}
+#msgs .cx-m.ai:last-child .cx-foot .chip{display:none}

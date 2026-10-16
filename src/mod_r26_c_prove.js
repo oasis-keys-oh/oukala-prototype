@@ -31,10 +31,10 @@ X.runTest=function(){const t=T();t.phase="run";t.runs++;t.prog=[0,0,0,0,0];const
  if(!A()){t.prog=[100,100,100,100,100];done()}else later(tick,380);
  function done(){const f=checks();f.forEach(x=>{if(!t.log.some(l=>l.id===x.id&&!l.done))t.log.push({id:x.id,a:x.a,si:x.si,t:x.t,fx:x.fx,done:false})});
   if(!f.length){t.phase="clean";Q.B.test={clean:true,n:t.cases,fixed:t.fixedN};say("Clean run. <b>"+t.cases+" checks</b> across five test agents, nothing left to fix"+(t.fixedN?" after "+t.fixedN+" fixes.":"."))}
-  else{t.phase="found";say("The five test agents ran <b>"+t.cases+" checks</b> and found <b>"+f.length+" thing"+(f.length>1?"s":"")+" to fix</b>:",null,f.map(x=>x.t));if(Q.auto)later(()=>X.fixAllTests(),A()?1500:0)}
+  else{t.phase="found";say("The five test agents ran <b>"+t.cases+" checks</b> and found <b>"+f.length+" thing"+(f.length>1?"s":"")+" to fix</b>:",null,f.map(x=>x.t));if(Q.auto)later(()=>X.fixAllTests(),A()?4000:0)}
   render()}};
 X.fixTest=function(id){const t=T(),f=checks().find(x=>x.id===id);if(!f)return;f.ap();const l=t.log.find(x=>x.id===id&&!x.done);if(l)l.done=true;t.fixedN++;
- say("Fixed: <b>"+E(f.fx)+"</b>.");if(!checks().length){t.phase="fixed";if(Q.auto)later(()=>X.runTest(),A()?900:0)}render()};
+ say("Fixed: <b>"+E(f.fx)+"</b>.");if(!checks().length){t.phase="fixed";if(Q.auto)later(()=>X.runTest(),A()?3500:0)}render()};
 X.fixAllTests=function(){const t=T();const f=checks();f.forEach(x=>{x.ap();const l=t.log.find(y=>y.id===x.id&&!y.done);if(l)l.done=true;t.fixedN++});if(f.length)say("Fixed all "+f.length+". I am running everything again to prove it.");t.phase="fixed";render();if(A())later(()=>X.runTest(),1100);else X.runTest()};
 V.test=function(){const t=T(),B=Q.B,open=checks(),n=t.n||casesFor(),st=steps();const bad=new Set();open.forEach(f=>f.si.forEach(i=>bad.add(i)));
  const sq=st.length>36?st.filter((s,i)=>i%Math.ceil(st.length/36)===0):st,idx=s=>st.indexOf(s);
@@ -80,7 +80,7 @@ function scan(){const u=U(),h=D.createElement("div");h.style.cssText="position:a
  u.res=UX.map(c=>{let o=[];try{o=c[5](root)}catch(e){}return{id:c[0],sec:c[1],ref:c[2],t:c[3],fx:c[4],n:o.length,idx:o.map(e=>all.indexOf(e))}});D.body.removeChild(h);u.bad={};u.res.forEach(r=>r.idx.forEach(i=>u.bad[i]=1));return u.res}
 X.runUx=function(){const u=U();u.phase="scan";u.rounds++;u.prog=0;Q.B.ux=null;render();
  const fin=()=>{scan();const open=u.res.filter(r=>r.n);if(!open.length){u.phase="clean";Q.B.ux={clean:true,fixed:u.fixed,n:UX.length};say("<b>No open issues.</b> "+UX.filter(c=>c[1]==="508").length+" Section 508 and WCAG 2.1 AA checks and "+UX.filter(c=>c[1]==="UX").length+" usability checks pass"+(u.fixed?" after "+u.fixed+" fixes.":"."))}
-  else{u.phase="found";say("I built a preview of the app and scanned it: <b>"+open.length+" problems</b>, "+open.filter(r=>r.sec==="508").length+" of them Section 508 or WCAG 2.1 AA.",null,open.map(r=>r.t));if(Q.auto)later(()=>X.fixAllUx(),A()?1500:0)}render();markBad()};
+  else{u.phase="found";say("I built a preview of the app and scanned it: <b>"+open.length+" problems</b>, "+open.filter(r=>r.sec==="508").length+" of them Section 508 or WCAG 2.1 AA.",null,open.map(r=>r.t));if(Q.auto)later(()=>X.fixAllUx(),A()?4000:0)}render();markBad()};
  const tick=()=>{if(Q.U!==u||u.phase!=="scan")return;u.prog=Math.min(100,u.prog+20);render();if(u.prog>=100)fin();else later(tick,300)};
  if(A())later(tick,300);else fin()};
 X.fixUx=function(id){const u=U(),r=u.res.find(x=>x.id===id);if(!r||!r.n)return;u.fx[id]=true;u.fixed++;say("Fixed: <b>"+E(r.fx)+"</b>.");scan();render();markBad()};
@@ -134,26 +134,39 @@ const svg=(x)=>`<svg class="r26-ts" viewBox="0 0 160 96" aria-hidden="true">${x}
 const LCOL={human:"h",auto:"a",fn:"f",agent:"g",gate:"k"};
 const TH={
  proc:()=>{const st=steps(),n=Math.min(st.length,14),L=["human","agent","fn","auto","gate"];let o="";st.slice(0,n).forEach((s,i)=>{const x=10+i*(140/n),y=8+L.indexOf(s.who)*17;o+=`<rect class="${LCOL[s.who]}" x="${x}" y="${y}" width="${Math.max(6,140/n-4)}" height="11" rx="3"/>`});return svg(o)},
- agents:()=>{const m={human:0,gate:0,fn:0,agent:0,auto:0};steps().forEach(s=>m[s.who]++);const t=steps().length||1;let x=10,o="";["human","gate","fn","agent","auto"].forEach(k=>{const w=m[k]/t*140;if(w){o+=`<rect class="${LCOL[k]}" x="${x}" y="30" width="${Math.max(2,w-2)}" height="28" rx="5"/>`;x+=w}});return svg(o+`<rect class="f" x="10" y="68" width="10" height="10" rx="3"/><rect class="g" x="26" y="68" width="10" height="10" rx="3"/><rect class="h" x="42" y="68" width="10" height="10" rx="3"/>`)},
- std:()=>svg([0,1,2,3].map(i=>`<rect class="p" x="10" y="${10+i*20}" width="38" height="13" rx="6"/><rect class="l" x="56" y="${13+i*20}" width="${70+((i*23)%40)}" height="6" rx="3"/>`).join("")),
- data:()=>svg([0,1,2,3].map(i=>`<circle class="h" cx="18" cy="${16+i*22}" r="6"/>`).join("")+[0,1,2].map(i=>`<rect class="a" x="124" y="${10+i*28}" width="26" height="16" rx="5"/>`).join("")+[[0,0],[1,0],[2,1],[3,2],[1,2]].map(c=>`<path class="ln" d="M24 ${16+c[0]*22} C70 ${16+c[0]*22} 80 ${18+c[1]*28} 124 ${18+c[1]*28}"/>`).join("")),
- metrics:()=>{const m=(Q.B.metrics[0]||{tr:[3,4,3,5,6,6,7]}).tr||[3,4,5],mn=Math.min.apply(0,m),mx=Math.max.apply(0,m),r=mx-mn||1;const p=m.map((v,i)=>`${10+i*140/(m.length-1)},${80-(v-mn)/r*58}`).join(" ");return svg(`<polyline class="sp" points="${p}"/><polygon class="spa" points="10,86 ${p} 150,86"/>`)},
  access:()=>{const b=X.connect.base(),s=STAFF().slice(0,48);return svg(s.map((p,i)=>`<circle class="lv-${X.levelFor(p.n,"proc",b)}" cx="${14+(i%12)*11.6}" cy="${16+Math.floor(i/12)*18}" r="4.4"/>`).join(""))},
- maturity:()=>{const c=X.curLevel(),t=X.connect.tgtOf();return svg([1,2,3,4,5].map(l=>`<rect class="${l<=c?"a":l<=t?"t":"l"}" x="${12+(l-1)*29}" y="${78-l*13}" width="22" height="${l*13}" rx="3"/>`).join(""))},
- roadmap:()=>svg([0,1,2].map(i=>`<rect class="l" x="10" y="${14+i*24}" width="140" height="12" rx="6"/><rect class="${["h","g","f"][i]}" x="${10+i*36}" y="${14+i*24}" width="${60}" height="12" rx="6"/>`).join("")),
- bcp:()=>svg([[120,"k"],[84,"a"],[60,"g"],[34,"f"],[22,"l"]].map((r,i)=>`<rect class="${r[1]}" x="10" y="${10+i*16}" width="${r[0]}" height="10" rx="5"/>`).join("")),
- know:()=>svg([0,1,2,3,4,5].map(i=>`<rect class="l" x="14" y="${12+i*13}" width="${i%3===2?70:130}" height="6" rx="3"/>`).join("")),
- test:()=>svg([0,1,2,3,4].map(i=>`<rect class="l" x="30" y="${10+i*16}" width="116" height="9" rx="4"/><rect class="a" x="30" y="${10+i*16}" width="${60+i*13}" height="9" rx="4"/><circle class="a" cx="16" cy="${14.5+i*16}" r="5"/>`).join("")),
- ux:()=>svg(`<rect class="l" x="14" y="10" width="60" height="76" rx="8"/><rect class="p" x="20" y="18" width="48" height="8" rx="3"/><rect class="a" x="20" y="66" width="48" height="10" rx="5"/><circle class="ring" cx="116" cy="48" r="22"/><circle class="ring v" cx="116" cy="48" r="22" stroke-dasharray="138 138"/>`),
- approve:()=>svg(Array.from({length:28},(_,i)=>`<rect class="${i===17?"f":i===10?"k":"l"}" x="${12+(i%7)*20}" y="${12+Math.floor(i/7)*19}" width="15" height="14" rx="4"/>`).join("")),
- agree:()=>svg(`<rect class="l" x="30" y="8" width="100" height="80" rx="6"/><rect class="p" x="42" y="20" width="60" height="6" rx="3"/><rect class="p" x="42" y="34" width="76" height="6" rx="3"/><path class="sig" d="M44 70 q8 -16 14 0 t14 0 t18 -6"/>`),
- audit:()=>svg(`<path class="ln" d="M20 48 H140"/>`+[0,1,2,3,4,5].map(i=>`<circle class="${i%2?"g":"h"}" cx="${24+i*22}" cy="${i%2?34:62}" r="6"/><path class="ln" d="M${24+i*22} 48 V${i%2?34:62}"/>`).join(""))};
-function wallItems(){const B=Q.B,b=!!Q.built,t=B.test&&B.test.clean,u=B.ux&&B.ux.clean,g=B.guard||{},n=steps().length;const R=Q.reached;
- return[["proc","Process and workflow",n+" steps on five lanes","flow",1],["agents","AI agents and Functions",steps().filter(s=>s.who==="fn").length+" Function"+(steps().filter(s=>s.who==="fn").length===1?"":"s")+", "+steps().filter(s=>s.who==="agent").length+" AI agent"+(steps().filter(s=>s.who==="agent").length===1?"":"s"),"agents",!!R.agents],["std","Standards by step",X.design.stdRows().length+" recommendations","stdstep",!!R.std],["data","Data model map",B.data.length+" elements, "+B.data.filter(d=>d.kind==="new").length+" new","datamap",!!R.data],["metrics","Measures",B.metrics.length+" with a decision each","metrics",!!R.metrics],["access","Access by color","Org chart colored by who reaches what","perm",!!R.access],["maturity","Maturity model","Level "+X.curLevel()+" to "+X.connect.tgtOf(),"maturity",!!R.maturity],["roadmap","Roadmap","Releases with research assigned","maturity",!!R.maturity],["bcp","Continuity plan","Fallback for every critical step","bcp",!!R.bcp],["know","Knowledge articles",(g.articles||[]).length+" drafted","guard",b],["test","Test report",t?"Passed":"Test agents next","test",!!t],["ux","UX and 508 report",u?"Passed":"Scan next","ux",!!u],["approve","Approval pack",B.submitted?"Submitted":"Calendar and prep","approve",!!B.submitted],["agree","Ownership agreement",B.agreed?"Accepted":"Waiting for you","guard",!!B.agreed],["audit","Audit trail","Every edit logged with its author","guard",b]]}
+ approve:()=>svg(Array.from({length:28},(_,i)=>`<rect class="${i===17?"f":i===10?"k":"l"}" x="${12+(i%7)*20}" y="${12+Math.floor(i/7)*19}" width="15" height="14" rx="4"/>`).join(""))};
+const GRP=["Design","Connect","Govern","Prove","Ship"];
+const plural=(n,a,b)=>n+" "+(n===1?a:b);
+function wallItems(){const B=Q.B,b=!!Q.built,t=B.test&&B.test.clean,u=B.ux&&B.ux.clean,g=B.guard||{},st=steps(),R=Q.reached;
+ const cnt=k=>st.filter(s=>s.who===k).length,fn=cnt("fn"),ag=cnt("agent"),gt=cnt("gate");
+ const m0=(B.metrics||[])[0],rm=G(()=>X.connect.roadmap(),[]),bc=G(()=>X.connect.bcpRows(),[]),sr=G(()=>X.design.stdRows(),[]);
+ const stdNames=[...new Set(sr.map(r=>r.std))].slice(0,3);
+ const lv={see:0,change:0,sign:0};G(()=>{const base=X.connect.base();STAFF().forEach(p=>{const l=X.levelFor(p.n,"proc",base);if(l in lv)lv[l]++})});
+ const agNames=st.filter(s=>s.who==="agent"||s.who==="fn").slice(0,2).map(s=>s.n);
+ const first=x=>String(x||"").split(/(?<=[.!?])\s/)[0];
+ return[
+ {k:"proc",g:0,t:"Process and workflow",f:plural(st.length,"step","steps"),l:[fn+" Function"+(fn===1?"":"s")+", "+plural(ag,"AI agent","AI agents")+", "+gt+" sign off"],j:"flow",on:true,mini:1},
+ {k:"agents",g:0,t:"AI agents and Functions",f:plural(fn,"Function","Functions")+", "+plural(ag,"AI agent","AI agents"),l:agNames,j:"agents",on:!!R.agents},
+ {k:"std",g:0,t:"Standards by step",f:plural(sr.length,"recommendation","recommendations"),l:stdNames,j:"stdstep",on:!!R.std},
+ {k:"data",g:1,t:"Data model map",f:B.data.length+" elements, "+B.data.filter(d=>d.kind==="new").length+" new",l:B.data.slice(0,2).map(d=>d.el+" ("+d.ent+")"),j:"datamap",on:!!R.data},
+ {k:"metrics",g:1,t:"Measures",f:plural((B.metrics||[]).length,"measure","measures"),l:m0?[m0.n+": "+m0.cur+m0.u+" to "+m0.tgt+m0.u,"If it moves: "+m0.dec]:[],j:"metrics",on:!!R.metrics},
+ {k:"access",g:1,t:"Access by color",f:lv.see+" see, "+lv.change+" change, "+lv.sign+" sign",l:["Org chart colored by who reaches what"],j:"perm",on:!!R.access,mini:1},
+ {k:"maturity",g:2,t:"Maturity model",f:"Level "+G(()=>X.curLevel(),"")+" to "+G(()=>X.connect.tgtOf(),""),l:[first(g.maturity)],j:"maturity",on:!!R.maturity},
+ {k:"roadmap",g:2,t:"Roadmap",f:plural((g.roadmap||[]).length||rm.length,"release","releases"),l:(g.roadmap||[]).slice(0,2),j:"maturity",on:!!R.maturity},
+ {k:"bcp",g:2,t:"Continuity plan",f:plural(bc.length,"critical step","critical steps")+" with a fallback",l:bc[0]?[bc[0].n+": "+bc[0].fb]:[],j:"bcp",on:!!R.bcp},
+ {k:"know",g:2,t:"Knowledge articles",f:plural((g.articles||[]).length,"article","articles")+" drafted",l:(g.articles||[]).slice(0,2),j:"guard",on:b},
+ {k:"test",g:3,t:"Test report",f:t?B.test.n+" checks passed":"Not run yet",l:t?["Fixed "+B.test.fixed+" before passing"]:["The five test agents run next"],j:"test",on:!!t},
+ {k:"ux",g:3,t:"UX and 508 report",f:u?"Passed "+B.ux.n+" checks":"Not scanned yet",l:u?["Section 508 and WCAG 2.1 AA. Fixed "+B.ux.fixed]:["Scan the built app next"],j:"ux",on:!!u},
+ {k:"approve",g:4,t:"Approval pack",f:B.submitted?"Submitted for approval":"Calendar and prep",l:[B.submitted?"On the board calendar":"Not submitted yet"],j:"approve",on:!!B.submitted,mini:1},
+ {k:"agree",g:4,t:"Ownership agreement",f:B.agreed?"Accepted":"Waiting for the owner",l:[first(g.agree).slice(0,110)],j:"guard",on:!!B.agreed},
+ {k:"audit",g:4,t:"Audit trail",f:plural((B.log||[]).length,"entry","entries"),l:["Every edit logged with its author"],j:"guard",on:b}]}
 function wall(){const it=wallItems(),show=Q.built&&!Q.wallSeen;if(Q.built)Q.wallSeen=true;
- return `<div class="r26-wall">${it.map((x,i)=>`<button type="button" class="r26-wt card glass ${x[4]?"on":""} ${show?"pop":""}" style="--i:${i}" data-r26-jump="${x[3]}" ${x[4]?"":"disabled"} aria-label="${E(x[1])}: ${E(x[2])}${x[4]?"":", not ready yet"}"><div class="r26-th">${x[4]?TH[x[0]]():`<span class="r26-ghost"></span>`}</div><b>${E(x[1])}</b><small>${E(x[2])}</small><i class="r26-ck ${x[4]?"on":""}" aria-hidden="true">${x[4]?"✓":""}</i></button>`).join("")}</div>`}
+ if(!Q.built){return `<div class="r26-wl">${GRP.map((gn,gi)=>`<section><h4>${gn}</h4><ul>${it.filter(x=>x.g===gi).map(x=>`<li class="${x.on?"on":""}"><i aria-hidden="true">${x.on?"✓":""}</i><span><b>${E(x.t)}</b> <small>${x.on?E(x.f):"will be created"}</small></span></li>`).join("")}</ul></section>`).join("")}</div>`}
+ return `<div class="r26-wl2">${GRP.map((gn,gi)=>{const own=it.filter(x=>x.g===gi),ready=own.filter(x=>x.on),pend=own.filter(x=>!x.on);
+  return `<section class="r26-wg"><h4>${gn} <small>${ready.length} of ${own.length}</small></h4>${ready.length?`<div class="r26-wgrid">${ready.map((x,i)=>`<button type="button" class="r26-wt card glass on ${show?"pop":""}" style="--i:${i}" data-r26-jump="${x.j}" aria-label="${E(x.t)}: ${E(x.f)}"><span class="r26-tt">${E(x.t)}</span><span class="r26-tf">${E(x.f)}</span>${x.mini&&TH[x.k]?`<span class="r26-th">${TH[x.k]()}</span>`:""}${x.l.filter(Boolean).map(l=>`<small>${E(l)}</small>`).join("")}</button>`).join("")}</div>`:""}${pend.length?`<ul class="r26-wp">${pend.map(x=>`<li><i aria-hidden="true"></i><span><b>${E(x.t)}</b> <small>${E(x.l[0]||"Next")}</small></span></li>`).join("")}</ul>`:""}</section>`}).join("")}</div>`}
 X.wall=wall;
-V.guard=function(){const B=Q.B,b=Q.built,it=wallItems(),n=it.filter(x=>x[4]).length;
+V.guard=function(){const B=Q.B,b=Q.built,it=wallItems(),n=it.filter(x=>x.on).length;
  return `${head("Guardrails","Everything that comes with it",b?n+" of "+it.length+" artifacts ready. Open any of them.":"You asked for one thing. These come with it by default.")}${wall()}
  <div class="stu-cta">${b?`<span class="stu-hint">${n<it.length?"Next the test agents, the accessibility scan and approval fill in the rest.":"Everything is ready."}</span>`:`<button class="btn primary" data-stu-build="1">Build the app and all its guardrails</button>`}</div>`};
 const oldShare=V.share;V.share=function(){const h=oldShare();return h.replace('<div class="stu-gg">','<h3>Everything that ships with it</h3>'+wall()+'<h3>Checks before publishing</h3><div class="stu-gg">')};

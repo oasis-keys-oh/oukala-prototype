@@ -64,37 +64,85 @@ const CXr=()=>W.CHATX||{};
 function say(html,cls,list){const pend=Q.msgs.find(m=>m.next);const o={r:"ai",h:html,c:cls||""};if(list)o.list=list;Q.msgs.push(o);
  if(pend){const lab=pend.next;pend.next=null;Q.msgs.push({r:"ai",h:"",next:lab})}drawChat(true);return o}
 function you(t){Q.msgs.push({r:"me",h:E(t),dock:Q.dockEcho?1:0});drawChat(true)}
-function later(fn,ms){const t=setTimeout(fn,Q.fast?10:ms);Q.timers.push(t);return t}
+function later(fn,ms){const t=setTimeout(fn,Q.fast?10:Math.round(ms*(Q.spd||1)));Q.timers.push(t);return t}
 function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[]}
 function optLabels(m){const o=m.ask.opts.map((x,i)=>({l:x.l,r:x.rec?1:0,i}));o.sort((a,b)=>b.r-a.r);return o.map(x=>x.l)}
 function ensureThread(title){const C=CXr();if(!C.newThread)return null;if(Q.thread&&C.hasThread(Q.thread.id)&&!title){C.activate(Q.thread.id);return Q.thread}
- Q.thread=C.newThread(title||"Build with Oukala",{studio:1});Q.mi=0;return Q.thread}
-function drawChat(scroll){const C=CXr(),t=Q.thread;if(!t||!C.sayAI)return;
+ Q.thread=C.newThread(title||"Build with Oukala",{studio:1});Q.mi=0;Q.lastCxm=null;return Q.thread}
+function drawChat(scroll){const C=CXr(),t=Q.thread;if(!t||!C.sayAI)return;let last=Q.lastCxm||null;
  for(;Q.mi<Q.msgs.length;Q.mi++){const m=Q.msgs[Q.mi];
   if(m.r==="me"){if(!m.dock)C.pushMsg({me:1,t:m.h},t)}
-  else if(m.ask){m.cxm=C.sayAI(t,"<b>"+E(m.ask.q)+"</b>",{stream:false,sugg:optLabels(m)})}
-  else if(m.next){m.hadNext=1;m.cxm=C.sayAI(t,"Ready when you are.",{stream:false,sugg:[m.next]})}
-  else if(m.h){let h=m.h;if(m.list)h+="<ol>"+m.list.map(l=>"<li>"+E(l)+"</li>").join("")+"</ol>";C.sayAI(t,h,{stream:false,sugg:m.sugg||null})}}
+  else if(m.ask){m.cxm=last=C.sayAI(t,"<b>"+E(m.ask.q)+"</b>",{stream:false,lin:false,sugg:optLabels(m)})}
+  else if(m.next){m.hadNext=1;if(last){last.sugg=[m.next];m.cxm=last}else m.cxm=last=C.sayAI(t,"Pick it up when you are ready.",{stream:false,lin:false,sugg:[m.next]})}
+  else if(m.h){let h=m.h;if(m.list)h+="<ol>"+m.list.map(l=>"<li>"+E(l)+"</li>").join("")+"</ol>";last=C.sayAI(t,h,{stream:false,lin:false,sugg:m.sugg||null})}}
+ Q.lastCxm=last;
  Q.msgs.forEach(m=>{if(m.cxm&&((m.ask&&m.ask.done!=null)||(m.hadNext&&!m.next)))m.cxm.sugg=null});
- C.drawMsgs&&C.drawMsgs()}
+ C.drawMsgs&&C.drawMsgs();afterDraw()}
 /* typed or tapped in the assistant box while this build is the active conversation */
-function onChat(q){const C=CXr();if(!Q.thread||!C.cur||C.cur().id!==Q.thread.id||!D.getElementById("stuRoot"))return false;
- C.pushMsg({me:1,t:E(q)},Q.thread);Q.dockEcho=true;
+/* Build is a mode of a thread. Answers and Continue go to the build. Anything else in a live build asks first. */
+const BUILD_RX=/^(please\s+)?(help me\s+)?(build|create|make|design|automate|set up)\b|\b(i|we) (need|want) (to )?(build|automate|a way to|an? (app|process|workflow|form|tracker))\b|\bbuild (me |us )?(an?|the|this)\b/i;
+const OFFER_RX=/\b(build|automate)\b|\b(create|design|set up)\b.*\b(app|workflow|process|form|approval|tracker|checklist|calculator|portal|automation|procedure)\b/i;
+function buildLive(){return !!Q.sc&&!Q.exited&&!!Q.thread}
+function dropMsgs(t,list){list.forEach(m=>{const i=t.msgs.indexOf(m);if(i>=0)t.msgs.splice(i,1)})}
+function holdAsk(q,t,kind){const C=CXr();const me=C.pushMsg({me:1,t:E(q)},t);
+ const labs=kind==="offer"?["Build this with Oukala","Just answer"]:["Part of the build","Ask the assistant"];
+ const txt=kind==="offer"?"That sounds like something to build. Build it here with every guardrail, or just answer it?":"Is that part of the build, or a question for the assistant?";
+ Q.hold={q,kind,t,me,ai:null,labs};const ai=C.sayAI(t,txt,{stream:false,lin:false,sugg:labs});Q.hold.ai=ai;C.drawMsgs&&C.drawMsgs()}
+function resolveHold(n){const h=Q.hold;if(!h)return false;const C=CXr();
+ const L=h.labs.map(x=>x.toLowerCase().replace(/[^a-z0-9 ]/g,"").trim());const j=L.indexOf(n);if(j<0)return false;
+ Q.hold=null;h.ai.sugg=null;
+ if(j===0){ /* build */
+  if(h.kind==="offer"){C.sayAI(h.t,"Opening Build with Oukala.",{stream:false,lin:false});open(h.q)}
+  else{dropMsgs(h.t,[h.me,h.ai]);buildRoute(h.q)}
+ }else{dropMsgs(h.t,[h.me,h.ai]);C.handle(h.q,{nohook:1})}
+ C.drawAll&&C.drawAll();return true}
+function buildRoute(q){const C=CXr();C.pushMsg({me:1,t:E(q)},Q.thread);Q.dockEcho=true;
  try{const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();const n=norm(q);
   const ai=Q.msgs.map((m,i)=>[m,i]).reverse().find(x=>x[0].ask&&x[0].ask.done==null);
   if(ai){const opts=ai[0].ask.opts;let j=opts.findIndex(o=>norm(o.l)===n);if(j<0&&/^[1-9]$/.test(n))j=+n-1;if(j<0)j=opts.findIndex(o=>norm(o.l).indexOf(n)===0&&n.length>3);
    if(j>=0&&j<opts.length){answer(ai[1],j);return true}
    if(/^(yes|ok|okay|go|sure|recommended|your pick)$/.test(n)){answer(ai[1],Math.max(0,opts.findIndex(o=>o.rec)));return true}}
-  const nx=Q.msgs[Q.msgs.length-1];const pend=Q.msgs.slice().reverse().find(m=>m.next);
+  const pend=Q.msgs.slice().reverse().find(m=>m.next);
   if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
   submit(q);return true}finally{Q.dockEcho=false}}
+function isChipOrAnswer(q){const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();const n=norm(q);
+ const ai=Q.msgs.find(m=>m.ask&&m.ask.done==null);
+ if(ai){const o=ai.ask.opts;if(o.some(x=>norm(x.l)===n)||/^[1-9]$/.test(n)||/^(yes|ok|okay|go|sure|recommended|your pick)$/.test(n))return true}
+ const pend=Q.msgs.find(m=>m.next);if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n)))return true;
+ return SD.CHIPS.some(c=>norm(c.t)===n)}
+function onChat(q){const C=CXr();const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();
+ if(Q.hold&&C.cur&&C.cur().id===Q.hold.t.id&&resolveHold(norm(q)))return true;
+ const inBuild=Q.thread&&C.cur&&C.cur().id===Q.thread.id&&D.getElementById("stuRoot");
+ if(!inBuild){ /* general chat: offer, never switch on its own */
+  if(OFFER_RX.test(q)&&!/^(what|who|where|when|why|show|find|list|open|go to)\b/i.test(q.trim())&&C.cur){holdAsk(q,C.cur(),"offer");return true}
+  return false}
+ if(!Q.sc||Q.exited&&!Q.sc)return buildRoute(q);
+ if(Q.exited)return buildRoute(q);
+ if(isChipOrAnswer(q)||BUILD_RX.test(q.trim()))return buildRoute(q);
+ holdAsk(q,Q.thread,"unclear");return true}
+/* the slim strip in the box, and the Continue chip that survives a side question */
+function pendingChips(){const ai=Q.msgs.find(m=>m.ask&&m.ask.done==null);if(ai)return optLabels(ai);const p=Q.msgs.find(m=>m.next);return p?[p.next]:[]}
+function afterDraw(){const C=W.CHATX;if(!C||!C.cur)return;const ctx=D.getElementById("chxCtx");if(!ctx)return;let st=D.getElementById("stuStrip");
+ const live=buildLive();
+ if(!live){if(st)st.remove();return}
+ const t=C.cur(),inThread=Q.thread&&t.id===Q.thread.id,onScr=S_screen()==="studio";
+ if(!st){st=D.createElement("div");st.id="stuStrip";st.className="stu-strip";ctx.parentNode.insertBefore(st,ctx)}
+ const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet" data-stu-exit>Exit build</button>';
+ if(st.dataset.h!==html){st.dataset.h=html;st.innerHTML=html}
+ C.drawSugs&&C.drawSugs()}
+function fixChips(t){if(!buildLive()||Q.hold||!Q.thread||t.id!==Q.thread.id)return;const want=pendingChips();const last=t.msgs[t.msgs.length-1];
+ if(want.length&&last&&last.ai){const cur=last.sugg||[];if(!want.every(w=>cur.indexOf(w)>=0))last.sugg=want.concat(cur.filter(c=>want.indexOf(c)<0)).slice(0,6)}}
+function wireChat(){if(W.CHATX){W.CHATX.afterDraw=afterDraw;W.CHATX.preSugs=fixChips}}
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-stu-back],[data-stu-exit]");if(!t)return;const C=W.CHATX;
+ if(t.hasAttribute("data-stu-back")){Q.exited=false;go("studio");setTimeout(()=>{mount();if(C&&Q.thread)C.activate(Q.thread.id);afterDraw()},60)}
+ else{clearTimers();Q.exited=true;Q.wait=false;go("home");setTimeout(afterDraw,80)}});
 if(W.CHATX)W.CHATX.hook=onChat;
 else document.addEventListener("DOMContentLoaded",()=>{if(W.CHATX)W.CHATX.hook=onChat});
-[500,1500,4000].forEach(t=>setTimeout(()=>{if(W.CHATX&&W.CHATX.hook!==onChat)W.CHATX.hook=onChat},t));
+[500,1500,4000].forEach(t=>setTimeout(()=>{if(W.CHATX&&W.CHATX.hook!==onChat)W.CHATX.hook=onChat;wireChat()},t));wireChat();
 
 /* ---------- running a scenario ---------- */
 function startScenario(sc,promptText){
- clearTimers();Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.mi=0;ensureThread(sc.title);Q.reached={};Q.built=false;Q.published=null;Q.exp={};Q.sel=null;Q.ph=0;Q.zoom=1;Q.seen=new Set();Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";Q.beats=X.beatsFor?X.beatsFor(sc,sc.beats.slice()):sc.beats;
+ clearTimers();Q.exited=false;Q.autoFit=true;Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.mi=0;ensureThread(sc.title);Q.reached={};Q.cpDone={};Q.peek=null;Q.built=false;Q.published=null;Q.exp={};Q.sel=null;Q.ph=0;Q.zoom=1;Q.seen=new Set();Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";Q.beats=X.beatsFor?X.beatsFor(sc,sc.beats.slice()):sc.beats;
  you(promptText||sc.prompt);
  const q=promptText||sc.prompt;
  /* a real search of the library comes first for every build */
@@ -118,16 +166,32 @@ function applyBeat(b){const B=Q.B,sc=Q.sc;
  if(b.view==="gov")B.gov=b.steps||[];
 
  if(b.run)G(()=>b.run(b));render();syncRail()}
+/* guided demo: where a person clicks, and how long a screen is held */
+const CP_VIEWS=["agents","perm","maturity","guard","test","ux","approve"];
+function isCP(b){return !!(b&&(b.ask||CP_VIEWS.indexOf(b.view)>=0))}
+function dwellFor(b,txt){const words=String(txt||"").replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;return Math.max(4000,1500+words*330,b.hold||0)}
+function advance(){const p=Q.msgs.find(m=>m.next);if(p)p.next=null;Q.wait=false;Q.peek=null;nextBeat()}
+function kick(){if(!Q.sc||!Q.wait)return;const last=Q.msgs[Q.msgs.length-1];
+ if(last&&last.ask&&last.ask.done==null){answer(Q.msgs.length-1,Math.max(0,last.ask.opts.findIndex(o=>o.rec)))}
+ else{const p=Q.msgs.slice().reverse().find(m=>m.next);if(p){const lab=p.next;p.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat()}}}
+const CTA={agents:"[data-r26-agents]",perm:"[data-r26-comp]",test:"[data-r26-run],[data-r26-fixall]",ux:"[data-r26-run],[data-r26-fixux]",approve:"[data-stu-agree],[data-r26-submit],[data-stu-pub]"};
+function pulse(){D.querySelectorAll(".stu-pulse").forEach(e=>e.classList.remove("stu-pulse"));
+ if(!buildLive()||Q.auto||Q.fast||!Q.wait||S_screen()!=="studio")return;const b=Q.beats[Q.i];
+ const sel=b&&CTA[b.view];if(sel&&!(Q.cpDone&&Q.cpDone[Q.i])){const el=[...D.querySelectorAll("#stuCanvas "+sel.split(",").join(",#stuCanvas "))].find(e=>!e.disabled&&e.offsetParent);if(el){el.classList.add("stu-pulse");return}}
+ const chip=D.querySelector("#sugs .chip");if(chip)chip.classList.add("stu-pulse")}
 function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.beats[Q.i];
  if(!b){finish();return}
  applyBeat(b);
- const msgs=(typeof b.say==="function"?b.say():b.say).slice();
+ const msgs=(typeof b.say==="function"?b.say():b.say).slice();const allTxt=msgs.join(" ");Q.peek=null;
  const step=()=>{const m=msgs.shift();if(m==null){after();return}
   Q.typing=true;drawChat(true);later(()=>{Q.typing=false;const o={r:"ai",h:m};if(!msgs.length&&b.view==="gov"&&b.steps)o.list=b.steps;Q.msgs.push(o);drawChat(true);step()},Q.fast?10:650)};
- const after=()=>{
-  if(b.ask){Q.msgs.push({r:"ai",h:"",ask:{q:b.ask.q,opts:b.ask.opts,done:null}});Q.wait=true;drawChat(true);if(Q.auto)later(()=>answer(Q.msgs.length-1,Math.max(0,b.ask.opts.findIndex(o=>o.rec))),b.holdAsk||1300)}
-  else if(b.view==="guard"&&!Q.built){Q.msgs.push({r:"ai",h:"",next:"Build the app and all its guardrails"});Q.wait=true;drawChat(true);if(Q.auto)later(buildOut,1300)}
-  else{const nb=Q.beats[Q.i+1];if(nb){Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=true;drawChat(true);if(Q.auto)later(nextBeat,b.hold||1200)}}};
+ const after=()=>{const cp=isCP(b),idx=Q.i,dw=dwellFor(b,allTxt);
+  const live=()=>Q.i===idx&&Q.wait;
+  if(b.ask){Q.msgs.push({r:"ai",h:"",ask:{q:b.ask.q,opts:b.ask.opts,done:null}});Q.wait=true;drawChat(true);if(Q.auto)later(()=>{if(live()&&Q.auto)answer(Q.msgs.length-1,Math.max(0,b.ask.opts.findIndex(o=>o.rec)))},Math.max(dw,b.holdAsk||0))}
+  else if(b.view==="guard"&&!Q.built){Q.msgs.push({r:"ai",h:"",next:"Build the app and all its guardrails"});Q.wait=true;drawChat(true);if(Q.auto)later(()=>{if(live()&&Q.auto&&!Q.built)buildOut()},dw)}
+  else{const nb=Q.beats[Q.i+1];if(nb){Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=true;drawChat(true);
+   if(Q.auto||(!Q.fast&&!cp))later(()=>{if(live()&&(Q.auto||(!Q.fast&&!cp)))advance()},dw)}}
+  pulse()};
  step()}
 function answer(mi,j){const m=Q.msgs[mi];if(!m||!m.ask||m.ask.done!=null)return;const o=m.ask.opts[j];m.ask.done=j;you(o.l);
  if(o.agree){Q.B.agreed=true;Q.B.agreedAt=new Date().toISOString().slice(0,10)}
@@ -263,7 +327,7 @@ function vData(){const d=Q.B.data,n=d.filter(x=>x.kind==="new").length,staff=STA
   ${rows.map(x=>`<div class="stu-er ${x.kind}"><b>${E(x.el)}</b><span class="stu-src">${E(x.src||"")}</span>${x.kind==="new"?`<label>Owner<input list="stuStaff" data-stu-own="${x.i}" value="${E(x.owner)}" placeholder="Who owns this?" aria-label="Owner of ${E(x.el)}"></label><label>Rule<input data-stu-rule="${x.i}" value="${E(x.rule||"")}" aria-label="Validation rule for ${E(x.el)}"></label>`:`<span class="stu-own">${E(x.owner)}</span><span class="stu-ok">Defined</span>`}</div>`).join("")}</section>`}).join("")}</div></div>`}
 const spark=(t,tg)=>{if(!t||!t.length)return"";const mn=Math.min.apply(0,t),mx=Math.max.apply(0,t),r=mx-mn||1,pt=t.map((v,i)=>[(i*120/(t.length-1)),30-(v-mn)/r*26]),ln=pt.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");return `<svg viewBox="0 0 120 34" preserveAspectRatio="none" class="stu-sp" aria-hidden="true"><polygon points="0,34 ${ln} 120,34" class="a"/><polyline fill="none" points="${ln}"/><circle cx="${pt[pt.length-1][0]}" cy="${pt[pt.length-1][1].toFixed(1)}" r="3"/></svg>`};
 function vMetrics(){return `${head("Measures","How you will know it works","Each measure says what decision it supports and what to do when it drifts.")}<div class="stu-mgrid">${Q.B.metrics.map((m,i)=>{const off=(m.dir==="max"&&+m.cur<+m.tgt)||(m.dir==="min"&&+m.cur>+m.tgt);
- return `<section class="stu-mt card glass"><div class="stu-mh"><b>${E(m.n)}</b><i class="stu-st ${off?"off":"ok"}" title="${off?"Off target":"On target"}"></i></div><div class="stu-mv"><span class="stu-cur">${E(m.cur)}${E(m.u==="%"?"%":" "+m.u)}</span><label>target ${m.dir==="max"?"≥":"≤"} <input type="number" step="any" value="${E(m.tgt)}" data-stu-tgt="${i}" aria-label="Target for ${E(m.n)}"></label></div>${spark(m.tr)}
+ return `<section class="stu-mt card glass"><div class="stu-mh"><b>${E(m.n)}</b><i class="stx-t ${off?"off":"ok"}" title="${off?"Off target":"On target"}"></i></div><div class="stu-mv"><span class="stu-cur">${E(m.cur)}${E(m.u==="%"?"%":" "+m.u)}</span><label>target ${m.dir==="max"?"≥":"≤"} <input type="number" step="any" value="${E(m.tgt)}" data-stu-tgt="${i}" aria-label="Target for ${E(m.n)}"></label></div>${spark(m.tr)}
  <details><summary>Why, the decision and what to do</summary><dl class="stu-dl"><dt>Why</dt><dd>${E(m.why)}</dd><dt>Decision</dt><dd>${E(m.dec)}</dd><dt>How measured</dt><dd>${E(m.f)} · ${E(m.src)}</dd><dt>On trend</dt><dd>${E(m.on)}</dd><dt>Off trend</dt><dd>${E(m.off)}</dd><dt>Retire when</dt><dd>${E(m.obs)}</dd></dl></details><code>${E(m.ac)}</code></section>`}).join("")}</div>`}
 function vAccess(){const B=Q.B;return `${head("Access","Who can see and change it","Say it in your own words. I check it against the org chart.")}
  <form class="stu-cmd" data-stu-cmdform><input value="${E(B.cmd)}" aria-label="Who should have access" placeholder="For example: all of finance, or managers and above"><button class="btn primary" type="submit">Resolve</button></form>
@@ -302,18 +366,22 @@ function railHTML(){if(Q.view==="home"||Q.view==="lib")return `<nav class="stu-r
  const grp=GROUPS.map(g=>{const mem=st.filter(t=>t[2]===g),done=mem.length&&mem.every(t=>Q.reached[t[0]]),any=mem.some(t=>Q.reached[t[0]]);const tgt=(mem.filter(t=>Q.reached[t[0]]).pop()||mem[0])[0];return `<button type="button" class="${g===cg?"cur":""} ${done?"done":""}" data-stu-view="${tgt}" ${any?"":"disabled"}>${g}</button>`}).join("");
  const sub=st.filter(t=>t[2]===cg).map(t=>{const r=Q.reached[t[0]];return `<button type="button" class="${cs===t[0]?"cur":""} ${r?"done":""}" data-stu-view="${t[0]}" ${r?"":"disabled"}>${t[1]}</button>`}).join("");
  return `<nav class="stu-rail" aria-label="Build progress">${grp}<span class="stu-sp1"></span><button type="button" data-stu-go="lib">Library</button>${playBtn()}</nav><nav class="stu-rail stu-sub2" aria-label="Steps in ${cg}">${sub}</nav>`}
-function canvasHTML(){const f=VIEWS[Q.view]||vHome;return railHTML()+`<div class="stu-body" tabindex="-1">${f()}</div>`}
+function demoBar(){if(!Q.sc||Q.view==="home"||Q.view==="lib")return "";const n=Q.beats.length,x=Math.max(1,Math.min(n,(Q.peek!=null?Q.peek:Q.i)+1));const sp=Q.spd||1;
+ const seg=(a,l,on)=>`<button type="button" class="${on?"on":""}" aria-pressed="${on}" ${a}>${l}</button>`;
+ return `<div class="stu-demo" role="group" aria-label="Demo controls"><div class="stu-dm1"><span class="stu-dseg" role="group" aria-label="Pace">${seg('data-stu-mode="guided"',"Guided",!Q.auto)}${seg('data-stu-mode="auto"',"Auto",!!Q.auto)}</span><button type="button" class="stu-dbk" data-stu-bk ${x<=1?"disabled":""}>Back</button>${Q.peek!=null?'<button type="button" class="stu-dbk" data-stu-live>Return to where we are</button>':""}<span class="stu-dstep" aria-live="off">Step ${x} of ${n}</span><span class="stu-dseg" role="group" aria-label="Speed">${seg('data-stu-spd="1.6"',"Slower",sp>1.2)}${seg('data-stu-spd="1"',"Normal",sp===1)}${seg('data-stu-spd="0.6"',"Faster",sp<.9)}</span></div><div class="stu-dprog" role="progressbar" aria-valuemin="1" aria-valuemax="${n}" aria-valuenow="${x}" aria-label="Build progress"><i style="width:${Math.round(x/n*100)}%"></i></div><div class="stu-dhint">${Q.auto?"Auto: it keeps going by itself. Switch to Guided to click through.":"Guided: it stops where you click. Space or the right arrow continues, the left arrow goes back."}</div></div>`}
+function canvasHTML(){const f=VIEWS[Q.view]||vHome;return demoBar()+railHTML()+`<div class="stu-body" tabindex="-1">${f()}</div>`}
 
 /* ---------- mounting ---------- */
 function shell(){return `<div class="stu"><section class="stu-right" id="stuCanvas" aria-label="What is being built"></section></div>`}
-function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();if(X.after)G(()=>X.after());{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}}
+function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();{const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw&&Q.autoFit!==false){const f=Math.max(.5,Math.min(1,(cv.clientWidth-8)/parseFloat(iw.style.width)));if(Math.abs(f-Q.zoom)>.02){Q.zoom=f;iw.style.zoom=f}}}pulse();if(X.after)G(()=>X.after());{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}}
 function syncRail(){}
-function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";r.innerHTML=shell();const C=CXr();
+function railSet(on){const c=D.getElementById("railCollapse");if(!c||c.checked===on)return false;c.checked=on;c.dispatchEvent(new Event("change",{bubbles:true}));return true}
+function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";if(!W.matchMedia("(max-width:760px)").matches&&railSet(true))Q.railAuto=true;r.innerHTML=shell();const C=CXr();
  if(!Q.thread||!(C.hasThread&&C.hasThread(Q.thread.id))){ensureThread("Build with Oukala");Q.msgs=[];Q.mi=0;Q.sc=null;Q.view="home"}else C.activate&&C.activate(Q.thread.id);
  if(!Q.msgs.length){Q.msgs.push({r:"ai",h:"Hi "+E(me().split(" ")[0])+". What do you need to do? Describe it in plain words, or pick an example. I will find what already exists, or build it with you here.",sugg:SD.CHIPS.map(c=>c.t)})}
  drawChat(true);render();if(C.open)C.open("chat")}
 W.STUDIO.mount=mount;W.STUDIO.start=id=>startScenario(SD.SCEN[id]);W.STUDIO.submit=submit;W.STUDIO.fast=false;
-function open(text){go("studio");setTimeout(()=>{mount();if(text)submit(text)},60)}
+function open(text){Q.exited=false;go("studio");setTimeout(()=>{mount();const C=CXr();if(C.activate&&Q.thread&&C.hasThread&&C.hasThread(Q.thread.id))C.activate(Q.thread.id);if(C.open)C.open("chat");if(text)submit(text)},60)}
 W.STUDIO.open=open;
 
 /* ---------- events ---------- */
@@ -325,14 +393,14 @@ D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data
  if(d.stuWho!=null){cycleWho(d.stuWho);return}
  if(d.stuSel!=null){Q.sel=String(Q.sel)===d.stuSel?null:d.stuSel;render();return}
  if(d.stuSet!=null){const[r,k]=d.stuSet.split("|");setWho(r,k);return}
- if(d.stuZoom!=null){const z=+d.stuZoom;if(z===0){const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw)Q.zoom=Math.max(.5,Math.min(1,(cv.clientWidth-6)/parseFloat(iw.style.width)))}else Q.zoom=Math.max(.5,Math.min(1.4,+(Q.zoom+z*.15).toFixed(2)));render();return}
+ if(d.stuZoom!=null){const z=+d.stuZoom;if(z===0){const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw){Q.autoFit=true;Q.zoom=Math.max(.5,Math.min(1,(cv.clientWidth-6)/parseFloat(iw.style.width)))}}else Q.autoFit=false,Q.zoom=Math.max(.5,Math.min(1.4,+(Q.zoom+z*.15).toFixed(2)));render();return}
  if(d.stuPh!=null){Q.ph=+d.stuPh;Q.sel=null;render();return}
  if(d.stuView){Q.view=VIEW_OF_STAGE[d.stuView]||d.stuView;render();return}
  if(d.stuGo){if(d.stuGo==="share"){Q.view="share";Q.stage="share";Q.reached.share=1}else Q.view=d.stuGo;render();return}
  if(d.stuBuild!=null){const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;buildOut();return}
  if(d.stuAgree!=null){Q.B.agreed=true;say("Thank you. You are named sponsor and "+E(Q.B.owner)+" is the owner.");render();return}
  if(d.stuPub!=null){publish();return}
- if(d.stuPlay!=null){Q.auto=!Q.auto;render();if(Q.auto){if(!Q.sc)startScenario(SD.SCEN.cal);else if(Q.wait){const last=Q.msgs[Q.msgs.length-1];if(last&&last.ask&&last.ask.done==null){answer(Q.msgs.length-1,Math.max(0,last.ask.opts.findIndex(o=>o.rec)))}else if(last&&last.next){last.next=null;Q.wait=false;if(Q.view==="guard"&&!Q.built)buildOut();else nextBeat()}}}return}
+ if(d.stuPlay!=null){Q.auto=!Q.auto;render();if(Q.auto){if(!Q.sc)startScenario(SD.SCEN.cal);else kick()}else pulse();return}
  if(d.stuUse){const[k,id]=d.stuUse.split(":");useLib(k,id);return}
  if(d.stuMic!=null){voice();return}});
 D.addEventListener("submit",e=>{const f=e.target;if(!f.matches)return;if(f.matches("[data-stu-form]")){e.preventDefault();const i=D.getElementById("stuInput");const v=i.value;i.value="";submit(v);return}
@@ -360,7 +428,7 @@ function voice(){const SR=W.SpeechRecognition||W.webkitSpeechRecognition;if(!SR)
 /* ---------- screen and entry points ---------- */
 G(()=>REG("studio","Build with Oukala","new","M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9z",()=>`<div class="screen stu-screen"><div id="stuRoot"></div></div>`));
 G(()=>NAVX.add("studio",{group:"make",label:"Build with Oukala",hint:"Say what you need and Oukala builds it with every guardrail",sub:"Chat and build",kw:"build create new process app automate studio chat guardrails in a box interview library extend"}));
-R15D.after.push(()=>{if(S_screen()==="studio")setTimeout(mount,0);else{const r=D.getElementById("stuRoot");if(r)r.dataset.m=""}ensurePill()});
+R15D.after.push(()=>{if(S_screen()==="studio")setTimeout(mount,0);else{const r=D.getElementById("stuRoot");if(r)r.dataset.m="";if(Q.railAuto){Q.railAuto=false;railSet(false)}}ensurePill()});
 function S_screen(){return G(()=>S.screen,"")}
 /* the front door: one colored pill at the bottom of the side menu, on every screen */
 function ensurePill(){const f=D.querySelector(".rail .railfoot");if(!f)return;let b=D.getElementById("stuPill");
@@ -369,6 +437,16 @@ function ensurePill(){const f=D.querySelector(".rail .railfoot");if(!f)return;le
  if(b.parentNode!==f||f.firstChild!==b)f.insertBefore(b,f.firstChild);b.classList.toggle("cur",S_screen()==="studio")}
 D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-stu-pill]"))open("")});
 [200,800,2000,5000].forEach(t=>setTimeout(ensurePill,t));
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-stu-mode],[data-stu-spd],[data-stu-bk],[data-stu-live]");
+ if(t){if(t.dataset.stuMode){const on=t.dataset.stuMode==="auto";if(Q.auto!==on){Q.auto=on;render();if(on)kick();else pulse()}}
+  else if(t.dataset.stuSpd){Q.spd=+t.dataset.stuSpd;render()}
+  else if(t.hasAttribute("data-stu-bk")){const i0=Q.peek!=null?Q.peek:Q.i;const k=Math.max(0,i0-1);Q.peek=k;const v=Q.beats[k]&&Q.beats[k].view;if(v){Q.view=v;render()}}
+  else{Q.peek=null;const v=Q.beats[Q.i]&&Q.beats[Q.i].view;if(v)Q.view=v;render()}return}
+ const sel=Q.beats&&Q.beats[Q.i]&&CTA[Q.beats[Q.i].view];if(sel&&e.target.closest&&e.target.closest("#stuCanvas "+sel.split(",").join(",#stuCanvas "))){Q.cpDone=Q.cpDone||{};Q.cpDone[Q.i]=1;setTimeout(pulse,60)}});
+D.addEventListener("keydown",e=>{if(!buildLive()||S_screen()!=="studio"||Q.auto)return;const tg=e.target,tn=tg&&tg.tagName;if(/INPUT|TEXTAREA|SELECT|BUTTON|A/.test(tn)||(tg&&tg.isContentEditable))return;
+ if(e.key===" "||e.key==="ArrowRight"){if(Q.peek!=null){e.preventDefault();Q.peek=null;const v=Q.beats[Q.i]&&Q.beats[Q.i].view;if(v)Q.view=v;render();return}
+  const p=Q.msgs.find(m=>m.next);if(Q.wait&&p){e.preventDefault();kick()}}
+ else if(e.key==="ArrowLeft"){const b=D.querySelector("[data-stu-bk]");if(b&&!b.disabled){e.preventDefault();b.click()}}});
 Object.assign(X,{E,G,Q,WHO,ORDER,head,tile,eyebrow,canvas,flatSteps,stepAt,setWho,say,later,render,syncRail,STAFF,me,OWN,resolveAccess,visPeople,publish,drawChat,slug,mixOf,barHTML,issuesHTML,glTile,ART:ART_OLD,STAGES,VIEW_OF_STAGE,STAGE_OF_VIEW});
 W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=nextBeat;
 })();
