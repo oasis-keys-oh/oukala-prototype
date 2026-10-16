@@ -8,16 +8,19 @@ const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;","
 const SD=W.STUD;if(!SD)return;
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"").slice(0,28);
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");
-const WHO={human:["Person","h"],auto:["Automatic","a"],agent:["AI agent","g"],gate:["Approval","k"]};
-const ORDER=["human","auto","agent","gate"];
-const STAGES=[["find","Find"],["process","Process"],["std","Standards"],["data","Data"],["metrics","Measures"],["access","Access"],["strat","Strategy",1],["guard","Guardrails"],["share","Share"]];
+const WHO={human:["Person","h"],auto:["Automatic","a"],fn:["Function","f"],agent:["AI agent","g"],gate:["Approval","k"]};
+const ORDER=["human","auto","fn","agent","gate"];
+const GROUPS=["Design","Connect","Govern","Prove","Ship"];
+const STAGES=[["find","Find","Design"],["process","Process","Design"],["std","Standards","Design"],["agents","Agents","Design"],["data","Data","Connect"],["metrics","Measures","Connect"],["access","Access","Connect"],["strat","Strategy","Govern",1],["maturity","Maturity","Govern"],["bcp","Continuity","Govern"],["guard","Guardrails","Prove"],["test","Test","Prove"],["ux","UX and 508","Prove"],["approve","Approval","Ship"],["share","Share","Ship"]];
+const VIEW_OF_STAGE={find:"find",process:"flow",std:"std",agents:"agents",data:"data",metrics:"metrics",access:"access",strat:"strat",maturity:"maturity",bcp:"bcp",guard:"guard",test:"test",ux:"ux",approve:"approve",share:"share"};
+const STAGE_OF_VIEW={gov:"find",flow:"process",stdstep:"std",datamap:"data",perm:"access"};
 const OWN={ret:["Kofi Mensah","Tomas Reyes"],cal:["Mei-Ling Zhou","Dmitri Kowal"],bundle:["Lena Hargrove","Daniel Okoye"],turn:["Dmitri Kowal","Sofia Arenas"]};
 const MODULE={ret:"ops_dist",cal:"ops_plant",bundle:"ops_cust",turn:"ops_plant",gen:"biz_corp"};
 
 /* ---------- state ---------- */
-const Q=W.STUDIO={sc:null,i:-1,msgs:[],B:null,view:"home",stage:"find",reached:{},auto:false,wait:false,timers:[],lib:[],pro:false,exp:{},built:false,published:null,open:{},vis:"enterprise",scale:false,sel:null,ph:0,zoom:1,seen:new Set()};
+const X={views:{}};const Q=W.STUDIO={x:X,sc:null,i:-1,msgs:[],B:null,view:"home",stage:"find",reached:{},auto:false,wait:false,timers:[],lib:[],pro:false,exp:{},built:false,published:null,open:{},vis:"enterprise",scale:false,sel:null,ph:0,zoom:1,seen:new Set()};
 const fresh=()=>({title:"",steps:[],phases:null,issues:[],std:[],data:[],metrics:[],cmd:"",grants:[],people:[],strat:null,guard:null,match:[],adj:null,add:[],agreed:false,owner:"",log:[]});
-Q.B=fresh();
+Q.B=fresh();Q.beats=[];
 
 /* ---------- search the library ---------- */
 const STOP=/\b(i|we|to|the|a|an|and|or|of|for|my|our|want|need|help|me|how|is|are|that|it|this|with|on|in|by|can|keep|so|nobody|knows|why)\b/g;
@@ -29,7 +32,7 @@ const proc=id=>G(()=>PROCLIB.list().find(p=>p.id===id),null);
 /* ---------- org chart: turn a spoken group into real people ---------- */
 const STAFF=()=>G(()=>ORGX.staff,[]);
 const kidsOf=n=>G(()=>ORGX.kids(n).length,0);
-const GROUPS=[
+const GRP=[
  [/finance/i,p=>/finance|controller|accounts/i.test(p.unit+" "+p.role)],
  [/quality/i,p=>/quality/i.test(p.role+" "+p.unit)],
  [/plant/i,p=>/Applied Standards|plant|control room|process control/i.test(p.unit+" "+p.role)],
@@ -46,7 +49,7 @@ function resolveClause(c){const s=STAFF();const t=c.toLowerCase();
  if(/contractor|vendor|external/.test(t))return{label:"Contractors and vendors",people:[],ext:true};
  if(/my team/.test(t)){const m=me();return{label:"Your team",people:s.filter(p=>p.mgr===m).map(p=>p.n).concat([m])}}
  if(/everyone|all staff|all employees|whole/.test(t))return{label:"Everyone",people:s.map(p=>p.n)};
- let set=null,lab=[];GROUPS.forEach(([re,fn])=>{if(re.test(t)){const x=s.filter(fn).map(p=>p.n);set=set?Array.from(new Set(set.concat(x))):x;lab.push(c.trim())}});
+ let set=null,lab=[];GRP.forEach(([re,fn])=>{if(re.test(t)){const x=s.filter(fn).map(p=>p.n);set=set?Array.from(new Set(set.concat(x))):x;lab.push(c.trim())}});
  if(set===null)return{label:c.trim(),people:[],none:true};
  if(/manager(s)?( or| and)? above|managers and above|lead(s)? and above|and above/.test(t))set=set.filter(n=>kidsOf(n)>0||/chief|director|manager|lead/i.test((G(()=>ORGX.P(n).role,""))));
  return{label:c.trim().replace(/\s+(can|only|may|should).*$/i,""),people:set}}
@@ -56,26 +59,42 @@ function resolveAccess(cmd,grants){const parts=String(cmd).split(/[.;]|\sand\s(?
   (groups.length?groups:[cl]).forEach(g=>{const r=resolveClause(g.replace(/\b(can|may|should)\b.*$/i,"").replace(/^only\s+/i,""));if(!r.none||groups.length===1){r.lvl=(grants&&grants[out.length]&&grants[out.length].lvl)||lvl;r.label=r.label.charAt(0).toUpperCase()+r.label.slice(1);r.on=true;out.push(r)}})});
  return out}
 
-/* ---------- chat ---------- */
-const chat=()=>D.getElementById("stuChat");
-function say(html,cls){Q.msgs.push({r:"ai",h:html,c:cls||""});drawChat(true)}
-function you(t){Q.msgs.push({r:"me",h:E(t)});drawChat(true)}
+/* ---------- chat: the conversation lives in the assistant box at the bottom right; this screen is the canvas ---------- */
+const CXr=()=>W.CHATX||{};
+function say(html,cls,list){const pend=Q.msgs.find(m=>m.next);const o={r:"ai",h:html,c:cls||""};if(list)o.list=list;Q.msgs.push(o);
+ if(pend){const lab=pend.next;pend.next=null;Q.msgs.push({r:"ai",h:"",next:lab})}drawChat(true);return o}
+function you(t){Q.msgs.push({r:"me",h:E(t),dock:Q.dockEcho?1:0});drawChat(true)}
 function later(fn,ms){const t=setTimeout(fn,Q.fast?10:ms);Q.timers.push(t);return t}
 function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[]}
-function msgHTML(m,i){
- if(m.r==="me")return `<div class="stu-m me"><div>${m.h}</div></div>`;
- let x=`<div class="stu-m ai ${m.c||""}"><div>${m.h}`;
- if(m.list)x+=`<ol class="stu-ol">${m.list.map(l=>`<li>${E(l)}</li>`).join("")}</ol>`;
- if(m.ask){const a=m.ask;x+=`<div class="stu-ask"><b>${E(a.q)}</b>${a.done!=null?`<div class="stu-chosen">${E(a.opts[a.done].l)}</div>`:a.opts.map((o,j)=>`<button type="button" class="stu-opt${o.rec?" rec":""}" data-stu-ans="${i}:${j}">${E(o.l)}${o.rec?'<small>Recommended</small>':""}</button>`).join("")}</div>`}
- if(m.next)x+=`<button type="button" class="stu-next" data-stu-next="1">${E(m.next)}</button>`;
- return x+`</div></div>`}
-function drawChat(scroll){const c=chat();if(!c)return;
- c.innerHTML=Q.msgs.map(msgHTML).join("")+(Q.typing?`<div class="stu-m ai"><div class="stu-typing"><i></i><i></i><i></i></div></div>`:"");
- if(scroll)c.scrollTop=c.scrollHeight}
+function optLabels(m){const o=m.ask.opts.map((x,i)=>({l:x.l,r:x.rec?1:0,i}));o.sort((a,b)=>b.r-a.r);return o.map(x=>x.l)}
+function ensureThread(title){const C=CXr();if(!C.newThread)return null;if(Q.thread&&C.hasThread(Q.thread.id)&&!title){C.activate(Q.thread.id);return Q.thread}
+ Q.thread=C.newThread(title||"Build with Oukala",{studio:1});Q.mi=0;return Q.thread}
+function drawChat(scroll){const C=CXr(),t=Q.thread;if(!t||!C.sayAI)return;
+ for(;Q.mi<Q.msgs.length;Q.mi++){const m=Q.msgs[Q.mi];
+  if(m.r==="me"){if(!m.dock)C.pushMsg({me:1,t:m.h},t)}
+  else if(m.ask){m.cxm=C.sayAI(t,"<b>"+E(m.ask.q)+"</b>",{stream:false,sugg:optLabels(m)})}
+  else if(m.next){m.hadNext=1;m.cxm=C.sayAI(t,"Ready when you are.",{stream:false,sugg:[m.next]})}
+  else if(m.h){let h=m.h;if(m.list)h+="<ol>"+m.list.map(l=>"<li>"+E(l)+"</li>").join("")+"</ol>";C.sayAI(t,h,{stream:false,sugg:m.sugg||null})}}
+ Q.msgs.forEach(m=>{if(m.cxm&&((m.ask&&m.ask.done!=null)||(m.hadNext&&!m.next)))m.cxm.sugg=null});
+ C.drawMsgs&&C.drawMsgs()}
+/* typed or tapped in the assistant box while this build is the active conversation */
+function onChat(q){const C=CXr();if(!Q.thread||!C.cur||C.cur().id!==Q.thread.id||!D.getElementById("stuRoot"))return false;
+ C.pushMsg({me:1,t:E(q)},Q.thread);Q.dockEcho=true;
+ try{const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();const n=norm(q);
+  const ai=Q.msgs.map((m,i)=>[m,i]).reverse().find(x=>x[0].ask&&x[0].ask.done==null);
+  if(ai){const opts=ai[0].ask.opts;let j=opts.findIndex(o=>norm(o.l)===n);if(j<0&&/^[1-9]$/.test(n))j=+n-1;if(j<0)j=opts.findIndex(o=>norm(o.l).indexOf(n)===0&&n.length>3);
+   if(j>=0&&j<opts.length){answer(ai[1],j);return true}
+   if(/^(yes|ok|okay|go|sure|recommended|your pick)$/.test(n)){answer(ai[1],Math.max(0,opts.findIndex(o=>o.rec)));return true}}
+  const nx=Q.msgs[Q.msgs.length-1];const pend=Q.msgs.slice().reverse().find(m=>m.next);
+  if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
+  submit(q);return true}finally{Q.dockEcho=false}}
+if(W.CHATX)W.CHATX.hook=onChat;
+else document.addEventListener("DOMContentLoaded",()=>{if(W.CHATX)W.CHATX.hook=onChat});
+[500,1500,4000].forEach(t=>setTimeout(()=>{if(W.CHATX&&W.CHATX.hook!==onChat)W.CHATX.hook=onChat},t));
 
 /* ---------- running a scenario ---------- */
 function startScenario(sc,promptText){
- clearTimers();Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.reached={};Q.built=false;Q.published=null;Q.exp={};Q.sel=null;Q.ph=0;Q.zoom=1;Q.seen=new Set();Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";
+ clearTimers();Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.mi=0;ensureThread(sc.title);Q.reached={};Q.built=false;Q.published=null;Q.exp={};Q.sel=null;Q.ph=0;Q.zoom=1;Q.seen=new Set();Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";Q.beats=X.beatsFor?X.beatsFor(sc,sc.beats.slice()):sc.beats;
  you(promptText||sc.prompt);
  const q=promptText||sc.prompt;
  /* a real search of the library comes first for every build */
@@ -97,19 +116,23 @@ function applyBeat(b){const B=Q.B,sc=Q.sc;
  if(b.view==="access"){B.cmd=b.cmd||"";B.grants=b.grants||[];B.people=resolveAccess(B.cmd,B.grants)}
  if(b.guard){B.guard=b.guard;B.owner=(OWN[sc.id]||[me(),"Casey Rowan"])[0]}
  if(b.view==="gov")B.gov=b.steps||[];
- render();syncRail()}
-function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=sc.beats[Q.i];
+
+ if(b.run)G(()=>b.run(b));render();syncRail()}
+function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.beats[Q.i];
  if(!b){finish();return}
  applyBeat(b);
- const msgs=b.say.slice();
+ const msgs=(typeof b.say==="function"?b.say():b.say).slice();
  const step=()=>{const m=msgs.shift();if(m==null){after();return}
   Q.typing=true;drawChat(true);later(()=>{Q.typing=false;const o={r:"ai",h:m};if(!msgs.length&&b.view==="gov"&&b.steps)o.list=b.steps;Q.msgs.push(o);drawChat(true);step()},Q.fast?10:650)};
  const after=()=>{
-  if(b.ask){Q.msgs.push({r:"ai",h:"",ask:{q:b.ask.q,opts:b.ask.opts,done:null}});Q.wait=true;drawChat(true);if(Q.auto)later(()=>answer(Q.msgs.length-1,Math.max(0,b.ask.opts.findIndex(o=>o.rec))),1300)}
+  if(b.ask){Q.msgs.push({r:"ai",h:"",ask:{q:b.ask.q,opts:b.ask.opts,done:null}});Q.wait=true;drawChat(true);if(Q.auto)later(()=>answer(Q.msgs.length-1,Math.max(0,b.ask.opts.findIndex(o=>o.rec))),b.holdAsk||1300)}
   else if(b.view==="guard"&&!Q.built){Q.msgs.push({r:"ai",h:"",next:"Build the app and all its guardrails"});Q.wait=true;drawChat(true);if(Q.auto)later(buildOut,1300)}
-  else{const last=Q.i>=sc.beats.length-1;if(!last){Q.msgs.push({r:"ai",h:"",next:"Continue"});Q.wait=true;drawChat(true);if(Q.auto)later(nextBeat,1200)}}};
+  else{const nb=Q.beats[Q.i+1];if(nb){Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=true;drawChat(true);if(Q.auto)later(nextBeat,b.hold||1200)}}};
  step()}
 function answer(mi,j){const m=Q.msgs[mi];if(!m||!m.ask||m.ask.done!=null)return;const o=m.ask.opts[j];m.ask.done=j;you(o.l);
+ if(o.agree){Q.B.agreed=true;Q.B.agreedAt=new Date().toISOString().slice(0,10)}
+ if(o.tgt!=null&&X.setTarget)X.setTarget(o.tgt);
+ if(o.run&&X[o.run])G(()=>X[o.run](o));
  if(o.own){const who=o.own==="@me"?me():o.own;Q.B.data.forEach(d=>{if(d.kind==="new")d.owner=who})}
  Q.typing=true;drawChat(true);later(()=>{Q.typing=false;if(o.say)say(o.say);Q.wait=false;render();syncRail();later(nextBeat,900)},700)}
 function finish(){}
@@ -119,7 +142,7 @@ function buildOut(){
  if(Q.built||!Q.sc)return;Q.built=true;Q.msgs.forEach(m=>{if(m.next)m.next=null});const B=Q.B,sc=Q.sc,own=OWN[sc.id]||[me(),"Casey Rowan"];
  const id="stu_"+slug(B.title);B.id=id;
  const flat=B.phases?B.phases.reduce((a,p)=>a.concat(p.steps.map(s=>Object.assign({ph:p.name},s))),[]):B.steps;
- const stp=flat.map((s,i)=>({n:s.n,d:s.d||"",who:s.who,owner:s.owner||"Owner",sla:s.sla||"",in:i?flat[i-1].n+" done":"Request",out:s.n+" done"}));
+ const stp=flat.map((s,i)=>({n:s.n,d:s.d||"",who:s.who==="fn"?"auto":s.who,owner:s.owner||"Owner",sla:s.sla||"",in:i?flat[i-1].n+" done":"Request",out:s.n+" done"}));
  const mids=[];
  B.metrics.forEach(m=>{const mid="m_stu_"+slug(B.title)+"_"+m.ac.toLowerCase();mids.push(mid);G(()=>{if(!METRICS[mid]){const t=parseFloat(m.tgt),c=parseFloat(m.cur);METRICS[mid]={n:m.n,f:m.f,u:m.u,cur:c,tgt:t,badAt:m.dir==="max"?t*.9:t*1.5,dir:m.dir,max:Math.max(t,c)*1.4,tr:m.tr,owner:own[0],use:[B.title],rem:{kind:"sop",ref:"SOP-S-"+m.ac,title:m.off,agent:"Studio Agent",auto:false,state:"idle",prog:"Drafted from the build conversation"}}}})});
  const newEnts=B.data.filter(d=>d.kind==="new");
@@ -131,7 +154,7 @@ function buildOut(){
  B.result=r&&r.ok?"registered":"drafted";B.ents=newEnts.length;B.mids=mids.length;B.nsteps=stp.length;
  G(()=>{if(W.MODMAP&&MODMAP.refresh)MODMAP.refresh()});G(()=>{if(PROCLIB.refresh)PROCLIB.refresh()});
  Q.stage="guard";Q.reached.guard=1;Q.view="guard";render();syncRail();
- Q.msgs.push({r:"ai",h:"Built. <b>"+stp.length+" steps</b>, "+mids.length+" measure"+(mids.length===1?"":"s")+", "+newEnts.length+" new data attribute"+(newEnts.length===1?"":"s")+" and every guardrail on the right. It is registered in the process library as <b>"+E(B.title)+"</b>.<br>One thing only you can do: accept ownership."});drawChat(true)}
+ Q.msgs.push({r:"ai",h:"Built. <b>"+stp.length+" steps</b>, "+mids.length+" measure"+(mids.length===1?"":"s")+", "+newEnts.length+" new data attribute"+(newEnts.length===1?"":"s")+" and every guardrail on the right. It is registered in the process library as <b>"+E(B.title)+"</b>.<br>I will not trust it yet. Next I put test agents through all of it."});const nb=Q.beats[Q.i+1];if(nb)Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=!!nb;drawChat(true);if(Q.auto&&nb)later(nextBeat,1300)}
 
 /* ---------- share it with the enterprise ---------- */
 const CERT=()=>{const B=Q.B,g=B.guard||{};return[
@@ -143,7 +166,9 @@ const CERT=()=>{const B=Q.B,g=B.guard||{};return[
  ["Each measure says what to do when off trend",B.metrics.every(m=>m.off),B.metrics.length+" measures"],
  ["Access set and checked against the org chart",B.people.length>0,B.people.reduce((a,x)=>a+x.people.length,0)+" people resolved"],
  ["Knowledge articles seeded from the conversation",(g.articles||[]).length>0,(g.articles||[]).length+" drafted"],
- ["Test run passed on sample data",true,"12 of 12 sample cases passed"]]};
+ ["Test agents ran the whole process and every finding is fixed",!!(B.test&&B.test.clean),B.test?(B.test.clean?B.test.n+" checks passed after "+B.test.fixed+" fixes":"Open findings"):"Not run yet"],
+ ["Usability and Section 508 scan passed after remediation",!!(B.ux&&B.ux.clean),B.ux?(B.ux.clean?"0 open issues, "+B.ux.fixed+" fixed":"Open issues"):"Not run yet"],
+ ["Approval path into the governance body submitted",!!B.submitted,B.submitted?"Submitted for the "+B.submitted:"Not submitted"]]};
 function publish(){if(Q.published||!Q.built)return;const B=Q.B;const bad=CERT().filter(c=>!c[1]);if(bad.length){Q.msgs.push({r:"ai",h:"Not yet. Still open: <b>"+E(bad[0][0])+"</b>."});drawChat(true);return}
  const can=visPeople();Q.published={id:B.id,title:B.title,owner:B.owner,vis:Q.vis,n:can.length,at:new Date().toISOString().slice(0,10),ver:"1.0"};
  Q.lib.unshift(Object.assign({kind:"studio",steps:B.nsteps||B.steps.length,sc:Q.sc.id},Q.published));
@@ -154,10 +179,11 @@ function visPeople(){const s=STAFF();if(Q.vis==="owner")return[Q.B.owner];if(Q.v
 /* ---------- direct edits on the visual ---------- */
 function flatSteps(){return Q.B.phases?Q.B.phases.reduce((a,p)=>a.concat(p.steps),[]):Q.B.steps}
 function cycleWho(ref){const s=stepAt(ref);if(s)setWho(ref,ORDER[(ORDER.indexOf(s.who)+1)%4])}
-function setWho(ref,to){const s=stepAt(ref);if(!s||s.base||s.who===to)return;const from=s.who;s.who=to;s.owner=s.who==="auto"?"Automatic":s.who==="agent"?(s.owner&&/Agent$/.test(s.owner)?s.owner:"Studio Agent"):(s.owner==="Automatic"||/Agent$/.test(s.owner)?"Owner":s.owner);
+function setWho(ref,to){const s=stepAt(ref);if(!s||s.base||s.who===to)return;const from=s.who;s.who=to;s.owner=s.who==="auto"?"Automatic":s.who==="fn"?"Function":s.who==="agent"?(s.owner&&/Agent$/.test(s.owner)?s.owner:"Studio Agent"):(s.owner==="Automatic"||s.owner==="Function"||/Agent$/.test(s.owner)?"Owner":s.owner);
  let msg="You changed <b>"+E(s.n)+"</b> from "+WHO[from][0].toLowerCase()+" to "+WHO[s.who][0].toLowerCase()+".";
  if(s.who==="auto"&&/approv|sign|decid|review/i.test(s.n))msg+=" I would keep a person on this one: it is a decision. I left it as you set it and logged the risk.";
  else if(s.who==="agent")msg+=" An agent will propose and a person will confirm.";
+ else if(s.who==="fn")msg+=" A function is a fixed rule: same input, same answer, tested once.";
  else msg+=" I rechecked the flow: nothing else changes.";
  say(msg);render()}
 function addStep(text){const t=text.replace(/^add (a )?step[:\s-]*/i,"").trim();if(!t){say("Tell me the step, for example: <i>add a step: notify the supplier</i>.");return}
@@ -178,11 +204,11 @@ function submit(text){text=String(text||"").trim();if(!text)return;
 function publishPrompt(){say("Use <b>Share</b> on the right when you are ready.");}
 
 /* ---------- visuals: same language as the workflow designer, process map and data model ---------- */
-const LANES=["human","agent","auto","gate"];
+const LANES=["human","agent","fn","auto","gate"];
 const eyebrow=(a,b)=>`<div class="stu-eb">${E(a)}${b?` <span>${E(b)}</span>`:""}</div>`;
 const head=(eb,t,sum)=>`${eyebrow(eb)}<h2>${t}</h2>${sum?`<p class="stu-sum">${sum}</p>`:""}`;
 const tile=(k,v,c)=>`<div class="stu-k card glass"><small>${k}</small><b>${v}</b><span>${c||""}</span></div>`;
-function mixOf(list){const m={human:0,auto:0,agent:0,gate:0};list.forEach(s=>m[s.who]++);return m}
+function mixOf(list){const m={human:0,auto:0,fn:0,agent:0,gate:0};list.forEach(s=>m[s.who]++);return m}
 function mixHTML(list){const m=mixOf(list);return ORDER.map(k=>`<span><i class="stu-dot ${WHO[k][1]}"></i><b>${m[k]}</b> ${WHO[k][0].toLowerCase()}</span>`).join("")}
 function barHTML(list){const m=mixOf(list);return `<span class="stu-bar">${ORDER.map(k=>m[k]?`<i class="${WHO[k][1]}" style="flex:${m[k]}"></i>`:"").join("")}</span>`}
 function stepAt(ref){if(ref==null||ref==="")return null;const B=Q.B;return String(ref).indexOf(":")>0?G(()=>B.phases[+ref.split(":")[0]].steps[+ref.split(":")[1]],null):B.steps[+ref]||null}
@@ -209,8 +235,8 @@ function inspector(){const ref=Q.sel,s=stepAt(ref);
   <dl class="stu-dl"><dt>Owner</dt><dd>${E(s.owner||"Not set")}</dd><dt>Time limit</dt><dd>${E(s.sla||"None")}</dd>${s.d?`<dt>Note</dt><dd>${E(s.d)}</dd>`:""}</dl>
   ${s.base?`<p class="stu-note">Owned by ${E(s.owner)}. Extending it needs the owner to agree.</p>`:""}
   ${iss.length?`<h4>What I found</h4><ul class="stu-iss">${iss.map(x=>`<li><b>${E(x.t)}</b><span>${E(x.f)}</span></li>`).join("")}</ul>`:`<p class="stu-note">No loopholes or rework here.</p>`}</aside>`}
-function flowTiles(all){const m=mixOf(all),auto=all.length?Math.round((m.auto+m.agent)/all.length*100):0,B=Q.B;
- return `<div class="stu-ks">${tile("Steps",all.length,B.phases?B.phases.length+" phases":"in sequence")}${tile("Automation",auto+"%","automatic plus AI agent")}${tile("Loopholes",B.loops||B.issues.length,(B.loops?B.loops-B.issues.length+" closed on my own":"all closed"))}${tile("Owner",E((B.adj&&B.adj.owner)||B.owner||"You"),B.adj?"agrees before it extends":"you, until you share it")}</div>`}
+function flowTiles(all){const m=mixOf(all),auto=all.length?Math.round((m.auto+m.agent+m.fn)/all.length*100):0,B=Q.B;
+ return `<div class="stu-ks">${tile("Steps",all.length,B.phases?B.phases.length+" phases":"in sequence")}${tile("Automation",auto+"%","automatic, function or AI agent")}${tile("Loopholes",B.loops||B.issues.length,(B.loops?B.loops-B.issues.length+" closed on my own":"all closed"))}${tile("Owner",E((B.adj&&B.adj.owner)||B.owner||"You"),B.adj?"agrees before it extends":"you, until you share it")}</div>`}
 function vFlow(){const B=Q.B;
  if(B.phases){const all=flatSteps(),pi=Math.min(Q.ph||0,B.phases.length-1),P=B.phases[pi];
   return `${head("Process",E(B.title),all.length+" steps in "+B.phases.length+" phases. Open a phase to see its steps.")}${flowTiles(all)}<div class="stu-mix">${mixHTML(all)}</div>
@@ -245,10 +271,10 @@ function vAccess(){const B=Q.B;return `${head("Access","Who can see and change i
  <div class="stu-ppl">${g.people.slice(0,24).map(n=>`<span class="stu-pp" title="${E(n)}">${E(n.split(" ").map(x=>x[0]).join("").slice(0,2))}<small>${E(n)}</small></span>`).join("")}${g.people.length>24?`<span class="stu-pp more">+${g.people.length-24}</span>`:""}</div></section>`).join("")||'<p class="stu-empty">No access set. Restricted to you until you do.</p>'}</div>
  <p class="stu-note">Sensitive fields stay masked unless a person's role already allows them.</p>`}
 function vStrat(){const s=Q.B.strat||[];return `${head("Strategy check",'<span class="stu-pro">Pro</span> Does this fit what leadership asked for?',"Checked before anything is built.")}<div class="stu-sg">${s.map(x=>{const o=SD.OBJ.find(y=>y.id===x.o);return `<div class="stu-sv card glass ${x.v}"><span class="stu-vd ${x.v}">${x.v==="supports"?"Supports":x.v==="conflicts"?"Conflicts":"No effect"}</span><b>${E(o.n)}</b><small>${E(x.t)}</small></div>`}).join("")}</div>`}
-const ART=()=>{const B=Q.B,g=B.guard||{},b=Q.built;const n=B.nsteps||flatSteps().length;
+const ART_OLD=()=>{const B=Q.B,g=B.guard||{},b=Q.built;const n=B.nsteps||flatSteps().length;
  return [["Process and workflow",n+" steps with a person, automation or agent on each",1],["Data model","Reuses "+(B.data.filter(d=>d.kind!=="new").length)+" existing elements; "+B.data.filter(d=>d.kind==="new").length+" new with owner, source and rule",1],["Measures","Each with a decision, a target and an off-trend action",1],["Access and security",B.people.reduce((a,x)=>a+x.people.length,0)+" people from the org chart; sensitive fields masked",1],["Maturity model",g.maturity,b],["Knowledge articles",(g.articles||[]).map(x=>"“"+x+"”").join(", "),b],["Roadmap",(g.roadmap||[]).join(" · "),b],["Technical debt decisions",(g.debt||[]).join(" "),b],["Ownership agreement",g.agree,b&&B.agreed],["Audit trail and change record","Every edit in this conversation is logged with its author",b],["Test run","12 of 12 sample cases passed",b]]};
 const glTile=a=>`<div class="stu-gt card glass ${a[2]?"on":""}"><i aria-hidden="true">${a[2]?"✓":""}</i><span><b>${E(a[0])}</b><small>${E(a[1]||"")}</small></span></div>`;
-function vGuard(){const B=Q.B,b=Q.built;return `${head("Guardrails","The app and its guardrails",b?"Built. Everything below exists and is linked.":"You asked for one thing. These come with it by default.")}
+function vGuard(){const B=Q.B,b=Q.built;const ART=ART_OLD;return `${head("Guardrails","The app and its guardrails",b?"Built. Everything below exists and is linked.":"You asked for one thing. These come with it by default.")}
  <div class="stu-gg">${ART().map(glTile).join("")}</div>
  <div class="stu-cta">${b?`${B.agreed?"":`<button class="btn" data-stu-agree="1">I accept ownership</button>`} <button class="btn primary" data-stu-go="share" ${B.agreed?"":"disabled"}>Share it with the enterprise</button>${B.agreed?"":'<span class="stu-hint">Accept ownership to continue</span>'}`:`<button class="btn primary" data-stu-build="1">Build the app and all its guardrails</button>`}</div>`}
 function visOpts(){return [["enterprise","Everyone"],["division","My division"],["owner","Only me"]].map(o=>`<label class="stu-vo"><input type="radio" name="stuvis" value="${o[0]}" ${Q.vis===o[0]?"checked":""}>${o[1]}</label>`).join("")}
@@ -266,26 +292,26 @@ function vLib(){const rows=libRows(Q.q);const sh=rows.slice(0,40);
  <div class="stu-lib">${sh.map(r=>{const ok=canSee(r);return `<div class="stu-lr card glass"><span class="stu-ln"><b>${E(r.title)}</b><small>${E(r.fam)} · owner ${E(r.owner)} · ${r.steps} steps${r.kind==="studio"?" · built in the studio "+E(r.ver):""}</small></span><span class="stu-mat">L${r.lvl}</span>${ok?`<button class="btn quiet" data-stu-use="run:${E(r.id)}">Run</button><button class="btn quiet" data-stu-use="ext:${E(r.id)}">Extend</button><button class="btn quiet" data-stu-use="inh:${E(r.id)}">Inherit</button>`:`<button class="btn quiet" data-stu-use="ask:${E(r.id)}">Ask for access</button>`}</div>`}).join("")}</div>${rows.length>40?`<p class="stu-sum">Showing 40. Search to narrow.</p>`:""}`}
 function vHome(){const lib=libRows("");return `<div class="stu-home">${eyebrow("Guardrails in a box")}<h2>Tell us what you need to do. We will handle the rest.</h2><p class="stu-sum">You do not need to know how security, data, governance or process design work. Describe the job in plain words. Oukala finds what already exists, builds what does not, and every enterprise rule applies to what you build.</p>
  <div class="stu-hw">${[["Say it","Type it, or soon, say it"],["Find or build","Oukala searches the library, then extends or builds"],["Watch and change","It appears here. Edit it here or in chat"],["Guardrails included","Everyone with permission can use what you build"]].map((x,i)=>`<div class="stu-h1 card glass"><b>${i+1}</b><span><em>${x[0]}</em><small>${x[1]}</small></span></div>`).join("")}</div>
+ <h3>Try an example</h3><div class="stu-ex">${SD.CHIPS.map(c=>`<button type="button" class="stu-exc card glass" data-stu-try="${c.id}"><b>${E(c.t)}${c.pro?' <em class="stu-pro">Pro</em>':""}</b><small>${E(c.sub)} · ${E(c.time)}</small></button>`).join("")}</div>
  <div class="stu-ks">${tile("Library",lib.length,"processes to reuse")}${tile("Data",G(()=>Object.keys(DATAMODEL.tables).length,0),"entities with owners")}${tile("Measures",Object.keys(G(()=>METRICS,{})).length,"each with an action")}<div class="stu-k card glass stu-kb"><button class="btn quiet" data-stu-go="lib">Browse the library</button></div></div></div>`}
-const VIEWS={home:vHome,find:vFind,gov:vGov,flow:vFlow,std:vStd,data:vData,metrics:vMetrics,access:vAccess,strat:vStrat,guard:vGuard,share:vShare,lib:vLib};
-function stageOfView(v){return {find:"find",gov:"find",flow:"process",std:"std",data:"data",metrics:"metrics",access:"access",strat:"strat",guard:"guard",share:"share"}[v]}
-function railHTML(){if(Q.view==="home"||Q.view==="lib")return `<nav class="stu-rail"><button type="button" class="${Q.view==="home"?"cur":""}" data-stu-go="home">Start</button><button type="button" class="${Q.view==="lib"?"cur":""}" data-stu-go="lib">Library</button></nav>`;
- return `<nav class="stu-rail" aria-label="Build progress">${STAGES.filter(s=>!s[2]||Q.pro).map(s=>{const r=Q.reached[s[0]],cur=stageOfView(Q.view)===s[0];return `<button type="button" class="${cur?"cur":""} ${r?"done":""}" data-stu-view="${s[0]}" ${r?"":"disabled"}>${s[1]}</button>`}).join("")}<span class="stu-sp1"></span><button type="button" data-stu-go="lib">Library</button></nav>`}
+const VIEWS=X.views;Object.assign(VIEWS,{home:vHome,find:vFind,gov:vGov,flow:vFlow,std:vStd,data:vData,metrics:vMetrics,access:vAccess,strat:vStrat,guard:vGuard,share:vShare,lib:vLib});
+function stageOfView(v){return STAGE_OF_VIEW[v]||v}
+const playBtn=()=>`<button type="button" class="stu-play" data-stu-play="1" aria-pressed="${Q.auto}">${Q.auto?"Pause demo":"Play the demo"}</button>`;
+function railHTML(){if(Q.view==="home"||Q.view==="lib")return `<nav class="stu-rail"><button type="button" class="${Q.view==="home"?"cur":""}" data-stu-go="home">Start</button><button type="button" class="${Q.view==="lib"?"cur":""}" data-stu-go="lib">Library</button><span class="stu-sp1"></span>${playBtn()}</nav>`;
+ const cs=stageOfView(Q.view),st=STAGES.filter(t=>!t[3]||Q.pro),cg=(st.find(t=>t[0]===cs)||st[0])[2];
+ const grp=GROUPS.map(g=>{const mem=st.filter(t=>t[2]===g),done=mem.length&&mem.every(t=>Q.reached[t[0]]),any=mem.some(t=>Q.reached[t[0]]);const tgt=(mem.filter(t=>Q.reached[t[0]]).pop()||mem[0])[0];return `<button type="button" class="${g===cg?"cur":""} ${done?"done":""}" data-stu-view="${tgt}" ${any?"":"disabled"}>${g}</button>`}).join("");
+ const sub=st.filter(t=>t[2]===cg).map(t=>{const r=Q.reached[t[0]];return `<button type="button" class="${cs===t[0]?"cur":""} ${r?"done":""}" data-stu-view="${t[0]}" ${r?"":"disabled"}>${t[1]}</button>`}).join("");
+ return `<nav class="stu-rail" aria-label="Build progress">${grp}<span class="stu-sp1"></span><button type="button" data-stu-go="lib">Library</button>${playBtn()}</nav><nav class="stu-rail stu-sub2" aria-label="Steps in ${cg}">${sub}</nav>`}
 function canvasHTML(){const f=VIEWS[Q.view]||vHome;return railHTML()+`<div class="stu-body" tabindex="-1">${f()}</div>`}
-const VIEW_OF_STAGE={find:"find",process:"flow",std:"std",data:"data",metrics:"metrics",access:"access",strat:"strat",guard:"guard",share:"share"};
 
 /* ---------- mounting ---------- */
-function shell(){return `<div class="stu"><section class="stu-left card glass" aria-label="Chat with Oukala"><header><b>Build with Oukala</b><span class="stu-sub">Guardrails in a box</span><button type="button" class="btn quiet" data-stu-play="1" aria-pressed="${Q.auto}">${Q.auto?"Pause demo":"Play the demo"}</button></header><div id="stuChat" class="stu-chat" role="log" aria-live="polite"></div>
- <div class="stu-chips" id="stuChips"></div>
- <form class="stu-in" data-stu-form><button type="button" class="stu-mic" data-stu-mic="1" title="Voice (where your browser supports it)" aria-label="Speak instead of typing">🎤</button><input id="stuInput" autocomplete="off" placeholder="${Q.sc?"Answer, ask, or say: add a step …":"What do you need to do?"}" aria-label="Tell Oukala what you need"><button class="btn primary" type="submit">Send</button></form></section>
- <section class="stu-right" id="stuCanvas" aria-label="What is being built"></section></div>`}
-function chipsHTML(){if(Q.sc)return"";return SD.CHIPS.map(c=>`<button type="button" class="stu-chip" data-stu-try="${c.id}"><b>${E(c.t)}${c.pro?' <em class="stu-pro">Pro</em>':""}</b><small>${E(c.sub)} · ${E(c.time)}</small></button>`).join("")}
-function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}const ch=D.getElementById("stuChips");if(ch)ch.innerHTML=chipsHTML();const inp=D.getElementById("stuInput");if(inp)inp.placeholder=Q.sc?"Answer, ask, or say: add a step …":"What do you need to do?";
- const pb=D.querySelector("[data-stu-play]");if(pb){pb.textContent=Q.auto?"Pause demo":"Play the demo";pb.setAttribute("aria-pressed",Q.auto)}}
+function shell(){return `<div class="stu"><section class="stu-right" id="stuCanvas" aria-label="What is being built"></section></div>`}
+function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();if(X.after)G(()=>X.after());{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}}
 function syncRail(){}
-function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";r.innerHTML=shell();
- if(!Q.msgs.length){Q.msgs.push({r:"ai",h:"Hi "+E(me().split(" ")[0])+". What do you need to do? Describe it in plain words. I will find what already exists, or build it with you."})}
- drawChat(true);render()}
+function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";r.innerHTML=shell();const C=CXr();
+ if(!Q.thread||!(C.hasThread&&C.hasThread(Q.thread.id))){ensureThread("Build with Oukala");Q.msgs=[];Q.mi=0;Q.sc=null;Q.view="home"}else C.activate&&C.activate(Q.thread.id);
+ if(!Q.msgs.length){Q.msgs.push({r:"ai",h:"Hi "+E(me().split(" ")[0])+". What do you need to do? Describe it in plain words, or pick an example. I will find what already exists, or build it with you here.",sugg:SD.CHIPS.map(c=>c.t)})}
+ drawChat(true);render();if(C.open)C.open("chat")}
 W.STUDIO.mount=mount;W.STUDIO.start=id=>startScenario(SD.SCEN[id]);W.STUDIO.submit=submit;W.STUDIO.fast=false;
 function open(text){go("studio");setTimeout(()=>{mount();if(text)submit(text)},60)}
 W.STUDIO.open=open;
@@ -343,5 +369,6 @@ function ensurePill(){const f=D.querySelector(".rail .railfoot");if(!f)return;le
  if(b.parentNode!==f||f.firstChild!==b)f.insertBefore(b,f.firstChild);b.classList.toggle("cur",S_screen()==="studio")}
 D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-stu-pill]"))open("")});
 [200,800,2000,5000].forEach(t=>setTimeout(ensurePill,t));
+Object.assign(X,{E,G,Q,WHO,ORDER,head,tile,eyebrow,canvas,flatSteps,stepAt,setWho,say,later,render,syncRail,STAFF,me,OWN,resolveAccess,visPeople,publish,drawChat,slug,mixOf,barHTML,issuesHTML,glTile,ART:ART_OLD,STAGES,VIEW_OF_STAGE,STAGE_OF_VIEW});
 W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=nextBeat;
 })();

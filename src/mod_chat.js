@@ -79,7 +79,7 @@ CX.delegation=delegation;
 /* ---------------- threads and context ---------------- */
 function newThread(title,o){const t=Object.assign({id:uid("T"),title:title||"New chat",pinned:false,arch:false,created:Date.now(),upd:Date.now(),mode:ST.mode,msgs:[],pend:null,unread:0,ctx:{subj:null,attach:[],off:{}}},o||{});ST.threads.unshift(t);ST.active=t.id;return t}
 const cur=()=>{let t=ST.threads.find(x=>x.id===ST.active&&!x.arch);if(!t){t=ST.threads.find(x=>!x.arch)||newThread()}ST.active=t.id;return t};
-CX.cur=cur;
+CX.cur=cur;CX.newThread=newThread;CX.hasThread=function(id){return ST.threads.some(x=>x.id===id&&!x.arch)};CX.activate=function(id){if(CX.hasThread(id)){ST.active=id;CX.drawAll&&CX.drawAll()}};
 try{Object.defineProperty(S,"chat",{configurable:true,enumerable:true,get(){return cur().msgs},set(v){cur().msgs=Array.isArray(v)?v:[]}})}catch(e){}
 const screenName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:id};
 function lookupRec(id){if(!id)return null;const X=S.itsm||{};let r;
@@ -645,7 +645,7 @@ const SLASH={"/onboard":q=>"onboard "+q,"/order":q=>"order "+q,"/status":q=>"wha
 CX.SLASH=SLASH;
 const SLASH_HELP=[["/onboard Name as role starting date","Plan a full onboarding"],["/order laptop for Name","Inline catalog form"],["/status RITM… or me","Where it is and who has it"],["/approve RITM…","Approve for you or for who you act for"],["/explain how the P1 SLA is measured","Grounded answer with sources"],["/impact Standards Portal","Impact analysis"],["/incident text","Log an incident"],["/pto Oct 20 to Oct 24","Request time off"],["/oncall","Who is on call"],["/as Hana Koval","Act on behalf of someone"],["/mode act","Autonomy mode"],["/attach INC0412","Add to the context pack"],["/token to 60M","Raise a token limit"]];
 CX.SLASH_HELP=SLASH_HELP;
-function handle(q0,o){o=o||{};let q=String(q0||"").trim();if(!q)return;const t=cur();CX.open&&CX.open("chat");
+function handle(q0,o){o=o||{};let q=String(q0||"").trim();if(!q)return;if(CX.hook&&!/^\//.test(q)&&CX.hook(q,o)===true)return;const t=cur();CX.open&&CX.open("chat");
  if(/^\/(new|clear)$/.test(q)){newThread();CX.drawAll();return}
  if(q==="/help"){pushMsg({me:1,t:q},t);sayAI(t,"Slash commands, and everything also works in plain words.",{cards:[{t:"table",title:"Slash commands",h:["Type","Does"],r:SLASH_HELP.map(x=>[x[0],x[1]])}],stream:false});return}
  if(q==="/context"){pushMsg({me:1,t:q},t);CX.open("ctx");return}
