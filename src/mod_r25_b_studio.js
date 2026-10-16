@@ -127,7 +127,7 @@ function afterDraw(){const C=W.CHATX;if(!C||!C.cur)return;const ctx=D.getElement
  if(!live){if(st)st.remove();return}
  const t=C.cur(),inThread=Q.thread&&t.id===Q.thread.id,onScr=S_screen()==="studio";
  if(!st){st=D.createElement("div");st.id="stuStrip";st.className="stu-strip";ctx.parentNode.insertBefore(st,ctx)}
- const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet" data-stu-exit>Exit build</button>';
+ const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet" data-stu-exit aria-label="Close the build bar">'+((inThread&&onScr)?"Exit build":"Close \u00d7")+'</button>';
  if(st.dataset.h!==html){st.dataset.h=html;st.innerHTML=html}
  C.drawSugs&&C.drawSugs()}
 function fixChips(t){if(!buildLive()||Q.hold||!Q.thread||t.id!==Q.thread.id)return;const want=pendingChips();const last=t.msgs[t.msgs.length-1];
@@ -135,7 +135,7 @@ function fixChips(t){if(!buildLive()||Q.hold||!Q.thread||t.id!==Q.thread.id)retu
 function wireChat(){if(W.CHATX){W.CHATX.afterDraw=afterDraw;W.CHATX.preSugs=fixChips}}
 D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-stu-back],[data-stu-exit]");if(!t)return;const C=W.CHATX;
  if(t.hasAttribute("data-stu-back")){Q.exited=false;go("studio");setTimeout(()=>{mount();if(C&&Q.thread)C.activate(Q.thread.id);afterDraw()},60)}
- else{clearTimers();Q.exited=true;Q.wait=false;go("home");setTimeout(afterDraw,80)}});
+ else{clearTimers();Q.exited=true;Q.wait=false;if(S_screen()==="studio")go("home");setTimeout(afterDraw,80);if(C&&C.drawSugs)C.drawSugs()}});
 if(W.CHATX)W.CHATX.hook=onChat;
 else document.addEventListener("DOMContentLoaded",()=>{if(W.CHATX)W.CHATX.hook=onChat});
 [500,1500,4000].forEach(t=>setTimeout(()=>{if(W.CHATX&&W.CHATX.hook!==onChat)W.CHATX.hook=onChat;wireChat()},t));wireChat();
