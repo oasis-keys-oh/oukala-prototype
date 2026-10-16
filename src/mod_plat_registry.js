@@ -249,7 +249,10 @@ function planDrawer(id){
  openDrawer(`<div class="eyebrow">Planned entity</div><h2 style="margin:4px 0">${E(r.label)}</h2><p class="muted small"><code>${E(id)}</code> in ${E(DOM[r.domain].n)}, proposed steward ${E(r.steward)}.</p><div class="story">${E(r.why)}</div><p class="small">First users: ${E(r.use)}</p><p class="small muted">Next step: data council review, then the field catalog is drafted by the Registry Agent for human approval.</p>`);
 }
 /* reuse check: finds near matches among existing and planned entities */
+let _rcE=null,_rcM=new Map();
 function reuseCheck(label,fieldsText){
+ const _es=PLAT.entities();if(_es!==_rcE){_rcE=_es;_rcM=new Map()}const _k=label+"\u0001"+(fieldsText||"");if(_rcM.has(_k))return _rcM.get(_k).slice();const _r=reuseCheck0(label,fieldsText);_rcM.set(_k,_r);return _r.slice()}
+function reuseCheck0(label,fieldsText){
  const toks=s=>(s||"").toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>2);
  const want=new Set(toks(label).concat(toks(fieldsText)));const hits=[];
  PLAT.entities().forEach(e=>{const have=new Set(toks(e.label).concat(toks(e.id)).concat(e.fields.flatMap(f=>toks(f.k).concat(toks(f.label)))));let n=0;want.forEach(w=>{if(have.has(w))n++});const sc=want.size?n/want.size:0;if(sc>=.34)hits.push({id:e.id,label:e.label,sc,kind:"existing"})});

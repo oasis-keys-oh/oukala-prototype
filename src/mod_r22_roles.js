@@ -7,4 +7,5 @@ try{
  const ks=ORDER.filter(k=>PERSONAS[k]).concat(Object.keys(PERSONAS).filter(k=>ORDER.indexOf(k)<0));
  const keep=Object.assign({},PERSONAS);ks.forEach(k=>{delete PERSONAS[k]});ks.forEach(k=>{PERSONAS[k]=keep[k]});
 }catch(e){console.error("r22 roles",e)}
+try{ /* greeting person: each role is held by its own named person */ const PU=(window.PERM&&PERM.personaUser)||{};Object.keys(PERSONAS).forEach(k=>{if(PU[k]&&!/^(Board member|Vendor guest)$/.test(PU[k]))PERSONAS[k].as=PU[k]})}catch(e){console.error("r22 as",e)}
 })();

@@ -68,6 +68,7 @@ D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data
  G(()=>audit("Chose lens",ST.lens.toUpperCase()));try{render()}catch(x){}G(()=>toast("Lens: "+(R18.LENSES.find(l=>l.id===ST.lens)||{}).short,"info"))});
 /* 4. a Work block on every home */
 const ROLE_FAM={exec:["Strategy and portfolio","AI governance"],finance:["Finance and invoices","Contracts and SOW"],pm:["Projects and WBS","Demand"],desk:["Incident and problem","Request and catalog","Knowledge"],portfolio:["Strategy and portfolio","Demand","Projects and WBS"],change:["Change and release","Observability and SLO"],arch:["Security, audit and platform governance","CMDB and discovery"],admin:["Security, audit and platform governance","Workflow and approvals"],audit:["Security, audit and platform governance"],guest:["Request and catalog","Knowledge"]};
+R18.ROLE_FAM=ROLE_FAM;
 const meName=()=>G(()=>R15D.me().name,"Casey Rowan");
 function workBlock(){
  const me=meName();const role=G(()=>PERSONAS[S.persona].role,"exec");const fams=ROLE_FAM[role]||ROLE_FAM.exec;

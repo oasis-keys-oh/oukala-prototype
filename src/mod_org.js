@@ -31,6 +31,10 @@ Aaron Whitfield|Security architect|Jordan Lee|Architecture|arch|Rina Okafor||Thr
 Sam Patel|Platform engineering lead|Casey Rowan|Platform engineering|eng|||Production platform health and on-call;Azure cost and capacity;Anything that needs a release to production|Keeps the Standards Platform up for 420 editors and thousands of readers.|Remote|5
 Leah Moss|Platform engineer|Sam Patel|Platform engineering|eng||PR1:40|Search index jobs and relevance deployments;Pipelines;Environment problems|Ships search relevance changes safely and quickly.|Remote|2
 Ben Ito|Platform engineer|Sam Patel|Platform engineering|eng||PR1:30,PR3:30|Failover and resilience tests;Kubernetes upgrades;Monitoring dashboards|Makes the portal resilient so an outage does not stop a publication date.|Remote|4
+Elise Park|Developer|Sam Patel|Platform engineering|dev|||Contract Repository fixes and incident follow-up;Platform team stories;Support rotation|Keeps the Contract Repository stable for the editors who use it every day.|Remote|3
+Mei Tan|Developer|Sam Patel|Platform engineering|dev|||Search relevance code in Python;Platform team stories;Index job fixes|Ships search relevance improvements the editors can feel.|Remote|2
+Luis Ortega|Developer|Sam Patel|Platform engineering|dev|||TypeScript and React front end;Accessibility fixes;Platform team stories|Makes the portal usable for every editor and reader.|Remote|2
+Ravi Menon|Network engineer (contractor)|Tom Becker|Service desk and operations|ops|||Network and VPN incidents;Ops team on-call;Network changes|Keeps staff connected to the network and VPN.|Remote|2
 Carla Reyes|Platform engineer|Sam Patel|Platform engineering|eng||PR1:50|Integrations with the Contract Repository;API gateway;Service accounts|Connects the Foundation's systems so data moves once and stays correct.|Remote|9
 Anita Cole|Developer|Sam Patel|Platform engineering|dev||PR1:60|Editor workspace features;Front-end fixes;Pull request reviews|Builds the features editors use every day.|Remote|2
 Ben Alvarez|QA analyst|Sam Patel|Platform engineering|dev||PR1:30,PR4:20|Test plans and acceptance testing;Regression results;Whether a release is safe|Finds the defect before a member does.|Remote|2
@@ -45,6 +49,7 @@ Ines Duarte|Operations engineer|Tom Becker|Service desk and operations|ops|||The
 Paula Grant|Operations engineer|Tom Becker|Service desk and operations|ops|||On-call rota and handoffs;Patching windows;Endpoint management|Makes sure someone competent is always on call and ready.|Norwalk, CT|1
 Wes Hartley|Service desk analyst|Tom Becker|Service desk and operations|desk|||Facilities and room bookings;Onboarding laptops;Meeting room AV|Gets new starters productive on day one.|Norwalk, CT|8
 Rina Okafor|Security lead|Casey Rowan|Security|sec|||Access requests for restricted data;Security incidents;Quarterly access reviews|Keeps member and staff data safe, and proves it to auditors.|Remote|4
+Rosa Alvarez|Internal auditor|Catherine Doyle|Internal audit|ctrl|||Access review and control testing evidence;Audit log review;SOC 2 and ISO 27001 testing|Gives the board independent assurance, separate from the teams she tests.|Remote|5
 Imran Sheikh|Security analyst|Rina Okafor|Security|sec|Tom Becker||Alert triage;Phishing reports;Vulnerability follow-up|Watches the alerts so nobody else has to.|Remote|3
 Colette Brandt|Identity engineer|Rina Okafor|Security|sec|||Entra ID groups and conditional access;Joiner, mover, leaver automation;Privileged access|Makes sure people have exactly the access they need and no more.|Remote|9
 Nia Brooks|Change manager|Casey Rowan|Change and release|chg|Maya Ortiz||Whether a change can go in this week;The change calendar and freezes;CAB agenda|Prevents Friday-afternoon surprises by making every change visible before it happens.|Norwalk, CT|3
@@ -71,7 +76,17 @@ Dev Anand|Dues billing and collections analyst|Noelle Park|Finance|apfa|||Dues i
 Harriet Yu|Events and conference manager|Catherine Doyle|Executive office|comms|||Annual conference planning;Venues and speakers;Registration|Turns the annual conference into a reason for members to renew.|Remote|7
 Ruben Castillo|Facilities and office manager|Joanna Pierce|People operations|hr|||Office space and leases;Safety and access badges;Mail and supplies|Keeps the Norwalk office running so staff can focus on the work.|Norwalk, CT|12
 Naomi Fields|Talent acquisition partner|Joanna Pierce|People operations|hr|||Open roles and interviews;Offer approvals;Onboarding paperwork|Finds and welcomes the people the Foundation needs.|Remote|3
-Julian Park|Contracts paralegal|Theo Marlowe|Legal and compliance|legal|||Contract drafts and redlines;Renewal calendar;Signature routing|Keeps every contract on file, current and signed by the right person.|Norwalk, CT|6`;
+Julian Park|Contracts paralegal|Theo Marlowe|Legal and compliance|legal|||Contract drafts and redlines;Renewal calendar;Signature routing|Keeps every contract on file, current and signed by the right person.|Norwalk, CT|6
+Lena Hargrove|Chief commercial officer|Catherine Doyle|Commercial|comms|||Publication sales and pricing;Customer and member experience;Partnerships and sponsorships|Turns what the Foundation publishes into revenue and keeps every buyer and member coming back.|Norwalk, CT|4
+Zainab Ali|Customer care lead|Lena Hargrove|Commercial|comms|||Customer complaints and refunds;Order questions;Survey results|Is the first and last call for any buyer who is not happy.|Remote|5
+Tomas Reyes|Distribution and fulfillment manager|Elena Marsh|Distribution|ops|||Order shipping and delivery dates;Stock levels;Returns|Gets every printed standard to the right member on the day promised.|Edison, NJ|9
+Kofi Mensah|Warehouse supervisor|Tomas Reyes|Distribution|ops|||Daily pick and pack plan;Dock schedule;Cycle counts|Runs the floor so the day's orders leave on time.|Edison, NJ|7
+Dmitri Kowal|Plant operations manager|Elena Marsh|Applied Standards Center|eng|||Pilot plant schedule and output;Equipment downtime;Quality holds|Runs the pilot plant where draft standards are proved on real equipment before they are published.|Pittsburgh, PA|11
+Mei-Ling Zhou|Quality engineer|Dmitri Kowal|Applied Standards Center|eng|||Nonconformance reports;Inspection plans;Test results|Makes sure what the plant produces meets the standard it is testing.|Pittsburgh, PA|6
+Sofia Arenas|Process control lead|Dmitri Kowal|Applied Standards Center|eng|||Control room alarms;Changes to control logic;Permits to work|Keeps the plant's control systems safe, quiet and under change control.|Pittsburgh, PA|8
+Hugo Baptiste|Control room operator|Sofia Arenas|Applied Standards Center|ops|||Shift handover notes;Alarm response;Equipment start-up and shutdown|Watches the plant around the clock and acts first when something drifts.|Pittsburgh, PA|5
+Joel Tran|Maintenance and facilities planner|Ruben Castillo|People operations|ops|||Preventive maintenance schedule;Work orders;Contractor visits|Keeps buildings and equipment working before they break.|Norwalk, CT|6
+Alba Torres|Buyer|Camille Ortega|Finance|proc|||Purchase requisitions;Supplier quotes;Inbound shipment status|Turns approved requests into purchase orders at the best terms.|Norwalk, CT|4`;
 
 /* ---------- role templates: access level per module group, data class access, approvals, recurring tasks ---------- */
 const MG=["Portfolio and delivery","Service and support","Operations and monitoring","Knowledge and learning","People and teams","Money and contracts","Strategy and performance","AI and governance","Platform and admin"];
@@ -113,7 +128,7 @@ A("Marcus Reid","cfo,cfo office");A("Casey Rowan","cio office,executive office")
 A("Kenji Watanabe","ai governance,ai governance board,ai platform lead,ai governance lead,governance office");A("Noor Haddad","knowledge,knowledge manager,knowledge office,knowledge and automation");A("Nia Brooks","change manager,change management,process governance lead,process office,process owners");
 A("Hollis Grey","release management,release manager,release office");A("Camille Ortega","vendor management,vendor mgmt,vendor manager,contract owners,procurement lead");A("Theo Marlowe","compliance lead,meridian legal,procurement and legal,general counsel delegate,internal audit");
 A("Leila Haddad","experience office");A("Rina Kovacs","data architect");A("Jordan Lee","architecture,enterprise architect");A("Noelle Park","finance operations,accounts payable");A("Joanna Pierce","people office,head of people operations");A("Ines Duarte","cmdb owner,cmdb team,configuration manager,it asset management");
-A("Priti Joshi","service level manager,problem manager");A("Rina Okafor","security,security lead,security and risk");A("Carla Reyes","integration lead,integration team");A("Leah Moss","automation team");A("Victor Amaya","tbm practice lead,fp&a,finops,it finance");A("Wes Hartley","facilities,facilities lead");A("Ben Alvarez","quality,ai quality");A("Anita Cole","design systems");A("Dev Rao","service portfolio manager");A("Elena Marsh","chief editor");
+A("Priti Joshi","service level manager,problem manager");A("Rina Okafor","security,security lead,security and risk");A("Carla Reyes","integration lead,integration team");A("Leah Moss","automation team");A("Victor Amaya","tbm practice lead,fp&a,finops,it finance");A("Ruben Castillo","facilities,facilities lead,facilities and campus lead,campus");A("Wes Hartley","room bookings");A("Lena Hargrove","commercial,chief commercial officer,customer experience,sales");A("Tomas Reyes","distribution,fulfillment,warehouse,distribution and fulfillment manager");A("Dmitri Kowal","plant,plant operations,pilot plant,plant operations manager");A("Sofia Arenas","process control,control room,control systems");A("Mei-Ling Zhou","quality engineer,quality");A("Joel Tran","maintenance,maintenance planner");A("Alba Torres","buyer,purchasing");A("Zainab Ali","customer care,customer care lead");A("Ben Alvarez","quality,ai quality");A("Anita Cole","design systems");A("Dev Rao","service portfolio manager");A("Elena Marsh","chief editor");
 /* ---------- build the staff list and make sure the directory has everyone ---------- */
 const STAFF=RAW.split("\n").map(l=>{const c=l.split("|");return{n:c[0],role:c[1],mgr:c[2]==="-"?null:c[2],unit:c[3],rt:c[4],dot:c[5]||"",mx:(c[6]||"").split(",").filter(Boolean).map(z=>{const p=z.split(":");return{p:p[0],pct:+p[1]}}),fn:(c[7]||"").split(";").filter(Boolean),value:c[8]||"",loc:c[9]||"Remote",yrs:+c[10]||1}});
 const BY={};STAFF.forEach(p=>BY[p.n]=p);
@@ -360,7 +375,13 @@ aiops|AI agent operations|agents,ai agents,agent go-live,kill switch,autonomy,ag
 people|People and HR|hr,hiring,onboarding,leave,benefits,performance review,headcount,people operations|Joanna Pierce|Grace Whitfield
 skills|Training and skills|training,skills,courses,learning,certification|Grace Whitfield|Joanna Pierce
 editorial|Editorial quality and publishing|editorial,publish,publishing,style guide,standards content,drafts|Elena Marsh|Pierce Caldwell
-comms|Communications|communications,comms,announcements,newsletter,release notes,members|Leila Haddad|Elena Marsh`;
+comms|Communications|communications,comms,announcements,newsletter,release notes,members|Leila Haddad|Elena Marsh
+customer|Customer and member experience|customer,customers,buyers,complaint,refund,survey,csat,satisfaction|Lena Hargrove|Zainab Ali
+fulfil|Distribution and fulfillment|warehouse,shipping,shipment,orders,inventory,stock,returns,fulfillment,pick|Tomas Reyes|Kofi Mensah
+plantops|Pilot plant operations|plant,production,equipment,downtime,oee,yield,pilot plant|Dmitri Kowal|Sofia Arenas
+quality|Quality and nonconformance|quality,nonconformance,ncr,inspection,quality hold,test results|Mei-Ling Zhou|Dmitri Kowal
+control|Process control and safety|alarm,alarms,control room,permit to work,management of change,moc,handover,shift|Sofia Arenas|Dmitri Kowal
+facilities|Facilities and maintenance|facilities,maintenance,work order,building,campus,safety inspection,space|Ruben Castillo|Joel Tran`;
 const pid2=n=>n?slug(n):"";
 const DOMAINS=DOM_RAW.split("\n").map(l=>{const c=l.split("|");return{id:c[0],label:c[1],aliases:c[2].split(",").map(x=>x.trim()).filter(Boolean),ownerId:c[3]?pid2(c[3]):"",backupId:c[4]?pid2(c[4]):""}});
 const DOMBY={};DOMAINS.forEach(d=>DOMBY[d.id]=d);

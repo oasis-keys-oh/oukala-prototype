@@ -118,11 +118,15 @@ let IDX=null,IDXK="",VER=0;
 const famName=id=>{const f=window.LINKS?LINKS.families.find(x=>x.id===id):null;return f?f.name:({gov:"Platform, security and audit"})[id]||id};
 const seedReview=id=>CORE.has(id)?"2026-04-15":null;
 function ownerInfo(P){
- const o=PL.own[P.id]||{},mod=modOf(P.module),def=P.def||{};
+ const fx=(window.OWNFIX&&OWNFIX[P.id])||{};const o=PL.own[P.id]||{},mod=modOf(P.module),def=P.def||{};
  const isNew=!!NEW9[P.id]||P.src==="added";
  const role=def.owner&&!(window.who&&who(def.owner))?def.owner:(mod?mod.own:"Process owner");
  let owner=o.owner!==undefined?o.owner:(def.owner&&window.who&&who(def.owner)?def.owner:(isNew?null:NAMED[P.family]||null));
+ if(o.owner===undefined&&fx.owner)owner=fx.owner;
+ if(o.owner===undefined&&!fx.owner&&window.OWNFIX_ROLES&&def.owner&&OWNFIX_ROLES[def.owner])owner=OWNFIX_ROLES[def.owner];
  let backup=o.backup!==undefined?o.backup:(!isNew&&hashN(P.id)%3===0?BACKUPS[hashN(P.id)%BACKUPS.length]:null);
+ if(o.backup===undefined&&fx.backup)backup=fx.backup;
+ if(o.backup===undefined&&!backup&&owner&&window.OWNFIX_BK){const c=(OWNFIX_BK[P.family]||[]).concat(OWNFIX_BK._||[]);backup=c.find(b=>b!==owner)||null}
  if(backup&&backup===owner)backup=BACKUPS.find(b=>b!==owner);
  const rv=PL.rev[P.id]||(seedReview(P.id)?{date:seedReview(P.id),by:"Process governance lead",note:"Sample register entry",seed:1}:null);
  return{owner,backup,role,named:!!owner,rev:rv,seeded:o.owner===undefined&&!!owner};
@@ -130,6 +134,7 @@ function ownerInfo(P){
 function metricsOf(P){
  const out=[],add=k=>{if(METRICS[k]&&!out.includes(k))out.push(k)};
  (P.declMetrics||[]).forEach(add);
+ ((window.OWNFIX&&OWNFIX[P.id]&&OWNFIX[P.id].metrics)||[]).forEach(add);
  if(!NEW9[P.id]&&P.src!=="added"){
   const mod=modOf(P.module),names=[scName(P.id),P.name,mod&&mod.name,mod&&mod.sn].filter(Boolean).map(s=>s.toLowerCase());
   Object.keys(METRICS).forEach(k=>{const u=(METRICS[k].use||[]).map(x=>String(x).toLowerCase());if(names.some(n=>u.includes(n)))add(k)});
@@ -232,16 +237,18 @@ function finish(P){
  const oi=ownerInfo(P);
  const dm=P.steps.map(s=>PROC.modeOf?PROC.modeOf(s):"hum");
  const ai=P.steps.filter(s=>/^(agent|auto)$/.test(s.who||"human")).length,sh=P.steps.length?ai/P.steps.length:0;
+ {const fx=window.OWNFIX&&OWNFIX[P.id];if(fx&&fx.name&&P.name.indexOf(fx.name)<0)P.name=fx.name}
  Object.assign(P,{a,level:mlv,l5:a.level,override:ov&&ov.model===P.model?ov:null,target:tg[0],targets:tg,max:mx,oi,owner:oi.owner||oi.role,mix:sh>=.6?"Mostly automated":sh>=.3?"Mixed":"Mostly people",modeMix:dm,mets:a.sig.mets,
   below:mlv<tg[0],hasOwner:oi.named,hasMetric:a.sig.mets.length>0});
  return P;
 }
-let IDXOLD=null,LASTB=0,IDXQ=0;
+let IDXOLD=null,LASTB=0,IDXQ=0,KEYT=0;
 function idx(){
  if(!IDX&&IDXOLD&&performance.now()<40000&&performance.now()-LASTB<7000){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},7100-(performance.now()-LASTB))}return IDXOLD}
+ if(IDX&&performance.now()-KEYT<800)return IDX;/* the key below walks the data model and process graph; once per 800 ms is enough, bump() still clears at once */
  const key=[PROC_IDS().length,PL.custom.length,modsAll().length,window.PLAT&&PLAT.entities?PLAT.entities().length:0,Object.keys(S.proc||{}).map(k=>(S.proc[k]||[]).length).join(","),VER,matReady()?MAT.M.xmodels.length:0,window.LINKS?LINKS.processEdges().length:0].join("|");
- if(IDX&&IDXK===key)return IDX;
- const list=build();IDX={list,by:{}};list.forEach(P=>IDX.by[P.id]=P);IDXK=key;LASTB=performance.now();IDXOLD=IDX;
+ if(IDX&&IDXK===key){KEYT=performance.now();return IDX}
+ const list=build();IDX={list,by:{}};list.forEach(P=>IDX.by[P.id]=P);IDXK=key;LASTB=performance.now();KEYT=LASTB;IDXOLD=IDX;
  syncMat();list.forEach(finish);list.forEach(snap);
  refreshMetrics();
  return IDX;

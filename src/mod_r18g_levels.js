@@ -12,7 +12,7 @@ const LEVELS=[
  {id:"specialist",n:"Specialist",who:"Architects, platform administrators, auditors",see:"The tools and records for their craft: catalogs, controls, evidence, configuration.",ctl:"Configure, review and attest within their scope. Auditors are read only.",not:"Business decisions outside their remit."},
  {id:"contributor",n:"Contributor",who:"Employees, new hires, guests",see:"Their own tasks, requests, learning and the apps they can use.",ctl:"Start requests, complete assigned steps, build within guardrails.",not:"Anything outside their part of the work."}];
 const LENS_OF={exec:"cio",cfo:"cfo",coo:"coo",ceo:"ceo",chro:"chro",ciso:"ciso",caio:"caio",clo:"ceo",cto:"cio",board:"ceo",portfolio:"coo",dir:"coo"};
-R18.levels=LEVELS;
+R18.levels=LEVELS;R18.LV=LV;R18.LENS_OF=LENS_OF;
 R18.levelOf=k=>LV[k||S.persona]||"manager";
 const lvl=()=>R18.levelOf();
 const E=s=>H(s);

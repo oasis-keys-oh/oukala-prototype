@@ -24,4 +24,11 @@ html=f'<title>Oukala</title>\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n
 open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)
 open(os.path.join(out,'oukala-js.js'),'w',encoding='utf-8').write(js)
 open(os.path.join(out,'full.html'),'w',encoding='utf-8').write('<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}</style></head><body>'+html+'</body></html>')
+# split build: a small shell plus one external script, so browsers cache and reuse the compiled code
+import hashlib
+ver=hashlib.md5(js.encode('utf-8')).hexdigest()[:10]
+shell=f'<title>Oukala</title>\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script src="oukala-js.js?v={ver}"></script>\n'
+open(os.path.join(out,'index.html'),'w',encoding='utf-8').write('<!doctype html><html lang="en"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}</style></head><body>'+shell+'</body></html>')
+import shutil
+if os.path.isdir('assets/hero'): shutil.copytree('assets/hero',os.path.join(out,'hero'),dirs_exist_ok=True)
 print(len(html),'bytes; modules:',mods)

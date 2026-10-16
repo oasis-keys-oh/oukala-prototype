@@ -75,6 +75,16 @@ Object.keys(DEFS).forEach(k=>{
  try{const caps=G(()=>CX.CAPS,null);if(caps&&!caps[k])caps[k]=d.readonly?["read"]:k==="emp"||k==="newhire"?["read","incident.create","request.order","pto.write","ui.set"]:["read","incident.create","request.order","report.build","ui.set"]}catch(e){}
 });
 PERSONAS.exec.sugg=PERSONAS.exec.sugg||[];
+/* Round 24: later modules can add a persona with the same translation and registration the built-in ones get. */
+R15D.DEFS=DEFS;R15D.FAM=FAM;
+R15D.addPersona=function(k,d){
+ if(PERSONAS[k])return false;
+ const O2N={auto:["kit"]},EX={decide:["lens","grc","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
+ const out=[];(d.groups||[]).forEach(g=>(O2N[g]||[g]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)}));(EX[d.family]||[]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)});if(!d.readonly&&out.indexOf("make")<0)out.push("make");
+ d=Object.assign({},d,{groups:out});DEFS[k]=d;
+ PERSONAS[k]={n:d.n,who:d.who,home:[],rings:d.kpis.slice(0,3),nav:d.pin.slice(),story:"",needs:[],sugg:d.sugg||[],role:d.role,family:d.family,groups:d.groups,pin:d.pin,kpis:d.kpis,generic:true,readonly:!!d.readonly,as:d.as||"Casey Rowan",actions:d.actions};
+ try{const caps=G(()=>CX.CAPS,null);if(caps&&!caps[k])caps[k]=["read","incident.create","request.order","report.build","ui.set"]}catch(e){}
+ return true};
 const defOf=k=>DEFS[k||S.persona]||DEFS.exec;
 
 /* ---------- identity ---------- */

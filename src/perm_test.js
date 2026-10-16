@@ -3,14 +3,14 @@
 const {chromium}=require('playwright');const path=require('path');
 const dir=path.resolve(process.argv[2]||'out_g16');const quiet=process.argv.includes('--quiet');
 /* ---- policy table (written down independently of the seed rules) ---- */
-const ALL=["exec","fin","pm","ops","portfolio","change","arch","admin","audit","board","guest","emp","newhire"];
+const ALL=["exec","fin","pm","ops","portfolio","change","arch","admin","audit","board","guest","emp","newhire","cco","dist","fac","scm","plant","proc"];
 const POLICY={ /* screen -> personas that may open it */
  inv:["fin","exec","audit"], r15_p2p:["fin","exec","audit"], bud_lines:["fin","exec","audit","portfolio"], bud_over:["fin","exec","audit","portfolio"], bud_doa:["fin","exec","audit","portfolio"],
  bud_req:["fin","exec","portfolio","pm","arch","audit","board"],
  ppl_perf:["exec","portfolio"], ppl_av:["exec","portfolio","pm"],
  adm_sec:["admin","audit","exec"], r15_iam:["admin","audit","exec"], r16g_perm:["admin","audit","exec"], adm_audit:["admin","audit","exec"],
  exe_board:["exec","board","audit"], grc_home:["audit","exec","admin","board"], adm_meter:["admin","fin","exec"],
- itsm_inc:["ops","change","arch","admin","pm","portfolio","exec","audit"], svc_portal:ALL, home:ALL};
+ itsm_inc:["ops","change","arch","admin","pm","portfolio","exec","audit","proc"], svc_portal:ALL, home:ALL};
 const NEVER_FOR_OPS=["inv","bud_req","bud_lines","bud_over","ppl_perf","ppl_av","r15_p2p","adm_sec","r15_iam","r16g_perm","exe_board"];
 /* person drawer tabs for a subject */
 const SUBJECT="Priya Shah"; /* reports to Maya Ortiz (portfolio), under Casey Rowan (exec); persona pm IS Priya */

@@ -1,0 +1,4 @@
+/* painted hero: the image fills the card, a role-colored wash and the existing left scrim keep the text readable */
+.r21-art img.r21-img{width:100%;height:100%;object-fit:cover;display:block}
+#view[data-screen] .hero.r21-hero>.r21-art{opacity:1}
+.hero.r21-hero>.r21-art::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,color-mix(in srgb,var(--p1) 70%,transparent) 0%,color-mix(in srgb,var(--p1) 34%,transparent) 42%,transparent 78%);pointer-events:none}

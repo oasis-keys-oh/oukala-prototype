@@ -1,0 +1,9 @@
+/* Round 25: flat interface. Blur and nested panels cost paint time on every screen. */
+#view .glass,#view .card.glass,#view .vsw.glass{-webkit-backdrop-filter:none;backdrop-filter:none}
+#view .screen>section.card,#view .screen>.card{content-visibility:auto;contain-intrinsic-size:auto 320px}
+details.fl{margin:12px 0;border-top:1px solid color-mix(in srgb,var(--ink) 12%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
+details.fl>summary{cursor:pointer;padding:10px 4px;font-size:14px;color:var(--muted);list-style:none;display:flex;gap:8px;align-items:center}
+details.fl>summary::before{content:"+";width:18px;text-align:center;color:var(--accent);font-weight:700}
+details.fl[open]>summary::before{content:"−"}
+details.fl>summary:hover{color:var(--ink)}
+details.fl>.card,details.fl>section.card{box-shadow:none;border:0;background:transparent;padding-left:0;padding-right:0}
