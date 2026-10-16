@@ -15,7 +15,7 @@ const OWN={ret:["Kofi Mensah","Tomas Reyes"],cal:["Mei-Ling Zhou","Dmitri Kowal"
 const MODULE={ret:"ops_dist",cal:"ops_plant",bundle:"ops_cust",turn:"ops_plant",gen:"biz_corp"};
 
 /* ---------- state ---------- */
-const Q=W.STUDIO={sc:null,i:-1,msgs:[],B:null,view:"home",stage:"find",reached:{},auto:false,wait:false,timers:[],lib:[],pro:false,exp:{},built:false,published:null,open:{},vis:"enterprise",scale:false};
+const Q=W.STUDIO={sc:null,i:-1,msgs:[],B:null,view:"home",stage:"find",reached:{},auto:false,wait:false,timers:[],lib:[],pro:false,exp:{},built:false,published:null,open:{},vis:"enterprise",scale:false,sel:null,ph:0,zoom:1,seen:new Set()};
 const fresh=()=>({title:"",steps:[],phases:null,issues:[],std:[],data:[],metrics:[],cmd:"",grants:[],people:[],strat:null,guard:null,match:[],adj:null,add:[],agreed:false,owner:"",log:[]});
 Q.B=fresh();
 
@@ -75,7 +75,7 @@ function drawChat(scroll){const c=chat();if(!c)return;
 
 /* ---------- running a scenario ---------- */
 function startScenario(sc,promptText){
- clearTimers();Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.reached={};Q.built=false;Q.published=null;Q.exp={};Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";
+ clearTimers();Q.sc=sc;Q.i=-1;Q.B=fresh();Q.B.title=sc.title;Q.B.sc=sc.id;Q.msgs=[];Q.reached={};Q.built=false;Q.published=null;Q.exp={};Q.sel=null;Q.ph=0;Q.zoom=1;Q.seen=new Set();Q.pro=!!sc.pro;Q.scale=sc.kind==="scale";Q.stage="find";Q.view="find";
  you(promptText||sc.prompt);
  const q=promptText||sc.prompt;
  /* a real search of the library comes first for every build */
@@ -153,7 +153,8 @@ function visPeople(){const s=STAFF();if(Q.vis==="owner")return[Q.B.owner];if(Q.v
 
 /* ---------- direct edits on the visual ---------- */
 function flatSteps(){return Q.B.phases?Q.B.phases.reduce((a,p)=>a.concat(p.steps),[]):Q.B.steps}
-function cycleWho(ref){const s=ref.indexOf(":")>0?Q.B.phases[+ref.split(":")[0]].steps[+ref.split(":")[1]]:Q.B.steps[+ref];if(!s||s.base)return;const from=s.who;s.who=ORDER[(ORDER.indexOf(s.who)+1)%4];s.owner=s.who==="auto"?"Automatic":s.who==="agent"?(s.owner&&/Agent$/.test(s.owner)?s.owner:"Studio Agent"):(s.owner==="Automatic"||/Agent$/.test(s.owner)?"Owner":s.owner);
+function cycleWho(ref){const s=stepAt(ref);if(s)setWho(ref,ORDER[(ORDER.indexOf(s.who)+1)%4])}
+function setWho(ref,to){const s=stepAt(ref);if(!s||s.base||s.who===to)return;const from=s.who;s.who=to;s.owner=s.who==="auto"?"Automatic":s.who==="agent"?(s.owner&&/Agent$/.test(s.owner)?s.owner:"Studio Agent"):(s.owner==="Automatic"||/Agent$/.test(s.owner)?"Owner":s.owner);
  let msg="You changed <b>"+E(s.n)+"</b> from "+WHO[from][0].toLowerCase()+" to "+WHO[s.who][0].toLowerCase()+".";
  if(s.who==="auto"&&/approv|sign|decid|review/i.test(s.n))msg+=" I would keep a person on this one: it is a decision. I left it as you set it and logged the risk.";
  else if(s.who==="agent")msg+=" An agent will propose and a person will confirm.";
@@ -176,79 +177,110 @@ function submit(text){text=String(text||"").trim();if(!text)return;
  startScenario(Object.assign({},SD.GENERIC(text),{kind:"new"}),text)}
 function publishPrompt(){say("Use <b>Share</b> on the right when you are ready.");}
 
-/* ---------- visuals ---------- */
-const chip=(who)=>`<span class="stu-w ${WHO[who][1]}">${WHO[who][0]}</span>`;
+/* ---------- visuals: same language as the workflow designer, process map and data model ---------- */
+const LANES=["human","agent","auto","gate"];
+const eyebrow=(a,b)=>`<div class="stu-eb">${E(a)}${b?` <span>${E(b)}</span>`:""}</div>`;
+const head=(eb,t,sum)=>`${eyebrow(eb)}<h2>${t}</h2>${sum?`<p class="stu-sum">${sum}</p>`:""}`;
+const tile=(k,v,c)=>`<div class="stu-k card glass"><small>${k}</small><b>${v}</b><span>${c||""}</span></div>`;
 function mixOf(list){const m={human:0,auto:0,agent:0,gate:0};list.forEach(s=>m[s.who]++);return m}
 function mixHTML(list){const m=mixOf(list);return ORDER.map(k=>`<span><i class="stu-dot ${WHO[k][1]}"></i><b>${m[k]}</b> ${WHO[k][0].toLowerCase()}</span>`).join("")}
-function stepRow(s,ref,i){const iss=Q.B.issues.filter(x=>x.s===i+1||x.s===ref);
- return `<li class="stu-step ${s.add?"add":""} ${s.base?"base":""}"><span class="stu-n">${typeof i==="number"?i+1:""}</span><span class="stu-sn" ${s.base?"":'contenteditable="true" spellcheck="false" data-stu-name="'+ref+'"'}>${E(s.n)}</span><button type="button" class="stu-wb ${WHO[s.who][1]}" data-stu-who="${ref}" ${s.base?"disabled":""} title="${s.base?"Owned by "+E(s.owner)+". Extending needs the owner to agree.":"Click to change who does this"}">${WHO[s.who][0]}</button><span class="stu-ow">${E(s.owner||"")}</span><span class="stu-sl">${E(s.sla||"")}</span>${iss.length?`<span class="stu-flag" title="${E(iss.map(x=>x.t).join("; "))}">${iss.length}</span>`:""}${s.d?`<small>${E(s.d)}</small>`:""}</li>`}
+function barHTML(list){const m=mixOf(list);return `<span class="stu-bar">${ORDER.map(k=>m[k]?`<i class="${WHO[k][1]}" style="flex:${m[k]}"></i>`:"").join("")}</span>`}
+function stepAt(ref){if(ref==null||ref==="")return null;const B=Q.B;return String(ref).indexOf(":")>0?G(()=>B.phases[+ref.split(":")[0]].steps[+ref.split(":")[1]],null):B.steps[+ref]||null}
+function issuesFor(ref,i){return Q.B.issues.filter(x=>x.s===i+1||x.s===ref)}
+/* the swimlane canvas: one lane per kind of doer, one column per step, curved connectors, nodes appear as they are built */
+const CW=176,NW=156,NH=64,RH=80,LX=118,TY=14;
+function canvas(steps,pre){
+ const used=LANES.filter(k=>steps.some(s=>s.who===k));if(!used.length)return`<p class="stu-empty">Nothing yet. Describe how it starts and I will draft it here.</p>`;
+ const w=LX+steps.length*CW+30,h=TY*2+used.length*RH,pos=steps.map((s,i)=>({x:LX+i*CW,y:TY+used.indexOf(s.who)*RH+(RH-NH)/2}));
+ let svg=`<svg class="stu-cvs" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><defs><marker id="stuAr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="currentColor"/></marker></defs>`;
+ used.forEach((k,li)=>{svg+=`<rect x="0" y="${TY+li*RH}" width="${w}" height="${RH}" class="stu-lane ${WHO[k][1]}"/>`});
+ steps.forEach((s,i)=>{if(!i)return;const a=pos[i-1],b=pos[i],x1=a.x+NW,y1=a.y+NH/2,x2=b.x,y2=b.y+NH/2,m=(x1+x2)/2;svg+=`<path class="stu-ln2 ${s.add?"add":""}" d="M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2-2} ${y2}" marker-end="url(#stuAr)"/>`});
+ svg+="</svg>";
+ const lab=used.map((k,li)=>`<div class="stu-lab ${WHO[k][1]}" style="top:${TY+li*RH}px;height:${RH}px"><i class="stu-dot ${WHO[k][1]}"></i>${WHO[k][0]}</div>`).join("");
+ const nodes=steps.map((s,i)=>{const ref=pre===""?String(i):pre+":"+i,iss=issuesFor(ref,i),key=Q.B.title+"|"+ref+"|"+s.n,fresh=!Q.seen.has(key);Q.seen.add(key);
+  return `<button type="button" class="stu-nd ${WHO[s.who][1]} ${s.base?"base":""} ${s.add?"add":""} ${fresh?"fresh":""} ${String(Q.sel)===ref?"sel":""}" style="left:${pos[i].x}px;top:${pos[i].y}px;--i:${Math.min(i,24)}" data-stu-sel="${ref}" title="${E(s.n)}"><em>${i+1}</em><b>${E(s.n)}</b><small>${E(s.owner||"")}${s.sla?" · "+E(s.sla):""}</small>${iss.length?`<u class="stu-flag" title="${E(iss.map(x=>x.t).join("; "))}">${iss.length}</u>`:""}</button>`}).join("");
+ return `<div class="stu-tools"><button type="button" class="btn quiet" data-stu-zoom="-1" aria-label="Zoom out">−</button><button type="button" class="btn quiet" data-stu-zoom="1" aria-label="Zoom in">+</button><button type="button" class="btn quiet" data-stu-zoom="0">Fit</button><span class="stu-hintx">Click a step to change who does it, rename it or see what I found. Scroll sideways for more.</span></div>
+ <div class="stu-cv card glass" id="stuCv"><div class="stu-cvi" style="width:${w}px;height:${h}px;zoom:${Q.zoom}">${svg}${lab}${nodes}</div></div>`}
+function inspector(){const ref=Q.sel,s=stepAt(ref);
+ if(!s)return"";
+ const idx=String(ref).indexOf(":")>0?+ref.split(":")[1]:+ref,iss=issuesFor(ref,idx);
+ return `<aside class="stu-insp card glass"><small class="stu-eb">STEP ${idx+1} · ${E(WHO[s.who][0]).toUpperCase()}</small><h3 ${s.base?"":'contenteditable="true" spellcheck="false" data-stu-name="'+ref+'"'}>${E(s.n)}</h3>
+  <div class="stu-seg" role="group" aria-label="Who does this step">${ORDER.map(k=>`<button type="button" class="${s.who===k?"on "+WHO[k][1]:""}" data-stu-set="${ref}|${k}" ${s.base?"disabled":""}>${WHO[k][0]}</button>`).join("")}</div>
+  <dl class="stu-dl"><dt>Owner</dt><dd>${E(s.owner||"Not set")}</dd><dt>Time limit</dt><dd>${E(s.sla||"None")}</dd>${s.d?`<dt>Note</dt><dd>${E(s.d)}</dd>`:""}</dl>
+  ${s.base?`<p class="stu-note">Owned by ${E(s.owner)}. Extending it needs the owner to agree.</p>`:""}
+  ${iss.length?`<h4>What I found</h4><ul class="stu-iss">${iss.map(x=>`<li><b>${E(x.t)}</b><span>${E(x.f)}</span></li>`).join("")}</ul>`:`<p class="stu-note">No loopholes or rework here.</p>`}</aside>`}
+function flowTiles(all){const m=mixOf(all),auto=all.length?Math.round((m.auto+m.agent)/all.length*100):0,B=Q.B;
+ return `<div class="stu-ks">${tile("Steps",all.length,B.phases?B.phases.length+" phases":"in sequence")}${tile("Automation",auto+"%","automatic plus AI agent")}${tile("Loopholes",B.loops||B.issues.length,(B.loops?B.loops-B.issues.length+" closed on my own":"all closed"))}${tile("Owner",E((B.adj&&B.adj.owner)||B.owner||"You"),B.adj?"agrees before it extends":"you, until you share it")}</div>`}
 function vFlow(){const B=Q.B;
- if(B.phases){const all=flatSteps();
-  return `<h2>${E(B.title)}</h2><p class="stu-sum">${all.length} steps in ${B.phases.length} phases · ${B.loops?B.loops+" loopholes found, "+(B.loops-B.issues.length)+" closed on my own":""}</p><div class="stu-mix">${mixHTML(all)}</div>
-  <div class="stu-ph">${B.phases.map((p,pi)=>{const o=Q.exp[pi],m=mixOf(p.steps);return `<div class="stu-phrow"><button type="button" class="stu-phh" data-stu-ph="${pi}" aria-expanded="${!!o}"><b>${pi+1}. ${E(p.name)}</b><span>${p.steps.length} steps</span><span class="stu-bar">${ORDER.map(k=>`<i class="${WHO[k][1]}" style="flex:${m[k]}"></i>`).join("")}</span><span class="stu-ch">${o?"Hide":"Open"}</span></button>${o?`<ol class="stu-steps">${p.steps.map((s,si)=>stepRow(s,pi+":"+si,si)).join("")}</ol>`:""}</div>`}).join("")}</div>
-  ${B.issues.length?issuesHTML():""}`}
- const steps=B.steps;
- return `<h2>${E(B.title)}</h2><p class="stu-sum">${steps.length} steps${B.adj?` · extends <b>${E(B.adj.name)}</b>, owned by ${E(B.adj.owner)}`:""}</p><div class="stu-mix">${mixHTML(steps)}</div>
- ${steps.length?`<ol class="stu-steps">${steps.map((s,i)=>stepRow(s,String(i),i)).join("")}</ol>`:`<p class="stu-empty">Nothing yet. Describe how it starts and I will draft it here.</p>`}
- ${B.issues.length?issuesHTML():""}`}
-function issuesHTML(){return `<h3>Loopholes and rework I found</h3><ul class="stu-iss">${Q.B.issues.map(x=>`<li><b>${E(x.t)}</b><span>${E(x.f)}</span></li>`).join("")}</ul>`}
+ if(B.phases){const all=flatSteps(),pi=Math.min(Q.ph||0,B.phases.length-1),P=B.phases[pi];
+  return `${head("Process",E(B.title),all.length+" steps in "+B.phases.length+" phases. Open a phase to see its steps.")}${flowTiles(all)}<div class="stu-mix">${mixHTML(all)}</div>
+  <div class="stu-pht">${B.phases.map((p,i)=>`<button type="button" class="stu-pt card glass ${i===pi?"on":""}" data-stu-ph="${i}"><small>${i+1}</small><b>${E(p.name)}</b><span>${p.steps.length} steps</span>${barHTML(p.steps)}</button>`).join("")}</div>
+  <div class="stu-fl ${stepAt(Q.sel)?"has":""}"><div>${eyebrow("Phase "+(pi+1),P.name)}${canvas(P.steps,String(pi))}</div>${inspector()}</div>${B.issues.length?issuesHTML():""}`}
+ const st=B.steps;
+ return `${head("Process",E(B.title),st.length+" steps"+(B.adj?` · extends <b>${E(B.adj.name)}</b>, owned by ${E(B.adj.owner)}`:""))}${flowTiles(st)}
+ <div class="stu-fl ${stepAt(Q.sel)?"has":""}"><div>${canvas(st,"")}</div>${inspector()}</div>${B.issues.length?issuesHTML():""}`}
+function issuesHTML(){return `<h3>Loopholes and rework I found</h3><div class="stu-isg">${Q.B.issues.map(x=>`<div class="stu-is card glass"><b>${E(x.t)}</b><span>${E(x.f)}</span></div>`).join("")}</div>`}
 function vFind(){const B=Q.B,m=B.match||[],adj=B.adj;
- return `<h2>Library search</h2><p class="stu-sum">Searched ${G(()=>PROCLIB.list().length,0)} processes before building anything.</p>
- ${adj?`<div class="stu-hit"><span class="stu-tag ext">Adjacent process</span><h3>${E(adj.name)}</h3><p>Owned by <b>${E(adj.owner)}</b>, backup ${E(adj.backup||"none")} · ${E(adj.familyName)} · maturity ${adj.level} of 5 · ${adj.steps} steps</p><p class="stu-act">Recommendation: extend it and bring ${E(adj.owner)} in.</p></div>`:`<div class="stu-hit new"><span class="stu-tag">Nothing close</span><h3>This is a new process</h3><p>I will interview you and build it step by step.</p></div>`}
- ${m.length?`<h3>Closest matches</h3><ul class="stu-lst">${m.map(x=>`<li><b>${E(x.p.name)}</b><span>${E(x.p.owner)}</span><span class="stu-sc">${Math.round(Math.min(.95,x.score)*100)}% overlap</span></li>`).join("")}</ul>`:""}`}
-function vGov(){const g=Q.B.gov||[];const adj=Q.B.adj||{};return `<h2>Extending ${E(adj.name||"an existing process")}</h2><p class="stu-sum">The whole governance process runs here, so you do not have to know it.</p>
- <ol class="stu-gov">${g.map((x,i)=>`<li class="${Q.i>=1&&Q.reached.process||Q.msgs.some(m=>m.ask&&m.ask.done===0)?"done":""}"><b>${i+1}</b><span>${E(x)}</span></li>`).join("")}</ol>
- <div class="stu-note">Nothing is changed in ${E(adj.owner||"the owner")}'s process until they agree.</div>`}
-function vStd(){return `<h2>What the industry does</h2><p class="stu-sum">References I checked so you can improve the process without searching.</p><ul class="stu-lst std">${Q.B.std.map((x,i)=>`<li><label><input type="checkbox" data-stu-std="${i}" ${x.on?"checked":""}><b>${E(x.n)}</b></label><span>${E(x.why)}</span></li>`).join("")}</ul>`}
+ return `${head("Library search","Looked before building",`Searched ${G(()=>PROCLIB.list().length,0)} processes first.`)}
+ ${adj?`<div class="stu-hit card glass"><span class="stu-tag ext">Adjacent process</span><h3>${E(adj.name)}</h3><p>Owned by <b>${E(adj.owner)}</b>, backup ${E(adj.backup||"none")} · ${E(adj.familyName)} · maturity ${adj.level} of 5 · ${adj.steps} steps</p><p class="stu-act">Recommendation: extend it and bring ${E(adj.owner)} in.</p></div>`:`<div class="stu-hit new card glass"><span class="stu-tag">Nothing close</span><h3>This is a new process</h3><p>I will interview you and build it step by step.</p></div>`}
+ ${m.length?`<h3>Closest matches</h3><div class="stu-mg">${m.map(x=>`<div class="stu-mc card glass"><b>${E(x.p.name)}</b><span>${E(x.p.owner)}</span><em>${Math.round(Math.min(.95,x.score)*100)}% overlap</em></div>`).join("")}</div>`:""}`}
+function vGov(){const g=Q.B.gov||[];const adj=Q.B.adj||{};const done=Q.i>=1&&Q.reached.process||Q.msgs.some(m=>m.ask&&m.ask.done===0);
+ return `${head("Governance","Extending "+E(adj.name||"an existing process"),"The whole governance process runs here, so you do not have to know it.")}
+ <div class="stu-gv">${g.map((x,i)=>`<div class="stu-gs card glass ${done?"done":""}"><b>${done?"✓":i+1}</b><span>${E(x)}</span></div>`).join("")}</div><p class="stu-note">Nothing is changed in ${E(adj.owner||"the owner")}'s process until they agree.</p>`}
+function vStd(){return `${head("Standards","What the industry does","References I checked so you can improve the process without searching.")}<div class="stu-sg">${Q.B.std.map((x,i)=>`<label class="stu-sc2 card glass ${x.on?"on":""}"><input type="checkbox" data-stu-std="${i}" ${x.on?"checked":""}><span><b>${E(x.n)}</b><small>${E(x.why)}</small></span></label>`).join("")}</div>`}
 function vData(){const d=Q.B.data,n=d.filter(x=>x.kind==="new").length,staff=STAFF().map(p=>p.n);
- return `<h2>Data</h2><p class="stu-sum"><b>${d.length-n}</b> reused from the data model, <b>${n}</b> new. Only authoritative elements are used.</p>
+ const grp={};d.forEach((x,i)=>{(grp[x.ent]=grp[x.ent]||[]).push(Object.assign({i},x))});
+ return `${head("Data","What it reads and writes",`<b>${d.length-n}</b> reused from the data model, <b>${n}</b> new. Only authoritative elements are used.`)}
  <datalist id="stuStaff">${staff.map(x=>`<option value="${E(x)}">`).join("")}</datalist>
- <table class="stu-tb"><thead><tr><th>Element</th><th>Where it lives</th><th>Owner</th><th>Source</th><th>Rule</th></tr></thead><tbody>${d.map((x,i)=>`<tr class="${x.kind}"><td><b>${E(x.el)}</b><span class="stu-tg ${x.kind}">${x.kind==="new"?"New":"Reused"}</span></td><td><code>${E(x.ent)}</code></td><td>${x.kind==="new"?`<input list="stuStaff" data-stu-own="${i}" value="${E(x.owner)}" placeholder="Who owns this?" aria-label="Owner of ${E(x.el)}">`:E(x.owner)}</td><td>${E(x.src||"")}</td><td>${x.kind==="new"?`<input data-stu-rule="${i}" value="${E(x.rule||"")}" aria-label="Validation rule for ${E(x.el)}">`:'<span class="stu-ok">Defined</span>'}</td></tr>`).join("")}</tbody></table>`}
-const spark=(t)=>{if(!t||!t.length)return"";const mn=Math.min.apply(0,t),mx=Math.max.apply(0,t),r=mx-mn||1;return `<svg viewBox="0 0 80 22" class="stu-sp" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="2" points="${t.map((v,i)=>(i*80/(t.length-1)).toFixed(1)+","+(20-(v-mn)/r*18).toFixed(1)).join(" ")}"/></svg>`};
-function vMetrics(){return `<h2>How you will know it works</h2><p class="stu-sum">Each measure says what decision it supports and what to do when it drifts.</p>${Q.B.metrics.map((m,i)=>`<section class="stu-met"><div class="stu-mh"><b>${E(m.n)}</b><code>${E(m.ac)}</code>${spark(m.tr)}<span class="stu-cur">${E(m.cur)}${E(m.u==="%"?"%":" "+m.u)}</span><label>Target <input type="number" step="any" value="${E(m.tgt)}" data-stu-tgt="${i}" aria-label="Target for ${E(m.n)}"></label></div>
- <dl class="stu-dl"><dt>Why</dt><dd>${E(m.why)}</dd><dt>Decision</dt><dd>${E(m.dec)}</dd><dt>How measured</dt><dd>${E(m.f)} · ${E(m.src)}</dd><dt>On trend</dt><dd>${E(m.on)}</dd><dt>Off trend</dt><dd>${E(m.off)}</dd><dt>Retire when</dt><dd>${E(m.obs)}</dd></dl></section>`).join("")}`}
-function vAccess(){const B=Q.B;return `<h2>Who can see and change it</h2><p class="stu-sum">Say it in your own words. I check it against the org chart.</p>
- <form class="stu-cmd" data-stu-cmdform><input value="${E(B.cmd)}" aria-label="Who should have access" placeholder="For example: all of finance, or managers and above"><button class="btn" type="submit">Resolve</button></form>
- ${B.people.map((g,gi)=>`<section class="stu-grp"><div class="stu-gh"><b>${E(g.label.charAt(0).toUpperCase()+g.label.slice(1))}</b><span class="stu-lv">${g.lvl==="sign"?"Can sign off":g.lvl==="edit"?"Can change":g.lvl||"Can see"}</span><span>${g.ext?"External, added per booking":g.people.length+" people"}</span></div>
- <div class="stu-ppl">${g.people.slice(0,24).map(n=>`<span class="stu-pp" title="${E(n)}">${E(n.split(" ").map(x=>x[0]).join("").slice(0,2))}<small>${E(n)}</small></span>`).join("")}${g.people.length>24?`<span class="stu-pp more">+${g.people.length-24}</span>`:""}</div></section>`).join("")||'<p class="stu-empty">No access set. Restricted to you until you do.</p>'}
- <div class="stu-note">Sensitive fields stay masked unless a person's role already allows them.</div>`}
-function vStrat(){const s=Q.B.strat||[];return `<h2>Strategy check <span class="stu-pro">Pro</span></h2><p class="stu-sum">Checked against what leadership asked for before anything is built.</p><ul class="stu-lst strat">${s.map(x=>{const o=SD.OBJ.find(y=>y.id===x.o);return `<li class="${x.v}"><b>${E(o.n)}</b><span class="stu-vd ${x.v}">${x.v==="supports"?"Supports":x.v==="conflicts"?"Conflicts":"No effect"}</span><span>${E(x.t)}</span></li>`}).join("")}</ul>`}
+ <div class="stu-dm"><div class="stu-hub card glass"><small class="stu-eb">THIS PROCESS</small><b>${E(Q.B.title)}</b><span>${d.length} elements in ${Object.keys(grp).length} entities</span></div>
+ <div class="stu-ents">${Object.keys(grp).map(k=>{const rows=grp[k],nw=rows.every(r=>r.kind==="new");return `<section class="stu-en card glass ${nw?"new":""}"><div class="stu-eh"><code>${E(k)}</code><span class="stu-tg ${nw?"new":""}">${nw?"New":rows.some(r=>r.kind==="new")?"Reused and new":"Reused"}</span></div>
+  ${rows.map(x=>`<div class="stu-er ${x.kind}"><b>${E(x.el)}</b><span class="stu-src">${E(x.src||"")}</span>${x.kind==="new"?`<label>Owner<input list="stuStaff" data-stu-own="${x.i}" value="${E(x.owner)}" placeholder="Who owns this?" aria-label="Owner of ${E(x.el)}"></label><label>Rule<input data-stu-rule="${x.i}" value="${E(x.rule||"")}" aria-label="Validation rule for ${E(x.el)}"></label>`:`<span class="stu-own">${E(x.owner)}</span><span class="stu-ok">Defined</span>`}</div>`).join("")}</section>`}).join("")}</div></div>`}
+const spark=(t,tg)=>{if(!t||!t.length)return"";const mn=Math.min.apply(0,t),mx=Math.max.apply(0,t),r=mx-mn||1,pt=t.map((v,i)=>[(i*120/(t.length-1)),30-(v-mn)/r*26]),ln=pt.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");return `<svg viewBox="0 0 120 34" preserveAspectRatio="none" class="stu-sp" aria-hidden="true"><polygon points="0,34 ${ln} 120,34" class="a"/><polyline fill="none" points="${ln}"/><circle cx="${pt[pt.length-1][0]}" cy="${pt[pt.length-1][1].toFixed(1)}" r="3"/></svg>`};
+function vMetrics(){return `${head("Measures","How you will know it works","Each measure says what decision it supports and what to do when it drifts.")}<div class="stu-mgrid">${Q.B.metrics.map((m,i)=>{const off=(m.dir==="max"&&+m.cur<+m.tgt)||(m.dir==="min"&&+m.cur>+m.tgt);
+ return `<section class="stu-mt card glass"><div class="stu-mh"><b>${E(m.n)}</b><i class="stu-st ${off?"off":"ok"}" title="${off?"Off target":"On target"}"></i></div><div class="stu-mv"><span class="stu-cur">${E(m.cur)}${E(m.u==="%"?"%":" "+m.u)}</span><label>target ${m.dir==="max"?"≥":"≤"} <input type="number" step="any" value="${E(m.tgt)}" data-stu-tgt="${i}" aria-label="Target for ${E(m.n)}"></label></div>${spark(m.tr)}
+ <details><summary>Why, the decision and what to do</summary><dl class="stu-dl"><dt>Why</dt><dd>${E(m.why)}</dd><dt>Decision</dt><dd>${E(m.dec)}</dd><dt>How measured</dt><dd>${E(m.f)} · ${E(m.src)}</dd><dt>On trend</dt><dd>${E(m.on)}</dd><dt>Off trend</dt><dd>${E(m.off)}</dd><dt>Retire when</dt><dd>${E(m.obs)}</dd></dl></details><code>${E(m.ac)}</code></section>`}).join("")}</div>`}
+function vAccess(){const B=Q.B;return `${head("Access","Who can see and change it","Say it in your own words. I check it against the org chart.")}
+ <form class="stu-cmd" data-stu-cmdform><input value="${E(B.cmd)}" aria-label="Who should have access" placeholder="For example: all of finance, or managers and above"><button class="btn primary" type="submit">Resolve</button></form>
+ <div class="stu-ag">${B.people.map(g=>`<section class="stu-gc card glass"><div class="stu-gh"><b>${E(g.label.charAt(0).toUpperCase()+g.label.slice(1))}</b><span class="stu-lv">${g.lvl==="sign"?"Can sign off":g.lvl==="edit"?"Can change":g.lvl||"Can see"}</span></div><p class="stu-cnt">${g.ext?"External, added per booking":g.people.length+" people"}</p>
+ <div class="stu-ppl">${g.people.slice(0,24).map(n=>`<span class="stu-pp" title="${E(n)}">${E(n.split(" ").map(x=>x[0]).join("").slice(0,2))}<small>${E(n)}</small></span>`).join("")}${g.people.length>24?`<span class="stu-pp more">+${g.people.length-24}</span>`:""}</div></section>`).join("")||'<p class="stu-empty">No access set. Restricted to you until you do.</p>'}</div>
+ <p class="stu-note">Sensitive fields stay masked unless a person's role already allows them.</p>`}
+function vStrat(){const s=Q.B.strat||[];return `${head("Strategy check",'<span class="stu-pro">Pro</span> Does this fit what leadership asked for?',"Checked before anything is built.")}<div class="stu-sg">${s.map(x=>{const o=SD.OBJ.find(y=>y.id===x.o);return `<div class="stu-sv card glass ${x.v}"><span class="stu-vd ${x.v}">${x.v==="supports"?"Supports":x.v==="conflicts"?"Conflicts":"No effect"}</span><b>${E(o.n)}</b><small>${E(x.t)}</small></div>`}).join("")}</div>`}
 const ART=()=>{const B=Q.B,g=B.guard||{},b=Q.built;const n=B.nsteps||flatSteps().length;
  return [["Process and workflow",n+" steps with a person, automation or agent on each",1],["Data model","Reuses "+(B.data.filter(d=>d.kind!=="new").length)+" existing elements; "+B.data.filter(d=>d.kind==="new").length+" new with owner, source and rule",1],["Measures","Each with a decision, a target and an off-trend action",1],["Access and security",B.people.reduce((a,x)=>a+x.people.length,0)+" people from the org chart; sensitive fields masked",1],["Maturity model",g.maturity,b],["Knowledge articles",(g.articles||[]).map(x=>"“"+x+"”").join(", "),b],["Roadmap",(g.roadmap||[]).join(" · "),b],["Technical debt decisions",(g.debt||[]).join(" "),b],["Ownership agreement",g.agree,b&&B.agreed],["Audit trail and change record","Every edit in this conversation is logged with its author",b],["Test run","12 of 12 sample cases passed",b]]};
-function vGuard(){const B=Q.B,b=Q.built;return `<h2>The app and its guardrails</h2><p class="stu-sum">${b?"Built. Everything below exists and is linked.":"You asked for one thing. These come with it by default."}</p>
- <ul class="stu-gl">${ART().map(a=>`<li class="${a[2]?"on":""}"><i aria-hidden="true">${a[2]?"✓":""}</i><span><b>${E(a[0])}</b><small>${E(a[1]||"")}</small></span></li>`).join("")}</ul>
+const glTile=a=>`<div class="stu-gt card glass ${a[2]?"on":""}"><i aria-hidden="true">${a[2]?"✓":""}</i><span><b>${E(a[0])}</b><small>${E(a[1]||"")}</small></span></div>`;
+function vGuard(){const B=Q.B,b=Q.built;return `${head("Guardrails","The app and its guardrails",b?"Built. Everything below exists and is linked.":"You asked for one thing. These come with it by default.")}
+ <div class="stu-gg">${ART().map(glTile).join("")}</div>
  <div class="stu-cta">${b?`${B.agreed?"":`<button class="btn" data-stu-agree="1">I accept ownership</button>`} <button class="btn primary" data-stu-go="share" ${B.agreed?"":"disabled"}>Share it with the enterprise</button>${B.agreed?"":'<span class="stu-hint">Accept ownership to continue</span>'}`:`<button class="btn primary" data-stu-build="1">Build the app and all its guardrails</button>`}</div>`}
 function visOpts(){return [["enterprise","Everyone"],["division","My division"],["owner","Only me"]].map(o=>`<label class="stu-vo"><input type="radio" name="stuvis" value="${o[0]}" ${Q.vis===o[0]?"checked":""}>${o[1]}</label>`).join("")}
 function vShare(){const c=CERT(),p=Q.published;
- return `<h2>Share it with the enterprise</h2><p class="stu-sum">Anyone with permission can discover it, run it, extend it or inherit from it. The studio searches here first next time.</p>
- <ul class="stu-gl">${c.map(x=>`<li class="${x[1]?"on":""}"><i aria-hidden="true">${x[1]?"✓":"!"}</i><span><b>${E(x[0])}</b><small>${E(x[2])}</small></span></li>`).join("")}</ul>
- ${p?`<div class="stu-hit"><span class="stu-tag ext">Published</span><h3>${E(p.title)} ${E(p.ver)}</h3><p>${p.n} people can find it · owner ${E(p.owner)}. Others extend it with ${E(p.owner)}'s agreement. You are credited as builder. Adoption and value show on the owner's home once it is used.</p></div>`
- :`<h3>Who can find it</h3><div class="stu-vis" role="radiogroup" aria-label="Who can find it">${visOpts()}</div><p class="stu-sum">${visPeople().length} people can find it with this setting.</p><div class="stu-cta"><button class="btn primary" data-stu-pub="1">Publish to the library</button></div>`}`}
-const DIVISION_OPEN=/^(biz_|ops_|stu_)/;
+ return `${head("Share","Share it with the enterprise","Anyone with permission can discover it, run it, extend it or inherit from it. The studio searches here first next time.")}
+ <div class="stu-gg">${c.map(x=>glTile([x[0],x[2],x[1]])).join("")}</div>
+ ${p?`<div class="stu-hit card glass"><span class="stu-tag ext">Published</span><h3>${E(p.title)} ${E(p.ver)}</h3><p>${p.n} people can find it · owner ${E(p.owner)}. Others extend it with ${E(p.owner)}'s agreement. You are credited as builder. Adoption and value show on the owner's home once it is used.</p></div>`
+ :`<div class="stu-pub card glass"><h3>Who can find it</h3><div class="stu-vis" role="radiogroup" aria-label="Who can find it">${visOpts()}</div><p class="stu-sum">${visPeople().length} people can find it with this setting.</p><div class="stu-cta"><button class="btn primary" data-stu-pub="1">Publish to the library</button></div></div>`}`}
 function canSee(p){const owner=G(()=>ORGX.P(p.owner),null);if(p.vis==="owner")return p.owner===me();if(p.vis==="division")return !owner||G(()=>ORGX.P(me()).unit,"")===owner.unit;return true}
 function libRows(q){const base=G(()=>PROCLIB.list(),[]).filter(p=>!/^stu_/.test(p.id)).map(p=>({id:p.id,title:p.name,owner:p.owner,fam:p.familyName,lvl:p.level,steps:p.steps,vis:"enterprise",kind:"core"}));
  const mine=Q.lib.map(p=>({id:p.id,title:p.title,owner:p.owner,fam:"Built in the studio",lvl:2,steps:p.steps,vis:p.vis,kind:"studio",ver:p.ver}));
  let rows=mine.concat(base);q=String(q||"").toLowerCase().trim();if(q)rows=rows.filter(r=>(r.title+" "+r.owner+" "+r.fam).toLowerCase().indexOf(q)>=0);return rows}
 function vLib(){const rows=libRows(Q.q);const sh=rows.slice(0,40);
- return `<h2>Enterprise library</h2><p class="stu-sum">${rows.length} processes anyone can find, run, extend or inherit, if their role allows it.</p><input class="stu-q" data-stu-q value="${E(Q.q||"")}" placeholder="Search by name, owner or area" aria-label="Search the library">
- <ul class="stu-lib">${sh.map(r=>{const ok=canSee(r);return `<li><span class="stu-ln"><b>${E(r.title)}</b><small>${E(r.fam)} · owner ${E(r.owner)} · ${r.steps} steps${r.kind==="studio"?" · built in the studio "+E(r.ver):""}</small></span><span class="stu-mat">L${r.lvl}</span>${ok?`<button class="btn quiet" data-stu-use="run:${E(r.id)}">Run</button><button class="btn quiet" data-stu-use="ext:${E(r.id)}">Extend</button><button class="btn quiet" data-stu-use="inh:${E(r.id)}">Inherit</button>`:`<button class="btn quiet" data-stu-use="ask:${E(r.id)}">Ask for access</button>`}</li>`}).join("")}</ul>${rows.length>40?`<p class="stu-sum">Showing 40. Search to narrow.</p>`:""}`}
-function vHome(){const lib=libRows("");return `<div class="stu-home"><h2>Tell us what you need to do. We will handle the rest.</h2><p class="stu-sum">You do not need to know how security, data, governance or process design work. Describe the job in plain words. Oukala finds what already exists, builds what does not, and every enterprise rule applies to what you build.</p>
- <ol class="stu-how"><li><b>1</b><span>Say what you need, by typing or, soon, by voice</span></li><li><b>2</b><span>Oukala searches the library and extends or builds</span></li><li><b>3</b><span>You watch it appear here, and change it in chat or right on the page</span></li><li><b>4</b><span>The guardrails come built in, and the whole enterprise can use what you build</span></li></ol>
- <div class="stu-stat"><span><b>${lib.length}</b> processes in the library</span><span><b>${G(()=>Object.keys(DATAMODEL.tables).length,0)}</b> data entities with owners</span><span><b>${Object.keys(G(()=>METRICS,{})).length}</b> measures</span><button class="btn quiet" data-stu-go="lib">Browse the library</button></div></div>`}
+ return `${head("Library","Enterprise library",rows.length+" processes anyone can find, run, extend or inherit, if their role allows it.")}<input class="stu-q" data-stu-q value="${E(Q.q||"")}" placeholder="Search by name, owner or area" aria-label="Search the library">
+ <div class="stu-lib">${sh.map(r=>{const ok=canSee(r);return `<div class="stu-lr card glass"><span class="stu-ln"><b>${E(r.title)}</b><small>${E(r.fam)} · owner ${E(r.owner)} · ${r.steps} steps${r.kind==="studio"?" · built in the studio "+E(r.ver):""}</small></span><span class="stu-mat">L${r.lvl}</span>${ok?`<button class="btn quiet" data-stu-use="run:${E(r.id)}">Run</button><button class="btn quiet" data-stu-use="ext:${E(r.id)}">Extend</button><button class="btn quiet" data-stu-use="inh:${E(r.id)}">Inherit</button>`:`<button class="btn quiet" data-stu-use="ask:${E(r.id)}">Ask for access</button>`}</div>`}).join("")}</div>${rows.length>40?`<p class="stu-sum">Showing 40. Search to narrow.</p>`:""}`}
+function vHome(){const lib=libRows("");return `<div class="stu-home">${eyebrow("Guardrails in a box")}<h2>Tell us what you need to do. We will handle the rest.</h2><p class="stu-sum">You do not need to know how security, data, governance or process design work. Describe the job in plain words. Oukala finds what already exists, builds what does not, and every enterprise rule applies to what you build.</p>
+ <div class="stu-hw">${[["Say it","Type it, or soon, say it"],["Find or build","Oukala searches the library, then extends or builds"],["Watch and change","It appears here. Edit it here or in chat"],["Guardrails included","Everyone with permission can use what you build"]].map((x,i)=>`<div class="stu-h1 card glass"><b>${i+1}</b><span><em>${x[0]}</em><small>${x[1]}</small></span></div>`).join("")}</div>
+ <div class="stu-ks">${tile("Library",lib.length,"processes to reuse")}${tile("Data",G(()=>Object.keys(DATAMODEL.tables).length,0),"entities with owners")}${tile("Measures",Object.keys(G(()=>METRICS,{})).length,"each with an action")}<div class="stu-k card glass stu-kb"><button class="btn quiet" data-stu-go="lib">Browse the library</button></div></div></div>`}
 const VIEWS={home:vHome,find:vFind,gov:vGov,flow:vFlow,std:vStd,data:vData,metrics:vMetrics,access:vAccess,strat:vStrat,guard:vGuard,share:vShare,lib:vLib};
 function stageOfView(v){return {find:"find",gov:"find",flow:"process",std:"std",data:"data",metrics:"metrics",access:"access",strat:"strat",guard:"guard",share:"share"}[v]}
 function railHTML(){if(Q.view==="home"||Q.view==="lib")return `<nav class="stu-rail"><button type="button" class="${Q.view==="home"?"cur":""}" data-stu-go="home">Start</button><button type="button" class="${Q.view==="lib"?"cur":""}" data-stu-go="lib">Library</button></nav>`;
- return `<nav class="stu-rail" aria-label="Build progress">${STAGES.filter(s=>!s[2]||Q.pro).map(s=>{const r=Q.reached[s[0]],cur=stageOfView(Q.view)===s[0];return `<button type="button" class="${cur?"cur":""} ${r?"done":""}" data-stu-view="${s[0]}" ${r?"":"disabled"}><i></i>${s[1]}</button>`}).join("")}<span class="stu-sp1"></span><button type="button" data-stu-go="lib">Library</button></nav>`}
+ return `<nav class="stu-rail" aria-label="Build progress">${STAGES.filter(s=>!s[2]||Q.pro).map(s=>{const r=Q.reached[s[0]],cur=stageOfView(Q.view)===s[0];return `<button type="button" class="${cur?"cur":""} ${r?"done":""}" data-stu-view="${s[0]}" ${r?"":"disabled"}>${s[1]}</button>`}).join("")}<span class="stu-sp1"></span><button type="button" data-stu-go="lib">Library</button></nav>`}
 function canvasHTML(){const f=VIEWS[Q.view]||vHome;return railHTML()+`<div class="stu-body" tabindex="-1">${f()}</div>`}
 const VIEW_OF_STAGE={find:"find",process:"flow",std:"std",data:"data",metrics:"metrics",access:"access",strat:"strat",guard:"guard",share:"share"};
 
 /* ---------- mounting ---------- */
-function shell(){return `<div class="stu"><section class="stu-left" aria-label="Chat with Oukala"><header><b>Build with Oukala</b><span class="stu-sub">Guardrails in a box</span><button type="button" class="btn quiet" data-stu-play="1" aria-pressed="${Q.auto}">${Q.auto?"Pause demo":"Play the demo"}</button></header><div id="stuChat" class="stu-chat" role="log" aria-live="polite"></div>
+function shell(){return `<div class="stu"><section class="stu-left card glass" aria-label="Chat with Oukala"><header><b>Build with Oukala</b><span class="stu-sub">Guardrails in a box</span><button type="button" class="btn quiet" data-stu-play="1" aria-pressed="${Q.auto}">${Q.auto?"Pause demo":"Play the demo"}</button></header><div id="stuChat" class="stu-chat" role="log" aria-live="polite"></div>
  <div class="stu-chips" id="stuChips"></div>
  <form class="stu-in" data-stu-form><button type="button" class="stu-mic" data-stu-mic="1" title="Voice (where your browser supports it)" aria-label="Speak instead of typing">🎤</button><input id="stuInput" autocomplete="off" placeholder="${Q.sc?"Answer, ask, or say: add a step …":"What do you need to do?"}" aria-label="Tell Oukala what you need"><button class="btn primary" type="submit">Send</button></form></section>
  <section class="stu-right" id="stuCanvas" aria-label="What is being built"></section></div>`}
 function chipsHTML(){if(Q.sc)return"";return SD.CHIPS.map(c=>`<button type="button" class="stu-chip" data-stu-try="${c.id}"><b>${E(c.t)}${c.pro?' <em class="stu-pro">Pro</em>':""}</b><small>${E(c.sub)} · ${E(c.time)}</small></button>`).join("")}
-function render(){const c=D.getElementById("stuCanvas");if(!c)return;c.innerHTML=canvasHTML();const ch=D.getElementById("stuChips");if(ch)ch.innerHTML=chipsHTML();const inp=D.getElementById("stuInput");if(inp)inp.placeholder=Q.sc?"Answer, ask, or say: add a step …":"What do you need to do?";
+function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}const ch=D.getElementById("stuChips");if(ch)ch.innerHTML=chipsHTML();const inp=D.getElementById("stuInput");if(inp)inp.placeholder=Q.sc?"Answer, ask, or say: add a step …":"What do you need to do?";
  const pb=D.querySelector("[data-stu-play]");if(pb){pb.textContent=Q.auto?"Pause demo":"Play the demo";pb.setAttribute("aria-pressed",Q.auto)}}
 function syncRail(){}
 function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";r.innerHTML=shell();
@@ -259,13 +291,16 @@ function open(text){go("studio");setTimeout(()=>{mount();if(text)submit(text)},6
 W.STUDIO.open=open;
 
 /* ---------- events ---------- */
-D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-stu-try],[data-stu-ans],[data-stu-next],[data-stu-who],[data-stu-ph],[data-stu-view],[data-stu-go],[data-stu-build],[data-stu-agree],[data-stu-pub],[data-stu-play],[data-stu-use],[data-stu-mic]");if(!t||!D.getElementById("stuRoot"))return;
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-stu-try],[data-stu-ans],[data-stu-next],[data-stu-who],[data-stu-ph],[data-stu-view],[data-stu-go],[data-stu-build],[data-stu-agree],[data-stu-pub],[data-stu-play],[data-stu-use],[data-stu-mic],[data-stu-sel],[data-stu-set],[data-stu-zoom]");if(!t||!D.getElementById("stuRoot"))return;
  const d=t.dataset;
  if(d.stuTry){startScenario(SD.SCEN[d.stuTry]);return}
  if(d.stuAns){const[a,b]=d.stuAns.split(":").map(Number);answer(a,b);return}
  if(d.stuNext){const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;Q.wait=false;drawChat();nextBeat();return}
  if(d.stuWho!=null){cycleWho(d.stuWho);return}
- if(d.stuPh!=null){Q.exp[d.stuPh]=!Q.exp[d.stuPh];render();return}
+ if(d.stuSel!=null){Q.sel=String(Q.sel)===d.stuSel?null:d.stuSel;render();return}
+ if(d.stuSet!=null){const[r,k]=d.stuSet.split("|");setWho(r,k);return}
+ if(d.stuZoom!=null){const z=+d.stuZoom;if(z===0){const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw)Q.zoom=Math.max(.5,Math.min(1,(cv.clientWidth-6)/parseFloat(iw.style.width)))}else Q.zoom=Math.max(.5,Math.min(1.4,+(Q.zoom+z*.15).toFixed(2)));render();return}
+ if(d.stuPh!=null){Q.ph=+d.stuPh;Q.sel=null;render();return}
  if(d.stuView){Q.view=VIEW_OF_STAGE[d.stuView]||d.stuView;render();return}
  if(d.stuGo){if(d.stuGo==="share"){Q.view="share";Q.stage="share";Q.reached.share=1}else Q.view=d.stuGo;render();return}
  if(d.stuBuild!=null){const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;buildOut();return}
@@ -283,7 +318,7 @@ D.addEventListener("change",e=>{const t=e.target;if(!t.matches||!D.getElementByI
  if(t.matches("[data-stu-std]")){Q.B.std[+t.dataset.stuStd].on=t.checked;say(t.checked?"Added the reference to the process and its articles.":"Removed. The steps that came from it stay unless you remove them.");return}
  if(t.matches('input[name="stuvis"]')){Q.vis=t.value;render();return}});
 D.addEventListener("input",e=>{const t=e.target;if(t.matches&&t.matches("[data-stu-q]")){Q.q=t.value;const c=D.querySelector(".stu-lib");const pos=t.selectionStart;render();const n=D.querySelector("[data-stu-q]");if(n){n.focus();n.setSelectionRange(pos,pos)}}});
-D.addEventListener("focusout",e=>{const t=e.target;if(!t.matches||!t.matches("[data-stu-name]"))return;const ref=t.dataset.stuName;const s=ref.indexOf(":")>0?Q.B.phases[+ref.split(":")[0]].steps[+ref.split(":")[1]]:Q.B.steps[+ref];const v=t.textContent.trim();if(s&&v&&v!==s.n){const old=s.n;s.n=v;say("Renamed <b>"+E(old)+"</b> to <b>"+E(v)+"</b>.")}});
+D.addEventListener("focusout",e=>{const t=e.target;if(!t.matches||!t.matches("[data-stu-name]"))return;const ref=t.dataset.stuName;const s=stepAt(ref);const v=t.textContent.trim();if(s&&v&&v!==s.n){const old=s.n;s.n=v;say("Renamed <b>"+E(old)+"</b> to <b>"+E(v)+"</b>.");render()}});
 D.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.matches&&e.target.matches("[data-stu-name]")){e.preventDefault();e.target.blur()}});
 
 function useLib(k,id){const p=proc(id)||(Q.lib.find(x=>x.id===id)&&{id,name:Q.lib.find(x=>x.id===id).title,owner:Q.lib.find(x=>x.id===id).owner});if(!p)return;
@@ -299,13 +334,14 @@ function voice(){const SR=W.SpeechRecognition||W.webkitSpeechRecognition;if(!SR)
 /* ---------- screen and entry points ---------- */
 G(()=>REG("studio","Build with Oukala","new","M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9z",()=>`<div class="screen stu-screen"><div id="stuRoot"></div></div>`));
 G(()=>NAVX.add("studio",{group:"make",label:"Build with Oukala",hint:"Say what you need and Oukala builds it with every guardrail",sub:"Chat and build",kw:"build create new process app automate studio chat guardrails in a box interview library extend"}));
-R15D.after.push(()=>{if(S_screen()==="studio")setTimeout(mount,0);else{const r=D.getElementById("stuRoot");if(r)r.dataset.m=""}
- if(S_screen()==="home")ensureAskBar()});
+R15D.after.push(()=>{if(S_screen()==="studio")setTimeout(mount,0);else{const r=D.getElementById("stuRoot");if(r)r.dataset.m=""}ensurePill()});
 function S_screen(){return G(()=>S.screen,"")}
-function ensureAskBar(){const v=D.getElementById("view");if(!v||v.querySelector(".stu-ask1"))return;const h=v.querySelector(".hero");if(!h)return;
- const b=D.createElement("form");b.className="stu-ask1";b.setAttribute("data-stu-front","1");b.innerHTML=`<label for="stuFront"><b>What do you need to do?</b> <span>Say it in plain words. Oukala finds what exists or builds it, with every guardrail.</span></label><div><input id="stuFront" autocomplete="off" placeholder="For example: printed standards keep arriving damaged"><button class="btn primary" type="submit">Start</button><button type="button" class="btn quiet" data-stu-fgo="1">See examples</button></div>`;
- h.parentNode.insertBefore(b,h)}
-D.addEventListener("submit",e=>{const f=e.target;if(f.matches&&f.matches("[data-stu-front]")){e.preventDefault();const v=f.querySelector("input").value.trim();open(v||"")}});
-D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-stu-fgo]"))open("")});
+/* the front door: one colored pill at the bottom of the side menu, on every screen */
+function ensurePill(){const f=D.querySelector(".rail .railfoot");if(!f)return;let b=D.getElementById("stuPill");
+ if(!b){b=D.createElement("button");b.id="stuPill";b.type="button";b.className="stu-pill";b.setAttribute("data-stu-pill","1");b.setAttribute("aria-label","Build with Oukala: say what you need and it is built with every guardrail");
+  b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span>Build with Oukala</span>'}
+ if(b.parentNode!==f||f.firstChild!==b)f.insertBefore(b,f.firstChild);b.classList.toggle("cur",S_screen()==="studio")}
+D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-stu-pill]"))open("")});
+[200,800,2000,5000].forEach(t=>setTimeout(ensurePill,t));
 W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=nextBeat;
 })();
