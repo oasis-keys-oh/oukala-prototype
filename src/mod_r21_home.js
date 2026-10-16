@@ -132,7 +132,7 @@ function tile(spec,who){const id=spec[0],lab=spec[1];
 
 /* ---------- painted hero art (Round 24): one image per role from HEROMAP, falling back to the generated line art ---------- */
 function heroArt(k,p){const h=(window.HEROMAP||{})[k];if(!h)return art(p.art,p.pal,k.length*131+7);
- return `<img class="r21-img" src="hero/${h.f}.webp" alt="" decoding="async" fetchpriority="high" style="object-position:${h.pos||"50% 50%"}">`}
+ return `<img class="r21-img" src="hero/${h.f}.webp?v=21b" onerror="this.onerror=null;this.src='hero/${h.f}.webp?r='+Date.now()" alt="" decoding="async" fetchpriority="high" style="object-position:${h.pos||"50% 50%"}">`}
 /* ---------- generated hero art ---------- */
 let seq=0;
 function rng(seed){let s=seed>>>0||1;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296}}
