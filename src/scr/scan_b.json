@@ -1,0 +1,70 @@
+{
+ "screens": 121,
+ "chips": 2654,
+ "dead": [
+  {
+   "screen": "bud_req",
+   "attr": "data-person",
+   "val": "the CEO",
+   "txt": "the CEO"
+  },
+  {
+   "screen": "exe_apps",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  },
+  {
+   "screen": "meet_hub",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor3.5 h"
+  },
+  {
+   "screen": "ppl_org",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  },
+  {
+   "screen": "plat_fab",
+   "attr": "data-person",
+   "val": "Platform team",
+   "txt": "Platform team"
+  },
+  {
+   "screen": "plat_fab",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  },
+  {
+   "screen": "itsm_rel",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  },
+  {
+   "screen": "agile_board",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  },
+  {
+   "screen": "agile_art",
+   "attr": "data-person",
+   "val": "Chief Editor",
+   "txt": "Chief Editor"
+  }
+ ],
+ "byAttr": {
+  "data-go": 1132,
+  "data-nav": 98,
+  "data-rec": 59,
+  "data-person": 929,
+  "data-dx-goproc": 45,
+  "data-mm-gomod": 48,
+  "data-pl-open": 314,
+  "data-s360-open": 29
+ }
+}

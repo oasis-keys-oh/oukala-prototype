@@ -1,0 +1,26 @@
+[
+ {
+  "id": "bud_over",
+  "r": [
+   {
+    "k": "BOX+VSCROLL",
+    "el": "DIV.tablewrap.glass.bud-tw",
+    "card": "SECTION.card.glass",
+    "h": 630,
+    "sh": 1204
+   }
+  ]
+ },
+ {
+  "id": "bud_doa",
+  "r": [
+   {
+    "k": "BOX",
+    "el": "DIV.tablewrap.glass.bud-tw",
+    "card": "SECTION.card.glass",
+    "h": 591,
+    "sh": 589
+   }
+  ]
+ }
+]

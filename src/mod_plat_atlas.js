@@ -48,7 +48,7 @@ const tyg=t=>TYG[t]||["Aa",String(t||"Text")];
 let _M=null,_Mk="";
 function model(){
  const es=PLAT.entities();const lv=LIN.ver();
- const key=es.length+"|"+Object.keys(DATAMODEL.tables).length+"|"+Object.keys(PLAT.FIXES).length+"|"+JSON.stringify(S.plat&&S.plat.applied||{})+"|"+lv+"|"+DMV+"|"+Object.keys(A.approved).length+"|"+(window.SCALE&&SCALE.on?1:0);
+ const key=es.length+"|"+DATAMODEL.cnt()+"|"+Object.keys(PLAT.FIXES).length+"|"+JSON.stringify(S.plat&&S.plat.applied||{})+"|"+lv+"|"+DMV+"|"+Object.keys(A.approved).length+"|"+(window.SCALE&&SCALE.on?1:0);
  if(_M&&_Mk===key)return _M;
  const ent=new Map(),list=[];
  es.forEach(e=>{if(!DC[e.domain]){DC[e.domain]=DPOOL[Object.keys(DC).length%DPOOL.length]}});

@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+path.resolve('out_a14/full.html'),{waitUntil:'load',timeout:90000});await p.waitForTimeout(500);
+console.log(JSON.stringify(await p.evaluate(()=>{const titles=new Set();ORGX.staff.forEach(x=>titles.add(x.role.toLowerCase()));DIR.forEach(d=>titles.add((d.role||'').toLowerCase()));PEOPLE.forEach(x=>titles.add((x[1]||'').toLowerCase()));
+const names=new Set();PEOPLE.forEach(x=>names.add(x[0]));DIR.forEach(d=>names.add(d.name));ORGX.staff.forEach(x=>names.add(x.n));ORGX.people.forEach(x=>names.add(x.name));
+const bad=[...names].filter(n=>titles.has(n.toLowerCase()));
+const res=new Set();TASKS.forEach(t=>{(t.res||[]).forEach(r=>res.add(typeof r==='string'?r.split(':')[0]:r.n||r.name));res.add(t.own)});PROJ.forEach(x=>res.add(x.owner));
+const unk=[...res].filter(n=>n&&!names.has(n));
+return{bad,unk,titleAsRes:unk.filter(n=>titles.has(n.toLowerCase()))}})));await b.close()})();

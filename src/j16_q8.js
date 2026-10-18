@@ -1,0 +1,1 @@
+(()=>{go('trace');return new Promise(r=>setTimeout(()=>{r({screen:S.screen,h:document.querySelector('#view .hero')&&document.querySelector('#view .hero').innerHTML.slice(0,1200),pk:[...document.querySelectorAll('.pk2')].map(x=>x.dataset.pk2)})},800))})()

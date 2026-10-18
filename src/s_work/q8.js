@@ -1,0 +1,13 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.stateKeys=sh(Object.keys(PERM.state));
+ o.roles=PERM.roles.length;o.groups=PERM.groups.length;o.roleNames=sh(PERM.roles.map(r=>r.id),900);
+ o.cov=sh(PERM.coverage(),900);
+ o.fields=sh(PERM.fields&&typeof PERM.fields,50);o.fc=sh(PERM.fieldsCatalog&&(PERM.fieldsCatalog.length||Object.keys(PERM.fieldsCatalog).length));
+ o.sets=sh(PERM.state.sets&&PERM.state.sets.map(s=>s.id+':'+s.n+':'+(s.grants||s.rules||[]).length),1500);
+ o.rules=sh((PERM.state.rules||[]).length);o.rule0=sh((PERM.state.rules||[])[0],700);
+ o.entities=sh(PERM.allEntities&&PERM.allEntities().length);
+ o.sod=sh(GUARD.sod&&(Array.isArray(GUARD.sod)?GUARD.sod.length+' '+JSON.stringify(GUARD.sod.slice(0,2)):typeof GUARD.sod),900);
+ o.actions=sh(GUARD.actions&&GUARD.actions.length);o.caps=sh(GUARD.caps&&Object.keys(GUARD.caps).slice(0,40));
+ o.rev=sh(PERM.review&&typeof PERM.review);o.hist=sh(PERM.history&&PERM.history().length);
+ o.seedver=PERM.SEEDVER;
+ return o;

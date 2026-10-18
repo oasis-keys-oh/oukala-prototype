@@ -1,0 +1,13 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.alias=Object.keys(R15.alias).length;o.hidden=Object.keys(R15.hidden).length;
+ const st=ORGX.staff;const units={};st.forEach(s=>units[s.unit]=(units[s.unit]||0)+1);o.units=sh(units);o.nunits=Object.keys(units).length;
+ o.et=sh(st.reduce((a,s)=>(a[s.et]=(a[s.et]||0)+1,a),{}));o.rt=sh(st.reduce((a,s)=>(a[s.rt]=(a[s.rt]||0)+1,a),{}));
+ o.vacs=sh((ORGX.vacs&&typeof ORGX.vacs==='function'?ORGX.vacs():ORGX.vacs)?.slice?.(0,2),900);
+ o.dir=DIR.length;o.dirKinds=sh(DIR.reduce((a,d)=>(a[d.kind]=(a[d.kind]||0)+1,a),{}));
+ o.lists=sh(LISTS.defs);o.lcons=sh(LISTS.consumers&&LISTS.consumers());
+ o.layers=sh(ORGX.layers&&ORGX.layers());o.size=ORGX.size&&sh(ORGX.size());
+ o.doms=ORGX.domains.length;o.domSample=sh(ORGX.domains.map(d=>d.id).slice(0,40));
+ o.orgEvents=sh(EVENTS.list().filter(e=>e.module==='org_chart').map(e=>e.id));
+ o.etBadge=sh(['ft','pt','ct','in'].map(x=>{try{return ORGX.etBadge(x)}catch(e){return null}}),400);
+ o.ETs=sh(typeof ORGX.ET!=="undefined"?ORGX.ET:null);
+ return JSON.stringify(o,null,1);

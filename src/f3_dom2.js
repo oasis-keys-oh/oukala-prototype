@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:390,height:844}})).newPage();
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+path.resolve('out_f3_15/full.html')+'#m',{timeout:240000,waitUntil:'domcontentloaded'});await p.waitForTimeout(5000);
+console.log(await p.evaluate(()=>{let e=document.querySelector('.r3m-tabs'),o=[];const r=e.getBoundingClientRect();o.push('tabs top '+Math.round(r.top)+' h '+innerHeight);while(e=e.parentElement){const s=getComputedStyle(e);if(s.transform!=='none'||s.filter!=='none'||s.backdropFilter!=='none'||s.willChange!=='auto'||s.contain!=='none'||s.perspective!=='none')o.push(e.tagName+'.'+String(e.className).slice(0,30)+' t:'+s.transform.slice(0,20)+' f:'+s.filter+' bf:'+s.backdropFilter+' wc:'+s.willChange+' c:'+s.contain)}return o.join('\n')}));await b.close()})();

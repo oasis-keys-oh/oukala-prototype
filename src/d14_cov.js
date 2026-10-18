@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const [out,theme,png,w]=process.argv.slice(2);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const ctx=await b.newContext({viewport:{width:+w||1440,height:1000},colorScheme:theme==='dark'?'dark':'light'});const p=await ctx.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PE '+e.message));p.on('console',m=>m.type()==='error'&&errs.push(m.text()));
+await p.route(/fonts\.(googleapis|gstatic)/,r=>r.abort());await p.goto('file://'+out+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(1200);
+if(theme==='dark')await p.evaluate(()=>{document.documentElement.setAttribute('data-theme','dark')});
+await p.evaluate(async()=>{NAVX.ensureIndex(true);await new Promise(r=>setTimeout(r,200));for(let i=0;i<900&&(NAVX.index.building||!NAVX.index.built);i++)await new Promise(r=>setTimeout(r,100));S.v.nav_v=1;go('nav_studio')});
+await p.waitForTimeout(800);
+const c=await p.evaluate(()=>{const z=NAVX.zsearch.coverage();return {pct:z.pct,cov:z.covered,tot:z.total,probe:z.probe,gaps:z.gaps.map(e=>e.id).join(','),unclass:z.unclass}});console.log(JSON.stringify(c));
+const el=await p.$('.zs-cov');if(el){await el.scrollIntoViewIfNeeded();await p.waitForTimeout(300);await p.screenshot({path:png})}else console.log('no zs-cov');
+console.log('errs',errs.slice(0,5));await b.close()})();

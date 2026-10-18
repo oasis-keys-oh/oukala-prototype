@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000},colorScheme:'dark'})).newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PE '+e.message));await p.route(/^https?:/,r=>r.abort());
+await p.goto('file://'+dir+'/full.html',{waitUntil:'load',timeout:240000});await p.waitForTimeout(1500);
+await p.evaluate(()=>{go('obs_dash')});await p.waitForTimeout(600);await p.evaluate(()=>DASHX.startEdit());await p.waitForTimeout(500);
+await p.screenshot({path:dir+'/j_e1d.png'});
+await p.evaluate(()=>{document.querySelector('[data-dl="add"]').click()});await p.waitForTimeout(600);await p.screenshot({path:dir+'/j_e2d.png'});
+await p.evaluate(()=>go('adm_studio'));await p.waitForTimeout(600);
+await p.evaluate(()=>{const t=[...document.querySelectorAll('#view [role=tab],#view .tab,#view label')].find(x=>/Tables and forms/.test(x.textContent));t&&t.click()});await p.waitForTimeout(800);
+await p.screenshot({path:dir+'/j_a1d.png'});
+await p.evaluate(()=>go('metrics'));await p.waitForTimeout(700);await p.screenshot({path:dir+'/j_m1d.png'});
+console.log(errs);await b.close()})();

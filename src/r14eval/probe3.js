@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const ctx=await b.newContext({viewport:{width:1440,height:900},colorScheme:'dark'});const p=await ctx.newPage();
+await p.goto('file://'+process.cwd()+'/full.html',{timeout:180000,waitUntil:'domcontentloaded'});await p.waitForFunction(()=>typeof S!=='undefined'&&typeof go==='function'&&document.querySelector('#view'),null,{timeout:180000});await p.waitForTimeout(2000);
+const T=async(id)=>p.evaluate(id=>{const t=performance.now();go(id);return Math.round(performance.now()-t)},id);
+const ids=['home','itsm_inc','svc_req','itom_cmdb','ppl_org','ppm_proj','adm_audit','bud_over'];
+console.log('demo',JSON.stringify(await Promise.all(ids.map(async i=>[i,await T(i)]))));
+const t0=Date.now();const r=await p.evaluate(()=>{const t=performance.now();try{SCALE.set(true)}catch(e){return 'EXC '+e.message}return Math.round(performance.now()-t)});console.log('scale set',r,Date.now()-t0);await p.waitForTimeout(1500);
+const out=[];for(const i of ids){out.push([i,await T(i)])}console.log('enterprise',JSON.stringify(out));
+console.log(await p.evaluate(()=>({nodes:document.querySelectorAll('*').length,counts:(typeof SCALE!=='undefined'&&SCALE.counts)?SCALE.counts():null,inc:(typeof INCIDENTS!=='undefined')?INCIDENTS.length:null,mem:performance.memory?Math.round(performance.memory.usedJSHeapSize/1e6):null})));
+await p.evaluate(()=>go('itsm_inc'));await p.waitForTimeout(800);await p.screenshot({path:'shots/scale_itsm_inc.png'});
+await p.evaluate(()=>go('svc_req'));await p.waitForTimeout(800);await p.screenshot({path:'shots/scale_svc_req.png'});
+console.log('nodes after',await p.evaluate(()=>document.querySelectorAll('*').length));
+await b.close()})();

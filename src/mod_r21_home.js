@@ -232,20 +232,21 @@ function decHTML(k,p){const list=decisions(k);
  <div class="r21-tw" tabindex="0" role="region" aria-label="Decisions table"><table class="r21-t"><thead><tr><th class="r21-n"><span class="sr-only">Rank</span></th><th>Decision</th><th class="r21-hide-sm">Type</th><th class="r21-hide-sm">From</th><th class="r21-hide-sm r21-num">Value</th><th>When</th><th class="r21-hide-sm">Risk</th><th class="r21-c-go"><span class="sr-only">Open</span></th></tr></thead><tbody>${rowsHTML(list)||`<tr><td colspan="8" class="muted small r21-emp">Nothing is waiting on you that only you can decide.</td></tr>`}</tbody></table></div></section>${ag}</div>`}
 
 /* ---------- compose ---------- */
-function build(prev){const k=S.persona,p=P[k];if(!p)return prev;
+function lensKeyOf(k,p){if(!p||p.kind!=="exec")return k;const l=G(()=>R18.st.lens,null);const lk=l==="cio"?"exec":l;return(lk&&P[lk]&&P[lk].kind==="exec")?lk:k}
+function build(prev){const k=S.persona,p=P[k];if(!p)return prev;const vk=lensKeyOf(k,p),vp=P[vk]||p,lensOn=vk!==k;
  const m0=prev.match(/^\s*<div class="screen[^"]*"[^>]*>/);if(!m0)return prev;
  const hi=prev.indexOf("</section>");if(hi<0)return prev;
  let rest=prev.slice(hi+10);
  if(p.kind==="self"||p.kind==="line"){rest=rest.replace(/<section class="[^"]*r18-homelens[^"]*"[\s\S]*?<\/section>/,"")}const li=rest.lastIndexOf("</div>");if(li>=0)rest=rest.slice(0,li);
- const who=me();let story=G(()=>R15D.storyFor&&R15D.storyFor(k),"");
+ const who=me();let story=G(()=>R15D.storyFor&&R15D.storyFor(vk),"");
  const lvl=({exec:"You decide",lead:"You lead",line:"You do the work",self:"You ask and track"})[p.kind];
- const top=effTop(k).map(t=>tile(t,who.name)).join("");
- const hero=`<section class="hero r21-hero" style="--p1:${p.pal[0]};--p2:${p.pal[1]};--p3:${p.pal[2]}"><div class="r21-art">${heroArt(k,p)}</div><div class="r21-hc"><div class="eyebrow r21-eb">${E(G(()=>NOW.day,"Today"))} · Meridian Standards Foundation</div><h1>Welcome${/^(board|guest)$/.test(k)?'':', '+E(who.first)}.</h1><p class="r21-role">${E(p.sub)} · ${E(lvl)}${p.ro?" · read only":""}</p>${story&&p.kind!=="self"?`<p class="r21-story">${story}</p>`:""}<div class="r21-top" role="group" aria-label="Your three numbers">${top}</div><div class="r21-hr"><button type="button" class="chip" data-r21-cus aria-haspopup="dialog">Choose what matters to you</button><button type="button" class="chip" data-ask="What should I look at first today?">What should I look at first?</button></div></div></section>`;
- const cs=effCare(k),panels=cs.map(c=>care(c.p)).join("");
+ const top=effTop(vk).map(t=>tile(t,who.name)).join("");
+ const hero=`<section class="hero r21-hero" style="--p1:${vp.pal[0]};--p2:${vp.pal[1]};--p3:${vp.pal[2]}"><div class="r21-art">${heroArt(vk,vp)}</div><div class="r21-hc"><div class="eyebrow r21-eb">${E(G(()=>NOW.day,"Today"))} · Meridian Standards Foundation</div><h1>Welcome${/^(board|guest)$/.test(k)?'':', '+E(who.first)}.</h1><p class="r21-role">${lensOn?E(vp.sub)+" lens · your access has not changed":E(p.sub)+" · "+E(lvl)}${p.ro?" · read only":""}</p>${story&&p.kind!=="self"?`<p class="r21-story">${story}</p>`:""}<div class="r21-top" role="group" aria-label="Your three numbers">${top}</div><div class="r21-hr"><button type="button" class="chip" data-r21-cus aria-haspopup="dialog">Choose what matters to you</button><button type="button" class="chip" data-ask="What should I look at first today?">What should I look at first?</button></div></div></section>`;
+ const cs=effCare(vk),panels=cs.map(c=>care(c.p)).join("");
  const head=`<div class="r21-sh"><h2>What you care about</h2><span class="muted small">${p.kind==="exec"?"The details behind your numbers.":"The numbers behind your work."}</span><button type="button" class="btn quiet r21-edit" data-r21-cus>Change topics</button></div>`;
  const grid=cs.length?`${head}<div class="r21-cg r21-n${Math.min(4,cs.length)}">${panels}</div>`:"";
  const sec=[];
- if(p.kind==="exec"){sec.push(grid);if(p.dec)sec.push(decHTML(k,p));else sec.push(standing(k,"Your agenda"))}
+ if(p.kind==="exec"){if(lensOn){const L=G(()=>R18.LENSES.find(l=>l.id===R18.st.lens),null)||{};sec.push(`<div class="r21-lensbar" role="status"><span><b>${E(vp.sub)} lens.</b> ${E((L.balance||"").replace(/[.\s]+$/,""))}. Everything here is what that executive would look at first. Your own role and permissions are unchanged.</span><button type="button" class="btn quiet" data-r18-lens="${E(k==="exec"?"cio":k)}">Back to my view</button></div>`)}sec.push(grid);if(vp.dec)sec.push(decHTML(vk,vp));else sec.push(standing(vk,"Your agenda"))}
  else if(p.kind==="lead"||p.kind==="line"){sec.push(workHTML(k,p));sec.push(standing(k,"Standing work for your role"));sec.push(grid)}
  else sec.push(grid);
  const more=rest.trim()?`<details class="r21-more" open><summary><span class="r21-mh">Other considerations</span><span class="muted small">More from your home: approvals, projects and the executive lens.</span></summary><div class="r21-mi">${rest}</div></details>`:"";

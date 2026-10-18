@@ -1,0 +1,1 @@
+(async()=>{await new Promise(r=>setTimeout(r,9000));const c=CONTRACT.evaluate('zevt');const a=ZLINK.audit();return {ct:c.score,gaps:c.gaps,rules:c.rules.map(r=>r.id+':'+r.st),left:a.checks.filter(x=>x.bad).map(x=>x.id+'='+x.bad).join(' '),dead:ZLINK.deadLinks().out.map(d=>d.rel+':'+d.ref).slice(0,20),score:ZLINK.score(),cov:window.EVENTS.coverage()}})()

@@ -1,0 +1,25 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();
+await p.route(/^https?:/,r=>r.abort());
+await p.goto('file://'+path.resolve('scr/base.html'));await p.waitForTimeout(800);
+const r=await p.evaluate(()=>{
+ const o={};
+ o.atlasKeys=Object.keys(ATLAS.lin);
+ o.atlasLin0=JSON.stringify(ATLAS.lin[Object.keys(ATLAS.lin)[0]]).slice(0,600);
+ const cov=ATLAS.coverage();o.cov=JSON.stringify(cov,(k,v)=>Array.isArray(v)&&v.length>3?v.slice(0,3).concat(['..'+v.length]):v).slice(0,2500);
+ o.mod0=JSON.stringify(MODMAP.modules[0]);o.flow0=JSON.stringify(MODMAP.flows[0]);o.flow1=JSON.stringify(MODMAP.flows[300]);
+ o.mstats=JSON.stringify(MODMAP.stats());
+ o.pl=JSON.stringify(PROCLIB.list()[0]).slice(0,1500);o.plN=PROCLIB.list().length;o.plstats=JSON.stringify(PROCLIB.stats());
+ o.metric0=JSON.stringify(METRICS[Object.keys(METRICS)[0]]).slice(0,500);o.nMetrics=Object.keys(METRICS).length;
+ o.plat=JSON.stringify(PLAT.entities()[0]).slice(0,700);o.nEnt=PLAT.entities().length;
+ o.mcp=MCPX.tools.map(t=>t.name||JSON.stringify(t).slice(0,60)).join(',');
+ o.inb=JSON.stringify(Object.keys(INBOX.adapters));o.inbstate=JSON.stringify(Object.keys(INBOX.state));o.inbwiring=JSON.stringify(INBOX.wiring()).slice(0,1500);
+ o.flowx=JSON.stringify(FLOWX.flows()[0]).slice(0,800);o.nFlowx=FLOWX.flows().length;
+ o.events=JSON.stringify(EVENTS);
+ o.ownx=JSON.stringify(OWNX.stats()).slice(0,600);
+ o.dec=JSON.stringify(DECX.rulesFor? DECX.coverage():0).slice(0,800);
+ o.nodes=JSON.stringify(NODES[0]);
+ o.orgx=typeof ORGX.people+' '+typeof window.ORGX;
+ return o});
+for(const k in r)console.log(k,'=',r[k]);await b.close()})();

@@ -1,0 +1,1 @@
+(()=>{const B=BUDX.B();const o={};Object.keys(B).forEach(k=>{const v=B[k];o[k]=Array.isArray(v)?('arr'+v.length+' '+String(JSON.stringify(v[0])).slice(0,260)):typeof v});o.BD=typeof BD!=='undefined'?Object.keys(BD).join():'-';o.inv=JSON.stringify(INVOICES[0]).slice(0,300);o.task=JSON.stringify(TASKS[0]).slice(0,250);o.proj=JSON.stringify(PROJ[0]).slice(0,200);return o})()

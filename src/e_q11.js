@@ -1,0 +1,1 @@
+(()=>({dm:DATAMODEL.tables.incident.fields.filter(f=>f.k==='service'||f.k==='caller'),pl:PLAT.ent('incident').fields.filter(f=>f.k==='service'||f.k==='assignment_group'),dmag:DATAMODEL.tables.incident.fields.filter(f=>f.k==='assignment_group'),ek:Object.keys(PLAT.ent('incident'))}))()

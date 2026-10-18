@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();const cdp=await c.newCDPSession(p);
+await p.addInitScript(()=>{document.addEventListener('DOMContentLoaded',()=>{});const mo=new MutationObserver(()=>{const v=document.querySelector('#view');if(v&&v.children.length){window.__first=performance.now()+performance.timeOrigin;mo.disconnect()}});mo.observe(document,{childList:true,subtree:true})});
+await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:500});await cdp.send('Profiler.start');const W0=Date.now();
+const t0=Date.now();await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded'});await p.waitForFunction(()=>window.__first,null,{timeout:90000});const tFirst=Date.now()-t0;
+const first=await p.evaluate(()=>window.__first);
+await p.waitForTimeout(500);
+const {profile}=await cdp.send('Profiler.stop');console.log('first view ms (wall)',tFirst);
+const nodes=profile.nodes,byId={};nodes.forEach(n=>byId[n.id]=n);let t=0;const children={};nodes.forEach(n=>(n.children||[]).forEach(c=>children[c]=n.id));
+const incl={},self={};let busy=0;
+profile.samples.forEach((s,i)=>{t+=profile.timeDeltas[i];if(t/1000>first-W0)return;const dt=profile.timeDeltas[i];const n0=byId[s];if(n0.callFrame.functionName==='(idle)')return;busy+=dt;let cur=s;const seen=new Set();while(cur){const n=byId[cur];const k=(n.callFrame.functionName||'(anon)')+' @'+n.callFrame.lineNumber;if(!seen.has(k)){seen.add(k);incl[k]=(incl[k]||0)+dt}cur=children[cur]}});
+console.log('busy before first view ms',(busy/1000).toFixed(0));
+Object.entries(incl).sort((a,b)=>b[1]-a[1]).slice(0,45).forEach(([k,v])=>console.log((v/1000).toFixed(0)+'ms',k));
+await b.close()})();

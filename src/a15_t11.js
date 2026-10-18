@@ -1,0 +1,18 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const errs=[];
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();
+p.on('pageerror',e=>errs.push('PE '+e.message));p.on('console',m=>m.type()==='error'&&!/ERR_FAILED/.test(m.text())&&errs.push(m.text()));
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+path.resolve('out_a15/full.html'),{waitUntil:'load',timeout:150000});await p.waitForTimeout(4500);
+const ev=async(f,a)=>{try{return await p.evaluate(f,a)}catch(e){errs.push('EV '+e.message.slice(0,200))}};
+console.log('rules',await ev(()=>window.EVENTS.list().filter(e=>/^(person|vacancy)/.test(e.id)).map(e=>e.id+':'+e.enabledRules).join(' ')));
+console.log('proc',await ev(()=>['org_joiner','org_leaver'].map(id=>{const x=PROCLIB.get(id);return x.owner+'/'+x.backup}).join(' ')));
+const cnt=n=>Object.fromEntries(Object.entries(ORGX.ownRecs(n)).map(([k,v])=>[k,v.length]));
+console.log('sam',await ev(()=>JSON.stringify(Object.fromEntries(Object.entries(ORGX.ownRecs('Sam Patel')).map(([k,v])=>[k,v.length])))),'jl',await ev(()=>JSON.stringify(Object.fromEntries(Object.entries(ORGX.ownRecs('Jordan Lee')).map(([k,v])=>[k,v.length])))));
+await ev(()=>ORGX.hr.term('Sam Patel'));await ev(()=>{const s=FORMST.org5_term.vals;Object.keys(s).filter(k=>/^h_/.test(k)).forEach(k=>s[k]='Jordan Lee')});
+console.log('keys',await ev(()=>Object.keys(FORMST.org5_term.vals).join()));
+await ev(()=>submitForm('org5_term'));await p.waitForTimeout(300);
+console.log('sam after',await ev(()=>JSON.stringify(Object.fromEntries(Object.entries(ORGX.ownRecs('Jordan Lee')).map(([k,v])=>[k,v.length])))));
+console.log('log0',await ev(()=>JSON.stringify(ORGX.hr.log()[0].events.map(e=>[e.id,e.eid])).slice(0,200)));
+const oc=await ev(()=>{const l=window.EVENTS.log[0];return JSON.stringify(l.outcomes)});console.log(oc.slice(0,500));
+console.log('mlc',await ev(()=>{ORGX.sync();return METRICS.m_org_lc.cur+' '+METRICS.m_org_fte.cur+' '+METRICS.m_org_hc_plan.cur}));
+console.log('errs',errs);await b.close()})();

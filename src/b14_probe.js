@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve('out_b14');const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900},colorScheme:process.argv[2]||'light'});const p=await c.newPage();p.errs=[];p.on('pageerror',e=>p.errs.push(e.message));p.on('console',m=>m.type()==='error'&&p.errs.push(m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(6000);
+await p.evaluate(()=>{FLOWX.open('wf_inv')});await p.waitForTimeout(900);
+await p.screenshot({path:dir+'/shots/p_flow.png'});
+console.log(await p.evaluate(()=>{const f=FLOWX.get('wf_inv');return JSON.stringify({n:f.nodes.map(n=>[n.id,n.t,n.l,n.x,n.r]),e:f.edges.map(e=>[e.f,e.p,e.t])})}));
+await p.evaluate(()=>{DRAW.open('')});await p.waitForTimeout(900);
+console.log(await p.evaluate(()=>S.screen+' '+Object.keys(DRAW.ST.doc||{})));
+await p.screenshot({path:dir+'/shots/p_draw.png'});
+console.log(p.errs);await b.close()})();

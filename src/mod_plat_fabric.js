@@ -112,7 +112,7 @@ const SUBS=[
 const subsFor=en=>SUBS.filter(s=>s.pat.includes("*")||s.pat.includes(en));
 /* ---------- seeding ---------- */
 let _nt=0;
-function sync_(){const n=Object.keys(DATAMODEL.tables).length;if(n!==_nt){_nt=n;PLAT.refresh();if(F.ready){F.proj.forEach(p=>{if(p.eval&&!p.mine){p.eval=evaluate(p);p.route=routeOf(p,p.eval);const r=F.reqs.find(x=>x.ref===p.id);if(r)r.route=p.route}})}}}
+function sync_(){const n=DATAMODEL.cnt();if(n!==_nt){_nt=n;PLAT.refresh();if(F.ready){F.proj.forEach(p=>{if(p.eval&&!p.mine){p.eval=evaluate(p);p.route=routeOf(p,p.eval);const r=F.reqs.find(x=>x.ref===p.id);if(r)r.route=p.route}})}}}
 function ensure(){
  sync_();if(F.ready)return;
  F.conns=seedConns();

@@ -1,0 +1,1 @@
+(()=>{go('r16j_dash');S.v.r16jd=2;render();const t=document.querySelector('#view').innerText;return {rows:document.querySelectorAll('#view tr').length,len:t.length,sample:t.slice(t.indexOf('Layouts'),t.indexOf('Layouts')+300).replace(/\n+/g,' | ')}})()

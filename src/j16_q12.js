@@ -1,0 +1,1 @@
+(()=>{go('obs_dash');DASHX.startEdit();document.querySelector('[data-dl="add"]').click();return new Promise(r=>setTimeout(()=>{const x=document.querySelector('.dl-lib');r({html:x&&x.innerHTML.slice(0,900),n:DASHX.library().length})},800))})()

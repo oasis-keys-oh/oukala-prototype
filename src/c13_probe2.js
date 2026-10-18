@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();const errs=[];
+p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+path.resolve('out_c13/full.html'));await p.waitForTimeout(1200);
+const r=await p.evaluate(()=>{const fl=FLOWX.flows();const o={flows:fl.length,keys:Object.keys(fl[0]).slice(0,20)};
+let dec=0,dmn=0,byProc={};fl.forEach(f=>{(f.nodes||[]).forEach(n=>{if(n.t==="decision"){dec++;if(n.a.mode==="dmn"){dmn++;byProc[f.id]=(byProc[f.id]||[]).concat(n.a.dmn)}}})});
+o.dec=dec;o.dmn=dmn;o.byProc=byProc;o.flowIds=fl.slice(0,8).map(f=>f.id+"|"+f.name+"|"+(f.proc||f.process||""));
+o.policyScreens=PROCLIB.list().filter(x=>PROC.policyFor(x.id).key!=="gen").length;
+o.procDefs=Object.keys(PROC.defs).length;
+o.pm=PROC.modeOf({n:"x",who:"gate"});o.dtScreen=SCREENS.filter(s=>/dmn|dec/.test(s[0])).map(s=>s[0]);return o});
+console.log(JSON.stringify(r,null,1));console.log(errs);process.exit(0)})();

@@ -1,0 +1,1 @@
+(()=>{const e=CONTRACT.evaluate('r16j_dash');return {score:e.score,pass:e.pass,total:e.total,rules:(e.rules||[]).map(r=>r.id+':'+r.st),keys:Object.keys(e),pha:[...document.querySelectorAll('#r16Pha button')].map(b=>b.textContent.trim().slice(0,25)),conn:(window.CONN?Object.keys(CONN).slice(0,8):null)}})()

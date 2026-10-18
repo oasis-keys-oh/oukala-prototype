@@ -87,7 +87,7 @@ document.addEventListener("toggle",e=>{if(e.target.id==="profilePop"&&e.newState
 document.addEventListener("submit",e=>{if(e.target.id==="chatForm"){e.preventDefault();const q=$("#chatq").value.trim();if(q){$("#chatq").value="";const sl=$("#chxSlash");if(sl)sl.hidden=true;ask(q)}}});
 
 /* ============ Boot ============ */
-document.body.insertAdjacentHTML("afterbegin",shellHTML());
+document.body.insertAdjacentHTML("afterbegin",shellHTML());{const bt=document.getElementById("oukBoot");if(bt)requestAnimationFrame(()=>requestAnimationFrame(()=>bt.remove()))}
 loadPrefs();if(window.CHATX&&CHATX.mount)CHATX.mount();else{$("#chatOpen").addEventListener("change",drawChat);drawChat()}
 const hashS0=decodeURIComponent((location.hash||"").slice(1).replace(/^\//,"").split("?")[0]),hashS=window.NAVX&&NAVX.resolveAlias?(NAVX.resolveAlias(hashS0)||hashS0):hashS0;if(SCREENS.some(s=>s[0]===hashS))S.screen=hashS;
 $("#railCollapse").addEventListener("change",renderNav);window.matchMedia("(max-width:700px),(max-height:500px) and (max-width:950px)").addEventListener("change",renderNav);document.addEventListener("toggle",e=>{const d=e.target;if(d.classList&&d.classList.contains("navgd")){S.navOpen=S.navOpen||{};S.navOpen[d.dataset.ng]=d.open;if(d.open)document.querySelectorAll("#nav .navgd[open]").forEach(o=>{if(o!==d){o.open=false;S.navOpen[o.dataset.ng]=false}})}},true);

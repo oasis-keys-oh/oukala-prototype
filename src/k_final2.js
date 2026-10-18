@@ -1,0 +1,27 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const errs=[];
+async function mk(w,h,dark){const c=await b.newContext({viewport:{width:w,height:h},colorScheme:dark?'dark':'light',hasTouch:w<500});const p=await c.newPage();p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/ERR_FAILED/.test(m.text())&&errs.push('console: '+m.text()));await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:300000});await p.waitForTimeout(15000);return p}
+const o={};
+let p=await mk(1440,900,true);
+await p.evaluate(()=>go('org_chart'));await p.waitForTimeout(1500);
+o.org=await p.evaluate(()=>{const w=document.querySelector('.org-wrap');return {wrapTop:w&&Math.round(w.getBoundingClientRect().top),heroH:Math.round(document.querySelector('#view .hero').getBoundingClientRect().height)}});
+await p.screenshot({path:dir+'/k2_org_dark.png'});
+await p.evaluate(()=>{go('strat_exec');S.sx.open={};render()});await p.waitForTimeout(800);
+await p.evaluate(()=>{const t=document.querySelectorAll('.sx-tg:not(.sx-leaf)');t[0].click()});await p.waitForTimeout(300);
+await p.evaluate(()=>{const e=document.querySelectorAll('.sx-row.sx-cap .sx-tg')[1];e&&e.click();document.querySelector('.sx-tree').scrollIntoView()});await p.waitForTimeout(500);
+await p.screenshot({path:dir+'/k2_tree_dark.png'});
+o.edit=await p.evaluate(async()=>{const D=R16K.sx.build();const n=D.leaves.find(x=>(x.objs||[]).length>0);const before=n.objs.slice();n.objs=before.concat(D.goals.map(g=>g.id).filter(g=>!before.includes(g)).slice(0,1));S.sx.ver++;const D2=R16K.sx.build();const ok=D2.goalNodes.some(g=>g.kids.some(c=>c.id===n.id))&&D2.flags.length>=0;n.objs=before;S.sx.ver++;return {changed:n.objs.length===before.length,ok}});
+await p.close();
+p=await mk(1440,900,false);
+await p.evaluate(()=>{go('strat_exec');S.v.sx=0;render()});await p.waitForTimeout(800);
+await p.evaluate(()=>{const t=document.querySelectorAll('.sx-tg:not(.sx-leaf)');t[0].click();document.querySelector('.sx-tree').scrollIntoView()});await p.waitForTimeout(500);
+await p.screenshot({path:dir+'/k2_tree_light.png'});
+await p.evaluate(()=>{S.v.sx=1;render();document.querySelector('.sx-graphwrap').scrollIntoView()});await p.waitForTimeout(500);
+await p.screenshot({path:dir+'/k2_graph_light.png'});
+await p.close();
+p=await mk(400,820,true);
+await p.evaluate(()=>{go('strat_exec');S.v.sx=0;render()});await p.waitForTimeout(800);
+await p.evaluate(()=>{document.querySelectorAll('.sx-tg:not(.sx-leaf)')[0].click();document.querySelector('.sx-tree').scrollIntoView()});await p.waitForTimeout(500);
+o.phone=await p.evaluate(()=>({sw:document.documentElement.scrollWidth}));
+await p.screenshot({path:dir+'/k2_tree_phone.png'});
+console.log(JSON.stringify(o));console.log('ERRS',errs.slice(0,6));await b.close()})();

@@ -1,0 +1,13 @@
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+page.goto: Timeout 240000ms exceeded.
+Call log:
+[2m  - navigating to "file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/out_j16/full.html", waiting until "load"[22m
+
+    at /tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/j16_scan.js:5:48 {
+  name: 'TimeoutError'
+}
+
+Node.js v22.22.0

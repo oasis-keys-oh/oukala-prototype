@@ -31,7 +31,7 @@ register("services",{label:"Services",source:"SVCREG (service registry)",screen:
 register("tables",{label:"Tables",source:"DATAMODEL.tables plus PLAT.entities() (Atlas)",screen:"adm_studio",
  raw:()=>{const m=new Map();G(()=>Object.keys(DATAMODEL.tables)).forEach(k=>{const t=DATAMODEL.tables[k];m.set(k,{id:k,label:t.label||k,module:modOf(k,t),fields:t.fields||[],source:t.source||"",cls:topCls(t)})});
   G(()=>PLAT.entities()).forEach(e=>{if(!m.has(e.id))m.set(e.id,{id:e.id,label:e.label||e.id,module:e.domain||"other",fields:e.fields||[],source:e.owner||"",cls:topCls(e)})});return [...m.values()]},
- version:()=>G(()=>Object.keys(DATAMODEL.tables).length,0)+"|"+G(()=>PLAT.entities().length,0),id:t=>t.id,label:t=>t.label,sub:t=>t.id+" · "+t.fields.length+" fields",grp:t=>MODN[t.module]||t.module});
+ version:()=>G(()=>DATAMODEL.cnt(),0)+"|"+G(()=>PLAT.entities().length,0),id:t=>t.id,label:t=>t.label,sub:t=>t.id+" · "+t.fields.length+" fields",grp:t=>MODN[t.module]||t.module});
 W.LISTS_MODN=null;
 const MODN={portfolio:"Portfolio",fin:"Finance",money:"Money",service:"Service",people:"People",ppl:"People",gov:"Governance",plat:"Platform",know:"Knowledge",sec:"Security",ops:"Operations",met:"Metrics",other:"Other"};
 const topCls=t=>{const o={};(t.fields||[]).forEach(f=>{const c=f.classification||f.cls;if(c)o[c]=(o[c]||0)+1});const rank=["restricted","confidential","personal","internal"];for(const r of rank)if(o[r])return r;return "internal"};

@@ -1,0 +1,13 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ const R=PERM.state.rules;const t={},e={};R.forEach(r=>{t[r.tier]=(t[r.tier]||0)+1;e[r.effect]=(e[r.effect]||0)+1});o.tiers=sh(t);o.effects=sh(e);
+ const k={};R.forEach(r=>{k[r.kind]=(k[r.kind]||0)+1});o.kinds=sh(k);
+ const F=PERM.state.fields;o.fieldRules=F.length;o.f0=sh(F[0],500);const fm={};F.forEach(f=>fm[f.mode]=(fm[f.mode]||0)+1);o.fmodes=sh(fm);
+ o.sodFn=sh(GUARD.sod().length);o.sod0=sh(GUARD.sod().slice(0,8),1800);
+ o.groups=sh(PERM.groups.map(g=>g.id+':'+g.n+':'+g.users.length));
+ const pk=Object.keys(PERSONAS);const scr=SCREENS.map(s=>s[0]);const mat={};
+ pk.forEach(p=>{let n=0;scr.forEach(s=>{try{if(PERM.can(p,'read','screen:'+s).ok)n++}catch(x){}});mat[p]=n});o.screensPerPersona=sh(mat);
+ o.cap=sh(Object.keys(GUARD.caps||{}));o.st=sh(GUARD.state&&Object.keys(GUARD.state));
+ o.verify=sh(STORE.verify&&STORE.verify(),400);
+ o.rev=sh(typeof R15F3!=="undefined"?Object.keys(R15F3):'');
+ o.logN=PERM.state.log.length;o.histN=PERM.state.hist.length;
+ return o;

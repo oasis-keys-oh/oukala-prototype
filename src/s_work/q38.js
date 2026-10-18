@@ -1,0 +1,2 @@
+ const f=id=>{const e=PLAT.entities().find(x=>x.id===id);return e?e.fields.map(x=>x.k+':'+(x.cls||x.classification)).join(', '):'none'};
+ return JSON.stringify({position:f('position'),person:f('person'),comp:f('compensation_record'),ben:f('benefit_enrollment'),ptob:f('pto_balance'),ptor:f('pto_request'),sc:f('status_change'),ou:f('organization_unit'),ci:f('cmdb_ci').slice(0,500),cia:f('ci_assignment'),cod:f('ci_ownership_default'),store:STORE.entities()},null,1);

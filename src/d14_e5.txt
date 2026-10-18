@@ -1,0 +1,2 @@
+(async()=>{NAVX.ensureIndex(true);await new Promise(r=>setTimeout(r,300));for(let i=0;i<900&&NAVX.index.building;i++)await new Promise(r=>setTimeout(r,100));
+const f=NAVX.index.items.filter(x=>x.g==='Finance');return f.map(x=>x.t.slice(0,40)+' ~ '+x.m.slice(0,40)).join('\n')})()

@@ -1,0 +1,1 @@
+DIR.filter(d=>d.kind!=="human").map(d=>d.kind+"|"+d.name+"|"+d.role+"|"+d.team+"|"+d.mgr+"|"+(d.agent||"")).join("\n")+"\n----\n"+DIR.filter(d=>d.kind==="human").map(d=>d.name+"|"+d.role+"|"+d.team+"|"+d.mgr+"|"+(d.tenure||"")+"|"+(d.skills||[]).length).join("\n")+"\n"+S.ppl.agents.map(a=>a.id+"|"+a.n+"|"+a.owner+"|"+a.tier+"|"+a.kill).join("\n")

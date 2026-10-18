@@ -1,0 +1,3 @@
+(async()=>{const o={};try{go('bud_over');await new Promise(r=>setTimeout(r,400));o.over=document.querySelector('#view').innerText.length}catch(e){o.over='ERR '+e.message}
+try{go('bud_ven');S.v.budx=4;await new Promise(r=>setTimeout(r,300));BD.open('po','PO-77120',{reset:true});await new Promise(r=>setTimeout(r,400));const d=document.querySelector('#drawer');o.po=(d&&d.innerText||'').slice(0,160)}catch(e){o.po='ERR '+e.message}
+return o})()

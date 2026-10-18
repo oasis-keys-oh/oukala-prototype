@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');
+(async()=>{const out=process.argv[2];const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await b.newPage();
+await p.route(/fonts\.(googleapis|gstatic)/,r=>r.abort());await p.goto('file://'+out+'/full.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1500);
+const r=await p.evaluate(()=>{const e=PLAT.entities();return {n:e.length,ents:e.map(x=>x.id+'|'+x.label+'|'+x.domain+'|'+(x.src||x.mod||'')).join('\n'),keys:Object.keys(e[0]),globs:['BUD','BUDX','BUDGET','TASKS','PROJ','INVOICES','PEOPLE','DIR','ORGX','WORK','WORKX','SCALE','ITSMX','ITOMX','CMDB','PROCLIB','MODMAP','GRID','SVC','SERVICES','RAID','ART','KB','JOURNEYS','SKILLSDB','ASKX','SEARCHX','CAP','ALLOC','VENDORS','CONTRACTS','POS','FIN','FINX','BR','RESERVE','MEETX'].map(k=>{try{const v=eval(k);return k+':'+(Array.isArray(v)?'arr'+v.length:typeof v+(v&&typeof v==='object'?'{'+Object.keys(v).slice(0,14)+'}':''))}catch(e){return k+':-'}}).join('\n')}});
+console.log(r.n,r.keys.join());console.log(r.globs);require('fs').writeFileSync(out+'/ents.txt',r.ents);await b.close()})();

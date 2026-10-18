@@ -1,0 +1,1 @@
+(()=>{const o={};o.p=ORGX.people.slice(0,3);o.pl=PROCLIB.list().slice(0,3);o.owners=[...new Set(PROCLIB.list().map(p=>p.owner))].slice(0,40);o.nbk=PROCLIB.list().filter(p=>!p.backup).length;o.dom=ORGX.domains.slice(0,2);o.dir=DIR.slice(0,2);return o})()

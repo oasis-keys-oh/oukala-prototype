@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/out_e13/full.html');await p.waitForTimeout(800);
+const r=await p.evaluate(()=>{const o={};const J=x=>JSON.stringify(x).slice(0,500);
+o.nav=J(Object.entries(NAVX.map).slice(0,3));o.navn=Object.keys(NAVX.map).length;o.groups=J(NAVX.groups.map(g=>g.id+":"+g.label));
+o.dir=J(DIR.slice(0,2));o.dirn=DIR.length;
+o.proc=J(PROCLIB.list().slice(0,2));o.procn=PROCLIB.list().length;
+o.metric=J(Object.entries(METRICS).slice(0,2).map(([k,m])=>[k,m.owner]));o.owners=J([...new Set(Object.values(METRICS).map(m=>m.owner))]);
+o.ent=J(PLAT.entities().slice(0,2).map(e=>({id:e.id,owner:e.owner,domain:e.domain,label:e.label})));o.entown=J([...new Set(PLAT.entities().map(e=>e.owner))]);
+o.svc=J(SVCREG.slice(0,1));o.agents=J(typeof S.agents);o.sagents=J((S.agents&&S.agents.list||S.agents||[]).slice?.(0,1));
+o.orgx=J(Object.keys(ORGX));o.staff=J(ORGX.staff.slice(0,2));o.gate=J(Object.keys(window.GATE||{}));o.apps=J(GATE.apps().map(a=>[a.id,a.owner,a.builder]));
+o.raid=J((window.PPMRAID||[]).slice(0,2));o.doa=J(Object.keys(window.DOA||{}));o.kgn=J(KGN.slice(0,1));
+o.screens=SCREENS.length;o.sc=J(SCREENS.slice(0,2));
+o.glob=J(Object.keys(window).filter(k=>/^(BUD|VEND|CONTRACT|POLIC|POL|GOV|AIG|RISK|KCS|KB|SEC|FIN|PPM|TOWER|AGENT)/i.test(k)));
+return o});console.log(JSON.stringify(r,null,1));await b.close()})();

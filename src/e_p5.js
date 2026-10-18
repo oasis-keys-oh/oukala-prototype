@@ -1,0 +1,17 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/out_e13/full.html');await p.waitForTimeout(800);
+const r=await p.evaluate(()=>{const o={};const names=new Set(DIR.map(d=>d.name));
+const cnt=(arr)=>{const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+":"+v+(names.has(k)?"*":"")).join(" | ")};
+o.proc=cnt(PROCLIB.list().map(p=>p.owner));o.procBackup=cnt(PROCLIB.list().map(p=>p.backup||"-")).slice(0,500);
+o.metr=cnt(Object.values(METRICS).map(m=>m.owner));o.metn=Object.keys(METRICS).length;
+o.ent=cnt(PLAT.entities().map(e=>e.owner));o.entn=PLAT.entities().length;
+o.kb=cnt(KCSX.items().map(k=>k.own));o.raid=cnt((window.PPMRAID||[]).map(r=>r.own));
+o.bud=cnt(S.bud.lines.map(l=>l.own));o.budn=S.bud.lines.length;o.vend=cnt(S.bud.vend.map(l=>l.own));o.con=cnt(S.bud.con.map(l=>l.own));
+o.svc=cnt(SVCREG.map(s=>s.owner));
+o.procMods=PROCLIB.list().filter(p=>SCREENS.some(s=>s[0]===p.module)).length+"/"+PROCLIB.list().length;
+o.screensWithProc=new Set(PROCLIB.list().map(p=>p.module)).size;
+o.agents=cnt(DIR.filter(d=>d.kind==="ai").map(d=>d.name+">"+(d.sponsor||d.owner||d.mgr||"?")));
+o.dirai=JSON.stringify(DIR.find(d=>d.kind==="ai"));
+o.pol=Object.keys(window).filter(k=>/polic/i.test(k)).join(",");
+return o});console.log(JSON.stringify(r,null,1));await b.close()})();

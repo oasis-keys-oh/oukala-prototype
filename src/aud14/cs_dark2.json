@@ -1,0 +1,137 @@
+[
+ {
+  "id": "draw_studio",
+  "r": [
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 3,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 3,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 3,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 3,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "G",
+    "fam": "dr-plist",
+    "n": 41,
+    "d": 364
+   }
+  ]
+ },
+ {
+  "id": "itom_model",
+  "r": [
+   {
+    "k": "U",
+    "fam": "card|card",
+    "n": 2,
+    "d": 897,
+    "txt": "Class hierarchy Select a"
+   }
+  ]
+ },
+ {
+  "id": "itsm_home",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itsm-go",
+    "n": 5,
+    "d": 261
+   }
+  ]
+ },
+ {
+  "id": "meet_series",
+  "r": [
+   {
+    "k": "G",
+    "fam": "meet-fgrid",
+    "n": 10,
+    "d": 732
+   }
+  ]
+ },
+ {
+  "id": "itom_evt",
+  "r": [
+   {
+    "k": "G",
+    "fam": "obs-wall",
+    "n": 16,
+    "d": 875
+   }
+  ]
+ },
+ {
+  "id": "plat_data_old",
+  "r": [
+   {
+    "k": "G",
+    "fam": "er-doms",
+    "n": 10,
+    "d": 547
+   }
+  ]
+ },
+ {
+  "id": "plat_build",
+  "r": [
+   {
+    "k": "G",
+    "fam": "bld-cts",
+    "n": 5,
+    "d": 822
+   },
+   {
+    "k": "G",
+    "fam": "bld-mods",
+    "n": 4,
+    "d": 760
+   }
+  ]
+ },
+ {
+  "id": "kcs_viz",
+  "r": [
+   {
+    "k": "S",
+    "fam": "BUTTON.viz-tile",
+    "n": 5,
+    "idx": 2,
+    "d": 23,
+    "el": ""
+   },
+   {
+    "k": "G",
+    "fam": "viz-gal",
+    "n": 97,
+    "d": 658
+   }
+  ]
+ }
+]

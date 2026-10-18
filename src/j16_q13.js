@@ -1,0 +1,1 @@
+(()=>{SCALE.n.projects=500;SCALE._pj=null;SCALE.set(true);const a=SCALE.projects().length;const L=LISTS.projects().length;const u=UPROJ().length;const idsL=new Set(LISTS.projects().map(x=>x.v));const uid=UPROJ().slice(0,3).map(x=>x.id);const miss=UPROJ().filter(x=>!idsL.has(x.id)).slice(0,3).map(x=>x.id);return {a,L,u,uid,miss,xt:XT.proj.length}})()

@@ -1,0 +1,43 @@
+PASS every screen in exactly one group {"screens":116,"placed":116,"np":[],"dup":[],"unm":[],"orph":[],"mapKeysNotScreens":[]}
+PASS every screen reachable as the active item in the nav (group opens) []
+PASS / opens palette
+PASS results for invoice ["action:Approve invoices","action:Summarize a contract","screen:Approve invoices","record:Invoices","record:Invoice approval","record:Invoice Advisor access"]
+PASS arrow down moves selection 2
+PASS arrow up
+PASS Tab cycles scope to Screens "screen"
+PASS Esc closes
+PASS Ctrl+K opens
+PASS Enter opens selection (Invoice approval -> exe_mat)
+PASS in:people scope {"scope":"person","types":["person"],"n":2,"first":"Maya Ortiz"}
+{"knowldge":["Build a chart","Knowledge flow","Knowledge graph"],"maturty":["Maturity and capability","Process library","Maturity and capability status"],"sla":["SLA","SLA attainment and risk","SLA coverage by process"],"cmdb":["CMDB data health","CMDB health"],"doa":["Delegation of authority rule (doa_rule)","DB-MW-policy 7 apps write Policy: adm_sec, bud_doa, chat_home, adm_gate, adm_audit, Invoices, dev_pipe"],"inc":["Incident queue status","Incidents","Incident resolution"],"broke":["Report a problem or ask for help","Create an incident"],"ms":1.9}
+PASS typo tolerance
+PASS acronym sla
+PASS Ctrl+Enter closes palette to ask
+chat state { sc: 2, cx: true }
+PASS star nav item adds favorite
+PASS favorite appears in the Favorites section
+PASS hero star adds favorite ["screen:itsm_inc","screen:ims"]
+PASS drawer detected {"id":"record:PR1","title":"Standards Platform Upgrade","type":"Project"}
+PASS drawer star adds record favorite
+PASS favorite record reopens its drawer
+PASS rename favorite
+PASS favorites persist after reload ["Broken things","Schedules across projects","Standards Platform Upgrade"]
+PASS Alt+ArrowDown reorders favorites [["screen:itsm_inc","screen:ims","record:PR1"],["screen:ims","screen:itsm_inc","record:PR1"]]
+PASS mouse drag reorders favorites [["screen:ims","screen:itsm_inc","record:PR1"],["screen:itsm_inc","screen:ims","record:PR1"]]
+[
+  'record:INC1|Portal latency (Sev 2)',
+  'screen:fin_gates|Funding approval gates',
+  'screen:itsm_chg|Plan and approve changes',
+  'screen:home|Home',
+  'record:PR1|Standards Platform Upgrade',
+  'screen:ims|Schedules across projects'
+]
+PASS history records screens and records
+PASS history flyout groups {"rows":119,"days":["Today"],"back":true}
+PASS history search
+PASS records filter
+PASS back to where I was (fin_gates -> fin_gates)
+PASS favorites namespaced per persona [["screen:itsm_inc","screen:ims","record:PR1"],["screen:itsm_inc","screen:itom_evt","screen:itsm_chg"]]
+{"star":["star this","{\"ai\":1,\"think\":1,\"t\":\"\",\"steps\":[\"Reading context\",\"No tool matched strongly\",\"Looking for a grounded answer\"],\"cards\":[],\"id\":\"M2aus\",\"at\":1791648925774}"],"yest":["what did I look at yesterday","{\"ai\":1,\"think\":1,\"t\":\"\",\"steps\":[\"Reading context\",\"No tool matched strongly\",\"Looking for a grounded answer\"],\"cards\":[],\"id\":\"M4z1f\",\"at\":1791648925805}"],"find":["find lumen invoices","{\"ai\":1,\"think\":1,\"t\":\"\",\"steps\":[\"Reading context\",\"No tool matched strongly\",\"Looking for a grounded answer\"],\"cards\":[],\"id\":\"M6sun\",\"at\":1791648925824}"],"favs":["show my favorites","{\"ai\":1,\"think\":1,\"t\":\"\",\"steps\":[\"Reading context\",\"No tool matched strongly\",\"Looking for a grounded answer\"],\"cards\":[],\"id\":\"M8g7h\",\"at\":1791648925844}"]}
+ERRORS []
+ALL PASS

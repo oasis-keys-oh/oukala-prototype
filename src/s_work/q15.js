@@ -1,0 +1,10 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.rt=sh(Object.keys(AGENTRT));
+ o.agst=sh(AGENTS_STATE.counts&&AGENTS_STATE.counts(),400);o.labels=sh(AGENTS_STATE.labels,400);
+ o.agT=typeof ORGX.agents;const ag=typeof ORGX.agents==='function'?ORGX.agents():ORGX.agents;o.agN=Array.isArray(ag)?ag.length:Object.keys(ag).length;
+ const a0=Array.isArray(ag)?ag[0]:Object.values(ag)[0];o.ag0=sh(a0,700);
+ o.registry=sh(STORE.all('agent_registry').slice(0,3),900);o.regN=STORE.all('agent_registry').length;
+ o.runs=STORE.all('agent_run').length;
+ o.state=sh(AGENTRT.state&&AGENTRT.state(),600);
+ o.tierRules=sh(AGENTRT.TIERS||AGENTRT.tiers,1200);
+ return o;

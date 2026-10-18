@@ -38,7 +38,7 @@ let _M=null,_Mk=null;
 function words(s){return String(s||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3).map(w=>w.replace(/s$/,""))}
 let _tn=-1;
 function model(){
- const tn=Object.keys(DATAMODEL.tables).length;if(tn!==_tn){_tn=tn;PLAT.refresh()}
+ const tn=DATAMODEL.cnt();if(tn!==_tn){_tn=tn;PLAT.refresh()}
  const es=PLAT.entities();if(_M&&_Mk===es)return _M;
  const eset=new Map(es.map(e=>[e.id,e])),gset=new Map(PLAT.PLANNED.map(p=>[p[0],{id:p[0],domain:p[1],label:p[2],steward:p[3],why:p[4],use:p[5],ghost:true}]));
  const refs=new Map();

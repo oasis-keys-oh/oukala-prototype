@@ -1,0 +1,11 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.xmodels=sh(Object.values(MAT.M.xmodels||{}).map?Object.values(MAT.M.xmodels).map(m=>(m.id||'')+':'+(m.n||m.name)+':'+(m.levels||[]).length):MAT.M.xmodels,1500);
+ o.amodels=sh(typeof MATMODELS!=="undefined"?Object.keys(MATMODELS):'');
+ o.mname=sh(['cmmi','iso33020','itil','nist','tbm'].map(k=>MAT.mname(k)));
+ o.lvlNames=sh(typeof PROCLIB_LVL!=="undefined"?PROCLIB_LVL:null);
+ o.dashD=sh(Object.keys(DASHX.D||{}));o.dash0=sh(DASHX.D&&Object.values(DASHX.D)[0],700);
+ o.lib=sh((DASHX.library()||[]).length);o.charts=sh((DASHX.charts()||[]).length);
+ o.libItem=sh(DASHX.library()[0],400);o.chart0=sh(DASHX.charts()[0],500);
+ o.dims=sh(R15R.DIMS&&R15R.DIMS.map?R15R.DIMS.map(d=>d.id||d.k||d):Object.keys(R15R.DIMS),600);o.meas=sh(R15R.MEAS&&(R15R.MEAS.map?R15R.MEAS.length:Object.keys(R15R.MEAS).length));
+ o.state=sh(Object.keys(R15R.state),400);o.subs=sh((R15R.state.subs||R15R.state.schedules||[]).length);
+ return o;

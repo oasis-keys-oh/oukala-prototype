@@ -1,0 +1,1687 @@
+[
+ {
+  "id": "home",
+  "r": [
+   {
+    "k": "G",
+    "fam": "rings",
+    "n": 3,
+    "d": 195
+   }
+  ]
+ },
+ {
+  "id": "inv",
+  "r": [
+   {
+    "k": "G",
+    "fam": "perf",
+    "n": 4,
+    "d": 308
+   }
+  ]
+ },
+ {
+  "id": "tower",
+  "r": [
+   {
+    "k": "G",
+    "fam": "ev-line",
+    "n": 3,
+    "d": 291
+   },
+   {
+    "k": "G",
+    "fam": "ev-line",
+    "n": 3,
+    "d": 291
+   },
+   {
+    "k": "G",
+    "fam": "ev-line",
+    "n": 3,
+    "d": 291
+   },
+   {
+    "k": "G",
+    "fam": "ev-line",
+    "n": 3,
+    "d": 291
+   },
+   {
+    "k": "G",
+    "fam": "ev-line",
+    "n": 3,
+    "d": 291
+   }
+  ]
+ },
+ {
+  "id": "port",
+  "r": [
+   {
+    "k": "G",
+    "fam": "ppm-hr",
+    "n": 3,
+    "d": 50
+   },
+   {
+    "k": "G",
+    "fam": "ppm-hr",
+    "n": 3,
+    "d": 45
+   }
+  ]
+ },
+ {
+  "id": "adm_studio",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "adm_sec",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "adm_env",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adm-envs",
+    "n": 4,
+    "d": 587
+   },
+   {
+    "k": "G",
+    "fam": "adm-pipe",
+    "n": 4,
+    "d": 556
+   }
+  ]
+ },
+ {
+  "id": "adm_meter",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "adm_gate",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "adm_audit",
+  "r": [
+   {
+    "k": "G",
+    "fam": "adq-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "bud_ven",
+  "r": [
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   },
+   {
+    "k": "G",
+    "fam": "bud-sc",
+    "n": 3,
+    "d": 48
+   }
+  ]
+ },
+ {
+  "id": "dec_cov",
+  "r": [
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   },
+   {
+    "k": "G",
+    "fam": "dx-br",
+    "n": 4,
+    "d": 120
+   }
+  ]
+ },
+ {
+  "id": "dev_pipe",
+  "r": [
+   {
+    "k": "G",
+    "fam": "dev-bar",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "dev-bar",
+    "n": 3,
+    "d": 68
+   }
+  ]
+ },
+ {
+  "id": "itom_dev",
+  "r": [
+   {
+    "k": "G",
+    "fam": "dev-dgrid",
+    "n": 4,
+    "d": 583
+   },
+   {
+    "k": "G",
+    "fam": "dev-bar",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "dev-bar",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "dev-bar",
+    "n": 3,
+    "d": 68
+   }
+  ]
+ },
+ {
+  "id": "draw_studio",
+  "r": [
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 2,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 2,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 2,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "S",
+    "fam": "BUTTON.dr-prow",
+    "n": 2,
+    "idx": 0,
+    "d": 10,
+    "el": "dr-pn"
+   },
+   {
+    "k": "G",
+    "fam": "dr-plist",
+    "n": 41,
+    "d": 414
+   }
+  ]
+ },
+ {
+  "id": "exe_scen",
+  "r": [
+   {
+    "k": "U",
+    "fam": "card|card|card",
+    "n": 3,
+    "d": 57,
+    "txt": "REFERENCE Baseline The p"
+   }
+  ]
+ },
+ {
+  "id": "flw_design",
+  "r": [
+   {
+    "k": "G",
+    "fam": "wfd-conv",
+    "n": 4,
+    "d": 556
+   }
+  ]
+ },
+ {
+  "id": "flw_dmn",
+  "r": [
+   {
+    "k": "G",
+    "fam": "flw-drow",
+    "n": 9,
+    "d": 744
+   },
+   {
+    "k": "G",
+    "fam": "flw-drow hit",
+    "n": 9,
+    "d": 744
+   },
+   {
+    "k": "G",
+    "fam": "flw-drow",
+    "n": 9,
+    "d": 744
+   }
+  ]
+ },
+ {
+  "id": "flw_bpmn",
+  "r": [
+   {
+    "k": "G",
+    "fam": "flw-wbar",
+    "n": 3,
+    "d": 72
+   },
+   {
+    "k": "G",
+    "fam": "flw-wbar",
+    "n": 3,
+    "d": 72
+   },
+   {
+    "k": "G",
+    "fam": "flw-wbar",
+    "n": 3,
+    "d": 72
+   }
+  ]
+ },
+ {
+  "id": "inbox",
+  "r": [
+   {
+    "k": "G",
+    "fam": "inbx-br",
+    "n": 3,
+    "d": 44
+   },
+   {
+    "k": "G",
+    "fam": "inbx-br",
+    "n": 3,
+    "d": 44
+   },
+   {
+    "k": "G",
+    "fam": "inbx-br",
+    "n": 3,
+    "d": 44
+   },
+   {
+    "k": "G",
+    "fam": "inbx-br",
+    "n": 3,
+    "d": 44
+   },
+   {
+    "k": "G",
+    "fam": "inbx-br",
+    "n": 3,
+    "d": 44
+   }
+  ]
+ },
+ {
+  "id": "itom_cmdb",
+  "r": [
+   {
+    "k": "G",
+    "fam": "statrow",
+    "n": 8,
+    "d": 581
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr itom-hrb",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   }
+  ]
+ },
+ {
+  "id": "itom_graph",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itom-hubl",
+    "n": 8,
+    "d": 277
+   }
+  ]
+ },
+ {
+  "id": "itom_disc",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itom-sgrid",
+    "n": 9,
+    "d": 417
+   }
+  ]
+ },
+ {
+  "id": "itom_fin",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   },
+   {
+    "k": "G",
+    "fam": "itom-hr",
+    "n": 3,
+    "d": 82
+   }
+  ]
+ },
+ {
+  "id": "itsm_inc",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   },
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   },
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   }
+  ]
+ },
+ {
+  "id": "itsm_prb",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   }
+  ]
+ },
+ {
+  "id": "itsm_chg",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   },
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   }
+  ]
+ },
+ {
+  "id": "itsm_home",
+  "r": [
+   {
+    "k": "G",
+    "fam": "itsm-hr",
+    "n": 3,
+    "d": 58
+   }
+  ]
+ },
+ {
+  "id": "kcs_home",
+  "r": [
+   {
+    "k": "G",
+    "fam": "kx-loop",
+    "n": 5,
+    "d": 418
+   },
+   {
+    "k": "G",
+    "fam": "kx-pipe",
+    "n": 5,
+    "d": 418
+   },
+   {
+    "k": "G",
+    "fam": "kx-ai",
+    "n": 3,
+    "d": 683
+   },
+   {
+    "k": "G",
+    "fam": "kx-ai",
+    "n": 3,
+    "d": 661
+   },
+   {
+    "k": "G",
+    "fam": "kx-ai",
+    "n": 3,
+    "d": 656
+   }
+  ]
+ },
+ {
+  "id": "kcs_skills",
+  "r": [
+   {
+    "k": "G",
+    "fam": "kx-loop",
+    "n": 5,
+    "d": 418
+   }
+  ]
+ },
+ {
+  "id": "exe_mat",
+  "r": [
+   {
+    "k": "G",
+    "fam": "mat-obj",
+    "n": 4,
+    "d": 90
+   },
+   {
+    "k": "G",
+    "fam": "mat-obj",
+    "n": 4,
+    "d": 90
+   }
+  ]
+ },
+ {
+  "id": "meet_hub",
+  "r": [
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-ct",
+    "n": 4,
+    "d": 555
+   }
+  ]
+ },
+ {
+  "id": "meet_act",
+  "r": [
+   {
+    "k": "S",
+    "fam": "DIV.meet-col",
+    "n": 2,
+    "idx": 2,
+    "d": 19,
+    "el": "muted small"
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "meet-bar",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "itom_evt",
+  "r": [
+   {
+    "k": "G",
+    "fam": "statrow",
+    "n": 7,
+    "d": 727
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 110
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 110
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 110
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 110
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 72
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 72
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 63
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 63
+   }
+  ]
+ },
+ {
+  "id": "itom_run",
+  "r": [
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 44
+   }
+  ]
+ },
+ {
+  "id": "obs_std",
+  "r": [
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 132
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 132
+   },
+   {
+    "k": "G",
+    "fam": "obs-bar ",
+    "n": 3,
+    "d": 132
+   }
+  ]
+ },
+ {
+  "id": "svc_oncall",
+  "r": [
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   }
+  ]
+ },
+ {
+  "id": "svc_skills",
+  "r": [
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   },
+   {
+    "k": "G",
+    "fam": "oc-crow",
+    "n": 3,
+    "d": 68
+   }
+  ]
+ },
+ {
+  "id": "ppl_org",
+  "r": [
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 103
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 175
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 187
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 187
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 187
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 198
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 210
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 222
+   },
+   {
+    "k": "G",
+    "fam": "pp2-mrow",
+    "n": 3,
+    "d": 222
+   }
+  ]
+ },
+ {
+  "id": "ppl_perf",
+  "r": [
+   {
+    "k": "G",
+    "fam": "pp2-cyc",
+    "n": 7,
+    "d": 522
+   }
+  ]
+ },
+ {
+  "id": "plat_data_old",
+  "r": [
+   {
+    "k": "G",
+    "fam": "er-doms",
+    "n": 10,
+    "d": 553
+   }
+  ]
+ },
+ {
+  "id": "plat_build",
+  "r": [
+   {
+    "k": "G",
+    "fam": "bld-cts",
+    "n": 5,
+    "d": 277
+   }
+  ]
+ },
+ {
+  "id": "plat_debt",
+  "r": [
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   }
+  ]
+ },
+ {
+  "id": "plat_fab",
+  "r": [
+   {
+    "k": "G",
+    "fam": "fab-ar warn",
+    "n": 3,
+    "d": 798
+   },
+   {
+    "k": "G",
+    "fam": "fab-ar warn",
+    "n": 3,
+    "d": 798
+   },
+   {
+    "k": "G",
+    "fam": "fab-ar info",
+    "n": 3,
+    "d": 798
+   },
+   {
+    "k": "G",
+    "fam": "fab-ar warn",
+    "n": 3,
+    "d": 798
+   }
+  ]
+ },
+ {
+  "id": "fin_spend",
+  "r": [
+   {
+    "k": "G",
+    "fam": "statrow",
+    "n": 4,
+    "d": 317
+   }
+  ]
+ },
+ {
+  "id": "plat_gate",
+  "r": [
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   }
+  ]
+ },
+ {
+  "id": "plat_mcp",
+  "r": [
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   },
+   {
+    "k": "G",
+    "fam": "debt-bar",
+    "n": 3,
+    "d": 62
+   }
+  ]
+ },
+ {
+  "id": "plat_proc",
+  "r": [
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "pl-fr",
+    "n": 4,
+    "d": 80
+   }
+  ]
+ },
+ {
+  "id": "ppm_raid",
+  "r": [
+   {
+    "k": "G",
+    "fam": "ppm-hr",
+    "n": 3,
+    "d": 45
+   },
+   {
+    "k": "G",
+    "fam": "ppm-hr",
+    "n": 3,
+    "d": 45
+   }
+  ]
+ },
+ {
+  "id": "itsm_rel",
+  "r": [
+   {
+    "k": "G",
+    "fam": "rel-hbr",
+    "n": 3,
+    "d": 44
+   },
+   {
+    "k": "G",
+    "fam": "rel-hbr",
+    "n": 3,
+    "d": 44
+   }
+  ]
+ },
+ {
+  "id": "svc_req",
+  "r": [
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 114
+   },
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 114
+   },
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 114
+   }
+  ]
+ },
+ {
+  "id": "svc_asset",
+  "r": [
+   {
+    "k": "G",
+    "fam": "statrow",
+    "n": 7,
+    "d": 727
+   },
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 80
+   },
+   {
+    "k": "G",
+    "fam": "svc-hb",
+    "n": 3,
+    "d": 80
+   }
+  ]
+ },
+ {
+  "id": "svc_360",
+  "r": [
+   {
+    "k": "G",
+    "fam": "statrow",
+    "n": 8,
+    "d": 581
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   },
+   {
+    "k": "G",
+    "fam": "svx-bul",
+    "n": 3,
+    "d": 74
+   }
+  ]
+ },
+ {
+  "id": "kcs_viz",
+  "r": [
+   {
+    "k": "S",
+    "fam": "BUTTON.viz-tile",
+    "n": 4,
+    "idx": 2,
+    "d": 23,
+    "el": ""
+   },
+   {
+    "k": "G",
+    "fam": "viz-gal",
+    "n": 97,
+    "d": 624
+   }
+  ]
+ },
+ {
+  "id": "ppm_wbs",
+  "r": [
+   {
+    "k": "G",
+    "fam": "wbs-r sum    crit",
+    "n": 9,
+    "d": 612
+   }
+  ]
+ },
+ {
+  "id": "zl_conn",
+  "r": [
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 145
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 144
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 202
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 219
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 219
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 219
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 202
+   },
+   {
+    "k": "G",
+    "fam": "zl-bar",
+    "n": 4,
+    "d": 219
+   },
+   {
+    "k": "G",
+    "fam": "zl-row",
+    "n": 4,
+    "d": 85
+   }
+  ]
+ }
+]

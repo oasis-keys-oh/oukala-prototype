@@ -1,0 +1,15 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/out_e13/full.html');await p.waitForTimeout(900);
+const H=async(s,sel)=>{return await p.evaluate(([s,sel])=>{if(s)go(s);return null},[s,sel])};
+const out={};
+out.nav=await p.evaluate(()=>{const a=document.querySelector("#nav .nx-item, .nx-item, #nav a, #nav button");return a?a.outerHTML.slice(0,500):"none"});
+out.navgrp=await p.evaluate(()=>{const a=document.querySelector(".nx-grp, .nx-group, #nav .grp");return a?a.outerHTML.slice(0,500):"none"});
+await p.evaluate(()=>go("metrics"));await p.waitForTimeout(500);
+out.mcard=await p.evaluate(()=>{const a=document.querySelector(".mcard");return a?a.outerHTML.slice(0,900):"none"});
+out.hero=await p.evaluate(()=>{const a=document.querySelector("#view .hero");return a?a.outerHTML.slice(0,700):"none"});
+await p.evaluate(()=>go("plat_atlas"));await p.waitForTimeout(700);
+out.atl=await p.evaluate(()=>{const a=[...document.querySelectorAll("#view [data-at-ent],#view [data-ent],#view tr[data-at]")].slice(0,1).map(x=>x.outerHTML.slice(0,500));return a.join("\n")||document.querySelector("#view").innerHTML.slice(0,1200)});
+await p.evaluate(()=>go("plat_proclib"));await p.waitForTimeout(700);
+out.pl=await p.evaluate(()=>{const a=[...document.querySelectorAll("#view [data-pl-open],#view [data-plib-open],#view [data-pl]")].slice(0,1).map(x=>x.outerHTML.slice(0,500));return a.join("\n")||document.querySelector("#view").innerHTML.slice(0,900)});
+console.log(JSON.stringify(out,null,1));await b.close()})();

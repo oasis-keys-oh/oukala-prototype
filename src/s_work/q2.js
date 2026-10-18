@@ -1,0 +1,11 @@
+ const o={};const sh=(x,n=700)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ const l=PROCLIB.list();const fam={};l.forEach(p=>{fam[p.familyName]=(fam[p.familyName]||0)+1});o.fam=sh(fam,1500);o.nfam=Object.keys(fam).length;
+ const lv={};l.forEach(p=>lv[p.level]=(lv[p.level]||0)+1);o.lv=sh(lv);
+ const wh={};l.forEach(p=>(Array.isArray(PROCLIB.get(p.id).steps)?PROCLIB.get(p.id).steps:[]).forEach(s=>wh[s.who]=(wh[s.who]||0)+1));o.who=sh(wh);
+ o.models=sh(typeof MAT!=="undefined"?Object.keys(MAT):null);
+ o.r16mKeys=typeof R16M!=="undefined"?Object.keys(R16M).join(','):'';
+ o.p0=sh(PROCLIB.get(l[0].id),1200);
+ o.flowx=Object.keys(FLOWX).join(',');
+ o.dec=typeof DEC!=="undefined"?Object.keys(DEC).join(','):'noDEC';
+ o.decrules=typeof DECX!=="undefined"?Object.keys(DECX).join(','):'';
+ return o;

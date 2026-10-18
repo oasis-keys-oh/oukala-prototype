@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const ctx=await b.newContext({viewport:{width:1440,height:1000}});const p=await ctx.newPage();
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(700);
+const c=await ctx.newCDPSession(p);await c.send('Profiler.enable');await c.send('Profiler.setSamplingInterval',{interval:500});await c.send('Profiler.start');
+const t0=Date.now();const ms=await p.evaluate(()=>{const t=performance.now();SCALE.set(true);return Math.round(performance.now()-t)});
+const {profile}=await c.send('Profiler.stop');console.log('SCALE.set ms',ms,'wall',Date.now()-t0);
+const nodes=new Map(profile.nodes.map(n=>[n.id,n]));const par={};profile.nodes.forEach(n=>(n.children||[]).forEach(ch=>par[ch]=n.id));
+const tot={},self={};const dt=profile.timeDeltas;profile.samples.forEach((id,i)=>{const n0=nodes.get(id);const k0=n0.callFrame.functionName+'@'+n0.callFrame.url.split('/').pop()+':'+n0.callFrame.lineNumber;self[k0]=(self[k0]||0)+dt[i]/1000;let cur=id;const seen=new Set();while(cur){const n=nodes.get(cur);const k=n.callFrame.functionName+':'+n.callFrame.lineNumber;if(!seen.has(k)){seen.add(k);tot[k]=(tot[k]||0)+dt[i]/1000}cur=par[cur]}});
+console.log('--- total');Object.entries(tot).sort((a,b)=>b[1]-a[1]).slice(0,45).forEach(e=>console.log(Math.round(e[1]),e[0]));
+console.log('--- self');Object.entries(self).sort((a,b)=>b[1]-a[1]).slice(0,12).forEach(e=>console.log(Math.round(e[1]),e[0]));await b.close()})();

@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000},colorScheme:'dark'})).newPage();p.setDefaultTimeout(30000);
+p.on('pageerror',e=>console.log('PE',e.message));
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+path.resolve('out_a14/full.html'),{waitUntil:'load',timeout:90000});await p.waitForTimeout(500);
+await p.evaluate(()=>{S.org.mode='both';S.org.k=0;S.org.lines={dotted:true,matrix:true};S.org.tab='chart';go('org_chart')});await p.waitForTimeout(800);
+await p.evaluate(()=>{document.querySelector('[data-org-all=expand]').click()});await p.waitForTimeout(800);
+await p.locator('.org-wrap').screenshot({path:'out_a14/s_lines.png'});
+await p.evaluate(()=>{S.org.tab='dir';render()});await p.waitForTimeout(700);await p.screenshot({path:'out_a14/s_dir.png'});
+await p.evaluate(()=>{S.org.tab='studio';render()});await p.waitForTimeout(700);await p.screenshot({path:'out_a14/s_studio.png'});
+console.log('done');await b.close()})();

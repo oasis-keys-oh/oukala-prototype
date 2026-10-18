@@ -1,0 +1,241 @@
+[
+ {
+  "screen": "exe_mat",
+  "findings": [
+   {
+    "table": "mat-heat",
+    "col": "Capability",
+    "issues": [
+     {
+      "prop": "wt",
+      "major": "700",
+      "n": 1,
+      "of": 6,
+      "ex": "500 \"› Conditional access p\""
+     }
+    ],
+    "tab": 5
+   }
+  ]
+ },
+ {
+  "screen": "bud_ccmap",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Variance",
+    "issues": [
+     {
+      "prop": "wt",
+      "major": "400",
+      "n": 4,
+      "of": 9,
+      "ex": "700 \"+$45K\" | 700 \"+$62K\""
+     }
+    ],
+    "tab": 2
+   }
+  ]
+ },
+ {
+  "screen": "itsm_rel",
+  "findings": [
+   {
+    "table": "rel-xm",
+    "col": "Criterion",
+    "issues": [
+     {
+      "prop": "bg",
+      "major": "rgba(36, 74, 86, 0.7)",
+      "n": 1,
+      "of": 11,
+      "ex": "row \"Criteria met\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2608Oct 8",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"100%\""
+     },
+     {
+      "prop": "bg",
+      "major": "rgba(103, 170, 105, 0.16)",
+      "n": 5,
+      "of": 11,
+      "ex": "row \"Pass100% of 43 tests\" | row \"Pass19 of 19 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2609Oct 12",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 6,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail90% of 130 tests\" | rgba(241, 100, 112, 0.15) \"Fail30 of 35 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2615Oct 20",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"100%\""
+     },
+     {
+      "prop": "bg",
+      "major": "rgba(103, 170, 105, 0.16)",
+      "n": 5,
+      "of": 11,
+      "ex": "row \"Pass100% of 12 tests\" | row \"Pass3 of 3 cases passe\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2607Oct 21",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"10%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 3,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail76.9% of 78 tests\" | rgba(241, 100, 112, 0.15) \"Fail19 of 21 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2610Oct 27",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"50%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(103, 170, 105, 0.16) \"PassDone\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2617Oct 29",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"20%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 2,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail75% of 48 tests\" | rgba(241, 100, 112, 0.15) \"Fail14 of 17 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2613Nov 3",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"50%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(103, 170, 105, 0.16) \"Pass0 open\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2618Nov 10",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2611Nov 13",
+    "issues": [
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"FailTraining not start\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ }
+]

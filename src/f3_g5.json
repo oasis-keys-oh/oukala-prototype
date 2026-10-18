@@ -1,0 +1,2 @@
+[{"w":390,"h":844,"dark":1,"jobs":[
+{"name":"m_rej_390_d","screen":"r15_mobile","pre":"S.r15m.tab='appr';S.r15m.sheet={kind:'reject',id:INBOX.items().find(x=>x.can.approve).id,reason:'Over budget'};render()"}]}]

@@ -1,0 +1,2 @@
+(()=>{const qs=["Who do I go to for month-end close?","who reports to Casey Rowan","what are the permissions for Tom Becker","what does Sam Patel own","agent opportunities for Maya Ortiz","build an agent for Nia Brooks","set Triage Agent to act with approval","pause Forecast Agent","show the human and ai view","what is the span of control","show the org chart"];
+return qs.map(q=>{let r="none";for(const f of ASKX){try{if(f(q)){r="handled";break}}catch(e){r="ERR "+e.message;break}}return q+" => "+r})})()

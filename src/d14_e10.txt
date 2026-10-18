@@ -1,0 +1,2 @@
+(async()=>{NAVX.ensureIndex(true);await new Promise(r=>setTimeout(r,300));for(let i=0;i<300&&NAVX.index.building;i++)await new Promise(r=>setTimeout(r,100));
+let err=null,h='';try{h=NAVX.ext.studioTop()}catch(e){err=e.stack.slice(0,300)}go('nav_studio');await new Promise(r=>setTimeout(r,500));return {err,len:h.length,has:!!document.querySelector('.zs-cov'),screen:S.screen,hasExt:typeof NAVX.ext.studioTop,view:document.querySelector('#view').innerText.slice(0,100)}})()

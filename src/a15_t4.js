@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const errs=[];
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();
+p.on('pageerror',e=>errs.push('PE '+e.message));
+await p.route(/fonts\.g/,r=>r.abort());await p.goto('file://'+path.resolve('out_a15/full.html'),{waitUntil:'load'});await p.waitForTimeout(1200);
+console.log(await p.evaluate(()=>{go('org_chart');ORGX.openProfile('Femi Adeyemi',7);return document.querySelector('#drawer').innerText.slice(0,200)}));
+console.log(await p.evaluate(()=>{ORGX.openProfile('Femi Adeyemi',7);return document.querySelector('#drawer').innerText.slice(0,200)}));
+await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>document.querySelector('#drawer').innerText.slice(0,200)));
+console.log(errs);await b.close()})();

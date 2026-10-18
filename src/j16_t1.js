@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]||'out_j16');const dark=process.argv.includes('--dark');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:1000},colorScheme:dark?'dark':'light'})).newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PE '+e.message));p.on('console',m=>m.type()==='error'&&errs.push(m.text()));
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'load',timeout:240000});await p.waitForTimeout(1200);
+await p.evaluate(()=>go('strat_exec'));await p.waitForTimeout(600);
+console.log(await p.evaluate(()=>JSON.stringify({pk:[...document.querySelectorAll('.pk2')].map(x=>x.dataset.pk2),proj:LISTS.projects().length})));
+await p.click('[data-pk2-open=sx_proj]');await p.waitForTimeout(300);
+await p.screenshot({path:dir+'/j_sx_open.png'});
+await p.keyboard.type('portal');await p.waitForTimeout(200);await p.keyboard.press('Enter');await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>JSON.stringify({perf:PICKER.perf})));
+await p.evaluate(()=>{S.screen='trace';render()});await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>JSON.stringify({pk:[...document.querySelectorAll('.pk2')].map(x=>x.dataset.pk2),scr:S.screen})));
+console.log(errs);await b.close()})();

@@ -1,0 +1,12 @@
+ const o={};const sh=(x,n=1800)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.mx=sh(MX.summary());
+ const ms=Object.values(METRICS);o.n=ms.length;o.dir=sh(ms.reduce((a,m)=>(a[m.dir]=(a[m.dir]||0)+1,a),{}));o.rem=sh(ms.reduce((a,m)=>(a[m.rem&&m.rem.kind]=(a[m.rem&&m.rem.kind]||0)+1,a),{}));
+ o.units=sh(ms.reduce((a,m)=>(a[m.u]=(a[m.u]||0)+1,a),{}));
+ o.noOwner=ms.filter(m=>!m.owner).length;o.noF=ms.filter(m=>!m.f).length;o.noTr=ms.filter(m=>!m.tr||m.tr.length<2).length;
+ o.ALLM=sh((MAT.ALLM||[]).map?MAT.ALLM.map(m=>m.id+':'+(m.n||m.name)+':'+(m.levels?m.levels.length:'')):Object.keys(MAT.ALLM),1500);
+ o.M=sh(Object.keys(MAT.M||{}),300);
+ o.CAPS=sh((MAT.CAPS||[]).length);
+ o.dimensions=sh(PROCLIB.dims,500);
+ o.dashx=typeof DASHX;o.dashkeys=sh(typeof DASHX!=="undefined"?Object.keys(DASHX):null);
+ o.r15r=sh(Object.keys(R15R||{}));
+ return o;

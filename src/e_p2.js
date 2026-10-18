@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file:///tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/out_e13/full.html');await p.waitForTimeout(800);
+const r=await p.evaluate(()=>{const o={};const J=x=>JSON.stringify(x).slice(0,700);
+o.staff=ORGX.staff.map(s=>s.n+"|"+s.role+"|"+s.unit).join("\n");
+o.dirkinds=J(DIR.reduce((a,d)=>(a[d.kind]=(a[d.kind]||0)+1,a),{}));
+o.dirnonstaff=J(DIR.filter(d=>!ORGX.by[d.name]&&!ORGX.P?.[d.name]).slice(0,40).map(d=>d.name+"|"+d.kind+"|"+d.role));
+o.budx=J(Object.keys(BUDX));o.kbx=J(Object.keys(KCSX));o.ppmx=J(Object.keys(PPMX));
+o.agk=J(Object.keys(S.agents));o.agentsAll=J((Array.isArray(S.agents)?S.agents:S.agents.list||Object.values(S.agents)).map(a=>[a.id,a.n,a.owner]));
+o.doarules=J(DOA.rules().slice(0,3));
+o.pol=J(Object.keys(S).filter(k=>/pol|gov|risk|sec/i.test(k)));
+return o});console.log(r.staff);delete r.staff;console.log(JSON.stringify(r,null,1));await b.close()})();

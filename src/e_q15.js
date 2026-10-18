@@ -1,0 +1,1 @@
+(()=>{const m=MODMAP.modules[5];const e=CONTRACT.evaluate(m.scr);return {keys:Object.keys(e),score:e.score,n:Object.keys(e).length,s:JSON.stringify(e).slice(0,500),inn:MODMAP.modules.filter(x=>x.inn).length,sample:Object.keys(MODMAP.modules[5]),nm:MODMAP.modules.length}})()

@@ -1,0 +1,17 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+path.resolve('out_c14/full.html'));await p.waitForTimeout(1500);
+const r=await p.evaluate(()=>{const o={};
+o.items=(window.REQREG&&REQREG.length);
+o.mm=MODMAP.modules.filter(m=>/svc|req|inbox|flw|hr|people|adm_audit|noti/i.test(m.id)).map(m=>m.id+":"+m.band);
+o.bands=[...new Set(MODMAP.modules.map(m=>m.band))];
+o.ent=Object.keys(DATAMODEL.tables).filter(k=>/request|task|person|approval|audit|order|catalog|service|notif/i.test(k));
+o.reports=DIR.filter(d=>d.mgr==="Priya Shah").map(d=>d.name);
+o.priya=DIR.find(d=>d.name==="Priya Shah");
+o.personas=Object.keys(PERSONAS);o.pn=S.persona;
+o.pl=PROCLIB.list().filter(p=>/onboard|request|svc|catalog/i.test(p.id+p.name)).map(p=>p.id+"|"+p.module+"|"+p.family);
+o.navg=NAVX.groups.map(g=>g.id);
+o.hasNOTI=typeof NOTI;o.mat=!!window.MAT;
+o.humans=DIR.filter(d=>d.kind==="human").slice(0,30).map(d=>d.name+"/"+d.team+"/"+d.mgr);
+return o});
+console.log(JSON.stringify(r,null,1));console.log(errs);await b.close()})();

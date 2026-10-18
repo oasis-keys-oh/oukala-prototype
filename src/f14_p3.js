@@ -1,0 +1,7 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const id=process.argv[3]||'home';const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:+process.argv[4]||400,height:820},colorScheme:'dark'})).newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(1500);
+await p.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await p.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important}'});
+await p.evaluate(i=>go(i),id);await p.waitForTimeout(700);
+console.log(await p.evaluate(()=>{const o=[];document.querySelectorAll('body *').forEach(e=>{const r=e.getBoundingClientRect();if(r.right>innerWidth+2&&r.width>0&&e.offsetParent!==null){let clipped=false;for(let a=e.parentElement;a;a=a.parentElement){const cs=getComputedStyle(a);if(/(hidden|auto|scroll|clip)/.test(cs.overflowX)){clipped=true;break}}o.push((clipped?'[clip] ':'')+e.tagName+'.'+e.className.toString().slice(0,30)+' r='+Math.round(r.right)+' w='+Math.round(r.width))}});return 'scrollW='+document.documentElement.scrollWidth+'\n'+o.filter(x=>!x.startsWith('[clip]')).concat(o.filter(x=>x.startsWith('[clip]')).slice(0,6)).slice(0,14).join('\n')}));
+await p.screenshot({path:'aud14/p400_'+id+'.png'});await b.close()})();

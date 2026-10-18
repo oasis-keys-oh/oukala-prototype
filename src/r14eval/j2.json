@@ -1,0 +1,6 @@
+[{"per":"ops","mode":"dark","screens":["itsm_chg","itsm_mi","itsm_prb","kcs_home","itom_cmdb","itom_evt","itom_slo","itom_run","svc_req","svc_asset","svc_sla","obs_std","agile_art"]},
+{"per":"exec","mode":"dark","screens":["adm_sec","adm_studio","adm_meter","plat_gate","plat_data","plat_reg","bud_ven","bud_doa","bud_ben","tbm_model","fin_model","exe_strat","exe_apps","exe_scen","kcs_test","kcs_prompt","tower","ppl_org","ppl_train","ppl_perf","ppl_cap","org_chart","flw_design","flw_appr","chat_home","inbox","plat_contract","plat_fab","itom_fin","fin_spend"]},
+{"per":"fin","mode":"light","screens":["home","inv","bud_ven"]},
+{"per":"pm","mode":"light","screens":["home","ppm_proj","agile_board"]},
+{"per":"ops","mode":"light","screens":["home","itsm_inc","itsm_chg"]},
+{"per":"ops","mode":"dark","w":400,"screens":["home","itsm_inc","svc_portal"]}]

@@ -1,0 +1,21 @@
+(()=>{const o={};
+o.bands=MODMAP.bands.map(b=>b.id).join(",");
+o.modKeys=Object.keys(MODMAP).join(",");
+o.ents=["person","organization_unit","position","skill","skill_claim","agent_skill","allocation","perf_feedback"].map(i=>{const t=DATAMODEL.tables[i];return i+":"+(t?t.fields.length+" "+t.status+" "+t.ownerMod:"none")});
+o.agentKeys=Object.keys(S.agents[0]).join(",");
+o.fn=typeof FLOWX!=="undefined"?Object.keys(FLOWX):null;
+o.ppmraid=window.PPMRAID&&PPMRAID.length;
+o.raid0=window.PPMRAID&&JSON.stringify(PPMRAID[0]);
+o.workKinds=WORK.map(w=>w.kind+"/"+w.tag);
+o.pend=typeof FLOWX!=="undefined"&&FLOWX.pending?JSON.stringify(FLOWX.pending("Casey Rowan").slice(0,1)):null;
+o.searchx=SEARCHX.length;o.askx=ASKX.length;
+o.skills=window.SKILLS&&JSON.stringify(SKILLS.slice(0,2));
+o.svc0=JSON.stringify(SVCREG[0]).slice(0,400);
+o.ppl=Object.keys(S.ppl||{}).join(",");
+o.pplp=S.ppl&&S.ppl.people&&S.ppl.people.length;
+o.pplp0=S.ppl&&JSON.stringify(S.ppl.people[0]);
+o.coverRecs=!!COVER.recs;
+o.exec=typeof window.EXEC;
+o.inb=Object.keys(window).filter(k=>/inbox|INBOX|NEEDS|needs/i.test(k)).join(",");
+o.stdkeys=Object.keys(STD).join(",");
+return o})()

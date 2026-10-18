@@ -1,0 +1,257 @@
+{
+ "screens": "home|Home|platform\ntrace|Executive trace|portfolio\ninv|Invoice approval|portfolio\nfo|First Officer|people\ntower|AI Control Tower|ai\nmetrics|Metrics|platform\nkg|Impact graph|know\nloop|Feedback loop|platform\nport|Demand and priorities|undefined\nims|Master schedule|undefined\nplan|Project plan|undefined\nlog|Product log|undefined\nadm_studio|Admin studio|platform\nadm_sec|Security and access|platform\nadm_env|Environments and releases|platform\nadm_meter|Licensing and billing|platform\nadm_gate|AI gateway and tokenomics|ai\nadm_audit|Audit and compliance|platform\nbud_over|Budgets overall|portfolio\nbud_model|Financial model|portfolio\nbud_ven|Vendors and contracts|portfolio\nbud_ben|Benefits realization|portfolio\nbud_doa|Delegation of authority|portfolio\nbud_req|Budget requests|portfolio\nchat_home|Chat and agents|platform\ndec_cov|Decision rule coverage|automate\ndev_pipe|Delivery pipeline|automate\nitom_dev|Environments and DORA|ops\nplat_map|Master process flow|platform\nplat_data|Master data model|platform\ndraw_studio|Process drawing studio|automate\nexe_dash|Executive dashboard|portfolio\nexe_strat|Strategy alignment|portfolio\nexe_risk|Risk heat map and Monte Carlo|portfolio\nexe_apps|Application portfolio|portfolio\nexe_board|Board pack|portfolio\nexe_scen|Scenario compare|portfolio\nflw_design|Workflow designer|automate\nflw_asmt|Assessments|automate\nflw_appr|Approvals inbox|automate\nflw_dmn|Decision tables|automate\nflw_bpmn|Process models (BPMN)|automate\nflw_agent|Agentic workflows|automate\nflw_hub|Integration hub|automate\ninbox|My inbox|people\nitom_cmdb|CMDB|ops\nitom_model|CMDB data model|ops\nitom_graph|Dependency views|ops\nitom_disc|Discovery and ingestion|ops\nitom_health|CMDB health and governance|ops\nitom_fin|Cloud cost (FinOps)|ops\nitsm_inc|Incidents|service\nitsm_prb|Problems and known errors|service\nitsm_chg|Changes|service\nitsm_mi|Major incident|service\nitsm_home|Service desk overview|service\nkcs_home|Knowledge management|know\nkcs_edit|Article editor|know\nkcs_ask|Ask the knowledge base|know\nkcs_gap|Knowledge gaps and analytics|know\nkcs_prompt|Prompt library|ai\nkcs_test|AI test management|ai\nkcs_skills|Agent skills|know\nvault|Knowledge graph|know\nexe_mat|Maturity models|portfolio\nmeet_hub|Meetings|people\nmeet_act|Meeting actions|people\nmeet_dec|Meeting decisions|people\nmeet_series|Forums and series|people\nnav_studio|Navigation and search|platform\nitom_evt|Event management|ops\nobs_dash|Dashboards and metrics|ops\nitom_slo|Observability and SLOs|ops\nitom_run|Runbooks and automation|ops\nobs_std|Standard change catalog|service\nsvc_oncall|On-call and escalation|service\nsvc_skills|Skills and availability|people\norg_chart|Org chart|people\nown_gaps|Ownership and gaps|platform\nppl_org|Org chart and workload|people\nppl_cap|Resource planning|people\nppl_train|Training and learning|people\nppl_av|Rooms and conference scheduling|people\nppl_jrny|Journey maps|people\nppl_meet|Forums and minutes|people\nppl_perf|Performance management|people\nplat_data_old|Data tables and model checks|platform\nplat_build|Build a module|platform\nplat_contract|Feature contract|platform\nplat_debt|Technical debt ledger|platform\nplat_fab|Integration fabric|platform\nfin_model|IT financial model|portfolio\nfin_color|Color of money|portfolio\nfin_spend|Spend-order simulator|portfolio\nfin_budget|Budget and forecast|portfolio\nfin_gates|Funding gates|portfolio\nfin_alloc|Allocation and showback|portfolio\nfin_rules|Financial controls|portfolio\nplat_gate|Citizen apps|platform\nplat_mcp|AI and coding clients|ai\nplat_dmap|Data connections|platform\nplat_pmap|Process connections|platform\nplat_proc|Process library|platform\nplat_reg|Platform registry|platform\nppm_proj|Projects and teams|portfolio\nppm_raid|RAID log|portfolio\nitsm_rel|Releases|service\nagile_board|Sprints and backlogs|service\nagile_art|Release trains and increments|service\nplat_self|Self-build|platform\nsvc_sla|SLAs, OLAs and XLAs|service\nppm_sow|SOW and contract analyzer|portfolio\nsvc_cat|Service catalog|service\nsvc_req|Requests and fulfillment|service\nsvc_portal|Self-service portal|service\nsvc_asset|Assets and software licenses|service\nsvc_notify|Notification engine|automate\nsvc_360|Service portfolio and map|service\ntbm_model|Cost transparency (TBM and ATUM)|portfolio\nkcs_viz|Visualization builder|know\nppm_wbs|WBS and task sheet|portfolio",
+ "pers": {
+  "exec": {
+   "n": "Executive",
+   "who": "CIO, sees everything that needs a decision",
+   "home": [
+    "rings",
+    "needs",
+    "burn",
+    "ims",
+    "projects",
+    "insights"
+   ],
+   "nav": [
+    "home",
+    "trace",
+    "port",
+    "ims",
+    "inv",
+    "plan",
+    "fo",
+    "tower",
+    "metrics",
+    "kg",
+    "loop",
+    "log"
+   ],
+   "story": "Delivery is <b>amber</b> and finance is <b>red</b> for one reason: Lumen is nine days late on the search indexer, so the beta moved to Nov 13 and Vendor services is <b>$45,000</b> over commitment.",
+   "needs": [
+    {
+     "ic": "bad",
+     "t": "Release or hold the Lumen payment",
+     "d": "Invoice Advisor recommends holding $62,900 until milestone 3 is accepted (Thu 14:00).",
+     "go": [
+      "inv",
+      "INV-20433"
+     ],
+     "a": "Review"
+    },
+    {
+     "ic": "warn",
+     "t": "Approve a $48,000 reforecast",
+     "d": "Moves hosting contingency to cover a larger tier. Forecast Agent drafted it.",
+     "go": [
+      "metrics",
+      "m_burn"
+     ],
+     "a": "Open"
+    },
+    {
+     "ic": "info",
+     "t": "Tier 1 portal is below target",
+     "d": "Latency since 09:12; failover rehearsal at 16:00.",
+     "go": [
+      "trace",
+      "INC1"
+     ],
+     "a": "Trace"
+    }
+   ],
+   "sugg": [
+    "Why is the portfolio amber?",
+    "Show invoices on hold",
+    "What's on my calendar tomorrow?"
+   ]
+  },
+  "fin": {
+   "n": "Finance approver",
+   "who": "AP lead, sees invoices, budgets and cash",
+   "home": [
+    "needs",
+    "rings",
+    "burn",
+    "insights"
+   ],
+   "nav": [
+    "home",
+    "inv",
+    "trace",
+    "port",
+    "metrics",
+    "ims",
+    "plan",
+    "fo",
+    "kg",
+    "loop",
+    "tower",
+    "log"
+   ],
+   "story": "You have <b>three invoices</b> worth <b>$268,500</b> waiting. Two are clean; one, from Lumen, should be held because it would pay for work nobody has accepted.",
+   "needs": [
+    {
+     "ic": "good",
+     "t": "Approve INV-20418 from Northwind",
+     "d": "$184,200, all six checks pass, advisor 94% confident.",
+     "go": [
+      "inv",
+      "INV-20418"
+     ],
+     "a": "Review"
+    },
+    {
+     "ic": "bad",
+     "t": "Hold INV-20433 from Lumen",
+     "d": "Accepted work $390,000, already paid $412,000.",
+     "go": [
+      "inv",
+      "INV-20433"
+     ],
+     "a": "Review"
+    },
+    {
+     "ic": "warn",
+     "t": "Reject INV-20440 as a duplicate",
+     "d": "92% match with an invoice paid Sep 12.",
+     "go": [
+      "inv",
+      "INV-20440"
+     ],
+     "a": "Review"
+    }
+   ],
+   "sugg": [
+    "Which invoices can clear automatically?",
+    "How much have we paid Lumen?",
+    "Tune the auto-approval rules"
+   ]
+  },
+  "pm": {
+   "n": "Project manager",
+   "who": "Delivery lead, sees milestones, risks and vendors",
+   "home": [
+    "needs",
+    "ims",
+    "projects",
+    "rings",
+    "insights"
+   ],
+   "nav": [
+    "home",
+    "ims",
+    "plan",
+    "port",
+    "trace",
+    "fo",
+    "kg",
+    "inv",
+    "metrics",
+    "loop",
+    "tower",
+    "log"
+   ],
+   "story": "The beta moved from Nov 4 to Nov 13 because Lumen delivered the <b>search indexer</b> nine days late. Milestone 3 is <b>70%</b> done and needs acceptance criteria by Friday.",
+   "needs": [
+    {
+     "ic": "warn",
+     "t": "Confirm milestone 3 acceptance criteria",
+     "d": "Due Friday. First Officer filed this from Monday's steering group.",
+     "go": [
+      "fo",
+      "m9"
+     ],
+     "a": "Open"
+    },
+    {
+     "ic": "info",
+     "t": "Prepare the design review at 15:00",
+     "d": "A pre-read is ready; the Aspen room is booked with a display wall.",
+     "go": [
+      "fo",
+      "m5"
+     ],
+     "a": "Open"
+    },
+    {
+     "ic": "bad",
+     "t": "Taxonomy pilot risk needs an owner",
+     "d": "40% chance Lumen staff are still on the indexer.",
+     "go": [
+      "trace",
+      "R1"
+     ],
+     "a": "Trace"
+    }
+   ],
+   "sugg": [
+    "What slipped and why?",
+    "Show my meetings this week",
+    "Who is the risk owner?"
+   ]
+  },
+  "ops": {
+   "n": "Service desk lead",
+   "who": "Sees incidents, services and knowledge",
+   "home": [
+    "needs",
+    "rings",
+    "insights",
+    "projects"
+   ],
+   "nav": [
+    "home",
+    "trace",
+    "kg",
+    "tower",
+    "ims",
+    "metrics",
+    "port",
+    "plan",
+    "fo",
+    "loop",
+    "inv",
+    "log"
+   ],
+   "story": "The <b>Standards Portal</b> has had a Sev 2 since 09:12 and availability is <b>99.62%</b> against 99.9%. The failover runbook is 14 months old, so a refresh draft is waiting.",
+   "needs": [
+    {
+     "ic": "bad",
+     "t": "Portal latency (Sev 2)",
+     "d": "140 editors affected. Ops Agent is running RB-031.",
+     "go": [
+      "trace",
+      "INC1"
+     ],
+     "a": "Trace"
+    },
+    {
+     "ic": "warn",
+     "t": "Review the failover runbook refresh",
+     "d": "Knowledge Curator drafted changes; you own the article.",
+     "go": [
+      "trace",
+      "K1"
+     ],
+     "a": "Open"
+    },
+    {
+     "ic": "info",
+     "t": "Change advisory board tomorrow 10:00",
+     "d": "Hosting tier change is on the agenda with a risk score.",
+     "go": [
+      "fo",
+      "m6"
+     ],
+     "a": "Open"
+    }
+   ],
+   "sugg": [
+    "Why is the portal slow?",
+    "Which articles are stale?",
+    "What changed this week?"
+   ]
+  }
+ },
+ "groups": null
+}

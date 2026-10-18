@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const W=+process.env.W||1440;
+const p=await (await b.newContext({viewport:{width:W,height:950}})).newPage();const errs=[];p.on('pageerror',e=>errs.push('PE '+e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+await p.goto('file://'+process.cwd()+'/out_b13/full.html');await p.waitForTimeout(1200);
+await p.evaluate(()=>go('draw_studio'));await p.waitForTimeout(700);
+await p.screenshot({path:'shots_b13/t1_picker_'+W+'.png'});
+console.log(await p.evaluate(()=>JSON.stringify({con:DRAWCON.log,metrics:['m_draw_cov','m_draw_valid'].map(k=>!!METRICS[k])})));
+await p.evaluate(()=>DRAW.open(PROCLIB.list()[3].id));await p.waitForTimeout(900);
+await p.screenshot({path:'shots_b13/t1_open_'+W+'.png'});
+console.log('errors',errs);await b.close()})();

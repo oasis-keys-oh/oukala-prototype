@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const phone=process.argv.includes('--phone');
+const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const c=await b.newContext({viewport:phone?{width:400,height:820}:{width:1440,height:900},colorScheme:process.argv.includes('--dark')?'dark':'light'});const p=await c.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&errs.push('console: '+m.text()));
+await p.goto('file://'+dir+'/full.html');await p.waitForTimeout(600);
+const tag=(phone?'_p':'')+(process.argv.includes('--dark')?'_d':'');
+await p.evaluate(()=>{S.v.budv=1;go('bud_over')});await p.waitForTimeout(300);
+await p.click('#view .bud-ln .bd-h').catch(e=>console.log('click line title fail'));await p.waitForTimeout(400);
+await p.screenshot({path:'b12_shots/t3_line'+tag+'.png'});
+console.log('overflow',await p.evaluate(()=>({doc:document.documentElement.scrollWidth>innerWidth+1,dr:(()=>{const d=document.getElementById('drawer');return d.scrollWidth>d.clientWidth+2})()})));
+// vendor tab entry
+await p.keyboard.press('Escape');await p.waitForTimeout(200);
+await p.evaluate(()=>{S.v.budx=1;go('bud_ven')});await p.waitForTimeout(300);
+await p.click('#view tr[data-bud-ct="CT-103"]');await p.waitForTimeout(400);
+console.log('ct crumb',await p.evaluate(()=>document.querySelector('#drawer .bd-crumb')?.innerText.replace(/\n/g,' ')));
+await p.click('#drawer [data-bd^="line:"]');await p.waitForTimeout(300);
+console.log('then',await p.evaluate(()=>document.querySelector('#drawer .bd-crumb')?.innerText.replace(/\n/g,' ')));
+await p.click('#drawer [data-bd-crumb="0"]');await p.waitForTimeout(300);
+console.log('back to ct',await p.evaluate(()=>document.querySelector('#drawer h2')?.innerText));
+await p.screenshot({path:'b12_shots/t3_ct'+tag+'.png'});
+console.log(errs);await b.close()})();

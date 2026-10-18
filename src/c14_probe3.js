@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file://'+path.resolve('out_c14/full.html'));await p.waitForTimeout(1500);
+const r=await p.evaluate(()=>{const o={};
+o.kids=ORGX.kids&&ORGX.kids("priya-shah");o.platform=DIR.filter(d=>d.team==="Platform team").map(d=>d.name+"/"+d.kind+"/"+d.mgr);
+o.sig=[ORGX.kids&&ORGX.kids.toString().slice(0,200),ORGX.up&&ORGX.up.toString().slice(0,200)];
+o.noti=Object.keys(window).filter(k=>/noti/i.test(k));
+o.svcx=Object.keys(window).filter(k=>/^svc|SVC/.test(k));
+return o});
+console.log(JSON.stringify(r,null,1));await b.close()})();

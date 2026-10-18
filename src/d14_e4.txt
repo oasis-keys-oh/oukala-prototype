@@ -1,0 +1,2 @@
+(async()=>{NAVX.ensureIndex(true);await new Promise(r=>setTimeout(r,300));for(let i=0;i<900&&NAVX.index.building;i++)await new Promise(r=>setTimeout(r,100));
+const o={};for(const q of ['budget','purchase order','PO','vendor','spend']){const r=NAVX.zsearch.search(q);o[q]=r.groups.slice(0,14).map(g=>g.lab+':'+g.n+'/'+Math.round(g.best)+'['+g.items[0].it.t.slice(0,22)+']').join(' | ')}return o})()

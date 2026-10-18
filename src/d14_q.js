@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const fs=require('fs');const Q=require('./d14_queries.js');
+(async()=>{const out=process.argv[2];const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await b.newPage({viewport:{width:1440,height:900}});
+await p.route(/fonts\.(googleapis|gstatic)/,r=>r.abort());await p.goto('file://'+out+'/full.html',{waitUntil:'domcontentloaded'});await p.waitForTimeout(1500);
+const R=await p.evaluate(async(Q)=>{NAVX.ensureIndex(true);await new Promise(r=>setTimeout(r,200));for(let i=0;i<900&&(NAVX.index.building||!NAVX.index.built);i++)await new Promise(r=>setTimeout(r,100));
+const o=[];for(const q of Q){const r=NAVX.search(q,{limit:400});const g={};r.results.forEach(x=>{const k=x.type==='record'||x.type==='knowledge'||x.type==='data'||x.type==='process'?(x.meta.split(' · ')[0]):x.type;g[k]=(g[k]||0)+1});o.push({q,total:r.total,types:r.counts,groups:g,top:r.results.slice(0,4).map(x=>x.type+':'+x.title.slice(0,30))})}return o},Q);
+fs.writeFileSync(out+'/queries.json',JSON.stringify(R,null,1));
+const zero=R.filter(r=>!r.total),so=R.filter(r=>r.total&&Object.keys(r.types).every(k=>k==='screen'));
+console.log('queries',R.length,'zero',zero.map(r=>r.q).join('|'));console.log('screens-only',so.map(r=>r.q).join('|'));
+const few=R.filter(r=>r.total&&Object.keys(r.types).length<=1&&!so.includes(r));console.log('single-type',few.map(r=>r.q+'('+Object.keys(r.types)+')').join('|'));
+['budget','vendor','invoice','cost','PO','reserve','forecast'].forEach(q=>{const r=R.find(x=>x.q===q);console.log(q,JSON.stringify(r.types),JSON.stringify(r.groups),r.top.join(' ; '))});
+await b.close()})();

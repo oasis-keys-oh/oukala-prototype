@@ -1,0 +1,6 @@
+[{"w":390,"h":844,"dark":1,"jobs":[
+{"name":"m_appr_390_d","screen":"r15_mobile","pre":"S.r15m.tab='appr';render()"},
+{"name":"m_inc_390_d","screen":"r15_mobile","pre":"S.r15m.tab='inc';render()"}]},
+{"w":390,"h":844,"dark":0,"jobs":[
+{"name":"m_appr_390_l","screen":"r15_mobile","pre":"S.r15m.tab='appr';render()"},
+{"name":"rpt_390_l","screen":"r15_rpt","pre":"S.v.r3rpt=0;render()"}]}]

@@ -1,0 +1,10 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:950}})).newPage();const errs=[];p.on('pageerror',e=>errs.push('PE '+e.message));
+await p.goto('file://'+process.cwd()+'/out_b13/full.html');await p.waitForTimeout(1200);
+await p.evaluate(()=>{DRAW.open(null,{name:"X"})});await p.waitForTimeout(500);
+await p.evaluate(()=>{const D=DRAW;D.ST.k=.8;D.ST.px=30;D.ST.py=20;D.placeShape('humantask',300,200,{n:'A'});D.placeShape('humantask',560,360,{n:'B'});D.closeProps();D.ST.sel.clear();D.paint()});await p.waitForTimeout(300);
+const g=await p.evaluate(()=>{const D=DRAW,s=D.ST.doc.shapes.find(x=>x.n==='B'),r=document.querySelector('#drSvg').getBoundingClientRect(),k=D.ST.k;const x=r.left+D.ST.px+s.x*k,y=r.top+D.ST.py+(s.y+s.h/2)*k;const el=document.elementFromPoint(x,y);return {x,y,tag:el&&el.tagName,cls:el&&el.getAttribute('class'),port:el&&el.getAttribute('data-dr-port'),r:el&&el.getAttribute('r')}});
+console.log(g);
+await p.mouse.move(g.x,g.y);await p.mouse.down();console.log('drag',await p.evaluate(()=>DRAW.ST.drag&&DRAW.ST.drag.k));await p.mouse.up();
+console.log(errs);await b.close()})();

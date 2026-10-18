@@ -1,0 +1,5 @@
+[{"per":"fin","mode":"dark","screens":["home","inv","fin_budget"]},
+{"per":"pm","mode":"dark","screens":["home","ppm_proj","ppm_raid","agile_board"]},
+{"per":"ops","mode":"dark","screens":["home","itsm_home","itsm_inc","svc_oncall"]},
+{"per":"exec","mode":"dark","screens":["exe_dash","exe_board","exe_risk","svc_portal","svc_cat","adm_audit","adm_gate"]},
+{"per":"exec","mode":"light","screens":["home","exe_dash","svc_portal"]}]

@@ -1,0 +1,2167 @@
+{
+ "total": 174,
+ "log": [
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=O1",
+   "txt": "ObjectiveModernize standards publishingOn track",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=P1",
+   "txt": "PortfolioDigital Publishing portfolio$2.06M",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=PR2",
+   "txt": "ProjectTaxonomy Data HubOn track",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=B2",
+   "txt": "Budget lineFY26 Vendor services$860K",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=V2",
+   "txt": "ContractLumen Data Partners SOW-4$610K",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=I2",
+   "txt": "InvoiceINV-20433 Lumen$63K",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=B1",
+   "txt": "FY26 Cloud hostingB1Budget line$1.2M approved and $740K paid; a larger hosting t",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=I1",
+   "txt": "INV-20418 NorthwindI1InvoiceMatches usage and contract; the advisor recommends a",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=I3",
+   "txt": "INV-20451 NorthwindI3InvoiceSmall storage add-on inside tolerance; eligible to c",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=V1",
+   "txt": "Northwind Cloud MSAV1ContractAnnual hosting commitment of $1.05M, delivering to ",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=K1",
+   "txt": "Portal failover runbookK1KnowledgeLast reviewed 14 months ago; a refresh draft i",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "trace",
+   "depth": 1,
+   "parent": null,
+   "key": "data-rec=INC1",
+   "txt": "Portal latency (Sev 2)INC1IncidentEditors saw slow pages since 09:12; 140 users ",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "trace"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m30",
+   "txt": "IT operations daily9am to 9:30am✓ Filed undefined records",
+   "verdict": "badtext",
+   "why": "undefined",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_yield",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_yield landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m1",
+   "txt": "Standards steering group10am to 11am● 1 to review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m2",
+   "txt": "Northwind vendor sync2pm to 2:30pm✓ Filed 2 records",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m3",
+   "txt": "IT operations daily9am to 9:30am✓ Filed 3 records",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m4",
+   "txt": "Finance review prep11am to 12pm● 1 to review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m5",
+   "txt": "Taxonomy hub design review3pm to 4pm◌ Will attend · AV booked",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m31",
+   "txt": "IT operations daily9am to 9:30am◌ Will attend",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m6",
+   "txt": "Change advisory board10am to 11am◌ Will attend",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m7",
+   "txt": "1:1 with Tom Becker1pm to 1:30pm◌ Will attend",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "fo",
+   "depth": 1,
+   "parent": null,
+   "key": "data-meet=m32",
+   "txt": "IT operations daily9am to 9:30am◌ Will attend",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "fo"
+  },
+  {
+   "screen": "loop",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_spi",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_spi landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_s1",
+   "txt": "1Initiation and governance",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_ontime",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_ontime landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_10",
+   "txt": "1.1Project kickoff",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_schedvar",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_schedvar landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_11",
+   "txt": "1.2Charter and business case",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_mshit",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_mshit landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_12",
+   "txt": "1.3Steering committee, RACI and RAID log setup",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_13",
+   "txt": "1.4Lumen SOW-4 statement of work and onboarding",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "ims",
+   "depth": 1,
+   "parent": null,
+   "key": "data-task=p1_20",
+   "txt": "Design gate G1: baseline approved",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "ims"
+  },
+  {
+   "screen": "adm_sec",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_access",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_access landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "adm_sec",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "adm_meter",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_licuse",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_licuse landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "adm_meter",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_tokcost",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_tokcost landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "adm_meter",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "adm_audit",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_ctrl",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_ctrl landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "adm_audit",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "bud_model",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_roi",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_roi landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_model",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_capex",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_capex landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_model",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "bud_ben",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_benefit",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_benefit landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_ben",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_roi",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_roi landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_ben",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "bud_ben",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=plan",
+   "txt": "Open Standards plan",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "plan"
+  },
+  {
+   "screen": "bud_ben",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=port",
+   "txt": "Open Demand and priorities",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "port"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=bud_over",
+   "txt": "Budgets overall",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "bud_over"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-br-open=BR-0112",
+   "txt": "BR-0112Reviewer workload dashboard",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Maya Ortiz",
+   "txt": "Maya Ortiz",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_br_cycle",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_br_cycle landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-br-open=BR-0106",
+   "txt": "BR-0106Lumen change order CO-2 funding",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Victor Amaya",
+   "txt": "Victor Amaya",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_br_stuck",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_br_stuck landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-br-open=BR-0104",
+   "txt": "BR-0104AI drafting assistant for standards",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Rina Okafor",
+   "txt": "Rina Okafor",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_br_conv",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_br_conv landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "bud_req",
+   "depth": 1,
+   "parent": null,
+   "key": "data-br-open=BR-0102",
+   "txt": "BR-0102Retire the legacy lease subledger",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "bud_req"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dec_cov",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dec_cov landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=adm_audit|adm_audit#143",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dec_drafts",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dec_drafts landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=adm_sec|adm_sec#140",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dec_owned",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dec_owned landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=agile_art|agile_art#161",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dec_tested",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dec_tested landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=agile_board|agile_board#160",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=flw_dmn",
+   "txt": "Open the original Decision tables",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_dmn"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=bud_ben|bud_ben#122",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=bud_model|bud_model#126",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "dec_cov",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dx-goproc=bud_over|bud_over#124",
+   "txt": "Review",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "dec_cov"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dora_df",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dora_df landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-lr-go=dev_clash",
+   "txt": "REL-2610 Portal standby failover (RB-031 v8)CHG0323Change CHG0323 on the same se",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itsm_rel"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Nia Brooks",
+   "txt": "Nia Brooks",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_dev"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dora_lead",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dora_lead landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-lr-go=dev_lr_REL-2611",
+   "txt": "FT-101FeatureFeature in Standards beta",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "agile_board"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Jordan Lee",
+   "txt": "Jordan Lee",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_dev"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dora_cfr",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dora_cfr landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dora_ttr",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dora_ttr landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_dev",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_dora_rework",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_dora_rework landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_atlas_trace",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_atlas_trace landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-cov-open=",
+   "txt": "See what is missing",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "plat_data"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-dom-go=portfolio",
+   "txt": "Portfolio and projects",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-ent=incident",
+   "txt": "Incident20 fieldsITSM→ Business service, Configuration item +2feeds 24 metrics",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_data_ref",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_data_ref landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-dom-go=agile",
+   "txt": "Agile and releases",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-ent=change_request",
+   "txt": "Change request13 fieldsITSM→ Business service, Configuration item +1feeds 6 metr",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-dom-go=fin",
+   "txt": "Finance and contracts",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-ent=request_item",
+   "txt": "Request item24 fieldsService catalog→ Catalog item, Service offering +3feeds 16 ",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-dom-go=money",
+   "txt": "Money (IT financial model)",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "plat_data",
+   "depth": 1,
+   "parent": null,
+   "key": "data-at-ent=project",
+   "txt": "Project12 fieldsPPM→ Person, agent or providerfeeds 9 metrics",
+   "verdict": "lost",
+   "why": "element not found after re-render"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_conf",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_conf landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_align",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_align landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_riskexp",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_riskexp landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_strat",
+   "txt": "Strategic alignment88.91 objective without funded work",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_strat"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_mat",
+   "txt": "Maturity vs strategy72%Glide-path index 96",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_mat"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_matatt",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_matatt landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_risk",
+   "txt": "Beta confidence by Nov 2076%80% by Nov 23 · plan Nov 13",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_risk"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=ims",
+   "txt": "Delivery health71Beta moved 7 days from Nov 4",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "ims"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_delivery",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_delivery landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=trace",
+   "txt": "Forecast vs approved105.6%$163K over $2.91M approved",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "trace"
+  },
+  {
+   "screen": "exe_dash",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_burn",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_burn landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_risk",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_conf",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_conf landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_risk",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "exe_risk",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_riskexp",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_riskexp landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_risk",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_decage",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_decage landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_delivery",
+   "txt": "1",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_delivery landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=ims",
+   "txt": "2",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "ims"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_burn",
+   "txt": "3",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_burn landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_conf",
+   "txt": "4",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_conf landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_risk",
+   "txt": "5",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_risk"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_riskexp",
+   "txt": "6",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_riskexp landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_dash",
+   "txt": "7",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_dash"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_align",
+   "txt": "1",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_align landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "exe_board",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=exe_strat",
+   "txt": "2",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "exe_strat"
+  },
+  {
+   "screen": "flw_design",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_wfauto",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_wfauto landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_design",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_wfsla",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_wfsla landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_design",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_wfstep",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_wfstep landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_apcycle",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_apcycle landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-apx-open=AP-2101",
+   "txt": "Release $48,000 of the Q4 reserve to search r…",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_apsla",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_apsla landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-apx-open=AP-2103",
+   "txt": "Overspend: Azure August actuals are $31,200 o…",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_aprover",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_aprover landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-apx-open=AP-2105",
+   "txt": "Northwind MSA amendment: Saturday service des…",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_gatepass",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_gatepass landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-apx-open=AP-2109",
+   "txt": "Raise search availability SLA from 99.5% to 9…",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_appr",
+   "depth": 1,
+   "parent": null,
+   "key": "data-apx-open=AP-2110",
+   "txt": "Data lake for member analytics: $640,000 over…",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_apcycle",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_apcycle landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-dr-open=",
+   "txt": "Draw this process",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "draw_studio"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_wfrun",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_wfrun landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=flw_dmn",
+   "txt": "Tune the decision table",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_dmn"
+  },
+  {
+   "screen": "flw_bpmn",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=flw_appr",
+   "txt": "Open approvals inbox",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_appr"
+  },
+  {
+   "screen": "flw_hub",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_intfail",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_intfail landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdbhealth",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdbhealth landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=itom_graph",
+   "txt": "Dependency views",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "itom_graph"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Sam Patel",
+   "txt": "Sam Patel",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_cmdb"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_disc",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_disc landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=itom_disc",
+   "txt": "Sources",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "itom_disc"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Rina Okafor",
+   "txt": "Rina Okafor",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_cmdb"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_uptime",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_uptime landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Priya Shah",
+   "txt": "Priya Shah",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_cmdb"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_comp",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_comp landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Tom Becker",
+   "txt": "Tom Becker",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_cmdb"
+  },
+  {
+   "screen": "itom_cmdb",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_corr",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_corr landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_graph",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_corr",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_corr landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_graph",
+   "depth": 1,
+   "parent": null,
+   "key": "data-lr-go=itom_walkr",
+   "txt": "Lease subledger (ERP)Tier 2Business service",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_graph"
+  },
+  {
+   "screen": "itom_graph",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "itom_graph",
+   "depth": 1,
+   "parent": null,
+   "key": "data-lr-go=itom_glist",
+   "txt": "db-prod-02OperationalSQL Server instance",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "itom_graph"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdbhealth",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdbhealth landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Sam Patel",
+   "txt": "Sam Patel",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-itom-open=ci_por3",
+   "txt": "portal-waf",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_comp",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_comp landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Rina Okafor",
+   "txt": "Rina Okafor",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-itom-open=ci_x_vmsql",
+   "txt": "vm-sql-prod-02",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_corr",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_corr landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Priya Shah",
+   "txt": "Priya Shah",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-itom-open=ci_cod5",
+   "txt": "codif-blob",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_cmdb_compl",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_cmdb_compl landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itom_health",
+   "depth": 1,
+   "parent": null,
+   "key": "data-person=Tom Becker",
+   "txt": "Tom Becker",
+   "verdict": "ok",
+   "why": "",
+   "drawer": true,
+   "landed": "itom_health"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=itsm_mi",
+   "txt": "Open the war room",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "itsm_mi"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-nav=flw_design",
+   "txt": "Open in Workflow designer",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "flw_design"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_itsm_sla",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_itsm_sla landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_itsm_backlog",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_itsm_backlog landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_itsm_impact",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_itsm_impact landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=tower",
+   "txt": "Open AI Control Tower",
+   "verdict": "ok",
+   "why": "",
+   "drawer": false,
+   "landed": "tower"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_itsm_mttrall",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_itsm_mttrall landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itsm_inc",
+   "depth": 1,
+   "parent": null,
+   "key": "data-go=metrics:m_itsm_team",
+   "txt": "Open in Metrics",
+   "verdict": "mismatch",
+   "why": "data-go=metrics:m_itsm_team landed on metrics",
+   "drawer": false,
+   "landed": "metrics"
+  },
+  {
+   "screen": "itsm_inc",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "itsm_chg",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "itsm_home",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "kcs_edit",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "kcs_gap",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "kcs_test",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "vault",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "meet_hub",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "meet_dec",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "nav_studio",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "obs_dash",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "itom_run",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "svc_oncall",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "org_chart",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppl_org",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppl_train",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppl_jrny",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppl_perf",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_build",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_debt",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "fin_model",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "fin_spend",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "fin_gates",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "fin_rules",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_mcp",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_pmap",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_reg",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppm_raid",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "agile_board",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "plat_self",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "ppm_sow",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "svc_req",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "svc_asset",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "svc_360",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  },
+  {
+   "screen": "kcs_viz",
+   "verdict": "harness",
+   "why": "Error: page.evaluate: Target page, context or browser has been closed"
+  }
+ ],
+ "errs": []
+}

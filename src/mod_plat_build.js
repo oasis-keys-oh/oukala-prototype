@@ -475,7 +475,7 @@ function register(){
 function withdraw(id){
  const rec=B.reg.find(r=>r.id===id&&!r.withdrawn);if(!rec)return;
  rec.ents.forEach(en=>{
-  if(en.kind==="new"){let done=false;if(window.ATLAS&&ATLAS.removeEntity){try{ATLAS.removeEntity(en.id);done=true}catch(e){}}if(!done){try{delete DATAMODEL.tables[en.id];PLAT.refresh&&PLAT.refresh()}catch(e){}}}
+  if(en.kind==="new"){let done=false;if(window.ATLAS&&ATLAS.removeEntity){try{ATLAS.removeEntity(en.id);done=true}catch(e){}}if(!done){try{delete DATAMODEL.tables[en.id];DATAMODEL._v++;PLAT.refresh&&PLAT.refresh()}catch(e){}}}
   else if(en.snap){try{DATAMODEL.tables[en.id].fields=en.snap.fields;PLAT.refresh&&PLAT.refresh();window.ATLAS&&ATLAS.bump&&ATLAS.bump()}catch(e){}}
  });
  try{if(window.PROCLIB&&PROCLIB.removeProcess)PROCLIB.removeProcess(rec.procId);else if(window.PROCLIB&&PROCLIB.remove)PROCLIB.remove(rec.procId);delete PROC.defs["bld_"+id]}catch(e){}

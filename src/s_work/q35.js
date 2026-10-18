@@ -1,0 +1,14 @@
+ const o={};const sh=(x,n=900)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ const F=PLAT.fieldsAll();o.n=F.length;o.f0=sh(F[0],300);
+ const cnt=(arr,fn)=>arr.reduce((a,x)=>{const k=fn(x);a[k]=(a[k]||0)+1;return a},{});
+ o.auth=sh(cnt(F,f=>f.authority||f.auth));o.cls=sh(cnt(F,f=>f.classification||f.cls));o.type=sh(cnt(F,f=>f.type));
+ o.refs=F.filter(f=>f.type==='ref').length;o.refNoTarget=F.filter(f=>f.type==='ref'&&!f.ref).length;
+ o.CLS=sh(PLAT.CLS_ORDER);
+ const E=PLAT.entities();o.entCls=sh(cnt(E,e=>e.cls||e.classification));
+ o.entSt=sh(cnt(E,e=>e.status||e.state||'?'));o.e0=sh(Object.keys(E[0]));
+ o.mm=MODMAP.flows.slice(0,1).map(f=>sh(f,500));
+ const fl=MODMAP.flows;o.flowMode=sh(cnt(fl,f=>f.mode));
+ o.fresh=sh(cnt(fl.flatMap(f=>(f.refs||[]).flatMap(r=>r.f||[])),x=>x.fresh));
+ o.conflict=sh(cnt(fl.flatMap(f=>(f.refs||[]).flatMap(r=>r.f||[])),x=>x.conflict));
+ o.rule=sh(cnt(fl.flatMap(f=>(f.refs||[]).flatMap(r=>r.f||[])),x=>x.rule).__proto__&&0);
+ return JSON.stringify(o,null,1);

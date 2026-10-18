@@ -1,0 +1,12 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.route(/^https:/,r=>r.abort());
+await p.goto('file://'+process.argv[2]+'/full.html',{timeout:120000});await p.waitForTimeout(1500);
+const o=await p.evaluate(()=>{const r={};
+const t=DATAMODEL.tables;const k=Object.keys(t);r.k=k.slice(0,60).join(",");r.t0=JSON.stringify(t[k[0]]).slice(0,700);
+r.dmkeys=Object.keys(DATAMODEL).join(",");
+const cl={};k.forEach(x=>(t[x].fields||[]).forEach(f=>{cl[f.classification||f.cls||f.class]=(cl[f.classification||f.cls||f.class]||0)+1}));r.cl=JSON.stringify(cl);
+r.map=JSON.stringify(Object.entries(NAVX.map).slice(0,5));r.mapn=Object.keys(NAVX.map).length;
+const pe=k.filter(x=>/person|employee|people|perf|pay|comp|pto|leave|review|budget|invoice|payment/i.test(x));r.pe=pe.join(",");
+return r});
+console.log(JSON.stringify(o,null,1));await b.close()})();

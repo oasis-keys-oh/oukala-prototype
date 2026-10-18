@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:1000}})).newPage();
+await p.route(/^https?:/,r=>r.abort());
+await p.goto('file://'+path.resolve('scr/base.html'));await p.waitForTimeout(500);
+const r=await p.evaluate(()=>{const o={};const J=(x,n=900)=>{try{return JSON.stringify(x,(k,v)=>typeof v==='function'?'fn':v).slice(0,n)}catch(e){return 'ERR '+e.message}};
+ o.line=J(S.bud.lines[0],500);o.lines=J(S.bud.lines.map(l=>l.id+':'+l.cat+':'+l.p).join(' '),900);o.po=J(S.bud.po.slice(0,3),700);o.con=J(S.bud.con.slice(0,2),900);o.vend=J(S.bud.vend.slice(0,2),500);
+ o.invs=J(INVOICES.map(i=>[i.id,i.vendor,i.contract,i.node,i.amt,i.rec]));o.dec=J(S.dec);
+ o.finLines=J(FIN.lines.slice(0,2),500);o.forecast=J(Object.keys(FIN.forecast()),300);
+ o.reserve=J(S.bud.led.slice(0,2));
+ o.proj=J(PROJ);o.mrel=J(Object.keys(METRICS).filter(k=>/res|fcst|forecast|burn|paid|ven|spend|vend/i.test(k)),600);
+ o.audit0=AUDIT.length;
+ return o});
+for(const k in r)console.log(k,'=',r[k]);await b.close()})();

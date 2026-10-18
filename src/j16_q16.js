@@ -1,0 +1,1 @@
+(()=>{go('zl_conn');const t=document.querySelector('#view').innerText;const m=t.match(/(\d+)\s*(?:\/\s*100)?[^\n]{0,40}(?:findings|gaps)/i);return {head:t.slice(0,420).replace(/\n+/g,' | '),m:m&&m[0],f:(t.match(/\b36\d\b|\b37\d\b/g)||[]).slice(0,4)}})()

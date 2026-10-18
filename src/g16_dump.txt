@@ -1,0 +1,212 @@
+exec,fin,pm,ops,portfolio,change,arch,admin,audit,board,guest,emp,newhire
+89
+Maya Ortiz|Portfolio lead|PMO|Casey Rowan
+Priya Shah|Project manager|Platform team|Maya Ortiz
+Dev Rao|Project manager|Data team|Maya Ortiz
+Tom Becker|Service desk lead|Service desk|Sam Patel
+Avery Chen|Controller|Finance|Casey Rowan
+Jordan Lee|Architect|Architecture|Casey Rowan
+Sam Patel|Platform engineer|Ops team|Casey Rowan
+Nia Brooks|Change manager|Change management|Sam Patel
+Elena Marsh|Chief editor|Editorial|Catherine Doyle
+Rina Okafor|Security lead|Security|Casey Rowan
+Casey Rowan|Chief information officer|PMO|undefined
+Catherine Doyle|Chief executive|Executive office|null
+Marcus Reid|Chief financial officer|Finance|Catherine Doyle
+Joanna Pierce|Head of People Operations|People operations|Catherine Doyle
+Theo Marlowe|General counsel|Legal and compliance|Catherine Doyle
+Hannah Lowe|Scrum master|Portfolio and delivery|Maya Ortiz
+Leila Haddad|Communications lead|Portfolio and delivery|Maya Ortiz
+Owen Pryce|Organizational change manager|Portfolio and delivery|Maya Ortiz
+Rina Kovacs|Solutions architect|Architecture|Jordan Lee
+Aaron Whitfield|Security architect|Architecture|Jordan Lee
+Leah Moss|Platform engineer|Platform engineering|Sam Patel
+Ben Ito|Platform engineer|Platform engineering|Sam Patel
+Carla Reyes|Platform engineer|Platform engineering|Sam Patel
+Anita Cole|Developer|Platform engineering|Sam Patel
+Ben Alvarez|QA analyst|Platform engineering|Sam Patel
+Anil Mehta|Data engineering lead|Data and analytics|Casey Rowan
+Yuki Tanaka|Data engineer|Data and analytics|Anil Mehta
+Rosa Delgado|Data engineer|Data and analytics|Anil Mehta
+Femi Adeyemi|Data analyst|Data and analytics|Anil Mehta
+Maribel Cruz|Service desk analyst|Service desk and operations|Tom Becker
+Priti Joshi|Tier 2 support analyst|Service desk and operations|Tom Becker
+Ines Duarte|Operations engineer|Service desk and operations|Tom Becker
+Paula Grant|Operations engineer|Service desk and operations|Tom Becker
+Wes Hartley|Service desk analyst|Service desk and operations|Tom Becker
+Imran Sheikh|Security analyst|Security|Rina Okafor
+Colette Brandt|Identity engineer|Security|Rina Okafor
+Hollis Grey|Release coordinator|Change and release|Nia Brooks
+Noelle Park|Accounts payable lead|Finance|Avery Chen
+Victor Amaya|Finance and budget lead|Finance|Avery Chen
+Camille Ortega|Procurement lead|Finance|Marcus Reid
+Kenji Watanabe|AI platform lead|Technology|Casey Rowan
+Noor Haddad|Standards editor|Editorial|Elena Marsh
+Pierce Caldwell|Standards editor|Editorial|Elena Marsh
+Isla Fenn|Associate editor|Editorial|Elena Marsh
+Grace Whitfield|Training lead|People operations|Joanna Pierce
+Dmitri Volkov|Platform engineer|Platform team|Sam Patel
+Hana Sato|Platform engineer|Platform team|Sam Patel
+Greg Nolan|Platform engineer|Platform team|Sam Patel
+Tess Whitaker|Platform engineer|Platform team|Sam Patel
+Chen Wei|Data engineer|Data team|Anil Mehta
+Lucas Brandt|Data engineer|Data team|Anil Mehta
+Kofi Mensah|AV and operations technician|Ops team|Tom Becker
+Owen Fraser|Service desk analyst|Service desk|Tom Becker
+Gabe Lindholm|Service desk analyst|Service desk|Tom Becker
+Luis Ortega|Developer|Platform team|Maya Ortiz
+Mei Tan|Developer|Platform team|Maya Ortiz
+Zoe Hart|Developer|Platform team|Maya Ortiz
+Isla Reid|UX designer and business analyst|Editors|Maya Ortiz
+Tessa Lin|Data engineer|Data team|Maya Ortiz
+Viktor Sokol|Developer|Platform team|Maya Ortiz
+Amara Diallo|Developer|Platform team|Maya Ortiz
+Marcus Webb|Scrum master|PMO|Maya Ortiz
+home|Home|platform
+trace|Executive trace|portfolio
+inv|Invoice approval|portfolio
+fo|First Officer|people
+tower|AI Control Tower|ai
+metrics|Metrics|platform
+kg|Impact graph|know
+loop|Feedback loop|platform
+port|Demand and priorities|undefined
+ims|Master schedule|undefined
+plan|Project plan|undefined
+log|Product log|undefined
+adm_studio|Admin studio|platform
+adm_sec|Security and access|platform
+adm_env|Environments and releases|platform
+adm_meter|Licensing and billing|platform
+adm_gate|AI gateway and tokenomics|ai
+adm_audit|Audit and compliance|platform
+bud_over|Budgets overall|portfolio
+bud_model|Financial model|portfolio
+bud_ven|Vendors and contracts|portfolio
+bud_ben|Benefits realization|portfolio
+bud_doa|Delegation of authority|portfolio
+bud_req|Budget requests|portfolio
+chat_home|Chat and agents|platform
+dec_cov|Decision rule coverage|automate
+dev_pipe|Delivery pipeline|automate
+itom_dev|Environments and DORA|ops
+plat_map|Master process flow|platform
+plat_data|Master data model|platform
+draw_studio|Process drawing studio|automate
+exe_dash|Executive dashboard|portfolio
+exe_strat|Strategy alignment|portfolio
+exe_risk|Risk heat map and Monte Carlo|portfolio
+exe_apps|Application portfolio|portfolio
+exe_board|Board pack|portfolio
+exe_scen|Scenario compare|portfolio
+flw_design|Workflow designer|automate
+flw_asmt|Assessments|automate
+flw_appr|Approvals inbox|automate
+flw_dmn|Decision tables|automate
+flw_bpmn|Process models (BPMN)|automate
+flw_agent|Agentic workflows|automate
+flw_hub|Integration hub|automate
+inbox|My inbox|people
+itom_cmdb|CMDB|ops
+itom_model|CMDB data model|ops
+itom_graph|Dependency views|ops
+itom_disc|Discovery and ingestion|ops
+itom_health|CMDB health and governance|ops
+itom_fin|Cloud cost (FinOps)|ops
+itsm_inc|Incidents|service
+itsm_prb|Problems and known errors|service
+itsm_chg|Changes|service
+itsm_mi|Major incident|service
+itsm_home|Service desk overview|service
+kcs_home|Knowledge management|know
+kcs_edit|Article editor|know
+kcs_ask|Ask the knowledge base|know
+kcs_gap|Knowledge gaps and analytics|know
+kcs_prompt|Prompt library|ai
+kcs_test|AI test management|ai
+kcs_skills|Agent skills|know
+vault|Knowledge graph|know
+exe_mat|Maturity models|portfolio
+meet_hub|Meetings|people
+meet_act|Meeting actions|people
+meet_dec|Meeting decisions|people
+meet_series|Forums and series|people
+nav_studio|Navigation and search|platform
+itom_evt|Event management|ops
+obs_dash|Dashboards and metrics|ops
+itom_slo|Observability and SLOs|ops
+itom_run|Runbooks and automation|ops
+obs_std|Standard change catalog|service
+svc_oncall|On-call and escalation|service
+svc_skills|Skills and availability|people
+org_chart|Org chart|people
+own_gaps|Ownership and gaps|platform
+ppl_org|Org chart and workload|people
+ppl_cap|Resource planning|people
+ppl_train|Training and learning|people
+ppl_av|Rooms and conference scheduling|people
+ppl_jrny|Journey maps|people
+ppl_meet|Forums and minutes|people
+ppl_perf|Performance management|people
+plat_data_old|Data tables and model checks|platform
+plat_build|Build a module|platform
+plat_contract|Feature contract|platform
+plat_debt|Technical debt ledger|platform
+plat_fab|Integration fabric|platform
+fin_model|IT financial model|portfolio
+fin_color|Color of money|portfolio
+fin_spend|Spend-order simulator|portfolio
+fin_budget|Budget and forecast|portfolio
+fin_gates|Funding gates|portfolio
+fin_alloc|Allocation and showback|portfolio
+fin_rules|Financial controls|portfolio
+plat_gate|Citizen apps|platform
+plat_mcp|AI and coding clients|ai
+plat_dmap|Data connections|platform
+plat_pmap|Process connections|platform
+plat_proc|Process library|platform
+plat_reg|Platform registry|platform
+ppm_proj|Projects and teams|portfolio
+ppm_raid|RAID log|portfolio
+bud_ccmap|Cost center mapping|portfolio
+bud_lines|All budget lines|portfolio
+r15d_evidence|Evidence room|strat
+r15d_agents|Agent registry|ai
+r15d_facts|Facts and conflicts|plat
+r15d_firstweek|My first week|help
+plat_store|Entity store|platform
+wf_runs|Run monitor|automate
+ai_runtime|Agent runtime|ai
+grc_home|GRC overview|platform
+grc_risk|Risk register|platform
+grc_ctl|Controls and testing|platform
+grc_find|Issues and findings|platform
+grc_pol|Policies|platform
+grc_aud|Audit management|platform
+grc_ven|Third-party risk|platform
+grc_exc|Exceptions and acceptances|platform
+rec_shell|Record shell|platform
+r15_iam|Identity and access|platform
+r15_mobile|Mobile approvals and on-call|people
+r15_sem|Semantic model|platform
+r15_rpt|Reports and subscriptions|portfolio
+r15_time|Timesheets and actuals|portfolio
+r15_p2p|Procure to pay|portfolio
+itsm_rel|Releases|service
+agile_board|Sprints and backlogs|service
+agile_art|Release trains and increments|service
+plat_self|Self-build|platform
+svc_sla|SLAs, OLAs and XLAs|service
+ppm_sow|SOW and contract analyzer|portfolio
+svc_cat|Service catalog|service
+svc_req|Requests and fulfillment|service
+svc_portal|Self-service portal|service
+svc_asset|Assets and software licenses|service
+svc_notify|Notification engine|automate
+svc_guides|Order guides|service
+svc_360|Service portfolio and map|service
+tbm_model|Cost transparency (TBM and ATUM)|portfolio
+kcs_viz|Visualization builder|know
+ppm_wbs|WBS and task sheet|portfolio
+zevt|Events and rules|platform
+zl_conn|Connections and gaps|platform

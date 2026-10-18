@@ -1,0 +1,12 @@
+[{"w":390,"h":844,"dark":1,"jobs":[
+{"name":"m_appr_390_d","screen":"r15_mobile","pre":"S.r15m.tab='appr';render()"},
+{"name":"m_oc_390_d","screen":"r15_mobile","pre":"S.r15m.tab='oc';render()"},
+{"name":"m_inc_390_d","screen":"r15_mobile","pre":"S.r15m.tab='inc';render()"},
+{"name":"m_rej_390_d","screen":"r15_mobile","pre":"S.r15m.tab='appr';S.r15m.sheet={kind:'reject',id:INBOX.items().find(x=>x.can.approve).id,reason:'Over budget'};render()"},
+{"name":"time_grid_390_d","screen":"r15_time","pre":"S.r15m.sheet=null;S.v.r3time=1;render()"},
+{"name":"p2p_390_d","screen":"r15_p2p","pre":"S.v.r3p2p=1;render()"},
+{"name":"iam_390_d","screen":"r15_iam","pre":"S.v.r3iam=2;render()"},
+{"name":"rpt_390_d","screen":"r15_rpt","pre":"S.v.r3rpt=0;render()"}]},
+{"w":390,"h":844,"dark":0,"jobs":[
+{"name":"m_appr_390_l","screen":"r15_mobile","pre":"S.r15m.tab='appr';render()"},
+{"name":"sem_390_l","screen":"r15_sem","pre":"S.v.r3sem=0;render()"}]}]

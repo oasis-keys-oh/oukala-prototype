@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file://'+path.resolve('out_d','full.html'));await p.waitForTimeout(600);await p.evaluate(()=>go('plat_data'));await p.waitForTimeout(900);
+console.log(await p.evaluate(()=>{const f=[...document.querySelectorAll('.at-fe path')].slice(0,3).map(x=>{const cs=getComputedStyle(x);return x.getAttribute('d')+' | '+cs.fill+' '+cs.stroke+' '+cs.strokeWidth+' '+cs.opacity});const l=document.querySelector('.at-fl');return f.join('\n')+'\n'+(l&&getComputedStyle(l).fontSize)+' '+document.querySelectorAll('.at-fl').length+' ls='+document.querySelector('.at-world').style.getPropertyValue('--ls')}));await b.close()})();

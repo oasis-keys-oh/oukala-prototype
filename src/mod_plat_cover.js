@@ -286,7 +286,7 @@ const scrMods=()=>{const m={};MODMAP.modules.forEach(x=>m[x.id]=x);return m};
 function stateOfEnts(es){/* live beats proposed */ if(!es.length)return"none";return es.some(e=>!e.proposed)?"live":"proposed"}
 
 let _cache=null,_ck="";
-function coverage(o){o=o||{};const key=[DMV(),Object.keys(DATAMODEL.tables).length,Object.keys(A.approved).length,Object.keys(A.confirmed).length,MODMAP.flows.length,MODMAP.modules.length,Object.keys(RUNTIME).length].join("|");
+function coverage(o){o=o||{};const key=[DMV(),DATAMODEL.cnt(),Object.keys(A.approved).length,Object.keys(A.confirmed).length,MODMAP.flows.length,MODMAP.modules.length,Object.keys(RUNTIME).length].join("|");
  if(_cache&&_ck===key&&!o.fresh)return _cache;
  const after=compute(false),before=compute(true);
  _ck=key;_cache=Object.assign({},after,{before:before.stats,after:after.stats,stats:after.stats});return _cache}

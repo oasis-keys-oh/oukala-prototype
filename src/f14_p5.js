@@ -1,0 +1,7 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const id=process.argv[3];const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900},colorScheme:'dark'})).newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(1500);
+await p.evaluate(()=>document.documentElement.setAttribute('data-theme','dark'));await p.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important}'});
+await p.evaluate(i=>go(i),id);await p.waitForTimeout(1500);
+console.log(await p.evaluate(()=>{const o=[];const g=document.querySelector('#view .mgrid');if(g){const ks=[...g.children];o.push('dbg '+ks.map(k=>{const c=getComputedStyle(k);return c.gridColumnStart+'/'+c.gridColumnEnd+'/'+c.gridRowStart}).filter((x,i,a)=>a.indexOf(x)===i).join(' ; ')+' ca='+JSON.stringify(Object.keys(window.CARDALIGN||{})));try{window.CARDALIGN.run();o.push('after run gf='+g.dataset.gf)}catch(e){o.push('ERR '+e.message)}}o.push('CARDALIGN '+!!window.CARDALIGN);document.querySelectorAll('#view .grid').forEach(g=>{const cs=getComputedStyle(g);o.push(g.className+' gf='+g.dataset.gf+' kids='+g.children.length+' cols='+cs.gridTemplateColumns.split(' ').length+' disp='+cs.display)});return o.join('\n')}));
+await p.screenshot({path:'aud14/p5_'+id+'.png'});await b.close()})();

@@ -1,0 +1,1 @@
+(async()=>{await new Promise(r=>setTimeout(r,4000));const a=ZLINK.audit();const g=id=>a.checks.find(c=>c.id===id).bad;return {fixed:Object.keys(ZLINK.state.fixed),nb:g('p_nobackup'),gate:g('a_gate'),bak:Object.keys(R15E.state.bak).length,gates:R15E.state.gate.length,roles:R15E.state.roles.length,mp:S.plib&&Object.keys(S.plib.own).length,last:R15E.last&&Object.keys(R15E.last)}})()

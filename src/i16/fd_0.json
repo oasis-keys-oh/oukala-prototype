@@ -1,0 +1,1974 @@
+[
+ {
+  "screen": "ims",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Milestone",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12.5px",
+      "n": 6,
+      "of": 25,
+      "ex": "15px \"Funding approved by th\" | 15px \"Taxonomy schema v1 rec\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "table",
+    "col": "Fed by milestones",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 4,
+      "of": 25,
+      "ex": "15px \"Starts the chain\" | 15px \"Starts the chain\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "table",
+    "col": "Feeds milestones",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 6,
+      "of": 25,
+      "ex": "15px \"End of chain\" | 15px \"End of chain\""
+     }
+    ],
+    "tab": 2
+   }
+  ]
+ },
+ {
+  "screen": "adm_meter",
+  "findings": [
+   {
+    "table": "adm-tbl",
+    "col": "Professional (yours)",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 1,
+      "of": 12,
+      "ex": "ui-monospace \"$1,800\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 12,
+      "ex": "12px \"$1,800\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "adm-tbl",
+    "col": "Enterprise",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 12,
+      "ex": "ui-monospace \"$4,200\" | ui-monospace \"2,000K\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 12,
+      "ex": "12px \"$4,200\" | 12px \"2,000K\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "adm-tbl",
+    "col": "Quota",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 2,
+      "of": 5,
+      "ex": "Hanken Grotesk \"100M\" | Hanken Grotesk \"2,000\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 5,
+      "ex": "15px \"100M\" | 15px \"2,000\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "adm-tbl",
+    "col": "Projected",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 2,
+      "of": 5,
+      "ex": "Hanken Grotesk \"102M\" | Hanken Grotesk \"1,616\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 5,
+      "ex": "15px \"102M\" | 15px \"1,616\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "adm-tbl",
+    "col": "Over",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 5,
+      "ex": "ui-monospace \"941,667\" | ui-monospace \"118,667\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 5,
+      "ex": "12px \"941,667\" | 12px \"118,667\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "adm-tbl",
+    "col": "Seat charges",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 4,
+      "of": 8,
+      "ex": "Hanken Grotesk \"$989\" | Hanken Grotesk \"$539\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 8,
+      "ex": "15px \"$989\" | 15px \"$539\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "bud_over",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Reserve",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 8,
+      "ex": "13px \"None\" | 13px \"None\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Project",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 5,
+      "ex": "12.5px \"PortalPR3-CLD\""
+     }
+    ],
+    "tab": 4
+   }
+  ]
+ },
+ {
+  "screen": "bud_ben",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Realized or forecast",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 8,
+      "ex": "12px \"$32,600 Measured\" | 12px \"$46,369 Forecast\""
+     }
+    ],
+    "tab": 1
+   }
+  ]
+ },
+ {
+  "screen": "chat_home",
+  "findings": [
+   {
+    "table": "tbl cx-reg",
+    "col": "Tool",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 96,
+      "ex": "ui-monospace \"Raise demanddemand.cre\" | ui-monospace \"Team rosterteam.member\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 96,
+      "ex": "11.44px \"Raise demanddemand.cre\" | 11.44px \"Team rosterteam.member\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "itom_dev",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Failure rate",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 1,
+      "of": 9,
+      "ex": "ui-monospace \"100.0%\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 9,
+      "ex": "12px \"100.0%\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Rework",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 1,
+      "of": 9,
+      "ex": "ui-monospace \"100.0%\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 9,
+      "ex": "12px \"100.0%\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Release",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 12,
+      "of": 24,
+      "ex": "Hanken Grotesk \"No release record\" | Hanken Grotesk \"No release record\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 12,
+      "of": 24,
+      "ex": "15px \"No release record\" | 15px \"No release record\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "exe_scen",
+  "findings": [
+   {
+    "table": "exe-cmp",
+    "col": "Lumen slips 10 more days",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 5,
+      "of": 12,
+      "ex": "12px \"Nov 27+10 days\" | 12px \"Dec 7+10 days\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "exe-cmp",
+    "col": "Cut the Contract Reposit",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 4,
+      "of": 12,
+      "ex": "12px \"76%+0 pts\" | 12px \"$2.9M-$605K\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "flw_appr",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Approval",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 8,
+      "of": 17,
+      "ex": "15px \"Overspend: Azure Augus\" | 15px \"Contract Repository OC\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "itom_cmdb",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Uptime, 30 days",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 26,
+      "ex": "13px \"Not monitored\" | 13px \"Not monitored\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "itom_disc",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Source",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 6,
+      "of": 25,
+      "ex": "ui-monospace \"vCenter\" | ui-monospace \"vCenter\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 6,
+      "of": 25,
+      "ex": "12px \"vCenter\" | 12px \"vCenter\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Rejected",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 8,
+      "of": 25,
+      "ex": "12px \"3\" | 12px \"3\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Why it was rejected",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 11,
+      "ex": "ui-monospace \"Invalid IP address 10.\" | ui-monospace \"Invalid IP address 10.\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 11,
+      "ex": "11.5px \"Invalid IP address 10.\" | 11.5px \"Invalid IP address 10.\""
+     }
+    ],
+    "tab": 4
+   }
+  ]
+ },
+ {
+  "screen": "itsm_inc",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Assigned to",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 4,
+      "of": 14,
+      "ex": "15px \"Team queue\" | 15px \"Team queue\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "kcs_prompt",
+  "findings": [
+   {
+    "table": "kcs-wide",
+    "col": "Version",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 4,
+      "of": 10,
+      "ex": "12px \"v3 v4 candidate\" | 12px \"v2 v3 candidate\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "kx-pt",
+    "col": "Version",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 4,
+      "of": 10,
+      "ex": "12px \"v3 v4 candidate\" | 12px \"v2 v3 candidate\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "vault",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Record",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 10,
+      "of": 26,
+      "ex": "12px \"Azure East US 2 subscr\" | 12px \"Edge firewall pairNetw\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Users or views",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 16,
+      "ex": "ui-monospace \"180,000\" | ui-monospace \"180,420\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 16,
+      "ex": "12px \"180,000\" | 12px \"180,420\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "nav_studio",
+  "findings": [
+   {
+    "table": "tbl nx-maptbl",
+    "col": "Formal name",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 3,
+      "of": 161,
+      "ex": "12.5px \"My first weekr15d_firs\" | 12.5px \"Changesitsm_chg\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "itom_slo",
+  "findings": [
+   {
+    "table": "table",
+    "col": "SLO",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 3,
+      "of": 8,
+      "ex": "12.5px \"Editors can save draft\" | 12.5px \"Search index is freshS\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Target",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 1,
+      "of": 8,
+      "ex": "ui-monospace \"99.95%\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 8,
+      "ex": "12px \"99.95%\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Burn rate, 1 h",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 3,
+      "of": 8,
+      "ex": "Hanken Grotesk \"0.0×\" | Hanken Grotesk \"0.0×\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 3,
+      "of": 8,
+      "ex": "15px \"0.0×\" | 15px \"0.0×\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Check",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12.5px",
+      "n": 1,
+      "of": 10,
+      "ex": "15px \"Standards API healthSY\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "table",
+    "col": "Success, 24 h",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 4,
+      "of": 10,
+      "ex": "Hanken Grotesk \"91.7%\" | Hanken Grotesk \"79.2%\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 10,
+      "ex": "15px \"91.7%\" | 15px \"79.2%\""
+     }
+    ],
+    "tab": 1
+   }
+  ]
+ },
+ {
+  "screen": "svc_oncall",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Rota",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 10,
+      "ex": "13px \"Global follow-the-sun \" | 13px \"Endpoint managementEnd\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "oc-t",
+    "col": "Person",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13.5px",
+      "n": 2,
+      "of": 8,
+      "ex": "12px \"LSLumen Search Service\" | 12px \"Dev Rao Employee\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "own_gaps",
+  "findings": [
+   {
+    "table": "ownx-t",
+    "col": "Thing",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 27,
+      "of": 60,
+      "ex": "13px \"D-101 Taxonomy enginee\" | 13px \"Endpoint management (I\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "ownx-t",
+    "col": "Accountable now",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 60,
+      "ex": "12px \"nobodyBackup Tom Becke\" | 12px \"nobodyBackup Nia Brook\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Accountability domain",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "9.16667px",
+      "n": 3,
+      "of": 30,
+      "ex": "13px \"Platform operations an\" | 13px \"Metrics and maturity g\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Screens",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "10px",
+      "n": 3,
+      "of": 30,
+      "ex": "12px \"·\" | 12px \"·\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Processes",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "10px",
+      "n": 6,
+      "of": 30,
+      "ex": "12px \"·\" | 12px \"·\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Entities",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "10px",
+      "n": 1,
+      "of": 30,
+      "ex": "12px \"·\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Metrics",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "10px",
+      "n": 2,
+      "of": 30,
+      "ex": "12px \"·\" | 12px \"·\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Agents",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 10,
+      "of": 30,
+      "ex": "10px \"0/1\" | 10px \"0/2\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Policies",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 13,
+      "of": 30,
+      "ex": "10px \"0/4\" | 10px \"1/4\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Budget lines",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"4/17\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Vendors",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"1/7\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Contracts",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"1/9\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Risks",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"4/66\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Knowledge",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"2/77\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Services",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 9,
+      "of": 30,
+      "ex": "10px \"1/3\" | 10px \"0/2\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-heat",
+    "col": "Apps",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 30,
+      "ex": "10px \"1/12\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "ownx-t",
+    "col": "Person",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 14,
+      "ex": "13px \"Jordan Lee Architect\" | 13px \"Avery Chen Controller\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "ownx-t",
+    "col": "Owns",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 6,
+      "of": 14,
+      "ex": "12px \"189 heavy\" | 12px \"119 heavy\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "ppl_train",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Course",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 10,
+      "ex": "12.5px \"Security awareness 202\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "table",
+    "col": "Due",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 10,
+      "ex": "12px \"Oct 2 closed\""
+     }
+    ],
+    "tab": 1
+   }
+  ]
+ },
+ {
+  "screen": "plat_fab",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Connector",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 19,
+      "ex": "13px \"CRMRoadmap\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "table",
+    "col": "Source field",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 1,
+      "of": 14,
+      "ex": "15px \"percentCompleteint · e\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "table",
+    "col": "Registry field",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 14,
+      "ex": "15px \"Not mapped\" | 15px \"Not mapped\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "table",
+    "col": "Field",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 26,
+      "ex": "15px \"Configuration itemci ·\" | 15px \"Configuration itemci ·\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "table",
+    "col": "Value received",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 3,
+      "of": 8,
+      "ex": "Hanken Grotesk \"Empty\" | Hanken Grotesk \"Empty\""
+     },
+     {
+      "prop": "size",
+      "major": "13.2px",
+      "n": 3,
+      "of": 8,
+      "ex": "15px \"Empty\" | 15px \"Empty\""
+     }
+    ],
+    "tab": 4
+   },
+   {
+    "table": "table",
+    "col": "Quarantined",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 7,
+      "of": 26,
+      "ex": "12px \"1\" | 12px \"1\""
+     }
+    ],
+    "tab": 4
+   },
+   {
+    "table": "table",
+    "col": "Dead letters",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 8,
+      "ex": "12px \"1\""
+     }
+    ],
+    "tab": 7
+   },
+   {
+    "table": "table",
+    "col": "Record",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 6,
+      "of": 26,
+      "ex": "Hanken Grotesk \"Dev Rao\" | Hanken Grotesk \"Dev Rao\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 6,
+      "of": 26,
+      "ex": "15px \"Dev Rao\" | 15px \"Dev Rao\""
+     }
+    ],
+    "tab": 7
+   }
+  ]
+ },
+ {
+  "screen": "plat_proc",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Process",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 8,
+      "of": 26,
+      "ex": "13px \"Impact analysisDepende\" | 13px \"Metrics to dashboardsD\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "ppm_raid",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Id",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 5,
+      "of": 26,
+      "ex": "ui-monospace \"I-M100\" | ui-monospace \"I-M101\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 5,
+      "of": 26,
+      "ex": "12px \"I-M100\" | 12px \"I-M101\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "grc_ctl",
+  "findings": [
+   {
+    "table": "grc-tbl ",
+    "col": "Last tested",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 8,
+      "ex": "13px \"Jun 3, 2026\" | 13px \"Jun 14, 2026\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "r15_sem",
+  "findings": [
+   {
+    "table": "r3-t",
+    "col": "Source field",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 2,
+      "of": 12,
+      "ex": "Hanken Grotesk \"budget_line.fcst - app\" | Hanken Grotesk \"time_entry.hours × cos\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 12,
+      "ex": "13px \"budget_line.fcst - app\" | 13px \"time_entry.hours × cos\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "r3-t",
+    "col": "Spend category",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 12,
+      "ex": "13px \"-\" | 13px \"-\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Cost center",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 5,
+      "of": 12,
+      "ex": "13px \"-\" | 13px \"-\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Budget owner",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Vendor",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "PO status",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Month ordered",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Person",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Week",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Timesheet status",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 12,
+      "ex": "12px \"●\" | 12px \"●\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Current",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 5,
+      "of": 40,
+      "ex": "ui-monospace \"105.6%\" | ui-monospace \"4.2days\""
+     },
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 5,
+      "of": 40,
+      "ex": "12px \"105.6%\" | 12px \"4.2days\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "r3-t",
+    "col": "Target",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 40,
+      "ex": "ui-monospace \"0.85idx\" | ui-monospace \"0.95idx\""
+     },
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 40,
+      "ex": "12px \"0.85idx\" | 12px \"0.95idx\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "r15_p2p",
+  "findings": [
+   {
+    "table": "r3-t",
+    "col": "Received",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 2,
+      "of": 13,
+      "ex": "Hanken Grotesk \"$0\" | Hanken Grotesk \"$0\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 13,
+      "ex": "13px \"$0\" | 13px \"$0\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "r3-t",
+    "col": "Invoiced",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 2,
+      "of": 13,
+      "ex": "Hanken Grotesk \"$0\" | Hanken Grotesk \"$0\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 13,
+      "ex": "13px \"$0\" | 13px \"$0\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "r3-t",
+    "col": "Variance",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 13,
+      "ex": "ui-monospace \"+$84,900\" | ui-monospace \"+$12,480\""
+     },
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 13,
+      "ex": "12px \"+$84,900\" | 12px \"+$12,480\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "r3-t",
+    "col": "Budget line",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "ui-monospace",
+      "n": 6,
+      "of": 15,
+      "ex": "Hanken Grotesk \"Run\" | Hanken Grotesk \"Run\""
+     },
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 6,
+      "of": 15,
+      "ex": "13px \"Run\" | 13px \"Run\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "r3-t",
+    "col": "Payable now",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 11,
+      "ex": "ui-monospace \"$184,200\" | ui-monospace \"$21,400\""
+     },
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 11,
+      "ex": "12px \"$184,200\" | 12px \"$21,400\""
+     }
+    ],
+    "tab": 4
+   }
+  ]
+ },
+ {
+  "screen": "r16h_rules",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Overlay",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "13px",
+      "n": 2,
+      "of": 10,
+      "ex": "12px \"2 tenant changes\" | 12px \"1 tenant change\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ },
+ {
+  "screen": "bc_plans",
+  "findings": [
+   {
+    "table": "bc-tbl ",
+    "col": "Next review",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 15,
+      "ex": "12px \"not reviewed\" | 12px \"not reviewed\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "bc-tbl ",
+    "col": "Last exercise",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 7,
+      "of": 15,
+      "ex": "12px \"Never\" | 12px \"Never\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "bc-tbl ",
+    "col": "Linked articles",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 6,
+      "of": 15,
+      "ex": "15px \"KB0031 RB-3101\" | 15px \"RB-3102\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "bc-tbl ",
+    "col": "Last reviewed",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 15,
+      "ex": "12px \"Never\" | 12px \"Never\""
+     }
+    ],
+    "tab": 4
+   }
+  ]
+ },
+ {
+  "screen": "bc_metrics",
+  "findings": [
+   {
+    "table": "bc-tbl ",
+    "col": "Since last exercise",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 6,
+      "of": 18,
+      "ex": "12px \"Never\" | 12px \"Never\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Recovery owner",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 28,
+      "ex": "12px \"None\" | 12px \"None\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "table",
+    "col": "Redundancy",
+    "issues": [
+     {
+      "prop": "fam",
+      "major": "Hanken Grotesk",
+      "n": 2,
+      "of": 28,
+      "ex": "ui-monospace \"active-passive\" | ui-monospace \"active-passive\""
+     },
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 28,
+      "ex": "12px \"active-passive\" | 12px \"active-passive\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "table",
+    "col": "Single point of failure",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 4,
+      "of": 28,
+      "ex": "12px \"Yes\" | 12px \"Yes\""
+     }
+    ],
+    "tab": 1
+   },
+   {
+    "table": "bc-tbl ",
+    "col": "Last tested",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 2,
+      "of": 5,
+      "ex": "12px \"Never\" | 12px \"Never\""
+     }
+    ],
+    "tab": 2
+   },
+   {
+    "table": "bc-tbl ",
+    "col": "Owner and backup",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 1,
+      "of": 7,
+      "ex": "12px \"Dev Rao No backup\""
+     }
+    ],
+    "tab": 2
+   }
+  ]
+ },
+ {
+  "screen": "itsm_rel",
+  "findings": [
+   {
+    "table": "rel-xm",
+    "col": "Criterion",
+    "issues": [
+     {
+      "prop": "bg",
+      "major": "rgba(36, 74, 86, 0.7)",
+      "n": 1,
+      "of": 11,
+      "ex": "row \"Criteria met\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2608Oct 8",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 11,
+      "ex": "13px \"PassDone\" | 13px \"PassDone\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"100%\""
+     },
+     {
+      "prop": "bg",
+      "major": "rgba(103, 170, 105, 0.16)",
+      "n": 5,
+      "of": 11,
+      "ex": "row \"Pass100% of 43 tests\" | row \"Pass19 of 19 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2609Oct 12",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 3,
+      "of": 11,
+      "ex": "13px \"PassDone\" | 13px \"PassDone\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 6,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail90% of 130 tests\" | rgba(241, 100, 112, 0.15) \"Fail30 of 35 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2615Oct 20",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 4,
+      "of": 11,
+      "ex": "13px \"PassDone\" | 13px \"PassDone\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"100%\""
+     },
+     {
+      "prop": "bg",
+      "major": "rgba(103, 170, 105, 0.16)",
+      "n": 5,
+      "of": 11,
+      "ex": "row \"Pass100% of 12 tests\" | row \"Pass3 of 3 cases passe\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2607Oct 21",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 11,
+      "ex": "15px \"10%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"10%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 3,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail76.9% of 78 tests\" | rgba(241, 100, 112, 0.15) \"Fail19 of 21 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2610Oct 27",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 2,
+      "of": 11,
+      "ex": "13px \"PassDone\" | 15px \"50%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"50%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(103, 170, 105, 0.16) \"PassDone\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2617Oct 29",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 11,
+      "ex": "15px \"20%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"20%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 2,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"Fail75% of 48 tests\" | rgba(241, 100, 112, 0.15) \"Fail14 of 17 cases pas\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2613Nov 3",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 11,
+      "ex": "15px \"50%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"50%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(103, 170, 105, 0.16) \"Pass0 open\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2618Nov 10",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 11,
+      "ex": "15px \"40%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     }
+    ],
+    "tab": 3
+   },
+   {
+    "table": "rel-xm",
+    "col": "REL-2611Nov 13",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 1,
+      "of": 11,
+      "ex": "15px \"40%\""
+     },
+     {
+      "prop": "pad",
+      "major": "10px",
+      "n": 1,
+      "of": 11,
+      "ex": "14px \"40%\""
+     },
+     {
+      "prop": "bg",
+      "major": "row",
+      "n": 1,
+      "of": 11,
+      "ex": "rgba(241, 100, 112, 0.15) \"FailTraining not start\""
+     }
+    ],
+    "tab": 3
+   }
+  ]
+ },
+ {
+  "screen": "svc_asset",
+  "findings": [
+   {
+    "table": "table",
+    "col": "Assigned to",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 6,
+      "of": 27,
+      "ex": "13px \"Not assigned\" | 13px \"Not assigned\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Intune",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "12px",
+      "n": 3,
+      "of": 27,
+      "ex": "13px \"n/a\" | 13px \"n/a\""
+     }
+    ],
+    "tab": 0
+   },
+   {
+    "table": "table",
+    "col": "Request",
+    "issues": [
+     {
+      "prop": "size",
+      "major": "15px",
+      "n": 12,
+      "of": 27,
+      "ex": "13px \"Before Oukala\" | 13px \"Before Oukala\""
+     }
+    ],
+    "tab": 0
+   }
+  ]
+ }
+]

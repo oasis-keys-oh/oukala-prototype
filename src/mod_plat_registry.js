@@ -147,7 +147,7 @@ function entities(){
 }
 let _ent=null,_nt=0;
 const PLAT=window.PLAT={DOM,APPS,FIXES,PLANNED,fieldMeta,domOf,CLS_ORDER,
- entities(){const n=Object.keys(DATAMODEL.tables).length;if(n!==_nt){_nt=n;_ent=null}return _ent||(_ent=entities())},refresh(){_ent=null},
+ entities(){const n=DATAMODEL.cnt();if(n!==_nt){_nt=n;_ent=null}return _ent||(_ent=entities())},refresh(){_ent=null},
  ent(id){return this.entities().find(e=>e.id===id)},
  missing(){const al=(window.COVER&&COVER.alias)||{};return PLANNED.filter(p=>!DATAMODEL.tables[p[0]]&&!al[p[0]])},
  ensureDom,

@@ -1,0 +1,2 @@
+(()=>{const c=(arr)=>{const o={};arr.forEach(x=>o[x]=(o[x]||0)+1);return Object.entries(o).sort((a,b)=>b[1]-a[1]).map(e=>e.join(":")).join(" | ")};
+return {met:c(Object.values(METRICS).map(m=>m.owner)),proc:c(PROCLIB.list().map(p=>p.owner)),bk:c(PROCLIB.list().map(p=>p.backup)),steward:c(PLAT.entities().map(e=>e.steward)),svc:c(SVCREG.map(s=>s.owner)),svcp:c(SVCREG.map(s=>s.processOwner)),proj:c(PROJ.map(p=>p.owner)),n:[Object.keys(METRICS).length,PROCLIB.list().length,PLAT.entities().length,SVCREG.length,PROJ.length],ent0:Object.keys(PLAT.entities()[0]).join(",")}})()

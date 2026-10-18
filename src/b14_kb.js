@@ -1,0 +1,26 @@
+const {chromium}=require('playwright');const path=require('path');
+const scheme=process.argv[2]||'light';const dir=path.resolve('out_b14');
+let fails=0;const ok=(c,m)=>{console.log((c?'PASS ':'FAIL ')+m);if(!c)fails++};
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900},colorScheme:scheme});const p=await c.newPage();p.errs=[];p.on('pageerror',e=>p.errs.push(e.message));p.on('console',m=>m.type()==='error'&&p.errs.push(m.text()));
+await p.goto('file://'+dir+'/full.html',{waitUntil:'commit',timeout:90000});await p.waitForTimeout(9000);
+const setup=async()=>{await p.evaluate(()=>{const f=FLOWX.get('wf_inv');if(!window.__orig)window.__orig=JSON.parse(JSON.stringify({n:f.nodes,e:f.edges}));const o=JSON.parse(JSON.stringify(window.__orig));const pick=id=>o.n.find(n=>n.id===id);
+ const set=(id,x,l,r)=>{const n=pick(id);n.x=x;n.l=l;n.r=r;return n};
+ f.nodes=[set('T1',162,0,0),set('A1',382,0,0),set('AP1',682,0,0),set('A4',1002,0,0),set('E1',1222,0,0)];
+ f.nodes.forEach(n=>{n.g=null});f.groups=[];
+ f.edges=[{id:'e1',f:'T1',p:'next',t:'A1'},{id:'e2',f:'A1',p:'next',t:'AP1'},{id:'e3',f:'AP1',p:'Approved',t:'A4'},{id:'e4',f:'A4',p:'next',t:'E1'}];f.undo=[];f.redo=[];
+ FLOWX.open('wf_inv');});await p.waitForTimeout(900);
+ await p.evaluate(()=>{const A=FLOWX._ed();A.E.zoom=.6;A.paintCanvas();A.E.inspOff=true;});await p.waitForTimeout(500)};
+const st=()=>p.evaluate(()=>{const f=FLOWX.get('wf_inv'),nm=id=>(f.nodes.find(n=>n.id===id)||{}).n;return{n:f.nodes.map(n=>n.n+'@'+n.x+'/'+n.l+'/'+n.r),e:f.edges.map(e=>nm(e.f)+'['+e.p+']>'+nm(e.t)),ov:FLOWX._ins.overlaps(f).length,undo:f.undo.length}});
+const toScr=(x,y)=>p.evaluate(([x,y])=>{const A=FLOWX._ed(),cv=document.querySelector('#wfdCanvas'),rc=cv.getBoundingClientRect(),z=A.E.zoom||1;return[rc.left-cv.scrollLeft+x*z,rc.top-cv.scrollTop+y*z]},[x,y]);
+const edgeMid=(eid,fr)=>p.evaluate(([eid,fr])=>{const v=document.querySelector(`.wfd-edge[data-wfd-edge="${eid}"] .vis`),L=v.getTotalLength(),q=v.getPointAtLength(L*fr);return[q.x,q.y]},[eid,fr||.5]);
+const nodeCtr=id=>p.evaluate(id=>{const A=FLOWX._ed(),n=A.f().nodes.find(n=>n.id===id);return[n.x+A.NW/2,A.nodeY(n)+A.NH/2,n.x,A.nodeY(n)]},id);
+const palPos=async t=>{const l=p.locator(`[data-wfd-pal="${t}"]`).first();await l.scrollIntoViewIfNeeded();const bb=await l.boundingBox();return[bb.x+bb.width/2,bb.y+bb.height/2]};
+const shot=n=>p.screenshot({path:`${dir}/shots/b14_flow_${n}_${scheme}.png`});
+const dragPal=async(t,sx,sy,hold)=>{const[px,py]=await palPos(t);await p.mouse.move(px,py);await p.mouse.down();await p.mouse.move(px+25,py+10,{steps:3});await p.mouse.move(sx,sy,{steps:14});await p.waitForTimeout(450);if(hold)return;await p.mouse.up();await p.waitForTimeout(500)};
+await setup();
+// 5 keyboard
+await setup();m=await edgeMid('e2',.2);[mx,my]=await toScr(...m);await p.mouse.click(mx,my);await p.waitForTimeout(400);console.log(await p.evaluate(()=>{const a=document.activeElement;return a.tagName+'.'+(a.getAttribute('class')||'')+' selE='+FLOWX._ed().E.selE}));await p.keyboard.press('Enter');await p.waitForTimeout(300);ok(await p.locator('.wfd-mini').count()===1,'Enter on selected connector opens picker');
+await p.keyboard.press('ArrowRight');await p.keyboard.press('ArrowRight');await p.keyboard.press('Enter');await p.waitForTimeout(500);s2=await st();console.log(JSON.stringify(s2));ok(s2.e.some(x=>x.startsWith('Three-way match[next]>Approval'))&&s2.ov===0,'keyboard inserted 3rd item (approval)');
+await setup();m=await edgeMid('e2',.2);[mx,my]=await toScr(...m);await p.mouse.click(mx,my);await p.waitForTimeout(400);await p.keyboard.press('+');await p.waitForTimeout(300);ok(await p.locator('.wfd-mini').count()===1,'+ opens picker');await p.keyboard.press('Escape');await p.waitForTimeout(200);ok(await p.locator('.wfd-mini').count()===0,'Esc closes');
+console.log('errors',p.errs);await b.close()})();

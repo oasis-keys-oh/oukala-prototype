@@ -10,7 +10,7 @@ N9 FAB 'Ask Oukala' overlaps content bottom-right on every screen (itom_disc-144
 N10 itom_fin: no stat row (inconsistent with siblings), anomaly band not drawn though text says band, formula callout serif magenta on pink (itom_fin-1440)
 N11 evt: status wall tile dot drops to own line when title wraps (Email and collab, Endpoint, Portfolio) tiles uneven; alerts/hour chart 130px of 300px card, axis 8px; hero chips + stat chips duplicate formula chips row (itom_evt-1440_s0/s1); Host groups 'Production' tag inline misaligns rows
 N12 obs_dash: SVG chart axis text ~8px, warn labels 7px, odd ticks 4,278 ms / 100.20% (obs_dash-1440)
-N13 SLO: card text monospace and SLI name collides with service name 'pagesCodification Portal' (itom_slo-1440, _s1) BLOCKER-ish major; error budget chart axis tiny; sparkline no axis
+N13 SLO: card text monospace and SLI name collides with service name 'pagesStandards Portal' (itom_slo-1440, _s1) BLOCKER-ish major; error budget chart axis tiny; sparkline no axis
 N14 run: level list wraps/unaligned no bars; ITIL5 SRE chips floating below list (itom_run-1440)
 N15 itom_run rules table: Automation level col clipped 'Level 3 Agentic with app', 4 of 8 rows visible 5th cut mid-text (itom_run-1440_s1)
 N16 dev_pipe: duplicate formula chips hero+below stats (also evt, plat_map, plat_data); pipeline strip 11 stages 6 visible, 'Waiting at the gate' sentence 28px teal links heavy (dev_pipe-1440)

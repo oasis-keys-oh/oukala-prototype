@@ -1,0 +1,5201 @@
+[
+ {
+  "id": "home",
+  "label": "Home",
+  "g": "home",
+  "formal": "",
+  "tag": "Good afternoon, Casey",
+  "story": "Delivery is amber and finance is red for one reason: Lumen is nine days late on the search indexer, so the beta moved to Nov 13 and Vendor services is $45,000 over commitment.",
+  "prim": "Review",
+  "own": null,
+  "r": null,
+  "w": null,
+  "pers": 13,
+  "persList": "all",
+  "st": 0
+ },
+ {
+  "id": "trace",
+  "label": "Trace goals to money and work",
+  "g": "r15hid",
+  "formal": "Executive trace",
+  "tag": null,
+  "story": "5 goals depend on 80 capabilities; 68 are below their Year 1 target and 17 of those have no roadmap that reaches it. 59 roadmap items are delivered by 14 funded projects. $4.35M of $4.49M funded work ",
+  "prim": "Add a roadmap item",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "inv",
+  "label": "Approve invoices",
+  "g": "money",
+  "formal": "Invoice approval",
+  "tag": "Pay what was earned",
+  "story": "Lumen billed $62,900 for milestone 3, which is not accepted yet. Accepted work is worth $390,000 but $412,000 is already paid, so paying now overpays by $22,000 and pushes Vendor services further past",
+  "prim": "Approve",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "contract",
+   "project"
+  ],
+  "w": [
+   "invoice"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "fo",
+  "label": "Meetings: Calendar and follow-ups",
+  "g": "r15hid",
+  "formal": "First Officer",
+  "tag": "Meetings that file themselves",
+  "story": "It attended 25 meetings, created 12 records without being asked, and left 2 for you. Come back here after the fact, not during.",
+  "own": "Leila Haddad",
+  "ow": {
+   "o": "Leila Haddad",
+   "b": "Elena Marsh"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "tower",
+  "label": "AI agents",
+  "g": "ai",
+  "formal": "AI Control Tower",
+  "tag": "Everything AI, in one place",
+  "story": "5 of 6 agents are running inside the gateway and spend is at 30% of the cap. One agent, Copilot in Teams, runs outside it and is only observed.",
+  "prim": "Approve",
+  "own": "Anil Mehta",
+  "ow": {
+   "o": "Anil Mehta",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "alert_event",
+   "runbook_execution"
+  ],
+  "w": [
+   "false_positive_feedback"
+  ],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "metrics",
+  "label": "Measures and targets",
+  "g": "strat",
+  "formal": "Metrics",
+  "tag": "Define once, use everywhere",
+  "story": "381 metrics, 266 off trend. Each one shows its formula, and each off-trend one already has an article, procedure or agent working on it.",
+  "prim": "Show 24 more",
+  "own": null,
+  "ow": {
+   "o": "",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "kg",
+  "label": "Impact and knowledge graph",
+  "g": "tech",
+  "formal": "Impact graph",
+  "tag": "Know what a change touches",
+  "story": "Changing Standard 842 Leases reaches 26 other items across 13 owners, about 64 hours of review. It travels from the standard through policy, procedure and control to the systems, data and reports that",
+  "own": null,
+  "ow": {
+   "o": "Noor Haddad",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "loop",
+  "label": "Feedback and learning loops",
+  "g": "strat",
+  "formal": "Feedback loop",
+  "tag": "Every action teaches the product",
+  "story": "Oukala audited 462 of your actions this session. When many people do the same thing, it becomes a candidate for research.",
+  "prim": "In research",
+  "own": "Grace Whitfield",
+  "ow": {
+   "o": "Grace Whitfield",
+   "b": "Joanna Pierce"
+  },
+  "r": null,
+  "w": null,
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "port",
+  "label": "Ideas and requests for new work",
+  "g": "plan",
+  "formal": "Demand and priorities",
+  "tag": "What should we fund",
+  "story": "4 of 10 ranked requests are funded: $1.44M of the $2.0M envelope and 43 of 70 person-months. Retire the legacy lease subledger scores 77 and sits just below the line, yet it carries a hard date.",
+  "prim": "New request",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "project",
+   "person",
+   "business_service"
+  ],
+  "w": [
+   "project_task"
+  ],
+  "pers": 6,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ims",
+  "label": "Schedules across projects",
+  "g": "plan",
+  "formal": "Master schedule",
+  "tag": "Every project on one timeline",
+  "story": "Four projects run to Feb 24, 2027. 1 of the four core projects is behind baseline. Standards go live is 7 work days late, and the Taxonomy pilot is on baseline, because one Lumen team sits on both.",
+  "own": "Priya Shah",
+  "ow": {
+   "o": "Priya Shah",
+   "b": "Dev Rao"
+  },
+  "r": [
+   "project_task"
+  ],
+  "w": [
+   "project_task"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plan",
+  "label": "One project's plan",
+  "g": "plan",
+  "formal": "Project plan",
+  "tag": "Standards",
+  "story": "Standards Platform Upgrade finishes Dec 11, 2026, 7 work days late. It is 59% done against 64% planned, and 4 tasks have no float, starting with search indexer (lumen).",
+  "own": "Priya Shah",
+  "ow": {
+   "o": "Priya Shah",
+   "b": "Maya Ortiz"
+  },
+  "r": null,
+  "w": null,
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "log",
+  "label": "Product log",
+  "g": "plat",
+  "formal": "",
+  "tag": "Everything you asked for",
+  "story": "38 requests so far: 31 shipped, 4 in progress and 3 waiting. Nothing you say about the design is lost.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "adm_studio",
+  "label": "Admin studio",
+  "g": "plat",
+  "formal": "",
+  "tag": "Shape the platform without code",
+  "story": "Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.",
+  "prim": "Add a field",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "adm_sec",
+  "label": "Security and access",
+  "g": "plat",
+  "formal": "",
+  "tag": "Know who can see what, and why",
+  "story": "11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Casey Rowan"
+  },
+  "r": [],
+  "w": [],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "adm_env",
+  "label": "Environments and releases",
+  "g": "plat",
+  "formal": "",
+  "tag": "Promote configuration like code",
+  "story": "3 packages are moving toward Production and 2 are waiting on a gate. Prod runs 26.09.14+136; the next platform upgrade, 26.12, is ready to schedule with 2 items to review.",
+  "own": "Hollis Grey",
+  "ow": {
+   "o": "Hollis Grey",
+   "b": "Nia Brooks"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "adm_meter",
+  "label": "Licensing and billing",
+  "g": "plat",
+  "formal": "",
+  "tag": "What Meridian pays for, and why",
+  "story": "The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.",
+  "prim": "Request a plan change",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "admin"
+  ],
+  "st": 0
+ },
+ {
+  "id": "adm_gate",
+  "label": "AI usage and cost",
+  "g": "ai",
+  "formal": "AI gateway and tokenomics",
+  "tag": "Route every model call on purpose",
+  "story": "The gateway routes across 5 approved models and spend is $122.70 this month, on pace for $634 against a $300 cap. An accepted result costs about $0.90 on average, and guardrails stopped or redacted 60",
+  "prim": "New routing policy",
+  "own": "Kenji Watanabe",
+  "ow": {
+   "o": "Kenji Watanabe",
+   "b": "Rina Kovacs"
+  },
+  "r": [],
+  "w": [
+   "cost_allocation"
+  ],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "adm_audit",
+  "label": "Audit trail and retention",
+  "g": "grc",
+  "formal": "The hash-chained audit log, control evidence, retention and legal holds",
+  "tag": "Prove what happened, and who or what did it",
+  "story": "The log holds 500 entries, 10 of them by AI agents. 73% of the 15 controls across SOC 2, ISO 27001 and the NIST AI Risk Management Framework have current evidence. 1 legal hold freezes records for the",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Theo Marlowe"
+  },
+  "r": [],
+  "w": [],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bud_over",
+  "label": "Budgets",
+  "g": "money",
+  "formal": "Budgets overall",
+  "tag": "The portfolio is 5.6% over budget, and the reserve can cover it",
+  "story": "Approved $2.91M, forecast $3.07M, so +$163K over. Vendor services is $45K over commitment because of Lumen change order CO-2, and the larger hosting tier adds $48K. The management reserve holds $151K,",
+  "prim": "Request budget",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "invoice",
+   "project",
+   "business_service",
+   "incident",
+   "change_request"
+  ],
+  "w": [
+   "cost_allocation",
+   "scaling_step"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bud_model",
+  "label": "Budgets: Forecast model",
+  "g": "r15hid",
+  "formal": "Financial model",
+  "tag": "The portfolio returns 22% over five years, and Taxonomy is the weakest case",
+  "story": "Five-year cost $6.4M against benefit $7.8M gives an NPV of $719K at 8% and payback in about 3.6 years. Of the $3.07M FY27 forecast, $1.35M (43.8%) is capitalized under Standard 350-40. Taxonomy return",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "cost_allocation"
+  ],
+  "w": [],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bud_ven",
+  "label": "Vendors and contracts",
+  "g": "money",
+  "formal": "",
+  "tag": "Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days",
+  "story": "Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepte",
+  "prim": "New purchase order",
+  "own": "Camille Ortega",
+  "ow": {
+   "o": "Camille Ortega",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "contract",
+   "invoice"
+  ],
+  "w": [
+   "vendor_ticket",
+   "contract"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bud_ben",
+  "label": "Track benefits",
+  "g": "money",
+  "formal": "Benefits realization",
+  "tag": "Measured benefit is 85% of plan so far, and $48K over the next year is at risk",
+  "story": "The register holds 10 benefits worth $1.85M a year once all are running. In the first quarter $32,600 was measured against $38,375 planned. Most value starts after go-live, so the beta slip (nine days",
+  "prim": "Record a measurement",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Grace Whitfield"
+  },
+  "r": [
+   "project"
+  ],
+  "w": [],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bud_doa",
+  "label": "Who can approve what",
+  "g": "money",
+  "formal": "Delegation of authority",
+  "tag": "Anything up to $100,000 you can approve, and 3 of 6 segregation checks fail",
+  "story": "Six tiers decide who approves a commitment, from budget owners up to $25,000, the CIO up to $100,000, the CFO up to $250,000, the CEO up to $1,000,000, and the Board finance committee above that. Fail",
+  "prim": "Who approves this?",
+  "own": "Marcus Reid",
+  "ow": {
+   "o": "Marcus Reid",
+   "b": "Catherine Doyle"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "change_approval_policy"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bud_req",
+  "label": "Budget requests",
+  "g": "money",
+  "formal": "Ask for budget and follow how it is decided",
+  "tag": "Ask for budget, and see how it is decided",
+  "story": "10 requests ($2,503,000) are moving through the funnel. The slowest stage is Funding decision at 4.5 days against 3. 1 is stuck past twice the target. Small asks skip stages; large ones are ranked by ",
+  "prim": "Request budget",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Maribel Cruz"
+  },
+  "r": [
+   "budget_line",
+   "cost_center",
+   "objective",
+   "approval",
+   "person",
+   "project"
+  ],
+  "w": [
+   "budget_request",
+   "approval",
+   "budget_adjustment",
+   "audit_event"
+  ],
+  "pers": 7,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "arch",
+   "audit",
+   "board"
+  ],
+  "st": 9
+ },
+ {
+  "id": "chat_home",
+  "label": "Ask Oukala (chat and agents)",
+  "g": "help",
+  "formal": "Chat and agents",
+  "tag": "One assistant on every screen, doing the work with your approval",
+  "story": "The chat answered 73% of questions without a person and finished 86% of the tasks it started, using 2 steps on average. 96 tools are registered under 10 active guardrails. This session has 0 agent tas",
+  "prim": "Open the chat",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "incident",
+   "request_item"
+  ],
+  "w": [],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "dec_cov",
+  "label": "Decision rules: Coverage",
+  "g": "r15hid",
+  "formal": "Decision rule coverage",
+  "tag": "Every process has decision rules; 2% are accepted by a person",
+  "story": "624 decision points across 253 processes now carry a decision table. 6 processes have a rule a person accepted, and 618 drafts are waiting. 28 points have no owner and 621 have no test.",
+  "own": "Anil Mehta",
+  "ow": {
+   "o": "Anil Mehta",
+   "b": "Yuki Tanaka"
+  },
+  "r": [
+   "process_definition",
+   "person",
+   "approval_policy",
+   "approval"
+  ],
+  "w": [
+   "decision_rule",
+   "decision_test_case"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "dev_pipe",
+  "label": "Build and release pipelines",
+  "g": "tech",
+  "formal": "Delivery pipeline",
+  "tag": "One flow from idea to production",
+  "story": "The change process is a stage in the pipeline, not a separate queue. 4.7 production deployments a week, lead time 54 hours, 10.0% failed. 4 runs are waiting at the gate for the CAB.",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "pull_request",
+   "release",
+   "change_request"
+  ],
+  "w": [
+   "pull_request"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 7
+ },
+ {
+  "id": "itom_dev",
+  "label": "Environments and releases: Delivery speed",
+  "g": "r15hid",
+  "formal": "Environments and DORA",
+  "tag": "How fast, how safely, and where it runs",
+  "story": "Four numbers describe delivery: how often you deploy, how long a change takes, how often it fails, and how fast you recover. Environments and freezes show where each service is today.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "release",
+   "incident",
+   "change_request"
+  ],
+  "w": [],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "plat_map",
+  "label": "Platform maps",
+  "g": "plat",
+  "formal": "Master process flow",
+  "tag": "Every module and how they feed each other",
+  "story": "124 modules in 10 bands exchange data through 751 documented flows. 723 of them map to a registered entity, 28 still move data nobody has defined, and 0 modules have no process definition; 253 process",
+  "prim": "Open screen",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "plat_data",
+  "label": "Platform maps: Data model",
+  "g": "r15hid",
+  "formal": "Master data model",
+  "tag": "Master data model, drawn, traced and audited",
+  "story": "237 tables and 2,165 fields in 16 domains, with 304 references between them. 200 of 378 metrics trace all the way to fields. Does it cover every module? Now 124 of 124 (was 6), but 94 proposed entitie",
+  "prim": "See what is missing",
+  "own": "Anil Mehta",
+  "ow": {
+   "o": "Anil Mehta",
+   "b": "Rosa Delgado"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "draw_studio",
+  "label": "Draw a process",
+  "g": "auto",
+  "formal": "Drag shapes onto a canvas; connectors draw themselves; saving writes the steps back to the process",
+  "tag": "Draw a process, and the steps write themselves",
+  "story": "Drag shapes from the drawer. Drop one near another and the arrow is drawn for you; decisions get Yes and No exits. Select any shape to set who acts, the owner, the target time and the system. 0 proces",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Ben Ito"
+  },
+  "r": [
+   "process_definition",
+   "person"
+  ],
+  "w": [
+   "process_drawing",
+   "process_definition"
+  ],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 8
+ },
+ {
+  "id": "exe_dash",
+  "label": "Dashboards",
+  "g": "strat",
+  "formal": "Executive dashboard",
+  "tag": "One set of numbers, five executive views",
+  "story": "Every tab below is a different arrangement of the same data, so the CEO, CFO, CIO, COO and Board audit chair never argue about whose number is right. We are 76% likely to hit the beta by Nov 20, forec",
+  "prim": "Approve",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Casey Rowan"
+  },
+  "r": [],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "exe_strat",
+  "label": "Goals and objectives",
+  "g": "strat",
+  "formal": "Strategy alignment",
+  "tag": "Is the money pointed at the strategy?",
+  "story": "The alignment score is 89 of 100. 4 of 5 objectives have funded work; Improve editor and reviewer experience has none because its linked requests all sit below the funding line. Laptop refresh (run bu",
+  "prim": "New objective",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Casey Rowan"
+  },
+  "r": [],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "exe_risk",
+  "label": "Risk",
+  "g": "grc",
+  "formal": "Monte Carlo on project risks; the same risks appear in the Risk register",
+  "tag": "How likely are we to hit the date?",
+  "story": "There is an 80% chance the Standards beta lands by Nov 23, 2026, and a 76% chance of making Nov 20. 7 open risks carry $261,000 of expected loss, 90% of the $291,000 contingency; the largest is Lumen ",
+  "prim": "Log a risk",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Sam Patel"
+  },
+  "r": [],
+  "w": [],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "exe_apps",
+  "label": "Applications we run",
+  "g": "tech",
+  "formal": "Application portfolio",
+  "tag": "Which applications earn their keep?",
+  "story": "Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, a",
+  "prim": "Add application",
+  "own": "Catherine Doyle",
+  "ow": {
+   "o": "Catherine Doyle",
+   "b": "Casey Rowan"
+  },
+  "r": null,
+  "w": null,
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "exe_board",
+  "label": "Board pack",
+  "g": "strat",
+  "formal": "",
+  "tag": "The quarterly pack, written from live data",
+  "story": "9 of 9 sections are in the pack and 49 numbered sources back its claims; hover a number to see the source, select it to open the record. Status is Draft.",
+  "prim": "Generate pack",
+  "own": "Catherine Doyle",
+  "ow": {
+   "o": "Catherine Doyle",
+   "b": "Casey Rowan"
+  },
+  "r": null,
+  "w": null,
+  "pers": 3,
+  "persList": [
+   "exec",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "exe_scen",
+  "label": "Compare what-if scenarios",
+  "g": "strat",
+  "formal": "Scenario compare",
+  "tag": "What happens if we change course?",
+  "story": "Compare saved portfolio scenarios on dates, cost, capacity, benefits and risk. Baseline lands the beta at Nov 13 with a 76% chance of Nov 20; Cut the Contract Repository refresh gives 76%, $2.9M of pr",
+  "prim": "Save a scenario",
+  "own": "Victor Amaya",
+  "ow": {
+   "o": "Victor Amaya",
+   "b": "Marcus Reid"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "flw_design",
+  "label": "Design a workflow",
+  "g": "auto",
+  "formal": "Workflow designer",
+  "tag": "Every process on every tab, drawn once and changed here",
+  "story": "312 workflows from the catalog, the process strip on each tab and the designer. 43% of 1822 work steps are done by an AI agent or an automatic action, 40% of steps have a service, operational or exper",
+  "prim": "Draw a process",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Rina Kovacs"
+  },
+  "r": [
+   "incident",
+   "change_request"
+  ],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 6
+ },
+ {
+  "id": "flw_asmt",
+  "label": "Assessments and questionnaires",
+  "g": "auto",
+  "formal": "Assessments",
+  "tag": "Questions that score a risk, kept apart from the decision",
+  "story": "7 assessments are complete and average 68 out of 100. 33% of required gates passed first time, 5 are still open and 1 are overdue. An assessment is a form with weights and a score. It never approves a",
+  "prim": "Assign an assessment",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 6
+ },
+ {
+  "id": "flw_appr",
+  "label": "My approvals",
+  "g": "my",
+  "formal": "Approvals inbox",
+  "tag": "One inbox for every decision that needs a person",
+  "story": "17 approvals are waiting on you as Casey Rowan (CIO, Portfolio board, Executive sponsor). 49 are open across the organization and 1 are past their service level. Each one shows what, why, the evidence",
+  "prim": "Approve 7 safe items",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "change_request",
+   "invoice",
+   "request_item",
+   "catalog_item"
+  ],
+  "w": [
+   "change_approval_policy"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "flw_dmn",
+  "label": "Decision rules",
+  "g": "auto",
+  "formal": "Decision tables",
+  "tag": "Write the rule once, see it decide",
+  "story": "4 tables hold 27 rules that route invoices, changes, tickets and catalog requests. Today 41% of approvals clear by rule alone. No overlaps or gaps.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 5
+ },
+ {
+  "id": "flw_bpmn",
+  "label": "Draw a process: BPMN models",
+  "g": "r15hid",
+  "formal": "Process models (BPMN)",
+  "tag": "See how work really flows",
+  "story": "Demand to project takes 5.5 days on the happy path, and 79% of that is waiting. The longest queue is Review business case, with 52 hours of average wait.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 0
+ },
+ {
+  "id": "flw_agent",
+  "label": "AI agents: Agent workflows",
+  "g": "r15hid",
+  "formal": "Agentic workflows",
+  "tag": "Agents do the work, people keep the say",
+  "story": "3 agent-run workflows ran 12 times this week for $1.85. 3 runs are paused at a human approval, and every write to money or access asks first. The kill switch has three levels, from pausing new runs to",
+  "prim": "Create agentic workflow",
+  "own": "Kenji Watanabe",
+  "ow": {
+   "o": "Kenji Watanabe",
+   "b": "Theo Marlowe"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 0
+ },
+ {
+  "id": "flw_hub",
+  "label": "Connect other systems",
+  "g": "plat",
+  "formal": "Integration hub",
+  "tag": "Every connection, healthy or not",
+  "story": "13 connectors: 9 healthy, 2 degraded, 1 failing, 1 paused. SAP ERP (Lease subledger) has failed since its certificate expired, and 6 events wait in the dead-letter queue, including the Lumen payment h",
+  "prim": "Add connector",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 0
+ },
+ {
+  "id": "inbox",
+  "label": "Notifications: Alerts and inbox",
+  "g": "r15hid",
+  "formal": "My inbox",
+  "tag": "What needs you, in one place",
+  "story": "142 items wait on Casey Rowan: 115 approvals, 20 actions and 7 mentions or alerts. 13 are overdue. Start with M2M-05 Intune compliance into assets.",
+  "prim": "Open Needs you",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Ben Ito"
+  },
+  "r": [
+   "approval",
+   "person",
+   "inbox_item",
+   "delegation_rule",
+   "notification_preference"
+  ],
+  "w": [
+   "approval_decision",
+   "inbox_item",
+   "delegation_rule"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 8
+ },
+ {
+  "id": "itom_cmdb",
+  "label": "Servers, apps and other technology items",
+  "g": "tech",
+  "formal": "CMDB",
+  "tag": "One trusted picture of what runs the Foundation",
+  "story": "162 active configuration items sit in 28 classes and support 16 business services. Health is 89.4 against a target of 90: 4 CIs have no owner, 2 have not been seen in 60 days, 35 reach no service and ",
+  "prim": "New CI",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Paula Grant"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "cmdb_ci",
+   "cmdb_rel_ci",
+   "business_service"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "itom_model",
+  "label": "How technology records are structured",
+  "g": "tech",
+  "formal": "CMDB data model",
+  "tag": "Classes, attributes and relationships, like the CMDB it replaces",
+  "story": "The CMDB data model has 42 classes (6 abstract, 36 concrete) and 154 attributes, of which 59 are required. A Linux server inherits attributes from four parent classes. 28 classes hold CIs today, and 1",
+  "prim": "New class",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "itom_graph",
+  "label": "What depends on what",
+  "g": "tech",
+  "formal": "Dependency views",
+  "tag": "Walk the graph to find what breaks and what caused it",
+  "story": "db-prod-02 sits in a graph of 178 nodes and 236 relationships. If it fails, 7 items within 3 steps are affected, including 6 business services (3 Tier 1) and up to 180,420 users. Only this neighborhoo",
+  "prim": "Impact analysis for the focus",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "cmdb_rel_ci",
+   "cmdb_ci"
+  ],
+  "w": [],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "itom_disc",
+  "label": "Scan and import technology",
+  "g": "tech",
+  "formal": "Discovery and ingestion",
+  "tag": "Tools feed the CMDB; rules decide what is true",
+  "story": "7 of 9 sources are connected and feed 84.6% of the CIs that can be discovered. Orion brings availability for 34 CIs. Today 234 records were read, 11 rows are rejected and waiting, and 2 duplicate pair",
+  "prim": "Connect or edit Orion",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "cmdb_ci"
+  ],
+  "w": [
+   "cmdb_ci"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "itom_health",
+  "label": "Is our technology data trustworthy",
+  "g": "tech",
+  "formal": "CMDB health and governance",
+  "tag": "Trust the CMDB, then prove it",
+  "story": "Health is 89.4 (target 90). Completeness is 95.4%, correctness 78.4% and compliance 92.6%. 12 CIs fail at least one audit rule and 39 have a finding of some kind. 6 remediation tasks are open and 3 of",
+  "prim": "New attestation campaign",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Paula Grant"
+  },
+  "r": [
+   "cmdb_ci"
+  ],
+  "w": [],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "itom_fin",
+  "label": "Cloud spend",
+  "g": "money",
+  "formal": "Cloud cost (FinOps)",
+  "tag": "Know who spends what, and stop paying for idle",
+  "story": "September Azure spend was $105K against a $100K budget (105%), and October is forecast at $112K because the SQL instance was scaled up during the portal incident. 10.9% of spend is recoverable waste.",
+  "prim": "Schedule revert after INC1",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "cmdb_ci"
+  ],
+  "w": [
+   "cost_allocation"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "itsm_inc",
+  "label": "Fix what is broken",
+  "g": "fix",
+  "formal": "Incidents",
+  "tag": "Restore service fast, to a team first",
+  "story": "14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a ma",
+  "prim": "Log incident",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Priti Joshi"
+  },
+  "r": [
+   "person",
+   "business_service",
+   "cmdb_ci",
+   "sla_definition",
+   "incident_priority_policy"
+  ],
+  "w": [
+   "incident",
+   "task_sla"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 7
+ },
+ {
+  "id": "itsm_prb",
+  "label": "Find root causes",
+  "g": "fix",
+  "formal": "Problems and known errors",
+  "tag": "Fix the cause, not the symptom",
+  "story": "5 problems are open and PRB0010 is the costliest: 9 repeat incidents in 4 weeks for up to 140 people. 4 known errors give the service desk a workaround today, and 8 open incidents have no problem yet.",
+  "prim": "New problem",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "incident",
+   "business_service"
+  ],
+  "w": [
+   "problem_record"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "itsm_chg",
+  "label": "Plan and approve changes",
+  "g": "fix",
+  "formal": "Changes",
+  "tag": "Change safely, on a calendar everyone trusts",
+  "story": "3 changes are scheduled in the next 7 days and 1 waits for approval. 1 collide on the same CI (CHG0314 and CHG0315), and 1 sits inside a freeze window. The change failure rate is 16.7% against a 12% t",
+  "prim": "Request change",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Hollis Grey"
+  },
+  "r": [
+   "business_service",
+   "cmdb_ci",
+   "maintenance_window"
+  ],
+  "w": [
+   "change_request",
+   "change_approval_policy"
+  ],
+  "pers": 7,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "itsm_mi",
+  "label": "Run a major outage",
+  "g": "fix",
+  "formal": "Major incident",
+  "tag": "War room: Standards Platform is degraded",
+  "story": "INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.",
+  "prim": "Impact analysis",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Priti Joshi"
+  },
+  "r": [
+   "incident",
+   "oncall_shift"
+  ],
+  "w": [
+   "incident"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "itsm_home",
+  "label": "Service desk at a glance",
+  "g": "fix",
+  "formal": "Service desk overview",
+  "tag": "Service desk overview",
+  "story": "5 open P1 or P2 incidents, led by the Standards Portal slowdown that has run 4h 18m. 6 SLA timers are at risk and 3 already breached; 4 incidents wait in a team queue for someone to claim them. The ch",
+  "prim": "Log incident",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Maribel Cruz"
+  },
+  "r": null,
+  "w": null,
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "kcs_home",
+  "label": "Browse and manage articles",
+  "g": "learn",
+  "formal": "Knowledge management",
+  "tag": "Knowledge that runs the work",
+  "story": "83 knowledge items feed answers and agents. 6 are ready to automate and 4 already run as agent skills, with a 89% success rate. 5 published items are stale, and 2 fixes were flagged by skill runs.",
+  "prim": "New knowledge item",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Priya Shah"
+  },
+  "r": [],
+  "w": [],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "kcs_edit",
+  "label": "Write or update an article",
+  "g": "learn",
+  "formal": "Article editor",
+  "tag": "Write it once, structured, with sources",
+  "story": "A new article starts as a Draft. Let the AI draft from a closed incident or a meeting, then edit every section yourself. Nothing the AI writes can be submitted until a person marks it reviewed.",
+  "prim": "Save version",
+  "own": null,
+  "ow": {
+   "o": "Noor Haddad",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 7,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 5
+ },
+ {
+  "id": "kcs_ask",
+  "label": "Find an answer",
+  "g": "help",
+  "formal": "Ask the knowledge base",
+  "tag": "Answers that show their work",
+  "story": "Ask a question. The answer cites numbered chunks, shows how well it is grounded, and refuses when the evidence is not there. Groundedness over the last 200 sampled answers is 93%.",
+  "prim": "Ask",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "business_service"
+  ],
+  "w": [],
+  "pers": 13,
+  "persList": "all",
+  "st": 4
+ },
+ {
+  "id": "kcs_gap",
+  "label": "What knowledge is missing",
+  "g": "learn",
+  "formal": "Knowledge gaps and analytics",
+  "tag": "Find what people need that we have not written",
+  "story": "People asked 82 questions this month that no published article answered. The biggest is how do I rebuild the lumen search index. Coverage is weakest for Lease subledger (ERP): only 40% of its incident",
+  "prim": "Draft top 3 with AI",
+  "own": null,
+  "ow": {
+   "o": "Noor Haddad",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "kcs_prompt",
+  "label": "Prompt library",
+  "g": "ai",
+  "formal": "",
+  "tag": "Every prompt has an owner, a version and a test",
+  "story": "10 prompts are governed here, 7 in production and 1 waiting on approval. The cost-cutting rewrite of the knowledge answer prompt (v4) fails its regression suite, so it cannot reach production.",
+  "own": "Kenji Watanabe",
+  "ow": {
+   "o": "Kenji Watanabe",
+   "b": "Theo Marlowe"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "kcs_test",
+  "label": "Test AI answers",
+  "g": "ai",
+  "formal": "AI test management",
+  "tag": "No prompt reaches production without passing",
+  "story": "3 suites hold 30 golden cases. Knowledge answers: golden set: candidate v4 scores 58.3% against 91.7%, so the regression gate is closed. The judge model and the rule grader disagree on 10% of cases ac",
+  "prim": "Run candidate v4",
+  "own": "Kenji Watanabe",
+  "ow": {
+   "o": "Kenji Watanabe",
+   "b": "Theo Marlowe"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "kcs_skills",
+  "label": "AI agents: Skills",
+  "g": "r15hid",
+  "formal": "Agent skills",
+  "tag": "Turn what we know into work that runs itself",
+  "story": "4 agent skills are running with a 89% success rate and $7,480 saved. 13 more published procedural items score 60 or more and can be promoted. Every skill is a knowledge item with inputs, tools, guardr",
+  "prim": "Open the Skill studio",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Sam Patel"
+  },
+  "r": [],
+  "w": [],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 7
+ },
+ {
+  "id": "vault",
+  "label": "Impact and knowledge graph: Connected knowledge",
+  "g": "r15hid",
+  "formal": "Knowledge graph",
+  "tag": "See how everything we know connects",
+  "story": "The knowledge graph joins 83 knowledge items to 16 services, 162 configuration items, 10 agent skills, people, projects and incidents through 866 relationships. Pick any record and walk its relationsh",
+  "prim": "Try an impact walk",
+  "own": null,
+  "ow": {
+   "o": "Noor Haddad",
+   "b": ""
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "exe_mat",
+  "label": "Maturity and capability",
+  "g": "strat",
+  "formal": "Maturity models",
+  "tag": "Are we on the path to the strategy?",
+  "story": "10 maturity models measure 333 capabilities. Attainment against the Year 1 target is 74%, we are at 102 on the glide path (100 is on the line), and 49 of 212 gaps have a funded project path. 163 capab",
+  "prim": "New capability",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Aaron Whitfield"
+  },
+  "r": [
+   "business_service",
+   "project"
+  ],
+  "w": [
+   "maturity_capability"
+  ],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit",
+   "board"
+  ],
+  "st": 7
+ },
+ {
+  "id": "meet_hub",
+  "label": "Meetings",
+  "g": "my",
+  "formal": "",
+  "tag": "Meetings that end in something",
+  "story": "10 meetings in the next seven days and 27 overdue actions, most with Priya Shah (4). 8 decisions wait for ratification. Every meeting here ends in something: an action with an owner, a decision with a",
+  "prim": "New meeting",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Ben Ito"
+  },
+  "r": [
+   "person",
+   "project",
+   "objective",
+   "incident",
+   "change_request",
+   "problem_record"
+  ],
+  "w": [
+   "meeting",
+   "meeting_series",
+   "meeting_attendee",
+   "agenda_item",
+   "meeting_note",
+   "meeting_action"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 10
+ },
+ {
+  "id": "meet_act",
+  "label": "Meetings: Actions",
+  "g": "r15hid",
+  "formal": "Meeting actions",
+  "tag": "Actions that come out of meetings",
+  "story": "68 are open and 27 overdue. Every action shows its meeting, and closing it updates the meeting and its RAID item.",
+  "own": "Leila Haddad",
+  "ow": {
+   "o": "Leila Haddad",
+   "b": "Elena Marsh"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 4
+ },
+ {
+  "id": "meet_dec",
+  "label": "Meetings: Decisions",
+  "g": "r15hid",
+  "formal": "Meeting decisions",
+  "tag": "Decisions, with the reasons",
+  "story": "35 decisions are on record and 8 wait for ratification. Each one carries a rationale, the alternatives, who decided and whether it can be reversed.",
+  "prim": "Ratify",
+  "own": "Leila Haddad",
+  "ow": {
+   "o": "Leila Haddad",
+   "b": "Elena Marsh"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 4
+ },
+ {
+  "id": "meet_series",
+  "label": "Meetings: Forums and series",
+  "g": "r15hid",
+  "formal": "Forums and series",
+  "tag": "Forums with a charter",
+  "story": "10 governance forums and series, each with a purpose, chair, quorum rule, decision rights and an escalation path, plus health and cost.",
+  "own": "Leila Haddad",
+  "ow": {
+   "o": "Leila Haddad",
+   "b": "Elena Marsh"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 9
+ },
+ {
+  "id": "nav_studio",
+  "label": "Navigation and search settings",
+  "g": "plat",
+  "formal": "Navigation and search",
+  "tag": "Find anything, return to anything",
+  "story": "All 169 screens sit in exactly one of 15 plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in 2.4 clicks clicks on average and 87% of searches end in",
+  "prim": "Open search",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "person",
+   "incident",
+   "change_request",
+   "project",
+   "business_service",
+   "invoice"
+  ],
+  "w": [
+   "nav_favorite",
+   "nav_history_event",
+   "search_query"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 11
+ },
+ {
+  "id": "itom_evt",
+  "label": "Alerts and events",
+  "g": "tech",
+  "formal": "Event management",
+  "tag": "7,999 signals in 24 hours, 5 worth a person's time",
+  "story": "Noise reduction is 99.9%. The biggest candidate, Standards Platform: 15 alerts across 9 CIs, folds 15 alerts into one group: Topology: 5 of the other 8 CIs depend on codif‑sql‑prd (codif‑app‑01 runs o",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "cmdb_ci",
+   "maintenance_window"
+  ],
+  "w": [
+   "alert_event",
+   "alert_rule",
+   "correlation_group",
+   "false_positive_feedback",
+   "maintenance_window"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 7
+ },
+ {
+  "id": "obs_dash",
+  "label": "Dashboards: Operations and metrics",
+  "g": "r15hid",
+  "formal": "Dashboards and metrics",
+  "tag": "Every metric, every host, one place",
+  "story": "Charts are drawn to scale from 10 metric types. Build your own dashboards with drag and drop, compare any CIs in the explorer, and read the network map and the log and trace panels for the same incide",
+  "prim": "Add a tile",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "business_service"
+  ],
+  "w": [
+   "slo",
+   "synthetic_check",
+   "metric_series",
+   "dashboard",
+   "log_pattern"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "itom_slo",
+  "label": "Reliability targets",
+  "g": "tech",
+  "formal": "Observability and SLOs",
+  "tag": "Promise a level of service, and watch the budget",
+  "story": "4 of 8 SLOs are inside their error budget. The portal availability budget was spent by the incident that began at 09:08 today: its SLI is 99.41% against a 99.9% promise. The platform covers 68% of wha",
+  "prim": "New SLO",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Leila Haddad"
+  },
+  "r": [
+   "metric_series",
+   "business_service",
+   "incident"
+  ],
+  "w": [
+   "slo",
+   "synthetic_check"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "itom_run",
+  "label": "Runbooks and automatic fixes",
+  "g": "auto",
+  "formal": "Runbooks and automation",
+  "tag": "From alert to action, with guardrails",
+  "story": "7 automation rules connect alerts to 15 pre‑approved standard changes. A restart of the Lumen indexer, for example, is diagnosed by an AI agent and approved by Marco Ellis before it runs. Every run is",
+  "prim": "New automation rule",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "alert_event",
+   "standard_change"
+  ],
+  "w": [
+   "automation_rule",
+   "runbook_execution",
+   "standard_change"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 7
+ },
+ {
+  "id": "obs_std",
+  "label": "Pre-approved changes and runbooks",
+  "g": "fix",
+  "formal": "Standard change catalog",
+  "tag": "Pre-approved changes that are also the runbooks",
+  "story": "15 standard changes carry their own SOP, validation and rollback. 12 are run or proposed by AI agents, and every run becomes an auto‑approved change record, so the Change process sees what operations ",
+  "prim": "New standard change",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Hollis Grey"
+  },
+  "r": [
+   "change_request"
+  ],
+  "w": [
+   "standard_change"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "svc_oncall",
+  "label": "Who is on call",
+  "g": "fix",
+  "formal": "On-call and escalation",
+  "tag": "Who is on call, and is every required hour covered?",
+  "story": "88% of required on-call hours are covered over the next 14 days across 10 rotas (per team, service, asset class and follow the sun). 429 hours have nobody scheduled or available, and 19 shifts collide",
+  "prim": "New rota",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "oncall_shift",
+   "time_off"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "svc_skills",
+  "label": "Skills and availability",
+  "g": "people",
+  "formal": "",
+  "tag": "Who can do what, and who is free right now?",
+  "story": "135 skills across 89 people, contractors, providers and AI agents. 2 rota skills depend on one person or none, and 6 certificates expire within 90 days. Rotas, assignment rules, the Service catalog an",
+  "prim": "Add a skill",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Ben Ito"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "skill_claim"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "org_chart",
+  "label": "Org chart",
+  "g": "people",
+  "formal": "Who reports to whom, what each person owns and can approve, and the agents that support them",
+  "tag": "Who does what, and who supports them",
+  "story": "45 people · 4 layers · 15 AI agents, each with a named sponsor · 38.2 h/wk returned · 338.9 h/wk open opportunity · 13 managers · 3.4 average span (widest 8)",
+  "own": "Joanna Pierce",
+  "ow": {
+   "o": "Joanna Pierce",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "person",
+   "organization_unit",
+   "position",
+   "role",
+   "access_review",
+   "approval"
+  ],
+  "w": [
+   "reporting_line",
+   "automation_opportunity"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 7
+ },
+ {
+  "id": "own_gaps",
+  "label": "Ownership and gaps",
+  "g": "plat",
+  "formal": "Who is accountable, and where nobody is",
+  "tag": "Every thing has a person who answers for it",
+  "story": "89.9% of the 1292 things that matter have a named human owner and backup. 3 have no owner, 96 name only a role or team, 8 rest on an AI agent, contractor or provider, and 23 have no backup. 437 owners",
+  "prim": "Assign the worst gap",
+  "own": null,
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "person",
+   "process_definition",
+   "metric_definition",
+   "app_manifest",
+   "exception"
+  ],
+  "w": [
+   "ownership_assignment",
+   "ownership_exception"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "ppl_org",
+  "label": "Org chart: Workload",
+  "g": "r15hid",
+  "formal": "Org chart and workload",
+  "tag": "Who is carrying what",
+  "story": "89 workers: 62 employees, 15 AI agents, 9 contractors and 3 providers. 18 people are over capacity the week of Oct 5, led by Maya Ortiz, Priya Shah, Dev Rao. 8 vacancies are open.",
+  "prim": "Add worker",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Rina Okafor"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "person"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ppl_cap",
+  "label": "Who is available to do the work",
+  "g": "plan",
+  "formal": "Resource planning",
+  "tag": "Resource planning",
+  "story": "Planning covers every kind of work, not only projects: incidents, requests, changes, on-call, operational work, meetings, training and leave, for 89 employees, contractors, AI agents and providers acr",
+  "prim": "Request resources",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "person",
+   "project",
+   "skill_claim"
+  ],
+  "w": [],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "pm",
+   "portfolio"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ppl_train",
+  "label": "Training and courses",
+  "g": "learn",
+  "formal": "Training and learning",
+  "tag": "Is everyone ready to do the work safely",
+  "story": "91% of mandatory courses due to date are complete, against a 95% target. 6 people have not finished Security awareness 2026, which closed Oct 2, and 10 certificates expire or have expired within 60 da",
+  "prim": "Design a course",
+  "own": "Grace Whitfield",
+  "ow": {
+   "o": "Grace Whitfield",
+   "b": "Joanna Pierce"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "ppl_av",
+  "label": "Meetings: Rooms",
+  "g": "r15hid",
+  "formal": "Rooms and conference scheduling",
+  "tag": "Is the right room ready",
+  "story": "Rooms are 36% booked this week against a 55% target, yet the Boardroom has 1 meeting of four people or fewer. Huddle Birch has a Teams Room device offline and 2 hybrid bookings today depend on it. 3 A",
+  "prim": "Book a room",
+  "own": "Joanna Pierce",
+  "ow": {
+   "o": "Joanna Pierce",
+   "b": "Grace Whitfield"
+  },
+  "r": null,
+  "w": null,
+  "pers": 3,
+  "persList": [
+   "exec",
+   "pm",
+   "portfolio"
+  ],
+  "st": 0
+ },
+ {
+  "id": "ppl_jrny",
+  "label": "Experience journeys",
+  "g": "people",
+  "formal": "Journey maps",
+  "tag": "Journey maps tied to workflows",
+  "story": "Journey maps are how the work looks to the people in it. Each of the 29 boxes across 4 journeys can be tied to the workflow or process that fulfills it, with a mode: human, deterministic or agentic. 9",
+  "prim": "New journey",
+  "own": "Joanna Pierce",
+  "ow": {
+   "o": "Joanna Pierce",
+   "b": "Grace Whitfield"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ppl_meet",
+  "label": "Meetings: Minutes",
+  "g": "r15hid",
+  "formal": "Forums and minutes",
+  "tag": "Decisions that stick",
+  "story": "Four forums make the decisions that move work. 3 of 10 open actions are late, the oldest is “draft the resourcing plan for the warehouse and hub overlap”. Only 71% of actions due so far were closed on",
+  "prim": "Build agenda",
+  "own": "Joanna Pierce",
+  "ow": {
+   "o": "Joanna Pierce",
+   "b": "Grace Whitfield"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 0
+ },
+ {
+  "id": "ppl_perf",
+  "label": "Performance reviews",
+  "g": "people",
+  "formal": "Performance management",
+  "tag": "Performance and growth",
+  "story": "The FY26 annual review is in manager review until Oct 23. 61% of 61 reviews are submitted, and 24 are still with managers. Ratings differ between managers by 0.74 (guideline 0.30), so calibration come",
+  "prim": "Write the next review",
+  "own": "Joanna Pierce",
+  "ow": {
+   "o": "Joanna Pierce",
+   "b": "Grace Whitfield"
+  },
+  "r": null,
+  "w": null,
+  "pers": 2,
+  "persList": [
+   "exec",
+   "portfolio"
+  ],
+  "st": 6
+ },
+ {
+  "id": "plat_data_old",
+  "label": "Data tables and checks (old)",
+  "g": "r15hid",
+  "formal": "Data tables and model checks",
+  "tag": "Master data model, drawn, traced and audited",
+  "story": "237 tables and 2,165 fields in 16 domains, with 304 references between them. 200 of 378 metrics trace all the way to fields. Does it cover every module? Now 124 of 124 (was 6), but 94 proposed entitie",
+  "prim": "See what is missing",
+  "own": "Anil Mehta",
+  "ow": {
+   "o": "Anil Mehta",
+   "b": "Rosa Delgado"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "plat_build",
+  "label": "Build a module",
+  "g": "plat",
+  "formal": "",
+  "tag": null,
+  "story": "4 modules are on the way in, reusing 85% of their data from the registry. A new application joins the platform the same way whether a person or an AI coding client builds it: reuse first, declare the ",
+  "prim": "Build a module",
+  "own": "Carla Reyes",
+  "ow": {
+   "o": "Carla Reyes",
+   "b": "Rina Kovacs"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "plat_contract",
+  "label": "Feature contract",
+  "g": "plat",
+  "formal": "",
+  "tag": "Every feature carries its process, data, metrics and connections",
+  "story": "109 of 181 screens, modules and citizen apps meet all four rules today; 147 rule gaps are open and 2 are waived. Every new feature must bring a process model, a data model with an integration decision",
+  "prim": "Run on a feature",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "process_definition",
+   "metric_definition",
+   "maturity_capability",
+   "debt_item",
+   "app_manifest",
+   "exception"
+  ],
+  "w": [
+   "contract_finding",
+   "contract_waiver"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_debt",
+  "label": "Technical debt",
+  "g": "plat",
+  "formal": "Technical debt ledger",
+  "tag": "Track, trace and pay down the debt before it compounds",
+  "story": "106 debt items are open with 1267 hours of work to fix. They cost about 232.6 hours a month in rework and risk, roughly $22,097. 2 exceptions have expired and 2 more expire within 30 days. 94 items we",
+  "prim": "Request an exception",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Marcus Reid"
+  },
+  "r": [],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_fab",
+  "label": "Connect other systems: Data feeds and mappings",
+  "g": "r15hid",
+  "formal": "Integration fabric",
+  "tag": "Integration fabric: feed any field, keep control",
+  "story": "12 connectors feed 21 registry fields, and 77% meet their freshness target. Take the project schedule: Oukala is authoritative, while dates arrive from Planner and Jira (Project Online retired on Sept",
+  "prim": "Change key",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Rina Kovacs"
+  },
+  "r": [],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 8
+ },
+ {
+  "id": "fin_model",
+  "label": "Budgets: IT financial model",
+  "g": "r15hid",
+  "formal": "IT financial model",
+  "tag": "Every IT dollar has a nature, a color and a TBM position",
+  "story": "21 of 24 budget lines carry a funding color and 3 do not. 4 of 10 control rules pass. The seven colors are placeholders until decision D-01 supplies Meridian's real list.",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_color",
+   "fin_funding_line"
+  ],
+  "w": [
+   "fin_exception"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "fin_color",
+  "label": "Which funding pays for what",
+  "g": "money",
+  "formal": "Color of money",
+  "tag": "7 funding colors, each with its own rules",
+  "story": "Headroom is $1,900,400 and $103,694 will lapse when the XR-T grant ends on Dec 31. All 7 colors are placeholders from the spec until Meridian supplies its real list (D-01). Every line carries exactly ",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_color",
+   "fin_color_source",
+   "fin_color_nature_rule"
+  ],
+  "w": [
+   "fin_color_balance",
+   "fin_release_event"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "fin_spend",
+  "label": "Test the order money is spent",
+  "g": "money",
+  "formal": "Spend-order simulator",
+  "tag": "When several colors can fund a cost, the policy decides the order",
+  "story": "Pick a cost, its nature, consumers and gate. The simulator lists every candidate color with rank and expiry, splits the line when a balance runs out, and records why. The three worked examples from th",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_color_nature_rule",
+   "fin_spend_order_policy"
+  ],
+  "w": [
+   "fin_funding_line"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "fin_budget",
+  "label": "Budgets: By funding type",
+  "g": "r15hid",
+  "formal": "Budget and forecast",
+  "tag": "Five versions of every line, forecast by color",
+  "story": "The forecast is $5,351K against a final budget of $5,190K. Running the spend order on the forecast moves $162K to a different color than planned and leaves $0K unfunded. 72% of lines are within the va",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_funding_line",
+   "fin_color_balance"
+  ],
+  "w": [
+   "fin_funding_line"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "fin_gates",
+  "label": "Funding approval gates",
+  "g": "money",
+  "formal": "Funding gates",
+  "tag": "Six gates decide when funding is committed and when cost becomes capital",
+  "story": "4 projects move through gates G0 to G5. 0 gate moves are waiting for approval. The prototype runs the current stage capitalization model; switch it on the Capitalization tab to see every capital figur",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_gate",
+   "fin_project_funding"
+  ],
+  "w": [
+   "fin_funding_line",
+   "fin_gate"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "fin_alloc",
+  "label": "Charge costs to teams",
+  "g": "money",
+  "formal": "Allocation and showback",
+  "tag": "Shared cost reaches consumers by a named, versioned driver",
+  "story": "6 drivers carry 7 versions and 2 shared costs are split into one-color children. Showback to consumers includes the funding color. Chargeback is locked until the ladder steps before it are signed off.",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "fin_allocation_driver",
+   "fin_funding_line"
+  ],
+  "w": [
+   "fin_allocation_driver"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "fin_rules",
+  "label": "Financial control checks",
+  "g": "money",
+  "formal": "Financial controls",
+  "tag": "Ten rules prove every dollar has a color, a rule and a ledger match",
+  "story": "4 of 10 validation rules pass today, with 9 failing items in the exception queue. Evidence for each color, the governance matrix, the policy set and the evidence register sit here too, so an auditor c",
+  "prim": "Run all rules",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "fin_exception",
+   "fin_mapping_record"
+  ],
+  "w": [
+   "fin_exception"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "plat_gate",
+  "label": "Approve citizen-built apps",
+  "g": "plat",
+  "formal": "Citizen apps",
+  "tag": "Build fast on the platform, never beside it",
+  "story": "12 citizen apps are registered: 4 certified, 3 in review and 3 in sandbox. Reuse is 84% and 40% of live apps still ask for a duplicate entity or process. 1 app has no support owner. Apps are checked a",
+  "prim": "New citizen app",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Casey Rowan"
+  },
+  "r": [],
+  "w": [],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_mcp",
+  "label": "Connect AI and coding tools",
+  "g": "ai",
+  "formal": "AI and coding clients",
+  "tag": "Let AI tools discover what exists before they build",
+  "story": "The platform's MCP (Model Context Protocol) server lets frontier models and coding tools ask what the registry already has. 16 tools are proposed (a proposed first set, not final); 2 clients are conne",
+  "prim": "Try a tool",
+  "own": "Carla Reyes",
+  "ow": {
+   "o": "Carla Reyes",
+   "b": "Rina Kovacs"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_dmap",
+  "label": "Platform maps: Data flows",
+  "g": "r15hid",
+  "formal": "Data connections",
+  "tag": "How every data element connects to every other",
+  "story": "237 entities, 293 field references between them and 24 apps that read or write them, drawn as one graph. Select any node to see who writes it, who reads it and what breaks if a field changes. 60 entit",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_pmap",
+  "label": "Platform maps: Processes",
+  "g": "r15hid",
+  "formal": "Process connections",
+  "tag": "No process runs alone",
+  "story": "78 processes in 17 families, joined by 96 documented handoffs and 89 shared-data dependencies. 10 processes keep their data outside the registry and 10 have no documented handoff.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "pm",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_proc",
+  "label": "Process library",
+  "g": "plat",
+  "formal": "",
+  "tag": "253 processes, 124 of 124 modules covered",
+  "story": "Every module now has a defined process, 253 in all. Average maturity is 2.7 of 5, 144 are below their Year 1 target, 0 have no named owner and 9 have no metric. Levels come from observable platform si",
+  "prim": "Add a process",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Ben Ito"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "plat_reg",
+  "label": "Platform registry",
+  "g": "plat",
+  "formal": "",
+  "tag": "One catalog every app builds on",
+  "story": "237 canonical entities and 2,165 fields, each with an owner, a steward, a classification and a declared authority. 5 duplicates are open, 94 entities are proposed and wait for approval, and 4 core ent",
+  "prim": "Propose an entity",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Yuki Tanaka"
+  },
+  "r": [],
+  "w": [],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "ppm_proj",
+  "label": "Projects",
+  "g": "plan",
+  "formal": "Projects and teams",
+  "tag": "Who runs what, who does the work",
+  "story": "4 projects with 22 people and agents on active projects (directory: 89 workers): 8 employees, 4 contractors, 7 AI agents and 3 managed service providers. 18 are over capacity, 1 contract end before th",
+  "own": "Priya Shah",
+  "ow": {
+   "o": "Priya Shah",
+   "b": "Tom Becker"
+  },
+  "r": [
+   "person",
+   "demand_request",
+   "business_service"
+  ],
+  "w": [
+   "project",
+   "raid_item",
+   "demand_request",
+   "skill"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ppm_raid",
+  "label": "Risks, issues and decisions",
+  "g": "plan",
+  "formal": "RAID log",
+  "tag": "Risks, assumptions, issues, dependencies",
+  "story": "8 open risks carry $252K of exposure, and the largest is lumen slips the search indexer again at $108K. 18 issues are open, 3 dependencies wait on something, and 2 assumptions have not been checked. O",
+  "prim": "Add an entry",
+  "own": "Priya Shah",
+  "ow": {
+   "o": "Priya Shah",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "incident",
+   "problem_record"
+  ],
+  "w": [],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bud_ccmap",
+  "label": "Cost center mapping",
+  "g": "money",
+  "formal": "Which cost centers match the org chart, and where the gaps are",
+  "tag": "Cost centers map to the org chart",
+  "story": "100% of approved budget ($2.91M of $2.91M) sits on a cost center that has an org unit, an owner and a GL segment, but 45% ($1.3M) is on cost centers shared by several org units. 6 of 9 cost centers ar",
+  "prim": "Add a cost center",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "cost_center",
+   "organization_unit",
+   "budget_line",
+   "person"
+  ],
+  "w": [
+   "cost_center",
+   "cost_center_map",
+   "audit_event"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bud_lines",
+  "label": "All budget lines",
+  "g": "money",
+  "formal": "Every line item with filters, grouping and export",
+  "tag": null,
+  "story": "17 lines: approved $2.91M, forecast $3.07M, actual $1.48M, committed $2.57M, variance +$163,000. Select a line id to open the line.",
+  "prim": "Request budget",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "budget_line",
+   "cost_center",
+   "project",
+   "person"
+  ],
+  "w": [
+   "audit_event"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "r15d_evidence",
+  "label": "Evidence room",
+  "g": "strat",
+  "formal": "Read-only index of controls, approvals, audit trail, decisions and exports",
+  "tag": "Evidence an auditor can sample, read only",
+  "story": "11 of 15 controls have current evidence. 514 audit entries are hash chained. Nothing here changes a record.",
+  "prim": "Verify chain",
+  "own": "Casey Rowan",
+  "ow": {
+   "o": "Casey Rowan",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "audit_event",
+   "approval"
+  ],
+  "w": [
+   "evidence_pack"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 4
+ },
+ {
+  "id": "r15d_agents",
+  "label": "Agent registry",
+  "g": "ai",
+  "formal": "One list of every agent and what working means",
+  "tag": "One list of every agent, one meaning of working",
+  "story": "13 of 16 registered agents are working at 13:29. 15 are enabled and 15 run under governance. The top bar, the org chart, the Control Tower and Ask all read this list.",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "person",
+   "audit_event"
+  ],
+  "w": [
+   "agent_state"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "r15d_facts",
+  "label": "Facts and conflicts",
+  "g": "plat",
+  "formal": "One registry of shared numbers with a conflict check",
+  "tag": "Every number has one home",
+  "story": "14 facts are registered with a value, a unit, a scope and a source. The test below renders each screen that shows one and compares what it shows. 0 problems found.",
+  "prim": "Run the check again",
+  "own": "Casey Rowan",
+  "ow": {
+   "o": "Casey Rowan",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "metric_definition",
+   "agent_state"
+  ],
+  "w": [
+   "fact_definition"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 4
+ },
+ {
+  "id": "r15d_firstweek",
+  "label": "My first week",
+  "g": "help",
+  "formal": "Accounts, equipment, training due, who to ask, your buddy",
+  "tag": "Jamie Okoro: first week",
+  "story": "1 of 6 onboarding parts are done. Jamie Okoro starts Wed, Oct 14, in 8 days. 1 waiting on someone.",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "person",
+   "approval"
+  ],
+  "w": [
+   "first_week_plan"
+  ],
+  "pers": 10,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "emp",
+   "newhire"
+  ],
+  "st": 4
+ },
+ {
+  "id": "plat_store",
+  "label": "Entity store",
+  "g": "plat",
+  "formal": "Persisted records, change log, promote proposed entities",
+  "tag": null,
+  "story": "497 persisted records in 15 entities on indexeddb; 94 of 275 entities are still proposed.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "person",
+   "audit_event"
+  ],
+  "w": [
+   "app_state_snapshot",
+   "entity_promotion",
+   "store_event"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "wf_runs",
+  "label": "Run monitor",
+  "g": "auto",
+  "formal": "Executes saved workflows; instances, timers, retries, SLA",
+  "tag": null,
+  "story": "0 active, 9 completed, 1 failed; mean cycle 25 h, failure rate 10%, SLA met 95%. Connector calls are simulated and labeled; state survives a reload.",
+  "prim": "Start a run",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Ben Ito"
+  },
+  "r": [
+   "workflow_definition",
+   "process_definition",
+   "person"
+  ],
+  "w": [
+   "workflow_instance",
+   "step_run",
+   "engine_state",
+   "workflow_run_definition"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ai_runtime",
+  "label": "Agent runtime",
+  "g": "ai",
+  "formal": "Agent lifecycle, tiers, kill switch, run records, gates, budgets",
+  "tag": null,
+  "story": "15 active agents, 2 runs waiting on a sponsor, 4 blocked by a control, budget or missing backup. Runs are simulated; each carries its confidence basis and tier gate.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "person",
+   "workflow_instance"
+  ],
+  "w": [
+   "agent_registry",
+   "agent_run",
+   "agent_control",
+   "agent_event"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "grc_home",
+  "label": "GRC overview",
+  "g": "grc",
+  "formal": "Risk, controls, findings and exceptions in one view",
+  "tag": "One view of risk, controls and assurance",
+  "story": "8 of 28 risks are above appetite. Control coverage is 72% (21 of 29). 3 findings are overdue and 4 exceptions are expiring or expired. Attestation is 64% complete.",
+  "prim": "Add a risk",
+  "own": "Theo Marlowe",
+  "ow": {
+   "o": "Theo Marlowe",
+   "b": "Rina Okafor"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "raid_item"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "grc_risk",
+  "label": "Risk: Risk register",
+  "g": "r15hid",
+  "formal": "Enterprise and project risks on one scale with appetite",
+  "tag": "Enterprise and project risks on one scale",
+  "story": "8 of 28 risks are above appetite. Project risks from the risk simulation and the RAID log appear here without copies.",
+  "prim": "Add a risk",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "raid_item"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "grc_ctl",
+  "label": "Controls and testing",
+  "g": "grc",
+  "formal": "Controls mapped to frameworks, test cycles and attestation",
+  "tag": "Controls mapped to frameworks, tested every cycle",
+  "story": "Control coverage is 72%. 5 of 17 Q4 tests are done; 2 failed. Attestation is 64% complete.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Aaron Whitfield"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "control",
+   "control_test",
+   "attestation"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "grc_find",
+  "label": "Issues and findings",
+  "g": "grc",
+  "formal": "Findings with remediation plans and due dates",
+  "tag": "Every finding has a plan, an owner and a date",
+  "story": "3 of 12 open findings are overdue. Findings come from control tests, audits, third-party reviews and self-identification.",
+  "prim": "Log a finding",
+  "own": "Theo Marlowe",
+  "ow": {
+   "o": "Theo Marlowe",
+   "b": "Avery Chen"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "finding",
+   "debt_item"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "grc_pol",
+  "label": "Policies",
+  "g": "grc",
+  "formal": "Policy versions and acknowledgement",
+  "tag": "Versioned policies with acknowledgement",
+  "story": "9 policies; 1 due for review within 30 days. Acknowledgement is 86% across published policies.",
+  "own": "Theo Marlowe",
+  "ow": {
+   "o": "Theo Marlowe",
+   "b": "Joanna Pierce"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "policy"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "grc_aud",
+  "label": "Audit management",
+  "g": "grc",
+  "formal": "Audit engagements, requests and evidence",
+  "tag": "Engagements, requests and evidence in one place",
+  "story": "4 engagements; 8 requests are open. Evidence is linked to existing records, never uploaded.",
+  "prim": "Add an audit request",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "audit_engagement"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "grc_ven",
+  "label": "Risk: Third-party risk",
+  "g": "r15hid",
+  "formal": "Vendor tiers, assessments and renewals",
+  "tag": "Tiers, assessments and renewals together",
+  "story": "3 of 3 Tier 1 vendors have a current assessment. Every contract renewal below shows whether the vendor's assessment will be current when it renews.",
+  "own": "Camille Ortega",
+  "ow": {
+   "o": "Camille Ortega",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "core_company",
+   "assessment"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 5
+ },
+ {
+  "id": "grc_exc",
+  "label": "Exceptions and acceptances",
+  "g": "grc",
+  "formal": "Time-limited exceptions and risk acceptance",
+  "tag": "Time-limited, approved and tracked as debt",
+  "story": "7 active; 4 expiring or expired; 2 waiting for approval. Approved exceptions add an item to Technical debt.",
+  "prim": "Request an exception",
+  "own": "Theo Marlowe",
+  "ow": {
+   "o": "Theo Marlowe",
+   "b": "Rina Okafor"
+  },
+  "r": [
+   "raid_item",
+   "control",
+   "policy",
+   "exception",
+   "core_company",
+   "contract"
+  ],
+  "w": [
+   "exception",
+   "debt_item"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "admin",
+   "audit",
+   "board"
+  ],
+  "st": 6
+ },
+ {
+  "id": "rec_shell",
+  "label": "Record shell",
+  "g": "plat",
+  "formal": "Comments, mentions, tags, watchers and history for every record",
+  "tag": "One shell for every record",
+  "story": "22 record types open in the same header, tabs, comments, watchers and change history. 0 comments are held on 0 records this session.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Leah Moss"
+  },
+  "r": [
+   "incident",
+   "change_request",
+   "problem_record",
+   "project",
+   "contract",
+   "core_company"
+  ],
+  "w": [
+   "comment",
+   "tag",
+   "watcher",
+   "attachment"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "r15_iam",
+  "label": "Identity and access",
+  "formal": "",
+  "tag": "Roles now decide what each person can do, and every denial is on the record",
+  "story": "1 segregation-of-duties conflicts, 3 live permission-set grants, 2 access requests waiting.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Jordan Lee"
+  },
+  "r": [
+   "person",
+   "role",
+   "access_review",
+   "approval"
+  ],
+  "w": [
+   "permission_set",
+   "access_request",
+   "access_grant",
+   "access_package"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r15_mobile",
+  "label": "Mobile approvals and on-call",
+  "formal": "",
+  "tag": null,
+  "story": null,
+  "own": null,
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "approval",
+   "incident",
+   "oncall_shift",
+   "person"
+  ],
+  "w": [
+   "oncall_ack",
+   "mobile_queue_item",
+   "approval_decision"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r15_sem",
+  "label": "Semantic model",
+  "formal": "",
+  "tag": "Every number in a report comes from one governed definition",
+  "story": "12 measures and 10 dimensions defined over live budget, purchase order and timesheet records; 381 metrics qualify for the trend measure.",
+  "prim": "Build a report",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "metric_definition",
+   "budget_line",
+   "purchase_order"
+  ],
+  "w": [
+   "semantic_metric",
+   "semantic_dimension"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r15_rpt",
+  "label": "Reports and subscriptions",
+  "formal": "",
+  "tag": "Build once from governed measures, then schedule it to the people who need it",
+  "story": "3 saved reports, 2 active schedules, 5 runs in history. Delivery is simulated and labeled.",
+  "prim": "Bar",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "semantic_metric",
+   "role",
+   "notification"
+  ],
+  "w": [
+   "report_definition",
+   "report_schedule",
+   "report_run",
+   "notification"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r15_time",
+  "label": "Timesheets and actuals",
+  "formal": "",
+  "tag": "Hours become budget actuals the day a manager approves them",
+  "story": "9 sheets wait for approval; approving posts labor cost to the project's budget line and accrues contractor hours against the purchase order.",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "purchase_order",
+   "budget_line",
+   "invoice",
+   "person",
+   "cost_center",
+   "project"
+  ],
+  "w": [
+   "timesheet",
+   "time_entry"
+  ],
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r15_p2p",
+  "label": "Procure to pay",
+  "formal": "",
+  "tag": "Every purchase order shows how far it has traveled from requisition to payment",
+  "story": "Accrual for goods and services received but not invoiced is $23,760; 2 purchase orders are invoiced ahead of receipt.",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "purchase_order",
+   "invoice",
+   "budget_line"
+  ],
+  "w": [
+   "goods_receipt",
+   "accrual_entry",
+   "requisition"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "fin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "r16g_perm",
+  "label": "Permissions",
+  "g": "plat",
+  "formal": "Who can see and do what: tables, rows and attributes",
+  "tag": "Permissions: one model for tables, rows and attributes",
+  "story": "222 rules, 43 field rules, 39% coverage. Sensitive data is denied unless a rule allows it. 0 denials and 0 sensitive reveals are logged.",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Jordan Lee"
+  },
+  "r": [
+   "person",
+   "role",
+   "permission_set",
+   "access_review"
+  ],
+  "w": [
+   "permission",
+   "permission_rule",
+   "field_rule",
+   "role_permission_map"
+  ],
+  "pers": 3,
+  "persList": [
+   "exec",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16h_status",
+  "label": "Status catalog",
+  "g": "people",
+  "formal": "Statuses, approval groups, handover rule and what each status starts",
+  "tag": null,
+  "story": "14 statuses, each with an approval group and a launch set. Changing a person's status starts the same process every time.",
+  "prim": "Add a status",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "status_definition",
+   "status_change"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16h_ci",
+  "label": "CI ownership",
+  "g": "tech",
+  "formal": "Owner, support group and approver group for every CI and asset; assignment and return",
+  "tag": null,
+  "story": "52% of 302 CIs and assets have the right owner, a support group and an approver group. 145 have gaps.",
+  "prim": "Apply class defaults to all gaps (145)",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "cmdb_ci",
+   "asset",
+   "decision_rule"
+  ],
+  "w": [
+   "ci_ownership_default",
+   "ci_assignment"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16h_groups",
+  "label": "Approval groups",
+  "g": "auto",
+  "formal": "Groups, members, delegates and quorum; audit of every approval path",
+  "tag": null,
+  "story": "80% of 1193 approval steps name a group. 89 still point at a person.",
+  "prim": "Migrate 237 slots to groups",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "person",
+   "person",
+   "approval"
+  ],
+  "w": [
+   "approver_group",
+   "approver_action"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16h_rules",
+  "label": "Approval rules",
+  "g": "auto",
+  "formal": "Nested approvals: levels, groups, modes, conditions, overlays",
+  "tag": null,
+  "story": "10 rules, 14 bindings, 2 with tenant changes. Every level names a group.",
+  "prim": "New rule",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "workflow_definition",
+   "approver_group",
+   "decision_rule"
+  ],
+  "w": [
+   "approval_rule",
+   "approval_rule_overlay",
+   "approval_binding"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16j_dash",
+  "label": "Dashboards and charts",
+  "g": "strat",
+  "formal": "Saved charts, layouts, defaults",
+  "tag": "Build a chart from a governed measure, keep your own dashboard layout, publish a default",
+  "story": "3 saved charts you can see, 0 personal layouts, 0 default changes waiting for approval. Charts use the semantic layer, so a number means the same thing here, in a report and in a BI export.",
+  "prim": "Save to my library",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "semantic_metric",
+   "report_definition",
+   "metric_definition",
+   "role",
+   "dashboard_layout",
+   "dashboard_default"
+  ],
+  "w": [
+   "dashboard_layout",
+   "dashboard_default",
+   "saved_chart",
+   "list_registry",
+   "notification"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "strat_exec",
+  "label": "Strategy to execution",
+  "g": "strat",
+  "formal": "Goals, the capabilities they need, the maturity roadmap, projects, money and work",
+  "tag": null,
+  "story": "5 goals depend on 80 capabilities; 68 are below their Year 1 target and 17 of those have no roadmap that reaches it. 59 roadmap items are delivered by 14 funded projects. $4.35M of $4.49M funded work ",
+  "prim": "Add a roadmap item",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "objective",
+   "maturity_capability",
+   "project"
+  ],
+  "w": [
+   "goal_capability_link",
+   "capability_roadmap_item",
+   "roadmap_project_link"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "bc_home",
+  "label": "Resilience overview",
+  "g": "res",
+  "formal": "Readiness by application, dimension and tier",
+  "tag": null,
+  "story": "8 of 14 Tier 1 and 2 applications have an approved plan. 6 exercises are overdue. In the last exercise 8 of 10 applications met their recovery time and 8 of 10 met their recovery point. 11 single poin",
+  "prim": "Schedule an exercise",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Tom Becker"
+  },
+  "r": [
+   "bc_plan",
+   "bc_exercise",
+   "cmdb_ci"
+  ],
+  "w": [
+   "bc_plan"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_frame",
+  "label": "Resilience framework",
+  "g": "res",
+  "formal": "Six dimensions with guidance questions and maturity levels",
+  "tag": null,
+  "story": "The framework is named BETH3D and has 6 dimensions. Data is new: it covers backups, replication, recovery points, lineage, classification, retention and integrity. Dimensions are assessed from live re",
+  "prim": "Rename the framework",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Theo Marlowe"
+  },
+  "r": [
+   "bc_data_asset",
+   "bc_component"
+  ],
+  "w": [
+   "bc_data_asset"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_tiers",
+  "label": "Recovery tiers",
+  "g": "res",
+  "formal": "RTO, RPO and exercise policy by tier, driven by CMDB classification",
+  "tag": null,
+  "story": "Tiers come from the CMDB business criticality. 6 applications are Tier 1 (Alpha) and need an annual live failover; Tier 2 alternates live and tabletop. 6 applications are overdue for the exercise thei",
+  "prim": "Schedule an exercise",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "cmdb_ci",
+   "bc_plan"
+  ],
+  "w": [
+   "bc_recovery_objective"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_cal",
+  "label": "Exercise calendar",
+  "g": "res",
+  "formal": "Live failover and table-top exercises inside change windows",
+  "tag": null,
+  "story": "5 exercises are planned and 1 in progress. 1 has a blocking conflict: EX-2026-025. Live failovers are placed inside approved change windows and each creates a change record.",
+  "prim": "Schedule an exercise",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "bc_plan",
+   "change_request",
+   "finding"
+  ],
+  "w": [
+   "bc_exercise",
+   "finding"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_plans",
+  "label": "Continuity plans",
+  "g": "res",
+  "formal": "Plans, versions, call trees, runbooks and communications",
+  "tag": null,
+  "story": "13 of 15 plans are approved; 1 are in review and 1 are drafts. 0 reviews are overdue. Every plan names an owner, a backup and an approver group, and links to its CIs, data, vendors, people, budget lin",
+  "prim": "New plan",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Tom Becker"
+  },
+  "r": [
+   "cmdb_ci",
+   "core_company",
+   "contract",
+   "person"
+  ],
+  "w": [
+   "bc_plan",
+   "bc_business_process"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_decl",
+  "label": "Declare disaster",
+  "g": "res",
+  "formal": "Start a plan workflow and notify the call tree (simulated)",
+  "tag": null,
+  "story": "0 active declarations, 1 past. Declaring starts the plan's recovery workflow, notifies the call tree in order and links the major incident. 1 open incident can invoke a plan. All of it is simulated an",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "bc_plan",
+   "incident"
+  ],
+  "w": [
+   "bc_declaration"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_trace",
+  "label": "Continuity traceability",
+  "g": "res",
+  "formal": "Trace plans to CIs, data, vendors, people and risks; impact and gaps",
+  "tag": null,
+  "story": "Every plan and component links to its CIs, services, processes, data, vendors, contracts, people, budget lines, risks and controls. 37 gaps are open: 5 applications without a plan, 6 CIs without a rec",
+  "own": "Theo Marlowe",
+  "ow": {
+   "o": "Theo Marlowe",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "cmdb_ci",
+   "bc_component",
+   "core_company",
+   "raid_item",
+   "control"
+  ],
+  "w": [
+   "bc_dependency"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "bc_metrics",
+  "label": "Resilience metrics",
+  "g": "res",
+  "formal": "Metrics by component, CI and application with formula lineage",
+  "tag": null,
+  "story": "Metrics by application, configuration item and component, rolled into a five-level maturity. Tier 1 maturity is 2.8 against a target of 3.5. Recovery time was met by 8 of 10 applications and 10 of 11 ",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "bc_plan",
+   "bc_exercise",
+   "bc_component"
+  ],
+  "w": [],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16m_setup",
+  "label": "Implementation and setup",
+  "g": "plat",
+  "formal": "Guided tenant setup with readiness computed from real state",
+  "tag": "Set up a customer tenant step by step, with readiness computed from real state",
+  "story": "69% of 39 readiness checks pass for Meridian Standards Foundation; 0 of 8 steps signed off.",
+  "prim": "Sign off",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "tenant",
+   "setup_step",
+   "person",
+   "role",
+   "data_source",
+   "import_batch"
+  ],
+  "w": [
+   "tenant",
+   "setup_step"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 7
+ },
+ {
+  "id": "r16m_deploy",
+  "label": "Deployment paths",
+  "g": "plat",
+  "formal": "Pooled, dedicated and private installs compared",
+  "tag": "Pick how a customer environment is hosted, then provision it the same way every time",
+  "story": "Four deployment paths compared on ten criteria. Default: pooled SaaS with per-tenant schema and key; dedicated stack as the upgrade.",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Jordan Lee"
+  },
+  "r": [
+   "tenant",
+   "environment"
+  ],
+  "w": [
+   "tenant"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 5
+ },
+ {
+  "id": "r16m_sources",
+  "label": "Data sources and integrations",
+  "g": "plat",
+  "formal": "Connector registry per source system with field mapping",
+  "tag": "Every source system has a type, direction, schedule, owner, backup and field mapping",
+  "story": "7 sources registered for Meridian Standards Foundation; 3 connected. Entries marked Simulated have no live system behind them.",
+  "prim": "Add a source",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "connector",
+   "tenant",
+   "person"
+  ],
+  "w": [
+   "data_source"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "r16m_import",
+  "label": "Import foundation data",
+  "g": "plat",
+  "formal": "Upload CSV sheets, map columns, dry run, commit",
+  "tag": "Load a customer's foundation data from spreadsheets, checked before anything is written",
+  "story": "11 of 11 foundation sheets are loaded for Meridian Standards Foundation. Upload, map, dry run, commit.",
+  "prim": "Upload CSV",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Avery Chen"
+  },
+  "r": [
+   "tenant",
+   "person",
+   "organization_unit",
+   "cost_center",
+   "core_company",
+   "catalog_item"
+  ],
+  "w": [
+   "import_batch",
+   "foundation_record"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "r16m_guides",
+  "label": "Process guides",
+  "g": "plat",
+  "formal": "Levels 1 to 5 guide for every process, linked to records, metrics and neighbors",
+  "tag": "A guide for every process, from purpose to work instructions",
+  "story": "253 processes, 0 guides generated, 0 reviewed. Guides are rebuilt from the process record and link to every related object.",
+  "own": "Maya Ortiz",
+  "ow": {
+   "o": "Maya Ortiz",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "process_definition",
+   "metric_definition",
+   "knowledge_article",
+   "person"
+  ],
+  "w": [
+   "process_guide"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "r16m_overlay",
+  "label": "Tenant overlays",
+  "g": "plat",
+  "formal": "Per-customer approvals, owners, steps and SLAs as a delta on the base process",
+  "tag": "One base process, a different approval path for each customer",
+  "story": "0 active overlays for Meridian Standards Foundation. Effective process = base plus overlay; guardrails stop unsafe changes and every approval routes to a group.",
+  "prim": "New overlay",
+  "own": "Jordan Lee",
+  "ow": {
+   "o": "Jordan Lee",
+   "b": "Rina Okafor"
+  },
+  "r": [
+   "process_definition",
+   "tenant",
+   "approval"
+  ],
+  "w": [
+   "tenant_overlay"
+  ],
+  "pers": 12,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "board",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "itsm_rel",
+  "label": "Plan and track releases",
+  "g": "plan",
+  "formal": "Releases",
+  "tag": "Ship together, with proof",
+  "story": "12 releases are in flight on 2 trains. The Standards beta (REL-2611, Nov 13) is 31% ready and 151 of 195 stories are still open. 2 releases have a hard clash: REL-2610, REL-2614. Hotfix REL-2608 goes ",
+  "prim": "New release",
+  "own": "Nia Brooks",
+  "ow": {
+   "o": "Nia Brooks",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "feature",
+   "user_story",
+   "change_request"
+  ],
+  "w": [
+   "release",
+   "release_task"
+  ],
+  "pers": 7,
+  "persList": [
+   "exec",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 9
+ },
+ {
+  "id": "agile_board",
+  "label": "Team boards and backlogs",
+  "g": "plan",
+  "formal": "Sprints and backlogs",
+  "tag": "Plan in sprints, ship in releases",
+  "story": "Sprint 26.4.1 is on day 7 of 10: 80 of 139 points are done (58%). Search and Indexing (Lumen) and Portal Reliability committed more than capacity. 1,118 stories wait in backlogs and 13 pull requests a",
+  "prim": "New story",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "person",
+   "feature"
+  ],
+  "w": [
+   "user_story"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "agile_art",
+  "label": "Planning across teams",
+  "g": "plan",
+  "formal": "Release trains and increments",
+  "tag": "Plan together, deliver in increments",
+  "story": "Two agile release trains are executing PI 26.4, iteration 1 of 5. Predictability last increment was 78%, 3 features are forecast to land after their release date and 2 dependencies are at risk.",
+  "prim": "New program increment",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Nia Brooks"
+  },
+  "r": [
+   "person"
+  ],
+  "w": [
+   "feature"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "plat_self",
+  "label": "Let Oukala extend itself",
+  "g": "plat",
+  "formal": "Self-build",
+  "tag": "Oukala managing its own build",
+  "story": "The prototype backlog is loaded into Demand, Projects, the WBS and the RAID log. The gaps below came from running the tool on itself.",
+  "own": "Carla Reyes",
+  "ow": {
+   "o": "Carla Reyes",
+   "b": "Rina Kovacs"
+  },
+  "r": null,
+  "w": null,
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 0
+ },
+ {
+  "id": "svc_sla",
+  "label": "Service promises and targets",
+  "g": "fix",
+  "formal": "SLAs, OLAs and XLAs",
+  "tag": "Are we keeping our promises, and does every process have one?",
+  "story": "91.1% of agreement clocks stopped inside their target over the last 30 days, across 24 active agreements (service level, operational level, underpinning contract and experience level). 6 clocks are at",
+  "prim": "New agreement",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Tom Becker"
+  },
+  "r": [
+   "incident",
+   "request_item",
+   "business_service"
+  ],
+  "w": [
+   "sla_definition",
+   "task_sla",
+   "xla_response"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 7
+ },
+ {
+  "id": "ppm_sow",
+  "label": "Review a statement of work",
+  "g": "money",
+  "formal": "SOW and contract analyzer",
+  "tag": "Every proposal and contract, line by line",
+  "story": "13 contracts hold $9.92M of commitments and $3.98M has been paid. Lumen's SOW-5 proposal has 12 of 41 lines off playbook, 4 of them with no standard term yet. 11 obligations fall due in 30 days and 2 ",
+  "prim": "Analyze a document",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Camille Ortega"
+  },
+  "r": [
+   "contract"
+  ],
+  "w": [
+   "contract",
+   "contract_line",
+   "contract_obligation",
+   "contract_change"
+  ],
+  "pers": 5,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "audit"
+  ],
+  "st": 8
+ },
+ {
+  "id": "svc_cat",
+  "label": "Manage the catalog",
+  "g": "fix",
+  "formal": "Service catalog",
+  "tag": "16 items you can order, 240 requests so far",
+  "story": "34 approvals are waiting on 9 people, the oldest for 18.1 h. Median fulfillment is 0.8 days against a 5 day goal, and 39 service offerings still have nothing to order. Each item is a form, a price, ap",
+  "prim": "Design a catalog item",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Maya Ortiz"
+  },
+  "r": [
+   "service_offering",
+   "person"
+  ],
+  "w": [
+   "catalog_item",
+   "catalog_task",
+   "request_item",
+   "fulfillment_step"
+  ],
+  "pers": 13,
+  "persList": "all",
+  "st": 6
+ },
+ {
+  "id": "svc_req",
+  "label": "Work the request queue",
+  "g": "fix",
+  "formal": "Requests and fulfillment",
+  "tag": "86 open, 34 approvals waiting",
+  "story": "6 requests have used 75% or more of their SLA. Median fulfillment is 0.8 days and 93.5% of approvals pass the first time. Open any request for who it is sitting with, every approval and the evidence b",
+  "prim": "Order something",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Priya Shah"
+  },
+  "r": [],
+  "w": [],
+  "pers": 13,
+  "persList": "all",
+  "st": 6
+ },
+ {
+  "id": "svc_portal",
+  "label": "Order something",
+  "g": "help",
+  "formal": "Self-service portal",
+  "tag": null,
+  "story": "One place for everything you can order: 11 catalog items and 5 order guides that bundle several items into one request. You have 5 requests in progress.",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "catalog_item"
+  ],
+  "w": [
+   "request_item"
+  ],
+  "pers": 13,
+  "persList": "all",
+  "st": 5
+ },
+ {
+  "id": "svc_asset",
+  "label": "Assets and software licenses",
+  "g": "tech",
+  "formal": "",
+  "tag": "140 devices, 3 titles over entitlement",
+  "story": "96 devices are deployed and 6 are in stock. Record accuracy against Intune is 91.1%. True up exposure is $12,648 on 3 titles; reclaiming unused seats is the cheapest fix. Laptops and phones ordered th",
+  "prim": "Add an asset",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "contract",
+   "invoice"
+  ],
+  "w": [
+   "asset"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "svc_notify",
+  "label": "Notifications",
+  "g": "auto",
+  "formal": "Notification engine",
+  "tag": "96.3% delivered, 87 failures to fix",
+  "story": "Of 3,418 events in 24 hours, 2,906 found a recipient, 508 were stopped as duplicates or throttled, and 64 waited for the morning. 87 failures need a person, mostly bad contact data rather than outages",
+  "prim": "New template",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Maribel Cruz"
+  },
+  "r": null,
+  "w": null,
+  "pers": 5,
+  "persList": [
+   "exec",
+   "ops",
+   "change",
+   "arch",
+   "admin"
+  ],
+  "st": 5
+ },
+ {
+  "id": "svc_guides",
+  "label": "Order something: Order guides",
+  "g": "r15hid",
+  "formal": "Order guides: new hire, offboarding and status change, move, project, event",
+  "tag": "Multi-part orders, one status",
+  "story": "6 open orders · 0 at risk · 1 blocked · 1 waiting for a manager · 21 open parts across 12 fulfillment groups.",
+  "prim": "Start an order",
+  "own": "Tom Becker",
+  "ow": {
+   "o": "Tom Becker",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "catalog_item",
+   "request_item",
+   "catalog_task",
+   "person",
+   "approval",
+   "notification"
+  ],
+  "w": [
+   "guide_order",
+   "order_guide_part",
+   "request_delegation",
+   "catalog_task",
+   "request_item",
+   "approval"
+  ],
+  "pers": 13,
+  "persList": "all",
+  "st": 7
+ },
+ {
+  "id": "svc_360",
+  "label": "Services we run and how they connect",
+  "g": "tech",
+  "formal": "Service portfolio and map",
+  "tag": "16 services, 5 below their availability target",
+  "story": "Meridian runs 6 Tier 1 services. Network and VPN is the most depended-on: if it fails, 15 other services are touched. Every incident, problem and change can open the same impact analysis, and every se",
+  "prim": "New service",
+  "own": "Sam Patel",
+  "ow": {
+   "o": "Sam Patel",
+   "b": "Casey Rowan"
+  },
+  "r": [
+   "business_service",
+   "service_offering",
+   "cmdb_rel_ci"
+  ],
+  "w": [
+   "business_service"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "tbm_model",
+  "label": "See where IT money goes",
+  "g": "money",
+  "formal": "Cost transparency (TBM and ATUM)",
+  "tag": "See what each service costs, and when it needs more",
+  "story": "Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week:",
+  "prim": "Forecast demand",
+  "own": "Avery Chen",
+  "ow": {
+   "o": "Avery Chen",
+   "b": "Priya Shah"
+  },
+  "r": [
+   "cost_allocation",
+   "business_service",
+   "cmdb_ci"
+  ],
+  "w": [
+   "cost_allocation"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "fin",
+   "portfolio",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "kcs_viz",
+  "label": "Dashboards: Build a chart",
+  "g": "r15hid",
+  "formal": "Visualization builder",
+  "tag": "Draw any chart from a measure someone owns",
+  "story": "19 saved visuals on 3 dashboards, 97 chart types including geographic coverage, incident maps and silhouette charts, and a builder that takes any data model table, metric series, a CSV or a 100,000 po",
+  "prim": "New visual",
+  "own": "Anil Mehta",
+  "ow": {
+   "o": "Anil Mehta",
+   "b": "Rosa Delgado"
+  },
+  "r": null,
+  "w": null,
+  "pers": 11,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "ops",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit",
+   "emp",
+   "newhire"
+  ],
+  "st": 6
+ },
+ {
+  "id": "ppm_wbs",
+  "label": "Tasks and work breakdown",
+  "g": "plan",
+  "formal": "WBS and task sheet",
+  "tag": "WBS and task sheet",
+  "story": "269 lines across 5 projects: 179 tasks, 26 milestones and 64 summaries. 1 project forecast later than baseline, most of all Standards at 7 work days late. Change a duration or a link and every depende",
+  "prim": "New task",
+  "own": "Priya Shah",
+  "ow": {
+   "o": "Priya Shah",
+   "b": "Sam Patel"
+  },
+  "r": [
+   "project",
+   "person"
+  ],
+  "w": [
+   "wbs_line"
+  ],
+  "pers": 8,
+  "persList": [
+   "exec",
+   "fin",
+   "pm",
+   "portfolio",
+   "change",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ },
+ {
+  "id": "zevt",
+  "label": "Events and rules",
+  "g": "plat",
+  "formal": "Event catalog, rules, dry run and firing log",
+  "tag": null,
+  "story": "97 events, 59 enabled rules, coverage 99%. 122 firings in the log.",
+  "prim": "New rule",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Yuki Tanaka"
+  },
+  "r": [
+   "event_definition",
+   "event_rule",
+   "approval"
+  ],
+  "w": [
+   "event_definition",
+   "event_rule"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 6
+ },
+ {
+  "id": "zl_conn",
+  "label": "Connections and gaps",
+  "formal": "",
+  "tag": null,
+  "story": "99 connectivity score. 303 findings in 15 of 104 checks; 7 of 9651 cross-module references do not resolve. Round 14 build: 1031 findings, 329 unresolved references, score 92.",
+  "prim": "Re-run the audit",
+  "own": "Rina Okafor",
+  "ow": {
+   "o": "Rina Okafor",
+   "b": "Marcus Reid"
+  },
+  "r": [
+   "project",
+   "incident",
+   "change_request",
+   "business_service",
+   "invoice",
+   "person"
+  ],
+  "w": [
+   "connectivity_finding"
+  ],
+  "pers": 4,
+  "persList": [
+   "exec",
+   "arch",
+   "admin",
+   "audit"
+  ],
+  "st": 5
+ }
+]

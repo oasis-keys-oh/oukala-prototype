@@ -72,7 +72,13 @@ const tryv=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 function sig(){return tryv(()=>[Object.keys(PROC.defs).length,MODMAP.modules.length,Object.keys(METRICS).length,Object.keys(DATAMODEL.tables).length,C.rev,G_()?G_().apps().length:0,PROCLIB.stats().processes].join("|"),"x")}
 function searchIdx(){const k=SEARCHX.length+"|"+C.rev;if(SIDX&&SIDXK===k)return SIDX;const recs=[];SEARCHX.forEach(fn=>{try{(fn()||[]).forEach(r=>recs.push({t:String(r.t||"").toLowerCase(),k:String(r.k||"").toLowerCase(),g:r.g}))}catch(e){}});SIDX=recs;SIDXK=k;return recs}
 function searchCount(f){const q=SIDXQ(f);return q}
-function SIDXQ(f){const recs=searchIdx(),nm=String(f.name||"").toLowerCase(),id=String(f.id).toLowerCase();let n=0;const re=new RegExp("(^|[^a-z0-9_])"+id.replace(/[^a-z0-9_]/g,"\\$&")+"([^a-z0-9_]|$)");recs.forEach(r=>{if(r.g==="Feature contract")return;if((nm.length>=4&&r.t===nm)||re.test(r.k)||(nm.length>=9&&r.t.indexOf(nm)>=0))n++});return n}
+let _TOK=null,_TOKK="";
+function tokIdx(){const recs=searchIdx(),k=recs.length+"|"+SIDXK;if(_TOK&&_TOKK===k)return _TOK;const tk=new Map(),tt=new Map(),ok=[];recs.forEach((r,i)=>{if(r.g==="Feature contract")return;ok.push(i);const seen=new Set();r.k.split(/[^a-z0-9_]+/).forEach(w=>{if(w&&!seen.has(w)){seen.add(w);let a=tk.get(w);if(!a)tk.set(w,a=[]);a.push(i)}});if(r.t){let a=tt.get(r.t);if(!a)tt.set(r.t,a=[]);a.push(i)}});_TOK={tk,tt,ok,recs};_TOKK=k;return _TOK}
+function SIDXQ(f){const T=tokIdx(),nm=String(f.name||"").toLowerCase(),id=String(f.id).toLowerCase();const hit=new Set();
+ if(/^[a-z0-9_]+$/.test(id)){(T.tk.get(id)||[]).forEach(i=>hit.add(i))}else{const re=new RegExp("(^|[^a-z0-9_])"+id.replace(/[^a-z0-9_]/g,"\\$&")+"([^a-z0-9_]|$)");T.ok.forEach(i=>{if(re.test(T.recs[i].k))hit.add(i)})}
+ if(nm.length>=4)(T.tt.get(nm)||[]).forEach(i=>hit.add(i));
+ if(nm.length>=9)T.ok.forEach(i=>{if(!hit.has(i)&&T.recs[i].t.indexOf(nm)>=0)hit.add(i)});
+ return hit.size}
 function ctx(){
  const k=sig();if(CX&&CXK===k)return CX;
  const x={covS:{},covM:{},pByMod:{},pById:{},modOf:null,feats:[],byName:{}};

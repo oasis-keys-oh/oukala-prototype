@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');const path=require('path');const dir=path.resolve('out_b14');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();p.on('pageerror',e=>console.log('ERR',e.message));
+await p.goto('file://'+dir+'/full.html',{waitUntil:'commit',timeout:90000});await p.waitForTimeout(9000);
+await p.evaluate(()=>{DRAW.open('dbg');const D=DRAW,d=D.ST.doc;const A=D.addShape(d,'start',60,200),R=D.addShape(d,'task',200,190,{n:'Request'}),P=D.addShape(d,'approval',430,190,{n:'Approval'}),E=D.addShape(d,'end',700,200);D.addConn(d,A.id,R.id,'r','l');D.addConn(d,R.id,P.id,'r','l');D.addConn(d,P.id,E.id,'r','l');D.paint();DRAW.fit();});
+await p.waitForTimeout(600);
+console.log(await p.evaluate(()=>['aistep','notification','task'].map(t=>{const e=document.querySelector(`[data-dr-pi="${t}"]`);const r=e.getBoundingClientRect();return t+' '+Math.round(r.x)+','+Math.round(r.y)+' '+Math.round(r.width)+'x'+Math.round(r.height)+' open='+(e.closest('details')&&e.closest('details').open)}).join(' | ')));
+const m=await p.evaluate(()=>{const d=DRAW.ST.doc,c=d.conns[1];const m=DRAW.midPt(d,c,.28);const r=document.querySelector('#drSvg').getBoundingClientRect(),S=DRAW.ST;return[r.left+S.px+m[0]*S.k,r.top+S.py+m[1]*S.k]});
+await p.mouse.click(m[0],m[1]);await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>{const a=document.activeElement;return a.tagName+'#'+a.id+'.'+a.className+' selC='+DRAW.ST.selC}));
+await p.keyboard.press('Enter');await p.waitForTimeout(400);console.log('mini',await p.locator('.dr-mini').count());await b.close()})();

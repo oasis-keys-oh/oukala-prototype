@@ -1,0 +1,6 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:+process.argv[3]||400,height:820},colorScheme:'dark'})).newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(1500);
+await p.addStyleTag({content:'*,*::before,*::after{animation:none!important;transition:none!important}'});
+await p.evaluate(()=>go('home'));await p.waitForTimeout(500);
+console.log(await p.evaluate(()=>{const tb=document.querySelector('.topbar');const o=['topbar '+JSON.stringify(tb.getBoundingClientRect().toJSON()).slice(0,80)+' scrollW='+document.documentElement.scrollWidth+' pad='+getComputedStyle(tb).padding+' gap='+getComputedStyle(tb).gap];[...tb.querySelectorAll(':scope>*,.tb-right>*')].forEach(c=>{const r=c.getBoundingClientRect();o.push(c.tagName+'.'+c.className.toString().slice(0,26)+' x='+Math.round(r.left)+' w='+Math.round(r.width)+' disp='+getComputedStyle(c).display)});return o.join('\n')}));await b.close()})();

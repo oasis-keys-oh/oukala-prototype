@@ -1,0 +1,3 @@
+draw_studio 5 [{"k":"S","fam":"BUTTON.dr-prow","n":3,"idx":0,"d":10,"el":"dr-pn"},{"k":"S","fam":"BUTTON.dr-prow","n":3,"idx":0,"d":10,"el":"dr-pn"},{"k":"S","fam":"BUTTON.dr-prow","n":3,"idx":0,"d":10,"el":"dr-pn"},{"k":"S","fam":"BUTTON.dr-prow","n":3,"idx":0,"d":10,"el":"dr-pn"}]
+r15d_firstweek 2 [{"k":"S","fam":"DIV.","n":2,"idx":2,"d":19,"el":"muted"},{"k":"S","fam":"DIV.","n":2,"idx":2,"d":19,"el":"muted"}]
+TOTAL findings 7 on 2 screens

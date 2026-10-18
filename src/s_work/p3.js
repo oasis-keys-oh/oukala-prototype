@@ -1,0 +1,25 @@
+const L=require('./load.js');
+(async()=>{const {b,p}=await L();
+const r=await p.evaluate(()=>{
+ const o={};
+ const sh=(x,n=500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ o.map=sh(NAVX.map,600); o.mapkeys=Object.keys(NAVX.map).length;
+ o.label=sh(NAVX.label('bud_over'));
+ o.hint=sh(NAVX.hint('bud_over'));
+ o.OWNXkeys=Object.keys(OWNX).join(',');
+ o.ORGXkeys=Object.keys(ORGX).join(',');
+ o.PROCLIBkeys=Object.keys(PROCLIB).join(',');
+ o.ATLASkeys=Object.keys(ATLAS).join(',');
+ o.MODMAPkeys=Object.keys(MODMAP).join(',');
+ o.METRICSn=Object.keys(METRICS).length;
+ o.EVENTSkeys=Object.keys(EVENTS).join(',');
+ o.PERMkeys=Object.keys(PERM).join(',');
+ o.PERSONASkeys=sh(PERSONAS,400);
+ o.DATAMODELkeys=Object.keys(DATAMODEL).join(',');
+ o.LISTSkeys=Object.keys(LISTS).join(',');
+ o.STOREkeys=Object.keys(STORE).join(',');
+ o.GUARDkeys=Object.keys(GUARD).join(',');
+ o.AGENTSkeys=Object.keys(AGENTS).join(',');
+ o.AGENTS_STATEkeys=Object.keys(AGENTS_STATE).join(',');
+ return o});
+console.log(JSON.stringify(r,null,1));await b.close()})();

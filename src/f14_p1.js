@@ -1,0 +1,5 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]);const id=process.argv[3];const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await(await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(1500);
+await p.evaluate(i=>go(i),id);await p.waitForTimeout(700);
+console.log(await p.evaluate(()=>{const out=[];document.querySelectorAll('#view .grid.g2').forEach(g=>{const k=[...g.children];if(k.length<2)return;out.push(k.map(c=>{const cs=getComputedStyle(c);const r=c.getBoundingClientRect();return c.className.toString().slice(0,30)+' as='+cs.alignSelf+' h='+Math.round(r.height)+' ca='+(c.dataset.ca||'')+' disp='+cs.display+' top='+Math.round(r.top)}).join(' || ')+' ## gridAI='+getComputedStyle(g).alignItems+' cols='+getComputedStyle(g).gridTemplateColumns)});return out.join('\n')}));await b.close()})();

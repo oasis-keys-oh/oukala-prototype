@@ -1,0 +1,1 @@
+(()=>{const m=MODMAP.modules[5];const o={m:Object.assign({},m),keys:Object.keys(MODMAP),n:MODMAP.modules.length};try{const e=CONTRACT.evaluate(m.id);o.ev=e}catch(x){o.ev=String(x)}o.pl=PROCLIB.forModule(m.id).length;o.f=MODMAP.flows[0];return o})()

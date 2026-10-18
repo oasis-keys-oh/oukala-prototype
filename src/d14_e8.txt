@@ -1,0 +1,1 @@
+(()=>{const m=MEETINGS.find(x=>x.agenda&&x.agenda.length&&x.minutes);return JSON.stringify({id:m&&m.id,ag:m&&m.agenda.slice(0,2),min:m&&String(JSON.stringify(m.minutes)).slice(0,300),n:MEETINGS.length})})()

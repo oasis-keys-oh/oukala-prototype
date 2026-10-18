@@ -1,0 +1,13 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+path.resolve('out_s14/full.html'),{waitUntil:'commit',timeout:90000});await p.waitForTimeout(7000);
+const info=(sel)=>p.evaluate(sel=>{const e=document.querySelector(sel);if(!e)return 'none '+sel;const cs=getComputedStyle(e),r=e.getBoundingClientRect();const par=e.parentElement,pc=getComputedStyle(par);return JSON.stringify({cls:e.className&&e.className.baseVal!==undefined?e.className.baseVal:e.className,id:e.id,pos:cs.position,ov:cs.overflow,r:[r.x,r.y,r.width,r.height].map(Math.round),par:par.className+'|'+pc.position+'|'+pc.overflow,kids:[...e.children].map(c=>c.tagName+'.'+(c.className.baseVal!==undefined?c.className.baseVal:c.className)).slice(0,10)})},sel);
+const go=async(f)=>{await p.evaluate(f);await p.waitForTimeout(900)};
+await go(()=>go('org_chart'));console.log('org',await info('#orgvp'));
+await go(()=>{S.v.mm_v=0;go('plat_map')});console.log('mm',await info('[data-mm-vp]'));
+await go(()=>{S.v.atlas=0;go('plat_data')});console.log('at',await info('[data-at-vp]'));
+await go(()=>{go('draw_studio');});console.log('dr',await info('#drSvg'), await info('.dr-canvas, .dr-stage, .dr-main'));
+await go(()=>{go('flw_design');FLOWX.open('wf_inv')});console.log('wf',await info('#wfdCanvas'),await info('.wfd-canvaswrap'));
+await go(()=>go('vault'));console.log('kg',await info('.gx-wrap canvas, canvas'));
+console.log(errs);await b.close()})();

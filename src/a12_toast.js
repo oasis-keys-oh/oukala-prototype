@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const p=await (await b.newContext({viewport:{width:1440,height:950}})).newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
+await p.goto('file://'+process.cwd()+'/out_a/full.html');await p.waitForTimeout(900);
+await p.evaluate(()=>{S.persona='exec';INBOX.simNow()});await p.waitForTimeout(600);
+await p.screenshot({path:'shots_a/toast.png',fullPage:false});
+await p.click('.inbx-nlink');await p.waitForTimeout(500);
+console.log('panel open',await p.evaluate(()=>document.getElementById('inbxPanel').matches(':popover-open')));
+await p.evaluate(()=>{INBOX.openFocus()});await p.waitForTimeout(300);await p.keyboard.press('Escape');await p.waitForTimeout(300);
+console.log('focus open after esc',await p.evaluate(()=>document.getElementById('inbxFocus').matches(':popover-open')));
+console.log(errs);await b.close()})();

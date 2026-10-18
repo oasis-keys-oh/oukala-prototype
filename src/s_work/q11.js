@@ -1,0 +1,11 @@
+ const o={};const sh=(x,n=1500)=>{try{return JSON.stringify(x).slice(0,n)}catch(e){return 'err'}};
+ const L=EVENTS.list();o.n=L.length;o.e0=sh(L[0],500);
+ const cat={};L.forEach(e=>{const k=e.module||e.cat||e.category||'?';cat[k]=(cat[k]||0)+1});o.byModule=sh(cat,1800);
+ o.rules=EVENTS.rules.length;const ra={};EVENTS.rules.forEach(r=>(r.then||[]).forEach(a=>ra[a.action]=(ra[a.action]||0)+1));o.ruleActions=sh(ra);o.r0=sh(EVENTS.rules[0],600);
+ o.rulesOn=EVENTS.rules.filter(r=>r.enabled).length;
+ o.cov=sh(EVENTS.coverage(),500);o.logN=EVENTS.log.length;
+ o.lifecycle=sh(L.filter(e=>/^(person|vacancy|status|position)\./.test(e.id)).map(e=>e.id));
+ o.decision=sh(L.filter(e=>/decision|approval/.test(e.id)).map(e=>e.id).slice(0,20));
+ o.workflow=sh(L.filter(e=>/^(workflow|wf|step|run)/.test(e.id)).map(e=>e.id).slice(0,20));
+ o.ids=sh(L.map(e=>e.id).slice(0,100),3000);
+ return o;

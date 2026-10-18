@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto('file://'+path.resolve('out_c14/full.html'));await p.waitForTimeout(1500);
+const r=await p.evaluate(()=>{const o={};
+o.cat=window.REQREG&&0;
+o.navmap=NAVX.map&&NAVX.map.svc_portal;o.navmapk=Object.keys(NAVX.map).filter(k=>/svc/.test(k)).map(k=>k+":"+JSON.stringify(NAVX.map[k]).slice(0,120));
+o.ents=PLAT.entities().filter(e=>/catalog|request_item|^approval$|person|audit_event|notification/.test(e.id)).map(e=>e.id+"|"+e.domain+"|"+(e.source||""));
+o.ldoms=ATLAS.domains&&ATLAS.domains.map?ATLAS.domains.map(d=>d.id||d):Object.keys(ATLAS);
+o.cover=typeof COVER+" "+(COVER.recs&&COVER.recs.length)+" "+JSON.stringify(COVER.recs&&COVER.recs[0]);
+o.proclibFam=PROCLIB.list().slice(0,3).map(p=>JSON.stringify(p).slice(0,300));
+o.matCaps=MAT&&Object.keys(MAT).slice(0,40);
+o.say=typeof say;
+return o});
+console.log(JSON.stringify(r,null,1));await b.close()})();

@@ -1,0 +1,4 @@
+## svc_sla 2
+    sla-dg |tab3 | 02:00 | bg 1/7 (color(srgb 0.447348 0.446777 0.218421 / 0.785412) "Fri 16:00 14 h")
+    sla-dg |tab3 | 08:00 | bg 2/7 (row "Tue 16:00 3.3 days" | row "Tue 16:00 2.3 days")
+total flagged columns 2 dark 1440

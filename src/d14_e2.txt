@@ -1,0 +1,9 @@
+(()=>{const T=(f)=>{try{return f()}catch(e){return 'ERR '+e.message}};const s=(v,n)=>String(JSON.stringify(v)).slice(0,n||200);const o={};
+o.FINcolors=T(()=>s(FIN.colors,200));o.FINgates=T(()=>s(FIN.gates,200));o.FINlines=T(()=>typeof FIN.lines);o.FINrules=T(()=>s(FIN.rules,150));
+o.DEPTS=T(()=>s(BUDX.DEPTS));o.doa=T(()=>s(BUDX.B().doa[0]));o.xf=T(()=>s(BUDX.B().xf));
+o.domains=T(()=>s(ORGX.domains&&ORGX.domains[0]));o.byDomain=T(()=>s(ORGX.byDomain('budget'),300));o.people=T(()=>s(ORGX.people&&ORGX.people[0]));o.agents=T(()=>s(ORGX.agents&&ORGX.agents()[0],200));
+o.meet=T(()=>s(MEETINGS[0]));o.series=T(()=>s(MEETX.series&&MEETX.series()[0],200));o.dir=T(()=>s(DIR[0]));o.dir2=T(()=>s(DIR.find(d=>d.kind==='ai')));
+o.proc=T(()=>s(PROCLIB.get(PROCLIB.list()[0].id),500));o.inc=T(()=>s(ITSMX.incidents&&ITSMX.incidents[0]));o.demand=T(()=>s(DEMAND[0]));o.raid=T(()=>s(typeof SCALE.raid==='function'&&SCALE.raid()[0]));
+o.scaleOn=T(()=>SCALE.on);o.ent=T(()=>s(PLAT.ent('budget_line'),400));o.atl=T(()=>Object.keys(ATLAS).join());o.nodes=T(()=>s(NODES[0],200));o.KGN=T(()=>s(KGN[0],200));
+o.person360=T(()=>typeof person360);o.recDrawer=T(()=>typeof recDrawer);o.openDrawer=T(()=>typeof openDrawer);o.views=T(()=>Object.keys(S.v||{}).join());
+return o})()
