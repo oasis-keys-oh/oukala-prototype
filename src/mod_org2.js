@@ -22,8 +22,8 @@ function buildTree(){seedCollapse();
  const aiMode=mode==="ai"||mode==="aionly";const keep=n=>!aiMode||(ag[n]&&ag[n].length)||O.kids(n).some(keep);
  const total=n=>{let t=0;const g=x=>O.kids(x).forEach(k=>{t++;g(k)});g(n);return t};
  const node=n=>{const p=O.P(n),col=!!OS.collapsed[n]&&!fo.has(n);const nd={id:n,t:"h",p,kids:[],col};
-  if(!col){O.kids(n).filter(keep).forEach(k=>nd.kids.push(node(k)));if(mode!=="human")(ag[n]||[]).forEach(a=>nd.kids.push({id:"ag:"+a.name,t:"a",a,kids:[]}));if(!aiMode&&O.vacFor)O.vacFor(n).forEach(v=>nd.kids.push(O.vacNode(v)))}
-  const nv=(!aiMode&&O.vacFor)?O.vacFor(n).length:0;nd.nKids=O.kids(n).filter(keep).length+nv;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0)+nv:0;nd.nAg=(ag[n]||[]).length;
+  if(!col){O.kids(n).filter(keep).forEach(k=>nd.kids.push(node(k)));if(mode!=="human")(ag[n]||[]).forEach(a=>nd.kids.push({id:"ag:"+a.name,t:"a",a,kids:[]}));if(!aiMode&&O.vacFor)O.vacFor(n).forEach(v=>nd.kids.push(O.vacNode(v)));if(!aiMode&&OS.props&&O.propFor)O.propFor(n).forEach(pr=>nd.kids.push({id:"pp:"+pr.id,t:"p",pr,kids:[]}))}
+  const np=(!aiMode&&OS.props&&O.propFor)?O.propFor(n).length:0;const nv=((!aiMode&&O.vacFor)?O.vacFor(n).length:0)+np;nd.nKids=O.kids(n).filter(keep).length+nv;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0)+nv:0;nd.nAg=(ag[n]||[]).length;
   nd.hit=!!q&&hit(p,q);nd.dim=(filtersOn()&&!match(p))||(!!q&&!nd.hit&&false);nd.ctx=mode==="aionly"&&!nd.nAg;return nd};
  return node(root)}
 const CW=232,CH=88,GX=18,GY=56,PAD=28;
@@ -51,6 +51,7 @@ function loadOf(n){try{return workload(n).pct}catch(e){return 60}}
 function cardHTML(c,sel){
  const pos=`left:${c.x}px;top:${c.y}px;width:${CW}px;height:${CH}px`;
  if(c.t==="v"&&O.vacCard)return O.vacCard(c,pos);
+ if(c.t==="p"&&O.propCard)return O.propCard(c,pos);
  if(c.t==="a"&&O.agCard)return O.agCard(c,pos);
  if(c.t==="a"){const a=c.a,L=O.LVL[a.autonomy];
   return `<div class="org-n org-ag ${a.status!=="running"?"off":""}" data-oid="${H(c.id)}" style="${pos}"><button type="button" class="org-card ag is-agent" data-org-agent="${H(a.name)}" aria-label="${H(AD(a.name).full)}, AI agent sponsored by ${H(a.sponsor)}, ${H(L.n)}, ${a.status}">${hexAv(a.name,32)}<span class="org-t" data-noag><b>${H(AD(a.name).first)}</b><small>${H(AD(a.name).title||L.short)} · AI</small><span class="org-m org-aim">${aiChip2("AI")}<span class="org-sp" title="Sponsor: ${H(a.sponsor)}">Sponsor: ${H(a.sponsor)}</span></span></span><i class="org-st ${a.status==="running"?"good":a.status==="paused"?"warn":"bad"}" title="${H(a.status)}"></i></button></div>`}
@@ -63,6 +64,7 @@ function chartInner(o){
 /* outline: the accessible, phone-friendly view of the same tree */
 function outline(nd,lvl){
  if(nd.t==="v"&&O.vacOutline)return O.vacOutline(nd.v);
+ if(nd.t==="p"&&O.propOutline)return O.propOutline(nd.pr);
  if(nd.t==="a"&&O.agOutline)return O.agOutline(nd.a);
  if(nd.t==="a"){const a=nd.a;return `<li role="treeitem" class="org-ol-a"><button type="button" class="org-ol is-agent" data-org-agent="${H(a.name)}">${hexAv(a.name,26)}<span><b>${H(a.name)} ${aiChip2("AI")}</b><small>Sponsor ${H(a.sponsor)} · ${H(O.LVL[a.autonomy].n)} · ${a.status}</small></span></button></li>`}
  const p=nd.p,l=loadOf(p.n);const hasK=nd.nKids||nd.nAg;
@@ -86,7 +88,7 @@ function chartPane(){
  ${OS.outline?`<div class="card glass org-outline"><ul role="tree" aria-label="Organization outline">${outline(o.root)}</ul></div>`:`<div class="org-wrap card glass"><div class="org-vp" id="orgvp" tabindex="0" role="group" aria-label="Org chart. Drag to pan, use the buttons or plus and minus to zoom, arrow keys to move."><div class="org-cv" id="orgcv" style="width:${o.W}px;height:${o.H}px">${chartInner(o)}</div></div>
   <div class="org-zoom" role="group" aria-label="Zoom"><button type="button" class="btn" data-org-z="in" aria-label="Zoom in">+</button><button type="button" class="btn" data-org-z="out" aria-label="Zoom out">−</button><button type="button" class="btn" data-org-z="fit">Fit</button><button type="button" class="btn" data-org-z="reset">Top</button></div>
   <div class="org-hint muted small">Drag to pan. Ctrl or Command with scroll to zoom. Cards open the person profile.</div></div>`}
- <div class="org-lg">${legend([["Solid line: reports to","--ink"],["Dashed: dotted-line (functional) report","--accent"],["Long dash: project matrix lead","--warn-f"],["Dashed violet line: AI teammate, sponsored by the person above","--r17t-ai"],["Thin dotted line: the team the AI teammate serves","--r17t-ai"]])}</div>`}
+ <div class="org-lg">${legend([["Solid line: reports to","--ink"],["Dashed: dotted-line (functional) report","--accent"],["Long dash: project matrix lead","--warn-f"],["Dashed violet line: AI teammate, sponsored by the person above","--r17t-ai"],["Thin dotted line: the team the AI teammate serves","--r17t-ai"]].concat(OS.props?[["Dashed card: a recommended agent or robot, proposed and not built","--accent"]]:[]))}</div>`}
 /* ---------- pan and zoom (direct DOM, no re-render) ---------- */
 let LAST=null;
 /* ---------- connectors: one SVG path per edge, from the REAL rendered rects (parent bottom-center to child top-center via a bus in the gap) ---------- */
@@ -105,7 +107,7 @@ function drawLines(){const cv=document.getElementById("orgcv");if(!cv||!LAST)ret
   out.push(`<path class="org-ln ${e.k==="line"?"":e.k}${e.k==="ag"&&O.agLine?" "+O.agLine(e.t):""}" data-from="${H(e.f)}" data-to="${H(e.t)}" data-k="${e.k}" d="${d}"/>`);if(e.k==="ag"&&O.agLabel)out.push(O.agLabel(b.x+b.w/2,b.y-8));
   if(pts&&e.k!=="line")pts.forEach(q=>out.push(`<circle class="org-dotend ${e.k}" cx="${q[0]}" cy="${q[1]}" r="3.5"/>`))});
  svg.innerHTML=out.join("")}
-O.drawLines=drawLines;
+O.drawLines=drawLines;O.chartPane=()=>chartPane();
 
 function applyT(){const cv=document.getElementById("orgcv");if(!cv)return;cv.style.transform=`translate(${OS.x}px,${OS.y}px) scale(${OS.k})`;const z=document.querySelector(".org-zoom");if(z)z.dataset.k=Math.round(OS.k*100)}
 function vp(){return document.getElementById("orgvp")}
@@ -116,7 +118,7 @@ function zoomAt(f,cx,cy){const v=vp();if(!v)return;const r=v.getBoundingClientRe
 O.cam={get:()=>({k:OS.k||1,x:OS.x||0,y:OS.y||0,W:LAST?LAST.W:0,H:LAST?LAST.H:0,vw:(vp()||{}).clientWidth||0,vh:(vp()||{}).clientHeight||0}),set:(x,y)=>{OS.x=x;OS.y=y;applyT()},zoomAt:(f,cx,cy)=>zoomAt(f,cx,cy),fit:()=>fit(false),min:.1,max:1.6};
 function paintChart(){const cv=document.getElementById("orgcv");if(!cv){render();return}LAST=layout();cv.style.width=LAST.W+"px";cv.style.height=LAST.H+"px";cv.innerHTML=chartInner(LAST);drawLines();applyT()}
 function mount(){
- if(S.screen!=="org_chart"||OS.tab!=="chart"||OS.outline)return;const v=vp();if(!v)return;LAST=layout();drawLines();
+ if(!((S.screen==="org_chart"&&OS.tab==="chart")||(O.embed&&O.embed()))||OS.outline)return;const v=vp();if(!v)return;LAST=layout();drawLines();
  if(!OS.k||OS.k<=0)fit(true);else applyT();
  if(OS.q){const q=OS.q.toLowerCase(),m=O.staff.find(p=>hit(p,q));const c=m&&LAST.by[m.n];if(c){OS.x=Math.round(v.clientWidth/2-(c.x+CW/2)*OS.k);OS.y=Math.round(v.clientHeight/3-c.y*OS.k);applyT()}}}
 const _ca=window.coreAfter;window.coreAfter=function(){if(_ca)_ca.apply(this,arguments);try{mount()}catch(e){console.error("org mount",e)}};

@@ -57,3 +57,18 @@
 /* ---- VibeCheck click-through ---- */
 .stu-demo .stu-dnx{background:var(--ink);color:var(--bg);font-weight:800;padding-inline:20px}
 .stu-clk{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+
+/* whole process panel on the Process map */
+.jpm-n.is-sel rect{stroke:var(--accent);stroke-width:3}
+.jpm-flow{margin-top:14px;padding:14px 16px}
+.jpm-fh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.jpm-fh h3{margin:2px 0 0;font:500 20px var(--f-disp,inherit)}
+.jpm-fw{position:relative;margin-top:8px}
+.jpm-fw .wfd-lanelab{position:absolute;left:8px;top:6px;font-size:11px;color:var(--muted)}
+.jpm-fw .wfd-edges{position:absolute;left:0;top:0;pointer-events:none}
+.jpm-fw .wfd-edges .vis{stroke:var(--muted);stroke-width:1.6}
+.jpm-fw .wfd-node{text-align:left;font:inherit;cursor:pointer;color:inherit}
+
+.jb-plan{margin:8px 0 12px;padding:10px 14px;border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent);border-radius:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.jb-pl{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--accent);color:#fff}.jb-pl.d{background:var(--muted)}
+.jb-act .btn.on{outline:2px solid var(--accent)}

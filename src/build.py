@@ -22,6 +22,10 @@ css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.cs
 js="\n".join(js)
 BR=json.load(open('brand.json'));NAME=BR['name'];OLD=BR['replace']
 js=js.replace(OLD,NAME);css=[c.replace(OLD,NAME) for c in css]
+MK=BR.get('mark','')
+if MK and MK.lower() in NAME.lower():
+    _i=NAME.lower().index(MK.lower());WM=NAME[:_i]+'<i class="wm-ai">'+NAME[_i:_i+len(MK)]+'</i>'+NAME[_i+len(MK):]
+    js=js.replace('<b>'+NAME+'</b><small>','<b class="wm">'+WM+'</b><small>')
 FAV='<link rel="icon" type="image/png" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/favicon.png','rb').read()).decode()+'"><link rel="apple-touch-icon" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/apple-touch-icon.png','rb').read()).decode()+'">'
 BOOTLOGO='<img alt="" width=56 height=56 style="display:block;margin:0 auto 10px;border-radius:14px" src="data:image/webp;base64,'+base64.b64encode(open('assets/brand/logo.webp','rb').read()).decode()+'">'
 html=f'<title>{NAME}</title>{FAV}\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script>\n{js}\n</script>\n'
