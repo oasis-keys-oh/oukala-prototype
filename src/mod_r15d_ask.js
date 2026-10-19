@@ -21,7 +21,7 @@ const fallback=q=>sayA(q,"I cannot answer that from the records I can read. "+(r
 function metricByText(q){const t=toks(q);if(!t.length)return null;let best=null,bs=0;Object.keys(METRICS).forEach(id=>{const m=METRICS[id];const h=norm(m.n+" "+id.replace(/^m_/,"").replace(/_/g," "));let s=0;t.forEach(w=>{if(h.indexOf(w)>=0)s++});if(s>bs&&s>=Math.max(1,Math.ceil(t.length*.7))){bs=s;best=id}});return best}
 function agentByText(q){const l=norm(q);return G(()=>AGENTS_STATE.rows(),[]).find(a=>l.indexOf(a.name.toLowerCase())>=0||(a.first&&l.indexOf(a.first.toLowerCase()+" ")>=0)||l.indexOf(a.display.toLowerCase())>=0)||null}
 function personByText(q){const l=norm(q);return G(()=>DIR.filter(d=>!d.generated).find(d=>l.indexOf(d.name.toLowerCase())>=0),null)}
-function incByText(q){const m=q.match(/\b(INC\d+|CHG\d+|PRB\d+|RITM\d+|REQ\d+)\b/i);const id=m?m[1].toUpperCase():null;const incs=G(()=>S.itsm.inc,[])||[];
+function incByText(q){const m=q.match(/\b(INC\d+|CHG\d+|PRB\d+|SR\d+|REQ\d+)\b/i);const id=m?m[1].toUpperCase():null;const incs=G(()=>S.itsm.inc,[])||[];
  if(id&&incs.find(i=>i.id===id))return {k:"incident",r:incs.find(i=>i.id===id)};
  const chg=G(()=>S.itsm.chg,[])||[];if(id&&chg.find(i=>i.id===id))return {k:"change",r:chg.find(i=>i.id===id)};
  const t=toks(q);if(t.length){const f=incs.find(i=>t.every(w=>norm(i.t||i.title||"").indexOf(w)>=0));if(f)return {k:"incident",r:f}}return null}

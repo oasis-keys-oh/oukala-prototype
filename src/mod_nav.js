@@ -352,7 +352,7 @@ document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
 function withCtx(ctx,fn,self,args){const prev=CTX;CTX=ctx;try{return fn.apply(self,args)}finally{CTX=prev}}
 function drawerTitle(d){let t="";const hs=qa("h1,h2,h3,.ftitle",d);for(const h of hs){if(h.closest(".dctl"))continue;t=(h.textContent||"").replace(/\s+/g," ").trim();if(t)break}
  if(!t){const e=d.querySelector(".eyebrow");t=e?(e.textContent||"").replace(/\s+/g," ").trim():""}return t.slice(0,120)}
-const TYPEPAT=[[/\bINC\d+/,"Incident"],[/\bCHG\d+/,"Change"],[/\bPRB\d+/,"Problem"],[/\b(RITM|REQ)\d+/,"Request"],[/\bINV-\d+/,"Invoice"],[/\bPR\d\b/,"Project"],[/\bKB\d+|\bKB-\d+/,"Article"],[/\bRX\d+/,"RAID item"],[/\bSOW\b|\bCTR?-?\d+/,"Contract"],[/\bRB-?\d+/,"Runbook"],[/\bSLO-?\d+/,"SLO"],[/\bREL-?\d+/,"Release"],[/\bDEM-?\d+|\bD\d{3}\b/,"Demand"]];
+const TYPEPAT=[[/\bINC\d+/,"Incident"],[/\bCHG\d+/,"Change"],[/\bPRB\d+/,"Problem"],[/\b(SR|REQ)\d+/,"Request"],[/\bINV-\d+/,"Invoice"],[/\bPR\d\b/,"Project"],[/\bKB\d+|\bKB-\d+/,"Article"],[/\bRX\d+/,"RAID item"],[/\bSOW\b|\bCTR?-?\d+/,"Contract"],[/\bRB-?\d+/,"Runbook"],[/\bSLO-?\d+/,"SLO"],[/\bREL-?\d+/,"Release"],[/\bDEM-?\d+|\bD\d{3}\b/,"Demand"]];
 function guessType(title,attrs,d){const hay=title+" "+Object.values(attrs||{}).join(" ");for(const p of TYPEPAT){if(p[0].test(hay))return p[1]}
  const e=d&&d.querySelector(".eyebrow, .pill");const et=e?(e.textContent||"").replace(/\s+/g," ").trim():"";if(et&&et.length<=28&&!/^(close|full screen)/i.test(et))return et.replace(/^\W+|\W+$/g,"");return "Record"}
 function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return (h>>>0).toString(36)}

@@ -94,7 +94,7 @@ TEAMS|Teams|ppl_org|ppl_org|12|organization_unit|new|TEAMS
 HOLIDAYS|Holidays|ppl_cap,svc_oncall|ppl_cap|7|setting|alias|HOLIDAYS
 SKILLS|Skill claims|svc_skills|svc_skills|203|skill_claim|direct|SKILLS
 SVCREG|Business services|svc_360|svc_360|16|business_service|direct|SVCREG
-CIREG|Configuration items|itom_cmdb,itom_graph,itom_disc,itom_health,itom_model|itom_cmdb|45|cmdb_ci|direct|CIREG
+CIREG|Configuration items|itom_cmdb,itom_graph,itom_disc,itom_health,itom_model|itom_cmdb|45|config_item|direct|CIREG
 PPMRAID|Project RAID items|ppm_raid|ppm_raid|21|raid_item|direct|PPMRAID
 REQREG|Requests|svc_req,svc_portal|svc_req|240|request_item|direct|REQREG
 SVC_ASSETS|Hardware and software assets|svc_asset|svc_asset|140|asset|direct|SVC_ASSETS
@@ -368,7 +368,7 @@ function gaps(){const c=coverage();const k=_ck+"|"+Object.keys(RUNTIME).length;i
   else if(m.state==="proposed"&&m.owned.some(id=>(PLAT.ent(id)||{}).proposed)){push({kind:"Module",sev:"Info",title:m.name+" depends on proposed entities",mod:m.id,target:{type:"module",id:m.id},action:"Approve the proposed entities this module relies on ("+m.owned.filter(id=>(PLAT.ent(id)||{}).proposed).slice(0,3).join(", ")+").",owner:"Data council chair"})}});
  c.screens.forEach(s=>{if(s.state==="gaps")s.missing.forEach(x=>push({kind:"Screen record",sev:"High",title:s.name+": "+x.r.label+" ("+x.r.path+") is not in the model",mod:x.r.mod,target:{type:"screen",id:s.id},action:"Define an entity for these "+(cnt(x.r))+" records or map them to "+(x.r.ent||"an existing entity")+".",owner:"Registry steward"}))});
  c.flows.forEach(x=>{if(x.state==="none")push({kind:"Flow",sev:"Medium",title:x.f.from+" to "+x.f.to+": "+x.f.data+" has no entity",mod:x.f.from,target:{type:"module",id:x.f.from},action:"Add the entity this flow carries in the process map.",owner:"Process governance lead"})});
- c.entities.forEach(x=>{if(!x.hasOwner&&x.e.id.indexOf("cmdb_ci")!==0)push({kind:"Entity owner",sev:"Medium",title:x.e.label+" has no owning module",target:{type:"entity",id:x.e.id},action:"Name the module that writes it, or retire the entity.",owner:x.e.steward});
+ c.entities.forEach(x=>{if(!x.hasOwner&&x.e.id.indexOf("config_item")!==0)push({kind:"Entity owner",sev:"Medium",title:x.e.label+" has no owning module",target:{type:"entity",id:x.e.id},action:"Name the module that writes it, or retire the entity.",owner:x.e.steward});
   if(x.def>0)push({kind:"Field labels",sev:x.def>x.fields/2?"Medium":"Low",title:x.e.label+": "+x.def+" of "+x.fields+" fields carry a default label",target:{type:"entity",id:x.e.id},action:"The Registry Agent proposed labels from field names; "+x.e.steward+" confirms them.",owner:x.e.steward,confirm:x.e.id,fieldsDefault:x.def})});
  c.missing.forEach(p=>push({kind:"Undefined entity",sev:"Low",title:p[2]+" is planned but not defined",target:{type:"planned",id:p[0]},action:WHYNOT[p[0]]||"Define it from the first module that needs it.",owner:p[3]}));
  c.entities.filter(x=>x.e.proposed).forEach(x=>push({kind:"Proposed",sev:"Info",title:x.e.label+" is proposed and waits for approval",target:{type:"entity",id:x.e.id},action:"Review the fields, then approve to make it live.",owner:x.e.steward,approve:x.e.id}));

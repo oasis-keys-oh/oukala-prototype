@@ -104,7 +104,7 @@ const SUBS=[
  {id:"s_plan",n:"Portfolio plan",pat:["project_task","project"],mode:"Push (webhook)",lag:"0.9 s",dl:0,st:"healthy"},
  {id:"s_exec",n:"Executive dashboard",pat:["project","project_task","invoice"],mode:"Push (webhook)",lag:"1.4 s",dl:0,st:"healthy"},
  {id:"s_sla",n:"Agreements and SLA engine",pat:["incident","alert_event"],mode:"Push (webhook)",lag:"0.7 s",dl:0,st:"healthy"},
- {id:"s_obs",n:"Observability correlation",pat:["alert_event","cmdb_ci"],mode:"Stream consumer",lag:"0.4 s",dl:1,st:"degraded"},
+ {id:"s_obs",n:"Observability correlation",pat:["alert_event","config_item"],mode:"Stream consumer",lag:"0.4 s",dl:1,st:"degraded"},
  {id:"s_fo",n:"First Officer notifications agent",pat:["*"],mode:"Stream consumer",lag:"2.1 s",dl:0,st:"healthy"},
  {id:"s_p360",n:"Person 360",pat:["person","time_off"],mode:"Pull on open",lag:"n/a",dl:0,st:"healthy"},
  {id:"s_mcp",n:"Registry MCP cache",pat:["*"],mode:"Stream consumer",lag:"1.1 s",dl:0,st:"healthy"},

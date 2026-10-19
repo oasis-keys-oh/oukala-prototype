@@ -152,7 +152,7 @@ addEntity({id:"change",label:"Change",table:"change_request",rsh:"change",forms:
  list:()=>arr(G(()=>ITSMX.changes,[])).map(c=>c.id),get:chgRaw,idOf:r=>r.id,
  flat:c=>rx({id:c.id,title:c.t,type:c.type,service:c.svc,environment:c.env,cost:NUM(c.cost),state:c.st,new_state:c.st,start:c.start,end:c.end,owner:c.own,requester:c.req,project:c.proj||"",open_tasks:openTasks(c),outcome:c.out||"",group:c.grp||""},c),
  setters:{title:(r,v)=>{r.t=v},owner:(r,v)=>{r.own=v},cost:(r,v)=>{r.cost=+v||0},environment:(r,v)=>{r.env=v}},hook:"_rules"});
-addEntity({id:"ci",label:"Configuration item",table:"cmdb_ci",rsh:"",forms:["itom_ret"],
+addEntity({id:"ci",label:"Configuration item",table:"config_item",rsh:"",forms:["itom_ret"],
  fields:[F("id","ID"),F("name","Name"),F("class","Class","choice"),F("service","Service","choice",{src:"services"}),F("environment","Environment","choice"),F("status","Status","choice"),F("lifecycle","Lifecycle","choice",{opts:["Planned","Operational","Retired"].map(x=>[x,x])}),F("owner","Owner","person"),F("group","Support group","choice",{src:"teams"}),F("criticality","Criticality","choice"),F("dependents","Dependent items","number"),F("reason","Reason given","choice"),F("acknowledged","Risk acknowledged","bool")],
  list:()=>arr(G(()=>CMDBX.all(),[])).map(c=>c.id),get:id=>G(()=>CMDBX.all().find(c=>c.id===id),null),idOf:r=>r.id,
  flat:c=>rx({id:c.id,name:c.name,class:c.class,service:G(()=>svName(c.svc),c.svc||""),environment:c.env,status:c.status,lifecycle:c.life,owner:c.owner||"",group:c.grp||"",criticality:c.crit||"",dependents:G(()=>CMDBX.impact(c.id).cis,0)},c),

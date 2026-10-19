@@ -77,7 +77,7 @@ D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#r15GrpPop
 
 /* =========================================================  6. TOASTS  ========================================================= */
 const TST={n:0};
-const APPR=/approv|waiting for|awaiting|RITM\d|sign.?off/i;
+const APPR=/approv|waiting for|awaiting|SR\d|sign.?off/i;
 function dismiss(t){if(!t||t.dataset.gone)return;t.dataset.gone=1;t.classList.add("out");setTimeout(()=>t.remove(),380)}
 function toast2(msg,kind,opt){opt=opt||{};kind=kind||"good";msg=String(msg==null?"":msg);
  let box=q1("#toasts");if(!box){box=D.createElement("div");box.id="toasts";D.body.appendChild(box)}box.setAttribute("aria-live","polite");box.setAttribute("role","status");

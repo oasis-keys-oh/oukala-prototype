@@ -290,7 +290,7 @@ function ensureState(){
  const TP=TPL0().map(t=>{t.svc=svM(t.svc);t.cis=t.cis.map(ciM);return t});
  const mi=MI0();mi.roles={ic:"Tom Becker",tech:"Sam Patel",comms:"",scribe:""};mi.tl=mi.tl.map(e=>[e[0],e[1]==="Ops Agent"?"Triage Agent":e[1],e[2],e[3]]);
  Object.assign(X,{inc:INCS,histI:HISTI.map(h=>Object.assign({},h,{svc:svM(h.svc)})),prb:PR,ke:KE,kb:KB,chg:CH,tpl:TP,mi,tasks:TASK0.slice(),kq:"",cm:"2026-10",sel:null,seq:{inc:418,prb:13,chg:324,ke:12,kb:220,t:9002,comm:4,pol:20,ap:12},ctype:"",cst:"",ovlog:[{id:"INC0407",from:3,to:2,by:"Avery Chen",role:"Service owner",why:"The payment export feeds Friday's AP run.",at:"Oct 6 09:40",appr:""}],fsel:{pid:"PRB0010",leaf:""},apsel:"",req:[
-  {id:"RITM0231",t:"Standards beta access for 12 editors",st:"good",svc:"Standards Platform"},{id:"RITM0244",t:"Increase mailbox size for the Board secretary",st:"info",svc:"Email and collaboration (M365)"},{id:"RITM0252",t:"New laptop for incoming analyst",st:"mute",svc:"Endpoint management (Intune)"}]});
+  {id:"SR0231",t:"Standards beta access for 12 editors",st:"good",svc:"Standards Platform"},{id:"SR0244",t:"Increase mailbox size for the Board secretary",st:"info",svc:"Email and collaboration (M365)"},{id:"SR0252",t:"New laptop for incoming analyst",st:"mute",svc:"Endpoint management (Intune)"}]});
 }
 ensureState();
 

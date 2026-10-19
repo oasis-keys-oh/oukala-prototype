@@ -86,7 +86,7 @@ function lookupRec(id){if(!id)return null;const X=S.itsm||{};let r;
  if(/^INC/.test(id)&&(r=(X.inc||[]).find(i=>i.id===id)))return{id,type:"Incident",t:r.t,sub:r.svc+" · "+r.st,svc:r.svc,go:()=>{go("itsm_inc")}};
  if(/^CHG/.test(id)&&(r=(X.chg||[]).find(i=>i.id===id)))return{id,type:"Change",t:r.t,sub:r.svc+" · "+r.st,svc:r.svc,go:()=>go("itsm_chg")};
  if(/^PRB/.test(id)&&(r=(X.prb||[]).find(i=>i.id===id)))return{id,type:"Problem",t:r.t,sub:r.svc+" · "+r.st,svc:r.svc,go:()=>go("itsm_prb")};
- if(/^RITM/.test(id)){r=(window.REQREG||[]).find(i=>i.id===id);if(r)return{id,type:"Request",t:G(()=>(r.vals&&(r.vals.title||r.vals.model||r.vals.name))||r.item,r.item),sub:r.service+" · "+(r.state||""),svc:r.service,go:()=>{go("svc_req");G(()=>svcOpenRequest(id))}};r=ST.reqs.find(i=>i.id===id);if(r)return{id,type:"Request",t:r.title,sub:r.svc+" · "+r.state,svc:r.svc,go:()=>go("svc_req")}}
+ if(/^SR/.test(id)){r=(window.REQREG||[]).find(i=>i.id===id);if(r)return{id,type:"Request",t:G(()=>(r.vals&&(r.vals.title||r.vals.model||r.vals.name))||r.item,r.item),sub:r.service+" · "+(r.state||""),svc:r.service,go:()=>{go("svc_req");G(()=>svcOpenRequest(id))}};r=ST.reqs.find(i=>i.id===id);if(r)return{id,type:"Request",t:r.title,sub:r.svc+" · "+r.state,svc:r.svc,go:()=>go("svc_req")}}
  if(/^KB/.test(id)&&(r=(X.kb||[]).find(i=>i.id===id)))return{id,type:"Article",t:r.t,sub:r.svc,svc:r.svc,go:()=>go("kcs_home")};
  if(/^R-\d/.test(id)&&(r=(window.PPMRAID||[]).find(i=>i.id===id)))return{id,type:"RAID item",t:r.n,sub:r.p+" · "+r.s,go:()=>go("ppm_raid")};
  if(/^PR\d/.test(id)&&(r=PROJ.find(p=>p.id===id)))return{id,type:"Project",t:r.n,sub:"Owner "+r.owner,go:()=>go("plan",id)};
@@ -94,7 +94,7 @@ function lookupRec(id){if(!id)return null;const X=S.itsm||{};let r;
  if(/^SLA-/.test(id)){r=G(()=>SLAX.AGS().find(a=>a.id===id));if(r)return{id,type:"SLA",t:r.n,sub:r.ty+" · "+r.tbl,go:()=>go("svc_sla")}}
  return null}
 CX.lookupRec=lookupRec;
-const REC_RE=/\b(INC\d{4,6}|CHG\d{4,6}|PRB\d{4,6}|RITM\d{5,8}|KB\d{4}|SLA-[A-Z0-9-]+|R-\d{3}|MSF-\d{5})\b/;
+const REC_RE=/\b(INC\d{4,6}|CHG\d{4,6}|PRB\d{4,6}|SR\d{5,8}|KB\d{4}|SLA-[A-Z0-9-]+|R-\d{3}|MSF-\d{5})\b/;
 function trackDrawer(){const d=$("#drawer");if(!d)return;let txt="";try{txt=d.textContent.slice(0,700)}catch(e){}
  const h=d.querySelector(".p360h h2");if(h){ST.lastPerson={name:h.textContent.trim(),at:Date.now()};ST.lastRec={id:"person:"+h.textContent.trim(),person:h.textContent.trim(),type:"Person",t:h.textContent.trim(),sub:"Person 360",at:Date.now(),screen:S.screen};return}
  const m=REC_RE.exec(txt);if(m){const r=lookupRec(m[1]);ST.lastRec={id:m[1],type:r?r.type:"Record",t:r?r.t:m[1],sub:r?r.sub:"",at:Date.now(),screen:S.screen}}}
@@ -270,7 +270,7 @@ function submitOrder(p,c,o){o=o||{};const it=CATX[p.item||"laptop"],cost=orderCo
  const title=({laptop:(p.model||"Laptop")+(p.monitor?" and monitor":""),phone:p.model||"Phone",software:p.title||"Software",monitor:p.model||"Monitor",access:(p.system||"System")+" ("+(p.level||"Read")+")"})[p.item||"laptop"];
  let id=null;if(typeof window.svcCreateReq==="function"){try{const r=window.svcCreateReq(p.item==="laptop"?"Laptop":p.item,Object.assign({},p),ME_NAME,tg);if(r&&r.ok!==false){const c0=typeof r==="object"?(r.id||r.number||(r.rec&&r.rec.id)):r;id=typeof c0==="string"&&c0?c0:null}}catch(e){}}
  const viaReal=!!id;const gates=(o.gates||orderGates(p)).map(g=>({who:g.who,why:g.why,st:"pending"}));
- const r={id:id||("RITM00"+(90000+ST.reqs.length+1)),item:p.item,title,svc:it.svc,by:ME_NAME,for:tg,state:gates.length?"Approvals":"Fulfillment",cost,gates,log:[{t:clock(),tx:"Submitted from chat by "+ME_NAME+(tg!==ME_NAME?" on behalf of "+tg:"")}],created:Date.now(),eta:it.eta,vals:p,via:viaReal?"service catalog pipeline":"chat catalog (mirrors the pipeline rules)",thread:cur().id};
+ const r={id:id||("SR00"+(90000+ST.reqs.length+1)),item:p.item,title,svc:it.svc,by:ME_NAME,for:tg,state:gates.length?"Approvals":"Fulfillment",cost,gates,log:[{t:clock(),tx:"Submitted from chat by "+ME_NAME+(tg!==ME_NAME?" on behalf of "+tg:"")}],created:Date.now(),eta:it.eta,vals:p,via:viaReal?"service catalog pipeline":"chat catalog (mirrors the pipeline rules)",thread:cur().id};
  if(gates.length)r.log.push({t:clock(),tx:"Approvals requested from "+gates.map(g=>g.who).join(", ")});else r.log.push({t:clock(),tx:"No approval needed. Sent to fulfillment."});
  if(!viaReal){ST.reqs.unshift(r);G(()=>{S.itsm.req.unshift({id:r.id,t:r.title+" for "+tg,st:gates.length?"info":"good",svc:r.svc})})}
  return r}
@@ -294,9 +294,9 @@ T({id:"request.order",name:"Order a catalog item",cat:"Fulfillment",desc:"Render
  undo:u=>{const i=ST.reqs.findIndex(x=>x.id===u.id);if(i>=0){const r=ST.reqs[i];r.state="Cancelled";r.log.push({t:clock(),tx:"Cancelled from chat (undo)"});G(()=>{const x=S.itsm.req.findIndex(y=>y.id===u.id);if(x>=0)S.itsm.req.splice(x,1)})}return"Cancelled "+u.id}});
 
 T({id:"request.status",name:"Check request status",cat:"Fulfillment",desc:"Finds a request and shows where it is, who it is sitting with, how much of its SLA is used and what happens next.",perm:"read",write:false,risk:"low",confirm:"never",
- kw:[[/\b(where is|status of|what.?s happening|track|waiting on|who has|who is it with|sitting with|stuck|any update)\b.{0,40}\b(request|ritm|laptop|order|onboarding|phone|access|approval)/,6],[/\bRITM\d{5,8}\b/i,4],[/\bwho('?s| is| has)\b.{0,20}\b(it|that|my)\b.{0,15}\b(with|sitting)/,5],[/\bmy (open )?requests\b/,5]],
- inputs:[{k:"rec",label:"Request",type:"rec",ph:"RITM0010441 (optional)"},{k:"who",label:"For",type:"person"}],
- prefill:(E,q,c)=>({rec:E.ids.RITM||(c.rec&&/^RITM/.test(c.rec.id)?c.rec.id:""),who:E.persons[0]||c.subj||""}),
+ kw:[[/\b(where is|status of|what.?s happening|track|waiting on|who has|who is it with|sitting with|stuck|any update)\b.{0,40}\b(request|ritm|laptop|order|onboarding|phone|access|approval)/,6],[/\bSR\d{5,8}\b/i,4],[/\bwho('?s| is| has)\b.{0,20}\b(it|that|my)\b.{0,15}\b(with|sitting)/,5],[/\bmy (open )?requests\b/,5]],
+ inputs:[{k:"rec",label:"Request",type:"rec",ph:"SR0010441 (optional)"},{k:"who",label:"For",type:"person"}],
+ prefill:(E,q,c)=>({rec:E.ids.SR||(c.rec&&/^SR/.test(c.rec.id)?c.rec.id:""),who:E.persons[0]||c.subj||""}),
  run:(p,c)=>{const tg=p.who||c.subj||ME_NAME;let list=[];const real=G(()=>window.REQREG,[]);if(p.rec){const a=real.find(r=>r.id===p.rec),b=ST.reqs.find(r=>r.id===p.rec);if(a)list.push({real:a});if(b)list.push({mine:b})}
   else{real.filter(r=>(r.requester===tg||r.for===tg||r.onBehalfOf===tg)&&!/delivered|decommissioned|deployed|rejected|cancel/.test(r.state||"")).slice(0,4).forEach(r=>list.push({real:r}));ST.reqs.filter(r=>(r.for===tg||r.by===tg)&&r.state!=="Delivered"&&r.state!=="Cancelled").forEach(r=>list.push({mine:r}))}
   if(!list.length)return{ok:true,summary:"No open requests found for "+tg,card:{t:"result",tone:"mute",title:"No open requests",sub:tg+" has nothing in flight. You can order something from here.",btns:[{l:"Order a laptop",d:"ask:Order a laptop for "+tg}]}};
@@ -313,14 +313,14 @@ function decide(p,verdict){const tg=p.on||p.who||targetOf(p,ctxNow());const pend
  return{ok:true,summary:x.r.id+" "+verdict+" for "+tg,rec:{type:"Request",id:x.r.id,go:()=>go("svc_req")},undo:{k:"gate",id:x.r.id,i:x.i},card:{t:"tracker",id:x.r.id}}}
 T({id:"request.approve",name:"Approve a request",cat:"Fulfillment",desc:"Approves a pending approval for you or, with a verified delegation, for the person you act for. Never your own request.",perm:"request.approve",write:true,risk:"medium",confirm:"ask",
  kw:[[/\bapprove\b/,6],[/\b(sign off|okay|ok) (on |the )?(request|ritm)/,4]],neg:[/\b(auto|rule|invoice)\b/],
- inputs:[{k:"rec",label:"Request",type:"rec",ph:"RITM… (optional: the oldest waiting)"},{k:"on",label:"Approve as",type:"person",help:"You, or someone who delegated to you"},{k:"note",label:"Note",type:"text"}],
- prefill:(E,q,c)=>({rec:E.ids.RITM||(c.rec&&/^RITM/.test(c.rec.id)?c.rec.id:""),on:E.persons[0]||c.subj||ME_NAME}),
+ inputs:[{k:"rec",label:"Request",type:"rec",ph:"SR… (optional: the oldest waiting)"},{k:"on",label:"Approve as",type:"person",help:"You, or someone who delegated to you"},{k:"note",label:"Note",type:"text"}],
+ prefill:(E,q,c)=>({rec:E.ids.SR||(c.rec&&/^SR/.test(c.rec.id)?c.rec.id:""),on:E.persons[0]||c.subj||ME_NAME}),
  preview:p=>{const tg=p.on||ME_NAME,n=pendingFor(tg).length;return n?"<b>"+n+"</b> approval"+(n>1?"s":"")+" waiting on "+H(tg)+". "+(tg!==ME_NAME?"You act as a delegate, which is logged.":""):"Nothing is waiting on "+H(tg)+"."},
  run:p=>decide(p,"approved"),undo:u=>{const r=ST.reqs.find(x=>x.id===u.id);if(r&&r.gates[u.i]){r.gates[u.i].st="pending";r.state="Approvals";r.log.push({t:clock(),tx:"Approval undone from chat"})}return"Approval reopened on "+u.id}});
 T({id:"request.reject",name:"Reject a request",cat:"Fulfillment",desc:"Rejects a pending approval with a reason. Delegation aware.",perm:"request.approve",write:true,risk:"medium",confirm:"ask",
  kw:[[/\b(reject|decline|deny|turn down)\b/,6]],neg:[/invoice/],
  inputs:[{k:"rec",label:"Request",type:"rec"},{k:"on",label:"Reject as",type:"person"},{k:"note",label:"Reason",type:"text",req:true}],
- prefill:(E,q,c)=>({rec:E.ids.RITM||"",on:E.persons[0]||c.subj||ME_NAME}),run:p=>decide(p,"rejected"),
+ prefill:(E,q,c)=>({rec:E.ids.SR||"",on:E.persons[0]||c.subj||ME_NAME}),run:p=>decide(p,"rejected"),
  undo:u=>{const r=ST.reqs.find(x=>x.id===u.id);if(r&&r.gates[u.i]){r.gates[u.i].st="pending";r.state="Approvals"}return"Rejection reopened"}});
 
 /* ---- 4. AI token limit ---- */
@@ -518,7 +518,7 @@ T({id:"chat.subject",name:"Act on behalf of someone",cat:"Chat control",desc:"Se
  inputs:[{k:"who",label:"Person (empty to stop)",type:"person"}],prefill:(E,q)=>({who:/stop acting|switch back|clear/i.test(q)?"":(E.persons[0]||"")}),
  run:p=>{setSubject(p.who||null);if(!p.who)return{ok:true,summary:"You are acting for yourself again",card:{t:"result",tone:"good",title:"Acting for yourself",sub:"The subject person was cleared."}};const dl=delegation(p.who);return{ok:true,summary:"Acting on behalf of "+p.who+(dl.verified?" (delegation verified)":" (not verified, read only)"),card:{t:"banner",who:p.who,dl}}}});
 T({id:"chat.attach",name:"Attach to the context",cat:"Chat control",desc:"Adds a record, service, CI or project to this thread's context pack.",perm:"read",write:false,risk:"low",confirm:"never",
- kw:[[/\b(attach|add|include|pin)\b.{0,25}\b(context|chat|thread|this conversation)\b/,8],[/\b(attach)\b/,5]],inputs:[{k:"what",label:"What",type:"text",req:true}],prefill:(E,q)=>({what:(E.ids.INC||E.ids.CHG||E.ids.PRB||E.ids.RITM||(E.svc&&E.svc.n)||q.replace(/^(attach|add|include|pin)\s+/i,"").replace(/\s+(to|in|into)\s+(the\s+)?(context|chat|thread).*$/i,""))}),
+ kw:[[/\b(attach|add|include|pin)\b.{0,25}\b(context|chat|thread|this conversation)\b/,8],[/\b(attach)\b/,5]],inputs:[{k:"what",label:"What",type:"text",req:true}],prefill:(E,q)=>({what:(E.ids.INC||E.ids.CHG||E.ids.PRB||E.ids.SR||(E.svc&&E.svc.n)||q.replace(/^(attach|add|include|pin)\s+/i,"").replace(/\s+(to|in|into)\s+(the\s+)?(context|chat|thread).*$/i,""))}),
  run:p=>{const w=String(p.what);let item=null;const r=lookupRec(w);if(r)item={k:r.type.toLowerCase(),id:w,label:w+" "+String(r.t).slice(0,40)};else{const s=svcByText(w);if(s)item={k:"service",id:s.id,label:s.n};else{const ci=CIREG.find(x=>w.toLowerCase().indexOf(x.name.toLowerCase())>=0);if(ci)item={k:"ci",id:ci.id,label:ci.name};else{const pj=PROJ.find(x=>w.toLowerCase().indexOf(x.n.toLowerCase())>=0||w===x.id);if(pj)item={k:"project",id:pj.id,label:pj.id+" "+pj.n}}}}
   if(!item)return{ok:false,error:"I could not find “"+w+"” to attach."};attach(item);return{ok:true,summary:"Attached "+item.label,card:{t:"result",tone:"good",title:"Attached to this thread",sub:item.label}}}});
 T({id:"chat.mode",name:"Set the autonomy mode",cat:"Chat control",desc:"Suggest only, ask before acting, or act within guardrails. Per thread.",perm:"read",write:false,risk:"low",confirm:"never",
@@ -606,7 +606,7 @@ function findPersons(q){const l=q.toLowerCase();const hits=[];const seen={};
  PS().forEach(d=>{if(seen[d.name]||d.kind==="ai"||d.kind==="msp")return;const f=firstOf(d.name).toLowerCase();if(f.length<3||firsts[f]>1||NAME_STOP.indexOf(f)>=0)return;const m=new RegExp("\\b"+f+"(?:'s)?\\b").exec(l);if(m){seen[d.name]=1;hits.push([m.index,d.name])}});
  hits.sort((a,b)=>a[0]-b[0]);return hits.map(h=>h[1])}
 function ents(q){const l=q.toLowerCase();const E={persons:findPersons(q),ids:{},svc:svcByText(q),team:null,amount:null,num:null,date:null,date2:null,pri:null};
- [["INC",/\bINC\d{4,6}\b/i],["CHG",/\bCHG\d{4,6}\b/i],["PRB",/\bPRB\d{4,6}\b/i],["RITM",/\bRITM\d{5,8}\b/i],["PR",/\bPR\d{1,2}\b/],["KB",/\bKB\d{4}\b/i]].forEach(([k,re])=>{const m=re.exec(q);if(m)E.ids[k]=m[0].toUpperCase()});
+ [["INC",/\bINC\d{4,6}\b/i],["CHG",/\bCHG\d{4,6}\b/i],["PRB",/\bPRB\d{4,6}\b/i],["SR",/\bSR\d{5,8}\b/i],["PR",/\bPR\d{1,2}\b/],["KB",/\bKB\d{4}\b/i]].forEach(([k,re])=>{const m=re.exec(q);if(m)E.ids[k]=m[0].toUpperCase()});
  const am=/\$\s?([\d,]+(?:\.\d+)?)\s?(k|m)?\b/i.exec(q);if(am)E.amount=+am[1].replace(/,/g,"")*(/k/i.test(am[2]||"")?1e3:/m/i.test(am[2]||"")?1e6:1);
  const nm=/\b(\d{1,5})\s+(users?|people|editors?|staff|seats?|directors?|employees)\b/i.exec(q);if(nm)E.num=+nm[1];
  const pm=/\bP([1-4])\b/i.exec(q)||/\bsev(?:erity)?\s?([1-4])\b/i.exec(q);if(pm)E.pri=+pm[1];else if(/\bcritical\b/.test(l))E.pri=1;
@@ -616,7 +616,7 @@ CX.ents=ents;
 
 function scoreTools(q,c){const l=q.toLowerCase();const out=[];LIVE();
  TOOLS.forEach(t=>{if(t.int||!t.kw.length)return;let s=0,hit=[];t.kw.forEach(([re,w])=>{if(re.test(l)||re.test(q)){s+=w;hit.push(String(re).slice(1,24))}});if(!s)return;(t.neg||[]).forEach(re=>{if(re.test(l))s-=8});
-  if(c.rec){const r=c.rec.id;if(/^INC/.test(r)&&/^incident\./.test(t.id))s+=1.5;if(/^CHG/.test(r)&&/^change\./.test(t.id))s+=1.5;if(/^RITM/.test(r)&&/^request\./.test(t.id))s+=1.5}
+  if(c.rec){const r=c.rec.id;if(/^INC/.test(r)&&/^incident\./.test(t.id))s+=1.5;if(/^CHG/.test(r)&&/^change\./.test(t.id))s+=1.5;if(/^SR/.test(r)&&/^request\./.test(t.id))s+=1.5}
   if(S.screen==="svc_portal"&&t.id==="request.order")s+=1;if(S.screen==="itsm_inc"&&/^incident/.test(t.id))s+=.8;if(S.screen==="svc_oncall"&&/^oncall/.test(t.id))s+=1;if(S.screen==="ppm_wbs"&&t.id==="wbs.addtasks")s+=1;
   if(s>0)out.push({t,s,hit})});
  out.sort((a,b)=>b.s-a.s);return out}
@@ -643,7 +643,7 @@ const SUGG_BY_TOOL={"incident.create":["Show who is on call","Run impact analysi
 /* ================= the handler: one entry for chat, palette, slash commands ================= */
 const SLASH={"/onboard":q=>"onboard "+q,"/order":q=>"order "+q,"/status":q=>"what is the status of "+(q||"my requests"),"/approve":q=>"approve "+q,"/reject":q=>"reject "+q,"/explain":q=>"explain "+q,"/impact":q=>"run impact analysis on "+q,"/incident":q=>"log an incident: "+q,"/pto":q=>"request time off "+q,"/oncall":q=>"who is on call "+q,"/who":q=>"who can "+q,"/as":q=>"act on behalf of "+q,"/mode":q=>"set autonomy to "+q,"/attach":q=>"attach "+q+" to the context","/offboard":q=>"offboard "+q,"/chart":q=>"chart "+q,"/show":q=>"show me "+q,"/token":q=>"raise my token limit "+q};
 CX.SLASH=SLASH;
-const SLASH_HELP=[["/onboard Name as role starting date","Plan a full onboarding"],["/order laptop for Name","Inline catalog form"],["/status RITM… or me","Where it is and who has it"],["/approve RITM…","Approve for you or for who you act for"],["/explain how the P1 SLA is measured","Grounded answer with sources"],["/impact Standards Portal","Impact analysis"],["/incident text","Log an incident"],["/pto Oct 20 to Oct 24","Request time off"],["/oncall","Who is on call"],["/as Hana Koval","Act on behalf of someone"],["/mode act","Autonomy mode"],["/attach INC0412","Add to the context pack"],["/token to 60M","Raise a token limit"]];
+const SLASH_HELP=[["/onboard Name as role starting date","Plan a full onboarding"],["/order laptop for Name","Inline catalog form"],["/status SR… or me","Where it is and who has it"],["/approve SR…","Approve for you or for who you act for"],["/explain how the P1 SLA is measured","Grounded answer with sources"],["/impact Standards Portal","Impact analysis"],["/incident text","Log an incident"],["/pto Oct 20 to Oct 24","Request time off"],["/oncall","Who is on call"],["/as Hana Koval","Act on behalf of someone"],["/mode act","Autonomy mode"],["/attach INC0412","Add to the context pack"],["/token to 60M","Raise a token limit"]];
 CX.SLASH_HELP=SLASH_HELP;
 function handle(q0,o){o=o||{};let q=String(q0||"").trim();if(!q)return;if(CX.hook&&!o.nohook&&!/^\//.test(q)&&CX.hook(q,o)===true)return;const t=cur();CX.open&&CX.open("chat");
  if(/^\/(new|clear)$/.test(q)){newThread();CX.drawAll();return}
@@ -1293,7 +1293,7 @@ TOOLS.forEach(t=>{if(!t.prefill&&(t.inputs||[]).some(i=>i.k==="q"))t.prefill=(E,
 }
 
 /* ================= metrics, standard, process, screen ================= */
-STD.agentic={n:"Agentic AI governance",by:"NIST AI RMF, ISO/IEC 42001, ServiceNow AI Agents and Moveworks practice",d:"An AI agent plans with registered tools, shows the plan, asks a person before risky steps, stays inside written guardrails and leaves an audit trail with model, confidence and the policy that allowed each step."};
+STD.agentic={n:"Agentic AI governance",by:"NIST AI RMF and ISO/IEC 42001",d:"An AI agent plans with registered tools, shows the plan, asks a person before risky steps, stays inside written guardrails and leaves an audit trail with model, confidence and the policy that allowed each step."};
 const BASE={asks:40,deflect:29,tasks:22,done:19,steps:44,esc:3};
 function liveM(){const u=ST.use,a=BASE.asks+u.asks,d=BASE.deflect+u.deflect,t=BASE.tasks+u.tasks,dn=BASE.done+u.done,s=BASE.steps+u.steps,e=BASE.esc+u.esc;
  return{defl:Math.round(d/Math.max(1,a)*100),done:Math.round(dn/Math.max(1,t)*100),steps:Math.round(s/Math.max(1,t)*10)/10,esc:Math.round(e/Math.max(1,t)*100)}}

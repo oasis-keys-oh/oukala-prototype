@@ -19,15 +19,15 @@ const DOM={
  plat:{n:"Platform and integration",steward:"Platform lead",ent:[]}
 };
 const ensureDom=d=>{if(!DOM[d])DOM[d]={n:String(d).replace(/[_-]+/g," ").replace(/^./,c=>c.toUpperCase()),steward:"Data council chair",ent:[],dyn:true};return d};
-const CIFAM="cmdb_ci";
-const domOf=t=>{const tb=DATAMODEL.tables[t];if(tb&&tb.domain)return ensureDom(tb.domain);if(t.indexOf("cmdb_ci")===0)return"cmdb";if(/^fin_/.test(t))return"money";for(const k in DOM)if(DOM[k].ent.includes(t))return k;return"ops"};
+const CIFAM="config_item";
+const domOf=t=>{const tb=DATAMODEL.tables[t];if(tb&&tb.domain)return ensureDom(tb.domain);if(t.indexOf("config_item")===0)return"cmdb";if(/^fin_/.test(t))return"money";for(const k in DOM)if(DOM[k].ent.includes(t))return k;return"ops"};
 const STEW={person:"Head of People Operations",invoice:"Finance controller",incident:"Service desk manager",change_request:"Change manager",project:"PMO director",contract:"General counsel delegate"};
 const CLS_ORDER=["public","internal","confidential","restricted","personal"];
 const RET={fin:"7 years",people:"Employment plus 7 years",service:"5 years",ops:"13 months hot, 5 years cold",cmdb:"Life of item plus 3 years",portfolio:"7 years",agile:"3 years",agree:"7 years"};
 /* ---------- field-level metadata: authority, direction, freshness, class, quality rule ---------- */
 const hash=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%9973;return h};
 function fieldMeta(t,f){
- const k=f.k,ty=f.type||"string",dm=domOf(t),isCI=t.indexOf("cmdb_ci")===0;
+ const k=f.k,ty=f.type||"string",dm=domOf(t),isCI=t.indexOf("config_item")===0;
  let auth="platform",fresh="live",cls="internal",why="Created and edited in Oukala";let basis="default";
  if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why="Oukala work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
  else if(t==="time_off"){auth="external";fresh="hourly";why="HR system is authoritative"}
@@ -98,12 +98,12 @@ const FIXES=[
 ];
 /* ---------- apps: who reads and writes which entity ---------- */
 const APPS=[
- ["itsm_inc","Incidents","ITSM",["person","business_service","cmdb_ci","sla_definition","incident_priority_policy"],["incident","task_sla"]],
- ["itsm_chg","Changes","ITSM",["business_service","cmdb_ci","maintenance_window"],["change_request","change_approval_policy"]],
+ ["itsm_inc","Incidents","ITSM",["person","business_service","config_item","sla_definition","incident_priority_policy"],["incident","task_sla"]],
+ ["itsm_chg","Changes","ITSM",["business_service","config_item","maintenance_window"],["change_request","change_approval_policy"]],
  ["itsm_prb","Problems","ITSM",["incident","business_service"],["problem_record"]],
  ["svc_cat","Service catalog","Service catalog",["service_offering","person"],["catalog_item","catalog_task","request_item","fulfillment_step"]],
- ["itom_cmdb","CMDB","CMDB",["person"],["cmdb_ci","cmdb_rel_ci","business_service"]],
- ["itom_evt","Event management","Event management",["cmdb_ci","maintenance_window"],["alert_event","alert_rule","correlation_group","false_positive_feedback","maintenance_window"]],
+ ["itom_cmdb","CMDB","CMDB",["person"],["config_item","cmdb_rel_ci","business_service"]],
+ ["itom_evt","Event management","Event management",["config_item","maintenance_window"],["alert_event","alert_rule","correlation_group","false_positive_feedback","maintenance_window"]],
  ["itom_run","Automation","Automation",["alert_event","standard_change"],["automation_rule","runbook_execution","standard_change"]],
  ["obs_dash","Observability","Observability",["business_service"],["slo","synthetic_check","metric_series","dashboard","log_pattern"]],
  ["svc_sla","Agreements","Agreements",["incident","request_item","business_service"],["sla_definition","task_sla","xla_response"]],
@@ -128,11 +128,11 @@ const OVER={skill:{owner:"PPM"},skill_claim:{owner:"Skills database"}};
 function entities(){
  const T=DATAMODEL.tables,out=[];let ciDone=false;
  Object.keys(T).forEach(t=>{
-  const isCI=t.indexOf("cmdb_ci")===0;
+  const isCI=t.indexOf("config_item")===0;
   if(isCI&&t!==CIFAM){return}
   const v=T[t],dm=domOf(t),own=(OVER[t]&&OVER[t].owner)||v.source;
   const fx=FIXES.find(f=>f.ents.includes(t)),applied=fx&&S.plat.applied[fx.id];
-  const fam=isCI?Object.keys(T).filter(x=>x.indexOf("cmdb_ci")===0):null;
+  const fam=isCI?Object.keys(T).filter(x=>x.indexOf("config_item")===0):null;
   const fields=isCI?v.fields:v.fields;
   const readers=APPS.filter(a=>a.reads.includes(t)||(isCI&&a.reads.includes(CIFAM))).map(a=>a.id);
   const writers=APPS.filter(a=>a.writes.includes(t)||(isCI&&a.writes.includes(CIFAM))).map(a=>a.id);

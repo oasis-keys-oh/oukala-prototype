@@ -63,11 +63,35 @@ function byTypeTab(){const L=lines();const cats=G(()=>BUDX.CATS,[]);const rows=c
  return `<section class="card glass"><div class="cardhead"><div><h3>Spend by type</h3><span class="muted small">Labor, vendors, hardware, cloud and licences across all domains.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Type</th><th class="n">Lines</th><th class="n">Approved</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
 function ownersTab(){const o=owners();const rows=Object.keys(DOM).map(k=>`<tr><td><b>${H(DOM[k][0])}</b><small class="muted">${H(deptName(k))}</small></td><td>${H(G(()=>BUDX.DEPTS.find(d=>d[0]===k)[2],""))}</td><td><select class="fin" data-r18-owner="${k}" aria-label="Executive owner of ${H(DOM[k][0])}">${EXECS.map(e=>`<option ${e===o[k]?"selected":""}>${e}</option>`).join("")}</select></td><td>${H(EXEC_NAME[o[k]]||"")}</td></tr>`).join("");
  return `<section class="card glass"><div class="cardhead"><div><h3>Domains and owners</h3><span class="muted small">Reassign a domain and every view follows. Changes are written to the audit trail. An owner of several domains sees the combined total.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Domain</th><th>Cost centers</th><th>Executive owner</th><th>Name</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
-/* purview: CEO, COO and CFO see every domain; every other executive sees the domains they own. */
+/* purview: CEO, COO and CFO see every domain; every other executive sees the domains they own.
+   An executive who owns no domain (CHRO, CISO, CAIO, general counsel) sees their own budget lines plus the shared costs allocated to their function. */
 const ALLVIEW=["CEO","COO","CFO"];
-function screen(){let st=R18.spend.stats();const mine=me();const own=st.rows.filter(r=>r.exec===mine);const scoped=!!mine&&ALLVIEW.indexOf(mine)<0&&own.length>0;
- if(scoped){const A=sum(own,"appr"),F=sum(own,"fcst");st={A,F,v:varPct(F,A),rows:own,execs:[{exec:mine,rows:own,appr:A,fcst:F}],unowned:0};CUR={keys:new Set(own.map(r=>r.k))}}
- try{return screenBody(st,scoped)}finally{CUR=null}}
+function purview(){const st0=R18.spend.stats();const mine=me();const own=st0.rows.filter(r=>r.exec===mine);
+ const scoped=!!mine&&ALLVIEW.indexOf(mine)<0&&own.length>0;const none=!!mine&&ALLVIEW.indexOf(mine)<0&&own.length===0;
+ let st=st0;if(scoped){const A=sum(own,"appr"),F=sum(own,"fcst");st={A,F,v:varPct(F,A),rows:own,execs:[{exec:mine,rows:own,appr:A,fcst:F}],unowned:0}}
+ return{mine,scoped,none,own,st,all:st0}}
+R18.spend.purview=purview;
+function subtree(name){const seen=new Set();const walk=n=>{if(!n||seen.has(n))return;seen.add(n);G(()=>ORGX.kids(n),[]).forEach(k=>walk(k&&k.n||k))};walk(name);return seen}
+/* what a function without its own domain costs: direct lines plus shared technology split by headcount, against an even share of the enterprise */
+function allocModel(mine){const nm=EXEC_NAME[mine]||"";const m=model();const A=sum(m.rows,"appr"),F=sum(m.rows,"fcst");
+ const names=subtree(nm);const staff=G(()=>ORGX.staff,[]);const hc=Math.max(1,staff.filter(x=>names.has(x.n)).length);const total=Math.max(1,staff.length);const share=hc/total;
+ const L=lines().filter(l=>l.own&&names.has(l.own));const dA=sum(L,"appr"),dF=sum(L,"fcst");
+ const pool=m.pool||{appr:0,fcst:0};const aA=(pool.appr||0)*share,aF=(pool.fcst||0)*share;
+ return{nm,hc,total,share,A,F,L,dA,dF,aA,aF,totA:dA+aA,totF:dF+aF,evenF:F*share,evenA:A*share,poolF:pool.fcst||0}}
+R18.spend.alloc=allocModel;
+function allocBody(mine){const x=allocModel(mine);const row=(lab,sub,a,f)=>`<tr><td><b>${H(lab)}</b><small class="muted">${H(sub)}</small></td>${num(a)}${num(f)}<td class="n">${a?pill(fv(varPct(f,a)),tone(varPct(f,a))):""}</td></tr>`;
+ const diff=x.evenF?(x.totF-x.evenF)/x.evenF*100:0;
+ const body=row("Budget lines you own",x.L.length?x.L.length+" lines in your function":"No budget lines are owned by your function yet",x.dA,x.dF)
+  +row("Shared technology allocated to you","Cloud and licences, split by headcount: "+x.hc+" of "+x.total+" staff ("+(x.share*100).toFixed(1)+"%)",x.aA,x.aF)
+  +`<tr class="r18-sp-t"><td><b>Cost to run your function</b></td>${num(x.totA)}${num(x.totF)}<td class="n">${x.totA?pill(fv(varPct(x.totF,x.totA)),tone(varPct(x.totF,x.totA))):""}</td></tr>`
+  +row("An even per-head share of the enterprise","The enterprise forecast split by headcount, for comparison",x.evenA,x.evenF);
+ return `<div class="screen r18-screen">${hero("Budget and spend traceability · "+H(mine)+" purview","How your spend lines up with the enterprise allocations","Your function does not own a spending domain, so this shows what you own directly and the shared technology cost allocated to you by headcount, set against an even share of the enterprise. Allocation by headcount is a modeled working assumption, not a charge-back policy.")}
+ ${typeof kpiRow==="function"?kpiRow([["Your function",x.hc+" staff",(x.share*100).toFixed(1)+"% of the enterprise"],["Cost to run it",usd(x.totF),"forecast"],["Even per-head share",usd(x.evenF),"modeled"],["Against an even share",fv(diff),"modeled",{cls:diff>5?"warn":""}]]):""}
+ <section class="card glass"><div class="cardhead"><div><h3>Your spend against the enterprise allocation</h3><span class="muted small">Modeled. Direct lines are budget lines whose owner is in your reporting line. The shared pool is cloud and licence cost held in IT operations.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Component</th><th class="n">Approved</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${body}</tbody></table></div><p class="small muted">The enterprise totals stay with the chief executive, chief operating officer and chief financial officer.</p></section></div>`}
+function screen(){const pv=purview();
+ if(pv.none)return allocBody(pv.mine);
+ if(pv.scoped)CUR={keys:new Set(pv.own.map(r=>r.k))};
+ try{return screenBody(pv.st,pv.scoped)}finally{CUR=null}}
 function screenBody(st,scoped){const mine=me();const my=st.execs.find(e=>e.exec===mine);
  const note=my?`<section class="card glass r18-mine"><div class="eyebrow">Your domains</div><h3>${my.rows.length>1?"You own "+my.rows.map(r=>H(r.dom)).join(" and "):"You own "+H(my.rows[0].dom)}</h3><p>Forecast <b>${usd(my.fcst)}</b> against <b>${usd(my.appr)}</b> approved, ${pill(fv(varPct(my.fcst,my.appr)),tone(varPct(my.fcst,my.appr)))}. The rest of the enterprise is below.</p></section>`:"";
  const worst=st.rows.slice().sort((a,b)=>b.var-a.var)[0]||{dom:"",var:0};

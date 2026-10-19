@@ -4,8 +4,8 @@
 const W=window,D=document;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const CXO=["exec","ceo","cfo","coo","chro","ciso","caio","clo","cto"];
-const TOP=[["home","Home"],["exe_strat","Strategy alignment"],["ppl_jrny","Journey maps"],["exe_dash","Dashboard"],["orgdesign","Agent Action"],["r18_spend","Budget and spend traceability"]];
-const SV=[["r18_strategy","Strategy enablement"],["r18_lens","Executive lenses"],["metrics","Measures and targets"],["bud_ben","Benefits realization"],["trace","Trace goals to money and work"],["exe_risk","Risk heat map"],["exe_board","Board pack"]];
+const TOP=[["home","Home"],["exe_strat","Strategy alignment"],["ppl_jrny","Journey maps"],["exe_dash","Dashboard"],["orgdesign","Agent Action"],["bst","Budget and spend traceability"]];
+const SV=[["r18_strategy","Strategy enablement"],["r18_lens","Executive lenses"],["metrics","Measures and targets"],["bud_ben","Benefits realization"],["exe_risk","Risk heat map"],["exe_board","Board pack"]];
 function compose(raw){
  const root=D.createElement("div");root.innerHTML=raw;
  const find=id=>root.querySelector('[data-nx-it="'+id+'"]');

@@ -25,8 +25,8 @@ bud_doa|Delegation of authority|mon|CFO office|delegation of authority,doa,appro
 inv|Invoices|mon|Accounts payable lead|invoice,invoices,accruals,accrual||
 bud_ven|Vendors and contracts|mon|Procurement lead|vendor,vendors,contracts,procurement||
 ppm_sow|SOW and contracts|mon|General counsel delegate|sow,contract,statement of work,contract analyzer||
-tbm_model|Cost transparency|mon|TBM office|tbm,cost transparency,technology business management|cost_allocation,business_service,cmdb_ci|cost_allocation
-itom_fin|Cloud cost (FinOps)|mon|FinOps lead|finops,cloud cost,cloud|cmdb_ci|cost_allocation
+tbm_model|Cost transparency|mon|TBM office|tbm,cost transparency,technology business management|cost_allocation,business_service,config_item|cost_allocation
+itom_fin|Cloud cost (FinOps)|mon|FinOps lead|finops,cloud cost,cloud|config_item|cost_allocation
 agile_board|Sprints and backlogs|bld|Scrum masters|sprint,sprints,backlog,agile board,boards,agile||
 agile_art|Release trains|bld|Release train engineer|release train,release trains,art,safe||
 dev_pipe|Delivery pipeline|bld|Platform engineering lead|pipeline,delivery pipeline,deploy,deployment,ci/cd|pull_request,release,change_request|pull_request
@@ -43,9 +43,9 @@ svc_req|Requests|ops|Service desk manager|request,requests,fulfillment||
 svc_sla|SLAs|ops|Service level manager|sla,slas,olas,xla||
 svc_360|Service 360|ops|Service portfolio manager|service 360,service portfolio,services,business service|business_service,service_offering,cmdb_rel_ci|business_service
 itom_cmdb|CMDB|inf|Configuration manager|cmdb,configuration,ci,cis||
-itom_graph|Impact Explorer|inf|Configuration manager|dependency,dependencies,topology,dependency views|cmdb_rel_ci,cmdb_ci|
-itom_disc|Discovery|inf|Configuration manager|discovery|cmdb_ci|cmdb_ci
-itom_health|CMDB health|inf|Configuration manager|cmdb health,data quality|cmdb_ci|
+itom_graph|Impact Explorer|inf|Configuration manager|dependency,dependencies,topology,dependency views|cmdb_rel_ci,config_item|
+itom_disc|Discovery|inf|Configuration manager|discovery|config_item|config_item
+itom_health|CMDB health|inf|Configuration manager|cmdb health,data quality|config_item|
 svc_asset|Assets and licenses|inf|Asset manager|asset,assets,licenses,software licenses|contract,invoice|asset
 itom_evt|Event management|obs|Operations lead|event,events,alerts,event management||
 itom_slo|SLOs|obs|Reliability lead|slo,slos,observability,error budget|metric_series,business_service,incident|slo,synthetic_check
@@ -70,7 +70,7 @@ flw_design|Workflow designer|plt|Process governance lead|workflow designer,workf
 adm_sec|Admin and security|plt|Security lead|security,admin,access,rbac||
 adm_audit|Audit and compliance|plt|Compliance lead|audit,compliance||`;
 /* ---------- flows: from>to | data | entity.fields (; separated, - for none) | trigger | mode e/b/h | why ---------- */
-const FLOWS=`itom_cmdb>itsm_inc|Affected CI, owner and support group|cmdb_ci.name,owned_by,support_group,business_criticality|Caller names a service or an alert links a CI|e|Routes the ticket to the team that owns the CI without a phone call.
+const FLOWS=`itom_cmdb>itsm_inc|Affected CI, owner and support group|config_item.name,owned_by,support_group,business_criticality|Caller names a service or an alert links a CI|e|Routes the ticket to the team that owns the CI without a phone call.
 svc_360>itsm_inc|Business service, owner and tier|business_service.name,service_owner,tier|Service picked on the incident form|e|Tier and service owner set the priority and decide who is told.
 ppm_proj>itsm_inc|Affected project and its manager|project.id,name,manager,finish|The service has a live project depending on it|e|Shows which project deadline is at risk before anyone asks.
 svc_sla>itsm_inc|SLA clock, goal and schedule|sla_definition.target,goal,schedule|Priority is set or changes|e|Starts the response and resolution timers with the right targets.
@@ -95,11 +95,11 @@ itsm_inc>svc_360|Service impact and SLA breach|business_service.availability_30d
 itsm_inc>itsm_mi|Escalation to major incident|incident.number,priority,service,impact|Duty manager declares|h|Moves a serious incident onto the major incident bridge.
 itsm_inc>svc_oncall|Page acknowledgement and override|oncall_shift.person,tier,override|Page not acknowledged in 5 minutes|e|Escalates to the next tier automatically.
 itsm_inc>exe_dash|Open priority 1 and 2, time to restore|incident.priority,state,opened_at,resolved_at|Every 15 minutes|b|Executives see service health without asking.
-itsm_inc>itom_cmdb|CI status after a fault|cmdb_ci.operational_status|Incident resolved with a CI fault|e|Keeps the CI record true and flags fragile CIs.
+itsm_inc>itom_cmdb|CI status after a fault|config_item.operational_status|Incident resolved with a CI fault|e|Keeps the CI record true and flags fragile CIs.
 itsm_inc>itom_slo|Outage minutes against the error budget|slo.service,budget_left;incident.business_duration|Incident resolved|e|Burns the right error budget.
 itsm_inc>exe_risk|Operational risk exposure|raid_item.exposure;incident.priority|Daily roll up|b|Feeds the enterprise risk heat map.
 itsm_inc>chat_home|War room thread and live notes|-|Priority 1 raised|e|Opens one shared channel so updates are not scattered.
-itom_cmdb>itsm_prb|CI history and relationships|cmdb_ci.name,lifecycle_stage;cmdb_rel_ci.parent,child,type|Problem record opened|e|Shows what else shares the failing CI.
+itom_cmdb>itsm_prb|CI history and relationships|config_item.name,lifecycle_stage;cmdb_rel_ci.parent,child,type|Problem record opened|e|Shows what else shares the failing CI.
 itom_graph>itsm_prb|Dependency path to a shared cause|cmdb_rel_ci.parent,child,type|Analyst opens the impact view|h|Finds the common upstream CI behind several incidents.
 itom_evt>itsm_prb|Alert group and root-cause hypothesis|correlation_group.root_cause_ci,reason,alert_count|Alert group linked to a problem|e|Gives the analyst evidence for the root cause.
 itsm_chg>itsm_prb|Recent changes on the same CI|change_request.number,ci,end_date,close_code|Problem record opened|e|Tests whether a recent change caused the problem.
@@ -111,13 +111,13 @@ itsm_prb>port|Demand for a permanent fix|demand_request.title,service,cost,stage
 itsm_prb>ppm_raid|Risk of recurrence|raid_item.type,probability,impact|Known error without a fix date|e|Records the standing risk against the affected project.
 itsm_prb>svc_360|Open problems and repeat incidents|problem_record.service,state,repeat_incidents|Daily|b|Shows service health beyond uptime.
 itsm_prb>bud_over|Cost of recurring incidents for the business case|cost_allocation.driver,amount;problem_record.repeat_incidents|Fix proposed|e|Gives the funding decision a real cost of doing nothing.
-itsm_prb>itom_health|CI facts found wrong or stale|cmdb_ci.last_discovered,owned_by|Root cause traced to bad data|e|Sends CMDB data fixes to the health queue.
+itsm_prb>itom_health|CI facts found wrong or stale|config_item.last_discovered,owned_by|Root cause traced to bad data|e|Sends CMDB data fixes to the health queue.
 itsm_prb>agile_board|Bug from a known error|user_story.kind,severity,feature|Fix agreed with engineering|h|Puts the product defect in the right team backlog.
 ppm_wbs>itsm_chg|Linked project task and milestone|wbs_line.wbs,n,ms,es,ef|Change linked to a task|e|Shows which task and date depend on this change.
 itsm_rel>itsm_chg|Release package and readiness|release.number,version,planned_date,readiness,exit_criteria_pass|Release scheduled|e|Bundles changes under one release record.
 bud_over>itsm_chg|Budget line and remaining funds|project.budget,actual_cost;budget_line|Change estimate above its threshold|e|Stops a change that has no money behind it.
 bud_doa>itsm_chg|Approval limits and approvers|change_approval_policy.min_cost,approvers,quorum,sla_hours|Risk and cost computed|e|Chooses the right approvers for the amount.
-itom_cmdb>itsm_chg|Affected CIs and service|cmdb_ci.name,class,business_criticality,support_group|CI added to the change|e|Scopes the risk by what the CI supports.
+itom_cmdb>itsm_chg|Affected CIs and service|config_item.name,class,business_criticality,support_group|CI added to the change|e|Scopes the risk by what the CI supports.
 itom_graph>itsm_chg|Downstream impact of the CI|cmdb_rel_ci.parent,child,type|Risk assessment opened|e|Lists every service that could be hit.
 itom_evt>itsm_chg|Maintenance windows and open alerts|maintenance_window.name,ci,schedule,mode|Schedule picked|e|Prevents a change during an open alert or a conflicting window.
 svc_360>itsm_chg|Service tier and freeze calendar|business_service.name,tier|Service chosen|e|Applies stricter rules to tier 1 services.
@@ -130,7 +130,7 @@ itsm_chg>bud_over|Actual cost of the change|cost_allocation.from,to,amount|Chang
 itsm_chg>ppm_proj|Schedule impact and date slip|project.finish,spi|Change completed late or early|e|Moves project dates with evidence.
 itsm_chg>ims|Milestone effect|project_task.planned_finish,milestone|Change window moved|e|The master schedule shows slips caused by change.
 itsm_chg>dev_pipe|Approved deployment record|change_request.number,state,start_date,end_date|Change approved|e|Lets the pipeline deploy only inside an approved window.
-itsm_chg>itom_cmdb|CI updates after implementation|cmdb_ci.lifecycle_stage,operational_status;cmdb_rel_ci.type|Change closed successful|e|Keeps the CMDB true after every change.
+itsm_chg>itom_cmdb|CI updates after implementation|config_item.lifecycle_stage,operational_status;cmdb_rel_ci.type|Change closed successful|e|Keeps the CMDB true after every change.
 itsm_chg>flw_appr|Approval request|change_request.number,risk,approval;change_approval_policy.approvers|Risk assessed|e|Routes the change to its approvers.
 itsm_chg>itsm_rel|Change state for the release|release.state;change_request.state|Change state changes|e|Release readiness reflects the state of its changes.
 itsm_chg>itom_evt|Maintenance window to quiet alerts|maintenance_window.ci,schedule,change|Change scheduled|e|Stops planned work from paging anyone.
@@ -169,7 +169,7 @@ svc_asset>svc_req|Stock and entitlement|asset.class,lifecycle,model|Hardware or 
 svc_req>svc_asset|Asset assigned to the person|asset.asset_tag,assigned_to,request|Request fulfilled|e|Records who holds the asset.
 svc_req>svc_sla|Request timer start and stop|task_sla.definition,task,stage,has_breached|Each stage|e|Measures fulfillment against the item target.
 svc_req>bud_over|Chargeback for fulfilled items|cost_allocation.from,to,driver,amount;request_item.price|Request fulfilled|e|Charges the cost to the requesting team.
-svc_req>itom_cmdb|New CI created by fulfillment|cmdb_ci.name,class,owned_by|Server or software delivered|e|Every delivered item lands in the CMDB with an owner.
+svc_req>itom_cmdb|New CI created by fulfillment|config_item.name,class,owned_by|Server or software delivered|e|Every delivered item lands in the CMDB with an owner.
 svc_req>ppl_org|Joiner, mover and leaver progress|person.name,team,manager|Onboarding request completes|e|Marks the person as ready in the directory.
 chat_home>svc_req|Request raised in chat|request_item.cat_item,requested_for|User asks an agent|e|Lets people order in plain words.
 svc_req>kcs_home|Steps that keep repeating|knowledge_article|Same request three times in a week|e|Suggests an article or an automation.
@@ -193,23 +193,23 @@ svc_360>exe_mat|Service data for maturity scoring|business_service.maturity,avai
 svc_360>port|Lifecycle trigger for demand|demand_request.service,objective|Service reaches end of life|e|Starts replacement demand before the service fails.
 svc_360>kcs_ask|Service context for answers|business_service.name,service_owner,tier|Question mentions a service|e|Answers say who owns the service and how critical it is.
 svc_360>itom_slo|Service targets|business_service.availability_30d,tier|Service changed|e|Defaults SLO targets from the service tier.
-itom_disc>itom_cmdb|Discovered CIs and attributes|cmdb_ci.name,class,environment,operational_status,last_discovered|Discovery run|b|Keeps hardware and cloud facts current without typing.
-svc_asset>itom_cmdb|Asset to CI link|asset.asset_tag,class;cmdb_ci.name|Asset received|e|Ties finance assets to technical CIs.
-plat_fab>itom_cmdb|Cloud and identity inventory|cmdb_ci.name,class,environment,owned_by|Hourly sync|b|Brings external inventory into one CMDB.
-itom_health>itom_cmdb|Remediation tasks|cmdb_ci.owned_by,last_discovered,lifecycle_stage|Weekly|b|Sends stale CI records back to their owners.
+itom_disc>itom_cmdb|Discovered CIs and attributes|config_item.name,class,environment,operational_status,last_discovered|Discovery run|b|Keeps hardware and cloud facts current without typing.
+svc_asset>itom_cmdb|Asset to CI link|asset.asset_tag,class;config_item.name|Asset received|e|Ties finance assets to technical CIs.
+plat_fab>itom_cmdb|Cloud and identity inventory|config_item.name,class,environment,owned_by|Hourly sync|b|Brings external inventory into one CMDB.
+itom_health>itom_cmdb|Remediation tasks|config_item.owned_by,last_discovered,lifecycle_stage|Weekly|b|Sends stale CI records back to their owners.
 itom_cmdb>itom_graph|Relationships between CIs|cmdb_rel_ci.parent,child,type,source|CI or relationship changes|e|Draws dependencies from the same source of truth.
-itom_cmdb>itom_evt|CI context for alerts|cmdb_ci.name,class,business_criticality|Alert arrives|e|Tells the operator how critical the CI is.
-itom_cmdb>tbm_model|CI cost pools|cmdb_ci.class,environment,business_criticality|Monthly|b|Lets TBM allocate infrastructure cost.
-itom_cmdb>itom_health|CI records to score|cmdb_ci.last_discovered,owned_by|Nightly|b|Measures completeness and freshness.
-itom_cmdb>itom_fin|Owner and tags for cloud resources|cmdb_ci.owned_by,environment|Hourly|b|Lets FinOps charge cloud spend to an owner.
-itom_cmdb>obs_dash|CI list for metric binding|cmdb_ci.name,class|CI added|e|Dashboards attach metrics to real CIs.
-itom_cmdb>itom_disc|Known CIs for reconciliation|cmdb_ci.name,class,last_discovered|Discovery run|b|Lets discovery match instead of duplicating.
+itom_cmdb>itom_evt|CI context for alerts|config_item.name,class,business_criticality|Alert arrives|e|Tells the operator how critical the CI is.
+itom_cmdb>tbm_model|CI cost pools|config_item.class,environment,business_criticality|Monthly|b|Lets TBM allocate infrastructure cost.
+itom_cmdb>itom_health|CI records to score|config_item.last_discovered,owned_by|Nightly|b|Measures completeness and freshness.
+itom_cmdb>itom_fin|Owner and tags for cloud resources|config_item.owned_by,environment|Hourly|b|Lets FinOps charge cloud spend to an owner.
+itom_cmdb>obs_dash|CI list for metric binding|config_item.name,class|CI added|e|Dashboards attach metrics to real CIs.
+itom_cmdb>itom_disc|Known CIs for reconciliation|config_item.name,class,last_discovered|Discovery run|b|Lets discovery match instead of duplicating.
 itom_evt>itom_disc|Unknown hosts seen in alerts|alert_event.ci,service|Alert for an unknown CI|e|Triggers a scan for CIs nobody recorded.
 adm_sec>itom_disc|Scan credentials|-|Credential rotation|e|Discovery uses vaulted credentials, never stored ones.
 plat_fab>itom_disc|Cloud account connections|connector|Connector added|e|Points discovery at new cloud accounts.
 itom_graph>itom_evt|Topology for correlation|cmdb_rel_ci.parent,child|CMDB changes|e|Lets alerts be grouped by shared parents.
 itom_graph>svc_360|Service map|cmdb_rel_ci.parent,child,type;business_service.name|CMDB changes|e|The map on the service page uses the same graph.
-itom_health>exe_mat|CMDB completeness score|cmdb_ci.last_discovered,owned_by|Weekly|b|Feeds the maturity score for configuration management.
+itom_health>exe_mat|CMDB completeness score|config_item.last_discovered,owned_by|Weekly|b|Feeds the maturity score for configuration management.
 itom_health>plat_debt|Data quality debt|debt_item|Weekly|b|Records stale data as debt with an owner.
 itom_cmdb>itom_graph: skipped
 bud_ven>svc_asset|License contracts and renewals|contract.id,vendor,end,auto_renew|Contract signed|e|Tracks what is licensed against what is installed.
@@ -243,7 +243,7 @@ itom_run>kcs_home|Run history updates the article|runbook_execution.result;knowl
 itom_run>flw_appr|Approval for level 3 automation|runbook_execution.approver,dry_run|Run needs approval|e|Puts a human in the loop for risky steps.
 itom_run>tower|Outcome for trust score|runbook_execution.result,executor|Run completes|e|Success and rollback rates drive each agent's autonomy.
 itom_run>obs_std|Success rate|standard_change.success_rate|Weekly|b|Proves a standard change is safe.
-itom_run>itom_cmdb|CI facts changed by automation|cmdb_ci.operational_status,last_discovered|Run completes|e|Keeps the CMDB right after an automatic fix.
+itom_run>itom_cmdb|CI facts changed by automation|config_item.operational_status,last_discovered|Run completes|e|Keeps the CMDB right after an automatic fix.
 obs_std>flw_appr|Pre-approval policy|standard_change.pre_approval|Policy changed|e|Approvers see what is already pre-approved.
 bud_ben>exe_strat|Realized benefits against objectives|-|Quarterly|b|Shows whether strategy paid off.
 exe_strat>port|Objectives and weights|demand_request.objective,capability,score|Annual and quarterly review|h|Scores new demand against what leadership chose.
@@ -358,7 +358,7 @@ tbm_model>exe_dash|Run against change spend|cost_allocation.amount|Monthly|b|Exe
 tbm_model>bud_model|Unit costs and benchmarks|scaling_step.cost_per_step,units_in_place|Monthly|b|Forecasts use unit cost, not guesses.
 tbm_model>itom_fin|Allocation rules|cost_allocation.driver|Rules changed|e|Cloud charges use the same drivers.
 plat_fab>itom_fin|Cloud billing export|cost_allocation.amount|Daily|b|Cloud cost arrives straight from the provider.
-itom_fin>itom_cmdb|Rightsizing facts|cmdb_ci.class,environment|Weekly|b|CI records show size and waste.
+itom_fin>itom_cmdb|Rightsizing facts|config_item.class,environment|Weekly|b|CI records show size and waste.
 itom_fin>ppm_raid|Budget overrun risk|raid_item.type,exposure|Forecast above budget|e|Flags cost risk to the project.
 itom_fin>exe_dash|Cloud savings|cost_allocation.amount|Monthly|b|Shows saving achieved against target.
 agile_art>agile_board|Features to break down|feature.number,short_description,epic,wsjf|Planning event|e|Teams plan stories for the right features.
@@ -377,7 +377,7 @@ itom_dev>agile_art|Delivery metrics|feature.state|Monthly|b|Shows lead time and 
 itsm_rel>dev_pipe|Release contents and window|release.number,version,planned_date|Release approved|e|Pipeline builds exactly what was approved.
 adm_sec>dev_pipe|Scan results and policy gates|-|On every build|e|Blocks a deploy that fails a security check.
 dev_pipe>itsm_chg|Deployment record|change_request.number,state,end_date|Deployment ends|e|Closes the change with proof of deployment.
-dev_pipe>itom_cmdb|Version deployed|cmdb_ci.name,environment,lifecycle_stage|Deployment ends|e|The CMDB knows what version runs where.
+dev_pipe>itom_cmdb|Version deployed|config_item.name,environment,lifecycle_stage|Deployment ends|e|The CMDB knows what version runs where.
 dev_pipe>itom_dev|Deployment events for DORA|release.actual_date,state|Deployment ends|e|Measures deployment frequency and lead time.
 dev_pipe>itsm_rel|Readiness and exit criteria|release.readiness,exit_criteria_pass|Each pipeline stage|e|Release readiness comes from tests, not opinions.
 itsm_rel>itsm_chg: skipped
@@ -387,7 +387,7 @@ itsm_rel>svc_360|Deployed version|release.version,service|Release done|e|The ser
 itsm_rel>ppm_proj|Release done against project scope|feature.project,release;project.percent_complete|Release done|e|Project progress follows shipped scope.
 itsm_rel>agile_art|Release outcome|release.state,release_train|Release done|e|The train learns from release results.
 itom_dev>exe_dash|DORA metrics|release.actual_date,state|Weekly|b|Executives see delivery speed and stability.
-itom_dev>dev_pipe|Environment availability|cmdb_ci.environment,operational_status|Environment status changes|e|Pipeline avoids a broken environment.
+itom_dev>dev_pipe|Environment availability|config_item.environment,operational_status|Environment status changes|e|Pipeline avoids a broken environment.
 itsm_inc>itom_dev|Change-caused incidents|incident.service,opened_at|Incident linked to a change|e|Feeds change failure rate.
 plat_fab>ppl_org|Entra ID and HR people data|person.name,role,team,manager|Hourly|b|People data is entered once in the identity system.
 ppl_org>svc_oncall|Roster|person.name,team|Person changes team|e|On-call rotas follow the org.

@@ -16,7 +16,7 @@ const trunc=(s,n)=>s.length>n?s.slice(0,n-1)+"…":s;
 const plural=(n,a,b)=>n+" "+(n===1?a:(b||a+"s"));
 /* ---------- reference derivation: field key or label to the entity it points at ---------- */
 const P_="person";
-const KEY={service:"business_service",parent_service:"business_service",ci:"cmdb_ci",root_cause_ci:"cmdb_ci",parent:"cmdb_ci",child:"cmdb_ci",
+const KEY={service:"business_service",parent_service:"business_service",ci:"config_item",root_cause_ci:"config_item",parent:"config_item",child:"config_item",
  caller:P_,owner:P_,manager:P_,service_owner:P_,delivery_manager:P_,primary_contact:P_,assigned_to:P_,requested_for:P_,opened_by:P_,executor:P_,approver:P_,acknowledged_by:P_,marked_by:P_,verified_by:P_,author:P_,release_manager:P_,accountable_human:P_,person:P_,owned_by:P_,
  team:"organization_unit",assignment_group:"organization_unit",support_group:"organization_unit",managed_by_group:"organization_unit",rota:"organization_unit",
  vendor:"vendor",po:"purchase_order",budget_link:"budget_line",
@@ -98,13 +98,13 @@ function procIds(){
 const pFam=id=>PF[id]?PF[id][1]:(PREF.find(p=>p[0].test(id))||[0,"wf"])[1];
 const pName=id=>PF[id]?PF[id][0]:(PROC.defs[id]?PROC.defs[id].title:id);
 const PX={ims:{r:["project","project_task","wbs_line","person"],w:["project_task"]},plan:{r:["project","wbs_line"],w:["project_task","wbs_line"]},ppm_raid:{r:["project","person"],w:["raid_item"]},
- exe_dash:{r:["project","business_service","slo","invoice"]},exe_strat:{r:["demand_request","project","maturity_capability"]},exe_risk:{r:["raid_item","project","project_task"]},exe_apps:{r:["business_service","cmdb_ci","cost_allocation"]},exe_board:{r:["project","invoice","raid_item","cost_allocation"]},exe_scen:{r:["project","cost_allocation","project_task"]},
+ exe_dash:{r:["project","business_service","slo","invoice"]},exe_strat:{r:["demand_request","project","maturity_capability"]},exe_risk:{r:["raid_item","project","project_task"]},exe_apps:{r:["business_service","config_item","cost_allocation"]},exe_board:{r:["project","invoice","raid_item","cost_allocation"]},exe_scen:{r:["project","cost_allocation","project_task"]},
  dev_pipe:{r:["change_request","release","pull_request"],w:["release_task"]},itom_dev:{r:["release","change_request","incident"]},itsm_mi:{r:["incident","business_service"],w:["incident"]},itsm_home:{r:["incident","request_item","task_sla"]},
- itom_model:{r:["cmdb_ci","cmdb_rel_ci"],w:["cmdb_rel_ci"]},itom_graph:{r:["cmdb_ci","cmdb_rel_ci","business_service"]},itom_disc:{r:["cmdb_ci"],w:["cmdb_ci"]},itom_health:{r:["cmdb_ci","cmdb_rel_ci","asset"]},itom_fin:{r:["cmdb_ci","asset"],w:["cost_allocation"]},
- svc_req:{r:["catalog_item","person"],w:["request_item","fulfillment_step"]},svc_portal:{r:["catalog_item","service_offering"],w:["request_item"]},svc_asset:{r:["request_item","person"],w:["asset"]},svc_notify:{r:["person","incident","change_request","request_item"]},chat_home:{r:["incident","request_item","person"],w:["request_item"]},svc_360:{r:["business_service","cmdb_ci","incident","project"]},
+ itom_model:{r:["config_item","cmdb_rel_ci"],w:["cmdb_rel_ci"]},itom_graph:{r:["config_item","cmdb_rel_ci","business_service"]},itom_disc:{r:["config_item"],w:["config_item"]},itom_health:{r:["config_item","cmdb_rel_ci","asset"]},itom_fin:{r:["config_item","asset"],w:["cost_allocation"]},
+ svc_req:{r:["catalog_item","person"],w:["request_item","fulfillment_step"]},svc_portal:{r:["catalog_item","service_offering"],w:["request_item"]},svc_asset:{r:["request_item","person"],w:["asset"]},svc_notify:{r:["person","incident","change_request","request_item"]},chat_home:{r:["incident","request_item","person"],w:["request_item"]},svc_360:{r:["business_service","config_item","incident","project"]},
  itom_slo:{r:["metric_series","business_service"],w:["slo"]},obs_std:{r:["automation_rule","change_request"],w:["standard_change"]},tbm_model:{r:["invoice","business_service"],w:["cost_allocation","scaling_step"]},
  ppl_perf:{r:["person","skill_claim","project_task"]},ppl_cap:{r:["person","time_off","project_task","oncall_shift"]},ppl_jrny:{r:["person"]},
- kcs_home:{r:["incident","request_item"]},kcs_gap:{r:["incident","request_item"]},kcs_edit:{r:["incident","problem_record"]},kcs_ask:{r:["incident"]},vault:{r:["business_service","cmdb_ci"]},kcs_skills:{r:["person","skill_claim"]},
+ kcs_home:{r:["incident","request_item"]},kcs_gap:{r:["incident","request_item"]},kcs_edit:{r:["incident","problem_record"]},kcs_ask:{r:["incident"]},vault:{r:["business_service","config_item"]},kcs_skills:{r:["person","skill_claim"]},
  flw_design:{r:["change_approval_policy"]},
  bud_ben:{r:["project","demand_request"]},bud_over:{r:["invoice"],w:["cost_allocation"]},bud_model:{r:["cost_allocation"]},bud_doa:{r:["person","change_approval_policy"]},bud_ven:{r:["contract","invoice"],w:["contract_obligation"]},
  adm_gate:{r:["cost_allocation"]},tower:{r:["alert_event","runbook_execution"],w:["false_positive_feedback"]},adm_sec:{r:["person"]},adm_audit:{r:["person","change_request"]}};
@@ -140,7 +140,7 @@ const HO=[
  ["dev_pipe","itsm_chg",["pull_request","change_request"],"Pipeline raises change","event"],
  ["itsm_chg","itsm_rel",["change_request"],"Approval result returns","event"],
  ["obs_std","itsm_chg",["standard_change"],"Pre-approved change used","event"],
- ["itsm_chg","itom_cmdb",["change_request","cmdb_ci"],"Change closes, CI updated","event"],
+ ["itsm_chg","itom_cmdb",["change_request","config_item"],"Change closes, CI updated","event"],
  ["itsm_chg","itsm_inc",["change_request","incident"],"Change linked to an incident","event"],
  ["itsm_chg","flw_appr",["change_request"],"Approval requested","event"],
  ["flw_appr","itsm_chg",["change_request"],"Decision recorded","event"],
@@ -160,11 +160,11 @@ const HO=[
  ["svc_req","flw_appr",["request_item"],"Approval needed","event"],
  ["flw_appr","svc_req",["request_item"],"Approved or rejected","event"],
  ["svc_req","svc_sla",["request_item","task_sla"],"Clock starts","event"],
- ["itom_disc","itom_cmdb",["cmdb_ci"],"Nightly discovery load","batch"],
- ["itom_health","itom_cmdb",["cmdb_ci"],"Quality fix list","batch"],
- ["itom_cmdb","itom_graph",["cmdb_ci","cmdb_rel_ci"],"Relationships refreshed","batch"],
- ["itom_cmdb","itom_evt",["cmdb_ci","business_service"],"Alerts enriched with service","event"],
- ["itom_graph","itsm_chg",["business_service","cmdb_ci"],"Impact analysis on a change","event"],
+ ["itom_disc","itom_cmdb",["config_item"],"Nightly discovery load","batch"],
+ ["itom_health","itom_cmdb",["config_item"],"Quality fix list","batch"],
+ ["itom_cmdb","itom_graph",["config_item","cmdb_rel_ci"],"Relationships refreshed","batch"],
+ ["itom_cmdb","itom_evt",["config_item","business_service"],"Alerts enriched with service","event"],
+ ["itom_graph","itsm_chg",["business_service","config_item"],"Impact analysis on a change","event"],
  ["itom_evt","itom_run",["alert_event","standard_change"],"Runbook matched","event"],
  ["itom_run","itsm_inc",["runbook_execution","incident"],"Auto-fix failed, ticket opened","event"],
  ["obs_dash","itom_slo",["metric_series","slo"],"Metrics feed objectives","batch"],
@@ -739,7 +739,7 @@ function srcFor(e,m){
  let n="External system";
  if(t==="person"||t==="time_off")n="Entra ID and the HR system";
  else if(t==="invoice")n="ERP, the finance ledger";
- else if(t.indexOf("cmdb_ci")===0||t==="asset")n="Discovery tools";
+ else if(t.indexOf("config_item")===0||t==="asset")n="Discovery tools";
  else if(["alert_event","metric_series","log_pattern","synthetic_check"].indexOf(t)>=0)n="Monitoring tools";
  else if(t==="pull_request")n="Source control";
  else if(t==="project_task"||t==="wbs_line")n="Project planning tool";
@@ -973,7 +973,7 @@ document.addEventListener("wheel",e=>{
 /* ---------- search and chat ---------- */
 SEARCHX.push(()=>{const m=model();return m.es.map(en=>({g:"Data connections",t:en.label+" ("+en.id+")",m:en.writers.length+" writers, "+en.readers.length+" readers",c:"--p4",f:()=>{Z.d.sel=en.id;Z.d.ff="";S.v.plk_d=0;go("plat_dmap")},k:en.id+" entity connections graph "+en.fields.map(f=>f.k).join(" ")}))
  .concat(pgraph().ids.map(p=>({g:"Process connections",t:pName(p),m:FAM[FIDX[pFam(p)]][1],c:"--p5",f:()=>{Z.p.sel=p;S.v.plk_p=0;go("plat_pmap")},k:p+" process handoff "+(PROC.defs[p]?PROC.defs[p].title:"")})))});
-const ALIAS={change:"change_request",changes:"change_request",ci:"cmdb_ci",cis:"cmdb_ci",service:"business_service",services:"business_service",people:"person",user:"person",users:"person",problem:"problem_record",problems:"problem_record",request:"request_item",requests:"request_item",incidents:"incident",invoices:"invoice",projects:"project",alert:"alert_event",alerts:"alert_event",story:"user_story",sla:"sla_definition",slas:"sla_definition",contracts:"contract",tasks:"project_task",task:"project_task",assets:"asset",skills:"skill_claim"};
+const ALIAS={change:"change_request",changes:"change_request",ci:"config_item",cis:"config_item",service:"business_service",services:"business_service",people:"person",user:"person",users:"person",problem:"problem_record",problems:"problem_record",request:"request_item",requests:"request_item",incidents:"incident",invoices:"invoice",projects:"project",alert:"alert_event",alerts:"alert_event",story:"user_story",sla:"sla_definition",slas:"sla_definition",contracts:"contract",tasks:"project_task",task:"project_task",assets:"asset",skills:"skill_claim"};
 function mentionedEnts(q){
  const t=" "+q.toLowerCase().replace(/[^a-z0-9_ ]/g," ")+" ",m=model(),out=[];
  m.es.forEach(e=>{const l=" "+e.label.toLowerCase()+" ",i=" "+e.id.replace(/_/g," ")+" ";let p=t.indexOf(l);if(p<0)p=t.indexOf(i);if(p<0)p=t.indexOf(" "+e.id+" ");if(p>=0)out.push({id:e.id,p,len:e.label.length})});

@@ -23,7 +23,8 @@ function load(k){const p=pack[k];if(!p)return;p.wfs.forEach(d=>W.WFX.reg(d));p.j
 Object.keys(pack).forEach(strip);
 SCN.set=function(k){if(!SCN.list[k]||k===SCN.cur)return;strip(SCN.cur);load(k);SCN.cur=k;try{S.scenario=k}catch(e){}
  if(X.JY.sel&&!X.JY.list.some(j=>j.id===X.JY.sel))X.JY.sel=null;
- G(()=>X.syncJy());G(()=>toast("Demo scenario: "+SCN.list[k].n,"good"));G(()=>render())};
+ G(()=>X.syncJy());G(()=>W.ODX&&W.ODX.preset&&W.ODX.preset(k));G(()=>{if(S.od){S.od.gsel=(W.ODX.GAPS[0]||{}).id||"G07";S.od.choice={};S.od.gdim="all"}});G(()=>toast("Demo scenario: "+SCN.list[k].n,"good"));G(()=>render())};
+SCN.wfs=k=>pack[k]?pack[k].wfs:[];
 SCN.counts=k=>pack[k]?{journeys:pack[k].jys.length,workflows:pack[k].wfs.length}:{journeys:4,workflows:0};
 /* the chooser on the Journey maps screen */
 function inject(){if(G(()=>S.screen,"")!=="ppl_jrny")return;const sc=D.querySelector("#view .screen");if(!sc||sc.querySelector(".r28-scn"))return;

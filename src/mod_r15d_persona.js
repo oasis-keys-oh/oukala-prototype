@@ -15,7 +15,7 @@ const order=(first)=>first.concat(ALLG.filter(g=>!first.includes(g)));
 /* ---------- definitions ---------- */
 /* family: decide, operate, build, assure, request */
 const DEFS={
- exec:{role:"exec",family:"decide",groups:["strat","money","ai","my"],pin:["trace","exe_dash","inv","tower"],kpis:["m_delivery","m_fin","m_ops","m_override"]},
+ exec:{role:"exec",family:"decide",groups:["strat","money","ai","my"],pin:["bst","exe_dash","inv","tower"],kpis:["m_delivery","m_fin","m_ops","m_override"]},
  fin:{role:"finance",family:"decide",groups:["money","my","strat","plan","ai"],pin:["inv","bud_over","fin_budget","bud_ven"],kpis:["m_fin","m_cycle","m_auto","m_burn"]},
  pm:{role:"pm",family:"build",groups:["plan","my","money","fix","learn"],pin:["ims","ppm_raid","ppm_proj","fo"],kpis:["m_delivery","m_vendor","m_ontime","m_spi"]},
  ops:{role:"desk",family:"operate",groups:["fix","help","tech","learn","my"],pin:["itsm_inc","itsm_mi","svc_oncall","kcs_home"],kpis:["m_ops","m_avail","m_kb","m_itsm_sla"]},
@@ -37,10 +37,10 @@ const DEFS={
  board:{n:"Board member (read only)",who:"Reads the quarterly pack and AI oversight; cannot change anything",role:"audit",family:"assure",readonly:true,groups:["strat","money","ai","plan"],pin:["exe_board","r15d_evidence","exe_risk","exe_dash"],kpis:["m_delivery","m_fin","m_ops","m_riskexp"],
   actions:[()=>["Read the board pack","Sections cite the records behind each claim.",["exe_board"],"Open"],()=>["See AI oversight","Override rate is "+mv("m_override")+"; spend is "+mv("m_aispend")+" of the daily cap.",["tower"],"Open"],()=>["Open the board evidence view","Controls, decisions and approvals behind the pack.",["r15d_evidence"],"Open"]],
   sugg:["What changed since last quarter?","Show top risks","Is AI spend within its cap?"]},
- cfo:{n:"CFO",who:"Chief Financial Officer: spend against profitability across every domain",role:"finance",family:"decide",as:"Marcus Reid",groups:["lens","money","strat","grc","my"],pin:["r18_spend","exe_dash","inv","bud_over"],kpis:["m_fin","m_burn","m_cycle"],
+ cfo:{n:"CFO",who:"Chief Financial Officer: spend against profitability across every domain",role:"finance",family:"decide",as:"Marcus Reid",groups:["lens","money","strat","grc","my"],pin:["bst","exe_dash","inv","bud_over"],kpis:["m_fin","m_burn","m_cycle"],
   actions:[()=>["See where the money goes","Spend along the org chart, by domain and by executive, with forecast against approved.",["r18_spend"],"Open"],()=>["Release or hold the largest invoice","Invoice Advisor recommends the action with its evidence.",["inv"],"Open"],()=>["Check the CFO lens","Spend, value realized and spend outside control.",["r18_lens"],"Open"]],
   sugg:["Where is spend over forecast?","Who owns the most spend?","Show invoices on hold"]},
- coo:{n:"COO",who:"Chief Operating Officer view, held by the Chief Editor who runs standards operations: comments, ballots and publishing against cost to serve",role:"exec",family:"decide",as:"Elena Marsh",groups:["lens","strat","plan","fix","res","my"],pin:["r18_lens","r18_strategy","exe_dash","trace"],kpis:["m_delivery","m_ops","m_ontime"],
+ coo:{n:"COO",who:"Chief Operating Officer view, held by the Chief Editor who runs standards operations: comments, ballots and publishing against cost to serve",role:"exec",family:"decide",as:"Elena Marsh",groups:["lens","strat","plan","fix","res","my"],pin:["r18_lens","r18_strategy","exe_dash","bst"],kpis:["m_delivery","m_ops","m_ontime"],
   actions:[()=>["See how each function enables the strategy","Function by objective, with the gaps.",["r18_strategy"],"Open"],()=>["Look at the COO lens","Where work stalls and what is ready to scale.",["r18_lens"],"Open"],()=>["Review the delivery schedule","Milestones and the schedule index.",["trace"],"Open"]],
   sugg:["Where does work stall?","Which builds are ready to scale?","Which objectives have no work?"]},
  ceo:{n:"CEO",who:"Chief Executive Officer: mission, members, money and strategy in one view",role:"exec",family:"decide",as:"Catherine Doyle",groups:["lens","strat","money","plan","my"],pin:["exe_board","r18_strategy","exe_dash","r18_lens"],kpis:["m_biz_renew","m_budvar","m_biz_cycle"],

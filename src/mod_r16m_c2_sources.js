@@ -10,7 +10,7 @@ const card_=(t,s,b,r)=>typeof card==="function"?card(t,s,b,r):`<section class="c
 const pj=(s,d)=>{try{return s==null||s===""?d:(typeof s==="string"?JSON.parse(s):s)}catch(e){return d}};
 const STAT=["Planned","Configured","Connected","Degraded","Retired"];
 const TYPES=["Identity","HR","ITSM","CMDB","ERP and finance","Monitoring","Cloud","Clinical","CRM","Files"];
-const FEEDS={Identity:["person","group_role"],HR:["person","org_unit"],"ERP and finance":["cost_center","budget_line","vendor_contract"],CMDB:["cmdb_ci","application"],ITSM:["cmdb_ci","service_catalog"],Cloud:["cmdb_ci","budget_line"],Monitoring:["cmdb_ci"],Clinical:["application"],CRM:["vendor_contract"],Files:["vendor_contract","process_owner"]};
+const FEEDS={Identity:["person","group_role"],HR:["person","org_unit"],"ERP and finance":["cost_center","budget_line","vendor_contract"],CMDB:["config_item","application"],ITSM:["config_item","service_catalog"],Cloud:["config_item","budget_line"],Monitoring:["config_item"],Clinical:["application"],CRM:["vendor_contract"],Files:["vendor_contract","process_owner"]};
 const srcs=()=>ST.all("data_source").filter(d=>d.tenant===R.curId());
 const mapOf=d=>pj(d.mapping,[]);
 const dmInfo=(ent,f)=>G(()=>DATAMODEL.tables[ent].fields.find(x=>x.k===f),null);

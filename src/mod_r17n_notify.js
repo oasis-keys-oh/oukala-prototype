@@ -87,7 +87,7 @@ D.addEventListener("keydown",e=>{if(e.key!=="Escape"||e.defaultPrevented)return;
 W.addEventListener("resize",()=>{place()});
 
 /* ---------- legacy toast(msg,kind,opt) ---------- */
-const APPR=/approv|waiting for|awaiting|RITM\d|sign.?off/i;
+const APPR=/approv|waiting for|awaiting|SR\d|sign.?off/i;
 const lastG={t:0};["pointerdown","keydown"].forEach(ev=>D.addEventListener(ev,()=>{lastG.t=Date.now()},true));
 function toast3(msg,kind,opt){opt=opt||{};kind=kind||"good";msg=String(msg==null?"":msg);
  const sys=!opt.user&&Date.now()-lastG.t>1500;
