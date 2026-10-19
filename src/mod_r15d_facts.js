@@ -102,8 +102,8 @@ const RAIL_BTN='.tb-right .live[data-nav="tower"],.tb-right .live[data-r15d-rail
 R15D.refreshRail=function(){
  const b=document.querySelector(RAIL_BTN);if(!b)return;const c=AGENTS_STATE.counts();
  b.setAttribute("data-r15d-rail","1");b.removeAttribute("data-nav");
- const l=b.querySelector(".lbl-long");if(l)l.textContent=c.working+" agent"+(c.working===1?"":"s")+" working";
- b.title=c.working+" agents running a task now at "+AGENTS_STATE.clock()+", "+c.enabled+" enabled, "+c.registered+" registered. Select to see the list.";
+ const l=b.querySelector(".lbl-long");if(l)l.textContent=c.working+" of "+c.registered+" agents working";
+ b.title=c.working+" of "+c.registered+" registered agents are running a task now ("+c.org+" are on the org chart, "+(c.registered-c.org)+" outside it) at "+AGENTS_STATE.clock()+", "+c.enabled+" enabled, "+c.registered+" registered. Select to see the list.";
  b.setAttribute("aria-label",b.title);
 };
 R15D.onAfter(()=>R15D.refreshRail());

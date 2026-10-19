@@ -101,7 +101,7 @@ function moreHTML(){
    <button type="button" popovertarget="profilePop">${svg(IC.user,20)}<span>Profile</span></button></div>
   <details class="r17o1-acc" open><summary>Navigate</summary><div class="r17o1-accb"><div class="r17o1-nav" data-r17o1-nav>${nav}</div></div></details>
   <details class="r17o1-acc"><summary>View as <em>${E(who)}</em></summary><div class="r17o1-accb r17o1-role">${fam}</div></details>
-  <div class="r17o1-sheetsec"><div class="eyebrow">Data volume</div><div class="r17o1-seg" role="group" aria-label="Data volume"><button type="button" data-scale="0" aria-pressed="${!ent}">Demo</button><button type="button" data-scale="1" aria-pressed="${ent}">Enterprise</button></div><p class="muted small" style="margin:2px 4px">Demo is a focused sample. Enterprise loads tenant-scale volumes: thousands of tickets, assets and projects.</p></div>`}
+  `}
 function openMore(){openSheet("Menu",moreHTML(),"more");
  /* open the group that holds the current screen, keep others closed to shorten the list */
  const cur=q1('#r17o1Body [aria-current="page"]');if(cur){setTimeout(()=>{try{cur.scrollIntoView({block:"center"})}catch(e){}},340)}}

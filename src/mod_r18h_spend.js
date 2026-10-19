@@ -13,7 +13,8 @@ const owners=()=>{if(!SP.owners){SP.owners={};Object.keys(DOM).forEach(k=>SP.own
 const EXEC_NAME={CEO:"Catherine Doyle",CFO:"Marcus Reid",COO:"Elena Marsh",CIO:"Casey Rowan",CTO:"Jordan Lee",CAIO:"Kenji Watanabe",CHRO:"Joanna Pierce",CISO:"Rina Okafor",CLO:"Theo Marlowe"};
 const staffOf=n=>G(()=>ORGX.staff.find(x=>x.n===n),null);
 const PERSONA_EXEC={exec:"CIO",cfo:"CFO",coo:"COO",ceo:"CEO",chro:"CHRO",ciso:"CISO",caio:"CAIO",clo:"CLO"};
-const lines=()=>G(()=>BUDX.B().lines,[]);
+let CUR=null;/* purview scope while one screen renders */
+const lines=()=>{const L=G(()=>BUDX.B().lines,[]);return CUR?L.filter(l=>CUR.keys.has(l.dept)):L};
 const deptName=k=>G(()=>BUDX.DN(k),k);
 const heads=()=>{const o={};arr(G(()=>BUDX.DEPTS,[])).forEach(d=>o[d[0]]=d[3]);return o};
 const SHARED_CATS=["Cloud","Licences"];
@@ -62,12 +63,17 @@ function byTypeTab(){const L=lines();const cats=G(()=>BUDX.CATS,[]);const rows=c
  return `<section class="card glass"><div class="cardhead"><div><h3>Spend by type</h3><span class="muted small">Labor, vendors, hardware, cloud and licences across all domains.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Type</th><th class="n">Lines</th><th class="n">Approved</th><th class="n">Actual</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
 function ownersTab(){const o=owners();const rows=Object.keys(DOM).map(k=>`<tr><td><b>${H(DOM[k][0])}</b><small class="muted">${H(deptName(k))}</small></td><td>${H(G(()=>BUDX.DEPTS.find(d=>d[0]===k)[2],""))}</td><td><select class="fin" data-r18-owner="${k}" aria-label="Executive owner of ${H(DOM[k][0])}">${EXECS.map(e=>`<option ${e===o[k]?"selected":""}>${e}</option>`).join("")}</select></td><td>${H(EXEC_NAME[o[k]]||"")}</td></tr>`).join("");
  return `<section class="card glass"><div class="cardhead"><div><h3>Domains and owners</h3><span class="muted small">Reassign a domain and every view follows. Changes are written to the audit trail. An owner of several domains sees the combined total.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Domain</th><th>Cost centers</th><th>Executive owner</th><th>Name</th></tr></thead><tbody>${rows}</tbody></table></div></section>`}
-function screen(){const st=R18.spend.stats();const mine=me();const my=st.execs.find(e=>e.exec===mine);
+/* purview: CEO, COO and CFO see every domain; every other executive sees the domains they own. */
+const ALLVIEW=["CEO","COO","CFO"];
+function screen(){let st=R18.spend.stats();const mine=me();const own=st.rows.filter(r=>r.exec===mine);const scoped=!!mine&&ALLVIEW.indexOf(mine)<0&&own.length>0;
+ if(scoped){const A=sum(own,"appr"),F=sum(own,"fcst");st={A,F,v:varPct(F,A),rows:own,execs:[{exec:mine,rows:own,appr:A,fcst:F}],unowned:0};CUR={keys:new Set(own.map(r=>r.k))}}
+ try{return screenBody(st,scoped)}finally{CUR=null}}
+function screenBody(st,scoped){const mine=me();const my=st.execs.find(e=>e.exec===mine);
  const note=my?`<section class="card glass r18-mine"><div class="eyebrow">Your domains</div><h3>${my.rows.length>1?"You own "+my.rows.map(r=>H(r.dom)).join(" and "):"You own "+H(my.rows[0].dom)}</h3><p>Forecast <b>${usd(my.fcst)}</b> against <b>${usd(my.appr)}</b> approved, ${pill(fv(varPct(my.fcst,my.appr)),tone(varPct(my.fcst,my.appr)))}. The rest of the enterprise is below.</p></section>`:"";
  const worst=st.rows.slice().sort((a,b)=>b.var-a.var)[0]||{dom:"",var:0};
- return `<div class="screen r18-screen">${hero("Strategy and value · Spend","Where the money goes across the enterprise","Follows the org chart from the chief executive down: every domain, the executive who owns it, and the people who own its budget, with forecast against approved. Technology cost transparency is the IT depth beneath it.")}
+ return `<div class="screen r18-screen">${scoped?hero("Budget and spend traceability · "+H(mine)+" purview","Spend in your purview: "+my.rows.map(r=>H(r.dom)).join(" and "),"Only the domains you own, with forecast against approved and the people who own each budget. The chief executive, chief operating officer and chief financial officer see every domain. Follow any dollar to a goal and the work it pays for in <button class=\"r18-lk\" type=\"button\" data-go=\"trace\">Executive trace</button>."):hero("Budget and spend traceability","Where the money goes across the enterprise","Follows the org chart from the chief executive down: every domain, the executive who owns it, and the people who own its budget, with forecast against approved. Follow any dollar to a goal and the work it pays for in <button class=\"r18-lk\" type=\"button\" data-go=\"trace\">Executive trace</button>. Technology cost transparency is the IT depth beneath it.")}
  ${typeof kpiRow==="function"?kpiRow([["Approved",usd(st.A),"all domains"],["Forecast",usd(st.F),"all domains"],["Forecast against approved",fv(st.v),"enterprise",{cls:st.v>5?"crit":st.v>0?"warn":""}],["Largest overrun",worst.dom,fv(worst.var)+" against approved",{cls:worst.var>5?"warn":""}]]):""}
- ${note}${typeof views==="function"?views("r18spv",["By org chart","By executive","By domain","By type","Domains and owners"],[byOrgTab(st),byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()]):byExecTab(st)}
+ ${scoped?"":note}${typeof views==="function"?(scoped?views("r18spv",["By domain","By type"],[byDomainTab(st),byTypeTab()]):views("r18spv",["By org chart","By executive","By domain","By type","Domains and owners"],[byOrgTab(st),byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()])):byExecTab(st)}
  ${typeof procCard==="function"?procCard("r18_spend"):""}</div>`}
 REG("r18_spend","Enterprise spend","money","M12 2v20M17 6.5C17 4.6 14.8 4 12 4S7 5 7 7c0 4.5 10 2.5 10 7 0 2.2-2.2 3-5 3s-5-.9-5-3",screen);
 

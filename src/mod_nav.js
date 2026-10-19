@@ -139,13 +139,13 @@ bud_over|money|Budgets|Budgets overall|Budgets and funding|budget spend forecast
 bud_model|money|Forecast and financial model|Financial model|Budgets and funding|forecast model scenario financial plan
 fin_budget|money|Budget and forecast by funding type|Budget and forecast|Budgets and funding|budget forecast reforecast variance
 fin_model|money|IT financial model|IT financial model|Budgets and funding|financial model decision policy
-fin_color|money|Which funding pays for what|Color of money|Budgets and funding|color of money capex opex funding type
+fin_color|money|Which funding pays for what|Funding color|Budgets and funding|color of money capex opex funding type
 fin_spend|money|Test the order money is spent|Spend-order simulator|Budgets and funding|spend order simulator waterfall
 fin_gates|money|Funding approval gates|Funding gates|Budgets and funding|funding gate g1 g2 g3 stage gate
 fin_rules|money|Financial control checks|Financial controls|Budgets and funding|controls reconciliation exceptions rules audit
 bud_ben|money|Track benefits|Benefits realization|Budgets and funding|benefits realization value savings roi
 bud_ven|money|Vendors and contracts|Vendors and contracts|Vendors|vendor contract purchase order supplier renewal
-tbm_model|money|See where IT money goes|Cost transparency (TBM and ATUM)|Where money goes|tbm cost transparency towers cost pools unit cost
+tbm_model|money|See what technology costs|Technology cost transparency (TBM)|Where money goes|tbm cost transparency towers cost pools unit cost
 fin_alloc|money|Charge costs to teams|Allocation and showback|Where money goes|allocation showback chargeback drivers
 itom_fin|money|Cloud spend|Cloud cost (FinOps)|Where money goes|cloud cost finops azure spend
 kcs_home|learn|Browse and manage articles|Knowledge management||knowledge article kb manage review

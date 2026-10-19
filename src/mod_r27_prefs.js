@@ -38,7 +38,6 @@ const ROWS=[
 ["Show only my role's areas","Mostrar solo las áreas de mi rol","Afficher seulement les domaines de mon rôle","Nur Bereiche meiner Rolle anzeigen","عرض مجالات دوري فقط"],
 ["How to read this menu","Cómo leer este menú","Comment lire ce menu","So lesen Sie dieses Menü","كيفية قراءة هذه القائمة"],
 ["VibeCheck","VibeCheck","VibeCheck","VibeCheck","VibeCheck"],
-["Data volume","Volumen de datos","Volume de données","Datenmenge","حجم البيانات"],
 ["Demo","Demo","Démo","Demo","تجريبي"],
 ["Enterprise","Empresa","Entreprise","Unternehmen","المؤسسة"],
 ["Skip to main content","Saltar al contenido principal","Aller au contenu principal","Zum Hauptinhalt springen","انتقل إلى المحتوى الرئيسي"],

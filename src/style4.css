@@ -153,8 +153,7 @@ p,li,.story,.muted{text-wrap:pretty}
 
 @media(prefers-reduced-motion:reduce){.wrow,.pchipx,.proc .ps,.loadbar u{transition:none}}
 
-.railfoot #scaleSw{margin:0 6px 8px;align-self:flex-start}
-:root:has(#railCollapse:checked) .railfoot #scaleSw,:root:has(#railCollapse:checked) .railfoot>.muted{display:none}
+:root:has(#railCollapse:checked) .railfoot>.muted{display:none}
 
 /* round 8 integration: keep short text cells readable inside tables */
 td:has(>.sub),td:has(>.st),td:has(>.small:only-child){min-width:150px}
@@ -219,7 +218,6 @@ td.small{min-width:130px}
 .rail::before{opacity:.35}
 .railfoot{gap:4px}
 .railfoot>.muted.small{padding:0 14px 2px!important;font-size:11px}
-.railfoot #scaleSw{margin:0 14px 4px}
 .whoami{padding:6px 8px}.whoami .avatar{width:32px;height:32px}
 .collapse{padding:4px 8px}
 .topbar{-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);background:color-mix(in srgb,var(--glass) 88%,var(--bg,#fff))}
