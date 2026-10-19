@@ -68,7 +68,7 @@ function later(fn,ms){const t=setTimeout(fn,Q.fast?10:Math.round(ms*(Q.spd||1)))
 function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[]}
 function optLabels(m){const o=m.ask.opts.map((x,i)=>({l:x.l,r:x.rec?1:0,i}));o.sort((a,b)=>b.r-a.r);return o.map(x=>x.l)}
 function ensureThread(title){const C=CXr();if(!C.newThread)return null;if(Q.thread&&C.hasThread(Q.thread.id)&&!title){C.activate(Q.thread.id);return Q.thread}
- Q.thread=C.newThread(title||"Build with Oukala",{studio:1});Q.mi=0;Q.lastCxm=null;return Q.thread}
+ Q.thread=C.newThread(title||"VibeCheck",{studio:1});Q.mi=0;Q.lastCxm=null;return Q.thread}
 function drawChat(scroll){const C=CXr(),t=Q.thread;if(!t||!C.sayAI)return;let last=Q.lastCxm||null;
  for(;Q.mi<Q.msgs.length;Q.mi++){const m=Q.msgs[Q.mi];
   if(m.r==="me"){if(!m.dock)C.pushMsg({me:1,t:m.h},t)}
@@ -85,14 +85,14 @@ const OFFER_RX=/\b(build|automate)\b|\b(create|design|set up)\b.*\b(app|workflow
 function buildLive(){return !!Q.sc&&!Q.exited&&!!Q.thread}
 function dropMsgs(t,list){list.forEach(m=>{const i=t.msgs.indexOf(m);if(i>=0)t.msgs.splice(i,1)})}
 function holdAsk(q,t,kind){const C=CXr();const me=C.pushMsg({me:1,t:E(q)},t);
- const labs=kind==="offer"?["Build this with Oukala","Just answer"]:["Part of the build","Ask the assistant"];
+ const labs=kind==="offer"?["Build this in VibeCheck","Just answer"]:["Part of the build","Ask the assistant"];
  const txt=kind==="offer"?"That sounds like something to build. Build it here with every guardrail, or just answer it?":"Is that part of the build, or a question for the assistant?";
  Q.hold={q,kind,t,me,ai:null,labs};const ai=C.sayAI(t,txt,{stream:false,lin:false,sugg:labs});Q.hold.ai=ai;C.drawMsgs&&C.drawMsgs()}
 function resolveHold(n){const h=Q.hold;if(!h)return false;const C=CXr();
  const L=h.labs.map(x=>x.toLowerCase().replace(/[^a-z0-9 ]/g,"").trim());const j=L.indexOf(n);if(j<0)return false;
  Q.hold=null;h.ai.sugg=null;
  if(j===0){ /* build */
-  if(h.kind==="offer"){C.sayAI(h.t,"Opening Build with Oukala.",{stream:false,lin:false});open(h.q)}
+  if(h.kind==="offer"){C.sayAI(h.t,"Opening VibeCheck.",{stream:false,lin:false});open(h.q)}
   else{dropMsgs(h.t,[h.me,h.ai]);buildRoute(h.q)}
  }else{dropMsgs(h.t,[h.me,h.ai]);C.handle(h.q,{nohook:1})}
  C.drawAll&&C.drawAll();return true}
@@ -377,7 +377,7 @@ function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.
 function syncRail(){}
 function railSet(on){const c=D.getElementById("railCollapse");if(!c||c.checked===on)return false;c.checked=on;c.dispatchEvent(new Event("change",{bubbles:true}));return true}
 function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";if(!W.matchMedia("(max-width:760px)").matches&&railSet(true))Q.railAuto=true;r.innerHTML=shell();const C=CXr();
- if(!Q.thread||!(C.hasThread&&C.hasThread(Q.thread.id))){ensureThread("Build with Oukala");Q.msgs=[];Q.mi=0;Q.sc=null;Q.view="home"}else C.activate&&C.activate(Q.thread.id);
+ if(!Q.thread||!(C.hasThread&&C.hasThread(Q.thread.id))){ensureThread("VibeCheck");Q.msgs=[];Q.mi=0;Q.sc=null;Q.view="home"}else C.activate&&C.activate(Q.thread.id);
  if(!Q.msgs.length){Q.msgs.push({r:"ai",h:"Hi "+E(me().split(" ")[0])+". What do you need to do? Describe it in plain words, or pick an example. I will find what already exists, or build it with you here.",sugg:SD.CHIPS.map(c=>c.t)})}
  drawChat(true);render();if(C.open)C.open("chat")}
 W.STUDIO.mount=mount;W.STUDIO.start=id=>startScenario(SD.SCEN[id]);W.STUDIO.submit=submit;W.STUDIO.fast=false;
@@ -426,14 +426,14 @@ function voice(){const SR=W.SpeechRecognition||W.webkitSpeechRecognition;if(!SR)
  try{const r=new SR();r.lang="en-US";r.onresult=ev=>{const x=ev.results[0][0].transcript;const i=D.getElementById("stuInput");if(i){i.value=x;submit(x);i.value=""}};r.start();say("Listening…")}catch(err){say("I could not start the microphone.")}}
 
 /* ---------- screen and entry points ---------- */
-G(()=>REG("studio","Build with Oukala","new","M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9z",()=>`<div class="screen stu-screen"><div id="stuRoot"></div></div>`));
-G(()=>NAVX.add("studio",{group:"make",label:"Build with Oukala",hint:"Say what you need and Oukala builds it with every guardrail",sub:"Chat and build",kw:"build create new process app automate studio chat guardrails in a box interview library extend"}));
+G(()=>REG("studio","VibeCheck","new","M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4zM5 15l.9 2.1L8 18l-2.1.9L5 21l-.9-2.1L2 18l2.1-.9z",()=>`<div class="screen stu-screen"><div id="stuRoot"></div></div>`));
+G(()=>NAVX.add("studio",{group:"make",label:"VibeCheck",hint:"Say what you need and Oukala builds it with every guardrail",sub:"Chat and build",kw:"build create new process app automate studio chat guardrails in a box interview library extend"}));
 R15D.after.push(()=>{if(S_screen()==="studio")setTimeout(mount,0);else{const r=D.getElementById("stuRoot");if(r)r.dataset.m="";if(Q.railAuto){Q.railAuto=false;railSet(false)}}ensurePill()});
 function S_screen(){return G(()=>S.screen,"")}
 /* the front door: one colored pill at the bottom of the side menu, on every screen */
 function ensurePill(){const f=D.querySelector(".rail .railfoot");if(!f)return;let b=D.getElementById("stuPill");
- if(!b){b=D.createElement("button");b.id="stuPill";b.type="button";b.className="stu-pill";b.setAttribute("data-stu-pill","1");b.setAttribute("aria-label","Build with Oukala: say what you need and it is built with every guardrail");
-  b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span>Build with Oukala</span>'}
+ if(!b){b=D.createElement("button");b.id="stuPill";b.type="button";b.className="stu-pill";b.setAttribute("data-stu-pill","1");b.setAttribute("aria-label","VibeCheck: say what you need and it is built with every guardrail");
+  b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span>VibeCheck</span>'}
  if(b.parentNode!==f||f.firstChild!==b)f.insertBefore(b,f.firstChild);b.classList.toggle("cur",S_screen()==="studio")}
 D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-stu-pill]"))open("")});
 [200,800,2000,5000].forEach(t=>setTimeout(ensurePill,t));

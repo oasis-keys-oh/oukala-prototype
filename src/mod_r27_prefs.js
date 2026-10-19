@@ -37,7 +37,7 @@ const ROWS=[
 ["Show every area","Mostrar todas las áreas","Afficher tous les domaines","Alle Bereiche anzeigen","عرض كل المجالات"],
 ["Show only my role's areas","Mostrar solo las áreas de mi rol","Afficher seulement les domaines de mon rôle","Nur Bereiche meiner Rolle anzeigen","عرض مجالات دوري فقط"],
 ["How to read this menu","Cómo leer este menú","Comment lire ce menu","So lesen Sie dieses Menü","كيفية قراءة هذه القائمة"],
-["Build with Oukala","Crear con Oukala","Créer avec Oukala","Mit Oukala erstellen","أنشئ مع أوكالا"],
+["VibeCheck","VibeCheck","VibeCheck","VibeCheck","VibeCheck"],
 ["Data volume","Volumen de datos","Volume de données","Datenmenge","حجم البيانات"],
 ["Demo","Demo","Démo","Demo","تجريبي"],
 ["Enterprise","Empresa","Entreprise","Unternehmen","المؤسسة"],
