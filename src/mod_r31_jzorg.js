@@ -1,0 +1,80 @@
+/* ===== mod_r31_jzorg: org chart with agent assist.
+   The organization as the journeys see it: teams, the roles inside them, and the agents and robots recommended for the steps each role does.
+   Everything is computed from the journey boxes; every figure is a modeled sample value (a robot frees 80% and an agent 60% of the hours, 140 hours is one FTE a month).
+   One proposed teammate stands for one recommended step; a real build may combine steps that share a process. ===== */
+(function(){
+const W=window,X=W.JYX,R=W.JXR;if(!X||!X.api||!R||!R.av)return;
+const A=()=>X.api,E=R.E,fmt=n=>A().fmt(Math.round(n)),f1=n=>A().f1(n);
+const FTE_H=140;
+const EXT=new Set(["Patient","Payer","Vendor","Regulator","Member","Customer IT admin","Referring clinician"]);
+const O=R.org={flt:"all",scope:null};
+const scopeNow=()=>O.scope||(W.SCN&&SCN.cur&&SCN.cur!=="core"?"detail":"all");
+const orgName=()=>(W.SCN&&SCN.list[SCN.cur]&&SCN.list[SCN.cur].n)||"The organization";
+const rows2st=rows=>{const c=rows.filter(x=>x.r.st==="cand"),ag=c.filter(x=>x.r.k==="agent").length,rb=c.filter(x=>x.r.k==="robot").length;
+ const ra=rows.filter(x=>x.r.st==="running"&&x.r.k==="agent").length,rr=rows.filter(x=>x.r.st==="running"&&x.r.k==="robot").length;
+ const hrs=rows.reduce((s,x)=>s+x.hrs,0),freed=c.reduce((s,x)=>s+x.r.save,0);
+ return {n:rows.length,hrs,agents:ag,robots:rb,runA:ra,runR:rr,freed,fte:hrs/FTE_H,fteF:freed/FTE_H,pain:rows.filter(x=>x.b.pain&&x.b.em<=2).length,nop:rows.filter(x=>!x.b.procs.length).length}};
+function model(){const a=A(),sc=scopeNow();const T=new Map(),OUT={n:"Outside the organization",ext:true,roles:new Map()};
+ const hasDetail=X.JY.list.some(x=>x.cat!=="End to end");
+ X.JY.list.forEach(j=>{if(sc==="detail"&&j.cat==="End to end"&&hasDetail)return;
+  a.allBoxes(j).forEach(({b,s})=>{const r=a.rec(b),hrs=b.min*b.vol/60,ext=EXT.has(b.who);
+   const t=ext?OUT:(T.get(b.owner||"Unassigned")||(T.set(b.owner||"Unassigned",{n:b.owner||"Unassigned",roles:new Map()}),T.get(b.owner||"Unassigned")));
+   const ro=t.roles.get(b.who)||(t.roles.set(b.who,{p:b.who,rows:[]}),t.roles.get(b.who));ro.rows.push({j,s,b,r,hrs})})});
+ const fin=t=>{t.rl=[...t.roles.values()].map(ro=>Object.assign(ro,{st:rows2st(ro.rows)})).sort((p,q)=>q.st.fteF-p.st.fteF||q.st.hrs-p.st.hrs);t.st=rows2st(t.rl.flatMap(x=>x.rows));return t};
+ const teams=[...T.values()].map(fin).sort((p,q)=>q.st.fteF-p.st.fteF||q.st.hrs-p.st.hrs);
+ if(OUT.roles.size)fin(OUT);
+ const staff=teams.flatMap(t=>t.rl.flatMap(r=>r.rows));
+ return {teams,out:OUT.roles.size?OUT:null,all:rows2st(staff),outSt:OUT.roles.size?OUT.st:null,sc,hasDetail}}
+R.orgModel=model;
+
+const grp=(k,cand,run,sz)=>{if(!cand&&!run)return "";const show=Math.min(3,cand+run);let h="";
+ for(let i=0;i<show;i++){const on=i<run;h+=R.av(k,(k==="robot"?"Robot":"Agent")+(on?" (running)":" (proposed)"),sz,(on?"":"jav-cand ")+"jav-ov")}
+ return `<span class="jo-grp" title="${E(k==="robot"?"Robots":"Agents")}: ${run} running, ${cand} proposed">${h}<b>${run?run+" running":""}${run&&cand?" · ":""}${cand?"+"+cand+" proposed":""}</b></span>`};
+const crew=(st,sz)=>grp("agent",st.agents,st.runA,sz)+grp("robot",st.robots,st.runR,sz);
+const dimmed=st=>{const f=O.flt;return (f==="agent"&&!st.agents)||(f==="robot"&&!st.robots)||(f==="run"&&!(st.runA+st.runR))};
+const pct=(st)=>st.hrs?Math.min(100,Math.round(st.freed/st.hrs*100)):0;
+const q=s=>encodeURIComponent(s);
+
+function roleCard(t,ro,ext){const st=ro.st;
+ return `<button class="jo-role${dimmed(st)?" is-dim":""}" data-pp2-act="jorgn" data-a="${q(t.n)}|${q(ro.p)}" title="${E(ro.p)}: open the steps">
+  <span class="jo-rh">${R.av("human",ro.p,34)}<span class="jo-rn"><b>${E(ro.p)}</b><small>${st.n} step${st.n===1?"":"s"} · ${ext?fmt(st.hrs)+" h a month":st.fte.toFixed(1)+" FTE now"}</small></span></span>
+  ${st.agents+st.robots+st.runA+st.runR?`<span class="jo-crew">${crew(st,24)}</span>`:`<span class="jo-none small muted">No agent or robot recommended</span>`}
+  ${st.freed>0?`<span class="jo-bar" role="img" aria-label="${pct(st)} percent released"><i style="width:${pct(st)}%"></i></span><small class="jo-rel">${ext?fmt(st.freed)+" h a month back":st.fteF.toFixed(1)+" FTE released"} · ${pct(st)}%</small>`:""}</button>`}
+function teamCol(t){const st=t.st;
+ return `<div class="jo-team${t.ext?" is-ext":""}"><button class="jo-th" data-pp2-act="jorgn" data-a="${q(t.n)}|" title="Open every step this team owns"><span class="jo-tn"><b>${E(t.n)}</b><small>${t.rl.length} role${t.rl.length===1?"":"s"} · ${t.ext?fmt(st.hrs)+" h a month":st.fte.toFixed(1)+" FTE now"}</small></span>
+  <span class="jo-tc">${st.agents+st.robots+st.runA+st.runR?crew(st,22):`<small class="muted">No teammates recommended</small>`}</span>${st.freed>0?`<span class="jo-bar"><i style="width:${pct(st)}%"></i></span><small class="jo-rel">${t.ext?fmt(st.freed)+" h a month back":st.fteF.toFixed(1)+" FTE released"} · ${pct(st)}%</small>`:""}</button>
+  <div class="jo-roles">${t.rl.map(ro=>roleCard(t,ro,t.ext)).join("")}</div></div>`}
+
+R.orgView=function(){const a=A(),M=model();const all=M.all,tiles=(l,v,s,c)=>`<div class="jk${c?" t-"+c:""}"><span class="jk-l">${l}</span><b>${v}</b><small>${s}</small></div>`;
+ const top=M.teams.filter(t=>t.st.fteF>0).slice(0,4);
+ const chip=(id,txt,num)=>`<button class="jmc${O.flt===id?" is-on":""}" data-pp2-act="jorgf" data-a="${id}" aria-pressed="${O.flt===id}">${num!=null?`<b>${num}</b> `:""}${txt}</button>`;
+ const o=M.outSt;
+ return `<div class="jx-brief" data-role="story"><b>${E(orgName())}</b> as the journeys see it: <b>${M.teams.length} teams</b>, ${M.teams.reduce((s,t)=>s+t.rl.length,0)} roles, about <b>${all.fte.toFixed(1)} FTE</b> of effort in the steps mapped. Recommended: <span class="jx-bt g">${all.agents} agents</span> <span class="jx-bt r">${all.robots} robots</span> releasing about <b>${all.fteF.toFixed(1)} FTE</b> (modeled). ${all.runA+all.runR} already run${all.runA+all.runR===1?"s":""}.</div>
+ <div class="jh-kpis">${tiles("Teams",M.teams.length,"that own mapped steps")}${tiles("Effort now",all.fte.toFixed(1)+" FTE","staff, "+fmt(all.hrs)+" hours a month")}${tiles("Agents proposed",all.agents,"one per recommended step","agent")}${tiles("Robots proposed",all.robots,"one per recommended step","robot")}${tiles("Capacity released",all.fteF.toFixed(1)+" FTE",pct(all)+"% of staff effort, modeled","good")}${o?tiles("Outside the organization",fmt(o.freed)+" h","a month returned to patients, payers and partners"):""}</div>
+ <div class="jmood jo-ctl" role="group" aria-label="Show">${chip("all","Everything")}${chip("agent","Agents",all.agents)}${chip("robot","Robots",all.robots)}${chip("run","Running now",all.runA+all.runR)}<span class="jo-sp"></span><span class="small muted">Steps counted</span><div class="vsw glass" role="group" aria-label="Journeys counted"><button class="${M.sc==="detail"?"on":""}" data-pp2-act="jorgs" data-a="detail" aria-pressed="${M.sc==="detail"}">Detailed journeys</button><button class="${M.sc==="all"?"on":""}" data-pp2-act="jorgs" data-a="all" aria-pressed="${M.sc==="all"}">All journeys</button></div></div>
+ ${top.length?`<div class="jo-start"><span class="jk-l">Where to start</span>${top.map((t,i)=>`<button class="pp2-lnk" data-pp2-act="jorgn" data-a="${q(t.n)}|"><b>${i+1}. ${E(t.n)}</b> <span class="small muted">${t.st.fteF.toFixed(1)} FTE, ${t.st.agents} agents, ${t.st.robots} robots</span></button>`).join("")}</div>`:""}
+ <section class="jo-chart" aria-label="Org chart with recommended agents and robots"><div class="jo-root"><span class="jo-ri">${R.av("human",orgName(),44)}</span><div><b>${E(orgName())}</b><small>${M.teams.length} teams · ${fmt(all.hrs)} staff hours a month in mapped steps</small></div><span class="jo-crew">${crew(all,28)}</span></div><div class="jo-rail" aria-hidden="true"></div>
+ <div class="tscroll"><div class="jo-teams">${M.teams.map(teamCol).join("")}${M.out?teamCol(M.out):""}</div></div></section>
+ <div class="jfl jo-leg"><span>${R.av("human","Person",20)} A role, with the effort it carries</span><span>${R.av("agent","Agent",20)} Agent: reasons and decides inside limits</span><span>${R.av("robot","Robot",20)} Robot: rules, no model cost</span><span>${R.av("agent","Proposed",20,"jav-cand")} Dashed ring: proposed, not built</span></div>
+ <p class="muted small jhint">${M.sc==="detail"&&M.hasDetail?"The end-to-end journey summarizes work the detailed journeys already cover, so it is left out to avoid counting the same effort twice. Switch to All journeys to include it. ":"Where two journeys cover the same work it is counted in both. "}One proposed teammate stands for one recommended step; a real build may combine steps that share a process. Modeled: a robot frees 80% and an agent 60% of the hours, ${FTE_H} hours is one FTE a month, and patient or partner time is shown in hours and never priced. Teams are the owning team named on each step; the sample organization is fictional.</p>
+ ${W.SCN&&SCN.cur==="core"?`<div class="row" style="margin-top:8px"><button class="btn quiet" data-go="org_chart">Open the full org chart with the 15 governed agents</button></div>`:""}`};
+
+R.orgDrawer=function(tn,pn){const a=A(),M=model();const all=M.teams.concat(M.out?[M.out]:[]);const t=all.find(x=>x.n===tn);if(!t)return;
+ const ro=pn?t.rl.find(x=>x.p===pn):null;const rows=(ro?ro.rows:t.rl.flatMap(x=>x.rows)).slice().sort((p,q2)=>q2.hrs-p.hrs);const st=ro?ro.st:t.st;
+ const tile=(l,v,s)=>`<div class="jd-tile"><span>${l}</span><b>${v}</b>${s?`<small>${s}</small>`:""}</div>`;const ext=t.ext;
+ openDrawer(`<div class="jd"><div class="eyebrow">${E(t.n)}${ro?" · role":""}</div><h2 class="jd-t">${E(ro?ro.p:t.n)}</h2>
+ <div class="jd-crew">${ro?R.av("human",ro.p,38):""}${crew(st,30)||`<span class="small muted">No agent or robot recommended</span>`}</div>
+ <div class="jd-tiles">${tile("Steps",st.n,ro?"in this role":"in this team")}${tile(ext?"Hours a month":"Effort now",ext?fmt(st.hrs):st.fte.toFixed(1)+" FTE",ext?"their time, not priced":fmt(st.hrs)+" hours a month")}${tile(ext?"Hours back":"Released",ext?fmt(st.freed):st.fteF.toFixed(1)+" FTE",pct(st)+"% if every candidate is built")}</div>
+ <p class="small muted">${st.agents} agent${st.agents===1?"":"s"} and ${st.robots} robot${st.robots===1?"":"s"} proposed; ${st.runA+st.runR} already running. ${st.pain} painful step${st.pain===1?"":"s"}, ${st.nop} with no process. Modeled.</p>
+ <h3 class="jd-h">${ro?"Steps":"Steps by role"}</h3><div class="jo-steps">${rows.map(x=>`<button class="jo-step" data-pp2-act="jgo" data-a="${x.j.id}|${x.b.id}"><span class="jo-sa">${x.r.k==="people"?R.av("human",x.b.who,26):R.av(x.r.k,R.dwName(x.b,x.r.k)+(x.r.st==="cand"?" (proposed)":""),26,x.r.st==="cand"?"jav-cand":"")}</span><span class="jo-sb"><span>${R.tnChip(x.j,x.b)} <b>${E(x.b.t)}</b></span><small>${ro?"":E(x.b.who)+" · "}${E(R.jshort(x.j))} · ${fmt(x.hrs)} h a month · ${E(a.recLabel(x.r))}${x.r.st==="cand"?", frees about "+fmt(x.r.save)+" h":""}</small></span></button>`).join("")}</div>
+ <div class="row" style="margin-top:12px"><button class="btn primary" data-pp2-act="jov" data-a="">Open the overlay</button></div></div>`)};
+
+const refresh=()=>{try{if(S.screen==="ppl_jrny")A().paneRefresh();else render()}catch(e){}};
+const ACT=A().ACT;if(ACT){ACT.jorgf=t=>{O.flt=t.dataset.a;refresh()};ACT.jorgs=t=>{O.scope=t.dataset.a;refresh()};
+ ACT.jorgn=t=>{const [x,y]=t.dataset.a.split("|");R.orgDrawer(decodeURIComponent(x),decodeURIComponent(y||""))}}
+/* the same view as its own screen, reachable from the executive menu and search */
+try{if(typeof REG==="function"){
+ const screen=()=>`<div class="screen">${hero("Operations and strategy","Org chart with agent assist","Where agents and robots would take work off each team, drawn on the organization the journeys describe. A COO's view of capacity and where to start.",`<div class="row"><button class="btn" data-go="ppl_jrny">Journey maps and demo scenarios</button><button class="btn quiet" data-go="orgdesign">Agent Action</button></div>`)}${R.orgView()}</div>`;
+ REG("orgassist","Org chart with agent assist","people","M12 3h-3v5h3M9 5.5H5v4M15 5.5h4v4M5 14h3v5H5zM16 14h3v5h-3zM10.5 14h3v5h-3zM12 8v3M6.5 11h11v3",screen);
+ try{NAVX.add("orgassist",{group:"strat",label:"Org chart with agent assist",hint:"The org chart with the agents and robots recommended for each team",sub:"Org, work and change",kw:"org chart agent assist agents robots recommended digital workforce fte capacity released teams roles coo headcount"})}catch(e){}}}catch(e){console.error("org assist",e)}
+})();
