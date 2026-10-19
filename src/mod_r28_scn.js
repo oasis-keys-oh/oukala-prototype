@@ -10,7 +10,7 @@ const SCN=W.SCN={cur:"core",list:{
  mining:{n:"Mining and operational technology",ind:"Mining",d:"Redstone Resources (fictional): from the mine plan to cash received and the site returned, plus maintenance and safety."},
  storage:{n:"Storage and backup",ind:"Storage and backup",d:"Corvane Data Protection (fictional): from the first data risk to the end of the relationship, plus evaluation and recovery."}}};
 const ORIG5=X.PERSONAS.slice(0,5);
-const pack={},byInd={};
+const pack={},byInd={};SCN.pack=pack;
 Object.keys(SCN.list).forEach(k=>{pack[k]={wfs:[],jys:[],pers:[]};if(k!=="core")byInd[SCN.list[k].ind]=k});
 const JP={JH:"health",JM:"mining",JS:"storage"};
 W.WFX.defs.forEach(d=>{if(d.industry&&byInd[d.industry])pack[byInd[d.industry]].wfs.push(d)});
