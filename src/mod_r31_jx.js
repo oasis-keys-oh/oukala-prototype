@@ -15,7 +15,9 @@ const everyBox=()=>{const o=[];allPacks().forEach(({k,pk})=>pk.jys.forEach(j=>j.
 function stamp(){allPacks().forEach(({pk})=>pk.jys.forEach(j=>{let n=0;j.stages.forEach(s=>s.boxes.forEach(b=>{if(b.tn&&b.tn.split("-")[0]===j.id)n=Math.max(n,+b.tn.split("-")[1]||0)}));
  j.stages.forEach(s=>s.boxes.forEach(b=>{if(!b.tn||b.tn.split("-")[0]!==j.id)b.tn=j.id+"-"+pad(++n)}))}))}
 JXR.tn=(j,b)=>{if(!b.tn||b.tn.split("-")[0]!==j.id){let n=0;j.stages.forEach(s=>s.boxes.forEach(x=>{if(x.tn&&x.tn.split("-")[0]===j.id)n=Math.max(n,+x.tn.split("-")[1]||0)}));b.tn=j.id+"-"+pad(n+1)}return b.tn};
-JXR.tnChip=(j,b)=>`<span class="jtn" title="Trace number. The same number follows this step on every tab.">${E(JXR.tn(j,b))}</span>`;
+JXR.numText=b=>{const p=b.procs&&b.procs[0];if(!p||!W.NUM)return "";const key=p.src+"|"+p.ref;return (p.step&&NUM.stepById(key,p.step))||NUM.proc(key)||""};
+JXR.numTail=b=>{const t=JXR.numText(b);return t?` <span class="num-chip" title="The process step that serves this step. Type it in search to open it.">\u2192 ${E(t)}</span>`:""};
+JXR.tnChip=(j,b)=>`<span class="jtn" title="Trace number. The same number follows this step on every tab.">${E(JXR.tn(j,b))}</span>${JXR.numTail(b)}`;
 
 /* ---------- 2. strategy metrics ---------- */
 /* label, unit, today, target, weight (t: elapsed minutes, r: friction hours, c: cost), decimals. Sample values, not measured. */
@@ -89,7 +91,7 @@ function generate(){allPacks().forEach(({k,pk})=>{const ind=SCN.list[k].ind;
   steps.forEach((s,i)=>{s.next=i<steps.length-1?["st"+(i+2)]:[]});
   const def={id,name,kind:"request",service:f.j.cat,owner,steps,visibleToRequester:steps.filter(s=>s.requesterVisible).map(s=>s.id),std:[],drafted:"journey-map"};if(ind)def.industry=ind;
   pk.wfs.push(def);if(k===SCN.cur&&W.WFX)WFX.reg(def);
-  rows.forEach(x=>x.b.procs.push(X.px("WFX",id,name,0,owner)))})})}
+  rows.forEach((x,i)=>{const pr=X.px("WFX",id,name,0,owner);pr.step="st"+(i+2);x.b.procs.push(pr)})})})}
 
 /* ---------- 5. how processes connect ---------- */
 const pk_=p=>p.src+"|"+p.ref;
@@ -103,8 +105,8 @@ JXR.conn=key=>{const M=pindex(),me=M.get(key);const up=new Map(),dn=new Map(),pe
   [i+1].filter(x=>x<L.length).forEach(x=>L[x].b.procs.forEach(p=>add(dn,p)));
   if(b.key)M.forEach((o2,k2)=>{if(k2!==key&&o2.rows.some(r=>r.b.key===b.key&&r.b!==b))add(pe,o2.p)})});
  return {me,up,dn,pe,js}};
-JXR.procSteps=p=>{if(p.src==="WFX"){const w=W.WFX&&WFX.get(p.ref);return w?w.steps.map(s=>({n:s.n,t:s.type,o:s.owner||s.team||"",sla:s.sla||""})):[]}
- const d=W.PROC&&PROC.defs[p.ref];return d&&d.steps?d.steps.map(s=>({n:s.n,t:s.who,o:s.owner||"",sla:s.sla||""})):[]};
+JXR.procSteps=p=>{if(p.src==="WFX"){const w=W.WFX&&WFX.get(p.ref);return w?w.steps.map(s=>({id:s.id,n:s.n,t:s.type,o:s.owner||s.team||"",sla:s.sla||""})):[]}
+ const d=W.PROC&&PROC.defs[p.ref];return d&&d.steps?d.steps.map((s,i)=>({id:"P"+i,n:s.n,t:s.who,o:s.owner||"",sla:s.sla||""})):[]};
 
 stamp();generate();stamp();
 try{X.syncJy()}catch(e){}
