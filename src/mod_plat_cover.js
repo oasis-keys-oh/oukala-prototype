@@ -558,13 +558,13 @@ function gapDrawer(id){const g=gaps().find(x=>x.id===id);if(!g)return;const t=g.
  if(t.type==="planned")btns+=`<button class="btn" data-go-reg="1">Open the registry</button>`;
  if(g.approve)btns+=`<button class="btn primary" data-cov-approve="${E(g.approve)}">Approve and make live</button>`;
  if(g.confirm)btns+=`<button class="btn primary" data-cov-confirm="${E(g.confirm)}">Confirm the proposed labels</button>`;
- openDrawer(`<div class="eyebrow">${E(g.kind)} · ${E(g.sev)}</div><h2 style="margin:4px 0">${E(g.title)}</h2><div class="story" data-role="story"><b>Remediation.</b> ${E(g.action)}</div><dl class="kv small"><dt>Owner</dt><dd>${E(g.owner)}</dd><dt>Opens</dt><dd>${E(t.type||"")} ${E(t.id||"")}</dd></dl><div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">${btns}</div>`)}
+ openDrawer(`<div class="eyebrow">${E(g.kind)} · ${E(g.sev)}</div><h2 style="margin:4px 0">${E(g.title)}</h2><div class="story" data-role="story"><b>Remediation.</b> ${E(g.action)}</div><dl class="kv small"><dt>Owner</dt><dd>${g.owner?ownerChip(g.owner,{role:"Owner"}):""}</dd><dt>Opens</dt><dd>${E(t.type||"")} ${E(t.id||"")}</dd></dl><div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">${btns}</div>`)}
 function modDrawer(id){const c=coverage(),m=c.modules.find(x=>x.id===id);if(!m)return;const b=compute(true).modules.find(x=>x.id===id);
  const chk=(ok,t)=>`<li>${ok?pill_("Pass","good"):pill_("Gap","warn")} ${E(t)}</li>`;
  const ents=m.owned.map(eid=>PLAT.ent(eid)).filter(Boolean);
  const recs=c.records.filter(x=>x.r.mod===id);
  const fl=c.flows.filter(x=>x.f.from===id||x.f.to===id);
- openDrawer(`<div class="eyebrow">${E(band(m.bi))}</div><h2 style="margin:4px 0">${E(m.name)}</h2><p class="muted small">Owner ${E(m.owner||"")} · ${b?`was <b>${b.state==="full"?"covered":"not covered"}</b> before the audit`:""}</p>
+ openDrawer(`<div class="eyebrow">${E(band(m.bi))}</div><h2 style="margin:4px 0">${E(m.name)}</h2><p class="muted small">Owner ${m.owner?ownerChip(m.owner,{role:"Owner"}):E("")} · ${b?`was <b>${b.state==="full"?"covered":"not covered"}</b> before the audit`:""}</p>
  <div class="story" data-role="story">${m.state==="full"?"Fully covered by live entities.":m.state==="proposed"?"Covered, but some entities are only proposed.":"Gaps remain: "+E(m.gaps.join("; "))+"."}</div>
  <ul class="cv-chk">${chk(m.chk.entities,"Owns a registered entity ("+m.entities+")")}${chk(m.chk.records,m.records+" record collection"+(m.records===1?"":"s")+", "+m.recordsMissing+" not in the model")}${chk(m.chk.flows,m.flows+" flows, "+m.flowsMissing+" with no entity")}${chk(m.chk.labels,N0(m.fields)+" fields, "+N0(m.fieldsDefault)+" with a default label")}</ul>
  <h3>Entities it owns</h3><div class="at-chips">${ents.map(e=>`<button class="chip at-chip" data-atlas-go="${E(e.id)}">${E(e.label)}${e.proposed?' <span class="pill info">Proposed</span>':""}</button>`).join("")||'<span class="muted small">None</span>'}</div>

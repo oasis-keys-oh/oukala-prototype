@@ -1090,7 +1090,7 @@ function lineageDetail(id){
  const imp=sel?LIN.impact(sel.e,sel.k||null):null;
  const M=model();
  const parents=[...LIN.parents(id)];
- let h=`<div class="at-lh"><div class="at-lhm"><div class="eyebrow">Metric · owner ${E(m.owner||"")}</div><h3>${E(m.n)}</h3><div class="formula">${E(m.f)}</div></div>
+ let h=`<div class="at-lh"><div class="at-lhm"><div class="eyebrow">Metric · owner ${m.owner?ownerChip(m.owner,{role:"Owner"}):E("")}</div><h3>${E(m.n)}</h3><div class="formula">${E(m.f)}</div></div>
   <div class="at-lha"><span class="pill ${stClass}">${E(stTxt)} · ${t.pct}%</span><span class="pill mute">Confidence ${t.conf}%</span>${fchip(id)}</div></div>
   <div class="row at-lbtns"><button class="btn primary" data-at-trace="${id}">Trace on the diagram</button><button class="btn" data-go="metrics:${id}">Open in Metrics</button>${LN.hist.length?`<button class="btn quiet" data-at-lback="1">Back to ${E(trunc(METRICS[LN.hist[LN.hist.length-1]].n,26))}</button>`:""}</div>
   <div class="statrow at-ss"><div class="stat"><small>Source fields</small><span class="num" data-role="metric">${srcRows.length}</span><em>in ${ents.size} entit${ents.size===1?"y":"ies"}</em></div><div class="stat"><small>Nested metrics</small><span class="num" data-role="metric">${t.st.nested}</span><em>up to 3 levels</em></div><div class="stat"><small>Needs mapping</small><span class="num" data-role="metric">${G.gapList.length}</span><em>${t.st.ghost+t.st.weak?(t.st.ghost+t.st.weak)+" weak or planned":"none weak"}</em></div><div class="stat"><small>Shown on</small><span class="num" data-role="metric">${(m.use||[]).length}</span><em>screens</em></div></div>
