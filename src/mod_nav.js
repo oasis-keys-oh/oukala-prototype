@@ -761,6 +761,7 @@ function openAll(){if(!NAVX.purview().all)return false;let p=q1("#nxAll");if(!p)
  p.innerHTML=allHTML();try{p.showPopover()}catch(e){}return true}
 function redrawAll(focusQ){const p=q1("#nxAll");if(!p)return;p.innerHTML=allHTML();if(focusQ){const i=q1("[data-nx-all-q]",p);if(i){i.focus();const v=i.value;i.setSelectionRange(v.length,v.length)}}}
 NAVX.allScreens={open:openAll,html:allHTML,state:AS};
+ROUTER.on("change","[data-nx-area]",(e,t)=>{G(()=>SRCH.setFacet("area",t.value||null));PAL.sel=0;refreshPal();const i=q1("#nxPalIn");if(i)i.focus()},{id:"nav.facet.area"});
 ROUTER.on("click","[data-nx-all]",e=>{e.preventDefault();menu(false);openAll()},{id:"nav.all"});
 ROUTER.on("click","[data-nx-all-sp]",(e,t)=>{AS.sp=t.dataset.nxAllSp;redrawAll()},{id:"nav.all.sp"});
 ROUTER.on("click","[data-nx-all-mine]",()=>{AS.mine=!AS.mine;redrawAll()},{id:"nav.all.mine"});
@@ -927,8 +928,12 @@ function sources(){const L=[];
   const AL={};G(()=>Object.keys(ALIAS).forEach(a=>{const v=ALIAS[a];(AL[v]=AL[v]||[]).push(a)}));
   const FV={};G(()=>(W.R15&&R15.families||[]).forEach(fm=>fm.views.forEach(v=>{if(v[0]!==fm.id)(FV[fm.id]=FV[fm.id]||[]).push(v[1],formal(v[0]))})));
   SCREENS.forEach(s=>{const id=s[0],m=resolve(id),f=formal(id);const ex=[m.kw,f,hintOf(id),OLDGN[oldGroup(id)]||"",m.sub,gLabel(m.g),(AL[id]||[]).join(" "),(FV[id]||[]).join(" "),(MAP[id]&&MAP[id].l0)||""].join(" ");
-  o.push(mkItem("screen",m.l,gLabel(m.g)+(hintOf(id)?" · "+hintOf(id):""),"--accent",()=>go(id),ex+" "+(MA[id]||""),"screen:"+id,{sid:id,ac:acro(f)}))});
+  const tp=placeOf(topOf(id));o.push(mkItem("screen",m.l,gLabel(tp.sp)+(hintOf(id)?" · "+hintOf(id):""),"--accent",()=>go(id),ex+" "+(MA[id]||"")+" "+((TX[id]||{}).objs||[]).join(" "),"screen:"+id,{sid:id,ac:acro(f),area:tp.sp,objs:(TX[id]||{}).objs||[]}))});
   G(()=>MODMAP.modules).forEach(md=>{if(!md||!md.id||(md.scr&&screenRow(md.scr)))return;o.push(mkItem("screen",md.name||md.sn,"Module · process flow","--p4",()=>MODMAP.select(md.id),(md.al||[]).join(" ")+" "+md.id,"module:"+md.id,{ac:acro(md.sn||md.name)}))});return o}]);
+ /* PH-14 (step 6): view-level results. Every view of a family and every merged view is found by its own name and opens that view;
+    it carries the area and objects of its family, and no screen id of its own, so builder mode still decides hidden screens */
+ L.push(["Screen views",()=>{const o=[];G(()=>(W.R15&&R15.families||[]).forEach(fm=>fm.views.forEach(v=>{const id=v[0];if(id===fm.id||!screenRow(id))return;const tp=placeOf(topOf(id));
+  const it=mkItem("screen",v[1],"View in "+fm.label+" · "+spLabel(tp.sp),"--accent",()=>go(id),fm.label+" "+formal(id)+" "+((TX[id]||{}).objs||[]).join(" ")+" view","view:"+id,{view:id,fam:fm.id,area:tp.sp,objs:(TX[id]||{}).objs||[],g:"Views"});if(it)o.push(it)})));return o}]);
  L.push(["Actions",()=>actionItems()]);
  L.push(["People",()=>(G(()=>DIR)||[]).map(d=>mkItem("person",d.name,d.role+" · "+d.team,d.c||"--p4",()=>person360(d.name),(d.skills||[]).join(" ")+" "+(d.email||"")+" "+d.kind+" "+(d.loc||""),"person:"+d.name))]);
  L.push(["Records",()=>{const o=[];G(()=>NODES).forEach(n=>o.push(mkItem("record",n.n,TYPES[n.t][0]+" · "+n.id,TYPES[n.t][1],()=>recDrawer(n.id),n.story,"record:"+n.id)));
@@ -993,7 +998,8 @@ function scoreItem(it,T,A,q,P,acro_){let sc=0,all=true;const tl=it.tl,h=it.h;
 function runSearch(raw,o){o=o||{};const t0=performance.now();let q=String(raw||"").trim(),scope=o.scope||"all";
  const m=q.match(/^in:\s*([a-z]+)\s*(.*)$/i)||q.match(/^(.*?)\s+in:\s*([a-z]+)$/i);
  if(m){const isFirst=/^in:/i.test(q);const key=(isFirst?m[1]:m[2]).toLowerCase(),rest=isFirst?m[2]:m[1];if(SCOPE_ALIAS[key]){scope=SCOPE_ALIAS[key];q=rest}}
- const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{}};
+ const fq=W.SRCH&&SRCH.parseFacets?SRCH.parseFacets(q):null;if(fq)q=fq.q; /* PH-14 (step 6): area:ops, object:invoice */
+ const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{},facets:fq?fq.facets:null};
  if(!T.length){out.ms=0;return out}
  const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};const SR=W.SRCH&&SRCH.allow?SRCH:null;if(SR)SR.reset();
  const pass=(A2,T2,penalty)=>{const acro_=T2.length===1&&T2[0].length>=2&&T2[0].length<=6;
@@ -1038,7 +1044,8 @@ const PAL={open:false,q:"",scope:"all",sel:0,rows:[],describe:false,res:null,pre
 function buildPalette(){const p=document.createElement("div");p.id="nxPal";p.className="nx-pal";p.hidden=true;p.setAttribute("role","dialog");p.setAttribute("aria-modal","true");p.setAttribute("aria-label","Search "+BRAND.name);
  p.innerHTML=`<div class="nx-palbox glass"><div class="nx-phead">${SVG(ICO.search,20,2)}<input id="nxPalIn" type="text" role="combobox" aria-expanded="true" aria-controls="nxPalList" aria-autocomplete="list" aria-label="Search" placeholder="Search screens, records, people, processes, data, or type in:people" autocomplete="off" spellcheck="false"><button type="button" class="nx-pesc" data-nx-pclose aria-label="Close search">Esc</button></div>
  <div class="nx-chips" role="group" aria-label="Search scope">${SCOPES.map(s=>`<button type="button" class="chip nx-chip" data-nx-scope="${s[0]}" aria-pressed="${s[0]==="all"}">${s[1]}<em></em></button>`).join("")}</div>
- <div class="nx-pnote" id="nxPalNote" hidden></div>
+ <div class="nx-pfacet" data-nx-facets><label class="small muted">Area <select data-nx-area aria-label="Filter results by area"><option value="">All areas</option>${SPACES.filter(s=>s[0]!=="home").map(s=>`<option value="${s[0]}">${E(s[1])}</option>`).join("")}</select></label><span class="small muted">or type <code>area:money</code>, <code>object:invoice</code></span></div>
+  <div class="nx-pnote" id="nxPalNote" hidden></div>
  <div class="nx-pbody"><ul id="nxPalList" class="nx-plist2" role="listbox" aria-label="Results"></ul><aside id="nxPrev" class="nx-prev" aria-label="Preview"></aside></div>
  <div class="nx-pfoot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>Tab</kbd> next type</span><span><kbd>Ctrl</kbd>+<kbd>↵</kbd> ask ${BRAND.name}</span><span><kbd>Esc</kbd> close</span><span class="nx-pstat" id="nxPalStat" aria-live="polite"></span></div></div>`;
  document.body.appendChild(p);
