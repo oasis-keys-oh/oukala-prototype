@@ -59,5 +59,10 @@ const cnt=await p.evaluate(async()=>{const out=[];for(const k of Object.keys(SCN
  JXR.scope.sel=null;return out});
 cnt.forEach(c=>ok(c.bA===c.oA&&c.bR===c.oR&&c.tA===c.bA&&c.tR===c.bR&&c.prop===c.n,`${c.k} (${c.sc}): Build list ${c.bA} agents and ${c.bR} robots = org chart ${c.oA} and ${c.oR} (tiles ${c.tA}, ${c.tR}; orgprop ${c.prop})`));
 
+// 6. JM-05, DC-24: every scenario has shared touchpoints, so the Overlay and the Process map "shared" count are not thin
+const tp=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));
+ const ix=JOV.index();const keys=Object.keys(ix);out[k]={n:keys.length,named:keys.filter(x=>JYX.TP[x]).length,sys:keys.filter(x=>x.indexOf('sys:')===0).length}}return out});
+for(const k in tp)ok(tp[k].n>=4&&tp[k].named===tp[k].n,`${k}: ${tp[k].n} shared touchpoints on the Overlay, all named in JYX.TP`);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
