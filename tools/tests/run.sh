@@ -39,6 +39,8 @@ node tools/tests/search.js build_out
 node tools/tests/nav_usage.js build_out
 # PH-11: close-control audit; fails only on outliers not in tools/tests/nav_close_baseline.json (list: docs/inventory/close-controls.md)
 node tools/tests/nav_close.js build_out
+# PH-14: navigation architecture (areas in fixed order, purview per persona, one place per screen, old ids resolve, gear rule, budget, REG metadata and its lint)
+node tools/tests/nav_ia.js build_out
 # DC-25: every Showroom tour beat under every tenant (no other tenant on screen, tenant-aware screens show the tenant's own data, timings)
 node tools/tests/tenant_tour.js build_out
 # CL-80: Enterprise scale is real; every screen opens at scale (render times over 800 ms are listed, not failed)
