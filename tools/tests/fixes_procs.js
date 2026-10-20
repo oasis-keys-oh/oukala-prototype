@@ -11,7 +11,7 @@ const open=async()=>{const c=await b.newContext({viewport:{width:1440,height:900
  p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));await p.route(/^https?:/,r=>r.abort());
  await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
  await p.waitForFunction(()=>window.PROCLIB&&PROCLIB.whenSettled&&typeof SCREENS!=='undefined'&&typeof go==='function',null,{timeout:60000});return {c,p}};
-const settle=p=>p.evaluate(()=>new Promise(r=>PROCLIB.whenSettled(r)));
+const settle=p=>p.evaluate(()=>new Promise(r=>PROCLIB.whenSettled(()=>setTimeout(r,1000))));
 const counts=p=>p.evaluate(()=>({list:PROCLIB.list().length,count:PROCLIB.count(),stats:PROCLIB.stats().processes}));
 const walk=(p,ids)=>p.evaluate(ids=>{for(const id of ids){try{go(id)}catch(e){}}},ids);
 /* page A: wait for settle first, then open every screen in order */

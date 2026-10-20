@@ -248,14 +248,14 @@ function finish(P){
 let IDXOLD=null,LASTB=0,IDXQ=0,KEYT=0;
 /* DC-38: stable process counts. Modules register their processes on staggered boot timers for about three seconds after load, and
    the index served a stale copy for up to 40 seconds, so a demo showed 131 or about 316 depending on timing and clicks. Boot
-   registration is now tracked: PROCLIB.settled turns true once registration has been quiet for 2 seconds (cap 15 seconds), the
+   registration is now tracked: PROCLIB.settled turns true once registration has been quiet for 3 seconds (cap 20 seconds), the
    index is rebuilt once at that moment and the stale copy is never served afterwards. PROCLIB.count() reads the ids directly. */
 let SETTLED=false;const SETTLE_CB=[];
 const idsNow=()=>{const s=new Set();if(window.LINKS)G0(()=>LINKS.processes().forEach(p=>s.add(p.id)));PROC_IDS().forEach(i=>s.add(i));PL.custom.forEach(c=>s.add(c.id));return s};
 function G0(f){try{f()}catch(e){}}
 (function watchBoot(){const t0=performance.now();const rk=()=>PROC_IDS().length+"|"+PL.custom.length;let last=rk(),quiet=t0;
  const iv=setInterval(()=>{const k=rk(),now=performance.now();if(k!==last){last=k;quiet=now;return}
-  if(now-quiet<2000&&now-t0<15000)return;clearInterval(iv);SETTLED=true;IDXOLD=null;bump();G0(()=>idx());
+  if(now-quiet<3000&&now-t0<20000)return;clearInterval(iv);SETTLED=true;IDXOLD=null;bump();G0(()=>idx());
   SETTLE_CB.splice(0).forEach(f=>G0(f));G0(()=>{if(S.screen==="plat_proc"&&typeof render==="function")render()})},250)})();
 function idx(){
  if(!IDX&&IDXOLD&&!SETTLED&&performance.now()<40000&&performance.now()-LASTB<7000){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},7100-(performance.now()-LASTB))}return IDXOLD}
@@ -268,6 +268,8 @@ function idx(){
  return IDX;
 }
 const bump=()=>{VER++;if(IDX)IDXOLD=IDX;IDX=null;KEYT=0};
+/* a process registered after the boot settles (a late timer, a user action) shows at once: no throttled stale index */
+(function(){const r0=PROC.reg;if(!r0||r0._dc38)return;const w=function(id){const nw=!PROC.defs[id];const x=r0.apply(this,arguments);if(nw&&SETTLED)bump();return x};w._dc38=1;PROC.reg=w})();
 /* ---------- registering every process as a capability in the Maturity models engine ---------- */
 let BY=null;
 function getBY(){
