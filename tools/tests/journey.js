@@ -135,5 +135,12 @@ const perm=await p.evaluate(async()=>{const out={};const prev=S.persona;SCN.set(
 for(const ps in perm){const c=perm[ps];if(['ops','fin'].indexOf(ps)>=0)ok(c.lock&&!c.cards&&!c.pilot&&!c.acc,`persona ${ps}: Build list is locked (simulated permission)`);
  else ok(!c.lock&&c.cards>0&&c.pilot&&c.hyp&&c.acc,`persona ${ps}: Build list shown with a pilot scope panel labeled Hypothesis`)}
 
+// 13. CL-35: journey Back and Forward and the orgprop reset run from HOOKS, not render or SCN.set wrappers
+const hk=await p.evaluate(async()=>{const ids=n=>HOOKS.list(n).map(h=>h.id);S.pp2.tab.ppl_jrny=0;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+ document.querySelector('[data-pp2-tab="ppl_jrny:1"]').click();await new Promise(r=>setTimeout(r,150));const pushed=!!(history.state&&history.state.jy&&history.state.jy.tab===1);
+ history.back();await new Promise(r=>setTimeout(r,300));return {after:ids('afterRender'),ten:ids('tenantChange'),pushed,back:S.pp2.tab.ppl_jrny}});
+ok(hk.after.indexOf('jnav-history')>=0&&hk.ten.indexOf('orgprop-reset')>=0,'jnav and orgprop register on HOOKS (afterRender, tenantChange)');
+ok(hk.pushed&&hk.back===0,`journey history: a tab change adds a history step and Back restores it (tab ${hk.back})`);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();

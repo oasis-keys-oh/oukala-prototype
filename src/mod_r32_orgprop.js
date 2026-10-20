@@ -51,5 +51,6 @@ document.addEventListener("click",e=>{
  if(t.hasAttribute("data-r32-props")){e.preventDefault();OS.props=!OS.props;if(OS.props)openPaths();OS.k=0;refresh();return}
  const id=t.getAttribute("data-r32-prop");if(OS._moved&&Date.now()-OS._moved<250)return;
  if(R.buildDrawer)R.buildDrawer(id)});
-if(W.SCN&&SCN.set){const _s=SCN.set;SCN.set=function(){O.propReset();return _s.apply(this,arguments)}}
+/* CL-35: a tenant change clears the cache through the tenantChange hook (runs before the scenario re-render) instead of wrapping SCN.set */
+if(W.HOOKS&&HOOKS.on)HOOKS.on("tenantChange",()=>O.propReset(),{id:"orgprop-reset",order:10});
 })();

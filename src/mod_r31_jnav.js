@@ -17,8 +17,8 @@ function after(){
   if(!same(s,last)){history.pushState({jy:s},"",location.href);last=s}
  }catch(e){}
 }
-const _r=W.render;
-if(typeof _r==="function"){W.render=function(){const r=_r.apply(this,arguments);try{after()}catch(e){}return r}}
+/* CL-35: runs from the afterRender hook instead of wrapping render (R40) */
+if(W.HOOKS&&HOOKS.on)HOOKS.on("afterRender",()=>{try{after()}catch(e){}},{id:"jnav-history",order:80});
 W.addEventListener("popstate",()=>{
  const y=history.state&&history.state.jy;
  if(!y||typeof S==="undefined")return;
