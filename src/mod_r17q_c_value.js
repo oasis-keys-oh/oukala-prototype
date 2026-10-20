@@ -108,7 +108,7 @@ function shareText(){
  const asm=INPUTS.map(i=>`- ${i.l}: ${nf(I[i.k],2)} ${i.u} (${ed.has(i.k)?"your data":"illustrative"})`).join("\n");
  const T=Q.tenant().filter(f=>["hours","sla","owner","traced","contract"].includes(f.key)).map(f=>`- ${f.l}: ${f.disp} (${f.kind==="mixed"?"measured runs, assumed minutes":"from the sample tenant's data"})`).join("\n");
  return `Business case model: a model, not a measured result.\nInputs marked illustrative are example assumptions; replace them with your data.\n\nAssumptions\n${asm}\n\nResults (modeled)\n${L.filter(l=>["H","full","lic","npv","roi","pb"].includes(l.id)).map(l=>`- ${l.l}: ${Q.fmtLine(l)}`).join("\n")}\n\nFormulas\n${L.filter(l=>["H","lab","tools","out","full","npv","roi"].includes(l.id)).map(l=>`- ${l.l} = ${l.fm}`).join("\n")}\n\nMeasured in the sample tenant (Layer A)\n${T}`}
-function exportHTML(){return `<div class="r17q-ex"><div class="r17q-exb"><button type="button" class="btn" data-r17q-print>Print view (one page)</button><button type="button" class="btn" data-r17q-csv>Download CSV</button><button type="button" class="btn" data-r17q-copy>Copy text</button></div><label class="r17q-share"><span class="small muted">Share assumptions: paste this block into an email or a document. It lists every assumption and whether it is illustrative.</span><textarea class="fin" readonly rows="12" id="r17q-share" aria-label="Assumptions text block">${H(shareText())}</textarea></label></div>`}
+function exportHTML(){return `<div class="r17q-ex"><div class="r17q-exb"><button type="button" class="btn primary" data-r17q-case>Download one-page business case (.html)</button><button type="button" class="btn" data-r17q-caseopen>Open printable page</button><button type="button" class="btn" data-r17q-print>Print view (one page)</button><button type="button" class="btn" data-r17q-csv>Download CSV</button><button type="button" class="btn" data-r17q-copy>Copy text</button></div><label class="r17q-share"><span class="small muted">Share assumptions: paste this block into an email or a document. It lists every assumption and whether it is illustrative.</span><textarea class="fin" readonly rows="12" id="r17q-share" aria-label="Assumptions text block">${H(shareText())}</textarea></label></div>`}
 function scenariosTab(){hydrate();
  return `<div class="r17q-stack"><section class="card glass r17q-c"><div class="cardhead"><div><h3>Saved scenarios</h3><span class="muted small">Save the current inputs under a name, load one back, or compare two.</span></div></div>
   <div class="r17q-sv"><label class="r17q-svl small muted" for="r17q-name"><span>Scenario name</span></label><input id="r17q-name" class="fin" type="text" maxlength="60" placeholder="For example: conservative" value="${H(ST.nm)}" data-r17q-name><button type="button" class="btn primary" data-r17q-save>Save current inputs</button></div>${scnTable()}</section>
@@ -150,6 +150,40 @@ function csv(){
  return rows.map(r=>r.map(csvq).join(",")).join("\r\n")}
 function download(name,text,type){try{const b=new Blob([text],{type:type||"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500);return true}catch(e){return false}}
 Q.csv=csv;
+/* ---------------- PR-21: one-page business case, as a standalone printable HTML page and a downloadable .html ----------------
+   Every number in it carries the label "Modeled" (inputs are modeled assumptions, results are model outputs). Measured Layer A
+   figures are left out so nothing measured and nothing modeled share one page. The page uses system colors only (no palette). */
+function caseHTML(){
+ const I=Q.inputs(),M=Q.model(I),L=Q.lines(M),sv=Q.sens(I,ST.range),ed=new Set(Q.edited().map(i=>i.k));
+ const org=G(()=>DATA.tenantInfo().org,"")||G(()=>TENANT.name(),"")||"Sample organization";
+ const day=G(()=>U.fmtDate(U.TODAY_ISO,{year:"numeric",month:"long"}),"");
+ const MOD='<td class="lb">Modeled</td>';
+ const row=(a,b,c)=>`<tr><td>${H(a)}</td><td class="n">${H(b)}</td>${c||MOD}</tr>`;
+ const res=L.filter(l=>["H","full","lic","npv","roi","pb"].includes(l.id));
+ const asm=INPUTS.map(i=>`<tr><td>${H(i.l)}${i.k==="price"?" (placeholder for your quote, not a price)":""}</td><td class="n">${H(nf(I[i.k],Number.isInteger(+I[i.k])?0:2))} ${H(i.u)}</td><td class="lb">Modeled, ${ed.has(i.k)?"your data":"illustrative"}</td></tr>`).join("");
+ const yr=M.rows.map(r=>`<tr><td>Year ${H(r.t)}</td><td class="n">${H(Math.round(r.ramp*100))}%</td><td class="n">${H(usdF(r.b))}</td><td class="n">${H(usdF(r.c))}</td><td class="n">${H(usdF(r.net))}</td><td class="n">${H(usdF(r.cum))}</td>${MOD}</tr>`).join("");
+ const sens=["low","base","high"].map(k=>{const m=sv[k];return `<tr><td>${H(k[0].toUpperCase()+k.slice(1))} case</td><td class="n">${H(usdF(m.full))}</td><td class="n">${H(usdF(m.npv))}</td><td class="n">${m.roi==null?"n/a":H(nf(m.roi*100))+"%"}</td>${MOD}</tr>`}).join("");
+ const fm=L.filter(l=>["lab","tools","out","full","lic","npv","roi","pb"].includes(l.id)).map(l=>`<tr><td>${H(l.l)}<div class="fm">${H(l.fm)}</div></td><td class="n">${H(Q.fmtLine(l))}</td>${MOD}</tr>`).join("");
+ return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Business case model</title>
+<style>:root{color-scheme:light dark}body{margin:0;background:Canvas;color:CanvasText;font:13px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:780px;margin:0 auto;padding:24px 16px}h1{font-size:22px;margin:0 0 4px}h2{font-size:14px;margin:16px 0 6px;text-transform:uppercase;letter-spacing:.05em}
+.sub{color:GrayText;margin:0 0 6px}.note{border:1px solid GrayText;border-radius:8px;padding:8px 10px;margin:10px 0}
+table{width:100%;border-collapse:collapse}td,th{padding:4px 6px;border-bottom:1px solid GrayText;text-align:left;vertical-align:top}th{font-size:11px;color:GrayText;font-weight:600}
+.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.lb{font-size:11px;color:GrayText;white-space:nowrap}.fm{font-size:11px;color:GrayText}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media (max-width:640px){.cols{grid-template-columns:minmax(0,1fr)}}
+footer{color:GrayText;font-size:11px;margin-top:14px}@media print{main{padding:0;max-width:none}body{font-size:8.5px;line-height:1.3}h1{font-size:16px}h2{font-size:10px;margin:6px 0 2px}td,th{padding:1px 4px}.lb,.fm,th,footer{font-size:7.5px}.note{margin:4px 0;padding:4px 8px}.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}@page{size:letter;margin:10mm}}</style></head>
+<body><main><h1>Business case model</h1><p class="sub">${H(org)} (fictional sample) · ${H(day)}</p>
+<p class="note"><b>A model, not a measured result.</b> Every number on this page is modeled: inputs are assumptions (illustrative unless marked your data) and results are computed from them with the formulas shown.</p>
+<h2>Results</h2><table data-case="results"><thead><tr><th>Result</th><th class="n">Value</th><th>Label</th></tr></thead><tbody>${res.map(l=>row(l.l,Q.fmtLine(l))).join("")}</tbody></table>
+<div class="cols"><div><h2>Assumptions</h2><table data-case="assumptions"><thead><tr><th>Input</th><th class="n">Value</th><th>Label</th></tr></thead><tbody>${asm}</tbody></table></div>
+<div><h2>Formulas</h2><table data-case="formulas"><thead><tr><th>Line</th><th class="n">Value</th><th>Label</th></tr></thead><tbody>${fm}</tbody></table>
+<h2>Low, base and high</h2><table data-case="sensitivity"><thead><tr><th>Case</th><th class="n">Annual benefit</th><th class="n">NPV</th><th class="n">ROI</th><th>Label</th></tr></thead><tbody>${sens}</tbody></table><p class="sub">Range plus or minus ${H(nf(ST.range))}% on the uncertain inputs (modeled).</p></div></div>
+<h2>Year by year</h2><table data-case="years"><thead><tr><th>Year</th><th class="n">Realized</th><th class="n">Benefit</th><th class="n">Platform cost</th><th class="n">Net</th><th class="n">Cumulative</th><th>Label</th></tr></thead><tbody>${yr}</tbody></table>
+<footer>Prepared with the Value realized screen of a prototype. Figures measured from the sample tenant's records are not on this page; they are on the screen with their formulas and sources. No price or certification is implied.</footer></main></body></html>`}
+Q.caseHTML=caseHTML;
+function openCase(){const html=caseHTML();let w=null;try{const u=URL.createObjectURL(new Blob([html],{type:"text/html;charset=utf-8"}));w=window.open(u,"_blank");setTimeout(()=>URL.revokeObjectURL(u),60000)}catch(e){}
+ if(!w){openPrint();toast("Pop-ups are blocked, so the print view opened here instead","warn")}Q.audit("Opened one-page business case","Value realized");return !!w}
+Q.openCase=openCase;
 function openPrint(){
  closePrint();
  const I=Q.inputs(),M=Q.model(I),L=Q.lines(M),sv=Q.sens(I,ST.range),ed=new Set(Q.edited().map(i=>i.k)),T=Q.tenant();
@@ -157,7 +191,7 @@ function openPrint(){
  const k=(l,v)=>`<div class="r17q-pk"><span>${H(l)}</span><b class="num">${H(v)}</b></div>`;
  const el=document.createElement("div");el.className="r17q-pv";el.setAttribute("role","dialog");el.setAttribute("aria-label","Print view");
  el.innerHTML=`<div class="r17q-pvbar"><button type="button" class="btn primary" data-r17q-pvprint>Print or save as PDF</button><button type="button" class="btn" data-r17q-pvclose>Close</button></div>
- <article class="r17q-page"><header><div class="r17q-pvt">Value realized: business case model</div><div class="r17q-pvs">Meridian Standards Foundation (sample) · ${H(d)} · <b>A model, not a measured result.</b> Inputs tagged illustrative are example assumptions; replace them with your data.</div></header>
+ <article class="r17q-page"><header><div class="r17q-pvt">Value realized: business case model</div><div class="r17q-pvs">${H(G(()=>DATA.tenantInfo().org,"")||"Meridian Standards Foundation")} (sample) · ${H(d)} · <b>A model, not a measured result.</b> Inputs tagged illustrative are example assumptions; replace them with your data.</div></header>
  <div class="r17q-pks">${k("Annual hours returned",nf(M.H)+" h")}${k("Annual benefit",usd(M.full))}${k("Payback",M.pb==null?"Not within "+M.yrs+" y":nf(M.pb,1)+" months")}${k(M.yrs+"-year NPV",usd(M.npv))}${k("ROI",M.roi==null?"n/a":nf(M.roi*100)+"%")}</div>
  <div class="r17q-pcols"><div class="r17q-pcol"><h4>Assumptions</h4><table class="r17q-pt2">${INPUTS.map(i=>`<tr><td>${H(i.l)}</td><td class="r17q-pn">${nf(I[i.k],2)} <span>${H(i.u)}</span></td><td>${ed.has(i.k)?"your data":"illustrative"}</td></tr>`).join("")}</table></div>
  <div class="r17q-pcol"><h4>Sensitivity: low, base, high</h4>${sensSVG(sv)}<h4>Formulas</h4><table class="r17q-pt2">${L.filter(l=>["lab","tools","out","full","lic","npv","roi","pb"].includes(l.id)).map(l=>`<tr><td>${H(l.l)}</td><td class="r17q-pn">${H(Q.fmtLine(l))}</td></tr><tr class="r17q-fr"><td colspan="2">${H(l.fm)}</td></tr>`).join("")}</table></div></div>
@@ -186,6 +220,8 @@ document.addEventListener("click",e=>{const t=e.target;if(!t.closest)return;let 
  if(b=t.closest("[data-r17q-load]")){const s=ST.scn.find(x=>x.id===b.dataset.r17qLoad);if(s){ST.inp=Object.assign({},s.inp);Q.audit("Loaded value scenario",s.name);toast("Loaded "+s.name,"good");S.v.r17qv=1;render()}return}
  if(b=t.closest("[data-r17q-del]")){const i=ST.scn.findIndex(x=>x.id===b.dataset.r17qDel);if(i>=0){const s=ST.scn.splice(i,1)[0];G(()=>{if(W.STORE&&STORE.delete)STORE.delete("value_scenario",s.id)},0);if(ST.cmpB===s.id)ST.cmpB="";if(ST.cmpA===s.id)ST.cmpA="__cur";Q.audit("Deleted value scenario",s.name);render()}return}
  if(t.closest("[data-r17q-csv]")){const ok=download("value-case-"+new Date().toISOString().slice(0,10)+".csv",csv());Q.audit("Exported value case CSV","");toast(ok?"CSV downloaded":"Download is blocked in this browser",ok?"good":"warn");return}
+ if(t.closest("[data-r17q-case]")){const ok=download("business-case-"+G(()=>U.TODAY_ISO,"model")+".html",caseHTML(),"text/html;charset=utf-8");Q.audit("Downloaded one-page business case","");toast(ok?"Business case downloaded (.html)":"Download is blocked in this browser",ok?"good":"warn");return}
+ if(t.closest("[data-r17q-caseopen]")){openCase();return}
  if(t.closest("[data-r17q-print]")){openPrint();return}
  if(t.closest("[data-r17q-pvprint]")){window.print();return}
  if(t.closest("[data-r17q-pvclose]")){closePrint();return}

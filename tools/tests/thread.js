@@ -109,5 +109,18 @@ add(await step('DC-14',async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-14
  const b=document.querySelector('#view [data-bst-grp="OR"]');if(b){b.click();await new Promise(r=>setTimeout(r,150));el=document.querySelector('#view [data-bst-group]');ok(el&&el.getAttribute('data-bst-group')==='OR'&&/Operational Resilience/.test(el.innerText),'choosing a group switches the view')}else ok(false,'group chips');
  S.thrGrp.g='DP';return f}));
 
+/* ---- PR-21: one-page business case from the Value screen: printable page and downloadable .html, every number labeled modeled ---- */
+add(await step('PR-21',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('PR-21 '+m)};const html=R17Q.caseHTML();
+ const d=new DOMParser().parseFromString(html,'text/html');const rows=[...d.querySelectorAll('tbody tr')];
+ ok(rows.length>=20,'the page has results, assumptions, formulas, cases and years ('+rows.length+' rows)');
+ const bad=rows.filter(r=>/\d/.test([...r.querySelectorAll('td.n')].map(x=>x.textContent).join(''))&&!/Modeled/.test((r.querySelector('td.lb')||{}).textContent||''));ok(!bad.length,'every row with a number is labeled Modeled ('+bad.length+' are not)');
+ ok(!/#[0-9a-fA-F]{3,8}\b/.test(html.replace(/&#\d+;/g,'')),'no hex colors in the exported page');ok(!/—/.test(html),'no em dash');ok(/A model, not a measured result/.test(html),'says it is a model');
+ ok(/<!doctype html>/i.test(html)&&/<title>Business case model<\/title>/.test(html),'a standalone HTML page');
+ S.v.r17qv=2;go('r17q_value');ok(!!document.querySelector('#view [data-r17q-case]')&&!!document.querySelector('#view [data-r17q-caseopen]'),'download and printable page buttons on the Value screen');
+ return f}));
+try{const [dl]=await Promise.all([p.waitForEvent('download',{timeout:8000}),p.evaluate(()=>document.querySelector('#view [data-r17q-case]').click())]);
+ const name=dl.suggestedFilename();const fp=await dl.path();const txt=require('fs').readFileSync(fp,'utf8');
+ if(!/\.html$/.test(name)||!/Business case model/.test(txt))fails.push('PR-21 download is not the business case .html ('+name+')')}catch(e){fails.push('PR-21 no download: '+String(e.message||e).slice(0,120))}
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();
