@@ -23,7 +23,7 @@ function strip(k){const p=pack[k];if(!p)return;const w=new Set(p.wfs.map(d=>d.id
  X.PERSONAS.length=0}
 function load(k){const p=pack[k];if(!p)return;p.wfs.forEach(d=>W.WFX.reg(d));p.jys.forEach(j=>{if(!X.JY.list.some(x=>x.id===j.id))X.JY.list.push(j)});p.pers.forEach(x=>{if(X.PERSONAS.indexOf(x)<0)X.PERSONAS.push(x)});byEnd()}
 Object.keys(pack).forEach(strip);load("core");G(()=>X.syncJy());
-SCN.set=function(k){if(!SCN.list[k]||k===SCN.cur)return;strip(SCN.cur);load(k);SCN.cur=k;try{S.scenario=k}catch(e){}
+SCN.set=function(k){if(!SCN.list[k]||k===SCN.cur)return;strip(SCN.cur);load(k);SCN.cur=k;try{S.scenario=k}catch(e){}G(()=>W.DATA&&W.DATA.setTenant(k));
  if(X.JY.sel&&!X.JY.list.some(j=>j.id===X.JY.sel))X.JY.sel=null;
  G(()=>X.syncJy());G(()=>W.ODX&&W.ODX.preset&&W.ODX.preset(k));G(()=>{if(S.od){S.od.gsel=(W.ODX.GAPS[0]||{}).id||"G07";S.od.choice={};S.od.gdim="all"}});G(()=>toast("Demo scenario: "+SCN.list[k].n,"good"));G(()=>render())};
 SCN.wfs=k=>pack[k]?pack[k].wfs:[];

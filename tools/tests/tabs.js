@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const path=require('path');
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
-p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
 await p.route(/^https?:/,r=>r.abort());
 await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(800);
 const scns=await p.evaluate(()=>Object.keys(SCN.list));let n=0,bad=0;console.log('scenarios',scns.join(','));

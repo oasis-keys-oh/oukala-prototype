@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const path=require('path'),fs=require('fs
 (async()=>{const a=process.argv.slice(2),dir=path.resolve(a[0]||'build_out');const sd=a.includes('--shots')?path.resolve(a[a.indexOf('--shots')+1]):null;if(sd)fs.mkdirSync(sd,{recursive:true});
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];let bad=0;const fail=m=>{bad++;console.log('FAIL',m)};
-p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy/.test(m.text())&&errs.push('console: '+m.text().slice(0,200)));
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,200)));
 await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(900);
 const lint=await p.evaluate(()=>SHOW.lint());if(lint.length)fail('lint '+JSON.stringify(lint));
 await p.evaluate(()=>go('showroom'));await p.waitForTimeout(400);

@@ -58,7 +58,7 @@ function metricRing(id,size){const m=METRICS[id],st=mstat(m),p=pid(),sz=size||13
  <div popover id="${p}" class="pop glass">${metricBody(id)}<div class="row" style="margin-top:14px"><button class="btn" popovertarget="${p}" popovertargetaction="hide">Close</button><button class="btn quiet" data-go="metrics:${id}">Open in Metrics</button></div></div></div>`}
 
 /* ---- drawer (popover with light-dismiss: click outside or Esc closes it) ---- */
-function openDrawer(html){const d=$("#drawer");d.innerHTML=`<button class="btn quiet closebtn" popovertarget="drawer" popovertargetaction="hide" aria-label="Close">Close</button>${html}`;if(d.showPopover){try{d.showPopover()}catch(e){}}else d.setAttribute("open","")}
+function openDrawer(html){const d=$("#drawer");d.innerHTML=`<button class="btn quiet closebtn" popovertarget="drawer" popovertargetaction="hide" aria-label="Close">Close</button>${html}`;if(d.showPopover){try{d.showPopover()}catch(e){}}else d.setAttribute("open","");if(window.HOOKS)HOOKS.run("afterOpenDrawer",d)}
 function closeDrawer(){const d=$("#drawer");if(d.hidePopover){try{d.hidePopover()}catch(e){}}}
 function connectedHTML(id,nb){const rows=nb.map(x=>{const t=ANODE(x.o);return t?{lab:x.out?"Goes to":"Comes from",row:{id:x.o,t:t.n,sub:x.l,tag:x.out?"out":"in",go:()=>recDrawer(x.o)}}:null}).filter(Boolean);
  if(window.lrHTML){const by={};rows.forEach(r=>(by[r.lab]=by[r.lab]||[]).push(r.row));return lrHTML({id:"rec-"+id,groups:Object.entries(by).map(([k,v])=>({key:k,label:k,rows:v})),limit:6,search:true,empty:"No connections."})}
@@ -86,10 +86,10 @@ function navHTML(){if(window.NAVX&&NAVX.html)return NAVX.html();const P=PERSONAS
   const head=par&&lab[par]?`<span class="gparent" data-nav="${par}" role="link" tabindex="0" ${S.screen===par?'aria-current="page"':""} title="Open ${esc(lab[par][1])}">${gl}</span>`:gl;
   return `<details class="navgd" data-ng="${g}" ${open?"open":""}><summary>${head}</summary>${ks.map(k=>(sub[k]?`<span class="navsub">${sub[k]}</span>`:"")+item(k)).join("")}</details>`}).join("")}
 function renderNav(){$("#nav").innerHTML=navHTML();$("#personaName").textContent=PERSONAS[S.persona].n}
-function go(screen,arg){S.screen=screen;S.navOpen={};if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
+function go(screen,arg){if(window.HOOKS)HOOKS.run("beforeGo",screen,arg);S.screen=screen;S.navOpen={};if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
 let _R={};
 function navReveal(){const n=$("#nav"),a=n&&n.querySelector("[aria-current=page]");if(!a)return;const nr=n.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.bottom>nr.bottom-8)n.scrollTop+=ar.bottom-nr.bottom+40;else if(ar.top<nr.top+8)n.scrollTop-=nr.top-ar.top+40}
-function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.dataset.screen=S.screen;v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender()}
+function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.dataset.screen=S.screen;v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender();if(window.HOOKS)HOOKS.run("afterRender",S.screen)}
 function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */

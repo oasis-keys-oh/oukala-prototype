@@ -20,6 +20,12 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 - Questions and decisions live in `Open Questions.md`, not in the backlog.
 - Start of session: invoke the Ariane skill to read vault context. End of session: update the rows you touched, write a handoff (newest entry on top of `Handoff.md`) citing IDs.
 
+## Who owns what
+- Claude Code: src/, tools/, build, tests, commits, pushes. Only it pushes to main.
+- Cowork: GTM assets, Project docs, vault GTM and Decisions notes. Never edits src/ or pushes.
+- Both: add the backlog row first, cite IDs, and re-read Product Backlog.md and Handoff.md right before editing them.
+- Parallel Claude Code sessions: one git worktree each (git worktree add ../wt-<ID> -b <ID>-short-name).
+
 ## Build, test, ship
 - Build: `python3 src/build.py --out build_out`. Output: `index.html`, `oukala-js.js`, `full.html` (single file used by tests).
 - Tests: `tools/tests/run.sh` builds then runs `smoke.js` (every registered screen), `tabs.js` (4 scenarios x 9 journey tabs) and `showroom.js` (tours). Needs Node, Playwright and a Chromium (`CHROMIUM_PATH` if Playwright's own is not installed). All must pass before any push.
@@ -27,6 +33,7 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 - Working tree notes: the " 2" duplicate files are quarantined until 2026-11-17 (CL-07); do not delete them earlier without Omar's say-so.
 
 ## Code conventions
+- Shared foundation is `src/platform.js` (`U`, `HOOKS`, `DATA`, `STEPMODE`, `TRIGGERS`, `CHATADDR`, `ownerChip`); contracts, file territories and build waves are in `docs/ARCHITECTURE.md`. New modules are `mod_s_<domain>`. Tests: `npm test`.
 - Each feature is a module pair `mod_<name>.js` and `.css` in `src/`, wrapped in an IIFE, with a unique CSS prefix. `build.py` concatenates core files, then modules in filename order. New modules sort after `mod_r32_*`. Do not name new files by build round when a domain name works.
 - Register a screen with `REG(id,name,suite,icon,render)`; add search and menu with `NAVX.add`. Read data through accessors, not module-level captures (tenant rules R16 to R20, CL-55).
 - Tokens only in CSS (`var(--...)`); no new hex colors, no new `!important`, one z-index from the token list once CL-23 lands. Close controls sit top right, never over content (PH-10).

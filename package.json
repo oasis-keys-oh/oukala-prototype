@@ -1,0 +1,12 @@
+{
+  "name": "falconaire-prototype",
+  "private": true,
+  "description": "Database-free prototype. Build: python3 src/build.py --out build_out. Tests: npm test",
+  "scripts": {
+    "build": "python3 src/build.py --out build_out",
+    "test": "tools/tests/run.sh"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}
