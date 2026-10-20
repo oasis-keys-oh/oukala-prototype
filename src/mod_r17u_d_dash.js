@@ -219,7 +219,6 @@ window.addEventListener("beforeprint",()=>{if(document.querySelector(".r17u-pv")
 /* drag and drop (kit DND, with its built-in Alt+Arrow keyboard fallback) */
 G(()=>DND.on("r17u_tile",(id,from,to,idx)=>{const d=cur(),i=d.tiles.findIndex(t=>t.id===id);if(i<0)return;const j=Math.max(0,Math.min(d.tiles.length-1,idx>i?idx-1:idx));if(j===i)return;mutate(d,x=>{x.tiles.splice(j,0,x.tiles.splice(i,1)[0])},"reordered tiles")}));
 /* the default selection follows the persona, until the person picks another dashboard */
-let lastP=null;const _r=W.render;
-/* search */
+let lastP=null;/* search */
 SEARCHX.push(()=>[{g:"Dashboard templates",t:"Executive, Service desk, Finance, Resilience, AI agents, Delivery",m:"Template gallery",c:"--accent",f:()=>{S.v.r17ud=1;go("r17u_dash")},k:"dashboard template gallery executive service desk finance resilience ai agents delivery"}]);
 })();

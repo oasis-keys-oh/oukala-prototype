@@ -14,7 +14,7 @@ function topbar(){
 }
 let timer=0;
 function later(){clearTimeout(timer);timer=setTimeout(()=>{try{topbar()}catch(e){console.error("r20 topbar",e)}},40)}
-const _render=W.render;if(typeof _render==="function")W.render=function(){const r=_render.apply(this,arguments);later();return r};
+HOOKS.on("afterRender",()=>later(),{id:"r20a.topbar"});
 const start=()=>{later();const tb=D.querySelector(".topbar");if(tb)new MutationObserver(later).observe(tb,{childList:true,subtree:true})};
 if(D.readyState==="loading")D.addEventListener("DOMContentLoaded",()=>setTimeout(start,600));else setTimeout(start,600);
 })();

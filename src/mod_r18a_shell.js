@@ -86,7 +86,7 @@ function workBlock(){
 function wrapHome(){const prev=_R.home;if(!prev||prev.__r18)return;const f=function(){let h=prev.apply(this,arguments);try{const i=h.indexOf("</section>");const lh=G(()=>R18.lensHome?R18.lensHome():"","");if(i>0)h=h.slice(0,i+10)+lh+workBlock()+h.slice(i+10)}catch(e){console.error("r18 home",e)}return h};f.__r18=1;_R.home=f}
 wrapHome();
 D.addEventListener("click",e=>{const p=e.target.closest&&e.target.closest("[data-r18-proc]");if(p){G(()=>PROCLIB.open(p.dataset.r18Proc));return}const a=e.target.closest&&e.target.closest("[data-r18-app]");if(a){ST.app=a.dataset.r18App;G(()=>go("r18_app"))}});
-const _render=W.render;W.render=function(){const r=_render.apply(this,arguments);try{ensureLens()}catch(e){console.error("r18 lens",e)}return r};
+HOOKS.on("afterRender",()=>{try{ensureLens()}catch(e){console.error("r18 lens",e)}},{id:"r18a.lens"});
 setTimeout(()=>{apply();try{ensureLens()}catch(e){}},50);setInterval(()=>{try{ensureLens()}catch(e){}},500);
 })();
 /* popovers (metric formulas, AI notes, standards and others): after layout, fit inside the window, never run off an edge */
