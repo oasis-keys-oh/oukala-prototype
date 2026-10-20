@@ -30,6 +30,18 @@ ok(r30.calls,'PR-30 gateOrder calls APG.check');
 ok(r30.sod.st==='pending'&&r30.sod.rule==='sod'&&r30.sod.state==='Approvals','PR-30 the requester cannot approve their own chat order: '+JSON.stringify(r30.sod));
 ok(r30.member.st==='approved'&&r30.member.state==='Fulfillment','PR-30 a member of the routed group is recorded as approved: '+JSON.stringify(r30.member));
 
+/* ---- CL-89: #nwPop and #r15GrpPop have a close control at the top right, in flow, and it closes the popover ---- */
+for(const [name,opener] of [['nwPop','#nwBtn'],['r15GrpPop','[data-r15-grp]']]){
+ await p.evaluate(()=>{try{go('wf_runs')}catch(e){}});await p.waitForTimeout(600);
+ const r=await p.evaluate(([id,sel])=>{const o=document.querySelector(sel);if(!o)return{err:'no opener '+sel};o.click();const pop=document.getElementById(id);if(!pop||!pop.matches(':popover-open'))return{err:'did not open'};
+  const x=pop.querySelector('[popovertargetaction=hide][aria-label=Close]');if(!x)return{err:'no close control'};const P=pop.getBoundingClientRect(),X=x.getBoundingClientRect();
+  const cs=getComputedStyle(x);const over=[...pop.querySelectorAll('button:not([aria-label=Close])')].some(bn=>{const q=bn.getBoundingClientRect();return !(q.right<=X.left||q.left>=X.right||q.bottom<=X.top||q.top>=X.bottom)});
+  x.click();return{dx:Math.round(P.right-X.right),dy:Math.round(X.top-P.top),pos:cs.position,over,closed:!pop.matches(':popover-open')}},[name,opener]);
+ ok(!r.err,'CL-89 '+name+': '+r.err);
+ if(!r.err)ok(r.dx>=0&&r.dx<=40&&r.dy>=0&&r.dy<=40&&r.pos==='static'&&!r.over&&r.closed,'CL-89 '+name+' close control top right, in flow, not over items, and it closes: '+JSON.stringify(r))}
+const base=JSON.parse(fs.readFileSync(path.join(root,'tools/tests/nav_close_baseline.json'),'utf8'));
+ok(!base.outliers.some(o=>/#nwPop|#r15GrpPop/.test(o.key)),'CL-89 nav_close baseline no longer lists #nwPop or #r15GrpPop');
+
 /*@@NEXT@@*/
 
 ok(!errs.length,'page errors: '+errs.slice(0,3).join(' | '));

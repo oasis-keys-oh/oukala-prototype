@@ -1,0 +1,6 @@
+/* CL-89 (PH-10): the Create menu (#nwPop) and the rail group popover (#r15GrpPop, mod_r15c_core.js) get a header row
+   with the close control at the top right, in flow: never positioned over the items. */
+.nw-hd,.r15-gphd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nw-hd .nw-h{flex:1;min-width:0}
+.r15-gphd .eyebrow{flex:1;min-width:0}
+.nw-hd .closebtn,.r15-gphd .closebtn{position:static;inset:auto;flex:none;display:inline-grid;place-items:center;min-width:36px;min-height:36px;padding:0;margin:0;border-radius:var(--rad-pill)}
