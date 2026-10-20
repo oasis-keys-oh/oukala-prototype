@@ -1,0 +1,117 @@
+/* ===== mod_s_guard: Guardrail register (DC-18), stage-by-family matrix (DC-19), "Try to break it" playground (DC-20),
+   guided guardrail views per act (DC-21). Screen "guard". API: window.GUARD (extends the IAM GUARD object, never replaces it):
+   GUARD.rails() rows · GUARD.families() · GUARD.matrix() · GUARD.attempt(id) · GUARD.attempts() · GUARD.child(id) · GUARD.children().
+   The register is an inventory of the code: every status is what the code does today (enforced, partial or documented only), and
+   GUARD.verify() looks up each check function in the running page. Everything here runs in a database-free prototype: it is
+   simulated, tenant isolation is simulated, and nothing is a security certification. Counsel review (BR-08) is required before
+   any of it is used with a customer. Prefix: gd-. ===== */
+(function(){
+const W=window;
+const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
+const E=s=>W.U&&U.esc?U.esc(s):String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const GD=W.GUARD=W.GUARD||{};
+const SELF="guard";
+const chip=(n,rec,role)=>G(()=>ownerChip(n,{record:rec,role}),E(n));
+
+/* ---------- families (DC-18: at least 12) ---------- */
+const FAM=[
+ {id:"perm",n:"Permissions",d:"Who may open, read, change or approve what."},
+ {id:"apg",n:"Approval groups",d:"Approvals route to a group, never a person (R14)."},
+ {id:"sod",n:"Segregation of duties",d:"The requester never approves their own request."},
+ {id:"doa",n:"Delegation of authority",d:"The amount decides who may approve."},
+ {id:"cap",n:"Budget caps",d:"Spend cannot pass the money that is free."},
+ {id:"tier",n:"Agent tier",d:"What an agent may do without a person."},
+ {id:"abud",n:"Agent budget",d:"A daily spend cap per agent."},
+ {id:"conf",n:"Confidence floor",d:"Below the floor a person decides."},
+ {id:"kill",n:"Kill switch",d:"Stop one agent, a tier or all agents."},
+ {id:"gate",n:"Gate promotion",d:"Nothing is promoted past a failed gate."},
+ {id:"cls",n:"Data classification",d:"Confidential is masked, restricted is hidden."},
+ {id:"ten",n:"Tenant boundary",d:"One tenant never sees another's data (simulated isolation)."},
+ {id:"aud",n:"Audit",d:"Every decision leaves a record."},
+ {id:"own",n:"Owner and backup",d:"A named human owner and a different backup (R12)."},
+ {id:"gw",n:"AI gateway",d:"Model calls go only through the gateway (simulated)."}];
+const FAMBY=Object.fromEntries(FAM.map(f=>[f.id,f]));
+
+/* ---------- process stages (DC-19 uses them) ---------- */
+const STAGES=[
+ {id:"request",n:"Request"},{id:"route",n:"Route"},{id:"approve",n:"Approve"},{id:"fund",n:"Fund"},
+ {id:"run",n:"Build and run"},{id:"promote",n:"Promote"},{id:"operate",n:"Operate"},{id:"audit",n:"Audit"}];
+
+/* ---------- the register: one row per guardrail, inventoried from the code ----------
+   status: enforced (a code path refuses the action) · partial (refuses on some paths, or only flags) · documented (text only).
+   test: which automated test covers it ("guard.js", "platform.js") or "none". probe: the check function in the running page. */
+const R=(id,fam,rule,status,owner,backup,test,scr,file,fn,probe,stages,note)=>({id,fam,rule,status,owner,backup,test,scr,file,fn,probe,stages,note:note||""});
+const RAILS=[
+ R("GR-01","perm","Screens, sections and actions are deny by default for confidential and restricted data, and decided by one permission model.","enforced","Rina Okafor","Sam Patel","guard.js","r16g_perm","mod_r16g_a_perm.js, mod_r16g_b_enforce.js","PERM.can, PERM.require",()=>typeof PERM.can==="function"&&PERM.enforceOn()===true,["request","approve","operate"],"An administrator can switch enforcement off on the Permissions screen to simulate; every decision then reads allowed."),
+ R("GR-02","perm","Role capabilities gate inbox, budget edit and access buttons.","enforced","Rina Okafor","Colette Brandt","none","r15_iam","mod_r15f3_iam.js","GUARD.can, GUARD.require",()=>typeof GD.can==="function",["approve","operate"]),
+ R("GR-03","apg","Catalog, budget and change approvals resolve to one group model, and only a member of that group can decide.","partial","Casey Rowan","Rina Okafor","guard.js","r16h_groups","mod_r16h_c_groups.js (APG.route, APG.check)","APG.check",()=>typeof APG.check==="function"&&typeof APG.route==="function",["route","approve"],"Bound in the inbox adapters and inside BUDREQ.decide; screen buttons are bound when permission enforcement is on. The chat catalog approval path is not bound yet."),
+ R("GR-04","apg","Every approval step names a group, never a person.","partial","Casey Rowan","Rina Okafor","none","r16h_groups","mod_r16h_c_groups.js (audit, migrate)","APG.audit",()=>typeof APG.audit==="function",["route"],"The gap check flags steps that still name a person; those route to the person's group until moved."),
+ R("GR-05","sod","The requester can never approve their own catalog, budget or change request.","enforced","Rina Okafor","Avery Chen","guard.js","bud_req","mod_r16h_c_groups.js, mod_budget3.js (BUDREQ.decide), mod_itsm.js","APG.check, BUDREQ.decide",()=>typeof BUDREQ.decide==="function"&&typeof APG.check==="function",["approve"]),
+ R("GR-06","sod","Segregation-of-duties checks on purchase orders and budget lines.","partial","Avery Chen","Victor Amaya","none","bud_doa","mod_budget.js (sodChecks)","sodChecks",()=>!!G(()=>_R.bud_doa,null),["approve","fund"],"Violations are listed; the purchase order approve control does not re-check them."),
+ R("GR-07","sod","A break-glass approver cannot be the person who asked for access.","enforced","Rina Okafor","Sam Patel","none","adm_sec","mod_admin.js","break-glass approval",()=>!!G(()=>_R.adm_sec,null),["approve","operate"]),
+ R("GR-08","doa","The amount decides the approver tier; a self-approval moves up one tier.","partial","Avery Chen","Marcus Reid","none","bud_doa","mod_budget.js (whoApproves)","DOA.approverFor",()=>typeof DOA.approverFor==="function",["route","approve"],"Routes and hides buttons; the reserve draw approve control does not re-check the tier."),
+ R("GR-09","cap","A purchase order cannot pass the line's uncommitted amount, and a reforecast cannot pass the free reserve.","enforced","Avery Chen","Victor Amaya","none","bud_lines","mod_budget.js (PO and reforecast forms)","form checks",()=>!!G(()=>_R.bud_lines,null),["fund"]),
+ R("GR-10","cap","Funding an approved budget request checks the reserve balance.","partial","Avery Chen","Casey Rowan","none","bud_req","mod_budget3.js (fund)","BUDREQ.decide",()=>typeof BUDREQ.decide==="function",["fund"],"The request page shows when the reserve is not enough; funding still posts the draw."),
+ R("GR-11","cap","A funding gate move is refused when a hard check fails.","enforced","Avery Chen","Maya Ortiz","none","fin_gates","mod_plat_fin2.js (gateChecks)","gate checks",()=>!!G(()=>_R.fin_gates,null),["fund","promote"]),
+ R("GR-12","tier","Tier 2 results wait for the sponsor; Tier 3 acts alone only above the confidence floor.","partial","Kenji Watanabe","Casey Rowan","guard.js","ai_runtime","mod_r15f1_c_agent.js (execute)","AGENTRT.execute",()=>typeof AGENTRT.execute==="function",["run"],"The run waits; the gate decision does not yet check that the decider is the sponsor."),
+ R("GR-13","tier","An agent cannot be activated or run without a human sponsor and a different backup.","enforced","Kenji Watanabe","Theo Marlowe","none","ai_runtime","mod_r15f1_c_agent.js (setLifecycle, execute)","AGENTRT.setLifecycle",()=>typeof AGENTRT.setLifecycle==="function",["run","promote"]),
+ R("GR-14","abud","A run is blocked when today's spend plus its cost would pass the agent's daily cap.","enforced","Kenji Watanabe","Avery Chen","guard.js","ai_runtime","mod_r15f1_c_agent.js (execute)","AGENTRT.execute",()=>typeof AGENTRT.execute==="function",["run"]),
+ R("GR-15","conf","Below the confidence floor a run escalates to a person.","partial","Kenji Watanabe","Casey Rowan","guard.js","ai_runtime","mod_r15f1_c_agent.js, mod_r15f1_b_wf.js","AGENTRT.execute",()=>typeof AGENTRT.execute==="function",["run"],"Workflow steps hand the run to a person; other callers read the flag but do not stop."),
+ R("GR-16","conf","An AI estimate shows the basis of its confidence.","documented","Kenji Watanabe","Jordan Lee","none","home","mod_r15d_ai.js (aiChip)","aiChip",()=>typeof W.aiChip==="function",["run","operate"],"Display only."),
+ R("GR-17","kill","A global, tier or agent kill switch is checked before every agent run.","enforced","Kenji Watanabe","Casey Rowan","guard.js","ai_runtime","mod_r15f1_c_agent.js (setControl, execute)","AGENTRT.setControl",()=>typeof AGENTRT.setControl==="function",["run","operate"]),
+ R("GR-18","kill","The kill switch on the AI Control Tower stops agents.","partial","Kenji Watanabe","Casey Rowan","none","tower","screens3.js (tower handler)","tower kill switch",()=>!!G(()=>_R.tower,null),["operate"],"It marks agents killed in the tower; it writes no runtime control record, so the runtime sees it only indirectly."),
+ R("GR-19","gate","A citizen app is promoted only when its gate passes, including owner and backup.","enforced","Jordan Lee","Rina Okafor","none","plat_gate","mod_plat_gate.js (GATE.decide), mod_own.js","GATE.decide",()=>typeof G(()=>GATE.decide,null)==="function",["promote"]),
+ R("GR-20","gate","A promotion cannot skip an environment or a missing gate.","enforced","Sam Patel","Jordan Lee","none","adm_env","mod_admin.js (promote)","environment promote",()=>!!G(()=>_R.adm_env,null),["promote"]),
+ R("GR-21","cls","Confidential fields are masked and restricted fields are hidden by default.","partial","Rina Okafor","Jordan Lee","none","r16g_perm","mod_r16g_a_perm.js (fields), mod_r16g_b_enforce.js (masks)","PERM.fields",()=>typeof PERM.fields==="function",["operate"],"Masks apply to some drawer labels and table columns; a new entity can be registered without a classification."),
+ R("GR-22","ten","A tenant never sees another tenant's rows; a missing pack shows empty and records a gap. Tenant isolation is simulated.","partial","Sam Patel","Jordan Lee","platform.js","home","platform.js (DATA.get)","DATA.get",()=>typeof DATA.get==="function",["request","operate"],"The data layer is tested; most screens still read sample globals. Isolation is simulated, not enforced by infrastructure."),
+ R("GR-23","ten","An agent run, its retrieval, memory and log stay in one tenant. Tenant isolation is simulated.","enforced","Kenji Watanabe","Sam Patel","guard.js","ai_runtime","mod_r15f1_c_agent.js (scope, leakCheck)","AGENTRT.scope",()=>typeof AGENTRT.scope==="function",["run","audit"],"Enforced inside the simulated runtime only."),
+ R("GR-24","aud","Every decision is written to the audit trail.","partial","Rina Okafor","Sam Patel","none","adm_audit","ui.js (audit), mod_r15f1_c_agent.js (eventLog), mod_r16g_a_perm.js (log)","audit",()=>typeof W.audit==="function",["approve","run","audit"],"The shared trail is kept in memory only; agent events and permission decisions are stored in the browser."),
+ R("GR-25","own","Every record has a human owner and a different named backup.","partial","Casey Rowan","Maya Ortiz","none","own_gaps","mod_own.js (OWNX.assign)","OWNX.assign",()=>typeof G(()=>OWNX.assign,null)==="function",["request","promote","audit"],"Assignment refuses a missing or duplicate backup; the process library only warns."),
+ R("GR-26","gw","Model calls go only through the AI gateway.","documented","Kenji Watanabe","Sam Patel","none","adm_gate","mod_admin.js (runGuards test panel)","runGuards",()=>!!G(()=>_R.adm_gate,null),["run"],"No model is called in this prototype; the gateway is simulated.")];
+const STATUS={enforced:{l:"Enforced",c:"good",d:"A code path refuses the action."},partial:{l:"Partial",c:"warn",d:"Refuses on some paths, or only flags."},documented:{l:"Documented only",c:"bad",d:"Described, nothing refuses."}};
+const RANK={enforced:3,partial:2,documented:1};
+function verify(){return RAILS.map(r=>({id:r.id,found:!!G(()=>r.probe(),false)}))}
+function rails(){const v=Object.fromEntries(verify().map(x=>[x.id,x.found]));return RAILS.map(r=>Object.assign({},r,{found:v[r.id],famName:FAMBY[r.fam].n}))}
+Object.assign(GD,{rails,families:()=>FAM.slice(),stages:()=>STAGES.slice(),verify,STATUS});
+
+/* ---------- screen pieces ---------- */
+const S_=S.sguard=S.sguard||{fam:"",st:"",stage:""};
+const pill=(t,c,title)=>`<span class="pill ${c||"mute"}"${title?` title="${E(title)}"`:""}>${E(t)}</span>`;
+const simChip=()=>`<span class="pill info gd-sim" title="Behavior is scripted in the prototype. No live connection, run or enforcement outside this page.">Simulated</span>`;
+function counts(rows){const c={enforced:0,partial:0,documented:0};rows.forEach(r=>c[r.status]++);return c}
+function dashboard(rows){const c=counts(rows),fams=new Set(rows.map(r=>r.fam)).size,tested=rows.filter(r=>r.test!=="none").length,found=rows.filter(r=>r.found).length;
+ const kp=(l,v,s,cls)=>`<div class="stat${cls?" "+cls:""}"><small>${E(l)}</small><span class="num">${E(v)}</span><em>${E(s)}</em></div>`;
+ const att=rows.filter(r=>r.status!=="enforced").sort((a,b)=>RANK[a.status]-RANK[b.status]).slice(0,6);
+ return `<div class="statrow">${kp("Guardrails in the register",rows.length,fams+" families · prototype fact")}${kp("Enforced in code",c.enforced,"a code path refuses · prototype fact")}${kp("Partial",c.partial,"some paths, or flags only",c.partial?"warn":"")}${kp("Documented only",c.documented,"nothing refuses yet",c.documented?"bad":"")}${kp("Covered by a test",tested,"of "+rows.length+" · prototype fact")}${kp("Check found in this page",found,"of "+rows.length+" looked up live")}</div>
+ ${card("What needs attention","The weakest guardrails first. Each says what is missing in the code today.",`<ul class="gd-att">${att.map(r=>`<li>${pill(STATUS[r.status].l,STATUS[r.status].c)} <b>${E(r.id)}</b> ${E(r.rule)} <span class="muted small">${E(r.note)}</span> <button type="button" class="chip" data-link="screen:${E(r.scr)}">Open ${E(scrName(r.scr))}</button></li>`).join("")}</ul>`)}`}
+const scrName=id=>G(()=>SCREENS.find(s=>s[0]===id)[1],id);
+function registerTab(rows){const f=S_.fam,st=S_.st,sg=S_.stage;const L=rows.filter(r=>(!f||r.fam===f)&&(!st||r.status===st)&&(!sg||r.stages.indexOf(sg)>=0));
+ const fbtn=(k,v,l,on)=>`<button type="button" class="chip" data-gd-f="${k}|${E(v)}" aria-pressed="${on}">${E(l)}</button>`;
+ return card("Guardrail register","One row per guardrail found in the code. The status is what the code does today; the last column looks the check up in this page.",
+ `<div class="gd-filt">${fbtn("fam","","All families",!f)}${FAM.map(x=>fbtn("fam",x.id,x.n,f===x.id)).join("")}</div>
+ <div class="gd-filt">${fbtn("st","","Any status",!st)}${Object.keys(STATUS).map(k=>fbtn("st",k,STATUS[k].l,st===k)).join("")}${sg?fbtn("stage","","Stage: "+(STAGES.find(x=>x.id===sg)||{}).n+" (clear)",true):""}<span class="muted small">${L.length} of ${rows.length}</span></div>
+ <div class="tscroll"><table class="gd-reg"><thead><tr><th>ID</th><th>Rule</th><th>Family</th><th>Enforcement</th><th>Owner</th><th>Test</th><th>Where it lives</th><th>Check</th></tr></thead><tbody>${L.map(r=>`<tr data-gd-row="${E(r.id)}"><td><b>${E(r.id)}</b></td><td>${E(r.rule)}${r.note?`<div class="muted small">${E(r.note)}</div>`:""}</td><td>${E(r.famName)}</td><td>${pill(STATUS[r.status].l,STATUS[r.status].c,STATUS[r.status].d)}</td><td>${chip(r.owner,"guardrail:"+r.id,"Owner")}<div class="muted small">Backup ${chip(r.backup,"guardrail:"+r.id,"Backup")}</div></td><td>${r.test==="none"?pill("No test","mute"):pill(r.test,"info","Automated test in tools/tests")}</td><td><button type="button" class="chip" data-link="screen:${E(r.scr)}">${E(scrName(r.scr))}</button><div class="muted small"><code>${E(r.file)}</code></div></td><td>${r.found?pill("Found: "+r.fn,"good"):pill("Not found","bad")}</td></tr>`).join("")||`<tr><td colspan="8" class="muted">Nothing matches these filters.</td></tr>`}</tbody></table></div>`)}
+const TABS=[{l:"Register",h:rows=>registerTab(rows)}];
+GD._tabs=TABS;
+function honesty(){return `<div class="gd-honest glass" role="note"><b>Read this first.</b> Everything on this screen runs in a database-free prototype and is simulated. Tenant isolation is simulated, not enforced by infrastructure. There is no security certification; certifications such as SOC 2 are a plan, not a claim. Counsel review (BR-08) is required before any of this is used with a customer. ${simChip()}</div>`}
+
+/* ---------- process (R34 procCard) ---------- */
+G(()=>PROC.reg(SELF,{title:"How a guardrail is kept true",std:["nist","cobit"],steps:[
+ {n:"Inventory the check",d:"Find the function that refuses the action and record where it lives.",who:"human",owner:"Rina Okafor",sla:"Per release",in:"Code and screens",out:"Register row"},
+ {n:"Look it up in the page",d:"The register looks each check up in the running page and flags any it cannot find.",who:"robot",owner:"Guardrail register",sla:"Every render",in:"Register row",out:"Found or not found"},
+ {n:"Try to break it",d:"A tester runs the real check with a bad request; the attempt is audited.",who:"human",owner:"Rina Okafor",sla:"Per release",in:"Attempt",out:"Refused or allowed, with the reason"},
+ {n:"Accept the status",d:"The owner accepts enforced, partial or documented only; a partial needs a backlog item.",who:"gate",owner:"Casey Rowan",sla:"Weekly",in:"Register and attempts",out:"Accepted status"}]}));
+
+/* ---------- the screen ---------- */
+function render_(){const rows=rails();const c=counts(rows);
+ const tabs=views("sguard",TABS.map(t=>t.l),TABS.map(t=>G(()=>t.h(rows),`<p class="muted">Not available.</p>`)));
+ return `<div class="screen gd-screen">${hero("Governance · Guardrails","Guardrail register",`<b>${rows.length}</b> guardrails in <b>${new Set(rows.map(r=>r.fam)).size}</b> families, read from the code: <b>${c.enforced}</b> enforced, <b>${c.partial}</b> partial, <b>${c.documented}</b> documented only. All of it is simulated in this prototype.`,`<div class="row">${simChip()}<button type="button" class="btn" data-link="screen:r16h_groups">Approval groups</button><button type="button" class="btn" data-link="screen:ai_runtime">Agent runtime</button></div>`)}${lensNote()}${honesty()}${G(()=>GD._childPanel?GD._childPanel():"","")}${dashboard(rows)}${tabs}${procHTML()}</div>`}
+/* procCard has no label for robot steps yet (CL-58, steps stream): label it through STEPMODE so no step reads "undefined" */
+function procHTML(){return String(G(()=>procCard(SELF),"")).replace(/<span class="who">undefined<\/span>/g,`<span class="who">${E(G(()=>STEPMODE.label("robot"),"Robot"))}</span>`)}
+REG(SELF,"Guardrails","platform","M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-4.5",render_);
+G(()=>{if(W.NAVX&&NAVX.add)NAVX.add(SELF,{group:"plat",label:"Guardrails",hint:"Guardrail register",sub:"Register, matrix, try to break it",kw:"guardrail register guardrails enforcement segregation of duties approval group kill switch confidence floor agent budget tenant boundary audit try to break it"})});
+G(()=>SEARCHX.push(()=>[{g:"Go to",t:"Guardrails",m:"Register of every guardrail and its enforcement status",c:"--p4",f:()=>go(SELF),k:"guardrail register enforcement simulated"}].concat(RAILS.map(r=>({g:"Guardrails",t:r.id+" "+r.rule.slice(0,70),m:FAMBY[r.fam].n+" · "+STATUS[r.status].l,c:"--p4",f:()=>{S_.fam=r.fam;S_.st="";S_.stage="";S.v.sguard=0;go(SELF)},k:"guardrail "+r.id+" "+FAMBY[r.fam].n+" "+r.rule})))));
+
+/* ---------- clicks ---------- */
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-f]");if(!t)return;const [k,v]=t.dataset.gdF.split("|");S_[k]=v;S.v.sguard=0;render()});
+})();

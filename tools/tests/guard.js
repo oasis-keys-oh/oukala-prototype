@@ -43,6 +43,26 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
   ok(RT.runs(null,{tenant:"*"}).every(x=>!x.tenant||typeof x.tenant==="string"),"CL-67 tenant field on run records");
   ok(RT.runs(null,{tenant:"*"}).filter(x=>x.id===a.runId||x.id===b2.runId).every(x=>x.tenant&&x.gateway),"CL-67 tenant and gateway on new runs");
   ok(RT.leakCheck().ok,"CL-67 leak check: "+RT.leakCheck().bad.slice(0,2).join(", "))}
+ /* ---- DC-18: the register is an inventory true to the code ---- */
+ const rails=GUARD.rails();const fams=new Set(rails.map(x=>x.fam));ok(rails.length>=12&&fams.size>=12,"DC-18 at least 12 families ("+fams.size+")");
+ ["perm","apg","sod","doa","cap","tier","abud","conf","kill","gate","cls","ten","aud"].forEach(k=>ok(fams.has(k),"DC-18 family "+k));
+ ok(rails.every(x=>["enforced","partial","documented"].includes(x.status)),"DC-18 status vocabulary");
+ ok(rails.every(x=>x.owner&&x.backup&&x.owner!==x.backup),"DC-18 owner and different backup on every row");
+ ok(rails.every(x=>x.found),"DC-18 every check is found in the page: "+rails.filter(x=>!x.found).map(x=>x.id).join(","));
+ ok(rails.every(x=>SCREENS.some(s=>s[0]===x.scr)),"DC-18 every row links to a registered screen: "+rails.filter(x=>!SCREENS.some(s=>s[0]===x.scr)).map(x=>x.id+">"+x.scr).join(","));
+ const byId=Object.fromEntries(rails.map(x=>[x.id,x]));
+ /* the rows that claim guard.js are exercised here against the real check functions */
+ if(ag){const reg=STORE.get("agent_registry",ag);
+  AGENTRT.setControl("global","all",true,"kill","guard test");const k=AGENTRT.execute({agent:ag,goal:"kill switch test",step:"guard test"});AGENTRT.setControl("global","all",false);
+  ok(k.blocked&&k.by==="control","GR-17 kill switch blocks the run");
+  const cap=reg.budget_cap;STORE.patch("agent_registry",ag,{budget_cap:0});const bu=AGENTRT.execute({agent:ag,goal:"budget test",step:"guard test"});STORE.patch("agent_registry",ag,{budget_cap:cap});
+  ok(bu.blocked&&bu.by==="budget","GR-14 daily cap blocks the run");
+  const act=AGENTRT.registry().find(x=>x.lifecycle==="active");if(act){const lo=AGENTRT.execute({agent:act.name,goal:"floor test",step:"guard test",conf:99});ok(lo.ok&&(lo.escalated||lo.needsApproval),"GR-15 below the floor a person decides")}
+  const t2=AGENTRT.registry().find(x=>x.lifecycle==="active"&&x.tier===2);if(t2){const r2=AGENTRT.execute({agent:t2.name,goal:"tier test",step:"guard test"});ok(r2.ok?r2.needsApproval:r2.blocked,"GR-12 tier 2 waits for the sponsor")}}
+ ok(byId["GR-01"].status==="enforced"&&PERM.enforceOn()===true,"GR-01 permission enforcement is on");
+ ok(byId["GR-26"].status==="documented","GR-26 AI gateway is documented only (no model is called)");
+ go("guard");const gv=document.getElementById("view").textContent;ok(/Guardrail register/.test(gv)&&!/undefined|NaN/.test(gv),"DC-18 screen renders without undefined");
+ ok(/simulated/i.test(gv)&&/BR-08/.test(gv)&&/isolation is simulated/i.test(gv),"DC-18 / CL-71 honesty labels on the screen");
  go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
  return f});
 fails.push(...r);

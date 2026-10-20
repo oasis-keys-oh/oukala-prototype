@@ -1,0 +1,9 @@
+/* Guardrails (mod_s_guard). Prefix: gd-. Tokens only. */
+.gd-honest{border:1px solid var(--hair);border-radius:14px;padding:10px 14px;margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--ink)}
+.gd-honest .pill{margin-left:6px}
+.gd-att{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.gd-att li{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;line-height:1.45}
+.gd-filt{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.gd-reg td{vertical-align:top}
+.gd-reg td:nth-child(2){min-width:260px}
+.gd-reg code{font-size:12px;word-break:break-word}
