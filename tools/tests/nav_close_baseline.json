@@ -2,30 +2,6 @@
  "about": "PH-11 close-control outliers accepted on 2026-10-20 (tools/tests/nav_close.js --update). New outliers fail the test; remove an entry once it is fixed.",
  "outliers": [
   {
-   "key": "[popover].pop | close not top right",
-   "where": [
-    "home (AI popover)",
-    "loop (AI popover)",
-    "exe_dash (AI popover)",
-    "flw_bpmn (AI popover)"
-   ],
-   "dx": 429,
-   "dy": 720,
-   "control": "Close"
-  },
-  {
-   "key": "[popover].pop.anch | close not top right",
-   "where": [
-    "trace (metric popover)",
-    "fo (AI popover)",
-    "tower (AI popover)",
-    "port (metric popover)"
-   ],
-   "dx": 428,
-   "dy": 813,
-   "control": "Close"
-  },
-  {
    "key": "#nwPop | no close control",
    "where": [
     "top bar: new"
@@ -35,24 +11,6 @@
    "control": null
   },
   {
-   "key": "#profilePop | close not top right",
-   "where": [
-    "top bar: profile"
-   ],
-   "dx": 200,
-   "dy": 3047,
-   "control": "Done"
-  },
-  {
-   "key": "#r15dVas | close not top right",
-   "where": [
-    "top bar: view as"
-   ],
-   "dx": 349,
-   "dy": 2422,
-   "control": "Close"
-  },
-  {
    "key": "#r15GrpPop | no close control",
    "where": [
     "wf_runs (form)"
@@ -60,18 +18,6 @@
    "dx": null,
    "dy": null,
    "control": null
-  },
-  {
-   "key": "#r18LensPop | close not top right",
-   "where": [
-    "home (popover)",
-    "trace (popover)",
-    "fo (popover)",
-    "tower (popover)"
-   ],
-   "dx": 196,
-   "dy": 527,
-   "control": "Close"
   }
  ]
 }

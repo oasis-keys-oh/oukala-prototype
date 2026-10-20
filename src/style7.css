@@ -157,3 +157,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 
 /* module grids that hold sibling cards also stretch (list/detail splits, kanban lanes and data-eq="off" are the intentional exceptions) */
 :root:root :is(div,section):has(>.card~.card):not(.dsplit,.listdet,.kan,.dfullgrid,[data-eq="off"]):is(.grid,[class*="-g2"],[class*="-two"],[class*="scg"],[class*="-g3"]){align-items:stretch}
+/* PH-10, PH-11: in a popover whose close sits in an action row at the end (AI chip, metric chip and ring, executive lens, profile, View as), the row moves to the top and the close control ends it: top right, in flow, never over content */
+.pop:popover-open:has(>.row>[popovertargetaction=hide]:not([data-go])){display:flex;flex-direction:column}
+.pop>.row:has(>[popovertargetaction=hide]:not([data-go])){order:-1;justify-content:flex-end;margin-bottom:12px}
+.pop>.row>[popovertargetaction=hide]:not([data-go]){order:99}
