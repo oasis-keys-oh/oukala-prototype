@@ -39,4 +39,33 @@ let decoT=0;const deco=()=>{if(decoT)return;decoT=requestAnimationFrame(()=>{dec
 G(()=>HOOKS.on("afterRender",s=>{if(s==="ppl_jrny")deco()},{id:"srs-fix"}));
 G(()=>{const v=D.getElementById("view");if(v)new MutationObserver(deco).observe(v,{childList:true,subtree:true})});
 
+/* ---------- PR-18: wedge mode ----------
+   The wedge screens are the COO cut's screens (decision 2026-10-19: the COO direction is the wedge), plus Home and the Showroom.
+   On: the menu and search show only those; every other screen is hidden, never deleted, and still opens from a link. */
+const WKEY="falconaire.wedge";
+let WS=null;const wedgeSet=()=>{if(WS)return WS;const s=new Set(["home","showroom"]);const c=SHOW.byId("coo");if(c)c.beats.forEach(b=>s.add(b.go));if(c)WS=s;return s};
+let wedgeOn=!!G(()=>U.store.get(WKEY,false),false);
+function applyWedge(){const nav=D.getElementById("nav");D.body.toggleAttribute("data-wedge",wedgeOn);if(!nav)return;const ok=wedgeSet();
+ nav.querySelectorAll("[data-nx-it]").forEach(it=>{const hide=wedgeOn&&!ok.has(it.dataset.nxIt);if(it.hidden!==hide)it.hidden=hide});
+ nav.querySelectorAll("details,section.r15d-pins").forEach(g=>{const any=g.querySelector("[data-nx-it]:not([hidden])");const hide=wedgeOn&&!any;if(g.hidden!==hide)g.hidden=hide});
+ let n=nav.querySelector(".srs-wnote");
+ if(wedgeOn&&!n){n=D.createElement("div");n.className="srs-wnote";n.setAttribute("role","status");n.innerHTML=`<b>Wedge mode</b><span>${ok.size} screens shown, the rest hidden.</span><button type="button" class="btn quiet sm" data-srs-wedge="0">Show all</button>`;nav.insertBefore(n,nav.firstChild)}
+ else if(!wedgeOn&&n)n.remove()}
+function setWedge(on){wedgeOn=!!on;G(()=>U.store.set(WKEY,wedgeOn));G(()=>{if(W.NAVX&&NAVX.ensureIndex)NAVX.ensureIndex()});G(()=>render());applyWedge();return wedgeOn}
+/* ?wedge=1 or ?wedge=0 sets it from a link and remembers it */
+G(()=>{const w=new URLSearchParams(location.search).get("wedge");if(w==="1"||w==="0"){wedgeOn=w==="1";G(()=>U.store.set(WKEY,wedgeOn));setTimeout(applyWedge,0)}});
+SHOW.wedge={on:()=>wedgeOn,set:setWedge,screens:()=>[...wedgeSet()],apply:applyWedge};
+/* search: hide every screen outside the wedge (chained onto the existing hide rule) */
+G(()=>{const R=W.R15=W.R15||{};const prev=R.hideItem;R.hideItem=function(it,raw){try{if(wedgeOn&&it){const sid=it.sid||(it.ty==="screen"&&it.key?String(it.key).replace(/^screen:/,""):null);if(sid&&!wedgeSet().has(sid))return true}}catch(e){}return prev?prev.apply(this,arguments):false}});
+G(()=>HOOKS.on("afterRender",applyWedge,{id:"srs-wedge",order:50}));
+G(()=>{const nav=D.getElementById("nav");if(nav)new MutationObserver(()=>applyWedge()).observe(nav,{childList:true})});
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-srs-wedge]");if(!t)return;setWedge(t.dataset.srsWedge==="1");G(()=>toast(wedgeOn?"Wedge mode on: only the COO cut's screens are in the menu and search.":"Wedge mode off: every screen is back in the menu.","info"))});
+
+/* ---------- Showroom home: presenter settings ---------- */
+SHOW.home.push(()=>{const main=SHOW.demos.filter(d=>!d.group||d.group==="main"||d.group==="lens");const ws=wedgeSet();
+ return `<div class="grid g2" style="align-items:start"><section class="sr-card glass srs" aria-label="Wedge mode"><div class="sr-ch"><h3>Wedge mode</h3><span class="sr-pill">${wedgeOn?"On":"Off"}</span></div>
+ <p class="muted small">Shows only the wedge, the screens of the COO cut, in the menu and in search. Every other screen is hidden, never deleted, and still opens from a link. Also <code>?wedge=1</code> and <code>?wedge=0</code>. Remembered on this device.</p>
+ <p class="small">${[...ws].map(id=>E(G(()=>NAVX.label(id),id)||id)).join(", ")}</p>
+ <div class="row"><button type="button" class="btn ${wedgeOn?"":"primary"}" data-srs-wedge="${wedgeOn?"0":"1"}" aria-pressed="${wedgeOn}">${wedgeOn?"Turn wedge mode off":"Turn wedge mode on"}</button></div></section>
+ </div>`});
 })();

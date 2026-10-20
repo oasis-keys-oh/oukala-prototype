@@ -92,5 +92,18 @@ if(await p.evaluate(()=>!!SHOW.buildFix)){
  for(const k of ['journey','gap','orphan']){const r=await p.evaluate(k=>{const t=SHOW.buildFix({kind:k,ref:'X-1',title:'Test gap '+k});return{t,scr:S.screen}},k);await p.waitForTimeout(900);
   const s=await p.evaluate(()=>({scr:S.screen,sc:!!(window.STUDIO&&STUDIO.sc)}));if(!/Test gap/.test(r.t)||s.scr!=='studio'||!s.sc)fail('fix '+k+' '+JSON.stringify([r,s]))}
  await p.evaluate(()=>{SCN.set('core');go('home')});await p.waitForTimeout(300);console.log('build the fix: ok ('+nb+' cards, '+nr[1]+' red boxes)')}
+// PR-18: wedge mode hides every screen outside the COO cut from the menu and search, never deletes, persists
+if(await p.evaluate(()=>!!SHOW.wedge)){
+ const w=await p.evaluate(async()=>{SHOW.wedge.set(true);go('home');await new Promise(r=>setTimeout(r,300));const ok=new Set(SHOW.wedge.screens());
+  const its=[...document.querySelectorAll('#nav [data-nx-it]')];const vis=its.filter(x=>!x.hidden&&x.offsetParent!==null).map(x=>x.dataset.nxIt);
+  const out=vis.filter(id=>!ok.has(id));const hid=its.filter(x=>x.hidden).length;
+  const sh=R15.hideItem({ty:'screen',key:'screen:itsm_inc'},'incident'),sk=R15.hideItem({ty:'screen',key:'screen:bst'},'budget');
+  go('itsm_inc');const opened=S.screen==='itsm_inc'&&document.querySelector('#view').innerHTML.length>400;
+  return{vis:vis.length,out,hid,sh,sk,opened,note:!!document.querySelector('.srs-wnote'),stored:U.store.get('falconaire.wedge',false)}});
+ if(w.out.length||!w.vis||!w.hid||!w.sh||w.sk||!w.opened||!w.note||!w.stored)fail('wedge mode '+JSON.stringify(w));
+ const p3=await ctx.newPage();watch(p3);await p3.goto(URL0,{waitUntil:'domcontentloaded',timeout:120000});await p3.waitForTimeout(1500);
+ const w2=await p3.evaluate(()=>({on:SHOW.wedge.on(),attr:document.body.hasAttribute('data-wedge')}));if(!w2.on||!w2.attr)fail('wedge mode did not persist '+JSON.stringify(w2));
+ await p3.goto(URL0+'?wedge=0',{waitUntil:'domcontentloaded',timeout:120000});await p3.waitForTimeout(1500);const w3=await p3.evaluate(()=>SHOW.wedge.on());if(w3)fail('?wedge=0 did not turn wedge mode off');await p3.close();
+ await p.evaluate(()=>SHOW.wedge.set(false));console.log('wedge mode:',w.vis,'menu items shown,',w.hid,'hidden')}
 // EXT: extension checks follow
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();
