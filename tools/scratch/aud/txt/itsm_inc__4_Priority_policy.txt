@@ -1,0 +1,105 @@
+SERVICE MANAGEMENT · INCIDENTS
+Restore service fast, to a team first
+
+14 incidents are open: 5 are P1 or P2 and 3 have already breached a target. 4 sit in a team queue waiting to be claimed. The largest measured impact is INC0412 (score 62, Significant). INC0412 is a major incident.
+
+Log incident
+Open the war room
+ƒ SLA compliance
+ƒ Backlog age
+ƒ Incident impact score
+ITIL 5
+ISO/IEC 20000
+DORA metrics
+Triage Agent · 86%
+Overview
+Board
+Priority calculator
+SLA timers
+Priority policy
+
+This is the incident priority policy in force (version 1). Change it with the forms; the whole platform recalculates at once. ITIL 5
+
+ISO/IEC 20000
+
+Impact factors and weights
+Weights add to 100. Each factor is a measured 0 to 1 share of its weight.
+Edit weights
+25
+Users affected, share of the service's users
+full credit at 50%
+20
+Function lost
+percent unavailable
+10
+Availability against target
+full credit at 0.5 points short
+15
+Transactions or revenue at risk an hour
+full credit at $10,000
+15
+Service tier
+Tier 1 100%, Tier 2 55%, Tier 3 20%
+15
+Regulatory exposure
+none, commitment at risk, reportable
+Bands: Extensive at 65 and above, Significant 40 to 64, Moderate 20 to 39, Minor below 20.
+Priority matrix
+Impact band by urgency. Edit any cell.
+Edit matrix and bounds
+IMPACT BAND	CRITICAL	HIGH	MEDIUM	LOW
+Extensive	P1	P1	P2	P3
+Significant	P1	P2	P3	P3
+Moderate	P2	P3	P3	P4
+Minor	P3	P4	P4	P4
+
+Most urgent urgency allowed by impact: Extensive Critical, Significant Critical, Moderate High, Minor Medium. VIP uplift never goes above High by itself.
+
+Roles: urgency bounds and override rights
+What each role may choose and change.
+ROLE	MOST URGENT	CRITICAL	OVERRIDE	
+Caller or employee	Medium	Needs a lead	No	Edit
+Service desk analyst	High	Needs a lead	No	Edit
+Team lead or service desk lead	Critical	Yes	No	Edit
+Incident manager	Critical	Yes	Yes	Edit
+Service owner	Critical	Yes	Yes	Edit
+Executive (CIO or delegate)	Critical	Yes	Yes	Edit
+VIP levels and expiry
+Every VIP rule is documented, owned and expires.
+Add a level
+LEVEL	STEPS UP	PRIORITY FLOOR	EXPIRES	BASIS AND OWNER	
+Standard	0	None	Never	No adjustment. Priority comes from impact and urgency only.	
+Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Casey Rowan.	Edit
+Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Casey Rowan.	Edit
+Level 3: Critical role in a time-boxed window	1	P3 or higher	Nov 20	Chief Editor and senior editors during the Codification beta publishing windows (PR1). Expires when the window closes. Owner: Maya Ortiz.	Edit
+Overrides and approvals
+1 overrides on record. Each has a reason and, for P1 downgrades, a second approver.
+ƒ Priority override rate
+INC0407
+P3 to P2 by Avery Chen (Service owner): The payment export feeds Friday's AP run.
+Oct 6 09:40
+Incident process (ITIL 5 Support activity)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Detect and log
+Monitoring, a caller or an agent raises the incident against a service and CI.
+AUTOMATIC
+Calculate priority
+Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.
+AI AGENT
+Confirm triage
+An agent suggests category, team and similar incidents. A person confirms.
+AUTOMATIC
+Route to a team
+Work lands in the team queue. Individuals are not assigned from outside the team.
+PERSON
+Claim and swarm
+A team member claims it, or the team swarms. A direct assignment needs a stated reason.
+PERSON
+Diagnose and restore
+Work the known error or runbook, link a change if one is needed, communicate.
+AI AGENT
+Resolve and learn
+Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.

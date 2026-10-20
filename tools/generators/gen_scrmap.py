@@ -1,0 +1,125 @@
+"""Scan the Oukala prototype source and write src/mod_r32_scrmap_a_data.js.
+
+Static facts per registered screen: the file that defines it, file size, how many screens share that file,
+who else mentions the screen id (inbound references), last commit date of the defining file, commit count,
+journey/tour references and whether the CxO menu pins it. The live screen (mod_r32_scrmap_b_screen.js) joins
+this with the running registry (names, groups, contract score, process, access, hidden flag).
+
+Usage: python3 tools/generators/gen_scrmap.py [src]   (default: the repo src/ folder; src/gen_scrmap.py forwards here)
+"""
+import re, sys, os, json, subprocess, datetime
+
+src = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "src"))
+os.chdir(src)
+
+core = ["data.js", "data2.js", "ui.js", "kit.js", "kit2.js", "screens1.js", "screens2.js", "screens4.js"]
+mods = sorted(f for f in os.listdir(".") if re.fullmatch(r"mod_.*\.js", f) and not f.startswith("mod_r32_scrmap_a_data"))
+build_files = core + mods + ["screens3.js"]  # load order; later REG wins
+build_files = [f for f in build_files if os.path.exists(f)]
+
+txt = {f: open(f, encoding="utf-8", errors="replace").read() for f in build_files}
+
+REG_RE = re.compile(r"""\bREG\(\s*["'`]([A-Za-z0-9_]+)["'`]\s*,\s*["'`]([^"'`]*)["'`]\s*,\s*["'`]([A-Za-z0-9_]*)["'`]""")
+defs = {}  # id -> list of (file, name, group)
+for f in build_files:
+    for m in REG_RE.finditer(txt[f]):
+        defs.setdefault(m.group(1), []).append((f, m.group(2), m.group(3)))
+
+# core SCREENS literal in data.js: ["id","Name","icon"] (no group; the live registry supplies it)
+core_screens = {}
+if "data.js" in txt:
+    m0 = re.search(r"const SCREENS=\[(.*?)\];", txt["data.js"], re.S)
+    if m0:
+        for m in re.finditer(r"""\[\s*["']([a-z0-9_]+)["']\s*,\s*["']([^"']+)["']\s*,\s*["'][^"']{6,}["']\s*(?:,\s*["']([a-z]*)["'])?\s*\]""", m0.group(1)):
+            core_screens.setdefault(m.group(1), ("data.js", m.group(2), m.group(3) or ""))
+ENTRY = re.compile(r"""\[\s*["']([a-z0-9_]+)["']\s*,\s*["']([^"']+)["']\s*,\s*["'][^"']{6,}["']\s*(?:,\s*["']([a-z]*)["'])?\s*\]""")
+for f in build_files:  # SCREENS.push([...],[...]) literals in core files
+    for mm in re.finditer(r"SCREENS\.push\((.*?)\);", txt[f], re.S):
+        for m in ENTRY.finditer(mm.group(1)):
+            core_screens.setdefault(m.group(1), (f, m.group(2), m.group(3) or ""))
+for sid, v in core_screens.items():
+    defs.setdefault(sid, []).insert(0, v)
+
+screens_per_file = {}
+for sid, lst in defs.items():
+    f = lst[-1][0]
+    screens_per_file[f] = screens_per_file.get(f, 0) + 1
+
+# every quoted token in every file, for inbound references
+TOK = re.compile(r"""["'`]([a-z][a-z0-9_]{2,40})["'`]""")
+tokfiles = {}
+navfiles = {}
+NAVREF = re.compile(r"""(?:\bgo\(\s*|data-nav=\\?|data-go=\\?|S\.screen\s*=\s*)["']([a-z][a-z0-9_]{2,40})["']""")
+for f in build_files:
+    for m in NAVREF.finditer(txt[f]):
+        if m.group(1) in defs:
+            navfiles.setdefault(m.group(1), {})
+            navfiles[m.group(1)][f] = navfiles[m.group(1)].get(f, 0) + 1
+for f in build_files:
+    seen = {}
+    for m in TOK.finditer(txt[f]):
+        seen[m.group(1)] = seen.get(m.group(1), 0) + 1
+    for t, n in seen.items():
+        if t in defs:
+            tokfiles.setdefault(t, {})[f] = n
+
+def git(args):
+    try:
+        return subprocess.run(["git"] + args, capture_output=True, text=True, timeout=20).stdout.strip()
+    except Exception:
+        return ""
+
+fileinfo = {}
+for f in set(v[-1][0] for v in defs.values()):
+    last = git(["log", "-1", "--format=%cs", "--", f])
+    n = git(["rev-list", "--count", "HEAD", "--", f])
+    fileinfo[f] = {
+        "b": len(txt[f].encode("utf-8")),
+        "l": txt[f].count("\n") + 1,
+        "n": screens_per_file.get(f, 0),
+        "last": last or "",
+        "c": int(n) if n.isdigit() else 0,
+    }
+
+JOURNEY = re.compile(r"(_jy\d|r28_jy|r30_j|r31_j|journey|r17p|r28_scn|r29_)")
+cxo = set()
+if "mod_r28_cxo.js" in txt:
+    for blk in re.findall(r"const (?:TOP|SV)=\[(.*?)\];", txt["mod_r28_cxo.js"], re.S):
+        cxo.update(re.findall(r"\[\s*\"([a-z0-9_]+)\"\s*,", blk))
+
+out = {}
+for sid, lst in sorted(defs.items()):
+    f, name, grp = lst[-1]
+    refs = dict(tokfiles.get(sid, {}))
+    refs.pop(f, None)
+    nav = dict(navfiles.get(sid, {}))
+    nav.pop(f, None)
+    jf = sorted(x for x in refs if JOURNEY.search(x))
+    others = sorted(refs, key=lambda x: -refs[x])
+    out[sid] = {
+        "f": f,
+        "nm": name,
+        "g": grp,
+        "dup": [x[0] for x in lst[:-1]],
+        "nv": len(nav),
+        "nvF": sorted(nav, key=lambda x: -nav[x])[:5],
+        "in": len(refs),
+        "inN": sum(refs.values()),
+        "inF": others[:5],
+        "jy": len(jf),
+        "cxo": 1 if sid in cxo else 0,
+    }
+
+payload = {
+    "generated": datetime.date.today().isoformat(),
+    "buildFiles": len(build_files),
+    "files": fileinfo,
+    "screens": out,
+}
+js = (
+    "/* GENERATED by gen_scrmap.py. Do not edit by hand. Re-run: python3 gen_scrmap.py <src folder>.\n"
+    "   Static facts for the Screen map (mod_r32_scrmap_b_screen.js): defining file, size, inbound references, last commit. */\n"
+    "window.SCRMAP_DATA=" + json.dumps(payload, separators=(",", ":")) + ";\n"
+)
+open("mod_r32_scrmap_a_data.js", "w", encoding="utf-8").write(js)
+print("screens found in source:", len(out), "| files:", len(fileinfo), "| cxo pinned:", len(cxo), "| bytes:", len(js))

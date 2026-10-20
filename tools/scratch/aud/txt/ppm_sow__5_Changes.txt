@@ -1,0 +1,194 @@
+PORTFOLIO AND DELIVERY · CONTRACTS
+Every proposal and contract, line by line
+
+13 contracts hold $9.92M of commitments and $3.98M has been paid. Lumen's SOW-5 proposal has 12 of 41 lines off playbook, 4 of them with no standard term yet. 11 obligations fall due in 30 days and 2 are overdue, and notice to stop the LegacyDocs Inc. renewal must go out by Nov 1, 2026.
+
+ƒ Clause playbook coverage
+ƒ Obligation on-time rate
+ƒ Negotiation cycle time
+ƒ Contract leakage
+Analyze a document
+Request a change
+Contract Analyst Agent · 90%
+Dashboard and contracts
+Repository
+Analyzer
+Terms playbook
+Proposal vs contract
+Changes
+Obligations and calendar
+OPEN CHANGE REQUESTS
+6
+2 waiting for approval
+NET VALUE OF OPEN CHANGES
+-$44,000
+price effect if all are approved
+APPLIED THIS QUARTER
+2
+2 amendments stored
+SCHEDULE DAYS AT STAKE
+2
+work days across open requests
+YOUR APPROVAL LIMIT
+$100,000
+CIO tier T3, delegation of authority
+Delegation of authority
+Contract Analyst Agent · 86%
+Request a change
+Change requests by type
+How contracts are being changed.
+Schedule change
+1
+Scope or project change
+1
+Assumption change
+1
+Price or rate change
+2
+SLA change
+1
+Termination or renewal
+2
+Version history: Lumen Data Partners SOW-5
+Proposal, executed contract and every amendment, with the price after each. Choose another contract to see its history.
+WORKING ON
+Lumen SOW-5: search indexer phase 2
+CLM-1002 · Lumen Data Partners · SOW · $348,000
+Change contract
+Vendor proposal v2
+Sep 29, 2026
+$348,000
+Current
+Not signed
+$348,000
+Status board
+Drag a request to the next stage. A request cannot reach Approved without impact review, legal review for term changes, and an approver at the right tier.
+Requested
+2
+CR-203
+Termination or renewal
+Send non-renewal notice and bridge month to month
+LegacyDocs Inc. Support agreement
+-$96,000
+Maya Ortiz
+CIO
+CR-205
+Assumption change
+Azure landing zone ready Nov 15 instead of Oct 15
+Contoso Cloud Operations MSA
+No price change
+Sam Patel
+Budget owner
+Impact review
+1
+CR-201
+Schedule change
+Milestone 3 slips 7 work days
+Lumen Data Partners SOW-4
+No price change
++7 work days
+Dev Rao
+Budget owner
+Legal review
+1
+CR-204
+SLA change
+Add a 15 minute Severity 1 response with credits
+Northwind Managed Services MSA
+No price change
+Tom Becker
+Budget owner
+Approval
+2
+CR-202
+Price or rate change
+Add two Lumen engineers for six weeks
+Lumen Data Partners SOW-4
++$96,000
+-5 work days
+Priya Shah
+CIO
+CR-207
+Price or rate change
+Reduce unassigned E5 seats by 70 at the true-up
+Microsoft Software license
+-$44,000
+Jordan Lee
+CIO
+Approved
+2
+CR-206
+Termination or renewal
+Extend Elise Park through Mar 26, 2027
+Northwind Staffing Order form
++$61,600
+Priya Shah
+CIO
+CR-208
+Scope or project change
+Add a storage tier for Codification content
+Northwind Cloud MSA
++$21,400
+Tom Becker
+Portfolio lead
+Border color on the type chip shows the change type, named on each card
+All change requests
+8 requests
+Type
+All
+6
+Stage
+All
+5
+Contract
+All
+7
+Export CSV
+ID	REQUEST	CONTRACT	TYPE	STAGE	PRICE EFFECT	DAYS	APPROVER	REQUESTED BY
+CR-201	Milestone 3 slips 7 work days	Lumen Data Partners SOW-4	Schedule change	Impact review	None	7	Budget owner	Dev Rao
+CR-202	Add two Lumen engineers for six weeks	Lumen Data Partners SOW-4	Price or rate change	Approval	+$96,000	-5	CIO	Priya Shah
+CR-203	Send non-renewal notice and bridge month to month	LegacyDocs Inc. Support agreement	Termination or renewal	Requested	-$96,000	0	CIO	Maya Ortiz
+CR-204	Add a 15 minute Severity 1 response with credits	Northwind Managed Services MSA	SLA change	Legal review	None	0	Budget owner	Tom Becker
+CR-205	Azure landing zone ready Nov 15 instead of Oct 15	Contoso Cloud Operations MSA	Assumption change	Requested	None	0	Budget owner	Sam Patel
+CR-206	Extend Elise Park through Mar 26, 2027	Northwind Staffing Order form	Termination or renewal	Approved	+$61,600	0	CIO	Priya Shah
+CR-207	Reduce unassigned E5 seats by 70 at the true-up	Microsoft Software license	Price or rate change	Approval	-$44,000	0	CIO	Jordan Lee
+CR-208	Add a storage tier for Codification content	Northwind Cloud MSA	Scope or project change	Approved	+$21,400	0	Portfolio lead	Tom Becker
+8 of 8 rows
+Scroll for more · rows are drawn as you scroll
+Audit trail
+Who did what to contracts and changes. Every approval and application is recorded.
+WHEN	WHO	ACTION	CONTRACT	DETAIL
+2026-10-06 08:12	Contract Analyst Agent	Analyzed proposal	CLM-1002	41 lines in 3.1 seconds, average confidence 89%.
+2026-10-05 16:40	Priya Shah	Routed to legal review	CLM-1002	Limitation of liability, three months of fees.
+2026-10-05 11:05	Rina Okafor	Opened shared review	CLM-1005	AI training on prompts.
+2026-10-02 15:22	Dev Rao	Raised change request	CLM-1001	CR-201 Milestone 3 slips 7 work days.
+2026-09-30 09:30	Casey Rowan	Approved change	CLM-1007	CR-208 storage tier, $21,400 (inside CIO authority).
+2026-09-14 13:00	Priya Shah	Applied change	CLM-1012	CR-206 extension signed, amendment A1 stored.
+From vendor proposal to managed contract
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to WorldCC contracting practice, COBIT 2019, PMBOK.
+Add a step
+Open in Workflow designer
+PERSON
+Intake
+A vendor proposal, SOW or terms arrive by upload, email or request. The original file and version are stored.
+AI AGENT
+AI analysis
+The Contract Analyst Agent splits the text into typed lines with owners, dates, measures and confidence.
+AI AGENT
+Playbook match
+Each line is matched to a standard clause, a variance with a redline, or flagged as new for legal.
+PERSON
+Legal or shared review
+Legal reviews exceptions. Shared review adds the vendor and business owner in one thread with a deadline.
+APPROVAL GATE
+Approval
+The signer is chosen by contract value under the delegation of authority. AI cannot accept terms.
+AUTOMATIC
+Execution
+The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.
+AI AGENT
+Obligations tracking
+Due dates, renewal notices and acceptance checks run daily. Invoices wait for accepted work.
+APPROVAL GATE
+Change control
+Any change to schedule, scope, price, SLA or term is a change request with impact analysis and the right approver.

@@ -1,0 +1,74 @@
+PLATFORM · SECURITY AND ACCESS
+Know who can see what, and why
+
+11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.
+
+ƒ Access review completion
+Policy engine · draft
+Roles
+Policies and labels
+Who can see this
+Identity and break-glass
+Access reviews
+Q4 access review: Restricted and privileged access
+Due Oct 30. 1 of 8 entitlements decided, 7 waiting for the reviewer (Casey Rowan). Unanswered items auto-revoke after 14 days.
+ƒ Access review completion
+Start a campaign
+Sam Patel
+Platform admin role · last used today
+Used daily; part of the on-call rotation.
+High privilege
+Claude Sonnet · 90%
+Attest
+Revoke
+Jordan Lee
+Architect: Change configuration · last used 41 days ago
+No configuration change in 41 days; the role is only needed for design reviews.
+Unused privilege
+Claude Sonnet · 82%
+Attest
+Revoke
+Chris Okafor (Lumen)
+Guest account with SOW-4 share · last used 63 days ago
+No sign-in for 63 days and the milestone is almost accepted.
+Stale external
+Claude Sonnet · 88%
+Attest
+Revoke
+Invoice Advisor
+AI agent: View finance records · last used today
+Scoped to approver data and cannot execute payments.
+Agent identity
+Claude Sonnet · 93%
+Attest
+Revoke
+Dana Whitfield
+Finance approver (Restricted data) · last used 2 days ago
+Approves payments weekly; clearance is current.
+Restricted data
+Claude Sonnet · 90%
+Attest
+Revoke
+Nia Brooks
+Change manager: Change configuration · last used yesterday
+Owns the change calendar.
+Config change
+Claude Sonnet · 87%
+Attested
+Undo
+Dev Rao
+Project manager (working from India) · last used today
+Residency policy denies Confidential data from this location; confirm the exception still stands.
+Residency exception
+Claude Sonnet · 70%
+Attest
+Revoke
+Tom Becker
+Service desk lead · last used today
+Normal use.
+Low
+Claude Sonnet · 95%
+Attest
+Revoke
+Remind the reviewer
+Attest everything marked Keep

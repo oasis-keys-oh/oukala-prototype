@@ -1,0 +1,194 @@
+AUTOMATION · APPROVALS INBOX
+One inbox for every decision that needs a person
+
+17 approvals are waiting on you as Casey Rowan (CIO, Portfolio board, Executive sponsor). 49 are open across the organization and 1 are past their service level. Each one shows what, why, the evidence, the impact and what the AI recommends. Required gates must pass before you can approve. Advisory assessments inform you and you may override them with a reason.
+
+ƒ Approval turnaround
+ƒ Approvals past SLA
+ƒ Approver override rate
+ƒ Assessment gate pass rate
+ITIL 5
+COBIT 2019
+Delegation and out of office
+Approve 7 safe items
+Waiting on you
+17
+7 are safe to approve in bulk
+Past SLA
+1
+Σ pending past SLA ÷ pending = 2%
+Turnaround
+18.3 h
+Σ decision − request ÷ decided
+Overrides
+0
+decided against AI or advisory score
+What is waiting
+Open approvals by type. The red part is past its service level.
+ƒ Approvals past SLA
+Catalog request
+23
+Budget line
+5
+Contract term
+4
+Access request
+4
+Change request
+3
+SLA change
+2
+Service change
+2
+Security assessment
+2
+Demand and funding
+2
+Release go or no go
+2
+Within service level, colored by type
+Past service level
+Drag to delegate
+Drag one of your approvals onto a person. They get it with a note; you can see it in the history.
+YOURS
+Release $48,000 of the Q4 reserve to search r…
+Budget line · 22 h left
+Overspend: Azure August actuals are $31,200 o…
+Budget line · Past SLA by 22 h
+Northwind MSA amendment: Saturday service des…
+Contract term · 2.5 d left
+Raise search availability SLA from 99.5% to 9…
+SLA change · 2.3 d left
+Data lake for member analytics: $640,000 over…
+Demand and funding · 2.8 d left
+Maya Ortiz
+Drop here
+Avery Chen
+Drop here
+Priya Shah
+Drop here
+On you (17)
+Everything open (49)
+Decided (5)
+Approvals
+Search, filter and sort 17 approvals by type, age, amount, risk and requester. Select one for the full picture.
+Type
+All
+7
+ageB
+All
+3
+amtB
+All
+5
+Risk
+All
+3
+req
+All
+9
+Group by 
+None
+Type
+Risk
+ageB
+amtB
+req
+Status
+Export CSV
+APPROVAL	TYPE	AMOUNT	RISK	CLOCK▲	ASSESSMENTS	AI RECOMMENDS	WHO CAN DECIDE	STATUS
+Overspend: Azure August actuals are $31,200 over forecast
+AP-2103 · Sam Patel · Azure
+	
+Budget line	$31,200	Medium	Past SLA by 22 h	None	Approve with conditions 74%	Casey Rowan	Waiting
+Reactivate a break-glass admin account
+AP-2128 · Rina Okafor · Identity (Entra ID)
+	
+Access request	-	High	3 h left	None	Approve 70%	Casey Rowan	Waiting
+Codification Platform 4.2 go or no go
+AP-2120 · Priya Shah · Codification Platform
+	
+Release go or no go	-	Medium	13 h left	None	Approve with conditions 80%	Sam Patel, Casey Rowan	Waiting
+Contract Repository OCR service v1.1 go or no go
+AP-2121 · Dev Rao · Contract Repository
+	
+Release go or no go	-	Low	17 h left	None	Approve 90%	Priya Shah, Sam Patel	Waiting
+Teams phone licenses for three editors
+AP-2117 · Chief Editor · Microsoft 365
+	
+Access request	-	Low	19 h left	None	Approve 96%	Casey Rowan, Rina Okafor	Waiting
+Release $48,000 of the Q4 reserve to search relevance phase 2
+AP-2101 · Dev Rao · Search and indexing
+	
+Budget line	$48,000	Medium	22 h left	None	Approve 86%	Casey Rowan	Waiting
+Developer laptop, 16-inch, for Hana Koval
+AP-2118 · Maya Ortiz · Endpoint management
+	
+Catalog request	$3,100	Low	34 h left	None	Approve 91%	Casey Rowan	Waiting
+newsvc for Maya Ortiz
+AP-C10466 · Maya Ortiz · Portfolio and project intake
+	
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
+laptop for Hana Koval
+AP-C10450 · Maya Ortiz · Endpoint management (Intune)
+	
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
+software for Jordan Lee
+AP-C10443 · Jordan Lee · Endpoint management (Intune)
+	
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
+aiaccess for Avery Chen
+AP-C10452 · Avery Chen · AI platform and agents
+	
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
+Retire the 4 hour response OLA for first line on call
+AP-2126 · Sam Patel · On-call
+	
+SLA change	-	Medium	43 h left	None	Approve 78%	Tom Becker, Chief Editor	Waiting
+Raise search availability SLA from 99.5% to 99.9%
+AP-2109 · Tom Becker · Search and indexing
+	
+SLA change	-	Medium	2.3 d left	None	Approve with conditions 62%	Sam Patel, Chief Editor	Waiting
+E-signature provider: 12 months, $64,000
+AP-2112 · Avery Chen · Contract Repository
+	
+Contract term	$64,000	Medium	2.4 d left	Gate open	Return 77%	Chief Editor, Casey Rowan	Waiting
+Northwind MSA amendment: Saturday service desk hours, $18,000 a year
+AP-2105 · Tom Becker · Service desk
+	
+Contract term	$18,000	Low	2.5 d left	None	Approve 88%	Maya Ortiz, Chief Editor	Waiting
+Data lake for member analytics: $640,000 over three years
+AP-2110 · Dev Rao · Data platform
+	
+Demand and funding	$640,000	High	2.8 d left	Advisory passed	Approve with conditions 71%	Casey Rowan, Maya Ortiz	Waiting
+Intake: Lumen search relevance phase 3 discovery, $85,000
+AP-2125 · Dev Rao · Search and indexing
+	
+Demand and funding	$85,000	Medium	3.2 d left	None	Approve with conditions 70%	Casey Rowan, Maya Ortiz	Waiting
+17 of 17 rows
+Scroll for more · rows are drawn as you scroll
+Required gate: blocks approval until it passes
+Advisory: informs, may be overridden with a reason
+Clock: time left against the approval's service level. Amber when under a quarter is left.
+How an approval gets decided
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, COBIT 2019.
+Add a step
+Open in Workflow designer
+PERSON
+Request raised
+From a workflow step, a catalog item or a form.
+AUTOMATIC
+Route to approvers
+By role and delegation of authority. Out of office cover applies.
+AI AGENT
+Assessments run
+Required gates must pass. Advisory ones inform the approver.
+AI AGENT
+AI recommends
+With sources. It never decides.
+APPROVAL GATE
+Approver decides
+Approve, approve with conditions, return, ask, reject or delegate.
+AUTOMATIC
+Audit and notify
+Decision, reason and overrides are written to the audit trail.

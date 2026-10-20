@@ -1,0 +1,129 @@
+SERVICE MANAGEMENT · MAJOR INCIDENT
+War room: Codification Platform is degraded
+
+INC0412 has run 4h 18m since 09:12 with 140 editors affected. Emergency change CHG0311 is cutting response times (6.1 s to 3.2 s). 2 roles still empty, so nothing can be sent to stakeholders yet.
+
+Impact analysis
+Add timeline entry
+Join bridge
+ƒ Major incident time to restore
+ITIL 5
+Overview
+War room
+Communications
+Status page
+Post-incident review
+Where we are
+Since 09:12, 4h 18m ago. Codification Portal slow for editors (page loads over 6 seconds)
+Triage Agent · 80%
+4h 18m
+Elapsed · declared 09:42
+Live
+Sev 2 (P2)
+140 editors
+Incident
+INC0412
+Bridge
+https://teams.meridian.example/meet/mi-0412
+Join bridge
+Copy link
+Fix in flight
+CHG0311 emergency change
+Declare service restored
+Add timeline entry
+ƒ Major incident time to restore
+ƒ Tier 1 availability
+Roles
+2 roles are empty: communications lead and scribe. Drag a person in.
+Incident commander
+Owns decisions and runs the bridge
+Tom Becker
+Technical lead
+Directs diagnosis and the fix
+Sam Patel
+Communications lead
+Approves and sends every update
+Scribe
+Keeps the timeline and actions
+AVAILABLE PEOPLE (DRAG INTO A ROLE)
+Maya Ortiz
+Priya Shah
+Dev Rao
+Avery Chen
+Jordan Lee
+Nia Brooks
+Chief Editor
+Rina Okafor
+Casey Rowan
+Blast radius
+What this incident reaches, from the CMDB
+SERVICES
+1
+1 are Tier 1
+USERS
+180,000
+largest group reached
+COST AT RISK
+$31K
+a month, services reached
+OBJECTIVES
+2
+2 projects depend on it
+Codification Portal
+Impact analysis
+Opens the visual dependency map: services, users, cost and objectives.
+Live timeline
+11 entries, newest first
+Add entry
+13:25 · Triage Agent
+Finding
+p95 now 3.2 s. Still above the 2 s threshold; monitoring.
+13:12 · Sam Patel
+Action
+CHG0311 implementation started. p95 fell from 6.1 s to 3.8 s.
+12:06 · Sam Patel
+Update
+Northwind engaged (NW-88213) to add two nodes.
+11:42 · Nia Brooks
+Decision
+ECAB approved emergency change CHG0311 (scale out and tune the balancer).
+11:18 · Sam Patel
+Hypothesis
+Editors' bulk edits before the beta plus business-hours index jobs saturate an undersized tier.
+10:36 · Triage Agent
+Finding
+RB-031 diagnostics: web tier CPU 94%, database connections 88%.
+10:06 · Tom Becker
+Comms
+First update sent to the Chief Editor's office.
+09:48 · Tom Becker
+Update
+Bridge opened. Tom Becker is incident commander, Sam Patel technical lead.
+09:42 · Tom Becker
+Decision
+Major incident declared: Tier 1 service, 140 users affected.
+09:36 · Tom Becker
+Update
+Four editor calls in 8 minutes. INC0412 logged as P2.
+09:12 · Monitoring
+Alert
+Synthetic check on the Codification Portal: p95 page load 6.1 s (threshold 2 s).
+Major incident process (ITIL 5 Support)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
+Add a step
+Open in Workflow designer
+APPROVAL GATE
+Declare
+Tier 1 service, many users, no workaround.
+PERSON
+Fill roles
+Commander, technical lead, communications lead, scribe.
+AI AGENT
+Diagnose and restore
+Diagnostics by an agent, decisions by people; emergency change if needed.
+APPROVAL GATE
+Communicate
+AI drafts, communications lead approves every update.
+PERSON
+Review
+Blameless post-incident review ends in tasks.

@@ -1,0 +1,268 @@
+AUTOMATION · WORKFLOW DESIGNER
+Every process on every tab, drawn once and changed here
+
+92 workflows from the catalog, the process strip on each tab and the designer. 47% of 657 work steps are done by an AI agent or an automatic action, 47% of steps have a service, operational or experience target, and 82 need a fix before they can be published. The designer suggests 15 human steps that an agent could take over, saving about $193,516 a month.
+
+ƒ Workflow automation rate
+ƒ Steps meeting their target
+ƒ Workflow run success
+ƒ Cost per workflow run
+BPMN 2.0 and DMN
+ITIL 5
+Experience level agreements
+New workflow
+Import JSON
+Workflows
+92
+20 from the catalog, 65 process strips
+Automation rate
+47%
+Σ agentic + deterministic steps ÷ work steps
+Steps with a target
+47%
+Σ steps with SLA, OLA or XLA ÷ work steps
+Run success
+94.8%
+runs without manual rescue, 30 days
+Who does the work
+347 human, 103 agentic and 207 deterministic steps across 92 workflows.
+Human (people, approvals, assessments)
+Agentic (AI agent with guardrails)
+Deterministic (API, script, rule, decision table)
+process
+65
+request
+12
+onboarding
+5
+incident
+4
+purchase
+3
+approval
+1
+Where the money goes
+Cost per run × runs in 30 days: Σ(step cost) × runs.
+ƒ Cost per workflow run
+Enterprise service onboarding (60 steps, 10 subflows)
+$326,538
+How strategy becomes measured work
+$104,564
+How people, agents and providers get assigned
+$104,381
+How a project plan is built and kept current
+$102,719
+Report build
+$94,620
+Bar length is monthly spend for that workflow. Service costs come from the TBM model.
+Needs attention
+Blocking problems or thin target coverage.
+Laptop provisioning
+12 blocking problems
+Project intake and decision
+12 blocking problems
+Enterprise service onboarding (60 steps, 10 subflows)
+11 blocking problems
+New hire onboarding (parent workflow)
+11 blocking problems
+Vendor onboarding
+10 blocking problems
+AI agent access and token budget
+10 blocking problems
+All workflows
+Search, filter and sort 92 workflows. Select one to open the canvas.
+Source
+All
+3
+Kind
+All
+8
+owner
+All
+44
+Status
+All
+3
+Group by 
+None
+Source
+Kind
+owner
+Status
+Export CSV
+WORKFLOW	SOURCE	KIND	TRIGGER	STEPS	HUMAN / AGENTIC / DETERMINISTIC	AUTOMATION	TARGETS SET	RUNS, 30 D▼	SUCCESS	COST PER RUN	VERSION	STATUS	PROBLEMS
+How the executive views are built
+Platform · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/1/1	50%	25%	1,346	93.4%	$58	v1	Registered	2
+How strategy becomes measured work
+CEO office · None
+	Process strip	process	Record change: Record created or chang	7	
+ 3/1/1	40%	0%	1,020	91.5%	$103	v1	Registered	2
+How people, agents and providers get assigned
+Priya Shah · None
+	Process strip	process	Record change: Record created or chang	8	
+ 3/1/2	50%	17%	1,018	93.1%	$103	v1	Registered	2
+How a project plan is built and kept current
+Priya Shah · None
+	Process strip	process	Record change: Record created or chang	7	
+ 3/1/1	40%	20%	1,002	94.2%	$103	v1	Registered	2
+Article lifecycle
+Knowledge Curator · None
+	Process strip	process	Record change: Record created or chang	7	
+ 3/1/1	40%	0%	904	93.3%	$71	v1	Registered	4
+How an answer is built
+Knowledge Curator · None
+	Process strip	process	Record change: Record created or chang	6	
+ 1/2/1	75%	0%	886	98.1%	$45	v1	Registered	0
+How a scenario is compared
+Portfolio lead · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/1/1	50%	0%	857	94.5%	$58	v1	Registered	2
+How resource planning works
+Resource Agent · None
+	Process strip	process	Record change: Record created or chang	8	
+ 2/2/2	67%	17%	817	92.5%	$58	v1	Registered	2
+How a prompt reaches production
+Maya Ortiz · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/1/1	50%	0%	713	94.2%	$58	v1	Registered	2
+From a failed search to published knowledge
+Portfolio office · None
+	Process strip	process	Record change: Record created or chang	7	
+ 2/1/2	60%	0%	699	92.3%	$58	v1	Registered	2
+How an application gets its TIME class
+Application owner · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/1/1	50%	25%	681	98.1%	$58	v1	Registered	2
+Cost transparency and scaling
+Finance systems · None
+	Process strip	process	Record change: Record created or chang	7	
+ 2/2/1	60%	20%	645	95.9%	$58	v1	Registered	2
+How risk and date confidence are produced
+Risk owner · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/0/2	50%	25%	637	94.5%	$58	v1	Registered	2
+How delivery performance is measured
+Nia Brooks · None
+	Process strip	process	Record change: Record created or chang	6	
+ 1/0/3	75%	0%	602	93.4%	$45	v1	Registered	0
+Contract renewal reminder
+Maya Ortiz · Contract Repository
+	Designer	contract	Schedule: Schedule	7	
+ 1/1/2	75%	25%	564	92.1%	$45	Draft	Draft	1
+Service portfolio and map
+Service owner · None
+	Process strip	process	Record change: Record created or chang	7	
+ 3/1/1	40%	20%	544	97%	$103	v1	Registered	2
+From knowledge item to approved agent skill
+Skill owner · None
+	Process strip	process	Record change: Record created or chang	9	
+ 3/2/2	57%	14%	530	92.5%	$103	v1	Registered	2
+Laptop provisioning
+Northwind Managed Services · Endpoint management (Intune)
+	Registry	request	Catalog request: Catalog request: lapt	23	
+ 11/2/7	45%	100%	515	96.7%	$68	v1	Registered	12
+Change enablement process (ITIL 5 Transition)
+Requester · None
+	Process strip	process	Record change: Record created or chang	8	
+ 4/0/2	33%	17%	507	97.9%	$147	v1	Registered	2
+How a person, agent, contractor or provider joins the org
+Casey Rowan · None
+	Process strip	process	Record change: Record created or chang	8	
+ 3/1/2	50%	33%	499	99.5%	$103	v1	Registered	2
+Major incident process (ITIL 5 Support)
+Incident manager · None
+	Process strip	process	Record change: Record created or chang	7	
+ 4/1/0	20%	60%	456	97.1%	$115	v1	Registered	4
+How on-call cover is built and used
+Tom Becker · None
+	Process strip	process	Record change: Record created or chang	8	
+ 3/1/2	50%	17%	448	97.6%	$103	v1	Registered	2
+Sprint process
+Test Agent · None
+	Process strip	process	Record change: Record created or chang	8	
+ 5/1/0	17%	17%	438	94.6%	$192	v1	Registered	2
+How impact analysis walks the graph
+Requester · None
+	Process strip	process	Record change: Record created or chang	6	
+ 2/0/2	50%	0%	436	94%	$58	v1	Registered	2
+Invoice approval with hold logic
+Avery Chen · Finance systems
+	Designer	purchase	Event: Invoice received (ERP)	18	
+ 4/1/7	67%	50%	428	92.6%	$93	v3	Published	6
+How a workflow is made and kept
+Process owner · None
+	Process strip	process	Record change: Record created or chang	8	
+ 3/1/2	50%	17%	402	97.3%	$103	v1	Registered	2
+How a visual gets from data to dashboard
+Tom Becker · None
+	Process strip	process	Record change: Record created or chang	8	
+ 3/1/2	50%	17%	367	99.1%	$103	v1	Registered	2
+Enterprise service onboarding (60 steps, 10 subflows)
+Jordan Lee · Integration hub
+	Designer	onboarding	Catalog request: Catalog request: Onbo	62	
+ 36/6/18	40%	50%	359	98%	$910	v2	Published	11
+
+92 of 92 rows
+Scroll for more · rows are drawn as you scroll
+Human (people, approvals, assessments)
+Agentic (AI agent with guardrails)
+Deterministic (API, script, rule, decision table)
+Suggested conversions
+Human steps an agent could do, ranked by monthly saving. Each one keeps a human fallback.
+Claude Sonnet · 78%
+Build and validate the model
+73% confidence
+Report build
+2 d saved per run
+$71,248 a month
+The step name or instructions describe reading, checking or drafting (validat), which agents do well.
+Open step
+Convert to agentic
+Review monthly
+74% confidence
+How delivery performance is measured
+3.2 h saved per run
+$25,934 a month
+The step name or instructions describe reading, checking or drafting (Review), which agents do well.
+Open step
+Convert to agentic
+Project manager confirms acceptance
+71% confidence
+Invoice approval with hold logic
+16 h saved per run
+$14,130 a month
+The step name or instructions describe reading, checking or drafting (record), which agents do well.
+Open step
+Convert to agentic
+Commit and pull request
+73% confidence
+How a change reaches production
+3.2 h saved per run
+$11,026 a month
+The step name or instructions describe reading, checking or drafting (review), which agents do well.
+Open step
+Convert to agentic
+How a workflow is made and kept
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to BPMN 2.0 and DMN, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Pick a trigger
+Event, schedule, record change, catalog request, email or API call.
+PERSON
+Draw the steps
+Human, agentic or deterministic. Drag, connect, set inputs and targets.
+AUTOMATIC
+Validate
+Unreachable steps, missing inputs and high-risk agents with no human are blocked.
+AUTOMATIC
+Test with a record
+A test record travels the graph and shows the data at each step.
+APPROVAL GATE
+Approve to publish
+The workflow owner publishes. The old version stays in history.
+AI AGENT
+Measure
+Cost, time and target met per step, every day.

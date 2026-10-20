@@ -1,8 +1,0 @@
-node:internal/process/promises:394
-    triggerUncaughtException(err, true /* fromPromise */);
-    ^
-
-page.evaluate: Target page, context or browser has been closed
-    at /tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/b12_t1.js:19:21
-
-Node.js v22.22.0

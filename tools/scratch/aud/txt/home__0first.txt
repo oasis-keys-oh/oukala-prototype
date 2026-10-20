@@ -1,0 +1,112 @@
+TUESDAY, OCTOBER 6 · MERIDIAN STANDARDS FOUNDATION
+Good afternoon, Casey
+
+Delivery is amber and finance is red for one reason: Lumen is nine days late on the search indexer, so the beta moved to Nov 13 and Vendor services is $45,000 over commitment.
+
+Viewing as
+Executive
+Why am I seeing this?
+Why is the portfolio amber?
+How we're doing
+Every score shows its formula. Select one for the trend and what happens when it slips.
+71
+Delivery health
+Off trend · target ≥ 80
+0.4 × Schedule adherence + 0.3 × Milestone hit rate + 0.3 × (1 − Risk exposure ÷ Contingency)
+62
+Financial health
+Off trend · target ≥ 85
+100 − (Forecast overrun % × 5) − (Budget lines over commitment × 10)
+82
+Operational health
+On trend · target ≥ 80
+0.5 × Availability score + 0.3 × Incident score + 0.2 × Knowledge freshness
+Needs you
+Ranked by money and time at stake
+Release or hold the Lumen payment
+Invoice Advisor recommends holding $62,900 until milestone 3 is accepted (Thu 14:00).
+Claude · 90%
+Review
+Approve a $48,000 reforecast
+Moves hosting contingency to cover a larger tier. Forecast Agent drafted it.
+Claude · 90%
+Open
+Tier 1 portal is below target
+Latency since 09:12; failover rehearsal at 16:00.
+Claude · 90%
+Trace
+Spend against plan
+Paid is 4% under plan, but the forecast ends $115K over the approved budget.
+ƒ Forecast vs approved
+$0.0M
+$0.6M
+$1.2M
+$1.8M
+$2.4M
+Jan
+Feb
+Mar
+Apr
+May
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Approved $2.06M
+Paid to date
+Plan
+Forecast
+Forecast Agent · 84%
+Portfolio schedule
+Lumen's late indexer holds up two projects. Codification go live is 7 work days late.
+ƒ Schedule performance index
+Codification Platform Upgrade
+Finishes
+Dec 11
+· 60% done
+7 work days late
+Taxonomy Data Hub
+Finishes
+Dec 2
+· 52% done
+on baseline
+Portal Resilience
+Finishes
+Nov 2
+· 39% done
+on baseline
+Contract Repository Refresh
+Finishes
+Feb 24
+· 7% done
+on baseline
+Open the master schedule
+Projects
+Select one to trace it to budget and operations
+Codification Platform Upgrade
+Beta moved from Nov 4 to Nov 13 because Lumen delivered the search indexer late.
+Amber
+Taxonomy Data Hub
+Pilot is on track for Dec 2 but depends on the same Lumen staff.
+Green
+Insights
+What changed, and what to do about it
+Lumen is the common thread
+Late indexer delivery explains the beta slip, the over-commitment, and the Taxonomy pilot risk. Consider a single recovery plan.
+Claude · 86%
+ƒ Vendor performance index
+Four of six Lumen holds were overridden
+The advisor may be too strict on Lumen. The Feedback loop has a proposed tolerance rule.
+Claude · 86%
+ƒ Agent override rate
+Invoice cycle time is improving
+Down from 5.4 to 4.2 days in eight weeks as clean invoices clear faster.
+Claude · 86%
+ƒ Invoice cycle time
+Runbook is 14 months old
+The failover steps predate the Northwind move. A refresh draft is waiting for review.
+Claude · 86%
+ƒ Knowledge freshness

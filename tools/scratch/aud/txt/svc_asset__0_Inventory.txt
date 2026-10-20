@@ -1,0 +1,186 @@
+ASSETS AND SOFTWARE LICENSES
+140 devices, 3 titles over entitlement
+
+96 devices are deployed and 6 are in stock. Record accuracy against Intune is 91.1%. True up exposure is $12,648 on 3 titles; reclaiming unused seats is the cheapest fix. Laptops and phones ordered through the catalog appear here as soon as they are ordered, and retire here when the request is decommissioned.
+
+Add an asset
+Reclaim licenses
+ƒ Asset record accuracy
+ƒ Licence true-up exposure
+ITIL 5
+CSDM 5
+Inventory
+Lifecycle board
+Software licenses
+ASSETS
+140
+in 6 classes
+DEPLOYED
+96
+68.6% of inventory
+IN STOCK
+6
+10 ordered or received
+IN REPAIR
+4
+with vendor or bench
+WARRANTY ENDING IN 90 DAYS
+6
+12 already out
+RECORD ACCURACY
+91.1%
+goal 98%, matches Intune
+VALUE IN SERVICE
+$183,255
+at purchase cost
+Lifecycle
+Every device is in exactly one state. Ordered and received devices come from open requests, so a delayed request shows here before it hurts someone.
+ƒ Asset record accuracy
+ITIL 5
+Ordered
+Received
+In stock
+Deployed
+In repair
+Retired
+Decommissioned
+5
+ordered
+5
+received
+6
+in stock
+96
+deployed
+4
+in repair
+8
+retired
+16
+decommissioned
+By class
+Deployed and in stock, side by side.
+Laptop
+54 + 5
+Monitor
+8 + 1
+Phone
+25 + 0
+Network
+2 + 0
+AV
+2 + 0
+Dock
+5 + 0
+Deployed
+In stock
+Inventory
+140 assets. Search any tag, model or person. Select a row for its history, links and actions.
+Add an asset
+Class
+All
+6
+State
+All
+7
+Location
+All
+9
+Group by 
+None
+Class
+State
+Location
+Export CSV
+TAG	CLASS	MODEL	STATE	ASSIGNED TO	LOCATION	BOUGHT	WARRANTY ENDS	COST	INTUNE	REQUEST
+MSF-10231	Laptop	Dell Latitude 7430 14"	Deployed	
+Priya Shah
+	Parker HQ	Nov 14	Nov 13	$1,640	Compliant	Before Oukala
+MSF-10208	Laptop	Dell Latitude 7430 14"	Retired	Not assigned	Parker HQ stockroom	Sep 2	Sep 1	$1,640	Compliant	Before Oukala
+MSF-10412	Laptop	Dell Latitude 7450 14"	In stock	Not assigned	Parker HQ stockroom	Aug 20	Aug 19	$1,840	Compliant	Before Oukala
+MSF-10377	Laptop	MacBook Pro 16"	Deployed	
+Jordan Lee
+	Parker HQ	Feb 6	Feb 5	$2,899	Compliant	Before Oukala
+MSF-10390	Laptop	Dell Precision 5680	Deployed	
+Dev Rao
+	Remote	May 21	May 21	$3,240	Compliant	Before Oukala
+MSF-10455	Laptop	Dell Latitude 7450 14"	Deployed	
+Tom Becker
+	Parker HQ	Mar 11	Mar 10	$1,840	Compliant	Before Oukala
+MSF-10488	Laptop	Dell Latitude 7450 14"	In repair	
+Nia Brooks
+	Vendor depot	Jun 30	Jun 29	$1,840	Compliant	Before Oukala
+MSF-10461	Monitor	Dell UltraSharp 27"	Deployed	
+Maya Ortiz
+	Parker HQ	Sep 10	Sep 10	$520	n/a	Before Oukala
+MSF-10470	Phone	iPhone 15	Deployed	
+Maya Ortiz
+	Mobile	Jan 15	Dec 15	$829	Compliant	Before Oukala
+MSF-10102	Network	Cisco Catalyst 9300	Deployed	
+Sam Patel
+	Parker HQ, 2nd floor	Nov 30	Nov 30	$8,900	n/a	Before Oukala
+MSF-10103	AV	Poly Studio X70	Deployed	
+Nia Brooks
+	Boardroom	Apr 18	Oct 31	$4,200	n/a	Before Oukala
+MSF-10499	Laptop	Dell Latitude 7450 14" (3 on order)	Ordered	Not assigned	Vendor	Oct 2	Oct 1	$5,520	Compliant	Before Oukala
+MSF-10630	Phone	Teams desk phone	Received	Not assigned	Parker HQ dock	Oct 6	Oct 5	$260	Compliant	RITM0010573
+MSF-10634	Laptop	Dell Latitude 7450 14"	Received	Not assigned	Parker HQ dock	Oct 6	Oct 5	$1,840	Compliant	RITM0010633
+MSF-10635	Laptop	Dell Latitude 7450 14"	Deployed	
+Amara Diallo
+	Parker HQ	Oct 3	Oct 2	$1,840	Compliant	RITM0010564
+MSF-10636	Laptop	Dell Latitude 7450 14"	Deployed	
+Pierce Caldwell
+	Parker HQ	Oct 2	Oct 1	$1,840	Compliant	RITM0010559
+MSF-10637	Laptop	Dell Latitude 7450 14"	Deployed	
+Sam Patel
+	Parker HQ	Oct 1	Sep 30	$1,840	Compliant	RITM0010425
+MSF-10638	Laptop	Dell Latitude 7450 14"	Deployed	
+Tess Whitaker
+	Parker HQ	Oct 2	Oct 1	$1,840	Compliant	RITM0010655
+MSF-10639	Phone	iPhone 16	Deployed	
+Casey Rowan
+	Parker HQ	Oct 1	Sep 30	$829	Compliant	RITM0010540
+MSF-10640	Laptop	Dell Latitude 7450 14"	Deployed	
+Dev Rao
+	Parker HQ	Oct 2	Oct 1	$1,840	Compliant	RITM0010514
+MSF-10641	Laptop	Dell Latitude 7450 14"	Received	Not assigned	Parker HQ dock	Sep 25	Sep 24	$1,840	Compliant	RITM0010432
+MSF-10642	Laptop	MacBook Pro 16"	Deployed	
+Amara Okoye
+	Parker HQ	Sep 27	Sep 26	$2,899	Compliant	RITM0010517
+MSF-10643	Laptop	Dell Latitude 7450 14"	Deployed	
+Ravi Menon
+	Parker HQ	Sep 24	Sep 23	$1,840	Compliant	RITM0010523
+MSF-10644	Laptop	Dell Latitude 7450 14"	Deployed	
+Tom Becker
+	Parker HQ	Sep 25	Sep 24	$1,840	Compliant	RITM0010624
+MSF-10645	Phone	iPhone 16	Deployed	
+Tom Becker
+	Parker HQ	Sep 23	Sep 22	$829	Compliant	RITM0010695
+MSF-10646	Laptop	Dell Latitude 7450 14"	Deployed	
+Tess Whitaker
+	Parker HQ	Sep 23	Sep 22	$1,840	Compliant	RITM0010642
+MSF-10647	Laptop	Dell Latitude 7450 14"	Deployed	
+Lucas Brandt
+	Parker HQ	Sep 23	Sep 22	$1,840	Compliant	RITM0010570
+
+140 of 140 rows
+Scroll for more · rows are drawn as you scroll
+Life of a device and a license
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, CSDM 5.
+Add a step
+Open in Workflow designer
+AUTOMATIC
+Ordered
+From a catalog request or added by hand.
+PERSON
+Received and tagged
+Receiving confirms and tags it.
+AUTOMATIC
+In stock or deployed
+Assigned to a person and enrolled in Intune.
+AI AGENT
+Reconciled
+Inventory is matched to Intune and sign-in data.
+PERSON
+Retired
+Wiped and decommissioned. Licenses are returned.

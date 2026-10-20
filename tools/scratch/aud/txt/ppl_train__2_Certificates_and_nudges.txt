@@ -1,0 +1,92 @@
+TRAINING AND LEARNING
+Is everyone ready to do the work safely
+
+91% of mandatory courses due to date are complete, against a 95% target. 6 people have not finished Security awareness 2026, which closed Oct 2, and 10 certificates expire or have expired within 60 days. Learning Coach has reminders ready.
+
+ƒ Mandatory training completion
+Design a course
+Import SCORM or xAPI
+Why am I seeing this?
+Mandatory completion
+91%
+82 of 90 due to date
+People with overdue courses
+6
+of 39
+Certificates expiring or expired
+10
+within 60 days
+Courses in catalog
+10
+0 imported packages
+Catalog and paths
+Assignments and completion
+Certificates and nudges
+Designer and import
+My learning
+Certificates and expiry
+1 expired and 9 expire in the next 60 days. An expired privileged-access certificate removes production access until renewed.
+PERSON	CERTIFICATE	EXPIRES	DAYS LEFT	STATE	
+Carla Reyes	Privileged access and change control	Sep 28	-8	Expired	Renew
+Sam Patel	Privileged access and change control	Oct 24	18	Expiring	Renew
+Wes Hartley	Privileged access and change control	Oct 26	20	Expiring	Renew
+Greg Nolan	Privileged access and change control	Oct 29	23	Expiring	Renew
+Hana Sato	Privileged access and change control	Nov 9	34	Expiring	Renew
+Leah Moss	Privileged access and change control	Nov 10	35	Expiring	Renew
+Ben Ito	Privileged access and change control	Nov 13	38	Expiring	Renew
+Tess Whitaker	Privileged access and change control	Nov 27	52	Expiring	Renew
+Ines Duarte	Incident response for the service desk	Nov 28	53	Expiring	Renew
+Ines Duarte	Privileged access and change control	Nov 30	55	Expiring	Renew
+Tom Becker	Incident response for the service desk	Dec 9	64	Valid	
+Tom Becker	Privileged access and change control	Sep 16	345	Valid	
+Dmitri Volkov	Privileged access and change control	Sep 20	349	Valid	
+Kofi Mensah	Incident response for the service desk	Sep 20	349	Valid	
+Overdue and nudges
+6 people have 8 overdue courses. Security awareness closed Oct 2 and 6 people have not finished it. Learning Coach drafts a reminder, copies the manager after day 7 and asks for an access review after day 14.
+Send all reminders
+TW
+Tess Whitaker Platform team
+Code of conduct and conflicts of … (6 days late) · Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+AM
+Anil Mehta Data team
+Code of conduct and conflicts of … (6 days late) · Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+OH
+Casey Rowan Leadership
+Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+DR
+Dev Rao PMO
+Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+BI
+Ben Ito Platform team
+Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+PC
+Pierce Caldwell Editors
+Security awareness 2026 (4 days late)
+Reminder
+Preview
+Send
+Remediation ladder
+What happens when a mandatory course is not finished
+Day 1
+Learning Coach sends a friendly reminder with a 10-minute link.
+Day 8
+The manager is copied. First Officer adds a calendar block.
+Day 15
+People office asks Entra ID access review to remove privileged roles until done.
+ƒ Mandatory training completion
+Learning Coach · 90%

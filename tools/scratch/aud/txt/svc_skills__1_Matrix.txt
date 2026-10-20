@@ -1,0 +1,139 @@
+PEOPLE AND WORK · SKILLS AND AVAILABILITY
+Who can do what, and who is free right now?
+
+139 skills across 85 people, contractors, providers and AI agents. 2 rota skills depend on one person or none, and 5 certificates expire within 90 days. Rotas, assignment rules, the Service catalog and workflows all read this database.
+
+ƒ Critical skill depth
+ƒ Verified skill share
+ITIL 5
+Add a skill
+Request time off
+Overview
+Matrix
+Who can do this
+Gap analysis
+Certifications
+Availability
+Taxonomy
+Person by skill matrix
+Each cell is a proficiency level from 1 (aware) to 5 (authority). Dashed outline means self-declared, hatched means expired. Sort a column to find your strongest people.
+Category
+All
+Cloud and infrastructure
+Service management
+Security and identity
+Data and search
+Applications
+End-user support
+Delivery and governance
+Finance and editorial
+Languages
+Team
+All
+13
+Export CSV
+PERSON	TEAM	AZURE	KUBERNETES	TERRAFORM	NETWORKING AND VPN	BACKUP AND RESTORE	OBSERVABILITY	AZURE OPERATIONS	ON-CALL PRACTICE	INCIDENT MANAGEMENT	MAJOR INCIDENT COMMAND	ITIL 4	CHANGE AND RELEASE	PROBLEM ANALYSIS	SERVICENOW	CAB FACILITATION	KNOWLEDGE MANAGEMENT (KCS)	TRIAGE AND ROUTING	ENTRA ID
+
+Maya Ortiz
+	PMO	·	·	·	·	·	·	·	·	3	3	·	·	·	·	·	·	·	·
+
+Priya Shah
+	Platform team	·	·	·	·	·	·	·	3	3	·	·	·	·	·	·	·	·	·
+
+Dev Rao
+	Data team	·	·	·	·	·	·	·	3	3	·	·	·	·	·	·	·	·	·
+
+Tom Becker
+	Service desk	·	·	·	·	·	·	·	·	5	5	5	·	·	4	·	3	·	·
+
+Avery Chen
+	Finance	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Jordan Lee
+	Architecture	4	·	·	·	·	·	·	4	3	·	·	·	·	·	·	·	·	·
+
+Sam Patel
+	Ops team	5	4	4	4	3	4	·	5	4	·	·	·	·	·	·	·	·	3
+
+Nia Brooks
+	Change management	·	·	·	·	·	·	·	·	3	·	·	5	·	·	5	·	·	·
+
+Chief Editor
+	Editors	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Rina Okafor
+	Security	·	·	·	·	·	·	·	4	4	·	·	·	·	·	·	·	·	5
+
+Casey Rowan
+	PMO	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Marco Ellis
+	Lumen (vendor)	·	·	·	·	·	·	·	4	4	·	·	·	·	·	·	·	·	·
+
+Hana Koval
+	Lumen (vendor)	·	·	·	·	·	·	·	3	3	·	·	·	·	·	·	·	·	·
+
+Ravi Menon
+	Ops team	4	3	3	3	·	5	·	4	3	·	·	·	·	·	·	·	·	·
+
+Elise Park
+	Platform team	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+LS
+Lumen Search Services
+	Lumen (vendor)	·	·	·	·	·	·	·	·	3	·	·	·	·	·	·	·	·	·
+
+NM
+Northwind Managed Services
+	Service desk	·	·	·	·	·	·	·	·	4	·	·	·	·	·	·	·	3	·
+
+CC
+Contoso Cloud Operations
+	Ops team	4	·	·	·	4	4	5	·	3	·	·	·	·	·	·	·	·	·
+
+First Officer
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Invoice Advisor
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Knowledge Curator
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	3	·	·
+
+Test Agent
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Triage Agent
+	AI agents	·	·	·	·	·	·	·	·	4	·	·	·	·	·	·	3	5	·
+
+PMO Agent
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Change Risk Agent
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	4	·	·	3	·	·	·
+
+Contract Analyst Agent
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Ops Agent
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+Event Correlator
+	AI agents	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·	·
+
+85 of 85 rows
+Scroll for more · rows are drawn as you scroll
+1
+Aware: Knows the vocabulary; needs close guidance
+2
+Working: Does routine tasks with occasional help
+3
+Proficient: Works alone and handles most cases; can be on call
+4
+Expert: Handles hard cases and coaches others
+5
+Authority: Sets the standard; final escalation
+3
+Self-declared
+3
+Expired

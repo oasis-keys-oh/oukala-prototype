@@ -1,0 +1,212 @@
+PROJECTS AND TEAMS
+Who runs what, who does the work
+
+4 projects with 23 people and agents: 9 employees, 4 contractors, 7 AI agents and 3 managed service providers. 16 are over capacity, 1 contract end before the work does, and 2 AI agent assignments have no accountable human.
+
+ƒ Milestones on time
+ƒ Schedule performance index
+ƒ Contracts that outlast their work
+ƒ AI agents with an accountable human
+PMBOK
+Projects
+All projects
+4
+Teams
+All teams
+13
+Kinds of worker
+All four kinds
+4
+Project managers
+All managers
+4
+Dashboard and list
+Project cards
+Milestones
+Team board
+People
+Capacity by week
+Bench and requests
+Skills
+People, AI agents, contractors and providers
+Select anyone to open Person 360: projects, tickets, approvals, meetings, time off, skills and whether they can take more.
+ƒ Resource utilization
+Kind
+All
+4
+Team
+All
+13
+Organization
+All
+5
+Group by 
+None
+Kind
+Team
+Organization
+Export CSV
+NAME	KIND	ROLE	TEAM	ORGANIZATION	LOAD▼	PROJECTS	HOW CAPACITY IS MEASURED	SKILLS
+
+Sam Patel
+	
+Employee	Platform engineer	Ops team	Meridian Standards Foundation	
+ 1128%	2	Hours a week against 40	Azure, Kubernetes, Terraform
+
+Ravi Menon
+	
+Contractor	Site reliability engineer	Ops team	Northwind Staffing	
+ 617%	1	Contract PO-7712 ends Jan 29, 2027, $140 an hour	Azure, Observability, On-call
+
+Maya Ortiz
+	
+Employee	Portfolio lead	PMO	Meridian Standards Foundation	
+ 421%	1	Hours a week against 40	Portfolio management, PMP, Vendor management
+
+Nia Brooks
+	
+Employee	Change manager	Change management	Meridian Standards Foundation	
+ 399%	1	Hours a week against 40	ITIL 4 Change, CAB facilitation, Risk assessment
+
+Jordan Lee
+	
+Employee	Architect	Architecture	Meridian Standards Foundation	
+ 388%	3	Hours a week against 40	Enterprise architecture, Azure, Integration
+
+Hana Koval
+	
+Contractor	Taxonomy engineer	Lumen (vendor)	Lumen Search Services	
+ 372%	1	Contract SOW-4 ends Mar 31, 2027, $150 an hour	Taxonomy, Python, NLP
+
+Tom Becker
+	
+Employee	Service desk lead	Service desk	Meridian Standards Foundation	
+ 324%	1	Hours a week against 40	ITIL 4, Incident management, ServiceNow
+
+Elise Park
+	
+Contractor	QA automation contractor	Platform team	Northwind Staffing	
+ 308%	2	Contract PO-7713 ends Dec 18, 2026, $110 an hour	Test automation, Playwright, API testing
+
+Marco Ellis
+	
+Contractor	Lead engineer, search indexer	Lumen (vendor)	Lumen Search Services	
+ 264%	1	Contract SOW-4 ends Mar 31, 2027, $165 an hour	Search indexing, Elasticsearch, Java
+
+Dev Rao
+	
+Employee	Project manager	Data team	Meridian Standards Foundation	
+ 230%	1	Hours a week against 40	Data engineering, PMP, Azure Data Factory
+
+Avery Chen
+	
+Employee	Controller	Finance	Meridian Standards Foundation	
+ 208%	1	Hours a week against 40	Accounting, ASC 842, Invoice approval
+
+Priya Shah
+	
+Employee	Project manager	Platform team	Meridian Standards Foundation	
+ 196%	1	Hours a week against 40	PMP, Agile delivery, Release planning
+
+Rina Okafor
+	
+Employee	Security lead	Security	Meridian Standards Foundation	
+ 194%	0	Hours a week against 40	Entra ID, Defender, NIST CSF
+
+Chief Editor
+	
+Employee	Chief editor	Editors	Meridian Standards Foundation	
+ 143%	1	Hours a week against 40	Standards writing, Editorial review, Codification
+
+Test Agent
+	
+AI agent	Quality and testing agent	AI agents	Meridian Standards Foundation	
+ 136%	1	Agent hours and $0.50 per task	Test runner, Sandbox
+
+Knowledge Curator
+	
+AI agent	Knowledge drafting agent	AI agents	Meridian Standards Foundation	
+ 131%	1	Agent hours and $0.60 per task	Articles, Search index
+
+Casey Rowan
+	
+Employee	Chief information officer	PMO	Meridian Standards Foundation	
+ 93%	0	Hours a week against 40	Executive sponsor, Portfolio, Strategy
+
+Contract Analyst Agent
+	
+AI agent	Contract and SOW analysis agent	AI agents	Meridian Standards Foundation	
+ 80%	1	Agent hours and $2.60 per task	Clause extraction, Playbook matching, Obligation tracking
+
+Ben Alvarez
+	
+Employee	QA analyst	Platform team	Meridian Standards Foundation	
+ 61%	0	Hours a week against 40	Manual testing, UAT coordination, Test design
+
+LS
+Lumen Search Services
+	
+Managed service provider	Managed service provider: search and indexing	Lumen (vendor)	Lumen Search Services	
+ 60%	2	Tier 2 search support, 24x5	Search operations, Indexing, Relevance
+
+Amara Okoye
+	
+Contractor	Taxonomy engineer (Lumen)	Lumen (vendor)	Lumen Search Services	
+ 60%	0	Contract SOW-4 ends Mar 31, 2027, $150 an hour	Taxonomy, Data modeling, Search and indexing
+
+CC
+Contoso Cloud Operations
+	
+Managed service provider	Managed service provider: Azure operations	Ops team	Contoso Cloud Operations	
+ 59%	1	Tier 1 platform monitoring 24x7	Azure operations, Backup and restore, Monitoring
+
+NM
+Northwind Managed Services
+	
+Managed service provider	Managed service provider: service desk and endpoint	Service desk	Northwind Managed Services	
+ 55%	1	Tier 1 desk 7am to 7pm ET, 15 minute response	Tier 1 service desk, Endpoint management, Intune
+
+Leila Haddad
+	
+Employee	Communications lead	PMO	Meridian Standards Foundation	
+ 55%	0	Hours a week against 40	Communications, Publishing, Stakeholder messaging
+
+Marta Kessler
+	
+Contractor	Lumen delivery lead	Lumen (vendor)	Lumen Search Services	
+ 48%	0	Contract SOW-4 ends Mar 31, 2027, $158 an hour	Search and indexing, Project management, Integration and APIs
+
+Zoe Hart
+	
+Employee	Developer	Platform team	Meridian Standards Foundation	
+ 48%	0	Hours a week against 40	TypeScript, Editor UX, Playwright
+
+Priyanka Nair
+	
+Contractor	Search engineer (Lumen)	Lumen (vendor)	Lumen Search Services	
+ 45%	0	Contract SOW-4 ends Mar 31, 2027, $140 an hour	Search and indexing, Integration and APIs, Taxonomy
+
+85 of 85 rows
+Scroll for more · rows are drawn as you scroll
+How people, agents and providers get assigned
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to PMBOK, ITIL 5.
+Add a step
+Open in Workflow designer
+PERSON
+Request
+A project manager asks for a skill, hours and dates.
+AI AGENT
+Match
+Resource Agent matches the skills database, spare hours and contract end dates, across employees, AI agents, contractors and providers.
+AUTOMATIC
+Check
+Automatic checks: contract ends before the work, AI agent without a human owner, provider near contracted capacity, person over capacity.
+APPROVAL GATE
+Confirm
+The project manager and the resource owner confirm. A flagged assignment needs a stated reason.
+AUTOMATIC
+Track weekly load
+Hours from the schedule, tickets, approvals and meetings are added up per person and team each week.
+PERSON
+Rebalance
+Move work or add capacity when a team passes 100%.

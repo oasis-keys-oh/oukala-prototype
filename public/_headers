@@ -1,4 +1,12 @@
+# CL-12. index.html loads oukala-js.js?v=<content hash> (written by src/build.py), so every build gets a new URL:
+# the script is cached for a year without revalidation. The shell revalidates on every load so it always names the current hash.
 /oukala-js.js
+  Cache-Control: public, max-age=31536000, immutable
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
   Cache-Control: public, max-age=0, must-revalidate
 /hero/*
+  Cache-Control: public, max-age=86400
+/journey/*
   Cache-Control: public, max-age=86400

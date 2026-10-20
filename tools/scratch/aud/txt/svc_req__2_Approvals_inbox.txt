@@ -1,0 +1,227 @@
+REQUESTS AND FULFILLMENT
+86 open, 33 approvals waiting
+
+6 requests have used 75% or more of their SLA. Median fulfillment is 0.8 days and 93.8% of approvals pass the first time. Open any request for who it is sitting with, every approval and the evidence behind it, and the cost and time of each step.
+
+Order something
+Approvals inbox
+ƒ Fulfillment on time
+ƒ First-time approval rate
+ƒ Cost per request
+ITIL 5
+Experience level agreements
+Dashboard and list
+Board
+Approvals inbox
+Team queues
+Acting as approver 
+Maya Ortiz (8)
+Avery Chen (5)
+Rina Okafor (5)
+Sam Patel (4)
+Jordan Lee (3)
+Casey Rowan (3)
+Tom Becker (2)
+Anil Mehta (1)
+Dev Rao (1)
+Catherine Doyle (1)
+Maya Ortiz
+10 people have approvals waiting
+Decide now
+Oldest first. Each shows the data that triggered the approval.
+RITM0010651
+Mobile phone
+9.1 h waiting
+Always
+
+Manager approval. Named accountable manager.
+
+Requested by
+Dev Rao
+$829
+Approve
+Reject with reason
+Open request
+RITM0010626
+Access request
+6.4 h waiting
+Data
+
+Data owner. System: Contract Repository; System: Contract Repository; System: Contract Repository
+
+Requested by
+Tess Whitaker
+$0
+Approve
+Reject with reason
+Open request
+RITM0010571
+Software license
+5.3 h waiting
+Cost
+
+Manager approval. Price: $110; Restricted software: yes
+
+Requested by
+Marcus Webb
+$110
+Approve
+Reject with reason
+Open request
+RITM0010557
+Laptop (new or replacement)
+4.3 h waiting
+Budget owner
+
+Budget owner. Price: $2,899
+
+Requested by
+Casey Rowan
+$2,899
+Approve
+Reject with reason
+Open request
+RITM0010587
+Vendor onboarding
+4.3 h waiting
+Vendor
+
+Contract review. Expected annual spend: 283000; What will they provide?: Hardware
+
+Requested by
+Zoe Hart
+$0
+Approve
+Reject with reason
+Open request
+RITM0010518
+Mobile phone
+3.6 h waiting
+Always
+
+Manager approval. Named accountable manager.
+
+Requested by
+Amara Diallo
+$829
+Approve
+Reject with reason
+Open request
+RITM0010575
+Access request
+3.4 h waiting
+Data
+
+Data owner. System: Contract Repository; System: Contract Repository; System: Contract Repository
+
+Requested by
+Rosa Delgado
+for
+Imran Sheikh
+$0
+Approve
+Reject with reason
+Open request
+RITM0010698
+Access request
+3.1 h waiting
+Data
+
+Data owner. System: Contract Repository; System: Contract Repository; System: Contract Repository
+
+Requested by
+Rosa Delgado
+for
+Hana Sato
+$0
+Approve
+Reject with reason
+Open request
+Every pending approval
+33 approvals. Search by request, item, rule or approver.
+Item
+All
+8
+Approver
+All
+10
+Export CSV
+REQUEST	ITEM	APPROVAL	APPROVER	WAITING	WHY IT TRIGGERED	PRICE
+RITM0010458	New project request	Steering: cost over $50,000	
+Avery Chen
+	18.1 h	Estimated cost: 180000	$0
+RITM0010458	New project request	AI governance review	
+Jordan Lee
+	18.1 h	Uses AI agents: yes	$0
+RITM0010651	Mobile phone	Manager approval	
+Maya Ortiz
+	9.1 h	Named accountable manager.	$829
+RITM0010626	Access request	Manager approval	
+Sam Patel
+	6.4 h	Manager confirms the business need.	$0
+RITM0010626	Access request	Data owner	
+Maya Ortiz
+	6.4 h	System: Contract Repository; System: Contract Repository; System: Contract Repository	$0
+RITM0010702	Laptop (new or replacement)	Manager approval	
+Tom Becker
+	6.3 h	Every purchase has a named accountable manager.	$1,840
+RITM0010621	Laptop (new or replacement)	Manager approval	
+Anil Mehta
+	5.9 h	Every purchase has a named accountable manager.	$2,899
+RITM0010621	Laptop (new or replacement)	Budget owner	
+Dev Rao
+	5.9 h	Price: $2,899	$2,899
+RITM0010452	AI agent access and token budget	Security (restricted or autonomous)	
+Rina Okafor
+	5.5 h	Security tier: Privileged	$1,440
+RITM0010571	Software license	Manager approval	
+Maya Ortiz
+	5.3 h	Price: $110; Restricted software: yes	$110
+RITM0010571	Software license	Security review (restricted software)	
+Rina Okafor
+	5.3 h	Restricted software: yes	$110
+RITM0010701	Laptop (new or replacement)	Manager approval	
+Sam Patel
+	4.9 h	Every purchase has a named accountable manager.	$1,840
+RITM0010441	Laptop (new or replacement)	Budget owner	
+Avery Chen
+	4.6 h	Price: $3,250	$3,250
+RITM0010557	Laptop (new or replacement)	Manager approval	
+Casey Rowan
+	4.3 h	Every purchase has a named accountable manager.	$2,899
+RITM0010557	Laptop (new or replacement)	Budget owner	
+Maya Ortiz
+	4.3 h	Price: $2,899	$2,899
+RITM0010587	Vendor onboarding	Procurement lead	
+Avery Chen
+	4.3 h	All suppliers pass procurement.	$0
+RITM0010587	Vendor onboarding	Contract review	
+Maya Ortiz
+	4.3 h	Expected annual spend: 283000; What will they provide?: Hardware	$0
+RITM0010518	Mobile phone	Manager approval	
+Maya Ortiz
+	3.6 h	Named accountable manager.	$829
+RITM0010443	Software license	Budget owner	
+Avery Chen
+	3.5 h	Price: $900	$900
+RITM0010443	Software license	Security review (restricted software)	
+Rina Okafor
+	3.5 h	Restricted software: yes	$900
+RITM0010689	AI agent access and token budget	Agent owner's manager	
+Tom Becker
+	3.5 h	A human is accountable for every agent.	$900
+RITM0010689	AI agent access and token budget	AI governance review	
+Jordan Lee
+	3.5 h	Every change to an agent goes through the registry.	$900
+RITM0010525	Mobile phone	Manager approval	
+Casey Rowan
+	3.5 h	Named accountable manager.	$260
+RITM0010575	Access request	Manager approval	
+Rina Okafor
+	3.4 h	Manager confirms the business need.	$0
+RITM0010575	Access request	Data owner	
+Maya Ortiz
+	3.4 h	System: Contract Repository; System: Contract Repository; System: Contract Repository	$0
+
+33 of 33 rows
+Scroll for more · rows are drawn as you scroll

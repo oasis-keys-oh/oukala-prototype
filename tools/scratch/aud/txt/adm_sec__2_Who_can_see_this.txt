@@ -1,0 +1,123 @@
+PLATFORM · SECURITY AND ACCESS
+Know who can see what, and why
+
+11 roles and 6 active policies decide access. 1 break-glass grant is open right now, 3 provisioning errors need attention, and the access review is 13% complete.
+
+ƒ Access review completion
+Policy engine · draft
+Roles
+Policies and labels
+Who can see this
+Identity and break-glass
+Access reviews
+Who can see this?
+Pick a record and a person. The engine runs the same rules production runs and shows each step, so a denial is never a mystery.
+Record
+Modernize standards publishing
+Reduce operating risk
+Digital Publishing portfolio
+Codification Platform Upgrade
+Taxonomy Data Hub
+FY26 Cloud hosting
+FY26 Vendor services
+Northwind Cloud MSA
+Lumen Data Partners SOW-4
+INV-20418 Northwind
+INV-20451 Northwind
+INV-20433 Lumen
+INV-20440 Apex Print
+Vendor delivery slip
+Taxonomy API
+Codification Portal
+Portal latency (Sev 2)
+Portal failover runbook
+SOW-4 milestone 3 acceptance criteria
+Lease accounting policy
+Capitalization threshold policy
+Lease classification review
+Monthly lease amortization close
+Lease inventory completeness
+Discount rate approval
+Person or agent
+Casey Rowan · CIO
+Maya Ortiz · Portfolio lead
+Priya Shah · Project manager
+Dev Rao · Project manager
+Tom Becker · Service desk lead
+Avery Chen · Controller
+Dana Whitfield · AP lead
+Jordan Lee · Architect
+Sam Patel · Platform engineer
+Nia Brooks · Change manager
+Rosa Alvarez · Internal auditor
+Chris Okafor (Lumen) · Lumen delivery lead
+Invoice Advisor · AI agent
+DECISION
+Deny
+Dev Rao cannot see Lumen Data Partners SOW-4
+Confidential
+Person
+Dev Rao, Delivery, India, device Compliant, clearance Confidential
+Roles
+Project manager
+Record
+Contract owned by Vendor mgmt, Vendor management
+What would change the answer: Give a role that includes "Manage contracts", make the person the owner, or share the record.
+Request break-glass for this
+Evaluation trace
+9 steps, in order
+✓
+Identity Passed
+Dev Rao is signed in through Entra ID with multifactor sign-in.
+✕
+Route to access Denied here
+role capability "Manage contracts": no (Project manager); record owner: no (owner is Vendor mgmt); allow policy: none match.
+✓
+Label against clearance Passed
+Record is Confidential; user clearance is Confidential.
+✓
+Policy: Confidential data needs a compliant device Passed
+Does not apply. record.label Confidential at least Confidential → true and user.device Compliant is not Compliant → false
+✓
+Policy: Finance records stay with finance and oversight Passed
+Does not apply. record.department Vendor management is Finance → false and user.department Delivery is not in Finance,Executive office,Internal audit → true
+✕
+Policy: Confidential data stays in approved countries Denied here
+Fires. record.label Confidential at least Confidential → true and user.location India is not in United States,Canada,Azure US-East → true
+–
+Policy: AI agents never read Restricted data Not applicable
+Does not apply. user.type employee is agent → false and record.label Confidential at least Restricted → false
+✓
+Policy: Guests see only what is shared with their company Passed
+Does not apply. user.type employee is guest → false and record.shared_with_user_org No is No → true
+–
+Break-glass override Not applicable
+No active time-boxed grant for this person and record.
+Who can see Lumen Data Partners SOW-4
+6 of 13 people and agents can see it; 7 cannot. Select a name to load their trace.
+Casey Rowan
+Allowed
+Maya Ortiz
+Allowed
+Priya Shah
+Denied: Route to access
+Dev Rao
+Denied: Route to access
+Tom Becker
+Denied: Route to access
+Avery Chen
+Allowed
+Dana Whitfield
+Allowed
+Jordan Lee
+Allowed by break-glass
+Sam Patel
+Denied: Route to access
+Nia Brooks
+Denied: Route to access
+Rosa Alvarez
+Allowed
+Chris Okafor (Lumen)
+Denied: Route to access
+Invoice Advisor
+Denied: Route to access

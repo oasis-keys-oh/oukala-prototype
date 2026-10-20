@@ -1,16 +1,26 @@
-"""Build Oukala. Usage: python3 build.py [--only mod_a,mod_b] [--out DIR]
+"""Build Falconaire. Usage: python3 src/build.py [--out DIR] [--full] [--only mod_a,mod_b]
 Core files are always included. Feature modules are mod_*.js and mod_*.css in this folder.
---only limits which modules are included (use this to test one module in isolation).
---out writes oukala.html (for publishing) and full.html (a complete page for local screenshots) to DIR."""
+--out   writes index.html (shell) and oukala-js.js (the hashed script) to DIR, plus hero/ and journey/ assets.
+--full  also writes full.html (one self-contained page, used by tools/tests) and oukala.html (inline fragment).
+--only  limits which modules are included (use this to test one module in isolation)."""
 import sys,os,glob,json,base64
 here=os.path.dirname(os.path.abspath(__file__));os.chdir(here);sys.path.insert(0,here)
 from tokens import block
-a=sys.argv[1:];only=None;out='.'
+a=sys.argv[1:];only=None;out='.';full='--full' in a
 if '--only' in a: only=set(x.strip() for x in a[a.index('--only')+1].split(',') if x.strip())
 if '--out' in a: out=a[a.index('--out')+1]
 os.makedirs(out,exist_ok=True)
 r=lambda f:open(f,encoding='utf-8').read()
-mods=sorted(set(os.path.splitext(f)[0] for f in glob.glob('mod_*.js')+glob.glob('mod_*.css')))
+# CL-16: module order comes from modules.json, not from filename sort; mismatches fail the build
+mods=json.load(open('modules.json',encoding='utf-8'))['modules']
+_disk=set(os.path.splitext(f)[0] for f in glob.glob('mod_*.js')+glob.glob('mod_*.css') if not os.path.splitext(f)[0].endswith(' 2'))  # quarantined ' 2' duplicates (CL-07) are never built
+_dup=sorted(set(m for m in mods if mods.count(m)>1))
+_missing=sorted(_disk-set(mods));_gone=[m for m in mods if m not in _disk]
+if _dup or _missing or _gone:
+    if _missing: sys.stderr.write('BUILD FAILED: module files not listed in src/modules.json (add each name to "modules"; see the _about notes there): '+', '.join(_missing)+'\n')
+    if _gone: sys.stderr.write('BUILD FAILED: src/modules.json lists modules with no .js or .css file: '+', '.join(_gone)+'\n')
+    if _dup: sys.stderr.write('BUILD FAILED: src/modules.json lists a module twice: '+', '.join(_dup)+'\n')
+    sys.exit(2)
 if only is not None: mods=[m for m in mods if m in only or m.replace('mod_','') in only]
 fonts='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"></noscript>'
 core=["data.js","data2.js","ui.js","kit.js","kit2.js","platform.js","screens1.js","screens2.js","screens4.js"]
@@ -30,9 +40,10 @@ FAV_ICO='<link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="da
 FAV='<link rel="icon" type="image/png" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/favicon.png','rb').read()).decode()+'"><link rel="apple-touch-icon" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/apple-touch-icon.png','rb').read()).decode()+'">'+FAV_ICO
 BOOTLOGO='<img alt="" width=56 height=56 style="display:block;margin:0 auto 10px;border-radius:14px" src="data:image/webp;base64,'+base64.b64encode(open('assets/brand/logo.webp','rb').read()).decode()+'">'
 html=f'<title>{NAME}</title>{FAV}\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script>\n{js}\n</script>\n'
-open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)
 open(os.path.join(out,'oukala-js.js'),'w',encoding='utf-8').write(js)
-open(os.path.join(out,'full.html'),'w',encoding='utf-8').write('<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}</style></head><body>'+html+'</body></html>')
+if full:
+    open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)
+    open(os.path.join(out,'full.html'),'w',encoding='utf-8').write('<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0}</style></head><body>'+html+'</body></html>')
 # split build: a small shell plus one external script, so browsers cache and reuse the compiled code
 import hashlib
 ver=hashlib.md5(js.encode('utf-8')).hexdigest()[:10]

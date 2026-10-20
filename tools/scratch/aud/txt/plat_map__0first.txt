@@ -1,0 +1,230 @@
+MASTER PROCESS FLOW
+The whole system, end to end
+
+From strategy to demand, projects, build, change and release, deploy, operate, service performance, cost and maturity, and back to strategy. 45% of defined steps are automated and 0 of 14 areas still need a process definition.
+
+ƒ Process automation level
+ƒ Process steps with an SLA
+ITIL 5
+PMBOK
+SAFe
+TBM Taxonomy and ATUM
+Process flow
+Handoffs
+Coverage
+PROCESS AREAS
+14
+from strategy back to strategy
+STEPS AUTOMATED
+45%
+63 of 139 steps
+STEPS WITH AN SLA
+65%
+time limit stated
+WITHOUT A PROCESS DEFINITION
+0
+dashed boxes on the map
+PROCESS DEFINITIONS
+65
+20 workflows registered
+ƒ Process automation level
+ƒ Process steps with an SLA
+ITIL 5
+PMBOK
+SAFe
+TBM Taxonomy and ATUM
+The whole system on one page
+Strategy turns into demand, projects and a backlog. The pipeline builds it, the change gate lets it through, operations runs it, and service performance and cost feed back into strategy. Select a box for its owner, standards and handoffs. Dashed boxes have no process definition yet.
+Layers
+Data objects
+Systems
+Roles
+AI agents
+Zoom in
+Zoom out
+Fit to screen
+100%
+Zoom 58%. Drag to pan. Hold Ctrl and scroll to zoom.
+Approved objectives
+Funded demand
+Scope and plan
+Ready stories
+Signed artifact
+Approved change
+Live version and CIs
+Correlated group
+Recurring cause
+Permanent fix
+Fulfilled services
+Service cost and value
+Cost per service
+Back to strategy
+Problem becomes a backlog item
+1
+Strategy and objectives
+Casey Rowan
+COBIT 2019
+TBM Taxonomy and ATUM
+Auto 40%
+SLA 100%
+2
+Demand and intake
+Maya Ortiz
+TBM Taxonomy and ATUM
+ITIL 5
+Auto 50%
+SLA 100%
+3
+Portfolio and projects
+Priya Shah
+PMBOK
+SAFe
+Auto 44%
+SLA 100%
+4
+Requirements and backlog
+Chief Editor
+SAFe
+Auto 25%
+SLA 50%
+5
+Build, test and scan
+Zoe Hart
+DORA metrics
+Auto 57%
+SLA 43%
+6
+Change and release
+Nia Brooks
+ITIL 5
+Auto 40%
+SLA 100%
+7
+Deploy and verify
+Contoso Cloud Operations
+DORA metrics
+SRE
+Auto 75%
+SLA 0%
+8
+Events and alerts
+Ops team
+ITIL 5
+SRE
+Auto 71%
+SLA 14%
+9
+Incidents
+Tom Becker
+ITIL 5
+Auto 50%
+SLA 100%
+10
+Problems and known errors
+Tom Becker
+ITIL 5
+Auto 33%
+SLA 100%
+11
+Requests and fulfillment
+Grace Whitfield
+ITIL 5
+Auto 47%
+SLA 6%
+12
+Service performance
+Service owners
+ITIL 5
+SRE
+Auto 31%
+SLA 54%
+13
+Financials (TBM)
+Avery Chen
+TBM Taxonomy and ATUM
+Auto 60%
+SLA 100%
+14
+Maturity and improvement
+Casey Rowan
+COBIT 2019
+CMMI
+Auto 29%
+SLA 100%
+Process area
+Handoff of data between areas
+Feedback loop
+Data objects
+Systems
+Roles
+AI agents
+Process areas
+Automation is the share of steps done by automation or an AI agent. SLA coverage is the share of steps with a stated time limit.
+Level
+All
+4
+Owner
+All
+12
+Export CSV
+PROCESS AREA▲	OWNER	STANDARDS	AUTOMATION	LEVEL	SLA COVERAGE	PROCESS DEFINED	WORKFLOWS
+Strategy and objectives
+Strategy alignment
+	Casey Rowan	COBIT 2019, TBM Taxonomy and ATUM	40% · Scripted	Level 2 Scripted	100%	1 of 1	0
+Demand and intake
+Demand and priorities
+	Maya Ortiz	TBM Taxonomy and ATUM, ITIL 5	50% · Agentic with approval	Level 3 Agentic with approval	100%	1 of 1	2
+Portfolio and projects
+Projects and teams, Master schedule, WBS and task sheet
+	Priya Shah	PMBOK, SAFe	44% · Scripted	Level 2 Scripted	100%	3 of 3	2
+Requirements and backlog
+Sprints and backlogs, Release trains and increments
+	Chief Editor	SAFe	25% · Assisted	Level 1 Assisted	50%	2 of 2	0
+Build, test and scan
+Delivery pipeline
+	Zoe Hart	DORA metrics	57% · Agentic with approval	Level 3 Agentic with approval	43%	1 of 1	1
+Change and release
+Changes, Releases
+	Nia Brooks	ITIL 5	40% · Scripted	Level 2 Scripted	100%	2 of 2	2
+Deploy and verify
+Environments and DORA
+	Contoso Cloud Operations	DORA metrics, SRE	75% · Autonomous	Level 4 Autonomous	0%	1 of 1	1
+Events and alerts
+Event management, Runbooks and automation
+	Ops team	ITIL 5, SRE	71% · Agentic with approval	Level 3 Agentic with approval	14%	2 of 2	0
+Incidents
+Incidents, Major incident
+	Tom Becker	ITIL 5	50% · Agentic with approval	Level 3 Agentic with approval	100%	2 of 2	0
+Problems and known errors
+Problems and known errors
+	Tom Becker	ITIL 5	33% · Scripted	Level 2 Scripted	100%	1 of 1	0
+Requests and fulfillment
+Requests and fulfillment, Service catalog, Self-service portal
+	Grace Whitfield	ITIL 5	47% · Scripted	Level 2 Scripted	6%	3 of 3	9
+Service performance
+SLAs, OLAs and XLAs, Observability and SLOs
+	Service owners	ITIL 5, SRE	31% · Scripted	Level 2 Scripted	54%	2 of 2	0
+Financials (TBM)
+Cost transparency (TBM and ATUM), Budgets overall
+	Avery Chen	TBM Taxonomy and ATUM	60% · Agentic with approval	Level 3 Agentic with approval	100%	1 of 2	1
+Maturity and improvement
+Maturity models
+	Casey Rowan	COBIT 2019, CMMI	29% · Assisted	Level 1 Assisted	100%	1 of 1	0
+14 of 14 rows
+Scroll for more · rows are drawn as you scroll
+How the master map stays true
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, PMBOK, SAFe, TBM Taxonomy and ATUM.
+Add a step
+Open in Workflow designer
+PERSON
+Process owners define their steps
+Each screen registers who does what and how fast.
+AUTOMATIC
+The map reads the definitions
+Automation and SLA coverage are calculated from the registered steps, not typed in.
+AUTOMATIC
+Gaps are flagged
+Areas without a definition show with a dashed border.
+APPROVAL GATE
+Quarterly review
+The CIO and process owners pick the next step to automate.

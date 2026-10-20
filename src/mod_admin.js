@@ -51,7 +51,7 @@ A.roles=A.roles||[
  {id:"guest",n:"Vendor guest",caps:["view"]},
  {id:"agent",n:"AI agent service role",caps:["view","fin"]}];
 const USERS=[
- {id:"u_omar",n:"Casey Rowan",title:"CIO",dept:"Executive office",roles:["exec"],loc:"United States",dev:"Compliant",clr:3,type:"employee"},
+ {id:"u_casey",n:"Casey Rowan",title:"CIO",dept:"Executive office",roles:["exec"],loc:"United States",dev:"Compliant",clr:3,type:"employee"},
  {id:"u_maya",n:"Maya Ortiz",title:"Portfolio lead",dept:"Portfolio office",roles:["portfolio"],loc:"United States",dev:"Compliant",clr:2,type:"employee"},
  {id:"u_priya",n:"Priya Shah",title:"Project manager",dept:"Delivery",roles:["pm"],loc:"United States",dev:"Compliant",clr:2,type:"employee"},
  {id:"u_dev",n:"Dev Rao",title:"Project manager",dept:"Delivery",roles:["pm"],loc:"India",dev:"Compliant",clr:2,type:"employee"},

@@ -1,0 +1,132 @@
+FORUMS AND MINUTES
+Decisions that stick
+
+Four forums make the decisions that move work. 3 of 10 open actions are late, the oldest is “draft the resourcing plan for the warehouse and hub overlap”. Only 71% of actions due so far were closed on time against an 85% target, and 1 set of minutes waits for approval.
+
+ƒ Forum actions closed on time
+Build agenda
+File minutes
+First Officer · 90%
+Why am I seeing this?
+Open actions
+10
+3 late
+Closed on time
+71%
+target 85%
+Decisions logged
+10
+0 pending ratification
+Next forum
+Oct 7
+Change Advisory Board
+Forums
+Actions
+Decision log
+Agendas and minutes
+Architecture Review Board
+Every other Tuesday, 11:00 to 12:00
+Next Oct 13
+
+Keeps the architecture coherent.
+
+Chair
+Jordan Lee
+Members
+JL
+RK
+AW
+SP
+AM
+TB
++1
+ 7, quorum 4
+Open actions
+2
+Agenda
+3 items, 55 of 60 min
+Open
+Build agenda
+File minutes
+Change Advisory Board
+Weekly, Wednesday 10:00 to 11:00
+Next Oct 7
+
+Assesses and approves changes that carry risk to production.
+
+Chair
+Nia Brooks
+Members
+NB
+TB
+SP
+JL
+PS
+AW
++1
+ 7, quorum 4
+Open actions
+3 1 late
+Agenda
+5 items, 60 of 60 min
+
+First Officer has it on the calendar: Change advisory board
+
+Open
+Build agenda
+File minutes
+Portfolio Council
+Monthly, second Thursday, 15:30 to 17:00
+Next Oct 8
+
+Decides which demand is funded, in what order, and what to stop.
+
+Chair
+Maya Ortiz
+Members
+MO
+OH
+MR
+EM
+PS
+DR
++2
+ 8, quorum 5
+Open actions
+3 1 late
+Agenda
+Not built yet
+Open
+Build agenda
+File minutes
+Security Council
+Monthly, third Wednesday, 13:00 to 14:00
+Next Oct 21
+
+Owns security policy, risk acceptance and the response to serious findings.
+
+Chair
+Casey Rowan
+Members
+OH
+AW
+JL
+TB
+AC
+NB
+ 6, quorum 4
+Open actions
+2 1 late
+Agenda
+Not built yet
+Open
+Build agenda
+File minutes
+On the First Officer calendar
+Read-only. These meetings are scheduled and attended by First Officer; the forum sets the agenda, First Officer files the minutes.
+Change advisory board
+Oct 7 · 10 am to 11 am · Teams
+Upcoming
+Board audit preparation
+Oct 8 · 9:30 am to 11 am · Boardroom
+Upcoming

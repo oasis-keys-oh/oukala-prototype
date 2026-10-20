@@ -1,0 +1,379 @@
+SERVICE CATALOG
+15 items you can order, 240 requests so far
+
+33 approvals are waiting on 10 people, the oldest for 18.1 h. Median fulfillment is 0.8 days against a 5 day goal, and 39 service offerings still have nothing to order. Each item is a form, a price, approval rules and a fulfillment workflow that you can open and change.
+
+Design a catalog item
+Open the customer portal
+Workflow designer
+ƒ Fulfillment time
+ƒ Experience score (XLA)
+ITIL 5
+Experience level agreements
+CSDM 5
+Dashboard and catalog
+Workflows
+Approval rules
+Capacity and demand
+OPEN REQUESTS
+86
+21 pending approval
+APPROVALS WAITING
+33
+oldest has waited 18.1 h
+FULFILLMENT TIME
+0.8 d
+median, goal 5 d
+DELIVERED ON TIME
+90.6%
+96 delivered in 30 days
+PROCESS COST PER REQUEST
+$102
+goal $95
+EXPERIENCE (XLA)
+4.15 / 5
+goal 80
+Requests by state
+Every request is in exactly one state. Hover a segment for its count.
+ƒ Fulfillment time
+Pending approval
+Approved, scheduled
+Fulfilling
+Deployed
+Decommissioned
+Rejected or cancelled
+21
+pending approval
+12
+approved, scheduled
+53
+fulfilling
+132
+deployed
+12
+decommissioned
+10
+rejected or cancelled
+Approvals waiting, by approver
+33 approvals across 10 people. The oldest is 18.1 h on RITM0010458.
+ƒ First-time approval rate
+Maya Ortiz
+8
+Avery Chen
+5
+Rina Okafor
+5
+Sam Patel
+4
+Casey Rowan
+3
+Fulfillment time against the SLA
+Bar is the median working time over the last 30 days. The line is the SLA target. Green is comfortable, amber is within 25% of it, red is over.
+ƒ Fulfillment on time
+Laptop (new or replacement)
+3.8 d of 4.3 d
+Software license
+1.5 h of 13 h
+Access request
+41 min of 4 h
+Mobile phone
+3.2 d of 3.4 d
+Conference room AV support
+10.3 h of 14 h
+New hire onboarding
+34.6 d of 39.5 d
+Role or location change
+14.5 h of 19 h
+New report
+2.1 d of 4.3 d
+Cost to fulfill
+Process cost is what the steps cost to run (labor, systems, handling), last 30 days. The price of the item itself is passed through and not counted here. Bar is the total spent.
+ƒ Cost per request
+New report
+$4,715 $1,179 each
+Laptop (new or replacement)
+$1,471 $61 each
+Conference room AV support
+$1,139 $88 each
+Mobile phone
+$551 $55 each
+New hire onboarding
+$534 $133 each
+New project request
+$306 $102 each
+Top items
+Most requested in the last 90 days.
+Laptop (new or replacement)
+51
+Software license
+29
+Access request
+29
+Mobile phone
+23
+Conference room AV support
+20
+New hire onboarding
+15
+Where the process is slow
+Steps that most often miss their operational target, across all workflows.
+ITIL 5
+Supplier builds, registers Autopilot hardware hash, ships
+Laptop (new or replacement) · Vendor (Dell)
+38% miss target
+Purchase order to supplier
+Laptop (new or replacement) · Procurement
+26% miss target
+Security baseline, Defender and Intune enrollment
+Laptop (new or replacement) · Endpoint team
+28% miss target
+Receiving and tagging
+Laptop (new or replacement) · Facilities
+22% miss target
+Supplier ships and registers the device in Apple Business Manager
+Mobile phone · Vendor (Dell)
+44% miss target
+Catalog by service and offering
+Services
+All services
+16
+All
+Hardware
+Software
+Access
+Onboarding
+People moves
+Facilities
+Data
+Collaboration
+AI and automation
+Projects
+Finance
+Integration
+Service
+Finance systems
+Tier 2 · owner Avery Chen · 4 offerings
+1 of 4 orderable
+Vendor setup service offering
+$53.1M a year · TBM
+4 requests
+1 deployed
+Vendor onboarding
+Add a supplier to the vendor master with screening, risk review, contract and payment details verified.
+No charge
+5 approval rules
+1 business day
+1
+2
+1
+Identity (Entra ID)
+Tier 1 · owner Rina Okafor · 4 offerings
+1 of 4 orderable
+Access provisioning service offering
+$25.2M a year · TBM
+31 requests
+18 deployed
+Access request
+Reader, Contributor, Admin or privileged access to a system. Time-bound where it matters.
+No charge
+4 approval rules
+1 business day
+3
+5
+18
+2
+Email and collaboration (M365)
+Tier 1 · owner Sam Patel · 6 offerings
+2 of 6 orderable
+Rooms and AV service offering
+$53.0M a year · TBM
+20 requests
+14 deployed
+Conference room AV support
+A technician sets up and attends hybrid meetings, recordings or livestreams in the Boardroom and training rooms.
+No charge
+2 approval rules
+1 business day
+6
+14
+Shared mailboxes and channels service offering
+$53.0M a year · TBM
+8 requests
+4 deployed
+Shared mailbox or Teams channel
+A shared mailbox, distribution list or private Teams channel with named owners.
+No charge
+2 approval rules
+1 business day
+4
+4
+Data platform
+Tier 2 · owner Dev Rao · 3 offerings
+1 of 3 orderable
+Reporting service offering
+$139.2M a year · TBM
+9 requests
+5 deployed
+New report
+Ask the data team to build a Power BI report. Personal data triggers a privacy review.
+from $1,425
+3 approval rules
+3 business days
+4
+5
+Endpoint management (Intune)
+Tier 2 · owner Northwind Managed Services · 5 offerings
+3 of 5 orderable
+Laptop provisioning service offering
+$27.12M a year · TBM
+56 requests
+29 deployed
+Laptop (new or replacement)
+A standard, developer or designer laptop that arrives enrolled in Intune, encrypted and ready to sign in.
+from $1,840
+6 approval rules
+3 business days
+8
+8
+29
+6
+Mobile devices service offering
+$27.12M a year · TBM
+23 requests
+14 deployed
+Mobile phone
+A company phone with carrier service, enrolled in Intune with work and personal data kept apart.
+from $829
+4 approval rules
+3 business days
+3
+6
+14
+Software deployment service offering
+$27.12M a year · TBM
+30 requests
+19 deployed
+Software license
+An application that is not in Company Portal. Paid titles check the license pool first.
+from $180
+3 approval rules
+1 business day
+2
+6
+19
+1
+Integration hub
+Tier 2 · owner Jordan Lee · 4 offerings
+1 of 4 orderable
+API keys service offering
+$22.8M a year · TBM
+14 requests
+6 deployed
+API key
+A scoped, expiring key for an API in the gateway, delivered once through a secure link.
+No charge
+3 approval rules
+1 business day
+4
+6
+1
+Portfolio and project intake
+Tier 2 · owner Maya Ortiz · 2 offerings
+2 of 2 orderable
+Project intake service offering
+$55.2M a year · TBM
+5 requests
+4 deployed
+New project request
+Propose work for the portfolio. Cost, risk and strategy decide who must approve before it becomes a funded project.
+No charge
+6 approval rules
+10 business days to a decision
+1
+4
+Service design intake service offering
+$55.2M a year · TBM
+2 requests
+1 deployed
+New service request
+Propose a new service for the catalog. Architecture, finance and service owners shape the offerings before it is published.
+No charge
+4 approval rules
+15 business days
+1
+1
+AI platform and agents
+Tier 2 · owner Jordan Lee · 3 offerings
+1 of 3 orderable
+Token budgets service offering
+$87.2M a year · TBM
+5 requests
+AI agent access and token budget
+Register an agent, give it tool access, or raise a Claude token limit with the guardrails that match its autonomy.
+from $1,440
+5 approval rules
+1 business day
+2
+2
+Employee lifecycle
+Tier 2 · owner Nia Brooks · 3 offerings
+3 of 3 orderable
+Onboarding service offering
+$58.4M a year · TBM
+17 requests
+8 deployed
+New hire onboarding
+One order for everything a new person needs on day one: laptop, accounts, badge, phone, training and security.
+from $2,260
+5 approval rules
+10 business days before start
+2
+8
+2
+Offboarding service offering
+$58.4M a year · TBM
+7 requests
+4 deployed
+Employee offboarding
+Close accounts at the right moment, protect data, collect devices and release licenses back to the pool.
+No charge
+4 approval rules
+Done on the last day
+1
+4
+Role changes service offering
+$58.4M a year · TBM
+9 requests
+5 deployed
+Role or location change
+A mover keeps what they need and loses what they no longer should: access, groups, equipment and cost center.
+No charge
+4 approval rules
+1 business day
+3
+5
+
+15 items shown. 39 service offerings have nothing orderable yet: every service in the CMDB needs offerings, and what people order is an offering or one of its variants (sub-offerings such as laptop models).
+
+From catalog item to delivered service
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, BPMN 2.0 and DMN, Experience level agreements.
+Add a step
+Open in Workflow designer
+PERSON
+Design the item
+Questions, price, approval rules and the workflow are defined together, with AI helping draft the form.
+PERSON
+Publish and show
+Choose what requesters see, then publish to the portal.
+AUTOMATIC
+Request arrives
+A person, a delegate or Claude on someone's behalf submits it.
+APPROVAL GATE
+Approvals by data
+Rules read the request and find the approvers.
+AI AGENT
+Fulfill
+Teams, AI agents and automatic steps run the workflow.
+AUTOMATIC
+Measure and scale
+Cost, time and experience roll up; capacity rules raise demand.

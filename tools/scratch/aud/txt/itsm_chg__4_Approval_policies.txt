@@ -1,0 +1,219 @@
+SERVICE MANAGEMENT · CHANGES
+Change safely, on a calendar everyone trusts
+
+3 changes are scheduled in the next 7 days and 1 waits for approval. 1 collide on the same CI (CHG0314 and CHG0315), and 1 sits inside a freeze window. The change failure rate is 16.7% against a 12% target. Approvers come from your 11 approval policies.
+
+Request change
+ƒ Change failure rate
+ƒ Approval turnaround
+ITIL 5
+DORA metrics
+Claude Sonnet · 82%
+Overview
+Calendar
+CAB and approvals
+Standard templates
+Approval policies
+Risk and DORA
+Policies decide who must approve a change. They match on service, CI, CI class, type, risk, requesting group, environment and cost, and every matching policy adds its approvers in order. A policy marked Final stops the evaluation. Change the policies and test them below before anyone submits a change. ITIL 5COBIT 2019ISO/IEC 20000
+New policy
+Reset to defaults
+11 of 11 policies on
+#	POLICY	WHEN	APPROVERS	SLA	STATUS	MATCHES
+1	AP1
+Standard change from an approved template
+↑
+↓
+Turn off
+Copy
+Delete
+	Standard · with template	Auto-approve	none	Final On	2
+2	AP2
+Standard change without a template
+↑
+↓
+Turn off
+Copy
+Delete
+	Standard · no template	Change manager
+all, parallel	8 h	Final On	0
+3	AP3
+Emergency change: ECAB
+↑
+↓
+Turn off
+Copy
+Delete
+	Emergency	Change manager, Incident commander, Executive
+2 of them, parallel	1 h	Final On	1
+4	AP4
+Normal change: change manager
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal	Change manager
+all, parallel	24 h	On	9
+5	AP5
+Service owner for their own service
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal	Service owner
+all, parallel	24 h	On	9
+6	AP6
+Architecture review for medium risk or higher
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal · risk ≥ 20	Architecture
+all, parallel	48 h	On	7
+7	AP7
+Finance for any cost
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal · cost ≥ $1	Finance
+all, parallel	48 h	On	2
+8	AP8
+Security review for identity and security services
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal · Identity (Entra ID)/Security operations	Security
+all, parallel	24 h	On	0
+9	AP9
+Executive for high risk, after the others
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal · risk ≥ 40	Executive
+all, parallel, after earlier stages	48 h	On	3
+10	AP10
+Freeze exception
+↑
+↓
+Turn off
+Copy
+Delete
+	in freeze	Executive
+all, parallel, after earlier stages	24 h	On	1
+11	AP11
+Production database or network CI classes
+↑
+↓
+Turn off
+Copy
+Delete
+	Normal · Database/Network device/Load balancer · Production	Architecture lead
+all, in order	24 h	On	5
+Simulator: who must approve, and why
+Pick a real change or describe one. The route and the rule trace use the live policies above.
+ƒ Approval turnaround
+Change
+Describe a change below
+CHG0312 Raise Codification Portal hosting tier (Northw
+CHG0311 Scale portal web tier and tune load balancer i
+CHG0313 Deploy Lumen search indexer build 2.4 to stagi
+CHG0314 Resize Taxonomy API connection pool and cap ba
+CHG0315 Scale Azure SQL tier for the Taxonomy pilot lo
+CHG0316 Monthly Windows and Linux patching, Platform s
+CHG0317 Conditional access: add editors' VPN as a name
+CHG0318 Deploy Codification beta to production
+CHG0319 Apply ERP vendor patch for the lease subledger
+CHG0320 Contract Repository storage tier migration reh
+CHG0322 Enable portal standby failover (RB-031 v8)
+CHG0323 Codification content migration dry run (batch
+Risk score
+From the change
+Medium (30)
+High (45)
+Very high (70)
+APPROVAL ROUTE
+1. Normal change: change manager
+all 1
+Nia Brooks Change manager
+SLA 24h
+2. Service owner for their own service
+all 1
+Jordan Lee Service owner
+SLA 24h. Separation of duties applied.
+3. Finance for any cost
+all 1
+Avery Chen Finance
+SLA 2d
+4. Executive for high risk, after the others
+all 1
+Casey Rowan Executive
+After earlier stages. SLA 2d
+Expected decision within 4d at the policy SLAs.
+
+CHG0312 · Normal · Codification Portal · risk 47 · Production · group Ops team · $48,000 · decision within 4d
+
+RULE TRACE
+AP1 Standard change from an approved template
+No match
+No: Type is Standard · No: Uses an approved template
+AP2 Standard change without a template
+No match
+No: Type is Standard · Yes: Has no approved template
+AP3 Emergency change: ECAB
+No match
+No: Type is Emergency
+AP4 Normal change: change manager
+Matched
+Yes: Type is Normal
+AP5 Service owner for their own service
+Matched
+Yes: Type is Normal
+AP6 Architecture review for medium risk or higher
+Matched
+Yes: Type is Normal · Yes: Risk at least 20. All its approvers are already on the route.
+AP7 Finance for any cost
+Matched
+Yes: Type is Normal · Yes: Cost at least $1
+AP8 Security review for identity and security services
+No match
+Yes: Type is Normal · No: Service is Identity (Entra ID) or Security operations
+AP9 Executive for high risk, after the others
+Matched
+Yes: Type is Normal · Yes: Risk at least 40
+AP10 Freeze exception
+No match
+No: Inside a freeze window
+AP11 Production database or network CI classes
+Matched
+Yes: Type is Normal · Yes: CI class is Database or Network device or Load balancer · Yes: Environment is Production. All its approvers are already on the route.
+Change enablement process (ITIL 5 Transition)
+Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, DORA metrics.
+Add a step
+Open in Workflow designer
+PERSON
+Request and assess
+Describe the change, the service and CIs, plans and the risk questionnaire.
+AUTOMATIC
+Check conflicts
+Collision on the same CI and freeze windows are checked live.
+AUTOMATIC
+Route approvals
+The approval policies decide who approves, in what order, with what quorum.
+APPROVAL GATE
+Approve
+Policy picks the approvers. Standard changes from a template need no vote.
+PERSON
+Schedule and implement
+Calendar slot, implementation by the team, backout ready.
+PERSON
+Review
+Outcome feeds the change failure rate. Lessons go to the template or policy.
