@@ -7,7 +7,7 @@
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SELF="scr_map",KEY="oukala-scrmap-v1";
 const DATA=W.SCRMAP_DATA||{generated:"not scanned",files:{},screens:{}};
 const CORE=["data.js","data2.js","ui.js","kit.js","kit2.js","screens1.js","screens2.js","screens3.js","screens4.js"];

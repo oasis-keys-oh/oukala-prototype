@@ -107,7 +107,7 @@ W.toast=toast3;G(()=>{if(W.R15)R15.toast=toast3});
 const GRP={invoice:"Finance approver group",inv:"Finance approver group",change:"Change advisory board",budget:"Finance approver group",access:"Security approver group",release:"Release approver group",catalog:"Service owners group",contract:"Legal approver group"};
 function groupOf(it){if(!it)return"approver group";const g=it.apgName;if(g)return g;
  return GRP[it.ic]||GRP[it.src]||((it.cat||"Approver")+" approver group")}
-const money=n=>"$"+Math.round(n).toLocaleString("en-US");
+const money=U.money;
 function mirrorBanner(el){const id=el.dataset.id;if(!id||el._r17n)return;el._r17n=1;
  const it=G(()=>INBOX.items().find(x=>x.id===id));
  const title=it?it.title:G(()=>q1(".inbx-bm b",el).textContent,"Approval requested");

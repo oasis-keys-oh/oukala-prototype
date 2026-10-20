@@ -8,7 +8,7 @@ const DIM={wf_h_ref:"exp",wf_h_auth:"fin",wf_h_sched:"exp",wf_h_prev:"data",wf_h
  wf_m_det:"ops",wf_m_wo:"ops",wf_m_ptw:"gov",wf_m_hse:"gov",wf_m_inv:"sc",wf_m_ca:"gov",
  wf_s_q2d:"fin",wf_s_o2d:"sc",wf_s_inst:"exp",wf_s_ren:"fin",wf_s_rec:"ops",wf_s_rma:"sc"};
 const OUT=/phone|fax|e-?mail|spreadsheet|paper|letter|portal|chat|radio|whiteboard|manual|text|sms|clipboard|tablet/i;
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 function build(w){
  const st=w.steps||[],n=st.length||1;
  const byPeople=st.filter(s=>s.type==="human"||s.type==="wait").length;

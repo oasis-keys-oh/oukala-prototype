@@ -16,7 +16,7 @@ const hh=h=>h<1?Math.round(h*60)+" min":h<48?(Math.round(h*10)/10)+" h":(Math.ro
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 const sum=(a,f)=>a.reduce((s,x)=>s+(f?f(x):x),0);
 const uniq=a=>[...new Set(a)];
-const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const clamp=U.clamp;
 const pc=(n,d)=>d?Math.round(n/d*1000)/10:0;
 const N=n=>Number(n).toLocaleString("en-US");
 const wh=(n,o)=>pchip(n,o);

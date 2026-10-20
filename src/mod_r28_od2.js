@@ -7,7 +7,7 @@ const X=W.ODX;if(!X)return;
 const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const r0=Math.round,r1=n=>Math.round(n*10)/10,sum=a=>a.reduce((s,x)=>s+x,0),avg=a=>a.length?sum(a)/a.length:0;
-const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const clamp=window.U.clamp;
 const U=(v,u)=>v+(u==="%"?"%":" "+u);
 const TABS=["COO brief","Sources","Diagnose","Hypotheses","Gaps and options","Roadmap","Adoption and impact"];
 const LENS={coo:{n:"COO",q:"What changes in how work runs, by when, and what could go wrong?",order:["ops","org","exp","sc","tech","data","fin","gov"]},

@@ -4,7 +4,7 @@
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SM=W.STEPMODE,TR=W.TRIGGERS;if(!SM||!TR)return;
 const STEPS=W.STEPKIT=W.STEPKIT||{};
 

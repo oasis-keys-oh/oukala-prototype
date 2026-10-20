@@ -4,7 +4,7 @@
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SD=W.STUD;if(!SD)return;
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"").slice(0,28);
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");

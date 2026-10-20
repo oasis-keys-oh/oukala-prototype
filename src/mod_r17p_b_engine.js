@@ -7,7 +7,7 @@
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v===undefined||v===null?d:v}catch(e){return d}};
 const q1=(s,r)=>(r||D).querySelector(s),qa=(s,r)=>Array.prototype.slice.call((r||D).querySelectorAll(s));
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const R=W.R17P=W.R17P||{};
 const reduced=()=>G(()=>W.matchMedia("(prefers-reduced-motion: reduce)").matches,false);
 const svg=(d,n)=>`<svg width="${n||16}" height="${n||16}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;

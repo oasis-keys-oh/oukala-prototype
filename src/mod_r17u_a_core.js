@@ -6,7 +6,7 @@
 "use strict";
 const W=window;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=window.U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const U=W.R17U=W.R17U||{};U.G=G;U.H=H;U.arr=arr;
 /* ---------------- dates and numbers ---------------- */

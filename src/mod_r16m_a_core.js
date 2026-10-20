@@ -6,7 +6,7 @@
 const W=window;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const arr=x=>Array.isArray(x)?x:[];
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const R=W.R16M=W.R16M||{};
 Object.assign(R,{G,H,arr});
 const ME=()=>G(()=>INBOX.me(),null)||G(()=>PERSONAS[S.persona].n,"Casey Rowan");

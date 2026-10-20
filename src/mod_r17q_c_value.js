@@ -6,7 +6,7 @@
 "use strict";
 const W=window,Q=W.R17Q;if(!Q)return;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const ST=Q.st,{nf,usd,usdF}=Q.fmt,INPUTS=Q.INPUTS,GROUPS=Q.GROUPS;
 const dg=(a)=>String(a);

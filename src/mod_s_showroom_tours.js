@@ -8,7 +8,7 @@
 (function(){
 const W=window,D=document;const SHOW=W.SHOW;if(!SHOW)return;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 
 /* ---------- DC-17 beat support: the hand-off as a beat setup ---------- */
 SHOW.setups.fix=()=>{const f=SHOW.lastFix&&SHOW.lastFix.t>SHOW.state.t0?SHOW.lastFix:null;

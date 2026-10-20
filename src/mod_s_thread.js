@@ -9,7 +9,7 @@
 "use strict";
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const uniq=a=>[...new Set(a.filter(x=>x!=null&&x!==""))];
 const usd=n=>G(()=>U.moneyShort(n),"$"+Math.round(+n||0));
