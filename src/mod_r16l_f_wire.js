@@ -13,54 +13,54 @@ const PROCS=[
  {id:"bc.program",name:"Run the continuity and recovery program",screen:"bc_home",owner:"Sam Patel",bak:"Tom Becker",trigger:"Monthly resilience review, or a gap is reported",std:["iso22301","nist","itil5"],metrics:["m_bc_maturity","m_bc_plan_cov","m_bc_days"],entities:["bc_plan","bc_exercise","bc_recovery_objective"],steps:[
   ["Review readiness","The program owner reads maturity, overdue exercises and open gaps for every application.","human","Sam Patel","Monthly","Metric values and gap list","Attention list"],
   ["Assign actions","Each gap gets one owner and a different backup.","human","Sam Patel","Monthly","Attention list","Owned actions"],
-  ["Report to leadership","Readiness by dimension and tier goes to the executive dashboard.","auto","Automatic","Monthly","Metric values","Dashboard tiles"],
+  ["Report to leadership","Readiness by dimension and tier goes to the executive dashboard.","robot","Robot","Monthly","Metric values","Dashboard tiles"],
   ["Approve the program","The Resilience council confirms the annual exercise schedule and the tier policy.","gate","Resilience council","Annual","Dashboard tiles","Approved program"],
   ["Track to closure","Open gaps are reviewed again next month.","human","Tom Becker","Monthly","Owned actions","Closed gaps"]]},
  {id:"bc.framework",name:"Maintain the resilience framework",screen:"bc_frame",owner:"Sam Patel",bak:"Theo Marlowe",trigger:"Annual review, a new asset class, or a lesson from an exercise",std:["iso22301","nist"],metrics:["m_bc_maturity"],entities:["bc_component","bc_data_asset"],steps:[
   ["Propose a change","Add or reword a dimension, a guidance question or a maturity level, or choose the framework name.","human","Sam Patel","Annual","Lesson or review","Proposed change"],
   ["Check the questions","Each dimension keeps guidance questions that an assessor can answer yes or no.","human","Theo Marlowe","1 week","Proposed change","Reviewed questions"],
   ["Approve","The Resilience council approves the edit.","gate","Resilience council","1 week","Reviewed questions","Approved framework"],
-  ["Publish","The new name and definition show on every screen and report.","auto","Automatic","Instant","Approved framework","Published framework"],
-  ["Record history","The change is kept in the framework history.","auto","Automatic","Instant","Published framework","History entry"]]},
+  ["Publish","The new name and definition show on every screen and report.","robot","Robot","Instant","Approved framework","Published framework"],
+  ["Record history","The change is kept in the framework history.","robot","Robot","Instant","Published framework","History entry"]]},
  {id:"bc.tiering",name:"Set recovery tiers and objectives",screen:"bc_tiers",owner:"Tom Becker",bak:"Sam Patel",trigger:"A CMDB classification changes, or the policy is reviewed",std:["iso22301","itil5","nist"],metrics:["m_bc_plan_cov","m_bc_rto_att","m_bc_rpo_att"],entities:["bc_recovery_objective","config_item"],steps:[
-  ["Read the classification","Each application's CMDB criticality maps to a tier.","auto","Automatic","Instant","CMDB criticality","Tier"],
+  ["Read the classification","Each application's CMDB criticality maps to a tier.","robot","Robot","Instant","CMDB criticality","Tier"],
   ["Review the policy","RTO, RPO, maximum tolerable downtime, exercise type and frequency per tier.","human","Tom Becker","Annual","Tier","Draft policy"],
   ["Approve policy changes","Changes to a tier policy or a reclassification are decided by a group.","gate","Resilience council","1 week","Draft policy","Approved policy"],
-  ["Compute obligations","Every application and CI gets the exercise it owes and the date it is due.","auto","Automatic","Instant","Approved policy","Obligation list"],
-  ["Notify owners","Application owners and backups see the new obligation.","auto","Automatic","Instant","Obligation list","Inbox notice"]]},
+  ["Compute obligations","Every application and CI gets the exercise it owes and the date it is due.","robot","Robot","Instant","Approved policy","Obligation list"],
+  ["Notify owners","Application owners and backups see the new obligation.","robot","Robot","Instant","Obligation list","Inbox notice"]]},
  {id:"bc.exercise_planning",name:"Plan and schedule an exercise",screen:"bc_cal",owner:"Tom Becker",bak:"Sam Patel",trigger:"An obligation comes due within 90 days",std:["iso22301","itil5"],metrics:["m_bc_ex_comp","m_bc_days"],entities:["bc_exercise","change_request"],steps:[
-  ["Pick the exercise","The tier decides live failover, alternating exercise or table-top.","auto","Automatic","Instant","Obligation","Exercise type"],
+  ["Pick the exercise","The tier decides live failover, alternating exercise or table-top.","robot","Robot","Instant","Obligation","Exercise type"],
   ["Choose a window","Select a date inside an approved change window; blackouts and conflicts are flagged.","human","Tom Becker","1 week","Exercise type and windows","Proposed date"],
-  ["Raise the change","A change record is created through the change module.","auto","Automatic","Instant","Proposed date","Change record"],
+  ["Raise the change","A change record is created through the change module.","robot","Robot","Instant","Proposed date","Change record"],
   ["Approve","The Change advisory board approves the change.","gate","Change advisory board","3 days","Change record","Approved change"],
-  ["Notify participants","The call tree and application owners are told the date.","auto","Automatic","Instant","Approved change","Inbox notices"]]},
+  ["Notify participants","The call tree and application owners are told the date.","robot","Robot","Instant","Approved change","Inbox notices"]]},
  {id:"bc.post_exercise",name:"Review an exercise and close findings",screen:"bc_cal",owner:"Sam Patel",bak:"Tom Becker",trigger:"An exercise is completed",std:["iso22301","itil5","cobit"],metrics:["m_bc_rto_att","m_bc_rpo_att","m_bc_ex_comp"],entities:["bc_exercise","finding"],steps:[
   ["Record the result","Achieved RTO and RPO are recorded against the target.","human","Tom Becker","2 days","Exercise run","Result"],
-  ["Raise findings","A missed target or a failed step becomes a finding with a remediation owner.","auto","Automatic","Instant","Result","Finding"],
+  ["Raise findings","A missed target or a failed step becomes a finding with a remediation owner.","robot","Robot","Instant","Result","Finding"],
   ["Review","The Resilience council reviews the result and the findings.","gate","Resilience council","2 weeks","Result and findings","Reviewed exercise"],
   ["Update the plan","Lessons change the plan, the runbook or the contact tree.","human","Sam Patel","1 month","Reviewed exercise","New plan version"],
-  ["Schedule a re-test","A missed target requires a re-test within 180 days.","auto","Automatic","Instant","Result","New obligation"]]},
+  ["Schedule a re-test","A missed target requires a re-test within 180 days.","robot","Robot","Instant","Result","New obligation"]]},
  {id:"bc.plan_review",name:"Write, review and approve a continuity plan",screen:"bc_plans",owner:"Sam Patel",bak:"Tom Becker",trigger:"A new application or site, or the review date arrives",std:["iso22301","itil5","cobit"],metrics:["m_bc_plan_cov"],entities:["bc_plan","bc_business_process"],steps:[
   ["Draft","The owner writes scope, objectives, runbook, contact tree and communications.","human","Plan owner","2 weeks","Scope and objectives","Draft plan"],
   ["Link the parts","Link CIs, data, vendors, people, knowledge articles and SOPs.","human","Plan owner","1 week","Draft plan","Linked plan"],
   ["Peer review","The backup owner reads the plan.","human","Plan backup","1 week","Linked plan","Reviewed plan"],
   ["Approve","The approver group decides; the owner cannot approve their own plan.","gate","Approver group","1 week","Reviewed plan","Approved version"],
-  ["Review again","The plan returns to review on its cadence.","auto","Automatic","Per cadence","Approved version","Review task"]]},
+  ["Review again","The plan returns to review on its cadence.","robot","Robot","Per cadence","Approved version","Review task"]]},
  {id:"bc.gap_closure",name:"Close a continuity gap",screen:"bc_trace",owner:"Theo Marlowe",bak:"Sam Patel",trigger:"The gap view lists a missing plan, exercise, owner or exit plan",std:["iso22301","cobit","nist"],metrics:["m_bc_ci_owner","m_bc_vend_exit","m_bc_spof"],entities:["bc_dependency","bc_component","finding"],steps:[
-  ["Find the gap","Tier 1 without a plan, plan without a recent exercise, CI without a recovery owner, vendor without an exit plan.","auto","Automatic","Daily","Links and plans","Gap list"],
+  ["Find the gap","Tier 1 without a plan, plan without a recent exercise, CI without a recovery owner, vendor without an exit plan.","robot","Robot","Daily","Links and plans","Gap list"],
   ["Trace the impact","Follow the chain up to applications and down to components; read the RTO exposure.","human","Theo Marlowe","2 days","Gap list","Impact view"],
   ["Assign","Name a remediation owner and a different backup.","human","Theo Marlowe","3 days","Impact view","Owned gap"],
   ["Approve the plan of action","A group accepts the remediation date or the risk.","gate","Resilience council","1 week","Owned gap","Decision"],
-  ["Verify","The gap is closed when the link, plan or exercise exists.","auto","Automatic","Daily","Decision","Closed gap"]]},
+  ["Verify","The gap is closed when the link, plan or exercise exists.","robot","Robot","Daily","Decision","Closed gap"]]},
  {id:"bc.measure",name:"Measure resilience by component, CI and application",screen:"bc_metrics",owner:"Avery Chen",bak:"Sam Patel",trigger:"Daily recompute, or a plan or exercise changes",std:["iso22301","cobit"],metrics:["m_bc_maturity","m_bc_rto_att","m_bc_rpo_att","m_bc_data_restore"],entities:["bc_plan","bc_exercise","bc_component"],steps:[
-  ["Collect","Plans, exercises, links and owners are read from the registers.","auto","Automatic","Daily","Registers","Raw counts"],
-  ["Compute","Each metric uses a stated formula; the lineage lists inputs.","auto","Automatic","Daily","Raw counts","Metric values"],
-  ["Assign maturity","Each application is placed on levels one to five.","auto","Automatic","Daily","Metric values","Maturity level"],
+  ["Collect","Plans, exercises, links and owners are read from the registers.","robot","Robot","Daily","Registers","Raw counts"],
+  ["Compute","Each metric uses a stated formula; the lineage lists inputs.","robot","Robot","Daily","Raw counts","Metric values"],
+  ["Assign maturity","Each application is placed on levels one to five.","robot","Robot","Daily","Metric values","Maturity level"],
   ["Review","The metric owner reads the weakest components.","human","Avery Chen","Monthly","Maturity level","Improvement list"],
-  ["Publish","Values reach the overview and the executive dashboard.","auto","Automatic","Daily","Metric values","Dashboard tiles"]]},
+  ["Publish","Values reach the overview and the executive dashboard.","robot","Robot","Daily","Metric values","Dashboard tiles"]]},
  {id:"bc.declare_recover",name:"Declare a disaster and recover",screen:"bc_decl",owner:"Tom Becker",bak:"Sam Patel",trigger:"A major incident or loss of a site, system, data set, supplier or key people",std:["iso22301","itil5","nist"],metrics:["m_bc_rto_att","m_bc_rpo_att"],entities:["bc_declaration","bc_plan","incident"],steps:[
   ["Declare","The incident commander names the plan and the scope.","human","Tom Becker","15 min","Major incident","Declaration"],
-  ["Start the workflow","The plan workflow starts through FLOWX (simulated) and the call tree is notified (simulated).","auto","Automatic","Instant","Declaration","Workflow run and notices"],
+  ["Start the workflow","The plan workflow starts through FLOWX (simulated) and the call tree is notified (simulated).","robot","Robot","Instant","Declaration","Workflow run and notices"],
   ["Recover","Runbook steps are carried out in order against the RTO clock.","human","Plan owner","Per RTO","Workflow run","Recovered services"],
   ["Confirm recovery","The Resilience council confirms recovery and releases the declaration.","gate","Resilience council","Same day","Recovered services","Closed declaration"],
   ["Review","A post-incident review feeds the next exercise and the plan.","human","Sam Patel","2 weeks","Closed declaration","Lessons"]]}];
@@ -96,7 +96,7 @@ function extList(){
 
 /* roles and groups resolved by the platform role registry (named holder, different backup) */
 const GRPROLES={"Incident commander":["Tom Becker","Sam Patel"],"Call tree":["Tom Becker","Sam Patel"],"Resilience council":["Sam Patel","Tom Becker"],"Change advisory board":["Casey Rowan","Sam Patel"],"Application owners forum":["Tom Becker","Sam Patel"],"Facilities and safety group":["Wes Hartley","Ines Duarte"],"Vendor risk group":["Camille Ortega","Maya Ortiz"],"People operations":["Catherine Doyle","Elena Marsh"],"Facilities":["Wes Hartley","Ines Duarte"],"Vendor manager":["Camille Ortega","Maya Ortiz"],"Communications lead":["Leila Haddad","Elena Marsh"]};
-const RUNROLES=["Automatic","Application","Application owner","Process owner","Plan owner","Plan backup","Approver group","Requester","Anyone","Resilience","Site","Vendor","Process","Enterprise"];
+const RUNROLES=["Robot","Automatic","Application","Application owner","Process owner","Plan owner","Plan backup","Approver group","Requester","Anyone","Resilience","Site","Vendor","Process","Enterprise"];
 function roles(){const R=G(()=>R15E.roles,null);if(!R||!R.add)return 0;const names={};
  const put=n=>{if(n&&typeof n==="string")names[n]=1};
  PROCS.forEach(p=>p.steps.forEach(x=>put(x[3])));G(()=>["application","site","vendor","process"].forEach(k=>X.mkSteps(k,"").forEach(x=>put(x.owner))));G(()=>X.D().sops.forEach(sp=>sp.steps.forEach(x=>put(x[3]))));G(()=>X.D().groups.forEach(g=>put(g.n)));

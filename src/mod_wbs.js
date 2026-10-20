@@ -275,7 +275,7 @@
  PROC.reg("ppm_wbs",{title:"How the work breakdown becomes the schedule",std:["pmbok","safe"],steps:[
   {n:"Decompose",d:"The project manager breaks each deliverable into phases, work packages and tasks, and writes the WBS dictionary entry: deliverable and acceptance criteria.",who:"human",owner:"Project manager",sla:"Before baseline",in:"Approved scope",out:"WBS lines with owners"},
   {n:"Draft the plan",d:"PMO Agent suggests tasks, durations and links from similar past projects and from the statement of work. It drafts; a person accepts.",who:"agent",owner:"PMO Agent",sla:"Minutes",in:"Scope and past plans",out:"Suggested lines"},
-  {n:"Schedule",d:"The schedule engine runs a forward and a backward pass over all four link types, lags and constraints, then rolls summaries up.",who:"auto",owner:"Schedule engine",sla:"Instant",in:"Durations and links",out:"Dates, float, critical path"},
+  {n:"Schedule",d:"The schedule engine runs a forward and a backward pass over all four link types, lags and constraints, then rolls summaries up.",who:"robot",owner:"Schedule engine",sla:"Instant",in:"Durations and links",out:"Dates, float, critical path"},
   {n:"Approve the baseline",d:"The steering committee approves the plan. Setting or resetting a baseline needs a reason and is audited.",who:"gate",owner:"Steering committee",sla:"Within a week",in:"Plan and variance",out:"Frozen baseline"},
   {n:"Track",d:"Percent complete and actual dates arrive from task sheets. Variance, earned value and resource load update everywhere.",who:"human",owner:"Task owners",sla:"Weekly",in:"Progress updates",out:"Variance and earned value"}]});
 })();

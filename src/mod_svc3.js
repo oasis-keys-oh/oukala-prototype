@@ -470,12 +470,12 @@ document.addEventListener("change",e=>{const t=e.target.closest("[data-og-a]");i
 REG("svc_guides","Order guides","service","M4 6h6v5H4zM14 6h6v5h-6zM4 14h6v5H4zM14 14h6v5h-6zM10 8.5h4M10 16.5h4M7 11v3M17 11v3",screenGuides);
 if(window.PROC&&PROC.reg)PROC.reg("svc_guides",{title:"Order guide: place, branch, fan out, track, close",std:["itil4","bpmn"],steps:[
  {n:"Place the order",d:"Who it is for, the answers, delivery contact.",who:"human",owner:"Requester",sla:"Minutes",in:"A need",out:"Order"},
- {n:"Check policy",d:"Can the requester order for this person; manager approval skipped or required.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"Order",out:"Approval path"},
+ {n:"Check policy",d:"Can the requester order for this person; manager approval skipped or required.",who:"robot",owner:(BRAND.name+" automation"),sla:"Instant",in:"Order",out:"Approval path"},
  {n:"Manager approval",d:"Only when the requester is not the manager or a delegate.",who:"gate",owner:"Manager of the person",sla:"1 day",in:"Approval path",out:"Approved order"},
- {n:"Branch and fan out",d:"Answers add or remove parts; one record per part goes to its group.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"Approved order",out:"Part records"},
+ {n:"Branch and fan out",d:"Answers add or remove parts; one record per part goes to its group.",who:"robot",owner:(BRAND.name+" automation"),sla:"Instant",in:"Approved order",out:"Part records"},
  {n:"Fulfill the parts",d:"Each group works its part; a part starts when everything it waits for is done.",who:"human",owner:"Fulfillment groups",sla:"Per part SLA",in:"Part record",out:"Done part"},
  {n:"Watch the critical path",d:"Forecast date, slack, blocked parts, escalation.",who:"agent",owner:"Order Guide Watcher",sla:"Continuous",in:"Part states",out:"Alerts"},
- {n:"Close and tell",d:"Requester and the person it is for are told.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"All parts done",out:"Closed order"}]});
+ {n:"Close and tell",d:"Requester and the person it is for are told.",who:"robot",owner:(BRAND.name+" automation"),sla:"Instant",in:"All parts done",out:"Closed order"}]});
 SEARCHX.push(()=>{ensureO();return GUIDES.map(g=>({g:"Order guides",t:g.n,m:g.parts.length+" parts",c:"--p4",f:()=>{S3.gid=g.id;S3.wiz=true;S3.kindItem=null;S.v.svc3_tabs=1;go("svc_guides")},k:"order guide multi part "+g.blurb+" "+g.parts.map(p=>p.n).join(" ")})).concat(ORD.slice(0,SCALE&&SCALE.on?300:40).map(o=>({g:"Orders",t:o.id+" "+g_n(o),m:OST[planOf(o).st][0],c:"--p3",f:()=>{S3.sel=o.id;S.v.svc3_tabs=0;go("svc_guides")},k:o.by+" "+o.forName+" order guide "+g_n(o)})))});
 SEARCHX.push(()=>[{g:"Actions",t:"Order for someone else",m:"Who is this for: myself, someone else, a new hire, a team",c:"--accent",f:()=>go("svc_portal"),k:"requested for on behalf of delegate order for my report new hire manager approval"}]);
 ASKX.push(q=>{const t=String(q).toLowerCase();let m;ensureO();
@@ -523,17 +523,17 @@ function wire(){try{
   const ok=r=>r&&(r.ok||/already exists/.test((r.warnings||[]).join(" ")));let all=true;
   const r0=PROCLIB.addProcess({id:"og_orchestrate",name:"Order guide: place, branch, fan out, track and close",module:"svc_guides",family:"req",owner:"Tom Becker",backup:"Nia Brooks",trigger:"A requester starts an order guide",std:["itil4","bpmn"],
    steps:[st("Place the order","Who it is for (myself, someone else, a new hire, a team), delivery contact and the guide's questions. RACI: Responsible requester, Accountable service catalog manager, Informed the person it is for.","human","Requester","Minutes","A need","Order"),
-    st("Check policy","Can this requester order for this person; manager approval skipped for managers and delegates, required otherwise.","auto",(BRAND.name+" automation"),"Instant","Order","Approval path"),
+    st("Check policy","Can this requester order for this person; manager approval skipped for managers and delegates, required otherwise.","robot",(BRAND.name+" automation"),"Instant","Order","Approval path"),
     st("Manager approval","Decided by the person's manager when the requester is not their manager or a delegate. RACI: Responsible manager, Accountable service catalog manager.","gate","Manager of the person","1 day","Approval path","Approved order"),
-    st("Branch and fan out","Answers add or remove parts; one fulfillment record per part goes to its group.","auto",(BRAND.name+" automation"),"Instant","Approved order","Part records"),
+    st("Branch and fan out","Answers add or remove parts; one fulfillment record per part goes to its group.","robot",(BRAND.name+" automation"),"Instant","Approved order","Part records"),
     st("Fulfill each part","Each group runs its own process, SLA and queue; a part starts when everything it waits for is done.","human","Fulfillment groups","Per part","Part record","Done part"),
     st("Watch the critical path","Forecast finish, slack, blocked parts; escalate to the part owner.","agent","Order Guide Watcher","Continuous","Part states","Alerts"),
-    st("Close and notify","Requester and the person it is for are told; metrics updated.","auto",(BRAND.name+" automation"),"Instant","All parts done","Closed order")],
+    st("Close and notify","Requester and the person it is for are told; metrics updated.","robot",(BRAND.name+" automation"),"Instant","All parts done","Closed order")],
    inputs:["Guide definition","Answers","Policy rules"],outputs:["Part records","Closed order","Audit trail"],entities:["guide_order","order_guide_part","catalog_task","request_item","approval"],metrics:["m_og_cycle","m_og_ontime","m_og_blocked","m_og_branch","m_rf_mgrap"],model:"itil"});
   all=all&&ok(r0);
   const who_={human:"human",it:"human"};
   Object.keys(LANES).forEach(k=>{const L=LANES[k],ss=LSTEPS[k];const r=PROCLIB.addProcess({id:"og_p_"+k,name:L.n+" part of an order guide: "+L.g,module:"svc_guides",family:"req",owner:L.own==="@mgr"?"Tom Becker":L.own,backup:"Nia Brooks",trigger:"A part is created for "+L.g+" by an order guide",std:["itil4"],
-    steps:ss.map((d,i)=>st(d,d+". Part SLA from the guide.",i===0?"human":i===ss.length-1?"auto":"human",L.own==="@mgr"?"Hiring or line manager":L.own,"Per part","Part record",i===ss.length-1?"Done part":"Work in progress")),inputs:["Part record","Order context"],outputs:["Done part"],entities:["catalog_task","guide_order"],metrics:["m_og_cycle","m_og_blocked"],model:"itil"});all=all&&ok(r)});
+    steps:ss.map((d,i)=>st(d,d+". Part SLA from the guide.",i===0?"human":i===ss.length-1?"robot":"human",L.own==="@mgr"?"Hiring or line manager":L.own,"Per part","Part record",i===ss.length-1?"Done part":"Work in progress")),inputs:["Part record","Order context"],outputs:["Done part"],entities:["catalog_task","guide_order"],metrics:["m_og_cycle","m_og_blocked"],model:"itil"});all=all&&ok(r)});
   if(all)W.proc=true;window.OGX.procState=all}
  }catch(e){console.error("svc3 wire",e)}
  window.OGX.wired=!!(W.nav&&W.ent&&W.mod&&W.proc);

@@ -717,7 +717,7 @@ PROC.reg("ppm_sow",{title:"From vendor proposal to managed contract",std:["world
  {n:"Playbook match",d:"Each line is matched to a standard clause, a variance with a redline, or flagged as new for legal.",who:"agent",owner:"Contract Analyst Agent",sla:"Under 1 minute",in:"Register and playbook",out:"Standard, variance or new term"},
  {n:"Legal or shared review",d:"Legal reviews exceptions. Shared review adds the vendor and business owner in one thread with a deadline.",who:"human",owner:"Maya Ortiz",sla:"5 business days",in:"Variances and new terms",out:"Agreed language"},
  {n:"Approval",d:"The signer is chosen by contract value under the delegation of authority. AI cannot accept terms.",who:"gate",owner:"Casey Rowan",sla:"2 business days",in:"Agreed terms",out:"Signed contract"},
- {n:"Execution",d:"The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.",who:"auto",sla:"Immediate",in:"Signed contract",out:"Project, schedule, invoice rules"},
+ {n:"Execution",d:"The executed contract is stored with its proposal. Project, WBS, invoice schedule and budget are created.",who:"robot",sla:"Immediate",in:"Signed contract",out:"Project, schedule, invoice rules"},
  {n:"Obligations tracking",d:"Due dates, renewal notices and acceptance checks run daily. Invoices wait for accepted work.",who:"agent",owner:"Contract Analyst Agent",sla:"Daily",in:"Obligation register",out:"Reminders and holds"},
  {n:"Change control",d:"Any change to schedule, scope, price, SLA or term is a change request with impact analysis and the right approver.",who:"gate",owner:"Nia Brooks",sla:"5 business days",in:"Change request",out:"Amendment and updated register"}]});
 /* ---------- UI helpers ---------- */

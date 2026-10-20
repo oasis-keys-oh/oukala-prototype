@@ -15,11 +15,8 @@ STEPS.label=v=>SM.label(v);
 STEPS.pill=v=>SM.pill(v);
 STEPS.ORDER=["human","robot","agent","gate"];
 STEPS.legend=()=>`<div class="stp-legend" aria-label="Step kinds">${STEPS.ORDER.map(k=>SM.pill(k)).join("")}</div>`;
-/* owner text for a step that is not a person: never "Automatic" or "Function" */
-STEPS.ownerFor=(k,cur)=>{k=SM.of(k);const c=String(cur||"");
- if(k==="robot")return /^(Automatic|Function|System|Platform)$/i.test(c)||!c||/Agent$/.test(c)?"Robot":c;
- if(k==="agent")return /Agent$/.test(c)?c:"Studio Agent";
- return /^(Automatic|Function|Robot|System)$/i.test(c)||/Agent$/.test(c)?"Owner":(c||"Owner")};
+/* owner text for a step that is not a person: never "Automatic" or "Function" (one rule, STEPMODE.ownerFor in platform.js) */
+STEPS.ownerFor=(k,cur)=>SM.ownerFor(k,cur);
 
 /* robot steps resolve to a robot record with a human sponsor and backup (CL-78, OWNERX robot directory) */
 STEPS.robotFor=(s,ctx)=>G(()=>W.OWNERX.robotFor(s,ctx),null);
@@ -28,7 +25,7 @@ STEPS.ownerChip=(s,ctx)=>{ctx=ctx||{};const k=SM.of(s&&s.who);if(k==="robot"){co
  return W.ownerChip(STEPS.ownerFor(k,s&&s.owner),{role:ctx.role,record:ctx.record})};
 
 /* ---------- triggers (R21a): robot and agent steps must have one; human steps start by assignment ---------- */
-STEPS.needsTrigger=v=>{const k=SM.of(v);return k==="robot"||k==="agent"};
+STEPS.needsTrigger=v=>SM.needsTrigger(v);
 const MAINF={metric:"metric",schedule:"every",step:"step",event:"event",record:"entity"};
 STEPS.mainField=t=>MAINF[t]||"event";
 /* a sensible first trigger from what the step says; the person can change it */

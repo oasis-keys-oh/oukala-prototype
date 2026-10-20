@@ -230,7 +230,7 @@ D.addEventListener("toggle",e=>{const d=e.target;if(d&&d.matches&&d.matches("det
 /* ---------- wiring: Feature Contract rules 1, 2 and 4 ---------- */
 const sx=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
 const STEPS=[
- sx("Scan the build","gen_scrmap.py reads every source file and the git history; the live registry adds names, menu area, access and contract scores.","auto","Platform owner","On demand","Source and registry","Screen facts"),
+ sx("Scan the build","gen_scrmap.py reads every source file and the git history; the live registry adds names, menu area, access and contract scores.","robot","Platform owner","On demand","Source and registry","Screen facts"),
  sx("Review the evidence","Look at hidden screens, screens with no link, and the signal score band by band.","human","Platform owner","Per session","Screen facts","Shortlist"),
  sx("Decide","Mark each screen Wedge, Keep, Defer or Cut and give a reason. Pre-filled hints stay marked until confirmed.","human","Founder","Per session","Shortlist","Decisions"),
  sx("Check the wedge","The wedge must be 5 to 8 screens. More than 8 means demote some.","human","Founder","Per session","Decisions","Confirmed wedge"),

@@ -195,15 +195,15 @@ const ENTS=()=>[
 const PSX=a=>({n:a[0],d:a[1],who:a[2],owner:a[3],sla:a[4],in:a[5],out:a[6]});
 const PROCS=[
  {id:"r17q.value",name:"Quantify and share the value of the platform",screen:"r17q_value",owner:OWN.value[0],bak:OWN.value[1],trigger:"A prospect or sponsor asks what the platform is worth, or a published default changes",std:["tbm","cobit"],metrics:["m_val_hours","m_val_cover","m_val_gapcost"],entities:["value_assumption","value_scenario"],steps:[
-  ["Read the tenant figures","Figures are computed from the registries; none are typed in.","auto","Automatic","Instant","Registries","Layer A figures"],
+  ["Read the tenant figures","Figures are computed from the registries; none are typed in.","robot","Robot","Instant","Registries","Layer A figures"],
   ["Enter your assumptions","The viewer replaces illustrative inputs with their own numbers.","human","Avery Chen","1 hour","Layer A figures","Layer B inputs"],
-  ["Compute the model","Every formula is shown with the substituted numbers; low, base and high cases are drawn.","auto","Automatic","Instant","Layer B inputs","Results and sensitivity"],
+  ["Compute the model","Every formula is shown with the substituted numbers; low, base and high cases are drawn.","robot","Robot","Instant","Layer B inputs","Results and sensitivity"],
   ["Review the case","Finance reviews inputs marked illustrative before the case is shared.","human","Maya Ortiz","3 days","Results","Reviewed case"],
   ["Approve published defaults","A change to the default inputs is decided by a group.","gate","Portfolio board","1 week","Reviewed case","Published defaults"]]},
  {id:"r17q.thinking",name:"Explain how the product was designed",screen:"r17q_thinking",owner:OWN.think[0],bak:OWN.think[1],trigger:"A round closes, or a decision is added to the decisions log",std:["togaf","dmbok"],metrics:["m_val_evidence","m_val_decisions"],entities:["meeting_decision"],steps:[
   ["Log the decision","Each decision is written with its date, reason and consequence.","human","Maya Ortiz","Same day","Round work","Decision record"],
-  ["Parse the log","The decisions log is read into the decisions table at build time.","auto","Automatic","Instant","Decisions log","Decisions table"],
-  ["Refresh the evidence","Counts are read live from the registries.","auto","Automatic","Instant","Registries","Evidence tiles"],
+  ["Parse the log","The decisions log is read into the decisions table at build time.","robot","Robot","Instant","Decisions log","Decisions table"],
+  ["Refresh the evidence","Counts are read live from the registries.","robot","Robot","Instant","Registries","Evidence tiles"],
   ["Review the narrative","The owner checks principles and timeline against the log.","human","Priya Shah","1 week","Decisions table","Reviewed page"],
   ["Approve changes to principles","A change to a standing principle is decided by a group.","gate","Portfolio board","1 week","Reviewed page","Published principles"]]}];
 Q.PROCS=PROCS;

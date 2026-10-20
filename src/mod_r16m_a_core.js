@@ -43,15 +43,15 @@ const GROUPS=R.groups=[
  {id:"G-PMO",n:"PMO",owner:"Maya Ortiz",backup:"Priya Shah",members:["Maya Ortiz","Priya Shah","Dev Rao"],kind:"fulfillment"},
  {id:"G-REQ",n:"Requesters",owner:"Casey Rowan",backup:"Maya Ortiz",members:[],kind:"performer"},
  {id:"G-OWN",n:"Process owners",owner:"Maya Ortiz",backup:"Priya Shah",members:["Maya Ortiz","Priya Shah"],kind:"performer"},
- {id:"G-AUTO",n:"Automatic",owner:"Sam Patel",backup:"Jordan Lee",members:[],kind:"system"}];
+ {id:"G-AUTO",n:"Robots",owner:"Sam Patel",backup:"Jordan Lee",members:[],kind:"system"}];
 R.groupByName=n=>GROUPS.find(g=>g.n===n)||null;
 const P2G={"Casey Rowan":"Executive approvers","Avery Chen":"Finance approvers","Rina Okafor":"Security approvers","Theo Marlowe":"Process governance board","Jordan Lee":"Architecture review board","Sam Patel":"Platform team","Camille Ortega":"Procurement approvers","Maya Ortiz":"PMO","Priya Shah":"PMO","Dev Rao":"PMO","Tom Becker":"Service desk","Joanna Pierce":"People approvers"};
-R.groupOf=function(owner,pid,who){owner=String(owner||"").trim();if(!owner)return who==="auto"?"Automatic":"Process owners";
+R.groupOf=function(owner,pid,who){owner=String(owner||"").trim();if(!owner)return STEPMODE.of(who)==="robot"&&who!=="gate"?"Robots":"Process owners";
  if(GROUPS.some(g=>g.n===owner))return owner;
  if(/^requester$/i.test(owner)||/^anyone$/i.test(owner))return"Requesters";
  if(/^approvers?$/i.test(owner)||/approver by/i.test(owner))return/^itsm_chg$|chg|change/.test(pid||"")?"Change advisory board":"Executive approvers";
- if(/automatic|service|engine/i.test(owner)||who==="auto")return"Automatic";
- if(/agent/i.test(owner))return"Automatic";
+ if(/automatic|robot|service|engine/i.test(owner)||(STEPMODE.of(who)==="robot"&&who!=="gate"))return"Robots";
+ if(/agent/i.test(owner))return"Robots";
  if(P2G[owner])return P2G[owner];
  if(/finance/i.test(owner))return"Finance approvers";if(/security/i.test(owner))return"Security approvers";if(/portfolio|pmo/i.test(owner))return"PMO";if(/council/i.test(owner))return"Data council";
  return"Process owners"};
@@ -257,7 +257,7 @@ const SX=a=>({n:a[0],d:a[1],who:a[2],owner:a[3],sla:a[4],in:a[5],out:a[6]});
 const PROCS=R.PROCS=[
  {id:"r16m.tenant_onboarding",screen:"r16m_setup",name:"Onboard a customer tenant",trigger:"A signed order form names a customer, an edition and a deployment model",std:["itil5","cobit"],metrics:["m_r16m_ready","m_r16m_deploy_days"],entities:["tenant","setup_step"],steps:[
   ["Create the tenant","Record customer, edition, deployment model, region and the named implementation lead and backup.","human","Jordan Lee","1 day","Signed order form","Tenant record"],
-  ["Provision the environment","Provision the stack from the deployment pattern, run migrations and register the tenant in the control plane.","auto","Automatic","2 days","Tenant record","Empty tenant environment"],
+  ["Provision the environment","Provision the stack from the deployment pattern, run migrations and register the tenant in the control plane.","robot","Robot","2 days","Tenant record","Empty tenant environment"],
   ["Connect identity","Configure the identity provider and single sign-on; test with two named users.","human","Sam Patel","3 days","Empty tenant environment","Working sign-in"],
   ["Load foundation data","Run the eleven foundation sheets through the import wizard in dependency order.","human","Sam Patel","2 weeks","Working sign-in","Loaded foundation data"],
   ["Register data sources and configure processes","Register connectors, then apply tenant overlays for approvals, owners and SLAs.","human","Jordan Lee","2 weeks","Loaded foundation data","Connected sources and effective processes"],
@@ -265,38 +265,38 @@ const PROCS=R.PROCS=[
   ["Cut over and hypercare","Switch production traffic, monitor for 14 days, then close the onboarding.","human","Jordan Lee","14 days","Go-live decision","Live tenant"]]},
  {id:"r16m.deployment_choice",screen:"r16m_deploy",name:"Choose a deployment path",trigger:"A prospect or customer states isolation, residency or hosting constraints",std:["togaf","iso27k"],metrics:["m_r16m_deploy_days"],entities:["tenant"],steps:[
   ["Capture constraints","Record isolation, residency, hosting account, upgrade cadence and budget.","human","Sam Patel","2 days","Customer requirements","Constraint list"],
-  ["Score the options","Rate pooled, dedicated vendor, dedicated customer and private install against the constraints.","auto","Automatic","Instant","Constraint list","Option scores"],
+  ["Score the options","Rate pooled, dedicated vendor, dedicated customer and private install against the constraints.","robot","Robot","Instant","Constraint list","Option scores"],
   ["Decide","The Architecture review board confirms the path and records the decision.","gate","Architecture review board","3 days","Option scores","Decision record"],
   ["Plan provisioning","Pick the infrastructure-as-code pattern, accounts, networking and cost.","human","Sam Patel","1 week","Decision record","Provisioning plan"],
-  ["Provision","Hand over to tenant onboarding.","auto","Automatic","2 days","Provisioning plan","Tenant environment"]]},
+  ["Provision","Hand over to tenant onboarding.","robot","Robot","2 days","Provisioning plan","Tenant environment"]]},
  {id:"r16m.data_import",screen:"r16m_import",name:"Import foundation data",trigger:"A tenant needs a foundation sheet loaded or refreshed",std:["dmbok","cobit"],metrics:["m_r16m_import_ok"],entities:["import_batch","foundation_record"],steps:[
   ["Download the template","Use the CSV template for the sheet; load in dependency order.","human","Sam Patel","Same day","Workbook description","Template CSV"],
   ["Upload and map columns","Upload the customer file and map its columns to template fields.","human","Sam Patel","1 day","Customer CSV","Column mapping"],
-  ["Dry run and validate","Check required fields, reference targets, classification, duplicates, owners and backups.","auto","Automatic","Instant","Column mapping","Error report"],
+  ["Dry run and validate","Check required fields, reference targets, classification, duplicates, owners and backups.","robot","Robot","Instant","Column mapping","Error report"],
   ["Fix and re-run","The customer corrects the file until errors are zero or accepted for skipping.","human","Sam Patel","2 days","Error report","Clean file"],
   ["Approve the load","The Data council confirms personal data handling for sheets that carry it.","gate","Data council","2 days","Dry run summary","Load approval"],
-  ["Commit with audit","Write records to the store, emit import events and add the batch to the audit trail.","auto","Automatic","Instant","Load approval","Committed batch"]]},
+  ["Commit with audit","Write records to the store, emit import events and add the batch to the audit trail.","robot","Robot","Instant","Load approval","Committed batch"]]},
  {id:"r16m.source_register",screen:"r16m_sources",name:"Register a data source",trigger:"A source system is named in the integration inventory",std:["dmbok","nist"],metrics:["m_r16m_src_conn"],entities:["data_source"],steps:[
   ["Add to the inventory","Record system, type, direction, schedule, owner and backup.","human","Jordan Lee","Same day","Integration inventory sheet","Data source (Planned)"],
   ["Evaluate fit","Check for a certified connector, field authority and classification of the data.","human","Jordan Lee","3 days","Data source (Planned)","Evaluation"],
   ["Map fields","Map source fields to registry fields; approve the mapping.","human","Sam Patel","1 week","Evaluation","Approved mapping"],
   ["Approve the connection","The Data council approves sources that carry personal or restricted data.","gate","Data council","3 days","Approved mapping","Approval"],
-  ["Enable and schedule","Connect, run a test sync and enable the schedule.","auto","Automatic","Instant","Approval","Connected source"],
-  ["Monitor","Run history, quarantine and freshness feed the Integration fabric.","auto","Automatic","Continuous","Run results","Health status"]]},
+  ["Enable and schedule","Connect, run a test sync and enable the schedule.","robot","Robot","Instant","Approval","Connected source"],
+  ["Monitor","Run history, quarantine and freshness feed the Integration fabric.","robot","Robot","Continuous","Run results","Health status"]]},
  {id:"r16m.overlay_change",screen:"r16m_overlay",name:"Change a tenant process overlay",trigger:"A customer asks for a different approval, owner group, step or SLA",std:["itil5","cobit"],metrics:["m_r16m_ovl_pending"],entities:["tenant_overlay"],steps:[
   ["Draft the delta","Record the change as a delta on the base process; nothing in the base changes.","human","Jordan Lee","1 day","Customer request","Draft overlay"],
-  ["Check guardrails","Segregation of duties, minimum approvals for the process class, groups only, locked steps.","auto","Automatic","Instant","Draft overlay","Guardrail result"],
+  ["Check guardrails","Segregation of duties, minimum approvals for the process class, groups only, locked steps.","robot","Robot","Instant","Draft overlay","Guardrail result"],
   ["Submit for approval","The overlay routes to the Process governance board, plus Security approvers when a security process is touched.","human","Jordan Lee","Same day","Guardrail result","Approval request"],
   ["Approve by group","Each required group decides; the proposer cannot decide.","gate","Process governance board","3 days","Approval request","Decision"],
-  ["Activate","The overlay becomes the tenant's effective process: base plus overlay.","auto","Automatic","Instant","Decision","Active overlay"],
+  ["Activate","The overlay becomes the tenant's effective process: base plus overlay.","robot","Robot","Instant","Decision","Active overlay"],
   ["Review for promotion","A recurring change is promoted to the base for all tenants through a second approval.","gate","Process governance board","Quarterly","Active overlays","Promoted or kept as overlay"]]},
  {id:"r16m.guide_review",screen:"r16m_guides",name:"Generate and review a process guide",trigger:"A process guide is opened, or its process record changes",std:["kcs","bpmn"],metrics:["m_r16m_guide_cov"],entities:["process_guide"],steps:[
-  ["Generate from the record","Build levels 1 to 5 from the process, its steps, owners, metrics and entities.","auto","Automatic","Instant","Process record","Guide (generated from record)"],
-  ["Check links","Resolve every linked object and list the gaps.","auto","Automatic","Instant","Guide","Link gap list"],
+  ["Generate from the record","Build levels 1 to 5 from the process, its steps, owners, metrics and entities.","robot","Robot","Instant","Process record","Guide (generated from record)"],
+  ["Check links","Resolve every linked object and list the gaps.","robot","Robot","Instant","Guide","Link gap list"],
   ["Edit","Owners add detail where the generated text is thin.","human","Maya Ortiz","1 week","Link gap list","Edited guide"],
   ["Review","A named reviewer confirms the guide against how the work is done.","gate","Maya Ortiz","1 week","Edited guide","Reviewed guide"],
-  ["Publish to the knowledge base","The reviewed guide is published and linked from the process page.","auto","Automatic","Instant","Reviewed guide","Published guide"],
-  ["Flag out of date","A changed process record marks the guide out of date.","auto","Automatic","Continuous","Process change","Out of date flag"]]}];
+  ["Publish to the knowledge base","The reviewed guide is published and linked from the process page.","robot","Robot","Instant","Reviewed guide","Published guide"],
+  ["Flag out of date","A changed process record marks the guide out of date.","robot","Robot","Continuous","Process change","Out of date flag"]]}];
 const MET={
  m_r16m_ready:{n:"Tenant go-live readiness",f:"Passing readiness checks ÷ all readiness checks for the selected tenant × 100",u:"%",cur:0,tgt:100,badAt:50,dir:"max",max:100,tr:[18,26,35,44,52,58,64,70],owner:"Jordan Lee",use:["Implementation and setup"],rem:{kind:"sop",ref:"SOP-R16-SETUP",title:"Clear the failing readiness checks",agent:"",auto:false,state:"idle",prog:""}},
  m_r16m_deploy_days:{n:"Time to provision a tenant",f:"Calendar days from signed order form to a working empty tenant environment",u:"d",cur:6,tgt:5,badAt:14,dir:"min",max:30,tr:[18,16,14,12,10,9,7,6],owner:"Sam Patel",use:["Deployment paths"],rem:{kind:"sop",ref:"SOP-R16-PROV",title:"Provisioning runbook",agent:"",auto:false,state:"idle",prog:""}},

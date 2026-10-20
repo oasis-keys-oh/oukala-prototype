@@ -184,7 +184,7 @@ const CHAINS={
 const SCRN=()=>new Set(SCREENS.map(s=>s[0]));
 const SCRNAME=()=>new Set(SCREENS.map(s=>lc(s[1])));
 function resolves(kind,ref){ref=ref==null?"":String(ref);if(!ref)return null; /* null = nothing to check */
- if(kind==="person")return actor(ref)==="person"||actor(ref)==="contractor"||actor(ref)==="msp"||actor(ref)==="agent"||has(ref)||actor(ref)==="role"||/^(Sponsor|Requester|Automatic)$/i.test(ref)?true:false;
+ if(kind==="person")return actor(ref)==="person"||actor(ref)==="contractor"||actor(ref)==="msp"||actor(ref)==="agent"||has(ref)||actor(ref)==="role"||/^(Sponsor|Requester|Automatic|Robot)$/i.test(ref)?true:false;
  if(kind==="actor")return !!actor(ref)||has(ref);
  if(kind==="svc")return has(ref)||SVCREG.some(s=>lc(s.n)===lc(ref)||lc(s.n).includes(lc(ref))||lc(ref).includes(lc(s.n)))||SCRN().has(ref);
  if(kind==="screen"){return SCRNAME().has(lc(ref))||SCRN().has(ref)||SCREENS.some(s=>lc(s[1]).includes(lc(ref))||lc(ref).includes(lc(s[1])))}
@@ -243,7 +243,7 @@ function audit(){const A=[];const add=(area,id,name,total,items,o)=>{o=o||{};A.p
  add("Process","p_nometric","Processes with no metric",pls.length,pls.filter(p=>!arr(p.metrics).length).map(p=>E(p.id,p.name,"No outcome or health metric")),{rem:"Add an outcome and a health metric",std:"cmmi"});
  add("Process","p_fewsteps","Processes with fewer than 3 steps",pls.length,pls.filter(p=>arr(p.stepsList).length<3).map(p=>E(p.id,p.name,arr(p.stepsList).length+" steps")),{rem:"Document the steps",std:"bpmn"});
  const stepsAll=pls.reduce((a,p)=>a+arr(p.stepsList).length,0);
- const noOwnStep=[],noIo=[];pls.forEach(p=>arr(p.stepsList).forEach((s,i)=>{if(!s.owner&&s.who!=="auto")noOwnStep.push(E(p.id+"#"+(i+1),p.name+": "+s.n,"Acting as "+s.who+", no owner"));if(!s.in||!s.out)noIo.push(E(p.id+"#"+(i+1),p.name+": "+s.n,(s.in?"":"no input ")+(s.out?"":"no output")))}));
+ const noOwnStep=[],noIo=[];pls.forEach(p=>arr(p.stepsList).forEach((s,i)=>{if(!s.owner&&STEPMODE.of(s.who)!=="robot")noOwnStep.push(E(p.id+"#"+(i+1),p.name+": "+s.n,"Acting as "+s.who+", no owner"));if(!s.in||!s.out)noIo.push(E(p.id+"#"+(i+1),p.name+": "+s.n,(s.in?"":"no input ")+(s.out?"":"no output")))}));
  add("Process","p_stepowner","Steps with no owner",stepsAll,noOwnStep,{rem:"Name who answers for the step",std:"bpmn"});
  add("Process","p_stepio","Steps with no input or no output",stepsAll,noIo,{rem:"Name the record or system each step reads and writes",std:"bpmn"});
  add("Process","p_noentity","Processes linked to no entity",pls.length,pls.filter(p=>!(arr((p.entities||{}).r).length+arr((p.entities||{}).w).length)).map(p=>E(p.id,p.name,"No entity read or written")),{rem:"Attach the entities the process reads and writes",std:"dmbok"});
@@ -575,9 +575,9 @@ function audit_(a,d){G(()=>(window.audit.__zl?_origAudit:window.audit)(a,d))}
 /* ---------- Feature Contract: process, data, metrics, links ---------- */
 const OWN="Rina Okafor",BAK="Jordan Lee";
 PROC.reg("zl_conn",{title:"How connection gaps are found and closed",std:["togaf","dmbok","itil5"],steps:[
- {n:"Collect",d:"Read the entity registry, module map, process library, workflows, search index and inbox adapters.",who:"auto",owner:OWN,sla:"On open",in:"Registries",out:"Record universe"},
- {n:"Check",d:"Run data, process, workflow, cross-module reference, platform and interoperability checks.",who:"auto",owner:OWN,sla:"On open",in:"Record universe",out:"Findings"},
- {n:"Fix by registration",d:"Declare targets, add flows, register adapters, resolvers, tools and intents. Each fix is logged.",who:"auto",owner:OWN,sla:"On load",in:"Findings",out:"Fix log"},
+ {n:"Collect",d:"Read the entity registry, module map, process library, workflows, search index and inbox adapters.",who:"robot",owner:OWN,sla:"On open",in:"Registries",out:"Record universe"},
+ {n:"Check",d:"Run data, process, workflow, cross-module reference, platform and interoperability checks.",who:"robot",owner:OWN,sla:"On open",in:"Record universe",out:"Findings"},
+ {n:"Fix by registration",d:"Declare targets, add flows, register adapters, resolvers, tools and intents. Each fix is logged.",who:"robot",owner:OWN,sla:"On load",in:"Findings",out:"Fix log"},
  {n:"Route to a human",d:"Findings that need a person (owners, authority, classification) become Technical debt items.",who:"gate",owner:OWN,sla:"5 working days",in:"Open findings",out:"Debt items"},
  {n:"Re-measure",d:"Score and trend per area; the invoice decision test re-runs.",who:"human",owner:BAK,sla:"Weekly",in:"Fix log",out:"Connectivity score"}]});
 function wire(){const W=Z.wired=Z.wired||{};
@@ -593,7 +593,7 @@ function wire(){const W=Z.wired=Z.wired||{};
    if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" "))))W.mod=true}
   if(!W.proc&&window.PROCLIB&&PROCLIB.addProcess&&W.mod){const st=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
    const r=G(()=>PROCLIB.addProcess({id:"connectivity_audit",name:"Connectivity audit",module:"zl_conn",family:G(()=>PROCLIB.get("plat_gate").family,undefined),owner:OWN,backup:BAK,trigger:"A registry changes or a person opens Connections and gaps",
-    steps:[st("Collect","Read registries.","auto",OWN,"On open","Registries","Record universe"),st("Check","Run checks.","auto",OWN,"On open","Record universe","Findings"),st("Fix by registration","Apply registration fixes.","auto",OWN,"On load","Findings","Fix log"),st("Route to a human","Debt items for owner decisions.","gate",OWN,"5 working days","Open findings","Debt items"),st("Re-measure","Score and trend.","human",BAK,"Weekly","Fix log","Connectivity score")],
+    steps:[st("Collect","Read registries.","robot",OWN,"On open","Registries","Record universe"),st("Check","Run checks.","robot",OWN,"On open","Record universe","Findings"),st("Fix by registration","Apply registration fixes.","robot",OWN,"On load","Findings","Fix log"),st("Route to a human","Debt items for owner decisions.","gate",OWN,"5 working days","Open findings","Debt items"),st("Re-measure","Score and trend.","human",BAK,"Weekly","Fix log","Connectivity score")],
     inputs:["Registries"],outputs:["Connectivity score","Debt items"],entities:["connectivity_finding","process_definition","metric_definition","person"],metrics:["m_zl_score","m_zl_dead","m_zl_fanout","m_zl_orphans"],model:"cmmi"}),null);
    if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" "))))W.proc=true}
  }catch(e){console.error("zlink wire",e)}

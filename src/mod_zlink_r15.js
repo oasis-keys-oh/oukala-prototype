@@ -84,9 +84,9 @@ window.DATALINK={types:DL_TYPES,parse:parseLink,open:openRecord,resolve:resolveL
 const OWN="Rina Okafor",BAK="Jordan Lee";
 PROC.reg("zevt",{title:"How an event becomes a recorded reaction",std:["togaf","itil5","dmbok"],steps:[
  {n:"Register the event",d:"A module registers its event with id, label, owner and payload fields.",who:"human",owner:OWN,sla:"At build",in:"Module design",out:"Event definition"},
- {n:"Emit",d:"The module publishes the event with a payload, source and actor.",who:"auto",owner:OWN,sla:"Instant",in:"Event definition",out:"Event record"},
- {n:"Evaluate rules",d:"Each enabled rule checks its condition against the payload.",who:"auto",owner:OWN,sla:"Instant",in:"Event record",out:"Matched rules"},
- {n:"Run actions",d:"Update a record, notify, start a workflow, create a task, call a connector or webhook (simulated here).",who:"auto",owner:OWN,sla:"Instant",in:"Matched rules",out:"Firing log row"},
+ {n:"Emit",d:"The module publishes the event with a payload, source and actor.",who:"robot",owner:OWN,sla:"Instant",in:"Event definition",out:"Event record"},
+ {n:"Evaluate rules",d:"Each enabled rule checks its condition against the payload.",who:"robot",owner:OWN,sla:"Instant",in:"Event record",out:"Matched rules"},
+ {n:"Run actions",d:"Update a record, notify, start a workflow, create a task, call a connector or webhook (simulated here).",who:"robot",owner:OWN,sla:"Instant",in:"Matched rules",out:"Firing log row"},
  {n:"Approve a rule change",d:"A new or changed rule is approved by the rule owner.",who:"gate",owner:OWN,sla:"2 working days",in:"Rule draft",out:"Enabled rule"},
  {n:"Review coverage",d:"Events nobody reacts to and rules that fail are reviewed weekly.",who:"human",owner:BAK,sla:"Weekly",in:"Firing log",out:"Coverage metric"}]});
 function wireEvt(){const W=Z15.wired=Z15.wired||{};
@@ -103,7 +103,7 @@ function wireEvt(){const W=Z15.wired=Z15.wired||{};
    const r=G(()=>MODMAP.addModule({id:"zevt",name:"Events and rules",sn:"Events",band:"plt",own:"Platform operations",proposed:false,r:["event_definition","event_rule","approval"],w:["event_definition","event_rule"],flows:fl}),null);if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" "))))W.mod=true}
   if(!W.proc&&W.mod&&window.PROCLIB&&PROCLIB.addProcess){const st=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
    const r=G(()=>PROCLIB.addProcess({id:"event_rules",name:"Event rules",module:"zevt",family:G(()=>PROCLIB.get("plat_gate").family,undefined),owner:OWN,backup:BAK,trigger:"A module emits an event or a rule changes",
-    steps:[st("Register the event","Declare id, owner, fields.","human",OWN,"At build","Module design","Event definition"),st("Emit","Publish with payload.","auto",OWN,"Instant","Event definition","Event record"),st("Evaluate rules","Check conditions.","auto",OWN,"Instant","Event record","Matched rules"),st("Run actions","Run the actions.","auto",OWN,"Instant","Matched rules","Firing log row"),st("Approve a rule change","Rule owner approves.","gate",OWN,"2 working days","Rule draft","Enabled rule"),st("Review coverage","Weekly review.","human",BAK,"Weekly","Firing log","Coverage metric")],
+    steps:[st("Register the event","Declare id, owner, fields.","human",OWN,"At build","Module design","Event definition"),st("Emit","Publish with payload.","robot",OWN,"Instant","Event definition","Event record"),st("Evaluate rules","Check conditions.","robot",OWN,"Instant","Event record","Matched rules"),st("Run actions","Run the actions.","robot",OWN,"Instant","Matched rules","Firing log row"),st("Approve a rule change","Rule owner approves.","gate",OWN,"2 working days","Rule draft","Enabled rule"),st("Review coverage","Weekly review.","human",BAK,"Weekly","Firing log","Coverage metric")],
     inputs:["Event record"],outputs:["Firing log row","Coverage metric"],entities:["event_definition","event_rule","approval","audit_event"],metrics:["m_ev_cov","m_ev_fail"],model:"cmmi"}),null);if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" "))))W.proc=true}
   if(!W.nav&&window.NAVX&&NAVX.add){NAVX.add("zevt",{group:"plat",label:"Events and rules",hint:"Event catalog, rules, dry run and firing log",sub:"Build and connect",kw:"event bus rules triggers webhook firing log notification routing decision events"});W.nav=true}
  }catch(e){console.error("zevt wire",e)}

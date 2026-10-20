@@ -47,19 +47,19 @@ R18.meta=id=>{const a=R18.app(id);if(!a)return{};const ow=ownerName(a);const lef
 R18.objectives=()=>arr(G(()=>EXE.E.objs,[]));
 R18.objective=id=>R18.objectives().find(o=>o.id===id)||null;
 
-/* ---------- process steps (human, automatic, AI, gate), generated from the build ---------- */
+/* ---------- process steps (human, robot, AI, gate), generated from the build ---------- */
 const HAND={
- ca_inv_exc:[["Invoice fails the match check","auto","Reads the invoice and contract; compares amount, quantity and approval","Invoice, contract"],["Classify the reason","ai","Claude Haiku proposes a reason code; a person can change it","Reason code"],["Chase the vendor","human","Accounts payable analyst sends the drafted email and logs the reply","Chase log"],["Resolve or escalate","gate","Over 10 days or over $25,000 goes to the Finance review group","Decision"],["Close and learn","auto","Closes the exception and updates the vendor's exception rate","Closed exception"]],
- ca_pipeline:[["Pull renewals due in 90 days","auto","Reads the member list and renewal dates","Renewal list"],["Set against the strategy and budget","auto","Reads the approved objectives and the budget lines for the membership program","Pipeline vs plan"],["Explain the at-risk renewals","ai","Claude Haiku gives a reason from the member's history; a person reviews it","Risk note"],["Decide the outreach","human","The membership lead chooses who to contact and how","Outreach plan"],["Track the response","auto","Logs replies and updates the pipeline","Response log"]]};
-R18.process=id=>{const a=R18.app(id);if(!a)return{steps:[],pid:null,counts:{human:0,auto:0,ai:0,gate:0}};
+ ca_inv_exc:[["Invoice fails the match check","robot","Reads the invoice and contract; compares amount, quantity and approval","Invoice, contract"],["Classify the reason","ai","Claude Haiku proposes a reason code; a person can change it","Reason code"],["Chase the vendor","human","Accounts payable analyst sends the drafted email and logs the reply","Chase log"],["Resolve or escalate","gate","Over 10 days or over $25,000 goes to the Finance review group","Decision"],["Close and learn","robot","Closes the exception and updates the vendor's exception rate","Closed exception"]],
+ ca_pipeline:[["Pull renewals due in 90 days","robot","Reads the member list and renewal dates","Renewal list"],["Set against the strategy and budget","robot","Reads the approved objectives and the budget lines for the membership program","Pipeline vs plan"],["Explain the at-risk renewals","ai","Claude Haiku gives a reason from the member's history; a person reviews it","Risk note"],["Decide the outreach","human","The membership lead chooses who to contact and how","Outreach plan"],["Track the response","robot","Logs replies and updates the pipeline","Response log"]]};
+R18.process=id=>{const a=R18.app(id);if(!a)return{steps:[],pid:null,counts:{human:0,robot:0,auto:0,ai:0,gate:0}};
  let st=HAND[id];
- if(!st){st=[["Something triggers the work","auto","A schedule, a form or a message starts "+a.n.toLowerCase(),"Trigger"]];
-  if(arr(a.reads).length)st.push(["Gather the data","auto","Reads "+arr(a.reads).slice(0,3).join(", ")+" through the platform, never directly","Data"]);
+ if(!st){st=[["Something triggers the work","robot","A schedule, a form or a message starts "+a.n.toLowerCase(),"Trigger"]];
+  if(arr(a.reads).length)st.push(["Gather the data","robot","Reads "+arr(a.reads).slice(0,3).join(", ")+" through the platform, never directly","Data"]);
   if(arr(a.ai).length)st.push([a.ai[0].use||"AI assists","ai",a.ai[0].model+" through the AI gateway, capped at $"+(a.ai[0].cap||0)+" a month; a person reviews","AI draft"]);
   st.push(["A person decides","human",(a.builder||"The owner")+" or the team reviews and acts","Decision"]);
   if(arr(a.writes).length||arr(a.newEnts).length)st.push(["Record the outcome","gate","Writes go through the owner of the data, with an approval where needed","Record"]);
-  st.push(["Notify and close","auto","Uses the platform notification service","Notice"])}
- const steps=st.map(s=>({n:s[0],who:s[1],d:s[2],out:s[3]}));const counts={human:0,auto:0,ai:0,gate:0};steps.forEach(s=>counts[s.who]=(counts[s.who]||0)+1);
+  st.push(["Notify and close","robot","Uses the platform notification service","Notice"])}
+ const steps=st.map(s=>({n:s[0],who:s[1],d:s[2],out:s[3]}));const counts={human:0,robot:0,ai:0,gate:0};steps.forEach(s=>{const k=s.who==="auto"?"robot":s.who;counts[k]=(counts[k]||0)+1});counts.auto=counts.robot;/* CL-72: auto reads as robot */
  return{steps,pid:"proc_"+id,counts}};
 
 /* ---------- metrics with formulas and a path to automating on trend ---------- */
@@ -123,7 +123,7 @@ R18.facets=id=>{const a=R18.app(id);if(!a)return[];const c=R18.conf(id),m=R18.me
  const worst=rs=>rs.includes("fail")?"missing":rs.includes("warn")?"drafted":"active";
  const done=a.status==="certified"||a.status==="review"||m.confirmed;
  const F={};
- F.process={s:done?"active":"drafted",d:pr.steps.length+" steps: "+pr.counts.human+" person, "+pr.counts.auto+" automatic, "+pr.counts.ai+" AI, "+pr.counts.gate+" gate"+(done?"":". Generated; the owner confirms it.")};
+ F.process={s:done?"active":"drafted",d:pr.steps.length+" steps: "+pr.counts.human+" person, "+pr.counts.robot+" robot, "+pr.counts.ai+" AI, "+pr.counts.gate+" gate"+(done?"":". Generated; the owner confirms it.")};
  F.data={s:!arr(a.reads).length&&!arr(a.newEnts).length?"active":ac.ok?"active":ac.n?"drafted":"missing",d:arr(a.reads).length?(ac.ok?"All "+arr(a.reads).length+" data sources approved":ac.n?ac.pending+" of "+ac.n+" access requests waiting":"Needs access to "+arr(a.reads).length+" sources; none requested"):"Uses no enterprise data"};
  F.metrics={s:done?"active":"drafted",d:me.length+" metrics with formulas, targets and a rule for acting on the trend"};
  F.maturity={s:mt.lvl>=3?"active":"drafted",d:"Level "+mt.lvl+" of 5, target "+mt.tgt+(mt.next.length?"; next: "+mt.next[0]:"")};

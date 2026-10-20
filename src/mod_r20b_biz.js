@@ -27,14 +27,14 @@ const MODS=[
 const PR=[
  {id:"biz_comment",name:"Public comment period",module:"biz_stds",family:"stdv",owner:"Greta Halloran",backup:"Priya Raman",trigger:"A committee approves a draft for public comment",metrics:["m_biz_comment"],steps:[
   st("Open the comment period","Publish the draft and the closing date; notify members.","human","Ballot and comment coordinator","1 day","Approved draft","Open period"),
-  st("Log each comment","Every comment is recorded with its author and section.","auto","Automatic","Instant","Comment","Logged comment"),
+  st("Log each comment","Every comment is recorded with its author and section.","robot","Robot","Instant","Comment","Logged comment"),
   st("Draft responses","Editors draft a response to each comment; AI suggestions are labeled drafts.","human","Standards editor","10 days","Logged comment","Draft response"),
   st("Committee review","The committee accepts, changes or rejects each response.","gate","Technical committee","7 days","Draft response","Committee decision"),
   st("Publish the response letter","Responses go back to every commenter.","human","Ballot and comment coordinator","2 days","Committee decision","Response letter")]},
  {id:"biz_ballot",name:"Ballot and vote tally",module:"biz_stds",family:"stdv",owner:"Priya Raman",backup:"Greta Halloran",trigger:"A revised standard is ready for member vote",metrics:["m_biz_ballot"],steps:[
   st("Open the ballot","Set quorum and deadline; confirm who may vote.","human","Ballot and comment coordinator","1 day","Revised standard","Open ballot"),
   st("Remind members","Reminders go to members who have not voted.","agent","Member Agent","Weekly","Open ballot","Reminder"),
-  st("Close and tally","Count votes and check quorum.","auto","Automatic","Instant","Votes","Tally"),
+  st("Close and tally","Count votes and check quorum.","robot","Robot","Instant","Votes","Tally"),
   st("Resolve negative votes","Each negative vote is answered and the voter asked to confirm.","human","Standards editor","10 days","Tally","Resolved votes"),
   st("Approve for publication","The editorial board approves the result.","gate","Editorial board","5 days","Resolved votes","Approval to publish")]},
  {id:"biz_publish",name:"Standard publication",module:"biz_stds",family:"stdv",owner:"Lucia Ferrante",backup:"Elena Marsh",trigger:"A standard is approved for publication",metrics:["m_biz_cycle"],steps:[
@@ -51,7 +51,7 @@ const PR=[
  {id:"biz_renew",name:"Membership renewal",module:"biz_mem",family:"memb",owner:"Daniel Okoye",backup:"Sofia Lindqvist",trigger:"A membership is within 90 days of its renewal date",metrics:["m_biz_renew"],steps:[
   st("Forecast renewals","List memberships due and flag those at risk.","agent","Member Agent","Monthly","Membership list","Renewal forecast"),
   st("Reach out","Member services contacts each member due.","human","Member services manager","30 days","Renewal forecast","Member response"),
-  st("Issue the dues invoice","Hand off to dues invoicing.","auto","Automatic","Instant","Member response","Dues invoice"),
+  st("Issue the dues invoice","Hand off to dues invoicing.","robot","Robot","Instant","Member response","Dues invoice"),
   st("Record the outcome","Renewed, lapsed or changed tier, with the reason.","human","Dues and renewals analyst","2 days","Dues invoice","Renewal record")]},
  {id:"biz_onboard",name:"New member onboarding",module:"biz_mem",family:"memb",owner:"Sofia Lindqvist",backup:"Daniel Okoye",trigger:"A new member organization signs",metrics:["m_biz_onb"],steps:[
   st("Confirm membership and tier","Check the agreement and dues tier.","human","Member services manager","1 day","Signed agreement","Confirmed membership"),
@@ -59,11 +59,11 @@ const PR=[
   st("Welcome call","Explain committees, ballots and benefits.","human","Member services manager","10 days","Member accounts","Welcome notes"),
   st("90-day check","Confirm first activity; offer help if none.","agent","Member Agent","90 days","Welcome notes","Activity check")]},
  {id:"biz_dues",name:"Dues invoicing and collections",module:"biz_mem",family:"memb",owner:"Dev Anand",backup:"Noelle Park",trigger:"A membership renews or a dues cycle opens",metrics:["m_biz_dso"],steps:[
-  st("Issue the invoice","Amount from the member's tier.","auto","Automatic","Instant","Renewal record","Dues invoice"),
+  st("Issue the invoice","Amount from the member's tier.","robot","Robot","Instant","Renewal record","Dues invoice"),
   st("Remind","A reminder goes out at 30 days if unpaid.","agent","Invoice Agent","30 days","Dues invoice","Reminder"),
   st("Follow up","Call the member and offer a payment plan if needed.","human","Dues billing and collections analyst","7 days","Reminder","Payment or plan"),
   st("Approve a write-off","Write-offs need the controller.","gate","Controller","5 days","Unpaid invoice","Approved write-off"),
-  st("Record payment","Match the payment to the invoice.","auto","Automatic","Instant","Payment","Closed invoice")]},
+  st("Record payment","Match the payment to the invoice.","robot","Robot","Instant","Payment","Closed invoice")]},
  {id:"biz_license",name:"Copyright and licensing request",module:"biz_stds",family:"stdv",owner:"Graham Wells",backup:"Lucia Ferrante",trigger:"Someone asks to reuse or translate a publication",metrics:["m_biz_lic"],steps:[
   st("Log the request","Who, what and for what use.","human","Licensing specialist","1 day","Request","Logged request"),
   st("Check rights","Confirm ownership and any existing licence.","human","Licensing specialist","2 days","Logged request","Rights check"),
@@ -86,7 +86,7 @@ const PR=[
   st("Open registration","Announce to members and track registrations.","human","Events and conference manager","Ongoing","Booked venue and speakers","Registrations"),
   st("Run and review","Run the event; report results against goal.","human","Events and conference manager","30 days","Registrations","Results report")]},
  {id:"biz_contract",name:"Contract review and renewal",module:"biz_corp",family:"corp",owner:"Julian Park",backup:"Theo Marlowe",trigger:"A contract is 90 days from its renewal date or a new one is requested",metrics:["m_biz_contract"],steps:[
-  st("List contracts due","Renewals in the next 90 days.","auto","Automatic","Weekly","Contract register","Renewal list"),
+  st("List contracts due","Renewals in the next 90 days.","robot","Robot","Weekly","Contract register","Renewal list"),
   st("Review terms","Check terms, price and liability.","human","Contracts paralegal","10 days","Renewal list","Redlines"),
   st("Legal approval","General counsel approves terms outside the standard.","gate","General counsel","5 days","Redlines","Approved terms"),
   st("Route for signature","The signer is set by delegation of authority.","human","Contracts paralegal","5 days","Approved terms","Signed contract")]}];

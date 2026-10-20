@@ -10,15 +10,15 @@ G(()=>{if(W.PERM&&PERM.personaRoles){const X=["executive","people_manager","empl
 const PSX=s=>({n:s[0],d:s[1],who:s[2],owner:s[3],sla:s[4],in:s[5],out:s[6]});
 const PROCS=[
  {id:"r18_spend_view",screen:"r18_spend",name:"How enterprise spend is shown by executive and domain",owner:OWN.spend,steps:[
-  ["Read the budget lines","Approved, committed, actual and forecast come from the one budget; nothing is copied.","auto","Automatic","Instant","Budget lines","Spend by cost center"],
-  ["Place each cost center in one domain","Every cost center belongs to exactly one domain, so no dollar is counted twice.","auto","Automatic","Instant","Spend by cost center","Spend by domain"],
-  ["Roll domains up to the owning executive","Each domain has one executive owner. An executive who owns several domains sees each one and the combined total.","auto","Automatic","Instant","Spend by domain","Spend by executive"],
+  ["Read the budget lines","Approved, committed, actual and forecast come from the one budget; nothing is copied.","robot","Robot","Instant","Budget lines","Spend by cost center"],
+  ["Place each cost center in one domain","Every cost center belongs to exactly one domain, so no dollar is counted twice.","robot","Robot","Instant","Spend by cost center","Spend by domain"],
+  ["Roll domains up to the owning executive","Each domain has one executive owner. An executive who owns several domains sees each one and the combined total.","robot","Robot","Instant","Spend by domain","Spend by executive"],
   ["Allocate shared IT costs","Cloud and licences can be allocated to consuming domains by headcount. The view states whether allocation is on.","human","Finance owner","Monthly","Spend by domain","Allocated spend"],
   ["Review forecast against approved","The executive opens the domain with the largest overrun and asks its owner to act.","human","Executive","Monthly","Allocated spend","Assigned action"],
   ["Change a domain owner","Reassigning a domain updates every view and is written to the audit trail.","gate","Finance owner","As needed","Assigned action","Updated ownership"]]},
  {id:"r18_levels_view",screen:"r18_levels",name:"How views scale with the level of a role",owner:OWN.lvl,steps:[
-  ["Place the role at a level","Each role is an executive, director, manager, specialist or contributor.","auto","Automatic","Instant","Role","Level"],
-  ["Choose the home","Executives get a headline view; others get working views for their part.","auto","Automatic","Instant","Level","Home"],
+  ["Place the role at a level","Each role is an executive, director, manager, specialist or contributor.","robot","Robot","Instant","Role","Level"],
+  ["Choose the home","Executives get a headline view; others get working views for their part.","robot","Robot","Instant","Level","Home"],
   ["Drill down","Any level can open what is below it; the nested permission model decides what is allowed.","human","Any role","Any","Home","Detail"]]}];
 const M={
  m_spend_var:{n:"Enterprise forecast against approved",f:"(Forecast − approved) ÷ approved × 100, across all domains, shared IT costs allocated",u:"%",cur:0,tgt:0,badAt:6,dir:"min",max:15,tr:[1,1.4,2,2.6,3.1,3.8,4.4,5],owner:OWN.spend[0],use:["Enterprise spend"],rem:{kind:"sop",ref:"SOP-R18-9",title:"Ask the owner of the largest overrun to reforecast",agent:"Forecast Agent",auto:false,state:"idle",prog:"Lists domains over approved"}},

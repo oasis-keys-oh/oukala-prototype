@@ -82,7 +82,7 @@ R.boxDrawer=function(jid,bid){const a=A(),Y=X.JY;const j=Y.list.find(x=>x.id===j
  <div class="row" style="margin-top:14px"><button class="btn" data-pp2-act="jbedit" data-a="${jid}|${bid}">Edit the box</button></div></div>`)};
 
 /* ---------- process drawer: steps, and the processes it connects to ---------- */
-const TYP={human:"People",agent:"Agent",auto:"Automatic",gate:"Approval"};
+const TYP={human:"People",agent:"Agent",robot:"Robot",auto:"Robot",gate:"Approval"};
 R.procView=function(src,ref,ctx){const a=A(),p={src,ref},key=src+"|"+ref,cn=R.conn(key);const nm=a.wfN(p),steps=R.procSteps(p);const me=cn.me;const rows=me?me.rows:[];
  const jn=[...cn.js.values()],js=jn.length,boxes=rows.length,xla=rows.length?rows.reduce((s,r)=>s+r.b.em,0)/rows.length:0;
  const chips=(m,none)=>m.size?[...m.values()].sort((x,y)=>y.n-x.n).map(o=>`<button class="jx-pc" data-pp2-act="jprocx" data-a="${E(R.pkey(o.p))}"><span>${E(a.wfN(o.p))}</span><small>${o.n} step${o.n===1?"":"s"}</small></button>`).join(""):`<span class="small muted">${none}</span>`;
