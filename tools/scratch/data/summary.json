@@ -1,0 +1,6781 @@
+{
+ "screens": 196,
+ "modes": {
+  "core": 181,
+  "data": 12,
+  "tenant": 3
+ },
+ "by_area": {
+  "Home": 1,
+  "Strategy and value": 18,
+  "Money and contracts": 19,
+  "My work": 10,
+  "Risk, control and AI": 30,
+  "Operations and service": 28,
+  "Transformation": 15,
+  "Portfolio and delivery": 13,
+  "Build and admin": 48,
+  "Ask or request": 4,
+  "People and organization": 5,
+  "not in IA inventory": 1,
+  "Showroom": 4
+ },
+ "core_by_area": {
+  "Home": 1,
+  "Strategy and value": 13,
+  "Money and contracts": 19,
+  "My work": 10,
+  "Risk, control and AI": 30,
+  "Operations and service": 28,
+  "Transformation": 10,
+  "Portfolio and delivery": 12,
+  "Build and admin": 44,
+  "Ask or request": 4,
+  "People and organization": 5,
+  "not in IA inventory": 1,
+  "Showroom": 4
+ },
+ "no_business_reads": [
+  "log",
+  "plat_data_old",
+  "plat_self",
+  "studio",
+  "trace"
+ ],
+ "ready_all": {
+  "health": [
+   "bc_frame",
+   "bc_trace",
+   "dec_cov",
+   "draw_studio",
+   "flw_bpmn",
+   "flw_design",
+   "guard",
+   "itom_fin",
+   "kcs_ask",
+   "nav_studio",
+   "plat_build",
+   "plat_dmap",
+   "plat_map",
+   "plat_mcp",
+   "plat_pmap",
+   "plat_proc",
+   "plat_reg",
+   "plat_retrofit",
+   "ppm_sow",
+   "r18_levels",
+   "scr_map",
+   "showroom",
+   "wf_runs"
+  ],
+  "mining": [
+   "bc_frame",
+   "bc_trace",
+   "dec_cov",
+   "draw_studio",
+   "flw_bpmn",
+   "flw_design",
+   "guard",
+   "itom_fin",
+   "kcs_ask",
+   "nav_studio",
+   "plat_build",
+   "plat_dmap",
+   "plat_map",
+   "plat_mcp",
+   "plat_pmap",
+   "plat_proc",
+   "plat_reg",
+   "plat_retrofit",
+   "ppm_sow",
+   "r18_levels",
+   "scr_map",
+   "showroom",
+   "wf_runs"
+  ],
+  "storage": [
+   "bc_frame",
+   "bc_trace",
+   "dec_cov",
+   "draw_studio",
+   "flw_bpmn",
+   "flw_design",
+   "guard",
+   "itom_fin",
+   "kcs_ask",
+   "nav_studio",
+   "plat_build",
+   "plat_dmap",
+   "plat_map",
+   "plat_mcp",
+   "plat_pmap",
+   "plat_proc",
+   "plat_reg",
+   "plat_retrofit",
+   "ppm_sow",
+   "r18_levels",
+   "scr_map",
+   "showroom",
+   "wf_runs"
+  ]
+ },
+ "ready_defined_only": [
+  "bc_frame",
+  "bc_trace",
+  "dec_cov",
+  "draw_studio",
+  "flw_bpmn",
+  "flw_design",
+  "guard",
+  "itom_fin",
+  "kcs_ask",
+  "nav_studio",
+  "plat_build",
+  "plat_dmap",
+  "plat_map",
+  "plat_mcp",
+  "plat_pmap",
+  "plat_proc",
+  "plat_reg",
+  "plat_retrofit",
+  "ppm_sow",
+  "r18_levels",
+  "scr_map",
+  "showroom",
+  "wf_runs"
+ ],
+ "entities": {
+  "access_grants": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "PERM.extraUsers",
+    "S.adm.roles",
+    "S.r15i.grants",
+    "S.r15i.reqs",
+    "S.r15i.runs"
+   ],
+   "screens": 17,
+   "core_screens": 17,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "caps",
+    "n",
+    "person",
+    "why",
+    "exp",
+    "set",
+    "at",
+    "st",
+    "item",
+    "who",
+    "days",
+    "status",
+    "ev",
+    "pkg",
+    "steps",
+    "done"
+   ],
+   "packs": null
+  },
+  "action_items": {
+   "defined": false,
+   "area": "My work",
+   "cls": "entity",
+   "paths": [
+    "MEETX.acts"
+   ],
+   "screens": 7,
+   "core_screens": 7,
+   "only_missing": [],
+   "fields": [
+    "due",
+    "st",
+    "mid",
+    "own",
+    "t",
+    "id",
+    "closed",
+    "raid",
+    "carry",
+    "created",
+    "pri",
+    "link"
+   ],
+   "packs": null
+  },
+  "agents": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "AGENTS",
+    "AGENTS_STATE.order",
+    "CONTRACT.agents",
+    "R18.access",
+    "R18.kill",
+    "R18.spend",
+    "S.agents",
+    "S.ppl.agents"
+   ],
+   "screens": 31,
+   "core_screens": 25,
+   "only_missing": [
+    "flw_agent",
+    "plat_contract",
+    "ai_runtime",
+    "agent_defs"
+   ],
+   "fields": [
+    "n",
+    "st",
+    "id",
+    "spend",
+    "cap$",
+    "model",
+    "runs",
+    "act",
+    "owner",
+    "auto",
+    "prov",
+    "tools",
+    "purpose",
+    "hits",
+    "base",
+    "kind",
+    "guards",
+    "rule",
+    "conf",
+    "inp",
+    "out",
+    "checks",
+    "guard"
+   ],
+   "packs": null
+  },
+  "applications": {
+   "defined": false,
+   "area": "Transformation",
+   "cls": "entity",
+   "paths": [
+    "S.exe.apps"
+   ],
+   "screens": 9,
+   "core_screens": 7,
+   "only_missing": [],
+   "fields": [
+    "cost",
+    "id",
+    "val",
+    "hlt",
+    "red",
+    "n",
+    "cat",
+    "ven",
+    "life",
+    "users",
+    "own"
+   ],
+   "packs": null
+  },
+  "approval_policies": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "config",
+   "paths": [
+    "APPR.state.binds",
+    "APPR.state.rules",
+    "S.br.rules",
+    "S.bud.crules",
+    "S.bud.doa",
+    "S.bud.pol",
+    "S.rules"
+   ],
+   "screens": 25,
+   "core_screens": 25,
+   "only_missing": [
+    "r16h_status",
+    "r16h_rules"
+   ],
+   "fields": [
+    "role",
+    "id",
+    "max",
+    "cat",
+    "why",
+    "min",
+    "name",
+    "root",
+    "apg",
+    "kind",
+    "ref",
+    "rule",
+    "desc",
+    "entity",
+    "big",
+    "amt",
+    "idx",
+    "dup",
+    "risk",
+    "v",
+    "d",
+    "who",
+    "what",
+    "stages",
+    "note",
+    "label",
+    "product",
+    "owner",
+    "version",
+    "sample"
+   ],
+   "packs": null
+  },
+  "audit_log": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "AUDIT",
+    "S.ownx.log",
+    "S.r16g.hist",
+    "S.zlink.log",
+    "STORE.log"
+   ],
+   "screens": 16,
+   "core_screens": 16,
+   "only_missing": [
+    "loop",
+    "plat_store"
+   ],
+   "fields": [
+    "t",
+    "by",
+    "id",
+    "prev",
+    "seq",
+    "op",
+    "entity",
+    "keys",
+    "hash",
+    "a",
+    "d",
+    "p",
+    "s",
+    "type",
+    "at",
+    "owner",
+    "backup",
+    "label",
+    "summary",
+    "before",
+    "after",
+    "state",
+    "what",
+    "n"
+   ],
+   "packs": null
+  },
+  "audits": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "GRCX.audits",
+    "GRCX.findings"
+   ],
+   "screens": 13,
+   "core_screens": 13,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "id",
+    "due",
+    "reqs",
+    "t",
+    "own",
+    "sev",
+    "firm",
+    "ctl",
+    "bak",
+    "debt",
+    "src",
+    "risk",
+    "steps",
+    "lead",
+    "period",
+    "report",
+    "sref",
+    "vend",
+    "kind",
+    "fw",
+    "start",
+    "opened",
+    "desc"
+   ],
+   "packs": null
+  },
+  "benefits": {
+   "defined": false,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "R17U.gapp",
+    "S.bud.ben"
+   ],
+   "screens": 9,
+   "core_screens": 9,
+   "only_missing": [
+    "bud_ben"
+   ],
+   "fields": [
+    "p",
+    "start",
+    "drv",
+    "real",
+    "id",
+    "own",
+    "conf",
+    "n",
+    "ty"
+   ],
+   "packs": null
+  },
+  "budget_lines": {
+   "defined": true,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "S.bud.lines"
+   ],
+   "screens": 35,
+   "core_screens": 30,
+   "only_missing": [],
+   "fields": [
+    "appr",
+    "act",
+    "fcst",
+    "comm",
+    "cat",
+    "p",
+    "id",
+    "n",
+    "dept",
+    "own",
+    "why",
+    "fix",
+    "num"
+   ],
+   "packs": {
+    "health": 13,
+    "mining": 13,
+    "storage": 12
+   }
+  },
+  "budget_requests": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "S.br.reqs"
+   ],
+   "screens": 10,
+   "core_screens": 9,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "amt",
+    "type",
+    "src",
+    "req",
+    "proj",
+    "stIn",
+    "sc",
+    "id",
+    "t",
+    "dupOf",
+    "color",
+    "cc",
+    "rv",
+    "tl",
+    "risk",
+    "why",
+    "yrs",
+    "route",
+    "cost",
+    "line",
+    "sp",
+    "obj",
+    "ben",
+    "alt",
+    "what",
+    "att",
+    "dem",
+    "cm",
+    "rank",
+    "lineId"
+   ],
+   "packs": null
+  },
+  "builds": {
+   "defined": false,
+   "area": "Build and admin",
+   "cls": "entity",
+   "paths": [
+    "R18.LEVELS",
+    "R18.stateClass",
+    "R18.stateText",
+    "S.gate.apps"
+   ],
+   "screens": 18,
+   "core_screens": 17,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "n",
+    "status",
+    "builder",
+    "tier",
+    "owner",
+    "reads",
+    "writes",
+    "purpose",
+    "m",
+    "newEnts",
+    "dupProc",
+    "ai",
+    "sunset",
+    "fn",
+    "users",
+    "cost",
+    "aiCost",
+    "connectors",
+    "classes",
+    "ttfa"
+   ],
+   "packs": null
+  },
+  "capabilities": {
+   "defined": false,
+   "area": "Transformation",
+   "cls": "entity",
+   "paths": [
+    "MAT.HW",
+    "MAT.HZ",
+    "S.mat.xcaps"
+   ],
+   "screens": 15,
+   "core_screens": 11,
+   "only_missing": [],
+   "fields": [
+    "ids",
+    "cr",
+    "w",
+    "id",
+    "cur",
+    "model",
+    "t",
+    "b0",
+    "svcs",
+    "objs",
+    "name",
+    "owner",
+    "root",
+    "eff",
+    "mo",
+    "parent",
+    "conf"
+   ],
+   "packs": null
+  },
+  "capacity": {
+   "defined": false,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "CAP.Architecture",
+    "CAP.Data team",
+    "CAP.Editors",
+    "CAP.Lumen (vendor)",
+    "CAP.Ops team",
+    "CAP.Platform team"
+   ],
+   "screens": 4,
+   "core_screens": 2,
+   "only_missing": [],
+   "fields": [],
+   "packs": null
+  },
+  "catalog_items": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "OGX.guides",
+    "OGX.lanes",
+    "SVC3B.CAT",
+    "SVC3B.CSP",
+    "SVC3B.GRPS",
+    "SVC3B.ME",
+    "SVC3B.RELN",
+    "SVC3B.TY",
+    "SVC3B.V"
+   ],
+   "screens": 11,
+   "core_screens": 11,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "id",
+    "parts",
+    "blurb",
+    "cat",
+    "short",
+    "svc",
+    "off",
+    "vars",
+    "pr",
+    "appr",
+    "est",
+    "state",
+    "c",
+    "item",
+    "slaH",
+    "ill",
+    "ic",
+    "flow",
+    "d",
+    "members",
+    "lead",
+    "kinds",
+    "pop",
+    "q",
+    "needL",
+    "own",
+    "g"
+   ],
+   "packs": null
+  },
+  "changes": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.itsm.cablog",
+    "S.itsm.chg"
+   ],
+   "screens": 21,
+   "core_screens": 21,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "start",
+    "st",
+    "svc",
+    "t",
+    "type",
+    "end",
+    "cis",
+    "win",
+    "req",
+    "stages",
+    "env",
+    "cost",
+    "subH",
+    "just",
+    "back",
+    "test",
+    "hist",
+    "out",
+    "own",
+    "prb",
+    "inc",
+    "rel",
+    "proj",
+    "appr",
+    "rq",
+    "auto",
+    "grp",
+    "impl",
+    "ok",
+    "tr",
+    "tpl"
+   ],
+   "packs": null
+  },
+  "config_items": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "CIEDGE",
+    "CIOWN.state.hist",
+    "CIREG",
+    "SVC_ASSETS"
+   ],
+   "screens": 27,
+   "core_screens": 27,
+   "only_missing": [
+    "itom_model",
+    "bc_tiers",
+    "svc_asset"
+   ],
+   "fields": [
+    "id",
+    "name",
+    "svc",
+    "cls",
+    "class",
+    "_p",
+    "owner",
+    "status",
+    "env",
+    "isSvc",
+    "st",
+    "grp",
+    "ip",
+    "svcLayer",
+    "model",
+    "who",
+    "crit",
+    "src",
+    "_h",
+    "uptime",
+    "a",
+    "usrc",
+    "life",
+    "cloudish",
+    "t",
+    "kind",
+    "detail",
+    "by",
+    "loc",
+    "bought",
+    "war",
+    "cost",
+    "intune",
+    "req"
+   ],
+   "packs": null
+  },
+  "connectors": {
+   "defined": false,
+   "area": "Build and admin",
+   "cls": "config",
+   "paths": [
+    "S.fab.conns",
+    "S.fab.events",
+    "S.fab.maps",
+    "S.fab.quar",
+    "S.fab.recon",
+    "S.fab.reqs",
+    "S.fab.runs",
+    "S.flw.conns",
+    "S.flw.dlq",
+    "S.flw.hooks",
+    "S.flw.keys",
+    "S.flw.mcps"
+   ],
+   "screens": 12,
+   "core_screens": 12,
+   "only_missing": [
+    "flw_hub"
+   ],
+   "fields": [
+    "status",
+    "id",
+    "kind",
+    "conn",
+    "tier",
+    "ents",
+    "name",
+    "ent",
+    "k",
+    "owner",
+    "n",
+    "err",
+    "min",
+    "at",
+    "st",
+    "rec",
+    "sys",
+    "tr",
+    "auth",
+    "last",
+    "rl",
+    "ev",
+    "url",
+    "lag",
+    "cat",
+    "flows",
+    "c",
+    "att",
+    "age",
+    "dir",
+    "sig",
+    "ok",
+    "made",
+    "pre",
+    "sc",
+    "used",
+    "exp",
+    "own",
+    "tools",
+    "calls"
+   ],
+   "packs": null
+  },
+  "contracts": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "S.bud.con"
+   ],
+   "screens": 12,
+   "core_screens": 11,
+   "only_missing": [],
+   "fields": [
+    "rn",
+    "id",
+    "n",
+    "v",
+    "ntc",
+    "tcv",
+    "dec",
+    "co",
+    "ty",
+    "own",
+    "ann",
+    "line",
+    "s",
+    "e",
+    "ms",
+    "rnTy",
+    "sla",
+    "replacedBy",
+    "util",
+    "rate",
+    "inv",
+    "proj"
+   ],
+   "packs": null
+  },
+  "controls": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "GRCX.TIER_FREQ",
+    "GRCX.att",
+    "GRCX.controls",
+    "GRCX.cycles",
+    "GRCX.tests",
+    "S.adm.ctl"
+   ],
+   "screens": 14,
+   "core_screens": 14,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "last",
+    "own",
+    "res",
+    "id",
+    "bak",
+    "maps",
+    "freq",
+    "ref",
+    "t",
+    "ev",
+    "fw",
+    "person",
+    "ctls",
+    "at",
+    "risks",
+    "ctl",
+    "feat",
+    "items",
+    "go",
+    "name",
+    "start",
+    "end",
+    "tester",
+    "due",
+    "notes",
+    "cycle",
+    "src",
+    "pol",
+    "ent",
+    "met"
+   ],
+   "packs": null
+  },
+  "conversations": {
+   "defined": false,
+   "area": "My work",
+   "cls": "entity",
+   "paths": [
+    "S.chx.threads"
+   ],
+   "screens": 4,
+   "core_screens": 4,
+   "only_missing": [],
+   "fields": [
+    "arch",
+    "title",
+    "msgs",
+    "pinned",
+    "id",
+    "upd",
+    "mode",
+    "ctx"
+   ],
+   "packs": null
+  },
+  "cost_centers": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "BUDX.DEPTS",
+    "S.ccmap.rows"
+   ],
+   "screens": 20,
+   "core_screens": 19,
+   "only_missing": [
+    "bud_ccmap",
+    "bud_lines"
+   ],
+   "fields": [
+    "code",
+    "units",
+    "owner",
+    "name",
+    "gl",
+    "st",
+    "note"
+   ],
+   "packs": null
+  },
+  "decision_tables": {
+   "defined": false,
+   "area": "Build and admin",
+   "cls": "config",
+   "paths": [
+    "S.flw.dmn"
+   ],
+   "screens": 2,
+   "core_screens": 2,
+   "only_missing": [
+    "flw_dmn"
+   ],
+   "fields": [
+    "id",
+    "name",
+    "rows",
+    "inputs",
+    "hp",
+    "desc",
+    "ai",
+    "outputs"
+   ],
+   "packs": null
+  },
+  "decisions": {
+   "defined": false,
+   "area": "My work",
+   "cls": "entity",
+   "paths": [
+    "MEETX.decs",
+    "OGX.decisions",
+    "R17Q_DATA.decisions",
+    "S.fin.decs",
+    "S.fin.dlog",
+    "S.ppl.decs"
+   ],
+   "screens": 12,
+   "core_screens": 12,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "t",
+    "why",
+    "st",
+    "rat",
+    "dt",
+    "by",
+    "ratAt",
+    "mid",
+    "raid",
+    "alts",
+    "decision",
+    "date",
+    "round",
+    "full",
+    "rev",
+    "eff",
+    "conf",
+    "src",
+    "d",
+    "f",
+    "due",
+    "owner",
+    "note",
+    "what",
+    "who",
+    "detail",
+    "reason",
+    "consequence",
+    "entity",
+    "kind"
+   ],
+   "packs": null
+  },
+  "demand": {
+   "defined": true,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "DEMAND",
+    "DW0.f",
+    "DW0.r",
+    "DW0.s",
+    "DW0.u",
+    "S.ppm.reqs"
+   ],
+   "screens": 25,
+   "core_screens": 18,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "n",
+    "sp",
+    "m0",
+    "mo",
+    "cost",
+    "st",
+    "why",
+    "wk",
+    "trig",
+    "who",
+    "ben",
+    "strat",
+    "risk",
+    "urg",
+    "pm",
+    "res",
+    "obj",
+    "svc",
+    "cap",
+    "dup",
+    "kg",
+    "pmName",
+    "pid",
+    "to",
+    "skill",
+    "hrs",
+    "pref",
+    "role",
+    "from"
+   ],
+   "packs": {
+    "health": 6,
+    "mining": 6,
+    "storage": 6
+   }
+  },
+  "events": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "EVENTS.log",
+    "LIVEEVENTS",
+    "SVCEVT"
+   ],
+   "screens": 7,
+   "core_screens": 7,
+   "only_missing": [
+    "svc_notify"
+   ],
+   "fields": [
+    "id",
+    "n",
+    "src",
+    "sev",
+    "to",
+    "at",
+    "source",
+    "payload",
+    "outcomes",
+    "x",
+    "eventId",
+    "actor"
+   ],
+   "packs": null
+  },
+  "finance_policies": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "config",
+   "paths": [
+    "S.fin.colors",
+    "S.fin.drv",
+    "S.fin.evreg",
+    "S.fin.ladder",
+    "S.fin.log",
+    "S.fin.pols",
+    "S.fin.rel",
+    "S.fin.rules",
+    "S.fin.sources",
+    "S.fin.splits"
+   ],
+   "screens": 10,
+   "core_screens": 10,
+   "only_missing": [
+    "fin_spend",
+    "fin_rules"
+   ],
+   "fields": [
+    "id",
+    "name",
+    "st",
+    "color",
+    "n",
+    "src",
+    "fund",
+    "use",
+    "t",
+    "c",
+    "avail",
+    "gaap",
+    "relT",
+    "auth",
+    "ev",
+    "conds",
+    "allowed",
+    "rank",
+    "rep",
+    "elig",
+    "status",
+    "from",
+    "to",
+    "amt",
+    "date",
+    "proj",
+    "start",
+    "end",
+    "owner",
+    "d",
+    "basis",
+    "imposed",
+    "allow",
+    "unallow",
+    "cap",
+    "capT",
+    "rel",
+    "exp",
+    "carry",
+    "trig"
+   ],
+   "packs": null
+  },
+  "forums": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "S.ppl.forums"
+   ],
+   "screens": 4,
+   "core_screens": 4,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "c",
+    "cadence",
+    "next",
+    "id",
+    "charter",
+    "chair",
+    "members",
+    "quorum",
+    "len",
+    "mid"
+   ],
+   "packs": null
+  },
+  "incidents": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.itsm.inc"
+   ],
+   "screens": 15,
+   "core_screens": 15,
+   "only_missing": [
+    "bc_decl"
+   ],
+   "fields": [
+    "st",
+    "id",
+    "svc",
+    "t",
+    "age",
+    "_c",
+    "ovr",
+    "_cv",
+    "grp",
+    "prb",
+    "direct",
+    "pausedH",
+    "resH",
+    "respH",
+    "own",
+    "caller",
+    "cat",
+    "maj",
+    "ua",
+    "ci",
+    "chg",
+    "urg",
+    "kb",
+    "notes",
+    "d",
+    "deg",
+    "txh"
+   ],
+   "packs": null
+  },
+  "invoices": {
+   "defined": true,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "INVOICES"
+   ],
+   "screens": 19,
+   "core_screens": 13,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "vendor",
+    "amt",
+    "rec",
+    "due",
+    "perf",
+    "story",
+    "checks",
+    "conf",
+    "led",
+    "node",
+    "months",
+    "plan",
+    "paid",
+    "earn",
+    "contract",
+    "num"
+   ],
+   "packs": {
+    "health": 6,
+    "mining": 6,
+    "storage": 6
+   }
+  },
+  "journeys": {
+   "defined": true,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "JYX.JY.list"
+   ],
+   "screens": 8,
+   "core_screens": 5,
+   "only_missing": [],
+   "fields": [
+    "stages",
+    "cat",
+    "n",
+    "persona",
+    "id",
+    "wf",
+    "desc"
+   ],
+   "packs": {
+    "health": 10,
+    "mining": 3,
+    "storage": 3
+   }
+  },
+  "key_results": {
+   "defined": true,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "S.exe.krs"
+   ],
+   "screens": 11,
+   "core_screens": 4,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "id",
+    "cur",
+    "o",
+    "tgt",
+    "start",
+    "u",
+    "owner",
+    "num"
+   ],
+   "packs": {
+    "health": 8,
+    "mining": 8,
+    "storage": 8
+   }
+  },
+  "knowledge_articles": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "KCS_TEST.ART",
+    "KCS_TEST.PR",
+    "KCS_TEST.SRC",
+    "KCS_TEST.SU",
+    "KCS_TEST.SUGGEST",
+    "KCS_TEST.SVCS",
+    "KCS_TEST.TOPICS",
+    "KCS_TEST.UNANS",
+    "S.kcsx.imp",
+    "S.kcsx.runs"
+   ],
+   "screens": 17,
+   "core_screens": 17,
+   "only_missing": [
+    "kcs_test"
+   ],
+   "fields": [
+    "st",
+    "id",
+    "rev",
+    "name",
+    "t",
+    "s",
+    "type",
+    "svc",
+    "status",
+    "risk",
+    "purpose",
+    "cases",
+    "why",
+    "owner",
+    "topic",
+    "desc",
+    "own",
+    "appr",
+    "views",
+    "help",
+    "q",
+    "n",
+    "kb",
+    "prodV",
+    "candV",
+    "model",
+    "runs",
+    "sk",
+    "exp",
+    "links",
+    "srcs",
+    "defl",
+    "rvw",
+    "nudged",
+    "reuse",
+    "k",
+    "meta",
+    "conf",
+    "ev",
+    "aud"
+   ],
+   "packs": null
+  },
+  "learning": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "S.ppl.courses",
+    "S.ppl.enr",
+    "S.ppl.paths",
+    "S.ppl.xapi"
+   ],
+   "screens": 7,
+   "core_screens": 7,
+   "only_missing": [],
+   "fields": [
+    "t",
+    "id",
+    "cat",
+    "aud",
+    "mand",
+    "src",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C6",
+    "C10",
+    "C7",
+    "C8",
+    "C5",
+    "C9",
+    "due",
+    "mins",
+    "cert",
+    "mods",
+    "pass",
+    "recur",
+    "c",
+    "a",
+    "verb",
+    "actor",
+    "object",
+    "timestamp",
+    "result",
+    "context",
+    "owner"
+   ],
+   "packs": null
+  },
+  "leave": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "S.ppl.leave"
+   ],
+   "screens": 7,
+   "core_screens": 7,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "from",
+    "id",
+    "who",
+    "to"
+   ],
+   "packs": null
+  },
+  "ledger_entries": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "PROV_SHARE",
+    "S.bud.led",
+    "SPEND30"
+   ],
+   "screens": 16,
+   "core_screens": 14,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "amt",
+    "t",
+    "line",
+    "p",
+    "req",
+    "id",
+    "apr",
+    "why",
+    "d",
+    "ai",
+    "num"
+   ],
+   "packs": null
+  },
+  "maturity": {
+   "defined": true,
+   "area": "Transformation",
+   "cls": "entity",
+   "paths": [],
+   "screens": 3,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 8,
+    "mining": 8,
+    "storage": 8
+   }
+  },
+  "meetings": {
+   "defined": false,
+   "area": "My work",
+   "cls": "entity",
+   "paths": [
+    "EXTRACTED",
+    "MEETINGS",
+    "MEETX.MON",
+    "MEETX.series",
+    "S.ppl.agendas",
+    "S.ppl.minutes"
+   ],
+   "screens": 13,
+   "core_screens": 13,
+   "only_missing": [
+    "fo"
+   ],
+   "fields": [
+    "id",
+    "t",
+    "type",
+    "s",
+    "sum",
+    "d",
+    "dt",
+    "inv",
+    "n",
+    "rev",
+    "att",
+    "st",
+    "e",
+    "k",
+    "cad",
+    "cancel",
+    "agenda",
+    "prep",
+    "files",
+    "minutes",
+    "series",
+    "links",
+    "room",
+    "chair",
+    "purpose",
+    "rec",
+    "exc",
+    "secy",
+    "f",
+    "auto",
+    "kind",
+    "conf",
+    "txt",
+    "line",
+    "av",
+    "nt",
+    "items",
+    "approved",
+    "q",
+    "dec"
+   ],
+   "packs": null
+  },
+  "metrics": {
+   "defined": true,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "METRICS",
+    "OBSX.metrics"
+   ],
+   "screens": 172,
+   "core_screens": 161,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "cur",
+    "u",
+    "tr",
+    "dir",
+    "tgt",
+    "badAt",
+    "max",
+    "f",
+    "rem",
+    "use",
+    "owner",
+    "_r15n",
+    "col",
+    "_r15u"
+   ],
+   "packs": {
+    "health": 11,
+    "mining": 11,
+    "storage": 11
+   }
+  },
+  "monitors": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.obs.ar",
+    "S.obs.dashes",
+    "S.obs.exec",
+    "S.obs.fpMark",
+    "S.obs.rules",
+    "S.obs.sc",
+    "S.obs.syn",
+    "S.obs.wins"
+   ],
+   "screens": 11,
+   "core_screens": 11,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "id",
+    "kind",
+    "on",
+    "mode",
+    "m",
+    "rule",
+    "lvl",
+    "risk",
+    "dow",
+    "cis",
+    "tiles",
+    "type",
+    "tgt",
+    "tpl",
+    "why",
+    "own",
+    "cls",
+    "svc",
+    "trig",
+    "rb",
+    "by",
+    "warn",
+    "crit",
+    "ci",
+    "sc",
+    "blast",
+    "runs",
+    "ok",
+    "steps",
+    "pre",
+    "back",
+    "at",
+    "op",
+    "sens",
+    "forMin",
+    "from",
+    "to",
+    "loc",
+    "every"
+   ],
+   "packs": null
+  },
+  "objectives": {
+   "defined": true,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "EXE.E",
+    "ROLLUP.RULES",
+    "S.exe.links",
+    "S.exe.objs"
+   ],
+   "screens": 31,
+   "core_screens": 22,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "n",
+    "O1",
+    "O2",
+    "O3",
+    "O4",
+    "O5",
+    "owner",
+    "c",
+    "story",
+    "sub",
+    "num",
+    "metric",
+    "tgt",
+    "due"
+   ],
+   "packs": {
+    "health": 4,
+    "mining": 4,
+    "storage": 4
+   }
+  },
+  "ops_automations": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.itom.aud",
+    "S.itom.camps",
+    "S.itom.idr",
+    "S.itom.prec",
+    "S.itom.rej",
+    "S.itom.runs",
+    "S.itom.srcs",
+    "S.itom.tasks"
+   ],
+   "screens": 2,
+   "core_screens": 2,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "st",
+    "n",
+    "o",
+    "src",
+    "at",
+    "t",
+    "due",
+    "cls",
+    "ids",
+    "dep",
+    "partial",
+    "note",
+    "a",
+    "reason",
+    "raw",
+    "found",
+    "updated",
+    "rej",
+    "dur",
+    "created",
+    "same",
+    "state",
+    "last",
+    "every",
+    "conn",
+    "map",
+    "kind",
+    "who",
+    "ci",
+    "cn",
+    "f",
+    "scope",
+    "att",
+    "rule",
+    "grp",
+    "dem"
+   ],
+   "packs": null
+  },
+  "org_units": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "ORGX.domains"
+   ],
+   "screens": 25,
+   "core_screens": 24,
+   "only_missing": [],
+   "fields": [
+    "aliases",
+    "id",
+    "label",
+    "ownerId",
+    "backupId"
+   ],
+   "packs": null
+  },
+  "people": {
+   "defined": true,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "DIR",
+    "KINDS.ai",
+    "KINDS.contractor",
+    "KINDS.human",
+    "KINDS.msp",
+    "ORGX.PBYID",
+    "ORGX.by",
+    "ORGX.staff",
+    "PEOPLE",
+    "S.ppl.people"
+   ],
+   "screens": 131,
+   "core_screens": 118,
+   "only_missing": [],
+   "fields": [
+    "name",
+    "kind",
+    "role",
+    "id",
+    "n",
+    "team",
+    "unit",
+    "mgr",
+    "hrs",
+    "rate",
+    "skills",
+    "end",
+    "loc",
+    "fte",
+    "rt",
+    "contract",
+    "et",
+    "fn",
+    "email",
+    "sla",
+    "type",
+    "c",
+    "org",
+    "dot",
+    "mx",
+    "tenure"
+   ],
+   "packs": {
+    "health": 26,
+    "mining": 25,
+    "storage": 22
+   }
+  },
+  "personas": {
+   "defined": true,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [],
+   "screens": 2,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 18,
+    "mining": 16,
+    "storage": 9
+   }
+  },
+  "pillars": {
+   "defined": true,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [],
+   "screens": 4,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 3,
+    "mining": 3,
+    "storage": 3
+   }
+  },
+  "plan_tasks": {
+   "defined": false,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "BASE.R",
+    "IDX.map",
+    "IDX.n",
+    "IDX.v",
+    "IDX.x",
+    "IMS_SCEN",
+    "PC.lumen5@c",
+    "PC.now@c",
+    "PC.now@c.l",
+    "PC.now@u",
+    "PTC.m",
+    "PTC.n",
+    "PTC.v",
+    "TMAP.m",
+    "TMAP.n"
+   ],
+   "screens": 28,
+   "core_screens": 23,
+   "only_missing": [
+    "ims",
+    "plan"
+   ],
+   "fields": [
+    "pct",
+    "ms",
+    "id",
+    "dur",
+    "as",
+    "af",
+    "p",
+    "own",
+    "n",
+    "res",
+    "wbs",
+    "ef",
+    "bdur",
+    "es",
+    "pred",
+    "dv",
+    "asg",
+    "parent",
+    "lv",
+    "snet",
+    "acc",
+    "note",
+    "cost",
+    "ac",
+    "oi"
+   ],
+   "packs": null
+  },
+  "policies": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "config",
+   "paths": [
+    "GRCX.exceptions",
+    "GRCX.policies",
+    "S.adm.holds",
+    "S.adm.pol",
+    "S.adm.ret"
+   ],
+   "screens": 14,
+   "core_screens": 14,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "id",
+    "req",
+    "exp",
+    "t",
+    "done",
+    "nextRev",
+    "n",
+    "own",
+    "appr",
+    "vers",
+    "eff",
+    "bak",
+    "why",
+    "ctl",
+    "on",
+    "fw",
+    "kind",
+    "ref",
+    "debt",
+    "conds",
+    "recs",
+    "scope",
+    "cust",
+    "vol",
+    "yrs",
+    "act",
+    "comp",
+    "risk",
+    "cycle",
+    "aud",
+    "ack",
+    "me"
+   ],
+   "packs": null
+  },
+  "problems": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.itsm.ke",
+    "S.itsm.prb"
+   ],
+   "screens": 10,
+   "core_screens": 10,
+   "only_missing": [],
+   "fields": [
+    "st",
+    "id",
+    "t",
+    "svc",
+    "workaround",
+    "cause",
+    "wa",
+    "sym",
+    "users",
+    "owner",
+    "chg",
+    "kb",
+    "used",
+    "help",
+    "prb",
+    "past",
+    "pr",
+    "root",
+    "fish",
+    "why",
+    "fix"
+   ],
+   "packs": null
+  },
+  "processes": {
+   "defined": true,
+   "area": "Build and admin",
+   "cls": "entity",
+   "paths": [
+    "PROC.defs"
+   ],
+   "screens": 160,
+   "core_screens": 150,
+   "only_missing": [],
+   "fields": [
+    "title",
+    "steps",
+    "std"
+   ],
+   "packs": {
+    "health": 8,
+    "mining": 8,
+    "storage": 8
+   }
+  },
+  "projects": {
+   "defined": true,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "PROJ",
+    "S.fab.proj",
+    "XT.proj"
+   ],
+   "screens": 41,
+   "core_screens": 32,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "owner",
+    "n",
+    "short",
+    "bac",
+    "t",
+    "stage",
+    "risk",
+    "route",
+    "created",
+    "purpose",
+    "systems",
+    "dir",
+    "vol",
+    "paid",
+    "c",
+    "rec",
+    "outcome",
+    "num"
+   ],
+   "packs": {
+    "health": 6,
+    "mining": 6,
+    "storage": 6
+   }
+  },
+  "purchase_orders": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "S.bud.po"
+   ],
+   "screens": 10,
+   "core_screens": 10,
+   "only_missing": [],
+   "fields": [
+    "inv",
+    "rec",
+    "st",
+    "ord",
+    "id",
+    "v",
+    "paid",
+    "d",
+    "date",
+    "aBy",
+    "cBy",
+    "line",
+    "rBy",
+    "ct"
+   ],
+   "packs": null
+  },
+  "raid_items": {
+   "defined": false,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "PPMRAID"
+   ],
+   "screens": 20,
+   "core_screens": 20,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "mit",
+    "s",
+    "p",
+    "t",
+    "n",
+    "own",
+    "pr",
+    "due",
+    "im",
+    "d",
+    "cost",
+    "acc"
+   ],
+   "packs": null
+  },
+  "reports": {
+   "defined": false,
+   "area": "Build and admin",
+   "cls": "config",
+   "paths": [
+    "S.r15r.reports",
+    "S.r15r.runs",
+    "S.r15r.scheds",
+    "S.r16d.charts",
+    "S.viz.dash",
+    "S.viz.lib"
+   ],
+   "screens": 6,
+   "core_screens": 6,
+   "only_missing": [
+    "kcs_viz"
+   ],
+   "fields": [
+    "owner",
+    "name",
+    "id",
+    "title",
+    "spec",
+    "note",
+    "backup",
+    "measure",
+    "dim",
+    "report",
+    "at",
+    "channel",
+    "share",
+    "created",
+    "by",
+    "rows",
+    "to",
+    "status",
+    "on",
+    "people",
+    "roles",
+    "freq",
+    "dow",
+    "scope",
+    "team",
+    "fdim",
+    "top",
+    "chart",
+    "items",
+    "upd"
+   ],
+   "packs": null
+  },
+  "risks": {
+   "defined": false,
+   "area": "Risk, control and AI",
+   "cls": "entity",
+   "paths": [
+    "GRCX.APPETITE",
+    "GRCX.risks",
+    "S.exe.risks",
+    "S.fin.risks"
+   ],
+   "screens": 26,
+   "core_screens": 21,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "st",
+    "own",
+    "p",
+    "amt",
+    "proj",
+    "plan",
+    "cat",
+    "t",
+    "n",
+    "ctl",
+    "due",
+    "il",
+    "ii",
+    "rl",
+    "ri",
+    "bak",
+    "src",
+    "proc",
+    "ent",
+    "met",
+    "vend",
+    "svc",
+    "kri",
+    "rev",
+    "exc",
+    "desc",
+    "why",
+    "mit",
+    "owner",
+    "note"
+   ],
+   "packs": null
+  },
+  "role_assignments": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "R15E.roles",
+    "S.ownx.asg",
+    "S.r15e.roles"
+   ],
+   "screens": 55,
+   "core_screens": 52,
+   "only_missing": [
+    "flw_asmt",
+    "inbox",
+    "agile_board",
+    "agile_art"
+   ],
+   "fields": [
+    "owner",
+    "backup",
+    "holders",
+    "runtime",
+    "id",
+    "name",
+    "tier",
+    "basis"
+   ],
+   "packs": null
+  },
+  "rooms": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "S.ppl.bk",
+    "S.ppl.rooms"
+   ],
+   "screens": 6,
+   "core_screens": 6,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "tr",
+    "cap",
+    "eq",
+    "n",
+    "room",
+    "d",
+    "e",
+    "s",
+    "gen",
+    "att",
+    "av",
+    "hy",
+    "setup",
+    "t",
+    "tech",
+    "type",
+    "floor"
+   ],
+   "packs": null
+  },
+  "rotas": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.oc.esc",
+    "S.oc.rotas"
+   ],
+   "screens": 6,
+   "core_screens": 6,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "layers",
+    "scope",
+    "target",
+    "id",
+    "lv",
+    "tier",
+    "rota",
+    "sla",
+    "req",
+    "rate",
+    "ai"
+   ],
+   "packs": null
+  },
+  "scenarios": {
+   "defined": false,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "S.exe.scens"
+   ],
+   "screens": 4,
+   "core_screens": 4,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "note",
+    "id",
+    "lumen",
+    "crash",
+    "cut",
+    "env"
+   ],
+   "packs": null
+  },
+  "service_levels": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.obs.slos",
+    "SLAX.SEED"
+   ],
+   "screens": 9,
+   "core_screens": 9,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "n",
+    "svc",
+    "good",
+    "tgt",
+    "ty",
+    "kind",
+    "target",
+    "goal",
+    "proc",
+    "act",
+    "party",
+    "own",
+    "sli",
+    "contract",
+    "cond",
+    "sch",
+    "retro",
+    "tbl",
+    "msp",
+    "st",
+    "xla",
+    "warn",
+    "ver"
+   ],
+   "packs": null
+  },
+  "service_policies": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "config",
+   "paths": [
+    "S.itsm.apol",
+    "S.itsm.ovlog",
+    "S.itsm.tpl"
+   ],
+   "screens": 7,
+   "core_screens": 7,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "n",
+    "cond",
+    "on",
+    "st",
+    "svc",
+    "by",
+    "from",
+    "to",
+    "role",
+    "why",
+    "appr",
+    "at",
+    "deleg",
+    "mode",
+    "quorum",
+    "sla",
+    "seq",
+    "auto",
+    "stop",
+    "pre",
+    "ok",
+    "runs",
+    "freq",
+    "dur"
+   ],
+   "packs": null
+  },
+  "service_requests": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "REQREG",
+    "S.svc.dem",
+    "SVC3B.REQS"
+   ],
+   "screens": 12,
+   "core_screens": 12,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "state",
+    "item",
+    "requester",
+    "ap",
+    "service",
+    "onBehalfOf",
+    "created",
+    "withN",
+    "stepN",
+    "sl",
+    "cost",
+    "price",
+    "slaTgt",
+    "flow",
+    "req",
+    "done",
+    "ts",
+    "for",
+    "key",
+    "title",
+    "src",
+    "at",
+    "synced",
+    "vals",
+    "act",
+    "as",
+    "w"
+   ],
+   "packs": null
+  },
+  "service_tasks": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "S.itsm.tasks"
+   ],
+   "screens": 1,
+   "core_screens": 1,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "done",
+    "t",
+    "who",
+    "due",
+    "from"
+   ],
+   "packs": null
+  },
+  "services": {
+   "defined": false,
+   "area": "Operations and service",
+   "cls": "entity",
+   "paths": [
+    "SVCREG",
+    "SVCX.created",
+    "SVCX.off"
+   ],
+   "screens": 38,
+   "core_screens": 34,
+   "only_missing": [
+    "tbm_model"
+   ],
+   "fields": [
+    "id",
+    "n",
+    "tier",
+    "owner",
+    "avail",
+    "cost",
+    "offerings",
+    "obj",
+    "sme",
+    "users",
+    "tgt",
+    "deps",
+    "processOwner",
+    "proj",
+    "maturity",
+    "matTgt",
+    "matCaps",
+    "svc",
+    "matModels",
+    "unit",
+    "subs",
+    "req"
+   ],
+   "packs": null
+  },
+  "skills": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "S.kcsx.skills",
+    "S.skl.custom",
+    "SKILLS",
+    "SKILLSDB.cats",
+    "SKILLSDB.levels"
+   ],
+   "screens": 11,
+   "core_screens": 11,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "status",
+    "n",
+    "runs",
+    "cat",
+    "skill",
+    "kb",
+    "name",
+    "owner",
+    "ok",
+    "saved",
+    "esc",
+    "person",
+    "level",
+    "verified",
+    "steps",
+    "appr",
+    "guards",
+    "inputs",
+    "risk",
+    "fail",
+    "tests",
+    "ver",
+    "conf",
+    "model",
+    "created",
+    "apBy",
+    "src",
+    "l",
+    "d"
+   ],
+   "packs": null
+  },
+  "teams": {
+   "defined": false,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [
+    "TEAMS"
+   ],
+   "screens": 20,
+   "core_screens": 19,
+   "only_missing": [],
+   "fields": [
+    "n",
+    "mgr",
+    "id"
+   ],
+   "packs": null
+  },
+  "tech_debt": {
+   "defined": false,
+   "area": "Transformation",
+   "cls": "entity",
+   "paths": [
+    "DEBT.rate",
+    "S.debt.tasks"
+   ],
+   "screens": 2,
+   "core_screens": 2,
+   "only_missing": [],
+   "fields": [
+    "title",
+    "id",
+    "kind",
+    "due",
+    "owner"
+   ],
+   "packs": null
+  },
+  "tenant_settings": {
+   "defined": false,
+   "area": "Build and admin",
+   "cls": "config",
+   "paths": [
+    "S.adm.bg",
+    "S.adm.flags",
+    "S.adm.gr",
+    "S.adm.kits",
+    "S.adm.langs",
+    "S.adm.models",
+    "S.adm.pkgs",
+    "S.adm.rev",
+    "S.adm.routes",
+    "S.adm.seats",
+    "S.adm.tok",
+    "S.admx.forms",
+    "S.r16g.fields"
+   ],
+   "screens": 16,
+   "core_screens": 16,
+   "only_missing": [
+    "adm_env",
+    "adm_meter"
+   ],
+   "fields": [
+    "n",
+    "id",
+    "st",
+    "on",
+    "name",
+    "e",
+    "dir",
+    "env",
+    "bought",
+    "assigned",
+    "enabled",
+    "entity",
+    "field",
+    "sub",
+    "when",
+    "mode",
+    "why",
+    "uid",
+    "access",
+    "used",
+    "rec",
+    "d",
+    "c",
+    "def",
+    "rtl",
+    "table",
+    "sections",
+    "owner",
+    "version",
+    "screen",
+    "start",
+    "dur",
+    "who",
+    "scope",
+    "appr",
+    "reason",
+    "risk",
+    "conf",
+    "k",
+    "own"
+   ],
+   "packs": null
+  },
+  "timesheets": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "S.r15t.rcpts",
+    "S.r15t.reqs",
+    "S.r15t.sheets"
+   ],
+   "screens": 6,
+   "core_screens": 6,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "status",
+    "po",
+    "desc",
+    "date",
+    "seed",
+    "week",
+    "late",
+    "person",
+    "rows",
+    "note",
+    "amt",
+    "posted",
+    "approver",
+    "by",
+    "requester",
+    "line",
+    "apg"
+   ],
+   "packs": null
+  },
+  "trace_links": {
+   "defined": false,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [
+    "EDGES",
+    "NODES"
+   ],
+   "screens": 9,
+   "core_screens": 6,
+   "only_missing": [
+    "kg"
+   ],
+   "fields": [
+    "id",
+    "n",
+    "t",
+    "story",
+    "s",
+    "amt",
+    "owner",
+    "c",
+    "a"
+   ],
+   "packs": null
+  },
+  "value_chain": {
+   "defined": true,
+   "area": "Strategy and value",
+   "cls": "entity",
+   "paths": [],
+   "screens": 3,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 7,
+    "mining": 7,
+    "storage": 7
+   }
+  },
+  "vendors": {
+   "defined": false,
+   "area": "Money and contracts",
+   "cls": "entity",
+   "paths": [
+    "GRCX.vendors",
+    "S.bud.vend"
+   ],
+   "screens": 18,
+   "core_screens": 18,
+   "only_missing": [
+    "bc_plans"
+   ],
+   "fields": [
+    "id",
+    "n",
+    "tier",
+    "last",
+    "cat",
+    "del",
+    "qual",
+    "resp",
+    "be",
+    "prem",
+    "own",
+    "risk",
+    "inh",
+    "data",
+    "score",
+    "findings",
+    "note",
+    "tr",
+    "dom",
+    "contracts",
+    "lines",
+    "con"
+   ],
+   "packs": null
+  },
+  "vocabulary": {
+   "defined": true,
+   "area": "Build and admin",
+   "cls": "entity",
+   "paths": [],
+   "screens": 2,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 15,
+    "mining": 15,
+    "storage": 15
+   }
+  },
+  "work_items": {
+   "defined": false,
+   "area": "Portfolio and delivery",
+   "cls": "entity",
+   "paths": [
+    "S.fab.wi",
+    "S.ppl.acts",
+    "S.ppl.tix",
+    "S.ppl.work",
+    "WORK"
+   ],
+   "screens": 23,
+   "core_screens": 20,
+   "only_missing": [],
+   "fields": [
+    "kind",
+    "tag",
+    "due",
+    "st",
+    "doneOn",
+    "owner",
+    "w0",
+    "n",
+    "h",
+    "id",
+    "t",
+    "state",
+    "room",
+    "bk",
+    "why",
+    "d",
+    "s",
+    "tech",
+    "by",
+    "f",
+    "o",
+    "src",
+    "sub",
+    "who"
+   ],
+   "packs": null
+  },
+  "workflows": {
+   "defined": true,
+   "area": "Build and admin",
+   "cls": "entity",
+   "paths": [
+    "S.flw.W",
+    "S.flw.bps",
+    "S.flw.wfs",
+    "WFX.defs"
+   ],
+   "screens": 16,
+   "core_screens": 12,
+   "only_missing": [],
+   "fields": [
+    "id",
+    "name",
+    "nodes",
+    "service",
+    "owner",
+    "steps",
+    "desc",
+    "_row",
+    "_v",
+    "kind",
+    "_st",
+    "happy",
+    "els",
+    "story",
+    "lanes",
+    "fl",
+    "runs",
+    "kill",
+    "goal",
+    "agent",
+    "reviewers",
+    "limits",
+    "guard"
+   ],
+   "packs": {
+    "health": 45,
+    "mining": 17,
+    "storage": 13
+   }
+  },
+  "workload": {
+   "defined": true,
+   "area": "People and organization",
+   "cls": "entity",
+   "paths": [],
+   "screens": 3,
+   "core_screens": 0,
+   "only_missing": [],
+   "fields": [],
+   "packs": {
+    "health": 13,
+    "mining": 12,
+    "storage": 12
+   }
+  }
+ },
+ "helpers": {
+  "mod_r16h_d_rules.js": {
+   "approval_policies": 8
+  },
+  "mod_r18h_spend.js": {
+   "cost_centers": 3,
+   "budget_lines": 3,
+   "agents": 1
+  },
+  "mod_mat.js": {
+   "demand": 12,
+   "capabilities": 14,
+   "projects": 12,
+   "objectives": 2,
+   "services": 6
+  },
+  "kit2.js": {
+   "people": 114,
+   "processes": 123,
+   "services": 19,
+   "work_items": 12,
+   "metrics": 27,
+   "config_items": 4,
+   "ops_automations": 2,
+   "incidents": 1,
+   "problems": 1,
+   "workflows": 4,
+   "connectors": 1,
+   "finance_policies": 1,
+   "builds": 1,
+   "service_requests": 1
+  },
+  "mod_r15e_roles.js": {
+   "people": 7,
+   "processes": 3
+  },
+  "mod_zlink.js": {
+   "people": 44,
+   "role_assignments": 49,
+   "work_items": 6,
+   "metrics": 1,
+   "processes": 2,
+   "trace_links": 1,
+   "contracts": 1,
+   "budget_lines": 1
+  },
+  "mod_budget3.js": {
+   "demand": 5,
+   "budget_requests": 9
+  },
+  "mod_r18_0_core.js": {
+   "objectives": 4,
+   "agents": 6,
+   "builds": 14
+  },
+  "mod_inbox.js": {
+   "invoices": 5,
+   "meetings": 5,
+   "service_requests": 5,
+   "projects": 5,
+   "changes": 5,
+   "work_items": 5,
+   "builds": 4
+  },
+  "mod_r15d_ai.js": {
+   "invoices": 1
+  },
+  "mod_kcs.js": {
+   "knowledge_articles": 11,
+   "config_items": 1,
+   "skills": 4
+  },
+  "ui.js": {
+   "metrics": 153,
+   "ledger_entries": 3,
+   "invoices": 3,
+   "meetings": 3,
+   "trace_links": 3
+  },
+  "mod_exec.js": {
+   "metrics": 8,
+   "projects": 8,
+   "risks": 10,
+   "objectives": 5,
+   "agents": 4,
+   "applications": 3,
+   "key_results": 4,
+   "scenarios": 3,
+   "invoices": 3,
+   "demand": 1
+  },
+  "mod_r15e_data.js": {
+   "metrics": 128
+  },
+  "mod_r16j_h_metrics.js": {
+   "metrics": 125
+  },
+  "mod_org.js": {
+   "people": 50,
+   "org_units": 22,
+   "metrics": 1,
+   "access_grants": 6
+  },
+  "mod_plat_gate.js": {
+   "processes": 10,
+   "builds": 14
+  },
+  "mod_r18e_lens.js": {
+   "agents": 1,
+   "objectives": 1
+  },
+  "mod_r18g_levels.js": {
+   "agents": 1
+  },
+  "mod_r18k_biz.js": {
+   "agents": 1,
+   "budget_lines": 1
+  },
+  "mod_r16h_c_groups.js": {
+   "service_requests": 5,
+   "approval_policies": 2
+  },
+  "mod_svc.js": {
+   "service_requests": 7,
+   "catalog_items": 7,
+   "events": 3,
+   "config_items": 3
+  },
+  "mod_r15d_facts.js": {
+   "agents": 10
+  },
+  "mod_budget.js": {
+   "approval_policies": 15,
+   "ledger_entries": 6,
+   "budget_lines": 7,
+   "invoices": 1,
+   "vendors": 4,
+   "projects": 3,
+   "benefits": 3,
+   "contracts": 3,
+   "purchase_orders": 3
+  },
+  "mod_flow.js": {
+   "approval_policies": 5,
+   "processes": 6,
+   "workflows": 6,
+   "service_requests": 1
+  },
+  "mod_plat_fin.js": {
+   "budget_lines": 12,
+   "metrics": 4,
+   "ledger_entries": 1,
+   "finance_policies": 7
+  },
+  "mod_r18d_access.js": {
+   "builds": 6
+  },
+  "mod_itsm.js": {
+   "changes": 8,
+   "problems": 4,
+   "config_items": 3,
+   "service_policies": 3,
+   "incidents": 3
+  },
+  "mod_own.js": {
+   "role_assignments": 13,
+   "metrics": 4,
+   "audit_log": 1,
+   "people": 5,
+   "org_units": 4,
+   "raid_items": 3,
+   "budget_lines": 3,
+   "vendors": 2,
+   "builds": 2,
+   "services": 3,
+   "contracts": 1
+  },
+  "data2.js": {
+   "plan_tasks": 27,
+   "capacity": 3,
+   "demand": 6,
+   "projects": 4
+  },
+  "mod_plat_links.js": {
+   "processes": 28,
+   "metrics": 1
+  },
+  "mod_ppm.js": {
+   "capacity": 1,
+   "demand": 5,
+   "metrics": 1,
+   "plan_tasks": 2,
+   "people": 1,
+   "raid_items": 4,
+   "skills": 4
+  },
+  "data.js": {
+   "trace_links": 2
+  },
+  "mod_s_owner.js": {
+   "people": 14,
+   "teams": 14
+  },
+  "mod_plat_proclib.js": {
+   "processes": 24,
+   "metrics": 11
+  },
+  "mod_r16j_d_admin.js": {
+   "tenant_settings": 1
+  },
+  "mod_r17u_a_core.js": {
+   "benefits": 8,
+   "people": 5,
+   "metrics": 1,
+   "projects": 1,
+   "budget_lines": 5
+  },
+  "mod_r17u_c_dsrc.js": {
+   "metrics": 2,
+   "demand": 1,
+   "invoices": 1,
+   "projects": 1,
+   "benefits": 1,
+   "changes": 1,
+   "incidents": 1,
+   "services": 1
+  },
+  "mod_r17u_d_dash.js": {
+   "benefits": 1
+  },
+  "mod_obs.js": {
+   "service_levels": 5,
+   "config_items": 3,
+   "metrics": 3,
+   "monitors": 3
+  },
+  "mod_plat_cover.js": {
+   "processes": 1,
+   "role_assignments": 1
+  },
+  "mod_r32_num_b.js": {
+   "key_results": 1,
+   "objectives": 1,
+   "invoices": 1,
+   "projects": 1,
+   "ledger_entries": 1,
+   "budget_lines": 1
+  },
+  "mod_meet.js": {
+   "meetings": 7,
+   "action_items": 7,
+   "decisions": 7,
+   "metrics": 4,
+   "raid_items": 4
+  },
+  "mod_zsearch.js": {
+   "people": 1
+  },
+  "mod_people.js": {
+   "people": 10,
+   "projects": 2,
+   "teams": 1,
+   "journeys": 3,
+   "learning": 3,
+   "decisions": 3,
+   "forums": 3,
+   "rooms": 3
+  },
+  "mod_r31_jx.js": {
+   "journeys": 4
+  },
+  "mod_org5.js": {
+   "metrics": 1,
+   "people": 4
+  },
+  "mod_org3.js": {
+   "people": 4
+  },
+  "mod_r17t_a_actor.js": {
+   "people": 2,
+   "agents": 5
+  },
+  "mod_oncall.js": {
+   "leave": 2,
+   "rotas": 4,
+   "skills": 3,
+   "people": 1
+  },
+  "mod_r30_jov.js": {
+   "journeys": 1
+  },
+  "mod_r31_jxr.js": {
+   "journeys": 1
+  },
+  "mod_org2.js": {
+   "people": 3
+  },
+  "mod_plat_fabric.js": {
+   "connectors": 10,
+   "projects": 3
+  },
+  "mod_r15b_ccmap.js": {
+   "cost_centers": 10,
+   "people": 6
+  },
+  "screens2.js": {
+   "events": 1,
+   "ledger_entries": 1,
+   "agents": 1
+  },
+  "mod_r15f2_b_data.js": {
+   "objectives": 12,
+   "risks": 12,
+   "controls": 12,
+   "audits": 11,
+   "policies": 11,
+   "vendors": 12,
+   "metrics": 11,
+   "raid_items": 12
+  },
+  "mod_r16l_a_data.js": {
+   "config_items": 5,
+   "changes": 3,
+   "monitors": 3,
+   "metrics": 7,
+   "vendors": 1
+  },
+  "mod_r15f2_b_grc.js": {
+   "risks": 1,
+   "controls": 4,
+   "audits": 4,
+   "policies": 4,
+   "metrics": 1
+  },
+  "mod_r16l_d_plans.js": {
+   "metrics": 1,
+   "vendors": 1
+  },
+  "mod_r15f3_iam.js": {
+   "people": 2,
+   "access_grants": 10
+  },
+  "mod_r16g_a_perm.js": {
+   "access_grants": 1,
+   "tenant_settings": 4,
+   "invoices": 3
+  },
+  "mod_r16h_0_core.js": {
+   "people": 1
+  },
+  "mod_r15f3_report.js": {
+   "cost_centers": 1,
+   "projects": 1,
+   "budget_lines": 1,
+   "reports": 3
+  },
+  "mod_r16j_e_dash.js": {
+   "people": 1
+  },
+  "screens1.js": {
+   "trace_links": 1,
+   "metrics": 1
+  },
+  "mod_r16m_a_core.js": {
+   "people": 6,
+   "metrics": 6
+  },
+  "mod_r15f1_a_store.js": {
+   "audit_log": 6
+  },
+  "mod_r16m_b_setup.js": {
+   "tenant_settings": 4
+  },
+  "mod_r17p_c_moments.js": {
+   "catalog_items": 4
+  },
+  "mod_plat_contract.js": {
+   "processes": 4,
+   "agents": 3,
+   "metrics": 1
+  },
+  "mod_itom.js": {
+   "config_items": 3
+  },
+  "mod_svc360.js": {
+   "config_items": 3,
+   "services": 3
+  },
+  "mod_r17q_b_core.js": {
+   "tech_debt": 1,
+   "controls": 1,
+   "policies": 1,
+   "metrics": 1,
+   "decisions": 3
+  },
+  "screens4.js": {
+   "demand": 3,
+   "projects": 3,
+   "plan_tasks": 1,
+   "people": 1,
+   "metrics": 1
+  },
+  "mod_r15d_ask.js": {
+   "people": 3,
+   "metrics": 3
+  },
+  "mod_r16k_trace.js": {
+   "objectives": 3
+  },
+  "mod_plat_atlas.js": {
+   "metrics": 3
+  },
+  "mod_svc3.js": {
+   "catalog_items": 4,
+   "people": 1
+  },
+  "mod_r16h_a_status.js": {
+   "people": 3
+  },
+  "mod_r32_scrmap_b_screen.js": {
+   "processes": 3
+  },
+  "mod_plat_fin2.js": {
+   "projects": 3,
+   "finance_policies": 3,
+   "decisions": 3,
+   "risks": 3
+  },
+  "mod_admin.js": {
+   "controls": 3,
+   "tenant_settings": 3,
+   "policies": 3,
+   "access_grants": 3
+  },
+  "mod_r15d_evidence.js": {
+   "controls": 1
+  },
+  "mod_r17u_b_ben.js": {
+   "benefits": 1
+  },
+  "mod_chat.js": {
+   "conversations": 3
+  },
+  "mod_r18f_wire.js": {
+   "builds": 1
+  },
+  "mod_r15f3_time.js": {
+   "timesheets": 3
+  },
+  "mod_r16j_g_contract.js": {
+   "reports": 3
+  },
+  "mod_r25_a_data.js": {
+   "reports": 4,
+   "metrics": 1
+  },
+  "mod_sla.js": {
+   "service_levels": 3
+  },
+  "mod_devops.js": {
+   "services": 3
+  },
+  "mod_tbm.js": {
+   "services": 3
+  },
+  "mod_r17s_a_engine.js": {
+   "people": 1,
+   "incidents": 1
+  },
+  "mod_s_showroom_lens.js": {
+   "metrics": 1
+  },
+  "platform.js": {
+   "demand": 1,
+   "people": 1,
+   "invoices": 1,
+   "projects": 1,
+   "budget_lines": 1,
+   "key_results": 1
+  },
+  "mod_r16i_portal.js": {
+   "catalog_items": 1,
+   "service_requests": 1
+  },
+  "mod_viz.js": {
+   "metrics": 1
+  },
+  "mod_r15e_ntf.js": {
+   "role_assignments": 1,
+   "events": 2
+  },
+  "mod_zlink_r15.js": {
+   "events": 1,
+   "role_assignments": 1
+  }
+ },
+ "modules": {
+  "screens1.js": {
+   "screens": [
+    "home",
+    "trace",
+    "inv"
+   ],
+   "need": [
+    "agents",
+    "approval_policies",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "cost_centers",
+    "demand",
+    "invoices",
+    "knowledge_articles",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "objectives",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "role_assignments",
+    "service_requests",
+    "trace_links",
+    "work_items"
+   ],
+   "own": [
+    "approval_policies",
+    "invoices",
+    "trace_links"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "data.js": {
+   "screens": [
+    "home (also)",
+    "trace (also)",
+    "inv (also)",
+    "fo (also)",
+    "tower (also)",
+    "metrics (also)",
+    "kg (also)",
+    "loop (also)"
+   ],
+   "need": [],
+   "own": [],
+   "modes": [
+    "core",
+    "data"
+   ]
+  },
+  "screens2.js": {
+   "screens": [
+    "fo",
+    "tower",
+    "metrics",
+    "loop"
+   ],
+   "need": [
+    "agents",
+    "audit_log",
+    "events",
+    "key_results",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "agents",
+    "audit_log",
+    "events",
+    "ledger_entries",
+    "meetings",
+    "metrics"
+   ],
+   "modes": [
+    "core",
+    "data"
+   ]
+  },
+  "screens3.js": {
+   "screens": [
+    "kg"
+   ],
+   "need": [
+    "processes",
+    "trace_links"
+   ],
+   "own": [
+    "trace_links"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "screens4.js": {
+   "screens": [
+    "port",
+    "ims",
+    "plan",
+    "log"
+   ],
+   "need": [
+    "capacity",
+    "demand",
+    "metrics",
+    "objectives",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "services",
+    "trace_links",
+    "work_items"
+   ],
+   "own": [
+    "metrics",
+    "people",
+    "plan_tasks",
+    "projects"
+   ],
+   "modes": [
+    "core",
+    "data"
+   ]
+  },
+  "mod_admin.js": {
+   "screens": [
+    "adm_studio",
+    "adm_sec",
+    "adm_env",
+    "adm_meter",
+    "adm_gate",
+    "adm_audit"
+   ],
+   "need": [
+    "access_grants",
+    "agents",
+    "audit_log",
+    "controls",
+    "ledger_entries",
+    "metrics",
+    "org_units",
+    "people",
+    "policies",
+    "processes",
+    "role_assignments",
+    "teams",
+    "tenant_settings"
+   ],
+   "own": [
+    "access_grants",
+    "agents",
+    "audit_log",
+    "controls",
+    "ledger_entries",
+    "metrics",
+    "policies",
+    "tenant_settings"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_budget.js": {
+   "screens": [
+    "bud_over",
+    "bud_model",
+    "bud_ven",
+    "bud_ben (also)",
+    "bud_doa"
+   ],
+   "need": [
+    "approval_policies",
+    "benefits",
+    "budget_lines",
+    "contracts",
+    "cost_centers",
+    "invoices",
+    "ledger_entries",
+    "metrics",
+    "plan_tasks",
+    "projects",
+    "purchase_orders",
+    "vendors"
+   ],
+   "own": [
+    "approval_policies",
+    "benefits",
+    "budget_lines",
+    "contracts",
+    "cost_centers",
+    "invoices",
+    "ledger_entries",
+    "metrics",
+    "plan_tasks",
+    "projects",
+    "purchase_orders",
+    "vendors"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17u_b_ben.js": {
+   "screens": [
+    "bud_ben"
+   ],
+   "need": [
+    "benefits",
+    "budget_lines",
+    "metrics",
+    "objectives",
+    "people",
+    "processes",
+    "projects"
+   ],
+   "own": [
+    "benefits",
+    "budget_lines",
+    "objectives"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_budget3.js": {
+   "screens": [
+    "bud_req"
+   ],
+   "need": [
+    "approval_policies",
+    "budget_lines",
+    "budget_requests",
+    "cost_centers",
+    "demand",
+    "ledger_entries",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "approval_policies",
+    "budget_requests",
+    "cost_centers",
+    "demand",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_chat.js": {
+   "screens": [
+    "chat_home"
+   ],
+   "need": [
+    "audit_log",
+    "conversations",
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "audit_log",
+    "conversations",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_dec.js": {
+   "screens": [
+    "dec_cov"
+   ],
+   "need": [
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_devops.js": {
+   "screens": [
+    "dev_pipe",
+    "itom_dev",
+    "plat_map (also)",
+    "plat_data (also)"
+   ],
+   "need": [
+    "changes",
+    "config_items",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "processes",
+    "service_levels",
+    "service_policies",
+    "services"
+   ],
+   "own": [
+    "changes",
+    "config_items",
+    "metrics",
+    "service_policies",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_modmap.js": {
+   "screens": [
+    "plat_map"
+   ],
+   "need": [
+    "metrics",
+    "processes",
+    "workflows"
+   ],
+   "own": [
+    "metrics",
+    "processes",
+    "workflows"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_atlas.js": {
+   "screens": [
+    "plat_data",
+    "plat_data_old"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_draw2.js": {
+   "screens": [
+    "draw_studio"
+   ],
+   "need": [
+    "metrics",
+    "processes"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_exec.js": {
+   "screens": [
+    "exe_dash",
+    "exe_strat",
+    "exe_risk",
+    "exe_apps",
+    "exe_board",
+    "exe_scen"
+   ],
+   "need": [
+    "agents",
+    "applications",
+    "budget_lines",
+    "capabilities",
+    "capacity",
+    "demand",
+    "invoices",
+    "key_results",
+    "ledger_entries",
+    "metrics",
+    "objectives",
+    "people",
+    "pillars",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "role_assignments",
+    "scenarios",
+    "services",
+    "value_chain",
+    "workload"
+   ],
+   "own": [
+    "agents",
+    "applications",
+    "capabilities",
+    "demand",
+    "invoices",
+    "key_results",
+    "metrics",
+    "objectives",
+    "plan_tasks",
+    "projects",
+    "risks",
+    "scenarios"
+   ],
+   "modes": [
+    "core",
+    "data"
+   ]
+  },
+  "mod_flow.js": {
+   "screens": [
+    "flw_design",
+    "flw_asmt",
+    "flw_appr",
+    "flw_dmn",
+    "flw_bpmn",
+    "flw_agent",
+    "flw_hub"
+   ],
+   "need": [
+    "agents",
+    "approval_policies",
+    "connectors",
+    "decision_tables",
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments",
+    "workflows"
+   ],
+   "own": [
+    "agents",
+    "approval_policies",
+    "connectors",
+    "decision_tables",
+    "metrics",
+    "processes",
+    "workflows"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_inbox.js": {
+   "screens": [
+    "inbox"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_itom.js": {
+   "screens": [
+    "itom_cmdb",
+    "itom_model",
+    "itom_graph",
+    "itom_disc",
+    "itom_health",
+    "itom_fin"
+   ],
+   "need": [
+    "config_items",
+    "metrics",
+    "ops_automations",
+    "people",
+    "processes",
+    "services",
+    "teams"
+   ],
+   "own": [
+    "config_items",
+    "metrics",
+    "ops_automations",
+    "services",
+    "teams"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_itsm.js": {
+   "screens": [
+    "itsm_inc",
+    "itsm_prb",
+    "itsm_chg",
+    "itsm_mi",
+    "itsm_home"
+   ],
+   "need": [
+    "changes",
+    "config_items",
+    "incidents",
+    "metrics",
+    "people",
+    "problems",
+    "processes",
+    "role_assignments",
+    "service_policies",
+    "service_tasks",
+    "services"
+   ],
+   "own": [
+    "changes",
+    "config_items",
+    "incidents",
+    "metrics",
+    "people",
+    "problems",
+    "service_policies",
+    "service_tasks",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_kcs.js": {
+   "screens": [
+    "kcs_home",
+    "kcs_edit",
+    "kcs_ask",
+    "kcs_gap",
+    "kcs_prompt",
+    "kcs_test",
+    "kcs_skills"
+   ],
+   "need": [
+    "knowledge_articles",
+    "metrics",
+    "people",
+    "processes",
+    "services",
+    "skills",
+    "trace_links",
+    "workflows"
+   ],
+   "own": [
+    "knowledge_articles",
+    "metrics",
+    "people",
+    "services",
+    "skills",
+    "trace_links"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_kgx.js": {
+   "screens": [
+    "vault"
+   ],
+   "need": [
+    "config_items",
+    "knowledge_articles",
+    "metrics",
+    "processes",
+    "services",
+    "skills"
+   ],
+   "own": [
+    "metrics",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_mat.js": {
+   "screens": [
+    "exe_mat"
+   ],
+   "need": [
+    "capabilities",
+    "demand",
+    "maturity",
+    "metrics",
+    "objectives",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "services"
+   ],
+   "own": [
+    "capabilities",
+    "demand",
+    "objectives",
+    "people",
+    "projects",
+    "services"
+   ],
+   "modes": [
+    "data"
+   ]
+  },
+  "mod_meet2.js": {
+   "screens": [
+    "meet_hub",
+    "meet_act",
+    "meet_dec",
+    "meet_series"
+   ],
+   "need": [
+    "action_items",
+    "decisions",
+    "meetings",
+    "metrics",
+    "people",
+    "processes",
+    "projects",
+    "raid_items",
+    "role_assignments"
+   ],
+   "own": [
+    "decisions",
+    "meetings",
+    "metrics",
+    "projects"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_nav.js": {
+   "screens": [
+    "nav_studio"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_obs.js": {
+   "screens": [
+    "itom_evt",
+    "obs_dash",
+    "itom_slo",
+    "itom_run",
+    "obs_std"
+   ],
+   "need": [
+    "config_items",
+    "metrics",
+    "monitors",
+    "people",
+    "processes",
+    "role_assignments",
+    "service_levels",
+    "services"
+   ],
+   "own": [
+    "config_items",
+    "metrics",
+    "monitors",
+    "service_levels",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_oncall.js": {
+   "screens": [
+    "svc_oncall",
+    "svc_skills"
+   ],
+   "need": [
+    "leave",
+    "metrics",
+    "people",
+    "processes",
+    "projects",
+    "role_assignments",
+    "rotas",
+    "services",
+    "skills",
+    "teams",
+    "work_items"
+   ],
+   "own": [
+    "leave",
+    "metrics",
+    "people",
+    "rotas",
+    "skills",
+    "teams"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_org2.js": {
+   "screens": [
+    "org_chart"
+   ],
+   "need": [
+    "access_grants",
+    "agents",
+    "approval_policies",
+    "journeys",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "projects",
+    "work_items"
+   ],
+   "own": [
+    "org_units",
+    "people",
+    "projects"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_own2.js": {
+   "screens": [
+    "own_gaps"
+   ],
+   "need": [
+    "audit_log",
+    "metrics",
+    "org_units",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "audit_log"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_people.js": {
+   "screens": [
+    "ppl_org",
+    "ppl_cap",
+    "ppl_train",
+    "ppl_av",
+    "ppl_jrny",
+    "ppl_meet",
+    "ppl_perf"
+   ],
+   "need": [
+    "agents",
+    "changes",
+    "decisions",
+    "forums",
+    "incidents",
+    "journeys",
+    "learning",
+    "leave",
+    "meetings",
+    "metrics",
+    "objectives",
+    "people",
+    "personas",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "role_assignments",
+    "rooms",
+    "service_requests",
+    "services",
+    "teams",
+    "work_items",
+    "workflows"
+   ],
+   "own": [
+    "agents",
+    "changes",
+    "decisions",
+    "forums",
+    "incidents",
+    "journeys",
+    "learning",
+    "leave",
+    "meetings",
+    "metrics",
+    "objectives",
+    "people",
+    "processes",
+    "projects",
+    "rooms",
+    "service_requests",
+    "services",
+    "teams",
+    "work_items"
+   ],
+   "modes": [
+    "core",
+    "tenant"
+   ]
+  },
+  "mod_plat_build.js": {
+   "screens": [
+    "plat_build"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "metrics",
+    "people"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_contract.js": {
+   "screens": [
+    "plat_contract",
+    "plat_retrofit"
+   ],
+   "need": [
+    "agents",
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "agents",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_debt.js": {
+   "screens": [
+    "plat_debt"
+   ],
+   "need": [
+    "builds",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments",
+    "teams",
+    "tech_debt"
+   ],
+   "own": [
+    "builds",
+    "metrics",
+    "people",
+    "tech_debt"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_fabric.js": {
+   "screens": [
+    "plat_fab"
+   ],
+   "need": [
+    "connectors",
+    "metrics",
+    "people",
+    "processes",
+    "projects",
+    "role_assignments",
+    "work_items"
+   ],
+   "own": [
+    "connectors",
+    "metrics",
+    "projects",
+    "work_items"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_fin.js": {
+   "screens": [
+    "fin_model",
+    "fin_color",
+    "fin_spend"
+   ],
+   "need": [
+    "budget_lines",
+    "decisions",
+    "finance_policies",
+    "metrics",
+    "people",
+    "processes",
+    "risks",
+    "role_assignments",
+    "services"
+   ],
+   "own": [
+    "budget_lines",
+    "decisions",
+    "finance_policies",
+    "metrics",
+    "risks"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_fin2.js": {
+   "screens": [
+    "fin_budget",
+    "fin_gates",
+    "fin_alloc",
+    "fin_rules"
+   ],
+   "need": [
+    "approval_policies",
+    "budget_lines",
+    "contracts",
+    "decisions",
+    "demand",
+    "finance_policies",
+    "ledger_entries",
+    "metrics",
+    "people",
+    "processes",
+    "projects"
+   ],
+   "own": [
+    "contracts",
+    "decisions",
+    "demand",
+    "finance_policies",
+    "projects"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_gate.js": {
+   "screens": [
+    "plat_gate",
+    "plat_mcp"
+   ],
+   "need": [
+    "builds",
+    "connectors",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "builds",
+    "metrics",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_links.js": {
+   "screens": [
+    "plat_dmap",
+    "plat_pmap"
+   ],
+   "need": [
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "metrics",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_proclib.js": {
+   "screens": [
+    "plat_proc"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "metrics",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_plat_registry.js": {
+   "screens": [
+    "plat_reg"
+   ],
+   "need": [
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_ppm.js": {
+   "screens": [
+    "ppm_proj",
+    "ppm_raid"
+   ],
+   "need": [
+    "demand",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "processes",
+    "raid_items",
+    "role_assignments",
+    "skills",
+    "work_items"
+   ],
+   "own": [
+    "demand",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "raid_items",
+    "skills"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15b_ccmap.js": {
+   "screens": [
+    "bud_ccmap"
+   ],
+   "need": [
+    "budget_lines",
+    "cost_centers",
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "budget_lines",
+    "cost_centers",
+    "people",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15b_lines.js": {
+   "screens": [
+    "bud_lines"
+   ],
+   "need": [
+    "budget_lines",
+    "cost_centers"
+   ],
+   "own": [
+    "budget_lines"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15d_evidence.js": {
+   "screens": [
+    "r15d_evidence"
+   ],
+   "need": [
+    "agents",
+    "approval_policies",
+    "audit_log",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "controls",
+    "decisions",
+    "demand",
+    "invoices",
+    "knowledge_articles",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "role_assignments",
+    "service_requests",
+    "work_items"
+   ],
+   "own": [
+    "audit_log",
+    "controls",
+    "decisions",
+    "invoices"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15d_facts.js": {
+   "screens": [
+    "r15d_agents",
+    "r15d_facts"
+   ],
+   "need": [
+    "agents",
+    "demand",
+    "events",
+    "journeys",
+    "ledger_entries",
+    "metrics",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "processes",
+    "raid_items",
+    "role_assignments",
+    "skills",
+    "teams",
+    "work_items"
+   ],
+   "own": [
+    "agents",
+    "metrics",
+    "people"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15d_front.js": {
+   "screens": [
+    "r15d_firstweek"
+   ],
+   "need": [
+    "learning",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "learning",
+    "people"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f1_a_store.js": {
+   "screens": [
+    "plat_store"
+   ],
+   "need": [
+    "audit_log",
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "audit_log",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f1_b_wf.js": {
+   "screens": [
+    "wf_runs"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f1_c_agent.js": {
+   "screens": [
+    "ai_runtime"
+   ],
+   "need": [
+    "agents",
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "agents",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f2_b_grc.js": {
+   "screens": [
+    "grc_home",
+    "grc_risk",
+    "grc_ctl",
+    "grc_find",
+    "grc_pol",
+    "grc_aud",
+    "grc_ven",
+    "grc_exc"
+   ],
+   "need": [
+    "audits",
+    "contracts",
+    "controls",
+    "metrics",
+    "objectives",
+    "people",
+    "policies",
+    "processes",
+    "raid_items",
+    "risks",
+    "vendors"
+   ],
+   "own": [
+    "audits",
+    "contracts",
+    "controls",
+    "metrics",
+    "policies",
+    "risks",
+    "vendors"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f2_c_adopt.js": {
+   "screens": [
+    "rec_shell"
+   ],
+   "need": [
+    "approval_policies",
+    "audits",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "changes",
+    "config_items",
+    "contracts",
+    "controls",
+    "incidents",
+    "knowledge_articles",
+    "metrics",
+    "monitors",
+    "objectives",
+    "org_units",
+    "people",
+    "policies",
+    "problems",
+    "processes",
+    "projects",
+    "purchase_orders",
+    "raid_items",
+    "risks",
+    "role_assignments",
+    "services",
+    "teams",
+    "vendors"
+   ],
+   "own": [
+    "budget_lines",
+    "changes",
+    "contracts",
+    "incidents",
+    "metrics",
+    "people",
+    "problems",
+    "projects",
+    "purchase_orders",
+    "raid_items",
+    "vendors"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f3_iam.js": {
+   "screens": [
+    "r15_iam"
+   ],
+   "need": [
+    "access_grants",
+    "approval_policies",
+    "metrics",
+    "people",
+    "processes",
+    "tenant_settings"
+   ],
+   "own": [
+    "access_grants",
+    "metrics",
+    "people",
+    "tenant_settings"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f3_mobile.js": {
+   "screens": [
+    "r15_mobile"
+   ],
+   "need": [
+    "approval_policies",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "demand",
+    "incidents",
+    "invoices",
+    "knowledge_articles",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "role_assignments",
+    "service_requests",
+    "work_items"
+   ],
+   "own": [
+    "incidents"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f3_report.js": {
+   "screens": [
+    "r15_sem",
+    "r15_rpt"
+   ],
+   "need": [
+    "access_grants",
+    "approval_policies",
+    "budget_lines",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "projects",
+    "reports",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "access_grants",
+    "budget_lines",
+    "metrics",
+    "people",
+    "projects",
+    "reports"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r15f3_time.js": {
+   "screens": [
+    "r15_time",
+    "r15_p2p"
+   ],
+   "need": [
+    "access_grants",
+    "approval_policies",
+    "budget_lines",
+    "cost_centers",
+    "invoices",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "purchase_orders",
+    "timesheets",
+    "vendors"
+   ],
+   "own": [
+    "budget_lines",
+    "cost_centers",
+    "invoices",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "projects",
+    "purchase_orders",
+    "timesheets"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16g_c_admin.js": {
+   "screens": [
+    "r16g_perm"
+   ],
+   "need": [
+    "access_grants",
+    "audit_log",
+    "metrics",
+    "people",
+    "processes",
+    "tenant_settings"
+   ],
+   "own": [
+    "access_grants",
+    "audit_log",
+    "metrics",
+    "people",
+    "tenant_settings"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16h_a_status.js": {
+   "screens": [
+    "r16h_status"
+   ],
+   "need": [
+    "approval_policies",
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "people"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16h_b_ci.js": {
+   "screens": [
+    "r16h_ci"
+   ],
+   "need": [
+    "config_items",
+    "decision_tables",
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "config_items",
+    "decision_tables"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16h_c_groups.js": {
+   "screens": [
+    "r16h_groups"
+   ],
+   "need": [
+    "approval_policies",
+    "changes",
+    "knowledge_articles",
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments",
+    "service_requests",
+    "timesheets",
+    "workflows"
+   ],
+   "own": [
+    "approval_policies",
+    "changes",
+    "processes",
+    "service_requests",
+    "timesheets"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16h_d_rules.js": {
+   "screens": [
+    "r16h_rules"
+   ],
+   "need": [
+    "approval_policies",
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "approval_policies"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16j_f_charts.js": {
+   "screens": [
+    "r16j_dash"
+   ],
+   "need": [
+    "access_grants",
+    "approval_policies",
+    "budget_lines",
+    "cost_centers",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "projects",
+    "reports",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "metrics",
+    "reports",
+    "teams"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16k_trace.js": {
+   "screens": [
+    "strat_exec"
+   ],
+   "need": [
+    "budget_lines",
+    "capabilities",
+    "demand",
+    "invoices",
+    "key_results",
+    "metrics",
+    "objectives",
+    "people",
+    "pillars",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "trace_links"
+   ],
+   "own": [
+    "objectives"
+   ],
+   "modes": [
+    "data"
+   ]
+  },
+  "mod_r16l_b_ui.js": {
+   "screens": [
+    "bc_home",
+    "bc_frame",
+    "bc_tiers"
+   ],
+   "need": [
+    "changes",
+    "config_items",
+    "metrics",
+    "monitors",
+    "people",
+    "processes"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16l_c_cal.js": {
+   "screens": [
+    "bc_cal"
+   ],
+   "need": [
+    "audits",
+    "changes",
+    "config_items",
+    "metrics",
+    "monitors",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "audits",
+    "changes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16l_d_plans.js": {
+   "screens": [
+    "bc_plans",
+    "bc_decl"
+   ],
+   "need": [
+    "incidents",
+    "metrics",
+    "people",
+    "processes",
+    "vendors"
+   ],
+   "own": [
+    "incidents",
+    "vendors"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16l_e_trace.js": {
+   "screens": [
+    "bc_trace",
+    "bc_metrics"
+   ],
+   "need": [
+    "config_items",
+    "metrics",
+    "people",
+    "processes",
+    "vendors"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16m_b_setup.js": {
+   "screens": [
+    "r16m_setup",
+    "r16m_deploy"
+   ],
+   "need": [
+    "access_grants",
+    "approval_policies",
+    "audit_log",
+    "budget_lines",
+    "builds",
+    "connectors",
+    "contracts",
+    "cost_centers",
+    "knowledge_articles",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "raid_items",
+    "role_assignments",
+    "services",
+    "teams",
+    "tenant_settings",
+    "vendors"
+   ],
+   "own": [
+    "tenant_settings"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16m_c2_sources.js": {
+   "screens": [
+    "r16m_sources"
+   ],
+   "need": [
+    "access_grants",
+    "audit_log",
+    "connectors",
+    "cost_centers",
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments",
+    "tenant_settings"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16m_c_import.js": {
+   "screens": [
+    "r16m_import"
+   ],
+   "need": [
+    "access_grants",
+    "audit_log",
+    "connectors",
+    "cost_centers",
+    "metrics",
+    "people",
+    "processes",
+    "tenant_settings"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16m_d_guides.js": {
+   "screens": [
+    "r16m_guides"
+   ],
+   "need": [
+    "access_grants",
+    "audit_log",
+    "connectors",
+    "cost_centers",
+    "metrics",
+    "people",
+    "processes",
+    "tenant_settings"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r16m_e_overlay.js": {
+   "screens": [
+    "r16m_overlay"
+   ],
+   "need": [
+    "access_grants",
+    "audit_log",
+    "connectors",
+    "cost_centers",
+    "metrics",
+    "people",
+    "processes",
+    "tenant_settings"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17p_d_screen.js": {
+   "screens": [
+    "r17p_tour"
+   ],
+   "need": [
+    "agents",
+    "approval_policies",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "demand",
+    "invoices",
+    "knowledge_articles",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "risks",
+    "role_assignments",
+    "service_requests",
+    "work_items",
+    "workflows"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17q_c_value.js": {
+   "screens": [
+    "r17q_value"
+   ],
+   "need": [
+    "access_grants",
+    "action_items",
+    "agents",
+    "applications",
+    "approval_policies",
+    "audits",
+    "benefits",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "config_items",
+    "connectors",
+    "contracts",
+    "controls",
+    "conversations",
+    "cost_centers",
+    "decisions",
+    "demand",
+    "events",
+    "finance_policies",
+    "forums",
+    "incidents",
+    "invoices",
+    "journeys",
+    "key_results",
+    "knowledge_articles",
+    "learning",
+    "ledger_entries",
+    "meetings",
+    "metrics",
+    "monitors",
+    "objectives",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "policies",
+    "problems",
+    "processes",
+    "projects",
+    "purchase_orders",
+    "raid_items",
+    "reports",
+    "risks",
+    "role_assignments",
+    "rooms",
+    "rotas",
+    "scenarios",
+    "service_levels",
+    "service_policies",
+    "service_requests",
+    "services",
+    "skills",
+    "tech_debt",
+    "tenant_settings",
+    "timesheets",
+    "trace_links",
+    "vendors",
+    "work_items",
+    "workflows"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17q_d_thinking.js": {
+   "screens": [
+    "r17q_thinking"
+   ],
+   "need": [
+    "access_grants",
+    "action_items",
+    "agents",
+    "applications",
+    "approval_policies",
+    "audits",
+    "benefits",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "config_items",
+    "connectors",
+    "contracts",
+    "controls",
+    "conversations",
+    "cost_centers",
+    "decisions",
+    "demand",
+    "events",
+    "finance_policies",
+    "forums",
+    "incidents",
+    "invoices",
+    "journeys",
+    "key_results",
+    "knowledge_articles",
+    "learning",
+    "meetings",
+    "metrics",
+    "monitors",
+    "objectives",
+    "people",
+    "plan_tasks",
+    "policies",
+    "problems",
+    "processes",
+    "projects",
+    "purchase_orders",
+    "raid_items",
+    "reports",
+    "risks",
+    "role_assignments",
+    "rooms",
+    "rotas",
+    "scenarios",
+    "service_levels",
+    "service_policies",
+    "service_requests",
+    "services",
+    "skills",
+    "tenant_settings",
+    "timesheets",
+    "trace_links",
+    "vendors",
+    "work_items",
+    "workflows"
+   ],
+   "own": [
+    "decisions"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17s_c_ui.js": {
+   "screens": [
+    "r17s_rules"
+   ],
+   "need": [
+    "audit_log",
+    "incidents",
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "audit_log"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r17u_d_dash.js": {
+   "screens": [
+    "r17u_dash"
+   ],
+   "need": [
+    "agents",
+    "benefits",
+    "budget_lines",
+    "changes",
+    "demand",
+    "incidents",
+    "invoices",
+    "metrics",
+    "people",
+    "processes",
+    "projects",
+    "services"
+   ],
+   "own": [
+    "benefits"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r18c_builds.js": {
+   "screens": [
+    "r18_builds",
+    "r18_app",
+    "r18_mature",
+    "r18_debt"
+   ],
+   "need": [
+    "agents",
+    "builds",
+    "maturity",
+    "metrics",
+    "objectives",
+    "org_units",
+    "people",
+    "processes",
+    "projects",
+    "role_assignments",
+    "teams",
+    "workflows"
+   ],
+   "own": [
+    "agents",
+    "builds",
+    "objectives"
+   ],
+   "modes": [
+    "core",
+    "data"
+   ]
+  },
+  "mod_r18d_access.js": {
+   "screens": [
+    "r18_access"
+   ],
+   "need": [
+    "builds",
+    "metrics",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments",
+    "teams"
+   ],
+   "own": [
+    "builds",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r18k_biz.js": {
+   "screens": [
+    "r18_lens"
+   ],
+   "need": [
+    "agents",
+    "budget_lines",
+    "builds",
+    "cost_centers",
+    "objectives",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "agents",
+    "objectives"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r18e_lens.js": {
+   "screens": [
+    "r18_lens (also)",
+    "r18_strategy"
+   ],
+   "need": [
+    "agents",
+    "builds",
+    "objectives",
+    "org_units",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "agents",
+    "objectives"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r18g_levels.js": {
+   "screens": [
+    "r18_levels"
+   ],
+   "need": [
+    "processes"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r18h_spend.js": {
+   "screens": [
+    "r18_spend"
+   ],
+   "need": [
+    "agents",
+    "budget_lines",
+    "cost_centers",
+    "processes"
+   ],
+   "own": [
+    "agents",
+    "budget_lines",
+    "cost_centers"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r25_b_studio.js": {
+   "screens": [
+    "studio"
+   ],
+   "need": [],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r28_od2.js": {
+   "screens": [
+    "orgdesign"
+   ],
+   "need": [
+    "people",
+    "pillars",
+    "value_chain",
+    "workload"
+   ],
+   "own": [],
+   "modes": [
+    "tenant"
+   ]
+  },
+  "mod_r29_bst.js": {
+   "screens": [
+    "bst"
+   ],
+   "need": [
+    "agents",
+    "budget_lines",
+    "budget_requests",
+    "contracts",
+    "cost_centers",
+    "demand",
+    "invoices",
+    "key_results",
+    "ledger_entries",
+    "metrics",
+    "objectives",
+    "people",
+    "projects",
+    "risks",
+    "trace_links"
+   ],
+   "own": [
+    "agents",
+    "ledger_entries",
+    "objectives"
+   ],
+   "modes": [
+    "data"
+   ]
+  },
+  "mod_r31_jzorg.js": {
+   "screens": [
+    "orgassist"
+   ],
+   "need": [
+    "agents",
+    "journeys",
+    "people",
+    "work_items",
+    "workflows"
+   ],
+   "own": [
+    "journeys"
+   ],
+   "modes": [
+    "tenant"
+   ]
+  },
+  "mod_r32_scrmap_b_screen.js": {
+   "screens": [
+    "scr_map"
+   ],
+   "need": [
+    "metrics",
+    "processes"
+   ],
+   "own": [
+    "metrics",
+    "processes"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_r33_showroom.js": {
+   "screens": [
+    "showroom"
+   ],
+   "need": [
+    "metrics"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_s_guard.js": {
+   "screens": [
+    "guard"
+   ],
+   "need": [
+    "people",
+    "processes"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_s_steps.js": {
+   "screens": [
+    "agent_defs"
+   ],
+   "need": [
+    "agents"
+   ],
+   "own": [
+    "agents"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_s_tenant.js": {
+   "screens": [
+    "tn_projects",
+    "tn_people",
+    "tn_metrics",
+    "tn_admin"
+   ],
+   "need": [
+    "budget_lines",
+    "demand",
+    "invoices",
+    "journeys",
+    "key_results",
+    "maturity",
+    "metrics",
+    "objectives",
+    "org_units",
+    "people",
+    "personas",
+    "pillars",
+    "processes",
+    "projects",
+    "role_assignments",
+    "teams",
+    "value_chain",
+    "vocabulary",
+    "workflows",
+    "workload"
+   ],
+   "own": [
+    "budget_lines",
+    "invoices",
+    "key_results",
+    "people",
+    "projects"
+   ],
+   "modes": [
+    "data"
+   ]
+  },
+  "mod_rel.js": {
+   "screens": [
+    "itsm_rel",
+    "agile_board",
+    "agile_art"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes",
+    "projects",
+    "role_assignments",
+    "services"
+   ],
+   "own": [
+    "metrics",
+    "projects",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_selfbuild.js": {
+   "screens": [
+    "plat_self"
+   ],
+   "need": [],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_sla.js": {
+   "screens": [
+    "svc_sla"
+   ],
+   "need": [
+    "config_items",
+    "leave",
+    "metrics",
+    "people",
+    "processes",
+    "rotas",
+    "service_levels",
+    "services",
+    "work_items"
+   ],
+   "own": [
+    "config_items",
+    "metrics",
+    "people",
+    "processes",
+    "service_levels",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_sow.js": {
+   "screens": [
+    "ppm_sow"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes"
+   ],
+   "own": [
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_svc.js": {
+   "screens": [
+    "svc_cat",
+    "svc_req",
+    "svc_portal",
+    "svc_asset",
+    "svc_notify"
+   ],
+   "need": [
+    "catalog_items",
+    "config_items",
+    "events",
+    "metrics",
+    "people",
+    "processes",
+    "service_requests",
+    "services",
+    "work_items"
+   ],
+   "own": [
+    "catalog_items",
+    "config_items",
+    "events",
+    "metrics",
+    "people",
+    "service_requests",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_svc3.js": {
+   "screens": [
+    "svc_guides"
+   ],
+   "need": [
+    "catalog_items",
+    "decisions",
+    "metrics",
+    "people",
+    "processes",
+    "role_assignments"
+   ],
+   "own": [
+    "catalog_items",
+    "decisions",
+    "metrics",
+    "people"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_svc360.js": {
+   "screens": [
+    "svc_360"
+   ],
+   "need": [
+    "changes",
+    "config_items",
+    "incidents",
+    "metrics",
+    "problems",
+    "processes",
+    "services"
+   ],
+   "own": [
+    "changes",
+    "config_items",
+    "incidents",
+    "metrics",
+    "problems",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_tbm.js": {
+   "screens": [
+    "tbm_model"
+   ],
+   "need": [
+    "metrics",
+    "processes",
+    "services"
+   ],
+   "own": [
+    "metrics",
+    "services"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_viz2.js": {
+   "screens": [
+    "kcs_viz"
+   ],
+   "need": [
+    "metrics",
+    "people",
+    "processes",
+    "reports"
+   ],
+   "own": [],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_wbs.js": {
+   "screens": [
+    "ppm_wbs"
+   ],
+   "need": [
+    "capacity",
+    "metrics",
+    "people",
+    "plan_tasks",
+    "processes",
+    "projects",
+    "role_assignments"
+   ],
+   "own": [
+    "capacity",
+    "metrics",
+    "people",
+    "plan_tasks"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_zevt.js": {
+   "screens": [
+    "zevt"
+   ],
+   "need": [
+    "events",
+    "metrics",
+    "org_units",
+    "people",
+    "role_assignments"
+   ],
+   "own": [
+    "events",
+    "metrics"
+   ],
+   "modes": [
+    "core"
+   ]
+  },
+  "mod_zlink.js": {
+   "screens": [
+    "zl_conn"
+   ],
+   "need": [
+    "access_grants",
+    "action_items",
+    "agents",
+    "applications",
+    "approval_policies",
+    "audit_log",
+    "audits",
+    "benefits",
+    "budget_lines",
+    "budget_requests",
+    "builds",
+    "capabilities",
+    "catalog_items",
+    "changes",
+    "config_items",
+    "connectors",
+    "contracts",
+    "controls",
+    "conversations",
+    "cost_centers",
+    "decisions",
+    "demand",
+    "events",
+    "finance_policies",
+    "forums",
+    "incidents",
+    "invoices",
+    "journeys",
+    "key_results",
+    "knowledge_articles",
+    "learning",
+    "meetings",
+    "metrics",
+    "monitors",
+    "objectives",
+    "org_units",
+    "people",
+    "plan_tasks",
+    "policies",
+    "problems",
+    "processes",
+    "projects",
+    "purchase_orders",
+    "raid_items",
+    "reports",
+    "risks",
+    "role_assignments",
+    "rooms",
+    "rotas",
+    "scenarios",
+    "service_levels",
+    "service_policies",
+    "service_requests",
+    "services",
+    "skills",
+    "tenant_settings",
+    "timesheets",
+    "trace_links",
+    "vendors",
+    "work_items",
+    "workflows"
+   ],
+   "own": [
+    "audit_log",
+    "processes",
+    "role_assignments",
+    "work_items"
+   ],
+   "modes": [
+    "core"
+   ]
+  }
+ },
+ "private": {
+  "mod_budget.js": [
+   "BEN0",
+   "CON",
+   "CR0",
+   "DEPTS",
+   "DOA0",
+   "LED0",
+   "PO0",
+   "RATES",
+   "SIMEX",
+   "VEND"
+  ],
+  "mod_r18f_wire.js": [
+   "MODS",
+   "NAVS",
+   "PROCS"
+  ],
+  "mod_exec.js": [
+   "CGRP",
+   "CLVL",
+   "DEC0",
+   "GATE",
+   "GRP",
+   "KR0",
+   "MCK",
+   "OBJ0",
+   "SROWS",
+   "TIMES"
+  ],
+  "mod_r16i_notif.js": [
+   "TYPES"
+  ],
+  "mod_r17s_a_engine.js": [
+   "URG"
+  ],
+  "mod_admin.js": [
+   "ATTRS",
+   "CAPS",
+   "DEP",
+   "DRY_MSG",
+   "ENVS",
+   "INH",
+   "INJ",
+   "MET",
+   "PLANS",
+   "SAMPLES",
+   "STR",
+   "TYPES",
+   "USERS"
+  ],
+  "mod_zlink_r15.js": [
+   "COLS",
+   "LEG"
+  ],
+  "mod_s_guard.js": [
+   "ATTEMPTS",
+   "CHILDREN",
+   "FAM",
+   "STAGES",
+   "TABS"
+  ],
+  "mod_r18_0_core.js": [
+   "NEW"
+  ],
+  "mod_kcs.js": [
+   "COVER",
+   "GAPN",
+   "INCS",
+   "LANES",
+   "NOCLICK",
+   "PRC",
+   "REPEAT",
+   "ROLES",
+   "SECS",
+   "SK0",
+   "SRC",
+   "SUGGEST",
+   "SYN",
+   "TOOLS",
+   "UNANS",
+   "VIEWERS"
+  ],
+  "mod_r16g_b_enforce.js": [
+   "FORMGATE",
+   "MAP",
+   "TABMAP"
+  ],
+  "mod_r15b_newmenu.js": [
+   "ITEMS"
+  ],
+  "mod_r16h_b_ci.js": [
+   "RET_STEPS"
+  ],
+  "mod_r18a_shell.js": [
+   "NEW",
+   "SURF"
+  ],
+  "mod_inbox.js": [
+   "ENT",
+   "FLOWS",
+   "SEEDH"
+  ],
+  "mod_meet.js": [
+   "ENTS",
+   "OBJS",
+   "SER"
+  ],
+  "mod_r16m_e_overlay.js": [
+   "OPTS"
+  ],
+  "mod_flow.js": [
+   "AUL",
+   "AUTON",
+   "BANDS_STD",
+   "DOA_FALLBACK",
+   "DONE0",
+   "KILL",
+   "OVL",
+   "PANES",
+   "PERMS",
+   "SCEN",
+   "SEEDA",
+   "SEEDR",
+   "TABTITLES",
+   "TOOLS"
+  ],
+  "mod_r18i_wire2.js": [
+   "MODS",
+   "NAVS",
+   "PROCS"
+  ],
+  "mod_plat_modmap.js": [
+   "BANDS",
+   "JOURNEYS"
+  ],
+  "mod_r20b_biz.js": [
+   "MODS"
+  ],
+  "mod_r17u_c_dsrc.js": [
+   "RANGES"
+  ],
+  "mod_r24_ops.js": [
+   "FAMS",
+   "MODS"
+  ],
+  "mod_r15f3_iam.js": [
+   "PKGS",
+   "SETS",
+   "SOD"
+  ],
+  "mod_ppm.js": [
+   "DEFTASKS",
+   "RAID"
+  ],
+  "mod_devops.js": [
+   "DOMS",
+   "EDGES",
+   "FEED",
+   "FRZ0",
+   "NODES",
+   "STG",
+   "TPLS"
+  ],
+  "mod_r15b_ccmap.js": [
+   "SEED"
+  ],
+  "mod_selfbuild.js": [
+   "GAPS"
+  ],
+  "mod_org2.js": [
+   "MODES"
+  ],
+  "mod_r15f1_a_store.js": [
+   "ENTS",
+   "PSTEPS"
+  ],
+  "mod_r17q_c_value.js": [
+   "SECS"
+  ],
+  "mod_dec.js": [
+   "DOMX",
+   "KINDS",
+   "KRX",
+   "MODES"
+  ],
+  "mod_s_search.js": [
+   "TREC"
+  ],
+  "screens3.js": [
+   "FILESLOT"
+  ],
+  "kit.js": [
+   "NAVG",
+   "PEOPLE"
+  ],
+  "mod_r17u_a_core.js": [
+   "EVD"
+  ],
+  "mod_r15f1_c_agent.js": [
+   "ENTS"
+  ],
+  "mod_s_tenant_screens.js": [
+   "DIMS"
+  ],
+  "mod_viz2.js": [
+   "MAPT",
+   "WELLS"
+  ],
+  "mod_r17s_e_wire.js": [
+   "FLOWS",
+   "STEPS"
+  ],
+  "mod_kgx.js": [
+   "CMDS"
+  ],
+  "mod_itom.js": [
+   "ATYPES",
+   "COMP",
+   "DEPT",
+   "IDR0",
+   "MAPHINT",
+   "PREC0",
+   "RECS",
+   "REJ_R",
+   "RULES",
+   "SRC",
+   "SVCS",
+   "UNT",
+   "VIEWS",
+   "WALK_PRE",
+   "XEDGE"
+  ],
+  "mod_r15b_lines.js": [
+   "COLS",
+   "FILTERS",
+   "GROUPS"
+  ],
+  "mod_plat_atlas.js": [
+   "ITABS",
+   "LAYERS",
+   "OVN",
+   "SYN"
+  ],
+  "mod_r15f2_d_wire.js": [
+   "EXT",
+   "NEWENT",
+   "PROCS",
+   "RECSETS"
+  ],
+  "mod_r15e_ntf.js": [
+   "BUS"
+  ],
+  "mod_r17q_d_thinking.js": [
+   "NOT",
+   "PRIN",
+   "RND"
+  ],
+  "mod_s_hide.js": [
+   "LIST"
+  ],
+  "mod_plat_contract.js": [
+   "AGENTS",
+   "FRULES",
+   "LEVELS",
+   "RULES",
+   "STDMAP"
+  ],
+  "mod_r28_od2.js": [
+   "STAGES"
+  ],
+  "mod_r17t_c_profile.js": [
+   "TABS"
+  ],
+  "mod_r26_a_design.js": [
+   "STDS"
+  ],
+  "mod_r15f2_c_adopt.js": [
+   "ENT",
+   "PROCS"
+  ],
+  "mod_r25_b_studio.js": [
+   "GRP",
+   "MATCH",
+   "STAGES"
+  ],
+  "mod_obs.js": [
+   "COV",
+   "EXT",
+   "LOGP",
+   "LVL",
+   "NETL",
+   "NETN",
+   "TRACES"
+  ],
+  "mod_plat_proclib.js": [
+   "DIMS"
+  ],
+  "kit2.js": [
+   "DM_RX",
+   "SVCREG",
+   "TEAMS"
+  ],
+  "mod_nav.js": [
+   "GMAP",
+   "GROUPS",
+   "NAV_ENT",
+   "NAV_PROCS",
+   "SCOPES",
+   "SEED_HIST",
+   "TYPEPAT"
+  ],
+  "mod_r16g_a_perm.js": [
+   "GROUPS",
+   "ROLES",
+   "SETS_EXTRA",
+   "TITLE_ROLES"
+  ],
+  "mod_r21_home.js": [
+   "TABS"
+  ],
+  "mod_s_showroom_lens.js": [
+   "LENSES"
+  ],
+  "mod_r16k_fix.js": [
+   "FAMS"
+  ],
+  "mod_oncall.js": [
+   "ESCW",
+   "LEVELS",
+   "PTO0",
+   "REQOPTS",
+   "SK0"
+  ],
+  "mod_r26_b_connect.js": [
+   "COMPS",
+   "LADDER"
+  ],
+  "mod_tbm.js": [
+   "CONS",
+   "POOLS",
+   "STEPS",
+   "TOWERS"
+  ],
+  "mod_r16i_core.js": [
+   "BUD"
+  ],
+  "mod_sla.js": [
+   "CAUSES",
+   "CLS",
+   "CLSRX",
+   "GENT",
+   "PHASES",
+   "SCH",
+   "SEED"
+  ],
+  "screens4.js": [
+   "COV"
+  ],
+  "mod_svc3.js": [
+   "DELEG",
+   "GUIDES",
+   "KINDS",
+   "SEEDS"
+  ],
+  "mod_wbs.js": [
+   "TABS"
+  ],
+  "mod_mat.js": [
+   "MODELS",
+   "TOWERS"
+  ],
+  "data.js": [
+   "AGENTS",
+   "EDGES",
+   "EXTRACTED",
+   "FLOW",
+   "INVOICES",
+   "KGE",
+   "KGN",
+   "KSCEN",
+   "LANES",
+   "LIVEEVENTS",
+   "MEETINGS",
+   "NODES",
+   "PROV_SHARE",
+   "RULES",
+   "SCOPES",
+   "SCREENS",
+   "STEPS",
+   "TRANSCRIPT",
+   "TREE",
+   "TRENDS",
+   "UNUSED"
+  ],
+  "mod_draw.js": [
+   "CATS"
+  ],
+  "mod_plat_build.js": [
+   "AUTHS",
+   "CLS",
+   "CONTRACTS",
+   "DIMS",
+   "FREE",
+   "MODES",
+   "SEEDS",
+   "SUGG",
+   "WHO"
+  ],
+  "mod_r17q_b_core.js": [
+   "GROUPS",
+   "INPUTS",
+   "PROCS"
+  ],
+  "mod_flow_ins.js": [
+   "MINI"
+  ],
+  "mod_svc.js": [
+   "ABASE",
+   "CAT",
+   "CHN",
+   "EVT",
+   "FLOWS",
+   "LICB",
+   "LOG",
+   "NORES",
+   "PST",
+   "SEEDS",
+   "STW",
+   "TPL"
+  ],
+  "mod_plat_fin.js": [
+   "COLORS0",
+   "CONF0",
+   "CONS",
+   "DEC0",
+   "DRV0",
+   "EVID0",
+   "FINLINES0",
+   "FINPROC",
+   "GATES",
+   "GOV",
+   "LAYERS",
+   "NAT",
+   "PHASES",
+   "POL0",
+   "REG_T",
+   "RSK0",
+   "SOURCES0"
+  ],
+  "mod_svc360.js": [
+   "ALIASX",
+   "RACI0"
+  ],
+  "mod_plat_fabric.js": [
+   "MAPSEED",
+   "ROUTES",
+   "STAGES",
+   "SUBS"
+  ],
+  "mod_plat_cover.js": [
+   "DUPS"
+  ],
+  "mod_own.js": [
+   "DRX",
+   "SEED"
+  ],
+  "mod_org5.js": [
+   "BUDLINES",
+   "DELTAS",
+   "EVDEF"
+  ],
+  "mod_r17p_c_moments.js": [
+   "MOMENTS"
+  ],
+  "mod_r17u_d_dash.js": [
+   "PERSONAS_",
+   "SIZES"
+  ],
+  "mod_plat_debt.js": [
+   "WORK"
+  ],
+  "mod_itsm.js": [
+   "APCOND",
+   "CHGH",
+   "COMP0",
+   "FREEZE",
+   "HISTI",
+   "MIHIST",
+   "MROLES",
+   "SRULES",
+   "TASK0",
+   "TRULES",
+   "VOL0"
+  ],
+  "mod_r15f3_report.js": [
+   "MEAS"
+  ],
+  "mod_budget3.js": [
+   "DEFRULES",
+   "STG"
+  ],
+  "mod_r32_scrmap_b_screen.js": [
+   "DEC",
+   "ENT",
+   "PROCS"
+  ],
+  "mod_s_owner.js": [
+   "FUNC_SEED"
+  ],
+  "mod_plat_links.js": [
+   "CHAINS",
+   "FAM",
+   "PREF"
+  ],
+  "mod_r18g_levels.js": [
+   "LEVELS"
+  ],
+  "mod_plat_gate.js": [
+   "ACTIONS",
+   "CHECKS",
+   "CLIENTS",
+   "CONN0",
+   "POL",
+   "ROLES",
+   "SERVICES",
+   "TOOLS"
+  ],
+  "mod_zsearch.js": [
+   "FAMS"
+  ],
+  "mod_r16h_c_groups.js": [
+   "PATHS"
+  ],
+  "mod_sow.js": [
+   "CR0",
+   "CT0",
+   "METW",
+   "NEWT",
+   "OBL0",
+   "TIERS",
+   "TYPESW"
+  ],
+  "mod_chat.js": [
+   "DEF_DELEG",
+   "DEF_POL",
+   "SLASH_HELP",
+   "VIEWS"
+  ],
+  "mod_rel.js": [
+   "ARTS",
+   "CAPS",
+   "CHGS",
+   "DEMOS",
+   "DEPS",
+   "EPICS",
+   "FRZ",
+   "REFSTORY",
+   "RISKS",
+   "TEAM",
+   "TPL"
+  ],
+  "mod_people.js": [
+   "AUTOL",
+   "CLV",
+   "COMPS",
+   "FEXT",
+   "KEYROLES",
+   "KILLS",
+   "PATHS0",
+   "ROLEREQ",
+   "ROOMS0",
+   "ROSTER",
+   "ROSTER0",
+   "SKILLS",
+   "TEDGE",
+   "VAC0"
+  ],
+  "mod_s_tenant.js": [
+   "PILLARS0"
+  ],
+  "mod_r17s_b_seed.js": [
+   "SEEDS"
+  ],
+  "mod_r16l_f_wire.js": [
+   "EVENTS_",
+   "PROCS",
+   "RECSETS"
+  ],
+  "mod_r33_showroom.js": [
+   "DEMOS"
+  ],
+  "mod_r16m_b_setup.js": [
+   "CONS",
+   "CRIT",
+   "CUTOVER",
+   "LEVERS",
+   "OPTS",
+   "SELL",
+   "STEPS"
+  ],
+  "mod_viz.js": [
+   "BARS",
+   "FLR",
+   "FLW",
+   "MOD",
+   "SITES",
+   "ZONES"
+  ],
+  "mod_r16m_a_core.js": [
+   "ENTS",
+   "FLOWS",
+   "SEED_T"
+  ],
+  "mod_zevt.js": [
+   "ACTIONS"
+  ],
+  "mod_plat_fin2.js": [
+   "CAD"
+  ],
+  "mod_plat_registry.js": [
+   "APPS",
+   "FIXES",
+   "PLANNED"
+  ],
+  "mod_r28_cxo.js": [
+   "TOP"
+  ],
+  "mod_r15f2_a_shell.js": [
+   "TABS"
+  ],
+  "data2.js": [
+   "CTYPES",
+   "DEMAND",
+   "IMS_SCEN",
+   "LOG0",
+   "MONTHS",
+   "NAMES",
+   "PROJ",
+   "PTYPES",
+   "TPL",
+   "VERS"
+  ],
+  "mod_draw2.js": [
+   "DRENT",
+   "DRFLOWS"
+  ],
+  "mod_r27_prefs.js": [
+   "FXL",
+   "LANGS",
+   "ROWS",
+   "WELCOME"
+  ],
+  "mod_r15f1_b_wf.js": [
+   "ENTS",
+   "EVS",
+   "SPEEDS"
+  ],
+  "mod_zlink.js": [
+   "BUS_EVENTS",
+   "IP_CONS",
+   "IP_EXP",
+   "KEYOBJ",
+   "SEARCH_TYPES"
+  ]
+ },
+ "tabs_clicked": 743,
+ "screens_with_tabs": 148,
+ "errors": [],
+ "paths_instrumented": 657,
+ "terms": {
+  "core": {
+   "customer": "customer",
+   "incident": "incident",
+   "ticket": "ticket",
+   "request": "request",
+   "asset": "asset",
+   "site": "site",
+   "downtime": "outage",
+   "workforce": "team",
+   "work_item": "ticket",
+   "frontline": "service desk",
+   "service": "service",
+   "order": "order",
+   "case": "case",
+   "supplier": "vendor",
+   "revenue": "revenue"
+  },
+  "health": {
+   "customer": "patient",
+   "incident": "patient safety event",
+   "ticket": "service request",
+   "request": "referral",
+   "asset": "medical device",
+   "site": "hospital",
+   "downtime": "downtime",
+   "workforce": "care team",
+   "work_item": "case",
+   "frontline": "access center",
+   "service": "service line",
+   "order": "order",
+   "case": "encounter",
+   "supplier": "supplier",
+   "revenue": "net patient revenue"
+  },
+  "mining": {
+   "customer": "offtake customer",
+   "incident": "safety event",
+   "ticket": "work order",
+   "request": "work request",
+   "asset": "piece of equipment",
+   "site": "mine site",
+   "downtime": "unplanned downtime",
+   "workforce": "crew",
+   "work_item": "work order",
+   "frontline": "control room",
+   "service": "operation",
+   "order": "shipment",
+   "case": "investigation",
+   "supplier": "supplier",
+   "revenue": "concentrate revenue"
+  },
+  "storage": {
+   "customer": "customer",
+   "incident": "data recovery event",
+   "ticket": "support case",
+   "request": "service request",
+   "asset": "appliance",
+   "site": "customer site",
+   "downtime": "outage",
+   "workforce": "field team",
+   "work_item": "support case",
+   "frontline": "support desk",
+   "service": "subscription",
+   "order": "order",
+   "case": "support case",
+   "supplier": "supplier",
+   "revenue": "recurring revenue"
+  }
+ }
+}
