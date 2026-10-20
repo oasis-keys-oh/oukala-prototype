@@ -66,7 +66,7 @@
 .ppm-kc i{width:8px;height:8px;border-radius:var(--rad-round);display:inline-block}
 .ppm-kc.human i{background:var(--good-f)}.ppm-kc.ai i{background:var(--u3)}.ppm-kc.contractor i{background:var(--w1)}.ppm-kc.msp i{background:var(--p3)}
 .ppm-stack{display:flex;height:34px;border-radius:var(--rad-xl);overflow:hidden;gap:2px;margin:6px 0 10px}
-.ppm-stack i{display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;color:#fff;min-width:0;transition:flex .4s}
+.ppm-stack i{display:grid;place-items:center;font-style:normal;font-weight:700;font-size:13px;color:var(--white);min-width:0;transition:flex .4s}
 .ppm-stack i.human{background:var(--good-f)}.ppm-stack i.ai{background:var(--u3)}.ppm-stack i.contractor{background:var(--w1)}.ppm-stack i.msp{background:var(--p3)}
 .ppm-mbar{display:inline-block;vertical-align:middle;width:70px;height:8px;border-radius:var(--rad-pill);background:var(--track);overflow:hidden}.ppm-mbar i{display:block;height:100%;background:var(--accent);border-radius:var(--rad-pill)}.ppm-mbar.over i{background:var(--bad-f)}
 .ppm-over{color:var(--bad);font-weight:700}
@@ -108,7 +108,7 @@
 
 @media(max-width:700px){.ppm-heat{grid-template-columns:44px repeat(5,minmax(0,1fr));gap:4px}.ppm-heat .hc{min-height:52px;padding:2px}.hd{width:26px;height:26px}.ppm-hl small{display:none}}
 
-.ppm-hm>i.u4{background:color-mix(in srgb,var(--bad-f) 62%,transparent);color:var(--ink)}.ppm-hm>i.u5{background:color-mix(in srgb,var(--bad-f) 78%,transparent);color:#fff}.ppm-hm>i.u6{background:var(--bad-f);color:#fff;font-weight:800}
+.ppm-hm>i.u4{background:color-mix(in srgb,var(--bad-f) 62%,transparent);color:var(--ink)}.ppm-hm>i.u5{background:color-mix(in srgb,var(--bad-f) 78%,transparent);color:var(--white)}.ppm-hm>i.u6{background:var(--bad-f);color:var(--white);font-weight:800}
 .ppm-pc{gap:8px}.ppm-pc .kv{gap:2px 12px}
 
 .ppm-kv4{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr);gap:6px 14px;align-items:center}.ppm-kv4 dd{margin:0}@media(max-width:700px){.ppm-kv4{grid-template-columns:auto minmax(0,1fr)}}

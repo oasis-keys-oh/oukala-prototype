@@ -32,7 +32,7 @@
 .pk2-ono{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.25}
 .pk2-ono b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pk2-ono small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pk2-cb{flex:none;width:18px;height:18px;border-radius:var(--rad-xs);border:1.5px solid var(--edge);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;color:var(--accent-ink,#fff)}
+.pk2-cb{flex:none;width:18px;height:18px;border-radius:var(--rad-xs);border:1.5px solid var(--edge);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:12px;color:var(--accent-ink,var(--white))}
 .pk2-o.on .pk2-cb{background:var(--accent);border-color:var(--accent)}
 .pk2-star{flex:none;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;padding:4px 6px;opacity:.0;border-radius:var(--rad-md)}
 .pk2-o:hover .pk2-star,.pk2-o.act .pk2-star,.pk2-star.on{opacity:1}

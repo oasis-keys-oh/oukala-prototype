@@ -16,9 +16,9 @@ select.fin{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .fmoney{display:flex;align-items:center;gap:0;position:relative}.fmoney b{position:absolute;left:16px;color:var(--muted)}.fmoney .fin{padding-left:30px}
 .fld.bad .fin{box-shadow:0 0 0 2px var(--bad-f)}.ferr{color:var(--bad);font-weight:700;font-size:12.5px}.fhelp{color:var(--muted);font-size:12.5px}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
-.pchip{display:inline-flex;align-items:center;gap:8px}.av{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:var(--rad-round);color:#fff;font-size:10px;font-weight:800;font-style:normal}
+.pchip{display:inline-flex;align-items:center;gap:8px}.av{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:var(--rad-round);color:var(--white);font-size:10px;font-weight:800;font-style:normal}
 .ftog{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:4px 0;font-weight:700;color:var(--ink)}
-.ftog i{width:46px;height:26px;border-radius:var(--rad-pill);background:var(--track);position:relative;transition:background .2s}.ftog i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:var(--rad-round);background:#fff;box-shadow:0 2px 6px var(--shade);transition:transform .2s var(--ease)}
+.ftog i{width:46px;height:26px;border-radius:var(--rad-pill);background:var(--track);position:relative;transition:background .2s}.ftog i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:var(--rad-round);background:var(--white);box-shadow:0 2px 6px var(--shade);transition:transform .2s var(--ease)}
 .ftog[aria-checked="true"] i{background:var(--accent)}.ftog[aria-checked="true"] i::after{transform:translateX(20px)}
 .frange{display:flex;align-items:center;gap:14px}.frange b{min-width:54px;text-align:right;font-size:20px}
 .fdrop{display:block;border-radius:20px;padding:22px;background:var(--accent-soft);border:2px dashed color-mix(in srgb,var(--accent) 55%,transparent);cursor:pointer;transition:transform .2s var(--ease),background .2s}

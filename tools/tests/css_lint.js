@@ -4,7 +4,7 @@
 // goes above the ceilings below (ceilings only go down: lower them when a cleanup lands).
 // Usage: node tools/tests/css_lint.js [--report]
 const fs=require('fs'),path=require('path');
-const CEIL={hex:Infinity,important:Infinity,zindex:0,fontStack:2,breakpoint:0,radius:124};
+const CEIL={hex:220,important:Infinity,zindex:0,fontStack:2,breakpoint:0,radius:124};
 const src=path.resolve(__dirname,'../../src');const rep=process.argv.includes('--report');
 const files=fs.readdirSync(src).filter(f=>!/ 2\./.test(f));
 const css={};for(const f of files.filter(f=>f.endsWith('.css')))css[f]=fs.readFileSync(path.join(src,f),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');

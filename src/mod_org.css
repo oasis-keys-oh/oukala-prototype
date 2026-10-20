@@ -177,8 +177,8 @@
 .org-card.ag{gap:8px}
 /* ===== R14: connectors drawn from rendered rects; contrast token; toggle moved off the line start ===== */
 :root{--org-line:#4f5f68;--org-line-dot:#1d6f8a;--org-line-mx:#9a5b00}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--org-line:#c3d2da;--org-line-dot:#7fd3ee;--org-line-mx:#ffc46b}}
-:root[data-theme="dark"]{--org-line:#c3d2da;--org-line-dot:#7fd3ee;--org-line-mx:#ffc46b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--org-line:var(--muted);--org-line-dot:var(--story);--org-line-mx:#ffc46b}}
+:root[data-theme="dark"]{--org-line:var(--muted);--org-line-dot:var(--story);--org-line-mx:#ffc46b}
 .org-svg{z-index:var(--z-local)}
 .org-n{z-index:calc(var(--z-local) + 1)}
 .org-ln{stroke:var(--org-line);stroke-width:1.75;opacity:1;stroke-linecap:butt;stroke-linejoin:miter;fill:none}

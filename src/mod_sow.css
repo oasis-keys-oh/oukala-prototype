@@ -11,7 +11,7 @@
 .sow-sel{min-width:200px;max-width:100%}
 .sow-stack{display:flex;height:30px;border-radius:var(--rad-xl);overflow:hidden;background:var(--track);gap:2px;margin:6px 0 10px}
 .sow-stack i{display:flex;align-items:center;justify-content:center;min-width:26px;transition:flex .6s var(--ease)}
-.sow-stack b{font-size:12.5px;color:var(--bg,#fff);mix-blend-mode:normal;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45)}
+.sow-stack b{font-size:12.5px;color:var(--bg,var(--white));mix-blend-mode:normal;color:var(--white);text-shadow:0 1px 2px rgba(0,0,0,.45)}
 .sow-hb{display:flex;flex-direction:column;gap:9px}
 .sow-hbr{display:grid;grid-template-columns:minmax(120px,190px) minmax(60px,1fr) 56px;gap:10px;align-items:center;font-size:13.5px}
 .sow-hbl{min-width:0;overflow-wrap:break-word}
@@ -50,7 +50,7 @@ button.sow-wk{cursor:pointer;transition:transform .25s var(--ease)}button.sow-wk
 .sow-steps li{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:var(--rad-card);background:var(--glass2);opacity:.55;transition:opacity .3s,transform .3s}
 .sow-steps li.done{opacity:1}.sow-steps li.now{opacity:1;transform:translateX(4px);outline:2px solid var(--accent)}
 .sow-steps i{width:24px;height:24px;border-radius:var(--rad-round);display:grid;place-items:center;background:var(--track);font-style:normal;font-weight:700;flex:0 0 auto}
-.sow-steps li.done i{background:var(--good-f);color:#fff}
+.sow-steps li.done i{background:var(--good-f);color:var(--white)}
 .sow-new{padding:16px 20px}
 .sow-new>summary{display:flex;justify-content:space-between;gap:14px;align-items:center;cursor:pointer;list-style:none}
 .sow-new>summary::-webkit-details-marker{display:none}
@@ -82,7 +82,7 @@ button.sow-wk{cursor:pointer;transition:transform .25s var(--ease)}button.sow-wk
 .sow-chain{display:flex;flex-direction:column;gap:8px}
 .sow-ch{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:var(--rad-card);background:var(--glass2)}
 .sow-ch>i{width:26px;height:26px;border-radius:var(--rad-round);display:grid;place-items:center;background:var(--track);font-style:normal;font-weight:700;font-size:13px}
-.sow-ch.done>i{background:var(--good-f);color:#fff}
+.sow-ch.done>i{background:var(--good-f);color:var(--white)}
 .sow-ch span{display:flex;flex-direction:column;gap:3px;min-width:0}
 .sow-gl{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;line-height:1.45}
 .sow-why{font-size:12.5px;padding:4px 12px}

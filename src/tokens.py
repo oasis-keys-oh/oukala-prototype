@@ -3,10 +3,11 @@
 # CL-23: eight z-index layers (--z-below to --z-top); a rule that must sit above a sibling in the same layer adds an offset: calc(var(--z-float) + 10).
 # CL-24: breakpoints (CSS custom media is not available, so media queries use the literal values): phone max 700px, tablet max 900px, laptop max 1100px, wide max 1500px; min-width queries use value+1. docs/css-tokens.md.
 # CL-21: radius scale --rad-xs 4px to --rad-panel 22px, plus --rad-pill and --rad-round (50%).
+# CL-22: --white and --black are the two neutrals module CSS used as literals (same value in both themes).
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);
---p1:#17899F;--p2:#2C92A6;--p3:#419CAE;--p4:#189EB8;--p5:#6EBECD;--p6:#98CDD8;
+--white:#FFFFFF;--black:#000000;--p1:#17899F;--p2:#2C92A6;--p3:#419CAE;--p4:#189EB8;--p5:#6EBECD;--p6:#98CDD8;
 --w1:#FFBA01;--w3:#FBC430;--e1:#E91224;--e4:#F16470;--s1:#0E7D10;--s3:#3A933C;--s4:#67AA69;--u1:#930E93;--u3:#A53AA5;--u4:#B767B7;
 --bg:#FBFBF9;--ink:#16262B;--muted:#435860;--faint:#5A6E74;
 --glass:rgba(244,248,250,.78);--glass2:rgba(255,255,255,.94);--edge:rgba(255,255,255,.95);--hair:rgba(22,38,43,.10);--shade:rgba(20,60,76,.11);--cardline:rgba(22,50,62,.11);

@@ -72,7 +72,7 @@
 .wbs-nd{cursor:pointer;outline:none}.wbs-nd:hover rect:first-of-type,.wbs-nd:focus-visible rect:first-of-type{filter:drop-shadow(0 4px 8px var(--shade))}
 .wbs-rc{display:inline-flex;align-items:center;gap:8px;min-width:0}
 .wbs-hc{display:inline-block;min-width:34px;text-align:center;padding:2px 4px;border-radius:var(--rad-md);font-variant-numeric:tabular-nums;font-weight:700}
-.wbs-hc.ok{background:color-mix(in srgb,var(--good-f) 22%,transparent)}.wbs-hc.warn{background:color-mix(in srgb,var(--warn-f) 35%,transparent)}.wbs-hc.over{background:var(--bad-f);color:#fff}
+.wbs-hc.ok{background:color-mix(in srgb,var(--good-f) 22%,transparent)}.wbs-hc.warn{background:color-mix(in srgb,var(--warn-f) 35%,transparent)}.wbs-hc.over{background:var(--bad-f);color:var(--white)}
 .wbs-chain{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1.1fr) auto minmax(0,1fr);gap:12px;align-items:center}
 .wbs-chain .arr{display:block;width:26px;height:2px;background:var(--faint);position:relative}.wbs-chain .arr:after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:8px solid var(--faint)}
 .wbs-cc{display:flex;flex-direction:column;gap:8px;align-items:flex-start;min-width:0}

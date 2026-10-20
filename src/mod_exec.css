@@ -120,7 +120,7 @@
 .exe-psec{margin-bottom:18px}.exe-psec h4{font-family:var(--f-disp);font-size:20px;margin:0 0 6px;border-bottom:1px solid var(--hair);padding-bottom:4px}.exe-psec h4 span{color:var(--accent)}
 .exe-claim{border-radius:var(--rad-xs);transition:background .2s}.exe-claim:hover{background:var(--accent-soft)}
 .exe-cite{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 4px;margin:0 1px;border-radius:var(--rad-pill);background:var(--metric-s);color:var(--metric);font:800 11px var(--f-body);vertical-align:baseline}
-.exe-cite:hover,.exe-cite:focus-visible{background:var(--metric-f);color:#fff;outline:none}
+.exe-cite:hover,.exe-cite:focus-visible{background:var(--metric-f);color:var(--white);outline:none}
 .exe-cite::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(4px);width:max-content;max-width:min(260px,70vw);padding:8px 12px;border-radius:var(--rad-xl);background:var(--ink);color:var(--bg);font:600 12px/1.35 var(--f-body);text-align:left;display:none;pointer-events:none;z-index:var(--z-sticky);white-space:normal}
 .exe-cite:hover::after,.exe-cite:focus-visible::after{display:block}
 .exe-src{font-family:var(--f-body);font-size:13px!important;color:var(--muted)}

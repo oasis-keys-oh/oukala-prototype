@@ -1,5 +1,5 @@
 /* Round 17 Agent N: one notification layer, top right, liquid glass. Replaces bottom-right toasts, the Needs you banner dock and the bottom-centre undo dock. */
-:root{--r17n-bg:rgba(255,255,255,.58);--r17n-bg2:rgba(255,255,255,.42);--r17n-edge:rgba(20,24,40,.10);--r17n-hi:rgba(255,255,255,.85);--r17n-sh:0 1px 2px rgba(15,20,40,.08),0 10px 30px rgba(15,20,40,.16),0 24px 60px rgba(15,20,40,.10);--r17n-chipfg:#fff;--r17n-btn:rgba(20,24,40,.07);--r17n-btnh:rgba(20,24,40,.13)}
+:root{--r17n-bg:rgba(255,255,255,.58);--r17n-bg2:rgba(255,255,255,.42);--r17n-edge:rgba(20,24,40,.10);--r17n-hi:rgba(255,255,255,.85);--r17n-sh:0 1px 2px rgba(15,20,40,.08),0 10px 30px rgba(15,20,40,.16),0 24px 60px rgba(15,20,40,.10);--r17n-chipfg:var(--white);--r17n-btn:rgba(20,24,40,.07);--r17n-btnh:rgba(20,24,40,.13)}
 :root[data-theme="dark"]{--r17n-bg:rgba(44,46,56,.56);--r17n-bg2:rgba(44,46,56,.42);--r17n-edge:rgba(255,255,255,.14);--r17n-hi:rgba(255,255,255,.22);--r17n-sh:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45),0 26px 64px rgba(0,0,0,.35);--r17n-btn:rgba(255,255,255,.10);--r17n-btnh:rgba(255,255,255,.18)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--r17n-bg:rgba(44,46,56,.56);--r17n-bg2:rgba(44,46,56,.42);--r17n-edge:rgba(255,255,255,.14);--r17n-hi:rgba(255,255,255,.22);--r17n-sh:0 1px 2px rgba(0,0,0,.4),0 12px 34px rgba(0,0,0,.45),0 26px 64px rgba(0,0,0,.35);--r17n-btn:rgba(255,255,255,.10);--r17n-btnh:rgba(255,255,255,.18)}}
 
@@ -18,7 +18,7 @@ html #toasts.r17n-layer.r17n-open::-webkit-scrollbar{display:none}
 .r17n-card.r17n-drag{transition:none}
 @keyframes r17n-in{from{opacity:0;transform:translateY(-120%) scale(.96)}to{opacity:1;transform:none}}
 .r17n-card:focus-visible,.r17n-act:focus-visible,.r17n-x:focus-visible,.r17n-more:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.r17n-chip{grid-row:1/span 2;width:38px;height:38px;border-radius:var(--rad-lg);display:grid;place-items:center;color:var(--r17n-chipfg);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 78%,#fff),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 1px 3px rgba(0,0,0,.2);--c:var(--accent)}
+.r17n-chip{grid-row:1/span 2;width:38px;height:38px;border-radius:var(--rad-lg);display:grid;place-items:center;color:var(--r17n-chipfg);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 78%,var(--white)),var(--c));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 1px 3px rgba(0,0,0,.2);--c:var(--accent)}
 .r17n-card.good .r17n-chip{--c:var(--good-f,#2e9d5b)}.r17n-card.info .r17n-chip{--c:var(--story-f,#4a7bd0)}.r17n-card.warn .r17n-chip{--c:var(--warn-f,#d98a1a)}.r17n-card.bad .r17n-chip{--c:var(--bad-f,#d04040)}.r17n-card.approval .r17n-chip{--c:var(--accent)}
 .r17n-chip svg{width:20px;height:20px}
 .r17n-top{display:flex;align-items:baseline;gap:8px;min-width:0}
@@ -37,7 +37,7 @@ html #toasts.r17n-layer.r17n-open::-webkit-scrollbar{display:none}
 .r17n-acts{grid-column:2/4;display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
 .r17n-act{flex:1 1 0;min-width:84px;border:0;border-radius:var(--rad-pill);min-height:32px;padding:6px 12px;font:inherit;font-weight:700;font-size:12.5px;color:var(--ink);background:var(--r17n-btn);cursor:pointer}
 .r17n-act:hover{background:var(--r17n-btnh)}
-.r17n-act.pri{background:var(--accent);color:var(--on-accent,#fff)}.r17n-act.pri:hover{filter:brightness(1.08)}
+.r17n-act.pri{background:var(--accent);color:var(--on-accent,var(--white))}.r17n-act.pri:hover{filter:brightness(1.08)}
 .r17n-bar{position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--accent);transform-origin:left;animation:r17n-count linear forwards}
 @keyframes r17n-count{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 .r17n-card:hover .r17n-bar,.r17n-card:focus-within .r17n-bar,.r17n-card.paused .r17n-bar{animation-play-state:paused}
@@ -56,4 +56,4 @@ html #toasts.r17n-layer.r17n-open::-webkit-scrollbar{display:none}
  .r17n-layer:not(.r17n-open) .r17n-card:nth-child(n){transform:none}}
 @keyframes r17n-fade{from{opacity:0}to{opacity:1}}
 @media(prefers-contrast:more){:root{--r17n-bg:Canvas;--r17n-bg2:Canvas;--r17n-edge:CanvasText;--r17n-hi:transparent}.r17n-card,.r17n-more{-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 0 0 2px CanvasText;color:CanvasText}.r17n-b,.r17n-when{color:CanvasText}.r17n-x{opacity:1}.r17n-act{box-shadow:inset 0 0 0 1px CanvasText}}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.r17n-card,.r17n-more{background:color-mix(in srgb,var(--bg,#fff) 94%,transparent)}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.r17n-card,.r17n-more{background:color-mix(in srgb,var(--bg,var(--white)) 94%,transparent)}}

@@ -166,7 +166,7 @@
 .nx-zero span{color:var(--muted);font-size:12.5px}
 .nx-fixed{padding:6px 14px;font-size:12.5px;color:var(--muted)}
 .nx-fixed b{color:var(--ink)}
-.nx-ask .nx-oi{background:linear-gradient(135deg,var(--p1),var(--u3));color:#fff}
+.nx-ask .nx-oi{background:linear-gradient(135deg,var(--p1),var(--u3));color:var(--white)}
 .nx-prev{border-left:1px solid var(--hair);padding:16px 18px 14px;overflow:auto;max-height:calc(min(78vh,720px) - 190px);display:flex;flex-direction:column;gap:10px;background:color-mix(in srgb,var(--accent-soft) 40%,transparent)}
 .nx-pv-h{display:flex;align-items:center;gap:12px}
 .nx-pv-h h3{font-size:22px;line-height:1.15;margin-top:2px;overflow-wrap:break-word;min-width:0}

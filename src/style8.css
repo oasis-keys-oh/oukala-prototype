@@ -36,7 +36,7 @@
 #toasts .toast{pointer-events:auto;border-radius:var(--rad-card);padding:10px 10px 10px 14px;font-weight:600;font-size:13px;max-width:400px;align-items:center;gap:10px;line-height:1.35}
 #toasts .toast .tmsg{flex:1 1 auto;min-width:0;overflow-wrap:break-word}
 #toasts .toast .tcount{font-size:12px;color:var(--muted)}
-#toasts .toast .tact{flex:none;border:0;border-radius:var(--rad-pill);padding:6px 12px;min-height:32px;font:inherit;font-weight:700;font-size:12.5px;cursor:pointer;background:var(--accent);color:var(--on-accent,#fff)}
+#toasts .toast .tact{flex:none;border:0;border-radius:var(--rad-pill);padding:6px 12px;min-height:32px;font:inherit;font-weight:700;font-size:12.5px;cursor:pointer;background:var(--accent);color:var(--on-accent,var(--white))}
 #toasts .toast .tx{flex:none;border:0;background:none;color:var(--muted);font-size:20px;line-height:1;width:32px;height:32px;border-radius:var(--rad-round);cursor:pointer}
 #toasts .toast .tx:hover{background:var(--glass2);color:var(--ink)}
 #toasts .toast.sys{opacity:.92;font-weight:500;padding:8px 8px 8px 12px;font-size:12.5px}
@@ -60,7 +60,7 @@
 .r15-fam .r15-fl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--muted)}
 .r15-fam .r15-fc{display:flex;gap:8px;flex-wrap:wrap}
 .r15-fam .chip{padding:7px 14px}
-.r15-fam .chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent,#fff);border-color:transparent}
+.r15-fam .chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent,var(--white));border-color:transparent}
 /* --- task first: collapsed overview --- */
 .r15-ov{padding:0;overflow:hidden}
 .r15-ov>summary{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;padding:14px var(--card-pad,20px);cursor:pointer;list-style:none;min-height:48px}

@@ -1,5 +1,5 @@
 /* Round 17 Agent T: human versus AI actors. Prefix r17t-. Tokens first; colors elsewhere come from tokens. */
-:root{--r17t-ai:#6a4fe0;--r17t-ai2:#9a87ff;--r17t-ink:#fff;--r17t-edge:rgba(255,255,255,.5);--r17t-trace:rgba(255,255,255,.78);--r17t-tint:color-mix(in srgb,var(--r17t-ai) 10%,var(--glass2,transparent));--r17t-line:color-mix(in srgb,var(--r17t-ai) 78%,var(--ink));--r17t-hu:var(--muted)}
+:root{--r17t-ai:#6a4fe0;--r17t-ai2:#9a87ff;--r17t-ink:var(--white);--r17t-edge:rgba(255,255,255,.5);--r17t-trace:rgba(255,255,255,.78);--r17t-tint:color-mix(in srgb,var(--r17t-ai) 10%,var(--glass2,transparent));--r17t-line:color-mix(in srgb,var(--r17t-ai) 78%,var(--ink));--r17t-hu:var(--muted)}
 :root[data-theme="dark"]{--r17t-ai:#8a74ff;--r17t-ai2:#5a44d8;--r17t-tint:color-mix(in srgb,var(--r17t-ai) 16%,var(--glass2,transparent));--r17t-line:#b3a6ff}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--r17t-ai:#8a74ff;--r17t-ai2:#5a44d8;--r17t-tint:color-mix(in srgb,var(--r17t-ai) 16%,var(--glass2,transparent));--r17t-line:#b3a6ff}}
 

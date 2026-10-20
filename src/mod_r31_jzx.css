@@ -70,7 +70,7 @@
 .jpm-fw .wfd-node{text-align:left;font:inherit;cursor:pointer;color:inherit}
 
 .jb-plan{margin:8px 0 12px;padding:10px 14px;border:1px dashed color-mix(in srgb,var(--accent) 55%,transparent);border-radius:var(--rad-xl);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.jb-pl{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:var(--rad-pill);background:var(--accent);color:#fff}.jb-pl.d{background:var(--muted)}
+.jb-pl{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:var(--rad-pill);background:var(--accent);color:var(--white)}.jb-pl.d{background:var(--muted)}
 .jb-act .btn.on{outline:2px solid var(--accent)}
 /* DC-01: a release that hit the per-step FTE cap (modeled) */
 .jb-cap{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--warn-f)}

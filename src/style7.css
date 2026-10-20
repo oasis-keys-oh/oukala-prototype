@@ -108,8 +108,8 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 }
 
 /* ---- F-04b filled controls: white text holds 4.5:1 on both ends of the gradient in light and dark ---- */
-:root:root .btn.primary{background:linear-gradient(135deg,#0E6478,#13809A);color:#fff}
-:root:root .btn.danger{background:linear-gradient(135deg,#B00D1B,#E91224);color:#fff}
+:root:root .btn.primary{background:linear-gradient(135deg,#0E6478,var(--p1));color:var(--white)}
+:root:root .btn.danger{background:linear-gradient(135deg,#B00D1B,var(--e1));color:var(--white)}
 
 /* ---- F-04c category colours used as TEXT (eyebrows, labels): mixed toward the ink so they hold 4.5:1 on light and dark ---- */
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p1)"]{color:color-mix(in srgb,var(--p1) 45%,var(--eb-mix))!important}

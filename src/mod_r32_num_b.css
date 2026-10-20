@@ -5,6 +5,6 @@
 .jx-xref{align-items:center;gap:8px;margin:8px 0}
 
 .num-pal{list-style:none;padding:6px 10px 2px}
-.num-palrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border-radius:var(--rad-lg);border:1px solid var(--line,#d8dce6);background:var(--card,#fff);cursor:pointer;font:inherit;color:inherit}
+.num-palrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border-radius:var(--rad-lg);border:1px solid var(--line,#d8dce6);background:var(--card,var(--white));cursor:pointer;font:inherit;color:inherit}
 .num-palrow:hover,.num-palrow:focus-visible{border-color:var(--accent,#c89b3c);outline:none}
 .num-palrow small{margin-left:auto;opacity:.65}
