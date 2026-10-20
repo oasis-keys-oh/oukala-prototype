@@ -120,7 +120,7 @@ R.personaData=function(p){const a=A();const L=X.JY.list.flatMap(j=>a.allBoxes(j)
  const now=n?L.reduce((s,x)=>s+x.b.em*x.b.vol,0)/vol:0;const R_=L.map(x=>a.rec(x.b));
  const after=n?L.reduce((s,x,i)=>{const f=R.fixOf(x.j,x.b);return s+Math.min(5,x.b.em+(f.f>0?1:0))*x.b.vol},0)/vol:0;
  const hrs=L.reduce((s,x)=>s+hrsOf(x.b),0),pat=p==="Patient";
- const cand=R_.filter(r=>r.st==="cand"),agents=cand.filter(r=>r.k==="agent").length,robots=cand.filter(r=>r.k==="robot").length;
+ const cand=R_.filter(r=>r.st==="cand"),cb=R.countBuilds(L.map((x,i)=>({j:x.j,s:x.s,b:x.b,r:R_[i]}))),agents=cb.agents,robots=cb.robots; /* JM-04: one teammate per build */
  const runA=R_.filter(r=>r.st==="running"&&r.k==="agent").length,runR=R_.filter(r=>r.st==="running"&&r.k==="robot").length;
  const freed=cand.reduce((s,r)=>s+r.save,0);const js=[...new Set(L.map(x=>x.j.id))];
  const worst=L.slice().sort((x,y)=>x.b.em-y.b.em||y.b.vol-x.b.vol)[0];

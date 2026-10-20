@@ -57,6 +57,16 @@ JXR.fixOf=(j,b)=>{const a=A(),r=a.rec(b);const f=r.st==="cand"?a.REC_SAVE[r.k]:(
  return {f,hrs,capped:raw>hrs,usd:b.who==="Patient"?0:hrs*a.REC_RATE,pt:b.who==="Patient",lift:f>0?Math.min(1,5-b.em):0}};
 /* DC-01: the FTE model in one place (mod_people journey section): 140 hours a month is one FTE; one step releases at most REC_CAP_FTE. Modeled. */
 JXR.FTE_H=()=>A().FTE_H||140;
+/* JM-04: one counting rule for proposed teammates, used by the Build list, the org chart, orgprop and the Personas tab.
+   A build is one agent or one robot. Recommended steps of the same kind that share a process (else a shared touchpoint, else a stage) are one build.
+   Scope: "detail" leaves out an end-to-end journey when detailed journeys exist (it summarizes the same work); "all" counts every journey. */
+JXR.scope={sel:null};
+JXR.hasDetail=()=>X.JY.list.some(j=>j.cat!=="End to end");
+JXR.scopeNow=()=>JXR.scope.sel||(JXR.hasDetail()?"detail":"all");
+JXR.inScope=j=>!(JXR.scopeNow()==="detail"&&j.cat==="End to end"&&JXR.hasDetail());
+JXR.buildGroup=(j,s,b)=>b.procs.length?pk_(b.procs[0]):b.key?"tp:"+b.key:"st:"+j.id+":"+s.id;
+JXR.buildKey=(j,s,b,r)=>r.k+":"+JXR.buildGroup(j,s,b);
+JXR.countBuilds=rows=>{const ag=new Set(),rb=new Set();rows.forEach(x=>{const r=x.r||A().rec(x.b);if(r.st!=="cand"||(r.k!=="agent"&&r.k!=="robot"))return;(r.k==="agent"?ag:rb).add(JXR.buildKey(x.j,x.s,x.b,r))});return {agents:ag.size,robots:rb.size,keys:[...ag,...rb]}};
 JXR.capNote=()=>`Each step releases at most ${A().REC_CAP_FTE||2} FTE (${A().REC_CAP_H||280} hours a month), modeled`;
 
 /* ---------- 3. avatars ---------- */

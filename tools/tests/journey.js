@@ -49,5 +49,15 @@ const run=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN
  out[k]={hits,n,lab}}return out});
 for(const k in run)ok(!run[k].hits.length&&run[k].n===run[k].lab,`${k}: ${run[k].n} automated steps labeled modeled, no live "running" wording${run[k].hits.length?' ('+run[k].hits.slice(0,3).join(' | ')+')':''}`);
 
+// 5. JM-04: the org chart and the Build list count proposed agents and robots the same way, in both scopes
+const cnt=await p.evaluate(async()=>{const out=[];for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));
+ for(const sc of ['detail','all']){JXR.scope.sel=sc;const B=JXR.builds(),M=JXR.orgModel();
+  S.pp2.tab.ppl_jrny=7;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const tile=l=>{const t=[...document.querySelectorAll('#view .jk')].find(x=>x.querySelector('.jk-l')&&x.querySelector('.jk-l').textContent===l);return t?+t.querySelector('b').textContent:null};
+  const prop=(window.ORGX&&ORGX.propAll&&k==='core')?ORGX.propAll().length:B.length;
+  out.push({k,sc,bA:B.filter(x=>x.k==='agent').length,bR:B.filter(x=>x.k==='robot').length,oA:M.all.agents,oR:M.all.robots,tA:tile('Agents proposed'),tR:tile('Robots proposed'),prop,n:B.length})}}
+ JXR.scope.sel=null;return out});
+cnt.forEach(c=>ok(c.bA===c.oA&&c.bR===c.oR&&c.tA===c.bA&&c.tR===c.bR&&c.prop===c.n,`${c.k} (${c.sc}): Build list ${c.bA} agents and ${c.bR} robots = org chart ${c.oA} and ${c.oR} (tiles ${c.tA}, ${c.tR}; orgprop ${c.prop})`));
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();

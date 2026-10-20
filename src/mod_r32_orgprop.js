@@ -20,7 +20,7 @@ function compute(){const by=new Map();if(!isCore())return by;
   const pr={id:o.id,k:o.k,name:o.name,title:o.title,wave:o.wave,steps:o.rows.length,hrs:o.hrs,freed:o.freed,ext:o.ext,owner,unit,head,exact};
   (by.get(head)||by.set(head,[]).get(head)).push(pr)});
  by.forEach(l=>l.sort((a,b)=>a.wave-b.wave||b.freed-a.freed));return by}
-const all=()=>{const k=SCN.cur+"|"+(window.DATA?DATA.version:0); /* keyed by tenant and data version (CL-55) */if(!CACHE||CK!==k){CACHE=compute();CK=k}return CACHE};
+const all=()=>{const k=SCN.cur+"|"+(window.DATA?DATA.version:0)+"|"+(R.scopeNow?R.scopeNow():""); /* keyed by tenant and data version (CL-55) */if(!CACHE||CK!==k){CACHE=compute();CK=k}return CACHE};
 O.propReset=()=>{CACHE=null};
 O.propFor=n=>all().get(n)||[];
 O.propAll=()=>[...all().values()].flat();
