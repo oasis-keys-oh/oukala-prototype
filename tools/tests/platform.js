@@ -7,7 +7,7 @@ await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{
 const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  ok(U.slug("Hello, World")==="hello-world","U.slug");ok(U.money(1234.4)==="$1,234","U.money");ok(U.clamp(5,0,3)===3,"U.clamp");ok(U.esc("<a>")==="&lt;a&gt;","U.esc");
  const seen=[];const off=HOOKS.on("beforeGo",s=>seen.push("b:"+s),{id:"t"});HOOKS.on("afterRender",s=>seen.push("r:"+s),{id:"t2"});HOOKS.on("beforeRender",s=>seen.push("p:"+s),{id:"t3"});go("home");off();go("home");
- ok(seen.filter(x=>x==="b:home").length===1,"HOOKS beforeGo once then off");ok(seen.includes("r:home"),"HOOKS afterRender");ok(seen.includes("p:home"),"HOOKS beforeRender");
+ ok(seen.filter(x=>x==="b:home").length===1,"HOOKS beforeGo once then off");ok(seen.includes("r:home"),"HOOKS afterRender");ok(seen.includes("p:home"),"HOOKS beforeRender");let au=null;HOOKS.on("audit",e=>au=e,{id:"t4"});audit("test action","x");ok(au&&au.a==="test action","HOOKS audit");
  DATA.define("t_rec",{core:()=>[{id:"A",n:"Meridian row"}]});ok(DATA.get("t_rec").length===1,"DATA core");
  let ch=0;DATA.on("change",()=>ch++);const prev=DATA.tenant();DATA.setTenant("zz_test");ok(DATA.get("t_rec").length===0,"DATA no leakage");ok(DATA.gaps().includes("zz_test:t_rec"),"DATA gap recorded");
  DATA.pack("zz_test",{t_rec:[{id:"B"}]});ok(DATA.byId("t_rec","B")&&DATA.byId("t_rec","B").id==="B","DATA pack");DATA.setTenant(prev);ok(ch===2,"DATA change events");

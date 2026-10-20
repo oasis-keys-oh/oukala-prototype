@@ -14,7 +14,7 @@ const PREF={theme:"auto",size:"m",density:"comfortable",motion:"system",skill:"s
 function loadPrefs(){try{const p=U.store.get("oukala-v2",null);if(p){Object.assign(PREF,p.pref||{});if(PERSONAS[p.persona])S.persona=p.persona}}catch(e){}applyPrefs()}
 function savePrefs(){try{U.store.set("oukala-v2",{pref:PREF,persona:S.persona})}catch(e){}}
 function applyPrefs(){const r=document.documentElement;PREF.theme==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",PREF.theme);r.dataset.size=PREF.size;r.dataset.density=PREF.density;r.dataset.skill=PREF.skill;r.dataset.contrast=PREF.contrast;PREF.motion==="reduced"?r.dataset.motion="reduced":r.removeAttribute("data-motion")}
-function audit(a,d){AUDIT.unshift({t:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),p:PERSONAS[S.persona].n,s:S.screen,a,d:d||""});const b=$("#auditCount");if(b)b.textContent=AUDIT.length}
+function audit(a,d){AUDIT.unshift({t:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),p:PERSONAS[S.persona].n,s:S.screen,a,d:d||""});const b=$("#auditCount");if(b)b.textContent=AUDIT.length;if(window.HOOKS)HOOKS.run("audit",AUDIT[0])}
 
 /* icons */
 const IC=d=>`<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;

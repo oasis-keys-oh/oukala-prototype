@@ -30,7 +30,7 @@ U.store={keys:new Set(),get(k,d){this.keys.add(k);try{const v=localStorage.getIt
    Names: beforeGo(screen,arg) · beforeRender(screen) · afterRender(screen) · afterOpenDrawer(el) · tenantChange(tenant,prev).
    HOOKS.on(name,fn,{order,id}) returns an off function. Lower order runs first; same id replaces. */
 const HK={};const HOOKS=W.HOOKS=W.HOOKS||{};
-HOOKS.names=["beforeGo","beforeRender","afterRender","afterOpenDrawer","tenantChange","tenantDenied"];
+HOOKS.names=["beforeGo","beforeRender","afterRender","afterOpenDrawer","tenantChange","tenantDenied","audit"]; /* audit(entry): every audited user action, {t,p,s,a,d} */
 HOOKS.on=(name,fn,o)=>{o=o||{};const L=HK[name]=HK[name]||[];if(o.id){const i=L.findIndex(x=>x.id===o.id);if(i>=0)L.splice(i,1)}
  const h={fn,order:o.order||0,id:o.id||null};L.push(h);L.sort((a,b)=>a.order-b.order);return()=>{const i=L.indexOf(h);if(i>=0)L.splice(i,1)}};
 HOOKS.run=(name,...a)=>{(HK[name]||[]).slice().forEach(h=>{try{h.fn(...a)}catch(e){console.error("hook "+name+(h.id?" ("+h.id+")":""),e)}})};
