@@ -1,0 +1,39 @@
+/* Steps: one look for the four step kinds (R21 to R24, CL-58). Prefix stp- and the sm-* classes that STEPMODE.pill emits.
+   Colors come from tokens only. Every module that draws a step reads --sm-human, --sm-robot, --sm-agent or --sm-gate,
+   or puts a sm-<kind> class on the element and reads --sm. */
+:root{--sm-human:var(--u3);--sm-robot:color-mix(in srgb,var(--p1) 42%,var(--u1));--sm-agent:var(--p4);--sm-gate:color-mix(in srgb,var(--warn-f) 55%,var(--warn))}
+.sm-human{--sm:var(--sm-human)}.sm-robot{--sm:var(--sm-robot)}.sm-agent{--sm:var(--sm-agent)}.sm-gate{--sm:var(--sm-gate)}
+.stepmode{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-2xs);font-weight:var(--fw-label);line-height:1.5;padding:1px 8px;border-radius:999px;white-space:nowrap;background:color-mix(in srgb,var(--sm,var(--muted)) 14%,transparent);color:color-mix(in srgb,var(--sm,var(--muted)) 72%,var(--ink));border:1px solid color-mix(in srgb,var(--sm,var(--muted)) 30%,transparent)}
+.stepmode::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--sm,var(--muted))}
+.stepmode.sm-agent::before{border-radius:50%}.stepmode.sm-gate::before{transform:rotate(45deg) scale(.85)}
+/* the trigger line on a step card */
+.stp-trig{display:inline-flex;align-items:center;gap:4px;font-size:var(--fs-2xs);color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stp-trig::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;border:1.5px solid var(--sm,var(--muted))}
+.stp-trig.none{color:var(--bad)}
+.stp-legend{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:6px 0}
+/* agent definition card */
+.stp-card{display:grid;gap:12px}
+.stp-card h2{margin:0;font-size:var(--fs-xl)}
+.stp-head{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.stp-head .stp-ht{flex:1;min-width:0}
+.stp-sim{display:inline-block;font-size:var(--fs-2xs);font-weight:var(--fw-label);padding:1px 8px;border-radius:999px;background:var(--warn-s);color:var(--warn)}
+.stp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px}
+.stp-kv{border:1px solid var(--cardline);border-radius:12px;padding:8px 10px;background:var(--glass2);min-width:0}
+.stp-kv small{display:block;color:var(--muted);font-size:var(--fs-2xs);font-weight:var(--fw-label);text-transform:uppercase;letter-spacing:.04em}
+.stp-kv b{display:block;font-size:var(--fs-md);overflow-wrap:anywhere}
+.stp-kv span{display:block;font-size:var(--fs-xs);color:var(--muted)}
+.stp-sec h4{margin:4px 0 6px;font-size:var(--fs-sm)}
+.stp-ver{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.stp-ver li{border:1px solid var(--hair);border-radius:10px;padding:8px 10px;font-size:var(--fs-sm)}
+.stp-ver li b{margin-right:6px}.stp-ver li.cur{border-color:var(--sm-agent)}
+.stp-ver pre{white-space:pre-wrap;font:inherit;font-size:var(--fs-xs);color:var(--muted);margin:4px 0 0}
+.stp-robot{border:1px solid color-mix(in srgb,var(--sm-robot) 40%,transparent);background:color-mix(in srgb,var(--sm-robot) 9%,transparent);border-radius:12px;padding:10px 12px;font-size:var(--fs-sm)}
+.stp-ks{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.stp-ks .on{color:var(--good);font-weight:var(--fw-strong)}.stp-ks .off{color:var(--bad);font-weight:var(--fw-strong)}
+.stp-tsel{display:grid;gap:4px}
+.stp-reg{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px}
+.stp-reg button{text-align:left;font:inherit;color:var(--ink);cursor:pointer;display:grid;gap:4px;padding:12px}
+/* workflow designer: the trigger line on robot and agent step cards, and the trigger editor */
+.wfd-node .wfd-ntr{font-size:10.5px;line-height:1.15;color:color-mix(in srgb,var(--nc) 70%,var(--ink))}
+.wfd-trig{display:grid;gap:6px;margin:0 0 10px}.wfd-trig .fld{margin:0}
+.wfd-seg3 button.sm-human i,.wfd-seg3 button.sm-robot i,.wfd-seg3 button.sm-agent i,.wfd-seg3 button.sm-gate i{background:var(--sm)}

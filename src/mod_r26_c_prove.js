@@ -15,11 +15,11 @@ function checks(){const B=Q.B,st=steps(),f=[];
  if(gates.length)f.push({id:"esc",a:1,si:gates.map(x=>x.i),t:gates.length+" approval step"+(gates.length>1?"s":"")+" wait forever if the approver is away",fx:"Escalates to the backup after the time limit",ap:()=>gates.forEach(x=>x.s.esc=true)});
  const ag=st.map((s,i)=>({s,i})).filter(x=>x.s.who==="agent"&&!x.s.fallback);
  if(ag.length)f.push({id:"fbk",a:4,si:ag.map(x=>x.i),t:ag.length+" AI agent step"+(ag.length>1?"s":"")+" have no fallback when the agent is unsure or unavailable",fx:"Falls back to a person after one failed try",ap:()=>ag.forEach(x=>x.s.fallback=true)});
- const hand=st.map((s,i)=>({s,i})).filter(x=>x.s.who==="agent"&&st[x.i+1]&&(st[x.i+1].who==="auto"||st[x.i+1].who==="fn")&&!x.s.confirm);
- if(hand.length)f.push({id:"hand",a:1,si:hand.map(x=>x.i),t:"An AI agent's answer flows straight into an automatic step with no person checking",fx:"A person confirms before the next step runs",ap:()=>hand.forEach(x=>x.s.confirm=true)});
+ const hand=st.map((s,i)=>({s,i})).filter(x=>x.s.who==="agent"&&st[x.i+1]&&(W.STEPMODE?STEPMODE.of(st[x.i+1].who)==="robot":/^(auto|fn|robot)$/.test(st[x.i+1].who))&&!x.s.confirm);
+ if(hand.length)f.push({id:"hand",a:1,si:hand.map(x=>x.i),t:"An agent's answer flows straight into a robot step with no person checking",fx:"A person confirms before the next step runs",ap:()=>hand.forEach(x=>x.s.confirm=true)});
  const nd=B.data.filter(d=>d.kind==="new"&&(!d.rule||!d.owner));
  if(nd.length)f.push({id:"rule",a:3,si:[],t:nd.length+" new data attribute"+(nd.length>1?"s":"")+" accept anything",fx:"Rule and owner added",ap:()=>nd.forEach(d=>{d.rule=d.rule||"Required, checked against the source";d.owner=d.owner||me()})});
- const nosla=st.map((s,i)=>({s,i})).filter(x=>!x.s.base&&!x.s.sla&&x.s.who!=="auto");
+ const nosla=st.map((s,i)=>({s,i})).filter(x=>!x.s.base&&!x.s.sla&&x.s.who!=="robot");
  if(nosla.length)f.push({id:"sla",a:1,si:nosla.map(x=>x.i),t:nosla.length+" step"+(nosla.length>1?"s have":" has")+" no time limit",fx:"Time limit set from similar steps",ap:()=>nosla.forEach(x=>x.s.sla="2 days")});
  const first=st[0];if(first&&!first.base&&!B.dupFix)f.push({id:"dup",a:1,si:[0],t:"Sending the request twice creates two records",fx:"Duplicate check on the request number",ap:()=>{B.dupFix=true}});
  const big=(B.people||[]).filter(g=>g.lvl==="edit"&&g.people.length>25);
@@ -131,23 +131,23 @@ X.publishFinal=function(){const B=Q.B;if(!B.agreed){say("I will hold it here unt
 
 /* ================= the wall of every artifact ================= */
 const svg=(x)=>`<svg class="r26-ts" viewBox="0 0 160 96" aria-hidden="true">${x}</svg>`;
-const LCOL={human:"h",auto:"a",fn:"f",agent:"g",gate:"k"};
+const LCOL={human:"h",robot:"f",agent:"g",gate:"k"};
 const TH={
- proc:()=>{const st=steps(),n=Math.min(st.length,14),L=["human","agent","fn","auto","gate"];let o="";st.slice(0,n).forEach((s,i)=>{const x=10+i*(140/n),y=8+L.indexOf(s.who)*17;o+=`<rect class="${LCOL[s.who]}" x="${x}" y="${y}" width="${Math.max(6,140/n-4)}" height="11" rx="3"/>`});return svg(o)},
+ proc:()=>{const st=steps(),n=Math.min(st.length,14),L=["human","agent","robot","gate"];let o="";st.slice(0,n).forEach((s,i)=>{const k=W.STEPMODE?STEPMODE.of(s.who):s.who,x=10+i*(140/n),y=8+L.indexOf(k)*17;o+=`<rect class="${LCOL[k]}" x="${x}" y="${y}" width="${Math.max(6,140/n-4)}" height="11" rx="3"/>`});return svg(o)},
  access:()=>{const b=X.connect.base(),s=STAFF().slice(0,48);return svg(s.map((p,i)=>`<circle class="lv-${X.levelFor(p.n,"proc",b)}" cx="${14+(i%12)*11.6}" cy="${16+Math.floor(i/12)*18}" r="4.4"/>`).join(""))},
  approve:()=>svg(Array.from({length:28},(_,i)=>`<rect class="${i===17?"f":i===10?"k":"l"}" x="${12+(i%7)*20}" y="${12+Math.floor(i/7)*19}" width="15" height="14" rx="4"/>`).join(""))};
 const GRP=["Design","Connect","Govern","Prove","Ship"];
 const plural=(n,a,b)=>n+" "+(n===1?a:b);
 function wallItems(){const B=Q.B,b=!!Q.built,t=B.test&&B.test.clean,u=B.ux&&B.ux.clean,g=B.guard||{},st=steps(),R=Q.reached;
- const cnt=k=>st.filter(s=>s.who===k).length,fn=cnt("fn"),ag=cnt("agent"),gt=cnt("gate");
+ const cnt=k=>st.filter(s=>s.who===k).length,fn=cnt("robot"),ag=cnt("agent"),gt=cnt("gate");
  const m0=(B.metrics||[])[0],rm=G(()=>X.connect.roadmap(),[]),bc=G(()=>X.connect.bcpRows(),[]),sr=G(()=>X.design.stdRows(),[]);
  const stdNames=[...new Set(sr.map(r=>r.std))].slice(0,3);
  const lv={see:0,change:0,sign:0};G(()=>{const base=X.connect.base();STAFF().forEach(p=>{const l=X.levelFor(p.n,"proc",base);if(l in lv)lv[l]++})});
- const agNames=st.filter(s=>s.who==="agent"||s.who==="fn").slice(0,2).map(s=>s.n);
+ const agNames=st.filter(s=>s.who==="agent"||s.who==="robot").slice(0,2).map(s=>s.n);
  const first=x=>String(x||"").split(/(?<=[.!?])\s/)[0];
  return[
- {k:"proc",g:0,t:"Process and workflow",f:plural(st.length,"step","steps"),l:[fn+" Function"+(fn===1?"":"s")+", "+plural(ag,"AI agent","AI agents")+", "+gt+" sign off"],j:"flow",on:true,mini:1},
- {k:"agents",g:0,t:"AI agents and Functions",f:plural(fn,"Function","Functions")+", "+plural(ag,"AI agent","AI agents"),l:agNames,j:"agents",on:!!R.agents},
+ {k:"proc",g:0,t:"Process and workflow",f:plural(st.length,"step","steps"),l:[plural(fn,"robot","robots")+", "+plural(ag,"agent","agents")+", "+gt+" sign off"],j:"flow",on:true,mini:1},
+ {k:"agents",g:0,t:"Agents and robots",f:plural(fn,"robot","robots")+", "+plural(ag,"agent","agents"),l:agNames,j:"agents",on:!!R.agents},
  {k:"std",g:0,t:"Standards by step",f:plural(sr.length,"recommendation","recommendations"),l:stdNames,j:"stdstep",on:!!R.std},
  {k:"data",g:1,t:"Data model map",f:B.data.length+" elements, "+B.data.filter(d=>d.kind==="new").length+" new",l:B.data.slice(0,2).map(d=>d.el+" ("+d.ent+")"),j:"datamap",on:!!R.data},
  {k:"metrics",g:1,t:"Measures",f:plural((B.metrics||[]).length,"measure","measures"),l:m0?[m0.n+": "+m0.cur+m0.u+" to "+m0.tgt+m0.u,"If it moves: "+m0.dec]:[],j:"metrics",on:!!R.metrics},
@@ -184,15 +184,15 @@ const lastIdx=(bs,f)=>{let k=-1;bs.forEach((b,i)=>{if(f(b))k=i});return k};
 X.beatsFor=function(sc,bs){
  const cur=X.curLevel?X.curLevel():2;
  const ins=(at,list)=>{bs.splice(at+1,0,...list)};
- const B=()=>Q.B,fnN=()=>steps().filter(s=>s.who==="fn").length;
+ const B=()=>Q.B,fnN=()=>steps().filter(s=>s.who==="robot").length;
  const guardAt=bs.findIndex(b=>b.guard);
  /* after the last Standards beat, the guardrail checks that need only the process */
  const pAt=Math.max(lastIdx(bs,b=>b.ph==="process"),lastIdx(bs,b=>b.ph==="std"));
  const design=[
   {ph:"std",btn:"Check each step against the standards",view:"stdstep",say:()=>["I checked every step against what the industry does and wrote a recommendation for each one that has a standard. <b>"+X.design.stdRows().length+" of "+steps().length+" steps</b> have one."]},
-  {ph:"agents",btn:"Where should AI agents help?",view:"agents",hold:3200,say:()=>{const rows=X.design.rows(),c=rows.filter(r=>!r.s.base);const fn=c.filter(r=>r.tgt==="fn").length,ag=c.filter(r=>r.tgt==="agent").length,rm=c.filter(r=>r.cur==="agent"&&r.tgt==="fn");
-   return["I asked one question of each step: <i>is the answer always the same for the same input?</i> If it is, I do not recommend an AI agent. A <b>Function</b>, a fixed rule shown in indigo, is cheaper, instant and exactly testable.",
-    "Result: <b>"+fn+"</b> step"+(fn===1?"":"s")+" as Functions, <b>"+ag+"</b> for an AI agent with a person confirming, the rest with people."+(rm.length?" I took the AI agent off <b>"+E(rm[0].s.n)+"</b>: a comparison against a limit does not need one.":"")]},
+  {ph:"agents",btn:"Where should AI agents help?",view:"agents",hold:3200,say:()=>{const rows=X.design.rows(),c=rows.filter(r=>!r.s.base);const fn=c.filter(r=>r.tgt==="robot").length,ag=c.filter(r=>r.tgt==="agent").length,rm=c.filter(r=>r.cur==="agent"&&r.tgt==="robot");
+   return["I asked one question of each step: <i>is the answer always the same for the same input?</i> If it is, I do not recommend an agent. A <b>robot</b>, a fixed if, then, else rule shown in indigo, is cheaper, instant and exactly testable.",
+    "Result: <b>"+fn+"</b> step"+(fn===1?"":"s")+" as robots, <b>"+ag+"</b> for an agent with a person confirming, the rest with people."+(rm.length?" I took the agent off <b>"+E(rm[0].s.n)+"</b>: a comparison against a limit does not need one.":"")]},
    run:()=>{if(A())later(()=>{X.applyAgents();render()},1400);else X.applyAgents()}}];
  ins(pAt<0?1:pAt,design);
  const dAt=lastIdx(bs,b=>b.ph==="data");

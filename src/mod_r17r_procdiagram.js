@@ -1,8 +1,11 @@
 /* R17 process diagrams: a swimlane diagram for every process, generated from its steps. Prefix r17pd- */
 (function(){
  const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
- const WHO={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"};
- const KIND={human:"var(--accent)",agent:"var(--info,#8b7cf6)",auto:"var(--good)",gate:"var(--warn)"};
+ /* step kinds through STEPMODE (CL-58): human, robot, agent, approval gate; colors are the sm tokens from mod_s_steps.css */
+ const KOF=v=>window.STEPMODE?STEPMODE.of(v):"human";
+ const WHO={human:"Human",robot:"Robot",agent:"Agent",gate:"Approval gate"};if(window.STEPMODE)Object.keys(WHO).forEach(k=>WHO[k]=STEPMODE.label(k));
+ const KIND={human:"var(--sm-human)",robot:"var(--sm-robot)",agent:"var(--sm-agent)",gate:"var(--sm-gate)"};
+ const TRT=s=>window.STEPKIT?" | "+STEPKIT.trigText(Object.assign({},s,{trig:s.trig||(STEPKIT.needsTrigger(s.who)?STEPKIT.guessTrig(s):null)})):"";
  function wrap(t,n){const w=String(t||"").split(/\s+/),L=[];let c="";w.forEach(x=>{if((c+" "+x).trim().length>n&&c){L.push(c);c=x}else c=(c+" "+x).trim()});if(c)L.push(c);if(L.length>3){L.length=3;L[2]=L[2].replace(/.{0,2}$/,"…")}return L}
  function steps(id){try{const p=window.PROCLIB&&PROCLIB.get(id);return p?p.stepsList:[]}catch(e){return[]}}
  function buildFlat(list){
@@ -13,11 +16,11 @@
   for(let i=0;i<P.length-1;i++){const a=P[i],b=P[i+1];
    const d=a.y===b.y?`M${a.x+SW} ${a.y+SH/2}H${b.x}`:`M${a.x+SW/2} ${a.y+SH}V${a.y+SH+GY/2}H${b.x+SW/2}V${b.y}`;
    out+=`<path d="${d}" class="r17pd-cn" marker-end="url(#r17pdB)"/>`}
-  P.forEach((p,i)=>{const s=p.s,w=/^(agent|auto|gate)$/.test(s.who)?s.who:"human",c=KIND[w],x0=p.x,y0=p.y,cx=x0+SW/2,cy=y0+SH/2;
-   const tip=`${i+1}. ${s.n} | ${WHO[w]} | ${s.owner||"Unassigned"}`;let shp;
+  P.forEach((p,i)=>{const s=p.s,w=KOF(s.who),c=KIND[w],x0=p.x,y0=p.y,cx=x0+SW/2,cy=y0+SH/2;
+   const tip=`${i+1}. ${s.n} | ${WHO[w]} | ${s.owner||"Unassigned"}${TRT(s)}`;let shp;
    if(w==="gate")shp=`<path d="M${cx} ${y0-5}L${x0+SW} ${cy}L${cx} ${y0+SH+5}L${x0} ${cy}Z" class="r17pd-sh" style="--k:${c}"/>`;
    else if(w==="agent")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="18" class="r17pd-sh r17pd-ai" style="--k:${c}"/><rect x="${x0+SW-30}" y="${y0-7}" width="26" height="13" rx="6.5" class="r17pd-bd" style="--k:${c}"/><text x="${x0+SW-17}" y="${y0+3}" class="r17pd-bt" text-anchor="middle">AI</text>`;
-   else if(w==="auto")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="4" class="r17pd-sh" style="--k:${c}"/><rect x="${x0+5}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/><rect x="${x0+SW-6.6}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/>`;
+   else if(w==="robot")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="4" class="r17pd-sh" style="--k:${c}"/><rect x="${x0+5}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/><rect x="${x0+SW-6.6}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/>`;
    else shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="8" class="r17pd-sh" style="--k:${c}"/>`;
    const L=wrap(s.n,w==="gate"?12:17);
    out+=`<g class="r17pd-n"><title>${E(tip)}</title>${shp}<text x="${cx}" y="${cy-(L.length-1)*6+4}" text-anchor="middle" class="r17pd-tx" style="font-size:11.5px">${L.map((ln,j)=>`<tspan x="${cx}" dy="${j?12:0}">${E(ln)}</tspan>`).join("")}</text><text x="${x0+2}" y="${y0-3}" class="r17pd-no">${i+1}</text></g>`});
@@ -46,18 +49,18 @@
   const last=pos[pos.length-1],ex=last.x+SW+GX/2+16;
   out+=`<path d="M${last.x+SW} ${last.y}H${ex-12}" class="r17pd-cn" marker-end="url(#r17pdA)"/><circle cx="${ex}" cy="${last.y}" r="11" class="r17pd-en"/><circle cx="${ex}" cy="${last.y}" r="6" class="r17pd-en2"/>`;
   /* steps */
-  pos.forEach((p,i)=>{const s=p.s,w=/^(agent|auto|gate)$/.test(s.who)?s.who:"human",c=KIND[w],x0=p.x,y0=p.y-SH/2;
-   const tip=`${i+1}. ${s.n} | ${WHO[w]} | ${s.owner||"Unassigned"}${s.sla?" | Target: "+s.sla:""}${s.in?" | In: "+s.in:""}${s.out?" | Out: "+s.out:""}`;
+  pos.forEach((p,i)=>{const s=p.s,w=KOF(s.who),c=KIND[w],x0=p.x,y0=p.y-SH/2;
+   const tip=`${i+1}. ${s.n} | ${WHO[w]} | ${s.owner||"Unassigned"}${TRT(s)}${s.sla?" | Target: "+s.sla:""}${s.in?" | In: "+s.in:""}${s.out?" | Out: "+s.out:""}`;
    let shp;
    if(w==="gate")shp=`<path d="M${x0+SW/2} ${y0-6}L${x0+SW} ${p.y}L${x0+SW/2} ${y0+SH+6}L${x0} ${p.y}Z" class="r17pd-sh" style="--k:${c}"/>`;
    else if(w==="agent")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="${SH/2.4}" class="r17pd-sh r17pd-ai" style="--k:${c}"/><rect x="${x0+SW-34}" y="${y0-8}" width="30" height="15" rx="7.5" class="r17pd-bd" style="--k:${c}"/><text x="${x0+SW-19}" y="${y0+3}" class="r17pd-bt" text-anchor="middle">AI</text>`;
-   else if(w==="auto")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="4" class="r17pd-sh" style="--k:${c}"/><rect x="${x0+5}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/><rect x="${x0+SW-6.6}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/>`;
+   else if(w==="robot")shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="4" class="r17pd-sh" style="--k:${c}"/><rect x="${x0+5}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/><rect x="${x0+SW-6.6}" y="${y0}" width="1.6" height="${SH}" style="fill:${c}"/>`;
    else shp=`<rect x="${x0}" y="${y0}" width="${SW}" height="${SH}" rx="9" class="r17pd-sh" style="--k:${c}"/>`;
    const L=wrap(s.n,compact?17:w==="gate"?14:20);
    out+=`<g class="r17pd-n" tabindex="0" role="img" aria-label="${E(tip)}"><title>${E(tip)}</title>${shp}<text x="${x0+SW/2}" y="${p.y-(L.length-1)*(compact?6:7)+4}" text-anchor="middle" class="r17pd-tx">${L.map((ln,j)=>`<tspan x="${x0+SW/2}" dy="${j?(compact?12:14):0}">${E(ln)}</tspan>`).join("")}</text>${!compact&&s.sla?`<text x="${x0+SW/2}" y="${y0+SH+(w==="gate"?22:17)}" text-anchor="middle" class="r17pd-sl">${E(s.sla)}</text>`:""}<text x="${x0+(w==="gate"?SW/2:8)}" y="${y0-(w==="gate"?9:4)}" ${w==="gate"?'text-anchor="middle"':""} class="r17pd-no">${i+1}</text></g>`});
   return{svg:`<svg class="r17pd-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="group" aria-label="Process diagram" xmlns="http://www.w3.org/2000/svg">${out}</svg>`,w:W,h:H,lanes:owners.length,n:list.length};
  }
- function legend(){return `<div class="r17pd-lg" aria-label="Legend"><span><i class="r17pd-k h"></i>Person</span><span><i class="r17pd-k a"></i>AI agent</span><span><i class="r17pd-k s"></i>Automatic</span><span><i class="r17pd-k g"></i>Approval gate</span><span class="muted">Rows are the owner of each step. Select the numbers or shapes for inputs, outputs and target time.</span></div>`}
+ function legend(){return `<div class="r17pd-lg" aria-label="Legend"><span><i class="r17pd-k h"></i>${E(WHO.human)}</span><span><i class="r17pd-k s"></i>${E(WHO.robot)}</span><span><i class="r17pd-k a"></i>${E(WHO.agent)}</span><span><i class="r17pd-k g"></i>${E(WHO.gate)}</span><span class="muted">Robot and agent steps start on a trigger; human steps start by assignment.Rows are the owner of each step. Select the numbers or shapes for inputs, outputs and target time.</span></div>`}
  function card(id){
   const st=steps(id);const d=build(st);
   if(!d)return `<div class="eyebrow">Process diagram</div><p class="small muted">No steps are recorded, so there is nothing to draw. Add steps in the Workflow designer or the drawing studio.</p>${window.DRAW&&DRAW.btn?DRAW.btn(id,"Open drawing studio"):""}`;

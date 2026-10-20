@@ -1,7 +1,7 @@
 /* Build with Oukala. Same visual language as the workflow designer, process map and data model: serif headings, glass cards,
    colored nodes on lanes, an inspector at the side. Chat left, live build right. */
 .stu-screen{padding:0!important;max-width:none!important}
-.stu{--wh:#9a3aa6;--wg:#139bbd;--wa:#2f8a3c;--wk:#c47a0a;--wf:#4b5bd6;display:block;min-height:calc(100vh - 120px)}
+.stu{--wh:var(--sm-human);--wg:var(--sm-agent);--wa:var(--sm-robot);--wk:var(--sm-gate);--wf:var(--sm-robot);display:block;min-height:calc(100vh - 120px)}
 .stu-pro{font-size:10.5px;font-style:normal;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:#2a1146;color:#e6d2ff;border-radius:6px;padding:1px 6px;vertical-align:middle;margin-right:6px}
 .stu-play{border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);background:transparent;color:var(--accent);font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;cursor:pointer}
 .stu-ex{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:0 0 16px}.stu-exc{text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:transform .15s}.stu-exc:hover{transform:translateY(-2px)}.stu-exc small{color:var(--muted);font-size:12.5px}
@@ -53,6 +53,8 @@
 /* inspector */
 .stu-insp{position:sticky;top:8px}.stu-insp h3{margin:4px 0 10px;font-size:20px;outline:none;line-height:1.2}.stu-insp h3:focus{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 40%,transparent);border-radius:6px}
 .stu-insp p{font-size:13.5px;color:var(--muted);margin:0}
+.stu-insp .stp-tsel{margin:0 0 10px}.stu-insp .stp-tsel .fin{width:100%}.stu-insp [data-stp-agent]{margin:0 0 10px}
+.stu-nd small.stu-ntr{color:color-mix(in srgb,var(--nc) 70%,var(--ink))}
 .stu-seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 12px}
 .stu-seg button{border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);background:transparent;border-radius:999px;font:inherit;font-size:12.5px;padding:6px 8px;cursor:pointer;color:var(--ink)}
 .stu-seg button.on{color:#fff;border-color:transparent;font-weight:600}.stu-seg button:disabled{opacity:.5;cursor:default}
