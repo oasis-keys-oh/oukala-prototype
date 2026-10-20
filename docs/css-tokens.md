@@ -217,3 +217,18 @@ This pass removed `!important` where it changes nothing (prototype fact, observe
 | left | 311 |
 
 `css_lint.js` fails when the count goes above 311. Risk: a removed declaration could still matter in a state the probe does not reach (after a click, a drag or a resize); the full suite and the screenshot pass found none.
+
+## Glass effects: measurement (CL-30, measure only)
+Prototype fact, measured 2026-10-20 with `node tools/tests/css_glass.js build_out`: headless Chromium (Playwright 1.58.2), software compositing, 1440 x 900, Apple M5. Nothing was changed (decision: measure first; a visual change needs Omar's approval).
+
+Source: 127 `backdrop-filter` declarations in the CSS (blur 8 to 26 px; 10 of them set it to none). The script opened all 195 screens, counted the visible elements with a backdrop filter, took the three with the most, and scrolled each down and up over 240 animation frames, three rounds with the filters as built and three with them switched off (median round shown).
+
+| Screen | Glass elements | Frame time with glass: median, p95 | Frames over 20 ms (of 240) | Without glass: median, p95 | Frames over 20 ms |
+|---|---|---|---|---|---|
+| `r18_access` (Data access) | 82 | 33.3 ms, 50.1 ms | 206 | 16.7 ms, 18.1 ms | 0 |
+| `orgassist` (Org chart with agent assist) | 76 | 33.3 ms, 50.0 ms | 183 | 16.7 ms, 18.1 ms | 2 |
+| `org_chart` (Org chart) | 76 | 33.4 ms, 67.0 ms | 209 | 16.7 ms, 17.3 ms | 0 |
+
+Reading: on these screens the glass halves the frame rate while scrolling (about 30 instead of 60 frames a second) and most frames miss a 60 Hz budget; without it scrolling holds 60. A GPU-backed browser pays far less per blur, so read the ratio, not the absolute numbers; the next measure is a real device. Next screens by glass count: `exe_mat` 36, `bc_home` 31, `fin_spend`, `r16g_perm`, `tn_projects` 27.
+
+Options for the decision (not built): a reduced-effects preference that sets `backdrop-filter:none` and a solid `--glass2` background (one rule, already how `mod_r25_c_flat.css` treats `#view .glass`); or keep blur only on the top bar, rail and popovers and drop it on cards and tiles, where most of the 76 to 82 elements are.
