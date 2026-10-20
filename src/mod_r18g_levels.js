@@ -50,7 +50,8 @@ applyLens();
 G(()=>{const f=R15.famOf.exe_dash;if(f){const ord=["exe_dash","obs_dash","r17u_dash","kcs_viz","r16j_dash"];f.views.sort((a,b)=>ord.indexOf(a[0])-ord.indexOf(b[0]))}});
 /* tabs of the Dashboards family that belong to directors and managers are not shown at executive level */
 function tag(){D.documentElement.dataset.r18lvl=lvl();applyLens()}
-const _render=W.render;W.render=function(){tag();const r=_render.apply(this,arguments);try{execNote()}catch(x){}return r};
+/* CL-35: HOOKS, not a render wrapper; orders -2030 and 2030 keep the old wrapper position (outermost of the three) */
+HOOKS.on("beforeRender",()=>tag(),{id:"r18g.tag",order:-2030});HOOKS.on("afterRender",()=>{try{execNote()}catch(x){}},{id:"r18g.note",order:2030});
 function execNote(){if(lvl()!=="exec")return;if(S.screen!=="exe_dash")return;const v=D.getElementById("view");if(!v||v.querySelector(".r18-lvnote"))return;const n=v.querySelector(".r15-fam");const html=`<p class="small muted r18-lvnote">Operations and metrics, chart builders and layout tools sit with directors and managers. <button type="button" class="r18-lk" data-go="r18_levels">See who sees what</button></p>`;if(n)n.insertAdjacentHTML("afterend",html)}
 function levelsScreen(){const me=lvl();
  const rows=LEVELS.map(l=>`<tr class="${l.id===me?"on":""}"><td><b>${E(l.n)}</b>${l.id===me?" "+pill("Your level","info"):""}<small class="muted">${E(l.who)}</small></td><td>${E(l.see)}</td><td>${E(l.ctl)}</td><td>${E(l.not)}</td></tr>`).join("");

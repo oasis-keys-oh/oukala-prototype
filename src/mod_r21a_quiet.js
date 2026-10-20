@@ -5,7 +5,7 @@ const KEY="oukala.silence";
 let until=+U.store.get(KEY,0)||0;
 const save=()=>U.store.set(KEY,until);
 const silenced=()=>until===-1||until>Date.now();
-const apply=()=>{D.documentElement.classList.toggle("r21-quiet",silenced());const b=D.getElementById("inbxBell");if(b){b.classList.toggle("r21-muted",silenced());if(silenced())b.title="Notifications silenced "+label()}};
+const apply=()=>{D.documentElement.classList.toggle("r21-quiet",silenced());const b=D.getElementById("inbxBell");if(b){b.classList.toggle("r21-muted",silenced());if(silenced()){const t="Notifications silenced "+label();if(b.title!==t)b.title=t}}}; /* CL-38: no attribute write when unchanged */
 const label=()=>until===-1?"until you turn them back on":"until "+new Date(until).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});
 function set(mode){const n=new Date();
  if(mode==="hour")until=Date.now()+3600e3;else if(mode==="day"){const t=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1,7,0,0);until=t.getTime()}else if(mode==="off")until=-1;else until=0;

@@ -15,10 +15,11 @@ const store={get:(k,d)=>U.store.get("oukala-r15d-"+k,d),set:(k,v)=>{U.store.set(
 R15D.store=store;
 S.r15d=S.r15d||{agFilter:"all",agHour:null};
 
-/* ---------- shared post-render hook (one wrapper for all r15d modules) ---------- */
+/* ---------- shared post-render hook for all r15d modules (CL-35: HOOKS, not a render wrapper) ----------
+   Orders -2010 and 2010 keep the old wrapper position: before and after the r16g_b and r18g hooks, which wrapped later. */
 if(!R15D.wrapped){R15D.wrapped=true;
- const _render=W.render;
- W.render=function(){R15D.beginRender&&R15D.beginRender();const r=_render.apply(this,arguments);R15D.after.forEach(fn=>{try{fn()}catch(e){console.error("r15d after",e)}});return r};
+ HOOKS.on("beforeRender",()=>{R15D.beginRender&&R15D.beginRender()},{id:"r15d.begin",order:-2010});
+ HOOKS.on("afterRender",()=>{R15D.after.forEach(fn=>{try{fn()}catch(e){console.error("r15d after",e)}})},{id:"r15d.after",order:2010});
 }
 
 /* ---------- units: one formatter for every metric ---------- */

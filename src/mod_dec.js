@@ -266,17 +266,18 @@ function secHTML(pid){
 let BUSY=false;
 function repaint(pid){if(BUSY)return;BUSY=true;try{repaint_(pid)}finally{BUSY=false}}
 function repaint_(pid){document.querySelectorAll('[data-dx-sec="'+CSS.escape(pid)+'"]').forEach(el=>{const t=document.createElement("div");t.innerHTML=secHTML(pid);const n=t.firstElementChild;const sc=document.getElementById("drawer");const y=sc?sc.scrollTop:0;el.replaceWith(n);if(sc)sc.scrollTop=y})}
-function inject(html,pid){
- if(html.indexOf("data-dx-sec=")>-1)return html;
- const sec=secHTML(pid);let at=html.lastIndexOf('<details class="pl-card glass pl-sec">');if(at<0)at=html.lastIndexOf("</div>");if(at<0)return html+sec;
- html=html.slice(0,at)+sec+html.slice(at);
+/* CL-35: the decision rules section and the jump button join the process page on the opened drawer, through the afterOpenDrawer hook
+   instead of an openDrawer wrapper that rewrote the markup: before the last process section card (else at the end of the last div).
+   Order -1000 runs it before every other drawer hook, so they see the section as they saw the injected markup. */
+const lastDiv=root=>{for(let c=root.lastElementChild;c;c=c.previousElementSibling){if(c.tagName==="DIV")return c;const x=lastDiv(c);if(x)return x}return null};
+function injectDrawer(d,pid){
+ if(d.querySelector("[data-dx-sec]"))return;
+ const sec=secHTML(pid);const det=[...d.querySelectorAll('details[class="pl-card glass pl-sec"]')].filter(x=>x.attributes.length===1).pop();
+ if(det)det.insertAdjacentHTML("beforebegin",sec);else{const ld=lastDiv(d);if(ld)ld.insertAdjacentHTML("beforeend",sec);else d.insertAdjacentHTML("beforeend",sec)}
  const rs=ensure(pid).filter(live),a=rs.filter(r=>r.status==="accepted").length;
- const jump=`<div class="row dx-jumpr"><button type="button" class="btn" data-dx-jump="${E(pid)}">Decision rules: ${rs.length} decision point${rs.length===1?"":"s"}, ${a} accepted</button></div>`;
- const m=html.match(/<p class="story"[^>]*>[\s\S]*?<\/p>/);if(m){const i=html.indexOf(m[0])+m[0].length;html=html.slice(0,i)+jump+html.slice(i)}
- return html}
-(function(){const od=window.openDrawer;if(typeof od!=="function")return;
- window.openDrawer=function(html){try{if(typeof html==="string"){const m=html.match(/data-pl-page="([^"]+)"/);if(m)html=inject(html,m[1].replace(/&amp;/g,"&").replace(/&quot;/g,'"'))}}catch(e){console.error("decision rules inject",e)}
-  return od.apply(this,[html].concat([].slice.call(arguments,1)))}})();
+ const st=d.querySelector('p[class="story"]');
+ if(st)st.insertAdjacentHTML("afterend",`<div class="row dx-jumpr"><button type="button" class="btn" data-dx-jump="${E(pid)}">Decision rules: ${rs.length} decision point${rs.length===1?"":"s"}, ${a} accepted</button></div>`)}
+HOOKS.on("afterOpenDrawer",d=>{try{d=d||document.getElementById("drawer");const pg=d&&d.querySelector("[data-pl-page]");if(pg)injectDrawer(d,pg.getAttribute("data-pl-page"))}catch(e){console.error("decision rules inject",e)}},{id:"dec.rules",order:-1000});
 /* minimal tab registry for the process page, defined only when nobody else did */
 G(()=>{const w=()=>{if(window.PROCLIB&&!PROCLIB.addTab){PROCLIB.addTab=function(def){PROCLIB._tabs=PROCLIB._tabs||[];if(def&&def.id&&!PROCLIB._tabs.some(t=>t.id===def.id))PROCLIB._tabs.push(def);return true};PROCLIB.addTab({id:"decision_rules",label:"Decision rules",section:"[data-dx-sec]"})}else if(!window.PROCLIB)setTimeout(w,400)};setTimeout(w,300)});
 function jumpTo(pid,rid){setTimeout(()=>{const el=document.getElementById("dx-sec-"+slug(pid));if(!el)return;if(rid){D.open[rid]=true;repaint(pid)}const e2=document.getElementById("dx-sec-"+slug(pid));if(e2)e2.scrollIntoView({block:"start",behavior:"smooth"})},120)}

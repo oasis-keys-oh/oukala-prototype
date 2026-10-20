@@ -72,7 +72,8 @@ document.addEventListener("click",e=>{if(!I.enforce)return;
 /* Act-as chip */
 function chip(){let c=document.getElementById("r3actas");if(!I.actAs){if(c)c.remove();return}
  if(!c){c=document.createElement("div");c.id="r3actas";c.setAttribute("role","status");document.body.appendChild(c)}
- c.innerHTML=`<span>Acting as <b>${E(I.actAs)}</b> · ${E(roleOf(I.actAs).n)}</span><button type="button" data-r3i-exit>Exit</button>`}
+ /* CL-38: write only when the text changes, so the 700 ms check no longer wakes every body observer */
+ const h=`<span>Acting as <b>${E(I.actAs)}</b> · ${E(roleOf(I.actAs).n)}</span><button type="button" data-r3i-exit>Exit</button>`;if(c._h!==h||!c.firstChild){c._h=h;c.innerHTML=h}}
 setInterval(chip,700);
 
 /* ---------------- seeds and SoD ---------------- */

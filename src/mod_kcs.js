@@ -606,7 +606,7 @@ function runPrompt(){const e=K.ped,p=pOf(e.id),vals=K.ptest.vals,vs=detect(e.tex
 function createFromSrc(src){K.ed=blank();applyDraft(src);const a=saveEd("Drafted by Knowledge Curator from "+src.id);return a}
 const ATTRS=["open","edit","role","mv","approve","retire","nudge","nudgeall","new","save","submit","approve2","publish","restore","src","gen","cite","rev","revall","tabwrite","ask","askq","askh","ctr","vote","gapdraft","draftit","draftall","heat","pdet","ptab","pechip","prun","presample","psave","pnew","psubmit","papp","ppromote","suite","run","tk","case","adj","newcase","newsuite","vzt","vzs","vsave","share","dsel","dw","drm"];
 const SEL=ATTRS.map(a=>"[data-kcs-"+a+"]").join(",");
-document.addEventListener("click",e=>{const t=e.target.closest(SEL);if(!t)return;const d=t.dataset;const ds=Object.keys(d).find(k=>k.startsWith("kcs"));if(!ds)return;const k=ds.slice(3).toLowerCase(),val=d[ds];
+ROUTER.on("click",e=>{const t=e.target.closest(SEL);if(!t)return;const d=t.dataset;const ds=Object.keys(d).find(k=>k.startsWith("kcs"));if(!ds)return;const k=ds.slice(3).toLowerCase(),val=d[ds];
  switch(k){
  case "open":closeDrawer();return openArt(val);
  case "edit":edLoad(val);K.aiSrc=null;K.aiRun=0;S.v.kcs_ev=0;closeDrawer();return go("kcs_edit");
@@ -658,15 +658,15 @@ document.addEventListener("click",e=>{const t=e.target.closest(SEL);if(!t)return
  case "newcase":return caseForm();
  case "newsuite":return suiteForm();
  }});
-document.addEventListener("keydown",e=>{if(e.key==="Enter"){const r=e.target.closest&&e.target.closest("tr[data-kcs-open]");if(r){openArt(r.dataset.kcsOpen);return}const c=e.target.closest&&e.target.closest("tr[data-kcs-pdet],tr[data-kcs-case],tr[data-kcs-ctr]");if(c)c.click();if(e.target.matches&&e.target.matches("[data-kcs-askin]")){askNow(e.target.value);render()}}});
-document.addEventListener("input",e=>{const t=e.target;if(!t.dataset)return;const d=t.dataset;
+ROUTER.on("keydown",e=>{if(e.key==="Enter"){const r=e.target.closest&&e.target.closest("tr[data-kcs-open]");if(r){openArt(r.dataset.kcsOpen);return}const c=e.target.closest&&e.target.closest("tr[data-kcs-pdet],tr[data-kcs-case],tr[data-kcs-ctr]");if(c)c.click();if(e.target.matches&&e.target.matches("[data-kcs-askin]")){askNow(e.target.value);render()}}});
+ROUTER.on("input",e=>{const t=e.target;if(!t.dataset)return;const d=t.dataset;
  if("kcsQ" in d){K.q=t.value;const n=$("#kcs-lib");if(n)n.innerHTML=libTable();return}
  if(d.kcsEd!=null){const f=d.kcsEd;K.ed[f]=f==="srcs"?t.value.split(",").map(x=>x.trim()).filter(Boolean):t.value;updLive();return}
  if(d.kcsEds){K.ed.s[d.kcsEds]=t.value;if(K.ed.ai[d.kcsEds]){K.ed.ai[d.kcsEds]=false;const g=$(`[data-kcs-aitag="${d.kcsEds}"]`);if(g)g.innerHTML=""}updLive();return}
  if(d.kcsPe){K.ped[d.kcsPe]=t.value;if(d.kcsPe==="text"){const n=$("#kcs-pvars");if(n)n.innerHTML=pVarsHTML()}return}
  if(d.kcsPv){K.ptest.vals[d.kcsPv]=t.value;return}
 });
-document.addEventListener("change",e=>{const t=e.target;if(!t.dataset)return;const d=t.dataset;
+ROUTER.on("change",e=>{const t=e.target;if(!t.dataset)return;const d=t.dataset;
  if(d.kcsF){K[d.kcsF]=t.value;const n=$("#kcs-lib");if(n)n.innerHTML=libTable();return}
  if(d.kcsEd!=null&&t.tagName==="SELECT"){K.ed[d.kcsEd]=t.value;updLive();return}
  if("kcsOpenSel" in d){if(t.value)edLoad(t.value);else K.ed=blank();K.aiSrc=null;K.aiRun=0;return render()}
@@ -676,9 +676,9 @@ document.addEventListener("change",e=>{const t=e.target;if(!t.dataset)return;con
  if(d.kcsPe&&t.tagName==="SELECT"){K.ped[d.kcsPe]=t.value;return}
  if(d.kcsPvd!=null){K.pvd[+d.kcsPvd]=+t.value;return render()}
 });
-document.addEventListener("click",e=>{const t=e.target.closest("[data-fmulti],[data-fchip],[data-ftog]");if(t){const v=t.dataset.fmulti||t.dataset.fchip||t.dataset.ftog;if(v&&v.startsWith("kcs_")){const fid=v.split(":")[0],sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)}}
+ROUTER.on("click",e=>{const t=e.target.closest("[data-fmulti],[data-fchip],[data-ftog]");if(t){const v=t.dataset.fmulti||t.dataset.fchip||t.dataset.ftog;if(v&&v.startsWith("kcs_")){const fid=v.split(":")[0],sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)}}
  const ch=e.target.closest("[data-kcs-edchip],[data-kcs-edmulti]");if(ch){const d=ch.dataset;if(d.kcsEdchip){const [f,v]=d.kcsEdchip.split(":");K.ed[f]=v;ch.parentElement.querySelectorAll("[data-kcs-edchip]").forEach(b=>b.setAttribute("aria-pressed",b===ch))}else{const i=d.kcsEdmulti.indexOf(":"),f=d.kcsEdmulti.slice(0,i),v=d.kcsEdmulti.slice(i+1),a=K.ed[f],on=a.includes(v);K.ed[f]=on?a.filter(x=>x!==v):a.concat(v);ch.setAttribute("aria-pressed",!on)}updLive()}});
-document.addEventListener("change",e=>{const t=e.target.closest&&e.target.closest("[data-fk]");if(!t)return;const fid=t.dataset.fk.split(":")[0];if(fid.startsWith("kcs_")){const sp=FORMSPEC[fid];if(sp&&sp.live)setTimeout(()=>sp.live(formValues(fid),fid),10)}});
+ROUTER.on("change","[data-fk]",(e,t)=>{const fid=t.dataset.fk.split(":")[0];if(fid.startsWith("kcs_")){const sp=FORMSPEC[fid];if(sp&&sp.live)setTimeout(()=>sp.live(formValues(fid),fid),10)}});
 
 /* ---------- search and chat intents ---------- */
 SEARCHX.push(()=>ART.filter(a=>a.st!=="Retired").map(a=>({g:"Knowledge articles",t:a.id+" "+a.t,m:a.st+" · "+a.type,c:"--p5",f:()=>{go("kcs_home");setTimeout(()=>openArt(a.id),60)},k:a.svc+" "+a.topic+" "+Object.values(a.s).join(" ").slice(0,200)})));
@@ -1049,7 +1049,7 @@ P("kcs_ask",{title:"How an answer is built",std:["kcs"],steps:[{n:"Retrieve",d:"
 P("kcs_edit",{title:"Article lifecycle",std:["kcs"],steps:[{n:"Draft",d:"Capture in the flow of work.",who:"human"},{n:"Structure",d:"AI helps fill sections.",who:"agent",owner:"Knowledge Curator"},{n:"Review",d:"Reviewer approves.",who:"gate",owner:"Nia Brooks"},{n:"Publish",d:"Publisher publishes.",who:"gate"},{n:"Review again",d:"Expiry date triggers a review.",who:"robot"}]});
 P("kcs_test",{title:"How AI quality is tested",std:["nist"],steps:[{n:"Write cases",d:"Question, expected answer, known-bad answers.",who:"human",owner:"AI quality"},{n:"Run both versions",d:"Production and candidate.",who:"robot"},{n:"Judge",d:"Judge model plus rules, with human adjudication.",who:"agent",owner:"Test Agent"},{n:"Gate",d:"No regression, then promote.",who:"gate"}]});
 /* ---------- events ---------- */
-document.addEventListener("click",e=>{const t=e.target.closest("[data-kx-item],[data-kx-new],[data-kx-promote],[data-kx-review],[data-kx-link],[data-kx-skill],[data-kx-graph],[data-kx-walk],[data-kx-adv],[data-kx-run],[data-kx-edit],[data-kx-extract],[data-kx-stepadd],[data-kx-stepdel],[data-kx-indel],[data-kx-gdel],[data-kx-ap],[data-kx-test],[data-kx-submit],[data-kx-discard],[data-kx-tabgo],[data-kx-fixdraft],[data-kx-demand],[data-kx-aidraft]");if(!t)return;const d=t.dataset;
+ROUTER.on("click","[data-kx-item],[data-kx-new],[data-kx-promote],[data-kx-review],[data-kx-link],[data-kx-skill],[data-kx-graph],[data-kx-walk],[data-kx-adv],[data-kx-run],[data-kx-edit],[data-kx-extract],[data-kx-stepadd],[data-kx-stepdel],[data-kx-indel],[data-kx-gdel],[data-kx-ap],[data-kx-test],[data-kx-submit],[data-kx-discard],[data-kx-tabgo],[data-kx-fixdraft],[data-kx-demand],[data-kx-aidraft]",(e,t)=>{const d=t.dataset;
  if(d.kxItem){openItem(d.kxItem);return}
  if(d.kxNew!==undefined){newItemForm();return}
  if(d.kxPromote){promoteForm(d.kxPromote);return}
@@ -1074,12 +1074,12 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-kx-item],[
  if(d.kxFixdraft){const i=seedImp().find(x=>x.id===d.kxFixdraft);if(!i)return;i.st="Fixing";const k=itOf(i.kb);audit("AI drafted a fix for flagged item",i.kb);toast("Knowledge Curator drafted a fix for "+i.kb+" and sent it to "+i.owner+" for review.","good");if(k&&k.art){editArt(k.id)}else render();return}
  if(d.kxDemand!==undefined){gapDemand(gapList()[+d.kxDemand]);return}
  if(d.kxAidraft!==undefined){aiDraft(gapList()[+d.kxAidraft]);return}});
-document.addEventListener("change",e=>{const t=e.target,d=t.dataset||{};
+ROUTER.on("change",e=>{const t=e.target,d=t.dataset||{};
  if(d.kxSrcsel!==undefined){if(!t.value){X.studio=null;render();return}const k=itOf(t.value);if(!k)return;const x=extract(k);X.studio={kb:k.id,name:k.t,owner:k.own,risk:riskOf(x.steps),steps:x.steps,inputs:x.inputs,guards:x.guards,appr:[],test:null,sample:{},ai:x.ai};X.editSk=null;audit("started skill studio",k.id);render();return}
  if(d.kxStept!==undefined){const s=X.studio.steps[+d.kxStept];s.tool=t.value;s.guard=guardFor(toolOf(t.value));X.studio.test=null;render();return}
  if(d.kxStepg!==undefined){X.studio.steps[+d.kxStepg].guard=t.value;X.studio.test=null;render()}});
-document.addEventListener("input",e=>{const t=e.target,d=t.dataset||{};if(d.kxStepn!==undefined){X.studio.steps[+d.kxStepn].n=t.value;X.studio.test=null}if(d.kxSamp!==undefined)X.studio.sample[d.kxSamp]=t.value;if(d.kxName!==undefined)X.studio.name=t.value});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const t=e.target,d=t.dataset||{};if(d.kxInadd!==undefined&&t.value.trim()){X.studio.inputs.push([t.value.trim(),"text",1]);X.studio.test=null;render()}if(d.kxGadd!==undefined&&t.value.trim()){X.studio.guards.push(t.value.trim());X.studio.test=null;render()}});
+ROUTER.on("input",e=>{const t=e.target,d=t.dataset||{};if(d.kxStepn!==undefined){X.studio.steps[+d.kxStepn].n=t.value;X.studio.test=null}if(d.kxSamp!==undefined)X.studio.sample[d.kxSamp]=t.value;if(d.kxName!==undefined)X.studio.name=t.value});
+ROUTER.on("keydown",e=>{if(e.key!=="Enter")return;const t=e.target,d=t.dataset||{};if(d.kxInadd!==undefined&&t.value.trim()){X.studio.inputs.push([t.value.trim(),"text",1]);X.studio.test=null;render()}if(d.kxGadd!==undefined&&t.value.trim()){X.studio.guards.push(t.value.trim());X.studio.test=null;render()}});
 /* ---------- search and chat ---------- */
 SEARCHX.push(()=>items().filter(k=>!k.gen).map(k=>({g:"Knowledge items",t:k.id+" "+k.t,m:k.type+" · "+k.st+" · readiness "+k.ready,c:"--p4",f:()=>openItem(k.id),k:k.svcN+" "+k.srcK+" "+k.own})).concat(allSkills().filter(s=>!s.gen).map(s=>({g:"Agent skills",t:s.id+" "+s.name,m:s.status+" · "+s.runs+" runs",c:"--accent",f:()=>openSkill(s.id),k:s.kb+" "+s.owner}))).concat(TOOLS.map(t=>({g:"Agent tools",t:t[0]+" "+t[1],m:t[2]+" · "+t[4]+" risk",c:"--u3",f:()=>{S.v.kx_sv=4;go("kcs_skills")},k:t[5]}))));
 const STOPW=new Set("what does the a an article item runbook doc document link links linked to of for about how which is are do with me show tell and".split(" "));

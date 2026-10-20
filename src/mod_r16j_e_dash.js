@@ -127,7 +127,7 @@ function libDrawer(){const items=W.DASHX&&DASHX.library?DASHX.library():[];
 function addTile(it){const w=D.work;if(!w)return;const key="add:"+it.kind+":"+it.ref;if((w.layout.added||[]).some(a=>a.key===key)){G(()=>toast("Already on this dashboard","info"));return}w.layout.added.push({key,kind:it.kind,ref:it.ref,title:it.l});applyLayout();G(()=>toast("Added "+it.l,"good"));setTimeout(()=>{const el=document.querySelector(`[data-dl-key="${CSS.escape(key)}"]`);if(el)el.scrollIntoView({block:"center",behavior:"smooth"})},60)}
 function addedHTML(a){if(W.DASHX&&DASHX.tileHTML)return DASHX.tileHTML(a);return `<div class="cardhead"><h3>${H(a.title)}</h3></div>`}
 /* ---------- events ---------- */
-document.addEventListener("click",e=>{const o=e.target.closest("[data-dl-open]");if(o){e.preventDefault();return startEdit()}
+ROUTER.on("click",e=>{const o=e.target.closest("[data-dl-open]");if(o){e.preventDefault();return startEdit()}
  const b=e.target.closest("[data-dl]");if(!b)return;const a=b.dataset.dl,k=b.dataset.k,c=b.dataset.c;
  switch(a){case "up":return move(c,k,-1);case "down":return move(c,k,1);case "narrow":return resize(k,-1);case "wide":return resize(k,1);
  case "hide":{const h=D.work.layout.hidden;const i=h.indexOf(k);if(i<0)h.push(k);else h.splice(i,1);return applyLayout()}
@@ -139,11 +139,11 @@ document.addEventListener("click",e=>{const o=e.target.closest("[data-dl-open]")
  case "cancel":D.edit=false;D.work=null;return render();case "save":return savePersonal();
  case "apply-default":{const u=me();delete (D.mine[u]||{})[k];sdel("dashboard_layout",u+"|"+k);render();return}}});
 let dragK=null,dragC=null;
-document.addEventListener("dragstart",e=>{const t=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(!t)return;dragK=t.dataset.dlKey;dragC=t.parentElement.dataset.dlC;e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",dragK)}catch(x){}t.classList.add("dl-drag")});
-document.addEventListener("dragover",e=>{const t=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(!t||!dragK||t.parentElement.dataset.dlC!==dragC)return;e.preventDefault();document.querySelectorAll(".dl-over").forEach(x=>x.classList.remove("dl-over"));if(t.dataset.dlKey!==dragK)t.classList.add("dl-over")});
-document.addEventListener("drop",e=>{const t=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(!t||!dragK)return;e.preventDefault();drop(dragC,dragK,t.dataset.dlKey);dragK=null});
-document.addEventListener("dragend",()=>{dragK=null;document.querySelectorAll(".dl-over,.dl-drag").forEach(x=>x.classList.remove("dl-over","dl-drag"))});
-document.addEventListener("keydown",e=>{if(!D.edit)return;const b=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(e.key==="Escape"&&!document.querySelector(".pk2-pop:not([hidden])")&&!document.getElementById("drawer").classList.contains("open")){}
+ROUTER.on("dragstart","[data-dl-tile].dl-edit",(e,t)=>{dragK=t.dataset.dlKey;dragC=t.parentElement.dataset.dlC;e.dataTransfer.effectAllowed="move";try{e.dataTransfer.setData("text/plain",dragK)}catch(x){}t.classList.add("dl-drag")});
+ROUTER.on("dragover",e=>{const t=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(!t||!dragK||t.parentElement.dataset.dlC!==dragC)return;e.preventDefault();document.querySelectorAll(".dl-over").forEach(x=>x.classList.remove("dl-over"));if(t.dataset.dlKey!==dragK)t.classList.add("dl-over")});
+ROUTER.on("drop",e=>{const t=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(!t||!dragK)return;e.preventDefault();drop(dragC,dragK,t.dataset.dlKey);dragK=null});
+ROUTER.on("dragend",()=>{dragK=null;document.querySelectorAll(".dl-over,.dl-drag").forEach(x=>x.classList.remove("dl-over","dl-drag"))});
+ROUTER.on("keydown",e=>{if(!D.edit)return;const b=e.target.closest&&e.target.closest("[data-dl-tile].dl-edit");if(e.key==="Escape"&&!document.querySelector(".pk2-pop:not([hidden])")&&!document.getElementById("drawer").classList.contains("open")){}
  if(b&&e.altKey&&(e.key==="ArrowUp"||e.key==="ArrowDown")&&e.target.closest(".dl-tb")){e.preventDefault();move(b.parentElement.dataset.dlC,b.dataset.dlKey,e.key==="ArrowUp"?-1:1)}});
 /* ---------- hook ---------- */
 const _ca=W.coreAfter;W.coreAfter=function(){const r=_ca&&_ca.apply(this,arguments);try{applyLayout()}catch(e){console.error("r16j dash",e)}return r};

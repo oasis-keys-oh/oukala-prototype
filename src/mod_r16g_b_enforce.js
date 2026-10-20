@@ -20,8 +20,9 @@ function deniedScreenHTML(id,d){const nm=G(()=>SCREENS.find(s=>s[0]===id)[1],id)
 let wrapN=-1;
 function wrapScreens(){if(typeof _R==="undefined")return;const ks=Object.keys(_R);
  ks.forEach(id=>{const f=_R[id];if(typeof f!=="function"||f.__pm)return;const w=function(){if(on()&&id!=="home"){const d=PM().can(null,"read","screen:"+id);if(!d.ok){PM().logDenial(PM().principal(),d,{rec:""});return deniedScreenHTML(id,d)}}return f.apply(this,arguments)};w.__pm=1;_R[id]=w})}
-const _render=W.render;
-W.render=function(){try{wrapScreens()}catch(e){console.error("perm wrap",e)}const r=_render.apply(this,arguments);try{if(typeof sweep==="function")sweep()}catch(e){console.error("perm sweep",e)}return r};
+/* CL-35: HOOKS, not a render wrapper; orders -2020 and 2020 keep the old wrapper position (outside r15d, inside r18g) */
+HOOKS.on("beforeRender",()=>{try{wrapScreens()}catch(e){console.error("perm wrap",e)}},{id:"perm.wrap",order:-2020});
+HOOKS.on("afterRender",()=>{try{if(typeof sweep==="function")sweep()}catch(e){console.error("perm sweep",e)}},{id:"perm.sweep",order:2020});
 
 /* ---------------- navigation ---------------- */
 function navDenied(id){return !PM().can(null,"read","screen:"+id).ok}
@@ -132,7 +133,7 @@ if(W.BUDREQ&&BUDREQ.decide&&!BUDREQ.decide.__pm){const d0=BUDREQ.decide;BUDREQ.d
 /* proactively lock controls that would be refused (the guard above stays the authority) */
 function lockControls(root){const seen={};root.querySelectorAll(CSEL).forEach(el=>{if(el.dataset.pmL==="1")return;const c=classify(el);if(!c)return;const key=c[0]+"|"+c[1]+"|"+(c[2]&&(c[2].id||c[2])||"");let d=seen[key];if(!d)d=seen[key]=PM().can(null,c[0],c[1],c[2]);
   if(!d.ok){el.dataset.pmL="1";el.setAttribute("aria-disabled","true");el.classList.add("pm-locked");el.title=(el.title?el.title+" · ":"")+"Not permitted: "+d.why;if("disabled" in el)el.disabled=true}})}
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pm-reqperm]");if(b){e.preventDefault();G(()=>closeDrawer());G(()=>NAVX.persona&&0);G(()=>go("r16g_perm"));setTimeout(()=>{G(()=>PM().ui.requestForm())},400)}});
+ROUTER.on("click","[data-pm-reqperm]",(e,b)=>{e.preventDefault();G(()=>closeDrawer());G(()=>NAVX.persona&&0);G(()=>go("r16g_perm"));setTimeout(()=>{G(()=>PM().ui.requestForm())},400)});
 
 /* ---------------- search: no hidden records, no masked fields ---------------- */
 function screenIdByTitle(t){const s=G(()=>SCREENS.find(x=>x[1]===t),null);return s?s[0]:null}

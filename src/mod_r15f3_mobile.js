@@ -8,7 +8,8 @@ const M=S.r15m=S.r15m||{tab:"appr",offline:false,queue:[],done:{},ack:{},sheet:n
 const need=(a,r)=>window.GUARD&&GUARD.require?GUARD.require(a,r):true;
 /* route: #m opens the mobile view */
 (function(){const w=window.NAVX;if(w&&w.resolveAlias&&!w._r3m){const o=w.resolveAlias;w.resolveAlias=function(s){const t=String(s||"").trim().toLowerCase().replace(/^#/,"");return t==="m"||t==="mobile"?"r15_mobile":o.apply(this,arguments)};w._r3m=1}})();
-setInterval(()=>{const on=S.screen==="r15_mobile";document.body.classList.toggle("r3m-on",on)},250);
+/* CL-38: the body class follows the screen on each render (afterRender), not a 250 ms poll */
+const r3mOn=()=>{const on=S.screen==="r15_mobile";document.body.classList.toggle("r3m-on",on)};HOOKS.on("afterRender",r3mOn,{id:"r3m.on"});r3mOn();
 const ageTxt=h=>h<1?"under 1 h":h<48?Math.round(h)+" h":Math.round(h/24)+" d";
 const money=R.money;
 function items(){return G(()=>INBOX.items().filter(x=>x.can&&x.can.approve&&!M.done[x.id]),[]).sort((a,b)=>(a.sc||0)-(b.sc||0))}
@@ -78,7 +79,7 @@ function ack(id){const i=S.itsm.inc.find(x=>x.id===id);if(!i)return;const r=rota
  M.ack[id]={status:"acknowledged",by:R.actor(),at:ts+(M.offline?" (queued)":"")};if(M.banner&&M.banner.id===id)M.banner=null;audit("Mobile: acknowledged incident",id+(M.offline?" (offline queue, simulated)":""));R.emit("incident.acknowledged",{incident:id,by:R.actor(),via:"mobile"});toast("Acknowledged "+id,"good")}
 function esc_(id){const i=S.itsm.inc.find(x=>x.id===id);if(!i)return;const r=rotaFor(i);const to=G(()=>ONCALL.now(r,"Secondary"),[])[0]||G(()=>ONCALL.now(r,"Escalation"),[])[0]||"Duty manager";
  M.ack[id]={status:"escalated",by:R.actor(),to,at:new Date(NOW).toISOString().slice(11,16)};if(M.banner&&M.banner.id===id)M.banner=null;audit("Mobile: escalated incident",id+" to "+to);R.emit("incident.escalated",{incident:id,to,via:"mobile"});toast("Escalated to "+to,"warn")}
-document.addEventListener("click",e=>{const root=e.target.closest("[data-r3m-root]");if(!root)return;const t=e.target.closest("[data-r3m-tab],[data-r3m-act],[data-r3m-more],[data-r3m-sync],[data-r3m-ack],[data-r3m-esc],[data-r3m-page],[data-r3m-close],[data-r3m-reason],[data-r3m-do],[data-r3m-to]");if(!t)return;const d=t.dataset;
+ROUTER.on("click","[data-r3m-root]",(e,root)=>{const t=e.target.closest("[data-r3m-tab],[data-r3m-act],[data-r3m-more],[data-r3m-sync],[data-r3m-ack],[data-r3m-esc],[data-r3m-page],[data-r3m-close],[data-r3m-reason],[data-r3m-do],[data-r3m-to]");if(!t)return;const d=t.dataset;
  if(d.r3mTab){M.tab=d.r3mTab;M.sheet=null;render()}
  else if(d.r3mAct){if(d.r3mAct==="approve"){if(decide(d.id,"approve"))render()}else{if(!need("approval.decide",{label:d.id}))return;M.sheet={kind:d.r3mAct,id:d.id,reason:""};render()}}
  else if(d.r3mMore!==undefined){M.more+=12;render()}
@@ -90,14 +91,14 @@ document.addEventListener("click",e=>{const root=e.target.closest("[data-r3m-roo
  else if(d.r3mReason){M.sheet.reason=d.r3mReason;const n=document.querySelector("[data-r3m-note]");M.sheet.note=n?n.value:"";render();const n2=document.querySelector("[data-r3m-note]");if(n2)n2.value=M.sheet.note||""}
  else if(d.r3mDo==="reject"){const n=document.querySelector("[data-r3m-note]");const note=((M.sheet.reason||"")+(n&&n.value?": "+n.value:"")).trim();if(!note){toast("Pick a reason","bad");return}if(decide(M.sheet.id,"reject",{note}))M.sheet=null;render()}
  else if(d.r3mTo){if(decide(M.sheet.id,"delegate",{to:d.r3mTo}))M.sheet=null;render()}});
-document.addEventListener("change",e=>{if(e.target.matches("[data-r3m-off]")){M.offline=e.target.checked;audit("Mobile: connection",M.offline?"offline (simulated)":"online");if(!M.offline&&M.queue.length)sync();render()}});
+ROUTER.on("change",e=>{if(e.target.matches("[data-r3m-off]")){M.offline=e.target.checked;audit("Mobile: connection",M.offline?"offline (simulated)":"online");if(!M.offline&&M.queue.length)sync();render()}});
 /* swipe */
 let sw=null;
-document.addEventListener("pointerdown",e=>{const c=e.target.closest(".r3m-card[data-r3m-id]");if(!c||e.target.closest("button"))return;sw={c,x:e.clientX,y:e.clientY,dx:0,lock:false};c.setPointerCapture&&c.setPointerCapture(e.pointerId)});
-document.addEventListener("pointermove",e=>{if(!sw)return;const dx=e.clientX-sw.x,dy=e.clientY-sw.y;if(!sw.lock&&Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>8){sw=null;return}sw.lock=Math.abs(dx)>8;if(!sw.lock)return;sw.dx=dx;const in_=sw.c.querySelector(".r3m-in");in_.style.transform=`translateX(${dx}px)`;sw.c.classList.toggle("go-r",dx>60);sw.c.classList.toggle("go-l",dx<-60)});
-document.addEventListener("pointerup",e=>{if(!sw)return;const {c,dx}=sw;sw=null;const in_=c.querySelector(".r3m-in");in_.style.transform="";c.classList.remove("go-r","go-l");const id=c.dataset.r3mId;if(dx>110){if(decide(id,"approve"))render()}else if(dx<-110){if(need("approval.decide",{label:id})){M.sheet={kind:"reject",id,reason:""};render()}}});
-document.addEventListener("pointercancel",()=>{if(sw){const i=sw.c.querySelector(".r3m-in");i.style.transform="";sw=null}});
-document.addEventListener("keydown",e=>{const c=e.target.closest&&e.target.closest(".r3m-card[data-r3m-id]");if(!c||e.target.closest("button"))return;if(e.key==="ArrowRight"&&decide(c.dataset.r3mId,"approve"))render();else if(e.key==="ArrowLeft"&&need("approval.decide",{label:c.dataset.r3mId})){M.sheet={kind:"reject",id:c.dataset.r3mId,reason:""};render()}});
+ROUTER.on("pointerdown",e=>{const c=e.target.closest(".r3m-card[data-r3m-id]");if(!c||e.target.closest("button"))return;sw={c,x:e.clientX,y:e.clientY,dx:0,lock:false};c.setPointerCapture&&c.setPointerCapture(e.pointerId)});
+ROUTER.on("pointermove",e=>{if(!sw)return;const dx=e.clientX-sw.x,dy=e.clientY-sw.y;if(!sw.lock&&Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>8){sw=null;return}sw.lock=Math.abs(dx)>8;if(!sw.lock)return;sw.dx=dx;const in_=sw.c.querySelector(".r3m-in");in_.style.transform=`translateX(${dx}px)`;sw.c.classList.toggle("go-r",dx>60);sw.c.classList.toggle("go-l",dx<-60)});
+ROUTER.on("pointerup",e=>{if(!sw)return;const {c,dx}=sw;sw=null;const in_=c.querySelector(".r3m-in");in_.style.transform="";c.classList.remove("go-r","go-l");const id=c.dataset.r3mId;if(dx>110){if(decide(id,"approve"))render()}else if(dx<-110){if(need("approval.decide",{label:id})){M.sheet={kind:"reject",id,reason:""};render()}}});
+ROUTER.on("pointercancel",()=>{if(sw){const i=sw.c.querySelector(".r3m-in");i.style.transform="";sw=null}});
+ROUTER.on("keydown",e=>{const c=e.target.closest&&e.target.closest(".r3m-card[data-r3m-id]");if(!c||e.target.closest("button"))return;if(e.key==="ArrowRight"&&decide(c.dataset.r3mId,"approve"))render();else if(e.key==="ArrowLeft"&&need("approval.decide",{label:c.dataset.r3mId})){M.sheet={kind:"reject",id:c.dataset.r3mId,reason:""};render()}});
 SEARCHX.push(()=>[{g:"Platform",t:"Mobile approvals and on-call",m:"Phone-first view, route /#m",c:"--accent",f:()=>go("r15_mobile"),k:"mobile phone pwa approvals on-call acknowledge escalate swipe offline"}]);
 ASKX.push(q=>{const l=String(q).toLowerCase();if(/mobile|phone|on-?call|acknowledge|pwa|install/.test(l)&&/mobile|phone|pwa|install|acknowledge|approve/.test(l)){go("r15_mobile");say(q,{t:`${items().length} approvals wait for you and ${incs().filter(i=>!M.ack[i.id]).length} incidents are unacknowledged. The mobile view is also at /#m.`,steps:["Read the inbox","Read open incidents"]});return true}return false});
 R.queue({key:"mob",name:"Mobile approvals and on-call",screen:"r15_mobile",

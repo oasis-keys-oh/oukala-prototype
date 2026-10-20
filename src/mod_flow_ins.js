@@ -120,7 +120,7 @@ function showFx(f,h){
   else{const el=$q("#wfdCanvas .wfd-zones");if(el){el.dataset.zone=h.zone;$$q("i",el).forEach(i=>i.classList.toggle("on",i.dataset.z===h.zone));const c=$q(".wfd-zcap",el);if(c)c.textContent="Place "+(h.zone==="branch"?"as a branch of":h.zone)+" "+T.n}}
  }
 }
-document.addEventListener("pointermove",e=>{
+ROUTER.on("pointermove",e=>{
  const a=A();if(!a)return;const d=a.drag();
  if(!d||!d.moved||(d.k!=="pal"&&d.k!=="node")){if(hov)clearFx();return}
  const f=a.f();if(!f)return;const p=a.wpt(e.clientX,e.clientY);
@@ -197,7 +197,7 @@ document.addEventListener("mouseover",e=>{
  const g=t.closest("#wfdCanvas .wfd-edge"),pl=t.closest(".wfd-plus");
  if(g)showPlus(g.dataset.wfdEdge);else if(pl)clearTimeout(plusT);else if($q("#wfdCanvas .wfd-plus")){clearTimeout(plusT);plusT=setTimeout(hidePlus,320)}
 },true);
-document.addEventListener("focusin",e=>{const g=e.target.closest&&e.target.closest("#wfdCanvas .wfd-edge");if(g)showPlus(g.dataset.wfdEdge)});
+ROUTER.on("focusin","#wfdCanvas .wfd-edge",(e,g)=>{showPlus(g.dataset.wfdEdge)});
 document.addEventListener("pointerdown",e=>{
  const t=e.target;if(!t.closest)return;
  const pl=t.closest(".wfd-plus");if(pl){e.preventDefault();e.stopImmediatePropagation();openMini(pl.dataset.eid);return}

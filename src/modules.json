@@ -6,6 +6,7 @@
   "\"mod_wbs 2.css\" is a quarantined duplicate (CL-07), byte-identical to mod_wbs.css, so it is not built; the file itself stays until CL-07 resolves it."
  ],
  "modules": [
+  "mod_s_router",
   "mod_admin",
   "mod_budget",
   "mod_budget2",
@@ -102,7 +103,6 @@
   "mod_r16i_portal",
   "mod_r16j_a_lists",
   "mod_r16j_b_picker",
-  "mod_r16j_c_sites",
   "mod_r16j_d_admin",
   "mod_r16j_e_dash",
   "mod_r16j_f_charts",
@@ -157,7 +157,6 @@
   "mod_r18",
   "mod_r18_0_core",
   "mod_r18a_shell",
-  "mod_r18b_families",
   "mod_r18c_builds",
   "mod_r18d_access",
   "mod_r18e_lens",

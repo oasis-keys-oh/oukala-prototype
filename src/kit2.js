@@ -105,9 +105,9 @@ window.workload=workload;
 const P360_TABS=[];window.P360_TABS=P360_TABS;
 
 /* ---------------- drawer: expand to full screen ---------------- */
-const _od=window.openDrawer;
-window.openDrawer=function(html){_od(html);const d=document.getElementById("drawer");if(!d)return;if(!d.querySelector(".dexpand")){const b=document.createElement("button");b.type="button";b.className="btn quiet dexpand";b.setAttribute("data-dexpand","");d.insertBefore(b,d.firstChild.nextSibling)}
- d.classList.toggle("dfull",!!S.k2.dfull);const b=d.querySelector(".dexpand");if(b)b.textContent=S.k2.dfull?"Exit full screen":"Full screen"};
+/* CL-35: through the afterOpenDrawer hook, not an openDrawer wrapper. Order 2000 keeps it after every other drawer hook, where the wrapper ran. */
+HOOKS.on("afterOpenDrawer",()=>{const d=document.getElementById("drawer");if(!d)return;if(!d.querySelector(".dexpand")){const b=document.createElement("button");b.type="button";b.className="btn quiet dexpand";b.setAttribute("data-dexpand","");d.insertBefore(b,d.firstChild.nextSibling)}
+ d.classList.toggle("dfull",!!S.k2.dfull);const b=d.querySelector(".dexpand");if(b)b.textContent=S.k2.dfull?"Exit full screen":"Full screen"},{id:"kit2.dexpand",order:2000});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-dexpand]");if(!b)return;S.k2.dfull=!S.k2.dfull;const d=document.getElementById("drawer");d.classList.toggle("dfull",S.k2.dfull);b.textContent=S.k2.dfull?"Exit full screen":"Full screen";audit("drawer full screen",S.k2.dfull?"on":"off")});
 
 /* ---------------- person 360 ---------------- */
@@ -442,9 +442,10 @@ mq.addEventListener("change",()=>{if(mq.matches)rc()});setTimeout(rc,300);
 })();
 
 /* ---------------- round 9: drawer controls live in one header bar, never over content ---------------- */
-(function(){const _od2=window.openDrawer;window.openDrawer=function(html){_od2(html);const d=document.getElementById("drawer");if(!d)return;
+/* CL-35: afterOpenDrawer hook, order 2001: right after the expand button above, as the second wrapper ran */
+(function(){HOOKS.on("afterOpenDrawer",()=>{const d=document.getElementById("drawer");if(!d)return;
  let bar=d.querySelector(":scope>.dctl");if(!bar){bar=document.createElement("div");bar.className="dctl";d.insertBefore(bar,d.firstChild)}
- const ex=d.querySelector(":scope>.dexpand"),cl=d.querySelector(":scope>.closebtn");if(ex)bar.appendChild(ex);if(cl)bar.appendChild(cl)};
+ const ex=d.querySelector(":scope>.dexpand"),cl=d.querySelector(":scope>.closebtn");if(ex)bar.appendChild(ex);if(cl)bar.appendChild(cl)},{id:"kit2.dctl",order:2001});
  document.addEventListener("click",e=>{const b=e.target.closest("[data-dexpand-fish]");if(!b)return;const d=document.getElementById("drawer");if(!d)return;S.k2.dfull=true;d.classList.add("dfull");const x=d.querySelector(".dexpand");if(x)x.textContent="Exit full screen";b.closest("[data-itsm-fishbox]")?.scrollIntoView({block:"start"})})})();
 
 

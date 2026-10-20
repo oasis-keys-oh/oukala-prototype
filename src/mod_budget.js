@@ -413,7 +413,7 @@ function xferForm(lineId,to){const l=LN(lineId);if(!l||l.p===to)return;const fro
 function applyXf(x){const l=LN(x.line);l.appr-=x.amt;let t=B().lines.find(q=>q.p===x.to&&q.cat===l.cat);if(!t){t={id:x.to+"-"+l.cat.slice(0,3).toUpperCase(),p:x.to,cat:l.cat,n:l.cat+" (moved from "+x.from+")",dept:PJ(x.to).id==="PR4"?"FN":"IT",appr:0,comm:0,act:0,fcst:0,own:PJ(x.to).owner,why:"",fix:""};B().lines.push(t)}t.appr+=x.amt;x.st="Approved"}
 DND.on("budmove",(id,from,to)=>{if(from===to)return;xferForm(id,to)});
 /* ---- delegated clicks for screen 1 ---- */
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t=e.target.closest("[data-bud-edit]");if(t){editForm(t.dataset.budEdit);return}
  t=e.target.closest("[data-bud-refc]");if(t){refcForm();return}
  t=e.target.closest("[data-bud-led]");if(t){const [id,a]=t.dataset.budLed.split(":"),en=B().led.find(x=>x.id===id);if(!en||en.st!=="Pending")return;
@@ -428,11 +428,11 @@ document.addEventListener("change",e=>{const t=e.target,k=t.dataset&&t.dataset.f
  e.stopImmediatePropagation();
  const dep=sp.fields.some(x=>x.show)||(fid==="bud_refc"&&f==="line")||t.type==="file";if(dep)setTimeout(()=>{if(document.activeElement===t||!document.activeElement||document.activeElement===document.body||!document.activeElement.closest(".fbody"))refreshForm(fid);else{const id=document.activeElement.id;refreshForm(fid);const n=id&&document.getElementById(id);if(n&&n.focus)n.focus()}},160);
  setTimeout(()=>{if(sp.live)sp.live(formValues(fid),fid)},200)},true);
-document.addEventListener("change",e=>{const t=e.target,k=t.dataset&&t.dataset.fk;if(!k||!k.startsWith("bud_"))return;const [fid,f]=k.split(":");
+ROUTER.on("change",e=>{const t=e.target,k=t.dataset&&t.dataset.fk;if(!k||!k.startsWith("bud_"))return;const [fid,f]=k.split(":");
  if(fid==="bud_refc"&&f==="line"){const l=LN(t.value),st=FORMST[fid];if(l){st.vals.newf=l.fcst;st.vals.res=Math.max(0,l.fcst-l.appr);st.vals.req=l.own;st.vals.why=l.why||"";refreshForm(fid)}}
  setTimeout(()=>{const sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)},20)});
-document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.fk;if(!k||!k.startsWith("bud_"))return;const fid=k.split(":")[0];setTimeout(()=>{const sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)},0)});
-document.addEventListener("click",e=>{const t=e.target.closest("[data-fchip],[data-fmulti],[data-ftog],[data-fai]");if(!t)return;const v=t.dataset.fchip||t.dataset.fmulti||t.dataset.ftog||t.dataset.fai;if(!v||!v.startsWith("bud_"))return;const fid=v.split(":")[0];setTimeout(()=>{const sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)},30)});
+ROUTER.on("input",e=>{const k=e.target.dataset&&e.target.dataset.fk;if(!k||!k.startsWith("bud_"))return;const fid=k.split(":")[0];setTimeout(()=>{const sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)},0)});
+ROUTER.on("click","[data-fchip],[data-fmulti],[data-ftog],[data-fai]",(e,t)=>{const v=t.dataset.fchip||t.dataset.fmulti||t.dataset.ftog||t.dataset.fai;if(!v||!v.startsWith("bud_"))return;const fid=v.split(":")[0];setTimeout(()=>{const sp=FORMSPEC[fid];if(sp&&sp.live)sp.live(formValues(fid),fid)},30)});
 /* ---------- 2. Financial model ---------- */
 function amortSplit(p,f){const L=B().life;let sw=0,hw=0;PS(p).forEach(q=>{const gl=goLive(q);if(!gl)return;const ls=PL(q),h=sum(ls.filter(l=>l.cat==="Hardware"),capOf),s=sum(ls.filter(l=>l.cat!=="Hardware"),capOf),g=gl.mi+1;
  const mon=life=>Math.max(0,Math.min(f*12+12,g+life*12)-Math.max(f*12,g));sw+=s/(L*12)*mon(L);hw+=h/48*mon(4)});return {sw,hw}}
@@ -511,14 +511,14 @@ REG("bud_model","Financial model","portfolio","M4 20h16M7 16V9M12 16V5M17 16v-4M
  return `<div class="screen">${hero("Financial model · cost plan, capitalization, TCO and return","The portfolio returns "+pc(r.roi*100)+" over five years, and "+w.p.short+" is the weakest case",`Five-year cost <b>${C$(r.sc)}</b> against benefit <b>${C$(r.sb)}</b> gives an NPV of <b>${C$(r.npv)}</b> at 8% and payback in about <b>${r.pb==null?"more than five":r.pb.toFixed(1)}</b> years. Of the ${C$(t.fcst)} FY27 forecast, <b>${C$(cap)}</b> (${pc(cap/t.fcst*100,1)}) is capitalized under Standard 350-40. ${esc(w.p.short)} returns ${pc(w.r.roi*100)} and depends on benefits that start only after the Dec 2 pilot.`,`<div class="row">${fchip("m_roi")}${fchip("m_capex")}${aiChip({model:"Claude Sonnet",conf:.8,title:"How the capitalization split was drafted",note:"Claude read the project stage from the master schedule and applied the Standard 350-40 stage rules. The Controller confirms the split before it is booked.",src:["Master schedule stage","Budget lines","Standard 350-40 stage rules","Benefits register"],guards:["Cannot book entries","Controller approves the split","Assumptions are shown, not hidden"]})}${whyPop("A CIO sees the return first, then the assumption that matters most. A Controller would open the capitalization tab first.")}</div>`)}${lensNote()}${modelView()}</div>`});
 /* ---- model interactions ---- */
 function calcRefresh(){$$("[data-bud-calc]").forEach(el=>{el.innerHTML=CALC[el.dataset.budCalc]()})}
-document.addEventListener("input",e=>{const t=e.target.closest("[data-bud-rng]");if(!t)return;const k=t.dataset.budRng,v=+t.value,b=B(),p=b.mproj;
+ROUTER.on("input","[data-bud-rng]",(e,t)=>{const k=t.dataset.budRng,v=+t.value,b=B(),p=b.mproj;
  if(k==="rate")b.rate=v;else if(k==="life")b.life=v;else if(k==="grow")b.grow=v;else if(p!=="all"){const m=b.mp[p];m[k]=v;
   if(k==="pre"&&m.pre+m.dev>100){m.dev=100-m.pre;sync("dev",m.dev)}if(k==="dev"&&m.pre+m.dev>100){m.pre=100-m.dev;sync("pre",m.pre)}}
  $$(`[data-bud-val="${k}"]`).forEach(o=>o.textContent=v+(k==="life"?" years":"%"));calcRefresh();
  function sync(kk,vv){const r=$(`[data-bud-rng="${kk}"]`);if(r)r.value=vv;$$(`[data-bud-val="${kk}"]`).forEach(o=>o.textContent=vv+"%")}});
-document.addEventListener("change",e=>{const t=e.target.closest("[data-bud-rng]");if(t){audit("changed model assumption",t.dataset.budRng+" = "+t.value);syncM();return}
+ROUTER.on("change",e=>{const t=e.target.closest("[data-bud-rng]");if(t){audit("changed model assumption",t.dataset.budRng+" = "+t.value);syncM();return}
  const c=e.target.closest("[data-bud-cp]");if(c){const [i,f]=c.dataset.budCp.split(":").map(Number),r=B().cp[B().mproj][i];r[f]=Math.max(0,+c.value||0);audit("changed cost plan",r[0]+" "+(f===2?"FTE ":"months ")+r[f]);render()}});
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t=e.target.closest("[data-bud-mproj]");if(t){B().mproj=t.dataset.budMproj;render();return}
  t=e.target.closest("[data-bud-scen]");if(t){B().scen=t.dataset.budScen;audit("selected scenario",SCEN[B().scen][0]);render();return}
  t=e.target.closest("[data-bud-sbm]");if(t){B().showMode=t.dataset.budSbm;audit("switched allocation mode",B().showMode);render();return}
@@ -642,7 +642,7 @@ function decideForm(id){const c=CID(id),r=recommend(c);
  fields:[{k:"dec",label:"Decision",type:"chips",req:true,opts:["Renew","Renegotiate","Replace","Let expire"]},{k:"why",label:"Reason",type:"longtext",req:true,ai:{label:"Use the recommendation",fn:()=>r.line+" Evidence: "+r.facts.join("; ")+"."}},{k:"send",label:"Draft the notice letter to the vendor",type:"toggle",help:"A draft only; nothing is sent."}],defaults:{dec:r.act,send:true,why:""},
  live:v=>liveBox(`<div class="rem"><div class="ico">${ico("info")}</div><div><b>${v.dec&&v.dec!==r.act?"You differ from the recommendation ("+r.act+"). The reason is kept for the feedback loop.":"Matches the recommendation."}</b><div class="small muted">${v.dec==="Renew"?"Renewal value "+D$(c.ann)+" a year goes through the tier approver.":v.dec==="Let expire"||v.dec==="Replace"?"Notice must be given by "+dfmt(notice(c))+".":"Negotiation brief goes to "+esc(c.own)+"."}</div></div></div>`),
  onSubmit:v=>{c.dec=v.dec;render();return {toast:c.id+": "+v.dec+" recorded"+(v.send?". Notice letter drafted.":""),audit:c.id+" decision "+v.dec+(v.dec!==r.act?" (differs from "+r.act+")":"")}}})}
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t=e.target.closest("[data-bud-ct]");if(t&&!e.target.closest("button:not([data-bud-ct])")){window.BD?BD.open("ct",t.dataset.budCt,{reset:!e.target.closest("#drawer")}):contractDrawer(t.dataset.budCt);return}
  t=e.target.closest("[data-bud-vend]");if(t){window.BD?BD.open("vend",t.dataset.budVend,{reset:!e.target.closest("#drawer")}):vendorDrawer(t.dataset.budVend);return}
  t=e.target.closest("[data-bud-newvend]");if(t){vendForm();return}
@@ -652,7 +652,7 @@ document.addEventListener("click",e=>{
  t=e.target.closest("[data-bud-decide]");if(t){decideForm(t.dataset.budDecide);return}
  t=e.target.closest("[data-bud-poa]");if(t){const p=B().po.find(x=>x.id===t.dataset.budPoa),l=LN(p.line);p.aBy="Casey (CIO)";p.st="Open";if(l)l.comm+=p.ord;audit("approved purchase order",p.id+" "+D$(p.ord));toast(p.id+" approved and committed "+D$(p.ord),"good");render();return}
  t=e.target.closest("[data-bud-porr]");if(t){const p=B().po.find(x=>x.id===t.dataset.budPorr);const r=whoApproves(p.ord,"Vendor services",p.cBy,{});p.aBy="Casey (CIO)";audit("re-routed approval",p.id+" from "+p.cBy+" to Casey (CIO)");toast(p.id+" re-approved by you. The creator no longer approves their own order.","good");render()}});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest("tr[data-bud-ct]");if(t)window.BD?BD.open("ct",t.dataset.budCt,{reset:true}):contractDrawer(t.dataset.budCt)});
+ROUTER.on("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest("tr[data-bud-ct]");if(t)window.BD?BD.open("ct",t.dataset.budCt,{reset:true}):contractDrawer(t.dataset.budCt)});
 /* ---------- 4. Benefits realization ---------- */
 const BT={"Productivity hours":"--p4","Cost avoidance":"--s3","Revenue":"--w1","Risk reduction":"--u3"};
 const drvTxt=b=>b.drv.hrs?`${b.drv.hrs.toLocaleString("en-US")} hours × $${b.drv.rate}`:b.drv.pr?(b.drv.pr<1?`${Math.round(b.drv.pr*100)}% chance × ${D$(b.drv.imp)}`:`${b.drv.pr} hours × ${D$(b.drv.imp)} per hour`):"Fixed annual amount";
@@ -710,13 +710,13 @@ function newBenForm(demId){const d=demId?DEMAND.find(x=>x.id===demId):null;
  defaults:{p:"PR3",n:d?"Benefit of "+d.n:"",ty:"Productivity hours",hrs:1000,rate:70,amt:50000,pr:.1,imp:300000,start:"3",conf:70,ev:""},
  live:v=>{const b={drv:v.ty==="Productivity hours"?{hrs:+v.hrs||0,rate:+v.rate||0}:v.ty==="Risk reduction"?{pr:+v.pr||0,imp:+v.imp||0}:{amt:+v.amt||0},start:+v.start||0};liveBox(`<div class="formula">Annual benefit = ${drvTxt(b)} = <b>${D$(annual(b))}</b> · starts ${qLab(b.start)} · risk-adjusted = ${D$(annual(b)*(+v.conf||0)/100)}</div>`)},
  onSubmit:v=>{const id="BEN-"+(B().nx.ben++),drv=v.ty==="Productivity hours"?{hrs:+v.hrs,rate:+v.rate}:v.ty==="Risk reduction"?{pr:+v.pr,imp:+v.imp}:{amt:+v.amt};B().ben.push({id,p:v.p,n:v.n,ty:v.ty,own:v.own,drv,start:+v.start,conf:(+v.conf)/100,real:[],ev:v.ev,why:"New in the register. First measurement is due when the benefit starts."});render();return {toast:id+" added: "+D$(annual({drv}))+" a year",audit:id+" "+v.n}}})}
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t=e.target.closest("[data-bud-bp]");if(t){B().benProj=t.dataset.budBp;render();return}
  t=e.target.closest("[data-bud-measure]");if(t){measureForm(t.dataset.budMeasure||"");return}
  t=e.target.closest("[data-bud-newben]");if(t){newBenForm();return}
  t=e.target.closest("[data-bud-newben-d]");if(t){newBenForm(t.dataset.budNewbenD);return}
  t=e.target.closest("[data-bud-bn]");if(t){benDrawer(t.dataset.budBn)}});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest("tr[data-bud-bn]");if(t)benDrawer(t.dataset.budBn)});
+ROUTER.on("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest("tr[data-bud-bn]");if(t)benDrawer(t.dataset.budBn)});
 /* ---------- 5. Delegation of authority ---------- */
 B().pol=B().pol||[{v:"v2",d:"2026-07-01",who:"CFO",what:"Raised tier T3 from $75,000 to $100,000 for the CIO and aligned reserve releases to the same tiers."},{v:"v1",d:"2025-07-01",who:"Board finance committee",what:"First delegation of authority for FY26."}];
 B().sodAck=B().sodAck||{};
@@ -777,7 +777,7 @@ function ruleForm(ix){const nw=ix==="new",r=nw?{cat:"Vendor services",role:"",mi
 REG("bud_doa","Delegation of authority","portfolio","M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4",()=>{syncM();const cs=sodChecks(),bad=cs.filter(c=>!c.ok),t=B().doa;
  return `<div class="screen">${hero("Delegation of authority","Anything up to "+D$(t[CIOIDX()].max)+" you can approve, and "+bad.length+" of "+cs.length+" segregation checks fail",`Six tiers decide who approves a commitment, from budget owners up to <b>${D$(t[1].max)}</b>, the CIO up to <b>${D$(t[2].max)}</b>, the CFO up to <b>${D$(t[3].max)}</b>, the CEO up to <b>${D$(t[4].max)}</b>, and the Board finance committee above that. ${bad.length?`Failing now: ${bad.map(b=>b.n.toLowerCase()).join("; ")}. PO-77231 was raised and approved by the same person for ${D$(36000)}, above a budget owner's ${D$(t[0].max)} limit.`:"All checks pass."}`,`<div class="row"><button class="btn primary" data-bud-simgo>Who approves this?</button>${whyPop("A CIO needs to know the line for personal approval and where the controls are leaking. A Controller would start with the segregation checks.")}${aiChip({model:"Claude Sonnet",conf:.95,title:"Where AI is used here",note:"Rules decide who approves. Claude writes the explanation and drafts policy text; it never changes a tier.",src:["Tier table","Review rules","Purchase orders","Reserve ledger"],guards:["Policy edits need a human and a reason","Versioned and audited"]})}</div>`)}${lensNote()}
  ${views("budd",["Approval matrix","Who approves this?","Segregation of duties","Policy editor"],[matrixView(),simView(),sodView(),policyView()])}</div>`});
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t=e.target.closest("[data-bud-simgo]");if(t){S.v.budd=1;if(S.screen==="bud_doa")render();else go("bud_doa");return}
  t=e.target.closest("[data-bud-simx]");if(t){Object.assign(B().sim,SIMEX[+t.dataset.budSimx][1],{isNew:false,capital:false});render();return}
  t=e.target.closest("[data-bud-simt]");if(t){const k=t.dataset.budSimt;B().sim[k]=!B().sim[k];t.setAttribute("aria-pressed",!!B().sim[k]);const o=$("#bud-sim-out");if(o)o.innerHTML=simOut();return}
@@ -785,8 +785,8 @@ document.addEventListener("click",e=>{
  t=e.target.closest("[data-bud-rule]");if(t){ruleForm(t.dataset.budRule);return}
  t=e.target.closest("[data-bud-ruledel]");if(t){const r=B().crules.splice(+t.dataset.budRuledel,1)[0];audit("removed review rule",r.role+" for "+r.cat);toast("Review rule removed: "+r.role,"warn");render();return}
  t=e.target.closest("[data-bud-split]");if(t){B().sodAck["split:"+t.dataset.budSplit]=true;audit("routed split purchase",t.dataset.budSplit);toast("The three orders are routed as one request to the CIO.","good");render()}});
-document.addEventListener("input",e=>{const t=e.target.closest("[data-bud-sim]");if(!t)return;B().sim[t.dataset.budSim]=t.dataset.budSim==="amt"?+t.value:t.value;const o=$("#bud-sim-out");if(o)o.innerHTML=simOut()});
-document.addEventListener("change",e=>{const t=e.target.closest("[data-bud-sim]");if(!t)return;audit("ran who approves",D$(B().sim.amt)+" "+B().sim.cat+" by "+B().sim.req)});
+ROUTER.on("input","[data-bud-sim]",(e,t)=>{B().sim[t.dataset.budSim]=t.dataset.budSim==="amt"?+t.value:t.value;const o=$("#bud-sim-out");if(o)o.innerHTML=simOut()});
+ROUTER.on("change","[data-bud-sim]",(e,t)=>{audit("ran who approves",D$(B().sim.amt)+" "+B().sim.cat+" by "+B().sim.req)});
 /* ---------- chat and search ---------- */
 const amtIn=q=>{const m=q.match(/\$?\s?([\d][\d,\.]*)\s?(k|m|thousand|million)?/i);if(!m)return null;let n=parseFloat(m[1].replace(/,/g,""));if(/k|thousand/i.test(m[2]||""))n*=1e3;else if(/m|million/i.test(m[2]||""))n*=1e6;return n};
 ASKX.push(q=>{const l=q.toLowerCase();
