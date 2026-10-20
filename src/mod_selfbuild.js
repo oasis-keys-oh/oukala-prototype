@@ -12,7 +12,7 @@ const GAPS=[
 ["P2","Process","Dashboard-and-list first view still missing on a few admin and budget tabs","Adopt kpi() and statrow on remaining tabs","core"],
 ["P3","Standards","ITIL 5 and service model mappings are summaries, not full practice guides","Curate practice libraries and mapping tables","itsm"],
 ["P3","Quality","No automated regression suite beyond scans","Playwright suite per screen plus visual diffs in CI","core"],
-["P3","Knowledge","Live Obsidian connector deferred","Read and write vault notes through a connector","know"]];
+["P3","Knowledge","Live knowledge vault connector deferred","Read and write vault notes through a connector","know"]];
 let done=false;
 function seed(){
  if(done)return;done=true;const _t=window.toast;window.toast=function(){};

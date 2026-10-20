@@ -13,7 +13,7 @@ const msOf=s=>{const m=/^(\d+)-(\d+)-(\d+)/.exec(s||"");return m?Date.UTC(+m[1],
 const uniq=a=>[...new Set(a)];
 const r1=x=>Math.round(x*10)/10;
 const bd=n=>r1(n)+" business day"+(r1(n)===1?"":"s");
-const S3=S.svc3=Object.assign({kind:null,kindItem:null,who:"",nh:{name:"",start:"2026-10-26",mgr:"",loc:"Parker HQ",worker:"Employee"},team:[],deliver:"",contact:"",q:"",sel:"ORD-1041",gid:"onboarding",ans:{},fq:"hr",fstate:"open",tab:0,wiz:false,seq:1060,pq:""},S.svc3||{});
+const S3=S.svc3=Object.assign({kind:null,kindItem:null,who:"",nh:{name:"",start:"2026-10-26",mgr:"",loc:"Meridian HQ",worker:"Employee"},team:[],deliver:"",contact:"",q:"",sel:"ORD-1041",gid:"onboarding",ans:{},fq:"hr",fstate:"open",tab:0,wiz:false,seq:1060,pq:""},S.svc3||{});
 const isWk=t=>{const w=new Date(t).getUTCDay();return w===0||w===6};
 function addBiz(t,d){let x=t,left=Math.floor(d+1e-9);while(left>0){x+=DAY;if(!isWk(x))left--}const fr=d-Math.floor(d+1e-9);if(fr>1e-6)x+=fr*DAY;while(isWk(x))x+=DAY;return x}
 function bdiff(a,b){let n=0,x=a;if(b<=a)return 0;while(x+DAY<=b){x+=DAY;if(!isWk(x))n++}return n+(b-x)/DAY}
@@ -26,7 +26,7 @@ const DEFK={onboarding:"newhire",offboarding:"other",move:"other",project:"self"
 const MGRONLY=["onboarding","offboarding","move"];/* items only a manager, the People team or a delegate may raise for someone else */
 const LEADS={"Priya Shah":["Elise Park","Dmitri Volkov","Hana Sato","Greg Nolan"]};/* people the requester leads day to day */
 const DELEG=[{by:"Priya Shah",for:"Maya Ortiz",scope:"All service requests",until:"Dec 31, 2026"},{by:"Priya Shah",for:"Dev Rao",scope:"Hardware and software",until:"Nov 30, 2026"}];
-const LOCS=["Parker HQ","Hybrid (HQ and home)","Remote (US)","Remote EU (Prague)"];
+const LOCS=["Meridian HQ","Hybrid (HQ and home)","Remote (US)","Remote EU (Prague)"];
 function directOf(n){const o=[];DIR.forEach(d=>{if(d.name===n)return;if(d.mgr===n||B.CSP[d.name]===n)o.push(d.name)});(LEADS[n]||[]).forEach(x=>{if(!o.includes(x)&&who(x))o.push(x)});return o}
 function reportsOf(n){const seen=new Set(),q=directOf(n);while(q.length){const x=q.shift();if(seen.has(x)||x===n)continue;seen.add(x);directOf(x).forEach(y=>q.push(y))}return [...seen]}
 const isMgr=n=>directOf(n).length>0;
@@ -73,7 +73,7 @@ function rfPanel(it,o){o=o||{};const kinds=o.kinds||KINDS.map(k=>k[0]);const P=r
  const reps=reportsOf(ME);let body="";
  const pickList=window.PICK?`<div class="svc3-pick">${PICK.person({id:"svc3:"+k,me:ME,multi:k==="team",value:k==="team"?S3.team.slice():(S3.who||""),label:k==="team"?"Team members":"Person",placeholder:k==="team"?"Add people to the team":"Choose a person",kinds:["human"],exclude:[ME],onPick:v=>{if(k==="team"){S3.team=Array.isArray(v)?v:[v]}else{S3.kind="other";S3.who=v}S3.q="";sv3()}})}</div>`:`<div class="svc3-pick"><div class="row svc3-reps"><span class="muted small">Your reports</span>${directOf(ME).slice(0,8).map(n=>`<button type="button" class="chip" data-svc3="pick|${E(n)}" aria-pressed="${S3.kind==="other"?S3.who===n:S3.team.includes(n)}">${B.whx(n).replace(/<button[^>]*>|<\/button>/g,"")}</button>`).join("")||'<span class="muted small">No direct reports on file</span>'}</div>
   <form class="row svc3-find" data-svc3-form="find"><input class="txtin" list="svc3_dl" data-svc3-q placeholder="Search the directory by name" aria-label="Search the directory" value="${E(S3.q)}" autocomplete="off"><button class="btn" type="submit">${k==="team"?"Add":"Choose"}</button>${personOpt()}</form></div>`;
- const delivery=`<div class="svc3-grid2"><label class="svc3-fld"><span>Deliver to</span><select class="fin" data-svc3-f="deliver"><option value="">Their usual location${S3.kind==="other"&&S3.who&&who(S3.who)?" ("+E(who(S3.who).loc||"HQ")+")":""}</option>${["My desk","Their home (remote)","Parker HQ front desk","Another address (add in the form)"].map(x=>`<option ${S3.deliver===x?"selected":""}>${x}</option>`).join("")}</select></label>
+ const delivery=`<div class="svc3-grid2"><label class="svc3-fld"><span>Deliver to</span><select class="fin" data-svc3-f="deliver"><option value="">Their usual location${S3.kind==="other"&&S3.who&&who(S3.who)?" ("+E(who(S3.who).loc||"HQ")+")":""}</option>${["My desk","Their home (remote)","Meridian HQ front desk","Another address (add in the form)"].map(x=>`<option ${S3.deliver===x?"selected":""}>${x}</option>`).join("")}</select></label>
   <label class="svc3-fld"><span>Contact for delivery</span><input class="txtin" data-svc3-f="contact" value="${E(S3.contact)}" placeholder="${S3.kind==="other"&&who(S3.who)?E(who(S3.who).email||""):"Name, phone or email"}" aria-label="Delivery contact"></label></div>`;
  if(k==="other"){const rec=who(S3.who);body=pickList+(S3.who?`<div class="svc3-sel">${B.whx(S3.who)}${rec?`<span class="pill mute">${E(rec.role||"")}</span><span class="pill mute">${E(rec.team||"")}</span><span class="pill mute">${E(B.WORKER(S3.who))}</span><span class="pill mute">${E(rec.loc||"")}</span><span class="muted small">Manager: ${E(B.MGRS2(S3.who))}</span>`:""}</div>`:'<p class="muted small">Pick a person to see whether you can order for them and who has to approve.</p>')+(S3.who?delivery:"")}
  else if(k==="team"){body=pickList+`<div class="svc3-team">${S3.team.map(n=>`<span class="svc3-tm">${B.whx(n).replace(/<button[^>]*>|<\/button>/g,"")}<button type="button" class="svc3-x" data-svc3="unpick|${E(n)}" aria-label="Remove ${E(n)}">x</button></span>`).join("")||'<span class="muted small">No one added yet</span>'}</div>${S3.team.length?delivery:""}`}
@@ -161,7 +161,7 @@ const GUIDES=[
   P("mgr","Day-one plan, buddy and 30-60-90 goals","mgr",2,["hr"],"",{ctx:["role","start"]})]},
 {id:"offboarding",item:"offboarding",n:"Employee offboarding",kinds:["other","self","team"],need:"last",needL:"Last working day",
  blurb:"Exit paperwork, access removal, device recovery, handover and final pay, coordinated so nothing is left active after the last day.",
- q:[Q("last","Last working day","date",{d:"2026-10-16"}),Q("reason","Reason","chips",{o:["Resignation","Termination","Retirement","Contract end"],d:"Resignation"}),Q("loc","Work location","chips",{o:["Parker HQ","Hybrid (HQ and home)","Remote (US)"],d:"Parker HQ"}),Q("access","Highest access held","chips",{o:["Standard","Privileged","Finance systems"],d:"Standard"}),Q("legal","Legal hold applies","toggle",{d:false}),Q("reports","Has direct reports","toggle",{d:false})],
+ q:[Q("last","Last working day","date",{d:"2026-10-16"}),Q("reason","Reason","chips",{o:["Resignation","Termination","Retirement","Contract end"],d:"Resignation"}),Q("loc","Work location","chips",{o:["Meridian HQ","Hybrid (HQ and home)","Remote (US)"],d:"Meridian HQ"}),Q("access","Highest access held","chips",{o:["Standard","Privileged","Finance systems"],d:"Standard"}),Q("legal","Legal hold applies","toggle",{d:false}),Q("reports","Has direct reports","toggle",{d:false})],
  derive:a=>{a.remote=REMOTE(a);a.onsite=!a.remote},
  parts:[P("hr","Exit paperwork and employment record","hr",1,[],"",{ctx:["reason","last"]}),
   P("mgr","Work handover and direct report reassignment","mgr",3,[],"",{ctx:["reports"],durFn:a=>a.reports?4:3}),
@@ -172,8 +172,8 @@ const GUIDES=[
   P("comp","Compliance exit review and legal hold","comp",2,["it"],"legal or access in Privileged|Finance systems",{ctx:["legal","access"]})]},
 {id:"move",item:"move",n:"Role or location change",kinds:["other","self","team"],need:"eff",needL:"Effective date",
  blurb:"A move between roles, teams or places: record change, pay and tax, access, desk, re-certification and a transition plan, only the parts the change needs.",
- q:[Q("eff","Effective date","date",{d:"2026-11-02"}),Q("type","What is changing","chips",{o:["Role change","Location change","Both"],d:"Role change"}),Q("newloc","New work location","chips",{o:["Parker HQ","Hybrid (HQ and home)","Remote (US)","Remote EU (Prague)"],d:"Parker HQ",show:"type in Location change|Both"}),Q("pay","Pay changes","toggle",{d:false})],
- derive:a=>{a.roleChg=a.type==="Role change"||a.type==="Both";a.locChg=a.type==="Location change"||a.type==="Both";a.eu=!!a.locChg&&/EU/.test(a.newloc||"");a.newonsite=!!a.locChg&&/Parker|Hybrid/.test(a.newloc||"")},
+ q:[Q("eff","Effective date","date",{d:"2026-11-02"}),Q("type","What is changing","chips",{o:["Role change","Location change","Both"],d:"Role change"}),Q("newloc","New work location","chips",{o:["Meridian HQ","Hybrid (HQ and home)","Remote (US)","Remote EU (Prague)"],d:"Meridian HQ",show:"type in Location change|Both"}),Q("pay","Pay changes","toggle",{d:false})],
+ derive:a=>{a.roleChg=a.type==="Role change"||a.type==="Both";a.locChg=a.type==="Location change"||a.type==="Both";a.eu=!!a.locChg&&/EU/.test(a.newloc||"");a.newonsite=!!a.locChg&&/Meridian HQ|Parker|Hybrid/.test(a.newloc||"")},
  parts:[P("hr","Update employment record and title","hr",1,[],"",{ctx:["type","eff"]}),
   P("pay","Compensation and tax update","pay",2,["hr"],"pay or eu",{ctx:["pay","newloc"]}),
   P("it","Access, group and device changes","it",2,["hr"],"roleChg or eu",{ctx:["type","newloc"]}),
@@ -255,7 +255,7 @@ function mkOrder(d,rr){const g=GD(d.g),o={id:d.id,g:d.g,by:d.by||ME,forName:d.fo
 const SEEDS=[
  {id:"ORD-1042",g:"move",by:ME,forName:"Zoe Hart",fk:"other",rel:"other",ago:0,ans:{eff:"2026-11-09",type:"Role change",pay:false},gate:{who:"Maya Ortiz",st:"pending"}},
  {id:"ORD-1041",g:"onboarding",by:ME,forName:"Jamie Okoro",fk:"newhire",rel:"newhire",ago:3,nh:{name:"Jamie Okoro",start:"2026-10-14",mgr:ME,loc:"Remote (US)",worker:"Employee"},ans:{name:"Jamie Okoro",start:"2026-10-14",mgr:ME,loc:"Remote (US)",worker:"Employee",role:"Developer",device:"Developer laptop",access:"Standards Platform admin",clear:true},ov:{comp:{blocked:{why:"Background vendor is waiting for a signed consent form",hold:2},prog:.35}},deliver:"Their home (remote)"},
- {id:"ORD-1040",g:"onboarding",by:"Tom Becker",forName:"Marcus Webb",fk:"newhire",rel:"newhire-other",ago:6,nh:{name:"Marcus Webb",start:"2026-10-12",mgr:"Tom Becker",loc:"Parker HQ",worker:"Employee"},ans:{name:"Marcus Webb",start:"2026-10-12",mgr:"Tom Becker",loc:"Parker HQ",worker:"Employee",role:"Standard",device:"Standard laptop",access:"Standard",clear:false}},
+ {id:"ORD-1040",g:"onboarding",by:"Tom Becker",forName:"Marcus Webb",fk:"newhire",rel:"newhire-other",ago:6,nh:{name:"Marcus Webb",start:"2026-10-12",mgr:"Tom Becker",loc:"Meridian HQ",worker:"Employee"},ans:{name:"Marcus Webb",start:"2026-10-12",mgr:"Tom Becker",loc:"Meridian HQ",worker:"Employee",role:"Standard",device:"Standard laptop",access:"Standard",clear:false}},
  {id:"ORD-1039",g:"offboarding",by:ME,forName:"Elise Park",fk:"other",rel:"report",ago:4,ans:{last:"2026-10-09",reason:"Contract end",loc:"Hybrid (HQ and home)",access:"Privileged",legal:true,reports:false},ov:{}},
  {id:"ORD-1038",g:"move",by:"Maya Ortiz",forName:ME,fk:"other",rel:"other",ago:5,ans:{eff:"2026-10-19",type:"Both",newloc:"Remote EU (Prague)",pay:true}},
  {id:"ORD-1037",g:"project",by:ME,forName:ME,fk:"self",rel:"self",ago:2,ans:{pname:"Standards Portal search upgrade",start:"2026-10-19",budget:320000,vendor:true,sens:"High",workspace:true}},
@@ -264,7 +264,7 @@ const SEEDS=[
  {id:"ORD-1034",g:"offboarding",by:"Sam Patel",forName:"Ben Alvarez",fk:"other",rel:"report",ago:11,ans:{last:"2026-09-25",reason:"Resignation",loc:"Remote (US)",access:"Standard",legal:false,reports:false}}];
 function build(){ORD.length=0;ORSEQ=1000;SEEDS.forEach(d=>ORD.push(mkOrder(d,RNG("og"+d.id))));
  if(SCALE&&SCALE.on){const rr=RNG("ogscale"),P=ppl(),gs=GUIDES;for(let i=0;i<320;i++){const g=gs[Math.floor(rr()*gs.length)],by=P[Math.floor(rr()*P.length)].name,fo=P[Math.floor(rr()*P.length)].name;const a={};g.q.forEach(q=>{if(q.t==="chips")a[q.k]=q.o[Math.floor(rr()*q.o.length)];else if(q.t==="toggle")a[q.k]=rr()<.35;else a[q.k]=q.d});
-  if(g.id==="onboarding"){a.name="New hire "+(i+1);a.start=iso(NOW+(2+Math.floor(rr()*20))*DAY);a.mgr=by;a.loc=["Parker HQ","Remote (US)","Hybrid (HQ and home)"][Math.floor(rr()*3)];a.worker=rr()<.8?"Employee":"Contractor"}
+  if(g.id==="onboarding"){a.name="New hire "+(i+1);a.start=iso(NOW+(2+Math.floor(rr()*20))*DAY);a.mgr=by;a.loc=["Meridian HQ","Remote (US)","Hybrid (HQ and home)"][Math.floor(rr()*3)];a.worker=rr()<.8?"Employee":"Contractor"}
   else{const dk=g.need;a[dk]=iso(NOW+(Math.floor(rr()*25)-4)*DAY)}
   ORD.push(mkOrder({id:"ORD-"+(2000+i),g:g.id,by,forName:g.id==="onboarding"?a.name:fo,fk:g.id==="onboarding"?"newhire":"other",rel:"other",ago:Math.floor(rr()*14),ans:a,nh:g.id==="onboarding"?{name:a.name,start:a.start,mgr:by,loc:a.loc,worker:a.worker}:null},RNG("ogx"+i)))}}
  genOn=!!(SCALE&&SCALE.on);REQV3++}
@@ -431,7 +431,7 @@ function place(gid){const g=GD(gid),it=B.ITEM(g.item);if(!it){toast("The catalog
  if(P.mgrAp==="required")o.gate={who:P.mgr,st:"pending",at:NOW};
  const inc=partsOf(g,o.A);
  inc.forEach(p=>{let rec={id:recId(p,o),type:"Catalog task"};
-  if(p.item&&B.ITEM(p.item)){try{const li=B.ITEM(p.item),dv=B.defVals(li);const v=Object.assign({},dv,{reason:"New hire",deliver:o.A.remote?"Home (remote)":"Parker HQ desk",model:o.A.device==="Developer laptop"?"Developer 16-inch":o.A.device==="MacBook"?"MacBook Pro 16-inch":"Standard 14-inch"});
+  if(p.item&&B.ITEM(p.item)){try{const li=B.ITEM(p.item),dv=B.defVals(li);const v=Object.assign({},dv,{reason:"New hire",deliver:o.A.remote?"Home (remote)":"Meridian HQ desk",model:o.A.device==="Developer laptop"?"Developer 16-inch":o.A.device==="MacBook"?"MacBook Pro 16-inch":"Standard 14-inch"});
    B.setREL({by:ME,fw,rel:P.rel,mgr:P.mgr});const r=B.createReq(li,v,ME,fw,{rel:P.rel,fk:S3.kind,guide:o.id,deliver:o.deliver,contact:o.contact,relMgr:P.mgr});rec={id:r.id,type:"Request item",ritm:true};B.log(r,"Created by order guide "+o.id+" for part "+p.n)}catch(e){console.warn("svc3 part item",e)}}
   o.recs[p.id]=rec});
  if(!o.gate)inc.forEach(p=>{if(!(p.deps||[]).some(d=>inc.some(q=>q.id===d)))o.act[p.id]={s:0,prog:.05}});
