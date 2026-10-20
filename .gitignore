@@ -25,3 +25,5 @@ src/atlas_r11_backup.*
 src/atlas_css_r11_backup.*
 *.log
 *.out
+# old copies, kept on disk only (purged from history 2026-10-20)
+_x/
