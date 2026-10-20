@@ -741,19 +741,23 @@ NAVX.purview=function(key){key=key||G(()=>S.persona)||"exec";const d=G(()=>R15D.
  const guest=key==="guest";const full=G(()=>PREF.nav==="full")&&!guest;
  let areas=(d.areas||v.areas||AREA_IDS).filter(a=>AREA_IDS.indexOf(a)>=0);if(full)areas=AREA_IDS.slice();
  areas=AREA_IDS.filter(a=>areas.indexOf(a)>=0); /* fixed order, whatever order the definition lists */
- const pins=(d.navPins||v.pins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
- return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:!guest,show:!guest,readonly:!!(P.readonly||d.readonly),guest,full,
+ let pins=(d.navPins||v.pins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
+ /* PR-18 (step 7): wedge mode is a filter over this menu. A wedge screen that is a view (Strategy to execution) is added as a pin
+    in its own area when that area is in the purview, so every wedge screen the persona can reach stays one click away */
+ const wedge=wedgeSet();if(wedge){pins=pins.concat([...wedge].filter(id=>screenRow(id)&&pins.indexOf(id)<0&&placeOf(id).kind!=="entry"&&id!=="home"&&id!=="showroom"&&areas.indexOf(placeOf(topOf(id)).sp)>=0))}
+ return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:!guest,show:!guest,readonly:!!(P.readonly||d.readonly),guest,full,wedge:!!wedge,
   builds:G(()=>JXR.purview(),null)}};
+function wedgeSet(){return G(()=>SHOW.wedge.on(),false)?new Set(G(()=>SHOW.wedge.screens(),[])):null}
 /* ---------- All screens: every area and every entry the viewer can open, one click from the rail (not for the Vendor guest) ---------- */
 const AS={sp:"all",q:"",mine:false};
 function allHTML(){const P=NAVX.purview();const q=AS.q.trim().toLowerCase();const mine=new Set(["my","ask","show"].concat(P.areas));
  const sps=SPACES.filter(s=>s[0]!=="home"&&(AS.sp==="all"||AS.sp===s[0])&&(!AS.mine||mine.has(s[0])));
- const hit=id=>{if(!q)return true;const t=TX[id]||{};return (labelOf(id)+" "+formal(id)+" "+(t.objs||[]).join(" ")+" "+(t.sub||"")).toLowerCase().indexOf(q)>=0};
+ const ws=wedgeSet();const hit=id=>{if(ws&&!ws.has(id))return false;if(!q)return true;const t=TX[id]||{};return (labelOf(id)+" "+formal(id)+" "+(t.objs||[]).join(" ")+" "+(t.sub||"")).toLowerCase().indexOf(q)>=0};
  let n=0;const body=sps.map(s=>{const e=spaceIds(s[0],Object.assign({},P,{readonly:P.readonly}));const subs=Object.keys(e).map(k=>{const ids=e[k].filter(hit);n+=ids.length;if(!ids.length)return"";
    return `<div class="nx-allsub"><span class="navsub">${E(k)}</span>${ids.map(id=>{const t=TX[id]||{};return `<button type="button" class="nx-alli" data-nav="${id}" data-nx-all-go="1"><b>${E(labelOf(id))}</b>${t.objs&&t.objs.length?`<small>${E(t.objs.slice(0,3).join(", "))}</small>`:""}</button>`}).join("")}</div>`}).join("");
   return subs?`<section class="nx-allsp" aria-label="${E(s[1])}"><h4>${SVG(s[0]==="build"?ICO.gear:s[3],15,1.9)}<span>${E(s[1])}</span>${mine.has(s[0])?"":`<em>outside your areas</em>`}</h4>${subs}</section>`:""}).join("");
  const chip=(v,l)=>`<button type="button" class="chip" data-nx-all-sp="${v}" aria-pressed="${AS.sp===v}">${E(l)}</button>`;
- return `<div class="nx-allh"><div><div class="eyebrow">All screens</div><h3>Every area, every screen you can open</h3><p class="muted small">Areas keep one fixed order. Views of a screen sit in its view switcher; search (Ctrl K) also finds views, tabs and records.</p></div><button type="button" class="btn quiet closebtn" popovertarget="nxAll" popovertargetaction="hide" aria-label="Close" title="Close">${SVG(ICO.x,16,2.2)}</button></div>
+ return `<div class="nx-allh"><div><div class="eyebrow">All screens</div><h3>Every area, every screen you can open</h3><p class="muted small">Areas keep one fixed order. Views of a screen sit in its view switcher; search (Ctrl K) also finds views, tabs and records.${ws?" Wedge mode is on: only the wedge screens are listed.":""}</p></div><button type="button" class="btn quiet closebtn" popovertarget="nxAll" popovertargetaction="hide" aria-label="Close" title="Close">${SVG(ICO.x,16,2.2)}</button></div>
  <div class="nx-allf"><div class="row" role="group" aria-label="Filter by area">${chip("all","All areas")}${SPACES.filter(s=>s[0]!=="home").map(s=>chip(s[0],s[1])).join("")}</div>
  <div class="row"><input type="search" class="txtin" data-nx-all-q value="${E(AS.q)}" placeholder="Filter by screen or object, for example invoice" aria-label="Filter by screen or object"><button type="button" class="chip" data-nx-all-mine aria-pressed="${AS.mine}">Only my areas</button><span class="muted small" data-nx-all-n>${n} screen${n===1?"":"s"}</span></div></div>
  <div class="nx-allb2">${body||`<p class="muted">Nothing matches that filter.</p>`}</div>`}
@@ -811,8 +815,9 @@ function refreshFavs(){const n=q1("#nav");if(!n)return;if(collapsed()){try{rende
 /* collapsed rail: a group icon opens a flyout with its screens */
 function openFly(g,btn){let f=q1("#nxFly");if(!f){f=document.createElement("div");f.id="nxFly";f.setAttribute("popover","auto");f.className="nx-fly glass";document.body.appendChild(f)}
  const sp=SPID[g]!=null?g:OLDGRP[g];if(!sp)return;const P=NAVX.purview();const sd=SPACES[SPID[sp]];const e=spaceIds(sp,P);const one=sd[5].length===1;
+ const ws=wedgeSet();if(ws)Object.keys(e).forEach(k=>{e[k]=e[k].filter(id=>ws.has(id));if(!e[k].length)delete e[k]});
  const row=(id,o)=>{o=o||{};const m=resolve(id),hint=o.pin?"":hintOf(id),s=screenRow(id),lab=o.label||m.l;return `<div class="nx-fi${S.screen===id?" is-cur":""}${o.pin?" nx-pin":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`};
- f.innerHTML=`<div class="nx-flyh"><div><b>${E(sd[1])}</b><small>${E(sd[4])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(sd[1])}">${SVG(ICO.x,14,2)}</button></div>`+pinsIn(sp,P).map(id=>row(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>row(id)).join("")).join("");
+ f.innerHTML=`<div class="nx-flyh"><div><b>${E(sd[1])}</b><small>${E(sd[4])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(sd[1])}">${SVG(ICO.x,14,2)}</button></div>`+pinsIn(sp,P).filter(id=>!ws||ws.has(id)).map(id=>row(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>row(id)).join("")).join("");
  try{f.showPopover()}catch(e){}
  const r=btn.getBoundingClientRect();const h=Math.min(f.offsetHeight,innerHeight-24);f.style.left=Math.round(r.right+10)+"px";f.style.top=Math.round(Math.max(12,Math.min(r.top-8,innerHeight-h-12)))+"px"}
 
