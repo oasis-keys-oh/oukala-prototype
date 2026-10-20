@@ -365,12 +365,13 @@ function entryFromDrawer(d,title){const c=CTX;
 function decorateDrawer(ent){const d=q1("#drawer");if(!d)return;const bar=d.querySelector(":scope>.dctl");if(!bar)return;let b=bar.querySelector(".nx-dstar");
  if(!ent){if(b)b.remove();return}
  const html=starBtn("drawer","nx-dstar",ent.title);if(b)b.outerHTML=html;else bar.insertAdjacentHTML("afterbegin",html)}
+/* CL-35: runs from the afterOpenDrawer hook (inside the core openDrawer). The record context (CTX, last click) is read at once;
+   the star is placed one microtask later, after the shell has built the drawer's .dctl header bar. */
 function afterDrawer(){const d=q1("#drawer");if(!d)return;DR.cur=null;
- if(d.querySelector("form.fform")){decorateDrawer(null);return}
- const title=drawerTitle(d);if(!title){decorateDrawer(null);return}
- const ent=entryFromDrawer(d,title);DR.cur=ent;visit(ent);decorateDrawer(ent)}
-const _od=W.openDrawer;
-W.openDrawer=function(html){const r=_od.apply(this,arguments);try{afterDrawer()}catch(e){}return r};
+ if(d.querySelector("form.fform")){queueMicrotask(()=>decorateDrawer(null));return}
+ const title=drawerTitle(d);if(!title){queueMicrotask(()=>decorateDrawer(null));return}
+ const ent=entryFromDrawer(d,title);DR.cur=ent;visit(ent);queueMicrotask(()=>{try{if(DR.cur===ent)decorateDrawer(ent)}catch(e){}})}
+if(W.HOOKS)HOOKS.on("afterOpenDrawer",()=>{try{afterDrawer()}catch(e){}},{id:"nav.drawer"});
 
 /* wrap the named open-a-record functions once everything else has loaded */
 let wrapped=false;
@@ -772,10 +773,11 @@ setTimeout(()=>{if(!(W.SCALE&&SCALE.on)&&!IDX.built&&!IDX.building){const f=()=>
 /* =====================================================================================
    Hooks into the shell, chat intents, and the Feature Contract artifacts
    ===================================================================================== */
-const _render=W.render;
-W.render=function(){const r=_render.apply(this,arguments);try{if(!wrapped)wrapGlobals();ensureChrome();onScreen();decorateHero();markTab();syncStars()}catch(e){console.error("nav hook",e)}return r};
-const _go=W.go;
-W.go=function(screen,arg){closePops();document.documentElement.classList.remove("nx-menu-open");const r=_go.apply(this,arguments);try{onGoArg(screen,arg)}catch(e){}return r};
+/* CL-35: lifecycle through HOOKS instead of wrapping render and go. afterRender work waits one microtask so the screen
+   is complete (wrappers outside the core render finish first); the go argument is recorded after go returns. */
+const afterScreen=()=>{try{if(!wrapped)wrapGlobals();ensureChrome();onScreen();decorateHero();markTab();syncStars()}catch(e){console.error("nav hook",e)}};
+if(W.HOOKS){HOOKS.on("afterRender",()=>{afterScreen();queueMicrotask(()=>{try{decorateHero()}catch(e){}})},{id:"nav.render"});
+ HOOKS.on("beforeGo",(screen,arg)=>{closePops();document.documentElement.classList.remove("nx-menu-open");queueMicrotask(()=>{try{onGoArg(screen,arg)}catch(e){}})},{id:"nav.go"})}
 /* the tab bar needs to know the persona changed: reload favorites and history for the new persona */
 document.addEventListener("change",e=>{if(e.target&&e.target.name==="persona"){STP=null;ST=null;STK.length=0;setTimeout(()=>{st();syncStars();refreshFavs();drawFavPop();drawHist()},0)}});
 window.addEventListener("hashchange",()=>{const id=NAVX.resolveAlias(location.hash);if(id&&id!==S.screen)go(id)});
