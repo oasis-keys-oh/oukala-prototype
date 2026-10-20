@@ -105,5 +105,17 @@ if(await p.evaluate(()=>!!SHOW.wedge)){
  const w2=await p3.evaluate(()=>({on:SHOW.wedge.on(),attr:document.body.hasAttribute('data-wedge')}));if(!w2.on||!w2.attr)fail('wedge mode did not persist '+JSON.stringify(w2));
  await p3.goto(URL0+'?wedge=0',{waitUntil:'domcontentloaded',timeout:120000});await p3.waitForTimeout(1500);const w3=await p3.evaluate(()=>SHOW.wedge.on());if(w3)fail('?wedge=0 did not turn wedge mode off');await p3.close();
  await p.evaluate(()=>SHOW.wedge.set(false));console.log('wedge mode:',w.vis,'menu items shown,',w.hid,'hidden')}
+// PR-19: demo reset and role preset
+if(await p.evaluate(()=>!!SHOW.reset)){
+ const r1=await p.evaluate(()=>{localStorage.setItem('fx.num.v1','"sentinel"');localStorage.setItem('oukala-r16i-test','"sentinel"');NAVX.persona.set('ops');SCN.set('mining');
+  const r=SHOW.reset({reload:false});return{persona:S.persona,tenant:DATA.tenant(),fx:localStorage.getItem('fx.num.v1'),r16:localStorage.getItem('oukala-r16i-test'),n:r.cleared.length}});
+ if(r1.persona!=='exec'||r1.tenant!=='core'||r1.fx==='"sentinel"'||r1.r16!==null)fail('reset in place '+JSON.stringify(r1));
+ const p4=await ctx.newPage();watch(p4);await p4.goto(URL0,{waitUntil:'domcontentloaded',timeout:120000});await p4.waitForTimeout(1500);
+ await p4.evaluate(()=>{['fx.num.v1','oukala-chx-1','oukala.bl.cols','oukala-r15d-test','oukala-r16i-test','showroom.lens'].forEach(k=>localStorage.setItem(k,'"sentinel"'));U.store.set('falconaire.wedge',false);NAVX.persona.set('ops');SCN.set('storage')});
+ await Promise.all([p4.waitForNavigation({timeout:30000}).catch(()=>null),p4.evaluate(()=>{SHOW.reset({demo:'coo'})})]);
+ await p4.waitForFunction(()=>window.SHOW&&SHOW.state.demo==='coo',null,{timeout:30000}).catch(()=>{});await settle(p4);await p4.waitForTimeout(800);
+ const r2=await p4.evaluate(()=>({demo:SHOW.state.demo,persona:S.persona,tenant:DATA.tenant(),left:['fx.num.v1','oukala-chx-1','oukala.bl.cols','oukala-r15d-test','oukala-r16i-test','showroom.lens'].filter(k=>localStorage.getItem(k)==='"sentinel"'),wedgeKept:localStorage.getItem('falconaire.wedge')!==null,url:location.search}));
+ if(r2.demo!=='coo'||r2.persona!=='coo'||r2.tenant!=='core'||r2.left.length||!r2.wedgeKept||/srreset/.test(r2.url))fail('reset and reload '+JSON.stringify(r2));
+ await p4.close();console.log('demo reset: ok, cleared',r1.n,'keys in place;',JSON.stringify(r2))}
 // EXT: extension checks follow
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();

@@ -61,11 +61,45 @@ G(()=>HOOKS.on("afterRender",applyWedge,{id:"srs-wedge",order:50}));
 G(()=>{const nav=D.getElementById("nav");if(nav)new MutationObserver(()=>applyWedge()).observe(nav,{childList:true})});
 D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-srs-wedge]");if(!t)return;setWedge(t.dataset.srsWedge==="1");G(()=>toast(wedgeOn?"Wedge mode on: only the COO cut's screens are in the menu and search.":"Wedge mode off: every screen is back in the menu.","info"))});
 
+/* ---------- PR-19: demo reset and role preset ---------- */
+const KNOWN=["oukala-v2","oukala-store:v1","oukala.bl.cols","oukala-chx-1","fx.num.v1","oukala.r21.cus.v2","oukala.log.v3","oukala-r15d-auditchain","showroom.lens","showroom.rehearsal","guard_attempts"];
+const PREFIX=["oukala-r15d-","oukala-r16i-","oukala-nav","oukala.","oukala-"];
+const KEEP=[WKEY]; /* a presenter setting, not demo data: wedge mode survives a reset */
+function storageKeys(){const ks=new Set([...G(()=>[...U.store.keys],[]),...KNOWN]);G(()=>{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(PREFIX.some(p=>k.indexOf(p)===0))ks.add(k)}});KEEP.forEach(k=>ks.delete(k));return[...ks]}
+function clearStorage(){const ks=storageKeys();ks.forEach(k=>G(()=>localStorage.removeItem(k)));return ks}
+let resetting=false;
+W.addEventListener("pagehide",()=>{if(resetting)clearStorage()}); /* registered after the modules that flush on pagehide, so it runs last */
+function reset(o){o=o||{};const d=o.demo?SHOW.byId(o.demo):null;const persona=o.persona||(d&&d.persona)||"exec";
+ if(G(()=>SHOW.state.demo,null))G(()=>SHOW.exit({stay:true}));
+ const cleared=clearStorage();
+ G(()=>{if(W.SCN&&SCN.cur!=="core")SCN.set("core");else if(DATA.tenant()!=="core")DATA.setTenant("core")});
+ G(()=>{if(S.persona!==persona)NAVX.persona.set(persona)});
+ G(()=>{const l=d&&d.lens||G(()=>R18.LENS_OF[persona],null);if(l){if(SHOW.applyLens&&SHOW.lensOf(l))SHOW.applyLens(l,{quiet:true});else{R18.st.lens=l;R18.st.lensBy=persona}}});
+ G(()=>{if(W.STUDIO){STUDIO.sc=null;STUDIO.view="home";STUDIO.lastScen=null}});
+ G(()=>CHATX.close());G(()=>INBOX.closePanel());G(()=>closeDrawer());
+ SHOW.lastReset={at:new Date().toISOString(),cleared,persona,tenant:"core",demo:o.demo||null};
+ if(o.reload===false){G(()=>go(o.demo?"showroom":"home"));if(o.demo)G(()=>SHOW.start(o.demo,0));return SHOW.lastReset}
+ const u=new URL(location.href);["showroom","beat","kid","mode","srwin","lens","srpath"].forEach(k=>u.searchParams.delete(k));u.searchParams.set("srreset","1");u.searchParams.set("srpersona",persona);if(o.demo)u.searchParams.set("showroom",o.demo);
+ G(()=>history.replaceState(null,"",u));resetting=true;
+ if(W.STORE&&STORE.reset)STORE.reset();else G(()=>location.reload());
+ return SHOW.lastReset}
+SHOW.reset=reset;SHOW.resetKeys=storageKeys;
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-srs-reset]");if(!t)return;const sel=D.getElementById("srsResetDemo");reset({demo:sel&&sel.value||null})});
+/* after a reset reload: confirm, apply the role preset, tidy the link */
+G(()=>{const q=new URLSearchParams(location.search);if(!q.get("srreset"))return;const p=q.get("srpersona");
+ setTimeout(()=>{G(()=>{if(p&&G(()=>PERSONAS[p],null)&&S.persona!==p&&!SHOW.state.demo)NAVX.persona.set(p)});
+  G(()=>{const u=new URL(location.href);u.searchParams.delete("srreset");u.searchParams.delete("srpersona");history.replaceState(null,"",u)});
+  SHOW.lastReset={at:new Date().toISOString(),reloaded:true,persona:p,tenant:G(()=>DATA.tenant(),"core")};
+  if(!SHOW.state.demo)G(()=>toast("Demo reset: browser storage cleared, Meridian sample, viewing as "+G(()=>PERSONAS[S.persona].n,""),"good"))},1400)});
+
 /* ---------- Showroom home: presenter settings ---------- */
 SHOW.home.push(()=>{const main=SHOW.demos.filter(d=>!d.group||d.group==="main"||d.group==="lens");const ws=wedgeSet();
  return `<div class="grid g2" style="align-items:start"><section class="sr-card glass srs" aria-label="Wedge mode"><div class="sr-ch"><h3>Wedge mode</h3><span class="sr-pill">${wedgeOn?"On":"Off"}</span></div>
  <p class="muted small">Shows only the wedge, the screens of the COO cut, in the menu and in search. Every other screen is hidden, never deleted, and still opens from a link. Also <code>?wedge=1</code> and <code>?wedge=0</code>. Remembered on this device.</p>
  <p class="small">${[...ws].map(id=>E(G(()=>NAVX.label(id),id)||id)).join(", ")}</p>
  <div class="row"><button type="button" class="btn ${wedgeOn?"":"primary"}" data-srs-wedge="${wedgeOn?"0":"1"}" aria-pressed="${wedgeOn}">${wedgeOn?"Turn wedge mode off":"Turn wedge mode on"}</button></div></section>
- </div>`});
+ <section class="sr-card glass srs" aria-label="Demo reset"><div class="sr-ch"><h3>Demo reset</h3></div>
+ <p class="muted small">One action so every demo starts the same: clears the browser storage this app uses (${storageKeys().length} keys today, wedge mode kept), resets the demo state, switches to the Meridian sample and the tour's role, then reloads clean.</p>
+ <div class="row"><label class="sr-chk" for="srsResetDemo">Then start</label><select id="srsResetDemo" class="fin"><option value="">No tour (Home, as the CIO)</option>${main.map(d=>`<option value="${E(d.id)}">${E(d.title)}</option>`).join("")}</select>
+ <button type="button" class="btn" data-srs-reset="1">Reset the demo</button></div></section></div>`});
 })();
