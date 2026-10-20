@@ -41,5 +41,13 @@ const nb=await narrow.evaluate(async()=>{go('org_chart');await new Promise(r=>se
 ok(nb.n>0&&!nb.out.length&&!nb.ov.length&&nb.doc<=400,`org chart toolbar at 400 px: ${nb.n} controls, none clipped or overlapping (${nb.out.concat(nb.ov).join('; ')||'clean'})`);
 await narrow.close();
 
+// 4. JM-02: steps automated today come from the process automation level and never read as live
+const run=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));const hits=[];
+ for(const t of [0,1,3,6,7,8]){S.pp2.tab.ppl_jrny=t;go('ppl_jrny');await new Promise(r=>setTimeout(r,120));const tx=document.querySelector('#view .pp2-pane').innerText;
+  (tx.match(/[^\n.]{0,40}\b(running now|already running|already runs?|\d+ running)\b[^\n.]{0,20}/gi)||[]).forEach(m=>hits.push('tab '+t+': '+m.trim()))}
+ const a=JYX.api;let n=0,lab=0;JYX.JY.list.forEach(j=>a.allBoxes(j).forEach(({b})=>{const r=a.rec(b);if(r.st==='running'){n++;if(r.modeled&&/modeled/i.test(a.recLabel(r)))lab++}}));
+ out[k]={hits,n,lab}}return out});
+for(const k in run)ok(!run[k].hits.length&&run[k].n===run[k].lab,`${k}: ${run[k].n} automated steps labeled modeled, no live "running" wording${run[k].hits.length?' ('+run[k].hits.slice(0,3).join(' | ')+')':''}`);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
