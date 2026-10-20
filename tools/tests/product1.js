@@ -87,6 +87,20 @@ ok(r51.trace.screen==='strat_exec'&&r51.trace.sx===4&&r51.trNote&&r51.traceArg.s
 ok(r51.hash.screen==='plat_data'&&r51.hash.atlas===5,'CL-51 an old deep link (#plat_data_old) lands on the same view');
 ok(r51.hidden,'CL-51 the folded ids leave the menu and search; the screens they fold into stay reachable (menu or their family switcher)');
 
+// PR-08: demand intake to prioritization strip on Demand and priorities; funded demand on the integrated master schedule (sample)
+const r08=await p.evaluate(async()=>{const o={};window.__p1dr=window.__p1dr||0;
+ go('port');S.v.port=0;render();await new Promise(r=>setTimeout(r,200));const f=document.querySelector('#view .ppm-flow');
+ o.flow=f?{n:f.querySelectorAll('.ppm-fs').length,txt:f.innerText,links:[...f.querySelectorAll('.ppm-fs')].every(b=>b.dataset.ppmTab||b.dataset.go)}:null;
+ const L=rank(S.w,S.env,S.cap),F=L.filter(d=>d.fund&&!(S.conv||{})[d.id]);o.F=F.length;
+ const sched=[...f.querySelectorAll('.ppm-fs')].pop();o.toIms=sched&&sched.dataset.go==='ims';
+ go('ims');S.v.ims=0;render();await new Promise(r=>setTimeout(r,300));const d=document.querySelector('#view .ppm-dl');
+ o.lane=d?{rows:d.querySelectorAll('.ppm-dl-r:not(.ppm-dl-h)').length,txt:d.innerText,now:!!d.querySelector('.ppm-dl-now')}:null;
+ const n0=window.__p1dr;const b=d&&d.querySelector('.ppm-dl-n');if(b)b.click();await new Promise(r=>setTimeout(r,150));o.drawer=window.__p1dr>n0;try{closeDrawer()}catch(e){}
+ go('home');return o});
+ok(r08.flow&&r08.flow.n===7&&r08.flow.links&&/Sample/.test(r08.flow.txt)&&r08.toIms&&!EMDASH.test(r08.flow.txt),'PR-08 Demand and priorities shows intake to the schedule in 7 stages (Submitted to On the master schedule), each opening its view, labeled sample');
+ok(r08.lane&&r08.lane.rows===r08.F&&r08.F>0&&/Planned, sample/.test(r08.lane.txt)&&r08.lane.now&&!EMDASH.test(r08.lane.txt),`PR-08 master schedule carries ${r08.F} funded requests that are not projects yet, planned and labeled sample, with today marked`);
+ok(r08.drawer,'PR-08 a funded request on the master schedule opens its demand record');
+
 //@@NEXT
 
 ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,8));
