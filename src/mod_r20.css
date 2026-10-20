@@ -109,3 +109,16 @@
 @media(min-width:701px){html #toasts.r17n-layer{top:auto!important;bottom:92px!important;right:16px!important;justify-content:flex-end;z-index:calc(var(--z-float) + 30)}
 html #toasts.r17n-layer.r17n-open{max-height:calc(100vh - 140px)}}
 html #toasts.r17n-layer{z-index:calc(var(--z-float) + 30)}
+
+/* PR-06 (PH-14 step 5): the top bar keeps search, the tenant badge, View as and the contribution thread; the rest sits in the profile panel */
+@media(min-width:701px){.tb-right.r20-simple>#nwBtn,.tb-right.r20-simple>.btn.live,.tb-right.r20-simple>#tbActions,.tb-right.r20-simple>#nxFavBtn,.tb-right.r20-simple>#nxHistBtn,.tb-right.r20-simple>.lensbtn{display:none}}
+.r20-tenant{display:inline-flex;align-items:center;gap:7px;max-width:220px;padding-inline:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.r20-tenant .r20-tdot{width:8px;height:8px;flex:none;border-radius:var(--rad-round);background:var(--good-f)}
+.r20-thread{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;font-size:var(--fs-xs)}
+.r20-thread[hidden]{display:none}
+.r20-quick{margin:12px 0 4px}
+.r20-qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr));gap:6px;margin-top:6px}
+.r20-q span{overflow-wrap:normal;word-break:normal;min-width:0}
+.r20-q{display:flex;align-items:center;gap:8px;justify-content:flex-start;min-width:0;text-align:left;white-space:normal}
+.r20-q em{margin-left:auto;font-style:normal;font-size:11px;font-weight:700;color:var(--muted)}
+.r20-q[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
