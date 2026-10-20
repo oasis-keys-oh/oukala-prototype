@@ -243,7 +243,6 @@
   "mod_zlink",
   "mod_zlink_r15",
   "mod_zsearch",
-  "mod_zslide",
-  "mod_zz_perf"
+  "mod_zslide"
  ]
 }
