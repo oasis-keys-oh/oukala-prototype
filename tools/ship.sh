@@ -3,7 +3,7 @@
 #   bash tools/ship.sh            build and stage the site in dist/ (what Netlify publishes)
 #   bash tools/ship.sh --deploy   also upload dist/ with the Netlify CLI (needs `netlify` logged in and linked to oukala-prototype)
 # Staged assets: index.html, oukala-js.js, hero/, journey/, and _headers and robots.txt from public/.
-# Cache rules (CL-12) live in public/_headers.
+# Cache rules (CL-12) live in public/_headers. Size budget (CL-48) warns only; it never fails the ship.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 OUT="${SHIP_DIR:-dist}"
@@ -18,6 +18,26 @@ ver=$(grep -o 'oukala-js\.js?v=[0-9a-f]*' "$OUT/index.html" | head -1 | cut -d= 
 [ -n "$ver" ] || { echo "SHIP FAILED: index.html does not reference oukala-js.js?v=<hash>"; exit 1; }
 for d in hero journey; do [ -d "$OUT/$d" ] || { echo "SHIP FAILED: $d/ missing from $OUT"; exit 1; }; done
 
+# CL-48: size budget, warn only. Budgets are prototype facts from the 2026-10-19 baseline plus headroom; override with env vars.
+python3 - "$OUT" <<'PY'
+import gzip, os, sys
+out = sys.argv[1]
+B = {  # file: (raw budget, gzip budget) in bytes
+    'oukala-js.js': (int(os.environ.get('BUDGET_JS_RAW', 12_500_000)), int(os.environ.get('BUDGET_JS_GZ', 4_000_000))),
+    'index.html': (int(os.environ.get('BUDGET_HTML_RAW', 1_700_000)), int(os.environ.get('BUDGET_HTML_GZ', 600_000))),
+}
+TOTAL = int(os.environ.get('BUDGET_TOTAL', 20_000_000))
+warn = 0
+for f, (raw_b, gz_b) in B.items():
+    b = open(os.path.join(out, f), 'rb').read(); raw, gz = len(b), len(gzip.compress(b, 9))
+    flag = ''
+    if raw > raw_b or gz > gz_b: flag = '  WARNING over budget'; warn += 1
+    print(f'size {f}: {raw:,} bytes raw (budget {raw_b:,}), {gz:,} gzip (budget {gz_b:,}){flag}')
+tot = sum(os.path.getsize(os.path.join(r, x)) for r, _, fs in os.walk(out) for x in fs)
+print(f'size total {out}/: {tot:,} bytes (budget {TOTAL:,})' + ('  WARNING over budget' if tot > TOTAL else ''))
+if warn or tot > TOTAL: print('size budget: WARNING (ship continues; see CL-48)')
+else: print('size budget: within budget')
+PY
 echo "staged $OUT/ (script v=$ver)"
 
 if [ "${1:-}" = "--deploy" ]; then
