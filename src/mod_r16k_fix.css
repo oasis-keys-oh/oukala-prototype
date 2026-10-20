@@ -25,7 +25,7 @@
 }
 
 .fi+.fi{margin-top:3px}
-.k16-mapnote{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:16px;border:1px solid var(--edge);border-radius:16px;background:var(--glass2)}
+.k16-mapnote{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:16px;border:1px solid var(--edge);border-radius:var(--rad-2xl);background:var(--glass2)}
 @media (max-width:700px){
  .k16-nocanvas{display:none!important}
  .stat small{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:flex-start}

@@ -1,12 +1,12 @@
 /* mod_s_owner: owner chip popover, group chip, "No backup" badge, team and group page (CL-53). Tokens only. Prefix own- */
-.own-pop[popover]{position:fixed;inset:auto;margin:0;padding:12px 14px 12px;max-width:calc(100vw - 16px);box-sizing:border-box;background:var(--bg);color:var(--ink);border:1px solid var(--hair);border-radius:16px;box-shadow:0 14px 44px var(--shade);overflow:visible}
+.own-pop[popover]{position:fixed;inset:auto;margin:0;padding:12px 14px 12px;max-width:calc(100vw - 16px);box-sizing:border-box;background:var(--bg);color:var(--ink);border:1px solid var(--hair);border-radius:var(--rad-2xl);box-shadow:0 14px 44px var(--shade);overflow:visible}
 .own-pop[popover]::backdrop{background:transparent}
 .own-hd{display:flex;align-items:center;gap:10px;min-width:0}
 .own-hd .avx{flex:none}
 .own-ht{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
 .own-ht b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .own-ht small{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.own-x{flex:none;margin-left:auto;align-self:flex-start;min-width:34px;min-height:34px;padding:0;display:inline-grid;place-items:center;font-size:20px;line-height:1;border-radius:999px}
+.own-x{flex:none;margin-left:auto;align-self:flex-start;min-width:34px;min-height:34px;padding:0;display:inline-grid;place-items:center;font-size:20px;line-height:1;border-radius:var(--rad-pill)}
 .own-rec{margin:6px 0 0}
 .own-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .own-acts .btn{padding:7px 12px;font-size:13.5px;min-height:0}
@@ -15,8 +15,8 @@
 .own-kv dt{color:var(--muted);font-size:12.5px}
 .own-kv dd{margin:0;min-width:0}
 .own-grp{gap:6px;padding:3px 12px 3px 6px}
-.own-gi{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:7px;background:var(--accent-soft);color:var(--ink);flex:none}
-.own-gi-l{width:34px;height:34px;border-radius:10px}
+.own-gi{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:var(--rad-sm);background:var(--accent-soft);color:var(--ink);flex:none}
+.own-gi-l{width:34px;height:34px;border-radius:var(--rad-lg)}
 .own-pair{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:100%}
 .own-nob{white-space:nowrap}
 .own-page h2{margin:4px 0 8px}

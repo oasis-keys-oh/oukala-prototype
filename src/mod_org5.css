@@ -1,12 +1,12 @@
 /* mod_org5: people lifecycle, vacancies ghost cards, directory sync, pay/benefits/PTO (prefix org5) */
-.org-card.vac{border-radius:18px;background:transparent;box-shadow:none;border:1.5px dashed var(--muted);opacity:.95}
+.org-card.vac{border-radius:var(--rad-3xl);background:transparent;box-shadow:none;border:1.5px dashed var(--muted);opacity:.95}
 .org-card.vac:hover{box-shadow:0 0 0 1px var(--accent);border-color:var(--accent)}
 .org-vac .org-t b{color:var(--ink)}
-.org5-vi{flex:none;width:34px;height:34px;border-radius:50%;border:1.5px dashed var(--muted);display:grid;place-items:center;font-weight:700;font-size:22px;color:var(--muted);line-height:1}
+.org5-vi{flex:none;width:34px;height:34px;border-radius:var(--rad-round);border:1.5px dashed var(--muted);display:grid;place-items:center;font-weight:700;font-size:22px;color:var(--muted);line-height:1}
 .org5-vi.sm{width:30px;height:30px;font-size:18px}
 .org5-vo b{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .org-n.org-hu .org-t b{padding-right:40px}
-.org5-et{position:absolute;top:7px;right:12px;font-size:10px;font-weight:800;letter-spacing:.03em;padding:1px 7px;border-radius:999px;background:var(--hair);color:var(--ink);pointer-events:none;line-height:1.5}
+.org5-et{position:absolute;top:7px;right:12px;font-size:10px;font-weight:800;letter-spacing:.03em;padding:1px 7px;border-radius:var(--rad-pill);background:var(--hair);color:var(--ink);pointer-events:none;line-height:1.5}
 .org5-et.pt{background:var(--accent-soft);color:var(--ink)}
 .org5-et.ct{background:var(--warn-f);color:var(--ink)}
 .org5-et.in{background:var(--p4);color:var(--accent-ink)}
@@ -18,16 +18,16 @@
 .org5-hc b{color:var(--ink)}
 .btn.sm{padding:6px 12px;font-size:13px;min-height:0}
 .org5-pa{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
-.org5-trig{margin-top:14px;padding:12px 14px;border-radius:16px;background:var(--glass2);box-shadow:inset 0 0 0 1px var(--hair)}
+.org5-trig{margin-top:14px;padding:12px 14px;border-radius:var(--rad-2xl);background:var(--glass2);box-shadow:inset 0 0 0 1px var(--hair)}
 .org5-trh{display:flex;gap:8px 12px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
 .org5-tt{font-size:12.5px}
-.org5-tt code,.org5-vt code{font-size:11.5px;background:var(--hair);padding:1px 6px;border-radius:6px}
+.org5-tt code,.org5-vt code{font-size:11.5px;background:var(--hair);padding:1px 6px;border-radius:var(--rad-sm)}
 .org5-tt td{vertical-align:top}
 .org5-own{margin:12px 0 4px}
 .org5-own .row{margin-top:6px}
 .org5-err{margin:8px 0;display:flex;flex-wrap:wrap;gap:6px}
 .org5-steps{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
-.org5-steps li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;padding:8px 12px;border-radius:12px;background:var(--glass2);box-shadow:inset 0 0 0 1px var(--hair)}
+.org5-steps li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;padding:8px 12px;border-radius:var(--rad-xl);background:var(--glass2);box-shadow:inset 0 0 0 1px var(--hair)}
 .org5-steps small{grid-column:2;color:var(--muted)}
 .org5-vt th{white-space:nowrap}
 .org5-vt td{vertical-align:middle}
@@ -40,11 +40,11 @@
 @media (max-width:700px){.org5-hc{margin-left:0;width:100%}.org5-act{flex-wrap:wrap}}
 .org5-op{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--warn-f);margin-right:3px}
 .org5-tl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.org5-tl li{padding:8px 10px;border-radius:12px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--hair)}
+.org5-tl li{padding:8px 10px;border-radius:var(--rad-xl);background:var(--glass);box-shadow:inset 0 0 0 1px var(--hair)}
 .org5-tl1{display:flex;gap:6px 8px;flex-wrap:wrap;align-items:center}
 .org5-tl1 b{font-size:13px;flex:1 1 140px;min-width:0}
 .org5-tl2{margin-top:4px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
-.org5-tl2 code{font-size:11px;background:var(--hair);padding:1px 6px;border-radius:6px;color:var(--ink)}
+.org5-tl2 code{font-size:11px;background:var(--hair);padding:1px 6px;border-radius:var(--rad-sm);color:var(--ink)}
 .org5-res .eyebrow{margin-top:12px;margin-bottom:6px}
 .org-tabs{flex-wrap:wrap;border-radius:24px}
 .org-tabs .org-tab{padding:9px 14px}

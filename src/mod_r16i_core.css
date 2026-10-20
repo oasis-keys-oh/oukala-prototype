@@ -1,15 +1,15 @@
 /* Round 16 Agent I: page-header actions slot, favorites accordion, budget section, star dropdown */
 #view{position:relative}
 .r16-pha{position:absolute;top:6px;right:8px;z-index:calc(var(--z-local) + 4);display:flex;align-items:center;justify-content:flex-end;gap:8px;height:36px;width:max-content;max-width:calc(100% - 16px)}
-.r16-pha .r16-why-btn{height:36px;padding:0 14px;font:600 13px/1 inherit;font-family:inherit;white-space:nowrap;border-radius:12px;display:inline-flex;align-items:center;box-sizing:border-box}
-.r16-pha .r16-star{position:static;width:36px;height:36px;min-width:36px;padding:0;display:inline-grid;place-items:center;border-radius:12px;background:var(--glass2);box-shadow:inset 0 1px 0 var(--edge),0 0 0 1px var(--hair);transform:none;opacity:1;box-sizing:border-box}
+.r16-pha .r16-why-btn{height:36px;padding:0 14px;font:600 13px/1 inherit;font-family:inherit;white-space:nowrap;border-radius:var(--rad-xl);display:inline-flex;align-items:center;box-sizing:border-box}
+.r16-pha .r16-star{position:static;width:36px;height:36px;min-width:36px;padding:0;display:inline-grid;place-items:center;border-radius:var(--rad-xl);background:var(--glass2);box-shadow:inset 0 1px 0 var(--edge),0 0 0 1px var(--hair);transform:none;opacity:1;box-sizing:border-box}
 /* the header always leaves room for the slot: first row of the hero is at least as tall as the slot, and the title never runs under it */
 #view .hero>.eyebrow:first-child,#view>.screen>.eyebrow.r15-eb:first-child{min-height:36px;display:flex;align-items:center;box-sizing:border-box;padding-right:230px}
 #view>.screen:not(:has(>.hero)):not(:has(>.eyebrow)){padding-top:42px}
 #view .hero h1{padding-right:0}
 #view[data-screen="home"] .hero>.eyebrow:first-child{min-height:36px}
 .r16-whysrc{display:none!important}
-.r16-whypop{position:fixed;inset:auto;margin:0;padding:18px 20px;max-height:min(70vh,640px);overflow:auto;border-radius:18px}
+.r16-whypop{position:fixed;inset:auto;margin:0;padding:18px 20px;max-height:min(70vh,640px);overflow:auto;border-radius:var(--rad-3xl)}
 .r16-wh{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .r16-wh h3{margin:2px 0 0}
 .r16-wnote{margin:6px 0 4px}
@@ -20,21 +20,21 @@
 @media (max-width:700px){.r16-pha .r16-why-btn{padding:0 10px;font-size:12px}#view .hero>.eyebrow:first-child,#view>.screen>.eyebrow.r15-eb:first-child{padding-right:0;min-height:0;margin-top:40px}}
 /* favorites accordion (sidebar) */
 html[data-r16-fav="closed"] .nx-favs .nx-favlist,html[data-r16-fav="closed"] .nx-favs .nx-empty{display:none}
-.nx-favs .nx-fh{cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-radius:10px}
+.nx-favs .nx-fh{cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-radius:var(--rad-lg)}
 .nx-favs .nx-fh:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .nx-favs .nx-fh::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin-right:6px;opacity:.7;flex:none}
 html[data-r16-fav="open"] .nx-favs .nx-fh::after{transform:rotate(45deg)}
 html[data-r16-fav="open"] .nx-favs .nx-favlist{max-height:240px;overflow:auto}
 @media (prefers-reduced-motion:reduce){.nx-favs .nx-fh::after{transition:none}}
 /* budget requests section */
-.r16-budbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 var(--sp-2,12px);padding:8px 12px;border-radius:12px;background:var(--glass2);box-shadow:0 0 0 1px var(--hair)}
+.r16-budbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 var(--sp-2,12px);padding:8px 12px;border-radius:var(--rad-xl);background:var(--glass2);box-shadow:0 0 0 1px var(--hair)}
 /* star dropdown */
 .r16-favctl{display:flex;align-items:center;gap:10px;padding:6px 14px 2px}
 .r16-favctl input{flex:1;min-width:0}
 #nxFavList{max-height:min(52vh,420px);overflow:auto}
 #nxFavList .nx-hrow{position:relative}
 .r16-mv{display:inline-flex;flex-direction:column;gap:0;margin-right:4px}
-.r16-mvb{border:0;background:transparent;color:var(--muted);padding:1px 4px;cursor:pointer;line-height:0;border-radius:6px}
+.r16-mvb{border:0;background:transparent;color:var(--muted);padding:1px 4px;cursor:pointer;line-height:0;border-radius:var(--rad-sm)}
 .r16-mvb:hover:not(:disabled){color:var(--ink);background:var(--glass2)}
 .r16-mvb:disabled{opacity:.25;cursor:default}
 .r16-mvb:focus-visible{outline:2px solid var(--accent)}

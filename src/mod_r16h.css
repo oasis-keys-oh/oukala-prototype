@@ -1,17 +1,17 @@
 /* Round 16 H: nested approval tree, status catalog, CI ownership. Tokens only; no literal colours. */
 /* ---- nested approval tree ---- */
 .r16r-tree{display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:760px;min-width:0}
-.r16r-start,.r16r-end{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 12px;border:1px dashed var(--edge);border-radius:99px;background:var(--glass2)}
+.r16r-start,.r16r-end{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 12px;border:1px dashed var(--edge);border-radius:var(--rad-pill);background:var(--glass2)}
 .r16r-seq{display:flex;flex-direction:column;min-width:0;position:relative}
 .r16r-seq.nest{margin-left:22px;padding-left:14px;border-left:2px solid var(--hair)}
 .r16r-seq.branch{padding-left:0}
 .r16r-ins{position:relative;height:26px;display:flex;align-items:center;justify-content:flex-start;padding-left:19px}
 .r16r-ins::before{content:"";position:absolute;left:30px;top:0;bottom:0;border-left:2px solid var(--hair)}
 .r16r-ins.ro{height:14px}
-.r16r-plus{position:relative;z-index:calc(var(--z-local) + 1);width:24px;height:24px;border-radius:99px;border:1px solid var(--edge);background:var(--bg);color:var(--accent);font:700 16px/1 inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .15s,transform .15s}
+.r16r-plus{position:relative;z-index:calc(var(--z-local) + 1);width:24px;height:24px;border-radius:var(--rad-pill);border:1px solid var(--edge);background:var(--bg);color:var(--accent);font:700 16px/1 inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .15s,transform .15s}
 .r16r-ins:hover .r16r-plus,.r16r-plus:focus-visible{opacity:1;transform:scale(1.15);border-color:var(--accent)}
 .r16r-plus:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.r16r-lvl{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;background:var(--glass);border:1px solid var(--edge);min-width:0}
+.r16r-lvl{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:var(--rad-2xl);background:var(--glass);border:1px solid var(--edge);min-width:0}
 .r16r-lvl.active{border-color:var(--warn);box-shadow:0 0 0 3px var(--warn-f)}
 .r16r-lvl.approved{border-color:var(--good);background:var(--good-f)}
 .r16r-lvl.rejected{border-color:var(--bad);background:var(--bad-f)}
@@ -19,19 +19,19 @@
 .r16r-lvl.added{border-color:var(--good);box-shadow:inset 4px 0 0 var(--good)}
 .r16r-lvl.changed{border-color:var(--warn);box-shadow:inset 4px 0 0 var(--warn)}
 .r16r-lvl.removed{border-color:var(--bad);text-decoration:line-through;opacity:.7}
-.r16r-num{flex:none;width:28px;height:28px;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:var(--bg);font-weight:700;font-size:13px}
+.r16r-num{flex:none;width:28px;height:28px;border-radius:var(--rad-pill);display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:var(--bg);font-weight:700;font-size:13px}
 .r16r-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .r16r-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .r16r-sub{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .r16r-chips{display:flex;gap:6px;flex-wrap:wrap}
-.r16r-c{font-size:12px;padding:2px 9px;border-radius:99px;border:1px solid var(--hair);background:var(--glass2);color:var(--ink);overflow-wrap:anywhere}
+.r16r-c{font-size:12px;padding:2px 9px;border-radius:var(--rad-pill);border:1px solid var(--hair);background:var(--glass2);color:var(--ink);overflow-wrap:anywhere}
 .r16r-c.skip{border-style:dashed}
 .r16r-c.esc{border-color:var(--warn)}
 .r16r-act{flex:none;display:flex;gap:6px;flex-wrap:wrap}
-.r16r-par{margin:0;padding:10px 12px 12px;border:2px solid var(--accent);border-radius:18px;background:var(--glass2)}
+.r16r-par{margin:0;padding:10px 12px 12px;border:2px solid var(--accent);border-radius:var(--rad-3xl);background:var(--glass2)}
 .r16r-parh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
 .r16r-branches{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.r16r-br{min-width:0;padding:8px;border-radius:14px;border:1px dashed var(--edge);background:var(--bg)}
+.r16r-br{min-width:0;padding:8px;border-radius:var(--rad-card);border:1px dashed var(--edge);background:var(--bg)}
 .r16r-seg{display:inline-flex;gap:6px}
 .r16r-head{min-width:0}
 .r16r-diff{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
@@ -41,17 +41,17 @@
 .r16r-f{display:grid;gap:4px;font-size:13px}
 .r16r-f span{color:var(--muted)}
 .r16r-decide{display:grid;gap:10px;margin:12px 0}
-.r16r-dl{padding:10px 12px;border-radius:14px;border:1px solid var(--edge);background:var(--glass2)}
+.r16r-dl{padding:10px 12px;border-radius:var(--rad-card);border:1px solid var(--edge);background:var(--glass2)}
 .r16r-trace{margin:6px 0 0;padding-left:20px;display:grid;gap:4px;font-size:13px}
 /* ---- status ---- */
-.r16s-live{margin-top:10px;padding:10px 12px;border-radius:14px;border:1px solid var(--hair);background:var(--glass2)}
+.r16s-live{margin-top:10px;padding:10px 12px;border-radius:var(--rad-card);border:1px solid var(--hair);background:var(--glass2)}
 .r16s-ll{margin:6px 0 0;padding:0;list-style:none;display:grid;gap:6px}
-.r16s-pend{padding:8px 12px;border-radius:12px;border:1px solid var(--warn);background:var(--warn-f);margin-bottom:6px}
+.r16s-pend{padding:8px 12px;border-radius:var(--rad-xl);border:1px solid var(--warn);background:var(--warn-f);margin-bottom:6px}
 /* ---- CI ownership ---- */
 .r16c-bars{display:grid;gap:8px}
 .r16c-bar{display:grid;grid-template-columns:minmax(120px,200px) 1fr 70px;gap:10px;align-items:center}
 .r16c-n{justify-self:start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.r16c-track{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--glass2);border:1px solid var(--hair)}
+.r16c-track{display:flex;height:12px;border-radius:var(--rad-pill);overflow:hidden;background:var(--glass2);border:1px solid var(--hair)}
 .r16c-track i{display:block;height:100%}
 .r16c-track .ok{background:var(--good)}
 .r16c-track .part{background:var(--warn)}

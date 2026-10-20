@@ -1,6 +1,6 @@
 .r27-simple .r27-h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin:12px 10px 4px}
 .r27-all{margin-top:10px;border-top:1px solid color-mix(in srgb,currentColor 14%,transparent);padding-top:6px}
-.r27-all>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;border-radius:10px;min-height:44px;display:flex;align-items:center}
+.r27-all>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;border-radius:var(--rad-lg);min-height:44px;display:flex;align-items:center}
 .r27-all>summary::-webkit-details-marker{display:none}
 .r27-all>summary::after{content:"▾";margin-inline-start:auto}
 .r27-all[open]>summary::after{content:"▴"}

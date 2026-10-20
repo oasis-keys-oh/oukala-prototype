@@ -2,6 +2,7 @@
 # CL-19: two font stacks, --font-sans and --font-serif (plus --f-mono for code); --f-body, --f-disp, --sans, --serif, --font, --font-ui, --f-ui, --font-display, --f-head stay as aliases.
 # CL-23: eight z-index layers (--z-below to --z-top); a rule that must sit above a sibling in the same layer adds an offset: calc(var(--z-float) + 10).
 # CL-24: breakpoints (CSS custom media is not available, so media queries use the literal values): phone max 700px, tablet max 900px, laptop max 1100px, wide max 1500px; min-width queries use value+1. docs/css-tokens.md.
+# CL-21: radius scale --rad-xs 4px to --rad-panel 22px, plus --rad-pill and --rad-round (50%).
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);
@@ -19,6 +20,7 @@ LIGHT = """
 --card:var(--glass2);--surface:var(--card);--glass3:var(--glass2);--glass-b:var(--hair);--hover:var(--track);--r17p-dim:rgba(6,17,22,.46);
 --font:var(--font-sans);--font-ui:var(--font-sans);--f-ui:var(--font-sans);--sans:var(--font-sans);--serif:var(--font-serif);--font-display:var(--font-serif);--f-head:var(--font-serif);
 --z-below:-1;--z-local:0;--z-sticky:20;--z-float:50;--z-overlay:100;--z-drag:200;--z-modal:900;--z-top:9000;
+--rad-xs:4px;--rad-sm:6px;--rad-md:8px;--rad-lg:10px;--rad-xl:12px;--rad-card:14px;--rad-2xl:16px;--rad-3xl:18px;--rad-panel:22px;--rad-pill:999px;--rad-round:50%;
 --gap:16px;--gap-lg:16px;--sp-5:24px;--r17-nav-h:84px;
 """
 DARK = """

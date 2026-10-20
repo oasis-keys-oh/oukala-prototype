@@ -1,6 +1,6 @@
 /* Showroom lenses (mod_s_showroom_lens). Prefix: srl-. Tokens only. */
 .srl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:10px}
-.srl-c{border:1px solid var(--hair);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;background:var(--glass)}
+.srl-c{border:1px solid var(--hair);border-radius:var(--rad-2xl);padding:12px 14px;display:flex;flex-direction:column;gap:6px;background:var(--glass)}
 .srl-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .srl-h b{font:700 15px var(--f-body);color:var(--ink)}
 .srl-c p{margin:0}

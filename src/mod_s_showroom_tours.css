@@ -1,6 +1,6 @@
 /* Showroom tours (mod_s_showroom_tours): full story, tenant briefs, last rehearsal. Prefix: srt-. Tokens only. */
 .srt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:10px}
-.srt-c{border:1px solid var(--hair);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;background:var(--glass)}
+.srt-c{border:1px solid var(--hair);border-radius:var(--rad-2xl);padding:12px 14px;display:flex;flex-direction:column;gap:6px;background:var(--glass)}
 .srt-c p{margin:0}
 .srt-c .row{margin-top:auto;flex-wrap:wrap;gap:6px}
 .srt .row{flex-wrap:wrap;gap:8px}

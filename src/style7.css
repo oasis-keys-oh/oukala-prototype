@@ -16,7 +16,7 @@
 :root:root .formula[data-fc]{position:relative;padding-right:76px}
 :root:root .pop,:root:root .fhov,:root:root #drawer{overflow-wrap:anywhere}
 :root:root :is(.pop,.fhov,.mcard)>*{min-width:0;max-width:100%}
-.fcopy{position:absolute;top:8px;right:8px;font:inherit;font-family:var(--f-body);font-style:normal;font-size:var(--fs-xs);font-weight:var(--fw-label);line-height:1;letter-spacing:0;white-space:nowrap;color:var(--ink);background:var(--glass2);border:1px solid var(--cardline);border-radius:99px;padding:6px 11px;cursor:pointer;min-height:28px;transition:background .15s,transform .15s}
+.fcopy{position:absolute;top:8px;right:8px;font:inherit;font-family:var(--f-body);font-style:normal;font-size:var(--fs-xs);font-weight:var(--fw-label);line-height:1;letter-spacing:0;white-space:nowrap;color:var(--ink);background:var(--glass2);border:1px solid var(--cardline);border-radius:var(--rad-pill);padding:6px 11px;cursor:pointer;min-height:28px;transition:background .15s,transform .15s}
 .fcopy:hover{background:var(--accent-soft)}.fcopy:active{transform:scale(.96)}.fcopy[data-done]{color:var(--good);border-color:var(--good)}
 .fhov .fcopy{display:none}
 
@@ -51,7 +51,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 
 /* ---- F-07 empty and loading states share one look ---- */
 .empty,.emptystate,.nodata{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:28px 16px;border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;min-height:96px}
-.skel,.skeleton{position:relative;overflow:hidden;border-radius:10px;background:var(--track);min-height:14px;color:transparent}
+.skel,.skeleton{position:relative;overflow:hidden;border-radius:var(--rad-lg);background:var(--track);min-height:14px;color:transparent}
 .skel::after,.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 9%,transparent),transparent);animation:skelslide 1.3s infinite}
 @keyframes skelslide{to{transform:translateX(100%)}}
 
@@ -92,7 +92,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 :root:root .proc .ps.gate .who{color:var(--warn)}
 
 /* ---- F-12 skip link: visible only on keyboard focus ---- */
-.skiplink{position:fixed;left:12px;top:-72px;z-index:calc(var(--z-top) + 1000);padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
+.skiplink{position:fixed;left:12px;top:-72px;z-index:calc(var(--z-top) + 1000);padding:12px 18px;border-radius:var(--rad-card);background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
 .skiplink:focus,.skiplink:focus-visible{top:12px;outline:2px solid var(--focus);outline-offset:3px}
 
 /* ---- F-13 phone top bar fits the viewport (it was 33px too wide on every screen, forcing sideways page scroll) ---- */

@@ -26,7 +26,7 @@
  :root:root #view table.r17o2-stack{display:block;width:100%!important;min-width:0!important;max-width:100%;border:0}
  :root:root #view table.r17o2-stack :is(tbody,tfoot){display:flex;flex-direction:column;gap:10px}
  :root:root #view table.r17o2-stack thead{display:none}
- :root:root #view table.r17o2-stack tr{display:block;border:1px solid var(--cardline);border-radius:14px;padding:6px 12px;background:var(--glass2)}
+ :root:root #view table.r17o2-stack tr{display:block;border:1px solid var(--cardline);border-radius:var(--rad-card);padding:6px 12px;background:var(--glass2)}
  :root:root #view table.r17o2-stack td{display:block;border:0;border-bottom:1px solid var(--hair,var(--cardline));padding:8px 0;white-space:normal;max-width:none;min-width:0;text-align:left;overflow:visible;overflow-wrap:break-word;background:none}
  :root:root #view table.r17o2-stack td:last-child{border-bottom:0}
  :root:root #view table.r17o2-stack td:first-child{min-width:0;font-weight:600}
@@ -35,7 +35,7 @@
  :root:root #view table.r17o2-stack td:empty{display:none}
  :root:root #view table.r17o2-stack td.num{text-align:left}
  /* wider tables: bordered scroller, sticky first column, edge fade */
- :root:root #view :is(.tscroll,.tablewrap):has(>table.r17o2-scr){border:1px solid var(--cardline);border-radius:14px;background:var(--glass2);position:relative}
+ :root:root #view :is(.tscroll,.tablewrap):has(>table.r17o2-scr){border:1px solid var(--cardline);border-radius:var(--rad-card);background:var(--glass2);position:relative}
  :root:root #view table.r17o2-scr :is(th,td):first-child{position:sticky;left:0;z-index:calc(var(--z-local) + 2);background:var(--bg);min-width:min(172px,48vw);max-width:min(58vw,240px);box-shadow:1px 0 0 var(--cardline)}
  :root:root #view table.r17o2-scr thead th:first-child{z-index:calc(var(--z-local) + 4)}
  .r17o2-more{display:flex;align-items:center;justify-content:center;width:100%;margin-top:10px}

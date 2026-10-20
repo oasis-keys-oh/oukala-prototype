@@ -57,3 +57,20 @@ JS checks that still use other widths (to align with the list above, JS stream):
 `--fs-2xs` 11px, `--fs-xs` 12px, `--fs-sm` 13px, `--fs-md` 15px, `--fs-lg` 18px, `--fs-xl` 22px, `--fs-2xl` 28px, `--fs-3xl` 38px.
 
 First pass: the 10 largest CSS files that set font sizes (`mod_r20`, `mod_flow`, `mod_people`, `style`, `mod_itsm`, `mod_r26_guardrails`, `mod_plat_atlas`, `style4`, `mod_svc`, `mod_r18`; `style5.css` holds only inline images). A literal size that equals a step now reads the token (335 declarations, `font-size` and the `font` shorthand), so nothing moves. Left in those files: 274 sizes that sit between steps (8 to 10.5, 11.5, 12.5, 13.5, 14, 14.5, 16, 17, 19, 20, 24, 26, 30 px and larger display sizes). Moving them onto the scale changes text size by 0.5 to 2 px and wrapping, so it needs a visual review per screen (the next pass, with screenshots).
+
+## Radius scale (CL-21)
+| Token | Value | Literals mapped |
+|---|---|---|
+| `--rad-xs` | 4px | 3, 4, 5 px |
+| `--rad-sm` | 6px | 6, 7 px |
+| `--rad-md` | 8px | 8, 9 px |
+| `--rad-lg` | 10px | 10, 11 px |
+| `--rad-xl` | 12px | 12, 13 px |
+| `--rad-card` | 14px | 14 px (same value as `--r2`) |
+| `--rad-2xl` | 16px | 16 px |
+| `--rad-3xl` | 18px | 18 px |
+| `--rad-panel` | 22px | 22 px (same value as `--r`) |
+| `--rad-pill` | 999px | 99, 999, 9999 px |
+| `--rad-round` | 50% | 50% |
+
+1,782 literal radii now use the scale (all sides of shorthands included). 122 of them moved by 1 px (3, 5, 7, 9, 11, 13 px) and 343 pill radii went from 99 to 999 px, which looks the same on anything under 198 px tall. Left as literals (124): 20, 24, 26, 28, 30, 36 px on large panels and sheets and 1 to 2 px on hairline bars; each is 2 px or more from a step, so moving it is a visible change for review. `css_lint.js` keeps the count from rising.

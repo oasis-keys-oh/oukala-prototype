@@ -1,10 +1,10 @@
 /* numbers: P-014 process, P-014.3 step, P-014.3.1 child step, B-012 build; DC-02 records: O-003 objective, O-003.2 key result, PJ-004 project, BL-012 budget line, IV-003 invoice, LG-005 ledger line */
-.num-chip{display:inline-block;font:600 10.5px/1.5 var(--f-mono);letter-spacing:.02em;padding:0 6px;border-radius:6px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--ink);white-space:nowrap;vertical-align:middle;text-transform:none}
+.num-chip{display:inline-block;font:600 10.5px/1.5 var(--f-mono);letter-spacing:.02em;padding:0 6px;border-radius:var(--rad-sm);background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--ink);white-space:nowrap;vertical-align:middle;text-transform:none}
 .wfd-nh .num-chip{margin-left:auto}
 .wfd-ttl h3 .num-chip{font-size:12px;margin-right:6px}
 .jx-xref{align-items:center;gap:8px;margin:8px 0}
 
 .num-pal{list-style:none;padding:6px 10px 2px}
-.num-palrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border-radius:10px;border:1px solid var(--line,#d8dce6);background:var(--card,#fff);cursor:pointer;font:inherit;color:inherit}
+.num-palrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 10px;border-radius:var(--rad-lg);border:1px solid var(--line,#d8dce6);background:var(--card,#fff);cursor:pointer;font:inherit;color:inherit}
 .num-palrow:hover,.num-palrow:focus-visible{border-color:var(--accent,#c89b3c);outline:none}
 .num-palrow small{margin-left:auto;opacity:.65}
