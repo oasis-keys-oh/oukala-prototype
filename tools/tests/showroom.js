@@ -21,8 +21,9 @@ for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.tot
  await p.evaluate(id=>SHOW.start(id,0),id);await settle();
  for(let i=0;i<n;i++){const n0=errs.length;
   const exp=await p.evaluate(([id,i])=>{const b=SHOW.demos.find(x=>x.id===id).beats[i];return{go:b.go,ap:b.approve||null}},[id,i]);
-  const r=await p.evaluate(()=>{const bar=document.querySelector('.sr-bar'),r=bar&&bar.getBoundingClientRect(),v=document.querySelector('#view');return{bar:!!bar,inView:!!r&&r.bottom<=innerHeight&&r.top>=0,len:v?v.innerHTML.length:0,scr:S.screen,ten:DATA.tenant(),pt:(document.getElementById('srPt')||{}).textContent,chat:(document.getElementById('chatOpen')||{}).checked}});
+  const r=await p.evaluate(()=>{const bar=document.querySelector('.sr-bar'),r=bar&&bar.getBoundingClientRect(),v=document.querySelector('#view');return{tabMissed:SHOW.state.tabMissed,bar:!!bar,inView:!!r&&r.bottom<=innerHeight&&r.top>=0,len:v?v.innerHTML.length:0,scr:S.screen,ten:DATA.tenant(),pt:(document.getElementById('srPt')||{}).textContent,chat:(document.getElementById('chatOpen')||{}).checked}});
   if(r.scr!==exp.go)fail(id+' beat '+(i+1)+' on screen '+r.scr+', expected '+exp.go);
+  if(r.tabMissed)fail(id+' beat '+(i+1)+' tab not found: '+r.tabMissed);
   if(r.ten!==ten)fail(id+' beat '+(i+1)+' on tenant '+r.ten+', expected '+ten);
   if(!r.bar||!r.inView||r.len<400||errs.length>n0||r.chat)fail(id+' beat '+(i+1)+' '+JSON.stringify(r)+' '+errs.slice(n0));
   if(exp.ap){/* DC-37: the persona set for this beat can click Approve */

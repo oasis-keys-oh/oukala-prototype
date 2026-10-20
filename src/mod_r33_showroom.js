@@ -36,9 +36,9 @@ const DEMOS=[
  {id:"demand.1",act:"Demand",point:"Requests ranked against what we can fund",secs:90,go:"port",tab:"Capacity vs demand",
   say:["New requests are scored against the objectives and against the capacity we have.","The capacity view shows which teams are overloaded by funded work."],
   do:"Point at the team with the highest load.",claims:["modeled"]},
- {id:"fund.1",act:"Fund",point:"Follow the dollar to the goal",secs:100,go:"bst",tab:"Trace detail",
-  say:["Spend rolls up from the cost center to the goal it serves, so every dollar has a reason.","Money that serves no goal is flagged as orphan spend."],
-  do:"Open the orphan spend line.",claims:["modeled"]},
+ {id:"fund.1",act:"Fund",point:"Follow the dollar to the goal",secs:100,go:"bst",
+  say:["Spend rolls up from the cost center to the goal it serves, so every dollar has a reason.","Money that reaches no goal shows as orphan spend in the trace."],
+  do:"Press Open the trace and point at orphan spend.",claims:["modeled"]},
  {id:"track.1",act:"Track",point:"One dashboard per role, same underlying numbers",secs:70,go:"exe_dash",tab:"COO",
   say:["Each executive sees the same numbers cut for their job.","The COO view leads with delivery and service health."],
   do:"Compare the COO tab with the CEO tab.",claims:["modeled"]},
@@ -57,25 +57,31 @@ const DEMOS=[
  {id:"build.1",act:"Build",point:"Build the next one from a plain request",secs:100,go:"studio",setup:"studio:home",
   say:["You describe the job in plain words and the studio builds it inside the guardrails.","The interview is scripted in this prototype, so show it as a preview."],
   do:"Press Start the click-through demo.",claims:["simulated"]}]},
-{id:"maturity",title:"Process maturity and roadmap",mins:8,who:"COO, CIO and PMO audiences",draft:true,
- blurb:"Pick a process, see its maturity against target, the measure behind the score, the roadmap and what to build first. Draft: not yet checked for every process.",
+/* DC-32: built from the DC-33 inventory (docs/inventory/maturity-tour-map.md). Seven beats; the Process library beat is new and uses an
+   existing screen. Every screen on this tour shows the Meridian sample in every tenant, so the tour runs on Meridian and says so. */
+{id:"maturity",title:"Process maturity and roadmap",mins:8,who:"COO, CIO and PMO audiences",persona:"coo",tenant:"core",
+ tenantWhy:"Four of these screens are not tenant-aware yet, so the tour runs on the Meridian sample in every tenant.",
+ blurb:"Pick a process, see its maturity record and target, the measure behind the score, the roadmap and what to build first. Checked against the maturity inventory (DC-33); runs on the Meridian sample.",
  beats:[
  {id:"m.1",act:"Pick",point:"Pick any process and find it by number",secs:60,go:"ppl_jrny",tab:"Processes",
   say:["Every process has a stable number such as P-014 and a link you can share.","Press Ctrl K and type a number to jump straight to it."],
   do:"Click one process row.",claims:["fact"]},
- {id:"m.2",act:"Level",point:"Maturity today against target",secs:80,go:"exe_mat",
-  say:["Each capability is scored on one shared scale, today against the target.","These levels are sample values and self-assessed, so present them as a conversation starter."],
-  do:"Open the Models and levels tab.",claims:["modeled"]},
- {id:"m.3",act:"Evidence",point:"Why that level: a defined measure",secs:60,go:"metrics",
+ {id:"m.2",act:"Record",point:"Each process carries a maturity record and a target",secs:80,go:"plat_proc",tab:"Maturity",
+  say:["The process library scores every library process on six dimensions: defined, owned, measured, integrated, automated and governed.","Levels are computed from signals in each process and the counts grow as screens add their processes, so treat them as modeled."],
+  do:"Open one process to see its six dimensions and Year 1 target.",claims:["modeled","fact"]},
+ {id:"m.3",act:"Level",point:"Maturity today against target, on one shared scale",secs:70,go:"exe_mat",tab:"Models and levels",
+  say:["Each capability is scored on one shared scale, today against the target.","Capability levels are sample values entered for Meridian, so present them as a conversation starter."],
+  do:"Open one model to see its levels.",claims:["modeled"]},
+ {id:"m.4",act:"Evidence",point:"Why that level: a defined measure",secs:60,go:"metrics",
   say:["Every measure has an owner, a formula and a baseline.","Open a formula chip to see exactly how the number is built."],
   do:"Open one formula chip.",claims:["modeled"]},
- {id:"m.4",act:"Roadmap",point:"Each build's path to a higher level",secs:80,go:"r18_mature",tab:"Maturity roadmaps",
+ {id:"m.5",act:"Roadmap",point:"Each build's path to a higher level",secs:70,go:"r18_mature",
   say:["Every build shows its level, its target and the next step to move up.","The roadmap lists what is below target and what is already at the next tier."],
   do:"Select one build to see its full roadmap.",claims:["modeled"]},
- {id:"m.5",act:"Fix first",point:"What to fix first, in waves",secs:80,go:"ppl_jrny",tab:"Build list",
+ {id:"m.6",act:"Fix first",point:"What to fix first, in waves",secs:70,go:"ppl_jrny",tab:"Build list",
   say:["The Build list orders agents and robots into waves, easy and valuable first.","The wave logic is a hypothesis until a buyer reviews it."],
   do:"Open wave 1.",claims:["modeled","hypothesis"]},
- {id:"m.6",act:"Build",point:"Build the fix from a plain request",secs:80,go:"studio",
+ {id:"m.7",act:"Build",point:"Build the fix from a plain request",secs:70,go:"studio",setup:"studio:home",
   say:["A gap becomes a plain-language request in the studio.","The interview is scripted here, so show it as a preview."],
   do:"Press Start the click-through demo.",claims:["simulated"]}]}];
 const BY={};
@@ -147,7 +153,8 @@ ST.approvalRec=approvalRec;ST.personaForApproval=personaForApproval;ST.actorAs=a
 function quiet(){G(()=>CHATX.close());G(()=>INBOX.closePanel());G(()=>INBOX.closeFocus());G(()=>{D.querySelectorAll("dialog[open]").forEach(x=>x.close())});G(()=>closeDrawer());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})}
 function clickTab(txt){if(!txt)return false;const want=txt.toLowerCase();
  const bs=[...D.querySelectorAll(".screen .views button, .screen [role=tab]")];
- const b=bs.find(x=>x.textContent.trim().toLowerCase()===want)||bs.find(x=>x.textContent.trim().toLowerCase().startsWith(want));
+ /* screens that draw their own view switcher: fall back to an exact button label inside the screen */
+ const b=bs.find(x=>x.textContent.trim().toLowerCase()===want)||bs.find(x=>x.textContent.trim().toLowerCase().startsWith(want))||[...D.querySelectorAll("#view .screen button")].find(x=>x.textContent.trim().toLowerCase()===want);
  if(b){b.click();try{const a=D.activeElement;if(a&&a!==D.body&&a.blur)a.blur()}catch(e){}return true}return false}
 
 /* ---------- what the presenter sees ---------- */
@@ -204,7 +211,7 @@ function open(i,o){o=o||{};const d=BY[st.demo];if(!d)return;
  st.i=Math.max(0,Math.min(d.beats.length-1,i));st.kid=o.kid!=null?o.kid:null;const b=cur();st.bt0=Date.now();
  st.busy=true;quiet();setupBeat(d,b);
  G(()=>go(b.go,b.arg));
- setTimeout(()=>{if(b.tab)clickTab(b.tab);if(b.setup){const s=String(b.setup),c=s.indexOf(":"),k=c<0?s:s.slice(0,c),a=c<0?"":s.slice(c+1);G(()=>ST.setups[k](a,b))}
+ setTimeout(()=>{st.tabMissed=b.tab&&!clickTab(b.tab)?b.tab:null;if(b.setup){const s=String(b.setup),c=s.indexOf(":"),k=c<0?s:s.slice(0,c),a=c<0?"":s.slice(c+1);G(()=>ST.setups[k](a,b))}
   if(b.go!=="studio")quiet();const v=D.getElementById("view");if(v)v.scrollTop=0;try{W.scrollTo(0,0)}catch(e){}
   setTimeout(()=>{st.busy=false;paint()},120)},360);
  setTimeout(()=>{G(()=>CHATX.close());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})},1100);
