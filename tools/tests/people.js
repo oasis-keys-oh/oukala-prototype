@@ -55,6 +55,10 @@ const r=await p.evaluate(async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  const th=CHATX.findAddress('person:Maya Ortiz');th.ctx.rec={type:'secret_rec',id:'S1'};ok(!CHATX.canSee(th)&&CHATX.access(th).simulated,'thread hidden when its record is not readable (simulated check)');
  CHATX.drawThreads();ok(!document.querySelector('#chxThreads [data-cx-th="open:'+th.id+'"]'),'hidden thread not listed');
  th.ctx.rec={type:'project',id:'PR1'};PERM.can=can;
+ // PH-05: COO persona in every switcher
+ ok(NAVX.persona.list().some(x=>x.key==='coo'),'COO in NAVX.persona.list');ok(document.querySelector('#profilePop input[name=persona][value=coo]'),'COO in the profile View as switcher');
+ CHATX.open('chat');await W(100);ok(document.querySelector('#chxCtx select[data-cx-role] option[value=coo]'),'COO in the chat role switcher');
+ ok(NAVX.persona.set('coo')&&S.persona==='coo','switch to COO');NAVX.persona.set('exec');
  return f});
 fails.push(...r);await p.context().close();
 
