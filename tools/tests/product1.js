@@ -72,6 +72,21 @@ ok(!/DAMA DMM/.test(r23.dmm)&&/CMMI Institute/.test(r23.dmm)&&/DMBOK/.test(r23.d
 ok(r23.base&&r23.lic&&r23.cw==='2:0.5,3:0.5'&&r23.cw5==='4:1','PR-23 own five-level, six-dimension base scale; licensed models carry a crosswalk with shares that add to 100% (DORA level 3 of 5 = 2 or 3, 50% each)');
 for(const id in r23.screens){const c=r23.screens[id];ok(c.counsel&&c.cw&&!c.gart&&(id==='cmmi'||id==='itil'?c.comp:true),`PR-23 models tab for ${id}: counsel notice and crosswalk shown${id==='cmmi'||id==='itil'?', labeled "comparable to"':''}, no Gartner`)}
 
+// CL-51: the two exact duplicates fold into one screen each with a view switcher; the old ids stay registered and land on the right view
+const r51=await p.evaluate(async()=>{const o={};const reg=id=>SCREENS.some(s=>s[0]===id)&&typeof _R[id]==='function';o.reg=['plat_data','plat_data_old','trace','strat_exec'].every(reg);
+ const land=async(id,arg)=>{go('home');await new Promise(r=>setTimeout(r,80));S.v.atlas=0;S.v.sx=0;go(id,arg);await new Promise(r=>setTimeout(r,250));const v=document.querySelector('#view');
+  return {screen:S.screen,atlas:S.v.atlas,sx:S.v.sx,rec:S.rec,tabs:[...v.querySelectorAll('[data-views] [role="tab"],[data-views] .vtab,[data-vw]')].length,txt:v.innerText.slice(0,40000)}};
+ o.old=await land('plat_data_old');o.trace=await land('trace');o.traceArg=await land('trace','R1');
+ location.hash='#plat_data_old';await new Promise(r=>setTimeout(r,400));o.hash={screen:S.screen,atlas:S.v.atlas};
+ o.hidden=['plat_data_old','trace'].every(id=>SRCH.hiddenScreen(id))&&['plat_data','strat_exec'].every(id=>!SRCH.hiddenScreen(id)||!!(R15.famOf&&R15.famOf[id]));
+o.oldNote=/now this view of the Master data model/.test(o.old.txt);o.trNote=/replaced the Executive trace screen/.test(o.trace.txt);
+ o.oldText=o.old.txt.length;o.trace.txt=o.trace.txt.length;o.traceArg.txt=o.traceArg.txt.length;o.old.txt=o.old.txt.length;go('home');return o});
+ok(r51.reg,'CL-51 no screen id deleted: plat_data, plat_data_old, trace and strat_exec are all still registered');
+ok(r51.old.screen==='plat_data'&&r51.old.atlas===5&&r51.oldNote&&r51.old.tabs>1,`CL-51 plat_data_old opens the Master data model on its Tables and checks view (view ${r51.old.atlas}) with the view switcher`);
+ok(r51.trace.screen==='strat_exec'&&r51.trace.sx===4&&r51.trNote&&r51.traceArg.sx===4&&r51.traceArg.rec==='R1',`CL-51 trace opens Strategy to execution on its Record chain view (view ${r51.trace.sx}); a record argument is kept (${r51.traceArg.rec})`);
+ok(r51.hash.screen==='plat_data'&&r51.hash.atlas===5,'CL-51 an old deep link (#plat_data_old) lands on the same view');
+ok(r51.hidden,'CL-51 the folded ids leave the menu and search; the screens they fold into stay reachable (menu or their family switcher)');
+
 //@@NEXT
 
 ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,8));

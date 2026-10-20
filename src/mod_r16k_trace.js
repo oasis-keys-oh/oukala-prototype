@@ -318,7 +318,7 @@ function screen(){
   `<div class="row">${fchip("m_sx_cover")}${fchip("m_sx_orphan")}${fchip("m_sx_gaps")}${typeof stdChip==="function"?stdChip("togaf","Business capability to project mapping follows the TOGAF capability-based planning idea."):""}<button class="btn primary" data-sx-form="crnew">Add a roadmap item</button><button class="btn" data-sx-form="gc">Map goals to a capability</button>${whyPop("A CIO traces each strategic goal to the capabilities it needs, the maturity roadmap that closes the gap, and the projects, money and people doing it.")}</div>`)}${lensNote()}
   ${kpis(D)}
   ${pk}
-  ${views("sx",["Tree","Trace graph","Gaps ("+D.flags.length+")","Mapping","Record chain"],[card("Goals, capabilities, roadmap and projects","Open a row to go one level down. Money is split across goals by Strategy alignment weights.",tree),card("Trace graph","Left to right: goal, capability, roadmap item, project, then money and work.",graphHTML(D)),card("Gaps","Where the chain breaks, worst first.",gapsHTML(D)),card("Mapping","Edit the three links. Each has a named owner and backup.",mappingHTML(D)),chainView()])}
+  ${views("sx",["Tree","Trace graph","Gaps ("+D.flags.length+")","Mapping","Record chain"],[card("Goals, capabilities, roadmap and projects","Open a row to go one level down. Money is split across goals by Strategy alignment weights.",tree),card("Trace graph","Left to right: goal, capability, roadmap item, project, then money and work.",graphHTML(D)),card("Gaps","Where the chain breaks, worst first.",gapsHTML(D)),card("Mapping","Edit the three links. Each has a named owner and backup.",mappingHTML(D)),`<p class="small muted sx-was" role="note">This view replaced the Executive trace screen; its old links (trace) open here (CL-51).</p>${chainView()}`])}
   ${reconHTML(D)}
   ${typeof procCard==="function"?procCard("strat_exec"):""}</div>`}
 
@@ -345,7 +345,7 @@ document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.tar
 
 /* ---------------- one name: the old id aliases here ---------------- */
 const R15=W.R15=W.R15||{};R15.alias=R15.alias||{};R15.hidden=R15.hidden||{};
-R15.alias.trace={to:"strat_exec"};R15.hidden.trace=1;
+R15.alias.trace={to:"strat_exec",tab:"sx:4"};R15.hidden.trace=1; /* CL-51: the old Executive trace id lands on the Record chain view */
 if(R15.names)R15.names.strat_exec="Strategy to execution";
 /* CL-35: lifecycle through HOOKS, not a go wrapper */
 if(!W._sxGo){W._sxGo=1;HOOKS.on("beforeGo",(screen,arg)=>{if((screen==="trace"||screen==="strat_exec")&&arg){S.rec=arg;S.flowSel=null;S.v.sx=4}},{id:"sx.go"})}

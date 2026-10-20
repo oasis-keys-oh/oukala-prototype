@@ -1200,8 +1200,8 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
 function oldPane(){
  let inner="";
  try{if(PREV){const doc=new DOMParser().parseFromString(PREV(),"text/html"),v=doc.querySelector('.views[data-views="map_d"]');if(v)inner=v.outerHTML}}catch(x){}
- if(!inner)return `<section class="card glass"><p class="muted">The earlier tables and model checks open on their own screen.</p><button class="btn" data-go="plat_data_old">Open Data tables and model checks</button></section>`;
- return `<div class="at-old"><p class="muted small">The earlier screen, unchanged: an overview of tables, the older diagram and the model integrity checks. <button class="at-lnk" data-go="plat_data_old">Open it on its own screen</button></p>${inner}</div>`}
+ if(!inner)return `<section class="card glass"><p class="muted">The earlier tables and model checks are not available in this build.</p></section>`;
+ return `<div class="at-old"><p class="muted small" role="note">The earlier screen Data tables and model checks, unchanged: an overview of tables, the older diagram and the model integrity checks. It is now this view of the Master data model, and its old links (plat_data_old) open here (CL-51).</p>${inner}</div>`}
 
 /* ----- metrics that describe the atlas itself ----- */
 function mkMetric(id,o){if(!METRICS[id])METRICS[id]=o}

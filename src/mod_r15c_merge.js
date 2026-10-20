@@ -27,7 +27,7 @@ const famOf={};
 FAM.forEach(f=>f.views.forEach(([id,v],i)=>{famOf[id]=f;if(id===f.id)N[id]=f.label;else{N[id]=f.label+": "+v;R15.hidden[id]=1}}));
 Object.keys(SINGLE).forEach(k=>{if(SINGLE[k])N[k]=SINGLE[k]});
 /* true duplicates: redirect */
-R15.alias.plat_data_old={to:"plat_data"};R15.hidden.plat_data_old=1;N.plat_data_old=N.plat_data_old;
+R15.alias.plat_data_old={to:"plat_data",tab:"atlas:5"}; /* CL-51: lands on the Tables and checks view of the Master data model */R15.hidden.plat_data_old=1;N.plat_data_old=N.plat_data_old;
 R15.famOf=famOf;
 /* the switcher: first thing on every member screen */
 function switcher(){const id=G(()=>S.screen);const f=famOf[id];if(!f)return;const sc=D.querySelector("#view .screen")||D.querySelector("#view");if(!sc||sc.querySelector(".r15-fam"))return;
