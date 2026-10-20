@@ -164,6 +164,45 @@ J("JH9","Healthcare: nurse shift, staffing to handover","Larkspur Health System 
 const TAGS={JH0:{b7:"ELIG",b8:"SCHED",b10:"ID",b12:"DOC",b13:"RES",b14:"RES",b17:"BED",b18:"DC",b19:"MEDREC",b20:"DC",b21:"FUP",b22:"FUP",b24:"CODE",b26:"PAY",b27:"DEN"},
  JH1:{b3:"ELIG",b4:"ELIG",b6:"SCHED",b7:"SCHED",b10:"ID",b11:"DOC"},
  JH2:{b1:"DC",b2:"DC",b3:"MEDREC",b4:"MEDREC",b5:"XFER",b6:"FUP",b7:"CODE",b8:"DEN",b9:"PAY",b10:"FUP",b11:"FUP"}};
+
+/* JM-05, DC-24: shared touchpoints for the Meridian, mining and storage samples too, so their overlays, Process map "shared" counts and
+   touchpoint images are not thin. Each key sits in at least two journeys of its own scenario. Fictional samples; names are generic. */
+Object.assign(X.TP,{
+ /* Meridian Standards Foundation (core) */
+ PORTAL:{n:"Self-service portal and request intake",kind:"System of record",d:"Where a person asks for something: one form, one record, one status to follow."},
+ APPR:{n:"Manager and budget approvals",kind:"Decision",d:"A manager, budget owner or steering group says yes or no. Waits pile up here."},
+ ASSET:{n:"Laptop and equipment hand-over",kind:"Handoff",d:"The device is staged, handed over and recorded against the person."},
+ VEND:{n:"Vendor and supplier hand-off",kind:"Outside data",d:"Work that leaves the organization: ordering, provider investigation, contracts."},
+ KNOW:{n:"Answers and known fixes",kind:"System of record",d:"Questions answered once and reused: day-one questions, known errors, errata."},
+ PLAN:{n:"Planning and staffing the work",kind:"Decision",d:"Turning an approved idea into a plan with named people and dates."},
+ /* Redstone Resources (mining, fictional) */
+ ALARM:{n:"Plant alarms and condition",kind:"Outside data",d:"An alarm or an abnormal reading from the control system, and who judges it."},
+ WO:{n:"Work orders and job plans",kind:"System of record",d:"The maintenance work order: parts, labor, permits and the plan to do the job."},
+ PTW:{n:"Permit to work and area clearance",kind:"Decision",d:"Isolation, permits and confirming an area is safe before work or a blast."},
+ HSE:{n:"Safety events and corrective actions",kind:"Handoff",d:"A report, its classification and the actions that must close before it recurs."},
+ REGR:{n:"Regulator reporting",kind:"Outside data",d:"What the site must tell the regulator, and by when."},
+ SHIFT:{n:"Shift briefing",kind:"Handoff",d:"What the crew hears at the start of the shift: the plan, the hazards, the lessons."},
+ /* Corvane Data Protection (storage and backup, fictional) */
+ POC:{n:"Sizing and proof of concept",kind:"Decision",d:"Showing the system fits the customer's data before anything is quoted."},
+ QUOTE:{n:"Configure, price and quote",kind:"System of record",d:"A valid configuration, an approved discount and one quote the customer can sign."},
+ ORDER:{n:"Orders, entitlement and returns",kind:"System of record",d:"Booking the order, checking what the customer is entitled to, and tracking parts that come back."},
+ SHIP:{n:"Build and ship",kind:"Handoff",d:"Allocating stock, building to order and tracking the delivery."},
+ INST:{n:"Install and first protected backup",kind:"Handoff",d:"From boxes on site to the first backup the customer trusts."},
+ CASE:{n:"Support cases and restores",kind:"Handoff",d:"A failed job or a data event, the case it opens and the restore that ends it."},
+ PART:{n:"Hardware fault and part replacement",kind:"Handoff",d:"Diagnosing a failed part and getting the replacement in and the old one back."},
+ RENEW:{n:"Renewal and account health",kind:"Decision",d:"Whether the customer stays, grows or leaves, and what the account team sees first."}});
+Object.assign(TAGS,{
+ JY1:{b3:"PORTAL",b4:"APPR",b5:"ASSET",b8:"KNOW"},
+ JY2:{b1:"PORTAL",b2:"PORTAL",b3:"APPR",b4:"APPR",b5:"VEND",b6:"VEND",b7:"ASSET"},
+ JY3:{b1:"PORTAL",b3:"KNOW",b4:"VEND",b6:"APPR"},
+ JY4:{b1:"PORTAL",b3:"APPR",b4:"PLAN",b5:"PLAN",b6:"VEND"},
+ JY5:{b3:"APPR",b4:"PLAN",b10:"APPR",b15:"KNOW",b16:"KNOW"},
+ JM0:{b2:"SHIFT",b5:"PTW",b10:"ALARM",b11:"WO",b12:"HSE",b20:"REGR"},
+ JM1:{b1:"ALARM",b2:"ALARM",b3:"ALARM",b5:"WO",b7:"PTW"},
+ JM2:{b1:"HSE",b3:"HSE",b4:"REGR",b7:"HSE",b8:"WO",b9:"HSE",b10:"SHIFT"},
+ JS0:{b4:"POC",b5:"QUOTE",b7:"ORDER",b8:"SHIP",b9:"INST",b11:"INST",b13:"CASE",b15:"CASE",b16:"CASE",b17:"PART",b18:"PART",b19:"RENEW"},
+ JS1:{b1:"POC",b2:"POC",b3:"QUOTE",b4:"QUOTE",b5:"ORDER",b6:"SHIP",b7:"SHIP",b8:"INST",b9:"INST",b10:"CASE",b11:"RENEW"},
+ JS2:{b2:"CASE",b3:"ORDER",b7:"CASE",b8:"PART",b9:"ORDER",b11:"RENEW"}});
 Object.keys(TAGS).forEach(id=>{const j=X.JY.list.find(x=>x.id===id);if(!j)return;j.stages.forEach(s=>s.boxes.forEach(b=>{if(TAGS[id][b.id])b.key=TAGS[id][b.id]}))});
 
 X.JY.list.sort((a,b)=>(b.cat==="End to end")-(a.cat==="End to end"));

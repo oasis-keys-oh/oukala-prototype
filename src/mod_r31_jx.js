@@ -53,8 +53,21 @@ function objectives(j,b){const a=A(),r=a.rec(b),k=kvOf(j),L=a.allBoxes(j),avg=L.
  if(!o.length)o.push(k.w==="t"?"Throughput":"Experience");return o}
 JXR.objectives=objectives;
 /* best action on a step: share of effort removed, hours and dollars, and the lift in how it feels */
-JXR.fixOf=(j,b)=>{const a=A(),r=a.rec(b);const f=r.st==="cand"?a.REC_SAVE[r.k]:(b.pain&&b.em<=2)?.4:0;const hrs=b.min*b.vol/60*f;
- return {f,hrs,usd:b.who==="Patient"?0:hrs*a.REC_RATE,pt:b.who==="Patient",lift:f>0?Math.min(1,5-b.em):0}};
+JXR.fixOf=(j,b)=>{const a=A(),r=a.rec(b);const f=r.st==="cand"?a.REC_SAVE[r.k]:(b.pain&&b.em<=2)?.4:0;const raw=b.min*b.vol/60*f,hrs=a.capSave?a.capSave(raw):raw;
+ return {f,hrs,capped:raw>hrs,usd:b.who==="Patient"?0:hrs*a.REC_RATE,pt:b.who==="Patient",lift:f>0?Math.min(1,5-b.em):0}};
+/* DC-01: the FTE model in one place (mod_people journey section): 140 hours a month is one FTE; one step releases at most REC_CAP_FTE. Modeled. */
+JXR.FTE_H=()=>A().FTE_H||140;
+/* JM-04: one counting rule for proposed teammates, used by the Build list, the org chart, orgprop and the Personas tab.
+   A build is one agent or one robot. Recommended steps of the same kind that share a process (else a shared touchpoint, else a stage) are one build.
+   Scope: "detail" leaves out an end-to-end journey when detailed journeys exist (it summarizes the same work); "all" counts every journey. */
+JXR.scope={sel:null};
+JXR.hasDetail=()=>X.JY.list.some(j=>j.cat!=="End to end");
+JXR.scopeNow=()=>JXR.scope.sel||(JXR.hasDetail()?"detail":"all");
+JXR.inScope=j=>!(JXR.scopeNow()==="detail"&&j.cat==="End to end"&&JXR.hasDetail());
+JXR.buildGroup=(j,s,b)=>b.procs.length?pk_(b.procs[0]):b.key?"tp:"+b.key:"st:"+j.id+":"+s.id;
+JXR.buildKey=(j,s,b,r)=>r.k+":"+JXR.buildGroup(j,s,b);
+JXR.countBuilds=rows=>{const ag=new Set(),rb=new Set();rows.forEach(x=>{const r=x.r||A().rec(x.b);if(r.st!=="cand"||(r.k!=="agent"&&r.k!=="robot"))return;(r.k==="agent"?ag:rb).add(JXR.buildKey(x.j,x.s,x.b,r))});return {agents:ag.size,robots:rb.size,keys:[...ag,...rb]}};
+JXR.capNote=()=>`Each step releases at most ${A().REC_CAP_FTE||2} FTE (${A().REC_CAP_H||280} hours a month), modeled`;
 
 /* ---------- 3. avatars ---------- */
 const AGN=["Atlas","Sage","Nova","Iris","Orion","Lyra","Quill","Vega"],RBN=["Bolt","Gear","Rivet","Relay","Cog","Torque","Switch","Sprocket"];
@@ -66,7 +79,7 @@ JXR.av=(kind,name,sz,cls)=>{sz=sz||28;const t=E(name||kind);
  return `<span class="jav jav-human ${cls||""}" style="--s:${sz}px" role="img" aria-label="${t}" title="${t}"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="hsl(${hue} 42% 84%)"/><path d="M5 37c1.4-7.5 7.2-11 15-11s13.6 3.5 15 11a19 19 0 01-30 0z" fill="hsl(${hue} 36% 40%)"/><rect x="17" y="21" width="6" height="6" rx="2" fill="hsl(${hue} 28% 58%)"/><ellipse cx="20" cy="16" rx="6.6" ry="7.4" fill="hsl(${hue} 30% 66%)"/>${hr===0?`<path d="M13 15.5c0-5 3-8 7-8s7 3 7 8c-2-2.6-4-3.6-7-3.6s-5 1-7 3.6z" fill="hsl(${hue} 30% 26%)"/>`:hr===1?`<path d="M12.6 17c-.8-6.5 3-10 7.4-10s8.2 3.5 7.4 10c-.6-4-3-6-7.4-6s-6.8 2-7.4 6zM12.6 17c.2 3 .8 5 1.6 6.4l-1.8-.4c-1-2-1.2-4-.8-6zM27.4 17c-.2 3-.8 5-1.6 6.4l1.8-.4c1-2 1.2-4 .8-6z" fill="hsl(${hue} 30% 26%)"/>`:`<path d="M13.4 14c1.2-4.4 4-6.4 6.6-6.4s5.4 2 6.6 6.4c-2.2-1.6-4.4-2.4-6.6-2.4s-4.4.8-6.6 2.4z" fill="hsl(${hue} 22% 34%)"/>`}</svg></span>`};
 /* persona avatar plus the digital worker doing or proposed for the step */
 JXR.crew=(b,r,sz)=>{sz=sz||30;const who=JXR.av("human",b.who,sz);
- if(r&&r.k!=="people"&&(r.st==="running"||r.st==="cand")){const nm=JXR.dwName(b,r.k);return `<span class="jcrew" title="${E(b.who)} with ${E(nm)}${r.st==="cand"?" (proposed)":""}">${who}${JXR.av(r.k,nm+(r.st==="cand"?" (proposed)":""),Math.round(sz*.78),"jav-ov"+(r.st==="cand"?" jav-cand":""))}</span>`}
+ if(r&&r.k!=="people"&&(r.st==="running"||r.st==="cand")){const nm=JXR.dwName(b,r.k);return `<span class="jcrew" title="${E(b.who)} with ${E(nm)}${r.st==="cand"?" (proposed)":" (automated today, modeled)"}">${who}${JXR.av(r.k,nm+(r.st==="cand"?" (proposed)":" (automated today, modeled)"),Math.round(sz*.78),"jav-ov"+(r.st==="cand"?" jav-cand":""))}</span>`}
  return `<span class="jcrew" title="${E(b.who)}">${who}</span>`};
 /* a face for the experience curve: 1 frustrated to 5 delighted */
 JXR.face=(em,cx,cy,r)=>{const q=(em-3)*.5*r,my=cy+.34*r;return `<circle class="jfc" cx="${cx}" cy="${cy}" r="${r}"/><circle cx="${cx-.36*r}" cy="${cy-.22*r}" r="${.11*r}" class="jfe"/><circle cx="${cx+.36*r}" cy="${cy-.22*r}" r="${.11*r}" class="jfe"/><path class="jfm" d="M${cx-.46*r} ${my}Q${cx} ${my+q} ${cx+.46*r} ${my}" fill="none"/>`};
@@ -111,7 +124,17 @@ JXR.procSteps=p=>{if(p.src==="WFX"){const w=W.WFX&&WFX.get(p.ref);return w?w.ste
 stamp();generate();stamp();
 try{X.syncJy()}catch(e){}
 /* images for the boxes: drop files in assets/journey and list them in manifest.json (see the README there) */
+/* JM-06: keys, most specific first: the trace number ("JH3-07"), "tp:<touchpoint key>" (JYX.TP), "persona:<name>", "default".
+   tp: and persona: keys match without regard to case. Keys starting with "_" are comments; an empty value is skipped, so the step keeps its tinted placeholder.
+   JXR.setManifest(m) sets the manifest without a fetch (a page opened from a file cannot fetch it); window.JOURNEY_MANIFEST is read if present. */
 JXR.manifest={};
-try{fetch("journey/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(m=>{JXR.manifest=m||{};try{if(S.screen==="ppl_jrny"&&Object.keys(JXR.manifest).length)render()}catch(e){}}).catch(()=>{})}catch(e){}
-JXR.img=(b)=>{const m=JXR.manifest||{};const f=m[b.tn]||(b.key&&m["tp:"+b.key])||m["persona:"+b.who]||m["default"];return f?"url(journey/"+encodeURI(f)+")":""};
+const MIDX={};
+const norm=k=>{const s=String(k);const i=s.indexOf(":");return i>0?s.slice(0,i).toLowerCase()+":"+s.slice(i+1).trim().toLowerCase():s.trim()};
+JXR.setManifest=function(m,noRender){JXR.manifest=m&&typeof m==="object"?m:{};Object.keys(MIDX).forEach(k=>delete MIDX[k]);
+ Object.keys(JXR.manifest).forEach(k=>{const v=JXR.manifest[k];if(k.charAt(0)==="_"||typeof v!=="string"||!v.trim())return;MIDX[norm(k)]=v.trim()});
+ if(!noRender)try{if(S.screen==="ppl_jrny")render()}catch(e){}return Object.keys(MIDX).length};
+if(W.JOURNEY_MANIFEST)JXR.setManifest(W.JOURNEY_MANIFEST,true);
+try{fetch("journey/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(m=>{if(m&&Object.keys(m).length)JXR.setManifest(m)}).catch(()=>{})}catch(e){}
+JXR.imgKey=b=>{if(!b)return "";const c=[b.tn,b.key?"tp:"+b.key:"",b.who?"persona:"+b.who:"","default"].filter(Boolean);for(const k of c){if(MIDX[norm(k)])return k}return ""};
+JXR.img=(b)=>{const k=JXR.imgKey(b);const f=k?MIDX[norm(k)]:"";return f?"url(journey/"+encodeURI(f)+")":""};
 })();

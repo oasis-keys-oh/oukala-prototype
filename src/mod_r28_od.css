@@ -98,3 +98,7 @@
 .od-heat{display:block;text-align:center;font-style:normal;border-radius:8px;padding:6px 2px;font-size:12px;font-weight:700;background:color-mix(in srgb,var(--accent) calc(var(--h)*0.45%),var(--glass2))}
 .od-defs{font-size:var(--fs-sm);color:var(--muted);padding-left:18px}
 .od-mh{grid-template-columns:1fr 90px 90px 170px 170px;font-weight:700;color:var(--muted)}.od-mr{grid-template-columns:1fr 90px 90px 170px 170px;padding:6px 4px}
+/* JM-07: labels when a tab is shown under another tenant */
+.od-msample{background:var(--story-s);color:var(--story)}.od-gap{background:var(--bad-s,var(--warn-s));color:var(--bad,var(--warn))}
+.od-nodata b{color:var(--muted)}
+.od-tenant{margin-bottom:12px}

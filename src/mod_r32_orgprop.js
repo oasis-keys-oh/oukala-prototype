@@ -5,7 +5,7 @@
 const W=window,O=W.ORGX,R=W.JXR;if(!O||!R||!R.builds||!W.SCN)return;
 const OS=S.org;
 const E=R.E,H=s=>E(s==null?"":String(s));
-const FTE_H=140,WL={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
+const FTE_H=(W.JYX&&JYX.api&&JYX.api.FTE_H)||140,WL={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
 /* box owners that are not an org unit by that name */
 const UNIT={"People office":"People operations","Hiring manager":"People operations","Service desk":"Service desk and operations","Ops team":"Service desk and operations","Change manager":"Change and release","PMO":"Portfolio and delivery","Resource office":"Portfolio and delivery","Vendor management":"Legal and compliance"};
 let CACHE=null,CK="";
@@ -20,7 +20,7 @@ function compute(){const by=new Map();if(!isCore())return by;
   const pr={id:o.id,k:o.k,name:o.name,title:o.title,wave:o.wave,steps:o.rows.length,hrs:o.hrs,freed:o.freed,ext:o.ext,owner,unit,head,exact};
   (by.get(head)||by.set(head,[]).get(head)).push(pr)});
  by.forEach(l=>l.sort((a,b)=>a.wave-b.wave||b.freed-a.freed));return by}
-const all=()=>{const k=SCN.cur+"|"+(window.DATA?DATA.version:0); /* keyed by tenant and data version (CL-55) */if(!CACHE||CK!==k){CACHE=compute();CK=k}return CACHE};
+const all=()=>{const k=SCN.cur+"|"+(window.DATA?DATA.version:0)+"|"+(R.scopeNow?R.scopeNow():""); /* keyed by tenant and data version (CL-55) */if(!CACHE||CK!==k){CACHE=compute();CK=k}return CACHE};
 O.propReset=()=>{CACHE=null};
 O.propFor=n=>all().get(n)||[];
 O.propAll=()=>[...all().values()].flat();
@@ -51,5 +51,6 @@ document.addEventListener("click",e=>{
  if(t.hasAttribute("data-r32-props")){e.preventDefault();OS.props=!OS.props;if(OS.props)openPaths();OS.k=0;refresh();return}
  const id=t.getAttribute("data-r32-prop");if(OS._moved&&Date.now()-OS._moved<250)return;
  if(R.buildDrawer)R.buildDrawer(id)});
-if(W.SCN&&SCN.set){const _s=SCN.set;SCN.set=function(){O.propReset();return _s.apply(this,arguments)}}
+/* CL-35: a tenant change clears the cache through the tenantChange hook (runs before the scenario re-render) instead of wrapping SCN.set */
+if(W.HOOKS&&HOOKS.on)HOOKS.on("tenantChange",()=>O.propReset(),{id:"orgprop-reset",order:10});
 })();

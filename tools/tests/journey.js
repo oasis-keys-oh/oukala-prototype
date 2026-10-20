@@ -1,0 +1,146 @@
+// Journey maps checks (stream journey, wave 2): FTE cap, experience tile, org chart toolbar at narrow width.
+// Usage: node tools/tests/journey.js <dir containing full.html>
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const dir=path.resolve(process.argv[2]||'build_out');
+const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
+const ctx=await b.newContext({viewport:{width:1440,height:900}});const p=await ctx.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
+await p.route(/^https?:/,r=>r.abort());
+const open=async pg=>{await pg.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
+ await pg.waitForFunction(()=>typeof SCREENS!=='undefined'&&typeof go==='function'&&document.querySelector('#view')&&window.JYX&&JYX.api,null,{timeout:120000});await pg.waitForTimeout(600)};
+await open(p);
+let fail=0;const ok=(c,m)=>{console.log((c?'ok   ':'FAIL ')+m);if(!c)fail++};
+const wait=ms=>p.waitForTimeout(ms);
+
+// 1. DC-01: per-step release is capped, totals are labeled modeled, capped cards say so
+const cap=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));
+ const a=JYX.api,H=a.REC_CAP_H;let max=0,capped=0;JYX.JY.list.forEach(j=>a.allBoxes(j).forEach(({b})=>{const r=a.rec(b);if(r.st==='cand'){max=Math.max(max,r.save);if(r.capped)capped++}}));
+ const B=JXR.builds();const st=B.filter(x=>!x.ext);const fte=st.reduce((s,x)=>s+x.freed,0)/a.FTE_H,raw=st.reduce((s,x)=>s+x.rows.reduce((t,y)=>t+(y.r.raw||y.r.save),0),0)/a.FTE_H;
+ capped=B.filter(x=>x.capped).length;
+ S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));const tx=document.querySelector('#view').innerText;
+ out[k]={H,max,capped,fte:+fte.toFixed(1),raw:+raw.toFixed(1),capChip:document.querySelectorAll('#view .jb-cap').length,modeled:/released if all built, modeled/.test(tx),note:/at most \d+ FTE/.test(tx)}}return out});
+for(const k in cap){const c=cap[k];ok(c.max<=c.H+1e-6,`${k}: no step releases more than ${c.H} h a month (max ${Math.round(c.max)})`);ok(c.modeled&&c.note,`${k}: Build list total is labeled modeled and states the per-step cap`);
+ if(c.capped)ok(c.capChip>0,`${k}: ${c.capped} capped builds show a "capped" marker on their card`)}
+ok(cap.health&&cap.health.fte<cap.health.raw,`health: Build list FTE released is capped (${cap.health&&cap.health.fte} FTE, was ${cap.health&&cap.health.raw} uncapped, modeled)`);
+
+// 2. CL-33 / DC-01: the experience score reads "x of 5", never a percentage
+const xla=await p.evaluate(async()=>{SCN.set('core');await new Promise(r=>setTimeout(r,120));S.pp2.tab.ppl_jrny=0;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
+ const m=METRICS.m_jr_xla;const pop=document.getElementById(document.querySelector('[data-k="m_jr_xla"]').getAttribute('popovertarget'));
+ return {fmt:mfmt(m),tgt:mfmt(m,m.tgt),pop:pop?pop.innerText.slice(0,240):''}});
+ok(/^\d(\.\d)? of 5$/.test(xla.fmt)&&/of 5/.test(xla.tgt),`experience score formats as "x of 5" (${xla.fmt}, target ${xla.tgt})`);
+ok(!/\d%/.test(xla.pop.split('Change since')[0]),'experience score popover shows no percentage');
+
+// 3. DC-01: org chart toolbar fits at 400 px (recommendations switch, employment chips, head count)
+const narrow=await ctx.newPage();await narrow.setViewportSize({width:400,height:900});await narrow.route(/^https?:/,r=>r.abort());await open(narrow);
+const nb=await narrow.evaluate(async()=>{go('org_chart');await new Promise(r=>setTimeout(r,500));const mb=document.querySelector('.k16-morebtn');if(mb&&mb.offsetParent)mb.click();await new Promise(r=>setTimeout(r,300));
+ const bar=document.querySelector('.org-bar');const lim=bar.getBoundingClientRect().right+1;
+ const L=[...document.querySelectorAll('.org5-bar button, .org5-bar .org5-lbl, .org5-hc')].filter(e=>e.getBoundingClientRect().width);
+ const out=L.filter(e=>e.getBoundingClientRect().right>lim).map(e=>e.textContent.slice(0,30));const ov=[];
+ for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){if(L[i].contains(L[j])||L[j].contains(L[i]))continue;const a=L[i].getBoundingClientRect(),c=L[j].getBoundingClientRect();if(a.x<c.right-1&&c.x<a.right-1&&a.y<c.bottom-1&&c.y<a.bottom-1)ov.push(L[i].textContent.slice(0,20)+' x '+L[j].textContent.slice(0,20))}
+ return {n:L.length,out,ov,doc:document.documentElement.scrollWidth}});
+ok(nb.n>0&&!nb.out.length&&!nb.ov.length&&nb.doc<=400,`org chart toolbar at 400 px: ${nb.n} controls, none clipped or overlapping (${nb.out.concat(nb.ov).join('; ')||'clean'})`);
+await narrow.close();
+
+// 4. JM-02: steps automated today come from the process automation level and never read as live
+const run=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));const hits=[];
+ for(const t of [0,1,3,6,7,8]){S.pp2.tab.ppl_jrny=t;go('ppl_jrny');await new Promise(r=>setTimeout(r,120));const tx=document.querySelector('#view .pp2-pane').innerText;
+  (tx.match(/[^\n.]{0,40}\b(running now|already running|already runs?|\d+ running)\b[^\n.]{0,20}/gi)||[]).forEach(m=>hits.push('tab '+t+': '+m.trim()))}
+ const a=JYX.api;let n=0,lab=0;JYX.JY.list.forEach(j=>a.allBoxes(j).forEach(({b})=>{const r=a.rec(b);if(r.st==='running'){n++;if(r.modeled&&/modeled/i.test(a.recLabel(r)))lab++}}));
+ out[k]={hits,n,lab}}return out});
+for(const k in run)ok(!run[k].hits.length&&run[k].n===run[k].lab,`${k}: ${run[k].n} automated steps labeled modeled, no live "running" wording${run[k].hits.length?' ('+run[k].hits.slice(0,3).join(' | ')+')':''}`);
+
+// 5. JM-04: the org chart and the Build list count proposed agents and robots the same way, in both scopes
+const cnt=await p.evaluate(async()=>{const out=[];for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));
+ for(const sc of ['detail','all']){JXR.scope.sel=sc;const B=JXR.builds(),M=JXR.orgModel();
+  S.pp2.tab.ppl_jrny=7;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const tile=l=>{const t=[...document.querySelectorAll('#view .jk')].find(x=>x.querySelector('.jk-l')&&x.querySelector('.jk-l').textContent===l);return t?+t.querySelector('b').textContent:null};
+  const prop=(window.ORGX&&ORGX.propAll&&k==='core')?ORGX.propAll().length:B.length;
+  out.push({k,sc,bA:B.filter(x=>x.k==='agent').length,bR:B.filter(x=>x.k==='robot').length,oA:M.all.agents,oR:M.all.robots,tA:tile('Agents proposed'),tR:tile('Robots proposed'),prop,n:B.length})}}
+ JXR.scope.sel=null;return out});
+cnt.forEach(c=>ok(c.bA===c.oA&&c.bR===c.oR&&c.tA===c.bA&&c.tR===c.bR&&c.prop===c.n,`${c.k} (${c.sc}): Build list ${c.bA} agents and ${c.bR} robots = org chart ${c.oA} and ${c.oR} (tiles ${c.tA}, ${c.tR}; orgprop ${c.prop})`));
+
+// 6. JM-05, DC-24: every scenario has shared touchpoints, so the Overlay and the Process map "shared" count are not thin
+const tp=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,120));
+ const ix=JOV.index();const keys=Object.keys(ix);out[k]={n:keys.length,named:keys.filter(x=>JYX.TP[x]).length,sys:keys.filter(x=>x.indexOf('sys:')===0).length}}return out});
+for(const k in tp)ok(tp[k].n>=4&&tp[k].named===tp[k].n,`${k}: ${tp[k].n} shared touchpoints on the Overlay, all named in JYX.TP`);
+
+// 7. DC-24: demo view hides four tabs (never the active one) and the Building blocks tab lists the components with live examples
+const demo=await p.evaluate(async()=>{SCN.set('core');await new Promise(r=>setTimeout(r,120));S.pp2.tab.ppl_jrny=1;JX.demoTabs(true);await new Promise(r=>setTimeout(r,150));
+ const vis=()=>[...document.querySelectorAll('#view [data-pp2-tab]')].filter(b=>!b.hidden).map(b=>b.textContent);const on=vis();
+ S.pp2.tab.ppl_jrny=4;render();await new Promise(r=>setTimeout(r,150));const onActive=vis();
+ const stored=U.store.get('jx.demoTabs',false);JX.demoTabs(false);await new Promise(r=>setTimeout(r,150));const off=vis();
+ S.pp2.tab.ppl_jrny=9;render();await new Promise(r=>setTimeout(r,200));const parts=[...document.querySelectorAll('#view .jx-part')];
+ return {on,onActive,off,stored,parts:parts.length,ex:parts.filter(x=>x.querySelector('.jx-pex').children.length).length,api:typeof JX.demoTabs}});
+ok(demo.api==='function'&&demo.on.length===6&&demo.off.length===10&&demo.stored===true,`demo view: ${demo.on.length} of ${demo.off.length} tabs shown (${demo.on.join(', ')}), stored in U.store`);
+ok(demo.onActive.indexOf('Processes')>=0&&demo.onActive.length===7,'demo view keeps the active tab visible even when it is one of the hidden four');
+ok(demo.parts>=8&&demo.ex===demo.parts,`Building blocks: ${demo.parts} components, each with a live example`);
+
+// 8. JM-07: the COO brief tabs (orgdesign) follow the tenant: no Meridian person or agent name under another tenant, and labels where data is missing
+const coo=await p.evaluate(async()=>{const names=[...new Set(ODX.people().map(x=>x.n).concat(ODX.agents().map(a=>a.name)))].filter(n=>n&&n.length>3);const out={};
+ for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,150));go('orgdesign');await new Promise(r=>setTimeout(r,200));const hits=new Set();let note=false,lab=0;
+  for(let t=0;t<7;t++){const bt=document.querySelector('[data-od="tab|'+t+'"]');if(bt)bt.click();await new Promise(r=>setTimeout(r,120));const tx=document.querySelector('#view').innerText;
+   names.forEach(n=>{if(tx.indexOf(n)>=0)hits.add(n)});if(t===0)note=/No data|Tenant: /.test(tx);lab+=(tx.match(/Meridian sample/g)||[]).length}
+  const bt=document.querySelector('[data-od="tab|0"]');if(bt)bt.click();out[k]={hits:[...hits].slice(0,5),n:hits.size,note,lab}}return out});
+for(const k in coo){if(k==='core')ok(coo[k].n>0,'core: the COO brief tabs still show the Meridian sample organization');
+ else ok(coo[k].n===0&&coo[k].note&&coo[k].lab>0,`${k}: COO brief tabs show no Meridian person or agent name (${coo[k].hits.join(', ')||'none'}), say where data is missing, and label ${coo[k].lab} Meridian sample panels`)}
+
+// 9. JM-01: industry tenants get the org chart built from box owners by default, and the screen says so
+const own=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,150));S.pp2.tab.ppl_jrny=7;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
+ const tx=document.querySelector('#view .pp2-pane').innerText;const sw=document.querySelector('[data-pp2-act="jorgsrc"][data-a="fns"]');let alt=null;
+ if(sw){sw.click();await new Promise(r=>setTimeout(r,150));alt=JXR.orgSource();const b=document.querySelector('[data-pp2-act="jorgsrc"][data-a="owners"]');if(b)b.click();await new Promise(r=>setTimeout(r,100))}
+ out[k]={src:JXR.orgSource(),said:/owning team named on a journey step/.test(tx)&&/HR org chart is an open decision/.test(tx),alt}}
+ SCN.set('core');await new Promise(r=>setTimeout(r,150));return out});
+for(const k in own){if(k==='core')ok(own[k].src==='real','core: the org chart tab shows the real Meridian chart');
+ else ok(own[k].src==='owners'&&own[k].said&&(own[k].alt===null||own[k].alt==='functions'),`${k}: org chart is built from box owners by default and says so (HR import noted as open)${own[k].alt?'; sample functions view available':''}`)}
+
+// 10. JM-06: manifest keys (trace number, tp:KEY, persona:Name, default), precedence, comments and empty placeholders
+const man=await p.evaluate(async()=>{SCN.set('health');await new Promise(r=>setTimeout(r,150));const a=JYX.api;const L=JYX.JY.list.flatMap(j=>a.allBoxes(j).map(x=>Object.assign({j},x)));
+ const withKey=L.find(x=>x.b.key),plain=L.find(x=>!x.b.key&&x.b.who!==withKey.b.who);JXR.tn(withKey.j,withKey.b);JXR.tn(plain.j,plain.b);
+ const res={};const set=m=>JXR.setManifest(m,true);
+ set({});res.none=JXR.img(plain.b);
+ set({default:"d.webp"});res.def=JXR.imgKey(plain.b);
+ set({default:"d.webp",["persona:"+plain.b.who.toUpperCase()]:"p.webp"});res.per=JXR.imgKey(plain.b);
+ set({default:"d.webp",["tp:"+withKey.b.key.toLowerCase()]:"t.webp",["persona:"+withKey.b.who]:"p.webp"});res.tp=JXR.imgKey(withKey.b);
+ set({default:"d.webp",["tp:"+withKey.b.key]:"t.webp",[withKey.b.tn]:"s.webp"});res.tn=JXR.imgKey(withKey.b);res.url=JXR.img(withKey.b);
+ set({_note:"comment",[withKey.b.tn]:"",default:""});res.ph=JXR.img(withKey.b);
+ set({[withKey.b.tn]:"s.webp"});JXR.setManifest(JXR.manifest);S.pp2.tab.ppl_jrny=1;JYX.JY.sel=withKey.j.id;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
+ const card=[...document.querySelectorAll('#view [style*="--img"]')].length;JXR.setManifest({},true);SCN.set('core');await new Promise(r=>setTimeout(r,120));
+ return Object.assign(res,{card,tnv:withKey.b.tn})});
+ok(man.none===''&&man.def==='default'&&/^persona:/.test(man.per)&&/^tp:/.test(man.tp)&&man.tn===man.tnv&&/journey\/s\.webp/.test(man.url),`manifest keys resolve in order: trace number, tp:, persona:, default (${man.tn}, ${man.tp}, ${man.per}, ${man.def})`);
+ok(man.ph==='','comment keys and empty values leave the tinted placeholder');
+ok(man.card>0,`a step with a manifest image shows it on its card (${man.card})`);
+
+// 11. JM-08: Process map accessibility and keyboard path (Tab to a process, arrow to the next, Enter opens it, focus stays)
+await p.evaluate(async()=>{SCN.set('health');await new Promise(r=>setTimeout(r,150));JXR.pmap.j=null;JXR.pmap.pm=null;S.pp2.tab.ppl_jrny=5;go('ppl_jrny');await new Promise(r=>setTimeout(r,250))});
+const ax=await p.evaluate(()=>{const svg=document.querySelector('.jpm-svg');const real=[...svg.querySelectorAll('.jpm-n:not(.is-gap)')],gaps=[...svg.querySelectorAll('.jpm-n.is-gap')];
+ const d=svg.getAttribute('aria-describedby');return {label:svg.getAttribute('aria-label')||'',desc:!!(d&&document.getElementById(d)),
+  real:real.length,realOk:real.filter(g=>g.getAttribute('role')==='button'&&g.getAttribute('tabindex')==='0'&&/Press Enter/.test(g.getAttribute('aria-label')||'')&&g.hasAttribute('aria-pressed')).length,
+  gaps:gaps.length,gapsOk:gaps.filter(g=>g.getAttribute('role')==='img'&&/no process yet/.test(g.getAttribute('aria-label')||'')).length,
+  hiddenEdges:[...svg.querySelectorAll('path.jpm-e')].every(e=>e.closest('[aria-hidden="true"]'))}});
+ok(/Process map of/.test(ax.label)&&ax.desc&&ax.real>1&&ax.realOk===ax.real&&ax.gapsOk===ax.gaps&&ax.hiddenEdges,`Process map: labeled group with a text alternative; ${ax.realOk}/${ax.real} processes are named focusable buttons, ${ax.gapsOk}/${ax.gaps} gaps are labeled, arrows hidden`);
+await p.focus('.jpm-svg .jpm-n[tabindex]');await p.keyboard.press('ArrowRight');
+const k1=await p.evaluate(()=>{const a=document.activeElement;const L=[...document.querySelectorAll('.jpm-svg .jpm-n[tabindex]')];return {i:L.indexOf(a),key:a&&a.getAttribute('data-a')}});
+await p.keyboard.press('Enter');await wait(250);
+const k2=await p.evaluate(()=>{const a=document.activeElement;const fr=a&&a.closest('.jpm-n')?getComputedStyle(a.querySelector('.jpm-fr')).stroke:'';
+ return {key:a&&a.getAttribute('data-a'),pressed:a&&a.getAttribute('aria-pressed'),pm:JXR.pmap.pm,ring:fr,flow:!!document.querySelector('.jpm-flow h3')}});
+ok(k1.i===1&&k2.pm===k1.key&&k2.key===k1.key&&k2.pressed==='true'&&k2.flow,`keyboard: arrow moves to the next process, Enter opens it once and focus stays on it (${k2.key})`);
+ok(k2.ring&&k2.ring!=='none','keyboard focus shows a visible focus ring (token stroke)');
+await p.evaluate(()=>{SCN.set('core')});await wait(150);
+
+// 12. JM-09: who sees the Build list (simulated through PERM) and the pilot scope panel (hypothesis)
+const perm=await p.evaluate(async()=>{const out={};const prev=S.persona;SCN.set('core');await new Promise(r=>setTimeout(r,120));
+ for(const ps of ['exec','portfolio','arch','ops','fin']){S.persona=ps;S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const v=document.querySelector('#view .pp2-pane');out[ps]={cards:v.querySelectorAll('.jb-card').length,lock:!!v.querySelector('.jb-lock'),pilot:!!v.querySelector('.jb-pilot'),hyp:/Hypothesis/.test((v.querySelector('.jb-pilot')||{}).innerText||''),acc:JXR.buildAccess().ok}}
+ S.persona=prev;render();return out});
+for(const ps in perm){const c=perm[ps];if(['ops','fin'].indexOf(ps)>=0)ok(c.lock&&!c.cards&&!c.pilot&&!c.acc,`persona ${ps}: Build list is locked (simulated permission)`);
+ else ok(!c.lock&&c.cards>0&&c.pilot&&c.hyp&&c.acc,`persona ${ps}: Build list shown with a pilot scope panel labeled Hypothesis`)}
+
+// 13. CL-35: journey Back and Forward and the orgprop reset run from HOOKS, not render or SCN.set wrappers
+const hk=await p.evaluate(async()=>{const ids=n=>HOOKS.list(n).map(h=>h.id);S.pp2.tab.ppl_jrny=0;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+ document.querySelector('[data-pp2-tab="ppl_jrny:1"]').click();await new Promise(r=>setTimeout(r,150));const pushed=!!(history.state&&history.state.jy&&history.state.jy.tab===1);
+ history.back();await new Promise(r=>setTimeout(r,300));return {after:ids('afterRender'),ten:ids('tenantChange'),pushed,back:S.pp2.tab.ppl_jrny}});
+ok(hk.after.indexOf('jnav-history')>=0&&hk.ten.indexOf('orgprop-reset')>=0,'jnav and orgprop register on HOOKS (afterRender, tenantChange)');
+ok(hk.pushed&&hk.back===0,`journey history: a tab change adds a history step and Back restores it (tab ${hk.back})`);
+
+ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
+console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();

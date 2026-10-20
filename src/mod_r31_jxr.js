@@ -6,7 +6,7 @@ const A=()=>X.api,E=R.E,fmt=n=>A().fmt(Math.round(n)),f1=n=>A().f1(n);
 const EC=i=>"var("+A().EMC[Math.max(1,Math.min(5,Math.round(i)))]+")";
 const slug=s=>String(s).toLowerCase().replace(/[^a-z]+/g,"-");
 const hrsOf=b=>b.min*b.vol/60,fric=b=>hrsOf(b)*(5-b.em)/4;
-const FTE_H=140;
+const FTE_H=A().FTE_H||140;
 const faceSvg=(em,sz)=>`<svg class="jfsv" width="${sz||18}" height="${sz||18}" viewBox="0 0 24 24" aria-hidden="true" style="--c:${EC(em)}">${R.face(em,12,12,10.5)}</svg>`;
 const brief=h=>`<div class="jx-brief" data-role="story">${h}</div>`;
 
@@ -51,7 +51,7 @@ R.boxCard=function(j,s,b,IX,stack){const a=A(),Y=X.JY,r=a.rec(b),np=!b.procs.len
  <div class="jbx-head">${R.crew(b,r,32)}<div class="jbx-id">${R.tnChip(j,b)}<span class="jbx-who">${E(b.who)}</span></div><span class="jbx-face" title="Experience ${b.em} of 5: ${a.EML[b.em]}">${faceSvg(b.em,26)}</span></div>
  <div class="jb-top"><span class="grip" aria-hidden="true"></span><button class="pp2-lnk pp2-bt" data-pp2-act="jbox" data-a="${j.id}|${b.id}"><b>${E(b.t)}</b></button></div>
  <div class="small muted jbx-meta">${E(b.tp)} · ${b.min} min · ${fmt(b.vol)} a month</div>
- <div class="jb-chips"><span class="pp2-em" style="--c:${EC(b.em)}">${b.em} ${a.EML[b.em]}</span>${hot?'<span class="jpain">Pain</span>':""}${r.st==="running"?`<span class="jmode m-${r.k} m-running">${a.ICO[r.k]}${r.k==="robot"?"Robot":"Agent"}</span>`:""}${sh?`<button class="jsh" data-pp2-act="jov" data-a="${E(sh.k)}" title="${E(sh.n)} appears in ${sh.journeys} journeys. Open the overlay.">${a.ICO.link}${sh.journeys} journeys</button>`:""}</div>
+ <div class="jb-chips"><span class="pp2-em" style="--c:${EC(b.em)}">${b.em} ${a.EML[b.em]}</span>${hot?'<span class="jpain">Pain</span>':""}${r.st==="running"?`<span class="jmode m-${r.k} m-running" title="Modeled from the automation level of the linked process. Not a live run.">${a.ICO[r.k]}${r.k==="robot"?"Robot":"Agent"}, modeled</span>`:""}${sh?`<button class="jsh" data-pp2-act="jov" data-a="${E(sh.k)}" title="${E(sh.n)} appears in ${sh.journeys} journeys. Open the overlay.">${a.ICO.link}${sh.journeys} journeys</button>`:""}</div>
  <div class="pp2-pchips">${np?`<button class="jb-flag" data-pp2-act="jlink" data-a="${j.id}|${b.id}">${a.ICO.flag}<span>No process. Link one</span></button>`:b.procs.map((p,i)=>`<button class="pp2-jpc" data-pp2-act="jproc" data-a="${j.id}|${b.id}|${i}" title="${E(a.wfN(p))}, ${a.AUTOL[a.procAuto(p)][0]}. Open it with the processes it connects to.">${a.autoDots(a.procAuto(p))}<span>${E(a.wfN(p))}</span></button>`).join("")}</div>
  ${r.st==="cand"?`<button class="jb-rec m-${r.k}" data-pp2-act="jbox" data-a="${j.id}|${b.id}" title="${E(r.why)}">${a.ICO[r.k]}<span>Build ${r.k==="robot"?"a robot":"an agent"} · ${kfmt(r.save)}${r.pt?" patient":""} h a month</span></button>`:""}</div></div>`};
 
@@ -120,7 +120,7 @@ R.personaData=function(p){const a=A();const L=X.JY.list.flatMap(j=>a.allBoxes(j)
  const now=n?L.reduce((s,x)=>s+x.b.em*x.b.vol,0)/vol:0;const R_=L.map(x=>a.rec(x.b));
  const after=n?L.reduce((s,x,i)=>{const f=R.fixOf(x.j,x.b);return s+Math.min(5,x.b.em+(f.f>0?1:0))*x.b.vol},0)/vol:0;
  const hrs=L.reduce((s,x)=>s+hrsOf(x.b),0),pat=p==="Patient";
- const cand=R_.filter(r=>r.st==="cand"),agents=cand.filter(r=>r.k==="agent").length,robots=cand.filter(r=>r.k==="robot").length;
+ const cand=R_.filter(r=>r.st==="cand"),cb=R.countBuilds(L.map((x,i)=>({j:x.j,s:x.s,b:x.b,r:R_[i]}))),agents=cb.agents,robots=cb.robots; /* JM-04: one teammate per build */
  const runA=R_.filter(r=>r.st==="running"&&r.k==="agent").length,runR=R_.filter(r=>r.st==="running"&&r.k==="robot").length;
  const freed=cand.reduce((s,r)=>s+r.save,0);const js=[...new Set(L.map(x=>x.j.id))];
  const worst=L.slice().sort((x,y)=>x.b.em-y.b.em||y.b.vol-x.b.vol)[0];
@@ -131,7 +131,7 @@ R.personaTab=function(){const a=A();const D=X.PERSONAS.map(R.personaData).filter
  <div class="jx-pgrid">${D.map(d=>{const gain=d.after-d.now;return card(`<span class="jx-ph">${R.av("human",d.p,40)}<span>${E(d.p)}</span></span>`,d.n+" steps in "+d.js.length+" journey"+(d.js.length===1?"":"s"),
  `${R.expBar?R.expBar(d):gauge(d.now,d.after)}<div class="jx-pm"><span title="Steps rated annoyed or frustrated"><b>${d.pains}</b>pain</span><span title="Steps with no process"><b>${d.nop}</b>no process</span><span title="Hours a month in these steps"><b>${fmt(d.hrs)}</b>${d.pat?"patient h":"hours"} a month</span><span title="Modeled lift if each recommended build or pain fix lifts its step by one point"><b>${gain>0?"+"+gain.toFixed(1):"0"}</b>experience</span></div>
  <div class="jpw"><div class="jpw-t">Digital workforce proposed</div><div class="jpw-row"><div>${R.av("agent","Agents",30)}<b>+${d.agents}</b><span>agent${d.agents===1?"":"s"}</span></div><div>${R.av("robot","Robots",30)}<b>+${d.robots}</b><span>robot${d.robots===1?"":"s"}</span></div><div>${R.av("human",d.p,30)}<b>${d.pat?fmt(d.freed):d.fteFreed.toFixed(1)}</b><span>${d.pat?"patient h back":"FTE released"}</span></div></div>
- ${d.pat?`<p class="small muted">Patient time returned a month if every candidate is built. It is their time, so it is not priced as staff cost.</p>`:`<div class="jpw-bar" role="img" aria-label="${Math.round(d.hrs?d.freed/d.hrs*100:0)} percent released"><i style="width:${Math.min(100,Math.round(d.hrs?d.freed/d.hrs*100:0))}%"></i></div><p class="small muted">${d.fte.toFixed(1)} FTE of effort now; about ${Math.round(d.hrs?d.freed/d.hrs*100:0)}% released if every candidate is built. ${d.runA||d.runR?`Already running: ${d.runA} agent${d.runA===1?"":"s"}, ${d.runR} robot${d.runR===1?"":"s"}.`:""}</p>`}</div>
+ ${d.pat?`<p class="small muted">Patient time returned a month if every candidate is built. It is their time, so it is not priced as staff cost.</p>`:`<div class="jpw-bar" role="img" aria-label="${Math.round(d.hrs?d.freed/d.hrs*100:0)} percent released"><i style="width:${Math.min(100,Math.round(d.hrs?d.freed/d.hrs*100:0))}%"></i></div><p class="small muted">${d.fte.toFixed(1)} FTE of effort now; about ${Math.round(d.hrs?d.freed/d.hrs*100:0)}% released if every candidate is built. ${d.runA||d.runR?`Already automated, modeled from the process automation level (not a live run): ${d.runA} agent${d.runA===1?"":"s"}, ${d.runR} robot${d.runR===1?"":"s"}.`:""}</p>`}</div>
  ${d.worst?`<button class="btn quiet jx-hard" data-pp2-act="jbox" data-a="${d.worst.j.id}|${d.worst.b.id}"><span class="jtn">${E(R.tn(d.worst.j,d.worst.b))}</span><span>Hardest: ${E(d.worst.b.t)}</span></button>`:""}`)}).join("")}</div><p class="muted small jhint">Experience now is weighted by volume. "After fixes" assumes each recommended build or pain fix lifts its step by one point (hypothesis). FTE released assumes a robot frees 80% and an agent 60% of the hours (modeled).</p>`};
 
 /* ---------- actions ---------- */

@@ -8,6 +8,7 @@ python3 src/build.py --out "$PWD/build_out" --full >/dev/null
 node tools/tests/showlint.js build_out
 node tools/tests/smoke.js build_out
 node tools/tests/tabs.js build_out
+node tools/tests/journey.js build_out
 node tools/tests/showroom.js build_out
 node tools/tests/platform.js build_out
 node tools/tests/people.js build_out
