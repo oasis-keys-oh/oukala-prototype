@@ -52,7 +52,7 @@ Describes how the Showroom moves from guided tours to experiences (Omar, 2026-10
 4. CIO: a change collides with a release the week of a board meeting; resolve it (itsm_chg, itsm_rel, exe_dash).
 5. Any role, Your Monday: the day's inbox and decisions with consequences (inbox, flw_appr, the role's pins).
 
-## Showroom rules (proposed rewrite of the CLAUDE.md section, for Omar's approval)
+## Showroom rules (approved by Omar 2026-10-20; now in CLAUDE.md)
 - An experience is a mission on existing screens; a mission with no existing feature is dropped and logged (DC-34).
 - Each mission has a one-sentence brief, a goal, a clock of 10 minutes or less, at least one ripple the buyer sees, and claims that appear only after the buyer has seen the thing claimed.
 - Every simulated element is labeled; `EXP.lint()` checks briefs, clocks, labels and that every screen a mission names exists; `tools/tests/exp.js` runs it.

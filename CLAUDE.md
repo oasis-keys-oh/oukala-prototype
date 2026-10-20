@@ -41,7 +41,12 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 - After adding screens, rerun `python3 src/gen_scrmap.py src` and rebuild so the Screen map stays current.
 
 ## Showroom
-The demo space is **Showroom** (module `mod_r33_showroom.js`, `window.SHOW`). Tours are data in `SHOW.demos`. A beat opens an existing screen and says what is on it; it never builds a new business screen (a beat with no existing feature is dropped and logged, DC-34). Each beat needs a point of 12 words or fewer, seconds, exactly two spoken sentences, one interaction and a claim chip. Every cut must stay under 1,200 seconds: `SHOW.lint()` enforces it and `showroom.js` runs it. Deep link: `?showroom=coo&beat=4`.
+The demo space is **Showroom**. Demos are **experiential**: the buyer drives and the presenter coaches (Omar, 2026-10-20). Design and contracts: `docs/showroom/experiences.md` (`window.EXP`, missions, ripples, facilitator console, self-serve links, Bring your company, Two seats, Break it).
+- An experience is a mission on existing screens; a mission that needs a feature that does not exist is dropped and logged, never built as a new business screen (DC-34).
+- Each mission has a one-sentence brief, a goal, a clock of 10 minutes or less, at least one ripple the buyer sees (budget, metric, risk or objective moving), and claims that appear only after the buyer has seen the thing claimed.
+- One engine serves facilitated sessions (console in a second window, `?exp=console`) and self-serve links; the buyer starts with their own company and falls back to the closest sample company.
+- Every simulated element is labeled (generated tenants, ripples, two seats, agent actions). `EXP.lint()` checks briefs, clocks, labels and that every named screen exists; `tools/tests/exp.js` runs it.
+- Guided tours (`window.SHOW`, `SHOW.demos`) stay as rehearsal and backup and keep their rules: a beat has a point of 12 words or fewer, seconds, two spoken sentences, one interaction and a claim chip, and every cut stays under 1,200 seconds (`SHOW.lint()`, `showroom.js`). Deep link: `?showroom=coo&beat=4`.
 
 ## Where things live
 - Vault: `OH-Vault/10-Projects/Enterprise Work Platform/` (GTM and Development folders, Decisions, Handoff, Open Questions, Product Backlog).
