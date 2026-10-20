@@ -5,7 +5,7 @@
 (function(){
 S.build=S.build||{d:null,step:0,vis:{},reg:[],saved:"",mcp:{tool:"validate_manifest",out:null},q:"",pq:"",quar:[],sim:{ent:"budget_table",mod:"Member renewals portal"},missing:[]};
 const B=S.build,E=esc;
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const STEPS=["Purpose and owner","Data","Process","Connections","Maturity","Metrics","Security and AI","Review"];
 const BANDN={str:"Strategy and portfolio",dem:"Demand and projects",mon:"Money and contracts",bld:"Build and release",ops:"Service operations",inf:"Infrastructure and CMDB",obs:"Observability and automation",ppl:"People and skills",kai:"Knowledge and AI",plt:"Platform and governance"};
 const WHO=[["human","Person"],["agent","AI agent"],["robot","Robot"],["gate","Gate"]];

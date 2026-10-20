@@ -5,7 +5,7 @@
    it never re-enters a budget line, it adds color, nature, gate, source id, fund code, driver and mapping evidence keyed by the existing line id. */
 (function(){
 "use strict";
-const E=esc,TODAY="2026-10-06";
+const E=esc,TODAY=U.TODAY_ISO;
 const U=money;
 const dt=s=>s?new Date(s+"T12:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"None";
 const dms=s=>Date.parse(s+"T12:00:00Z");

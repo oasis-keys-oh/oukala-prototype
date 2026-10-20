@@ -4,7 +4,7 @@
 const E=esc;
 const F=S.fab=S.fab||{edition:"fabric",key:"FAB-MSF-2026-7Q4K",ready:false,mapConn:"c_graph",sel:null,ovr:{},lastSample:{},mapTest:{},mapVer:{},usage:1412,seq:{run:4900,q:60,ev:9000,wi:1300,rec:300,req:40,prj:7}};
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const NOW=new Date(Date.UTC(2026,9,6,15,30));
+const NOW=new Date(U.TODAY_ISO+"T15:30:00Z");
 const tsAgo=m=>{const d=new Date(NOW.getTime()-m*60000);return MON[d.getUTCMonth()]+" "+d.getUTCDate()+", "+String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0")};
 const dayS=(n)=>{const d=new Date(NOW.getTime()+n*86400000);return MON[d.getUTCMonth()]+" "+d.getUTCDate()+", "+d.getUTCFullYear()};
 const isoDay=n=>new Date(NOW.getTime()+n*86400000).toISOString().slice(0,10);

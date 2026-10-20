@@ -8,7 +8,7 @@ const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
 const H=U.esc;
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const ASOF={y:2026,m:9,d:6};/* Oct 6, 2026: the prototype date used across screens */
-const asOf="Oct 6, 2026";
+const asOf=U.fmtDate(U.TODAY_ISO,{year:"numeric"});
 function monthAt(n,i){let m=ASOF.m-(n-1-i),y=ASOF.y;while(m<0){m+=12;y--}return MN[m]+" "+y}
 function base(m){const tr=Array.isArray(m.tr)?m.tr:[];if(m.base&&m.base.v!=null)return Object.assign({explicit:true},calc(m,m.base.v,m.base.at||"Baseline"));
  if(tr.length<2)return {none:true,now:m.cur};return calc(m,tr[0],monthAt(tr.length,0))}

@@ -3,7 +3,7 @@
    Decisions made offline (simulated) wait in a local queue and sync when the connection returns. The installable manifest and service worker live in docs/pwa/. */
 (function(){
 const R=window.R15F3,G=R.G,E=R.E;
-const NOW=Date.UTC(2026,9,6,13,30);
+const NOW=Date.parse(U.TODAY_ISO+"T13:30:00Z");
 const M=S.r15m=S.r15m||{tab:"appr",offline:false,queue:[],done:{},ack:{},sheet:null,more:12,fromMobile:0,decided:0,banner:null};
 const need=(a,r)=>window.GUARD&&GUARD.require?GUARD.require(a,r):true;
 /* route: #m opens the mobile view */

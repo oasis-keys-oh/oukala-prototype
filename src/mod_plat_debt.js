@@ -3,7 +3,7 @@
 (function(){
 S.debt=S.debt||{ov:{},manual:null,tasks:[],rev:0,trace:{kind:"entity",id:"invoice"},hrs:32,ceil:null,taskDone:{}};
 const E=esc,D=S.debt;
-const TODAY="2026-10-06",T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5,RATE=95;
+const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5,RATE=95;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const days=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
 const fD=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"None";

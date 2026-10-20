@@ -3,7 +3,7 @@
    The report builder can only use governed definitions, so a number means the same in a dashboard, a scheduled report and a BI export. Delivery is simulated and labeled. */
 (function(){
 const R=window.R15F3,G=R.G,E=R.E,$$=R.money;
-const TODAY="2026-10-06",NOWMS=Date.UTC(2026,9,6,13,30);
+const TODAY=U.TODAY_ISO,NOWMS=Date.parse(U.TODAY_ISO+"T13:30:00Z");
 const B=()=>window.BUDX&&BUDX.B();
 const need=(a,r)=>window.GUARD&&GUARD.require?GUARD.require(a,r):true;
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -73,7 +73,7 @@ function seed(){if(Rp.seeded)return;Rp.seeded=true;
   {id:"SC-002",report:"RP-002",freq:"daily",dow:0,at:"07:30",roles:["finance"],people:["Sam Patel"],channel:"In-app notification",fmt:"Table",on:true,owner:"Avery Chen",backup:"Sam Patel"});
  [["RP-001","2026-09-28 08:00",13,"Delivered (simulated)",5],["RP-001","2026-10-05 08:00",13,"Delivered (simulated)",5],["RP-002","2026-10-04 07:30",9,"Delivered (simulated)",4],["RP-002","2026-10-05 07:30",9,"Delivered (simulated)",4],["RP-002","2026-10-06 07:30",9,"Delivered (simulated)",4]].forEach(r=>Rp.runs.push({id:"RUN-"+String(Rp.nx.run++).padStart(4,"0"),report:r[0],at:r[1],rows:r[2],status:r[3],to:r[4],channel:r[0]==="RP-001"?"Email (simulated)":"In-app notification",by:"Schedule"}))}
 const rep=id=>Rp.reports.find(r=>r.id===id);
-function nextRun(s){const [h,m]=s.at.split(":").map(Number);let t=Date.UTC(2026,9,6,h,m);let g=0;const last=Rp.runs.filter(r=>r.report===s.report&&r.by==="Schedule").map(r=>Date.parse(r.at.replace(" ","T")+":00Z")).sort().pop()||0;
+function nextRun(s){const [h,m]=s.at.split(":").map(Number);let t=Date.parse(U.TODAY_ISO+"T00:00:00Z")+(h*60+m)*6e4;let g=0;const last=Rp.runs.filter(r=>r.report===s.report&&r.by==="Schedule").map(r=>Date.parse(r.at.replace(" ","T")+":00Z")).sort().pop()||0;
  while((t<=Math.max(NOWMS,last)||(s.freq==="weekly"&&((new Date(t).getUTCDay()+6)%7)!==(s.dow-1+7)%7&&g<14))&&g++<30)t+=864e5;return t}
 const fdt=t=>{const d=new Date(t);return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()]+" "+MN[d.getUTCMonth()]+" "+d.getUTCDate()+", "+String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0")};
 function audience(s){const names=new Set(s.people);s.roles.forEach(rid=>DIR.forEach(d=>{if(d.kind!=="agent"&&window.GUARD&&GUARD.roleOf(d.name).id===rid)names.add(d.name)}));return[...names]}

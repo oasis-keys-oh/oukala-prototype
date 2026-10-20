@@ -8,7 +8,7 @@ const PL=S.plib,E=esc;
 const ICON="M5 4h14v4H5zM5 10h14v4H5zM5 16h9v4H5zM17 17l2 2 3-4";
 const scName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:""};
 const hasScr=id=>SCREENS.some(x=>x[0]===id);
-const todayIso=()=>{try{return dateOf(TODAY).toISOString().slice(0,10)}catch(e){return "2026-10-06"}};
+const todayIso=()=>{try{return dateOf(TODAY).toISOString().slice(0,10)}catch(e){return U.TODAY_ISO}};
 const dayN=iso=>Date.parse(iso+"T00:00:00Z")/864e5;
 const slug=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;

@@ -17,7 +17,7 @@ const LINKS={gc:"Goal to capability",cr:"Capability to roadmap item",rp:"Roadmap
 const fm=n=>{n=Math.round(n||0);if(!n)return "$0";const a=Math.abs(n);return (n<0?"-":"")+"$"+(a>=1e6?(a/1e6).toFixed(2)+"M":a>=1e3?Math.round(a/1e3)+"K":a)};
 const fmd=n=>{n=Math.round(n||0);return (n<0?"-":"+")+fm(Math.abs(n))};
 const LASTWD=G(()=>WD.length-1,0),LASTT=G(()=>WD[LASTWD],0);
-const dOf=w=>{try{return w<=LASTWD?dateOf(w):new Date(LASTT+Math.round((w-LASTWD)*7/5)*864e5)}catch(e){return new Date(Date.UTC(2026,9,6))}};
+const dOf=w=>{try{return w<=LASTWD?dateOf(w):new Date(LASTT+Math.round((w-LASTWD)*7/5)*864e5)}catch(e){return U.todayDate()}};
 const dtxt=w=>dOf(w).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"});
 const lvName=(n,v)=>{const m=G(()=>MAT.ALLM().find(x=>x.id===n.model),null);return m&&m.lv[Math.round(v)-1]?m.lv[Math.round(v)-1][0]:"Level "+v};
 

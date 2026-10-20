@@ -3,7 +3,7 @@
 (function(){
 S.gate=S.gate||{apps:null,ran:{},waive:{},sel:null,sim:{role:"citizen_team",action:"read",ent:"project",app:"ca_budget",route:"gateway",conn:"dropbox"},con:{tool:"check_reuse",args:{}},conOut:null,mcpLog:[],clients:{},rev:0,qc:{name:"Budget tracker",needs:"budget table"},tier:"team"};
 const G=S.gate,E=esc;
-const TODAY="2026-10-06",T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5;
+const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const days=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
 const fD=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"None";

@@ -4,7 +4,7 @@
    compensation reveal, timesheet approval, requisition approval, receipts and payment release. Joiner/mover/leaver packages subscribe lazily to person.* events. */
 (function(){
 const R=window.R15F3,G=R.G,E=R.E;
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const I=S.r15i=S.r15i||{enforce:true,actAs:"",grants:[],reqs:[],runs:[],roleOverride:{},log:[],seeded:false,nx:{rq:1,gr:1,run:1}};
 const A=()=>S.adm;
 const ROLES=()=>(S.adm&&S.adm.roles)||[];

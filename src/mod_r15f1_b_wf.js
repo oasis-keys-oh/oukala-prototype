@@ -6,7 +6,7 @@
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const H=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const HR=3600000;
-const BASE=new Date(2026,9,6,8,0,0).getTime();   /* the product's "today": Tue Oct 6 2026, 08:00 */
+const BASE=new Date(U.TODAY_ISO+"T08:00:00").getTime();   /* the product's "today": Tue Oct 6 2026, 08:00 */
 const F=(k,label,type,o)=>Object.assign({k,label,type:type||"string",authority:"platform",classification:"internal"},o||{});
 const me=()=>G(()=>INBOX.me(),null)||G(()=>PERSONAS[S.persona].n,"System");
 const ST=()=>window.STORE;

@@ -12,7 +12,7 @@ rank=function(w,env,cap){const L=_rk(w,env,cap);L.forEach((d,i)=>{d.sr=i+1});
  let c=0,p=0,cut=false;L.forEach(d=>{if(S.conv[d.id]){d.fund=true;c+=d.cost;p+=d.pm}});
  L.forEach(d=>{if(S.conv[d.id])return;if(!cut&&c+d.cost<=env&&p+d.pm<=cap){c+=d.cost;p+=d.pm;d.fund=true}else{cut=true;d.fund=false}});L.spent=c;L.pms=p;return L};
 const _ld=load;load=function(Pl,extra){return _ld(Pl,(extra||[]).filter(d=>!S.conv[d.id]))};
-const nextMon=()=>{const d=new Date("2026-10-06T00:00:00Z");d.setUTCDate(d.getUTCDate()+((8-d.getUTCDay())%7||7));return d.toISOString().slice(0,10)};
+const nextMon=()=>{const d=new Date(U.TODAY_ISO+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+((8-d.getUTCDay())%7||7));return d.toISOString().slice(0,10)};
 const moveIdx=(arr,id,idx,same)=>{const o=arr.indexOf(id),a=arr.filter(x=>x!==id);let i=idx;if(same&&o>=0&&o<idx)i=idx-1;a.splice(Math.max(0,Math.min(a.length,i)),0,id);return a};
 const W4=()=>norm();
 /* ---------- score breakdown ---------- */
@@ -91,7 +91,7 @@ DND.on("ppmprio",(id,from,to,idx)=>{const L=rank(S.w,S.env,S.cap),ids=L.map(d=>d
  openForm({id:"ppm_reorder",title:`Move “${esc(d.n)}” to #${ni+1}`,story:`It scores ${d.score} and is #${o+1} by score. The portfolio board will see this override, who made it and why.${ni>o&&d.fund?" Moving it down can push it below the funding line.":""}`,submit:"Apply the new order",
   fields:[{k:"reason",label:"Why does this belong here?",type:"chips",req:true,opts:["Regulatory date","Sponsor decision","Dependency on other work","Capacity","Value the score misses","Other"]},{k:"note",label:"Add detail for the board",type:"longtext",ph:"One or two sentences",ai:{label:"Draft",fn:v=>`${v.reason||"Judgment"}: ${d.n} moves ${ni<o?"up":"down"} from #${o+1} to #${ni+1}. The score of ${d.score} does not capture this.`}}],
   live:()=>`<b>Effect on funding</b><br>${lost.length?`Falls below the line: <b>${lost.map(esc).join(", ")}</b>.<br>`:""}${gain.length?`Moves inside the line: <b>${gain.map(esc).join(", ")}</b>.`:""}${!lost.length&&!gain.length?"No funding change. The same items stay inside the line.":""}`,
-  onSubmit:v=>{S.order=nw;S.ovr[id]={from:o+1,to:ni+1,reason:v.reason+(v.note?` (${v.note})`:""),at:"Oct 6"};return {toast:`Moved ${d.n} to #${ni+1}. The override is logged.`,audit:`${id} #${o+1} → #${ni+1}`}},defaults:{}});
+  onSubmit:v=>{S.order=nw;S.ovr[id]={from:o+1,to:ni+1,reason:v.reason+(v.note?` (${v.note})`:""),at:U.fmtDate(U.TODAY_ISO)};return {toast:`Moved ${d.n} to #${ni+1}. The override is logged.`,audit:`${id} #${o+1} → #${ni+1}`}},defaults:{}});
  setTimeout(()=>render(),0)});
 document.addEventListener("click",e=>{const t=e.target.closest("[data-ppm-reset]");if(!t)return;S.order=null;S.ovr={};audit("reset priority order","back to score order");toast("Back to score order","info");render()});
 document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches(".drow.vd")){e.preventDefault();e.target.click()}});
@@ -119,7 +119,7 @@ function addDemand(o){o=o||{};if(!o.title)return null;const id="D"+(DEMAND.reduc
  const sg=suggest({title:txt,why:""}),t1=sv&&/1/.test(sv.tier||""),cost=+o.cost||90,sla=/sla|breach|incident|outage/i.test(txt),sc=/scale|capacity|peak|unit-cost/i.test(txt);
  const strat=Math.min(5,Math.max(sg.s,sv?3:2)+(t1?1:0)),risk=Math.min(5,Math.max(sg.r,sla?4:2)+(t1&&sla?1:0)),urg=Math.min(5,Math.max(sg.u,sla?5:sc?4:2));
  const team=sv?({svc_data:"Data team",svc_search:"Lumen (vendor)",svc_net:"Ops team",svc_end:"Ops team",svc_desk:"Ops team",svc_cr:"Platform team"}[sv.id]||"Platform team"):"Platform team",pm=typeof o.pm==="number"?o.pm:Math.max(2,Math.round(cost/35));
- const d={id,n:o.title,who:o.source||"Trigger",sp:sv?sv.owner:"Casey Rowan",cost,ben:Math.round(cost*(t1?3:2.2)),strat,risk,urg,pm,st:1,res:[[team,1]],m0:4,mo:Math.max(2,Math.round(pm/2)),why:o.reason||"",obj:sv&&sv.obj?objOfName(sv.obj[0]):"",svc:sv?sv.id:"",wk:o.kind||"Trigger",cap:o.cap||(sla?"Service continuity":sc?"Capacity and cost management":"Change enablement"),trig:{source:o.source||"Trigger",at:"Oct 6, "+new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"}),reason:o.reason||""},pmName:typeof o.pm==="string"?o.pm:""};
+ const d={id,n:o.title,who:o.source||"Trigger",sp:sv?sv.owner:"Casey Rowan",cost,ben:Math.round(cost*(t1?3:2.2)),strat,risk,urg,pm,st:1,res:[[team,1]],m0:4,mo:Math.max(2,Math.round(pm/2)),why:o.reason||"",obj:sv&&sv.obj?objOfName(sv.obj[0]):"",svc:sv?sv.id:"",wk:o.kind||"Trigger",cap:o.cap||(sla?"Service continuity":sc?"Capacity and cost management":"Change enablement"),trig:{source:o.source||"Trigger",at:U.fmtDate(U.TODAY_ISO)+", "+new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"}),reason:o.reason||""},pmName:typeof o.pm==="string"?o.pm:""};
  DEMAND.push(d);window.demandById=window.demandById||(x=>DEMAND.find(d=>d.id===x));audit("demand created by trigger",id+" · "+d.n+" · "+d.trig.source+" · scored "+dscore(d,S.w));toast("Demand created by trigger: "+d.n,"info");if(S.screen==="port")render();return id}
 window.addDemand=addDemand;window.demandById=x=>DEMAND.find(d=>d.id===x)||null;
 document.addEventListener("click",e=>{let t;if(t=e.target.closest("[data-ppm-trig]")){const k=t.dataset.ppmTrig;if(TRIGS[k]){const id=addDemand(TRIGS[k]);if(id)S.v.port=0,render()}return}
@@ -239,7 +239,7 @@ function capLine(n){const r=who(n);if(!r)return "";const w=wlOf(n);
  if(r.kind==="contractor")return `Ends ${fmtISO(r.end)} · $${r.rate||0} an hour · ${pctTxt(w.pct,r.hrs)} loaded`;
  if(r.kind==="msp")return `${(r.sla||"Contracted service levels").split(",")[0]} · ${w.pct}% of contracted capacity`;
  return `${pctTxt(w.pct,r.hrs)} loaded · ${w.items} open items`}
-const NOW=wdOf("2026-10-06");
+const NOW=wdOf(U.TODAY_ISO);
 /* project facts: real projects come from the schedule, enterprise projects are generated */
 function pinfo(p){if(PINF[p.id])return PINF[p.id];let o;
  if(!p.scaled){const Pl=curPlan(),ts=TASKS.filter(t=>t.p===p.id),has=ts.length>0,e=has?evm(Pl,p.id):{spi:1},ms=ts.filter(t=>t.ms),late=has?projFin(Pl,p.id)-projFin(BASE,p.id):0;
@@ -476,7 +476,7 @@ function genRaid(){if(!SCALE.on){_gr=null;return[]}if(_gr)return _gr;const r=RNG
  return _gr=out}
 const raidAll=()=>RAID.concat(genRaid());
 const raidById=id=>raidAll().find(r=>r.id===id);
-const isOver=r=>r.s!=="done"&&r.due<"2026-10-06";
+const isOver=r=>r.s!=="done"&&r.due<U.TODAY_ISO;
 /* ---------- filters ---------- */
 function rbar(){const A=allProj();return `<div class="ppm-fbar glass">${mpHTML({id:"ppm_rf_proj",label:"Projects",all:"All projects",opts:A.map(p=>({v:p.id,l:p.id+" "+(p.full||p.n),sub:p.owner,grp:p.scaled?"Portfolio":"Core projects"}))})}${mpHTML({id:"ppm_rf_type",label:"Types",all:"All types",opts:Object.entries(RT).map(([k,v])=>({v:k,l:v[0]+"s"}))})}${mpHTML({id:"ppm_rf_kind",label:"Owner is a",all:"All four kinds",opts:KORD.map(k=>({v:k,l:KS[k]}))})}<button class="btn primary" data-ppm-radd>Add an entry</button></div>`}
 function rfilt(){const ps=sel("ppm_rf_proj"),ts=sel("ppm_rf_type"),ks=sel("ppm_rf_kind");return raidAll().filter(r=>(!ps||ps.has(r.p))&&(!ts||ts.has(r.t))&&(!ks||ks.has(kindOf(r.own))))}

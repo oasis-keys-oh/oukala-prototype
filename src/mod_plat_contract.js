@@ -7,7 +7,7 @@
 S.contract=S.contract||{};
 const C=S.contract,E=esc;
 if(!C.init){Object.assign(C,{init:1,rev:0,waivers:[],overlay:{},decisions:{},closed:[],runs:[],run:{mode:"feature",target:"ims",text:"",res:null,shown:0,err:""},sel:null,wired:false,seeded:false,hist:null,fx:{}})}
-const TODAY="2026-10-06",T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5;
+const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const dd=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
 const fD=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"None";
