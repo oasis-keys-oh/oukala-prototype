@@ -204,7 +204,7 @@ adm_env|plat|Environments and releases|Environments and releases|Administer|envi
 log|plat|Product log|Product log|Administer|product log feedback backlog request feature`;
 const MAP={};
 const OVR=store.get("oukala-nav-map")||{};
-function parseRaw(){let o=0;RAW.split("\n").forEach(line=>{const p=line.split("|");if(p.length<3)return;const id=p[0].trim();MAP[id]={g:p[1].trim(),l:p[2].trim(),h:(p[3]||"").trim(),sub:(p[4]||"").trim(),kw:(p[5]||"").trim(),o:o++}})}
+function parseRaw(){let o=0;RAW.split("\n").forEach(line=>{const p=line.split("|");if(p.length<3)return;const id=p[0].trim();MAP[id]={g:p[1].trim(),l:p[2].trim(),l0:p[2].trim(),h:(p[3]||"").trim(),sub:(p[4]||"").trim(),kw:(p[5]||"").trim(),o:o++}})}
 parseRaw();
 NAVX.map=MAP;
 /* runtime additions: NAVX.add(screenId,{group,label,hint,sub,kw}) */
@@ -837,7 +837,10 @@ const GMAP=[[/^(go to|screens?|modules?)$/i,"screen"],[/^(people|contractors|pro
 const tyOfGroup=g=>{for(const r of GMAP){if(r[0].test(g))return r[1]}return"record"};
 const goTbl=(screen,id)=>()=>{go(screen);let n=0;const iv=setInterval(()=>{const i=q1("#view [data-bt-q]");if(i){clearInterval(iv);i.value=id;i.dispatchEvent(new Event("input",{bubbles:true}))}else if(++n>12)clearInterval(iv)},150)};
 function sources(){const L=[];
- L.push(["Screens",()=>{const o=[];const MA={};G(()=>MODMAP.modules).forEach(md=>{if(md&&md.scr)MA[md.scr]=((MA[md.scr]||"")+" "+(md.al||[]).join(" ")+" "+(md.name||"")).trim()});SCREENS.forEach(s=>{const id=s[0],m=resolve(id),f=formal(id);const ex=[m.kw,f,hintOf(id),OLDGN[oldGroup(id)]||"",m.sub,gLabel(m.g)].join(" ");
+ L.push(["Screens",()=>{const o=[];const MA={};G(()=>MODMAP.modules).forEach(md=>{if(md&&md.scr)MA[md.scr]=((MA[md.scr]||"")+" "+(md.al||[]).join(" ")+" "+(md.name||"")).trim()});/* PH-14: an entry also answers to its old names, its aliases and the names of the views folded into it */
+  const AL={};G(()=>Object.keys(ALIAS).forEach(a=>{const v=ALIAS[a];(AL[v]=AL[v]||[]).push(a)}));
+  const FV={};G(()=>(W.R15&&R15.families||[]).forEach(fm=>fm.views.forEach(v=>{if(v[0]!==fm.id)(FV[fm.id]=FV[fm.id]||[]).push(v[1],formal(v[0]))})));
+  SCREENS.forEach(s=>{const id=s[0],m=resolve(id),f=formal(id);const ex=[m.kw,f,hintOf(id),OLDGN[oldGroup(id)]||"",m.sub,gLabel(m.g),(AL[id]||[]).join(" "),(FV[id]||[]).join(" "),(MAP[id]&&MAP[id].l0)||""].join(" ");
   o.push(mkItem("screen",m.l,gLabel(m.g)+(hintOf(id)?" · "+hintOf(id):""),"--accent",()=>go(id),ex+" "+(MA[id]||""),"screen:"+id,{sid:id,ac:acro(f)}))});
   G(()=>MODMAP.modules).forEach(md=>{if(!md||!md.id||(md.scr&&screenRow(md.scr)))return;o.push(mkItem("screen",md.name||md.sn,"Module · process flow","--p4",()=>MODMAP.select(md.id),(md.al||[]).join(" ")+" "+md.id,"module:"+md.id,{ac:acro(md.sn||md.name)}))});return o}]);
  L.push(["Actions",()=>actionItems()]);

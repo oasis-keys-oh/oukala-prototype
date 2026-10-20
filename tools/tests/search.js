@@ -5,7 +5,7 @@ const {chromium}=require('playwright');const path=require('path');
 const CASES=[
  {q:'org chart',screen:'org_chart'},
  {q:'screen map',screen:'scr_map'},
- {q:'build list',screen:'ppl_jrny',tab:'Build list'},
+ {q:'build list',screen:'r18_builds'}, /* PH-14: the approved navigation names r18_builds "Build list" (docs/ia/screen-inventory.csv); tab search is still covered by the guardrail cases */
  {q:'showroom',screen:'showroom'},
  {q:'guardrail register',screen:'guard',tab:'Register'},
  {q:'stage matrix',screen:'guard',tab:'Stage matrix'},
