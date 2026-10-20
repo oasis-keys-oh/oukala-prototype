@@ -11,4 +11,4 @@
 .stn-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
 .stn-chip{display:none;gap:8px;align-items:center;margin:0 0 8px;font-size:12.5px;color:var(--muted)}
 html.r17o1-ph .stn-chip,body.r3m-on .stn-chip{display:flex}
-@media (max-width:600px){.stn-legacy{font-size:12.5px;padding:6px 10px}.stn-legacy .btn{margin-left:0}}
+@media (max-width:700px){.stn-legacy{font-size:12.5px;padding:6px 10px}.stn-legacy .btn{margin-left:0}}

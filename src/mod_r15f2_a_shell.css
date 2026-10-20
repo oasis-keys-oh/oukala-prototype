@@ -64,6 +64,6 @@
 .rsh-link-add{display:flex;flex-direction:column;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--hair)}
 .rsh-lres{display:flex;gap:6px;flex-wrap:wrap}
 .rsh-h3{margin:4px 0 6px;font-size:15px;color:var(--ink)}
-@media (max-width:560px){.rsh-title{font-size:19px}.rsh-own{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){.rsh-title{font-size:19px}.rsh-own{grid-template-columns:minmax(0,1fr)}}
 .rsh-acts{display:flex;gap:8px;flex-wrap:wrap}
 .rsh-extra{display:flex;flex-direction:column;gap:14px;padding-top:12px;border-top:1px solid var(--hair);min-width:0}

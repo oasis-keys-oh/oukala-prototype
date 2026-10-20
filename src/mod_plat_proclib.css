@@ -82,6 +82,6 @@ details.pl-card>summary{cursor:pointer}
 .pl-nb{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
 .pl-ec small{color:var(--muted)}
 .pl-st{margin:4px 0}
-@media (max-width:560px){.pl-fr{grid-template-columns:minmax(0,1fr) 34px}.pl-fr .pl-tk{grid-column:1 / -1;order:3}.pl-fr .small.muted{display:none}.pl-title{font-size:24px}.pl-hn{min-width:140px}.pl-wc{flex-direction:column}}
+@media (max-width:700px){.pl-fr{grid-template-columns:minmax(0,1fr) 34px}.pl-fr .pl-tk{grid-column:1 / -1;order:3}.pl-fr .small.muted{display:none}.pl-title{font-size:24px}.pl-hn{min-width:140px}.pl-wc{flex-direction:column}}
 @media (prefers-reduced-motion:reduce){.pl-pc,.pl-trow,.pl-tk i{transition:none}}
 .pl-raci{display:flex;flex-direction:column;gap:10px}.pl-rw{display:flex;flex-direction:column;gap:4px}.pl-rw .row{gap:6px}

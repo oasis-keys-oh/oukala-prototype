@@ -194,7 +194,7 @@ td.small{min-width:130px}
 .vsw.sc-l.sc-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(90deg,transparent,#000 34px,#000 calc(100% - 34px),transparent)}
 .views>input:focus-visible~.vsw{outline:none}
 .views>input:focus-visible~.vsw label[aria-selected=true],.vsw label:focus-visible,.vsw>button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-@media(max-width:600px){.vsw{border-radius:18px}}
+@media(max-width:700px){.vsw{border-radius:18px}}
 /* table scroll cues */
 .tscroll.sc-r,.bt-scroll.sc-r{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent)}
 .tscroll.sc-l.sc-r,.bt-scroll.sc-l.sc-r{-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 30px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 30px),transparent)}
@@ -234,7 +234,7 @@ a:focus-visible,button:focus-visible,[role=button]:focus-visible,[tabindex]:focu
 .stat small{display:flex;align-items:center;gap:6px;justify-content:space-between}
 .stat small .fchip{font-size:10.5px;padding:0 7px;text-transform:none;letter-spacing:0}
 .mcard{content-visibility:auto;contain-intrinsic-size:auto 330px}
-@media(max-width:600px){
+@media(max-width:700px){
  .statrow{display:flex;overflow-x:auto;gap:8px;scroll-snap-type:x proximity;padding-bottom:4px}
  .statrow>.stat{flex:0 0 150px;scroll-snap-align:start}
  .hero h1{font-size:24px}

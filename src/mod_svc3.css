@@ -23,7 +23,7 @@
 .svc3-pn{flex:1 1 150px;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:8px 10px;border:1px solid var(--hair);border-radius:10px;background:var(--glass)}
 .svc3-pa{flex:none;align-self:center;width:18px;height:2px;background:var(--hair);position:relative;margin:0 4px}
 .svc3-pa::after{content:"";position:absolute;right:-1px;top:-4px;border-left:7px solid var(--hair);border-top:5px solid transparent;border-bottom:5px solid transparent}
-@media(max-width:640px){.svc3-path{flex-direction:column}.svc3-pa{width:2px;height:14px;margin:4px 0 4px 18px}.svc3-pa::after{right:auto;left:-4px;top:auto;bottom:-3px;border-top:7px solid var(--hair);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:0}}
+@media(max-width:700px){.svc3-path{flex-direction:column}.svc3-pa{width:2px;height:14px;margin:4px 0 4px 18px}.svc3-pa::after{right:auto;left:-4px;top:auto;bottom:-3px;border-top:7px solid var(--hair);border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:0}}
 /* orders */
 .svc3-split{display:grid;grid-template-columns:minmax(230px,300px) minmax(0,1fr);gap:16px;align-items:start}
 @media(max-width:900px){.svc3-split{grid-template-columns:minmax(0,1fr)}}

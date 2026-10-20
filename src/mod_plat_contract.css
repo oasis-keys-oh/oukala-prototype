@@ -34,7 +34,7 @@
 .ct-runs li{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px}
 .ct-ag{display:flex;flex-direction:column}
 .ct-run{grid-template-columns:minmax(0,1fr)}
-@media(min-width:1100px){.ct-run{grid-template-columns:minmax(300px,2fr) minmax(0,3fr)}}
+@media(min-width:1101px){.ct-run{grid-template-columns:minmax(300px,2fr) minmax(0,3fr)}}
 .ct-ta{width:100%;font-family:var(--f-mono);font-size:12px;line-height:1.45;resize:vertical;min-height:220px}
 .ct-steps{display:grid;gap:10px}
 .ct-step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start;padding:12px;border-radius:16px;background:var(--glass2);animation:ct-in .25s ease both}
@@ -53,6 +53,6 @@
 .ct-fr{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
 @keyframes ct-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.ct-step,.ct-wrow{animation:none;transition:none}}
-@media(max-width:600px){.ct-bar{grid-template-columns:minmax(0,1fr) 44px}.ct-bar .ct-track{grid-column:1/-1;grid-row:2}.ct-wrow{grid-template-columns:minmax(0,1fr) auto}.ct-wrow .ct-dots{display:none}}
+@media(max-width:700px){.ct-bar{grid-template-columns:minmax(0,1fr) 44px}.ct-bar .ct-track{grid-column:1/-1;grid-row:2}.ct-wrow{grid-template-columns:minmax(0,1fr) auto}.ct-wrow .ct-dots{display:none}}
 .ct-sh{display:inline-flex;gap:6px;flex-wrap:wrap;align-items:center}
 .ct-rrs{display:grid;gap:8px;margin-top:8px}.ct-rr{padding:10px 12px;border-radius:14px;background:var(--glass2);display:grid;gap:4px}

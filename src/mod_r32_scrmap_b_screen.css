@@ -41,7 +41,7 @@
 .scm-dr h2{margin:2px 0 4px}.scm-dr h4{margin:16px 0 6px}
 .scm-dr textarea{width:100%;margin-top:4px;resize:vertical}
 .scm-dr .kv dd{overflow-wrap:break-word;min-width:0}
-@media (max-width:640px){.scm-seg{width:100%}.scm-b{flex:1 1 0;padding:8px 6px}.scm-mb{width:100%}.scm-bulk{justify-content:flex-start}}
+@media (max-width:700px){.scm-seg{width:100%}.scm-b{flex:1 1 0;padding:8px 6px}.scm-mb{width:100%}.scm-bulk{justify-content:flex-start}}
 @media (prefers-reduced-motion:reduce){.scm-g>summary::before,.scm-row,.scm-b{transition:none}}
 .scm-cell{display:flex;flex-wrap:wrap;gap:6px;min-width:300px}
 .scm-dr .kv,.scm-g .kv{min-width:0}

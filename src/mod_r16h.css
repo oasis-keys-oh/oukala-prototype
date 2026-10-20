@@ -58,7 +58,7 @@
 .r16c-track .none{background:var(--bad)}
 .r16c-filter{display:grid;gap:10px}
 .r16c-bulkbar{align-items:center}
-@media (max-width:720px){
+@media (max-width:700px){
  .r16r-diff,.r16r-simgrid{grid-template-columns:minmax(0,1fr)}
  .r16r-lvl{flex-wrap:wrap}
  .r16r-act{width:100%}

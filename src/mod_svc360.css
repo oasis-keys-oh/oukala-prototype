@@ -82,7 +82,7 @@
 .svx-ocs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
 .svx-oc{display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:14px;background:var(--glass2)}
 .svx-rq{display:flex;flex-direction:column;gap:2px;font-size:13px;padding:6px 0;border-top:1px solid var(--hair)}
-@media (max-width:640px){.svx-bul{grid-template-columns:minmax(0,1fr) 56px}.svx-bul .svx-bt{grid-column:1/3;order:3}.svx-gr{grid-template-columns:1fr}}
+@media (max-width:700px){.svx-bul{grid-template-columns:minmax(0,1fr) 56px}.svx-bul .svx-bt{grid-column:1/3;order:3}.svx-gr{grid-template-columns:1fr}}
 
 /* views support for up to 10 tabs (shared css stops at 5) */
 .views>input:nth-of-type(6):checked~.panes .pane:nth-child(6),.views>input:nth-of-type(7):checked~.panes .pane:nth-child(7),.views>input:nth-of-type(8):checked~.panes .pane:nth-child(8),.views>input:nth-of-type(9):checked~.panes .pane:nth-child(9),.views>input:nth-of-type(10):checked~.panes .pane:nth-child(10){display:block;animation:rise .35s var(--ease)}

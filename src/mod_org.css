@@ -103,7 +103,7 @@
 .org-pk{display:flex;gap:6px;align-items:center;font-size:13px;font-weight:600;color:var(--muted);margin-right:auto}
 .org-st1 select{margin:8px 0}
 .org-pp{display:flex;gap:14px;align-items:center;margin:8px 0}
-@media (max-width:760px){
+@media (max-width:700px){
  .org-agr{grid-template-columns:minmax(0,1fr)}
  .org-agb{margin-left:0}
  .org-zoom{flex-direction:row;top:auto;bottom:10px;right:10px}
@@ -118,7 +118,7 @@
 .org-agl,.org-ops{container-type:inline-size}
 .org-agr{grid-template-columns:minmax(0,1fr)}
 @container (min-width:700px){.org-agr{grid-template-columns:minmax(0,1.2fr) minmax(0,1.6fr)}}
-@media (max-width:760px){.org-agr{grid-template-columns:minmax(0,1fr)!important}}
+@media (max-width:700px){.org-agr{grid-template-columns:minmax(0,1fr)!important}}
 .org-dr .story{font-size:16px;line-height:1.55}
 .org-lb i.on{background:var(--p4)}.org-lb i.on.warn{background:var(--warn-f)}.org-lb i.on.bad{background:var(--bad-f)}.org-lb i.on.info,.org-lb i.on.mute{background:var(--p4)}
 /* ===== Round 13: shared AI-versus-human visual language (reuse in any module) =====
@@ -162,7 +162,7 @@
 .org-own-line{margin:10px 0 0;padding:10px 14px;border-radius:16px;background:var(--glass2);box-shadow:inset 0 0 0 1px var(--hair);font-weight:600;line-height:1.5}
 .org-own-line .muted{font-weight:500}
 .org-dom{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
-@media (max-width:760px){.org-key{margin-left:0}}
+@media (max-width:700px){.org-key{margin-left:0}}
 .org-aim{align-items:center;gap:6px;overflow:hidden}
 .org-aim .ai-chip{padding:0 6px 0 5px;font-size:10px}
 .org-aim .org-sp{margin-top:0;font-size:10.5px;min-width:0}

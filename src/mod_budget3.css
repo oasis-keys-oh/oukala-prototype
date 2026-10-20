@@ -31,5 +31,5 @@
 .br-live{display:grid;gap:8px;margin-top:10px}
 .br-bad{color:var(--bad)}
 .br-req{display:grid;gap:14px}
-@media (max-width:760px){.br-frow{grid-template-columns:minmax(0,1fr)}.br-ag{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.br-frow{grid-template-columns:minmax(0,1fr)}.br-ag{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){.br-bar i{transition:none}}

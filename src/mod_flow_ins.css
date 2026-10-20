@@ -20,6 +20,6 @@
 .wfd-mini{animation-name:wfdMini}@keyframes wfdMini{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#wfdCanvas .wfd-node{transition:none}.wfd-inspill,.wfd-plus,.wfd-mini{animation:none}}
 :root[data-motion="reduced"] #wfdCanvas .wfd-node{transition:none}:root[data-motion="reduced"] .wfd-inspill,:root[data-motion="reduced"] .wfd-plus,:root[data-motion="reduced"] .wfd-mini{animation:none}
-@media (max-width:520px){.wfd-mini-g{grid-template-columns:repeat(3,80px)}}
+@media (max-width:700px){.wfd-mini-g{grid-template-columns:repeat(3,80px)}}
 .wfd-inspill.low{transform:translate(-50%,0) scale(var(--iz,1));transform-origin:50% 0}
 .wfd-zones.low .wfd-zcap{bottom:auto;top:calc(100% + 8px);transform-origin:50% 0}

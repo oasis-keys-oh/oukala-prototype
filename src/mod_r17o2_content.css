@@ -1,5 +1,5 @@
 /* Round 17, Agent O2: phone content patterns (prefix r17o2). Everything lives inside max-width:600px or hover:none, so desktop is untouched. */
-@media (max-width:600px){
+@media (max-width:700px){
  :root{--card-pad:14px;--card-gap:12px;--r17o2-gap:12px}
  /* (h) type scale */
  #view h1,#view .hero>h1{font-size:clamp(23px,6.6vw,29px);line-height:1.15;overflow-wrap:break-word}

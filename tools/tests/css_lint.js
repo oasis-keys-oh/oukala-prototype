@@ -4,7 +4,7 @@
 // goes above the ceilings below (ceilings only go down: lower them when a cleanup lands).
 // Usage: node tools/tests/css_lint.js [--report]
 const fs=require('fs'),path=require('path');
-const CEIL={hex:Infinity,important:Infinity,zindex:0,fontStack:2};
+const CEIL={hex:Infinity,important:Infinity,zindex:0,fontStack:2,breakpoint:0};
 const src=path.resolve(__dirname,'../../src');const rep=process.argv.includes('--report');
 const files=fs.readdirSync(src).filter(f=>!/ 2\./.test(f));
 const css={};for(const f of files.filter(f=>f.endsWith('.css')))css[f]=fs.readFileSync(path.join(src,f),'utf8').replace(/\/\*[\s\S]*?\*\//g,'');
@@ -22,7 +22,8 @@ const imp=cnt(/!\s*important/g);
 const zi=cnt(/z-index\s*:\s*-?\d+/g);
 const fst={n:0,per:{}};for(const [f,t] of Object.entries(css))for(const m of t.matchAll(/(?<![\w-])font(-family)?\s*:([^;}]+)/g)){
  const v=m[2].replace(/var\([^()]*(\([^()]*\)[^()]*)*\)/g,'');if(/serif|monospace|system-ui|Georgia|Menlo|"/i.test(v)){fst.n++;fst.per[f]=(fst.per[f]||0)+1}}
-const out={undefinedVars:Object.keys(undef).length,hex:hex.n,important:imp.n,zindex:zi.n,fontStack:fst.n};
+const BP=new Set([700,701,900,901,1100,1101,1500,1501]);const bp={n:0,per:{}};for(const [f,t] of Object.entries(css))for(const m of t.matchAll(/@media[^{]*/g)){if(/height/.test(m[0]))continue;for(const w of m[0].matchAll(/(?:max|min)-width\s*:\s*(\d+)px/g))if(!BP.has(+w[1])){bp.n++;bp.per[f]=(bp.per[f]||0)+1}}
+const out={undefinedVars:Object.keys(undef).length,hex:hex.n,important:imp.n,zindex:zi.n,fontStack:fst.n,breakpoint:bp.n};
 console.log('css lint',JSON.stringify(out));
 if(rep){const top=o=>Object.entries(o.per).sort((a,b)=>b[1]-a[1]).slice(0,12).map(x=>x.join(' ')).join(', ');
  console.log(' hex by file:',top(hex));console.log(' !important by file:',top(imp));console.log(' z-index literals:',top(zi));console.log(' font stacks:',top(fst))}

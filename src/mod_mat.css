@@ -45,7 +45,7 @@ button.mat-item{cursor:pointer}
 .mat-obj:focus-visible,button.mat-item:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .mat-on{display:flex;align-items:center;gap:10px;min-width:0}.mat-on i{width:12px;height:12px;border-radius:50%;flex:none}.mat-on b{overflow-wrap:break-word;line-height:1.25}
 .mat-ob2{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
-@media (max-width:640px){.mat-obj{grid-template-columns:minmax(0,1fr) auto}.mat-obj .mat-on{grid-column:1/-1}.mat-obj .mat-bar{grid-column:1/-1}}
+@media (max-width:700px){.mat-obj{grid-template-columns:minmax(0,1fr) auto}.mat-obj .mat-on{grid-column:1/-1}.mat-obj .mat-bar{grid-column:1/-1}}
 .mat-bar{position:relative;height:12px;border-radius:99px;background:var(--track);min-width:0}
 .mat-bar u{position:absolute;left:0;top:0;bottom:0;border-radius:99px;transition:width .6s var(--ease)}
 .mat-bar s{position:absolute;top:-4px;bottom:-4px;width:3px;border-radius:2px;background:var(--ink);box-shadow:0 0 0 2px var(--bg)}
@@ -87,7 +87,7 @@ button.mat-item{cursor:pointer}
 .mat-mapi small{display:block;margin-top:2px}.mat-mapi b{overflow-wrap:break-word}
 .mat-rows{display:flex;flex-direction:column;gap:10px}
 .mat-lvrow{display:grid;grid-template-columns:30px minmax(100px,.8fr) minmax(0,2fr);gap:10px;align-items:center}
-@media (max-width:640px){.mat-lvrow{grid-template-columns:30px minmax(0,1fr)}.mat-lvrow input:last-child{grid-column:1/-1}}
+@media (max-width:700px){.mat-lvrow{grid-template-columns:30px minmax(0,1fr)}.mat-lvrow input:last-child{grid-column:1/-1}}
 @media (prefers-reduced-motion:reduce){.mat-obj,.mat-item,.mat-bar u{transition:none}.mat-obj:hover,button.mat-item:hover{transform:none}}
 .mat-heat tbody th,.mat-heat tbody th .mat-lk{text-transform:none;letter-spacing:0;font-size:14px;font-family:inherit}
 .mat-lk{font:inherit;font-weight:700;text-transform:none;letter-spacing:0}
@@ -95,7 +95,7 @@ button.mat-item{cursor:pointer}
 .mat-hc{min-width:0;padding:4px 10px}
 .mat-screen .statrow{grid-template-columns:repeat(auto-fit,minmax(118px,1fr))}
 .mat-obj{grid-template-columns:minmax(150px,1.2fr) minmax(110px,1fr) 118px auto}
-@media (max-width:640px){.mat-obj{grid-template-columns:minmax(0,1fr) auto}}
+@media (max-width:700px){.mat-obj{grid-template-columns:minmax(0,1fr) auto}}
 /* tabs 6 to 9 */
 .views>input:nth-of-type(6):checked~.panes .pane:nth-child(6),.views>input:nth-of-type(7):checked~.panes .pane:nth-child(7),.views>input:nth-of-type(8):checked~.panes .pane:nth-child(8),.views>input:nth-of-type(9):checked~.panes .pane:nth-child(9){display:block;animation:rise .35s var(--ease)}
 .views>input:nth-of-type(6):checked~.vsw label:nth-child(6),.views>input:nth-of-type(7):checked~.vsw label:nth-child(7),.views>input:nth-of-type(8):checked~.vsw label:nth-child(8),.views>input:nth-of-type(9):checked~.vsw label:nth-child(9){background:var(--accent);color:var(--accent-ink)}

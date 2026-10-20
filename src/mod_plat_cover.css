@@ -36,7 +36,7 @@
 .cv-c0{color:var(--faint)}
 .cv-foot td,.cv-foot th{font-weight:600;border-top:2px solid var(--hair)}
 @media (prefers-reduced-motion:reduce){.cv-tile,.cv-kind,.cv-cell,.cv-bar i{transition:none}.cv-tile:hover,.cv-kind:hover,.cv-cell:hover{transform:none}}
-@media (max-width:600px){.cv-big .num{font-size:28px}.cv-sticky{min-width:140px!important}}
+@media (max-width:700px){.cv-big .num{font-size:28px}.cv-sticky{min-width:140px!important}}
 .cv-subtabs{display:flex;gap:6px;overflow-x:auto;padding:4px;border-radius:16px;background:var(--glass);border:1px solid var(--hair);scrollbar-width:thin}
 .cv-subtabs .chip{white-space:nowrap;flex:none}
 .cv-subtabs .chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}

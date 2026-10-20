@@ -87,4 +87,4 @@
 .fin-det{margin:8px 0}.fin-det summary{cursor:pointer;font-weight:700;font-size:13px}
 .fin-sc .fin-f{margin-bottom:12px}
 @media (prefers-reduced-motion:reduce){.fin-cc,.fin-ar,.fin-ly,.fin-cell,.fin-track i{transition:none}.fin-cc:hover,.fin-ar:hover,.fin-ly:hover,.fin-cell:hover{transform:none}}
-@media (max-width:560px){.fin-lay{padding-right:34px}.fin-ly{grid-template-columns:34px minmax(0,1fr)}.fin-ly .fin-ctag,.fin-ly .fin-sws{display:none}.fin-ly::after{width:22px}.fin-rail{right:6px}.fin-rail::after{display:none}}
+@media (max-width:700px){.fin-lay{padding-right:34px}.fin-ly{grid-template-columns:34px minmax(0,1fr)}.fin-ly .fin-ctag,.fin-ly .fin-sws{display:none}.fin-ly::after{width:22px}.fin-rail{right:6px}.fin-rail::after{display:none}}

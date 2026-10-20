@@ -1,6 +1,7 @@
 # Design tokens injected by build.py ahead of all CSS. Value names and scales: docs/css-tokens.md.
 # CL-19: two font stacks, --font-sans and --font-serif (plus --f-mono for code); --f-body, --f-disp, --sans, --serif, --font, --font-ui, --f-ui, --font-display, --f-head stay as aliases.
 # CL-23: eight z-index layers (--z-below to --z-top); a rule that must sit above a sibling in the same layer adds an offset: calc(var(--z-float) + 10).
+# CL-24: breakpoints (CSS custom media is not available, so media queries use the literal values): phone max 700px, tablet max 900px, laptop max 1100px, wide max 1500px; min-width queries use value+1. docs/css-tokens.md.
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);

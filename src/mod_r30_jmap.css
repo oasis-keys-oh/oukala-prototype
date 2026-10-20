@@ -214,8 +214,8 @@ button.jk:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .jov-cb i{display:block;height:100%;border-radius:99px;transition:width .35s var(--ease)}
 .jov-cb.set i{background:var(--p4)}
 .jov-cb.one i{background:var(--faint)}
-@media(max-width:1000px){.jov-cols{grid-template-columns:1fr}}
-@media(max-width:820px){.jov-vs{grid-template-columns:1fr}.jov-vs-x{display:none}.jd-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.jov-cols{grid-template-columns:1fr}}
+@media(max-width:900px){.jov-vs{grid-template-columns:1fr}.jov-vs-x{display:none}.jd-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @keyframes jdraw{to{stroke-dashoffset:0}}
 @keyframes jpulse{0%{transform:scale(.55);opacity:.95}100%{transform:scale(1.8);opacity:0}}
 @keyframes jglow{0%,100%{box-shadow:0 2px 8px var(--shade),0 0 0 0 color-mix(in srgb,var(--bad-f) 0%,transparent)}50%{box-shadow:0 2px 8px var(--shade),0 0 18px 2px color-mix(in srgb,var(--bad-f) 45%,transparent)}}

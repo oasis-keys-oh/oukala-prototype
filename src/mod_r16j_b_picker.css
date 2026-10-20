@@ -40,6 +40,6 @@
 .pk2-none,.pk2-ft{font-size:12.5px;color:var(--muted);padding:4px 10px}
 .pk2-ft{display:flex;justify-content:space-between;gap:10px}
 .fld.t-pick,.fld.t-chips:has(.pk2),.fld.t-multi:has(.pk2){position:relative}
-@media (max-width:600px){.pk2-pop{max-width:calc(100vw - 16px)}}
+@media (max-width:700px){.pk2-pop{max-width:calc(100vw - 16px)}}
 .bud-pick{min-width:240px;max-width:360px;flex:0 1 320px}
 .tr-pick{margin:8px 0}

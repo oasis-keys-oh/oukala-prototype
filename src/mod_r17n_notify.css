@@ -49,7 +49,7 @@ html #toasts.r17n-layer.r17n-open::-webkit-scrollbar{display:none}
 .r17n-layer .r17n-card.r17n-back{display:none}
 .r17n-layer:not(.r17n-open) .r17n-card:nth-child(2){transform:scale(.985)}
 .r17n-layer:not(.r17n-open) .r17n-card:nth-child(3){transform:scale(.97)}
-@media(max-width:600px){html #toasts.r17n-layer{left:16px!important;right:16px!important;width:auto;max-width:none;top:calc(var(--r17n-top,72px))!important}
+@media(max-width:700px){html #toasts.r17n-layer{left:16px!important;right:16px!important;width:auto;max-width:none;top:calc(var(--r17n-top,72px))!important}
  .r17n-card.r17n-in{animation-name:r17n-in-m}}
 @keyframes r17n-in-m{from{opacity:0;transform:translateY(-140%)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.r17n-card,.r17n-card.r17n-in,.r17n-more{animation:r17n-fade .2s ease both!important;transition:opacity .2s!important}.r17n-card.r17n-out,.r17n-card.r17n-outr{transform:none!important}.r17n-bar{animation:none;transform:none;opacity:.5}

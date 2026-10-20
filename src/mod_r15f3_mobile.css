@@ -4,9 +4,9 @@ body.r3m-on .app{grid-template-columns:minmax(0,1fr);padding:0;gap:0}
 body.r3m-on .stage{gap:0}
 body.r3m-on #view{padding-bottom:0}
 .r3m{position:relative;max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 16px 88px}
-@media(min-width:700px){.r3m{margin:16px auto;min-height:calc(100vh - 32px);border:1px solid var(--cardline);border-radius:28px;background:var(--glass);box-shadow:0 20px 50px var(--shade);padding-top:8px}}
+@media(min-width:701px){.r3m{margin:16px auto;min-height:calc(100vh - 32px);border:1px solid var(--cardline);border-radius:28px;background:var(--glass);box-shadow:0 20px 50px var(--shade);padding-top:8px}}
 .r3m-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) 0 10px;position:sticky;top:0;z-index:calc(var(--z-local) + 5);background:var(--bg)}
-@media(min-width:700px){.r3m-head{background:transparent}}
+@media(min-width:701px){.r3m-head{background:transparent}}
 .r3m-h{margin:2px 0 0;font-size:var(--fs-2xl);line-height:1.1}
 .r3m-body{display:flex;flex-direction:column;gap:12px}
 .r3m-sub{font-size:var(--fs-md);margin:6px 0 0;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
@@ -35,7 +35,7 @@ body.r3m-on #view{padding-bottom:0}
 .r3m-who{display:flex;flex-direction:column;gap:2px;font-size:var(--fs-sm);min-width:0}
 .r3m-who i{font-style:normal;color:var(--muted);margin-right:6px;font-size:var(--fs-xs)}
 .r3m-tabs{position:fixed;left:0;right:0;bottom:0;z-index:calc(var(--z-sticky) + 10);display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--cardline);max-width:480px;margin:0 auto}
-@media(min-width:700px){.r3m-tabs{position:sticky;bottom:0;border-radius:0 0 28px 28px;margin-top:auto}}
+@media(min-width:701px){.r3m-tabs{position:sticky;bottom:0;border-radius:0 0 28px 28px;margin-top:auto}}
 .r3m-tab{font:inherit;font-weight:600;min-height:52px;border-radius:14px;border:0;background:transparent;color:var(--muted);position:relative;cursor:pointer}
 .r3m-tab.on{background:var(--accent-soft);color:var(--ink)}
 .r3m-n{font-style:normal;position:absolute;top:4px;right:calc(50% - 30px);min-width:18px;height:18px;border-radius:99px;background:var(--bad-f);color:#fff;font-size:11px;line-height:18px;text-align:center;padding:0 4px}

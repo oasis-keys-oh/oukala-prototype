@@ -78,7 +78,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 .gx-cv .gx-leg{bottom:calc(8px + var(--zs-b,0px));right:calc(10px + var(--zs-r,0px))}
 .gx-cv .gx-stat{max-width:calc(100% - var(--zs-r,0px) - 24px)}
 .org-wrap .org-hint{bottom:calc(10px + var(--zs-b,var(--zs-bh)))}
-@media (min-width:1001px){.mm-cv:has(.mm-insp.open) .mm-vp>.zs-root{right:400px}}
+@media (min-width:1101px){.mm-cv:has(.mm-insp.open) .mm-vp>.zs-root{right:400px}}
 .itom-gc .itom-leg{bottom:calc(8px + var(--zs-b,0px));right:calc(10px + var(--zs-r,0px))}
 /* the slider strip carries zoom in, out and fit, so the org chart's own copies step aside */
 .org-wrap.zs-host .org-zoom [data-org-z="in"],.org-wrap.zs-host .org-zoom [data-org-z="out"],.org-wrap.zs-host .org-zoom [data-org-z="fit"]{display:none}

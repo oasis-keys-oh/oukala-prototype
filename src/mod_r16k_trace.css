@@ -62,6 +62,6 @@ span.sx-lab{cursor:default;font-weight:600}
 .sx-dim{opacity:.22}
 .sx-screen .tbl td.num{font-variant-numeric:tabular-nums;text-align:right}
 @media (prefers-reduced-motion:reduce){.sx-tg svg{transition:none}}
-@media (max-width:640px){.sx-open,.sx-tg{min-height:44px;min-width:44px}.sx-lab{min-height:44px;display:inline-flex;align-items:center}}
+@media (max-width:700px){.sx-open,.sx-tg{min-height:44px;min-width:44px}.sx-lab{min-height:44px;display:inline-flex;align-items:center}}
 .sx-filters{display:flex;flex-wrap:wrap}
 .sx-filters .pk2,.sx-filters .mp{flex:1 1 280px;max-width:420px;min-width:0}

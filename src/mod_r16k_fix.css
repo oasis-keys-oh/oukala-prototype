@@ -10,11 +10,11 @@
 .org-tabs>*{flex:none;white-space:nowrap}
 .screen:has(> .org-tabs) > .r15d-agstrip{margin:0}
 .screen:has(> .org-tabs) > .r15-fam{margin:0}
-@media (min-width:900px){
+@media (min-width:901px){
  .screen:has(> .org-tabs) > .hero .statrow,.screen:has(> .org-tabs) > .hero .exe-kpis{gap:8px}
 }
 /* phone tap targets: 44px minimum for anything you press */
-@media (max-width:640px){
+@media (max-width:700px){
  button:not(.sx-tg):not(.mpo),.btn,.chip,a.btn,[role=button]:not(svg *),[role=tab],summary,select,input[type=checkbox],input[type=radio],.navi,.vsw label,.tab,[data-go],[data-nav],[data-link]{min-height:44px}
  .chip,.btn,.vsw label,[role=tab]{min-width:44px;display:inline-flex;align-items:center;justify-content:center}
  button:not(.sx-tg):not(.mpo):not(.sx-lab):not(.pk2-btn),[role=button]:not(svg *),summary{min-width:44px}
@@ -26,7 +26,7 @@
 
 .fi+.fi{margin-top:3px}
 .k16-mapnote{display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:16px;border:1px solid var(--edge);border-radius:16px;background:var(--glass2)}
-@media (max-width:640px){
+@media (max-width:700px){
  .k16-nocanvas{display:none!important}
  .stat small{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:flex-start}
  .stat small>span:first-child{flex:1 1 100%}
@@ -39,7 +39,7 @@
 .r15d-fwlist>div>small{margin-top:auto}
 
 /* org chart first screen: hero, registry and view switcher share rows; the chart canvas starts above the fold at 1440x900 */
-@media (min-width:1000px){
+@media (min-width:1101px){
  .screen:has(> .org-tabs){display:flex;flex-direction:row;flex-wrap:wrap;gap:10px 14px;align-items:center}
  .screen:has(> .org-tabs) > *{flex:1 1 100%;min-width:0}
  .screen:has(> .org-tabs) > .r15-fam,.screen:has(> .org-tabs) > .r15d-agstrip{flex:0 1 auto}
@@ -53,7 +53,7 @@
 
 .k16-morebar{display:flex;flex-wrap:wrap;gap:8px 10px;flex:1 1 100%;align-items:center}
 .k16-morebar[hidden]{display:none}
-@media (min-width:1000px){
+@media (min-width:1101px){
  .screen:has(> .org-tabs) > .hero .fkpi .fk-s{display:none}
  .screen:has(> .org-tabs) > .hero .fkpi .fk-h{min-height:0}
 }

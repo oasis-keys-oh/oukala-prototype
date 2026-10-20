@@ -51,7 +51,7 @@
 .dx-qr>div:first-child{min-width:0;flex:1 1 200px}
 .dx-two-c{align-items:start}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-@media (max-width:600px){.dx-br{grid-template-columns:1fr 1fr 44px}.dx-br .muted{display:none}}
+@media (max-width:700px){.dx-br{grid-template-columns:1fr 1fr 44px}.dx-br .muted{display:none}}
 @media (prefers-reduced-motion:no-preference){.dx-rule{transition:border-color .2s,transform .15s}.dx-rule:hover{transform:translateY(-1px)}}
 .dx-th{display:flex;gap:4px;align-items:flex-start;justify-content:space-between}
 .dx-retire{color:var(--bad)}

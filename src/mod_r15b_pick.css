@@ -88,11 +88,11 @@
 
 .tb-right .nw-rb{display:inline-flex;align-items:center;gap:6px;padding-inline:11px}
 .nw-rb .lbl-rb{display:none}
-@media(min-width:1700px){.nw-rb .lbl-rb{display:inline}}
+@media(min-width:1501px){.nw-rb .lbl-rb{display:inline}}
 @media(max-width:700px){:root:root .tb-right .nw-rb{display:none}}
 
 :root:root #view .bl-scroll .bl-t thead>tr>th{top:0!important}
 
 .nw-btn .lbl-long{display:none}
-@media(min-width:1600px){.nw-btn .lbl-long{display:inline}}
+@media(min-width:1501px){.nw-btn .lbl-long{display:inline}}
 .tb-right .nw-btn{padding-inline:12px}

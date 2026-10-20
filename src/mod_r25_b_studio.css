@@ -6,7 +6,7 @@
 .stu-play{border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);background:transparent;color:var(--accent);font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;cursor:pointer}
 .stu-ex{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:0 0 16px}.stu-exc{text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:transform .15s}.stu-exc:hover{transform:translateY(-2px)}.stu-exc small{color:var(--muted);font-size:12.5px}
 /* the chat is the assistant box at the bottom right; with it open the canvas keeps its own room */
-@media(min-width:1000px){:root.chx-open:not(.chx-full):has(.stu-screen) .app{padding-right:calc(var(--chxw) + 28px)}:root.chx-open:not(.chx-full):has(.stu-screen) .chx{box-shadow:none}}
+@media(min-width:1101px){:root.chx-open:not(.chx-full):has(.stu-screen) .app{padding-right:calc(var(--chxw) + 28px)}:root.chx-open:not(.chx-full):has(.stu-screen) .chx{box-shadow:none}}
 /* right side */
 .stu-right{min-width:0;display:flex;flex-direction:column;gap:12px}
 .stu-rail{display:flex;gap:4px;flex-wrap:wrap;align-items:center}

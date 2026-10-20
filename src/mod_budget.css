@@ -9,8 +9,8 @@
 .bud-wf{max-width:100%;height:auto}
 .bud-tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .bud-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
-@media(max-width:1200px){.bud-board{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:640px){.bud-board{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1100px){.bud-board{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.bud-board{grid-template-columns:minmax(0,1fr)}}
 .bud-col{display:flex;flex-direction:column;gap:12px}
 .bud-col:hover{transform:none}
 .bud-mini{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -23,7 +23,7 @@
 .bud-lt{display:block;font-size:14px;line-height:1.25}
 .bud-ln .dot,.bud-key .dot,.dot.bud-d{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
 .bud-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px}
-@media(max-width:640px){.bud-split{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.bud-split{grid-template-columns:minmax(0,1fr)}}
 .bud-sp{display:flex;flex-direction:column;gap:6px}
 .bud-sp .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
 .bud-live{flex:1 1 100%;order:-1;display:flex;flex-direction:column;gap:10px}
@@ -38,7 +38,7 @@
 .bud-tc{display:grid;grid-template-columns:48px minmax(0,1fr) 74px;gap:10px;align-items:center;padding:4px 0}
 .bud-vgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:1100px){.bud-vgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:640px){.bud-vgrid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.bud-vgrid{grid-template-columns:minmax(0,1fr)}}
 .bud-vt{display:flex;flex-direction:column;gap:12px;text-align:left;width:100%;cursor:pointer;color:var(--ink)}
 .bud-scs{display:flex;flex-direction:column;gap:6px}
 .bud-sc{display:grid;grid-template-columns:96px minmax(0,1fr) 38px;gap:10px;align-items:center}
@@ -64,7 +64,7 @@
 .bud-sls{margin-bottom:14px}
 .bud-num{width:84px;padding:6px 10px}
 .bud-simf{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-@media(max-width:520px){.bud-simf{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){.bud-simf{grid-template-columns:minmax(0,1fr)}}
 .bud-tw table{min-width:640px}
 .bud-tw td{vertical-align:top}
 tr[data-bud-ct]:hover td,tr[data-bud-bn]:hover td{background:var(--glass)}

@@ -45,5 +45,5 @@
 .r15d-evbody>*+*{margin-top:var(--sp-5,24px)}
 html[data-r15d-ro] .btn.primary[data-decide],html[data-r15d-ro] [data-inbx-ban=approve]{opacity:.5}
 .tbl td small{display:block;margin-top:2px}
-@media(max-width:1700px){.tb-right .nx-tb .lbl-long,.tb-right .r15d-vas .lbl-long{display:none}.topbar .search{min-width:240px}}
+@media(max-width:1500px){.tb-right .nx-tb .lbl-long,.tb-right .r15d-vas .lbl-long{display:none}.topbar .search{min-width:240px}}
 @media(max-width:1500px){.tb-right .live .lbl-long{max-width:128px}}

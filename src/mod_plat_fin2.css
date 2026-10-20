@@ -42,5 +42,5 @@
 .fin-rule summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:12px}
 .fin-rb{padding:4px 12px 12px;display:grid;gap:8px}
 .fin-evc{padding:12px;border-radius:14px;background:var(--glass2);margin-bottom:10px}
-@media (max-width:720px){.fin-kb{grid-template-columns:repeat(6,200px)}.fin-bars{height:140px}.fin-rule summary{grid-template-columns:auto minmax(0,1fr)}.fin-rule summary>.num{grid-column:2}}
+@media (max-width:700px){.fin-kb{grid-template-columns:repeat(6,200px)}.fin-bars{height:140px}.fin-rule summary{grid-template-columns:auto minmax(0,1fr)}.fin-rule summary>.num{grid-column:2}}
 @media (prefers-reduced-motion:reduce){.fin-kcard,.fin-lk{transition:none}}

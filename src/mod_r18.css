@@ -104,7 +104,7 @@
 .r18-cb{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;padding:4px;border:0;background:none;color:var(--ink);font:inherit;cursor:pointer;border-radius:8px}
 .r18-cb b{font-size:1.1rem}.r18-cb span{font-size:.74rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .r18-cb:hover{outline:2px solid var(--accent)}
-@media (max-width:640px){.r18-vl li{grid-template-columns:1fr;gap:2px}.r18-fr{grid-template-columns:96px minmax(0,1fr)}.r18-fr .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:700px){.r18-vl li{grid-template-columns:1fr;gap:2px}.r18-fr{grid-template-columns:96px minmax(0,1fr)}.r18-fr .btn{grid-column:1/-1;justify-self:start}}
 @media (prefers-reduced-motion:no-preference){.r18-cand,.r18-lopt,.r18-cb{transition:background .2s,border-color .2s}}
 
 .r18-map thead th{text-transform:none;letter-spacing:0;white-space:normal;overflow:visible;text-overflow:clip}
@@ -119,7 +119,7 @@
 :root:root .hero .row:has(>.fkpi){align-items:stretch}
 :root:root .hero .row>.fkpi{width:208px;flex:0 0 208px;height:auto;align-self:stretch;justify-content:space-between}
 :root:root .hero .row>.fkpi .fk-h{align-items:flex-start;min-height:2.6em}
-@media (max-width:640px){:root:root .hero .row>.fkpi{flex:1 1 calc(50% - 8px);width:auto;min-width:150px}}
+@media (max-width:700px){:root:root .hero .row>.fkpi{flex:1 1 calc(50% - 8px);width:auto;min-width:150px}}
 /* darker rail for visual separation from content: tokens redefined inside the rail so every child adapts */
 :root:root .rail{--ink:#eaf3f5;--muted:#a9bec4;--faint:#8aa2a9;--hair:rgba(255,255,255,.14);--edge:rgba(255,255,255,.16);--glass:rgba(255,255,255,.07);--glass2:rgba(255,255,255,.10);--accent:#63d3df;--accent-soft:rgba(99,211,223,.18);--accent-ink:#06222a;--bg:#0c2630;--shade:rgba(0,0,0,.35);--good-f:#7fdc9c;--warn-f:#f0c46a;--bad-f:#ff8f86;--bad-s:rgba(255,143,134,.16);--warn-s:rgba(240,196,106,.16);--good-s:rgba(127,220,156,.16);
  background:linear-gradient(172deg,#123642 0%,#0d2833 52%,#0a202a 100%);color:var(--ink);border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 50px rgba(5,20,28,.35),inset 0 1px 0 rgba(255,255,255,.10)}
@@ -150,7 +150,7 @@
 .r18-t tr.on td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
 :root[data-r18lvl="exec"] .r15-fv[data-nav="obs_dash"],:root[data-r18lvl="exec"] .r15-fv[data-nav="kcs_viz"],:root[data-r18lvl="exec"] .r15-fv[data-nav="r17u_dash"],:root[data-r18lvl="exec"] .r15-fv[data-nav="r16j_dash"]{display:none}
 @media(max-width:1100px){.r18-dg{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.r18-dg{grid-template-columns:1fr}}
+@media(max-width:700px){.r18-dg{grid-template-columns:1fr}}
 .r15d-vas b{max-width:104px}
 
 /* ---- Round 18 phase 3: liquid glass restored on the rail and notifications ---- */
@@ -218,6 +218,6 @@
 .r18-cc{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:18px;border:1px solid var(--hair);background:var(--glass2);min-width:0}
 .r18-cc-h{display:flex;flex-direction:column}.r18-cc-t{margin:0;font-size:14px}.r18-cc-t b{font-family:var(--f-disp);font-size:24px;font-weight:500}.r18-cc p{margin:0}
 .r18-cc-f{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:12.5px;color:var(--muted)}
-@media(max-width:1100px){.r18-cg{grid-template-columns:1fr 1fr}}@media(max-width:600px){.r18-cg{grid-template-columns:1fr}}
+@media(max-width:1100px){.r18-cg{grid-template-columns:1fr 1fr}}@media(max-width:700px){.r18-cg{grid-template-columns:1fr}}
 .r18-org th,.r18-org td{padding-left:10px;padding-right:10px}.r18-org th{white-space:nowrap}.r18-org td:first-child{max-width:300px;white-space:normal}
 .r18-ol1{padding-left:26px!important}.r18-ol2{padding-left:40px!important}.r18-ol3{padding-left:54px!important}

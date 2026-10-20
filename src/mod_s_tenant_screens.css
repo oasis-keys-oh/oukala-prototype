@@ -13,5 +13,5 @@
 .stn-trace h4{margin:0 0 6px;font-size:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .stn-lv{display:inline-flex;min-width:26px;justify-content:center;padding:2px 6px;border-radius:8px;border:1px solid var(--hair);font-variant-numeric:tabular-nums}
 .stn-lv.stn-low{background:var(--warn-s);border-color:var(--warn)}
-@media (max-width:600px){.stn-kr{grid-template-columns:minmax(0,1fr)}.stn-bar{max-width:none}}
+@media (max-width:700px){.stn-kr{grid-template-columns:minmax(0,1fr)}.stn-bar{max-width:none}}
 .stn-h2{font-size:20px;margin:22px 0 10px}

@@ -43,7 +43,7 @@
 .thr-bar u{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--accent)}
 .thr-cnm{grid-column:1 / -1;margin:0}
 .thr-legend{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0}
-@media (max-width:600px){.thr-cn[data-lvl="enterprise"]{margin-left:8px}.thr-cn[data-lvl="group"]{margin-left:16px}.thr-cn[data-lvl="team"]{margin-left:24px}.thr-cn{grid-template-columns:minmax(0,1fr)}.thr-cnv{justify-self:start}}
+@media (max-width:700px){.thr-cn[data-lvl="enterprise"]{margin-left:8px}.thr-cn[data-lvl="group"]{margin-left:16px}.thr-cn[data-lvl="team"]{margin-left:24px}.thr-cn{grid-template-columns:minmax(0,1fr)}.thr-cnv{justify-self:start}}
 
 /* DC-13 strategy authoring */
 .thr-gate{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}

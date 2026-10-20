@@ -100,8 +100,8 @@
 .nx-tb .nx-favcount{font-style:normal;font-size:11px;font-weight:700;line-height:1;border-radius:99px;padding:3px 7px;background:var(--accent-soft);color:var(--accent)}
 .nx-tb .nx-favcount[hidden]{display:none}
 #tbActions{display:contents}
-@media(max-width:1280px){.nx-tb .lbl-long{display:none}.nx-tb{padding-inline:10px}}
-@media(max-width:1180px){.search kbd.nx-k2{display:none}}
+@media(max-width:1100px){.nx-tb .lbl-long{display:none}.nx-tb{padding-inline:10px}}
+@media(max-width:1100px){.search kbd.nx-k2{display:none}}
 
 /* ---------- history and favorites popovers ---------- */
 .nx-pop{position:fixed;inset:auto;margin:0;width:min(430px,calc(100vw - 24px));max-height:min(78vh,700px);overflow:auto;border-radius:26px;padding:18px;color:var(--ink);border:1px solid var(--edge);background:var(--bg);display:none}
@@ -226,7 +226,7 @@
  .nx-pop{inset:auto 8px calc(84px + env(safe-area-inset-bottom,0px)) 8px!important;width:auto;max-height:70vh;border-radius:26px}
  main{padding-bottom:132px}
 }
-@media(max-width:560px){.tb-right .btn.live{display:none}}
+@media(max-width:700px){.tb-right .btn.live{display:none}}
 @media (prefers-reduced-motion:reduce){.nx-star svg,.nx-pal,.nx-palbox{animation:none;transition:none}}
 
 .nx-fav.is-ren>.nx-ren{margin:4px 8px 4px 22px;flex:1}

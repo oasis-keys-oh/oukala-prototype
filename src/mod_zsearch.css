@@ -26,7 +26,7 @@
 .zs-gapdom{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:6px 10px;align-items:start;padding:8px 0;border-top:1px solid var(--hair)}
 
 .zs-gaplist{display:flex;gap:6px;flex-wrap:wrap}
-@media (max-width:760px){.zs-meta{max-width:38%}.zs-st{max-width:80px}.zs-gapdom{grid-template-columns:auto minmax(0,1fr)}.zs-gaplist{grid-column:1/-1}}
+@media (max-width:700px){.zs-meta{max-width:38%}.zs-st{max-width:80px}.zs-gapdom{grid-template-columns:auto minmax(0,1fr)}.zs-gaplist{grid-column:1/-1}}
 /* keep the ownership strip (mod_own2) compact above grouped results */
 #nxPalList>.ownx-pal .ownx-pchips{display:flex;flex-wrap:wrap;gap:6px}
 #nxPalList>.ownx-pal{margin-bottom:4px}
