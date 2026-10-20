@@ -57,8 +57,13 @@ const L=R18.LENSES=[
   v:["Capacity freed",f=>[["Hours returned a month",n0(f.P.hours),"modeled from time saved per use"],["Equivalent full-time roles",(f.P.hours/160).toFixed(1),"at 160 hours a month"],["People building",new Set(f.rows.map(r=>r.a.builder)).size,"employees creating their own tools"]]],
   c:["Change load",f=>[["People using builds",f.P.users,"changed how they work"],["Steps now done by AI",f.rows.reduce((s,r)=>s+R18.process(r.a.id).counts.ai,0),"previously done by a person"],["Steps still done by a person",f.rows.reduce((s,r)=>s+R18.process(r.a.id).counts.human,0),"judgement and approval"]]],
   r:["Workforce impact",f=>[["Builder or owner has left",f.gone,"build needs a new owner"],["Builds without a backup",f.P.noOwner,"depends on one person"],["Builds with no trained backup",f.rows.filter(r=>!r.m.backup).length,"succession gap"]]],
-  say:"About {fte} full-time roles of capacity returned a month across {people} people. The owner has left on {gone} of {n} builds."}];
-const cur=()=>L.find(l=>l.id===ST.lens)||L[0];
+  say:"About {fte} full-time roles of capacity returned a month across {people} people. The owner has left on {gone} of {n} builds."},
+ /* DC-28: the CLO lens, configuration only, drawn from the same figures */
+ {id:"clo",short:"CLO",name:"Chief Legal Officer",balance:"Exposure against the speed of the business",q:"Where are we exposed, and what slows decisions down?",
+  v:["Obligations kept",f=>[["Builds with an owner and a backup",(f.P.n-f.P.noOwner)+" of "+f.P.n,"someone answers for every build"],["Access decided by policy",(f.ac.pol||0)+"%","no person needed for safe requests"],["Builds tied to strategy",f.tied+" of "+f.P.n,"each names the objective it serves"]]],
+  c:["Review load",f=>[["Data access requests waiting",f.ac.pending,"each waits on an owner group"],["Average time to decide access",(f.ac.avg||0).toFixed(1)+" days","excluding policy decisions"],["Run cost a month",usd(f.P.cost),"all builds"]]],
+  r:["Legal exposure",f=>[["Models called outside the gateway",f.P.aiDirect,"no log of what data left"],["Over-privileged builds",f.ac.over,"personal tier holding confidential data"],["Grants expired or ending soon",(f.ac.exp||0)+(f.ac.soon||0),"recertify or let lapse"]]],
+  say:"{over} builds hold confidential data at the personal tier. {direct} of {n} builds call a model outside the gateway, with no log."}];const cur=()=>L.find(l=>l.id===ST.lens)||L[0];
 R18.lensOf=cur;
 function say(l,f){const m={"{net}":usd(f.P.net),"{n}":f.P.n,"{stall}":f.P.noOwner,"{cost}":usd(f.P.cost),"{unl}":f.P.unlinked,"{ai}":f.aiRows.length,"{direct}":f.P.aiDirect,"{noks}":f.rows.length-f.killOk,"{cov}":f.objs.length-f.bare.length,"{obj}":f.objs.length,"{sec}":f.sec,"{over}":f.ac.over||0,"{fails}":f.fails,"{dup}":f.dup,"{high}":f.high,"{fte}":(f.P.hours/160).toFixed(1),"{people}":f.P.users,"{gone}":f.gone};
  return l.say.replace(/\{[a-z]+\}/g,k=>m[k]!==undefined?m[k]:k)}
