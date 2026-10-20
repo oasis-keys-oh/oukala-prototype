@@ -99,6 +99,8 @@ function appScreen(){
  return `<div class="screen r18-screen">${hero("Make · My builds / "+H(m.fn),H(a.n),H(a.purpose),`<div class="row r18-hrow">${pill(st[0],st[1])}${pill(a.tier+" tier","mute")}<span class="r18-hm">Built by <b>${H(a.builder||"")}</b></span><span class="r18-hm">Owner <b>${m.owner?H(m.owner):"none"}</b>, backup <b>${m.backup?H(m.backup):"none"}</b></span><span class="r18-hm"><b>${a.users||0}</b> users</span>${pick()}</div>`)}
  ${typeof views==="function"?views("r18av",tabs,[guardrailsTab(a),processTab(a),dataTab(a),metricsTab(a),debtTab(a),scaleTab(a)]):guardrailsTab(a)}</div>`}
 REG("r18_app","App record","make","M4 5h16v14H4zM4 10h16M9 10v9",appScreen);
+/* DC-38: every build's process is registered at load, not when its App record is first opened, so process counts do not depend on clicks */
+G(()=>{const all=()=>R18.apps().forEach(a=>G(()=>ensureProc(a,R18.process(a.id),R18.meta(a.id)),null));if(window.PROCLIB&&PROCLIB.get)all()},null);
 
 /* ============================ Maturity roadmaps ============================ */
 function matureScreen(){const L=R18.apps().filter(a=>a.status!=="sunset");const rows=L.map(a=>({a,mt:R18.maturity(a.id)}));

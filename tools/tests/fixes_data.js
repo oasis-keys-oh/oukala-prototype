@@ -1,0 +1,35 @@
+// CL-77: every DATAMODEL table has a classification (public, internal, confidential, restricted); an invalid one is refused;
+// a registration without one is inferred conservatively (never public) and listed. Prints the inferred list (prototype fact).
+// Usage: node tools/tests/fixes_data.js <dir containing full.html> [--list]
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const a=process.argv.slice(2);const dir=path.resolve(a.find(x=>!x.startsWith('--'))||'build_out');const list=a.includes('--list');
+const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
+const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();const errs=[];
+p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));await p.route(/^https?:/,r=>r.abort());
+await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
+await p.waitForFunction(()=>window.DATAMODEL&&DATAMODEL.classOf&&typeof SCREENS!=='undefined',null,{timeout:60000});await p.waitForTimeout(1500);
+let fail=0;const ok=(v,m)=>{console.log((v?'ok   ':'FAIL ')+m);if(!v)fail++};
+const r=await p.evaluate(()=>{const D=DATAMODEL;const ks=Object.keys(D.tables);const by={};const bad=[];
+ ks.forEach(k=>{const c=D.classOf(k);by[c]=(by[c]||0)+1;if(D.CLASSES.indexOf(c)<0)bad.push(k)});
+ const inf=D.inferred();const pub=inf.filter(x=>x.classification==="public").length;
+ const n0=ks.length;const ref=D.register("cl77_bad",{label:"Bad",classification:"secret",fields:[]});const refusedOk=ref&&ref.classification==="internal"&&!ref.declared&&D.refused.some(x=>x.t==="cl77_bad")&&D.inferred().some(i=>i.t==="cl77_bad");
+ const x=D.register("cl77_plain",{label:"Plain test table",fields:[{k:"note",label:"Note"}]});const plain=x&&x.classification==="internal"&&D.inferred().some(i=>i.t==="cl77_plain");
+ const y=D.register("cl77_pay",{label:"Payroll test",fields:[{k:"amount",label:"Amount"}]});const kw=y&&y.classification==="confidential";
+ const z=D.register("cl77_decl",{label:"Declared",classification:"public",fields:[{k:"email",label:"Email",classification:"personal"}]});const raised=z&&z.classification==="confidential"&&z.declared==="public";
+ const w=D.register("cl77_ok",{label:"Declared ok",classification:"restricted",fields:[]});const decl=w&&w.classification==="restricted"&&!D.inferred().some(i=>i.t==="cl77_ok");
+ const cf=D.classify("cl77_plain","confidential","fixes test");const fixed=cf.ok&&!D.inferred().some(i=>i.t==="cl77_plain");
+ ["cl77_bad","cl77_plain","cl77_pay","cl77_decl","cl77_ok"].forEach(k=>delete D.tables[k]);D._v++;
+ return {n:n0,by,bad,inf,pub,refusedOk,plain,kw,raised,decl,fixed}});
+ok(r.bad.length===0,r.n+' tables, every one classified: '+JSON.stringify(r.by));
+ok(r.pub===0,'no table is inferred as public');
+ok(r.refusedOk,'an invalid classification is refused (dropped, listed in DATAMODEL.refused, class inferred)');
+ok(r.plain,'a table registered without a classification defaults to internal and is listed as inferred');
+ok(r.kw,'sensitive words in a table name infer confidential');
+ok(r.raised,'a declared class is raised when a field is more sensitive (public with a personal field reads confidential)');
+ok(r.decl,'a declared class is kept and not listed as inferred');
+ok(r.fixed,'DATAMODEL.classify declares a class and removes the table from the inferred list');
+const ib={};r.inf.forEach(x=>{ib[x.classification]=(ib[x.classification]||0)+1});
+console.log('inferred (no declared class yet): '+r.inf.length+' of '+r.n+' '+JSON.stringify(ib));
+if(list)r.inf.forEach(x=>console.log('  '+x.t+' | '+x.classification+' | '+x.why));
+ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,5));
+console.log(fail?'DATA FAIL ('+fail+')':'DATA PASS');await b.close();process.exit(fail?1:0)})();

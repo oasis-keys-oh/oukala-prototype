@@ -399,8 +399,15 @@ O.domainView=dview;
 function scoreDom(d,q,toks){let s=0;const L=d.label.toLowerCase();if(L===q||d.id===q)s+=100;if(L.indexOf(q)>=0)s+=40;
  d.aliases.forEach(a=>{if(a===q)s+=300;else if(q.indexOf(a)>=0&&a.length>2)s+=30+a.length;else if(a.indexOf(q)>=0&&q.length>2)s+=25});
  toks.forEach(t=>{if(t.length<3)return;if(L.indexOf(t)>=0)s+=12;d.aliases.forEach(a=>{if(a.split(" ").indexOf(t)>=0||a===t)s+=14;else if(a.indexOf(t)>=0&&t.length>3)s+=6})});return s}
-O.searchDomains=text=>{const q=String(text||"").toLowerCase().trim();if(!q)return [];const toks=q.split(/[^a-z0-9&-]+/).filter(Boolean);return DOMAINS.map(d=>({d,s:scoreDom(d,q,toks)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).map(x=>dview(x.d))};
-O.byDomain=text=>{const r=O.searchDomains(text);return r.length?r[0]:null};
+/* CL-76: the ranking is memoized by query text. The key includes a signature of the domain list (count and alias count, since
+   other modules add aliases in place); the view (owner, backup, gap) is built fresh on every call so owner changes show at once. */
+const RANKC=new Map();let RANKSIG="";
+const domSig=()=>{let a=0;for(let i=0;i<DOMAINS.length;i++)a+=(DOMAINS[i].aliases||[]).length;return DOMAINS.length+":"+a};
+const rankDomains=text=>{const q=String(text||"").toLowerCase().trim();if(!q)return [];const sig=domSig();if(sig!==RANKSIG){RANKC.clear();RANKSIG=sig}
+ let r=RANKC.get(q);if(r)return r;const toks=q.split(/[^a-z0-9&-]+/).filter(Boolean);
+ r=DOMAINS.map(d=>({d,s:scoreDom(d,q,toks)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).map(x=>x.d);if(RANKC.size>2000)RANKC.clear();RANKC.set(q,r);return r};
+O.searchDomains=text=>rankDomains(text).map(dview);
+O.byDomain=text=>{const r=rankDomains(text);return r.length?dview(r[0]):null};
 O.owns=idOrName=>{const p=personRec(idOrName);if(!p)return [];return DOMAINS.filter(d=>d.ownerId===p.id||d.backupId===p.id).map(d=>({domainId:d.id,label:d.label,role:d.ownerId===p.id?"owner":"backup",other:personRec(d.ownerId===p.id?d.backupId:d.ownerId)}))};
 O.gaps=()=>DOMAINS.filter(d=>!d.ownerId||!d.backupId).map(dview);
 O.ownerLine=n=>{const r=O.owns(n).filter(x=>x.role==="owner");return r.map(x=>x.label+(x.other?" (backup: "+x.other.name+")":" (no backup)")).join("; ")};

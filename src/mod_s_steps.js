@@ -21,6 +21,12 @@ STEPS.ownerFor=(k,cur)=>{k=SM.of(k);const c=String(cur||"");
  if(k==="agent")return /Agent$/.test(c)?c:"Studio Agent";
  return /^(Automatic|Function|Robot|System)$/i.test(c)||/Agent$/.test(c)?"Owner":(c||"Owner")};
 
+/* robot steps resolve to a robot record with a human sponsor and backup (CL-78, OWNERX robot directory) */
+STEPS.robotFor=(s,ctx)=>G(()=>W.OWNERX.robotFor(s,ctx),null);
+/* the owner chip for any step: robots get their directory record (sponsor and backup ride along), others the step owner */
+STEPS.ownerChip=(s,ctx)=>{ctx=ctx||{};const k=SM.of(s&&s.who);if(k==="robot"){const r=STEPS.robotFor(s,ctx);if(r)return W.ownerChip(r.name,{kind:"robot",sponsor:r.sponsor,backup:r.backup,role:ctx.role||"Robot",record:ctx.record})}
+ return W.ownerChip(STEPS.ownerFor(k,s&&s.owner),{role:ctx.role,record:ctx.record})};
+
 /* ---------- triggers (R21a): robot and agent steps must have one; human steps start by assignment ---------- */
 STEPS.needsTrigger=v=>{const k=SM.of(v);return k==="robot"||k==="agent"};
 const MAINF={metric:"metric",schedule:"every",step:"step",event:"event",record:"entity"};

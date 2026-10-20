@@ -38,8 +38,39 @@ const isAgentName=n=>!!G(()=>W.R17T&&R17T.isAgent(n),false);
 const agentName=n=>G(()=>R17T.canon(n),null)||n;
 const agentModel=n=>G(()=>R17T.model(agentName(n)),null);
 
+/* ---------- robot directory (CL-78, R23): every robot step resolves to a robot record with a human sponsor and a backup ----------
+   A robot runs fixed rules (if, then, else), no model. Its name is the step owner when that names a system (Workflow engine, Finance
+   systems); a generic owner (Automatic, Platform, Robot, none, a role, a person or an agent) gives "<process> robot". Sponsor: the step owner
+   when a person, else the process owner (PROCLIB), else the accountable domain owner (ORGX.byDomain), else the platform domain owner.
+   Backup: the process backup, else the domain backup, else the sponsor's manager, always a different human. Directory entries are
+   prototype data; robots do not run (simulated). */
+const GENERIC=/^(automatic|function|system|platform|robot|auto|none|)$/i;
+const ROLE=/(manager|lead|analyst|office|owner|designer|team|pmo|desk|officer|steward|director|partner|finance|sponsor|approver|reviewer|requester)$/i; /* a role is not a system */
+const isHumanName=n=>{const r=G(()=>who(n),null);return !!(r&&r.kind!=="ai"&&!isAgentName(n))};
+const domainPair=q=>{const d=G(()=>ORGX.byDomain(q),null);return d?{o:d.owner&&d.owner.name,b:d.backup&&d.backup.name}:{}};
+const PLATPAIR=()=>{const d=G(()=>ORGX.byDomain("platform"),null);return{o:(d&&d.owner&&d.owner.name)||"Sam Patel",b:(d&&d.backup&&d.backup.name)||"Ben Ito"}};
+function pickBackup(sp,cands){for(const c of cands){if(c&&c!==sp&&isHumanName(c))return c}const m=G(()=>who(sp).mgr,"");if(m&&m!==sp&&isHumanName(m))return m;const pp=PLATPAIR();return [pp.b,pp.o,"Casey Rowan"].find(x=>x&&x!==sp)}
+let RB=null,RBK="",RBT=0;
+function robotName(step,proc){const o=String((step&&step.owner)||"").trim();if(!o||GENERIC.test(o)||ROLE.test(o)||isHumanName(o)||isAgentName(o)||/agent$/i.test(o))return(proc&&proc.name?proc.name:"Process")+" robot";return o}
+function addRobot(M,step,proc){const name=robotName(step,proc),id="robot:"+slug(name);let r=M.get(id);
+ if(!r){const so=String((step&&step.owner)||"").trim();const dp=domainPair((proc&&proc.name)||name),pp=PLATPAIR();
+  const sponsor=[isHumanName(so)?so:null,proc&&proc.owner,dp.o,pp.o].find(x=>x&&isHumanName(x))||pp.o;
+  const backup=pickBackup(sponsor,[proc&&proc.backup,dp.b,dp.o,pp.b]);
+  r={id,name,kind:"robot",sponsor,backup,processes:[],steps:0,source:proc?"Process library":"Step",simulated:true};M.set(id,r)}
+ if(proc&&proc.id&&r.processes.indexOf(proc.id)<0)r.processes.push(proc.id);r.steps++;return r}
+function buildRobots(){const L=G(()=>PROCLIB.list(),[])||[];const k=L.length;if(RB&&RBK===k)return RB;const M=new Map();
+ L.forEach(p=>{const g=G(()=>PROCLIB.get(p.id),null);(g&&g.stepsList||[]).forEach(s=>{if(G(()=>STEPMODE.of(s.who),"")==="robot")addRobot(M,s,p)})});
+ RB=M;RBK=k;if(!RBT){RBT=1;setTimeout(()=>{RBT=0;RBK=""},0)}return M}
+O.robots=()=>[...buildRobots().values()].map(r=>Object.assign({},r,{processes:r.processes.slice()}));
+O.robot=q=>{if(!q)return null;const M=buildRobots();const k=String(q);const r=M.get(k)||M.get("robot:"+slug(k))||null;return r?Object.assign({},r,{processes:r.processes.slice()}):null};
+/* robotFor(step,{process}) always returns a record: from the directory when the process is known, else a new entry for this step */
+O.robotFor=(step,ctx)=>{ctx=ctx||{};const pid=ctx.process||ctx.processId||"";const p=pid?G(()=>PROCLIB.get(pid),null):null;
+ const nm=robotName(step,p||(ctx.processName?{name:ctx.processName}:null));const hit=O.robot(nm);if(hit)return hit;
+ const M=buildRobots();return Object.assign({},addRobot(M,step,p||(ctx.processName?{name:ctx.processName,id:"",owner:ctx.owner,backup:ctx.backup}:null)))};
+const isRobotName=n=>!!n&&G(()=>buildRobots().has("robot:"+slug(n)),false);
+
 O.kindOf=function(name,o){o=o||{};if(o.kind)return o.kind;if(isAgentName(name))return"agent";if(G(()=>who(name),null))return"person";
- if(findTeam(name))return"team";if(findFunc(name))return"function";return"person"};
+ if(findTeam(name))return"team";if(findFunc(name))return"function";if(isRobotName(name))return"robot";return"person"};
 O.addrFor=function(name,o){const k=O.kindOf(name,o);
  if(k==="team"){const t=findTeam(name);return"team:"+(t?t.id:slug(name))}
  if(k==="function"){const f=findFunc(name);return"function:"+(f?f.id:slug(name))}
@@ -61,11 +92,12 @@ O.resolve=function(addr){const p=G(()=>CHATADDR.parse(addr),null);if(!p)return n
 /* ---------- the chip ---------- */
 const GRP_ICO=`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M15 15c3 0 6 1.5 6 5"/></svg>`;
 const BOT_ICO=`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01"/></svg>`;
-function attrs(name,o,kind,addr){return ` data-owner="${H(name)}" data-owner-kind="${H(kind)}" data-owner-addr="${H(addr)}"`+(o.record?` data-owner-rec="${H(o.record)}"`:"")+(o.role?` data-owner-role="${H(o.role)}"`:"")+(o.sponsor?` data-owner-sponsor="${H(o.sponsor)}"`:"")}
+function attrs(name,o,kind,addr){return ` data-owner="${H(name)}" data-owner-kind="${H(kind)}" data-owner-addr="${H(addr)}"`+(o.record?` data-owner-rec="${H(o.record)}"`:"")+(o.role?` data-owner-role="${H(o.role)}"`:"")+(o.sponsor?` data-owner-sponsor="${H(o.sponsor)}"`:"")+(o.backup&&kind==="robot"?` data-owner-backup="${H(o.backup)}"`:"")}
 function ownerChip(name,o){o=o||{};if(name==null||name==="")return`<span class="muted small">none</span>`;name=String(name);
  const kind=O.kindOf(name,o),addr=O.addrFor(name,o);
  if(kind==="team"||kind==="function"){const r=O.resolve(addr)||{label:name};
   return`<button type="button" class="pchipx own-grp"${attrs(r.label,o,kind,addr)} aria-haspopup="dialog"><span class="own-gi">${GRP_ICO}</span><span>${H(r.label)}${o.showRole&&r.sub?` <small>${H(r.sub)}</small>`:""}</span></button>`}
+ if(kind==="robot"){const rr=O.robot(name);if(rr&&!o.sponsor)o=Object.assign({},o,{sponsor:rr.sponsor,backup:rr.backup});}
  if(kind==="robot")return`<button type="button" class="pchipx own-grp own-bot"${attrs(name,o,kind,addr)} aria-haspopup="dialog"><span class="own-gi">${BOT_ICO}</span><span>${H(name)}</span><i class="r17t-tag">Robot</i></button>`;
  const base=G(()=>W.pchip(name,{size:o.size,role:o.showRole}),null);
  if(!base||!/^<button /.test(base))return`<button type="button" class="pchipx"${attrs(name,o,kind,addr)} aria-haspopup="dialog"><span>${H(name)}</span></button>`;
@@ -87,16 +119,16 @@ function place(pop,chip){const r=chip.getBoundingClientRect(),vw=document.docume
 const btn=(act,label,primary)=>`<button type="button" class="btn${primary?" primary":""}" data-own-act="${act}">${H(label)}</button>`;
 function head(avatarHtml,title,sub){return`<div class="own-hd">${avatarHtml}<div class="own-ht"><b>${H(title)}</b>${sub?`<small>${H(sub)}</small>`:""}</div><button type="button" class="btn quiet own-x" data-own-act="close" aria-label="Close">×</button></div>`}
 function popHTML(d){const rec=d.rec?`<div class="own-rec muted small">${d.role?H(d.role)+" on ":"On "}${H(d.rec.replace(":"," "))}</div>`:(d.role?`<div class="own-rec muted small">${H(d.role)}</div>`:"");
- if(d.kind==="agent"||d.kind==="robot"){const m=d.kind==="agent"?agentModel(d.name):null;const sponsor=m?m.sponsor:d.sponsor||"";const backup=m?m.backup:"";
+ if(d.kind==="agent"||d.kind==="robot"){const m=d.kind==="agent"?agentModel(d.name):null;const rr=d.kind==="robot"?O.robot(d.name):null;const sponsor=m?m.sponsor:d.sponsor||(rr&&rr.sponsor)||"";const backup=m?m.backup:d.backup||(rr&&rr.backup)||"";
   const tier=m?G(()=>R17T.TIERN[m.tier],""):"";const label=m?(m.d.full||m.name):d.name;
   return head(d.kind==="agent"?G(()=>W.avatar(agentName(d.name),{size:34}),""):`<span class="own-gi own-gi-l">${BOT_ICO}</span>`,label,d.kind==="agent"?"AI teammate"+(tier?" · "+tier:""):"Robot step · runs rules, no judgment")+rec+
-   `<dl class="own-kv"><dt>Human sponsor</dt><dd>${sponsor?ownerChip(sponsor,{role:"Sponsor"}):'<span class="pill warn">No sponsor</span>'}</dd>${d.kind==="agent"?`<dt>Backup</dt><dd>${backup&&!ownerChip.noBackup(sponsor,backup)?ownerChip(backup,{role:"Backup"}):ownerChip.badge(sponsor,backup)}</dd>`:""}</dl>
+   `<dl class="own-kv"><dt>Human sponsor</dt><dd>${sponsor?ownerChip(sponsor,{role:"Sponsor"}):'<span class="pill warn">No sponsor</span>'}</dd><dt>Backup</dt><dd>${backup&&!ownerChip.noBackup(sponsor,backup)?ownerChip(backup,{role:"Backup"}):ownerChip.badge(sponsor,backup)}</dd>${rr&&rr.processes.length?`<dt>Runs in</dt><dd class="small">${rr.processes.length} process${rr.processes.length===1?"":"es"}, ${rr.steps} step${rr.steps===1?"":"s"} (directory entry, simulated)</dd>`:""}</dl>
    <div class="own-acts">${d.kind==="agent"&&G(()=>!!R17T.openProfile,false)?btn("profile","Open profile",true):""}${btn("msg",d.kind==="agent"?"Message":"Message sponsor")}${d.rec?btn("rec","Open chat on this record"):""}</div>
    <p class="own-note muted small">Messages are simulated: nobody is notified.</p>`}
  const r=G(()=>who(d.name),null);
  return head(G(()=>W.avatar(d.name,{size:34}),""),r?r.name:d.name,r?[r.role,r.team].filter(Boolean).join(" · "):"")+rec+
   `<div class="own-acts">${btn("p360","Person 360",true)}${btn("msg","Message")}${d.rec?btn("rec","Open chat on this record"):""}</div><p class="own-note muted small">Messages are simulated: nobody is notified.</p>`}
-function dataOf(chip){const ds=chip.dataset;return{name:ds.owner,kind:ds.ownerKind||O.kindOf(ds.owner),addr:ds.ownerAddr||O.addrFor(ds.owner),rec:ds.ownerRec||"",role:ds.ownerRole||"",sponsor:ds.ownerSponsor||""}}
+function dataOf(chip){const ds=chip.dataset;return{name:ds.owner,kind:ds.ownerKind||O.kindOf(ds.owner),addr:ds.ownerAddr||O.addrFor(ds.owner),rec:ds.ownerRec||"",role:ds.ownerRole||"",sponsor:ds.ownerSponsor||"",backup:ds.ownerBackup||""}}
 O.open=function(chip){const d=dataOf(chip);
  if(d.kind==="team"||d.kind==="function"){closePop(false);return openGroupPage(d.addr,d.rec)}
  closePop(false);const pop=document.createElement("div");pop.className="own-pop";pop.setAttribute("popover","manual");pop.setAttribute("role","dialog");pop.setAttribute("aria-label",d.name);
@@ -122,7 +154,7 @@ O.message=message;
 function act(a,d){if(a==="close"){closePop(true);return}
  if(a==="p360"){closePop(false);G(()=>person360(d.name));return}
  if(a==="profile"){closePop(false);G(()=>R17T.openProfile(agentName(d.name)));return}
- if(a==="msg"){if(d.kind==="robot"){const m=d.sponsor;if(m)message("person:"+m,d.rec);else{closePop(false);G(()=>toast("This robot step has no sponsor to message","warn"))}return}message(d.addr,d.rec);return}
+ if(a==="msg"){if(d.kind==="robot"){const m=d.sponsor||G(()=>O.robot(d.name).sponsor,"");if(m)message("person:"+m,d.rec);else{closePop(false);G(()=>toast("This robot step has no sponsor to message","warn"))}return}message(d.addr,d.rec);return}
  if(a==="rec"){message("record:"+d.rec);return}}
 document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
  const a=t.closest("[data-own-act]");if(a&&POP&&POP.contains(a)){e.preventDefault();e.stopPropagation();act(a.dataset.ownAct,POP._d);return}
