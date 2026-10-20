@@ -218,6 +218,7 @@
   "mod_s_steps",
   "mod_s_tenant",
   "mod_s_tenant_health",
+  "mod_s_thread",
   "mod_rel",
   "mod_selfbuild",
   "mod_sla",

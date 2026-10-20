@@ -63,5 +63,19 @@ add(await step('DC-04',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-04 '+m)
  ok(v.variance.filter(x=>x.ok).length>=13,'most budget lines reach a scored objective ('+v.variance.filter(x=>x.ok).length+')');
  return f}));
 
+/* ---- DC-10: Trace this from any number: the thread, hand-offs with owner chips, reachable from a chip next to a number ---- */
+add(await step('DC-10',async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-10 '+m)};const N=(k,id)=>NUM.rec(k,id);
+ const R=THREAD.build(N('line','PR1-CLD'));ok(R&&['obj','kr','proj','line','inv','led'].every(k=>R.levels[k].length),'a budget line thread reaches every level: '+(R?Object.keys(R.levels).map(k=>k+R.levels[k].length).join(' '):'none'));
+ ok(R&&R.handoffs.length>=1&&R.handoffs.every(h=>h.from.owner!==h.to.owner),'hand-offs are changes of owner');
+ ok(R&&R.steps.some(s=>/^P-\d{3}\.\d+$/.test(s.snum)),'process steps carry step numbers');
+ [['obj','O1'],['kr','k12'],['proj','PR2'],['inv','INV-20433'],['led','RL-03']].forEach(([k,id])=>{const r=THREAD.build(N(k,id));ok(r&&r.levels.proj.length>=1&&r.levels[k].some(x=>x.id===id),'thread from '+k+' '+id)});
+ const run=THREAD.build(N('inv','INV-20440'));ok(run&&run.notes.length&&!run.levels.proj.length,'a run-budget invoice says it reaches no project');
+ ok(THREAD.build('P-056')&&THREAD.build('P-056').process,'a process number opens its thread');
+ THREAD.open(N('line','PR1-CLD'));const dr=document.getElementById('drawer');ok(dr&&dr.querySelector('.thr')&&dr.querySelectorAll('.thr-ho [data-owner]').length>=2,'drawer shows hand-offs through ownerChip');
+ ok(!/—/.test(dr.innerText),'no em dash in the thread drawer');ok(/modeled/.test(dr.innerText),'dollar figures are labeled modeled');
+ closeDrawer();go('exe_strat');await new Promise(r=>setTimeout(r,400));const c=document.querySelector('#view .num-chip + .thr-chip');ok(!!c,'a Trace chip sits next to a number on screen');
+ if(c){c.click();await new Promise(r=>setTimeout(r,200));ok(!!document.querySelector('#drawer .thr'),'the Trace chip opens the thread')}
+ closeDrawer();return f}));
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();
