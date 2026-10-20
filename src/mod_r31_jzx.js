@@ -3,7 +3,7 @@
 (function(){
 const W=window,X=W.JYX,R=W.JXR;if(!X||!X.api||!R||!R.av)return;
 const A=()=>X.api,E=R.E,fmt=n=>A().fmt(Math.round(n)),f1=n=>A().f1(n);
-const FTE_H=140,q=s=>encodeURIComponent(s);
+const FTE_H=A().FTE_H||140,q=s=>encodeURIComponent(s);
 const hrsOf=b=>b.min*b.vol/60;
 const brief=h=>`<div class="jx-brief" data-role="story">${h}</div>`;
 const tile=(l,v,s,c)=>`<div class="jk${c?" t-"+c:""}"><span class="jk-l">${l}</span><b>${v}</b><small>${s||""}</small></div>`;
@@ -92,7 +92,7 @@ function builds(){const a=A(),Y=X.JY,map=new Map();
   const hrs=o.rows.reduce((s,x)=>s+x.hrs,0),freed=o.rows.reduce((s,x)=>s+x.r.save,0),risk=Math.max(...o.rows.map(x=>x.b.risk||1));
   const roles=[...new Set(o.rows.map(x=>x.b.who))],teams=[...new Set(o.rows.map(x=>x.b.owner).filter(Boolean))],sys=[...new Set(o.rows.map(x=>x.b.sys).filter(Boolean))];
   const ext=roles.every(x=>EXT.has(x)),pain=o.rows.filter(x=>x.b.pain&&x.b.em<=2).length;
-  return Object.assign(o,{name:R.dwName(b,o.k),title,hrs,freed,risk,roles,teams,sys,ext,pain,hasProc:!!p,lim:lim(o.k,risk),js:[...new Set(o.rows.map(x=>R.jshort(x.j)))]})});
+  return Object.assign(o,{name:R.dwName(b,o.k),title,hrs,freed,capped:o.rows.some(x=>x.r.capped),risk,roles,teams,sys,ext,pain,hasProc:!!p,lim:lim(o.k,risk),js:[...new Set(o.rows.map(x=>R.jshort(x.j)))]})});
  out.sort((x,y)=>y.freed-x.freed);const n=out.length;
  out.forEach((o,i)=>{o.wave=(o.risk<=3&&o.hasProc&&i<Math.ceil(n*.3))?1:(o.risk>=5||!o.hasProc||i>=Math.ceil(n*.7))?3:2;o.id="b"+i});
  return out}
@@ -100,7 +100,7 @@ R.builds=builds;R.bdec=R.bdec||{};
 const wl={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
 function bcard(o){const a=A();
  return `<article class="jb-card k-${o.k}"><button class="jb-open" data-pp2-act="jbld" data-a="${o.id}" aria-label="Open the build summary for ${E(o.title)}"><span class="jb-top">${R.av(o.k,o.name,44)}<span class="jb-t"><b>${W.NUM?NUM.bchip(o.key)+" ":""}${E(o.title)}</b><small>${o.k==="agent"?"Agent":"Robot"} ${E(o.name.split(" ")[1])} · ${o.rows.length} step${o.rows.length===1?"":"s"} · ${E(o.js.slice(0,2).join(", "))}${o.js.length>2?" +"+(o.js.length-2):""}</small></span><span class="jb-wv w${o.wave}" title="Build order, a hypothesis: easy and valuable first">${wl[o.wave]}</span></span>${R.bdec[o.id]==="plan"?`<span class="jb-pl">In the build plan</span>`:R.bdec[o.id]==="defer"?`<span class="jb-pl d">Deferred</span>`:""}
-  <span class="jb-m"><span><b>${fmt(o.hrs)}</b>h a month covered</span><span><b>${o.ext?fmt(o.freed):(o.freed/FTE_H).toFixed(1)}</b>${o.ext?"h back to them":"FTE released"}</span><span><b>${o.risk}</b>risk of 5</span></span>
+  <span class="jb-m"><span><b>${fmt(o.hrs)}</b>h a month covered</span><span><b>${o.ext?fmt(o.freed):(o.freed/FTE_H).toFixed(1)}</b>${o.ext?"h back to them":"FTE released"}${o.capped?`<em class="jb-cap" title="${E(R.capNote())}">capped</em>`:""}</span><span><b>${o.risk}</b>risk of 5</span></span>
   <span class="jb-r small muted">${o.roles.slice(0,3).map(E).join(", ")}${o.roles.length>3?" +"+(o.roles.length-3):""} · owner ${E(o.teams[0]||"to assign")}</span>
   <span class="jb-chk"><i class="${o.hasProc?"ok":"no"}"></i>${o.hasProc?"Process exists":"Needs a process first"}${o.sys.length?` · <i class="ok"></i>${E(o.sys.slice(0,2).join(", "))}`:""}</span></button></article>`}
 
@@ -122,19 +122,19 @@ R.buildTab=function(){const a=A(),B=builds();const ag=B.filter(x=>x.k==="agent")
  const show=B.filter(x=>(O.flt==="all"||O.flt===x.k)&&(!O.wave||O.wave===x.wave));const lim_=O.all?show.length:24;
  const chip=(g,id,txt,num)=>`<button class="jmc${(g==="f"?O.flt===id:O.wave===id)?" is-on":""}" data-pp2-act="jbf" data-a="${g}|${id}" aria-pressed="${g==="f"?O.flt===id:O.wave===id}">${num!=null?`<b>${num}</b> `:""}${txt}</button>`;
  return `${brief(`<b>${B.length} things to build:</b> <span class="jx-bt g">${ag.length} agents</span> <span class="jx-bt r">${rb.length} robots</span>. ${steps} recommended steps become ${B.length} builds when steps that share a process are combined. Together they release about <b>${fte.toFixed(1)} FTE</b> of staff effort${ext>0?` and return about ${fmt(ext)} hours a month to people outside the organization`:""} (modeled).`)}
- <div class="jh-kpis">${tile("To build",B.length,"agents and robots")}${tile("Agents",ag.length,"reason inside a box","agent")}${tile("Robots",rb.length,"rules, no model cost","robot")}${tile("Wave 1",B.filter(x=>x.wave===1).length,"start here: easy and valuable","good")}${tile("Staff capacity",fte.toFixed(1)+" FTE","released if all built, modeled")}</div>
+ <div class="jh-kpis">${tile("To build",B.length,"agents and robots")}${tile("Agents",ag.length,"reason inside a box","agent")}${tile("Robots",rb.length,"rules, no model cost","robot")}${tile("Wave 1",B.filter(x=>x.wave===1).length,"start here: easy and valuable","good")}${tile("Staff capacity",fte.toFixed(1)+" FTE","released if all built, modeled; at most "+A().REC_CAP_FTE+" FTE a step")}</div>
  <div class="jmood jo-ctl" role="group" aria-label="Filter builds">${chip("f","all","Everything")}${chip("f","agent","Agents",ag.length)}${chip("f","robot","Robots",rb.length)}<span class="jo-sp"></span>${chip("w",0,"Any wave")}${chip("w",1,"Wave 1",B.filter(x=>x.wave===1).length)}${chip("w",2,"Wave 2",B.filter(x=>x.wave===2).length)}${chip("w",3,"Wave 3",B.filter(x=>x.wave===3).length)}</div>
  ${(()=>{const pl=B.filter(x=>R.bdec[x.id]==="plan"),nx=pl.slice().sort((x,y)=>x.wave-y.wave||y.freed-x.freed)[0];const pf=pl.filter(x=>!x.ext).reduce((s,x)=>s+x.freed,0)/FTE_H;return `<div class="jb-plan" role="status"><b>Build plan</b> ${pl.length?`${pl.length} build${pl.length===1?"":"s"} · about ${pf.toFixed(1)} FTE released if all are built (modeled)${nx?` <button class="btn sm primary" data-pp2-act="jbvc" data-a="${nx.id}">Build the next one in VibeCheck</button>`:""}`:`<span class="muted">Empty. Open a card and choose Add to the build plan, or Build it in VibeCheck.</span>`}</div>`})()}
  ${R.xrefBar()}
  <div class="jb-grid">${show.slice(0,lim_).map(bcard).join("")||`<p class="muted">Nothing matches these filters.</p>`}</div>
  ${show.length>24?`<div class="row" style="margin-top:10px"><button class="btn quiet" data-pp2-act="jbmore" data-a="">${O.all?"Show the top 24":"Show all "+show.length}</button></div>`:""}
- <p class="muted small jhint">Waves are a hypothesis: Wave 1 is the most hours released among builds with a process behind them and risk of 3 or less; Wave 3 has risk 5, no process yet, or the least return. Limits shown are the proposed starting box (tier, confidence floor, kill switch), not a running configuration. Nothing here is built or live. Teammate names are placeholders.</p>`};
+ <p class="muted small jhint">Waves are a hypothesis: Wave 1 is the most hours released among builds with a process behind them and risk of 3 or less; Wave 3 has risk 5, no process yet, or the least return. FTE is modeled: a robot frees 80% and an agent 60% of a step's hours, ${FTE_H} hours is one FTE a month, and ${E(R.capNote().replace(/^Each/,"each"))}; cards marked capped hit that limit. Limits shown are the proposed starting box (tier, confidence floor, kill switch), not a running configuration. Nothing here is built or live. Teammate names are placeholders.</p>`};
 R.buildDrawer=function(id){const a=A(),o=builds().find(x=>x.id===id);if(!o)return;const L=o.lim;
  const rows=o.rows.slice().sort((x,y)=>y.hrs-x.hrs);const p=o.rows[0].b.procs[0];
  const kv=(k,v)=>`<div class="jb-kv"><span>${k}</span><b>${v}</b></div>`;
  openDrawer(`<div class="jd"><div class="eyebrow">${o.k==="agent"?"Agent":"Robot"} to create · ${wl[o.wave]} ${W.NUM?NUM.bchip(o.key):""}</div><h2 class="jd-t">${E(o.title)}</h2>
  <div class="jd-crew">${R.av(o.k,o.name,44)}<span class="small muted">Placeholder name: ${E(o.name)}. Proposed, not built.</span></div>
- <div class="jd-tiles">${tile("Steps",o.rows.length,"it would take over")}${tile("Hours a month",fmt(o.hrs),"covered today")}${tile(o.ext?"Hours back":"Released",o.ext?fmt(o.freed):(o.freed/FTE_H).toFixed(1)+" FTE",o.k==="robot"?"80% freed, modeled":"60% freed, modeled")}</div>
+ <div class="jd-tiles">${tile("Steps",o.rows.length,"it would take over")}${tile("Hours a month",fmt(o.hrs),"covered today")}${tile(o.ext?"Hours back":"Released",o.ext?fmt(o.freed):(o.freed/FTE_H).toFixed(1)+" FTE",(o.k==="robot"?"80% freed, modeled":"60% freed, modeled")+(o.capped?"; capped at "+A().REC_CAP_FTE+" FTE a step":""))}</div>
  <h3 class="jd-h">Job</h3><p class="small">${o.k==="agent"?"Reads the request, decides what to do inside its box, acts or hands to a person, and records why.":"Runs the same fixed rule every time, with no model, and alerts the owner when an input is not what it expects."} It covers: ${rows.slice(0,4).map(x=>E(x.b.t)).join("; ")}${rows.length>4?"; and "+(rows.length-4)+" more":""}.</p>
  <h3 class="jd-h">Starting box</h3><div class="jb-kvs">${kv("Mode",o.k==="agent"?"Agent":"Robot")}${kv("Tier",E(L.tier))}${kv("Confidence floor",E(L.floor))}${kv("When unsure",E(L.ask))}${kv("Kill switch",E(L.kill))}${kv("Budget","Set when it is built; not priced here")}${kv("Accountable owner",E(o.teams[0]||"To assign"))}${kv("Highest step risk",o.risk+" of 5")}</div>
  <h3 class="jd-h">Before it can be built</h3><ul class="jb-need"><li class="${o.hasProc?"ok":"no"}">${o.hasProc?"A process to run inside: "+E(a.wfN(p)):"A process first. Draft one from the steps below."}</li><li class="${o.sys.length?"ok":"no"}">${o.sys.length?"Access to "+E(o.sys.join(", ")):"Systems to be named"}</li><li class="${o.risk>=4?"no":"ok"}">${o.risk>=4?"High risk: a person approves each action until it earns trust":"Risk is low enough to act and report"}</li>${o.pain?`<li class="ok">${o.pain} painful step${o.pain===1?"":"s"} it would relieve</li>`:""}</ul>

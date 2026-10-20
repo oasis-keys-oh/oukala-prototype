@@ -48,3 +48,8 @@
 .org5-res .eyebrow{margin-top:12px;margin-bottom:6px}
 .org-tabs{flex-wrap:wrap;border-radius:24px}
 .org-tabs .org-tab{padding:9px 14px}
+/* DC-01: the recommendations switch and the toolbar rows must fit a narrow screen (no clipping beside the head count) */
+.org5-bar{min-width:0;max-width:100%}
+.org-bar .k16-morebar:has(.org5-bar){min-width:0;max-width:100%}
+.org-bar .k16-morebar:has(.org5-bar)>*{min-width:0;max-width:100%}
+@media (max-width:700px){.org5-hc{width:auto;flex:1 1 100%;min-width:0;overflow-wrap:anywhere}}

@@ -6,7 +6,7 @@ const A=()=>X.api,E=R.E,fmt=n=>A().fmt(Math.round(n)),f1=n=>A().f1(n);
 const EC=i=>"var("+A().EMC[Math.max(1,Math.min(5,Math.round(i)))]+")";
 const slug=s=>String(s).toLowerCase().replace(/[^a-z]+/g,"-");
 const hrsOf=b=>b.min*b.vol/60,fric=b=>hrsOf(b)*(5-b.em)/4;
-const FTE_H=140;
+const FTE_H=A().FTE_H||140;
 const faceSvg=(em,sz)=>`<svg class="jfsv" width="${sz||18}" height="${sz||18}" viewBox="0 0 24 24" aria-hidden="true" style="--c:${EC(em)}">${R.face(em,12,12,10.5)}</svg>`;
 const brief=h=>`<div class="jx-brief" data-role="story">${h}</div>`;
 

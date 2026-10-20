@@ -53,8 +53,11 @@ function objectives(j,b){const a=A(),r=a.rec(b),k=kvOf(j),L=a.allBoxes(j),avg=L.
  if(!o.length)o.push(k.w==="t"?"Throughput":"Experience");return o}
 JXR.objectives=objectives;
 /* best action on a step: share of effort removed, hours and dollars, and the lift in how it feels */
-JXR.fixOf=(j,b)=>{const a=A(),r=a.rec(b);const f=r.st==="cand"?a.REC_SAVE[r.k]:(b.pain&&b.em<=2)?.4:0;const hrs=b.min*b.vol/60*f;
- return {f,hrs,usd:b.who==="Patient"?0:hrs*a.REC_RATE,pt:b.who==="Patient",lift:f>0?Math.min(1,5-b.em):0}};
+JXR.fixOf=(j,b)=>{const a=A(),r=a.rec(b);const f=r.st==="cand"?a.REC_SAVE[r.k]:(b.pain&&b.em<=2)?.4:0;const raw=b.min*b.vol/60*f,hrs=a.capSave?a.capSave(raw):raw;
+ return {f,hrs,capped:raw>hrs,usd:b.who==="Patient"?0:hrs*a.REC_RATE,pt:b.who==="Patient",lift:f>0?Math.min(1,5-b.em):0}};
+/* DC-01: the FTE model in one place (mod_people journey section): 140 hours a month is one FTE; one step releases at most REC_CAP_FTE. Modeled. */
+JXR.FTE_H=()=>A().FTE_H||140;
+JXR.capNote=()=>`Each step releases at most ${A().REC_CAP_FTE||2} FTE (${A().REC_CAP_H||280} hours a month), modeled`;
 
 /* ---------- 3. avatars ---------- */
 const AGN=["Atlas","Sage","Nova","Iris","Orion","Lyra","Quill","Vega"],RBN=["Bolt","Gear","Rivet","Relay","Cog","Torque","Switch","Sprocket"];

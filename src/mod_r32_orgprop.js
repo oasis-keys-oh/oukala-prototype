@@ -5,7 +5,7 @@
 const W=window,O=W.ORGX,R=W.JXR;if(!O||!R||!R.builds||!W.SCN)return;
 const OS=S.org;
 const E=R.E,H=s=>E(s==null?"":String(s));
-const FTE_H=140,WL={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
+const FTE_H=(W.JYX&&JYX.api&&JYX.api.FTE_H)||140,WL={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
 /* box owners that are not an org unit by that name */
 const UNIT={"People office":"People operations","Hiring manager":"People operations","Service desk":"Service desk and operations","Ops team":"Service desk and operations","Change manager":"Change and release","PMO":"Portfolio and delivery","Resource office":"Portfolio and delivery","Vendor management":"Legal and compliance"};
 let CACHE=null,CK="";

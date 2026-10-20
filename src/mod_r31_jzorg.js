@@ -5,7 +5,7 @@
 (function(){
 const W=window,X=W.JYX,R=W.JXR;if(!X||!X.api||!R||!R.av)return;
 const A=()=>X.api,E=R.E,fmt=n=>A().fmt(Math.round(n)),f1=n=>A().f1(n);
-const FTE_H=140;
+const FTE_H=A().FTE_H||140;
 const EXT=new Set(["Patient","Payer","Vendor","Regulator","Member","Customer IT admin","Referring clinician"]);
 const O=R.org={flt:"all",scope:null};
 const scopeNow=()=>O.scope||(W.SCN&&SCN.cur&&SCN.cur!=="core"?"detail":"all");
@@ -71,7 +71,7 @@ R.orgView=function(){const a=A(),M=model();const all=M.all,tiles=(l,v,s,c)=>`<di
  ${realOrg()?realChart():(tenantChart(M,all)||`<section class="jo-chart" aria-label="Org chart with recommended agents and robots"><div class="jo-root"><span class="jo-ri">${R.av("human",orgName(),44)}</span><div><b>${E(orgName())}</b><small>${M.teams.length} teams · ${fmt(all.hrs)} staff hours a month in mapped steps</small></div><span class="jo-crew">${crew(all,28)}</span></div><div class="jo-rail" aria-hidden="true"></div>
  <div class="tscroll"><div class="jo-teams">${M.teams.map(teamCol).join("")}${M.out?teamCol(M.out):""}</div></div></section>`)}
  <div class="jfl jo-leg"><span>${R.av("human","Person",20)} A role, with the effort it carries</span><span>${R.av("agent","Agent",20)} Agent: reasons and decides inside limits</span><span>${R.av("robot","Robot",20)} Robot: rules, no model cost</span><span>${R.av("agent","Proposed",20,"jav-cand")} Dashed ring: proposed, not built</span></div>
- <p class="muted small jhint">${M.sc==="detail"&&M.hasDetail?"The end-to-end journey summarizes work the detailed journeys already cover, so it is left out to avoid counting the same effort twice. Switch to All journeys to include it. ":"Where two journeys cover the same work it is counted in both. "}One proposed teammate stands for one recommended step; a real build may combine steps that share a process. Modeled: a robot frees 80% and an agent 60% of the hours, ${FTE_H} hours is one FTE a month, and patient or partner time is shown in hours and never priced. Teams are the owning team named on each step; the sample organization is fictional.</p>
+ <p class="muted small jhint">${M.sc==="detail"&&M.hasDetail?"The end-to-end journey summarizes work the detailed journeys already cover, so it is left out to avoid counting the same effort twice. Switch to All journeys to include it. ":"Where two journeys cover the same work it is counted in both. "}One proposed teammate stands for one recommended step; a real build may combine steps that share a process. Modeled: a robot frees 80% and an agent 60% of the hours, ${FTE_H} hours is one FTE a month, ${E(R.capNote().replace(/^Each/,"each").replace(/, modeled$/,""))}, and patient or partner time is shown in hours and never priced. Teams are the owning team named on each step; the sample organization is fictional.</p>
  ${W.SCN&&SCN.cur==="core"?`<div class="row" style="margin-top:8px"><button class="btn quiet" data-go="org_chart">Open the full org chart with the 15 governed agents</button></div>`:""}`};
 
 R.orgDrawer=function(tn,pn){const a=A(),M=model();const all=M.teams.concat(M.out?[M.out]:[]);const t=all.find(x=>x.n===tn);if(!t)return;
