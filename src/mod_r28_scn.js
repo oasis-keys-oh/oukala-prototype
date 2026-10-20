@@ -1,6 +1,9 @@
 /* ===== mod_r28_scn: demo scenarios. The industry journeys and workflows (healthcare, mining, storage and backup) are separate demos for separate customers.
-   By default only the Meridian sample is loaded. Choose a scenario on the Journey maps screen, from search, or with ?scenario=health|mining|storage in the address.
-   Switching removes the previous scenario's journeys, workflows and personas and loads the new one. Fictional organizations only. ===== */
+   By default only the Meridian sample is loaded. Choose a scenario on the Journey maps screen, from search, from the tenant switcher, or with
+   ?tenant= (or ?scenario=) health|mining|storage in the address. Switching removes the previous scenario's journeys, workflows and personas and loads the new one.
+   One tenant model (DC-31): DATA owns the active tenant. SCN.set and TENANT.switch both call DATA.setTenant; a DATA change listener swaps the
+   journeys, workflows and personas in place, and one tenantChange hook re-renders the same screen with the user's state kept (CL-56, no reload).
+   Fictional organizations only. ===== */
 (function(){
 const W=window,D=document;const X=W.JYX;if(!X||!W.WFX)return;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
@@ -23,18 +26,27 @@ function strip(k){const p=pack[k];if(!p)return;const w=new Set(p.wfs.map(d=>d.id
  X.PERSONAS.length=0}
 function load(k){const p=pack[k];if(!p)return;p.wfs.forEach(d=>W.WFX.reg(d));p.jys.forEach(j=>{if(!X.JY.list.some(x=>x.id===j.id))X.JY.list.push(j)});p.pers.forEach(x=>{if(X.PERSONAS.indexOf(x)<0)X.PERSONAS.push(x)});byEnd()}
 Object.keys(pack).forEach(strip);load("core");G(()=>X.syncJy());
-SCN.set=function(k){if(!SCN.list[k]||k===SCN.cur)return;strip(SCN.cur);load(k);SCN.cur=k;try{S.scenario=k}catch(e){}G(()=>W.DATA&&W.DATA.setTenant(k));
+/* swap the tenant state in place; the user's state (screen, tab, filters) is left alone */
+function apply(k){strip(SCN.cur);load(k);SCN.cur=k;try{S.scenario=k}catch(e){}
  if(X.JY.sel&&!X.JY.list.some(j=>j.id===X.JY.sel))X.JY.sel=null;
- G(()=>X.syncJy());G(()=>W.ODX&&W.ODX.preset&&W.ODX.preset(k));G(()=>{if(S.od){S.od.gsel=(W.ODX.GAPS[0]||{}).id||"G07";S.od.choice={};S.od.gdim="all"}});G(()=>toast("Demo scenario: "+SCN.list[k].n,"good"));G(()=>render())};
+ G(()=>X.syncJy());G(()=>W.ODX&&W.ODX.preset&&W.ODX.preset(k));G(()=>{if(S.od){S.od.gsel=(W.ODX.GAPS[0]||{}).id||"G07";S.od.choice={};S.od.gdim="all"}})}
+const DT=W.DATA;
+if(DT){Object.keys(SCN.list).forEach(k=>DT.addTenant(k,{n:SCN.list[k].n,ind:SCN.list[k].ind||null,d:SCN.list[k].d}));
+ DT.on("change",id=>{if(SCN.list[id]&&id!==SCN.cur)apply(id)});
+ G(()=>HOOKS.on("tenantChange",id=>{if(!SCN.list[id])return;G(()=>toast("Tenant: "+((W.TENANT&&TENANT.name(id))||SCN.list[id].n),"good"));G(()=>render())},{order:1000,id:"scn-render"}))}
+SCN.allowed=k=>!!SCN.list[k]&&(!DT||DT.allowed(k));
+SCN.set=function(k){if(!SCN.list[k]||k===SCN.cur)return false;
+ if(DT){const ok=DT.setTenant(k);if(!ok&&DT.tenant()===k&&SCN.cur!==k){apply(k);G(()=>render());return true}return ok}
+ apply(k);G(()=>render());return true};
 SCN.wfs=k=>pack[k]?pack[k].wfs:[];
 SCN.counts=k=>pack[k]?{journeys:pack[k].jys.length,workflows:pack[k].wfs.length}:{journeys:0,workflows:0};
-/* the chooser on the Journey maps screen */
+/* the chooser on the Journey maps screen: only tenants the signed-in person is a member of (CL-63) */
 function inject(){if(G(()=>S.screen,"")!=="ppl_jrny")return;const sc=D.querySelector("#view .screen");if(!sc||sc.querySelector(".r28-scn"))return;
- const chips=Object.keys(SCN.list).map(k=>`<button type="button" class="chip r15-fv" data-r28-scn="${k}" aria-pressed="${k===SCN.cur}"${k===SCN.cur?' aria-current="true"':""} title="${SCN.list[k].d}">${SCN.list[k].n}</button>`).join("");
- const html=`<nav class="r15-fam r28-scn" aria-label="Demo scenario"><span class="r15-fl">Demo scenario</span><span class="r15-fc">${chips}</span></nav><p class="muted small" style="margin:4px 2px 10px">${SCN.list[SCN.cur].d} Each scenario is a separate demo with its own journeys and workflows. All organizations and figures are fictional sample data.</p>`;
+ const chips=Object.keys(SCN.list).filter(SCN.allowed).map(k=>`<button type="button" class="chip r15-fv" data-r28-scn="${k}" aria-pressed="${k===SCN.cur}"${k===SCN.cur?' aria-current="true"':""} title="${SCN.list[k].d}">${SCN.list[k].n}</button>`).join("");
+ const html=`<nav class="r15-fam r28-scn" aria-label="Demo scenario" data-tenant-chooser="1"><span class="r15-fl">Demo scenario</span><span class="r15-fc">${chips}</span></nav><p class="muted small" style="margin:4px 2px 10px">${SCN.list[SCN.cur].d} Each scenario is a separate demo with its own journeys and workflows. All organizations and figures are fictional sample data.</p>`;
  const hero=sc.querySelector(":scope > .hero");hero?hero.insertAdjacentHTML("afterend",html):sc.insertAdjacentHTML("afterbegin",html)}
-const _r=W.render;W.render=function(){const r=_r.apply(this,arguments);try{inject()}catch(e){console.error("r28 scn",e)}return r};
+G(()=>HOOKS.on("afterRender",()=>{try{inject()}catch(e){console.error("r28 scn",e)}},{id:"scn-chooser"}));
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r28-scn]");if(b)SCN.set(b.dataset.r28Scn)});
-G(()=>SEARCHX.push(()=>Object.keys(SCN.list).map(k=>({g:"Go to",t:"Demo scenario: "+SCN.list[k].n,m:SCN.list[k].d,c:"--p4",f:()=>{SCN.set(k);go("ppl_jrny")},k:"demo scenario industry journeys "+SCN.list[k].n.toLowerCase()}))));
-const q=G(()=>new URLSearchParams(location.search).get("scenario"),null);if(q&&SCN.list[q])setTimeout(()=>SCN.set(q),600);
+G(()=>SEARCHX.push(()=>Object.keys(SCN.list).filter(SCN.allowed).map(k=>({g:"Go to",chooser:1,t:"Demo scenario: "+SCN.list[k].n,m:SCN.list[k].d,c:"--p4",f:()=>{SCN.set(k);go("ppl_jrny")},k:"demo scenario industry journeys "+SCN.list[k].n.toLowerCase()}))));
+const q=G(()=>{const u=new URLSearchParams(location.search);return u.get("tenant")||u.get("scenario")},null);if(q&&SCN.list[q])setTimeout(()=>SCN.set(q),600);
 })();
