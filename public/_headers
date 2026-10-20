@@ -1,6 +1,7 @@
-# CL-12. index.html loads oukala-js.js?v=<content hash> (written by src/build.py), so every build gets a new URL:
-# the script is cached for a year without revalidation. The shell revalidates on every load so it always names the current hash.
-/oukala-js.js
+# CL-12, CL-14. Every file in /assets/ has a content hash in its name (written by src/build.py): style.<hash>.css, app.<hash>.js,
+# rest.<hash>.js, data/<name>.<hash>.json and the images the CSS uses. A new build gives new names, so these are cached for a year
+# without revalidation. The shell revalidates on every load so it always names the current files.
+/assets/*
   Cache-Control: public, max-age=31536000, immutable
 /
   Cache-Control: public, max-age=0, must-revalidate
