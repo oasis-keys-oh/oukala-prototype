@@ -147,7 +147,7 @@ const KL={goal:"Goal",cap:"Capability",road:"Roadmap",proj:"Project",direct:"Dir
 const isOpen=nd=>SX.open[nd.k]!==undefined?SX.open[nd.k]:((nd.kind==="goal"&&innerWidth>600)||nd.kind==="orphan"&&false);
 function levelCell(D,nd){
  if(nd.kind==="cap"){const mx=5;return `<span class="sx-lv" title="Level ${MAT.fv(nd.cur)} now, ${MAT.fv(nd.t1)} Year 1 target"><i style="width:${Math.min(100,nd.cur/mx*100)}%"></i><b style="left:${Math.min(100,nd.t1/mx*100)}%"></b></span><span class="sx-lt">${MAT.fv(nd.cur)} to ${MAT.fv(nd.t1)}${nd.gap>.001?` <em>gap ${MAT.fv(nd.gap)}</em>`:""}</span>`}
- if(nd.kind==="goal"){const R=G(()=>MAT.roll(nd.kids.filter(k=>k.kind==="cap").map(k=>k.n)),null);return R&&R.n?`<span class="sx-lt">${MAT.fv(R.cur)} to ${MAT.fv(R.t1)} <em>${R.n} capabilities</em></span>`:`<span class="sx-lt muted">none</span>`}
+ if(nd.kind==="goal"){const R=G(()=>MAT.roll(nd.kids.filter(k=>k.kind==="cap").map(k=>k.n)),null);return R&&R.n?`<span class="sx-lt">${MAT.fv(R.cur)} to ${MAT.fv(R.t1)} <em>${U.esc(R.n)} capabilities</em></span>`:`<span class="sx-lt muted">none</span>`}
  if(nd.kind==="road")return `<span class="sx-lt">L${nd.from} to L${nd.to}</span>`;
  if(nd.kind==="proj"){const p=nd.p;return `<span class="sx-lt">${p.funded?"Funded":"Not funded"}</span>`}
  return ""}

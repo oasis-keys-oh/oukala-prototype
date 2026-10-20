@@ -511,7 +511,7 @@ function stats(){
 }
 function famBars(){
  const L=idx().list,fams=[...new Set(L.map(P=>P.family))].map(f=>({f,l:L.filter(P=>P.family===f)})).map(x=>({f:x.f,n:x.l.length,a:avg(x.l.map(P=>P.level/P.max*5)),b:x.l.filter(P=>P.below).length})).sort((p,q)=>p.a-q.a);
- return `<div class="pl-fb">${fams.map(x=>`<div class="pl-fr"><span class="small">${E(famName(x.f))}</span><div class="pl-tk" role="img" aria-label="${E(famName(x.f))}: average level ${r1(x.a)} of 5"><i class="pl-b${Math.max(1,Math.round(x.a))}" style="width:${x.a*20}%"></i></div><span class="num small">${r1(x.a)}</span><span class="small muted">${x.n}</span></div>`).join("")}</div>${lvLegend()}`;
+ return `<div class="pl-fb">${fams.map(x=>`<div class="pl-fr"><span class="small">${E(famName(x.f))}</span><div class="pl-tk" role="img" aria-label="${E(famName(x.f))}: average level ${r1(x.a)} of 5"><i class="pl-b${Math.max(1,Math.round(x.a))}" style="width:${x.a*20}%"></i></div><span class="num small">${r1(x.a)}</span><span class="small muted">${U.esc(x.n)}</span></div>`).join("")}</div>${lvLegend()}`;
 }
 function libPane(){
  const s=stats(),L=idx().list;
