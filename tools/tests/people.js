@@ -65,7 +65,8 @@ fails.push(...r);await p.context().close();
 // 2. PH-10: chat minimize control top right, in flow, light and dark, desktop and 400px, docked and full screen
 for(const [w,scheme,full] of [[1440,'light',false],[1440,'dark',false],[1440,'dark',true],[400,'light',false],[400,'dark',false]]){
  const q=await page(w,scheme);
- const m=await q.evaluate(async full=>{CHATX.open('chat');await new Promise(r=>setTimeout(r,300));if(full){document.querySelector('#chxFull').click();await new Promise(r=>setTimeout(r,300))}
+ const m=await q.evaluate(async full=>{const settle=async()=>{let last='',same=0;for(let i=0;i<60&&same<3;i++){await new Promise(r=>setTimeout(r,50));const e=document.querySelector('.cx-head>.cx-min');const r=e&&e.getBoundingClientRect();const k=r?[r.left,r.top,r.width,r.height].map(Math.round).join():'';same=k&&k===last?same+1:0;last=k}};
+  CHATX.open('chat');await settle();if(full){document.querySelector('#chxFull').click();await settle()}
   const mb=document.querySelector('.cx-head>.cx-min');if(!mb)return{err:'no .cx-min in header'};const a=mb.getBoundingClientRect(),h=document.querySelector('.cx-head').getBoundingClientRect();
   const over=[...document.querySelectorAll('.cx-head *')].filter(e=>e!==mb&&!mb.contains(e)).some(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&!(r.right<=a.left||r.left>=a.right||r.bottom<=a.top||r.top>=a.bottom)});
   return{right:h.right-a.right,top:a.top-h.top,over,pos:getComputedStyle(mb).position,w:a.width,hgt:a.height}},full);
