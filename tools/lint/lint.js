@@ -1,4 +1,4 @@
-// Build lint (CL-46): reads src/ (not the build) and checks the platform rules that a script can see in source.
+// Build lint (CL-46, CL-60): reads src/ (not the build) and checks the platform rules that a script can see in source.
 // Each rule counts hits per file. The run fails only when a file has more hits for a rule than the recorded baseline
 // (tools/lint/baseline.json), so existing violations are listed and new ones cannot drift in (same approach as
 // tools/tests/nav_close.js). Lower the baseline when a cleanup lands: run with --update.
@@ -62,7 +62,19 @@ const RULES=[
    const open=/^[;!]?\(\s*(function\b|\(\s*\)\s*=>|async\b)/.test(c)||/^!function\b/.test(c);const close=/\}\s*\)\s*\(\s*\)\s*;?$|\}\s*\(\s*\)\s*\)\s*;?$/.test(c);
    return open&&close?[]:[{i:0,s:(open?'':'no opening IIFE')+(open||close?'':'; ')+(close?'':'no closing IIFE')}]}},
  {id:'price',rule:'R30',ids:'CL-46',n:'Price point (dollar amount per user or per seat)',scope:'js',each:(s,L)=>strHits(L,/\$\s?\d[\d,.]*\s*[kKmM]?\s*(?:\/\s?|per\s+)(?:user|seat)\b|\bper (?:user|seat) per month\b/i)},
- {id:'cert',rule:'R30',ids:'CL-46, CL-71',n:'Certification claim outside a plan sentence',scope:'js',each:(s,L)=>{const out=[];for(const x of L.strings){const re=/(SOC ?2|bank[- ]grade)/gi;let m;while((m=re.exec(x.v))){const v=certJudge(s.t,x.i+m.index,m[0].length);if(v)out.push({i:x.i+m.index,s:v.slice(0,70)})}}return out}}
+ {id:'cert',rule:'R30',ids:'CL-46, CL-71',n:'Certification claim outside a plan sentence',scope:'js',each:(s,L)=>{const out=[];for(const x of L.strings){const re=/(SOC ?2|bank[- ]grade)/gi;let m;while((m=re.exec(x.v))){const v=certJudge(s.t,x.i+m.index,m[0].length);if(v)out.push({i:x.i+m.index,s:v.slice(0,70)})}}return out}},
+ {id:'js-literal',rule:'R8',ids:'CL-60',n:'Literal color or size in JS view code',scope:'view',each:(s,L)=>{const out=[];
+   const RE=/(?<![\w&])#(?:[0-9a-fA-F]{8}|[0-9a-fA-F]{6}|[0-9a-fA-F]{3})(?![\w-])|\brgba?\(\s*\d|\b(?:font-size|border-radius|z-index)\s*:\s*-?\d/g;
+   for(const x of L.strings){RE.lastIndex=0;let m;while((m=RE.exec(x.v))){const h=m[0];if(h[0]==='#'&&!/[a-fA-F]/.test(h)&&!/(color|fill|stroke|background)\s*[:=]\s*["']?$/i.test(x.v.slice(Math.max(0,m.index-14),m.index)))continue;out.push({i:x.i+m.index,s:x.v.slice(Math.max(0,m.index-20),m.index+24)})}}return out}},
+ {id:'sample-data',rule:'R9',ids:'CL-60',n:'Sample person or customer name as a string literal in a module',scope:'mod-view',each:(s,L)=>strHits(L,PEOPLE_RE)},
+ {id:'helper',rule:'R10',ids:'CL-60, CL-32',n:'Shared helper redeclared (compare U)',scope:'view',each:(s,L)=>reHits(L.code,new RegExp('(?:\\b(?:const|let|var)\\s+|\\bfunction\\s+|[,{]\\s*)('+UKEYS.join('|')+')\\s*(?:=(?![=>])\\s*(?:\\(|function|[a-z]\\s*=>|[a-z]\\w*\\s*=>)|\\()','g')).filter(h=>!/^[,{]/.test(h.s)||/=/.test(h.s))},
+ {id:'owner-text',rule:'R13',ids:'CL-60, CL-53',n:'Owner, backup or approver rendered as plain text (heuristic)',scope:'view',each:(s,L)=>reHits(L.code,/\$\{\s*(?:(?:esc|E|H|U\.esc|h|escH|x)\s*\(\s*)?[\w$.]+?\.(?:owner|own|backup|approver|assignee|sponsor|requester|reviewer|ownerName)\s*\)?\s*(?:\|\|\s*[^}]{0,30})?\}/g)},
+ {id:'step-label',rule:'R21',ids:'CL-60, CL-72',n:'"Automatic" or "Function" used as a step kind or label',scope:'view',each:(s,L)=>{const out=reHits(L.nc,/\bwho\s*:\s*["'](?:auto|automatic|fn|function)["']/gi);
+   for(const x of L.strings)if(/^(Automatic|Function)( step)?$/.test(x.v.trim()))out.push({i:x.i,s:'"'+x.v+'"'});return out}},
+ {id:'product-name',rule:'R31',ids:'CL-60, CL-17',n:'Product name typed as a literal (use BRAND.name) or an old product name',scope:'view',each:(s,L)=>strHits(L,/\b(Oukala|Shaheen|Falconaire)\b/,v=>!isId(v)&&!/^[a-z0-9_.:-]+$/.test(v))},
+ {id:'wrapper',rule:'R40',ids:'CL-60, CL-35',n:'New wrapper of render, go or openDrawer (use HOOKS)',scope:'view',each:(s,L)=>{const out=[];const c=L.code;
+   for(const m of c.matchAll(/(\b(?:window|W)\s*\.\s*|[^\w$.\s]\s*|^\s*)\b(render|go|openDrawer)\s*=(?![=>])/gm)){
+    const before=c.slice(Math.max(0,m.index-12),m.index+m[1].length);if(/\b(const|let|var|function)\s*$/.test(before))continue;out.push({i:m.index,s:m[0].trim()})}return out}}
 ];
 const inScope=(r,s)=>{if(r.scope==='all')return true;if(r.scope==='css')return s.ext==='css';if(s.ext!=='js')return false;
  if(r.scope==='js')return true;if(r.scope==='mod')return s.module;
@@ -78,7 +90,14 @@ const SELF={
  'real-name':['x("Owner '+REAL[0]+'")','x("Owner Casey Rowan")'],
  'iife':['const a=1;','(function(){const a=1;})();','mod'],
  'price':['x("Only $12 per user")','x("Spend $12,000 per quarter")'],
- 'cert':['x("Falconaire is SOC 2 certified.")','x("SOC 2 is a plan, not a claim.")']};
+ 'cert':['x("Falconaire is SOC 2 certified.")','x("SOC 2 is a plan, not a claim.")'],
+ 'js-literal':['x(`<b style="color:#ab12cd;font-size:14px">`)','x(`<b style="color:var(--ink)">#12 open</b>`)'],
+ 'sample-data':['x("Owner Casey Rowan")','x("Owner "+U.esc(r.owner))','mod'],
+ 'helper':['const pct=(a,b)=>a/b;','const r=U.pct(1);'],
+ 'owner-text':['x(`<td>${esc(r.owner)}</td>`)','x(`<td>${ownerChip(r.owner)}</td>`)'],
+ 'step-label':['const s={who:"auto"};','const s={who:"robot"};'],
+ 'product-name':['x("Welcome to Oukala today")','U.store.get("oukala-pref")'],
+ 'wrapper':['const _r=window.render;window.render=function(){_r()};','HOOKS.on("afterRender",f,{id:"x"});']};
 for(const r of RULES){const smp=SELF[r.id];if(!smp){console.log('!! no self-test for rule',r.id);process.exit(1)}
  const mk=(t,kind)=>({f:kind==='css'?'self.css':'mod_self.js',ext:kind==='css'?'css':'js',t,generated:false,module:true,core:false});
  const fire=t=>{const s=mk(t,smp[2]);return r.each(s,s.ext==='js'?lex(t):null).length};
