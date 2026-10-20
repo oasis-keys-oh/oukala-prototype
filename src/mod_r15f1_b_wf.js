@@ -166,7 +166,9 @@ function execAgent(i,tok,n,now){const a=n.a||{};let r=null;
 /* resolve a waiting token (by timer, signal, person or agent gate) */
 function resolveTok(i,tok,now,how,by,note){const d=getDefCached(i),n=nodeOf(d,tok.node);if(tok.st!=="wait")return false;
  if(tok.kind==="human"){const oc=how&&how.outcome||(tok.outs&&tok.outs[0])||"Done";i.ctx[n.id+".result"]=oc;return complete(i,tok,"next",now,{result:oc,detail:(note||tok.detail||""),who:by||tok.who.join(", ")}),true}
- if(tok.kind==="approval"){const dec=how&&how.decision||"Approved";if(tok.agentGate){G(()=>window.AGENTRT&&tok.agentRun&&AGENTRT.gate(tok.agentRun,dec==="Approved"?"Approved":"Rejected",by||me(),note));if(dec==="Approved"){i.ctx[n.id+".confidence"]=.9;return complete(i,tok,"next",now,{result:"Sponsor approved the agent result",detail:note||"",who:by||tok.who.join(", ")}),true}return complete(i,tok,"next",now,{result:"Sponsor rejected the agent result: a person redoes the step",detail:note||"",who:by||""}),true}
+ if(tok.kind==="approval"){const dec=how&&how.decision||"Approved";if(tok.agentGate){/* PR-27: a timer decision is the sponsor's (simulated); a refused decider leaves the step waiting */
+   const dby=by||(tok.who&&tok.who[0])||me();if(window.AGENTRT&&tok.agentRun&&AGENTRT.canDecide&&!AGENTRT.canDecide(tok.agentRun,dby).ok){if(!by)tok.due=null;return false}
+   G(()=>window.AGENTRT&&tok.agentRun&&AGENTRT.gate(tok.agentRun,dec==="Approved"?"Approved":"Rejected",dby,note));if(dec==="Approved"){i.ctx[n.id+".confidence"]=.9;return complete(i,tok,"next",now,{result:"Sponsor approved the agent result",detail:note||"",who:by||tok.who.join(", ")}),true}return complete(i,tok,"next",now,{result:"Sponsor rejected the agent result: a person redoes the step",detail:note||"",who:by||""}),true}
   const port=portsOf(n).includes(dec)?dec:"Approved";i.ctx[n.id+".decision"]=dec;return complete(i,tok,port,now,{result:dec,detail:note||"",who:by||tok.who.join(", ")}),true}
  if(tok.kind==="timer"||tok.kind==="event"){return complete(i,tok,"next",now,{result:tok.kind==="event"&&!by?"Timed out waiting":"Done",detail:by?"Signalled by "+by:tok.detail,who:by||"Timer"}),true}
  if(tok.kind==="retry"){tok.st="ready";return true}
@@ -205,6 +207,7 @@ W.control=setState;
 function decideTok(id,tokId,how,note,onBehalf){const i=inst(id);if(!i)return{ok:false,why:"No instance"};const t=i.tokens.find(x=>x.id===tokId);if(!t||t.st!=="wait")return{ok:false,why:"Step is no longer waiting"};
  if(i.state==="paused")return{ok:false,why:"The instance is paused"};
  if(t.kind==="approval"&&i.by===me()&&!onBehalf&&!t.agentGate)return{ok:false,why:"Separation of duties: the requester cannot approve their own request"};
+ if(t.kind==="approval"&&t.agentGate&&t.agentRun&&window.AGENTRT&&AGENTRT.canDecide){const cd=AGENTRT.canDecide(t.agentRun,me());if(!cd.ok)return{ok:false,why:cd.why,rule:cd.rule}}
  if(t.kind==="approval"&&window.APPR&&APPR.wfDecide&&i.ctx["appr."+t.node]){const ar=APPR.wfDecide(i,t,how,me(),note,onBehalf);if(ar&&ar.err)return{ok:false,why:ar.err};if(ar&&ar.pending){t.who=ar.who;t.detail="Approval by "+ar.who.join(", ")+" ("+ar.detail+")";save(i);return{ok:true,state:i.state,pending:true}}if(ar&&ar.done)how=Object.assign({},how,{decision:ar.decision})}
  const by=onBehalf?(t.who[0]||"")+" (recorded by "+me()+")":me();resolveTok(i,t,SIM(),how,by,note);stepInst(i,SIM());save(i);audit("Workflow step decided",i.name+" · "+t.name+" · "+((how&&(how.decision||how.outcome))||"Done"));return{ok:true,state:i.state}}
 W.decide=decideTok;W.instances=()=>allInst();W.get=inst;W.steps=stepsOf;W.tick=tick;
