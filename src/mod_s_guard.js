@@ -132,7 +132,7 @@ const ATTEMPTS=[
    t("Catalog request","Casey Rowan","catalog",{kind:"catalog",id:"playground",requester:"Casey Rowan"});
    return{refused:out.every(x=>!x[1].ok&&x[1].rule==="sod"),why:out.map(x=>x[0]+": "+x[1].why).join(" · "),who:out.length+" requests"}}},
  {id:"kill",n:"Run an agent while the kill switch is on",rail:"GR-17",fn:"AGENTRT.setControl",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};let r;
-   try{AGENTRT.setControl("global","all",true,"kill","Guardrail playground (simulated)");r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: kill switch",step:"Try to break it",origin:"guard playground"})}finally{AGENTRT.setControl("global","all",false,"kill","Guardrail playground done")}
+   try{AGENTRT.setControl("global","all",true,"kill","Guardrail playground, simulated");r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: kill switch",step:"Try to break it",origin:"guard playground"})}finally{AGENTRT.setControl("global","all",false,"kill","Guardrail playground done")}
    return{refused:!!(r&&r.blocked&&r.by==="control"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}}];
 function attempt(id){const a=ATTEMPTS.find(x=>x.id===id);if(!a)return null;let res;try{res=a.run()||{}}catch(e){res={na:"The check could not run: "+(e&&e.message||e)}}
  const ent={at:Date.now(),id:a.id,n:a.n,rail:a.rail,fn:a.fn,refused:!!res.refused,na:res.na||"",why:res.na||res.why||"",ref:res.ref||"",who:res.who||"",tenant:G(()=>DATA.tenant(),"core"),sim:true};
@@ -148,6 +148,49 @@ Object.assign(GD,{attempt,attempts:()=>LOG.slice(),tries:()=>ATTEMPTS.map(a=>({i
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-try]");if(!t)return;const id=t.dataset.gdTry;
  const done=(id==="*"?ATTEMPTS.map(a=>attempt(a.id)):[attempt(id)]).filter(Boolean);const bad=done.filter(x=>!x.refused&&!x.na).length;
  G(()=>toast(bad?bad+" attempt"+(bad===1?"":"s")+" not refused":done.length+" attempt"+(done.length===1?"":"s")+" refused (simulated)",bad?"warn":"good"));if(S.screen===SELF)render()});
+
+/* ---------- DC-21: guardrail children, one short guided view per act ----------
+   Beat-ready data for the Showroom (point of 12 words or fewer, seconds, exactly two sentences, one interaction, claim chips).
+   Open one with GUARD.child(id), go("guard",id), or the deep link ?guardchild=<id>. The Showroom module is not edited here. */
+const CHILDREN=[
+ {id:"demand",act:"Demand",title:"Approvals go to a group, never a person",point:"Every approval routes to a group; nobody approves their own",secs:150,rails:["GR-03","GR-04","GR-05"],
+  say:["Catalog, budget and change approvals all resolve to one group model, and only a member of that group can decide.","The requester is always refused, which you can watch happen on the next step."],
+  do:"Press Try it on Approve your own request.",claims:["fact","simulated"],
+  steps:[{t:"One routing source decides which group holds each approval.",link:"r16h_groups"},{t:"Try to approve your own request: the real check refuses it.",tryit:"own"},{t:"Steps that still name a person are counted as gaps.",link:"r16h_groups"}]},
+ {id:"fund",act:"Fund",title:"Money cannot move past its authority",point:"The amount decides who approves; caps stop overspend",secs:150,rails:["GR-08","GR-09","GR-10","GR-11","GR-06"],
+  say:["The delegation of authority picks the approver from the amount, and a purchase order cannot pass what is left on its line.","Two of these are partial today, and the register says exactly where."],
+  do:"Open the delegation of authority matrix.",claims:["fact","modeled"],
+  steps:[{t:"The amount picks the approver tier.",link:"bud_doa"},{t:"A purchase order or reforecast past the free money is refused.",link:"bud_lines"},{t:"Funding a request shows the reserve but does not block yet: partial.",link:"bud_req"}]},
+ {id:"deliver",act:"Deliver",title:"Agents work inside a box",point:"Tier, budget, confidence floor and kill switch box every agent",secs:180,rails:["GR-12","GR-13","GR-14","GR-15","GR-17"],
+  say:["Every agent run is checked against its tier, its daily budget, a confidence floor and the kill switch before anything happens.","Runs here are simulated, and each attempt below calls the real runtime check."],
+  do:"Press Try it on the kill switch.",claims:["simulated"],
+  steps:[{t:"Run an agent past its daily budget: blocked.",tryit:"budget"},{t:"Below the confidence floor a person decides.",tryit:"confidence"},{t:"With the kill switch on, nothing runs.",tryit:"kill"},{t:"See every run, gate and stop in the runtime.",link:"ai_runtime"}]},
+ {id:"build",act:"Build",title:"Nothing ships past a failed gate",point:"A failed gate or missing owner blocks every promotion",secs:120,rails:["GR-19","GR-20","GR-25"],
+  say:["A citizen app is promoted only when its gate passes, and the gate checks for a named owner and a different backup.","Environments cannot be skipped on the way to production."],
+  do:"Open the citizen app gate.",claims:["fact"],
+  steps:[{t:"The promotion gate refuses a failing app.",link:"plat_gate"},{t:"Environments promote in order.",link:"adm_env"},{t:"Owner and backup gaps are listed.",link:"own_gaps"}]},
+ {id:"track",act:"Track",title:"Every decision leaves a record",point:"Permissions decide, masks hide, and the trail records it",secs:120,rails:["GR-01","GR-21","GR-24"],
+  say:["The permission model decides every screen and action, and restricted fields stay hidden.","The shared audit trail is kept in memory in this prototype, so it is marked partial."],
+  do:"Press Try it on the restricted record.",claims:["fact","simulated"],
+  steps:[{t:"Open someone else's pay as the service desk: refused.",tryit:"restricted"},{t:"See how the permission model decided.",link:"r16g_perm"},{t:"Read the audit trail.",link:"adm_audit"}]},
+ {id:"tenant",act:"Set",title:"One tenant, one boundary",point:"Each tenant sees its own data; isolation is simulated here",secs:150,rails:["GR-22","GR-23","GR-26"],
+  say:["Data and agent runs are read per tenant, so one customer never sees another's records or runs.","Tenant isolation and the AI gateway are simulated in this prototype and are plans, not certified claims."],
+  do:"Open the agent runtime and read the gateway note.",claims:["simulated","hypothesis"],
+  steps:[{t:"Agent runs, retrieval, memory and logs are kept per tenant.",link:"ai_runtime"},{t:"Model calls go only through the AI gateway, which is simulated.",link:"adm_gate"},{t:"A tenant with no data sees empty screens, never sample rows from another tenant.",link:"home"}]}];
+const CHBY=Object.fromEntries(CHILDREN.map(c=>[c.id,c]));
+function child(id){if(!CHBY[id])return null;S_.child=id;if(W.HOOKS)G(()=>go(SELF,id));else{S.screen=SELF;render()}return Object.assign({},CHBY[id])}
+G(()=>HOOKS.on("beforeGo",(s,a)=>{if(s===SELF&&a&&CHBY[a])S_.child=a},{id:"guard-child"}));
+GD._childPanel=function(){const c=CHBY[S_.child];if(!c)return"";const rs=Object.fromEntries(rails().map(r=>[r.id,r]));const last=id=>LOG.find(x=>x.id===id);
+ return `<section class="card glass gd-child" aria-label="Guided view: ${E(c.title)}"><div class="gd-ch-h"><div><div class="eyebrow">Guided view · ${E(c.act)} · about ${Math.round(c.secs/60)} minutes</div><h3>${E(c.title)}</h3></div><button type="button" class="btn quiet gd-x" data-gd-child="" aria-label="Close the guided view">&times;</button></div>
+ <p data-role="story">${E(c.say.join(" "))}</p>
+ <ol class="gd-steps">${c.steps.map(s=>{const l=s.tryit&&last(s.tryit);return `<li><span>${E(s.t)}</span> ${s.tryit?`<button type="button" class="btn sm" data-gd-try="${E(s.tryit)}">Try it</button>${l?" "+(l.refused?pill("Refused","good"):pill("Not refused","bad")):""}`:`<button type="button" class="chip" data-link="screen:${E(s.link)}">Open ${E(scrName(s.link))}</button>`}</li>`}).join("")}</ol>
+ <div class="row">${c.rails.map(id=>rs[id]?pill(id+" "+STATUS[rs[id].status].l,STATUS[rs[id].status].c,rs[id].rule):"").join("")}${c.claims.indexOf("simulated")>=0?simChip():""}</div></section>`};
+function childrenTab(){return card("Guided views","Short views of the guardrails, one per act of a tour. A Showroom beat can link to any of them.",
+ `<div class="tscroll"><table><thead><tr><th>Act</th><th>View</th><th>Point</th><th class="num">Time</th><th>Deep link</th><th></th></tr></thead><tbody>${CHILDREN.map(c=>`<tr><td>${E(c.act)}</td><td><b>${E(c.title)}</b></td><td class="small">${E(c.point)}</td><td class="num">${Math.round(c.secs/60*10)/10} min</td><td><code>?guardchild=${E(c.id)}</code></td><td><button type="button" class="btn sm" data-gd-child="${E(c.id)}">Open</button></td></tr>`).join("")}</tbody></table></div>`)}
+TABS.push({l:"Guided views",h:()=>childrenTab()});
+Object.assign(GD,{child,children:()=>CHILDREN.map(c=>JSON.parse(JSON.stringify(c)))});
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-child]");if(!t)return;const id=t.dataset.gdChild;if(id)child(id);else{S_.child="";render()}});
+G(()=>{const q=new URLSearchParams(location.search).get("guardchild");if(q&&CHBY[q])setTimeout(()=>child(q),1200)});
 
 /* ---------- process (R34 procCard) ---------- */
 G(()=>PROC.reg(SELF,{title:"How a guardrail is kept true",std:["nist","cobit"],steps:[

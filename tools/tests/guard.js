@@ -78,8 +78,22 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  ok(!STORE.all("agent_control").some(c=>c.scope==="global"&&c.paused),"DC-20 kill switch is back off");
  if(ag)ok(STORE.get("agent_registry",AGENTRT.registry().find(x=>x.lifecycle==="active")?AGENTRT.registry().find(x=>x.lifecycle==="active").name:ag).budget_cap>0,"DC-20 budget cap restored");
  S.v.sguard=2;go("guard");ok(/Refused/.test(document.getElementById("view").textContent),"DC-20 results show on the screen");
+ /* ---- DC-21: guided views per act, beat-ready, deep-linkable ---- */
+ const ch=GUARD.children();ok(ch.length>=5,"DC-21 at least five guided views");
+ ch.forEach(c=>{ok(c.point.split(/\s+/).length<=12,"DC-21 "+c.id+" point is 12 words or fewer");ok(c.say.length===2,"DC-21 "+c.id+" has exactly two sentences");
+  ok(c.secs>=120&&c.secs<=180,"DC-21 "+c.id+" runs 2 to 3 minutes");ok(c.do&&c.claims.length&&c.act,"DC-21 "+c.id+" has an act, an interaction and claim chips");
+  ok(c.rails.every(id=>byId[id]),"DC-21 "+c.id+" rails exist");ok(c.steps.every(s=>s.tryit?tries.some(t=>t.id===s.tryit):SCREENS.some(x=>x[0]===s.link)),"DC-21 "+c.id+" steps resolve");
+  ok(!/—/.test(JSON.stringify(c)),"DC-21 "+c.id+" has no em dash")});
+ GUARD.child("deliver");ok(S.screen==="guard"&&document.querySelector("#view .gd-child")&&/Agents work inside a box/.test(document.getElementById("view").textContent),"DC-21 GUARD.child opens the view");
+ document.querySelector("#view .gd-child [data-gd-child]").click();ok(!document.querySelector("#view .gd-child"),"DC-21 the view closes");
+ go("guard","fund");ok(document.querySelector("#view .gd-child"),"DC-21 go(guard, id) opens the view");S.sguard.child="";
  go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
  return f});
 fails.push(...r);
+/* DC-21 deep link: ?guardchild=<id> opens the guided view on load */
+const p2=await (await b.newContext()).newPage();p2.on('pageerror',e=>errs.push(String(e)));await p2.route(/^https?:/,x=>x.abort());
+await p2.goto('file://'+dir+'/full.html?guardchild=tenant',{waitUntil:'domcontentloaded',timeout:120000});
+const dl=await p2.waitForFunction(()=>S.screen==="guard"&&S.sguard&&S.sguard.child==="tenant"&&!!document.querySelector("#view .gd-child"),null,{timeout:30000}).then(()=>true,()=>false);
+if(!dl)fails.push('DC-21 deep link ?guardchild=tenant does not open the guided view');
 if(errs.length)fails.push('page errors: '+errs.slice(0,3).join(' | '));
 console.log('guard',fails.length?'FAIL\n - '+fails.join('\n - '):'ok');await b.close();process.exit(fails.length?1:0)})();
