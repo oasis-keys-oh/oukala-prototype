@@ -83,9 +83,11 @@ for f in set(v[-1][0] for v in defs.values()):
 
 JOURNEY = re.compile(r"(_jy\d|r28_jy|r30_j|r31_j|journey|r17p|r28_scn|r29_)")
 cxo = set()
-if "mod_r28_cxo.js" in txt:
-    for blk in re.findall(r"const (?:TOP|SV)=\[(.*?)\];", txt["mod_r28_cxo.js"], re.S):
-        cxo.update(re.findall(r"\[\s*\"([a-z0-9_]+)\"\s*,", blk))
+# PH-14: the CxO Simple list is retired; a screen counts as CxO-pinned when it is a role pin of an executive persona
+# (PURVIEW in mod_r15d_persona.js)
+if "mod_r15d_persona.js" in txt:
+    for key, pins in re.findall(r"\b(ceo|exec|cfo|coo|cco|chro|ciso|caio|clo):\{areas:\[[^\]]*\],pins:\[([^\]]*)\]", txt["mod_r15d_persona.js"]):
+        cxo.update(re.findall(r"\"([a-z0-9_]+)\"", pins))
 
 out = {}
 for sid, lst in sorted(defs.items()):

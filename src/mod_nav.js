@@ -735,12 +735,43 @@ const ONLY={r15d_firstweek:["newhire","emp"]};
 const READ_HIDE={ask:["Request"]}; /* read-only roles (Board member, Auditor) see no request forms */
 function topOf(id){const f=G(()=>R15.famOf[id]);if(f&&f.id!==id)return topOf(f.id);const a=G(()=>R15.alias[id]);if(a&&a.to!==id)return topOf(a.to);return id}
 function curSpace(){const id=G(()=>S.screen);if(!id||!screenRow(id))return null;return placeOf(topOf(id)).sp}
-NAVX.purview=function(key){key=key||G(()=>S.persona)||"exec";const d=G(()=>R15D.DEFS[key])||{};const P=G(()=>PERSONAS[key])||{};
- const full=G(()=>PREF.nav==="full")&&key!=="guest";
- let areas=(d.areas||AREA_IDS).filter(a=>AREA_IDS.indexOf(a)>=0);if(full)areas=AREA_IDS.slice();
+/* the purview of a persona: its areas (fixed order), its role pins (at most four), the gear rule, and the Build list scope (JM-13),
+   so menus, All screens, Home and the Build list read one function. The Full menu setting shows every area (never for the guest). */
+NAVX.purview=function(key){key=key||G(()=>S.persona)||"exec";const d=G(()=>R15D.DEFS[key])||{};const v=G(()=>R15D.PURVIEW[key])||{};const P=G(()=>PERSONAS[key])||{};
+ const guest=key==="guest";const full=G(()=>PREF.nav==="full")&&!guest;
+ let areas=(d.areas||v.areas||AREA_IDS).filter(a=>AREA_IDS.indexOf(a)>=0);if(full)areas=AREA_IDS.slice();
  areas=AREA_IDS.filter(a=>areas.indexOf(a)>=0); /* fixed order, whatever order the definition lists */
- const pins=(d.navPins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
- return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:key!=="guest",show:key!=="guest",readonly:!!(P.readonly||d.readonly),guest:key==="guest",full}};
+ const pins=(d.navPins||v.pins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
+ return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:!guest,show:!guest,readonly:!!(P.readonly||d.readonly),guest,full,
+  builds:G(()=>JXR.purview(),null)}};
+/* ---------- All screens: every area and every entry the viewer can open, one click from the rail (not for the Vendor guest) ---------- */
+const AS={sp:"all",q:"",mine:false};
+function allHTML(){const P=NAVX.purview();const q=AS.q.trim().toLowerCase();const mine=new Set(["my","ask","show"].concat(P.areas));
+ const sps=SPACES.filter(s=>s[0]!=="home"&&(AS.sp==="all"||AS.sp===s[0])&&(!AS.mine||mine.has(s[0])));
+ const hit=id=>{if(!q)return true;const t=TX[id]||{};return (labelOf(id)+" "+formal(id)+" "+(t.objs||[]).join(" ")+" "+(t.sub||"")).toLowerCase().indexOf(q)>=0};
+ let n=0;const body=sps.map(s=>{const e=spaceIds(s[0],Object.assign({},P,{readonly:P.readonly}));const subs=Object.keys(e).map(k=>{const ids=e[k].filter(hit);n+=ids.length;if(!ids.length)return"";
+   return `<div class="nx-allsub"><span class="navsub">${E(k)}</span>${ids.map(id=>{const t=TX[id]||{};return `<button type="button" class="nx-alli" data-nav="${id}" data-nx-all-go="1"><b>${E(labelOf(id))}</b>${t.objs&&t.objs.length?`<small>${E(t.objs.slice(0,3).join(", "))}</small>`:""}</button>`}).join("")}</div>`}).join("");
+  return subs?`<section class="nx-allsp" aria-label="${E(s[1])}"><h4>${SVG(s[0]==="build"?ICO.gear:s[3],15,1.9)}<span>${E(s[1])}</span>${mine.has(s[0])?"":`<em>outside your areas</em>`}</h4>${subs}</section>`:""}).join("");
+ const chip=(v,l)=>`<button type="button" class="chip" data-nx-all-sp="${v}" aria-pressed="${AS.sp===v}">${E(l)}</button>`;
+ return `<div class="nx-allh"><div><div class="eyebrow">All screens</div><h3>Every area, every screen you can open</h3><p class="muted small">Areas keep one fixed order. Views of a screen sit in its view switcher; search (Ctrl K) also finds views, tabs and records.</p></div><button type="button" class="btn quiet closebtn" popovertarget="nxAll" popovertargetaction="hide" aria-label="Close" title="Close">${SVG(ICO.x,16,2.2)}</button></div>
+ <div class="nx-allf"><div class="row" role="group" aria-label="Filter by area">${chip("all","All areas")}${SPACES.filter(s=>s[0]!=="home").map(s=>chip(s[0],s[1])).join("")}</div>
+ <div class="row"><input type="search" class="txtin" data-nx-all-q value="${E(AS.q)}" placeholder="Filter by screen or object, for example invoice" aria-label="Filter by screen or object"><button type="button" class="chip" data-nx-all-mine aria-pressed="${AS.mine}">Only my areas</button><span class="muted small" data-nx-all-n>${n} screen${n===1?"":"s"}</span></div></div>
+ <div class="nx-allb2">${body||`<p class="muted">Nothing matches that filter.</p>`}</div>`}
+function openAll(){if(!NAVX.purview().all)return false;let p=q1("#nxAll");if(!p){p=document.createElement("div");p.id="nxAll";p.setAttribute("popover","auto");p.className="nx-all glass";p.setAttribute("role","dialog");p.setAttribute("aria-label","All screens");document.body.appendChild(p)}
+ p.innerHTML=allHTML();try{p.showPopover()}catch(e){}return true}
+function redrawAll(focusQ){const p=q1("#nxAll");if(!p)return;p.innerHTML=allHTML();if(focusQ){const i=q1("[data-nx-all-q]",p);if(i){i.focus();const v=i.value;i.setSelectionRange(v.length,v.length)}}}
+NAVX.allScreens={open:openAll,html:allHTML,state:AS};
+ROUTER.on("click","[data-nx-all]",e=>{e.preventDefault();menu(false);openAll()},{id:"nav.all"});
+ROUTER.on("click","[data-nx-all-sp]",(e,t)=>{AS.sp=t.dataset.nxAllSp;redrawAll()},{id:"nav.all.sp"});
+ROUTER.on("click","[data-nx-all-mine]",()=>{AS.mine=!AS.mine;redrawAll()},{id:"nav.all.mine"});
+ROUTER.on("click","[data-nx-all-go]",()=>{const p=q1("#nxAll");if(p)try{p.hidePopover()}catch(x){}},{id:"nav.all.go"});
+ROUTER.on("input","[data-nx-all-q]",(e,t)=>{AS.q=t.value;redrawAll(true)},{id:"nav.all.q"});
+/* ---------- Home carries the role pins (the same four as inside the areas) ---------- */
+function homePins(){if(G(()=>S.screen)!=="home")return;const v=q1("#view");if(!v||q1(".nx-hpins",v))return;const P=NAVX.purview();if(!P.pins.length)return;
+ const host=q1(".screen",v)||v;const hero=q1(":scope > .hero",host);
+ const html=`<section class="nx-hpins" aria-label="For your role"><span class="eyebrow">For your role</span>${P.pins.map(id=>{const s=screenRow(id);const sp=placeOf(topOf(id)).sp;return `<button type="button" class="chip nx-hpin" data-nav="${id}" title="${E(spLabel(sp))}">${IC(s[2])}<span>${E(pinLabel(id))}</span></button>`}).join("")}</section>`;
+ if(hero)hero.insertAdjacentHTML("afterend",html);else host.insertAdjacentHTML("afterbegin",html)}
+if(W.HOOKS)HOOKS.on("afterRender",()=>{try{homePins()}catch(e){console.error("nav home pins",e)}},{id:"nav.homepins",order:1100});
 function spaceIds(sp,P){const e=spaceEntries(sp,P.key);const ro=P.readonly&&!P.guest?(READ_HIDE[sp]||[]):[];
  const out={};Object.keys(e).forEach(k=>{if(ro.indexOf(k)>=0)return;const l=e[k].filter(id=>!ONLY[id]||ONLY[id].indexOf(P.key)>=0);if(l.length)out[k]=l});return out}
 function pinsIn(sp,P){return P.pins.filter(id=>placeOf(topOf(id)).sp===sp)}
