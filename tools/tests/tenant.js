@@ -22,8 +22,10 @@ const r=await p.evaluate(()=>{const f=[];const snap=DATA.snapshot('core'); /* ta
  ok(JYX.JY.list.every(j=>/^JH/.test(j.id)),'Healthcare journeys only after the switch');
  ok(DATA.tenants().length===4&&DATA.tenants().every(t=>t.org),'tenant registry has four named tenants');
  /* R18: a gap is empty, never Meridian rows */
- TENANT.switch('mining');ok(DATA.get('projects').length===0&&DATA.gaps().includes('mining:projects'),'gap recorded for mining projects');
+ TENANT.switch('mining');const coreP=new Set(DATA.get('projects',{tenant:'core'}).map(x=>x.id));
+ ok(DATA.get('projects').length>0&&DATA.get('projects').every(x=>/^RR-/.test(x.id)&&!coreP.has(x.id)),'mining projects are its own');
  ok(DATA.get('people').length>0&&DATA.get('people').every(x=>x.org!=='Meridian Standards Foundation'),'mining people are its own');
+ DATA.pack('zz_gap',{projects:[{id:'G1',n:'Gap fixture'}]});ok(DATA.get('invoices',{tenant:'zz_gap'}).length===0&&DATA.gaps().includes('zz_gap:invoices'),'a missing entity is an empty list and a recorded gap');
  TENANT.switch('core');
  /* identity and membership, default deny (CL-63) */
  ok(IDENT.me().id==='casey-rowan'&&TENANT.list().length===4,'demo presenter is a member of four tenants');
