@@ -41,7 +41,7 @@ const ROWS=[
 ["Demo","Demo","Démo","Demo","تجريبي"],
 ["Enterprise","Empresa","Entreprise","Unternehmen","المؤسسة"],
 ["Skip to main content","Saltar al contenido principal","Aller au contenu principal","Zum Hauptinhalt springen","انتقل إلى المحتوى الرئيسي"],
-["Search screens, records, people, or ask Oukala","Busca pantallas, registros, personas o pregunta a Oukala","Rechercher écrans, dossiers, personnes, ou demander à Oukala","Bildschirme, Datensätze, Personen suchen oder Oukala fragen","ابحث عن الشاشات والسجلات والأشخاص أو اسأل أوكالا"],
+[("Search screens, records, people, or ask "+BRAND.name),("Busca pantallas, registros, personas o pregunta a "+BRAND.name),("Rechercher écrans, dossiers, personnes, ou demander à "+BRAND.name),("Bildschirme, Datensätze, Personen suchen oder "+BRAND.name+" fragen"),("ابحث عن الشاشات والسجلات والأشخاص أو اسأل "+BRAND.name)],
 ["Ask","Preguntar","Demander","Fragen","اسأل"],
 ["Lens","Lente","Perspective","Blickwinkel","المنظور"],
 ["Executive lens","Lente ejecutiva","Perspective de dirigeant","Blick der Führungskraft","منظور تنفيذي"],

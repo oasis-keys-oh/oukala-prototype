@@ -269,17 +269,17 @@ CAT.forEach(it=>{it.vis=it.vis||{steps:"labels",approvers:"names",cost:"price",s
 /* ---- fulfillment workflows: each catalog item runs one. Steps carry type, owner team and person, system, operational target (SLA/OLA/UC/XLA), cost and rework ----
    type: human | agent (AI) | auto | gate (approval) | wait (vendor or time) | sub (sub-flow). p = parent step ids (default: the step before it). */
 const T=(id,n,type,team,owner,sys,t,cost,o)=>Object.assign({id,n,type,team,owner,sys,t,cost,tk:type==="wait"?"UC":"OLA",rw:type==="auto"?1:type==="agent"?3:5},o||{});
-const G=(id,ap,o)=>T(id,"","gate","Approvers",null,"Oukala approvals",8,2.4,Object.assign({ap,p:["s1"],rv:"Waiting for approval",rw:4,pause:true},o||{}));
+const G=(id,ap,o)=>T(id,"","gate","Approvers",null,(BRAND.name+" approvals"),8,2.4,Object.assign({ap,p:["s1"],rv:"Waiting for approval",rw:4,pause:true},o||{}));
 const GATES="gates";
 const FLOWS=[
 {id:"wf_laptop",n:"Laptop provisioning",item:"laptop",kind:"request",steps:[
- T("s1","Request submitted","auto","Service desk",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),
+ T("s1","Request submitted","auto","Service desk",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),
  G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),G("g6","A6"),
  T("s2","Budget check and cost center","agent","Finance","Invoice Advisor","Finance systems",1,1.1,{p:GATES}),
  T("s3","Purchase order to supplier","human","Procurement","Avery Chen","Finance systems (PO)",6,14,{rv:"Ordering your laptop",rw:6}),
  T("s4","Supplier builds, registers Autopilot hardware hash, ships","wait","Vendor (Dell)",null,"Dell Premier",72,0,{rv:"Being built and shipped by our supplier",tkl:"Underpinning contract: 3 days"}),
  T("s5","Receiving and tagging","human","Facilities","Nia Brooks","Parker HQ dock",8,9,{rv:"Arrived and being checked",rw:4}),
- T("s6","Asset record created in inventory","auto","Service desk",null,"Oukala Assets",.1,.3,{hook:"asset"}),
+ T("s6","Asset record created in inventory","auto","Service desk",null,(BRAND.name+" Assets"),.1,.3,{hook:"asset"}),
  T("s7a","Assign Autopilot profile and group tag","auto","Endpoint team",null,"Intune and Windows Autopilot",.3,.5,{cond:"provision = Zero touch (Autopilot)",p:["s6"]}),
  T("s7b","Image, update and prepare by hand","human","Endpoint team","Sam Patel","Intune and imaging bench",4,38,{cond:"provision = Prepared by IT",p:["s6"],rv:"Being set up by IT",rw:9}),
  T("s8","Create account (Entra ID) and mailbox","auto","Identity team",null,"Entra ID",.5,.6,{cond:"reason = New hire",p:["s2"]}),
@@ -287,48 +287,48 @@ const FLOWS=[
  T("s10","Compliance check before release","agent","Security","Change Risk Agent","Defender and Intune compliance",.5,.9,{}),
  T("s11","License assignment (Microsoft 365 E5 and apps)","auto","Identity team",null,"Entra ID group licensing",.3,.4,{p:["s8","s10"]}),
  T("s12","Delivery to desk or shipped to home","human","Endpoint team","Northwind Managed Services","Northwind dispatch",8,11,{p:["s10","s11"],rv:"On its way to you",tk:"SLA",rw:5}),
- T("s13","User acceptance","human","Requester",null,"Oukala portal",24,1.2,{rv:"Waiting for you to confirm it works",tk:"XLA",pause:true,xla:1}),
- T("s14","Close, rating survey, retire old device","auto","Service desk",null,"Oukala portal and Assets",.1,.5,{rv:"Done",xla:1})]},
+ T("s13","User acceptance","human","Requester",null,(BRAND.name+" portal"),24,1.2,{rv:"Waiting for you to confirm it works",tk:"XLA",pause:true,xla:1}),
+ T("s14","Close, rating survey, retire old device","auto","Service desk",null,(BRAND.name+" portal and Assets"),.1,.5,{rv:"Done",xla:1})]},
 {id:"wf_phone",n:"Mobile phone provisioning",item:"phone",kind:"request",steps:[
- T("s1","Request submitted","auto","Service desk",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
+ T("s1","Request submitted","auto","Service desk",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
  T("s2","Budget check","agent","Finance","Invoice Advisor","Finance systems",1,1.1,{p:GATES}),
  T("s3","Purchase order","human","Procurement","Avery Chen","Finance systems (PO)",5,12,{rv:"Ordering your phone"}),
  T("s4","Supplier ships and registers the device in Apple Business Manager","wait","Vendor (Dell)",null,"Apple Business Manager",48,0,{rv:"Being shipped"}),
  T("s5","Receiving and tagging","human","Facilities","Nia Brooks","Parker HQ dock",8,8,{}),
- T("s6","Asset record created","auto","Service desk",null,"Oukala Assets",.1,.3,{hook:"asset"}),
+ T("s6","Asset record created","auto","Service desk",null,(BRAND.name+" Assets"),.1,.3,{hook:"asset"}),
  T("s7","Activate line and port number","human","Carrier","Northwind Managed Services","Carrier portal",8,16,{cond:"model != Teams desk phone",rv:"Activating your line"}),
  T("s8","Intune enrollment (supervised, work profile)","auto","Endpoint team",null,"Intune",1,.9,{p:["s6","s7"]}),
  T("s9","Delivery","human","Endpoint team","Northwind Managed Services","Northwind dispatch",8,10,{rv:"On its way to you",tk:"SLA"}),
- T("s10","User acceptance","human","Requester",null,"Oukala portal",24,1.2,{rv:"Confirm it works",tk:"XLA",pause:true,xla:1}),
- T("s11","Close and survey","auto","Service desk",null,"Oukala portal",.1,.5,{rv:"Done",xla:1})]},
+ T("s10","User acceptance","human","Requester",null,(BRAND.name+" portal"),24,1.2,{rv:"Confirm it works",tk:"XLA",pause:true,xla:1}),
+ T("s11","Close and survey","auto","Service desk",null,(BRAND.name+" portal"),.1,.5,{rv:"Done",xla:1})]},
 {id:"wf_software",n:"Software license and install",item:"software",kind:"request",steps:[
- T("s1","Request submitted","auto","Service desk",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
- T("s2","License pool check","agent","Finance","Invoice Advisor","Oukala Assets licenses",.3,.6,{p:GATES,rv:"Checking for a free license"}),
+ T("s1","Request submitted","auto","Service desk",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
+ T("s2","License pool check","agent","Finance","Invoice Advisor",(BRAND.name+" Assets licenses"),.3,.6,{p:GATES,rv:"Checking for a free license"}),
  T("s3","Buy seats","human","Procurement","Avery Chen","Finance systems (PO)",16,12,{cond:"poolempty",rv:"Buying a license"}),
  T("s4","Assign license (Entra group)","auto","Identity team",null,"Entra ID",.3,.4,{p:["s2","s3"]}),
  T("s5","Deploy through Intune","auto","Endpoint team",null,"Intune",1,.8,{rv:"Installing on your device"}),
- T("s6","Requester confirms install","human","Requester",null,"Oukala portal",24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
- T("s7","Close","auto","Service desk",null,"Oukala portal",.1,.3,{rv:"Done"})]},
+ T("s6","Requester confirms install","human","Requester",null,(BRAND.name+" portal"),24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
+ T("s7","Close","auto","Service desk",null,(BRAND.name+" portal"),.1,.3,{rv:"Done"})]},
 {id:"wf_project",n:"Project intake and decision",item:"project",kind:"request",steps:[
- T("s1","Idea submitted","auto","PMO",null,"Oukala portal",.1,.4,{p:[],rv:"Idea received"}),
- T("s2","Triage and completeness check","agent","PMO","PMO Agent","Oukala intake",2,2,{rv:"Being reviewed for completeness"}),
+ T("s1","Idea submitted","auto","PMO",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Idea received"}),
+ T("s2","Triage and completeness check","agent","PMO","PMO Agent",(BRAND.name+" intake"),2,2,{rv:"Being reviewed for completeness"}),
  G("g1","A1",{p:["s2"]}),G("g2","A2",{p:["s2"],t:24}),G("g3","A3",{p:["s2"],t:48}),G("g4","A4",{p:["s2"],t:24}),G("g5","A5",{p:["s2"],t:24}),G("g6","A6",{p:["s2"],t:16}),
- T("s3","Business case scoring against strategy and capacity","agent","PMO","PMO Agent","Oukala portfolio",2,3.2,{p:GATES,rv:"Being scored"}),
+ T("s3","Business case scoring against strategy and capacity","agent","PMO","PMO Agent",(BRAND.name+" portfolio"),2,3.2,{p:GATES,rv:"Being scored"}),
  T("s4","Architecture review","human","Architecture","Jordan Lee","Architecture repository",24,60,{cond:"cost > 25000",rv:"Architecture review"}),
  T("s5","Create project record and demand item","auto","PMO",null,"PPM and demand",.2,.5,{p:["s3","s4"],rv:"Decision recorded"}),
- T("s6","Assign project manager","human","PMO","Maya Ortiz","Oukala PPM",16,12,{rv:"Finding a project manager"}),
+ T("s6","Assign project manager","human","PMO","Maya Ortiz",(BRAND.name+" PPM"),16,12,{rv:"Finding a project manager"}),
  T("s7","Kickoff scheduled","human","PMO","Priya Shah","Teams",16,8,{rv:"Kickoff being scheduled",tk:"SLA"}),
- T("s8","Close and notify sponsor","auto","PMO",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})]},
+ T("s8","Close and notify sponsor","auto","PMO",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_access",n:"Access provisioning",item:"access",kind:"request",steps:[
- T("s1","Request submitted","auto","Identity team",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
+ T("s1","Request submitted","auto","Identity team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
  T("s2","Separation of duties check","agent","Identity team","Triage Agent","Entra ID access reviews",.2,.5,{p:GATES}),
  T("s3","Add to Entra ID group or role","auto","Identity team",null,"Entra ID",.3,.5,{rv:"Granting access"}),
  T("s4","Privileged: just-in-time eligibility and MFA check","auto","Identity team",null,"Privileged Identity Management",.3,.7,{cond:"tier = Privileged"}),
  T("s5","Log in quarterly access review","auto","Security",null,"Entra access reviews",.1,.3,{}),
- T("s6","Requester confirms access works","human","Requester",null,"Oukala portal",24,.8,{rv:"Confirm it works",tk:"XLA",pause:true,xla:1}),
- T("s7","Close","auto","Identity team",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})]},
+ T("s6","Requester confirms access works","human","Requester",null,(BRAND.name+" portal"),24,.8,{rv:"Confirm it works",tk:"XLA",pause:true,xla:1}),
+ T("s7","Close","auto","Identity team",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_onboard",n:"New hire onboarding (parent workflow)",item:"onboarding",kind:"onboarding",steps:[
- T("s1","Order received","auto","People team",null,"Oukala portal",.1,.4,{p:[],rv:"Order received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
+ T("s1","Order received","auto","People team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Order received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
  T("s2","Hire record and employment checks","human","People team","Nia Brooks","HR system",16,18,{p:GATES,rv:"HR paperwork"}),
  T("s3","Identity: account, mailbox and role groups","agent","Identity team","Triage Agent","Entra ID",1,1.2,{rv:"Creating your accounts"}),
  T("sub1","Laptop (sub-workflow)","sub","Endpoint team",null,"Laptop provisioning",0,0,{sub:"wf_laptop",p:["s2"],rv:"Laptop on its way"}),
@@ -337,81 +337,81 @@ const FLOWS=[
  T("s5","Access bundle and application groups","auto","Identity team",null,"Entra ID",1,.9,{p:["s3"],rv:"Setting up your access"}),
  T("s6","Enroll in required training","auto","People team",null,"Learning platform",.3,.4,{p:["s3"],rv:"Training scheduled"}),
  T("s7","Equipment check: monitor and dock","human","Facilities","Elise Park","Parker HQ stockroom",8,9,{p:["s2"],cond:"monitor"}),
- T("s8","Day-one readiness review (two days before start)","human","People team","Nia Brooks","Oukala onboarding",4,14,{p:["sub1","sub2","s4","s5","s6","s7"],tk:"SLA",rv:"Final checks"}),
+ T("s8","Day-one readiness review (two days before start)","human","People team","Nia Brooks",(BRAND.name+" onboarding"),4,14,{p:["sub1","sub2","s4","s5","s6","s7"],tk:"SLA",rv:"Final checks"}),
  T("s9","Welcome message and orientation scheduled","agent","People team","First Officer","Teams and Outlook",.5,.8,{rv:"Welcome plan ready"}),
- T("s10","Day one: new hire confirms they can work","human","Requester",null,"Oukala portal",24,1.2,{tk:"XLA",pause:true,xla:1,rv:"Day one"}),
- T("s11","30-day check-in survey","wait","People team",null,"Oukala portal",720,2,{tk:"XLA",xla:1,rv:"30-day check-in"})]},
+ T("s10","Day one: new hire confirms they can work","human","Requester",null,(BRAND.name+" portal"),24,1.2,{tk:"XLA",pause:true,xla:1,rv:"Day one"}),
+ T("s11","30-day check-in survey","wait","People team",null,(BRAND.name+" portal"),720,2,{tk:"XLA",xla:1,rv:"30-day check-in"})]},
 {id:"wf_offboard",n:"Employee offboarding",item:"offboarding",kind:"onboarding",steps:[
- T("s1","Departure recorded","auto","People team",null,"Oukala portal",.1,.4,{p:[],rv:"Departure recorded"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
- T("s2","Schedule actions for the last day","auto","Identity team",null,"Oukala workflow",.2,.4,{p:GATES}),
+ T("s1","Departure recorded","auto","People team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Departure recorded"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
+ T("s2","Schedule actions for the last day","auto","Identity team",null,(BRAND.name+" workflow"),.2,.4,{p:GATES}),
  T("s3","Cut access at the scheduled time (sign-in, sessions, tokens)","auto","Identity team",null,"Entra ID",.3,.8,{rv:"Access removed"}),
  T("s4","Hand over mailbox and files","agent","Identity team","Knowledge Curator","Exchange and OneDrive",2,1.4,{cond:"not hold",rv:"Files handed over"}),
  T("s5","Reclaim licenses to the pool","auto","Identity team",null,"Entra ID licensing",.3,.4,{p:["s3"]}),
  T("s6","Collect or remote-wipe device","human","Endpoint team","Northwind Managed Services","Intune and courier",24,18,{p:["s3"],rv:"Returning equipment",rw:6}),
- T("s7","Asset record set to decommissioned","auto","Service desk",null,"Oukala Assets",.1,.3,{p:["s6"],hook:"decom"}),
+ T("s7","Asset record set to decommissioned","auto","Service desk",null,(BRAND.name+" Assets"),.1,.3,{p:["s6"],hook:"decom"}),
  T("s8","Access review attestation","human","Security","Rina Okafor","Entra access reviews",8,6,{p:["s3","s5"]}),
- T("s9","Close and record","auto","People team",null,"Oukala portal",.1,.4,{p:["s4","s5","s7","s8"],rv:"Done",xla:1})]},
+ T("s9","Close and record","auto","People team",null,(BRAND.name+" portal"),.1,.4,{p:["s4","s5","s7","s8"],rv:"Done",xla:1})]},
 {id:"wf_move",n:"Mover: role or location change",item:"move",kind:"onboarding",steps:[
- T("s1","Move recorded","auto","People team",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
+ T("s1","Move recorded","auto","People team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
  T("s2","Compare old and new role access","agent","Identity team","Triage Agent","Entra ID",.5,1,{p:GATES,rv:"Reviewing access"}),
  T("s3","Remove access from the old role","auto","Identity team",null,"Entra ID",.3,.6,{cond:"not keep"}),
  T("s4","Add groups for the new role","auto","Identity team",null,"Entra ID",.3,.5,{p:["s2"]}),
  T("s5","Update HR record, manager and cost center","human","People team","Nia Brooks","HR system",16,10,{p:["s2"],rv:"Updating records"}),
- T("s6","New manager confirms access","human","Requester",null,"Oukala portal",24,1,{p:["s3","s4","s5"],tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
- T("s7","Close","auto","People team",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})]},
+ T("s6","New manager confirms access","human","Requester",null,(BRAND.name+" portal"),24,1,{p:["s3","s4","s5"],tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
+ T("s7","Close","auto","People team",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_av",n:"Conference room AV support",item:"av",kind:"request",steps:[
- T("s1","Request submitted","auto","Facilities",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),
+ T("s1","Request submitted","auto","Facilities",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),
  T("s2","Confirm room and equipment","human","Facilities","Elise Park","Room calendar",2,6,{p:GATES,rv:"Room confirmed"}),
  T("s3","Test audio and camera the day before","human","Facilities","Elise Park","Teams Rooms",8,18,{rv:"Equipment test"}),
  T("s4","Technician attends the event","human","Facilities","Nia Brooks","Teams Rooms",3,60,{tk:"SLA",rv:"Technician on site"}),
- T("s5","Event rating and close","auto","Facilities",null,"Oukala portal",.1,.4,{rv:"Done",xla:1})]},
+ T("s5","Event rating and close","auto","Facilities",null,(BRAND.name+" portal"),.1,.4,{rv:"Done",xla:1})]},
 {id:"wf_vendor",n:"Vendor onboarding",item:"vendor",kind:"purchase",steps:[
- T("s1","Request submitted","auto","Procurement",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
+ T("s1","Request submitted","auto","Procurement",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
  T("s2","Sanctions and watch-list screening","agent","Finance","Invoice Advisor","Screening service",.3,2.1,{p:GATES,rv:"Supplier screening"}),
  T("s3","Third-party risk assessment","human","Security","Rina Okafor","Risk register",24,95,{cond:"data",rv:"Security review"}),
  T("s4","Contract pre-review (clauses against playbook)","agent","Legal and contracts","Contract Analyst Agent","Contract Repository",1,4.5,{p:["s2"]}),
  T("s5","Legal review and redlines","human","Legal and contracts","Maya Ortiz","Contract Repository",24,120,{cond:"spend > 25000 or kind = Managed service",p:["s4"],rw:14}),
  T("s6","Create vendor in the ERP vendor master","auto","Finance",null,"Finance systems (vendor master)",.2,.6,{p:["s2","s3","s5"]}),
  T("s7","Bank details verified by call back","human","Finance","Avery Chen","Bank portal",8,14,{rv:"Verifying payment details"}),
- T("s8","Vendor activated, requester notified","auto","Procurement",null,"Oukala portal",.1,.4,{rv:"Done",xla:1})]},
+ T("s8","Vendor activated, requester notified","auto","Procurement",null,(BRAND.name+" portal"),.1,.4,{rv:"Done",xla:1})]},
 {id:"wf_ai",n:"AI agent access and token budget",item:"aiaccess",kind:"request",steps:[
- T("s1","Request submitted","auto","AI governance",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
+ T("s1","Request submitted","auto","AI governance",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),G("g5","A5"),
  T("s2","Agent registry and risk score","agent","AI governance","Change Risk Agent","AI registry",.5,1.6,{p:GATES}),
  T("s3","Set token budget and 80 percent alert in the gateway","auto","Integration team",null,"AI gateway",.3,.5,{rv:"Applying the new limit"}),
  T("s4","Grant tool scopes (least privilege)","auto","Integration team",null,"AI gateway and Entra",.3,.6,{cond:"kind != Raise Claude token limit"}),
  T("s5","Guardrail test run","agent","AI governance","Test Agent","Sandbox",1,2.4,{p:["s3","s4"]}),
- T("s6","Owner confirms and enables alerts","human","Requester",null,"Oukala portal",24,1,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
+ T("s6","Owner confirms and enables alerts","human","Requester",null,(BRAND.name+" portal"),24,1,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
  T("s7","Close and record in registry","auto","AI governance",null,"AI registry",.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_newsvc",n:"New service design and publication",item:"newsvc",kind:"request",steps:[
- T("s1","Proposal submitted","auto","PMO",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
+ T("s1","Proposal submitted","auto","PMO",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),G("g4","A4"),
  T("s2","Create service and offering records (CMDB)","auto","Architecture",null,"CMDB",.3,.8,{p:GATES,rv:"Service record created"}),
  T("s3","Define offerings and sub-offerings","human","Architecture","Jordan Lee","Service model",40,420,{rv:"Defining what people can order"}),
  T("s4","TBM cost model and capacity triggers","human","Finance","Avery Chen","TBM model",24,210,{p:["s2"],rv:"Costing"}),
  T("s5","Draft SLA, OLA and XLA","agent","PMO","PMO Agent","SLA designer",2,3.2,{p:["s3","s4"]}),
- T("s6","Service owner accepts","human","Requester",null,"Oukala portal",24,1.5,{tk:"XLA",pause:true,xla:1,rv:"Your review"}),
+ T("s6","Service owner accepts","human","Requester",null,(BRAND.name+" portal"),24,1.5,{tk:"XLA",pause:true,xla:1,rv:"Your review"}),
  T("s7","Publish to catalog and portal","auto","Service desk",null,"Service catalog",.1,.4,{rv:"Published"}),
  T("s8","Scaling triggers added to demand","auto","PMO",null,"Demand pipeline",.1,.4,{rv:"Done",xla:1})]},
 {id:"wf_apikey",n:"API key issuance",item:"apikey",kind:"request",steps:[
- T("s1","Request submitted","auto","Integration team",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
+ T("s1","Request submitted","auto","Integration team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
  T("s2","Generate key in the API gateway","auto","Integration team",null,"API gateway",.1,.5,{p:GATES,rv:"Creating your key"}),
  T("s3","Store in Key Vault, apply scopes and rate limit","auto","Integration team",null,"Azure Key Vault",.1,.4,{}),
- T("s4","Deliver once through a secure link","auto","Integration team",null,"Oukala portal",.1,.3,{rv:"Key ready"}),
- T("s5","Requester confirms the first call works","human","Requester",null,"Oukala portal",24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
- T("s6","Schedule rotation reminder","auto","Integration team",null,"Oukala workflow",.1,.3,{rv:"Done",xla:1})]},
+ T("s4","Deliver once through a secure link","auto","Integration team",null,(BRAND.name+" portal"),.1,.3,{rv:"Key ready"}),
+ T("s5","Requester confirms the first call works","human","Requester",null,(BRAND.name+" portal"),24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
+ T("s6","Schedule rotation reminder","auto","Integration team",null,(BRAND.name+" workflow"),.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_report",n:"Report build",item:"report",kind:"request",steps:[
- T("s1","Request submitted","auto","Data team",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
+ T("s1","Request submitted","auto","Data team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),G("g3","A3"),
  T("s2","Clarify requirements","human","Data team","Dev Rao","Teams",16,95,{p:GATES,rv:"Clarifying what you need"}),
  T("s3","Privacy review","human","Data team","Dev Rao","Data catalog",8,60,{cond:"pii",p:["s2"]}),
  T("s4","Build and validate the model","human","Data team","Hana Koval","Power BI and lakehouse",60,880,{rv:"Building",rw:18}),
  T("s5","Review with requester","human","Requester",null,"Power BI",16,60,{rv:"Your review",pause:true}),
  T("s6","Publish to the Power BI workspace","human","Data team","Dev Rao","Power BI",2,30,{rv:"Publishing",tk:"SLA"}),
- T("s7","Close and rate","auto","Data team",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})]},
+ T("s7","Close and rate","auto","Data team",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})]},
 {id:"wf_mailbox",n:"Shared mailbox or channel",item:"mailbox",kind:"request",steps:[
- T("s1","Request submitted","auto","Identity team",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),
+ T("s1","Request submitted","auto","Identity team",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"}),G("g1","A1"),G("g2","A2"),
  T("s2","Create in the Microsoft 365 admin center","auto","Identity team",null,"Microsoft 365",.2,.5,{p:GATES,rv:"Creating"}),
  T("s3","Set owners, permissions and retention label","auto","Identity team",null,"Microsoft 365",.2,.5,{}),
- T("s4","Owner confirms","human","Requester",null,"Oukala portal",24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
- T("s5","Close","auto","Identity team",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})]}
+ T("s4","Owner confirms","human","Requester",null,(BRAND.name+" portal"),24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),
+ T("s5","Close","auto","Identity team",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})]}
 ];
 const FLOW=id=>FLOWS.find(f=>f.id===id);
 const FLOWOF=it=>FLOW(it.flow);
@@ -509,7 +509,7 @@ function mk(itemId,state,o){o=o||{};const it=ITEM(itemId),r0=rnd((o.id||"r"+reqS
  const elapsed=cut>=1e8?total+ageH:cut;r.created=o.created||Math.round(NOW-elapsed*HR);
  const done=(a)=>a.e<=cut+1e-9,act=(a)=>a.s<=cut&&!done(a);
  tpl.forEach(s=>{if(sk.includes(s.id))return;const a=off[s.id];if(!a)return;const st=Math.round(r.created+a.s*HR),en=Math.round(r.created+a.e*HR);
-  if(done(a)){const t={s:st,e:en,rw:a.rw?1:0};t.by=s.type==="gate"?(r.ap[s.ap]||{}).who:s.owner&&!isAI(s.owner)&&s.type==="human"?s.owner:s.type==="auto"?"Oukala automation":s.type==="agent"?s.owner:s.type==="wait"?(s.team):s.team==="Requester"?r.requester:TEAMPICK(r0,s.team,true)||s.team;r.ts[s.id]=t;if(s.type==="gate"&&r.ap[s.ap]){r.ap[s.ap].st="approved";r.ap[s.ap].at=en;r.ap[s.ap].fta=!a.rw}}
+  if(done(a)){const t={s:st,e:en,rw:a.rw?1:0};t.by=s.type==="gate"?(r.ap[s.ap]||{}).who:s.owner&&!isAI(s.owner)&&s.type==="human"?s.owner:s.type==="auto"?(BRAND.name+" automation"):s.type==="agent"?s.owner:s.type==="wait"?(s.team):s.team==="Requester"?r.requester:TEAMPICK(r0,s.team,true)||s.team;r.ts[s.id]=t;if(s.type==="gate"&&r.ap[s.ap]){r.ap[s.ap].st="approved";r.ap[s.ap].at=en;r.ap[s.ap].fta=!a.rw}}
   else if(act(a)&&s.type!=="sub"||(act(a)&&s.type==="sub")){r.ts[s.id]={s:st};if(s.type==="human"||s.type==="wait"){const p=r0()<.55&&s.type==="human"&&s.team!=="Requester"?TEAMPICK(r0,s.team,true):"";r.as[s.id]={t:s.team,p:p||"",why:p?"Claimed from the "+s.team+" queue":""}}}});
  if(state==="rejected"&&rejGate){const gr=r.ap[rejGate.ap];if(gr){gr.st="rejected";gr.at=Math.round(r.created+off[rejGate.id].e*HR);gr.note=pick(r0,["Not justified for this role.","Duplicate of an existing request.","Budget is frozen until November.","Security cannot approve this software."])}r.rej={at:gr?gr.at:r.created,by:gr?gr.who:"",rule:rejGate.ap};tpl.forEach(s=>{if(r.ts[s.id]&&!r.ts[s.id].e)delete r.ts[s.id]});Object.keys(r.ap).forEach(k=>{if(r.ap[k].st==="pending")r.ap[k].st="cancelled"})}
  if(state==="decommissioned"){r.decom=Math.round(NOW-(o.decomDays!=null?o.decomDays:r0()*60)*DAY)}
@@ -540,7 +540,7 @@ function touch(r){const it=ITEM(r.item),tpl=tplOf(it.flow),sk=new Set(r.sk);let 
  if(r.rej)r.state="rejected";else if(r.decom)r.state="decommissioned";else if(done)r.state="deployed";else if(!started)r.state=gatesPending?"pending":"approved";else r.state="fulfilling";
  if(r.state==="approved"){r.slaUsed=0;r.sl=0}r.cost=Math.round(r.price+r.costDone);r.act=act.map(s=>s.id);
  /* who is it sitting with */
- const w=[];act.forEach(s=>{if(s.type==="sub")return;const a=r.as[s.id]||{};if(s.type==="gate"){const ap=r.ap[s.ap]||{};w.push({k:"person",n:ap.who,step:stepName(it,s),role:"Approver"})}else if(s.type==="human"){if(s.team==="Requester")w.push({k:"person",n:r.requester===r.for?r.for:r.requester,step:s.n,role:"Requester"});else w.push(a.p?{k:"person",n:a.p,step:s.n,role:a.t}:{k:"team",n:s.team,step:s.n,role:"Queue"})}else if(s.type==="agent")w.push({k:"agent",n:s.owner||"AI agent",step:s.n,role:"AI agent"});else if(s.type==="wait")w.push({k:"team",n:s.team,step:s.n,role:"Waiting"});else w.push({k:"auto",n:"Oukala automation",step:s.n,role:"Automatic"})});
+ const w=[];act.forEach(s=>{if(s.type==="sub")return;const a=r.as[s.id]||{};if(s.type==="gate"){const ap=r.ap[s.ap]||{};w.push({k:"person",n:ap.who,step:stepName(it,s),role:"Approver"})}else if(s.type==="human"){if(s.team==="Requester")w.push({k:"person",n:r.requester===r.for?r.for:r.requester,step:s.n,role:"Requester"});else w.push(a.p?{k:"person",n:a.p,step:s.n,role:a.t}:{k:"team",n:s.team,step:s.n,role:"Queue"})}else if(s.type==="agent")w.push({k:"agent",n:s.owner||"AI agent",step:s.n,role:"AI agent"});else if(s.type==="wait")w.push({k:"team",n:s.team,step:s.n,role:"Waiting"});else w.push({k:"auto",n:(BRAND.name+" automation"),step:s.n,role:"Automatic"})});
  r.w=w;const p0=w.find(x=>x.k==="person"||x.k==="team")||w[0];r.withN=r.state==="approved"?"Scheduled":p0?p0.n:"";r.withK=p0?p0.k:"";r.stepN=w.length?w[0].step:"";r.nap=Object.values(r.ap).filter(a=>a.st==="pending").length;r.clr=r.sl>=100?"bad":r.sl>=75?"warn":"good";
  r.startAt=r.state==="approved"?(gE+Math.max(1,r.delayH)*HR*.8):0}
 RESOLVE.budgetOwner.f=c=>{const r=who(c.for);if(r&&r.kind!=="human")return"Avery Chen";const t=TEAMS.find(x=>r&&x.n===r.team);let b=t?t.mgr:"Avery Chen";if(b===c.for||b==="Chief Editor"||b===c.by)b=b===c.by&&b!==c.for?"Avery Chen":"Avery Chen";return b};
@@ -594,7 +594,7 @@ function advance(r){const it=ITEM(r.item),tpl=tplOf(it.flow),sk=new Set(r.sk);le
    if(s.type==="sub"){const c2=allKids(tpl,s.id).filter(k=>!sk.has(k.id));if(!t&&(c2.some(k=>r.ts[k.id])||!c2.length&&s.p.every(isDone))){r.ts[s.id]={s:NOW};ch=true}
     const t3=r.ts[s.id];if(t3&&!t3.e&&c2.every(k=>r.ts[k.id]&&r.ts[k.id].e)){t3.e=NOW;ch=true}return}
    if(!t){if(s.p.every(isDone)){if(r.startAt&&r.startAt>NOW&&s.type!=="gate"&&s.id!=="s1")return;r.ts[s.id]={s:NOW};ch=true}}
-   const t2=r.ts[s.id];if(t2&&!t2.e&&(s.type==="auto"||s.type==="agent")){t2.e=NOW;t2.by=s.type==="agent"?s.owner:"Oukala automation";ch=true;if(s.hook)assetHook(r,s)}})}
+   const t2=r.ts[s.id];if(t2&&!t2.e&&(s.type==="auto"||s.type==="agent")){t2.e=NOW;t2.by=s.type==="agent"?s.owner:(BRAND.name+" automation");ch=true;if(s.hook)assetHook(r,s)}})}
  touch(r);REQV++}
 const stepOf=(r,id)=>tplOf(ITEM(r.item).flow).find(s=>s.id===id);
 function approve(r,apId,note){const s=tplOf(ITEM(r.item).flow).find(x=>x.ap===apId&&!x.sg),a=r.ap[apId];if(!s||!a||a.st!=="pending")return false;a.st="approved";a.at=NOW;a.note=note||a.note;a.fta=true;const t=r.ts[s.id]||(r.ts[s.id]={s:NOW});t.e=NOW;t.by=a.who;log(r,a.who+" approved: "+stepName(ITEM(r.item),s)+(note?" ("+note+")":""),a.who);audit("approved",r.id+" "+apId);advance(r);return true}
@@ -607,7 +607,7 @@ function expedite(r){r.startAt=0;r.exp=1;log(r,"Expedited: scheduled start relea
 function addTask(r,t){(r.tasks=r.tasks||[]).push(Object.assign({id:"T"+(r.tasks.length+1),st:"Open",at:NOW},t));log(r,"Task added: "+t.t+" ("+t.team+")");audit("added task",r.id+" "+t.t);REQV++}
 function decomReq(r){r.decom=NOW;ASSETS.filter(a=>a.req===r.id).forEach(a=>{a.st="Decommissioned";a.who="";a.dec=NOW});log(r,"Decommissioned");audit("decommissioned",r.id);touch(r);REQV++}
 function createReq(it,vals,by,fw,extra){const {ctx,list}=apprFor(it,vals,fw,by),tpl=tplOf(it.flow),sk=skipSet(it,null,ctx,list);
- const r=Object.assign({id:"SR00"+(reqSeq++),req:"REQ00"+(10100+Math.floor(reqSeq/1.3)),item:it.id,flow:it.flow,service:it.svc,offering:it.off,requester:by,onBehalfOf:fw!==by?fw:null,for:fw,vals:Object.assign({},vals),sk,ap:{},ts:{s1:{s:NOW,e:NOW,by:"Oukala portal"}},as:{},cm:[],tasks:[],price:ctx.price,created:NOW,pr:3,delayH:0,ctxs:{tier:ctx.tier,region:ctx.region,worker:ctx.worker,level:ctx.level},xla:null,log:[{t:NOW,tx:"Submitted by "+by+(fw!==by?" on behalf of "+fw:""),by}]},extra||{});
+ const r=Object.assign({id:"SR00"+(reqSeq++),req:"REQ00"+(10100+Math.floor(reqSeq/1.3)),item:it.id,flow:it.flow,service:it.svc,offering:it.off,requester:by,onBehalfOf:fw!==by?fw:null,for:fw,vals:Object.assign({},vals),sk,ap:{},ts:{s1:{s:NOW,e:NOW,by:(BRAND.name+" portal")}},as:{},cm:[],tasks:[],price:ctx.price,created:NOW,pr:3,delayH:0,ctxs:{tier:ctx.tier,region:ctx.region,worker:ctx.worker,level:ctx.level},xla:null,log:[{t:NOW,tx:"Submitted by "+by+(fw!==by?" on behalf of "+fw:""),by}]},extra||{});
  list.forEach(a=>{if(a.trig&&!a.dup)r.ap[a.id]={who:a.who,st:"pending",note:a.note||""}});
  if(ctx.expedite&&it.id==="onboarding")r.exp=1;
  REQS.unshift(r);advance(r);const ap=Object.values(r.ap);log(r,ap.length?"Approvals requested from "+uniq(ap.map(a=>a.who)).join(", "):"No approval needed. Sent to fulfillment.");if(r.state==="approved"&&!ap.length){}audit("created request",r.id+" "+it.n+" · requested by "+by+(fw!==by?" for "+fw:"")+(r.rel?" ("+r.rel+")":""));ap.forEach(a=>{try{NOTI("e4",a.who,r)}catch(x){}});REQV++;return r}
@@ -664,7 +664,7 @@ const STATES=["pending","approved","fulfilling","deployed","decommissioned","rej
 const stLegend=()=>legend(STATES.map(s=>[STC[s][0],STV[s]]));
 const itemName=id=>(ITEM(id)||{n:id}).n;
 const teamChip=t=>`<span class="svc-team" title="Team queue: ${E((GRPS[t]||{d:""}).d)}"><i>${IC("M3 20c0-3 3-5 6-5s6 2 6 5M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 11a2.5 2.5 0 1 0 0-5M17 15c2.5.3 4 2 4 4")}</i><b>${E(t)}</b></span>`;
-function whoHTML(w){if(!w)return"";if(w.k==="team")return teamChip(w.n);if(w.k==="auto")return `<span class="svc-team"><i>${IC(TY.auto.ic)}</i><b>Oukala automation</b></span>`;return wh(w.n)}
+function whoHTML(w){if(!w)return"";if(w.k==="team")return teamChip(w.n);if(w.k==="auto")return `<span class="svc-team"><i>${IC(TY.auto.ic)}</i><b>${BRAND.name} automation</b></span>`;return wh(w.n)}
 function withHTML(r){if(r.state==="deployed"||r.state==="decommissioned")return`<span class="muted small">Closed</span>`;if(r.state==="rejected")return`<span class="muted small">Closed (${r.cancelled?"cancelled":"rejected"})</span>`;if(r.state==="approved")return`<span class="muted small">Scheduled start ${fd(r.startAt)}</span>`;const w=r.w.filter(x=>x.k!=="auto").slice(0,2);return w.length?w.map(whoHTML).join(" "):`<span class="muted small">Automation</span>`}
 const slClass=p=>p>=100?"bad":p>=75?"warn":"good";
 function clockHTML(r){const it=ITEM(r.item),pct=r.sl,paused=r.w.some(x=>x.role==="Approver"||x.role==="Requester");return `<div class="svc-clk"><div class="svc-bar" role="img" aria-label="${pct} percent of the SLA used"><i class="${r.done||r.state==="rejected"?"good":slClass(pct)}" style="width:${clamp(pct,0,100)}%"></i><u style="left:75%"></u></div><div class="row sp small"><span><b data-role="metric">${pct}%</b> of ${hh(it.slaH)} used${paused&&!r.done&&r.state!=="rejected"?" (clock paused while waiting on "+(r.w[0]&&r.w[0].role==="Approver"?"an approver":"the requester")+")":""}</span><span class="muted">${r.done?"Delivered "+fdt(r.done):r.state==="rejected"?"Closed":"Due "+fdt(NOW+Math.max(0,it.slaH-r.slaUsed)*HR)}</span></div></div>`}
@@ -1003,7 +1003,7 @@ function syncGates(it){const f=FLOW(it.flow);if(!f)return;const ids=new Set(it.a
  /* steps that were waiting on all gates keep working, because GATES is expanded at read time */
  clearTpl()}
 const clearTpl=()=>{Object.keys(TPLC).forEach(k=>delete TPLC[k]);STATC={v:-1,m:{}}};
-function newFlow(it,team,sys){const id="wf_"+it.id;const f={id,n:it.n,item:it.id,kind:"request",steps:[T("s1","Request submitted","auto","Service desk",null,"Oukala portal",.1,.4,{p:[],rv:"Request received"})].concat(it.appr.map((a,i)=>G("g"+(i+1),a.id)),[T("s2","Fulfill the request","human",team||"Service desk",null,sys||"Service desk tools",8,24,{p:GATES,rv:"Being worked on",rw:6}),T("s3","Confirm with the requester","human","Requester",null,"Oukala portal",24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),T("s4","Close and rate","auto",team||"Service desk",null,"Oukala portal",.1,.3,{rv:"Done",xla:1})])};FLOWS.push(f);return f}
+function newFlow(it,team,sys){const id="wf_"+it.id;const f={id,n:it.n,item:it.id,kind:"request",steps:[T("s1","Request submitted","auto","Service desk",null,(BRAND.name+" portal"),.1,.4,{p:[],rv:"Request received"})].concat(it.appr.map((a,i)=>G("g"+(i+1),a.id)),[T("s2","Fulfill the request","human",team||"Service desk",null,sys||"Service desk tools",8,24,{p:GATES,rv:"Being worked on",rw:6}),T("s3","Confirm with the requester","human","Requester",null,(BRAND.name+" portal"),24,.8,{tk:"XLA",pause:true,xla:1,rv:"Confirm it works"}),T("s4","Close and rate","auto",team||"Service desk",null,(BRAND.name+" portal"),.1,.3,{rv:"Done",xla:1})])};FLOWS.push(f);return f}
 function aiDraft(name,svc){const n=String(name||"").toLowerCase();const base=["# Request","Why do you need it? [why] | longtext | | required | Say what problem this solves.","Needed by [needby] | date","Cost center [cc] | text | | | | Where the cost is charged"];
  if(/monitor|keyboard|headset|dock|peripheral/.test(n))return base.concat(["Quantity [qty] | number","Model [model] | cards | Standard:120~Good for most desks;Premium:260~Ergonomic and adjustable | required"]).join("\n");
  if(/access|permission|role/.test(n))return base.concat(["# Access","System [system] | select | Contract Repository;Standards Platform;Lease subledger | required","Role [role] | chips | Reader;Contributor;Admin | required","Duration [dur] | chips | Permanent;90 days;30 days"]).join("\n");
@@ -1155,7 +1155,7 @@ function reqAnswers(r){const it=ITEM(r.item),c=ctxOf(it,r.vals,r.for,r.requester
 function openReq(id){const r=RQ(id);if(!r){toast("Request not found","warn");return}V.reqSel=id;S.v.svc_rq=0;openDrawer(reqDrawer(r));audit("opened request",id)}
 function openStep(rid,sid){let r,it;if(rid==="PLAN"){it=ITEM(V.planIt||V.cat);r=planInst(it)}else{r=RQ(rid);it=r&&ITEM(r.item)}if(!it)return;const s=tplOf(it.flow).find(x=>x.id===sid);if(!s)return;const ss=stepStats(it.flow)[sid]||{n:0,sum:0,ola:0,rw:0,cost:0},t=r.ts&&r.ts[sid],P=proj(r)[sid]||{};const rule=s.ap?ruleOf(it,s.ap):null;const asn=r.as&&r.as[sid];
  openDrawer(`<div class="row">${tyIc(s.type)}<span class="pill info">${E(TY[s.type].n)}</span>${s.tk?`<span class="pill mute">${E(s.tk)}</span>`:""}${P.sk?'<span class="pill mute">Not triggered</span>':""}</div><h2>${E(stepName(it,s))}</h2><p class="muted small">${E(it.n)}${rid!=="PLAN"?" · "+E(rid):" · workflow definition"}</p>
- <dl class="kv"><dt>Team</dt><dd>${teamChip(s.team)}</dd><dt>Owner</dt><dd>${s.type==="gate"?(rid!=="PLAN"&&r.ap[s.ap]?wh(r.ap[s.ap].who):E((RESOLVE[(rule||{}).who]||{n:"Resolved by rule"}).n)):asn&&asn.p?wh(asn.p):s.owner?wh(s.owner):"None named"}</dd><dt>System</dt><dd>${E(s.sys||"")}</dd><dt>Target</dt><dd>${hh(s.type==="gate"?8:s.t)} <span class="muted small">(${E(s.tk||"OLA")})</span></dd><dt>Cost per run</dt><dd class="num">${money(s.cost)}</dd><dt>Expected rework</dt><dd>${s.rw}%</dd><dt>Runs when</dt><dd>${E(condText(s.cond||(rule?rule.when:""),it)||"Always")}</dd><dt>Requester sees</dt><dd>${s.rv?E(s.rv):"Nothing, internal step"}</dd>${t&&t.s?`<dt>Started</dt><dd>${fdt(t.s)}</dd><dt>${t.e?"Finished":"Elapsed"}</dt><dd>${t.e?fdt(t.e)+" by "+wh(t.by||"Oukala automation"):hh((NOW-t.s)/HR)}</dd>`:""}</dl>
+ <dl class="kv"><dt>Team</dt><dd>${teamChip(s.team)}</dd><dt>Owner</dt><dd>${s.type==="gate"?(rid!=="PLAN"&&r.ap[s.ap]?wh(r.ap[s.ap].who):E((RESOLVE[(rule||{}).who]||{n:"Resolved by rule"}).n)):asn&&asn.p?wh(asn.p):s.owner?wh(s.owner):"None named"}</dd><dt>System</dt><dd>${E(s.sys||"")}</dd><dt>Target</dt><dd>${hh(s.type==="gate"?8:s.t)} <span class="muted small">(${E(s.tk||"OLA")})</span></dd><dt>Cost per run</dt><dd class="num">${money(s.cost)}</dd><dt>Expected rework</dt><dd>${s.rw}%</dd><dt>Runs when</dt><dd>${E(condText(s.cond||(rule?rule.when:""),it)||"Always")}</dd><dt>Requester sees</dt><dd>${s.rv?E(s.rv):"Nothing, internal step"}</dd>${t&&t.s?`<dt>Started</dt><dd>${fdt(t.s)}</dd><dt>${t.e?"Finished":"Elapsed"}</dt><dd>${t.e?fdt(t.e)+" by "+wh(t.by||(BRAND.name+" automation")):hh((NOW-t.s)/HR)}</dd>`:""}</dl>
  <div class="eyebrow">Across ${N(ss.n)} runs</div><div class="statrow"><div class="stat"><small>Average time</small><span class="num">${ss.n?hh(ss.sum/ss.n):""}</span><em>target ${hh(s.t)}</em></div><div class="stat"><small>On target</small><span class="num">${pc(ss.ola,ss.n)}%</span><em>OLA</em></div><div class="stat"><small>Rework</small><span class="num">${pc(ss.rw,ss.n)}%</span><em>repeated</em></div><div class="stat"><small>Average cost</small><span class="num">${ss.n?money(ss.cost/ss.n):""}</span><em>per run</em></div></div>
  <div class="row">${rid!=="PLAN"&&t&&!t.e&&s.type==="human"?`<button class="btn primary" data-svc="completestep|${rid}|${sid}">Mark done</button><button class="btn" data-svc="assign|${rid}|${sid}">Reassign</button>`:""}<button class="btn" data-svc="editstep|${it.flow}|${sid.includes(".")?"":sid}" ${sid.includes(".")?"disabled":""}>Edit this step</button>${rid!=="PLAN"?`<button class="btn quiet" data-svc="req|${rid}">Back to the request</button>`:""}</div>`)}
 /* ================= self-service portal: customer view and admin view ================= */
@@ -1267,7 +1267,7 @@ function astAgg(){if(ASC.d&&ASC.n===ASSETS.length&&ASC.v===REQV&&ASC.sc===SCALE.
   if(a.intune!==null&&a.st==="Deployed"){d.intuneN++;if(!a.intune)d.intuneBad++}});
  d.acc=d.intuneN?Math.round((1-d.intuneBad/d.intuneN)*1000)/10:100;ASC={v:REQV,n:ASSETS.length,sc:SCALE.on,d};const m=METRICS.m_astacc;if(m){m.cur=d.acc;m.tr=m.tr.slice(0,7).concat(d.acc)}return d}
 function licAgg(){const L=LICB.map(lv);const spend=sum(L,l=>l.ent*l.price),ex=sum(L,expo),over=L.filter(l=>l.asg>l.ent).length;const m=METRICS.m_licrisk;const v=spend?Math.round(ex/spend*1000)/10:0;if(m){m.cur=v;m.tr=m.tr.slice(0,7).concat(v)}return {L,spend,ex,over,pct:v}}
-const astCols=()=>[{k:"id",label:"Tag",fmt:a=>`<b>${E(a.id)}</b>`,val:a=>a.id,cls:"tok"},{k:"cls",label:"Class",fmt:a=>E(a.cls),val:a=>a.cls},{k:"model",label:"Model",fmt:a=>E(a.model),val:a=>a.model,wrap:1},{k:"st",label:"State",fmt:a=>astPill(a.st),val:a=>a.st},{k:"who",label:"Assigned to",fmt:a=>a.who?wh(a.who):'<span class="muted small">Not assigned</span>',val:a=>a.who||""},{k:"loc",label:"Location",fmt:a=>E(a.loc),val:a=>a.loc},{k:"bought",label:"Bought",fmt:a=>fd(a.bought),val:a=>a.bought},{k:"war",label:"Warranty ends",fmt:a=>`<span class="${a.war<NOW?"bad-t":a.war<NOW+90*DAY?"warn-t":""}">${fd(a.war)}</span>`,val:a=>a.war},{k:"cost",label:"Cost",fmt:a=>money(a.cost),val:a=>a.cost,cls:"num"},{k:"intune",label:"Intune",fmt:a=>a.intune===null?'<span class="muted small">n/a</span>':a.intune?'<span class="pill good">Compliant</span>':'<span class="pill bad">Not enrolled</span>',val:a=>a.intune===null?"n/a":a.intune?"Compliant":"Not enrolled"},{k:"req",label:"Request",fmt:a=>a.req?`<button class="svc-hl" data-svc="req|${E(a.req)}">${E(a.req)}</button>`:'<span class="muted small">Before Oukala</span>',val:a=>a.req||""}];
+const astCols=()=>[{k:"id",label:"Tag",fmt:a=>`<b>${E(a.id)}</b>`,val:a=>a.id,cls:"tok"},{k:"cls",label:"Class",fmt:a=>E(a.cls),val:a=>a.cls},{k:"model",label:"Model",fmt:a=>E(a.model),val:a=>a.model,wrap:1},{k:"st",label:"State",fmt:a=>astPill(a.st),val:a=>a.st},{k:"who",label:"Assigned to",fmt:a=>a.who?wh(a.who):'<span class="muted small">Not assigned</span>',val:a=>a.who||""},{k:"loc",label:"Location",fmt:a=>E(a.loc),val:a=>a.loc},{k:"bought",label:"Bought",fmt:a=>fd(a.bought),val:a=>a.bought},{k:"war",label:"Warranty ends",fmt:a=>`<span class="${a.war<NOW?"bad-t":a.war<NOW+90*DAY?"warn-t":""}">${fd(a.war)}</span>`,val:a=>a.war},{k:"cost",label:"Cost",fmt:a=>money(a.cost),val:a=>a.cost,cls:"num"},{k:"intune",label:"Intune",fmt:a=>a.intune===null?'<span class="muted small">n/a</span>':a.intune?'<span class="pill good">Compliant</span>':'<span class="pill bad">Not enrolled</span>',val:a=>a.intune===null?"n/a":a.intune?"Compliant":"Not enrolled"},{k:"req",label:"Request",fmt:a=>a.req?`<button class="svc-hl" data-svc="req|${E(a.req)}">${E(a.req)}</button>`:('<span class="muted small">Before '+BRAND.name+'</span>'),val:a=>a.req||""}];
 function astDash(){const d=astAgg(),cl=Object.entries(d.cls),mx=Math.max(1,...cl.map(([k,v])=>v.dep+v.stock));
  const stk=`<div class="svc-stack" role="img" aria-label="Assets by lifecycle state">${AST_ST.map(s=>d.st[s]?`<i style="width:${d.st[s]/d.n*100}%;background:var(${AST_C[s]})" title="${s}: ${N(d.st[s])}"></i>`:"").join("")}</div>${astLegend()}<div class="svc-stk">${AST_ST.map(s=>`<span><b class="num">${N(d.st[s])}</b> ${s.toLowerCase()}</span>`).join("")}</div>`;
  return `<div class="statrow">${[["Assets",N(d.n),"in "+Object.keys(d.cls).length+" classes",""],["Deployed",N(d.st.Deployed),pc(d.st.Deployed,d.n)+"% of inventory",""],["In stock",N(d.st["In stock"]),N(d.st.Ordered+d.st.Received)+" ordered or received",d.st["In stock"]<d.n*.01?"crit":""],["In repair",N(d.st["In repair"]),"with vendor or bench",""],["Warranty ending in 90 days",N(d.war),N(d.warOld)+" already out",d.war?"crit":""],["Record accuracy",d.acc+"%","goal "+METRICS.m_astacc.tgt+"%, matches Intune",d.acc<METRICS.m_astacc.tgt?"crit":""],["Value in service",money(d.value),"at purchase cost",""]].map(s=>`<div class="stat ${s[3]}"><small>${s[0]}</small><span class="num" data-role="metric">${s[1]}</span><em>${s[2]}</em></div>`).join("")}</div>
@@ -1291,7 +1291,7 @@ function openAsset(id){const a=ASSETS.find(x=>x.id===id);if(!a){toast("Asset not
  openDrawer(`<div class="row">${astPill(a.st)}<span class="pill mute">${a.cls}</span><span class="pill mute">${E(a.id)}</span></div><h2>${E(a.model)}</h2>
  <div class="dfullgrid svc-dfg"><section><div class="eyebrow">Assigned to</div>${a.who?wh(a.who,{role:1}):'<span class="pill mute">Not assigned</span>'}<dl class="kv"><dt>Location</dt><dd>${E(a.loc)}</dd><dt>Serial</dt><dd>${E(a.serial)}</dd><dt>Bought</dt><dd>${fdy(a.bought)} for ${money(a.cost)}</dd><dt>Warranty ends</dt><dd>${fdy(a.war)}${a.war<NOW?' <span class="pill bad">Out of warranty</span>':a.war<NOW+90*DAY?' <span class="pill warn">Ending soon</span>':""}</dd><dt>Intune</dt><dd>${a.intune===null?"Not managed":a.intune?'<span class="pill good">Enrolled and compliant</span>':'<span class="pill bad">Not enrolled</span>'}</dd></dl></section>
  <section><div class="eyebrow">Lifecycle</div><ol class="svc-trk">${life.map(x=>`<li class="done"><i>${IC("M5 12l5 5 9-10")}</i><span><b>${x[0]}</b><small class="muted">${fd(x[1])}</small></span></li>`).join("")}</ol></section>
- <section><div class="eyebrow">Linked records</div>${lrHTML({id:"svc_lra_"+a.id,limit:5,groups:[{key:"req",label:"Request",rows:r?[{id:r.id,t:r.id+" "+itemName(r.item),sub:STC[r.state][0],tag:"Request",st:STC[r.state][1],go:()=>openReq(r.id)}]:[]},{key:"person",label:"Other devices of "+(a.who||"nobody"),rows:a.who?ASSETS.filter(x=>x.who===a.who&&x.id!==a.id).slice(0,20).map(x=>({id:x.id,t:x.id+" "+x.model,sub:x.st,tag:"Asset",st:"mute",go:()=>openAsset(x.id)})):[]},{key:"ci",label:"Configuration items that manage it",rows:cis.map(c=>({id:c.id,t:c.name,sub:c.class,tag:"CI",st:"good",go:()=>go("svc_360")}))}].filter(g=>g.rows.length),empty:"Bought before Oukala, so there is no request."})}</section></div>
+ <section><div class="eyebrow">Linked records</div>${lrHTML({id:"svc_lra_"+a.id,limit:5,groups:[{key:"req",label:"Request",rows:r?[{id:r.id,t:r.id+" "+itemName(r.item),sub:STC[r.state][0],tag:"Request",st:STC[r.state][1],go:()=>openReq(r.id)}]:[]},{key:"person",label:"Other devices of "+(a.who||"nobody"),rows:a.who?ASSETS.filter(x=>x.who===a.who&&x.id!==a.id).slice(0,20).map(x=>({id:x.id,t:x.id+" "+x.model,sub:x.st,tag:"Asset",st:"mute",go:()=>openAsset(x.id)})):[]},{key:"ci",label:"Configuration items that manage it",rows:cis.map(c=>({id:c.id,t:c.name,sub:c.class,tag:"CI",st:"good",go:()=>go("svc_360")}))}].filter(g=>g.rows.length),empty:("Bought before "+BRAND.name+", so there is no request.")})}</section></div>
  <div class="row svc-acts">${a.st!=="Deployed"&&a.st!=="Retired"&&a.st!=="Decommissioned"?`<button class="btn primary" data-svc="astassign|${a.id}">Assign to a person</button>`:""}${a.st==="Deployed"?`<button class="btn" data-svc="astassign|${a.id}">Reassign</button><button class="btn" data-svc="astmove|${a.id}|In repair">Send for repair</button><button class="btn" data-svc="astmove|${a.id}|In stock">Return to stock</button>`:""}${a.st==="In repair"?`<button class="btn" data-svc="astmove|${a.id}|In stock">Repaired, return to stock</button>`:""}${a.st==="Ordered"?`<button class="btn" data-svc="astmove|${a.id}|Received">Mark received</button>`:""}${a.st==="Received"?`<button class="btn" data-svc="astmove|${a.id}|In stock">Move to stock</button>`:""}${a.st==="In stock"||a.st==="Deployed"?`<button class="btn" data-svc="astmove|${a.id}|Retired">Retire</button>`:""}${a.st==="Retired"?`<button class="btn danger" data-svc="astmove|${a.id}|Decommissioned">Decommission</button>`:""}</div>`);audit("opened asset",id)}
 function astMove(a,st,person){const old=a.st;if(st==="Deployed"&&!person&&!a.who){assignForm2(a);return false}a.st=st;if(st==="Retired"||st==="Decommissioned"||st==="In stock"||st==="Ordered"||st==="Received")a.who="";if(person)a.who=person;if(st==="Decommissioned")a.dec=NOW;REQV++;audit("asset "+old+" to "+st,a.id);return true}
 function assignForm2(a){openForm({id:"svc_aa",title:"Assign "+a.id,story:"Assigning marks the device Deployed. If it is Intune managed it is also given to the person's profile.",submit:"Assign",fields:[{k:"p",label:"Assign to",type:"people",req:true},{k:"note",label:"Note",type:"text"}],defaults:{p:a.who||""},onSubmit:v=>{if(!who(v.p))return{toast:v.p+" is not in the directory",close:false};astMove(a,"Deployed",v.p);render();if(V.astSel===a.id)openAsset(a.id);return{toast:a.id+" assigned to "+v.p,audit:a.id+" "+v.p}}})}

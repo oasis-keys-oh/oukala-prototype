@@ -334,7 +334,7 @@ function donePart(o,pid){const pl=planOf(o),r=pl.R[pid];if(!r||r.state==="done")
  const a=o.act[pid]=o.act[pid]||{};if(a.s==null)a.s=pl.nowOff;a.e=Math.max(pl.nowOff,a.s);a.prog=1;delete a.blocked;a.by=ME;o.log.push({t:NOW,tx:r.p.n+" completed",by:ownerOf(r.p,o)});audit("completed order part",o.id+" "+r.p.n);
  touchO(o);const p2=planOf(o);const opened=p2.inc.filter(p=>p2.R[p.id].state==="ready"&&p2.R[p.id].deps.includes(pid));
  toast(r.p.n+" done."+(opened.length?" Now ready: "+opened.map(p=>LANES[p.lane].n).join(", ")+".":""),"good");
- if(p2.finished){o.log.push({t:NOW,tx:"Order complete. All "+p2.n+" parts delivered.",by:"Oukala"});try{B.NOTI("e5",o.by,{id:o.id});if(o.forName!==o.by&&human(o.forName))B.NOTI("e5",o.forName,{id:o.id})}catch(e){}toast(o.id+" is complete","good")}
+ if(p2.finished){o.log.push({t:NOW,tx:"Order complete. All "+p2.n+" parts delivered.",by:BRAND.name});try{B.NOTI("e5",o.by,{id:o.id});if(o.forName!==o.by&&human(o.forName))B.NOTI("e5",o.forName,{id:o.id})}catch(e){}toast(o.id+" is complete","good")}
  syncM();sv3()}
 function blockPart(o,pid){const pl=planOf(o),r=pl.R[pid];if(!r)return;openForm({id:"svc3_blk",title:"Block: "+r.p.n,story:"A blocked part holds back every part that depends on it and moves the order's expected date. Say what is needed and from whom.",submit:"Mark blocked",fields:[{k:"why",label:"What is blocking it",type:"longtext",req:true,ph:"For example, waiting for a signed consent form"},{k:"hold",label:"Expected delay (business days)",type:"number",min:.5,max:20,step:.5}],defaults:{hold:2},
  onSubmit:v=>{const a=o.act[pid]=o.act[pid]||{};if(a.s==null)a.s=pl.nowOff;a.blocked={why:v.why,hold:+v.hold||1.5};o.log.push({t:NOW,tx:r.p.n+" blocked: "+v.why,by:ME});audit("blocked order part",o.id+" "+r.p.n+": "+v.why);toast("Marked blocked. The order's expected date moved.","warn");closeDrawer();after(o)}})}
@@ -436,7 +436,7 @@ function place(gid){const g=GD(gid),it=B.ITEM(g.item);if(!it){toast("The catalog
   o.recs[p.id]=rec});
  if(!o.gate)inc.forEach(p=>{if(!(p.deps||[]).some(d=>inc.some(q=>q.id===d)))o.act[p.id]={s:0,prog:.05}});
  o.log.push({t:NOW,tx:"Order placed by "+ME+" for "+fw+" ("+(B.RELN[P.rel]||P.rel)+"). "+inc.length+" parts, "+uniq(inc.map(p=>LANES[p.lane].n)).length+" groups.",by:ME});
- o.log.push({t:NOW,tx:o.gate?"Waiting for manager approval from "+o.gate.who+" before any part starts":"Parts with no dependencies started in parallel: "+inc.filter(p=>o.act[p.id]).map(p=>LANES[p.lane].n).join(", "),by:"Oukala"});
+ o.log.push({t:NOW,tx:o.gate?"Waiting for manager approval from "+o.gate.who+" before any part starts":"Parts with no dependencies started in parallel: "+inc.filter(p=>o.act[p.id]).map(p=>LANES[p.lane].n).join(", "),by:BRAND.name});
  ORD.unshift(o);touchO(o);S3.sel=id;S3.wiz=false;S.v.svc3_tabs=0;B.setREL(null);
  if(fw!==ME&&human(fw)){try{B.NOTI("e12",fw,{id})}catch(e){}}if(o.gate){try{B.NOTI("e4",o.gate.who,{id})}catch(e){}}
  audit("placed order guide",id+" "+g.n+" by "+ME+" for "+fw+" ["+P.rel+"], "+inc.length+" parts");toast(id+" placed. "+inc.length+" parts sent to "+uniq(inc.map(p=>LANES[p.lane].n)).length+" groups"+(o.gate?"; waiting for "+o.gate.who+" to approve.":"."),"good");syncM();go("svc_guides");sv3()}
@@ -470,12 +470,12 @@ document.addEventListener("change",e=>{const t=e.target.closest("[data-og-a]");i
 REG("svc_guides","Order guides","service","M4 6h6v5H4zM14 6h6v5h-6zM4 14h6v5H4zM14 14h6v5h-6zM10 8.5h4M10 16.5h4M7 11v3M17 11v3",screenGuides);
 if(window.PROC&&PROC.reg)PROC.reg("svc_guides",{title:"Order guide: place, branch, fan out, track, close",std:["itil4","bpmn"],steps:[
  {n:"Place the order",d:"Who it is for, the answers, delivery contact.",who:"human",owner:"Requester",sla:"Minutes",in:"A need",out:"Order"},
- {n:"Check policy",d:"Can the requester order for this person; manager approval skipped or required.",who:"auto",owner:"Oukala automation",sla:"Instant",in:"Order",out:"Approval path"},
+ {n:"Check policy",d:"Can the requester order for this person; manager approval skipped or required.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"Order",out:"Approval path"},
  {n:"Manager approval",d:"Only when the requester is not the manager or a delegate.",who:"gate",owner:"Manager of the person",sla:"1 day",in:"Approval path",out:"Approved order"},
- {n:"Branch and fan out",d:"Answers add or remove parts; one record per part goes to its group.",who:"auto",owner:"Oukala automation",sla:"Instant",in:"Approved order",out:"Part records"},
+ {n:"Branch and fan out",d:"Answers add or remove parts; one record per part goes to its group.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"Approved order",out:"Part records"},
  {n:"Fulfill the parts",d:"Each group works its part; a part starts when everything it waits for is done.",who:"human",owner:"Fulfillment groups",sla:"Per part SLA",in:"Part record",out:"Done part"},
  {n:"Watch the critical path",d:"Forecast date, slack, blocked parts, escalation.",who:"agent",owner:"Order Guide Watcher",sla:"Continuous",in:"Part states",out:"Alerts"},
- {n:"Close and tell",d:"Requester and the person it is for are told.",who:"auto",owner:"Oukala automation",sla:"Instant",in:"All parts done",out:"Closed order"}]});
+ {n:"Close and tell",d:"Requester and the person it is for are told.",who:"auto",owner:(BRAND.name+" automation"),sla:"Instant",in:"All parts done",out:"Closed order"}]});
 SEARCHX.push(()=>{ensureO();return GUIDES.map(g=>({g:"Order guides",t:g.n,m:g.parts.length+" parts",c:"--p4",f:()=>{S3.gid=g.id;S3.wiz=true;S3.kindItem=null;S.v.svc3_tabs=1;go("svc_guides")},k:"order guide multi part "+g.blurb+" "+g.parts.map(p=>p.n).join(" ")})).concat(ORD.slice(0,SCALE&&SCALE.on?300:40).map(o=>({g:"Orders",t:o.id+" "+g_n(o),m:OST[planOf(o).st][0],c:"--p3",f:()=>{S3.sel=o.id;S.v.svc3_tabs=0;go("svc_guides")},k:o.by+" "+o.forName+" order guide "+g_n(o)})))});
 SEARCHX.push(()=>[{g:"Actions",t:"Order for someone else",m:"Who is this for: myself, someone else, a new hire, a team",c:"--accent",f:()=>go("svc_portal"),k:"requested for on behalf of delegate order for my report new hire manager approval"}]);
 ASKX.push(q=>{const t=String(q).toLowerCase();let m;ensureO();
@@ -523,12 +523,12 @@ function wire(){try{
   const ok=r=>r&&(r.ok||/already exists/.test((r.warnings||[]).join(" ")));let all=true;
   const r0=PROCLIB.addProcess({id:"og_orchestrate",name:"Order guide: place, branch, fan out, track and close",module:"svc_guides",family:"req",owner:"Tom Becker",backup:"Nia Brooks",trigger:"A requester starts an order guide",std:["itil4","bpmn"],
    steps:[st("Place the order","Who it is for (myself, someone else, a new hire, a team), delivery contact and the guide's questions. RACI: Responsible requester, Accountable service catalog manager, Informed the person it is for.","human","Requester","Minutes","A need","Order"),
-    st("Check policy","Can this requester order for this person; manager approval skipped for managers and delegates, required otherwise.","auto","Oukala automation","Instant","Order","Approval path"),
+    st("Check policy","Can this requester order for this person; manager approval skipped for managers and delegates, required otherwise.","auto",(BRAND.name+" automation"),"Instant","Order","Approval path"),
     st("Manager approval","Decided by the person's manager when the requester is not their manager or a delegate. RACI: Responsible manager, Accountable service catalog manager.","gate","Manager of the person","1 day","Approval path","Approved order"),
-    st("Branch and fan out","Answers add or remove parts; one fulfillment record per part goes to its group.","auto","Oukala automation","Instant","Approved order","Part records"),
+    st("Branch and fan out","Answers add or remove parts; one fulfillment record per part goes to its group.","auto",(BRAND.name+" automation"),"Instant","Approved order","Part records"),
     st("Fulfill each part","Each group runs its own process, SLA and queue; a part starts when everything it waits for is done.","human","Fulfillment groups","Per part","Part record","Done part"),
     st("Watch the critical path","Forecast finish, slack, blocked parts; escalate to the part owner.","agent","Order Guide Watcher","Continuous","Part states","Alerts"),
-    st("Close and notify","Requester and the person it is for are told; metrics updated.","auto","Oukala automation","Instant","All parts done","Closed order")],
+    st("Close and notify","Requester and the person it is for are told; metrics updated.","auto",(BRAND.name+" automation"),"Instant","All parts done","Closed order")],
    inputs:["Guide definition","Answers","Policy rules"],outputs:["Part records","Closed order","Audit trail"],entities:["guide_order","order_guide_part","catalog_task","request_item","approval"],metrics:["m_og_cycle","m_og_ontime","m_og_blocked","m_og_branch","m_rf_mgrap"],model:"itil"});
   all=all&&ok(r0);
   const who_={human:"human",it:"human"};
