@@ -86,7 +86,16 @@ WORK.push({kind:"Project tasks",tag:"TASK",fn:(n,r)=>TASKS.filter(t=>t.own===n||
 WORK.push({kind:"Projects led",tag:"PROJ",fn:n=>PROJ.filter(p=>p.owner===n).map(p=>({id:p.id,t:p.n,sub:"Project manager",st:"info",hrs:8,go:()=>go("plan",p.id)}))});
 WORK.push({kind:"Meetings this week",tag:"MTG",fn:n=>MEETINGS.filter(m=>(m.att||m.who||[]).some&&(m.att||m.who||[]).includes&&(m.att||m.who||[]).includes(n)).slice(0,8).map(m=>({id:m.id,t:m.t,sub:"Oct "+m.d,st:"mute",hrs:1,go:()=>go("fo",m.id)}))});
 WORK.push({kind:"Invoices to approve",tag:"INV",fn:n=>INVOICES.filter(i=>i.st!=="paid"&&(n==="Avery Chen"||n==="Casey Rowan")).slice(0,4).map(i=>({id:i.id,t:i.id+" "+(i.v||i.vendor||""),sub:"Awaiting approval",st:"warn",hrs:1,go:()=>go("inv",i.id)}))});
-const workFor=n=>{const out=[];WORK.forEach(w=>{let rows=[];try{rows=w.fn(n,who(n))||[]}catch(e){}if(rows.length)out.push({kind:w.kind,tag:w.tag,rows})});return out};
+/* CL-76: workFor is memoized for one render pass. The cache is cleared on beforeGo and afterRender, when DATA.version moves,
+   and at the end of the current task, so a click handler that changes work and then reads it in a later task sees fresh rows.
+   Code that changes work and reads it back in the same task calls workFor.clear(). */
+const WFC=new Map();let WFV=-1,WFT=0,WFH=0;
+const wfClear=()=>{WFC.clear();WFT=0};
+const workFor=n=>{if(!WFH&&window.HOOKS&&HOOKS.on){WFH=1;HOOKS.on("beforeGo",wfClear,{id:"workFor-memo"});HOOKS.on("afterRender",wfClear,{id:"workFor-memo"})}
+ const v=window.DATA?DATA.version:0;if(v!==WFV){WFC.clear();WFV=v}const k=String(n);const c=WFC.get(k);if(c)return c;
+ const out=[];WORK.forEach(w=>{let rows=[];try{rows=w.fn(n,who(n))||[]}catch(e){}if(rows.length)out.push({kind:w.kind,tag:w.tag,rows})});
+ WFC.set(k,out);if(!WFT){WFT=1;setTimeout(wfClear,0)}return out};
+workFor.clear=wfClear;
 window.workFor=workFor;
 function workload(n){const r=who(n)||{};const w=workFor(n);const hrs=w.reduce((a,g)=>a+g.rows.reduce((b,x)=>b+(x.hrs||1),0),0);const cap=r.hrs||40;const base=r.kind==="ai"?20:r.kind==="msp"?0:4;const pct=r.kind==="msp"?Math.round(52+RNG(n)()*38):Math.round((hrs+base)/cap*100);return {hrs,cap,pct,items:w.reduce((a,g)=>a+g.rows.length,0)}}
 window.workload=workload;
