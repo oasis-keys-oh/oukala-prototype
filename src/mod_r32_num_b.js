@@ -11,9 +11,9 @@ const W=window,D=document;
 const DATA=W.NUM_DATA||{v:1,p:{},s:{},c:{},b:{},t:{}};DATA.r=DATA.r||{};
 const LS="fx.num.v1";
 let L={p:{},s:{},c:{},b:{},t:{},r:{}};
-try{const r=JSON.parse(localStorage.getItem(LS)||"null");if(r&&r.v===1)L=Object.assign(L,r)}catch(e){}
+{const r=U.store.get(LS,null);if(r&&r.v===1)L=Object.assign(L,r)}
 L.r=L.r||{};
-const save=()=>{try{localStorage.setItem(LS,JSON.stringify(Object.assign({v:1},L)))}catch(e){}};
+const save=()=>{U.store.set(LS,Object.assign({v:1},L))};
 const NUM=W.NUM={};
 /* any number this module can read: P-014, P-014.3, B-012, O-003, O-003.2, PJ-004, BL-012, IV-003, LG-005 */
 const NRX=/^#?(pj|bl|iv|lg|p|b|o)-?\d/i;NUM.RX=NRX;
@@ -187,6 +187,6 @@ G_(()=>HOOKS.on("tenantChange",()=>G_(()=>NUM.syncRecords(),0),{id:"num.records.
 
 /* ---------- used by the generator and the checks ---------- */
 NUM.__dump=()=>({v:1,p:Object.assign({},DATA.p,L.p),s:Object.assign({},DATA.s,Object.fromEntries(Object.keys(L.s).map(k=>[k,top(k)]))),c:Object.assign({},DATA.c,Object.fromEntries(Object.keys(L.c).map(k=>[k,kids.apply(null,k.split("#"))]))),b:Object.assign({},DATA.b,L.b),t:Object.assign({},DATA.t,L.t),r:Object.fromEntries(Object.keys(RK).map(k=>[k,Object.assign({},DATA.r[k]||{},L.r[k]||{})]))});
-NUM.__reset=()=>{L={p:{},s:{},c:{},b:{},t:{},r:{}};try{localStorage.removeItem(LS)}catch(e){}};
+NUM.__reset=()=>{L={p:{},s:{},c:{},b:{},t:{},r:{}};U.store.del(LS)};
 NUM.__local=()=>L;
 })();

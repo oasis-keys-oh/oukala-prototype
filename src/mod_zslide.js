@@ -17,8 +17,8 @@ const clamp=U.clamp;
 const mk=(tag,cls,attrs)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);return e};
 const SV=d=>`<svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${d}"/></svg>`;
 const ARW={l:"M7.5 2.5L4 6l3.5 3.5",r:"M4.5 2.5L8 6 4.5 9.5",u:"M2.5 7.5L6 4l3.5 3.5",d:"M2.5 4.5L6 8l3.5-3.5"};
-const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
-const lsSet=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const lsGet=k=>{const v=U.store.get(k,null);return v==null?null:String(v)};
+const lsSet=(k,v)=>{U.store.set(k,+v)};
 let UID=0;
 
 function attach(host,ad,opt){

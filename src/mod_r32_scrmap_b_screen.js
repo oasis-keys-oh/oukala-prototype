@@ -21,10 +21,10 @@ const DK={};DEC.forEach(d=>DK[d.k]=d);
 const NOBAND="Not on the process map";
 const sp=(t,cls,title)=>`<span class="scm-p ${cls||"mute"}"${title?` title="${E(title)}"`:""}>${t}</span>`;
 
-/* ---------- decisions: localStorage with an in-memory fallback ---------- */
+/* ---------- decisions: browser storage (U.store) with an in-memory fallback ---------- */
 let MEM=null;
-function load(){try{const v=localStorage.getItem(KEY);if(v)return JSON.parse(v)}catch(e){}return MEM?JSON.parse(MEM):{}}
-function save(){let s="{}";try{s=JSON.stringify(ST.dec)}catch(e){}MEM=s;try{localStorage.setItem(KEY,s)}catch(e){}}
+function load(){const v=U.store.get(KEY,null);if(v)return v;return MEM?JSON.parse(MEM):{}}
+function save(){let s="{}";try{s=JSON.stringify(ST.dec)}catch(e){}MEM=s;U.store.set(KEY,ST.dec)}
 S.scrmap=S.scrmap||{dec:load(),q:"",fd:"all",fh:"all",by:"band",open:{},arm:0};
 const ST=S.scrmap;
 

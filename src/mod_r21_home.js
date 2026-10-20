@@ -175,9 +175,9 @@ function art(kind,pal,seed){const id="r21g"+(++seq),r=rng(seed||7),[a,b,c]=pal,f
 
 /* ---------- personal choices (saved on this device, per role) ---------- */
 const CK="oukala.r21.cus.v2";
-function cusAll(){try{return JSON.parse(localStorage.getItem(CK)||"{}")||{}}catch(e){return{}}}
+function cusAll(){return U.store.get(CK,{})||{}}
 function cusGet(k){return cusAll()[k]||null}
-function cusSave(k,v){try{const a=cusAll();if(v)a[k]=v;else delete a[k];localStorage.setItem(CK,JSON.stringify(a))}catch(e){}}
+function cusSave(k,v){const a=cusAll();if(v)a[k]=v;else delete a[k];U.store.set(CK,a)}
 function effTop(k){const p=P[k],c=cusGet(k);if(c&&Array.isArray(c.top)&&c.top.length===3){return c.top.map((id,i)=>{const d=p.top.find(t=>t[0]===id);if(d)return d;if(id==="@orders")return[id,"Open orders"];if(id==="@requests")return[id,"Open requests"];const m=M(id);return m?[id,m.n]:p.top[i]})}return p.top}
 function panelOf(id){if(PL[id])return PL[id];if(/^m:/.test(id)){const mid=id.slice(2),m=M(mid);if(!m)return null;const same=Object.keys(METRICS).filter(x=>x!==mid&&METRICS[x].owner===m.owner).slice(0,2);return{t:m.n,q:"Owner: "+m.owner+". What sits behind this number?",go:"metrics:"+mid,cta:"Open in Metrics",lead:mid,rows:same}}return null}
 function effCare(k){const p=P[k],c=cusGet(k);const ids=c&&Array.isArray(c.care)?c.care:p.care;return ids.map(id=>({id,p:panelOf(id)})).filter(x=>x.p)}
