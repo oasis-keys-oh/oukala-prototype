@@ -79,7 +79,9 @@
 :root:has(#railCollapse:checked) .nx-favi svg{color:var(--warn-f)}
 .nx-fly{position:fixed;inset:auto;margin:0;width:min(330px,calc(100vw - 40px));max-height:min(78vh,720px);overflow:auto;border-radius:22px;padding:10px;color:var(--ink);border:1px solid var(--edge);background:var(--bg)}
 .nx-fly:popover-open{animation:pop .2s var(--ease)}
-.nx-flyh{padding:6px 10px 8px}
+.nx-flyh{padding:6px 4px 8px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.nx-flyh>div{min-width:0}
+.nx-flyx{flex:none;min-height:0;padding:4px 6px;color:var(--muted)} /* PH-10, PH-11: close sits top right */
 .nx-flyh b{display:block;font-size:15px}
 .nx-flyh small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .nx-fi{position:relative;display:flex;align-items:center;border-radius:14px}

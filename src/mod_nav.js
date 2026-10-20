@@ -433,7 +433,7 @@ function refreshFavs(){const n=q1("#nav");if(!n)return;if(collapsed()){try{rende
 /* collapsed rail: a group icon opens a flyout with its screens */
 function openFly(g,btn){let f=q1("#nxFly");if(!f){f=document.createElement("div");f.id="nxFly";f.setAttribute("popover","auto");f.className="nx-fly glass";document.body.appendChild(f)}
  const ids=groupItems(g);let sub="";
- f.innerHTML=`<div class="nx-flyh"><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
+ f.innerHTML=`<div class="nx-flyh"><div><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(gLabel(g))}">${SVG(ICO.x,14,2)}</button></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
   return h+`<div class="nx-fi${S.screen===id?" is-cur":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}).join("");
  try{f.showPopover()}catch(e){}
  const r=btn.getBoundingClientRect();const h=Math.min(f.offsetHeight,innerHeight-24);f.style.left=Math.round(r.right+10)+"px";f.style.top=Math.round(Math.max(12,Math.min(r.top-8,innerHeight-h-12)))+"px"}

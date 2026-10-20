@@ -19,5 +19,7 @@ node tools/tests/tenant_leak.js build_out
 node tools/tests/search.js build_out
 # PR-16: real screen-open counts (this browser only), shown on the Screen map and the Usage tab
 node tools/tests/nav_usage.js build_out
+# PH-11: close-control audit; fails only on outliers not in tools/tests/nav_close_baseline.json (list: docs/inventory/close-controls.md)
+node tools/tests/nav_close.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"
