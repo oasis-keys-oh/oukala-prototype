@@ -552,7 +552,7 @@ const LOG0=[
  ["F20","Feature","Portfolio","Expand project and portfolio management: integrated master schedule across projects, Gantt charts, project plans, full Microsoft Project Online features, demand and prioritization.","In progress","v3"],
  ["F21","Process","Product log","Track every update, including design feedback, for future releases.","In progress","v3"],
  ["F22","Question","Research","Why does the data-model research matter in a prototype? It informs the real data model, so it is not a screen. Answered in chat.","Done","v2"],
- ["F23","Idea","Visual","Offer to get outside UI and UX guidance (ChatGPT) if the visuals need it. Not needed yet.","Open","—"],
+ ["F23","Idea","Visual","Offer to get outside UI and UX guidance (ChatGPT) if the visuals need it. Not needed yet.","Open",""],
  ["F24","Feature","Demand","Drag and drop priorities, with a reason captured for every override.","Done","v4"],
  ["F25","Feature","Platform","Drag and drop everywhere it makes sense: demand gates, assignments, change calendar, release trains, workflow canvas, budget transfers, risk heat map, room bookings.","Done","v4"],
  ["F26","Feature","Demand","Show how intake works, with a real form, duplicate check and live score preview.","Done","v4"],
@@ -566,7 +566,7 @@ const LOG0=[
  ["F34","Feature","Finance","Show budgets overall, financial model, vendors and contracts, benefits and delegation of authority.","Done","v4"],
  ["F35","Feature","Executive","Show executive views: CEO, CFO, CIO, COO and Board, strategy alignment, risk heat map with Monte Carlo, application portfolio, board pack.","Done","v4"],
  ["F36","Feature","Platform","Build initial feature prototypes with forms for everything on the feature list.","Done","v4"],
- ["F37","Idea","Platform","The vault graph should read the live Obsidian vault instead of a snapshot. Needs the desktop connector.","Open","—"],
- ["F38","Idea","Demand","Contract ingestion should read real PDF and Word files through a document service.","Open","—"]];
+ ["F37","Idea","Platform","The vault graph should read the live Obsidian vault instead of a snapshot. Needs the desktop connector.","Open",""],
+ ["F38","Idea","Demand","Contract ingestion should read real PDF and Word files through a document service.","Open",""]];
 const LOGKEY="oukala.log.v3";
 let LOGX=[];try{LOGX=JSON.parse(localStorage.getItem(LOGKEY)||"[]")}catch(e){}
