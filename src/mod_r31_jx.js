@@ -124,7 +124,17 @@ JXR.procSteps=p=>{if(p.src==="WFX"){const w=W.WFX&&WFX.get(p.ref);return w?w.ste
 stamp();generate();stamp();
 try{X.syncJy()}catch(e){}
 /* images for the boxes: drop files in assets/journey and list them in manifest.json (see the README there) */
+/* JM-06: keys, most specific first: the trace number ("JH3-07"), "tp:<touchpoint key>" (JYX.TP), "persona:<name>", "default".
+   tp: and persona: keys match without regard to case. Keys starting with "_" are comments; an empty value is skipped, so the step keeps its tinted placeholder.
+   JXR.setManifest(m) sets the manifest without a fetch (a page opened from a file cannot fetch it); window.JOURNEY_MANIFEST is read if present. */
 JXR.manifest={};
-try{fetch("journey/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(m=>{JXR.manifest=m||{};try{if(S.screen==="ppl_jrny"&&Object.keys(JXR.manifest).length)render()}catch(e){}}).catch(()=>{})}catch(e){}
-JXR.img=(b)=>{const m=JXR.manifest||{};const f=m[b.tn]||(b.key&&m["tp:"+b.key])||m["persona:"+b.who]||m["default"];return f?"url(journey/"+encodeURI(f)+")":""};
+const MIDX={};
+const norm=k=>{const s=String(k);const i=s.indexOf(":");return i>0?s.slice(0,i).toLowerCase()+":"+s.slice(i+1).trim().toLowerCase():s.trim()};
+JXR.setManifest=function(m,noRender){JXR.manifest=m&&typeof m==="object"?m:{};Object.keys(MIDX).forEach(k=>delete MIDX[k]);
+ Object.keys(JXR.manifest).forEach(k=>{const v=JXR.manifest[k];if(k.charAt(0)==="_"||typeof v!=="string"||!v.trim())return;MIDX[norm(k)]=v.trim()});
+ if(!noRender)try{if(S.screen==="ppl_jrny")render()}catch(e){}return Object.keys(MIDX).length};
+if(W.JOURNEY_MANIFEST)JXR.setManifest(W.JOURNEY_MANIFEST,true);
+try{fetch("journey/manifest.json",{cache:"no-store"}).then(r=>r.ok?r.json():{}).then(m=>{if(m&&Object.keys(m).length)JXR.setManifest(m)}).catch(()=>{})}catch(e){}
+JXR.imgKey=b=>{if(!b)return "";const c=[b.tn,b.key?"tp:"+b.key:"",b.who?"persona:"+b.who:"","default"].filter(Boolean);for(const k of c){if(MIDX[norm(k)])return k}return ""};
+JXR.img=(b)=>{const k=JXR.imgKey(b);const f=k?MIDX[norm(k)]:"";return f?"url(journey/"+encodeURI(f)+")":""};
 })();

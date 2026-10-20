@@ -93,5 +93,22 @@ const own=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN
 for(const k in own){if(k==='core')ok(own[k].src==='real','core: the org chart tab shows the real Meridian chart');
  else ok(own[k].src==='owners'&&own[k].said&&(own[k].alt===null||own[k].alt==='functions'),`${k}: org chart is built from box owners by default and says so (HR import noted as open)${own[k].alt?'; sample functions view available':''}`)}
 
+// 10. JM-06: manifest keys (trace number, tp:KEY, persona:Name, default), precedence, comments and empty placeholders
+const man=await p.evaluate(async()=>{SCN.set('health');await new Promise(r=>setTimeout(r,150));const a=JYX.api;const L=JYX.JY.list.flatMap(j=>a.allBoxes(j).map(x=>Object.assign({j},x)));
+ const withKey=L.find(x=>x.b.key),plain=L.find(x=>!x.b.key&&x.b.who!==withKey.b.who);JXR.tn(withKey.j,withKey.b);JXR.tn(plain.j,plain.b);
+ const res={};const set=m=>JXR.setManifest(m,true);
+ set({});res.none=JXR.img(plain.b);
+ set({default:"d.webp"});res.def=JXR.imgKey(plain.b);
+ set({default:"d.webp",["persona:"+plain.b.who.toUpperCase()]:"p.webp"});res.per=JXR.imgKey(plain.b);
+ set({default:"d.webp",["tp:"+withKey.b.key.toLowerCase()]:"t.webp",["persona:"+withKey.b.who]:"p.webp"});res.tp=JXR.imgKey(withKey.b);
+ set({default:"d.webp",["tp:"+withKey.b.key]:"t.webp",[withKey.b.tn]:"s.webp"});res.tn=JXR.imgKey(withKey.b);res.url=JXR.img(withKey.b);
+ set({_note:"comment",[withKey.b.tn]:"",default:""});res.ph=JXR.img(withKey.b);
+ set({[withKey.b.tn]:"s.webp"});JXR.setManifest(JXR.manifest);S.pp2.tab.ppl_jrny=1;JYX.JY.sel=withKey.j.id;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
+ const card=[...document.querySelectorAll('#view [style*="--img"]')].length;JXR.setManifest({},true);SCN.set('core');await new Promise(r=>setTimeout(r,120));
+ return Object.assign(res,{card,tnv:withKey.b.tn})});
+ok(man.none===''&&man.def==='default'&&/^persona:/.test(man.per)&&/^tp:/.test(man.tp)&&man.tn===man.tnv&&/journey\/s\.webp/.test(man.url),`manifest keys resolve in order: trace number, tp:, persona:, default (${man.tn}, ${man.tp}, ${man.per}, ${man.def})`);
+ok(man.ph==='','comment keys and empty values leave the tinted placeholder');
+ok(man.card>0,`a step with a manifest image shows it on its card (${man.card})`);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
