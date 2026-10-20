@@ -9,7 +9,7 @@ const H=s=>esc(s==null?"":String(s));
 const D$=n=>typeof money==="function"?money(n):"$"+Math.round(n).toLocaleString("en-US");
 const tryv=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
-const TODAY=Date.UTC(2026,9,6);
+const TODAY=U.todayDate().getTime();
 const iso=ms=>new Date(ms).toISOString().slice(0,10);
 const ms=s=>Date.parse(s+"T12:00:00Z");
 const dago=n=>iso(TODAY-n*864e5);

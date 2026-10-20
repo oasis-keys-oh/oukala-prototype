@@ -5,7 +5,7 @@
 (function(){
 const H=esc,N0=n=>Math.round(n).toLocaleString("en-US"),P1=n=>(Math.round(n*10)/10).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
 const D=S.dev=S.dev||{ver:0,sel:null,trace:"REL-2611",pol:null,frz:[],ov:{},rb:[],cabLog:[],envF:"All",runQ:""};
-const TODAY="2026-10-06",NOWT="2026-10-06 13:30";
+const TODAY=U.TODAY_ISO,NOWT=U.TODAY_ISO+" 13:30";
 const pad=n=>String(n).padStart(2,"0");
 const dn=s=>Math.round(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10))/864e5);
 const dfrom=n=>{const d=new Date(n*864e5);return d.getUTCFullYear()+"-"+pad(d.getUTCMonth()+1)+"-"+pad(d.getUTCDate())};

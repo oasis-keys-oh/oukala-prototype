@@ -6,7 +6,7 @@
 const H=s=>esc(s==null?"":s);
 const CX=window.CHATX=window.CHATX||{};
 const LSK="oukala-chx-1";
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],DW=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const pd=s=>new Date(s+"T00:00:00Z"),iso=d=>d.toISOString().slice(0,10),addD=(s,n)=>iso(new Date(pd(s).getTime()+n*864e5));
 const fd=s=>{if(!s)return"";const d=pd(s);return MON[d.getUTCMonth()]+" "+d.getUTCDate()};

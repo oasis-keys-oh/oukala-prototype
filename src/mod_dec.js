@@ -10,7 +10,7 @@
 "use strict";
 S.decx=S.decx||{rules:{},byId:{},seq:0,open:{},tab:0,seeded:false,rev:0};
 const D=S.decx,E=esc;
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const slug=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 const clone=o=>JSON.parse(JSON.stringify(o));
 const pct=(a,b)=>b?Math.round(100*a/b):0;

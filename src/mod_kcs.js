@@ -2,7 +2,7 @@
  Screens: kcs_home, kcs_edit, kcs_ask, kcs_gap (group know); kcs_prompt, kcs_test (group ai). kcs_viz moved to the Viz builder module. */
 (function(){
 "use strict";
-const NOW="2026-10-06";
+const NOW=U.TODAY_ISO;
 const dd=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/864e5);
 const fD=iso=>iso?new Date(iso+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"none";
 const addD=(iso,n)=>new Date(Date.parse(iso)+n*864e5).toISOString().slice(0,10);
@@ -339,7 +339,7 @@ function cost(q,r,b){const win=b?b.used.reduce((n,u)=>n+u.c.text.split(/\s+/).le
 function askNow(q,viewerId){q=(q||"").trim();if(!q)return;if(viewerId)K.ask.viewer=viewerId;K.ask.q=q;const v=viewer(),r=retrieve(q,v),b=build(q,r),c=cost(q,r,b);
  let gap=null,why="";if(!b){const all=retrieve(q,{aud:AUD,cls:CLS});const hid=all.rows.find(x=>x.f>=.34&&!r.rows.some(y=>y.c.id===x.c.id));const d0=ART.filter(a=>a.st==="Draft"||a.st==="In review").map(a=>({a,s:chunksOf(a).reduce((m,cc)=>{const tt=new Set(cc.toks);return Math.max(m,r.qt.filter(t=>tt.has(t)).length/Math.max(1,r.qt.length))},0)})).sort((x,y)=>y.s-x.s)[0];
   why=hid?"Matching articles exist but you are not in their audience. Nothing from them was read or shown.":"Best match scored "+(r.rows[0]?r.rows[0].f.toFixed(2):"0.00")+", below the 0.34 answer threshold.";const draft=d0&&d0.s>=.5?d0.a:null;
-  const ex=K.gaps.find(g=>g.q.toLowerCase()===q.toLowerCase());if(ex){ex.n++;gap=ex}else{gap={q,n:1,aud:v.n,last:"Oct 6",why,hidden:!!hid,draft:draft?draft.id:null};K.gaps.unshift(gap)}
+  const ex=K.gaps.find(g=>g.q.toLowerCase()===q.toLowerCase());if(ex){ex.n++;gap=ex}else{gap={q,n:1,aud:v.n,last:U.fmtDate(U.todayDate()),why,hidden:!!hid,draft:draft?draft.id:null};K.gaps.unshift(gap)}
   audit("knowledge gap logged",q)}
  else{K.askN=(K.askN||0)+1;K.askS=(K.askS||0)+b.g*100;METRICS.m_ground.cur=Math.round((93*200+K.askS)/(200+K.askN));audit("asked knowledge base",q+" · grounded "+pc(b.g))}
  K.ask.res={q,v:v.id,r,b,c,gap,why};K.ask.hist=[{q,ok:!!b}].concat(K.ask.hist.filter(h=>h.q!==q)).slice(0,6);K.ask.run++}
@@ -536,7 +536,7 @@ function caseRes(s,c,kind){const p=pOf(s.target),v=verLabel(s,kind),vv=vOf(p,v);
  const pass=!fail,h=H(c.id+kind+v),dis=!!(kind==="p"?c.dp:c.dc);let cor=pass?.88+h*.1:.15+h*.3,gro=pass?.91+h*.08:(/policy|AI|print|Retrieve|secure/.test(c.bad)?.2+h*.12:.5+h*.2),saf=c.type==="safety"&&fail?.1+h*.1:1;if(dis)cor=pass?.5+h*.12:.74+h*.06;
  const jv=cor>=.7&&saf>=.8;const rat=!pass?(c.type==="safety"?"The answer crosses a safety boundary the expected answer refuses: "+c.bad.slice(0,50)+"...":"The answer says \""+c.bad.slice(0,56)+"\", which contradicts the expected answer."):(dis?"Content matches but the judge wanted the source named; the rule grader accepted it.":"The answer matches the expected content and every claim traces to the cited source.");
  return {id:c.id,pass,out:pass?c.exp:c.bad,cor,gro,saf,jv,dis:jv!==pass,rat}}
-function mkRun(s,kind,id){const res=s.cases.map(c=>caseRes(s,c,kind)),n=res.length,ps=res.filter(r=>r.pass).length;return {id:id||"R"+(100+SU.reduce((a,x)=>a+x.runs.length,0)+1),suite:s.id,kind,ver:verLabel(s,kind),when:"Oct 6, "+new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"}),res,n,pass:ps,rate:100*ps/n,safe:res.filter((r,i)=>s.cases[i].type==="safety"&&(!r.pass||r.saf<.8)).length,gro:100*res.reduce((a,r)=>a+r.gro,0)/n,dis:res.filter(r=>r.dis).length,disr:100*res.filter(r=>r.dis).length/n}}
+function mkRun(s,kind,id){const res=s.cases.map(c=>caseRes(s,c,kind)),n=res.length,ps=res.filter(r=>r.pass).length;return {id:id||"R"+(100+SU.reduce((a,x)=>a+x.runs.length,0)+1),suite:s.id,kind,ver:verLabel(s,kind),when:U.fmtDate(U.todayDate())+", "+new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"}),res,n,pass:ps,rate:100*ps/n,safe:res.filter((r,i)=>s.cases[i].type==="safety"&&(!r.pass||r.saf<.8)).length,gro:100*res.reduce((a,r)=>a+r.gro,0)/n,dis:res.filter(r=>r.dis).length,disr:100*res.filter(r=>r.dis).length/n}}
 SU.forEach(s=>{s.runs.push(mkRun(s,"p","R"+(SU.indexOf(s)*2+101)));s.runs.push(mkRun(s,"c","R"+(SU.indexOf(s)*2+102)));s.runs.forEach((r,i)=>{r.when=["Oct 5, 22:00","Oct 5, 22:06"][i]})});
 PR.forEach(p=>{if(p.suite){const s=suOf(p.suite);}});
 const lastRun=(s,kind)=>s.runs.filter(r=>r.kind===kind).slice(-1)[0];
@@ -595,7 +595,7 @@ function suiteForm(){openF({id:"kcs_suite",title:"New test suite",story:"A suite
  defaults:{thr:90,judge:"GPT (council)",sched:"On every prompt change",seed:true,own:"Maya Ortiz",target:"P106"},extra:FL("kcs_suite"),
  live:v=>{const p=pOf(v.target);flive("kcs_suite",p?`<p class="small muted">${p.model} answers, ${esc(v.judge||"a judge")} judges. ${v.judge&&p.model.toLowerCase().includes(v.judge.split(" ")[0].toLowerCase())?'<b style="color:var(--warn)">Same vendor as the answering model: judge may favor its own style.</b>':"Different vendors, so the judge is independent."}</p>`:"")},
  onSubmit:v=>{const id="ST"+(SU.length+1),p=pOf(v.target);const su={id,name:v.name,target:v.target,agent:p.usedBy[0]||"New agent",desc:v.desc||"",thr:v.thr||90,sched:v.sched||"Nightly",judge:v.judge||"GPT (council)",owner:v.own||"Maya Ortiz",runs:[],cases:[]};if(v.seed)UNANS.slice(0,4).forEach((u,i)=>su.cases.push(C("G0"+(i+1),"golden",u.q.charAt(0).toUpperCase()+u.q.slice(1)+"?","Answer from a published article, or refuse and log a gap.","(no wrong answer defined)",{userAdded:1})));
-  SU.push(su);if(!p.suite)p.suite=id;K.tSel=id;if(su.cases.length){su.runs.push(mkRun(su,"p"));su.runs.push(mkRun(su,"c"));su.runs.forEach((r,i)=>r.when=["Oct 6, just now","Oct 6, just now"][i])}audit("created suite",su.name);render();return {toast:"Suite "+su.name+" created with "+su.cases.length+" cases.",audit:id}}})}
+  SU.push(su);if(!p.suite)p.suite=id;K.tSel=id;if(su.cases.length){su.runs.push(mkRun(su,"p"));su.runs.push(mkRun(su,"c"));su.runs.forEach((r,i)=>r.when=[U.fmtDate(U.todayDate())+", just now",U.fmtDate(U.todayDate())+", just now"][i])}audit("created suite",su.name);render();return {toast:"Suite "+su.name+" created with "+su.cases.length+" cases.",audit:id}}})}
 /* ---------- actions ---------- */
 function runAI(){if(!K.aiSrc||K.aiRun===1)return;K.aiRun=1;K.aiStep=0;const src=srcOf(K.aiSrc);if(!K.ed)K.ed=blank();const b=$("#kcs-aistep");if(b)b.innerHTML=aiStepHTML();const btn=$("[data-kcs-gen]");if(btn)btn.disabled=true;
  const t=()=>{K.aiStep++;const b=$("#kcs-aistep");if(K.aiStep<4){if(b)b.innerHTML=aiStepHTML();setTimeout(t,520)}else{applyDraft(src);K.ed.id=K.ed.id;K.aiRun=2;audit("AI drafted article",src.id+" · "+K.ed.t);toast("Draft ready from "+src.id+". Review each section before submitting.","info");render()}};setTimeout(t,520)}

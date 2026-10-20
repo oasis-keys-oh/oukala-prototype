@@ -6,7 +6,7 @@ const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
 const D$=money, C$=mk;
 const pc=(n,d)=>(Math.round(n*Math.pow(10,d||0))/Math.pow(10,d||0)).toFixed(d||0)+"%";
 const iso=d=>d.toISOString().slice(0,10);
-const TODAYD=new Date(Date.UTC(2026,9,6));
+const TODAYD=U.todayDate();
 const dd=s=>new Date(s+"T00:00:00Z");
 const dfmt=s=>dd(s).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"});
 const dshort=s=>dd(s).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"});

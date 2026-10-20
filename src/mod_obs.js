@@ -502,7 +502,7 @@ function execsSeed(){const r=RNG("exec7"),out=[];const pick=a=>a[Math.floor(r()*
 const EXECS=()=>{if(!O.exec)O.exec=execsSeed();return O.exec};
 
 /* ---------- decision engine: which automation rule applies, which guardrails pass, what happens ---------- */
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const sloLeft=sid=>{try{return window.OBSX&&OBSX.sloLeft?OBSX.sloLeft(sid):40}catch(e){return 40}};
 function decide(a,o){o=o||{};const A=computeAll(),c=ciOf(a.ci)||{},hr=(NOW_T%DAYMIN)/60,biz=dowOf(NOW_T)>0&&dowOf(NOW_T)<6&&hr>=8&&hr<18,g=a.grp&&A.groups.find(x=>x.id===a.grp);
  const path=[],matches=[];

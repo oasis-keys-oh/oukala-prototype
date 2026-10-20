@@ -6,7 +6,7 @@
 "use strict";
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const H=s=>esc(s==null?"":String(s));
-const NOW0=Date.UTC(2026,9,6,16,0,0);          /* the prototype's "today": Tue Oct 6 2026 */
+const NOW0=U.todayDate().getTime()+16*36e5;         /* the prototype's "today": Tue Oct 6 2026 */
 const USERS={exec:"Casey Rowan",fin:"Avery Chen",pm:"Priya Shah",ops:"Tom Becker"};
 /* PR-28: every role approves as its own identity (R15D.me); the four core personas keep their named users */
 const ME=()=>{if(USERS[S.persona])return USERS[S.persona];try{const p=PERSONAS[S.persona];if(p&&p.as&&window.R15D&&R15D.me){const n=R15D.me().name;if(n)return n}}catch(e){}return "Casey Rowan"};
@@ -239,7 +239,7 @@ const byId=id=>collect().find(x=>x.id===id);
 const flt=list=>{const f=I.flt||{};let r=list;if(f.kinds&&f.kinds.length)r=r.filter(x=>f.kinds.includes(x.cat));if(f.srcs&&f.srcs.length)r=r.filter(x=>f.srcs.includes(x.src));if(f.grp&&f.grp.length)r=r.filter(x=>f.grp.includes(x.group));if(f.q){const q=f.q.toLowerCase();r=r.filter(x=>(x.title+" "+x.req+" "+x.cat).toLowerCase().includes(q))}return r};
 
 /* ---------- delegation rules, policies ---------- */
-const TODAY_ISO="2026-10-06";
+const TODAY_ISO=U.TODAY_ISO;
 function activeDele(){return I.dele.filter(d=>d.on&&d.from<=TODAY_ISO&&d.until>=TODAY_ISO&&d.owner===ME())}
 function covers(d,it){return it.kind==="approval"&&it.can&&it.can.delegate&&(d.limit==null||it.amt==null||it.amt<=d.limit)&&it.risk!=="high"&&it.src!=="sim"}
 function pols(){const me=ME();I.pol=I.pol||{};if(!I.pol[me]){I.pol[me]=[
@@ -407,7 +407,7 @@ let polled=false;function poll(){const list=collect();if(!polled){list.forEach(x
  list.forEach(x=>{if(I.seenBanner[x.id])return;I.seenBanner[x.id]=1;if(x.urgent&&x.kind==="approval")banner(x)});updateBell()}
 
 /* ---------- delegation and policies (act through the owning modules) ---------- */
-function isoPlus(days){const d=new Date(Date.UTC(2026,9,6+days));return d.toISOString().slice(0,10)}
+function isoPlus(days){const d=new Date(U.todayDate().getTime()+days*864e5);return d.toISOString().slice(0,10)}
 function nextWeekday(name){const wd={sunday:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6}[String(name||"").toLowerCase()];if(wd==null)return isoPlus(3);let k=(wd-2+7)%7;if(k===0)k=7;return isoPlus(k)}
 function createDele(o){const me=ME();if(!o.to||o.to===me)return{ok:false,why:"Pick someone other than yourself to cover."};const r={id:"dr"+(I.dele.length+1),owner:me,to:o.to,from:o.from||TODAY_ISO,until:o.until||isoPlus(3),limit:o.limit!=null&&o.limit!==""&&+o.limit>0?+o.limit:null,scope:"Approvals that can be delegated",on:true,applied:0,mod:false,at:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})};
  I.dele.push(r);audit("Inbox: delegation rule",me+" to "+r.to+" from "+r.from+" until "+r.until+(r.limit?" up to "+money0(r.limit):""));applyDele(r);bump();refreshAll();return{ok:true,rule:r}}

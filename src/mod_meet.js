@@ -4,8 +4,8 @@
 (function(){
 if(window.MEETX)return;
 const M=window.MEETX={};
-S.meet=S.meet||{cal:"week",cur:"2026-10-06",sel:null,ap:{},colt:null};
-const TODAY="2026-10-06",NOWH=13.5;
+S.meet=S.meet||{cal:"week",cur:U.TODAY_ISO,sel:null,ap:{},colt:null};
+const TODAY=U.TODAY_ISO,NOWH=13.5;
 const MS=864e5,D0=Date.UTC(2026,8,30);
 const isoOf=n=>new Date(D0+n*MS).toISOString().slice(0,10);
 const dOf=iso=>Math.round((Date.parse(iso+"T00:00:00Z")-D0)/MS);
@@ -133,7 +133,7 @@ M.linkGo=function(l){try{
 function openDrawerRec(id){if(typeof recDrawer==="function")recDrawer(id)}
 
 /* ---------- audit trail on the meeting ---------- */
-function maud(m,what,detail,by){m.aud=m.aud||[];m.aud.unshift({at:"Oct 6 "+tm(NOWH),by:by||(S.persona&&PERSONAS[S.persona]?PERSONAS[S.persona].n:"Casey Rowan"),a:what,d:detail||""});if(m.aud.length>60)m.aud.length=60;audit("Meetings: "+what,(m.t||"")+(detail?" · "+detail:""))}
+function maud(m,what,detail,by){m.aud=m.aud||[];m.aud.unshift({at:U.fmtDate(U.todayDate())+" "+tm(NOWH),by:by||(S.persona&&PERSONAS[S.persona]?PERSONAS[S.persona].n:"Casey Rowan"),a:what,d:detail||""});if(m.aud.length>60)m.aud.length=60;audit("Meetings: "+what,(m.t||"")+(detail?" · "+detail:""))}
 M.maud=maud;
 
 /* ---------- seed: patch the existing 12 meetings and add the rest ---------- */

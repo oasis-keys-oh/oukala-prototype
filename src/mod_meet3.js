@@ -190,7 +190,7 @@ function createFromDraft(){const d=S.meet.draft;if(!d.title.trim()){toast("Give 
  if(d.rep!=="none"){ser={id:"sr_u"+Date.now().toString(36),n:d.title,type:d.type,chair:ME(),secy:"",cad:({weekly:"Weekly",biweekly:"Every other week",monthly:"Monthly"})[d.rep]+", "+DN[M.dowOf(d.dt)]+" "+tm(+d.s),s:+d.s,e:+d.s+d.dur,room:d.room,purpose:"Created from a template on "+fd(TODAY)+".",rights:"To be set by the chair.",esc:"",mem:d.inv.map(i=>[i.n,i.role]),dates:[],mids:{},ex:{},links:d.links.map(l=>[l.k,l.id])};M.series.push(ser)}
  let first=null;for(let k=0;k<n;k++){const dt=addD(d.dt,k*step);if(ser)ser.dates.push(dt);
   const m=M.addMeeting({t:d.title,type:d.type,series:ser?ser.id:"",dt,s:+d.s,e:+d.s+d.dur,room:d.room,online:/Teams|Webex|bridge/.test(d.room)||d.online?"https://teams.example/meet/"+Date.now().toString(36)+k:"",inv:d.inv.map(i=>({n:i.n,role:i.role,rsvp:i.n===ME()?"yes":"none",att:null,dlg:"",tz:M.tzOf(i.n)})),links:d.links.map(l=>({k:l.k,id:l.id})),chair:ME(),secy:"",st:"next",
-   agenda:d.ag.map((a,i)=>({id:"",t:a.t,min:+a.min,own:a.own,note:"",st:"todo"})),files:d.files.map(f=>({n:f,kind:"Pre-read",size:"0.4 MB",by:ME()})),prep:d.prep?{at:"Oct 6 "+tm(M.NOWH),conf:.84}:null,idx:k,occ:k+1});
+   agenda:d.ag.map((a,i)=>({id:"",t:a.t,min:+a.min,own:a.own,note:"",st:"todo"})),files:d.files.map(f=>({n:f,kind:"Pre-read",size:"0.4 MB",by:ME()})),prep:d.prep?{at:U.fmtDate(U.todayDate())+" "+tm(M.NOWH),conf:.84}:null,idx:k,occ:k+1});
   m.agenda.forEach((a,i)=>a.id=m.id+"_g"+i);M.maud(m,"Meeting scheduled",(ser?"Series of "+n+". ":"")+m.inv.length+" invited");if(!first)first=m}
  M.sync();S.meet.draft=null;S.meet.cur=first.dt;toast((n>1?n+" meetings":"Meeting")+" scheduled for "+fdw(first.dt),"good");go("meet_hub");S.v.meet=1;render();setTimeout(()=>M.open(first.id),80)}
 
@@ -219,7 +219,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-mt]");if(!
  if(k==="ag-del"){const g=m.agenda.splice(+v[2],1)[0];M.maud(m,"Agenda item removed",g.t);paint();return}
  if(k==="ag-add"){agForm(m);return}
  if(k==="agenda-tpl"){M.fillAgenda(m,0);M.maud(m,"Agenda drafted from template",T[m.type].n);toast("Agenda drafted. Check the owners and times.","info");fin();return}
- if(k==="prep"){m.prep={at:"Oct 6 "+tm(M.NOWH),conf:.85};M.maud(m,"Prep brief drafted","First Officer");toast("Prep brief drafted","info");fin();return}
+ if(k==="prep"){m.prep={at:U.fmtDate(U.todayDate())+" "+tm(M.NOWH),conf:.85};M.maud(m,"Prep brief drafted","First Officer");toast("Prep brief drafted","info");fin();return}
  if(k==="start"){m.live=true;S.meet.tm={mid:m.id,run:0,t0:Date.now(),acc:{}};m.inv.forEach(i=>{if(i.rsvp==="yes"&&!i.att)i.att="present"});M.maud(m,"Meeting started",quorumView(m).met?"Quorum met":"Quorum not met");paint();return}
  if(k==="end"){m.live=false;m.st="done";if(S.meet.tm&&S.meet.tm.mid===m.id){S.meet.tm.run=null}m.minutes={st:"draft",by:m.secy||m.chair,at:TODAY,text:M.minutesText(m)};if(!m.sum)m.sum="Held "+fd(m.dt)+" with "+m.inv.filter(i=>i.att==="present").length+" attendees.";M.maud(m,"Meeting ended","Minutes drafted");toast("Meeting ended. Minutes drafted for review.","good");fin();return}
  if(k==="resched"){M.resched(v[1]);return}
