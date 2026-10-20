@@ -1127,7 +1127,8 @@ CX.mount=function(){if(CX.mounted)return;const d=$("#chatDock");if(!d)return;CX.
 drawChat=function(){if(CX.mounted)CX.drawAll()};
 /* Chat is the entry for the search box, the palette and every module: ask() goes to the planner */
 CX.setAskPrev(ask);ask=function(q){return handle(q)};
-const _render=render;render=function(){const r=_render.apply(this,arguments);try{if(CX.mounted&&S.screen!==CX._lastScreen){CX._lastScreen=S.screen;if(ST.lastRec&&!ST.keepRec)ST.lastRec=null;ST.keepRec=false;CX.drawCtx();CX.drawSugs();if(CX.isOpen()&&ST.dock.view==="ctx")CX.drawContext();if(DIR.length!==CX._dl)fillLists()}}catch(e){}return r};
+/* CL-35: the chat context follows the screen through HOOKS afterRender, not a wrapper of render */
+HOOKS.on("afterRender",()=>{try{if(CX.mounted&&S.screen!==CX._lastScreen){CX._lastScreen=S.screen;if(ST.lastRec&&!ST.keepRec)ST.lastRec=null;ST.keepRec=false;CX.drawCtx();CX.drawSugs();if(CX.isOpen()&&ST.dock.view==="ctx")CX.drawContext();if(DIR.length!==CX._dl)fillLists()}}catch(e){}},{id:"chat-context"});
 
 /* ================= round 8 tools: problems, releases, SLA, CMDB, rota, workflows, budgets, SOW, knowledge, capacity,
    maturity, TBM, visualization, ITSM, requests, observability. Every tool calls the owning module's exported API when it exists

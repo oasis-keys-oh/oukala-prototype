@@ -1520,8 +1520,9 @@ new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.classList&&
 const FLOWX=window.FLOWX={_ed:()=>({f:curFlow,E,paintHead,fitZoom,drag:()=>drag,wpt,pushU,touch,mkNode,NEWNAME,uid,colX,NW,NH,LH,LW,GX,CW,laneTop,nodeY,outs,NTY,PAL,paintAll,paintCanvas,paintInsp,audit,toast,rs,nodeById,selectNode,mut}),open:(id,node)=>openEditor(id,node),flows:allFlows,get:getFlow,validate,simulate,exportJSON,approvals:()=>everyAx(),canDecide};
 /* open a process: go("flw_design","proc:flw_appr") or a workflow id */
 function openByRef(ref){if(!ref)return;let id=String(ref);if(!getFlow(id)){if(getFlow("proc:"+id))id="proc:"+id;else if(getFlow("wfx:"+id))id="wfx:"+id;else return}F.open=id;E.sel=null;E.selE=null;E.conn=null;E.sim=null;E.insp="step";E.tab="do";E.pane="valid";E.q=""}
-const _go=window.go;window.go=function(screen,arg){if(screen==="flw_design"&&arg)openByRef(arg);else if(screen==="flw_design"&&arg===undefined&&S.screen!=="flw_design"&&F.open&&false)F.open=null;
- if(screen==="flw_appr"&&arg)AX.sel=arg;const r=_go.apply(this,arguments);if(screen==="flw_appr"&&arg&&itemOf(arg))setTimeout(()=>openAppr(arg),60);if(screen==="flw_asmt"&&arg&&aType(arg)){AS.type=arg;AS.tab="bld";render()}return r};
+/* CL-35: deep links into the designer, approvals and assessments run before the screen renders (HOOKS beforeGo, no wrapper of go) */
+HOOKS.on("beforeGo",(screen,arg)=>{if(screen==="flw_design"&&arg)openByRef(arg);
+ if(screen==="flw_appr"&&arg){AX.sel=arg;if(itemOf(arg))setTimeout(()=>openAppr(arg),60)}if(screen==="flw_asmt"&&arg&&aType(arg)){AS.type=arg;AS.tab="bld"}},{id:"flow-deeplinks"});
 /* process strips everywhere: the "Open in Workflow designer" button and step drawers open the matching process */
 document.addEventListener("click",e=>{const nv=e.target.closest&&e.target.closest('[data-nav="flw_design"]');if(!nv)return;const strip=document.querySelector("[data-proc]"),dr=e.target.closest("#drawer");let sc=null;if(dr){const m=(dr.innerHTML.match(/data-proc-step="([^":]+)/)||[]);sc=S._lastProc}if(!sc&&strip)sc=strip.dataset.proc;if(sc&&PROC.defs[sc]&&sc!=="flw_design"){e.stopImmediatePropagation();e.preventDefault();closeDrawer();go("flw_design","proc:"+sc)}},true);
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-proc-step]");if(t)S._lastProc=t.dataset.procStep.split(":")[0]},true);
