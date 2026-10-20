@@ -43,7 +43,7 @@ R.actorChip=function(idOrName,o){if(idOrName==null||idOrName==="")return `<span 
 R.actorBadge=function(idOrName,o){return window.avatar(isAgent(idOrName)?(canon(idOrName)||idOrName):idOrName,o||{})};
 R.kindTag=n=>isAgent(n)?`<i class="r17t-tag">AI</i>`:`<i class="r17t-tag hu">Person</i>`;
 /* clicks on an agent chip anywhere open the AI teammate profile */
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-person]");if(!b)return;const n=b.dataset.person;if(!isAgent(n))return;if(!window.R17T.openProfile)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();R.openProfile(canon(n)||n)},true);
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-person]");if(!b||b.closest("[data-owner]"))return;const n=b.dataset.person;if(!isAgent(n))return;if(!window.R17T.openProfile)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();R.openProfile(canon(n)||n)},true);
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r17t-open]");if(!b)return;e.preventDefault();R.openProfile(b.dataset.r17tOpen)});
 
 /* ---------- the AI teammate model ---------- */
