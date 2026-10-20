@@ -6,7 +6,7 @@ const NOW="2026-10-06";
 const dd=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/864e5);
 const fD=iso=>iso?new Date(iso+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"none";
 const addD=(iso,n)=>new Date(Date.parse(iso)+n*864e5).toISOString().slice(0,10);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const pc=v=>Math.round(v*100)+"%";
 const H=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)/4294967296};
 const attr=s=>esc(String(s));
@@ -697,7 +697,7 @@ window.KCS_TEST={kanPane,freshPane,qualPane,ART,qual,retrieve,build,askNow,K,PR,
 (function(){
 "use strict";
 const T=window.KCS_TEST,{ART,K,byId,isStale,qual,age,comp,fD,NOW,addD,dd,stPill,openF}=T;
-const esc_=esc,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const esc_=esc,clamp=U.clamp;
 const hsh=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)/4294967296};
 const X=S.kcsx=S.kcsx||{ov:{},skills:null,runs:null,imp:null,studio:null,ver:0,fq:{},sel:null,tool:{},loopNote:""};
 /* ---------- vocab ---------- */

@@ -6,7 +6,7 @@
 const NOWH=NOW.h;
 const fmt=n=>Number(n).toLocaleString("en-US");
 const f1=n=>(Math.round(n*10)/10).toFixed(1);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const nextId=p=>p+(++I.seq);
 const enc=s=>String(s).replace(/[^A-Za-z0-9_-]/g,"");
 const dl=(a)=>a&&a.length?a:[];

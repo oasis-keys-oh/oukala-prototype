@@ -5,7 +5,7 @@ const E=S.exe=S.exe||{};
 const PN=["CEO","CFO","CIO","COO","Board"];
 const dstr=w=>fmtD(w),dyr=w=>fmtD(w,true);
 const pc=v=>Math.round(v*100)+"%";
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const nm=n=>PEOPLE.find(p=>p[0]===n)?n:"Unassigned";
 const stc=(p,tg,bad,dir)=>dir==="max"?(p>=tg?"good":p>=bad?"warn":"bad"):(p<=tg?"good":p<=bad?"warn":"bad");
 const SC={good:"--good-f",warn:"--warn-f",bad:"--bad-f"};

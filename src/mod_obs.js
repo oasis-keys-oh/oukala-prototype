@@ -22,7 +22,7 @@ const DOWN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const hz=s=>{let h=2166136261;s=String(s);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
 const hn=(seed,t)=>{let x=(typeof seed==="number"?seed:hz(seed))+Math.imul(t|0,374761393);x=Math.imul(x^(x>>>13),1274126177);return((x^(x>>>16))>>>0)/4294967296};
 const smooth=(seed,t,w)=>{const a=Math.floor(t/w),f=t/w-a;const u=f*f*(3-2*f);return hn(seed,a)*(1-u)+hn(seed,a+1)*u};
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const sum=(a,f)=>a.reduce((x,y)=>x+(f?f(y):y),0);
 const avg=a=>a.length?sum(a)/a.length:0;
 const sd=a=>{const m=avg(a);return Math.sqrt(avg(a.map(x=>(x-m)**2)))};

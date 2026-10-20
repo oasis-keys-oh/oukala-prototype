@@ -14,7 +14,7 @@ const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","De
 const fd=s=>s?MON[+s.slice(5,7)-1]+" "+(+s.slice(8,10)):"";
 const sum=(a,f)=>a.reduce((x,y)=>x+(f?f(y):y),0);
 const med=a=>{if(!a.length)return 0;const b=a.slice().sort((x,y)=>x-y),m=b.length>>1;return b.length%2?b[m]:(b[m-1]+b[m])/2};
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const who_=()=>(S.persona&&PERSONAS&&PERSONAS[S.persona]?PERSONAS[S.persona].n:"Casey Rowan");
 const STG=[["wi","Work item","Backlog item or project task"],["cm","Commit","Code committed with the work item id"],["pr","Pull request","Review and merge"],["bd","Build","Compile and package"],["ts","Test","Automated test suite"],["sc","Security scan","Dependencies, code and secrets"],["ar","Artifact","Signed, versioned package"],["gt","Change gate","Standard, normal or emergency change"],["dp","Deploy","Release to the target environment"],["vf","Verify","Service level check after deploy"],["rr","Release closed","Release and change records closed"]];
 const ENVS=["Development","Test","Staging","Production"];
