@@ -3,15 +3,20 @@
 // Snapshot rule: for the record entities the core ids must match tools/tests/tenant_core_snapshot.json exactly; for the
 // metrics registry no snapshot id may disappear (additions are reported); processes and workflows register lazily and on timers
 // while the page settles, so only their counts are recorded and reported, never compared.
+// PR-32 entities (src/mod_s_tenant_entities.js): stores that grow on timers while the page settles (VOLATILE) are left out of the
+// id comparison: a listed part is dropped from the ids, an entity listed with '*' is counted only.
 // Usage: node tools/tests/tenant.js <dir containing full.html> [--update]   (--update rewrites the snapshot after a deliberate change)
 const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
 const SNAP=path.join(__dirname,'tenant_core_snapshot.json');const OPEN=['metrics'],LAZY=['processes','workflows'];
+const VOLATILE={audit_log:'*',conversations:'*',events:'*',role_assignments:'*',skills:'*',leave:'*',decisions:'*',capabilities:'*',config_items:['history']}; /* measured: these Meridian stores fill on timers during the first seconds after load */
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const update=process.argv.includes('--update');
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
 p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
 await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(900);
-const r=await p.evaluate(()=>{const f=[];const snap=DATA.snapshot('core'); /* taken first: some registries grow as screens render */const ok=(c,m)=>{if(!c)f.push(m)};const btn=()=>(document.getElementById('tnBtn')||{}).textContent||'';
+const r=await p.evaluate(VOL=>{const f=[];const snap=DATA.snapshot('core');
+ Object.keys(VOL).forEach(e=>{if(!snap[e]||!window.TENANT_ENTITIES)return;if(VOL[e]==='*'){snap[e].ids='not recorded: grows while the page settles';return}
+  const d=TENANT_ENTITIES.get(e);snap[e].ids=DATA.get(e,{tenant:'core'}).filter(x=>!VOL[e].includes(TENANT_ENTITIES.part(e,x))).map(x=>x[d.key]);snap[e].count=snap[e].ids.length}); /* taken first: some registries grow as screens render */const ok=(c,m)=>{if(!c)f.push(m)};const btn=()=>(document.getElementById('tnBtn')||{}).textContent||'';
  /* one tenant model (DC-31) */
  let fired=0;const off=HOOKS.on('tenantChange',()=>fired++,{id:'t-count'});
  SCN.set('mining');ok(DATA.tenant()==='mining'&&TENANT.cur()==='mining','SCN.set drives DATA and TENANT');
@@ -69,14 +74,14 @@ const r=await p.evaluate(()=>{const f=[];const snap=DATA.snapshot('core'); /* ta
  DATA.pack('zz_bad',{projects:[{id:'X1',n:'A'},{id:'X1',n:'B'},{n:'no id'},{id:'X2',n:'Run by Meridian Standards Foundation'}],nonsense:[{id:1}]});
  const bad=DATA.validate('zz_bad');ok(!bad.ok,'validator rejects a bad pack');
  ['duplicate id X1','missing id','unknown entity nonsense','mentions another tenant'].forEach(m=>ok(bad.errors.some(e=>e.indexOf(m.split(' ').slice(-1)[0])>=0&&e.indexOf(m.split(' ')[0])>=0),'validator reports '+m+': '+bad.errors.join('; ')));
- return{f,snap,val:val.map(v=>v.tenant+' '+JSON.stringify(v.counts))}});
+ return{f,snap,val:val.map(v=>v.tenant+' '+JSON.stringify(v.counts))}},VOLATILE);
 r.val.forEach(v=>console.log('pack',v));
 // snapshot
 LAZY.forEach(e=>{if(r.snap[e])r.snap[e]={count:r.snap[e].count,ids:'not recorded: registers lazily'}});
 if(update||!fs.existsSync(SNAP)){fs.writeFileSync(SNAP,JSON.stringify(r.snap,null,1)+'\n');console.log('snapshot written',SNAP)}
 else{const old=JSON.parse(fs.readFileSync(SNAP,'utf8'));
  Object.keys(old).forEach(e=>{const now=r.snap[e];if(!now){r.f.push('snapshot: entity '+e+' is gone');return}
-  if(LAZY.includes(e)){console.log('snapshot: '+e+' count '+now.count+' (was '+old[e].count+', not compared)');return}
+  if(LAZY.includes(e)||VOLATILE[e]==='*'){console.log('snapshot: '+e+' count '+now.count+' (was '+old[e].count+', not compared)');return}
   const was=new Set(old[e].ids),is=new Set(now.ids);const lost=[...was].filter(x=>!is.has(x)),added=[...is].filter(x=>!was.has(x));
   if(lost.length)r.f.push('snapshot: '+e+' lost '+lost.length+' ids ('+lost.slice(0,5).join(', ')+')');
   if(added.length){if(OPEN.includes(e))console.log('snapshot: '+e+' gained '+added.length+' ids (allowed for this registry)');else r.f.push('snapshot: '+e+' gained '+added.length+' ids ('+added.slice(0,5).join(', ')+')')}});
