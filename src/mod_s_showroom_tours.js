@@ -103,4 +103,45 @@ if(kids.length)SHOW.add({id:"guardrails",title:"Guardrails, one act at a time",m
  blurb:"The six guided guardrail views in the order of the COO cut's acts. Each runs the real prototype check where one exists and says what is simulated.",
  beats:["tenant","demand","fund","track","deliver","build"].map(id=>kids.find(c=>c.id===id)).filter(Boolean).map(kidBeat)});
 
+/* ---------- DC-30: full-story path ----------
+   A cut never runs past 1,200 seconds (SHOW.lint). The 25 to 30 minute story is therefore a path of two cuts played in
+   order: the COO cut, then the guardrails cut. */
+if(SHOW.byId("guardrails"))SHOW.paths.push({id:"full",title:"Full story",parts:["coo","guardrails"],who:"A first meeting with a COO and their CIO",
+ blurb:"The COO thin thread, then the guardrail behind each act. Two cuts, each under the limit, played as one path."});
+
+/* ---------- DC-30: leave-behind ---------- */
+const scrName=id=>G(()=>NAVX.label(id),null)||G(()=>SCREENS.find(s=>s[0]===id)[1],id);
+function leaveBehindHTML(id){const path=String(id).indexOf("path:")===0?SHOW.paths.find(p=>p.id===String(id).slice(5)):null;
+ const tours=path?path.parts.map(SHOW.byId).filter(Boolean):[SHOW.byId(id)].filter(Boolean);if(!tours.length)return"";
+ const C=SHOW.CLAIM,name=G(()=>BRAND.name,"")||"the platform";const title=path?path.title:tours[0].title;
+ const tot=tours.reduce((a,d)=>a+d.total,0);let n=0;const sim=[];
+ const beat=(b,opt)=>{n++;if(b.claims.indexOf("simulated")>=0)sim.push(b.point);
+  return `<li class="${opt?"opt":""}"><div class="h"><span class="n">${opt?"Optional":n}</span><b>${E(b.point)}</b><span class="act">${E(b.act)} · ${E(scrName(b.go))}</span></div>
+  <p>${E(b.say[0])} ${E(b.say[1])}</p><p class="cl">${b.claims.map(k=>`<span>${E(C[k].l)}</span>`).join("")}</p></li>`};
+ const body=tours.map(d=>`<section><h2>${E(d.title)}</h2><p class="muted">${E(d.blurb)} About ${Math.round(d.total/60)} minutes.</p><ol>${d.beats.map(b=>beat(b)+(b.kids||[]).map(k=>beat(k,true)).join("")).join("")}</ol></section>`).join("");
+ return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${E(title)}: leave-behind</title>
+<style>body{font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;margin:32px auto;max-width:760px;padding:0 16px;color:CanvasText;background:Canvas}h1{font-size:24px;margin:0 0 4px}h2{font-size:18px;margin:28px 0 4px}
+ol{list-style:none;padding:0;margin:12px 0}li{border-top:1px solid GrayText;padding:10px 0;break-inside:avoid}li.opt{padding-left:24px}.h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.n{font-weight:700;min-width:22px}.act{color:GrayText;font-size:13px}
+p{margin:4px 0}.muted{color:GrayText}.cl span{display:inline-block;border:1px solid GrayText;border-radius:99px;padding:0 8px;margin:2px 6px 0 0;font-size:12px}dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px}dt{font-weight:700}
+footer{margin-top:28px;border-top:1px solid GrayText;padding-top:10px;font-size:13px;color:GrayText}@media print{body{margin:0 auto}}</style></head><body>
+<h1>${E(title)}</h1><p class="muted">A walkthrough of the ${E(name)} prototype. ${tours.length>1?tours.length+" parts, ":""}about ${Math.round(tot/60)} minutes. Every organization, person and figure is fictional sample data (Meridian Standards Foundation and the sample tenants).</p>
+${body}<h2>How to read the labels</h2><dl>${Object.keys(C).map(k=>`<dt>${E(C[k].l)}</dt><dd>${E(C[k].d)}</dd>`).join("")}</dl>
+${sim.length?`<h2>What is simulated</h2><p>Scripted in the prototype, with no live connection, run or enforcement: ${sim.map(E).join("; ")}.</p>`:""}
+<footer>Prototype walkthrough. ${E(name)} is a working name. Nothing here is a certification claim or a price; security and isolation are plans.</footer></body></html>`}
+function leaveBehind(id,o){o=o||{};const html=leaveBehindHTML(id);if(!html)return null;const w=G(()=>W.open("","_blank"),null);
+ if(!w){G(()=>toast("The browser blocked the leave-behind window. Allow pop-ups for this page.","warn"));return null}
+ w.document.open();w.document.write(html);w.document.close();if(o.print!==false)setTimeout(()=>G(()=>w.print()),400);return w}
+Object.assign(SHOW,{leaveBehind,leaveBehindHTML});
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-sr-leave]");if(t)leaveBehind(t.dataset.srLeave)});
+
+/* ---------- DC-30 home: the full-story path and the last rehearsal ---------- */
+SHOW.home.push(()=>{const p=SHOW.paths.find(x=>x.id==="full");const fmt=SHOW.fmt;
+ const parts=p?p.parts.map(SHOW.byId).filter(Boolean):[];const tot=parts.reduce((a,d)=>a+d.total,0);
+ return `${p?`<section class="sr-card glass srt" aria-label="Full story"><div class="sr-ch"><h3>${E(p.title)}</h3><span class="sr-pill">About ${Math.round(tot/60)} min</span><span class="sr-pill">${parts.length} cuts</span></div>
+ <p class="muted">${E(p.blurb)} Each cut stays under the ${fmt(SHOW.LIMIT)} limit; the path plays them in order and the bar says which part you are in.</p>
+ <ol class="sr-ol">${parts.map(d=>`<li><b>${E(d.title)}</b> <span class="sr-sc">${d.beats.length} beats, ${fmt(d.total)}</span></li>`).join("")}</ol>
+ <div class="row"><button type="button" class="btn primary" data-sr-path="full">Start the full story</button><button type="button" class="btn quiet" data-sr-leave="path:full">Leave-behind</button></div></section>`:""}
+ ${(()=>{const r=G(()=>SHOW.lastRehearsal||U.store.get("showroom.rehearsal",null),null);if(!r||!r.rows)return"";
+  return `<section class="sr-card glass srt" aria-label="Last rehearsal"><div class="sr-ch"><h3>Last rehearsal: ${E(r.title)}</h3><span class="sr-pill">${fmt(r.actual)} of ${fmt(r.budget)}</span></div>
+  <div class="tscroll"><table class="tbl"><thead><tr><th>Beat</th><th class="num">Budget</th><th class="num">Took</th></tr></thead><tbody>${r.rows.map(x=>`<tr><td>${E(x.point)}</td><td class="num">${fmt(x.secs)}</td><td class="num${x.actual>x.secs?" srt-over":""}">${fmt(x.actual)}</td></tr>`).join("")}</tbody></table></div></section>`})()}`});
 })();

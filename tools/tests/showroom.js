@@ -117,5 +117,21 @@ if(await p.evaluate(()=>!!SHOW.reset)){
  const r2=await p4.evaluate(()=>({demo:SHOW.state.demo,persona:S.persona,tenant:DATA.tenant(),left:['fx.num.v1','oukala-chx-1','oukala.bl.cols','oukala-r15d-test','oukala-r16i-test','showroom.lens'].filter(k=>localStorage.getItem(k)==='"sentinel"'),wedgeKept:localStorage.getItem('falconaire.wedge')!==null,url:location.search}));
  if(r2.demo!=='coo'||r2.persona!=='coo'||r2.tenant!=='core'||r2.left.length||!r2.wedgeKept||/srreset/.test(r2.url))fail('reset and reload '+JSON.stringify(r2));
  await p4.close();console.log('demo reset: ok, cleared',r1.n,'keys in place;',JSON.stringify(r2))}
+// DC-30: the full-story path plays its cuts in order; the leave-behind is built from the beats and their claim chips
+if(await p.evaluate(()=>!!(SHOW.paths.length&&SHOW.leaveBehindHTML))){
+ const pa=await p.evaluate(()=>{const P=SHOW.paths.find(x=>x.id==='full');const parts=P.parts.map(SHOW.byId);return{parts:P.parts,each:parts.map(d=>d.total),tot:parts.reduce((a,d)=>a+d.total,0)}});
+ if(pa.each.some(t=>t>1200)||pa.tot<1500||pa.tot>1800)fail('full story path '+JSON.stringify(pa));
+ await p.evaluate(()=>SHOW.startPath('full'));await settle();const n0=await p.evaluate(()=>SHOW.byId(SHOW.paths[0].parts[0]).beats.length);
+ await p.evaluate(n=>SHOW.jump(n-1),n0);await settle();const lbl=await p.evaluate(()=>(document.querySelector('.sr-bar .sr-pill')||{}).textContent);
+ await p.keyboard.press('PageDown');await settle();const pt2=await p.evaluate(()=>({demo:SHOW.state.demo,i:SHOW.state.i,part:SHOW.state.path&&SHOW.state.path.part,lbl:(document.querySelector('.sr-bar .sr-pill')||{}).textContent}));
+ if(!/part 1 of 2/.test(lbl||'')||pt2.demo!==pa.parts[1]||pt2.i!==0||pt2.part!==1||!/part 2 of 2/.test(pt2.lbl||''))fail('path did not move to part 2 '+JSON.stringify([lbl,pt2]));
+ await p.keyboard.press('Escape');await p.waitForTimeout(300);
+ const lb=await p.evaluate(()=>{const h=SHOW.leaveBehindHTML('path:full');const pts=SHOW.paths[0].parts.flatMap(id=>SHOW.byId(id).beats.map(b=>b.point));const miss=pts.filter(x=>h.indexOf(x.replace(/&/g,'&amp;').replace(/'/g,'&#39;'))<0);
+  return{len:h.length,miss,labels:Object.values(SHOW.CLAIM).every(c=>h.indexOf(c.l)>=0),fict:/fictional/.test(h),em:/—/.test(h)}});
+ if(!lb.len||lb.miss.length||!lb.labels||!lb.fict||lb.em)fail('leave-behind '+JSON.stringify(lb));
+ await p.evaluate(()=>go('showroom'));await p.waitForTimeout(400);
+ const [lw]=await Promise.all([p.waitForEvent('popup',{timeout:10000}).catch(()=>null),p.evaluate(()=>SHOW.leaveBehind('coo',{print:false}))]);
+ if(!lw)fail('leave-behind window did not open');else{await lw.waitForTimeout(300);const t=await lw.evaluate(()=>document.title+' | '+document.querySelectorAll('li').length);if(!/leave-behind \| \d+/.test(t))fail('leave-behind window '+t);await lw.close()}
+ console.log('full story path:',pa.parts.join(' + '),pa.tot,'s; leave-behind',lb.len,'chars')}
 // EXT: extension checks follow
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();
