@@ -13,6 +13,8 @@ let DMV=1,_dmT=0;
 (function(){const R=DATAMODEL.register;if(!R||R._atlas)return;
  const w=function(t,def){const cur=R.call(this,t,def);
   if(def){["domain","status","ownerMod","steward","note","ownerApp","seed"].forEach(k=>{if(def[k]!=null)cur[k]=def[k]})}
+  /* CL-72: "Automatic" is retired; an entity whose source or owning app is still registered as Automatic reads as the robot */
+  ["source","ownerApp"].forEach(k=>{if(/^automatic$/i.test(String(cur[k]||"")))cur[k]=STEPMODE.label("robot")});
   if(!cur.domain&&/^fin_/.test(t))cur.domain="money";
   DMV++;try{if(window.PLAT&&PLAT.refresh)PLAT.refresh();if(window.LIN)LIN.bump()}catch(e){}
   clearTimeout(_dmT);_dmT=setTimeout(()=>{if(S.screen==="plat_data"||S.screen==="plat_reg"){try{render()}catch(e){}}},120);

@@ -17,9 +17,7 @@ const CHECKS=[
  ['unrendered template',/\$\{|BRAND\.name/],
  ['banned name',/\bFabric( Enterprise)?\b|\bTrellis\b|\bCore\b(?= (platform|product|data|layer|edition|tier|suite))|\b(FASB|GASB|FAF|ASC|ASU)\b|\bCodification\b/]];
 const OTHER=[
- ['fin_color','banned name',/FASB ASC 958/,'mod_r29_bst.js (sweep-c)'],
- /* app and owner name "Automatic" on entities registered by mod_r16l_f_wire.js and mod_r17q_b_core.js (source/ownerApp) */
- ...['own_gaps','plat_debt','plat_reg'].map(id=>[id,'Automatic step label',/Automatic/,'mod_r16l_f_wire.js, mod_r17q_b_core.js ownerApp (sweep-c)'])];
+ ['fin_color','banned name',/FASB ASC 958/,'mod_r29_bst.js (sweep-c)']];
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const report=process.argv.includes('--report');
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
