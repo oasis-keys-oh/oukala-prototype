@@ -1,5 +1,5 @@
 /* ============ platform.js: the shared foundation (docs/ARCHITECTURE.md) ============
-   Core file, loaded after kit2.js and before every mod_*.js. Everything is a property of window so it can never
+   Core file, loaded first so every core file and module can use it at load. Everything is a property of window so it can never
    collide with a module's own top-level names. New code uses these; old code migrates in the sweep waves.
    U (CL-31) helpers · HOOKS (CL-35) lifecycle registry · DATA (CL-55) tenant-scoped data access ·
    STEPMODE (CL-58) human, robot, agent · TRIGGERS (CL-73) shared trigger catalog · ownerChip (CL-53) ·

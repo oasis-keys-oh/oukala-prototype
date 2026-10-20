@@ -23,7 +23,7 @@ if _dup or _missing or _gone:
     sys.exit(2)
 if only is not None: mods=[m for m in mods if m in only or m.replace('mod_','') in only]
 fonts='<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"></noscript>'
-core=["data.js","data2.js","ui.js","kit.js","kit2.js","platform.js","screens1.js","screens2.js","screens4.js"]
+core=["platform.js","data.js","data2.js","ui.js","kit.js","kit2.js","screens1.js","screens2.js","screens4.js"]
 js=[r(f) for f in core]
 for m in mods:
     if os.path.exists(m+'.js'): js.append('/* ===== '+m+' ===== */\n(function(){try{\n'+r(m+'.js')+'\n}catch(e){console.error("module '+m+' failed",e)}})();' if False else '/* ===== '+m+' ===== */\n'+r(m+'.js'))

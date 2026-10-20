@@ -4,7 +4,7 @@ Describes how the backlog is built. It carries no status or priority: those live
 
 ## 1. The foundation: `src/platform.js`
 
-One core file, loaded after `kit2.js` and before every `mod_*.js`. Every name is a property of `window`, never a top-level `const`, because all modules are concatenated into one script and 20 of them already declare their own `slug`, `pct` or `uid`. `tools/tests/platform.js` is the contract test; it runs in `npm test` and must stay green.
+One core file, loaded first (before data.js and every other core file), so core files and modules can use `U` and `HOOKS` at load. Every name is a property of `window`, never a top-level `const`, because all modules are concatenated into one script and 20 of them already declare their own `slug`, `pct` or `uid`. `tools/tests/platform.js` is the contract test; it runs in `npm test` and must stay green.
 
 | Namespace | Rule | Backlog | Contract |
 |---|---|---|---|
