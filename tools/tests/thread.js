@@ -87,5 +87,19 @@ add(await step('DC-12',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-12 '+m)
  go('exe_strat');const html=document.querySelector('#view').innerHTML;ok(/Cascade: company, enterprise, group and team/.test(html)&&/Weights modeled/.test(html),'cascade pane on exe_strat, labeled modeled');
  return f}));
 
+/* ---- DC-13: strategy authoring with a quality gate and versions ---- */
+add(await step('DC-13',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-13 '+m)};
+ ok(EXE.gateCheck().ok,'seed objectives pass the gate');const v0=S.exe.stv.vers.length;
+ S.exe.objs.push({id:'OT1',n:'Thread gate test objective',sub:'Gate test',owner:'CIO'});
+ const g=EXE.gateCheck();const r=g.rows.find(x=>x.o.id==='OT1');ok(r&&['metric','tgt','due','kr'].every(k=>r.miss.some(m=>m.k===k)),'gate names the missing metric, target, date and key result');
+ const p1=EXE.publishStrat('test');ok(!p1.ok&&/quality gate/i.test(p1.why)&&S.exe.stv.vers.length===v0,'publishing is refused while the gate fails, with the reason');
+ Object.assign(S.exe.objs.find(o=>o.id==='OT1'),{metric:'Search success rate',tgt:'80%',due:'2027-06-30'});S.exe.krs.push({id:'kOT1',o:'OT1',n:'Searches that end in a click',u:'%',start:40,cur:40,tgt:80,owner:'Maya Ortiz'});
+ const p2=EXE.publishStrat('test version');ok(p2.ok&&p2.v===S.exe.stv.vers[v0-1].v+1&&p2.changes.some(c=>/Added objective/.test(c)),'a passing draft publishes the next version with its changes');
+ ok(S.exe.stv.vers[S.exe.stv.vers.length-1].snap.objs.some(o=>o.id==='OT1')&&!S.exe.stv.vers[0].snap.objs.some(o=>o.id==='OT1'),'versions keep their own snapshot');
+ const p3=EXE.publishStrat('again');ok(!p3.ok&&/Nothing changed/.test(p3.why),'an unchanged strategy is not republished');
+ S.exe.objs=S.exe.objs.filter(o=>o.id!=='OT1');S.exe.krs=S.exe.krs.filter(k=>k.id!=='kOT1');
+ S.v.exestratv=6;go('exe_strat');ok(/Quality gate/.test(document.querySelector('#view').innerText),'Author and publish tab renders');S.v.exestratv=0;
+ return f}));
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();
