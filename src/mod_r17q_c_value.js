@@ -160,7 +160,7 @@ function caseHTML(){
  const MOD='<td class="lb">Modeled</td>';
  const row=(a,b,c)=>`<tr><td>${H(a)}</td><td class="n">${H(b)}</td>${c||MOD}</tr>`;
  const res=L.filter(l=>["H","full","lic","npv","roi","pb"].includes(l.id));
- const asm=INPUTS.map(i=>`<tr><td>${H(i.l)}${i.k==="price"?" (placeholder for your quote, not a price)":""}</td><td class="n">${H(nf(I[i.k],Number.isInteger(+I[i.k])?0:2))} ${H(i.u)}</td><td class="lb">Modeled, ${ed.has(i.k)?"your data":"illustrative"}</td></tr>`).join("");
+ const asm=INPUTS.map(i=>`<tr><td>${H(i.l)}${i.k==="price"?" (unpriced placeholder for your quote)":""}</td><td class="n">${H(nf(I[i.k],Number.isInteger(+I[i.k])?0:2))} ${H(i.u)}</td><td class="lb">Modeled, ${ed.has(i.k)?"your data":"illustrative"}</td></tr>`).join("");
  const yr=M.rows.map(r=>`<tr><td>Year ${H(r.t)}</td><td class="n">${H(Math.round(r.ramp*100))}%</td><td class="n">${H(usdF(r.b))}</td><td class="n">${H(usdF(r.c))}</td><td class="n">${H(usdF(r.net))}</td><td class="n">${H(usdF(r.cum))}</td>${MOD}</tr>`).join("");
  const sens=["low","base","high"].map(k=>{const m=sv[k];return `<tr><td>${H(k[0].toUpperCase()+k.slice(1))} case</td><td class="n">${H(usdF(m.full))}</td><td class="n">${H(usdF(m.npv))}</td><td class="n">${m.roi==null?"n/a":H(nf(m.roi*100))+"%"}</td>${MOD}</tr>`}).join("");
  const fm=L.filter(l=>["lab","tools","out","full","lic","npv","roi","pb"].includes(l.id)).map(l=>`<tr><td>${H(l.l)}<div class="fm">${H(l.fm)}</div></td><td class="n">${H(Q.fmtLine(l))}</td>${MOD}</tr>`).join("");
