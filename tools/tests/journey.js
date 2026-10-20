@@ -110,5 +110,22 @@ ok(man.none===''&&man.def==='default'&&/^persona:/.test(man.per)&&/^tp:/.test(ma
 ok(man.ph==='','comment keys and empty values leave the tinted placeholder');
 ok(man.card>0,`a step with a manifest image shows it on its card (${man.card})`);
 
+// 11. JM-08: Process map accessibility and keyboard path (Tab to a process, arrow to the next, Enter opens it, focus stays)
+await p.evaluate(async()=>{SCN.set('health');await new Promise(r=>setTimeout(r,150));JXR.pmap.j=null;JXR.pmap.pm=null;S.pp2.tab.ppl_jrny=5;go('ppl_jrny');await new Promise(r=>setTimeout(r,250))});
+const ax=await p.evaluate(()=>{const svg=document.querySelector('.jpm-svg');const real=[...svg.querySelectorAll('.jpm-n:not(.is-gap)')],gaps=[...svg.querySelectorAll('.jpm-n.is-gap')];
+ const d=svg.getAttribute('aria-describedby');return {label:svg.getAttribute('aria-label')||'',desc:!!(d&&document.getElementById(d)),
+  real:real.length,realOk:real.filter(g=>g.getAttribute('role')==='button'&&g.getAttribute('tabindex')==='0'&&/Press Enter/.test(g.getAttribute('aria-label')||'')&&g.hasAttribute('aria-pressed')).length,
+  gaps:gaps.length,gapsOk:gaps.filter(g=>g.getAttribute('role')==='img'&&/no process yet/.test(g.getAttribute('aria-label')||'')).length,
+  hiddenEdges:[...svg.querySelectorAll('path.jpm-e')].every(e=>e.closest('[aria-hidden="true"]'))}});
+ok(/Process map of/.test(ax.label)&&ax.desc&&ax.real>1&&ax.realOk===ax.real&&ax.gapsOk===ax.gaps&&ax.hiddenEdges,`Process map: labeled group with a text alternative; ${ax.realOk}/${ax.real} processes are named focusable buttons, ${ax.gapsOk}/${ax.gaps} gaps are labeled, arrows hidden`);
+await p.focus('.jpm-svg .jpm-n[tabindex]');await p.keyboard.press('ArrowRight');
+const k1=await p.evaluate(()=>{const a=document.activeElement;const L=[...document.querySelectorAll('.jpm-svg .jpm-n[tabindex]')];return {i:L.indexOf(a),key:a&&a.getAttribute('data-a')}});
+await p.keyboard.press('Enter');await wait(250);
+const k2=await p.evaluate(()=>{const a=document.activeElement;const fr=a&&a.closest('.jpm-n')?getComputedStyle(a.querySelector('.jpm-fr')).stroke:'';
+ return {key:a&&a.getAttribute('data-a'),pressed:a&&a.getAttribute('aria-pressed'),pm:JXR.pmap.pm,ring:fr,flow:!!document.querySelector('.jpm-flow h3')}});
+ok(k1.i===1&&k2.pm===k1.key&&k2.key===k1.key&&k2.pressed==='true'&&k2.flow,`keyboard: arrow moves to the next process, Enter opens it once and focus stays on it (${k2.key})`);
+ok(k2.ring&&k2.ring!=='none','keyboard focus shows a visible focus ring (token stroke)');
+await p.evaluate(()=>{SCN.set('core')});await wait(150);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
