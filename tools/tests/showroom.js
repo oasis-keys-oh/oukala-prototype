@@ -10,7 +10,7 @@ const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.
 const ctx=await b.newContext({viewport:{width:1440,height:900}});const p=await ctx.newPage();const errs=[];let bad=0;const fail=m=>{bad++;console.log('FAIL',m)};
 const watch=pg=>{pg.on('pageerror',e=>errs.push('PAGEERROR '+e.message+' '+String(e.stack||'').split('\n').slice(1,4).join(' | ').slice(0,400)));pg.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,200)))};
 watch(p);await ctx.route(/^https?:/,r=>r.abort());await p.goto(URL0,{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(900);
-const settle=async(pg)=>{pg=pg||p;await pg.waitForFunction(()=>!SHOW.state.busy,null,{timeout:10000}).catch(()=>{});await pg.waitForTimeout(800)};
+const settle=async(pg)=>{pg=pg||p;await pg.waitForFunction(()=>!SHOW.state.busy&&!SHOW.state.queued,null,{timeout:12000}).catch(()=>{});await pg.waitForTimeout(800)};
 const lint=await p.evaluate(()=>SHOW.lint());if(lint.length)fail('lint '+JSON.stringify(lint));
 await p.evaluate(()=>go('showroom'));await p.waitForTimeout(400);
 const home=await p.evaluate(()=>({len:document.querySelector('#view').innerHTML.length,cards:document.querySelectorAll('.sr-card').length}));if(home.cards<3)fail('home '+JSON.stringify(home));
@@ -27,7 +27,7 @@ for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.tot
   if(r.scr!==exp.go)fail(id+' beat '+(i+1)+' on screen '+r.scr+', expected '+exp.go);
   if(r.tabMissed)fail(id+' beat '+(i+1)+' tab not found: '+r.tabMissed);
   if(r.ten!==ten)fail(id+' beat '+(i+1)+' on tenant '+r.ten+', expected '+ten);
-  if(!r.bar||!r.inView||r.len<400||errs.length>n0||r.chat)fail(id+' beat '+(i+1)+' '+JSON.stringify(r)+' '+errs.slice(n0));
+  if(!r.bar||!r.inView||r.len<400||errs.length>n0||(r.chat&&r.scr!=='studio'))fail(id+' beat '+(i+1)+' '+JSON.stringify(r)+' '+errs.slice(n0));
   if(exp.ap){/* DC-37: the persona set for this beat can click Approve */
    const ok=await p.evaluate(ap=>{const rec=SHOW.approvalRec(ap);const actor=ap.kind==='budget_request'?INBOX.me():R15D.me().name;const c=APG.check(actor,ap.kind,rec);return{ok:c.ok,why:c.why,actor,persona:S.persona}},exp.ap);
    if(!ok.ok)fail(id+' beat '+(i+1)+' approve would be refused: '+JSON.stringify(ok));else console.log(' ',id,'beat',i+1,'approves as',ok.actor,'('+ok.persona+')')}
@@ -35,7 +35,7 @@ for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.tot
   if(i<n-1){await p.keyboard.press('PageDown');await settle()}}
  await p.keyboard.press('PageUp');await settle();
  const bk=await p.evaluate(()=>[...document.querySelectorAll('.sr-dot')].findIndex(x=>x.classList.contains('on')));if(n>1&&bk!==n-2)fail(id+' Back did not step back, at '+bk);
- await p.keyboard.press('Escape');await p.waitForTimeout(400);
+ await p.evaluate(()=>{const a=document.activeElement;if(a&&a.blur)a.blur()});await p.keyboard.press('Escape');await p.waitForTimeout(400);
  const gone=await p.evaluate(()=>!document.querySelector('.sr-bar')&&!document.body.classList.contains('sr-on'));if(!gone)fail(id+' exit left the bar');
  const back=await p.evaluate(()=>({persona:S.persona,tenant:DATA.tenant()}));if(back.persona!==startT.persona||back.tenant!==startT.tenant)fail(id+' exit did not restore role and tenant '+JSON.stringify(back));
  console.log(id,n,'beats',tot,'s budget: stepped');}

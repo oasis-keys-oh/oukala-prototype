@@ -214,7 +214,9 @@ function open(i,o){o=o||{};const d=BY[st.demo];if(!d)return;
  setTimeout(()=>{st.tabMissed=b.tab&&!clickTab(b.tab)?b.tab:null;if(b.setup){const s=String(b.setup),c=s.indexOf(":"),k=c<0?s:s.slice(0,c),a=c<0?"":s.slice(c+1);G(()=>ST.setups[k](a,b))}
   if(b.go!=="studio"&&!b.setup)quiet();const v=D.getElementById("view");if(v)v.scrollTop=0;try{W.scrollTo(0,0)}catch(e){}
   setTimeout(()=>{st.busy=false;paint()},120)},360);
- setTimeout(()=>{G(()=>CHATX.close());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})},1100);
+ /* VibeCheck's interview lives in the chat panel: a studio beat that runs a scenario keeps it open */
+ const keepChat=b.go==="studio"&&b.setup&&!/^studio:home/.test(b.setup);
+ if(!keepChat)setTimeout(()=>{G(()=>CHATX.close());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})},1100);
  G(()=>{const u=new URL(location.href);u.searchParams.set("showroom",st.demo);u.searchParams.set("beat",String(st.i+1));if(st.kid!=null)u.searchParams.set("kid",String(st.kid+1));else u.searchParams.delete("kid");history.replaceState(null,"",u)});
  paint();if(!o.remote)sync()}
 function start(id,beat,opts){opts=opts||{};const d=BY[id];if(!d)return false;
@@ -278,11 +280,14 @@ D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data
  else if(a==="aud"){setMode(st.aud?"presenter":"audience")}
  else if(a==="win")presenterWindow()});
 D.addEventListener("change",e=>{const t=e.target;if(t&&t.matches&&t.matches("[data-sr-mode]"))setMode(t.value)});
-D.addEventListener("keydown",e=>{if(!st.demo)return;const t=e.target;if(t&&t.matches&&t.matches("input:not([type=radio]):not([type=checkbox]):not([type=button]),textarea,select,[contenteditable=true]"))return;if(e.ctrlKey||e.metaKey||e.altKey)return;
+D.addEventListener("keydown",e=>{if(!st.demo)return;if(e.ctrlKey||e.metaKey||e.altKey)return;
+ /* a presentation clicker sends Page Down and Page Up: they move the tour even while a text box (the VibeCheck chat) has focus */
+ if(e.key==="PageDown"||e.key==="PageUp"){e.preventDefault();if(e.key==="PageDown")next();else back();return}
+ const t=e.target;if(t&&t.matches&&t.matches("input:not([type=radio]):not([type=checkbox]):not([type=button]),textarea,select,[contenteditable=true]"))return;
  /* the VibeCheck click-through owns the arrow keys while a scenario is live; Page Down and Page Up (presentation clickers) still move the tour */
  const stu=G(()=>S.screen==="studio"&&W.STUDIO&&!!STUDIO.sc&&STUDIO.view!=="home",false);
- if(e.key==="PageDown"||(e.key==="ArrowRight"&&!stu)){e.preventDefault();next()}
- else if(e.key==="PageUp"||(e.key==="ArrowLeft"&&!stu)){e.preventDefault();back()}
+ if(e.key==="ArrowRight"&&!stu){e.preventDefault();next()}
+ else if(e.key==="ArrowLeft"&&!stu){e.preventDefault();back()}
  else if(e.key==="Escape"){exit()}
  else if(e.key==="t"||e.key==="T"){st.talk=!st.talk;paint()}
  else if(e.key==="r"||e.key==="R"){st.rail=!st.rail;paint()}

@@ -20,7 +20,7 @@ const FIX={
  orphan:c=>"Tie the orphan spend \""+c.title+"\""+(c.ref?" ("+c.ref+")":"")+" to a goal, or propose how to stop it, with an owner and a measure."};
 function buildFix(ctx){ctx=ctx||{};const k=FIX[ctx.kind]?ctx.kind:"build";const text=FIX[k]({ref:ctx.ref||"",title:String(ctx.title||"this gap").replace(/\s+/g," ").trim().slice(0,120)});
  G(()=>{if(W.STUDIO){STUDIO.sc=null;STUDIO.view="home";STUDIO.lastScen=null}});
- SHOW.lastFix={kind:k,ref:ctx.ref||"",title:ctx.title||"",text,from:G(()=>S.screen,"")};
+ SHOW.lastFix={kind:k,ref:ctx.ref||"",title:ctx.title||"",text,from:G(()=>S.screen,""),t:Date.now()};
  G(()=>audit("Build the fix in VibeCheck",text));
  if(W.STUDIO&&STUDIO.open)STUDIO.open(text);else G(()=>go("studio"));
  return text}
@@ -32,7 +32,8 @@ const fixBtn=(kind,ref,title)=>{const b=D.createElement("button");b.type="button
  b.setAttribute("aria-label","Build the fix in VibeCheck: "+title);return b};
 function decorate(){const v=D.getElementById("view");if(!v)return;
  v.querySelectorAll(".jb-card:not([data-srs-fix])").forEach(c=>{c.dataset.srsFix="1";const chip=c.querySelector(".num-chip");const ref=chip?chip.textContent.trim():"";
-  const t=c.querySelector(".jb-t b");const title=t?t.textContent.replace(ref,"").trim():"this build";c.appendChild(fixBtn("build",ref,title))});
+  const t=c.querySelector(".jb-t b");const title=t?t.textContent.replace(ref,"").trim():"this build";c.appendChild(fixBtn("build",ref,title));
+  if(c===v.querySelector(".jb-card"))SHOW.firstFixCard={kind:"build",ref,title}});
  v.querySelectorAll("div.noproc:not([data-srs-fix])").forEach(c=>{c.dataset.srsFix="1";const ref=(c.dataset.jb||"").split("|").join(" ");
   const t=c.querySelector("b,strong,.jb-n,.t");const title=(t?t.textContent:c.textContent).trim().split("\n")[0].slice(0,90);c.appendChild(fixBtn("journey",ref,title))})}
 let decoT=0;const deco=()=>{if(decoT)return;decoT=requestAnimationFrame(()=>{decoT=0;if(G(()=>S.screen,"")==="ppl_jrny")decorate()})};
