@@ -42,7 +42,25 @@ E.krHist=E.krHist||{};
 const KRX={};KR0.forEach(k=>KRX[k.id]=k);
 const krLive=k=>{const x=KRX[k.id];return x&&x.live};
 const krCur=k=>{const l=krLive(k);return l?l():k.cur};
-const krProg=k=>clamp((krCur(k)-k.start)/((k.tgt-k.start)||1),0,1);
+/* PR-22 (Omar decision 2026-10-20): one roll-up rule for every parent score, shown on screen next to the number.
+   1 attainment: each metric becomes the share of the way from its baseline to its target, direction-aware (lower is better when the target
+     sits below the baseline), clamped 0 to 1; with no baseline it is percent of target. Unlike units are never added.
+   2 weights: equal by default; owner-set weights are always shown with who set them.
+   3 floor: a parent cannot show green while any child is red.
+   4 count once: an item shared by several parents carries split shares that add to 100%. */
+const ROLLUP=window.ROLLUP=window.ROLLUP||{};
+ROLLUP.att=(cur,tgt,base,dir)=>{cur=+cur;tgt=+tgt;if(!isFinite(cur)||!isFinite(tgt))return 0;
+ if(base!=null&&isFinite(+base)&&+base!==tgt)return clamp((cur-base)/(tgt-base),0,1);
+ if((dir||"max")==="min")return cur<=0?1:clamp(tgt/cur,0,1);return tgt<=0?1:clamp(cur/tgt,0,1)};
+ROLLUP.wmean=xs=>{const sw=xs.reduce((s,x)=>s+(+x.w||0),0);return sw?xs.reduce((s,x)=>s+(+x.w||0)*x.a,0)/sw:null};
+ROLLUP.floor=(st,kids)=>st==="good"&&(kids||[]).some(k=>k==="bad")?"warn":st;
+ROLLUP.split=ups=>{const ks=Object.keys(ups||{}).filter(k=>ups[k]>0),t=ks.reduce((s,k)=>s+ups[k],0),o={};ks.forEach(k=>o[k]=t?ups[k]/t:0);return o};
+ROLLUP.RULES=[["Attainment","Each metric becomes the share of the way from its baseline to its target, direction-aware, from 0 to 100%. Days, percent, dollars and levels are never added as they are."],
+ ["Weights","Equal by default. An owner can set weights; the card then says who set them, and the weights are always shown."],
+ ["Floor","A parent cannot show green while any child is red; it is held at amber and the red child is named."],
+ ["Count once","An item that serves several parents is split so its shares add to 100%; leaves are counted once."]];
+ROLLUP.html=(note)=>`<details class="exe-ru" open><summary><b>How this rolls up</b> <span class="muted small">PR-22 rule, the same on every roll-up</span></summary><ol class="small">${ROLLUP.RULES.map(r=>`<li><b>${r[0]}.</b> ${r[1]}</li>`).join("")}</ol>${note?`<p class="small muted" data-role="metric">${note}</p>`:""}</details>`;
+const krProg=k=>ROLLUP.att(krCur(k),k.tgt,k.start);
 const EXP0=()=>clamp(TODAY/wdOf("2026-12-31"),0,1);
 const krExp=k=>{const x=KRX[k.id];return x&&x.exp?x.exp()/100:EXP0()};
 const krSt=k=>{const p=krProg(k),e=krExp(k);return p>=e-.05?"good":p>=e-.25?"warn":"bad"};
@@ -157,7 +175,22 @@ function coverage(){const I=inits(),res={};E.objs.forEach(o=>{const rows=I.filte
  const fundedAll=I.filter(i=>i.funded),tot=fundedAll.reduce((s,i)=>s+i.cost,0),linked=fundedAll.reduce((s,i)=>s+i.cost*Math.min(1,lsum(i.id)),0);
  const gaps=E.objs.filter(o=>res[o.id].fund===0),orph=fundedAll.filter(i=>lsum(i.id)===0),unal=I.filter(i=>!i.funded&&lsum(i.id)===0);
  const score=tot?linked/tot*100-8*gaps.length:0;return {I,res,tot,linked,gaps,orph,unal,score:Math.max(0,score)}}
-function objProg(o){const ks=E.krs.filter(k=>k.o===o.id);if(!ks.length)return {p:0,e:EXP0(),st:"warn",n:0};const p=ks.reduce((s,k)=>s+krProg(k),0)/ks.length,e=ks.reduce((s,k)=>s+krExp(k),0)/ks.length;return {p,e,n:ks.length,st:p>=e-.05?"good":p>=e-.25?"warn":"bad"}}
+/* PR-22: objective progress = weighted mean of key result attainment; weights equal unless the objective owner set them (E.krw) */
+E.krw=E.krw||{};
+const krWts=o=>{const set=E.krw[o.id];return E.krs.filter(k=>k.o===o.id).map(k=>({k,w:set&&set.w&&set.w[k.id]!=null?+set.w[k.id]:1}))};
+function objProg(o){const ks=krWts(o);if(!ks.length)return {p:0,e:EXP0(),st:"warn",raw:"warn",n:0,src:"equal",floored:false,w:[],red:0,on:0};
+ const p=ROLLUP.wmean(ks.map(x=>({a:krProg(x.k),w:x.w})))||0,e=ROLLUP.wmean(ks.map(x=>({a:krExp(x.k),w:x.w})))||0;const sw=ks.reduce((s,x)=>s+x.w,0)||1;
+ const raw=p>=e-.05?"good":p>=e-.25?"warn":"bad",sts=ks.map(x=>krSt(x.k)),st=ROLLUP.floor(raw,sts),set=E.krw[o.id];
+ const reds=ks.filter((x,i)=>sts[i]==="bad").map(x=>x.k);
+ return {p,e,n:ks.length,st,raw,floored:st!==raw,src:set?"owner":"equal",by:set?set.by:"",at:set?set.at:"",w:ks.map(x=>({id:x.k.id,n:x.k.n,w:x.w/sw})),red:reds.length,worst:reds[0]||null,on:sts.filter(z=>z==="good").length}}
+function wLine(o){const p=objProg(o);if(!p.n)return "";
+ return `<p class="small muted exe-wline" data-role="metric">Weights ${p.src==="owner"?`set by ${esc(p.by)} on ${esc(U.fmtDate(p.at))}`:"equal by default"}: ${p.w.map(x=>`${esc(x.n)} ${Math.round(x.w*100)}%`).join(", ")}. ${p.on} of ${p.n} on track${p.floored?`. Floor rule: held at amber because ${esc(p.worst.n)} is red`:""}. <button type="button" class="exe-wbtn" data-exe-krw="${o.id}">Set weights</button></p>`}
+function krwForm(oid){const o=E.objs.find(x=>x.id===oid);if(!o)return;const ks=krWts(o);if(!ks.length)return;const d={};ks.forEach(x=>d["w_"+x.k.id]=Math.round(x.w*100/(ks.reduce((s,y)=>s+y.w,0)||1)));
+ openForm({id:"exe_krw",title:"Key result weights: "+o.n,story:`How much each key result counts toward <b>${esc(o.n)}</b>. Equal by default; the objective owner (${esc(o.owner)}) sets them, and the card always shows them. Weights are scaled to add to 100%.`,submit:"Save weights",
+  fields:ks.map(x=>({k:"w_"+x.k.id,label:x.k.n,type:"range",min:0,max:100,step:5,unit:"%"})).concat([{k:"eq",label:"Go back to equal weights",type:"toggle"}]),defaults:d,
+  onSubmit:v=>{if(v.eq){delete E.krw[oid];audit("reset key result weights to equal",oid);sync();setTimeout(render,0);return {toast:"Weights are equal again"}}
+   const t=ks.reduce((s,x)=>s+(+v["w_"+x.k.id]||0),0);if(!t)return {toast:"At least one weight must be above zero"};const w={};ks.forEach(x=>w[x.k.id]=Math.round((+v["w_"+x.k.id]||0)/t*100)/100);
+   E.krw[oid]={w,by:o.owner,at:U.TODAY_ISO};audit("changed key result weights",oid);sync();setTimeout(render,0);return {toast:"Weights saved for "+o.n}}},d)}
 
 /* ---------------- apps engine ---------------- */
 function scaleApps(){const on=typeof SCALE!=="undefined"&&SCALE.on,has=E.apps.some(a=>a.gen);
@@ -308,11 +341,11 @@ const objN=id=>(E.objs.find(o=>o.id===id)||{n:"Unlinked",sub:"Unlinked",c:"--fai
 const KRSRC={k12:"PR1 earned value from the project plan",k21:"Metric: Tier 1 availability",k22:"Vendor performance index from invoice approval",k23:"PR3 earned value from the project plan",k31:"Metric: Auto-approval rate",k32:"PR4 earned value from the project plan",k41:"Metric: Agent override rate",k42:"AI Control Tower agent list"};
 function krRow(k){const p=krProg(k),e=krExp(k),st=krSt(k),live=!!krLive(k);
  return `<button class="exe-kr" data-exe-kr="${k.id}" aria-label="Open key result ${esc(k.n)}"><span class="exe-krn"><b data-role="story">${esc(k.n)}</b><small class="muted">${numChip("kr",k.id)} ${esc(k.owner)} · ${live?"measured live":"updated by hand"}</small></span><span class="exe-bar" title="Progress ${Math.round(p*100)}%, expected ${Math.round(e*100)}%"><u style="width:${Math.round(p*100)}%;background:${col(SC[st])}"></u><s style="left:${Math.round(e*100)}%"></s></span><span class="exe-krv num" data-role="metric">${fmtKr(k,k.start)} → <b>${fmtKr(k)}</b> → ${fmtKr(k,k.tgt)}</span>${stPill(st)}</button>`}
-function matChip(oid){if(!window.MAT)return "";const L=MAT.nodesOfObj(oid);if(!L.length)return `<div class="row exe-mchip"><span class="muted small" data-role="story">No capabilities are linked to this objective yet, so its maturity cannot be measured.</span><button class="btn quiet" data-go="exe_mat">Break it into capabilities</button></div>`;const R=MAT.roll(L);return `<button class="exe-mchip exe-mc" data-mat-obj="${oid}" aria-label="Open the maturity path for this objective"><span class="muted small" data-role="metric">Maturity: ${L.length} capabilities at level <b>${MAT.fv(R.cur)}</b> against <b>${MAT.fv(R.exp)}</b> expected today, Year 1 target <b>${MAT.fv(R.t1)}</b></span>${MAT.stPill(R.st)}</button>`}
+function matChip(oid){if(!window.MAT)return "";const L=MAT.nodesOfObj(oid);if(!L.length)return `<div class="row exe-mchip"><span class="muted small" data-role="story">No capabilities are linked to this objective yet, so its maturity cannot be measured.</span><button class="btn quiet" data-go="exe_mat">Break it into capabilities</button></div>`;const R=MAT.roll(L,null,{obj:oid});return `<button class="exe-mchip exe-mc" data-mat-obj="${oid}" aria-label="Open the maturity path for this objective"><span class="muted small" data-role="metric">Maturity: ${L.length} capabilities at level <b>${MAT.fv(R.cur)}</b> against <b>${MAT.fv(R.exp)}</b> expected today, Year 1 target <b>${MAT.fv(R.t1)}</b></span>${MAT.stPill(R.st)}</button>`}
 function matPane(){if(!window.MAT)return empty("Maturity models are not installed","Install the maturity module to break objectives into capabilities.");return `<div class="grid g2 exe-two">${MAT.objRollRows().map(({o,L,R})=>card(esc(o.n),L.length?`${L.length} capabilities. Level ${MAT.fv(R.cur)} today, ${MAT.fv(R.exp)} expected, ${MAT.fv(R.t1)} wanted by end of FY27.`:"Nothing is measuring this objective yet.",L.length?MAT.glideMini(L,170):empty("No capabilities yet","Map capabilities from a maturity model to this objective."),`<span class="row">${L.length?MAT.stPill(R.st):""}<button class="btn quiet" data-mat-obj="${o.id}">Open the path</button></span>`)).join("")}</div>`}
 function objCard(o){const p=objProg(o),c=coverage().res[o.id],ks=E.krs.filter(k=>k.o===o.id);
  return `<section class="card glass exe-ocard"><div class="cardhead"><div><div class="eyebrow"><i class="exe-dot2" style="background:${col(o.c)}"></i>${numChip("obj",o.id)||esc(o.id)} · ${esc(o.owner)}</div><h3>${esc(o.n)}</h3><span class="muted small" data-role="story">${esc(o.story)}</span></div><div class="exe-orr">${stPill(p.st)}<span class="num" data-role="metric" style="font-size:26px">${Math.round(p.p*100)}%</span></div></div>
- <div class="exe-krs">${ks.length?ks.map(krRow).join(""):empty("No key results yet","Add one so progress can be measured.")}</div>
+ <div class="exe-krs">${ks.length?ks.map(krRow).join(""):empty("No key results yet","Add one so progress can be measured.")}</div>${wLine(o)}
  <div class="row exe-ofoot"><span class="muted small" data-role="metric">${c.n} funded initiative${c.n===1?"":"s"} carry ${c.fund?money(Math.round(c.fund)*1000):"$0"} of weighted spend</span><button class="btn quiet" data-exe-newkr="${o.id}">Add key result</button></div>${matChip(o.id)}</section>`}
 function initChip(i,oid){const w=lw(i.id)[oid];return `<div class="exe-init ${i.funded?"":"below"}" data-dnd-id="${i.id}" tabindex="0" data-exe-ini="${i.id}">${grip}<span class="exe-in"><b>${esc(i.n)}</b><small class="muted">${i.id} · ${K$(i.cost)} · ${i.funded?"funded":"below the funding line"}</small></span>${w?`<em class="pill ${i.funded?"info":"mute"}" data-role="metric">${Math.round(w*100)}%</em>`:""}</div>`}
 function linkBoard(){const c=coverage(),un=c.I.filter(i=>lsum(i.id)===0);
@@ -329,7 +362,7 @@ REG("exe_strat","Strategy alignment","portfolio","M12 3a9 9 0 1 0 0 18 9 9 0 0 0
  return `<div class="screen exe-screen">${hero("Strategy alignment","Is the money pointed at the strategy?",`The alignment score is <b>${Math.round(c.score)}</b> of 100. <b>${E.objs.length-c.gaps.length} of ${E.objs.length}</b> objectives have funded work${g?`; <b>${esc(g.n)}</b> has none because ${c.res[g.id].rows.length?"its linked requests all sit below the funding line":"nothing is linked to it"}`:""}. ${c.orph.length?`<b>${esc(c.orph[0].n)}</b> (${K$(c.orph[0].cost)}) is funded with no objective. `:""}${on} of ${E.objs.length} objectives are on track against where they should be today.`,`<div class="row">${fchip("m_align")}<button class="btn primary" data-exe-newobj>New objective</button><button class="btn" data-exe-newkr="">New key result</button><button class="btn" data-exe-krup>Update progress</button>${whyPop("Objectives and key results are the company's stated aims. Linked initiatives are the work that pays for them. Gaps in either direction are shown so leadership can fix them.")}</div>`)}${lensNote()}
  ${tiles([TL("Alignment score",`<span>${Math.round(c.score*10)/10}</span>`,"Target 90 · "+(c.score>=90?"on target":"below target"),c.score>=90?"good":"warn"),TL("Funded dollars linked",K$(Math.round(c.linked)),`of ${K$(c.tot)} funded`,"good"),TL("Objectives with no funded work",String(c.gaps.length),c.gaps.length?esc(c.gaps[0].sub):"none",c.gaps.length?"bad":"good"),TL("Funded work with no objective",String(c.orph.length),c.orph.length?K$(c.orph.reduce((s,i)=>s+i.cost,0))+" at stake":"none",c.orph.length?"warn":"good")])}
  ${window.MAT?`<div class="row exe-mrow">${fchip("m_matatt")}${fchip("m_matgp")}<span class="muted small" data-role="metric">Capability maturity: attainment ${METRICS.m_matatt.cur}%, glide-path index ${METRICS.m_matgp.cur}. Each objective below shows its capabilities.</span><button class="btn quiet" data-go="exe_mat">Open maturity models</button></div>`:""}
- ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity","Cascade","Author and publish"],[`<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane(),casPane(),authPane()])}${procCard("exe_strat")}</div>`});
+ ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity","Cascade","Author and publish"],[`${ROLLUP.html("Objective progress = Σ weight × key result attainment ÷ Σ weight. Status compares progress with where it should be today, then the floor rule applies.")}<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane(),casPane(),authPane()])}${procCard("exe_strat")}</div>`});
 DND.on("exestrat",(id,from,to)=>{if(from===to)return;const L=E.links[id]=E.links[id]||{},ini=inits().find(i=>i.id===id),nm2=ini?ini.n:id;
  if(from==="O0"){E.links[id]={[to]:1}}else if(to==="O0"){delete L[from]}else{const w=L[from]||1;delete L[from];L[to]=(L[to]||0)+w}
  audit("re-linked initiative",`${id} ${from} to ${to}`);toast(to==="O0"?`${nm2} is now unlinked`:`${nm2} now counts toward ${objN(to).sub||objN(to).n}`,to==="O0"?"warn":"good");sync();render()});
@@ -404,22 +437,30 @@ function cascade(){const C=E.casc,nodes=[],by={};
   return ups.reduce((s,u)=>s+(by[u].sw?n.up[u]/by[u].sw:0)*share(by[u]),0)};
  nodes.forEach(n=>{n.share=share(n);n.contrib=n.p==null?null:n.p*n.share*100;
   if(n.obj){const o=E.objs.find(x=>x.id===n.id);n.krScore=o?objProg(o).p:null}});
+ /* PR-22: status with the floor rule (a parent cannot be green while a child is red); shared nodes carry split shares that add to 100% */
+ const ex=EXP0(),stm={};const stOf=n=>{if(stm[n.id])return stm[n.id];let st;
+  if(n.kr){const k=E.krs.find(x=>x.id===n.kr);st=k?krSt(k):"warn"}else{const raw=n.p==null?"warn":n.p>=ex-.05?"good":n.p>=ex-.25?"warn":"bad";st=ROLLUP.floor(raw,kids(n.id).map(stOf));n.floored=st!==raw}
+  return stm[n.id]=st};
+ nodes.forEach(n=>{n.st=stOf(n);const ups=Object.keys(n.up).filter(u=>by[u]&&n.up[u]>0);n.shared=ups.length>1;if(n.shared)n.split=ROLLUP.split(n.up)});
+ /* count once: every node with nothing below it adds its points once, and those points add up to the company score */
+ const leafPts=nodes.filter(n=>n.lvl!=="company"&&!n.kids.length&&n.contrib!=null).reduce((s,n)=>s+n.contrib,0);
  const orphan=nodes.filter(n=>n.lvl!=="company"&&!Object.keys(n.up).some(u=>by[u]&&n.up[u]>0));
- return {nodes,by,orphan,company:by[C.company.id]}}
+ return {nodes,by,orphan,company:by[C.company.id],leafPts}}
 const pctS=v=>v==null?"n/a":Math.round(v*100)+"%";
 function casNode(n,X){const lv=(CLVL.find(l=>l[0]===n.lvl)||[0,n.lvl])[1];const kr=n.kr&&E.krs.find(k=>k.id===n.kr);
  const ups=Object.keys(n.up).filter(u=>X.by[u]&&n.up[u]>0);const g=n.grp&&CGRP.find(x=>x.id===n.grp);
  const math=n.kr?(kr?`Measured by key result ${numChip("kr",kr.id)} ${esc(kr.n)}: ${fmtKr(kr,kr.start)} to ${fmtKr(kr)} toward ${fmtKr(kr,kr.tgt)} = ${pctS(n.p)}`:"Its key result is missing, so it has no progress")
   :n.kids.length?`Progress = Σ weight × child ÷ Σ weight = (${n.kids.map(id=>{const c=X.by[id];return (Math.round(c.up[n.id]*100)/100)+" × "+pctS(c.p)}).join(" + ")}) ÷ ${Math.round(n.sw*100)/100} = ${pctS(n.p)}`:"Nothing below it contributes yet";
  return `<div class="thr-cn" data-lvl="${n.lvl}" data-exe-cas="${n.id}"><div class="thr-cnn"><span class="thr-lvl">${lv}${g?" · "+esc(g.n):n.team?" · "+esc(n.team):""}</span>${n.obj?numChip("obj",n.id):""}<b>${esc(n.n)}</b>${ownerChip?ownerChip(n.owner,{record:"objective:"+n.id,size:20}):esc(n.owner)}</div>
- <div class="thr-cnv"><span class="thr-bar" title="Progress ${pctS(n.p)}"><u style="width:${n.p==null?0:Math.round(n.p*100)}%"></u></span><b class="num" data-role="metric">${pctS(n.p)}</b>${n.lvl!=="company"?`<span class="small muted" data-role="metric" title="Share of the company score, modeled">${n.contrib==null?"":(Math.round(n.contrib*10)/10)+" pts of company"}</span>`:""}</div>
- <p class="small muted thr-cnm" data-role="metric">${math}${ups.length&&n.lvl!=="company"?` · weight ${ups.map(u=>Math.round(n.up[u]*100)+"% into "+esc(X.by[u].n)).join(", ")}`:""}${n.obj&&n.krScore!=null?` · key result score ${pctS(n.krScore)}`:""}</p></div>`}
+ <div class="thr-cnv"><span class="thr-bar" title="Progress ${pctS(n.p)}"><u style="width:${n.p==null?0:Math.round(n.p*100)}%"></u></span><b class="num" data-role="metric">${pctS(n.p)}</b>${stPill(n.st)}${n.lvl!=="company"?`<span class="small muted" data-role="metric" title="Share of the company score, modeled">${n.contrib==null?"":(Math.round(n.contrib*10)/10)+" pts of company"}</span>`:""}</div>
+ <p class="small muted thr-cnm" data-role="metric">${math}${ups.length&&n.lvl!=="company"?` · weight ${ups.map(u=>Math.round(n.up[u]*100)+"% into "+esc(X.by[u].n)).join(", ")}`:""}${n.obj&&n.krScore!=null?` · key result score ${pctS(n.krScore)}`:""}${n.floored?" · floor rule: held at amber because a child is red":""}${n.shared?` · shared, split ${Object.keys(n.split).map(u=>Math.round(n.split[u]*100)+"% "+esc(X.by[u].n)).join(" and ")} so it counts once`:""}</p></div>`}
 function casPane(){const X=cascade(),order=[];const walk=(n,seen)=>{if(seen.has(n.id))return;seen.add(n.id);order.push(n);n.kids.map(id=>X.by[id]).sort((a,b)=>CLVL.findIndex(l=>l[0]===a.lvl)-CLVL.findIndex(l=>l[0]===b.lvl)).forEach(c=>walk(c,seen))};
  const seen=new Set();walk(X.company,seen);X.orphan.forEach(n=>walk(n,seen));
  const lc=CLVL.map(l=>[l[1],X.nodes.filter(n=>n.lvl===l[0]).length]);
  return card("Cascade: company, enterprise, group and team",`Each level rolls up from the one below with stated weights. Team objectives are measured by one key result each; everything above is computed. Weights are modeled sample assumptions; key result values are prototype facts.`,
   `<div class="thr-legend small muted">${lc.map(x=>`<span><b>${x[1]}</b> ${x[0].toLowerCase()} objective${x[1]===1?"":"s"}</span>`).join("")}<span class="pill info">Weights modeled</span></div>
-  <div class="formula" data-role="metric">Company score = Σ enterprise weight × enterprise progress ÷ Σ weight = <b>${pctS(X.company.p)}</b> (modeled). A team's points of the company score = its progress × its weight share at every level above it.</div>
+  <div class="formula" data-role="metric">Company score = Σ enterprise weight × enterprise progress ÷ Σ weight = <b>${pctS(X.company.p)}</b> (modeled). A team's points of the company score = its progress × its weight share at every level above it. Count-once check: the points of the objectives with nothing below them add up to <b>${Math.round(X.leafPts*10)/10}</b>, the company score.</div>
+  ${ROLLUP.html("Cascade weights here are owner-set and shown on every row (modeled). Key results are measured as attainment from start to target.")}
   <div class="thr-cas">${order.map(n=>casNode(n,X)).join("")}</div>
   ${X.orphan.length?`<p class="small" data-role="story"><b>${X.orphan.length}</b> objective${X.orphan.length===1?" is":"s are"} not cascaded to a parent: ${X.orphan.map(n=>esc(n.n)).join(", ")}. Set a weight to bring ${X.orphan.length===1?"it":"them"} into the company score.</p>`:""}`,
   `<button class="btn quiet" data-exe-casw="">Set weights</button>`)}
@@ -468,8 +509,8 @@ function pubForm(){const g=gateCheck(),last=E.stv.vers[E.stv.vers.length-1];if(!
  openForm({id:"exe_pub",title:"Publish strategy version "+(last.v+1),story:"Publishing records a snapshot that everyone sees as the current strategy. The previous version stays available for comparison.",submit:"Publish",
   fields:[{k:"note",label:"What this version changes",type:"longtext",req:true}],
   onSubmit:v=>{const r=publishStrat(v.note);if(!r.ok)return {toast:r.why,close:false};setTimeout(render,0);return {toast:"Version "+r.v+" published with "+r.changes.length+" change"+(r.changes.length===1?"":"s")}}})}
-document.addEventListener("click",e=>{const c=e.target.closest("[data-exe-casw],[data-exe-pub],[data-exe-objedit],[data-exe-cas]");if(c){const d=c.dataset;
- if(d.exeCasw!=null)return casWForm(d.exeCasw);if(d.exePub!=null)return pubForm();if(d.exeObjedit)return objEditForm(d.exeObjedit);
+document.addEventListener("click",e=>{const c=e.target.closest("[data-exe-casw],[data-exe-krw],[data-exe-pub],[data-exe-objedit],[data-exe-cas]");if(c){const d=c.dataset;
+ if(d.exeKrw)return krwForm(d.exeKrw);if(d.exeCasw!=null)return casWForm(d.exeCasw);if(d.exePub!=null)return pubForm();if(d.exeObjedit)return objEditForm(d.exeObjedit);
  if(d.exeCas&&!e.target.closest("[data-owner],.thr-chip,[data-num-open]")){const n=cascade().by[d.exeCas];if(n&&n.obj&&window.THREAD)return THREAD.open(n.id);if(n&&n.kr)return krDrawer(n.kr);if(n&&n.lvl!=="company")return casWForm(n.id)}}});
 document.addEventListener("click",e=>{const t=e.target.closest("[data-exe-kr],[data-exe-ini],[data-exe-newobj],[data-exe-newkr],[data-exe-krup],[data-exe-quick]");if(!t)return;const d=t.dataset;
  if(d.exeKr)return krDrawer(d.exeKr);if(d.exeIni!=null&&!t.closest(".dnd-ghost"))return iniDrawer(d.exeIni);if(d.exeNewobj!=null)return objForm();if(d.exeNewkr!=null)return krForm(d.exeNewkr);if(d.exeKrup!=null)return krUpForm(d.exeKrup);
@@ -774,5 +815,5 @@ SEARCHX.push(()=>[].concat(
  E.apps.map(a=>({g:"Applications",t:a.n,m:tOf(a)+" · "+K$(a.cost),c:tCol(tOf(a)),f:()=>{S.v.exeappv=2;go("exe_apps");setTimeout(()=>appDrawer(a.id),50)},k:a.cat+" "+a.ven})),
  E.scens.map(s=>({g:"Scenarios",t:s.n,m:"Scenario",c:"--u3",f:()=>go("exe_scen"),k:s.note})),
  [["Board pack","exe_board"],["Executive dashboard","exe_dash"],["Monte Carlo schedule risk","exe_risk"],["Strategy gaps","exe_strat"],["Application retirement","exe_apps"]].map(x=>({g:"Executive",t:x[0],m:"Screen",c:"--accent",f:()=>go(x[1]),k:"board ceo cfo cio coo okr heat map time model"}))));
-window.EXE={snap,mc,coverage,appStats,sync,E,krDrawer,objProg,krProg,krCur,krSt,krExp,fmtKr,inits,lw,objN,cascade,CGRP,gateCheck,publishStrat,stratDiff};
+window.EXE={snap,mc,coverage,appStats,sync,E,krDrawer,objProg,krwForm,ROLLUP,krProg,krCur,krSt,krExp,fmtKr,inits,lw,objN,cascade,CGRP,gateCheck,publishStrat,stratDiff};
 })();

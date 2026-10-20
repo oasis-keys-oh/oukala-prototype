@@ -90,9 +90,9 @@
 .jpm-n.lv0 rect:not(.jpm-fr){stroke:var(--muted)}.jpm-sw{border-color:var(--muted)}
 .jpm-e{opacity:1}
 .jpm-alt{margin-top:8px}.jpm-alt summary{cursor:pointer;font-size:13px;color:var(--ink)}.jpm-alt ol{margin:6px 0 4px 18px;padding:0;font-size:13px}.jpm-alt li{margin:2px 0;overflow-wrap:anywhere}
-/* JM-09: locked Build list and the pilot scope panel */
-.jb-lock{padding:14px 16px;margin:8px 0}.jb-lock p{margin:0 0 6px}
+/* JM-13: the viewer's purview on the Build list; JM-09 pilot scope panel */
+.jb-pv{display:flex;flex-direction:column;gap:4px;padding:12px 16px;margin:8px 0}.jb-pv b{color:var(--ink)}
+.jb-via{display:block;color:var(--muted)}
 .jb-pilot{padding:14px 16px;margin:10px 0}
 .jb-pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:10px 18px;margin:8px 0}
 .jb-pgrid ul{margin:4px 0 0 16px;padding:0}.jb-pgrid p{margin:4px 0 0}.jb-pgrid li{overflow-wrap:anywhere}
-.jb-acc{margin:6px 2px}

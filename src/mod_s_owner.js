@@ -46,7 +46,7 @@ const agentModel=n=>G(()=>R17T.model(agentName(n)),null);
    prototype data; robots do not run (simulated). */
 const GENERIC=/^(automatic|function|system|platform|robot|auto|none|)$/i;
 const ROLE=/(manager|lead|analyst|office|owner|designer|team|pmo|desk|officer|steward|director|partner|finance|sponsor|approver|reviewer|requester)$/i; /* a role is not a system */
-const isHumanName=n=>{const r=G(()=>who(n),null);return !!(r&&r.kind!=="ai"&&!isAgentName(n))};
+const isHumanName=n=>{const r=G(()=>who(n),null);return !!(r&&r.kind!=="ai"&&r.name===String(n).trim()&&!isAgentName(n))}; /* CL-88: who() matches loosely, so a robot name such as "Resource planning robot" must not read as a person */
 const domainPair=q=>{const d=G(()=>ORGX.byDomain(q),null);return d?{o:d.owner&&d.owner.name,b:d.backup&&d.backup.name}:{}};
 const PLATPAIR=()=>{const d=G(()=>ORGX.byDomain("platform"),null);return{o:(d&&d.owner&&d.owner.name)||"Sam Patel",b:(d&&d.backup&&d.backup.name)||"Ben Ito"}};
 function pickBackup(sp,cands){for(const c of cands){if(c&&c!==sp&&isHumanName(c))return c}const m=G(()=>who(sp).mgr,"");if(m&&m!==sp&&isHumanName(m))return m;const pp=PLATPAIR();return [pp.b,pp.o,"Casey Rowan"].find(x=>x&&x!==sp)}

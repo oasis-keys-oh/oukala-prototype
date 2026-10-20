@@ -103,3 +103,8 @@ button.mat-item{cursor:pointer}
 .mat-wictl{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));align-items:start}
 .mat-wictl select.fin{width:100%}
 .mat-heat td.small{min-width:200px;white-space:normal;overflow-wrap:break-word}
+
+/* PR-23: licence position and the base-scale crosswalk on the models tab */
+.mat-licnote{margin:8px 0;padding:8px 12px;border-radius:var(--rad-card);background:var(--glass2)}
+.mat-lic{gap:8px;margin:0 0 6px}
+.mat-cw{width:100%;border-collapse:collapse}.mat-cw th,.mat-cw td{padding:6px 10px;text-align:left;vertical-align:top;font-size:13px}
