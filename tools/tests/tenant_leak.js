@@ -7,6 +7,9 @@
 //     that tenant, and under health every legacy screen carries the "not tenant-aware yet" label;
 //  4. search never returns another industry tenant's records. Meridian records in search under other tenants are counted as legacy
 //     (search providers are not tenant-aware yet), not failed.
+// Fingerprints (wave 2, DC-11, DC-22, DC-23): each industry pack's ids (projects, budget lines, invoices, metrics, objectives, key results,
+// processes, demand, pillars, people, journeys, workflows), its people and project names, its vendors, and its metric, objective, demand
+// and process names of three words or more that no Meridian metric or objective shares.
 // Excluded on purpose: tenant choosers and the identity card ([data-tenant-chooser]); the signed-in identity's own name (IDENT).
 // Usage: node tools/tests/tenant_leak.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
@@ -20,8 +23,13 @@ async function open(){const p=await (await b.newContext({viewport:{width:1440,he
   DATA.tenants().forEach(t=>{const terms=new Set([t.org,t.short].filter(Boolean));const add=v=>{v=String(v||'');if(v.length>=3&&!me.has(v))terms.add(v)};
    if(t.id==='core'){DATA.get('invoices',{tenant:'core'}).forEach(r=>add(r.id));DATA.get('projects',{tenant:'core'}).forEach(r=>add(r.n));
     DATA.get('people',{tenant:'core'}).filter(r=>r.kind==='human').forEach(r=>add(r.name))}
-   else{['projects','budget_lines','metrics','objectives','people','journeys','workflows'].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>add(r.id)));
-    DATA.get('projects',{tenant:t.id}).forEach(r=>add(r.n));DATA.get('people',{tenant:t.id}).forEach(r=>add(r.name))}
+   else{['projects','budget_lines','invoices','metrics','objectives','key_results','processes','demand','pillars','people','journeys','workflows'].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>add(r.id)));
+    DATA.get('projects',{tenant:t.id}).forEach(r=>add(r.n));DATA.get('people',{tenant:t.id}).forEach(r=>add(r.name));
+    /* names that only this tenant's pack carries (DC-11, DC-22, DC-23); a name a Meridian metric or objective also uses identifies neither */
+    const coreN=new Set(DATA.get('metrics',{tenant:'core'}).map(r=>r.n).concat(DATA.get('objectives',{tenant:'core'}).map(r=>r.n)));
+    const addN=(v,any)=>{v=String(v||'');if(!coreN.has(v)&&(any||v.split(/\s+/).length>=3))add(v)}; /* three words or more: short generic names (Renewal, Scheduling) are not fingerprints */
+    DATA.get('invoices',{tenant:t.id}).forEach(r=>addN(r.vendor,1));DATA.get('objectives',{tenant:t.id}).forEach(r=>addN(r.n));
+    DATA.get('metrics',{tenant:t.id}).forEach(r=>addN(r.n));DATA.get('demand',{tenant:t.id}).forEach(r=>addN(r.n));DATA.get('processes',{tenant:t.id}).forEach(r=>addN(r.n))}
    fp[t.id]=[...terms]});
   /* a term shared by two tenants identifies neither */
   const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
@@ -39,7 +47,7 @@ const tenants=await p.evaluate(()=>DATA.tenants().map(t=>t.id));const nonCore=te
 const screens=await p.evaluate(()=>DATA.screens());
 const aware=screens.filter(s=>s.mode!=='core').map(s=>s.id),legacy=screens.filter(s=>s.mode==='core').map(s=>s.id);
 console.log('tenants',tenants.join(','),'| tenant-aware screens',aware.length,'| legacy screens',legacy.length);
-let checks=0,legacyLabeled=0;
+let checks=0,legacyLabeled=0;const aliased=[];
 for(const t of tenants){
  // 1. seamless switch onto t from Journey maps with a tab and a filter set
  await p.evaluate(()=>{S.pp2.tab.ppl_jrny=3;S.tn.q='a';go('ppl_jrny')});await p.waitForTimeout(150);
@@ -67,10 +75,10 @@ for(const t of tenants){
 // 3. legacy screens on a fresh page per tenant (some legacy screens add sample records when opened)
 for(const t of ['core','health']){const q=await open();await q.evaluate(t=>TENANT.switch(t),t);await q.waitForTimeout(200);
  for(const id of legacy){const n0=errs.length;await visit(q,id,null);checks++;
-  const r=await q.evaluate(([t,nc])=>({h:window.__hits(window.__surface(),t,nc),lab:!!document.querySelector('#view [data-tenant-legacy]')}),[t,nonCore]);
+  const r=await q.evaluate(([t,nc])=>({h:window.__hits(window.__surface(),t,nc),lab:!!document.querySelector('#view [data-tenant-legacy]'),alias:DATA.screenMode(S.screen)!=='core'?S.screen:null}),[t,nonCore]);
   if(r.h.length)fail(t+' '+id+' (legacy) shows another tenant: '+r.h.slice(0,4).join(' | '));
-  if(t!=='core'){if(r.lab)legacyLabeled++;else fail(t+' '+id+' legacy screen without the tenant label')}
+  if(t!=='core'){if(r.lab)legacyLabeled++;else if(r.alias){aliased.push(id+' -> '+r.alias)}else fail(t+' '+id+' legacy screen without the tenant label')} /* an old id that opens a tenant-aware screen (trace -> strat_exec) needs no label */
   if(errs.length>n0)fail(t+' '+id+' errors '+errs.slice(n0).join(' | ').slice(0,400))}
  await q.close()}
-console.log('checks',checks,'| legacy screens labeled under health',legacyLabeled+'/'+legacy.length,'| failures',bad,'| errors',errs.length?errs.slice(0,3):'none');
+console.log('checks',checks,'| legacy screens labeled under health',legacyLabeled+'/'+legacy.length,'| aliases of tenant-aware screens',aliased.join(', ')||'none','| failures',bad,'| errors',errs.length?errs.slice(0,3):'none');
 await b.close();process.exit(bad||errs.length?1:0)})();
