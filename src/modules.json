@@ -220,6 +220,7 @@
   "mod_s_pack_storage",
   "mod_s_steps",
   "mod_s_tenant",
+  "mod_s_tenant_screens",
   "mod_rel",
   "mod_selfbuild",
   "mod_sla",

@@ -42,6 +42,13 @@ const r=await p.evaluate(()=>{const f=[];const snap=DATA.snapshot('core'); /* ta
  /* vocabulary (CL-57) */
  ok(DATA.term('incident',{tenant:'core'})==='incident'&&DATA.term('incident',{tenant:'mining'})==='safety event'&&DATA.term('customer',{tenant:'health',many:true})==='patients'&&DATA.term('ticket',{tenant:'storage',cap:true})==='Support case','DATA.term follows the tenant');
  TENANT.switch('mining');ok(DATA.term('ticket')==='work order'&&DATA.terms().incident==='safety event','DATA.term reads the active tenant');TENANT.switch('core');
+ /* screen adapters: data mode, and they render each tenant's own rows */
+ const ad=(window.STN&&STN.adapters)?STN.adapters():[];ok(ad.length>=8,'screen adapters registered: '+ad.length);
+ ad.forEach(id=>ok(DATA.screenMode(id)==='data','adapter '+id+' is a data screen'));
+ ['health','mining','storage'].forEach(t=>{TENANT.switch(t);const pn=DATA.get('projects')[0].n;ad.forEach(id=>{go(id);const tx=document.getElementById('view').textContent;
+  ok(tx.indexOf(DATA.tenantInfo(t).org)>=0,t+' '+id+' names the tenant');ok(!/could not be drawn/.test(tx),t+' '+id+' renders')});
+  go('strat_exec');ok(document.getElementById('view').textContent.indexOf(pn)>=0,t+' trace detail (strat_exec) follows the dollar through the tenant project')});
+ TENANT.switch('core');go('home');
  /* identity and membership, default deny (CL-63) */
  ok(IDENT.me().id==='casey-rowan'&&TENANT.list().length===4,'demo presenter is a member of four tenants');
  IDENT.use('jordan-lee');ok(TENANT.list().join()==='core','Jordan Lee sees only Meridian');
