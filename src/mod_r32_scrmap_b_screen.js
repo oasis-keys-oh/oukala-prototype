@@ -140,7 +140,7 @@ function filesPane(RS){const by={};RS.forEach(r=>{(by[r.file]=by[r.file]||[]).pu
 
 /* ---------- decisions and export pane ---------- */
 function mdOf(RS){const d=new Date().toISOString().slice(0,10),t=tally(RS);
- const sec=(k)=>{const rs=RS.filter(r=>r.decision===k).sort((a,b)=>a.band.localeCompare(b.band)||a.label.localeCompare(b.label));return `## ${DK[k].l} (${rs.length})\n\n${rs.length?rs.map(r=>`- ${r.label} (${r.id}, ${r.band})${r.note?" — "+r.note:""}`).join("\n"):"- none"}\n`};
+ const sec=(k)=>{const rs=RS.filter(r=>r.decision===k).sort((a,b)=>a.band.localeCompare(b.band)||a.label.localeCompare(b.label));return `## ${DK[k].l} (${rs.length})\n\n${rs.length?rs.map(r=>`- ${r.label} (${r.id}, ${r.band})${r.note?": "+r.note:""}`).join("\n"):"- none"}\n`};
  return `# Screen map decisions, ${d}\n\nPrototype facts: ${RS.length} registered screens; ${t.none} undecided. Decisions are the founder's; the signal score is a hypothesis.\n\n${["wedge","keep","defer","cut"].map(sec).join("\n")}`}
 function csvOf(RS){const h=["id","screen","formal_name","band","module","menu_area","hidden","cxo_menu","decision","note","signal_score","links_in","contract_of_4","file","file_kb","last_change"];
  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
