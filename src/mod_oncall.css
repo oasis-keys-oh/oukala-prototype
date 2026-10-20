@@ -44,7 +44,7 @@
 .oc-hh span{font-size:10.5px;color:var(--muted);text-align:left;font-weight:700}
 .oc-dl{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;line-height:1.1}.oc-dl small{font-weight:500;color:var(--muted);font-size:11px}
 .oc-c{height:26px;border-radius:6px;border:0;padding:0;font:700 10.5px/1 var(--f-ui,inherit);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:transform .15s var(--ease)}
-button.oc-c:hover{transform:scale(1.18);z-index:1;position:relative}
+button.oc-c:hover{transform:scale(1.18);z-index:calc(var(--z-local) + 1);position:relative}
 .oc-heat.mini .oc-c{height:16px}
 .oc-c.s-ok{background:color-mix(in srgb,var(--good-f) 82%,transparent);color:#fff}
 .oc-c.s-sur{background:color-mix(in srgb,var(--p3) 85%,transparent);color:#fff}

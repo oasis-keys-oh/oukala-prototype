@@ -92,7 +92,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 :root:root .proc .ps.gate .who{color:var(--warn)}
 
 /* ---- F-12 skip link: visible only on keyboard focus ---- */
-.skiplink{position:fixed;left:12px;top:-72px;z-index:10000;padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
+.skiplink{position:fixed;left:12px;top:-72px;z-index:calc(var(--z-top) + 1000);padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
 .skiplink:focus,.skiplink:focus-visible{top:12px;outline:2px solid var(--focus);outline-offset:3px}
 
 /* ---- F-13 phone top bar fits the viewport (it was 33px too wide on every screen, forcing sideways page scroll) ---- */

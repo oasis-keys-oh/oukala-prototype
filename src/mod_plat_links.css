@@ -88,9 +88,9 @@
 .plk-mxwrap{overflow:auto;max-height:660px;border:1px solid var(--hair);border-radius:16px;background:var(--glass)}
 .plk-mx{border-collapse:separate;border-spacing:2px;width:max-content}
 .plk-mx th{font-size:12px;font-weight:600;background:var(--glass2)}
-.plk-mx thead th{position:sticky;top:0;z-index:2}
-.plk-mx th[scope=row]{position:sticky;left:0;z-index:1;text-align:left;white-space:nowrap;padding:3px 10px;min-width:180px}
-.plk-mx thead th:first-child{left:0;z-index:3;text-align:left;padding:4px 10px}
+.plk-mx thead th{position:sticky;top:0;z-index:calc(var(--z-local) + 2)}
+.plk-mx th[scope=row]{position:sticky;left:0;z-index:calc(var(--z-local) + 1);text-align:left;white-space:nowrap;padding:3px 10px;min-width:180px}
+.plk-mx thead th:first-child{left:0;z-index:calc(var(--z-local) + 3);text-align:left;padding:4px 10px}
 .plk-mx th.v{height:150px;width:30px;vertical-align:bottom;padding:4px 0}
 .plk-mx th.v span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;display:inline-block;max-height:146px;overflow:hidden;font-size:11px}
 .plk-mx td{padding:0;min-width:30px;height:28px;text-align:center;border-radius:6px}

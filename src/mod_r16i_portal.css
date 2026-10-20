@@ -36,7 +36,7 @@ html[data-r16-layout="portal"] .app{grid-template-columns:minmax(0,1fr);max-widt
 html[data-r16-layout="portal"] .topbar .lensbtn,html[data-r16-layout="portal"] .topbar .agents-live,html[data-r16-layout="portal"] .topbar [data-agents-live]{display:none}
 html[data-r16-layout="portal"] #nxTab{display:none}
 html[data-r16-layout="portal"] .svc-viewbar{display:none}
-.r16p-shell{display:flex;align-items:center;gap:16px;padding:8px 14px;border-radius:16px;margin-bottom:10px;position:relative;z-index:2}
+.r16p-shell{display:flex;align-items:center;gap:16px;padding:8px 14px;border-radius:16px;margin-bottom:10px;position:relative;z-index:calc(var(--z-local) + 2)}
 .r16p-shell nav{display:flex;gap:4px;flex-wrap:wrap}
 .r16p-sp{flex:1}
 .r16p-brand{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none}

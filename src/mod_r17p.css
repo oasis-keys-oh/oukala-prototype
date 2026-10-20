@@ -1,6 +1,6 @@
 /* ===== Round 17, Agent P: Tour. Every class is prefixed r17p-. Tokens only; no literal hex. ===== */
 /* ---- presenter bar: bottom center (the top right belongs to notifications) ---- */
-.r17p-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:160;width:min(960px,calc(100vw - 168px));max-height:calc(100dvh - 120px);display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:24px;color:var(--ink);overflow:visible}
+.r17p-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-overlay) + 60);width:min(960px,calc(100vw - 168px));max-height:calc(100dvh - 120px);display:flex;flex-direction:column;gap:10px;padding:12px 14px;border-radius:24px;color:var(--ink);overflow:visible}
 .r17p-cap{display:flex;flex-direction:column;gap:6px;min-width:0}
 .r17p-eb{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:var(--fs-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .r17p-sep{opacity:.5}
@@ -49,13 +49,13 @@
 .r17p-mbtn small{font-size:var(--fs-2xs);color:var(--muted);font-weight:500;line-height:1.35}
 .r17p-mres{margin-top:8px;min-height:1.3em;font-size:var(--fs-sm);color:var(--ink);overflow-wrap:break-word}
 /* spotlight */
-.r17p-spot{position:fixed;z-index:150;pointer-events:none;border-radius:18px;opacity:0;box-shadow:0 0 0 3px var(--accent),0 0 0 100vmax var(--r17p-dim,rgba(6,17,22,.46));transition:opacity .2s,left .25s,top .25s,width .25s,height .25s}
+.r17p-spot{position:fixed;z-index:calc(var(--z-overlay) + 50);pointer-events:none;border-radius:18px;opacity:0;box-shadow:0 0 0 3px var(--accent),0 0 0 100vmax var(--r17p-dim,rgba(6,17,22,.46));transition:opacity .2s,left .25s,top .25s,width .25s,height .25s}
 .r17p-spot.on{opacity:1}
 /* top-bar launcher */
 .r17p-launch{display:inline-flex;align-items:center;gap:6px}
 @media(max-width:1300px){.r17p-launch .lbl-long{display:none}.r17p-launch{padding-left:9px;padding-right:9px;min-width:36px;justify-content:center}}
 /* mini pill shown while presenting without a tour */
-.r17p-mini{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:160;display:flex;align-items:center;gap:10px;padding:6px 8px 6px 16px;border-radius:99px;font-size:var(--fs-sm);font-weight:700}
+.r17p-mini{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-overlay) + 60);display:flex;align-items:center;gap:10px;padding:6px 8px 6px 16px;border-radius:99px;font-size:var(--fs-sm);font-weight:700}
 /* present mode: clutter chrome out, type up 10 percent */
 html.r17p-present .nw-btn,html.r17p-present #nwPop,html.r17p-present #nxFavBtn,html.r17p-present #nxHistBtn,html.r17p-present .r17p-launch,html.r17p-present .r17-hide-present{display:none!important}
 html.r17p-present .app{zoom:1.1}

@@ -81,7 +81,7 @@ p,li,.story,.muted{text-wrap:pretty}
 .mp[open]>summary{box-shadow:0 0 0 2px var(--accent)}
 .mp .mpn{min-width:22px;height:22px;border-radius:99px;background:var(--accent);color:var(--accent-ink);display:inline-grid;place-items:center;font-size:12px;padding:0 6px}
 .mp .mpl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px}
-.mpp{position:absolute;z-index:40;top:calc(100% + 8px);left:0;width:min(360px,86vw);max-height:420px;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:20px;box-shadow:0 24px 60px var(--shade)}
+.mpp{position:absolute;z-index:calc(var(--z-sticky) + 20);top:calc(100% + 8px);left:0;width:min(360px,86vw);max-height:420px;display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:20px;box-shadow:0 24px 60px var(--shade)}
 .mpp input[type=search]{width:100%;padding:9px 12px;border-radius:12px;border:0;background:var(--track);color:var(--ink);font:inherit}
 .mpq{display:flex;gap:8px;flex-wrap:wrap}
 .mpl2{overflow:auto;display:flex;flex-direction:column;gap:2px;min-height:60px}
@@ -98,12 +98,12 @@ p,li,.story,.muted{text-wrap:pretty}
 .bt-bar input[type=search]{flex:1 1 220px;min-width:160px;padding:9px 14px;border-radius:99px;border:0;background:var(--glass2);color:var(--ink);font:inherit}
 .bt-scroll{overflow:auto;max-height:var(--bt-h,520px);border-radius:16px;position:relative}
 .bt table{border-spacing:0;min-width:100%;width:max-content}
-.bt thead th{position:sticky;top:0;z-index:3;background:var(--glass3,var(--glass2));cursor:pointer}
+.bt thead th{position:sticky;top:0;z-index:calc(var(--z-local) + 3);background:var(--glass3,var(--glass2));cursor:pointer}
 .bt td{padding:9px 14px;border-bottom:1px solid var(--hair,transparent);background:transparent;white-space:nowrap;max-width:360px;overflow:hidden;text-overflow:ellipsis}
 .bt td.wrap{white-space:normal}
 .bt tbody tr:hover td{background:var(--accent-soft)}
 .bt tbody tr[data-bt-row]{cursor:pointer}
-.bt tr.grp td{position:sticky;top:34px;background:var(--glass2);font-weight:700;z-index:2}
+.bt tr.grp td{position:sticky;top:34px;background:var(--glass2);font-weight:700;z-index:calc(var(--z-local) + 2)}
 .bt-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12.5px}
 .bt th .sar{opacity:.6;margin-left:4px}
 
@@ -285,7 +285,7 @@ a:focus-visible,button:focus-visible,[role=button]:focus-visible,[tabindex]:focu
 .stat .num{font-size:clamp(16px,1.9vw,28px);overflow-wrap:break-word}
 
 /* round 9: drawer header bar (Full screen + Close) sits above content; fishbone fits the drawer */
-#drawer>.dctl{position:sticky;top:-24px;z-index:5;display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:-8px -8px 10px auto;padding:6px;width:fit-content;max-width:100%;border-radius:16px;background:var(--glass2);backdrop-filter:blur(14px)}
+#drawer>.dctl{position:sticky;top:-24px;z-index:calc(var(--z-local) + 5);display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:-8px -8px 10px auto;padding:6px;width:fit-content;max-width:100%;border-radius:16px;background:var(--glass2);backdrop-filter:blur(14px)}
 #drawer>.dctl .closebtn,#drawer>.dctl .dexpand{position:static;inset:auto;margin:0}
 #drawer .itsm-fx{min-width:0}
 #drawer.dfull .itsm-fx{min-width:0;font-size:1em}

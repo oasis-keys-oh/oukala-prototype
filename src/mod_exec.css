@@ -121,7 +121,7 @@
 .exe-claim{border-radius:4px;transition:background .2s}.exe-claim:hover{background:var(--accent-soft)}
 .exe-cite{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 4px;margin:0 1px;border-radius:99px;background:var(--metric-s);color:var(--metric);font:800 11px var(--f-body);vertical-align:baseline}
 .exe-cite:hover,.exe-cite:focus-visible{background:var(--metric-f);color:#fff;outline:none}
-.exe-cite::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(4px);width:max-content;max-width:min(260px,70vw);padding:8px 12px;border-radius:12px;background:var(--ink);color:var(--bg);font:600 12px/1.35 var(--f-body);text-align:left;display:none;pointer-events:none;z-index:20;white-space:normal}
+.exe-cite::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(4px);width:max-content;max-width:min(260px,70vw);padding:8px 12px;border-radius:12px;background:var(--ink);color:var(--bg);font:600 12px/1.35 var(--f-body);text-align:left;display:none;pointer-events:none;z-index:var(--z-sticky);white-space:normal}
 .exe-cite:hover::after,.exe-cite:focus-visible::after{display:block}
 .exe-src{font-family:var(--f-body);font-size:13px!important;color:var(--muted)}
 .exe-pf{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--hair);padding-top:10px;font:600 12px var(--f-body);color:var(--muted)}

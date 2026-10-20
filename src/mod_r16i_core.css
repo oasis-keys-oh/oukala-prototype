@@ -1,6 +1,6 @@
 /* Round 16 Agent I: page-header actions slot, favorites accordion, budget section, star dropdown */
 #view{position:relative}
-.r16-pha{position:absolute;top:6px;right:8px;z-index:4;display:flex;align-items:center;justify-content:flex-end;gap:8px;height:36px;width:max-content;max-width:calc(100% - 16px)}
+.r16-pha{position:absolute;top:6px;right:8px;z-index:calc(var(--z-local) + 4);display:flex;align-items:center;justify-content:flex-end;gap:8px;height:36px;width:max-content;max-width:calc(100% - 16px)}
 .r16-pha .r16-why-btn{height:36px;padding:0 14px;font:600 13px/1 inherit;font-family:inherit;white-space:nowrap;border-radius:12px;display:inline-flex;align-items:center;box-sizing:border-box}
 .r16-pha .r16-star{position:static;width:36px;height:36px;min-width:36px;padding:0;display:inline-grid;place-items:center;border-radius:12px;background:var(--glass2);box-shadow:inset 0 1px 0 var(--edge),0 0 0 1px var(--hair);transform:none;opacity:1;box-sizing:border-box}
 /* the header always leaves room for the slot: first row of the hero is at least as tall as the slot, and the title never runs under it */

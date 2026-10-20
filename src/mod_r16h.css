@@ -8,7 +8,7 @@
 .r16r-ins{position:relative;height:26px;display:flex;align-items:center;justify-content:flex-start;padding-left:19px}
 .r16r-ins::before{content:"";position:absolute;left:30px;top:0;bottom:0;border-left:2px solid var(--hair)}
 .r16r-ins.ro{height:14px}
-.r16r-plus{position:relative;z-index:1;width:24px;height:24px;border-radius:99px;border:1px solid var(--edge);background:var(--bg);color:var(--accent);font:700 16px/1 inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .15s,transform .15s}
+.r16r-plus{position:relative;z-index:calc(var(--z-local) + 1);width:24px;height:24px;border-radius:99px;border:1px solid var(--edge);background:var(--bg);color:var(--accent);font:700 16px/1 inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:.55;transition:opacity .15s,transform .15s}
 .r16r-ins:hover .r16r-plus,.r16r-plus:focus-visible{opacity:1;transform:scale(1.15);border-color:var(--accent)}
 .r16r-plus:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .r16r-lvl{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;background:var(--glass);border:1px solid var(--edge);min-width:0}

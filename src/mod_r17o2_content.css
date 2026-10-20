@@ -36,8 +36,8 @@
  :root:root #view table.r17o2-stack td.num{text-align:left}
  /* wider tables: bordered scroller, sticky first column, edge fade */
  :root:root #view :is(.tscroll,.tablewrap):has(>table.r17o2-scr){border:1px solid var(--cardline);border-radius:14px;background:var(--glass2);position:relative}
- :root:root #view table.r17o2-scr :is(th,td):first-child{position:sticky;left:0;z-index:2;background:var(--bg);min-width:min(172px,48vw);max-width:min(58vw,240px);box-shadow:1px 0 0 var(--cardline)}
- :root:root #view table.r17o2-scr thead th:first-child{z-index:4}
+ :root:root #view table.r17o2-scr :is(th,td):first-child{position:sticky;left:0;z-index:calc(var(--z-local) + 2);background:var(--bg);min-width:min(172px,48vw);max-width:min(58vw,240px);box-shadow:1px 0 0 var(--cardline)}
+ :root:root #view table.r17o2-scr thead th:first-child{z-index:calc(var(--z-local) + 4)}
  .r17o2-more{display:flex;align-items:center;justify-content:center;width:100%;margin-top:10px}
  .r17o2-hid{display:none!important}
  /* nested scroll boxes: let plain tables flow with the page (virtualised big tables keep their own scroller) */
@@ -47,7 +47,7 @@
  :root:root #view .fgrid{grid-template-columns:minmax(0,1fr);gap:14px}
  :root:root #view .fld>label,:root:root #view .fld .flab{font-size:13px}
  :root:root #view :is(.fin,.fld input:not([type=checkbox],[type=radio],[type=range]),.fld select,.fld textarea,input.fin,select.fin,textarea.fin){font-size:16px;min-height:44px}
- :root:root #view .fform .fact{position:sticky;bottom:calc(var(--r17-nav-h,84px) + env(safe-area-inset-bottom,0px));z-index:6;display:flex;gap:8px;padding:10px 0;background:linear-gradient(0deg,var(--bg) 70%,transparent)}
+ :root:root #view .fform .fact{position:sticky;bottom:calc(var(--r17-nav-h,84px) + env(safe-area-inset-bottom,0px));z-index:calc(var(--z-local) + 6);display:flex;gap:8px;padding:10px 0;background:linear-gradient(0deg,var(--bg) 70%,transparent)}
  :root:root #view .fform .fact .btn{flex:1 1 auto}
  /* (d) canvases */
  .r17o2-fitbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px;font-size:12px;color:var(--muted)}

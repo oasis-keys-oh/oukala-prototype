@@ -1,5 +1,6 @@
 # Design tokens injected by build.py ahead of all CSS. Value names and scales: docs/css-tokens.md.
 # CL-19: two font stacks, --font-sans and --font-serif (plus --f-mono for code); --f-body, --f-disp, --sans, --serif, --font, --font-ui, --f-ui, --font-display, --f-head stay as aliases.
+# CL-23: eight z-index layers (--z-below to --z-top); a rule that must sit above a sibling in the same layer adds an offset: calc(var(--z-float) + 10).
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);
@@ -16,6 +17,7 @@ LIGHT = """
 --info:var(--story);--info-f:var(--story-f);--info-s:var(--story-s);--bad-t:var(--bad);--bad-b:var(--bad-s);--warn-t:var(--warn);--mut:var(--muted);--on-accent:var(--accent-ink);
 --card:var(--glass2);--surface:var(--card);--glass3:var(--glass2);--glass-b:var(--hair);--hover:var(--track);--r17p-dim:rgba(6,17,22,.46);
 --font:var(--font-sans);--font-ui:var(--font-sans);--f-ui:var(--font-sans);--sans:var(--font-sans);--serif:var(--font-serif);--font-display:var(--font-serif);--f-head:var(--font-serif);
+--z-below:-1;--z-local:0;--z-sticky:20;--z-float:50;--z-overlay:100;--z-drag:200;--z-modal:900;--z-top:9000;
 --gap:16px;--gap-lg:16px;--sp-5:24px;--r17-nav-h:84px;
 """
 DARK = """

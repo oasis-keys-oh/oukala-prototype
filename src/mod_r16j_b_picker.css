@@ -17,7 +17,7 @@
 .pk2-chip button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
 .pk2-sum{font-size:12.5px;font-weight:600;color:var(--muted);margin-left:2px}
 .pk2-clr{border:0;background:transparent;color:var(--accent);cursor:pointer;font:inherit;font-size:12.5px;font-weight:600;padding:2px 4px}
-.pk2-pop{z-index:400;background:var(--bg);border:1px solid var(--edge);border-radius:16px;box-shadow:0 18px 50px var(--shade);padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.pk2-pop{z-index:calc(var(--z-drag) + 200);background:var(--bg);border:1px solid var(--edge);border-radius:16px;box-shadow:0 18px 50px var(--shade);padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}
 .pk2-pop[hidden]{display:none}
 .pk2-pop.inline{position:static;box-shadow:none;background:transparent;border:0;padding:0}
 .pk2-q{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--edge);background:var(--glass2);color:var(--ink);font:inherit;box-sizing:border-box}

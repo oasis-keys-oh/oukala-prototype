@@ -21,7 +21,7 @@
 @media (prefers-reduced-motion:reduce){.svx-e.hot{animation:none}}
 .svx-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:6px 0}
 .svx-search{position:relative;flex:1 1 280px;min-width:220px}
-.svx-res{position:absolute;z-index:5;left:0;right:0;top:100%;margin-top:4px;max-height:300px;overflow:auto;background:var(--glass2);backdrop-filter:blur(18px);border:1px solid var(--hair);border-radius:14px;box-shadow:0 12px 30px var(--shade);padding:4px}
+.svx-res{position:absolute;z-index:calc(var(--z-local) + 5);left:0;right:0;top:100%;margin-top:4px;max-height:300px;overflow:auto;background:var(--glass2);backdrop-filter:blur(18px);border:1px solid var(--hair);border-radius:14px;box-shadow:0 12px 30px var(--shade);padding:4px}
 .svx-res[hidden]{display:none}
 .svx-pick{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;text-align:left;padding:8px 10px;border-radius:10px;background:none;border:0;color:var(--ink);cursor:pointer}
 .svx-pick:hover,.svx-pick:focus-visible{background:var(--accent-soft)}

@@ -9,7 +9,7 @@
 .pk-t b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pk-t b.pk-ph{color:var(--muted);font-weight:500}
 .pk-t small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pk-pop{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:80;background:var(--bg);border:1px solid var(--edge);border-radius:16px;box-shadow:0 18px 50px var(--shade);padding:8px;display:flex;flex-direction:column;gap:6px}
+.pk-pop{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:calc(var(--z-float) + 30);background:var(--bg);border:1px solid var(--edge);border-radius:16px;box-shadow:0 18px 50px var(--shade);padding:8px;display:flex;flex-direction:column;gap:6px}
 .pk-pop[hidden]{display:none}
 .pk-pop.up{top:auto;bottom:calc(100% + 6px)}
 .pk-q{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--edge);background:var(--glass2);color:var(--ink);font:inherit}
@@ -39,12 +39,12 @@
 .bl-cols{position:relative}
 .bl-cols summary{list-style:none;cursor:pointer}
 .bl-cols summary::-webkit-details-marker{display:none}
-.bl-colpop{position:absolute;z-index:70;top:calc(100% + 6px);left:0;min-width:220px;max-height:340px;overflow:auto;padding:12px;border-radius:16px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--edge);box-shadow:0 18px 50px var(--shade)}
+.bl-colpop{position:absolute;z-index:calc(var(--z-float) + 20);top:calc(100% + 6px);left:0;min-width:220px;max-height:340px;overflow:auto;padding:12px;border-radius:16px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--edge);box-shadow:0 18px 50px var(--shade)}
 .bl-colpop label{display:flex;gap:8px;align-items:center;font-size:14px;cursor:pointer}
 .bl-scroll{overflow:auto;max-height:min(68vh,720px);border-radius:0;position:relative}
 .bl-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .bl-t{width:100%;min-width:900px;border-collapse:separate;border-spacing:0}
-.bl-t th{position:sticky;top:0;z-index:3;background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-radius:0;padding:0;border-bottom:1px solid var(--edge)}
+.bl-t th{position:sticky;top:0;z-index:calc(var(--z-local) + 3);background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-radius:0;padding:0;border-bottom:1px solid var(--edge)}
 .bl-t th button{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 8px;cursor:pointer;white-space:nowrap}
 .bl-t th.num button{text-align:right}
 .bl-t th button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
@@ -53,7 +53,7 @@
 .bl-t td.wrap{white-space:normal;min-width:170px;max-width:210px}
 .bl-t td.num,.bl-t th.num{text-align:right}
 .bl-t tbody tr:hover td{background:var(--glass2)}
-.bl-t tfoot td{position:sticky;bottom:0;z-index:3;background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-top:2px solid var(--edge);border-bottom:0;padding:11px 10px}
+.bl-t tfoot td{position:sticky;bottom:0;z-index:calc(var(--z-local) + 3);background:linear-gradient(var(--glass2),var(--glass2)),var(--bg);border-top:2px solid var(--edge);border-bottom:0;padding:11px 10px}
 .bl-grp td{background:var(--glass2);padding:0}
 .bl-grp button{all:unset;box-sizing:border-box;display:flex;gap:8px;align-items:center;width:100%;padding:10px 14px;cursor:pointer}
 .bl-grp button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}

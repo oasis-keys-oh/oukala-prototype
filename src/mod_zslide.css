@@ -18,7 +18,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 
 /* ---------- 2. SLIDERS component ---------- */
 .zs-host{--zs-b:var(--zs-bh);--zs-r:var(--zs-vw)}
-.zs-root{position:absolute;inset:0;pointer-events:none;z-index:30;font:600 12px/1 var(--font,inherit);color:var(--ink)}
+.zs-root{position:absolute;inset:0;pointer-events:none;z-index:calc(var(--z-sticky) + 10);font:600 12px/1 var(--font,inherit);color:var(--ink)}
 .zs-root>*{pointer-events:auto}
 .zs-bt{position:absolute;left:0;right:0;bottom:0;min-height:var(--zs-bh);display:flex;align-items:stretch;flex-wrap:wrap;background:var(--glass2);border-top:1px solid var(--hair);box-sizing:border-box}
 .zs-v{position:absolute;top:0;right:0;bottom:var(--zs-b);width:var(--zs-vw);display:flex;flex-direction:column;background:var(--glass2);border-left:1px solid var(--hair);box-sizing:border-box}

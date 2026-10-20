@@ -2,13 +2,13 @@
 /* shared Gantt: virtual rows inside one scroller */
 .gx-scroll{overflow:auto;position:relative;scrollbar-width:thin;max-width:100%;border-radius:inherit;overscroll-behavior:contain}
 .gx-in{position:relative}
-.gx-head{position:sticky;top:0;z-index:7;height:48px;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.gx-head{position:sticky;top:0;z-index:calc(var(--z-local) + 7);height:48px;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .gx-head>span{position:absolute;top:22px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.gx-corner{position:sticky;left:0;z-index:8;width:250px;height:48px;display:flex;align-items:flex-end;padding:0 12px 8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--bg) 92%,transparent)}
+.gx-corner{position:sticky;left:0;z-index:calc(var(--z-local) + 8);width:250px;height:48px;display:flex;align-items:flex-end;padding:0 12px 8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--bg) 92%,transparent)}
 .gx-body{position:absolute;left:0}
-.gx-body .glinks{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:1}
-.gx-body .today{top:-10px;bottom:0;z-index:1}
-.gx-rows{position:relative;z-index:2}
+.gx-body .glinks{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:calc(var(--z-local) + 1)}
+.gx-body .today{top:-10px;bottom:0;z-index:calc(var(--z-local) + 1)}
+.gx-rows{position:relative;z-index:calc(var(--z-local) + 2)}
 .gx-r{position:absolute;left:0;display:flex;height:38px;align-items:center}
 .gx-r:hover .glab{background:var(--accent-soft)}
 .gx-r.proj{background:color-mix(in srgb,var(--glass2) 70%,transparent)}
@@ -45,7 +45,7 @@
 .wbs-sheet{padding-bottom:14px}
 .wbs-sc{overflow:auto;position:relative;max-width:100%;border-radius:14px;border:1px solid var(--hair,var(--track));background:color-mix(in srgb,var(--glass2) 55%,transparent);scrollbar-width:thin;overscroll-behavior:contain}
 .wbs-hd,.wbs-r{display:grid;grid-template-columns:var(--wc);width:var(--tw);align-items:center}
-.wbs-hd{position:sticky;top:0;z-index:6;height:36px;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair,var(--track))}
+.wbs-hd{position:sticky;top:0;z-index:calc(var(--z-local) + 6);height:36px;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair,var(--track))}
 .wbs-hh{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0 8px;white-space:nowrap}
 .wbs-in{position:relative;width:var(--tw)}
 .wbs-rows{position:absolute;left:0;right:0}
@@ -54,7 +54,7 @@
 .wbs-r.sum{background:color-mix(in srgb,var(--glass2) 80%,transparent)}.wbs-r.proj{background:color-mix(in srgb,var(--p4) 12%,var(--glass2));font-weight:700}
 .wbs-r.sel{background:var(--accent-soft)}.wbs-r.act,.wbs-r:focus-visible{box-shadow:inset 3px 0 0 var(--accent)}
 .wbs-r.focus{animation:wbsfl 2.4s ease-out}@keyframes wbsfl{0%,40%{background:var(--warn-f);opacity:.8}100%{}}
-.wbs-fx{position:sticky;left:0;z-index:4;display:flex;align-items:center;gap:4px;height:100%;min-width:0;background:inherit;padding-right:6px}
+.wbs-fx{position:sticky;left:0;z-index:calc(var(--z-local) + 4);display:flex;align-items:center;gap:4px;height:100%;min-width:0;background:inherit;padding-right:6px}
 .wbs-r .wbs-fx{background:color-mix(in srgb,var(--bg) 94%,var(--glass2))}.wbs-r.sel .wbs-fx{background:color-mix(in srgb,var(--bg) 85%,var(--accent-soft))}.wbs-r.sum .wbs-fx{background:color-mix(in srgb,var(--bg) 88%,var(--glass2))}
 .wbs-hd .wbs-fx{background:transparent}
 .wbs-ck{display:inline-grid;place-items:center;width:30px;flex:none}.wbs-ck input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}

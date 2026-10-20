@@ -30,9 +30,9 @@
 .pl-heatw{max-height:560px;overflow:auto;margin-top:8px}
 .pl-heat{border-collapse:separate;border-spacing:0 4px;width:100%}
 .pl-heat th,.pl-heat td{padding:3px 8px;text-align:center;font-size:12.5px}
-.pl-heat thead th{position:sticky;top:0;background:var(--glass2);backdrop-filter:blur(8px);z-index:2;white-space:nowrap}
+.pl-heat thead th{position:sticky;top:0;background:var(--glass2);backdrop-filter:blur(8px);z-index:calc(var(--z-local) + 2);white-space:nowrap}
 .pl-heat tbody tr{cursor:pointer}.pl-heat tbody tr:hover td,.pl-heat tbody tr:hover th{background:var(--accent-soft)}
-.pl-hn{text-align:left!important;min-width:190px;position:sticky;left:0;background:var(--glass2);z-index:1}
+.pl-hn{text-align:left!important;min-width:190px;position:sticky;left:0;background:var(--glass2);z-index:calc(var(--z-local) + 1)}
 .pl-link{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--hair);text-underline-offset:3px}
 .pl-link:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .pl-ow{border:1px solid var(--hair);border-radius:12px;padding:10px;margin-top:8px;display:flex;flex-direction:column;gap:8px;background:var(--glass)}
