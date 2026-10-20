@@ -1,5 +1,11 @@
 # Oukala module guide (read fully before writing code)
 
+## Current rules (2026-10-19; these override anything older below)
+- Product name is Falconaire (`src/brand.json`); conventions and contracts are in `docs/ARCHITECTURE.md`. Older sections below mention /tmp build folders and round numbers: treat them as history.
+- **Name a new module `mod_s_<domain>.js` (and optional `.css`)**, a domain name, never a round number.
+- **Register it in `src/modules.json` (CL-16).** The build no longer sorts filenames: it concatenates modules in the order of the `modules` list there. Add `"mod_s_<domain>"` where filename sort would have put it (after `mod_r33_showroom`, alphabetical among the `mod_s_` entries, before `mod_sla`). A module file that is not listed, or a listed name with no file, fails the build with a message naming it.
+- Build: `python3 src/build.py --out build_out` (add `--full` for `full.html`); test: `npm test`.
+
 Oukala is a single-file prototype (no backend) of an AI-native enterprise work platform (PPM, ITSM, ITOM, knowledge, workflow, AI governance). You are building ONE OR MORE feature modules as `mod_<name>.js` (+ optional `mod_<name>.css`) in `/tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/`. Casey (CIO, first customer is "Meridian Standards Foundation", a mid-sized standards body; Microsoft E5 assumed) wants to SEE forms, features, working interactions. Not mockups of boxes: working prototypes with realistic data.
 
 ## Hard rules (rewritten in Round 11: the Feature Contract comes first and wins where it conflicts)
@@ -152,7 +158,7 @@ Owner assignments are in your prompt. If two modules must interact, use the cont
 `{name, purpose, owner, process:{ref?, trigger, steps:[{n,who,owner,sla}]}, data:{reuse:[entityId], extend:[{entity,add:[k]}], new:[{id,label,why,fields:[{k,classification,authority}],dup?}], none?, rationale?}, metrics:[{n,f,owner,tgt,rem}], maturity:{model,target}, links:{modules:[{id,dir:"push|pull",entity}], search, projects, strategy, tickets, people, chat, inbox, approvals, notifications}}`
 
 ## Rules of thumb for builders
-- Load order is alphabetical, so the contract module loads before the gate, proclib, modmap and debt. Everything that touches them is lazy: `CONTRACT` registers its own entities, module and process in a deferred `wire()` (timeouts), never at load.
+- Load order is the `src/modules.json` order (alphabetical when it was created), so the contract module loads before the gate, proclib, modmap and debt. Everything that touches them is lazy: `CONTRACT` registers its own entities, module and process in a deferred `wire()` (timeouts), never at load.
 - Start from the agents: run `oukala-feature-contract` (or the four in order) before writing the module, paste the manifest into Run on a feature, and fix gaps before you build.
 - Score your own screens: `CONTRACT.evaluate("<id>").rules` shows evidence for each rule. Target 4 of 4 before you report.
 - A waiver is never a way to skip the work quietly: it needs a reason, the covering control, a named owner and an expiry; it shows on the Feature contract screen and in Technical debt.
