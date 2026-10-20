@@ -59,6 +59,19 @@ ok(Math.abs(r22.leaf-r22.comp)<0.2,`PR-22 cascade counts once: leaf points ${r22
 ok(Math.abs(r22.mat.tot-r22.mat.per)<0.01,`PR-22 maturity objective roll-ups count each capability once (${r22.mat.shared} shared, weights ${r22.mat.per} = ${r22.mat.tot})`);
 ok(r22.rule&&r22.casRule&&r22.matRule&&r22.matFloor,'PR-22 the rule is shown on Strategy alignment, the cascade and Maturity models');
 
+// PR-23: own base scale, labeled crosswalks for licensed models, no Gartner stage names, DMM attribution corrected, counsel notice on screen
+const r23=await p.evaluate(async()=>{const o={};const A=MAT.ALLM(),g=A.find(m=>m.id==='gai'),d=A.find(m=>m.id==='dmm');
+ o.gartner=JSON.stringify(g)+JSON.stringify(STD.gai);o.gaiNames=g.lv.map(l=>l[0]);o.dmm=JSON.stringify(STD.dmm)+JSON.stringify(d);
+ o.base=MAT.BASE.lv.length===5&&MAT.BASE.dims.length===6;o.lic=['cmmi','itil','p3m3','tbm'].every(id=>MAT.LIC[id]&&MAT.LIC[id].kind==='licensed');
+ o.cw=MAT.crosswalk('dora',3).map(c=>c.lv+':'+c.share).join(',');o.cw5=MAT.crosswalk('cmmi',4).map(c=>c.lv+':'+c.share).join(',');
+ const out={};for(const id of ['cmmi','itil','gai','nist']){go('exe_mat');S.v.matv=2;MAT.M.sel=id;render();await new Promise(r=>setTimeout(r,150));const t=document.querySelector('#view').innerText;
+  out[id]={counsel:/Licence review by counsel before external use/.test(t),cw:/Base scale and crosswalk/.test(t),comp:/comparable to level/.test(t),gart:/Gartner/.test(t)}}
+ o.screens=out;return o});
+ok(!/Gartner/.test(r23.gartner)&&r23.gaiNames.join()==='Exploring,Piloting,In production with controls,Governed across the enterprise,Trusted within policy','PR-23 gai uses our own stage names: '+r23.gaiNames.join(', '));
+ok(!/DAMA DMM/.test(r23.dmm)&&/CMMI Institute/.test(r23.dmm)&&/DMBOK/.test(r23.dmm),'PR-23 dmm attribution corrected: DMBOK areas from DAMA; the DMM model is named as a CMMI Institute (ISACA) product, not shipped');
+ok(r23.base&&r23.lic&&r23.cw==='2:0.5,3:0.5'&&r23.cw5==='4:1','PR-23 own five-level, six-dimension base scale; licensed models carry a crosswalk with shares that add to 100% (DORA level 3 of 5 = 2 or 3, 50% each)');
+for(const id in r23.screens){const c=r23.screens[id];ok(c.counsel&&c.cw&&!c.gart&&(id==='cmmi'||id==='itil'?c.comp:true),`PR-23 models tab for ${id}: counsel notice and crosswalk shown${id==='cmmi'||id==='itil'?', labeled "comparable to"':''}, no Gartner`)}
+
 //@@NEXT
 
 ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,8));
