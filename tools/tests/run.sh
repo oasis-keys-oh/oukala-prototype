@@ -4,6 +4,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 python3 src/build.py --out "$PWD/build_out" --full >/dev/null
+# CL-46, CL-60: build lint over src/ (fails only on violations above tools/lint/baseline.json; rules: docs/enforcement.md)
+node tools/lint/lint.js
 # DC-06: a tour over 1,200 seconds (or any SHOW.lint finding) fails the build before the long suites run
 node tools/tests/showlint.js build_out
 # CL-18 to CL-26 (R8): no undefined CSS variables; hex, !important, literal z-index, font stacks, breakpoints and radii stay at or under their ceilings

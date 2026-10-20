@@ -1,0 +1,58 @@
+{
+ "about": "Build lint baseline (tools/lint/lint.js, CL-46 and CL-60). Counts of existing violations per rule and file, accepted on 2026-10-20. A file may not go above its count; lower or remove an entry when a cleanup lands (node tools/lint/lint.js --update).",
+ "rules": {
+  "css-var": {},
+  "hex-css": {
+   "mod_flow.css": 1,
+   "mod_oncall.css": 2,
+   "mod_org.css": 5,
+   "mod_r15f1_a_store.css": 1,
+   "mod_r16j_b_picker.css": 1,
+   "mod_r16j_e_dash.css": 6,
+   "mod_r16m_a_core.css": 4,
+   "mod_r17n_notify.css": 4,
+   "mod_r17o1_shell.css": 1,
+   "mod_r17q_a.css": 9,
+   "mod_r17t.css": 8,
+   "mod_r17u.css": 5,
+   "mod_r18.css": 13,
+   "mod_r20.css": 42,
+   "mod_r21.css": 11,
+   "mod_r25_b_studio.css": 4,
+   "mod_r26_guardrails.css": 54,
+   "mod_r27_prefs.css": 29,
+   "mod_r28_brand.css": 1,
+   "mod_r32_brand.css": 1,
+   "mod_r32_num_b.css": 2,
+   "mod_r32_orgprop.css": 4,
+   "mod_r32_tenant.css": 1,
+   "mod_svc.css": 2,
+   "mod_wbs.css": 3,
+   "style.css": 1,
+   "style2.css": 1,
+   "style4.css": 1,
+   "style7.css": 3
+  },
+  "banned-name": {
+   "data2.js": 1,
+   "mod_r16m_a_core.js": 1
+  },
+  "em-dash": {
+   "screens4.js": 2
+  },
+  "real-name": {},
+  "iife": {
+   "mod_gaapdata.js": 1,
+   "mod_r17q_a_data.js": 1,
+   "mod_r24_hero.js": 1,
+   "mod_r32_num_a_data.js": 1,
+   "mod_r32_scrmap_a_data.js": 1,
+   "mod_viz2.js": 1
+  },
+  "price": {
+   "mod_admin.js": 2,
+   "mod_svc360.js": 9
+  },
+  "cert": {}
+ }
+}
