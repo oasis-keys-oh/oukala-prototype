@@ -234,6 +234,297 @@ NAVX.overrides=()=>OVR;
 function groupItems(g){const ids=SCREENS.map(s=>s[0]).filter(id=>id!=="home"&&resolve(id).g===g);
  return ids.map((id,i)=>({id,m:resolve(id),i})).sort((a,b)=>(a.m.o-b.m.o)||(a.i-b.i)).map(x=>x.id)}
 NAVX.groupItems=groupItems;
+
+/* ---------- PH-14 (step 1): the navigation taxonomy, kept as data beside RAW ----------
+   Seven business areas in one fixed order, plus the fixed spaces (Home, My work, Ask or request, Showroom, Build and admin).
+   Seeded from docs/ia/screen-inventory.csv (Omar approved the proposal 2026-10-20). One row per registered screen:
+   screen id | space | sub-group | label | kind | ref | archetype | R3 comparison | objective level | objects shown
+   kind: entry (one menu place), view (a view of the family ref), merged (merged into ref as a view), search (search only),
+   role (shown only to the persona ref), retire (candidate to retire, Omar decides; the id keeps redirecting to ref).
+   A screen with no row lands in search only, never in a menu (docs/ia/navigation-architecture.md, section g). */
+const SPACES=[
+ ["home","Home","fixed",ICO.home,"Your starting point.",["Home"]],
+ ["my","My work","fixed",ICO.my,"Things waiting on you: approvals, meetings, your first week.",["Approvals","Meetings","Start here"]],
+ ["ask","Ask or request","fixed",ICO.help,"Ask a question, find an answer, report a problem or order something.",["Ask","Request"]],
+ ["strat","Strategy and value","area",ICO.strat,"Goals, measures, value realized and board material.",["Direction","Performance","Value and money"]],
+ ["deliver","Portfolio and delivery","area",ICO.plan,"Choose the work, plan it, staff it and ship it.",["Choose the work","Plan and run","Staff and ship"]],
+ ["ops","Operations and service","area",ICO.fix,"The service desk, changes, the technology behind the services, monitoring and knowledge.",["Service desk","Change and service levels","Technology and services","Monitoring","Knowledge"]],
+ ["money","Money and contracts","area",ICO.money,"Approve and pay, budgets, where money goes, vendors and contracts.",["Approve and pay","Budgets","Where money goes","Vendors and contracts"]],
+ ["people","People and organization","area",ICO.people,"The organization, skills and availability, learning and performance.",["Organization","Capacity and skills","Learning and performance"]],
+ ["risk","Risk, control and AI","area",ICO.grc,"Risk, control and audit, access, AI oversight and resilience.",["Risk","Control, audit and access","AI oversight","Resilience"]],
+ ["transform","Transformation","area",ICO.res,"Redesign the work, processes and maturity, and scale what was built.",["Redesign the work","Processes and maturity","Scale what was built"]],
+ ["show","Showroom","fixed",ICO.story,"Guided tours and executive lenses.",["Showroom"]],
+ ["build","Build and admin","fixed",ICO.kit,"Build, automate, data and integration, access and tenants, and running the platform.",["Build","Automate","Data and integration","Access and tenants","Run the platform","Product"]]];
+const SPID={};SPACES.forEach((s,i)=>SPID[s[0]]=i);
+const AREA_IDS=SPACES.filter(s=>s[2]==="area").map(s=>s[0]);
+/* old group ids (saved menu overrides, crumbs, links) resolve to the space that took them over (section c) */
+const OLDGRP={home:"home",story:"show",my:"my",help:"ask",plan:"deliver",fix:"ops",tech:"ops",money:"money",people:"people",learn:"ops",lens:"strat",strat:"strat",grc:"risk",res:"risk",ai:"risk",reg:"build",make:"transform",kit:"build",auto:"build",plat:"build",new:"build",
+ portfolio:"deliver",service:"ops",ops:"ops",know:"ops",automate:"build",platform:"build"};
+const TAXO=`home|home|Home|Home|entry||Other: landing page|none|individual|role cards, needs, rings, insights
+flw_appr|my|Approvals|My approvals|entry||Approval inbox|inbox|individual|approvals on me, open, decided
+inbox|my|Approvals|Alerts and inbox|view|flw_appr|Approval inbox|flw_appr|individual|alerts, queue, delegation
+meet_hub|my|Meetings|Meetings|entry||Dashboard-first list|fo|individual|meetings, agendas, actions, decisions
+fo|my|Meetings|My calendar and follow-ups|view|meet_hub|Other: AI assistant|meet_hub|individual|meetings, agendas, actions, pre-reads
+meet_act|my|Meetings|Meeting actions|view|meet_hub|Dashboard-first list|meet_hub|individual|action items
+meet_dec|my|Meetings|Decisions made in meetings|view|meet_hub|Dashboard-first list|meet_hub|team|decisions
+meet_series|my|Meetings|Recurring meetings and forums|view|meet_hub|Dashboard-first list|ppl_meet|team|forums, series
+ppl_av|my|Meetings|Book a room|view|meet_hub|Other: calendar|meet_hub|individual|rooms, bookings
+ppl_meet|my|Meetings|Meeting minutes|view|meet_hub|Dashboard-first list|meet_series|team|forums, minutes, actions
+r15d_firstweek|my|Start here|My first week|entry||Other: help or onboarding|ppl_train|individual|accounts, equipment, training, contacts
+chat_home|ask|Ask|Ask ${BRAND.name}|entry||Other: chat|kcs_ask|individual|chat threads, activities, tools, guardrails
+kcs_ask|ask|Ask|Find an answer|entry||Other: assistant|chat_home|individual|answers with sources
+svc_portal|ask|Request|Report a problem or order something|entry||Other: portal|svc_cat|individual|catalog, forms, my requests
+svc_guides|ask|Request|Order guides|view|svc_portal|Intake form|svc_portal|individual|order guides, fulfiller queues
+exe_board|strat|Direction|Board pack|entry||Report|r15d_evidence|company|board sections citing records
+exe_strat|strat|Direction|Goals and objectives|entry||Dashboard-first list|r18_strategy|company|objectives, key results, cascade, links to work
+r18_lens|strat|Direction|Executive lenses|entry||Other: lens picker|r18_strategy|company|value against cost and risk per executive
+exe_scen|strat|Direction|Compare what-if scenarios|merged|exe_strat|Report|exe_strat|enterprise|scenarios
+r18_levels|strat|Direction|Views by level|merged|r18_lens|Other: lens picker|r18_lens|company|executive, manager, specialist views
+r18_strategy|strat|Direction|How each function enables the strategy|view|r18_lens|Other: lens picker|exe_strat|enterprise|functions by objective, gaps
+exe_dash|strat|Performance|Dashboards|entry||Dashboard-first list|r17u_dash|company|executive dashboards by role
+metrics|strat|Performance|Measures and targets|entry||Other: catalog|svc_sla|enterprise|metrics, formulas, owners, targets
+kcs_viz|strat|Performance|Chart library and builder|merged|r16j_dash|Designer canvas|r16j_dash|enterprise|charts, maps, shapes
+r15_rpt|strat|Performance|Reports and subscriptions|view|exe_dash|Report|r16j_dash|enterprise|reports, schedules, run history
+r16j_dash|strat|Performance|Build a dashboard|view|exe_dash|Designer canvas|kcs_viz|enterprise|charts, layouts, defaults
+r17u_dash|strat|Performance|Dashboard viewer and templates|merged|r16j_dash|Dashboard-first list|r16j_dash|enterprise|dashboards, templates, schedules
+bst|strat|Value and money|Budget and spend traceability|entry||Report|strat_exec|enterprise|funded work linked to goals, orphan spend
+bud_ben|strat|Value and money|Benefits and value realized|entry||Dashboard-first list|r17q_value|enterprise|benefits, checkpoints, payback
+r17q_value|strat|Value and money|Value realized|view|bud_ben|Report|bud_ben|enterprise|value layers, business case, scenarios
+r18_spend|strat|Value and money|Spend detail|view|bst|Report|bst|enterprise|spend by domain and type
+strat_exec|strat|Value and money|Trace goals to money and work|view|bst|Report|trace|enterprise|objectives, projects, budget lines, gaps
+trace|strat|Value and money|Trace goals to money and work (old link)|retire|strat_exec|Report|strat_exec|enterprise|objectives, projects, budget lines, records
+port|deliver|Choose the work|Ideas and requests for new work|entry||Dashboard-first list|bud_req|enterprise|demand items, scores, capacity, intake form
+ims|deliver|Plan and run|Schedules across projects|entry||Other: timeline|plan|group|projects, milestones, Gantt, critical path
+ppm_proj|deliver|Plan and run|Projects|entry||Dashboard-first list|ims|group|projects, health, milestones, teams
+ppm_raid|deliver|Plan and run|Risks, issues and decisions|entry||Dashboard-first list|exe_risk|team|RAID items. RAID means risks, assumptions, issues and dependencies
+r15_time|deliver|Plan and run|Timesheets and actuals|entry||Intake form|ppm_proj|individual|time entries, approvals, actuals
+plan|deliver|Plan and run|One project's plan|merged|ims|Other: timeline|ims|team|one project, baseline, milestones
+ppm_wbs|deliver|Plan and run|Tasks and work breakdown|view|ims|Other: spreadsheet|ims|team|tasks, WBS, Gantt, resources
+agile_board|deliver|Staff and ship|Team boards and backlogs|entry||Board|agile_art|team|stories, sprints, backlogs
+dev_pipe|deliver|Staff and ship|Build and release pipelines|entry||Dashboard-first list|itom_dev|team|pipelines, runs, gates, environments, freezes
+itsm_rel|deliver|Staff and ship|Plan and track releases|entry||Dashboard-first list|dev_pipe|team|releases, clashes, readiness, go or no-go
+ppl_cap|deliver|Staff and ship|Who is available to do the work|entry||Dashboard-first list|ppl_org|group|capacity, over capacity, scenarios
+agile_art|deliver|Staff and ship|Planning across teams|view|agile_board|Board|agile_board|group|release trains, increments, objectives
+itom_dev|deliver|Staff and ship|Delivery speed|merged|dev_pipe|Dashboard-first list|dev_pipe|team|DORA measures, environments
+itsm_chg|ops|Change and service levels|Plan and approve changes|entry||Dashboard-first list|obs_std|team|changes, calendar, change board, templates
+svc_cat|ops|Change and service levels|Manage the catalog|entry||Dashboard-first list|svc_portal|team|catalog items, workflows, approval rules
+svc_sla|ops|Change and service levels|Service promises and targets|entry||Dashboard-first list|itom_slo|team|SLAs, OLAs, XLAs, breaches
+obs_std|ops|Change and service levels|Pre-approved changes|merged|itsm_chg|Dashboard-first list|itsm_chg|team|standard changes, runbooks, pre-approvals
+kcs_home|ops|Knowledge|Browse and manage articles|entry||Dashboard-first list|kcs_edit|team|articles, lifecycle, freshness
+kcs_edit|ops|Knowledge|Write or update an article|view|kcs_home|Intake form|kcs_home|team|article draft, versions
+kcs_gap|ops|Knowledge|What knowledge is missing|view|kcs_home|Report|kcs_home|team|search misses, gaps
+vault|ops|Knowledge|Explore connected knowledge|view|kg|Other: graph explorer|kg|team|knowledge graph
+itom_run|ops|Monitoring|Runbooks and automatic fixes|entry||Dashboard-first list|obs_std|team|runbooks, automation rules, history
+obs_dash|ops|Monitoring|Monitor systems|entry||Dashboard-first list|exe_dash|team|hosts, CIs, metrics, logs, traces
+itom_evt|ops|Monitoring|Alerts and events|view|obs_dash|Dashboard-first list|obs_dash|team|alerts, correlation, thresholds
+itom_slo|ops|Monitoring|Reliability targets|view|obs_dash|Dashboard-first list|svc_sla|team|SLOs, error budgets, synthetic checks
+itsm_home|ops|Service desk|Service desk at a glance|entry||Dashboard-first list|grc_home|group|queues, volumes
+itsm_inc|ops|Service desk|Fix what is broken|entry||Dashboard-first list|itsm_mi|team|incidents, priorities, SLA timers
+itsm_mi|ops|Service desk|Run a major outage|entry||Other: command center|itsm_inc|team|major incident, war room, communications
+itsm_prb|ops|Service desk|Find root causes|entry||Dashboard-first list|itsm_inc|team|problems, known errors, root cause analysis
+svc_oncall|ops|Service desk|Who is on call|entry||Dashboard-first list|svc_skills|team|rotas, escalation, overrides
+svc_req|ops|Service desk|Work the request queue|entry||Dashboard-first list|svc_portal|team|requests, queues, approvals
+itom_cmdb|ops|Technology and services|Servers, apps and other technology|entry||Dashboard-first list|itom_model|team|configuration items, classes
+kg|ops|Technology and services|See what a change would affect|entry||Other: graph explorer|itom_graph|team|services, CIs, dependencies, knowledge links
+svc_360|ops|Technology and services|Services we run|entry||360 view|exe_apps|group|services, owners, tiers, map
+svc_asset|ops|Technology and services|Assets and software licenses|entry||Dashboard-first list|itom_cmdb|team|assets, lifecycle, licenses
+exe_apps|ops|Technology and services|Applications we run|view|svc_360|Dashboard-first list|svc_360|team|applications, value and health, TIME quadrants
+itom_disc|ops|Technology and services|Scan and import technology|view|itom_cmdb|Dashboard-first list|itom_cmdb|team|discovery sources, runs, mappings
+itom_graph|ops|Technology and services|Technology dependencies|view|kg|Other: graph explorer|kg|team|dependency graph
+itom_health|ops|Technology and services|Is our technology data trustworthy|view|itom_cmdb|Dashboard-first list|itom_cmdb|team|CI health scores, remediation tasks
+itom_model|ops|Technology and services|How technology records are structured|view|itom_cmdb|Other: graph explorer|itom_cmdb|team|CI classes, relationship types
+r16h_ci|ops|Technology and services|Who owns each technology item|view|itom_cmdb|Dashboard-first list|itom_health|team|CI owners, gaps
+bud_doa|money|Approve and pay|Who can approve what|entry||Dashboard-first list|r16h_rules|group|approval matrix, sample cases, segregation of duties
+bud_req|money|Approve and pay|Budget requests|entry||Dashboard-first list|port|enterprise|funding requests, decision funnel, routing
+inv|money|Approve and pay|Approve invoices|entry||Approval inbox|flw_appr|team|invoices, vendors, milestones, approval rules
+r15_p2p|money|Approve and pay|Procure to pay|entry||Dashboard-first list|inv|group|requisitions, orders, receipts, matching
+bud_over|money|Budgets|Budgets|entry||Dashboard-first list|fin_budget|enterprise|budgets, forecasts, reserves, approvals
+fin_color|money|Budgets|Which funding pays for what|entry||Dashboard-first list|fin_budget|enterprise|funding colors, headroom, rule matrix
+bud_lines|money|Budgets|All budget lines|view|bud_over|Dashboard-first list|bud_over|enterprise|budget lines
+bud_model|money|Budgets|Forecast model|view|bud_over|Report|fin_budget|enterprise|cost plan, capitalization, depreciation, TCO
+fin_budget|money|Budgets|Budget by funding type|view|bud_over|Dashboard-first list|bud_model|enterprise|versions, variance, forecast methods
+fin_gates|money|Budgets|Funding approval gates|view|fin_color|Dashboard-first list|fin_color|enterprise|stage gates, capitalization, release at G3
+fin_model|money|Budgets|IT financial model|view|bud_over|Report|bud_model|enterprise|principles, decisions, roadmap
+fin_rules|money|Budgets|Financial control checks|view|fin_color|Dashboard-first list|grc_ctl|group|validation rules, exceptions, evidence
+fin_spend|money|Budgets|Test the order money is spent|view|fin_color|Other: simulator|fin_color|enterprise|spend-order waterfall
+bud_ven|money|Vendors and contracts|Vendors and contracts|entry||Dashboard-first list|grc_ven|team|vendors, contracts, renewals, purchase orders
+ppm_sow|money|Vendors and contracts|Review a statement of work|entry||Other: document analyzer|bud_ven|team|contracts, clauses, playbook
+tbm_model|money|Where money goes|See what technology costs|entry||Report|fin_alloc|enterprise|cost pools, towers, unit cost
+bud_ccmap|money|Where money goes|Cost center mapping|view|tbm_model|Dashboard-first list|fin_alloc|enterprise|cost centers, roll-up to org chart
+fin_alloc|money|Where money goes|Charge costs to teams|view|tbm_model|Dashboard-first list|tbm_model|team|showback, drivers, splits
+itom_fin|money|Where money goes|Cloud spend|view|tbm_model|Dashboard-first list|tbm_model|enterprise|cloud spend, untagged cost, rightsizing
+svc_skills|people|Capacity and skills|Skills and availability|entry||Dashboard-first list|ppl_cap|group|skills, certificates, availability
+ppl_perf|people|Learning and performance|Performance reviews|entry||Dashboard-first list|exe_strat|individual|goals, reviews, calibration
+ppl_train|people|Learning and performance|Training and courses|entry||Dashboard-first list|svc_skills|individual|courses, assignments, certificates
+org_chart|people|Organization|Org chart|entry||Other: map or diagram|orgassist|company|people, teams, AI teammates, ownership
+ppl_org|people|Organization|Workload by team|view|org_chart|Dashboard-first list|ppl_cap|team|teams, weekly load
+kcs_test|risk|AI oversight|Test AI answers|entry||Dashboard-first list|kcs_prompt|team|test cases, judge results, regression gate
+tower|risk|AI oversight|Watch and control AI agents|entry||Dashboard-first list|r15d_agents|team|agents, budgets, lineage, kill switch
+adm_gate|risk|AI oversight|AI usage and cost|view|tower|Other: admin configuration|tower|team|model routes, tokens, budget guard
+agent_defs|risk|AI oversight|Agent definitions|view|tower|Catalog|r15d_agents|team|agent cards: prompts, guidelines, box
+ai_runtime|risk|AI oversight|Agent runtime|view|tower|Dashboard-first list|wf_runs|team|agent runs, gates, controls
+flw_agent|risk|AI oversight|Workflows with AI agents|view|tower|Designer canvas|flw_design|team|agentic workflows
+kcs_prompt|risk|AI oversight|Prompt library|view|kcs_test|Dashboard-first list|kcs_test|team|prompts, versions, approvals
+kcs_skills|risk|AI oversight|What AI agents can do|view|tower|Dashboard-first list|agent_defs|team|agent skills, tools
+r15d_agents|risk|AI oversight|Agent registry|view|tower|Dashboard-first list|agent_defs|team|agents, owners, sponsors
+grc_home|risk|Control, audit and access|Governance, risk and compliance|entry||Dashboard-first list|exe_risk|enterprise|risk, control, finding and policy summary
+r15_iam|risk|Control, audit and access|Identity and access|entry||Dashboard-first list|r16g_perm|enterprise|roles, access requests, reviews, joiner mover leaver
+r15d_evidence|risk|Control, audit and access|Evidence room|entry||Dashboard-first list|adm_audit|enterprise|controls, approvals, audit trail, decisions, exports
+grc_aud|risk|Control, audit and access|Audit management|view|grc_home|Dashboard-first list|adm_audit|enterprise|audits, requests
+grc_ctl|risk|Control, audit and access|Controls and testing|view|grc_home|Dashboard-first list|fin_rules|enterprise|controls, tests, attestation
+grc_find|risk|Control, audit and access|Issues and findings|view|grc_home|Dashboard-first list|grc_aud|enterprise|findings
+grc_pol|risk|Control, audit and access|Policies|view|grc_home|Dashboard-first list|kcs_home|enterprise|policies, acknowledgements
+r18_access|risk|Control, audit and access|Data access requests|merged|r15_iam|Dashboard-first list|r15_iam|enterprise|data access requests, grants, data owners
+bc_home|risk|Resilience|Resilience|entry||Dashboard-first list|itsm_mi|enterprise|continuity summary
+bc_cal|risk|Resilience|Exercise calendar|view|bc_home|Other: calendar|itsm_chg|enterprise|exercises, windows, results
+bc_decl|risk|Resilience|Declare a disaster|view|bc_home|Intake form|itsm_mi|enterprise|declarations
+bc_frame|risk|Resilience|Resilience framework|view|bc_home|Other: reference|bc_home|enterprise|dimensions, assessment
+bc_metrics|risk|Resilience|Resilience measures|view|bc_home|Report|metrics|enterprise|resilience metrics
+bc_plans|risk|Resilience|Continuity plans|view|bc_home|Dashboard-first list|itom_run|enterprise|plans, call trees, runbooks
+bc_tiers|risk|Resilience|Recovery tiers|view|bc_home|Dashboard-first list|svc_360|enterprise|tiers, obligations, CIs
+bc_trace|risk|Resilience|Continuity traceability|view|bc_home|Report|kg|enterprise|services, CIs, contracts, gaps
+exe_risk|risk|Risk|Risk|entry||Dashboard-first list|grc_risk|enterprise|risks, heat map, Monte Carlo, register
+guard|risk|Risk|Guardrails|entry||Dashboard-first list (register)|r18_app|enterprise|guardrails, stage matrix, guided views
+grc_exc|risk|Risk|Exceptions and acceptances|view|exe_risk|Dashboard-first list|plat_debt|enterprise|exceptions, expiry
+grc_risk|risk|Risk|Risk register|view|exe_risk|Dashboard-first list|ppm_raid|enterprise|risks, owners, due dates
+grc_ven|risk|Risk|Third-party risk|view|exe_risk|Dashboard-first list|bud_ven|enterprise|vendor risk
+exe_mat|transform|Processes and maturity|Process maturity|entry||Dashboard-first list|r18_mature|group|maturity models, levels, scores
+plat_proc|transform|Processes and maturity|Processes|entry||Dashboard-first list|plat_pmap|group|processes, steps, owners, maturity
+draw_studio|transform|Processes and maturity|Draw a process|view|plat_proc|Designer canvas|flw_design|group|process drawings
+flw_bpmn|transform|Processes and maturity|Process models (BPMN)|view|plat_proc|Designer canvas|draw_studio|group|BPMN models
+flw_design|transform|Processes and maturity|Workflow designer|view|plat_proc|Designer canvas|draw_studio|group|workflow steps, gates, step modes
+loop|transform|Processes and maturity|What we learned from overrides|retire|tower|Other: diagram|tower|team|override events, learning items
+r16m_guides|transform|Processes and maturity|Process guides|view|plat_proc|Other: help or onboarding|kcs_home|group|generated guides, link checker
+r18_mature|transform|Processes and maturity|Maturity roadmaps|view|exe_mat|Report|exe_mat|group|roadmaps by process
+orgassist|transform|Redesign the work|Org chart with agent assist|entry||Designer canvas|org_chart|group|proposed org, AI teammates, FTE
+orgdesign|transform|Redesign the work|Agent Action|entry||Other: agent action surface|orgassist|enterprise|COO brief, diagnosis, gaps, roadmap
+ppl_jrny|transform|Redesign the work|Journey maps|entry||Other: map or diagram|orgassist|enterprise|journeys, steps, overlays, process map
+r18_builds|transform|Scale what was built|Build list|entry||Dashboard-first list|plat_gate|team|builds, owners, need action
+studio|transform|Scale what was built|VibeCheck|entry||Other: builder entry|plat_build|team|chat-to-build brief
+plat_gate|transform|Scale what was built|Approve citizen-built apps|view|r18_builds|Dashboard-first list|r18_builds|team|apps, conformance gate, tiers
+r18_app|transform|Scale what was built|App record|search||Record detail drawer|rec_shell|team|one build: guardrails, process, data, metrics, debt
+showroom|show|Showroom|Showroom|entry||Other: demo space|r17p_tour|platform|tours, beats, lenses
+r15_mobile|show|Showroom|Phone approvals and on-call (preview)|view|showroom|Other: device preview|flw_appr|individual|phone preview of approvals
+r17p_tour|show|Showroom|Tour|view|showroom|Other: help or onboarding|showroom|platform|stories, moments, rehearsal
+r17q_thinking|show|Showroom|How it was built|view|showroom|Report|log|platform|design principles, rounds, decisions
+adm_audit|build|Access and tenants|Audit log and retention|entry||Dashboard-first list|r15d_evidence|group|audit log, retention, holds
+r16g_perm|build|Access and tenants|Permissions|entry||Other: admin configuration|r15_iam|team|permission matrix, row and field rules
+tn_admin|build|Access and tenants|Tenancy|entry||Other: admin configuration|r16m_setup|team|tenants, memberships, data packs
+adm_sec|build|Access and tenants|Security and access|view|r16g_perm|Other: admin configuration|r16g_perm|team|roles, policies, labels, access reviews
+r16m_overlay|build|Access and tenants|Tenant overlays|view|tn_admin|Other: admin configuration|tn_admin|team|overlays, compare tenants
+tn_metrics|build|Access and tenants|Metrics and objectives (tenant view)|role|admin|Report|metrics|team|metrics and objectives per tenant
+tn_people|build|Access and tenants|People directory (tenant view)|role|admin|Dashboard-first list|org_chart|team|people per tenant
+tn_projects|build|Access and tenants|Projects and budget (tenant view)|role|admin|Dashboard-first list|ppm_proj|team|projects, budget per tenant
+flw_dmn|build|Automate|Rules and decisions|entry||Designer canvas|dec_cov|team|decision tables, rules, events, notifications
+r16h_groups|build|Automate|Approval groups|entry||Other: admin configuration|bud_doa|team|approver groups, approval paths
+r16h_status|build|Automate|Status catalog|entry||Other: admin configuration|adm_studio|team|statuses, mappings
+wf_runs|build|Automate|Workflow runs|entry||Dashboard-first list|ai_runtime|team|process instances, timers, retries
+dec_cov|build|Automate|Rule coverage|view|flw_dmn|Dashboard-first list|flw_dmn|team|rule coverage, review queue, gaps
+r16h_rules|build|Automate|Approval rules|view|r16h_groups|Other: admin configuration|bud_doa|team|rules, simulation, bindings
+r17s_rules|build|Automate|In-app rules and scripts|view|flw_dmn|Designer canvas|zevt|team|rules, scripts, firing log
+svc_notify|build|Automate|Notifications|view|flw_dmn|Other: admin configuration|zevt|team|channels, templates, delivery log
+zevt|build|Automate|Events and rules|view|flw_dmn|Other: admin configuration|r17s_rules|team|events, rules, firing log
+flw_asmt|build|Build|Assessments and questionnaires|entry||Intake form|r16m_import|team|questionnaires, results
+plat_build|build|Build|Build a module|entry||Intake form|studio|team|blueprint, manifest, worked example
+plat_contract|build|Build|Feature contract|entry||Report|plat_gate|team|contract scores, rules, exceptions
+plat_mcp|build|Build|Connect AI and coding tools|entry||Other: admin configuration|flw_hub|team|tools, clients, contract file
+plat_self|build|Build|Let ${BRAND.name} extend itself|merged|plat_build|Other: builder entry|plat_build|team|self-build proposals
+rec_shell|build|Build|Record shell (pattern reference)|search||Record detail drawer|r18_app|team|one record with activity, comments, related
+flw_hub|build|Data and integration|Connect other systems|entry||Dashboard-first list|plat_fab|team|connectors, webhooks, retries
+plat_map|build|Data and integration|Platform maps|entry||Other: map or diagram|plat_pmap|team|modules, processes, data flows, data model
+plat_reg|build|Data and integration|Registries|entry||Dashboard-first list|plat_store|team|entities, duplicates, field catalog
+r15_sem|build|Data and integration|Semantic model|entry||Other: admin configuration|metrics|team|measures, dimensions, certified metrics
+r16m_sources|build|Data and integration|Data sources|entry||Dashboard-first list|flw_hub|team|sources, field mapping
+own_gaps|build|Data and integration|Ownership and gaps|view|plat_reg|Dashboard-first list|r16h_ci|team|owners, backups, gaps
+plat_data|build|Data and integration|Data model|view|plat_map|Other: graph explorer|plat_data_old|team|entities, fields, lineage
+plat_data_old|build|Data and integration|Data tables and checks (old)|retire|plat_data|Other: graph explorer|plat_data|team|entities, fields
+plat_dmap|build|Data and integration|Data flows|view|plat_map|Other: map or diagram|plat_data|team|data connections, field lineage
+plat_fab|build|Data and integration|Data feeds and mappings|view|flw_hub|Dashboard-first list|flw_hub|team|connectors, mappings, field authority
+plat_pmap|build|Data and integration|How processes connect|view|plat_map|Other: map or diagram|plat_proc|team|process connections, critical paths
+plat_store|build|Data and integration|Entity store|view|plat_reg|Dashboard-first list|plat_reg|team|entities, promotions, change log
+r15d_facts|build|Data and integration|Facts and conflicts|view|plat_reg|Dashboard-first list|metrics|team|shared numbers, conflicts
+r16m_import|build|Data and integration|Import foundation data|view|r16m_sources|Intake form|itom_disc|team|import batches, templates
+zl_conn|build|Data and integration|Connections and gaps|view|plat_map|Other: graph explorer|plat_pmap|team|dead links, orphans, fixes
+log|build|Product|Product log|entry||Other: activity log|r17q_thinking|team|feedback items, releases
+scr_map|build|Product|Screen map|entry||Report|nav_studio|team|screens, keep and cut decisions
+adm_env|build|Run the platform|Environments and releases|entry||Other: admin configuration|dev_pipe|team|environments, migration kits, upgrades, feature flags
+adm_meter|build|Run the platform|Licensing and billing|entry||Dashboard-first list|tbm_model|team|seats, plans, usage meters, statements
+adm_studio|build|Run the platform|Fields, forms and themes|entry||Other: admin configuration|r16h_status|team|fields, layouts, list views, themes, translations
+nav_studio|build|Run the platform|Navigation and search settings|entry||Other: admin configuration|scr_map|team|menu map, search health, usage
+plat_debt|build|Run the platform|Technical debt|entry||Dashboard-first list|r18_debt|team|debt items, exceptions, burn-down
+r16m_setup|build|Run the platform|Implementation and setup|entry||Other: wizard|tn_admin|team|setup steps, tenants, branding, cutover
+r16m_deploy|build|Run the platform|Deployment paths|view|r16m_setup|Other: reference|r16m_setup|team|deployment options, fit finder
+r18_debt|build|Run the platform|Risk and debt|merged|plat_debt|Report|plat_debt|team|debt and risk per build
+plat_retrofit|build|Build|Retrofit matrix|entry||Report|plat_contract|platform|screens, foundation checks, waivers`;
+/* families: canonical id | menu label | views (id:label, * marks a view merged from another screen) (section d) */
+const FAMS=`flw_appr|My approvals|flw_appr:My approvals;inbox:Alerts and inbox
+meet_hub|Meetings|meet_hub:Meetings;fo:My calendar and follow-ups;meet_act:Meeting actions;meet_dec:Decisions made in meetings;meet_series:Recurring meetings and forums;ppl_av:Book a room;ppl_meet:Meeting minutes
+svc_portal|Report a problem or order something|svc_portal:Report a problem or order something;svc_guides:Order guides
+r18_lens|Executive lenses|r18_lens:Executive lenses;r18_strategy:How each function enables the strategy;r18_levels:Views by level*
+exe_dash|Dashboards|exe_dash:Dashboards;r15_rpt:Reports and subscriptions;r16j_dash:Build a dashboard;kcs_viz:Chart library and builder*;r17u_dash:Dashboard viewer and templates*
+bud_ben|Benefits and value realized|bud_ben:Benefits and value realized;r17q_value:Value realized
+bst|Budget and spend traceability|bst:Budget and spend traceability;r18_spend:Spend detail;strat_exec:Trace goals to money and work
+ims|Schedules across projects|ims:Schedules across projects;ppm_wbs:Tasks and work breakdown;plan:One project's plan*
+agile_board|Team boards and backlogs|agile_board:Team boards and backlogs;agile_art:Planning across teams
+kcs_home|Browse and manage articles|kcs_home:Browse and manage articles;kcs_edit:Write or update an article;kcs_gap:What knowledge is missing
+kg|See what a change would affect|kg:See what a change would affect;vault:Explore connected knowledge;itom_graph:Technology dependencies
+obs_dash|Monitor systems|obs_dash:Monitor systems;itom_evt:Alerts and events;itom_slo:Reliability targets
+svc_360|Services we run|svc_360:Services we run;exe_apps:Applications we run
+itom_cmdb|Servers, apps and other technology|itom_cmdb:Servers, apps and other technology;itom_disc:Scan and import technology;itom_health:Is our technology data trustworthy;itom_model:How technology records are structured;r16h_ci:Who owns each technology item
+bud_over|Budgets|bud_over:Budgets;bud_lines:All budget lines;bud_model:Forecast model;fin_budget:Budget by funding type;fin_model:IT financial model
+fin_color|Which funding pays for what|fin_color:Which funding pays for what;fin_gates:Funding approval gates;fin_rules:Financial control checks;fin_spend:Test the order money is spent
+tbm_model|See what technology costs|tbm_model:See what technology costs;bud_ccmap:Cost center mapping;fin_alloc:Charge costs to teams;itom_fin:Cloud spend
+org_chart|Org chart|org_chart:Org chart;ppl_org:Workload by team
+tower|Watch and control AI agents|tower:Watch and control AI agents;adm_gate:AI usage and cost;agent_defs:Agent definitions;ai_runtime:Agent runtime;flw_agent:Workflows with AI agents;kcs_skills:What AI agents can do;r15d_agents:Agent registry
+kcs_test|Test AI answers|kcs_test:Test AI answers;kcs_prompt:Prompt library
+grc_home|Governance, risk and compliance|grc_home:Governance, risk and compliance;grc_aud:Audit management;grc_ctl:Controls and testing;grc_find:Issues and findings;grc_pol:Policies
+bc_home|Resilience|bc_home:Resilience;bc_cal:Exercise calendar;bc_decl:Declare a disaster;bc_frame:Resilience framework;bc_metrics:Resilience measures;bc_plans:Continuity plans;bc_tiers:Recovery tiers;bc_trace:Continuity traceability
+exe_risk|Risk|exe_risk:Risk;grc_exc:Exceptions and acceptances;grc_risk:Risk register;grc_ven:Third-party risk
+plat_proc|Processes|plat_proc:Processes;draw_studio:Draw a process;flw_bpmn:Process models (BPMN);flw_design:Workflow designer;r16m_guides:Process guides
+exe_mat|Process maturity|exe_mat:Process maturity;r18_mature:Maturity roadmaps
+r18_builds|Build list|r18_builds:Build list;plat_gate:Approve citizen-built apps
+showroom|Showroom|showroom:Showroom;r15_mobile:Phone approvals and on-call (preview);r17p_tour:Tour;r17q_thinking:How it was built
+r16g_perm|Permissions|r16g_perm:Permissions;adm_sec:Security and access
+tn_admin|Tenancy|tn_admin:Tenancy;r16m_overlay:Tenant overlays
+flw_dmn|Rules and decisions|flw_dmn:Rules and decisions;dec_cov:Rule coverage;r17s_rules:In-app rules and scripts;svc_notify:Notifications;zevt:Events and rules
+r16h_groups|Approval groups|r16h_groups:Approval groups;r16h_rules:Approval rules
+plat_reg|Registries|plat_reg:Registries;own_gaps:Ownership and gaps;plat_store:Entity store;r15d_facts:Facts and conflicts
+plat_map|Platform maps|plat_map:Platform maps;plat_data:Data model;plat_dmap:Data flows;plat_pmap:How processes connect;zl_conn:Connections and gaps
+flw_hub|Connect other systems|flw_hub:Connect other systems;plat_fab:Data feeds and mappings
+r16m_sources|Data sources|r16m_sources:Data sources;r16m_import:Import foundation data
+r16m_setup|Implementation and setup|r16m_setup:Implementation and setup;r16m_deploy:Deployment paths`;
+/* merge-only targets: the screen absorbs a merged view without becoming a family head; "tab" redirects to an existing tab
+   that already holds the merged content (prefix:index of views()), otherwise the merged screen opens as a view of the target */
+const MERGE={exe_scen:{to:"exe_strat",l:"Compare what-if scenarios"},itom_dev:{to:"dev_pipe",l:"Delivery speed",tab:"dev_v:6"},obs_std:{to:"itsm_chg",l:"Pre-approved changes"},
+ r18_access:{to:"r15_iam",l:"Data access requests"},plat_self:{to:"plat_build",l:"Let "+BRAND.name+" extend itself"},r18_debt:{to:"plat_debt",l:"Risk and debt"},
+ r18_levels:{to:"r18_lens"},kcs_viz:{to:"r16j_dash"},r17u_dash:{to:"r16j_dash"},plan:{to:"ims"}};
+const TX={};let txo=0;
+TAXO.split("\n").forEach(line=>{const p=line.split("|");if(p.length<9)return;TX[p[0]]={sp:p[1],sub:p[2],l:p[3],kind:p[4],ref:p[5]||"",arch:p[6],cmp:p[7],obj:p[8],objs:(p[9]||"").split(/\s*,\s*/).filter(Boolean),o:txo++}});
+const FX=FAMS.split("\n").filter(Boolean).map(line=>{const p=line.split("|");return {id:p[0],label:p[1],views:p[2].split(";").map(v=>{const i=v.indexOf(":");const l=v.slice(i+1);return [v.slice(0,i),l.replace(/\*$/,""),/\*$/.test(l)]})}});
+const spLabel=sp=>(SPACES[SPID[sp]]||[0,sp])[1];
+/* the place of one screen: a saved override (old group id or new space id) moves the entry, the taxonomy row places it, and a
+   screen with no row is search only */
+function placeOf(id){const t=TX[id],ov=OVR[id];let r=t?Object.assign({id},t):{id,sp:OLDGRP[oldGroup(id)]||"build",sub:"",l:null,kind:"search",ref:"",arch:"",cmp:"",obj:"",objs:[],o:9000,untaxed:true};
+ if(ov&&ov.g){const sp=SPID[ov.g]!=null?ov.g:OLDGRP[ov.g];if(sp){r.sp=sp;if(r.kind!=="entry")r.kind="entry";r.moved=true;if(ov.sub!=null)r.sub=ov.sub;else if(SPACES[SPID[sp]][5].indexOf(r.sub)<0)r.sub=SPACES[SPID[sp]][5][0]}}
+ return r}
+function spaceEntries(sp,persona){const out={};SPACES[SPID[sp]][5].forEach(s=>out[s]=[]);
+ SCREENS.forEach(s=>{const id=s[0];if(id==="home"&&sp!=="home")return;const p=placeOf(id);if(p.sp!==sp)return;
+  const shown=p.kind==="entry"||(p.kind==="role"&&persona&&persona===p.ref);if(!shown)return;(out[p.sub]=out[p.sub]||[]).push(id)});
+ Object.keys(out).forEach(k=>out[k].sort((a,b)=>placeOf(a).o-placeOf(b).o));return out}
+NAVX.taxo={spaces:()=>SPACES.map(s=>({id:s[0],label:s[1],kind:s[2],icon:s[3],blurb:s[4],subs:s[5].slice()})),areas:()=>AREA_IDS.slice(),
+ row:id=>TX[id]?Object.assign({id},TX[id]):null,place:placeOf,label:spLabel,entries:spaceEntries,oldGroup:g=>OLDGRP[g]||null,oldGroups:()=>Object.assign({},OLDGRP),
+ families:()=>FX.map(f=>({id:f.id,label:f.label,views:f.views.map(v=>v.slice())})),merges:()=>JSON.parse(JSON.stringify(MERGE)),rows:()=>Object.keys(TX)};
+/* the check: every registered screen has exactly one place; every entry sits in one sub-group of one space; the menu stays
+   inside its budget of 7 areas x 7 sub-groups x 7 entries (section g, rule 8) */
+NAVX.taxo.check=function(){const ids=SCREENS.map(s=>s[0]);const by={entry:[],view:[],merged:[],search:[],role:[],retire:[]};const seen={},dup=[];
+ ids.forEach(id=>{const p=placeOf(id);(by[p.kind]=by[p.kind]||[]).push(id)});
+ SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");Object.keys(e).forEach(sub=>e[sub].forEach(id=>{if(seen[id])dup.push(id);seen[id]=s[0]+" / "+sub}))});
+ const famIds=new Set();FX.forEach(f=>f.views.forEach(v=>famIds.add(v[0])));
+ const badRef=ids.filter(id=>{const p=placeOf(id);if(p.kind==="view")return !famIds.has(id)||!ids.includes(p.ref);if(p.kind==="merged"||p.kind==="retire")return !ids.includes(p.ref);return false});
+ const over=[];SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");const subs=Object.keys(e).filter(k=>e[k].length);if(subs.length>7)over.push(s[0]+" has "+subs.length+" sub-groups");subs.forEach(k=>{if(e[k].length>7)over.push(s[0]+" / "+k+" has "+e[k].length+" entries")})});
+ if(AREA_IDS.length>7)over.push(AREA_IDS.length+" areas");
+ return {screens:ids.length,entries:by.entry.length,views:by.view.length,merged:by.merged.length,search:by.search.length,role:by.role.length,retire:by.retire.length,
+  placed:Object.keys(seen).length,duplicates:dup,untaxed:ids.filter(id=>!TX[id]),orphans:Object.keys(TX).filter(id=>!ids.includes(id)),badRef,over,where:seen}};
 /* the unmapped check: every registered screen must have an entry in the map */
 NAVX.unmapped=function(){return SCREENS.map(s=>s[0]).filter(id=>!MAP[id])};
 NAVX.missing=function(){return Object.keys(MAP).filter(id=>!screenRow(id))};
