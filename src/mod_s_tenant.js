@@ -38,7 +38,8 @@ const PILLARS0=[{id:"MS-PL1",n:"Grow member trust",d:"Members trust the standard
  {id:"MS-PL2",n:"Publish faster",d:"A standard moves from draft to published in weeks, not months.",obj:"O1"},
  {id:"MS-PL3",n:"Spend less per standard",d:"Lower cost per published standard without cutting review quality.",obj:"O2"}];
 /* the platform's default words; a tenant pack replaces any of them (R19) */
-const VOC0={customer:["customer","customers"],incident:["incident","incidents"],ticket:["ticket","tickets"],request:["request","requests"],asset:["asset","assets"],
+const VOC0={project:["project","projects"],change:["change","changes"],problem:["problem","problems"],config_item:["configuration item","configuration items"],knowledge_article:["article","articles"],catalog_item:["catalog item","catalog items"],alert:["alert","alerts"],service_level:["service level","service levels"],rota:["on-call rota","on-call rotas"],risk:["risk","risks"],control:["control","controls"],audit:["audit","audits"],finding:["finding","findings"],policy:["policy","policies"],regulator:["regulator","regulators"],contract:["contract","contracts"],cost_center:["cost center","cost centers"],purchase_order:["purchase order","purchase orders"],budget_request:["budget request","budget requests"],capability:["capability","capabilities"],application:["application","applications"],course:["course","courses"],meeting:["meeting","meetings"],org_unit:["team","teams"],plan_task:["task","tasks"],
+ /* PR-32 Meridian defaults for the 25 pack vocabulary keys */ customer:["customer","customers"],incident:["incident","incidents"],ticket:["ticket","tickets"],request:["request","requests"],asset:["asset","assets"],
  site:["site","sites"],downtime:["outage","outages"],workforce:["team","teams"],work_item:["ticket","tickets"],frontline:["service desk","service desks"],service:["service","services"],
  order:["order","orders"],case:["case","cases"],supplier:["vendor","vendors"],revenue:["revenue","revenue"]};
 DT.define("key_results",{label:"Key results",core:()=>G(()=>S.exe.krs,[]),required:["n","o"]});
@@ -187,4 +188,7 @@ G(()=>{if(W.NAVX&&NAVX.add){NAVX.add("tn_admin",{group:"plat",label:"Tenancy",hi
  NAVX.add("tn_projects",{group:"plat",label:"Projects and budget (tenant view)",hint:"Tenant projects",sub:"Read through the tenant data layer",kw:"tenant projects budget lines"});
  NAVX.add("tn_people",{group:"plat",label:"People directory (tenant view)",hint:"Tenant people",sub:"Read through the tenant data layer",kw:"tenant people directory"});
  NAVX.add("tn_metrics",{group:"plat",label:"Metrics and objectives (tenant view)",hint:"Tenant metrics",sub:"Read through the tenant data layer",kw:"tenant metrics objectives"})}});
+/* PR-32: load every industry pack's records while the page is idle after app:ready, so the first tenant switch in a demo never shows gaps */
+W.addEventListener("app:ready",()=>{const go=()=>{try{(DT.tenants?DT.tenants():[]).forEach(t=>{if(t&&t.id!=="core"&&W.BUNDLE&&BUNDLE.need)BUNDLE.need("pack_"+t.id)})}catch(e){console.error("pack prefetch",e)}};
+ if(W.requestIdleCallback)requestIdleCallback(go,{timeout:4000});else setTimeout(go,1500)},{once:true});
 })();

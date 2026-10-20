@@ -632,7 +632,7 @@
   ]
  },
  "processes": {
-  "count": 286,
+  "count": 315,
   "ids": "not recorded: registers lazily"
  },
  "workflows": {
@@ -709,8 +709,33 @@
   "ids": []
  },
  "vocabulary": {
-  "count": 15,
+  "count": 40,
   "ids": [
+   "project",
+   "change",
+   "problem",
+   "config_item",
+   "knowledge_article",
+   "catalog_item",
+   "alert",
+   "service_level",
+   "rota",
+   "risk",
+   "control",
+   "audit",
+   "finding",
+   "policy",
+   "regulator",
+   "contract",
+   "cost_center",
+   "purchase_order",
+   "budget_request",
+   "capability",
+   "application",
+   "course",
+   "meeting",
+   "org_unit",
+   "plan_task",
    "customer",
    "incident",
    "ticket",
@@ -2826,7 +2851,7 @@
   ]
  },
  "events": {
-  "count": 18,
+  "count": 42,
   "ids": "not recorded: grows while the page settles"
  },
  "rotas": {
@@ -2927,7 +2952,7 @@
   ]
  },
  "audit_log": {
-  "count": 536,
+  "count": 618,
   "ids": "not recorded: grows while the page settles"
  },
  "controls": {
