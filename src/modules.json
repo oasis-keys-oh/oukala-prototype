@@ -216,6 +216,8 @@
   "mod_s_guard",
   "mod_s_owner",
   "mod_s_steps",
+  "mod_s_tenant",
+  "mod_s_tenant_health",
   "mod_rel",
   "mod_selfbuild",
   "mod_sla",
