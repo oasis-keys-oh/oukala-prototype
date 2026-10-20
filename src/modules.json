@@ -216,6 +216,7 @@
   "mod_s_guard",
   "mod_s_owner",
   "mod_s_search",
+  "mod_s_search_usage",
   "mod_s_steps",
   "mod_s_tenant",
   "mod_s_tenant_health",

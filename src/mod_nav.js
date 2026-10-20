@@ -249,7 +249,7 @@ function mkScreen(id){const s=screenRow(id),m=resolve(id);return {id:"screen:"+i
 function st(){const p=(typeof S!=="undefined"&&S.persona)||"exec";if(STP===p&&ST)return ST;STP=p;ST=store.get("oukala-nav:"+p)||{};
  if(!ST.fav)ST.fav=[];if(!ST.hist)ST.hist=[];if(!ST.rs)ST.rs=[];if(!ST.tel)ST.tel={};
  if(!ST.seeded){ST.seeded=1;const base=now();(SEED_FAV[p]||SEED_FAV.exec).forEach(id=>{if(screenRow(id))ST.fav.push(Object.assign(mkScreen(id),{t:base,seed:1}))});
-  SEED_HIST.forEach(a=>{if(screenRow(a[0]))ST.hist.push(Object.assign(mkScreen(a[0]),{t:base-a[1]*3600*1000-(a[1]>24?86400000:0),n:a[2],dur:a[2]*95000,seed:1}))});ST.hist.sort((a,b)=>b.t-a.t);persist()}
+  SEED_HIST.forEach(a=>{if(screenRow(a[0]))ST.hist.push(Object.assign(mkScreen(a[0]),{t:base-a[1]*3600*1000-(a[1]>24?86400000:0),n:0,dur:0,seed:1}))}); /* PR-16: seeded rows carry no visit count or time; real counts live in USAGE */ST.hist.sort((a,b)=>b.t-a.t);persist()}
  return ST}
 function persist(){clearTimeout(saveT);saveT=0;if(STP)store.set("oukala-nav:"+STP,ST)}
 function persistSoon(){if(saveT)return;saveT=setTimeout(persist,600)}
@@ -288,7 +288,7 @@ function visit(e){if(!e||!e.id||!e.title)return;const s=st();const slot=e.kind==
  if(CUR[slot]&&CUR[slot].id===e.id&&now()-CUR[slot].t0<1200)return;
  finish(slot);
  const i=s.hist.findIndex(h=>h.id===e.id);let h;
- if(i>=0){h=s.hist.splice(i,1)[0];h.n=(h.n||1)+1;h.title=e.title;if(e.sub)h.sub=e.sub;if(e.op)h.op=e.op;if(e.scr)h.scr=e.scr}else{h=Object.assign(stripEntry(e),{n:1,dur:0})}
+ if(i>=0){h=s.hist.splice(i,1)[0];if(h.seed){h.n=1;h.dur=0}else h.n=(h.n||1)+1;h.title=e.title;if(e.sub)h.sub=e.sub;if(e.op)h.op=e.op;if(e.scr)h.scr=e.scr}else{h=Object.assign(stripEntry(e),{n:1,dur:0})}
  h.t=now();delete h.seed;s.hist.unshift(h);if(s.hist.length>200)s.hist.length=200;
  CUR[slot]={id:e.id,t0:now()};
  if(STK[STK.length-1]!==e.id)STK.push(e.id);if(STK.length>60)STK.shift();
@@ -889,7 +889,7 @@ function studioContract(){const procs=G(()=>NAV_PROCS.map(p=>({p,m:PROCLIB.matur
  <div class="card glass"><div class="cardhead"><div><h3>Measures</h3><span class="muted small">Each has a formula, an owner and a remediation. They update as you navigate and search.</span></div></div><div class="grid g3 mgrid">${["m_nav_depth","m_search_success","m_search_zero_results","m_fav_use","m_hist_return"].map(id=>metricRing(id,120)).join("")}</div></div>`}
 REG("nav_studio","Navigation and search","platform","M4 6h16M4 12h10M4 18h7M17 14l4 4M19 16a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",()=>{const c=NAVX.check();
  const story=`All <b data-role="metric">${c.screens}</b> screens sit in exactly one of <b>${GROUPS.filter(g=>NAVX.counts()[g[0]]).length}</b> plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
- return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"],[studioMap(),studioSearch(),studioPeople(),studioContract()])}</div>`});
+ return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"].concat(W.USAGE?["Usage"]:[]),[studioMap(),studioSearch(),studioPeople(),studioContract()].concat(W.USAGE?[G(()=>USAGE.panelHTML())||""]:[]))}</div>`});
 document.addEventListener("change",e=>{const t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.nxSg!=null){S.navs.g=t.value;S.v.nav_v=0;render();return}
  if(t.dataset.nxMvg){NAVX.setOverride(t.dataset.nxMvg,{g:t.value});audit("Moved a screen to another group",t.dataset.nxMvg+" to "+t.value);toast("Moved. The menu and search are updated.","good");S.v.nav_v=0;render();return}

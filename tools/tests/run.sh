@@ -17,5 +17,7 @@ node tools/tests/tenant.js build_out
 node tools/tests/tenant_leak.js build_out
 # PH-12: screens, modules and tabs by name in the global search; hidden screens only in builder mode
 node tools/tests/search.js build_out
+# PR-16: real screen-open counts (this browser only), shown on the Screen map and the Usage tab
+node tools/tests/nav_usage.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"
