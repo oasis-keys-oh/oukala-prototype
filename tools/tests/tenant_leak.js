@@ -52,7 +52,7 @@ for(const t of tenants){
  if(after.scn!==t)fail(t+': SCN out of step with DATA ('+after.scn+')');
  if(after.btn.indexOf(after.short)<0)fail(t+': active tenant not visible in the side menu ('+after.btn+')');
  // 2. tenant-aware screens, Journey maps on every tab
- for(const id of aware){const tabs=id==='ppl_jrny'?[0,1,2,3,4,5,6,7,8]:[null];
+ for(const id of aware){const tabs=id==='ppl_jrny'?[...Array(await p.evaluate(()=>window.JX&&JX.TABS?JX.TABS.length:9)).keys()]:[null];
   for(const tab of tabs){const n0=errs.length;await visit(p,id,tab);checks++;
    const h=await p.evaluate(t=>window.__hits(window.__surface(),t),t);
    if(h.length)fail(t+' '+id+(tab!=null?' tab '+tab:'')+' shows another tenant: '+h.slice(0,4).join(' | '));
