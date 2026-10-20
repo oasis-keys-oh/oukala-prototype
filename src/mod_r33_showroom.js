@@ -311,7 +311,12 @@ function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
   <li>Keys: Right and Left arrows or Page Down and Page Up move between beats, R opens the beat list, T hides the talk track, A toggles audience mode, G opens a beat's optional view, Esc exits. On VibeCheck the arrows drive the click-through; Page Down still moves the tour.</li>
   <li>Modes: Presenter shows the talk track and timer; Audience hides both; Rehearse adds a timer per beat and keeps the times. Presenter window puts the talk track in a second window and turns this one into the audience view.</li>
   <li>Open any beat from the lists above to start mid-tour. A link such as <code>?showroom=coo&amp;beat=4</code> does the same; add <code>&amp;mode=audience</code> or <code>&amp;mode=rehearse</code>.</li>
-  <li>The timer is a guide. A tour that runs past its budget turns amber, then red.</li></ul></section></div></div>`}
+  <li>The timer is a guide. A tour that runs past its budget turns amber, then red.</li></ul></section></div>
+ <section class="sr-card glass" aria-label="Known limits and what changed after the first meeting"><h3>Known limits, and what is done about them</h3><ul class="sr-ul">
+  <li>Most screens are not tenant-aware yet. A tour that needs the Meridian sample says so on its card and in the bar, switches to it on start and switches back on exit; under another tenant a Meridian-only screen is marked in the bar.</li>
+  <li>The talk track sat on the audience's screen. Use Presenter window to move it to a second window, or Audience mode.</li>
+  <li>A presentation clicker sends Page Down and Page Up; both move the tour, even when the VibeCheck chat has focus. VibeCheck beats keep its chat open because the interview lives there.</li>
+  <li>Approvals are routed to groups now. A beat that clicks Approve switches to a role in that group and says which.</li></ul></section></div>`}
 REG(SELF,"Showroom","platform","M3 5h18v12H3zM8 21h8M12 17v4M9 10l2 2 4-4",render_);
 
 /* ---------- wiring ---------- */
