@@ -27,7 +27,7 @@ function training(o){
  return cs.filter(c=>(c.aud||[]).includes("All")||(team&&(c.aud||[]).includes(team))||!team).map(c=>({id:c.id,t:c.t,mins:c.mins,cat:c.cat,due:c.due,owner:c.owner}))}
 function buddy(o){const m=NH(o).mgr||"Casey Rowan";const pers=G(()=>DIR.find(d=>d.name===m),null);
  const buddyName=(o&&o.act&&o.act.buddy)||G(()=>DIR.filter(d=>d.kind==="human"&&!d.generated&&d.team===(pers&&pers.team)&&d.name!==m&&d.name!==NH(o).name)[0].name,"Not assigned yet");return {mgr:m,buddy:buddyName}}
-function equipment(o){const A=o&&o.A||{};return [["Laptop",A.device||"Standard laptop",A.remote?"Shipped to home address":"Collected at the desk on day one"],["System access",A.access||"Standard","Entra ID account created before the start date"],["Role",A.role||"Standard","Sets default groups and licences"],A.clear?["Clearance","Security check required","Adds time to the Compliance part"]:null,["Workplace",A.remote?"Remote (US)":"Parker HQ","Badge and desk"+(A.remote?" not needed":"")].concat([])].filter(Boolean)}
+function equipment(o){const A=o&&o.A||{};return [["Laptop",A.device||"Standard laptop",A.remote?"Shipped to home address":"Collected at the desk on day one"],["System access",A.access||"Standard","Entra ID account created before the start date"],["Role",A.role||"Standard","Sets default groups and licences"],A.clear?["Clearance","Security check required","Adds time to the Compliance part"]:null,["Workplace",A.remote?"Remote (US)":"Meridian HQ","Badge and desk"+(A.remote?" not needed":"")].concat([])].filter(Boolean)}
 
 /* ---------- My first week ---------- */
 REG("r15d_firstweek","My first week","help","M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z",()=>{
