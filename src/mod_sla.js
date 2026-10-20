@@ -3,7 +3,7 @@
    conditions built from real DATAMODEL fields, on a schedule (calendar, time zone, holidays). */
 (function(){
 const E=esc;
-const NOW=Date.UTC(2026,9,6,13,30); /* Tue Oct 6 2026 13:30, treated as Mountain local clock */
+const NOW=Date.parse(window.U.TODAY_ISO+"T13:30:00Z"); /* Tue Oct 6 2026 13:30, treated as Mountain local clock */
 const DAY=864e5,HR=36e5;
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const z2=n=>String(n).padStart(2,"0");

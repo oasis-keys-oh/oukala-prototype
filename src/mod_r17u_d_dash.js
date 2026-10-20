@@ -203,7 +203,7 @@ document.addEventListener("click",e=>{const T=e.target.closest&&e.target.closest
  if("r17uOpenlib" in ds){UI.sel=ds.r17uOpenlib;UI.edit=false;S.v.r17ud=0;render();return}
  if("r17uDuplib" in ds){const s=byId(ds.r17uDuplib);dupDash(s);render();return}
  if("r17uDellib" in ds){const s=byId(ds.r17uDellib);s&&delForm(s);return}
- if("r17uRun" in ds){const s=byId(ds.r17uRun),sc=DS.sched[ds.r17uRun];if(!s||!sc)return;DS.runs.unshift({at:"Oct 6, 2026 "+new Date().toTimeString().slice(0,5),dash:s.name,to:sc.to,fmt:sc.fmt});if(DS.runs.length>40)DS.runs.length=40;U.emit("dashboard.delivery_simulated",{dashboard:s.id,recipients:sc.to});U.audit("dashboard delivery run (simulated)",s.name);G(()=>toast("Simulated run recorded. Nothing was sent.","good"));render();return}
+ if("r17uRun" in ds){const s=byId(ds.r17uRun),sc=DS.sched[ds.r17uRun];if(!s||!sc)return;DS.runs.unshift({at:window.U.fmtDate(window.U.todayDate(),{year:"numeric"})+" "+new Date().toTimeString().slice(0,5),dash:s.name,to:sc.to,fmt:sc.fmt});if(DS.runs.length>40)DS.runs.length=40;U.emit("dashboard.delivery_simulated",{dashboard:s.id,recipients:sc.to});U.audit("dashboard delivery run (simulated)",s.name);G(()=>toast("Simulated run recorded. Nothing was sent.","good"));render();return}
  if("r17uSchedoff" in ds){const sc=DS.sched[ds.r17uSchedoff];if(sc){sc.on=!sc.on;U.audit("schedule "+(sc.on?"on":"off")+" (simulated)",ds.r17uSchedoff);render()}return}
  if("r17uPvprint" in ds){document.body.classList.add("r17u-printing");G(()=>window.print());setTimeout(()=>document.body.classList.remove("r17u-printing"),500);G(()=>toast("Print dialog requested","good"));return}
  if("r17uPvclose" in ds){closePrint();return}

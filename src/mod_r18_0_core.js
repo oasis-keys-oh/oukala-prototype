@@ -9,7 +9,7 @@ const H=U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const R18=W.R18=W.R18||{};
 R18.G=G;R18.H=H;R18.arr=arr;
-const TODAY=R18.TODAY="2026-10-06";
+const TODAY=R18.TODAY=window.U.TODAY_ISO;
 const ST=R18.st=(S.r18=S.r18||{});
 Object.assign(ST,{obj:ST.obj||{},conf:ST.conf||{},lens:ST.lens||"coo",showAll:!!ST.showAll,app:ST.app||"ca_pipeline",kill:ST.kill||{},lensOpen:false,rate:ST.rate||62,mins:ST.mins||45});
 const hash=s=>{let h=7;for(let i=0;i<String(s).length;i++)h=(h*31+String(s).charCodeAt(i))%99991;return h};

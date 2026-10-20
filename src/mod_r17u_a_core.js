@@ -10,7 +10,7 @@ const H=window.U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const U=W.R17U=W.R17U||{};U.G=G;U.H=H;U.arr=arr;
 /* ---------------- dates and numbers ---------------- */
-const TODAY="2026-10-06",TD=Date.UTC(2026,9,6);
+const TODAY=window.U.TODAY_ISO,TD=Date.parse(TODAY+"T00:00:00Z");
 const dd=s=>new Date(s+"T00:00:00Z");
 const iso=d=>new Date(d).toISOString().slice(0,10);
 const addDays=(s,n)=>iso(dd(s).getTime()+n*864e5);
@@ -21,7 +21,7 @@ const usd=n=>{n=Math.round(+n||0);const a=Math.abs(n);return (n<0?"-":"")+"$"+(a
 const usdF=n=>(Math.round(+n||0)<0?"-":"")+"$"+nf(Math.abs(Math.round(+n||0)));
 U.TODAY=TODAY;U.dd=dd;U.iso=iso;U.addDays=addDays;U.daysTo=daysTo;U.fmtD=fmtD;U.nf=nf;U.usd=usd;U.usdF=usdF;
 U.me=()=>G(()=>INBOX.me(),"Casey Rowan");
-U.now=()=>"2026-10-06 "+new Date().toTimeString().slice(0,5);
+U.now=()=>window.U.TODAY_ISO+" "+new Date().toTimeString().slice(0,5);
 const csvq=v=>{v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 U.csv=rows=>rows.map(r=>r.map(csvq).join(",")).join("\r\n");
 U.download=(name,text,type)=>{try{const b=new Blob([text],{type:type||"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500);return true}catch(e){return false}};

@@ -7,7 +7,7 @@
 const NOFIX=!!window.__ZLINK_NOFIX;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const H=s=>esc(s==null?"":String(s));
-const TODAY="2026-10-06";
+const TODAY=window.U.TODAY_ISO;
 const Z=S.zlink=S.zlink||{fixed:{},log:[],events:[],notes:[],ledger:{},alias:[],tgt:0,tab:0,sel:null,hv:null};
 const arr=x=>Array.isArray(x)?x:[];
 const lc=s=>String(s==null?"":s).toLowerCase();

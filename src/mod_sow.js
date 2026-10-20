@@ -5,7 +5,7 @@
 S.sow=S.sow||{ct:"CLM-1002",doc:"proposal",scope:"doc",cmp:"CLM-1001",run:null,line:null,crSel:null,oSel:null,more:{},rq:"all",pbq:""};
 const SW=S.sow;
 /* ---------- dates ---------- */
-const TDY="2026-10-06",DMS=864e5,t0=iso=>Date.parse(iso+"T00:00:00Z");
+const TDY=window.U.TODAY_ISO,DMS=864e5,t0=iso=>Date.parse(iso+"T00:00:00Z");
 const addD=(iso,n)=>new Date(t0(iso)+n*DMS).toISOString().slice(0,10);
 const difD=(a,b)=>Math.round((t0(a)-t0(b))/DMS);
 const fdt=(iso,noy)=>iso?new Date(t0(iso)).toLocaleDateString("en-US",Object.assign({month:"short",day:"numeric",timeZone:"UTC"},noy?{}:{year:"numeric"})):"None";
@@ -970,7 +970,7 @@ function openOb(id){const o=OBLS().find(x=>x.id===id);if(!o)return;const s=obSt(
 const ME="Casey Rowan";
 const addWD=(iso,n)=>{try{return dateOf(wdOf(iso)+n).toISOString().slice(0,10)}catch(e){return addD(iso,Math.round(n*1.4))}};
 function mkReview(l,route,part,due,msg){let r=REV.find(x=>x.line===l.id);if(!r){r={id:"RV-"+(201+REV.length),ct:l.ct,line:l.id,route:route,st:"Open",due:due,part:part,opened:TDY,thread:[]};REV.push(r)}else{r.route=route;r.due=due;r.part=part;if(r.st==="Agreed")r.st="Open"}
- if(msg)r.thread.push({who:ME,t:msg,at:"Oct 6"});l.route=route;if(l.status==="proposed")l.status="negotiating";l.by=(route==="legal"?"Sent to Meridian Legal":"Shared review opened")+" by "+ME;aud(ME,route==="legal"?"Sent line to legal":"Opened shared review",l.ct,r.id+" for §"+l.ref+", due "+fdt(due,1)+".");return r}
+ if(msg)r.thread.push({who:ME,t:msg,at:window.U.fmtDate(window.U.todayDate())});l.route=route;if(l.status==="proposed")l.status="negotiating";l.by=(route==="legal"?"Sent to Meridian Legal":"Shared review opened")+" by "+ME;aud(ME,route==="legal"?"Sent line to legal":"Opened shared review",l.ct,r.id+" for §"+l.ref+", due "+fdt(due,1)+".");return r}
 function setRoute(l,route){if(route==="ai"){l.route="ai";l.by="AI picked our "+((PBN[l.pb]||NTN[l.pb]||{}).n||"standard")+(l.m==="var"&&l.fb?" fallback":" language")+"; a person confirms before it is sent";if(l.m!=="std"&&l.status==="proposed")l.status="negotiating";aud("Contract Analyst Agent","Picked standard language",l.ct,"§"+l.ref+": "+l.by);toast("AI selected our language. A person confirms before it goes to the vendor.","info");render();openLine(l.id)}
  else if(route==="legal"){mkReview(l,"legal",[LEGAL,(ctOf(l.ct)||{}).owner||ME],addWD(TDY,5));toast("Sent to Meridian Legal. Deadline "+fdt(addWD(TDY,5),1)+".","good");render();openLine(l.id)}
  else sharedForm(l)}
@@ -979,7 +979,7 @@ function sharedForm(l){const c=ctOf(l.ct)||{},part=[...new Set([LEGAL,c.vOwner,c
   live:v=>`<p class="story">${(v.part||[]).length} people. The thread opens on §${esc(l.ref)} and ${v.due?"closes "+fdt(v.due):"has no deadline yet"}.</p>`,onSubmit:v=>{mkReview(l,"shared",v.part,v.due,v.msg);render();return {toast:"Shared review opened. "+v.part.length+" people notified.",audit:l.id}}})}
 function acceptLine(l){if(lineGuard(l)){toast("High risk exception. Meridian Legal must approve it before it can be accepted.","warn");if(!l.route)setRoute(l,"legal");return}
  l.status="accepted";l.by=ME+" confirmed";aud(ME,"Accepted line",l.ct,"§"+l.ref+" "+(PBN[l.pb]||NTN[l.pb]||{n:TYP[l.type][0]}).n);toast("Line accepted","good");render();if(findLine(l.id))openLine(l.id)}
-function legalOK(l){l.lg=true;l.status=l.status==="proposed"?"accepted":l.status;l.by="Meridian Legal approved";const r=REV.find(x=>x.line===l.id);if(r)r.thread.push({who:LEGAL,t:"Approved the position for this line.",at:"Oct 6"});aud(LEGAL,"Approved exception",l.ct,"§"+l.ref);toast("Legal approval recorded","good");render();openLine(l.id)}
+function legalOK(l){l.lg=true;l.status=l.status==="proposed"?"accepted":l.status;l.by="Meridian Legal approved";const r=REV.find(x=>x.line===l.id);if(r)r.thread.push({who:LEGAL,t:"Approved the position for this line.",at:window.U.fmtDate(window.U.todayDate())});aud(LEGAL,"Approved exception",l.ct,"§"+l.ref);toast("Legal approval recorded","good");render();openLine(l.id)}
 function agreeLine(l){if(lineGuard(l)){toast("A high risk line needs legal approval before it is agreed.","warn");return}l.status="agreed";l.by="Both parties agreed";const r=REV.find(x=>x.line===l.id);if(r)r.st="Agreed";aud(ME,"Marked agreed",l.ct,"§"+l.ref);toast("Marked agreed","good");render();openLine(l.id)}
 function batch(kind){const a=curAn();if(!a)return;let n=0;a.lines.forEach(l=>{if(kind==="std"&&l.m==="std"&&l.status==="proposed"){l.status="accepted";l.by=ME+" confirmed standard lines";n++}else if(kind==="fb"&&l.m==="var"&&l.fb&&!l.route){l.route="ai";l.status="negotiating";l.by="AI picked our fallback; a person confirms";n++}else if(kind==="legal"&&l.m!=="std"&&l.risk==="High"&&!l.route){mkReview(l,"legal",[LEGAL,(ctOf(l.ct)||{}).owner||ME],addWD(TDY,5));n++}});
  aud(ME,"Bulk "+({std:"confirmed standard lines",fb:"picked fallbacks",legal:"sent high risk lines to legal"})[kind],a.ct,n+" lines.");toast(n+" lines updated","good");render()}
@@ -1027,7 +1027,7 @@ function approveCR(x){const t=tierOf(x.amt),ap=x.ap=x.ap||{};
  if(["SLA change","Termination or renewal","Assumption change"].includes(x.type)&&!ap[LEGAL]){toast("Meridian Legal must review this type of change first. Moved to Legal review.","warn");if(x.st==="Requested"||x.st==="Impact review")x.st="Legal review";return false}
  if(!x.imp){toast("Review the impact analysis first","warn");if(x.st==="Requested")x.st="Impact review";return false}
  if(Math.abs(x.amt)>10000&&!ap.Controller){toast("The Controller must review anything above $10,000","warn");return false}
- if(Math.abs(x.amt)>100000){x.st="Approval";x.thread.push({who:ME,t:"I reviewed this. "+D$(Math.abs(x.amt))+" is above CIO authority, so the "+t.role+" must sign.",at:"Oct 6"});aud(ME,"Routed for signature",x.ct,x.id+" needs the "+t.role+" ("+t.id+").");toast("Above your $100,000 limit. Sent to the "+t.role+".","warn");return false}
+ if(Math.abs(x.amt)>100000){x.st="Approval";x.thread.push({who:ME,t:"I reviewed this. "+D$(Math.abs(x.amt))+" is above CIO authority, so the "+t.role+" must sign.",at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Routed for signature",x.ct,x.id+" needs the "+t.role+" ("+t.id+").");toast("Above your $100,000 limit. Sent to the "+t.role+".","warn");return false}
  applyCR(x);return true}
 function moveCR(id,to){const x=CRALL().find(y=>y.id===id);if(!x||x.st===to){render();return}
  if(x.st==="Approved"){toast("Already applied. Raise a new change request to amend it again.","warn");render();return}
@@ -1071,7 +1071,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-sow-pick],
  if(d.sowLgok){const l=findLine(d.sowLgok);if(l)legalOK(l);return}
  if(d.sowLk){const [id,k]=d.sowLk.split(":"),l=findLine(id);if(l){l.lkc=l.lkc||{};l.lkc[k]=true;aud(ME,"Confirmed link",l.ct,"§"+l.ref+" to "+l.lk[k]);toast("Link confirmed","good");render();openLine(id)}return}
  if(d.sowWbs1){const l=findLine(d.sowWbs1),c=l&&ctOf(l.ct);if(!l||!c)return;const T=[{n:l.src.split(":")[0]+": "+(l.src.split(":")[1]||l.src).trim().slice(0,46),dur:0,ms:l.type==="milestone"?1:0,snet:l.due,own:c.owner,pred:[]}];if(window.PPMX&&PPMX.addTasks&&c.proj){try{PPMX.addTasks(c.proj,T);toast("Sent to the WBS of "+c.proj,"good");aud(ME,"Sent line to WBS",l.ct,"§"+l.ref);return}catch(er){}}toast(c.proj?"WBS module not loaded. Not sent.":"Link a project first. Use Create project on the Obligations tab.","info");return}
- if(d.sowCmt){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const l=findLine(d.sowCmt);if(!l)return;const r=REV.find(x=>x.line===l.id);(r?r.thread:l.thread).push({who:ME,t:v,at:"Oct 6"});aud(ME,"Commented on line",l.ct,"§"+l.ref);openLine(l.id);return}
+ if(d.sowCmt){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const l=findLine(d.sowCmt);if(!l)return;const r=REV.find(x=>x.line===l.id);(r?r.thread:l.thread).push({who:ME,t:v,at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Commented on line",l.ct,"§"+l.ref);openLine(l.id);return}
  if(d.sowEditline){const l=findLine(d.sowEditline);if(l)editLineForm(l);return}
  if(d.sowAddclause){clauseForm(null,d.sowAddclause);return}
  if("sowNewclause" in d){clauseForm();return}
@@ -1081,11 +1081,11 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-sow-pick],
  if("sowNewcr" in d){closeDrawer();setTimeout(()=>crForm(d.sowNewcr||null,d.sowCrKey||null),30);return}
  if(d.sowCr){openCR(d.sowCr);return}
  if(d.sowMore){SW.more[d.sowMore]=1;render();return}
- if(d.sowSign){const [id,r]=d.sowSign.split(":"),x=CRALL().find(y=>y.id===id);if(x){x.ap=x.ap||{};x.ap[r]=true;x.thread.push({who:r===LEGAL?LEGAL:ME,t:"Recorded the "+r+" review.",at:"Oct 6"});aud(ME,"Recorded review",x.ct,x.id+": "+r);toast(r+" review recorded","good");render();openCR(id)}return}
+ if(d.sowSign){const [id,r]=d.sowSign.split(":"),x=CRALL().find(y=>y.id===id);if(x){x.ap=x.ap||{};x.ap[r]=true;x.thread.push({who:r===LEGAL?LEGAL:ME,t:"Recorded the "+r+" review.",at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Recorded review",x.ct,x.id+": "+r);toast(r+" review recorded","good");render();openCR(id)}return}
  if(d.sowImpact){const x=CRALL().find(y=>y.id===d.sowImpact);if(x){x.imp=true;if(x.st==="Requested")x.st="Impact review";aud(ME,"Reviewed impact",x.ct,x.id);toast("Impact review recorded","good");render();openCR(x.id)}return}
  if(d.sowApprove){const x=CRALL().find(y=>y.id===d.sowApprove);if(x){const ok=approveCR(x);render();if(ok)closeDrawer();else openCR(x.id)}return}
- if(d.sowReject){const x=CRALL().find(y=>y.id===d.sowReject);if(x){const i=CRS.indexOf(x);x.st="Requested";x.title="Rejected: "+x.title.replace(/^Rejected: /,"");x.thread.push({who:ME,t:"Rejected. Raise a new request with changes.",at:"Oct 6"});aud(ME,"Rejected change request",x.ct,x.id);toast(x.id+" rejected and returned to Requested","warn");closeDrawer();render()}return}
- if(d.sowCmtcr){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const x=CRALL().find(y=>y.id===d.sowCmtcr);if(x){x.thread.push({who:ME,t:v,at:"Oct 6"});openCR(x.id)}return}
+ if(d.sowReject){const x=CRALL().find(y=>y.id===d.sowReject);if(x){const i=CRS.indexOf(x);x.st="Requested";x.title="Rejected: "+x.title.replace(/^Rejected: /,"");x.thread.push({who:ME,t:"Rejected. Raise a new request with changes.",at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Rejected change request",x.ct,x.id);toast(x.id+" rejected and returned to Requested","warn");closeDrawer();render()}return}
+ if(d.sowCmtcr){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const x=CRALL().find(y=>y.id===d.sowCmtcr);if(x){x.thread.push({who:ME,t:v,at:window.U.fmtDate(window.U.todayDate())});openCR(x.id)}return}
  if(d.sowSvcimp){const x=CRALL().find(y=>y.id===d.sowSvcimp),c=x&&ctOf(x.ct);if(c&&window.openImpact)openImpact({type:"change",id:x.id,service:c.svc});return}
  if(d.sowCmpopen){openCmp(d.sowCmpopen);return}
  if(d.sowOpen1){openLine(d.sowOpen1);return}

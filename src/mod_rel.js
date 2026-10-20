@@ -2,7 +2,7 @@
 (function(){
 S.rel=S.rel||{};const R=S.rel;
 Object.entries({sel:"REL-2611",kt:"tm_alpha",bl:"team",bt:"tm_alpha",ct:"tm_alpha",pit:"26.4",part:"art1",selFt:null,selEp:null,tab:{},gate:{},lt:"sprint"}).forEach(([k,v])=>{if(R[k]===undefined)R[k]=v});
-const TODAYI="2026-10-06",CURSP="26.4.1";
+const TODAYI=window.U.TODAY_ISO,CURSP="26.4.1";
 const addD=(iso,n)=>{const d=new Date(iso+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
 const dif=(a,b)=>Math.round((Date.parse(a+"T00:00:00Z")-Date.parse(b+"T00:00:00Z"))/864e5);
 const fd=iso=>iso?new Date(iso+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"}):"";
@@ -238,7 +238,7 @@ function recommend(r){const c=crit(r),hf=c.filter(x=>x.hard&&!x.ok),rd=readiness
 const lastDec=r=>(r.gng||[]).slice(-1)[0];
 
 /* ---------- metrics ---------- */
-function dora(){const all=ALLR().filter(r=>!isOpen(r)&&r.act>="2026-09-06"&&r.act<="2026-10-06");const f=all.filter(r=>r.fail);return {n:all.length,df:rnd1(all.length/(30/7)),cfr:all.length?Math.round(f.length/all.length*1000)/10:0,ttr:f.length?rnd1(sum(f,x=>x.ttr)/f.length):0,lt:Math.round(med(all.filter(r=>r.lt).map(r=>r.lt)))}}
+function dora(){const all=ALLR().filter(r=>!isOpen(r)&&r.act>="2026-09-06"&&r.act<=TODAYI);const f=all.filter(r=>r.fail);return {n:all.length,df:rnd1(all.length/(30/7)),cfr:all.length?Math.round(f.length/all.length*1000)/10:0,ttr:f.length?rnd1(sum(f,x=>x.ttr)/f.length):0,lt:Math.round(med(all.filter(r=>r.lt).map(r=>r.lt)))}}
 const MU=(f,tr,own,use,agent,ref,title,prog)=>({f,tr,owner:own,use,rem:{kind:"sop",ref,title,agent,auto:false,state:"idle",prog}});
 Object.assign(METRICS,{
  m_rel_ltc:Object.assign({n:"Lead time for changes",u:"h",cur:48,tgt:72,badAt:168,dir:"min",max:240},MU("Median of (production deploy time − first commit time) for releases deployed in the last 30 days",[61,58,66,59,54,52,50,48],"Release management",["Releases","Release trains and increments"],"Release Agent","SOP-410","Shrink batch size and automate the staging gate","Lists the longest-waiting commits and the gate that held them")),

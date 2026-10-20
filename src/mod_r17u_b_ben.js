@@ -32,7 +32,7 @@ function chart(list){const s=U.series(list),Wd=720,Hd=290,L=58,R=14,T=16,Bm=44,p
  const rp=s.real.map((v,i)=>v==null?null:[X_(i),Y(v)]).filter(Boolean);
  if(rp.length)g+=`<polygon class="r17u-area" points="${L+pw*.5/NQ},${Y(0)} ${rp.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")} ${rp[rp.length-1][0]},${Y(0)}"/>`;
  g+=line(s.plan,"r17u-l-plan","Planned (cumulative)")+line(s.adj,"r17u-l-adj","Risk-adjusted forecast (cumulative)")+line(s.real,"r17u-l-real","Recorded (cumulative)");
- const nx=L+pw*(CURQ+U.frac(CURQ))/NQ;g+=`<line class="r17u-now" x1="${nx}" x2="${nx}" y1="${T}" y2="${T+ph}"/><text class="r17u-ax" x="${nx+5}" y="${T+10}">Today, Oct 6</text>`;
+ const nx=L+pw*(CURQ+U.frac(CURQ))/NQ;g+=`<line class="r17u-now" x1="${nx}" x2="${nx}" y1="${T}" y2="${T+ph}"/><text class="r17u-ax" x="${nx+5}" y="${T+10}">Today, ${window.U.fmtDate(window.U.todayDate())}</text>`;
  return `<svg class="r17u-svg" viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="Cumulative planned, risk-adjusted and recorded benefit by quarter, eight quarters from July 2026">${g}</svg>`+
   (typeof legend==="function"?legend([["Planned, cumulative","--p4"],["Risk-adjusted: planned × confidence for future quarters","--w1"],["Recorded actuals, cumulative","--s3"]]):"")}
 
