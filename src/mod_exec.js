@@ -329,7 +329,7 @@ REG("exe_strat","Strategy alignment","portfolio","M12 3a9 9 0 1 0 0 18 9 9 0 0 0
  return `<div class="screen exe-screen">${hero("Strategy alignment","Is the money pointed at the strategy?",`The alignment score is <b>${Math.round(c.score)}</b> of 100. <b>${E.objs.length-c.gaps.length} of ${E.objs.length}</b> objectives have funded work${g?`; <b>${esc(g.n)}</b> has none because ${c.res[g.id].rows.length?"its linked requests all sit below the funding line":"nothing is linked to it"}`:""}. ${c.orph.length?`<b>${esc(c.orph[0].n)}</b> (${K$(c.orph[0].cost)}) is funded with no objective. `:""}${on} of ${E.objs.length} objectives are on track against where they should be today.`,`<div class="row">${fchip("m_align")}<button class="btn primary" data-exe-newobj>New objective</button><button class="btn" data-exe-newkr="">New key result</button><button class="btn" data-exe-krup>Update progress</button>${whyPop("Objectives and key results are the company's stated aims. Linked initiatives are the work that pays for them. Gaps in either direction are shown so leadership can fix them.")}</div>`)}${lensNote()}
  ${tiles([TL("Alignment score",`<span>${Math.round(c.score*10)/10}</span>`,"Target 90 · "+(c.score>=90?"on target":"below target"),c.score>=90?"good":"warn"),TL("Funded dollars linked",K$(Math.round(c.linked)),`of ${K$(c.tot)} funded`,"good"),TL("Objectives with no funded work",String(c.gaps.length),c.gaps.length?esc(c.gaps[0].sub):"none",c.gaps.length?"bad":"good"),TL("Funded work with no objective",String(c.orph.length),c.orph.length?K$(c.orph.reduce((s,i)=>s+i.cost,0))+" at stake":"none",c.orph.length?"warn":"good")])}
  ${window.MAT?`<div class="row exe-mrow">${fchip("m_matatt")}${fchip("m_matgp")}<span class="muted small" data-role="metric">Capability maturity: attainment ${METRICS.m_matatt.cur}%, glide-path index ${METRICS.m_matgp.cur}. Each objective below shows its capabilities.</span><button class="btn quiet" data-go="exe_mat">Open maturity models</button></div>`:""}
- ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity"],[`<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane()])}${procCard("exe_strat")}</div>`});
+ ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity","Cascade"],[`<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane(),casPane()])}${procCard("exe_strat")}</div>`});
 DND.on("exestrat",(id,from,to)=>{if(from===to)return;const L=E.links[id]=E.links[id]||{},ini=inits().find(i=>i.id===id),nm2=ini?ini.n:id;
  if(from==="O0"){E.links[id]={[to]:1}}else if(to==="O0"){delete L[from]}else{const w=L[from]||1;delete L[from];L[to]=(L[to]||0)+w}
  audit("re-linked initiative",`${id} ${from} to ${to}`);toast(to==="O0"?`${nm2} is now unlinked`:`${nm2} now counts toward ${objN(to).sub||objN(to).n}`,to==="O0"?"warn":"good");sync();render()});
@@ -356,6 +356,81 @@ function krUpForm(id){const man=E.krs.filter(k=>!krLive(k));openForm({id:"exe_kr
  fields:[{k:"id",label:"Key result",type:"select",req:true,opts:man.map(k=>[k.id,`${objN(k.o).sub||objN(k.o).n}: ${k.n}`]),help:"Measured key results update themselves and are not listed."},{k:"v",label:"New value",type:"number",req:true},{k:"note",label:"What changed",type:"longtext",ph:"One sentence for the record",ai:{label:"Draft note",fn:v=>"Updated after the monthly review with the owner; "+(v.v!=null&&v.v!==""?"value is now "+v.v+".":"no change in direction.")}}],
  ...LVX("krup",v=>{const k=E.krs.find(x=>x.id===v.id);if(!k||v.v===""||v.v==null)return "";const p=clamp((v.v-k.start)/((k.tgt-k.start)||1),0,1);return `<div class="formula">Progress becomes ${Math.round(p*100)}% (expected ${Math.round(krExp(k)*100)}%): ${p>=krExp(k)-.05?"on track":p>=krExp(k)-.25?"watch":"needs action"}</div>`},{id:id||(man[0]||{}).id}),defaults:{id:id||(man[0]||{}).id},
  onSubmit:v=>{const k=E.krs.find(x=>x.id===v.id);if(!k)return {toast:"Pick a key result",close:false};const was=fmtKr(k);k.cur=+v.v;(E.krHist[k.id]=E.krHist[k.id]||[]).unshift(["Oct 6",fmtKr(k),v.note||""]);audit("updated key result",`${k.n}: ${was} to ${fmtKr(k)}`);sync();setTimeout(render,0);return {toast:`${k.n} is now ${fmtKr(k)}`}}},{id:id||(man[0]||{}).id})}
+/* ---------------- DC-12: multi-level cascade (company, enterprise, group, team) with contribution math ----------------
+   Company objective at the top; the strategy objectives (E.objs) are the enterprise level; each business group has objectives that
+   contribute to enterprise objectives; team objectives are the leaves and are measured by one key result each.
+   Progress of a node = Σ (weight × child progress) ÷ Σ weight over the children that contribute to it.
+   A leaf's contribution to the company = its progress × the product of its normalized weights up the chain, in percentage points.
+   Weights are sample assumptions (modeled); leaf progress comes from key result values (prototype facts). */
+const CLVL=[["company","Company"],["enterprise","Enterprise"],["group","Group"],["team","Team"]];
+const CGRP=[{id:"DP",n:"Digital Publishing",owner:"Maya Ortiz",proj:["PR1","PR2"]},{id:"OR",n:"Operational Resilience",owner:"Tom Becker",proj:["PR3"]},{id:"RC",n:"Records and Contracts",owner:"Avery Chen",proj:["PR4"]}];
+const CASC0={company:{id:"C1",n:"Trusted standards, published faster, at lower risk",owner:"CEO office"},
+ ent:{O1:.3,O2:.25,O3:.2,O4:.1,O5:.15},
+ nodes:[
+ {id:"G1",lvl:"group",grp:"DP",n:"Publish standards faster",owner:"Maya Ortiz",up:{O1:1}},
+ {id:"G2",lvl:"group",grp:"DP",n:"Lighter reviewer load",owner:"Maya Ortiz",up:{O5:1}},
+ {id:"G3",lvl:"group",grp:"OR",n:"Tier 1 services stay up",owner:"Tom Becker",up:{O2:1}},
+ {id:"G4",lvl:"group",grp:"OR",n:"Govern every agent",owner:"Jordan Lee",up:{O4:1}},
+ {id:"G5",lvl:"group",grp:"RC",n:"Pay only for accepted work",owner:"Avery Chen",up:{O3:1}},
+ {id:"T1",lvl:"team",team:"Platform team",n:"Earn the Standards Platform plan",owner:"Priya Shah",kr:"k12",up:{G1:.5}},
+ {id:"T2",lvl:"team",team:"Editors",n:"Shorten the time to publish",owner:"Chief Editor",kr:"k11",up:{G1:.3}},
+ {id:"T3",lvl:"team",team:"Editors",n:"Draft with AI assistance",owner:"Chief Editor",kr:"k13",up:{G1:.2}},
+ {id:"T4",lvl:"team",team:"Editors",n:"Turn reviews around in five days",owner:"Chief Editor",kr:"k51",up:{G2:1}},
+ {id:"T5",lvl:"team",team:"Ops team",n:"Keep Tier 1 available",owner:"Tom Becker",kr:"k21",up:{G3:.5}},
+ {id:"T6",lvl:"team",team:"Ops team",n:"Close the Sev 2 problem",owner:"Tom Becker",kr:"k23",up:{G3:.3}},
+ {id:"T7",lvl:"team",team:"Vendor management",n:"Hold vendors at the index",owner:"Maya Ortiz",kr:"k22",up:{G3:.2}},
+ {id:"T8",lvl:"team",team:"Architecture",n:"Put every agent under the gateway",owner:"Jordan Lee",kr:"k42",up:{G4:.6}},
+ {id:"T9",lvl:"team",team:"Architecture",n:"Lower the agent override rate",owner:"Jordan Lee",kr:"k41",up:{G4:.4}},
+ {id:"T10",lvl:"team",team:"Finance",n:"Clear invoices by rule",owner:"Avery Chen",kr:"k31",up:{G5:.5}},
+ {id:"T11",lvl:"team",team:"Contracts",n:"Earn the Contract Repository plan",owner:"Maya Ortiz",kr:"k32",up:{G5:.5}}]};
+E.casc=E.casc||JSON.parse(JSON.stringify(CASC0));
+function cascade(){const C=E.casc,nodes=[],by={};
+ const add=n=>{by[n.id]=n;nodes.push(n)};
+ add({id:C.company.id,lvl:"company",n:C.company.n,owner:C.company.owner,up:{}});
+ E.objs.forEach(o=>add({id:o.id,lvl:"enterprise",n:o.n,owner:o.owner,up:C.ent[o.id]?{[C.company.id]:C.ent[o.id]}:{},obj:true}));
+ C.nodes.forEach(n=>add(Object.assign({},n,{up:Object.assign({},n.up)})));
+ const kids=id=>nodes.filter(n=>(n.up[id]||0)>0);
+ const memo={};const prog=n=>{if(memo[n.id]!=null)return memo[n.id];let p=null;
+  if(n.kr){const k=E.krs.find(x=>x.id===n.kr);p=k?krProg(k):null}
+  else{const ks=kids(n.id).map(c=>({c,p:prog(c),w:c.up[n.id]})).filter(x=>x.p!=null);const sw=ks.reduce((s,x)=>s+x.w,0);p=sw?ks.reduce((s,x)=>s+x.w*x.p,0)/sw:null}
+  return memo[n.id]=p};
+ nodes.forEach(n=>{n.p=prog(n);n.kids=kids(n.id).map(c=>c.id);const sw=kids(n.id).reduce((s,c)=>s+c.up[n.id],0);n.sw=sw});
+ /* share of each node in the company score: product of normalized weights up the first chain to the company */
+ const share=n=>{if(n.lvl==="company")return 1;const ups=Object.keys(n.up).filter(u=>by[u]&&n.up[u]>0);if(!ups.length)return 0;
+  return ups.reduce((s,u)=>s+(by[u].sw?n.up[u]/by[u].sw:0)*share(by[u]),0)};
+ nodes.forEach(n=>{n.share=share(n);n.contrib=n.p==null?null:n.p*n.share*100;
+  if(n.obj){const o=E.objs.find(x=>x.id===n.id);n.krScore=o?objProg(o).p:null}});
+ const orphan=nodes.filter(n=>n.lvl!=="company"&&!Object.keys(n.up).some(u=>by[u]&&n.up[u]>0));
+ return {nodes,by,orphan,company:by[C.company.id]}}
+const pctS=v=>v==null?"n/a":Math.round(v*100)+"%";
+function casNode(n,X){const lv=(CLVL.find(l=>l[0]===n.lvl)||[0,n.lvl])[1];const kr=n.kr&&E.krs.find(k=>k.id===n.kr);
+ const ups=Object.keys(n.up).filter(u=>X.by[u]&&n.up[u]>0);const g=n.grp&&CGRP.find(x=>x.id===n.grp);
+ const math=n.kr?(kr?`Measured by key result ${numChip("kr",kr.id)} ${esc(kr.n)}: ${fmtKr(kr,kr.start)} to ${fmtKr(kr)} toward ${fmtKr(kr,kr.tgt)} = ${pctS(n.p)}`:"Its key result is missing, so it has no progress")
+  :n.kids.length?`Progress = Σ weight × child ÷ Σ weight = (${n.kids.map(id=>{const c=X.by[id];return (Math.round(c.up[n.id]*100)/100)+" × "+pctS(c.p)}).join(" + ")}) ÷ ${Math.round(n.sw*100)/100} = ${pctS(n.p)}`:"Nothing below it contributes yet";
+ return `<div class="thr-cn" data-lvl="${n.lvl}" data-exe-cas="${n.id}"><div class="thr-cnn"><span class="thr-lvl">${lv}${g?" · "+esc(g.n):n.team?" · "+esc(n.team):""}</span>${n.obj?numChip("obj",n.id):""}<b>${esc(n.n)}</b>${ownerChip?ownerChip(n.owner,{record:"objective:"+n.id,size:20}):esc(n.owner)}</div>
+ <div class="thr-cnv"><span class="thr-bar" title="Progress ${pctS(n.p)}"><u style="width:${n.p==null?0:Math.round(n.p*100)}%"></u></span><b class="num" data-role="metric">${pctS(n.p)}</b>${n.lvl!=="company"?`<span class="small muted" data-role="metric" title="Share of the company score, modeled">${n.contrib==null?"":(Math.round(n.contrib*10)/10)+" pts of company"}</span>`:""}</div>
+ <p class="small muted thr-cnm" data-role="metric">${math}${ups.length&&n.lvl!=="company"?` · weight ${ups.map(u=>Math.round(n.up[u]*100)+"% into "+esc(X.by[u].n)).join(", ")}`:""}${n.obj&&n.krScore!=null?` · key result score ${pctS(n.krScore)}`:""}</p></div>`}
+function casPane(){const X=cascade(),order=[];const walk=(n,seen)=>{if(seen.has(n.id))return;seen.add(n.id);order.push(n);n.kids.map(id=>X.by[id]).sort((a,b)=>CLVL.findIndex(l=>l[0]===a.lvl)-CLVL.findIndex(l=>l[0]===b.lvl)).forEach(c=>walk(c,seen))};
+ const seen=new Set();walk(X.company,seen);X.orphan.forEach(n=>walk(n,seen));
+ const lc=CLVL.map(l=>[l[1],X.nodes.filter(n=>n.lvl===l[0]).length]);
+ return card("Cascade: company, enterprise, group and team",`Each level rolls up from the one below with stated weights. Team objectives are measured by one key result each; everything above is computed. Weights are modeled sample assumptions; key result values are prototype facts.`,
+  `<div class="thr-legend small muted">${lc.map(x=>`<span><b>${x[1]}</b> ${x[0].toLowerCase()} objective${x[1]===1?"":"s"}</span>`).join("")}<span class="pill info">Weights modeled</span></div>
+  <div class="formula" data-role="metric">Company score = Σ enterprise weight × enterprise progress ÷ Σ weight = <b>${pctS(X.company.p)}</b> (modeled). A team's points of the company score = its progress × its weight share at every level above it.</div>
+  <div class="thr-cas">${order.map(n=>casNode(n,X)).join("")}</div>
+  ${X.orphan.length?`<p class="small" data-role="story"><b>${X.orphan.length}</b> objective${X.orphan.length===1?" is":"s are"} not cascaded to a parent: ${X.orphan.map(n=>esc(n.n)).join(", ")}. Set a weight to bring ${X.orphan.length===1?"it":"them"} into the company score.</p>`:""}`,
+  `<button class="btn quiet" data-exe-casw="">Set weights</button>`)}
+function casWForm(id){const X=cascade();const ns=X.nodes.filter(n=>n.lvl!=="company");const n=X.by[id]||ns[0];if(!n)return;
+ const parents=X.nodes.filter(p=>CLVL.findIndex(l=>l[0]===p.lvl)===CLVL.findIndex(l=>l[0]===n.lvl)-1);
+ const d={id:n.id};parents.forEach(p=>d["w_"+p.id]=Math.round((n.up[p.id]||0)*100));
+ openForm({id:"exe_casw",title:"Cascade weight: "+n.n,story:"How much this objective counts toward each objective one level up. The parent's progress is the weighted average of everything that counts toward it. Weights are a modeled assumption.",submit:"Save weights",
+  fields:parents.map(p=>({k:"w_"+p.id,label:p.n,type:"range",min:0,max:100,step:5,unit:"%"})),defaults:d,
+  onSubmit:v=>{const up={};parents.forEach(p=>{const w=(+v["w_"+p.id]||0)/100;if(w>0)up[p.id]=w});
+   if(n.lvl==="enterprise"){const w=up[E.casc.company.id];if(w)E.casc.ent[n.id]=w;else delete E.casc.ent[n.id]}else{const x=E.casc.nodes.find(z=>z.id===n.id);if(x)x.up=up}
+   audit("changed cascade weight",n.id);setTimeout(render,0);return {toast:"Cascade weights saved for "+n.n}}},d)}
+
+document.addEventListener("click",e=>{const c=e.target.closest("[data-exe-casw],[data-exe-cas]");if(c){const d=c.dataset;
+ if(d.exeCasw!=null)return casWForm(d.exeCasw);
+ if(d.exeCas&&!e.target.closest("[data-owner],.thr-chip,[data-num-open]")){const n=cascade().by[d.exeCas];if(n&&n.obj&&window.THREAD)return THREAD.open(n.id);if(n&&n.kr)return krDrawer(n.kr);if(n&&n.lvl!=="company")return casWForm(n.id)}}});
 document.addEventListener("click",e=>{const t=e.target.closest("[data-exe-kr],[data-exe-ini],[data-exe-newobj],[data-exe-newkr],[data-exe-krup],[data-exe-quick]");if(!t)return;const d=t.dataset;
  if(d.exeKr)return krDrawer(d.exeKr);if(d.exeIni!=null&&!t.closest(".dnd-ghost"))return iniDrawer(d.exeIni);if(d.exeNewobj!=null)return objForm();if(d.exeNewkr!=null)return krForm(d.exeNewkr);if(d.exeKrup!=null)return krUpForm(d.exeKrup);
  if(d.exeQuick){const [i,o]=d.exeQuick.split(":");E.links[i]={[o]:1};audit("linked funded work",i+" to "+o);toast("Linked to "+(objN(o).sub||objN(o).n));sync();render()}});
@@ -659,5 +734,5 @@ SEARCHX.push(()=>[].concat(
  E.apps.map(a=>({g:"Applications",t:a.n,m:tOf(a)+" · "+K$(a.cost),c:tCol(tOf(a)),f:()=>{S.v.exeappv=2;go("exe_apps");setTimeout(()=>appDrawer(a.id),50)},k:a.cat+" "+a.ven})),
  E.scens.map(s=>({g:"Scenarios",t:s.n,m:"Scenario",c:"--u3",f:()=>go("exe_scen"),k:s.note})),
  [["Board pack","exe_board"],["Executive dashboard","exe_dash"],["Monte Carlo schedule risk","exe_risk"],["Strategy gaps","exe_strat"],["Application retirement","exe_apps"]].map(x=>({g:"Executive",t:x[0],m:"Screen",c:"--accent",f:()=>go(x[1]),k:"board ceo cfo cio coo okr heat map time model"}))));
-window.EXE={snap,mc,coverage,appStats,sync,E,krDrawer,objProg,krProg,krCur,krSt,krExp,fmtKr,inits,lw,objN};
+window.EXE={snap,mc,coverage,appStats,sync,E,krDrawer,objProg,krProg,krCur,krSt,krExp,fmtKr,inits,lw,objN,cascade,CGRP};
 })();

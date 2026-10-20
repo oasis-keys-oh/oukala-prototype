@@ -77,5 +77,15 @@ add(await step('DC-10',async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-10
  if(c){c.click();await new Promise(r=>setTimeout(r,200));ok(!!document.querySelector('#drawer .thr'),'the Trace chip opens the thread')}
  closeDrawer();return f}));
 
+/* ---- DC-12: four-level cascade with contribution math ---- */
+add(await step('DC-12',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-12 '+m)};const X=EXE.cascade();
+ ['company','enterprise','group','team'].forEach(l=>ok(X.nodes.some(n=>n.lvl===l),'has a '+l+' level'));
+ const close=(a,b)=>Math.abs(a-b)<1e-9;
+ X.nodes.filter(n=>!n.kr&&n.kids.length).forEach(n=>{const ks=n.kids.map(id=>X.by[id]).filter(c=>c.p!=null);const sw=ks.reduce((s,c)=>s+c.up[n.id],0);ok(close(n.p,ks.reduce((s,c)=>s+c.up[n.id]*c.p,0)/sw),'weighted roll-up at '+n.id)});
+ X.nodes.filter(n=>n.kr).forEach(n=>{const k=S.exe.krs.find(x=>x.id===n.kr);ok(k&&close(n.p,EXE.krProg(k)),'leaf '+n.id+' is measured by its key result')});
+ const pts=X.nodes.filter(n=>n.lvl==='team').reduce((s,n)=>s+n.contrib,0);ok(Math.abs(pts-X.company.p*100)<1e-6,'team contributions add up to the company score ('+pts.toFixed(2)+' vs '+(X.company.p*100).toFixed(2)+')');
+ go('exe_strat');const html=document.querySelector('#view').innerHTML;ok(/Cascade: company, enterprise, group and team/.test(html)&&/Weights modeled/.test(html),'cascade pane on exe_strat, labeled modeled');
+ return f}));
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();
