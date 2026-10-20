@@ -17,7 +17,9 @@ const home=await p.evaluate(()=>({len:document.querySelector('#view').innerHTML.
 if(sd)await p.screenshot({path:path.join(sd,'home.png')});
 const startT=await p.evaluate(()=>({persona:S.persona,tenant:DATA.tenant()}));
 // every tour, every beat
-for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.total,x.tenant||'core']))){const [id,n,tot,ten]=d;
+// SR_ONLY=<tour id,...> limits the step-through to some tours while iterating; npm test runs them all
+const only=(process.env.SR_ONLY||'').split(',').filter(Boolean);
+for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.total,x.tenant||'core']))){if(only.length&&only.indexOf(d[0])<0)continue;const [id,n,tot,ten]=d;
  await p.evaluate(id=>SHOW.start(id,0),id);await settle();
  for(let i=0;i<n;i++){const n0=errs.length;
   const exp=await p.evaluate(([id,i])=>{const b=SHOW.demos.find(x=>x.id===id).beats[i];return{go:b.go,ap:b.approve||null}},[id,i]);
@@ -79,5 +81,16 @@ if(await p.evaluate(()=>!!SHOW.lenses)){
  for(const l of L){const r=await p.evaluate(id=>{SHOW.applyLens(id);go('r18_lens');const on=document.querySelector('.r18-lopt.on');return{lens:R18.st.lens,persona:S.persona,on:on&&on.dataset.r18Lens}},l.id);await p.waitForTimeout(150);
   if(r.lens!==l.id||r.on!==l.id||r.persona!==l.persona)fail('apply lens '+l.id+' '+JSON.stringify(r))}
  await p.evaluate(p0=>{NAVX.persona.set(p0)},startT.persona);console.log('lenses:',L.map(l=>l.id+' '+l.screens+' screens').join(', '))}
+// DC-17: Build the fix in VibeCheck, from a Build list card, a red Journey box, an Agent Action gap and an orphan
+if(await p.evaluate(()=>!!SHOW.buildFix)){
+ await p.evaluate(()=>{go('ppl_jrny')});await p.waitForTimeout(400);await p.evaluate(()=>{const b=[...document.querySelectorAll('.screen .views button, .screen [role=tab]')].find(x=>x.textContent.trim()==='Build list');b&&b.click()});await p.waitForTimeout(500);
+ const nb=await p.evaluate(()=>document.querySelectorAll('.jb-card .srs-fix').length);if(!nb)fail('no Build the fix button on Build list cards');
+ else{await p.click('.jb-card .srs-fix');await p.waitForTimeout(1200);const f=await p.evaluate(()=>({scr:S.screen,k:SHOW.lastFix&&SHOW.lastFix.kind,ref:SHOW.lastFix&&SHOW.lastFix.ref,sc:!!(window.STUDIO&&STUDIO.sc)}));
+  if(f.scr!=='studio'||f.k!=='build'||!f.ref||!f.sc)fail('fix from a Build list card '+JSON.stringify(f))}
+ await p.evaluate(()=>{SCN.set('health');go('ppl_jrny')});await p.waitForTimeout(400);await p.evaluate(()=>{const b=[...document.querySelectorAll('.screen .views button, .screen [role=tab]')].find(x=>x.textContent.trim()==='Map');b&&b.click()});await p.waitForTimeout(500);
+ const nr=await p.evaluate(()=>[document.querySelectorAll('div.noproc').length,document.querySelectorAll('div.noproc .srs-fix').length]);if(!nr[0]||nr[1]!==nr[0])fail('red Journey boxes without the fix button '+nr);
+ for(const k of ['journey','gap','orphan']){const r=await p.evaluate(k=>{const t=SHOW.buildFix({kind:k,ref:'X-1',title:'Test gap '+k});return{t,scr:S.screen}},k);await p.waitForTimeout(900);
+  const s=await p.evaluate(()=>({scr:S.screen,sc:!!(window.STUDIO&&STUDIO.sc)}));if(!/Test gap/.test(r.t)||s.scr!=='studio'||!s.sc)fail('fix '+k+' '+JSON.stringify([r,s]))}
+ await p.evaluate(()=>{SCN.set('core');go('home')});await p.waitForTimeout(300);console.log('build the fix: ok ('+nb+' cards, '+nr[1]+' red boxes)')}
 // EXT: extension checks follow
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();
