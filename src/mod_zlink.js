@@ -39,7 +39,7 @@ const isHuman=n=>{const k=actor(n);return k==="person"||k==="contractor"||k==="m
 let _uni=null,_uniV="";
 const itsm=()=>window.ITSMX||{incidents:[],changes:[],problems:[]};
 let _uvT=0,_uvV="";
-function uniVersion(){if(_uvV&&Date.now()-_uvT<2000)return _uvV;_uvT=Date.now();return _uvV=[PROJ.length,TASKS.length,DEMAND.length,INVOICES.length,MEETINGS.length,DIR.length,G(()=>itsm().incidents.length,0),G(()=>itsm().changes.length,0),G(()=>SEARCHX.length,0),G(()=>Object.keys(METRICS).length,0),G(()=>PROCLIB.list().length,0),G(()=>FLOWX.flows().length,0),G(()=>S.bud.po.length,0),G(()=>(S.kcsx.created||[]).length,0),G(()=>R15E.runLines.length,0),(window.SCALE&&SCALE.on)?1:0].join(",")}
+function uniVersion(){if(_uvV&&Date.now()-_uvT<2000)return _uvV;_uvT=Date.now();return _uvV=[PROJ.length,TASKS.length,DEMAND.length,INVOICES.length,MEETINGS.length,DIR.length,G(()=>itsm().incidents.length,0),G(()=>itsm().changes.length,0),G(()=>SEARCHX.length,0),G(()=>Object.keys(METRICS).length,0),G(()=>PROCLIB.list().length,0),G(()=>FLOWX.flows().length,0),G(()=>S.bud.po.length,0),G(()=>(S.kcsx.created||[]).length,0),G(()=>R15E.runLines.length,0),(window.SCALE&&SCALE.on)?1:0,G(()=>S.exe.objs.length+"."+S.exe.krs.length,0),G(()=>S.bud.led.length+"."+S.bud.lines.length,0),G(()=>BUDREQ.requests().map(r=>r.st).join(""),"")].join(",")}
 function universe(){const v=uniVersion();if(_uni&&_uniV===v)return _uni;_uniV=v;const U=new Map();
  const add=(id,t,label,extra)=>{if(id==null||id==="")return;U.set(String(id),Object.assign({id:String(id),t,label:label||String(id)},extra||{}))};
  PROJ.forEach(p=>add(p.id,"project",p.n,{owner:p.owner}));
@@ -53,6 +53,12 @@ function universe(){const v=uniVersion();if(_uni&&_uniV===v)return _uni;_uniV=v;
  arr(SVCREG).forEach(s=>{add(s.id,"service",s.n,{owner:s.owner});add(s.n,"service",s.n,{owner:s.owner,alias:1})});
  arr(CIREG).forEach(c=>add(c.id,"ci",c.name,{owner:c.owner}));
  arr(NODES).forEach(n=>add(n.id,"record",n.n,{owner:n.owner}));
+ /* DC-04: strategy and ledger nodes. Objectives and key results come from the strategy registry (S.exe), ledger lines from the
+    management reserve ledger (S.bud.led), budget requests from BUDREQ. An objective id that is also a trace-graph record becomes an objective. */
+ arr(G(()=>S.exe.objs,[])).forEach(o=>add(o.id,"objective",o.n,{owner:o.owner}));
+ arr(G(()=>S.exe.krs,[])).forEach(k=>add(k.id,"key_result",k.n,{owner:k.owner,obj:k.o}));
+ arr(G(()=>S.bud.led,[])).forEach(e=>add(e.id,"ledger",e.id+" "+(e.why||""),{owner:e.req,line:e.line,proj:e.p}));
+ arr(G(()=>BUDREQ.requests(),[])).forEach(r=>add(r.id,"budget_request",r.t,{owner:r.sp}));
  arr(G(()=>KGN,[])).forEach(n=>{if(!U.has(n.id))add(n.id,"record",n.n||n.t)});
  DIR.forEach(d=>add(d.name,"person",d.name,{kind:d.kind}));
  Object.keys(METRICS).forEach(k=>add(k,"metric",METRICS[k].n,{owner:METRICS[k].owner}));
@@ -65,7 +71,7 @@ function universe(){const v=uniVersion();if(_uni&&_uniV===v)return _uni;_uniV=v;
  G(()=>{SEARCHX.forEach(fn=>{G(()=>fn(),[]).forEach(r=>{const m=/^([A-Za-z]{2,5}-?\d{2,6}|[a-z]{2,6}_[a-z0-9_]+)\b/.exec(String(r.t||""));if(m&&!U.has(m[1]))add(m[1],lc(r.g||"record"),String(r.t).slice(m[1].length).trim()||m[1],{viaSearch:1})})})});
  return _uni=U}
 const has=id=>universe().has(String(id));
-const TYPEN={project:"Project",task:"Task",demand:"Demand request",invoice:"Invoice",meeting:"Meeting",incident:"Incident",change:"Change",problem:"Problem",service:"Service",ci:"Configuration item",record:"Strategy or work record",person:"Person",metric:"Metric",process:"Process",workflow:"Workflow",po:"Purchase order",contract:"Contract",vendor:"Vendor",budget_line:"Budget line",raid:"RAID item",article:"Knowledge article"};
+const TYPEN={project:"Project",task:"Task",demand:"Demand request",invoice:"Invoice",meeting:"Meeting",incident:"Incident",change:"Change",problem:"Problem",service:"Service",ci:"Configuration item",record:"Strategy or work record",person:"Person",metric:"Metric",process:"Process",workflow:"Workflow",po:"Purchase order",contract:"Contract",vendor:"Vendor",budget_line:"Budget line",raid:"RAID item",article:"Knowledge article",objective:"Objective",key_result:"Key result",ledger:"Ledger line",budget_request:"Budget request"};
 
 /* ---------- cross-module relations: every reference that should resolve ---------- */
 /* each rel: {id, name, from, to, rows(): [[fromId, ref, label?]]} ; ref may be a list. unresolved refs are dead links */
@@ -130,8 +136,51 @@ function relations(){const R=[];
  rel("wf_apr","Workflow approver","workflow","actor",()=>G(()=>FLOWX.flows().flatMap(f=>f.nodes.filter(n=>n.t==="approval").flatMap(n=>arr(n.a.approvers).map(a=>[f.id+"/"+n.id,a]))),[]),"actor");
  rel("wf_agent","Workflow agent step","workflow","agent",()=>G(()=>FLOWX.flows().flatMap(f=>f.nodes.filter(n=>n.t==="agent"&&n.a.agent).map(n=>[f.id+"/"+n.id,n.a.agent])),[]),"actor");
  rel("wf_edge","Workflow edge","workflow","step",()=>G(()=>FLOWX.flows().flatMap(f=>{const ids=new Set(f.nodes.map(n=>n.id));return arr(f.edges).flatMap(e=>{const a=e.from||e[0],b=e.to||e[1];return [[f.id+"/"+a,ids.has(a)?a:""],[f.id+"/"+b,ids.has(b)?b:""]]})}),[]),"edge");
+ /* DC-04: the golden thread relations: key result to objective, work to objective (weighted links), invoice to project and budget line,
+    ledger line to budget line and project, budget request to demand, budget line, project and objective */
+ rel("kr_obj","Key result to objective","key_result","objective",()=>arr(G(()=>S.exe.krs,[])).map(k=>[k.id,k.o]));
+ rel("init_obj","Work to objective (weighted)","project","objective",()=>{const L=G(()=>S.exe.links,{});return Object.keys(L).flatMap(i=>Object.keys(L[i]||{}).filter(o=>L[i][o]>0).map(o=>[i,o]))});
+ rel("inv_proj","Invoice to project","invoice","project",()=>INVOICES.map(i=>[i.id,invProject(i.id).proj]));
+ rel("inv_line","Invoice to budget line","invoice","budget_line",()=>INVOICES.map(i=>[i.id,invProject(i.id).line]));
+ rel("led_line","Ledger line to budget line","ledger","budget_line",()=>arr(G(()=>S.bud.led,[])).map(e=>[e.id,e.line]));
+ rel("led_proj","Ledger line to project","ledger","project",()=>arr(G(()=>S.bud.led,[])).map(e=>[e.id,e.p]));
+ rel("br_dem","Budget request to demand","budget_request","demand",()=>arr(G(()=>BUDREQ.requests(),[])).map(r=>[r.id,r.dem]));
+ rel("br_line","Budget request to budget line","budget_request","budget_line",()=>arr(G(()=>BUDREQ.requests(),[])).flatMap(r=>(r.lineIds&&r.lineIds.length?r.lineIds:[r.lineId||r.line]).map(l=>[r.id,l])));
+ rel("br_proj","Budget request to project","budget_request","project",()=>arr(G(()=>BUDREQ.requests(),[])).map(r=>[r.id,r.proj]));
+ rel("br_obj","Budget request to objective","budget_request","objective",()=>arr(G(()=>BUDREQ.requests(),[])).map(r=>[r.id,r.obj]));
  try{(window.ZLINK_REL_HOOKS||[]).forEach(f=>f(rel))}catch(e){}
  return R}
+/* ---------- DC-04: the three golden-thread chains, computed from the source registries (not the cached graph) ----------
+   demand to budget line: demand > budget request (r.dem) > the budget lines a funded request created, or the request's target project
+     lines when it is not funded yet (labeled "proposed");
+   invoice to project: invoice > contract (S.bud.con inv list) > project, else the trace graph (invoice node billed by a contract node,
+     committed by a budget node, funding a project);
+   variance to objective score: budget line variance (forecast minus approved) > project > objectives it contributes to (weights in
+     S.exe.links) > each objective's score from its key results. Dollar figures are modeled. */
+function invProject(id){const inv=INVOICES.find(i=>i.id===id);if(!inv)return {proj:"",line:"",via:"",path:[]};
+ const con=G(()=>S.bud.con.find(c=>arr(c.inv).includes(id)),null),lines=G(()=>S.bud.lines,[]);
+ const line=con&&lines.some(l=>l.id===con.line)?con.line:"";
+ if(con&&con.proj)return {proj:con.proj,line,via:"contract",contract:con.id,path:[id,con.id,con.proj]};
+ if(inv.node){const E_=G(()=>EDGES,[]);const up=(to,lab)=>(E_.find(e=>e[1]===to&&e[2]===lab)||[])[0];const v=up(inv.node,"billed"),bn=v&&up(v,"committed to"),pr=bn&&up(bn,"funded by");
+  if(pr&&PROJ.some(p=>p.id===pr))return {proj:pr,line,via:"trace graph",contract:con?con.id:"",path:[id,v,bn,pr].filter(Boolean)}}
+ return {proj:"",line,via:con?"contract (run budget, no project)":"",contract:con?con.id:"",path:con?[id,con.id]:[id]}}
+const CHAINS={
+ invoiceToProject:invProject,
+ demandToLine(did){const d=G(()=>DEMAND.find(x=>x.id===did),null);if(!d)return {ok:false,why:"No demand "+did,path:[]};
+  const brs=arr(G(()=>BUDREQ.requests(),[])).filter(r=>r.dem===did);if(!brs.length)return {ok:false,why:"No budget request carries this demand",path:[did]};
+  const lines=G(()=>S.bud.lines,[]),out=[];
+  brs.forEach(r=>{const own=(r.lineIds&&r.lineIds.length?r.lineIds:[r.lineId||r.line]).filter(l=>l&&lines.some(x=>x.id===l));
+   if(own.length)out.push({br:r.id,lines:own,proposed:false,st:r.st});else{const pl=lines.filter(l=>l.p===r.proj).map(l=>l.id);out.push({br:r.id,lines:pl,proposed:true,proj:r.proj,st:r.st})}});
+  const ok=out.some(x=>x.lines.length);return {ok,funded:out.some(x=>!x.proposed&&x.lines.length),rows:out,path:ok?[did,out[0].br].concat(out[0].lines.slice(0,1)):[did,out[0].br],why:ok?"":"The request has no target project lines yet"}},
+ varianceToObjective(lid){const l=G(()=>S.bud.lines.find(x=>x.id===lid),null);if(!l)return {ok:false,why:"No budget line "+lid};
+  const v=l.fcst-l.appr,w=G(()=>S.exe.links[l.p],{})||{},E_=G(()=>EXE,null);
+  const rows=Object.keys(w).filter(o=>w[o]>0).map(o=>{const ob=G(()=>S.exe.objs.find(x=>x.id===o),null);const pg=ob&&E_?G(()=>E_.objProg(ob),null):null;
+   return {obj:o,n:ob?ob.n:o,w:w[o],wvar:v*w[o],score:pg?Math.round(pg.p*100):null,exp:pg?Math.round(pg.e*100):null,st:pg?pg.st:""}});
+  return {ok:rows.length>0&&rows.every(r=>r.score!=null),line:lid,proj:l.p,variance:v,rows,modeled:true,path:[lid,l.p].concat(rows.map(r=>r.obj)),why:rows.length?"":"The line's project is linked to no objective"}},
+ /* every chain the seed data should carry; used by tools/tests/thread.js and the Trace drawer */
+ verify(){const dem=arr(G(()=>DEMAND,[])).map(d=>Object.assign({id:d.id},CHAINS.demandToLine(d.id))).filter(x=>x.path.length>1);
+  const inv=INVOICES.map(i=>Object.assign({id:i.id},invProject(i.id)));const lines=G(()=>S.bud.lines,[]).map(l=>Object.assign({id:l.id},CHAINS.varianceToObjective(l.id)));
+  return {demand:dem,invoice:inv,variance:lines,missingNodes:["objective","key_result","ledger","budget_line","invoice"].filter(t=>!G(()=>[...universe().values()].some(u=>u.t===t),false))}}};
 const SCRN=()=>new Set(SCREENS.map(s=>s[0]));
 const SCRNAME=()=>new Set(SCREENS.map(s=>lc(s[1])));
 function resolves(kind,ref){ref=ref==null?"":String(ref);if(!ref)return null; /* null = nothing to check */
@@ -317,6 +366,11 @@ function openRec(id){id=String(id);const u=universe().get(id);if(!u)return false
   if(u.t==="record"){recDrawer(u.id);return true}
   if(u.t==="invoice"){go("inv",u.id);return true}
   if(u.t==="metric"){go("metrics",u.id);return true}
+  if(u.t==="objective"){go("exe_strat");if(window.THREAD&&THREAD.open)setTimeout(()=>THREAD.open(u.id),120);return true}
+  if(u.t==="key_result"){go("exe_strat");setTimeout(()=>G(()=>EXE.krDrawer(u.id)),120);return true}
+  if(u.t==="ledger"&&window.openBudgetDrill){openBudgetDrill("led:"+u.id);return true}
+  if(u.t==="budget_line"&&window.openBudgetDrill){openBudgetDrill("line:"+u.id);return true}
+  if(u.t==="budget_request"&&window.BUDREQ&&BUDREQ.openReq){go("bud_req");setTimeout(()=>G(()=>BUDREQ.openReq(u.id)),120);return true}
   if(u.t==="process"){PROCLIB.open(u.id);return true}
   if(u.t==="workflow"){FLOWX.open(u.id);return true}
   if(u.t==="meeting"&&window.MEETX){MEETX.open(u.id);return true}
@@ -549,6 +603,6 @@ function boot(){if(NOFIX)return;wire();fixAll();wire();G(()=>{const a=getAudit(t
 /* R15 speed: run the same work in three idle slices after first paint so no single task blocks input for seconds */
 const idleRun=(f,ms)=>{const run=()=>{try{f()}catch(e){console.error("zlink idle",e)}};setTimeout(()=>{if(window.requestIdleCallback)requestIdleCallback(run,{timeout:6000});else run()},ms)};
 function bootStaged(){if(NOFIX)return;idleRun(()=>{wire();fixAll()},1800);idleRun(()=>{wire()},2600);idleRun(()=>{G(()=>{const a=getAudit(true);fixDebt(a);Z.last=null})},3200)}
-window.ZLINK={_fx:{fixRefs,fixWfService,fixAliases,fixMetricUse,fixStepIO,fixFlows,fixLineage,fixInbox,fixMcp,fixSearch,fixAsk,fixDebt,hookAudit,watchDrawer},audit:()=>getAudit(true),deadLinks,universe,graph,connected,open:openRec,interop:runIP,fixAll,score:()=>scoreOf(getAudit(true)),log:()=>Z.log,state:Z,relations,actor,wire,boot};
+window.ZLINK={_fx:{fixRefs,fixWfService,fixAliases,fixMetricUse,fixStepIO,fixFlows,fixLineage,fixInbox,fixMcp,fixSearch,fixAsk,fixDebt,hookAudit,watchDrawer},audit:()=>getAudit(true),deadLinks,universe,graph,connected,open:openRec,interop:runIP,fixAll,score:()=>scoreOf(getAudit(true)),log:()=>Z.log,state:Z,relations,actor,wire,boot,chains:CHAINS,refresh:_bust};
 if(!NOFIX){bootStaged();idleRun(()=>{wire();watchDrawer();G(()=>{const l=Z.log.find(x=>x.id==='fx_lineage'),keep=l?l.n:0;fixLineage();const l2=Z.log.find(x=>x.id==='fx_lineage');if(l2)l2.n+=keep});Z.last=null},4200)}
 })();

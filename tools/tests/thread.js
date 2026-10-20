@@ -43,5 +43,25 @@ add(await step('PR-26',()=>{const f=[];const r=BUDREQ.requests().find(q=>q.st===
  if(BUDREQ.requests().find(q=>q.id===r.id).st!=='dec')f.push('PR-26 refused request left the decision stage');
  return f}));
 
+/* ---- DC-04: ZLINK has objective, key result, budget line, invoice and ledger nodes; the three chains resolve ---- */
+add(await step('DC-04',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-04 '+m)};ZLINK.refresh();const U=ZLINK.universe();
+ [['O1','objective'],['k12','key_result'],['RL-02','ledger'],['PR1-CLD','budget_line'],['INV-20433','invoice'],['BR-0105','budget_request']].forEach(([id,t])=>ok(U.get(id)&&U.get(id).t===t,'node '+id+' is a '+t));
+ const C=ZLINK.chains,v=C.verify();ok(!v.missingNodes.length,'no node type missing: '+v.missingNodes.join(','));
+ /* invoice to project: every invoice either reaches a project or is a run-budget invoice with its contract named */
+ v.invoice.forEach(x=>ok(x.proj||/run budget/.test(x.via),'invoice '+x.id+' reaches a project or says run budget'));
+ ok(C.invoiceToProject('INV-20433').proj==='PR2'&&C.invoiceToProject('INV-20418').proj==='PR1','invoice to project (contract and trace graph)');
+ const g=ZLINK.graph();ok((g.out.get('INV-20433')||[]).some(x=>x.id==='PR2'),'invoice to project is an edge in the graph');
+ ok((g.out.get('k12')||[]).some(x=>x.id==='O1')&&(g.out.get('RL-04')||[]).some(x=>x.id==='PR1-CLD'),'key result and ledger edges in the graph');
+ /* demand to budget line: proposed before funding, real lines after the funding decision */
+ const d7=C.demandToLine('D7');ok(d7.ok&&d7.rows[0].br==='BR-0105'&&d7.rows[0].proposed,'D7 reaches BR-0105 and its proposed project lines');
+ const r=BUDREQ.requests().find(q=>q.id==='BR-0105');if(r&&r.st==='dec'){const by=(APG.route('budget_request',{stage:'dec',amount:r.amt,requester:r.req}).members||[]).find(m=>m!==r.req);PERM.enforceOn(false);const x=BUDREQ.decide(r.id,'Approve','thread test',by);PERM.enforceOn(true);ok(x&&x.ok,'BR-0105 funds: '+JSON.stringify(x));
+  const d7b=C.demandToLine('D7');ok(d7b.funded&&d7b.rows[0].lines.length&&d7b.rows[0].lines.every(l=>S.bud.lines.some(y=>y.id===l&&/BR-0105/.test(y.why))),'after funding, D7 reaches the budget lines BR-0105 created')}
+ else ok(false,'BR-0105 is not at the decision stage');
+ /* variance to objective score: weighted variance and the objective score from key results */
+ const vo=C.varianceToObjective('PR1-CLD');ok(vo.ok&&vo.variance===48000&&vo.rows.length===2,'PR1-CLD variance reaches two objectives');
+ const o1=vo.rows.find(x=>x.obj==='O1');ok(o1&&Math.round(o1.wvar)===Math.round(48000*S.exe.links.PR1.O1)&&o1.score===Math.round(EXE.objProg(S.exe.objs[0]).p*100),'weighted variance and objective score match their sources');
+ ok(v.variance.filter(x=>x.ok).length>=13,'most budget lines reach a scored objective ('+v.variance.filter(x=>x.ok).length+')');
+ return f}));
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();
