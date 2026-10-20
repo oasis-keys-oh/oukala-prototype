@@ -140,10 +140,10 @@ if(!only||only==='breakit'){const p=await open();
   return{host:true,cards:h.querySelectorAll('[data-bk-try]').length,held:/held/i.test(h.textContent),score:(h.querySelector('[data-bk-score]')||{}).textContent||'',sim:/simulated/i.test(h.textContent)}});
  if(!ui.host||ui.cards<6||!ui.held||!ui.sim)fail('breakit: free play panel '+JSON.stringify(ui));
  /* mission registration when EXP appears */
- const m=await p.evaluate(async()=>{const got=[];window.EXP={register(x){got.push(x);return x},list:()=>got,on(){},state:()=>null};HOOKS.run('afterRender','home');await new Promise(r=>setTimeout(r,50));
-  const x=got.find(g=>/break/i.test(g.id));if(!x)return null;const ev={t:'now',p:'x',s:'guard',a:'Guardrail test (simulated): x',d:''};
-  return{id:x.id,clock:x.clock,brief:x.brief,goal:x.goal,cps:x.checkpoints.length,role:x.role,tenants:x.tenants,hasWhen:x.checkpoints.every(c=>typeof c.when==='function'),fires:x.checkpoints.some(c=>{try{return c.when(Object.assign({},ev,{a:'Guardrail test (simulated): '+GUARD.tries().find(t=>t.id==='own').n}),{})}catch(e){return false}})}});
- if(!m)fail('breakit: no EXP mission registered');else{if(!(m.clock<=180))fail('breakit: mission clock '+m.clock+' over 180 seconds');if(m.cps<6||!m.hasWhen||!m.fires)fail('breakit: mission checkpoints '+JSON.stringify(m));if(!m.brief||!m.goal)fail('breakit: mission brief or goal missing')}
+ const m=await p.evaluate(()=>{const x=(window.EXP&&EXP.missions?EXP.missions():[]).find(g=>/break/i.test(g.id));if(!x)return null; /* the real engine (DC-40) holds the registered mission */
+  const a=GUARD.tries().find(t=>t.id==='own').n;const ev={kind:'audit',a:'Guardrail test (simulated): '+a,d:'',s:'guard'};
+  return{id:x.id,clock:x.clock,brief:x.brief,goal:x.goal,cps:x.checkpoints.length,role:x.role,tenants:x.tenants,hasWhen:x.checkpoints.every(c=>typeof c.when==='function'),fires:x.checkpoints.some(c=>{try{return c.when(ev,{})}catch(e){return false}}),lint:EXP.lint([x])}});
+ if(!m)fail('breakit: no EXP mission registered');else{if(!(m.clock<=180))fail('breakit: mission clock '+m.clock+' over 180 seconds');if(m.cps<6||!m.hasWhen||!m.fires)fail('breakit: mission checkpoints '+JSON.stringify(m));if(!m.brief||!m.goal)fail('breakit: mission brief or goal missing');if(m.lint.length)fail('breakit: EXP.lint '+JSON.stringify(m.lint))}
  if(p.errs.length)fail('breakit: page errors '+p.errs.slice(0,3).join(' | '));
  console.log('breakit:',r.res.map(x=>x.id+(x.refused?' held':' NOT')).join(', '),'| mission',m&&m.id,m&&m.clock+'s');
  await p.context().close()}

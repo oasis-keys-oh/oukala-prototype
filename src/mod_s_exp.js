@@ -126,7 +126,7 @@ G(()=>HOOKS.on("beforeGo",(s,arg)=>signal({kind:"go",screen:s,arg}),{id:"exp-go"
 G(()=>HOOKS.on("afterRender",s=>{signal({kind:"render",screen:s});if(cur)G(paintHud)},{id:"exp-render",order:80}));
 G(()=>HOOKS.on("afterOpenDrawer",el=>signal({kind:"drawer",el}),{id:"exp-drawer"}));
 /* EVENTS (mod_zevt) loads after this module: subscribe on the first start */
-let evOn=false;const ensureEvents=()=>{if(evOn||!W.EVENTS||!EVENTS.on)return;evOn=true;EVENTS.on("*",(ev,pl)=>{if(cur&&ev&&!/^exp\./.test(ev.id))signal({kind:"event",type:ev.id,payload:pl||{}})})};
+let evOn=false;const ensureEvents=()=>{if(evOn||!W.EVENTS||!EVENTS.on)return;evOn=true;EVENTS.on("*",(ev,pl)=>{if(cur&&ev&&!/^exp\.(start|stop|end|checkpoint|hint|ripple|success|stuck|debrief|state|nudge|claim|recover|skip)$/.test(ev.id))signal({kind:"event",type:ev.id,payload:pl||{}})})};
 G(()=>HOOKS.on("tenantChange",t=>signal({kind:"tenant",tenant:t}),{id:"exp-tenant"}));
 G(()=>ROUTER.on("click",(e,t)=>{if(!cur)return;const el=t&&t.closest?t.closest("button,a,[role=tab],[data-pp2-tab],[data-invpick],[data-rel-open]"):null;if(!el||el.closest("#expHud,#expTrail"))return;
  signal({kind:"click",el,data:Object.assign({},el.dataset),text:String(el.textContent||"").trim().slice(0,80)})},{id:"exp-click"}));

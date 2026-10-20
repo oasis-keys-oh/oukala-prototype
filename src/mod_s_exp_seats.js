@@ -71,12 +71,18 @@ G(()=>{const q=new URLSearchParams(location.search);const r=q.get("seat"),t=q.ge
  if(t)setTimeout(()=>{if(G(()=>DATA.tenant(),"")!==t&&G(()=>SCN.list[t],null))G(()=>TENANT.switch(t))},900)});
 
 /* ---------- a three-minute mission for the experience engine (registered when EXP is present) ---------- */
-const MISSION={id:"two_seats",title:"Two seats: work across the table",role:"any",tenants:"any",clock:180,
+const isSeat=ev=>!!ev&&((ev.kind==="event"&&ev.type==="exp.seat")||(ev.kind==="audit"&&/^Two seats/.test(ev.a)));
+const MISSION={id:"two_seats",title:"Two seats: work across the table",role:"any",tenants:"any",clock:180,labels:["simulated","modeled"],
+ screens:["inbox"],ripples:["metric"],
  brief:"Open a second seat and watch your decision land on the other desk.",goal:"An action in one seat arrives in the other as a simulated item.",
  setup(){if(!ST.role)pick("cfo")},
- checkpoints:[{id:"second",when:ev=>!!(ev&&((ev.type==="exp.seat")||(/^Two seats/.test(String(ev.a||""))))),hint:{after:40,text:"Open the Operations seat from the seat bar."},claim:"simulated"},
-  {id:"arrived",when:ev=>!!(ev&&ev.type==="exp.seat"),hint:{after:90,text:"Approve or move something in one window and look at the other."},claim:"simulated"}],
- success:()=>ST.arr.length>0,ripples:["metric"],debrief:()=>ST.arr.length+" action"+(ST.arr.length===1?"":"s")+" arrived from the other seat (simulated)."};
+ checkpoints:[{id:"second",t:"Open the second seat",when:ev=>isSeat(ev)||(ev&&ev.kind==="audit"&&/seat/i.test(ev.a)),hint:{after:40,text:"Open the Operations seat from the seat bar."},claim:{k:"simulated",t:"A second window takes a second role on the same company, on this machine only."}},
+  {id:"arrived",t:"Act in one seat, see it arrive in the other",when:ev=>!!ev&&ev.kind==="event"&&ev.type==="exp.seat",hint:{after:90,text:"Approve or move something in one window and look at the other."},
+   claim:{k:"simulated",t:"Your action arrived on the other desk as an inbox item and a changed number."},
+   ripple:(ctx,ev)=>{const pl=ev.payload||{},from=lab(pl.from||"coo");const n=parseFloat(String(pl.num||"").replace(/[$,]/g,""));
+    return{kind:"seat",cause:"The "+from+" seat acted and this desk saw it",rule:"An audited action in one seat arrives in the other as an inbox item and a notification; the number shown is the one the action moved. Simulated, this machine only.",
+     nodes:[{level:"record",label:from+" seat: "+(pl.a||"an action")},{level:"queue",label:"Your inbox: items from the other seat",before:Math.max(0,ST.arr.length-1),after:ST.arr.length,good:"up"}].concat(isFinite(n)?[{level:"line",label:"Amount that moved",before:0,after:n,fmt:"money"}]:[])}}}],
+ success:()=>ST.arr.length>0,debrief:()=>({what:ST.arr.length+" action"+(ST.arr.length===1?"":"s")+" arrived from the other seat (simulated).",mean:"Two leaders work one company in one view instead of a chain of emails. Simulated."})};
 let reg=false;const tryReg=()=>{if(reg||!W.EXP||typeof EXP.register!=="function")return;try{EXP.register(MISSION);reg=true}catch(e){console.error("seats mission",e)}};
 G(()=>HOOKS.on("afterRender",tryReg,{id:"seats-exp"}));setTimeout(tryReg,0);
 

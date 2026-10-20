@@ -37,9 +37,13 @@ const RUN={
   await p.evaluate(()=>{try{closeDrawer()}catch(e){}go('guard')});await settle();await press('Try to break it');await settle();await p.click('#view [data-gd-try="restricted"]');await settle(1200)},
  cio_clash:async()=>{await p.evaluate(()=>go('itsm_rel'));await settle();const id=await p.evaluate(()=>EXP.current().ctx.rel);await p.locator('#view [data-rel-open="'+id+'"]').locator('visible=true').first().click();await settle(1000);
   await p.locator('[data-rel-move^="'+id+'"]').locator('visible=true').last().click();await settle(2500)},
+ break_it:async()=>{await p.evaluate(()=>go('guard'));await settle();await p.evaluate(()=>EXP.current().m.checkpoints.forEach(c=>{try{GUARD.attempt(c.id)}catch(e){}}));await settle(1500)},
+ two_seats:async()=>{await p.evaluate(()=>{if(!SEATS.role())SEATS.pick('cfo');const ch=new BroadcastChannel('falconaire-seats'); /* acts as the other window */
+  ch.postMessage({v:1,id:'test-other-seat',type:'hello',role:'coo',tenant:'core'});
+  setTimeout(()=>ch.postMessage({v:1,id:'test-other-seat',type:'audit',role:'coo',tenant:'core',entry:{a:'approved budget request',d:'BL-012 moved $12,000',s:'bud_req'},num:'$12,000'}),300)});await settle(2000)},
  monday:async()=>{await p.evaluate(()=>go('inbox'));await settle();await p.evaluate(()=>{const it=INBOX.items().sort((a,b)=>(b.sim?1:0)-(a.sim?1:0));for(const x of it){const r=INBOX.decide(x.id,'approve',{note:'experience test'});if(r.ok)break}INBOX.flush()});await settle(1500)}};
-const ROLE={cfo_invoice:'cfo',coo_journey:'coo',ciso_agent:'ciso',cio_clash:'cio',monday:'chro'};
-const TEN={cfo_invoice:'health',coo_journey:'storage',ciso_agent:'core',cio_clash:'mining',monday:'core'};
+const ROLE={break_it:'ciso',two_seats:'cfo',cfo_invoice:'cfo',coo_journey:'coo',ciso_agent:'ciso',cio_clash:'cio',monday:'chro'};
+const TEN={break_it:'core',two_seats:'core',cfo_invoice:'health',coo_journey:'storage',ciso_agent:'core',cio_clash:'mining',monday:'core'};
 for(const id of await p.evaluate(()=>EXP.missions().map(m=>m.id))){const n0=errs.length;
  if(!RUN[id]){fail('no test driver for mission '+id);continue}
  const ev=await p.evaluate(([id,role,ten])=>{window.__ev=[];['checkpoint','ripple','success'].forEach(k=>EXP.on(k,d=>window.__ev.push(k)));return EXP.start(id,{role,tenant:ten,mode:'facilitated'})},[id,ROLE[id],TEN[id]]);

@@ -238,12 +238,17 @@ G(()=>ROUTER.on("click","[data-bk-try],[data-bk-self]",(e,el)=>{if(el.dataset.bk
  const X=W.BUDX,l=G(()=>X.B().lines.slice().sort((a,b)=>(b.appr-b.comm)-(a.appr-a.comm))[0],null);if(!l)return;newPo();
  G(()=>{const v=FORMST.bud_npo.vals;v.ord=Math.max(0,l.appr-l.comm)+25000;v.line=l.id;v.d="Break it: overspend (simulated)";refreshForm("bud_npo")});
  G(()=>toast("Press Raise purchase order and watch the check refuse it","info"))},{id:"bk-click"}));
-const MISSION={id:"break_it",title:"Break it: get past the guardrails",role:"any",tenants:"any",clock:180,
+const MISSION={id:"break_it",title:"Break it: get past the guardrails",role:"any",tenants:"any",clock:180,labels:["simulated","fact"],
+ screens:["guard"],ripples:["risk"],
  brief:"Try six things a guardrail should stop and see which control holds each one.",goal:"All six attempts are refused, each with the control that held.",
  setup(){openBreakIt()},
- checkpoints:FREE.slice(0,6).map(([id,t],i)=>({id,when:ev=>{const a=ATT(id);return !!ev&&!!a&&((ev.type==="exp.breakit"&&ev.id===id)||String(ev.a||"")==="Guardrail test (simulated): "+a.n)},hint:{after:20+i*25,text:"Try: "+t+"."},claim:"fact"})),
- success(){return FREE.slice(0,6).every(([id])=>LOG.some(l=>l.id===id&&l.refused))},ripples:["risk"],
- debrief(){const six=FREE.slice(0,6).map(f=>f[0]);const h=six.filter(id=>LOG.some(l=>l.id===id&&l.refused));return h.length+" of "+six.length+" held: "+h.map(id=>(ATT(id)||{}).ctl).join(", ")+". Simulated."}};
+ checkpoints:FREE.slice(0,6).map(([id,t],i)=>({id,t:"Try: "+t,screen:"guard",
+  when:ev=>{const a=ATT(id);return !!ev&&!!a&&((ev.kind==="event"&&ev.type==="exp.breakit"&&ev.payload&&ev.payload.id===id)||(ev.kind==="audit"&&ev.a==="Guardrail test (simulated): "+a.n))},
+  hint:{after:20+i*25,text:"Try: "+t+"."},claim:{k:"fact",t:"The real check refused it and named the control that held."},
+  ripple:i===0?(ctx)=>({kind:"guardrail",cause:"You tried to get past "+((ATT(id)||{}).ctl||"a guardrail")+" and it held",rule:"The attempt ran the real check; nothing changed, so the exposure stayed where it was. Simulated.",
+   nodes:[{level:"record",label:"Attempt: "+t},{level:"risk",label:"Open exposure from this attempt",before:0,after:0,good:"down"}]}):undefined})),
+ success(){return FREE.slice(0,6).every(([id])=>LOG.some(l=>l.id===id&&l.refused))},
+ debrief(){const six=FREE.slice(0,6).map(f=>f[0]);const h=six.filter(id=>LOG.some(l=>l.id===id&&l.refused));return {what:h.length+" of "+six.length+" held: "+h.map(id=>(ATT(id)||{}).ctl).join(", ")+". Simulated.",mean:"Every control you tried is a real check in the product, not a slide."}}};
 let REGD=false;const tryReg=()=>{if(REGD||!W.EXP||typeof EXP.register!=="function")return;try{EXP.register(MISSION);REGD=true}catch(e){console.error("break it mission",e)}};
 G(()=>HOOKS.on("afterRender",tryReg,{id:"guard-breakit-exp"}));setTimeout(tryReg,0);
 Object.assign(GD,{openBreakIt,breakIt:()=>FREE.map(([id,t,d])=>({id,title:t,d,control:(ATT(id)||{}).ctl})),mission:MISSION});
