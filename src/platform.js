@@ -30,7 +30,7 @@ U.store={keys:new Set(),get(k,d){this.keys.add(k);try{const v=localStorage.getIt
    Names: beforeGo(screen,arg) · afterRender(screen) · afterOpenDrawer(el) · tenantChange(tenant,prev).
    HOOKS.on(name,fn,{order,id}) returns an off function. Lower order runs first; same id replaces. */
 const HK={};const HOOKS=W.HOOKS=W.HOOKS||{};
-HOOKS.names=["beforeGo","afterRender","afterOpenDrawer","tenantChange"];
+HOOKS.names=["beforeGo","afterRender","afterOpenDrawer","tenantChange","tenantDenied"];
 HOOKS.on=(name,fn,o)=>{o=o||{};const L=HK[name]=HK[name]||[];if(o.id){const i=L.findIndex(x=>x.id===o.id);if(i>=0)L.splice(i,1)}
  const h={fn,order:o.order||0,id:o.id||null};L.push(h);L.sort((a,b)=>a.order-b.order);return()=>{const i=L.indexOf(h);if(i>=0)L.splice(i,1)}};
 HOOKS.run=(name,...a)=>{(HK[name]||[]).slice().forEach(h=>{try{h.fn(...a)}catch(e){console.error("hook "+name+(h.id?" ("+h.id+")":""),e)}})};
@@ -40,7 +40,10 @@ HOOKS.list=name=>(HK[name]||[]).map(h=>({id:h.id,order:h.order}));
    DATA.define(entity,{core:()=>rows,key,label})   the Meridian (core) source, usually a getter over an existing global
    DATA.pack(tenant,{entity:rows|()=>rows,...})      a tenant pack supplies its own rows (DC-09 pack format)
    DATA.get(entity,{tenant,where})                   rows for the active tenant; memoized by version
-   DATA.tenant() · DATA.setTenant(id) · DATA.version · DATA.on("change",fn) · DATA.entities() · DATA.gaps()
+   DATA.tenant() · DATA.setTenant(id) -> bool · DATA.version · DATA.on("change",fn) · DATA.entities() · DATA.gaps()
+   DATA.addTenant(id,info) · DATA.tenants() · DATA.tenantInfo(id) · DATA.guard(fn) · DATA.allowed(id)   one tenant model (DC-31, CL-63)
+   DATA.screen(id,{mode,entities}) · DATA.screens() · DATA.screenMode(id)                                tenant-aware screen registry
+   DATA.validate(tenant) · DATA.snapshot(tenant)                                                         pack format checks (DC-09)
    No leakage (R18): a non-core tenant with no rows for an entity gets [] and the gap is recorded, never Meridian rows. */
 const DEF={},PACKS={},MEMO=new Map(),GAPS=new Set(),LIS=[];
 const DATA=W.DATA=W.DATA||{};
@@ -60,8 +63,46 @@ DATA.get=(entity,ctx)=>{ctx=ctx||{};const t=ctx.tenant||_tenant;const k=t+"|"+en
 DATA.byId=(entity,id,ctx)=>{const d=DEF[entity]||{key:"id"};return DATA.get(entity,ctx).find(r=>r&&r[d.key]===id)||null};
 DATA.on=(ev,fn)=>{if(ev==="change"){LIS.push(fn);return()=>{const i=LIS.indexOf(fn);if(i>=0)LIS.splice(i,1)}}return()=>{}};
 DATA.touch=()=>{DATA.version++;MEMO.clear();LIS.slice().forEach(f=>{try{f(_tenant,_tenant)}catch(e){console.error("DATA change",e)}})};
-DATA.setTenant=id=>{if(!id||id===_tenant)return;const prev=_tenant;_tenant=id;DATA.version++;MEMO.clear();
- LIS.slice().forEach(f=>{try{f(id,prev)}catch(e){console.error("DATA change",e)}});HOOKS.run("tenantChange",id,prev)};
+/* setTenant returns true when the active tenant changed, false when unchanged or refused by the guard (CL-63, simulated) */
+let _guard=null;
+DATA.guard=fn=>{_guard=typeof fn==="function"?fn:null;return DATA};
+DATA.allowed=id=>!_guard||!!safe(()=>_guard(id),false);
+DATA.setTenant=id=>{if(!id||id===_tenant)return false;if(!DATA.allowed(id)){HOOKS.run("tenantDenied",id,_tenant);return false}const prev=_tenant;_tenant=id;DATA.version++;MEMO.clear();
+ LIS.slice().forEach(f=>{try{f(id,prev)}catch(e){console.error("DATA change",e)}});HOOKS.run("tenantChange",id,prev);return true};
+
+/* Tenant registry (DC-31): one list of tenants for SCN, TENANT and the switcher. info = {org, short, kind, ...} */
+const TEN={};const TORD=[];
+DATA.addTenant=(id,info)=>{if(!TEN[id])TORD.push(id);TEN[id]=Object.assign({id},TEN[id]||{},info||{});return DATA};
+DATA.tenantInfo=id=>TEN[id==null?_tenant:id]||null;
+DATA.tenants=()=>TORD.map(id=>TEN[id]);
+
+/* Tenant-aware screen registry (CL-55). mode: "data" reads through DATA.get · "tenant" follows the tenant through SCN or
+   TENANT (not yet DATA) · "core" shows the Meridian sample only (the default for any screen not declared). */
+const SCR={};
+DATA.screen=(id,o)=>{SCR[id]=Object.assign({id,mode:"data",entities:[]},SCR[id]||{},o||{});return DATA};
+DATA.screens=()=>{const all=safe(()=>SCREENS.map(s=>({id:s[0],name:s[1],group:s[3]})),[]);const seen=new Set(all.map(s=>s.id));
+ Object.keys(SCR).forEach(id=>{if(!seen.has(id))all.push({id,name:id,group:""})});
+ return all.map(s=>Object.assign({mode:"core",entities:[]},s,SCR[s.id]||{},{id:s.id,name:s.name}))};
+DATA.screenMode=id=>(SCR[id]&&SCR[id].mode)||"core";
+
+/* Tenant pack format (DC-09): DATA.pack(tenant, {entity: rows | () => rows}, info?) where info registers the tenant.
+   DATA.validate(tenant) checks a pack against the defined entities; DATA.snapshot(tenant) gives counts and ids per entity. */
+const _pack=DATA.pack;DATA.pack=(tenant,ents,info)=>{if(info)DATA.addTenant(tenant,info);return _pack(tenant,ents)};
+DATA.snapshot=tenant=>{const t=tenant||_tenant,o={};Object.keys(DEF).forEach(e=>{const d=DEF[e];const rows=DATA.get(e,{tenant:t});o[e]={count:rows.length,ids:rows.map(r=>r&&r[d.key])}});return o};
+DATA.validate=tenant=>{const t=tenant||_tenant,errors=[],warnings=[],counts={};const P=t==="core"?null:PACKS[t];
+ if(t!=="core"&&!P)errors.push("no pack registered for "+t);
+ if(t!=="core"&&!TEN[t])warnings.push("tenant "+t+" has no registry entry (DATA.addTenant)");
+ if(P)Object.keys(P).forEach(e=>{if(!DEF[e])errors.push("unknown entity "+e)});
+ Object.keys(DEF).forEach(e=>{const d=DEF[e];let rows;
+  if(P&&P[e]==null){warnings.push("gap: "+e);counts[e]=0;return}
+  rows=DATA.get(e,{tenant:t});if(!Array.isArray(rows)){errors.push(e+": rows are not a list");return}
+  counts[e]=rows.length;const ids=new Set();
+  rows.forEach((r,i)=>{const id=r&&r[d.key];if(id==null||id===""){errors.push(e+"["+i+"]: missing "+d.key);return}if(ids.has(id))errors.push(e+": duplicate "+d.key+" "+id);ids.add(id)});
+  if(d.required)rows.forEach((r,i)=>d.required.forEach(f=>{if(r&&r[f]==null)errors.push(e+"["+i+"]: missing "+f)}))});
+ /* no other tenant's organization name inside this pack (R18) */
+ if(P){const txt=safe(()=>JSON.stringify(Object.keys(P).map(e=>DATA.get(e,{tenant:t}))),"");
+  TORD.filter(x=>x!==t&&TEN[x].org).forEach(x=>{if(txt.indexOf(TEN[x].org)>=0)errors.push("mentions another tenant: "+TEN[x].org)})}
+ return{tenant:t,ok:!errors.length,errors,warnings,counts}};
 
 /* ---- STEPMODE: every process step is human, robot or agent (R21 to R24); approval gate is a separate step type ----
    Legacy values map through ALIAS: "fn"/"function" are the robot; "auto"/"automatic" are retired and read as robot until

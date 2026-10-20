@@ -12,6 +12,11 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  let ch=0;DATA.on("change",()=>ch++);const prev=DATA.tenant();DATA.setTenant("zz_test");ok(DATA.get("t_rec").length===0,"DATA no leakage");ok(DATA.gaps().includes("zz_test:t_rec"),"DATA gap recorded");
  DATA.pack("zz_test",{t_rec:[{id:"B"}]});ok(DATA.byId("t_rec","B")&&DATA.byId("t_rec","B").id==="B","DATA pack");DATA.setTenant(prev);ok(ch===2,"DATA change events");
  if(window.SCN){SCN.set("health");ok(DATA.tenant()==="health","SCN drives DATA");SCN.set("core");ok(DATA.tenant()==="core","SCN back to core")}
+ /* tenancy extensions of DATA (tenancy stream): registry, guard, screen registry, pack validation */
+ DATA.addTenant("zz_reg",{org:"Test Org"});ok(DATA.tenants().some(t=>t.id==="zz_reg")&&DATA.tenantInfo("zz_reg").org==="Test Org","DATA tenant registry");DATA.guard(id=>id!=="zz_reg");ok(DATA.setTenant("zz_reg")===false&&DATA.tenant()===prev,"DATA guard refuses");
+ DATA.guard(null);ok(DATA.allowed("zz_reg"),"DATA guard cleared");if(window.IDENT)DATA.guard(id=>!DATA.tenantInfo(id)||IDENT.member(id));
+ DATA.screen("zz_scr",{mode:"data",entities:["t_rec"]});ok(DATA.screenMode("zz_scr")==="data"&&DATA.screenMode("home")==="core"&&DATA.screens().length>=SCREENS.length,"DATA screen registry");
+ ok(DATA.validate("zz_test").ok&&!DATA.validate("zz_none").ok,"DATA.validate");ok(DATA.snapshot("core").t_rec.ids[0]==="A","DATA.snapshot");
  ok(STEPMODE.of("fn")==="robot"&&STEPMODE.of("auto")==="robot"&&STEPMODE.label("ai")==="Agent","STEPMODE aliases");ok(!/Automatic|Function/.test(STEPMODE.pill("auto")),"STEPMODE never shows retired words");
  ok(TRIGGERS.list().length===5&&TRIGGERS.get("metric"),"TRIGGERS catalog");
  const a=CHATADDR.parse("record:project:PR1");ok(a&&a.recType==="project"&&a.id==="PR1","CHATADDR parse");
