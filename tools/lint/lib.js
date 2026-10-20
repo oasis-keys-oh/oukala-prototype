@@ -5,10 +5,15 @@ const ROOT=path.resolve(__dirname,'../..');const SRC=path.join(ROOT,'src');
 
 /* The source files the build reads: every src/*.js and src/*.css except the quarantine copies. Generated data files are
    marked so rules about hand-written view code can skip them. */
+/* the build's own inputs */
+const BUILD=(()=>{const set=new Set();try{const py=fs.readFileSync(path.join(SRC,'build.py'),'utf8');const m=py.match(/core=\[([^\]]*)\]/);if(m)m[1].match(/"[^"]+"/g).forEach(x=>set.add(x.slice(1,-1)));set.add('screens3.js');
+ JSON.parse(fs.readFileSync(path.join(SRC,'modules.json'),'utf8')).modules.forEach(n=>{set.add(n+'.js');set.add(n+'.css')});
+ fs.readdirSync(SRC).filter(f=>/^style\d*\.css$/.test(f)).forEach(f=>set.add(f))}catch(e){console.error('lint: could not read build inputs',e.message)}return set})();
 function sources(){
  const out=[];
  for(const f of fs.readdirSync(SRC).sort()){
   if(/ 2\./.test(f)||!/\.(js|css)$/.test(f))continue;
+  if(!BUILD.has(f))continue; /* only what build.py includes: core files, modules.json entries, style sheets (skips stale outputs such as src/oukala-js.js) */
   const t=fs.readFileSync(path.join(SRC,f),'utf8');
   out.push({f,ext:f.endsWith('.css')?'css':'js',t,generated:/^\/\*\s*GENERATED\b/.test(t.slice(0,300)),module:/^mod_/.test(f),core:!/^mod_/.test(f)});
  }

@@ -45,8 +45,7 @@
    "mod_gaapdata.js": 1,
    "mod_r17q_a_data.js": 1,
    "mod_r24_hero.js": 1,
-   "mod_r32_num_a_data.js": 1,
-   "mod_viz2.js": 1
+   "mod_r32_num_a_data.js": 1
   },
   "price": {
    "mod_admin.js": 2,
@@ -119,7 +118,7 @@
    "mod_itsm.js": 204,
    "mod_kcs.js": 177,
    "mod_kgx.js": 2,
-   "mod_mat.js": 49,
+   "mod_mat.js": 48,
    "mod_meet.js": 125,
    "mod_meet2.js": 1,
    "mod_meet3.js": 1,
@@ -357,13 +356,7 @@
    "screens3.js": 1
   },
   "wrapper": {
-   "kit2.js": 2,
-   "mod_dec.js": 1,
-   "mod_people.js": 1,
-   "mod_r15c_core.js": 2,
-   "mod_r15d_facts.js": 1,
-   "mod_r16g_b_enforce.js": 1,
-   "mod_r18g_levels.js": 1,
+   "mod_r15c_core.js": 1,
    "mod_zlink.js": 6
   }
  }
