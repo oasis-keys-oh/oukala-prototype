@@ -21,7 +21,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-sow-pick],
  if(d.sowLgok){const l=findLine(d.sowLgok);if(l)legalOK(l);return}
  if(d.sowLk){const [id,k]=d.sowLk.split(":"),l=findLine(id);if(l){l.lkc=l.lkc||{};l.lkc[k]=true;aud(ME,"Confirmed link",l.ct,"§"+l.ref+" to "+l.lk[k]);toast("Link confirmed","good");render();openLine(id)}return}
  if(d.sowWbs1){const l=findLine(d.sowWbs1),c=l&&ctOf(l.ct);if(!l||!c)return;const T=[{n:l.src.split(":")[0]+": "+(l.src.split(":")[1]||l.src).trim().slice(0,46),dur:0,ms:l.type==="milestone"?1:0,snet:l.due,own:c.owner,pred:[]}];if(window.PPMX&&PPMX.addTasks&&c.proj){try{PPMX.addTasks(c.proj,T);toast("Sent to the WBS of "+c.proj,"good");aud(ME,"Sent line to WBS",l.ct,"§"+l.ref);return}catch(er){}}toast(c.proj?"WBS module not loaded. Not sent.":"Link a project first. Use Create project on the Obligations tab.","info");return}
- if(d.sowCmt){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const l=findLine(d.sowCmt);if(!l)return;const r=REV.find(x=>x.line===l.id);(r?r.thread:l.thread).push({who:ME,t:v,at:"Oct 6"});aud(ME,"Commented on line",l.ct,"§"+l.ref);openLine(l.id);return}
+ if(d.sowCmt){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const l=findLine(d.sowCmt);if(!l)return;const r=REV.find(x=>x.line===l.id);(r?r.thread:l.thread).push({who:ME,t:v,at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Commented on line",l.ct,"§"+l.ref);openLine(l.id);return}
  if(d.sowEditline){const l=findLine(d.sowEditline);if(l)editLineForm(l);return}
  if(d.sowAddclause){clauseForm(null,d.sowAddclause);return}
  if("sowNewclause" in d){clauseForm();return}
@@ -31,11 +31,11 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-sow-pick],
  if("sowNewcr" in d){closeDrawer();setTimeout(()=>crForm(d.sowNewcr||null,d.sowCrKey||null),30);return}
  if(d.sowCr){openCR(d.sowCr);return}
  if(d.sowMore){SW.more[d.sowMore]=1;render();return}
- if(d.sowSign){const [id,r]=d.sowSign.split(":"),x=CRALL().find(y=>y.id===id);if(x){x.ap=x.ap||{};x.ap[r]=true;x.thread.push({who:r===LEGAL?LEGAL:ME,t:"Recorded the "+r+" review.",at:"Oct 6"});aud(ME,"Recorded review",x.ct,x.id+": "+r);toast(r+" review recorded","good");render();openCR(id)}return}
+ if(d.sowSign){const [id,r]=d.sowSign.split(":"),x=CRALL().find(y=>y.id===id);if(x){x.ap=x.ap||{};x.ap[r]=true;x.thread.push({who:r===LEGAL?LEGAL:ME,t:"Recorded the "+r+" review.",at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Recorded review",x.ct,x.id+": "+r);toast(r+" review recorded","good");render();openCR(id)}return}
  if(d.sowImpact){const x=CRALL().find(y=>y.id===d.sowImpact);if(x){x.imp=true;if(x.st==="Requested")x.st="Impact review";aud(ME,"Reviewed impact",x.ct,x.id);toast("Impact review recorded","good");render();openCR(x.id)}return}
  if(d.sowApprove){const x=CRALL().find(y=>y.id===d.sowApprove);if(x){const ok=approveCR(x);render();if(ok)closeDrawer();else openCR(x.id)}return}
- if(d.sowReject){const x=CRALL().find(y=>y.id===d.sowReject);if(x){const i=CRS.indexOf(x);x.st="Requested";x.title="Rejected: "+x.title.replace(/^Rejected: /,"");x.thread.push({who:ME,t:"Rejected. Raise a new request with changes.",at:"Oct 6"});aud(ME,"Rejected change request",x.ct,x.id);toast(x.id+" rejected and returned to Requested","warn");closeDrawer();render()}return}
- if(d.sowCmtcr){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const x=CRALL().find(y=>y.id===d.sowCmtcr);if(x){x.thread.push({who:ME,t:v,at:"Oct 6"});openCR(x.id)}return}
+ if(d.sowReject){const x=CRALL().find(y=>y.id===d.sowReject);if(x){const i=CRS.indexOf(x);x.st="Requested";x.title="Rejected: "+x.title.replace(/^Rejected: /,"");x.thread.push({who:ME,t:"Rejected. Raise a new request with changes.",at:window.U.fmtDate(window.U.todayDate())});aud(ME,"Rejected change request",x.ct,x.id);toast(x.id+" rejected and returned to Requested","warn");closeDrawer();render()}return}
+ if(d.sowCmtcr){const i=$("#sow_cmt"),v=i&&i.value.trim();if(!v)return;const x=CRALL().find(y=>y.id===d.sowCmtcr);if(x){x.thread.push({who:ME,t:v,at:window.U.fmtDate(window.U.todayDate())});openCR(x.id)}return}
  if(d.sowSvcimp){const x=CRALL().find(y=>y.id===d.sowSvcimp),c=x&&ctOf(x.ct);if(c&&window.openImpact)openImpact({type:"change",id:x.id,service:c.svc});return}
  if(d.sowCmpopen){openCmp(d.sowCmpopen);return}
  if(d.sowOpen1){openLine(d.sowOpen1);return}

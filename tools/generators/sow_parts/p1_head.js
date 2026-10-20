@@ -5,7 +5,7 @@
 S.sow=S.sow||{ct:"CLM-1002",doc:"proposal",scope:"doc",cmp:"CLM-1001",run:null,line:null,crSel:null,oSel:null,more:{},rq:"all",pbq:""};
 const SW=S.sow;
 /* ---------- dates ---------- */
-const TDY="2026-10-06",DMS=864e5,t0=iso=>Date.parse(iso+"T00:00:00Z");
+const TDY=window.U.TODAY_ISO,DMS=864e5,t0=iso=>Date.parse(iso+"T00:00:00Z");
 const addD=(iso,n)=>new Date(t0(iso)+n*DMS).toISOString().slice(0,10);
 const difD=(a,b)=>Math.round((t0(a)-t0(b))/DMS);
 const fdt=(iso,noy)=>iso?new Date(t0(iso)).toLocaleDateString("en-US",Object.assign({month:"short",day:"numeric",timeZone:"UTC"},noy?{}:{year:"numeric"})):"None";
