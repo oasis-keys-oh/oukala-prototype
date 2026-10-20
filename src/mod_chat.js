@@ -3,6 +3,27 @@
    (plan, tools, human in the loop), Moveworks agentic fulfillment (plugins, approvals), Copilot Studio (topics and actions),
    Salesforce Agentforce (topics, actions, guardrails and trust layer). No network model: a deterministic planner scores tools. */
 (function(){
+/* ---------- PR-32 B6: TROWS, tenant row views for the operations and service modules (R16 to R20). Here because mod_chat loads
+   first of them. Meridian (core) reads the module's own stores exactly as before (the sources the entity core getters wrap, so
+   writes and Enterprise scale are unchanged). Any other tenant reads its pack through DATA.get, one part of an entity at a time,
+   kept per tenant while the pack rows are the same object, so records made in the session stay. Never Meridian rows elsewhere (R18).
+   arr(entity,part,coreFn,map) an array view a module keeps under its old name; state(obj,{key:[entity,part,map] | ()=>value})
+   a view of S.<prefix>; under another tenant mapped keys are the tenant's rows and "_" keys (caches) are kept per tenant. ---------- */
+if(!window.TROWS&&window.DATA){const DT=DATA,C={},core=()=>DT.tenant()==="core",tk=k=>DT.tenant()+"|"+k;
+ const part=(e,p,map)=>{const src=DT.get(e),k=tk(e+"|"+(p||""));let c=C[k];if(!c||c.src!==src){let r=p?src.filter(x=>x&&x.part===p):src;if(map)r=r.map(map);C[k]=c={src,rows:r}}return c.rows};
+ const local=(k,f)=>{k=tk("~"+k);if(!(k in C))C[k]={rows:f()};return C[k].rows};
+ const arr=(e,p,coreFn,map)=>{const cur=()=>core()?coreFn():part(e,p,map);return new Proxy([],{get:(t,k)=>{const a=cur(),v=a[k];return typeof v==="function"?v.bind(a):v},
+  set:(t,k,v)=>{cur()[k]=v;return true},has:(t,k)=>k in cur(),ownKeys:()=>Reflect.ownKeys(cur()),getOwnPropertyDescriptor:(t,k)=>k==="length"?{value:cur().length,writable:true,enumerable:false,configurable:false}:Reflect.getOwnPropertyDescriptor(cur(),k)})};
+ const state=(o,map)=>new Proxy(o,{get:(t,k)=>{if(core()||typeof k!=="string")return t[k];const m=map[k];if(m)return typeof m==="function"?local(k,m):part(m[0],m[1],m[2]);return k[0]==="_"?(C[tk("_"+k)]||{}).rows:t[k]},
+  set:(t,k,v)=>{if(!core()&&typeof k==="string"){const m=map[k];if(m){C[typeof m==="function"?tk("~"+k):tk(m[0]+"|"+(m[1]||""))]={src:typeof m==="function"?null:DT.get(m[0]),rows:v};return true}if(k[0]==="_"){C[tk("_"+k)]={rows:v};return true}}t[k]=v;return true}});
+ const org=()=>{const i=DT.tenantInfo(DT.tenant())||{};return i.org||i.n||DT.tenant()},short=()=>{const i=DT.tenantInfo(DT.tenant())||{};return i.short||org()};
+ const GAP="No data in this sample company yet";
+ const gap=what=>empty(GAP,(what?U.esc(what)+": ":"")+"the gap is recorded. Rows from another company are never shown in their place.");
+ /* a metric chip: Meridian's own metric; under another tenant a labeled gap with the metric's name (never Meridian figures or owners) */
+ const chip=(id,label)=>{if(core())return fchip(id,label);const m=(window.METRICS||{})[id]||{};return `<span class="pill mute" data-trows-gap title="${U.esc(GAP)}">ƒ ${U.esc(label||m.n||id)}: no data yet</span>`};
+ const me=()=>{const p=DT.get("people").find(x=>x&&x.kind==="human");return p?p.name:""};
+ const mode=(ids,entities,note)=>[].concat(ids).forEach(id=>DT.screen(id,{mode:"data",entities,note:note||"PR-32 B6: reads the active tenant's rows (TROWS over DATA.get)"}));
+ window.TROWS={core,arr,state,part,local,org,short,GAP,gap,chip,me,mode,term:(k,o)=>DT.term(k,o)}}
 const H=s=>esc(s==null?"":s);
 const CX=window.CHATX=window.CHATX||{};
 const LSK="oukala-chx-1";
