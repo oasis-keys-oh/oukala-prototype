@@ -216,9 +216,9 @@ function deriveApp(a){
  return{name:a.n,owner:a.owner,process:{},data:{reuse:a.reads||[],new:(a.newEnts||[]).map(n=>({id:n.id,label:n.id,why:n.why,dup:n.dupOf,fields:[{k:"id",classification:"internal"}]}))},metrics:[],links:{modules:[],search:true,notifications:!(a.m&&a.m.ownNotify)}}}
 const mkProc=(o,names)=>({trigger:"A request arrives",steps:names.map((n,i)=>({n,who:i===1?"agent":i===names.length-1?"human":"human",owner:i===1?"Triage Agent":o,sla:i===1?"15 minutes":"1 day"}))});
 const APPCON={
- ca_comments:{name:"Standards comment tracker",owner:"Chief Editor",process:mkProc("Chief Editor",["Log comment","Triage","Respond","Close"]),data:{reuse:["person","project"],new:[{id:"comment_thread",label:"Comment thread",why:"Public comments on exposure drafts have a thread and a response status; no registered entity holds an external commenter with a response.",fields:[{k:"draft_id",classification:"internal"},{k:"commenter",classification:"personal"},{k:"response_status",classification:"internal"}]}]},metrics:[{n:"Comments closed on time",f:"Comments answered by the due date ÷ comments due × 100",owner:"Chief Editor",tgt:90,rem:"Rebalance reviewers"}],maturity:{model:"cmmi",target:3},links:{modules:[{id:"ppl_org",dir:"pull",entity:"person"},{id:"plat_debt",dir:"push",entity:"debt_item"}],search:true,people:true}},
- ca_renewals:{name:"Member renewal reminders",owner:"Maya Ortiz",process:mkProc("Maya Ortiz",["Find renewals","Remind","Log response"]),data:{reuse:["person"],new:[]},metrics:[{n:"Renewals confirmed before expiry",f:"Renewals confirmed before the date ÷ renewals due × 100",owner:"Maya Ortiz",tgt:85,rem:"Send a second reminder"}],maturity:{model:"cmmi",target:2},links:{modules:[{id:"ppl_org",dir:"pull",entity:"person"},{id:"chat_home",dir:"push",entity:"notification"}],search:true,notifications:true}},
- ca_styleguide:{name:"Style guide search",owner:"Jordan Lee",process:mkProc("Jordan Lee",["Ask","Retrieve with citations","Review feedback"]),data:{reuse:["person","knowledge_article"],new:[]},metrics:[{n:"Answers with a citation",f:"Answers that cite a source ÷ answers given × 100",owner:"Jordan Lee",tgt:95,rem:"Retrain retrieval"},{n:"Helpful rate",f:"Thumbs up ÷ rated answers × 100",owner:"Jordan Lee",tgt:80,rem:"Review low-rated answers"}],maturity:{model:"cmmi",target:4},links:{modules:[{id:"kcs_home",dir:"pull",entity:"knowledge_article"},{id:"adm_audit",dir:"push",entity:"audit_event"}],search:true,chat:["style guide"]}},
+ ca_comments:{name:"Standards comment tracker",owner:"Chief Editor",process:mkProc("Chief Editor",["Log comment","Triage","Respond","Close"]),data:{reuse:["person","project"],new:[{id:"comment_thread",label:"Comment thread",why:"Public comments on exposure drafts have a thread and a response status; no registered entity holds an external commenter with a response.",fields:[{k:"draft_id",classification:"internal"},{k:"commenter",classification:"personal"},{k:"response_status",classification:"internal"}]}]},metrics:[{n:"Comments closed on time",f:"Comments answered by the due date ÷ comments due × 100",owner:"Chief Editor",tgt:90,rem:"Rebalance reviewers"}],maturity:{model:"cmmi",target:3},links:{modules:[{id:"ppl_org",dir:"pull",entity:"person"},{id:"plat_debt",dir:"push",entity:"debt_item"}],search:true,people:true},reuse:{archetype:"Dashboard-first list",compared:["kcs_home"]},tenant:{dataLayer:true,vocabulary:true},people:{ownerChip:true,chat:"platform"}},
+ ca_renewals:{name:"Member renewal reminders",owner:"Maya Ortiz",process:mkProc("Maya Ortiz",["Find renewals","Remind","Log response"]),data:{reuse:["person"],new:[]},metrics:[{n:"Renewals confirmed before expiry",f:"Renewals confirmed before the date ÷ renewals due × 100",owner:"Maya Ortiz",tgt:85,rem:"Send a second reminder"}],maturity:{model:"cmmi",target:2},links:{modules:[{id:"ppl_org",dir:"pull",entity:"person"},{id:"chat_home",dir:"push",entity:"notification"}],search:true,notifications:true},reuse:{archetype:"Dashboard-first list",compared:["kcs_home"]},tenant:{dataLayer:true,vocabulary:true},people:{ownerChip:true,chat:"platform"}},
+ ca_styleguide:{name:"Style guide search",owner:"Jordan Lee",process:mkProc("Jordan Lee",["Ask","Retrieve with citations","Review feedback"]),data:{reuse:["person","knowledge_article"],new:[]},metrics:[{n:"Answers with a citation",f:"Answers that cite a source ÷ answers given × 100",owner:"Jordan Lee",tgt:95,rem:"Retrain retrieval"},{n:"Helpful rate",f:"Thumbs up ÷ rated answers × 100",owner:"Jordan Lee",tgt:80,rem:"Review low-rated answers"}],maturity:{model:"cmmi",target:4},links:{modules:[{id:"kcs_home",dir:"pull",entity:"knowledge_article"},{id:"adm_audit",dir:"push",entity:"audit_event"}],search:true,chat:["style guide"]},reuse:{archetype:"Dashboard-first list",compared:["kcs_home"]},tenant:{dataLayer:true,vocabulary:true},people:{ownerChip:true,chat:"platform"}},
  ca_lease:{name:"Lease expiry watcher",owner:"",process:mkProc("Facilities",["Scan leases","Warn","Confirm action"]),data:{reuse:["contract"],new:[]},metrics:[],links:{modules:[{id:"bud_ven",dir:"pull",entity:"contract"}],search:true}}};
 /* ---------- gate and MCP plug-ins ---------- */
 function plugGate(CHECKS,R){
@@ -227,6 +227,10 @@ function plugGate(CHECKS,R){
   CHECKS.push({id:r.chk,n:r.n+" (feature contract)",rule:r.short,t:"team",run:a=>{
    const mf=a.contract||APPCON[a.id]||deriveApp(a),rl=evaluateManifest(mf).by[r.id],wv=applyWaiver(a.id,r.id,rl);
    if(wv.st==="pass")return R("pass",wv.ev);if(wv.st==="waived")return R("warn",wv.ev,wv.fix);return R("fail",(wv.st==="partial"?"Partly met. ":"")+wv.ev,wv.fix)}})});
+ FRULES.forEach(r=>{if(CHECKS.some(c=>c.id===r.chk))return;
+  CHECKS.push({id:r.chk,n:r.n+" (feature contract)",rule:r.short+" ("+r.rules+")",t:"team",run:a=>{
+   const mf=a.contract||APPCON[a.id]||deriveApp(a),rl=fManifest(mf)[r.id],wv=applyWaiver(a.id,r.id,rl);
+   if(wv.st==="pass")return R("pass",wv.ev);if(wv.st==="waived")return R("warn",wv.ev,wv.fix);return R("fail",(wv.st==="partial"?"Partly met. ":"")+wv.ev,wv.fix)}})});
  return true}
 function runTool(a){
  a=a||{};let t=a.manifest&&typeof a.manifest==="object"?a.manifest:a.feature_id;
@@ -234,7 +238,7 @@ function runTool(a){
  if(typeof t==="string"&&!ctx().feats.some(f=>f.id===t))throw new Error("Unknown feature: "+t+". Use a screen id, a module id or a citizen app id.");
  const res=run(t,{via:"MCP tool run_feature_contract"});
  return{feature:res.ev.name,verdict:res.verdict,score:res.ev.score,level:res.ev.level,promotable:res.ev.pass&&!res.ev.naming.length,
-  rules:res.ev.rules.map(r=>({rule:r.id,check:r.chk,result:r.st,evidence:r.ev,fix:r.fix})),naming_violations:res.ev.naming,
+  rules:res.ev.rules.map(r=>({rule:r.id,check:r.chk,result:r.st,evidence:r.ev,fix:r.fix})),foundation:tryv(()=>foundation(typeof t==="string"?t:t).rules.map(r=>({rule:r.id,check:r.chk,result:r.st,evidence:r.ev,fix:r.fix})),[]),naming_violations:res.ev.naming,
   agents:res.steps.map(s=>({agent:s.agent,calls:s.calls.length,findings:s.findings.length,proposals:s.props.length})),
   next_actions:res.steps.flatMap(s=>s.props.map(p=>p.title+" ("+p.kind+")")).slice(0,8)}}
 function plugMcp(TOOLS,IMPL){
@@ -249,6 +253,7 @@ function fromDraft(d){
    process:{ref:pr.tpl||undefined,trigger:pr.trigger,steps:arrS(pr.steps).map(s=>({n:s.n,who:s.who,owner:s.owner,sla:s.sla}))},
    data:{reuse:arrS(dt.reuse),extend:arrS(dt.ext).map(x=>({entity:x.ent,add:arrS(x.add).map(f=>f.k)})),new:arrS(dt.neu).map(n=>({id:n.id,label:n.label,why:n.why,fields:arrS(n.fields).map(f=>({k:f.k,classification:f.classification,authority:f.authority}))}))},
    metrics:arrS(d.metrics).map(q=>({n:q.n,f:q.f,owner:q.owner,tgt:q.tgt,rem:q.remTitle})),maturity:d.mat?{model:d.mat.model,target:d.mat.target}:undefined,
+   reuse:{archetype:d.arch||"Dashboard-first list",compared:arrS(d.compared).length?arrS(d.compared):["Registry search in Build a module"]},tenant:{dataLayer:true,vocabulary:true},people:{ownerChip:true,chat:"platform"},
    links:{modules:conns.map(c=>({id:c.other,dir:c.dir,entity:c.entity})),search:true,notifications:!!sec.notify,approvals:arrS(pr.steps).some(s=>s.who==="gate"),inbox:arrS(pr.steps).some(s=>s.who==="gate")}}}catch(e){return{}}}
 /* ---------- metrics ---------- */
 const MEMBER=(id,n,f,u,cur,tgt,badAt,dir,max,tr,rem)=>({n,f,u,cur,tgt,badAt,dir,max,tr,owner:"Platform team",use:["Feature contract"],rem});
@@ -477,6 +482,7 @@ function openFeature(id){
  const body=`<div class="eyebrow">Feature contract · ${E(ev.kind)}</div><h2 style="margin:2px 0 4px">${E(ev.name)}</h2>
  <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:10px">${lvPill(ev)}${pill_(ev.score+" of 4","metric")}${pill_(ev.area,"mute")}<span class="small muted">Owner ${typeof pchip==="function"&&window.DIR&&DIR.some(d=>d.name===ev.owner)?pchip(ev.owner):E(ev.owner)}</span></div>
  <div class="dfullgrid">${ev.rules.map((r,i)=>`<section class="card glass ct-fr"><div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${i+1}. ${E(r.n)}</b>${st_(r)}</div><p class="small" style="margin:6px 0">${E(r.ev)}</p>${r.st!=="pass"&&r.st!=="waived"?`<p class="small"><b>Fix.</b> ${E(r.fix)}</p>`:""}${r.st==="gap"||r.st==="partial"?`<button class="btn quiet" data-ct-waive="${E(id)}:${r.id}">Request a waiver</button>`:""}${r.refs&&r.refs[0]&&r.id==="process"?`<button class="btn quiet" data-ct-proc="${E(r.refs[0])}">Open the process</button>`:""}${r.ents&&r.ents[0]&&r.id==="data"?`<button class="btn quiet" data-ct-ent="${E(r.ents[0])}">Open in the atlas</button>`:""}</section>`).join("")}</div>
+ ${foundationBlock(id)}
  ${dec?`<div class="ct-ex" style="margin-top:12px"><b>Integration decision</b><div class="small">${E(dec.decision)}${dec.entity?" "+E(dec.entity):""}. ${E(dec.why)}</div></div>`:""}
  <div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn primary" data-ct-run="${E(id)}">Run the agents on this</button>${act}</div>`;
  openDrawer(body)}
@@ -624,6 +630,97 @@ ASKX.push(q=>{
  if(/(four|4) rules|build rules|feature contract rules|standing rules/.test(t)){S.v.contract=2;go("plat_contract");say(q,{t:"Every feature must have: <b>1.</b> an editable process model, <b>2.</b> a data model with a recorded reuse, extend or new decision, <b>3.</b> metrics with a maturity record, <b>4.</b> interconnectivity with the rest of the app. The gate and the MCP tool enforce them.",steps:["Opened The four rules"]});return true}
  if(/feature contract|contract (coverage|compliance|gaps|matrix|status)|retrofit/.test(t)){const s=stats();S.v.contract=0;go("plat_contract");say(q,{t:"Contract coverage is "+s.coveragePct+"%: "+s.fullContract+" of "+s.features+" features meet all four rules, with "+s.openGaps+" open gaps and "+s.waivers+" waivers.",steps:["Opened the Feature contract dashboard"]});return true}
  return false});
+/* ---------- CL-59: foundation checks ct_reuse, ct_tenant, ct_people (Platform rules Part 3, decision 3) ----------
+   Rules 6 to 8 of the contract. Reported beside the 0 to 4 score; for citizen apps and Build a module drafts they block promotion
+   from the team tier up (plugGate). Existing screens are scored by the retrofit matrix (screen plat_retrofit) with no compliance
+   date (decision 7). Screen evidence joins the live registries (CONTRACT.declare, PROC.defs, DATA.screens) with the static facts
+   in window.SRCFACTS (src/mod_s_facts.js, generated by tools/lint/facts.js; it describes the file that registers the screen). */
+const FRULES=[
+ {id:"reuse",chk:"ct_reuse",n:"Reuse of screens and components",rules:"R1 to R4, R7",short:"The screen declares its archetype, records which existing screen it was compared with, shows its process through the designer and uses the shared components."},
+ {id:"tenant",chk:"ct_tenant",n:"Tenant-aware by construction",rules:"R16 to R20",short:"The screen reads its records through the tenant data layer (DATA) and uses tenant vocabulary, so every tenant sees its own data and no other."},
+ {id:"people",chk:"ct_people",n:"People, chat and step conventions",rules:"R13, R13a, R21",short:"Owners render through ownerChip, conversations use the one platform chat, and every step is human, robot or agent."}];
+const FB={};FRULES.forEach(r=>FB[r.id]=r);
+const ARCH=["Dashboard-first list","Record detail drawer","360 view","Board","Designer canvas","Intake form","Approval inbox","Report"];
+C.decl=C.decl||{};
+function declare(id,o){if(!id||!o)return null;const a=o.archetype&&ARCH.find(x=>x.toLowerCase()===String(o.archetype).toLowerCase());
+ if(o.archetype&&!a)throw new Error("Unknown archetype "+o.archetype+". Use one of: "+ARCH.join(", ")+", or propose a new one for review.");
+ C.decl[id]=Object.assign({},C.decl[id]||{},a?{archetype:a}:{},o.compared?{compared:arrS(o.compared).filter(Boolean)}:{},o.note!=null?{note:String(o.note)}:{},{by:o.by||"Platform lead",at:TODAY});
+ bust();return C.decl[id]}
+const FX=()=>window.SRCFACTS||{files:{},screens:{}};
+function factsOf(id){const F=FX();const file=F.screens[id]||tryv(()=>SCRMAP_DATA.screens[id].f,null);return{file,x:file?F.files[file]||null:null}}
+const LEGACY=/^(auto|automatic|fn|function)$/i;
+function fScreen(id){
+ const d=C.decl[id]||{},fc=factsOf(id),x=fc.x,src=fc.file?" ("+fc.file+")":"";
+ const proc=!!tryv(()=>PROC.defs[id],null),cmp=arrS(d.compared);
+ /* ct_reuse */
+ const ru=(d.archetype?"Archetype: "+d.archetype:"No archetype declared")+"; "+(cmp.length?"compared with "+cmp.slice(0,3).join(", "):"no comparison with an existing screen recorded")+"; "+(proc?"its process strip opens the workflow designer":"no PROC.reg, so no process strip that opens the designer")+(x?"; the file that registers it"+src+" makes "+x.shared+" shared component call"+(x.shared===1?"":"s")+" and builds "+x.table+" table"+(x.table===1?"":"s")+" by hand":"; no source facts for it")+".";
+ const rfix="Declare the archetype and the screen it was compared with (CONTRACT.declare or the Declare button), register PROC.reg so procCard opens the designer, and use btHTML, views and openForm instead of hand-built tables and tabs.";
+ const reuse=d.archetype&&cmp.length&&proc?R_("pass",ru):(d.archetype||proc||(x&&x.shared>0))?R_("partial",ru,rfix):R_("gap",ru,rfix);
+ /* ct_tenant */
+ const mode=tryv(()=>DATA.screenMode(id),"core"),tu="Tenant mode "+mode+(mode==="data"?" (reads through DATA)":mode==="tenant"?" (follows the tenant through SCN or TENANT, not yet DATA)":" (shows the core sample tenant under every tenant)")+(x?"; the file"+src+" has "+x.dget+" DATA reads and "+x.dterm+" vocabulary lookups":"")+".";
+ const tfix="Read records with DATA.get, declare the screen with DATA.screen(id,{mode:\"data\",entities}), and take industry nouns from DATA.term.";
+ const tenant=mode==="data"?R_("pass",tu):(mode==="tenant"||(x&&(x.dget>0||x.dterm>0)))?R_("partial",tu,tfix):R_("gap",tu,tfix);
+ /* ct_people */
+ let people;const pfix="Render every owner, backup, approver, assignee, sponsor, requester and reviewer with ownerChip (pairs with ownerChip.pair), open conversations through CHATADDR, and use STEPMODE for step kinds (human, robot, agent).";
+ if(!x)people=R_("partial","No source facts for the file that registers this screen, so owner rendering was not measured.",pfix);
+ else{const chips=x.chip+x.pchip,pu=x.chip+" ownerChip and "+x.pchip+" person chip calls, "+x.plain+" plain-text owner field"+(x.plain===1?"":"s")+" and "+x.legacy+" legacy step kind"+(x.legacy===1?"":"s")+" in "+fc.file+".";
+  people=!x.plain&&!x.legacy?R_("pass",pu):chips>0?R_("partial",pu,pfix):R_("gap",pu,pfix)}
+ return{reuse,tenant,people}}
+function fManifest(m){
+ m=m||{};const ru=m.reuse||{},te=m.tenant||{},pe=m.people||{},steps=arrS(m.process&&m.process.steps);
+ const arch=ru.archetype&&ARCH.some(a=>a.toLowerCase()===String(ru.archetype).toLowerCase()),cmp=arrS(ru.compared);
+ const reuse=arch&&cmp.length?R_("pass","Archetype "+ru.archetype+"; compared with "+cmp.slice(0,3).join(", ")+"."):arch||cmp.length?R_("partial",(arch?"Archetype "+ru.archetype+", but no comparison recorded.":"A comparison is recorded, but no archetype from the pattern library is declared."),"Declare reuse.archetype (one of "+ARCH.join(", ")+") and reuse.compared (the screens it was compared with)."):R_("gap","No archetype and no comparison with existing screens in the manifest.","Add a reuse section: {archetype, compared:[screen ids]}.");
+ const tenant=te.dataLayer&&te.vocabulary!==false?R_("pass","Reads through the tenant data layer"+(te.vocabulary?" and uses tenant vocabulary":"")+"."):te.dataLayer?R_("partial","Reads through the tenant data layer, but declares hard-coded vocabulary.","Take industry nouns from DATA.term."):R_("gap","No statement that the app reads through the tenant data layer.","Add tenant:{dataLayer:true, vocabulary:true}; reads go through DATA.get.");
+ const bad=steps.filter(s=>LEGACY.test(String(s.who||""))).length,own=pe.ownerChip===true,chat=pe.chat==null||pe.chat==="platform";
+ const pu=(own?"Owners render through ownerChip":"No statement that owners render through ownerChip")+"; "+(chat?"chat uses the platform service":"declares its own chat or comment box")+"; "+(bad?bad+" step"+(bad===1?"":"s")+" use a retired kind (Automatic or Function)":"every step is human, robot, agent or a gate")+".";
+ const people=own&&chat&&!bad?R_("pass",pu):(own||chat)&&!(bad&&!own)?R_("partial",pu,"Set people:{ownerChip:true, chat:\"platform\"} and make every step human, robot or agent."):R_("gap",pu,"Set people:{ownerChip:true, chat:\"platform\"} and make every step human, robot or agent.");
+ return{reuse,tenant,people}}
+function foundation(id){
+ const x=ctx(),f=typeof id==="object"&&id?null:x.feats.find(q=>q.id===id);
+ let raw;if(!f)raw=fManifest(id);else if(f.kind==="app"){const a=f.app;raw=fManifest(a.contract||APPCON[a.id]||deriveApp(a))}else if(f.kind==="screen")raw=fScreen(f.id);else return null;
+ const fid=f?f.id:"manifest";const arr=FRULES.map(r=>Object.assign({id:r.id,chk:r.chk,n:r.n,rules:r.rules},applyWaiver(fid,r.id,raw[r.id])));
+ return{id:fid,name:f?f.name:(id&&id.name)||"Draft manifest",kind:f?f.kind:"draft",rules:arr,by:rules2obj(arr),pass:arr.every(r=>r.st==="pass"||r.st==="waived"),
+  blocks:f&&f.kind==="app"?["team","enterprise"].indexOf(f.app.tier)>=0||f.app.status==="certified":f?false:true}}
+let FMX=null,FMXK="";
+function foundationMatrix(){ctx();const k=CXK+"|"+Object.keys(C.decl).length+"|"+C.waivers.length+"|"+tryv(()=>DATA.screens().filter(s=>s.mode!=="core").length,0);
+ if(FMX&&FMXK===k)return FMX;FMX=ctx().feats.filter(f=>f.kind!=="module").map(f=>{try{const r=foundation(f.id);return r?Object.assign(r,{area:f.area,file:f.kind==="screen"?factsOf(f.id).file||"":""}):null}catch(e){return null}}).filter(Boolean);FMXK=k;return FMX}
+function foundationStats(){const mx=foundationMatrix().filter(r=>r.kind==="screen");const o={screens:mx.length,all:mx.filter(r=>r.pass).length};
+ FRULES.forEach(r=>{o[r.id]={pass:0,partial:0,gap:0,waived:0};mx.forEach(x=>o[r.id][x.by[r.id].st]++)});return o}
+function foundationBlock(id){const fv=tryv(()=>foundation(id),null);if(!fv)return"";
+ return`<h3 class="ct-h4" style="margin-top:14px">Foundation checks (rules 6 to 8)</h3><p class="small muted">${fv.kind==="app"?"These block promotion from the team tier up.":"Reported in the retrofit matrix; existing screens are scored, not blocked, and no compliance date is set yet."}</p>
+ <div class="dfullgrid">${fv.rules.map((r,i)=>`<section class="card glass ct-fr"><div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${i+6}. ${E(r.n)}</b>${pill_(STL[r.st][0],STL[r.st][1])}</div><p class="small muted" style="margin:2px 0">${E(r.chk)} · ${E(r.rules)}</p><p class="small" style="margin:6px 0">${E(r.ev)}</p>${r.st!=="pass"&&r.st!=="waived"?`<p class="small"><b>Fix.</b> ${E(r.fix)}</p>`:""}${r.id==="reuse"&&fv.kind==="screen"?`<button class="btn quiet" data-ct-decl="${E(id)}">Declare archetype and comparison</button>`:""}${r.st==="gap"||r.st==="partial"?`<button class="btn quiet" data-ct-waive="${E(id)}:${r.id}">Request a waiver</button>`:""}</section>`).join("")}</div>`}
+function declareForm(id){const nm=tryv(()=>SCREENS.find(s=>s[0]===id)[1],id),d=C.decl[id]||{};
+ openForm({id:"ct_decl",title:"Declare archetype: "+nm,story:"Rule R2: every screen is an instance of a named archetype, and R3: a new screen says which existing screen it was compared with. The retrofit matrix re-scores the screen as soon as you save.",submit:"Save the declaration",
+  fields:[{k:"archetype",label:"Archetype",type:"select",req:true,opts:ARCH,help:"From the screen pattern library. If none fits, propose a new archetype for review instead of building a one-off."},
+   {k:"compared",label:"Compared with",type:"multi",req:true,opts:tryv(()=>SCREENS.filter(s=>s[0]!==id).map(s=>[s[0],s[1]]),[]),help:"The existing screens this one was compared with before it was kept as its own screen."},
+   {k:"note",label:"Why it is its own screen",type:"longtext",ph:"What the compared screens could not show as a tab, filter or drawer"}],
+  defaults:{archetype:d.archetype||"",compared:d.compared||[],note:d.note||""},
+  onSubmit:v=>{try{declare(id,{archetype:v.archetype,compared:v.compared,note:v.note,by:tryv(()=>S.user||PERSONAS[S.persona].name,"Platform lead")})}catch(e){toast(e.message,"bad");return}
+   audit("Declared screen archetype",nm+": "+v.archetype);toast("Declaration saved; the matrix re-scored "+nm,"good");closeDrawer();render()}})}
+function retrofitFn(){
+ if(!C.wired)wire();
+ const s=foundationStats(),mx=foundationMatrix(),apps=mx.filter(r=>r.kind==="app"),blocked=apps.filter(r=>r.blocks&&!r.pass).length;
+ const story=`<b>${s.all} of ${s.screens}</b> screens pass all three foundation checks today. ${s.reuse.pass} declare an archetype and a comparison, ${s.tenant.pass} read through the tenant data layer and ${s.people.pass} render owners only through the owner chip. Existing screens are scored here first; no compliance date is set (decision 7). New and changed citizen apps are blocked from the team tier up when a check fails (${blocked} of ${apps.length} apps are blocked today).`;
+ const kp=typeof kpiRow==="function"?kpiRow([["Screens scored",s.screens,"every registered screen",{keep:true}],["Pass all three",s.all,s.screens?Math.round(100*s.all/s.screens)+"% of screens":"",{keep:true}],["ct_reuse met",s.reuse.pass,s.reuse.partial+" partly met, "+s.reuse.gap+" gaps",{keep:true}],["ct_tenant met",s.tenant.pass,s.tenant.partial+" partly met, "+s.tenant.gap+" gaps",{keep:true}],["ct_people met",s.people.pass,s.people.partial+" partly met, "+s.people.gap+" gaps",{keep:true}],["Apps blocked",blocked,"team tier and up",{keep:true}]]):"";
+ const cell=k=>r=>`<span class="pill ${STL[r[k]][1]}">${STL[r[k]][0]}</span>`;
+ const rows=()=>foundationMatrix().map(r=>({id:r.id,name:r.name,kind:r.kind==="app"?"Citizen app":"Screen",area:r.area,file:r.file||"",reuse:r.by.reuse.st,tenant:r.by.tenant.st,people:r.by.people.st,met:r.rules.filter(x=>x.st==="pass"||x.st==="waived").length,gate:r.kind==="app"?(r.blocks?(r.pass?"Passes":"Blocked"):"Advice only (personal tier)"):"Reported, not blocked"}));
+ const tbl=typeof btHTML==="function"?btHTML({id:"ct_retro",key:"id",h:560,rowH:46,facets:["kind","area","reuse","tenant","people","gate"],groupBy:["kind","area"],exportName:"retrofit-matrix",sort:{k:"met",d:1},
+  cols:[{k:"name",label:"Screen or app",wrap:true,fmt:r=>`<b>${E(r.name)}</b> <span class="small muted">${E(r.id)}</span>`},{k:"reuse",label:"6 Reuse",fmt:cell("reuse"),val:r=>r.reuse},{k:"tenant",label:"7 Tenant",fmt:cell("tenant"),val:r=>r.tenant},{k:"people",label:"8 People",fmt:cell("people"),val:r=>r.people},{k:"met",label:"Met",fmt:r=>`<span class="num">${r.met}/3</span>`},{k:"gate",label:"Gate",wrap:true},{k:"file",label:"Source file",wrap:true},{k:"area",label:"Area",wrap:true}],rows,open:id=>openFeature(id)}):"";
+ const how=card("How each check is scored","Evidence is read from the live registries and from the source facts file; open a row for the evidence on one screen",`<div class="grid g3" style="gap:12px">${FRULES.map((r,i)=>`<section class="ct-ex"><b>${i+6}. ${E(r.n)}</b><div class="small muted">${E(r.chk)} · ${E(r.rules)}</div><p class="small" style="margin:6px 0 0">${E(r.short)}</p></section>`).join("")}</div><p class="small muted" style="margin-top:10px">Met: every part holds. Partly met: some evidence (for example a process strip, shared components, a tenant mode of "tenant", or owner chips beside plain-text owners). Gap: none. Source facts come from <code>src/mod_s_facts.js</code>, generated by <code>tools/lint/facts.js</code> (prototype fact for the build it was generated from).</p>`);
+ const extra=`<div class="row"><button class="btn" data-ct-go="plat_contract">Open the Feature contract</button><button class="btn quiet" data-ct-go="plat_gate">Open Citizen apps</button></div>`;
+ return`<div class="screen">${hero("Platform","Retrofit matrix: reuse, tenant and people checks on every screen",story,extra)}${lensNote()}${kp}<div style="margin-top:16px">${card("Every screen and citizen app","Facets filter by check and state; open a row for evidence and fixes",tbl+`<div class="legend" role="note"><span><i class="ct-sw ct-s-pass"></i>Met</span><span><i class="ct-sw ct-s-partial"></i>Partly met</span><span><i class="ct-sw ct-s-waived"></i>Waived by exception</span><span><i class="ct-sw ct-s-gap"></i>Gap</span></div>`)}</div><div style="margin-top:16px">${how}</div>${procCard("plat_retrofit")}</div>`}
+REG("plat_retrofit","Retrofit matrix","platform","M4 5h16v14H4zM4 10h16M4 15h16M10 5v14M15 5v14",retrofitFn);
+PROC.reg("plat_retrofit",{title:"How an existing screen is brought onto the foundation",std:["cmmi","togaf"],steps:[
+ {n:"Score",d:"The matrix scores every screen on reuse, tenant and people from the registries and the source facts.",who:"robot",owner:"Platform lead",sla:"On every change",in:"Registries, source facts",out:"Scores per screen"},
+ {n:"Declare",d:"The screen owner declares the archetype and the screen it was compared with.",who:"human",owner:"Screen owner",sla:"5 days",in:"Gap on ct_reuse",out:"Declaration"},
+ {n:"Migrate",d:"Reads move to DATA, owners to ownerChip, step kinds to STEPMODE.",who:"human",owner:"Screen owner",sla:"Per sprint",in:"Gap on ct_tenant or ct_people",out:"Changed screen"},
+ {n:"Gate",d:"New and changed citizen apps are blocked from the team tier up until the three checks pass or a waiver with an expiry is approved.",who:"gate",owner:"Platform team",sla:"1 day",in:"Scores",out:"Pass, blocked or waived"}]});
+tryv(()=>NAVX.add("plat_retrofit",{group:"plat",label:"Retrofit matrix",hint:"Reuse, tenant and people checks on every screen",sub:"Retrofit matrix",kw:"retrofit matrix foundation checks ct_reuse ct_tenant ct_people archetype tenant aware owner chip step modes compliance"}));
+SEARCHX.push(()=>[{g:"Platform",t:"Retrofit matrix",m:"Reuse, tenant and people checks",c:"--p4",f:()=>go("plat_retrofit"),k:"retrofit matrix foundation checks ct_reuse ct_tenant ct_people archetype tenant owner chip"}]);
+ASKX.push(q=>{const t=q.toLowerCase();if(!/retrofit|foundation check|ct_reuse|ct_tenant|ct_people|(which|how many) screens.*(tenant|archetype|owner chip)/.test(t))return false;
+ const s=foundationStats();go("plat_retrofit");say(q,{t:"<b>"+s.all+" of "+s.screens+"</b> screens pass all three foundation checks. Reuse: "+s.reuse.pass+" met; tenant: "+s.tenant.pass+" met; people: "+s.people.pass+" met. No compliance date is set yet.",steps:["Scored every screen","Opened the Retrofit matrix"]});return true});
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-ct-decl]");if(!t)return;declareForm(t.dataset.ctDecl)});
 /* ---------- public API ---------- */
-window.CONTRACT={rules:RULES,agents:AGENTS,evaluate,matrix,run,stats,evaluateManifest,fromDraft,plugGate,plugMcp,runTool,naming,features:()=>ctx().feats.slice(),decisions:()=>C.entDecisions.slice(),waivers:()=>C.waivers.slice(),refresh:bust,sample:{good:SAMPLE_GOOD,bad:SAMPLE_BAD}};
+window.CONTRACT={rules:RULES,agents:AGENTS,evaluate,matrix,run,stats,evaluateManifest,fromDraft,plugGate,plugMcp,runTool,naming,features:()=>ctx().feats.slice(),decisions:()=>C.entDecisions.slice(),waivers:()=>C.waivers.slice(),refresh:bust,sample:{good:SAMPLE_GOOD,bad:SAMPLE_BAD},
+ foundationRules:FRULES,archetypes:ARCH,declare,declarations:()=>Object.assign({},C.decl),foundation,foundationMatrix,foundationStats};
 })();

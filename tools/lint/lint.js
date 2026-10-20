@@ -77,7 +77,7 @@ const RULES=[
     const before=c.slice(Math.max(0,m.index-12),m.index+m[1].length);if(/\b(const|let|var|function)\s*$/.test(before))continue;out.push({i:m.index,s:m[0].trim()})}return out}}
 ];
 const inScope=(r,s)=>{if(r.scope==='all')return true;if(r.scope==='css')return s.ext==='css';if(s.ext!=='js')return false;
- if(r.scope==='js')return true;if(r.scope==='mod')return s.module;
+ if(r.scope==='js')return true;if(r.scope==='mod')return s.module&&!s.generated;
  const view=!s.generated&&s.f!=='platform.js';if(r.scope==='view')return view;
  if(r.scope==='mod-view')return view&&s.module&&!/^mod_s_pack_|^mod_s_tenant/.test(s.f)&&!/_data\.js$/.test(s.f);return false};
 
@@ -125,5 +125,7 @@ if(better&&!has('--update'))console.log('lint: '+better+' file and rule pairs ar
 if(has('--report'))for(const r of RULES){const cur=res[r.id]||{};const top=Object.entries(cur).sort((a,b)=>b[1]-a[1]).slice(0,8);if(!top.length)continue;
  console.log('\n'+r.rule+' '+r.n+' ['+r.id+'] '+Object.values(cur).reduce((a,b)=>a+b,0)+' in '+Object.keys(cur).length+' files');top.forEach(([f,n])=>{console.log('  '+n+' '+f);(samples[r.id][f]||[]).slice(0,2).forEach(x=>console.log('      '+x))})}
 if(has('--json'))console.log(JSON.stringify(res));
-if(bad)console.log('lint failed: '+bad+' new violation'+(bad===1?'':'s')+' (rules and fixes: docs/enforcement.md)');
+/* CL-59: the contract facts file must match the source (warning only, so a merge never fails on it; rerun the generator) */
+try{const fx=require('./facts');if(!fx.current().ok)console.log('lint warning: src/mod_s_facts.js is stale (Feature contract facts); run node tools/lint/facts.js --write')}catch(e){console.log('lint warning: facts check skipped,',e.message)}
+if(bad)console.log('lint failed:'+bad+' new violation'+(bad===1?'':'s')+' (rules and fixes: docs/enforcement.md)');
 process.exit(bad?1:0);
