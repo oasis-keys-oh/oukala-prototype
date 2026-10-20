@@ -199,3 +199,21 @@ Uppercase is for eyebrow labels only: a short label above a heading or a group o
 The other 131 rules (table headers, stat and tile captions, badges, pills, field labels, section labels inside cards) dropped the uppercase and the wide letter-spacing that went with it (130 declarations), so text shows as written, in sentence case. CSS cannot turn text into sentence case, so a label written in capitals or lower case in a script still shows that way; two scripts set capitals inline (`mod_exec.js`, `mod_r17q_c_value.js`, JS stream).
 
 The all-caps metric modals: a popover sits in the DOM inside the chip or label that opens it, so it inherited that label's capitals, tracking and bold weight. `.pop` now starts from body text (`text-transform:none`, normal tracking, body weight); eyebrows inside it stay uppercase.
+
+## Cascade layers and !important (CL-26)
+Layer order, declared once at the top of the token block: `@layer base, components, modules, overrides;`. The tokens are in `base`.
+
+Why the rest is not in layers yet: a rule in a later layer beats any rule in an earlier layer whatever its specificity, unlayered rules beat all layers, and for `!important` the order flips (earlier layers win). Today the cascade between style*.css and module files is decided by specificity and source order; putting style*.css in `components` and modules in `modules` changes every contest where an earlier file wins by specificity, and each one needs a screenshot review. The plan per file: move a file into its layer only when `css_shots.js` shows no difference, then drop the `!important` that only existed to win against a later file.
+
+This pass removed `!important` where it changes nothing (prototype fact, observed states). `tools/tests/css_important.js` opens all 195 screens in light, dark and 400 px; for each `!important` longhand whose selector matches, it drops the priority, compares the computed value on up to 40 matched elements and puts it back. A declaration lost its `!important` only when it matched on at least one screen, never made a difference, and is not a property that scripts often set inline (display, visibility, position, offsets, transform, sizes, opacity, pointer-events, z-index, overflow; 28 such declarations kept although they made no difference).
+
+| | Count |
+|---|---|
+| `!important` in source CSS before | 375 |
+| removed (matched, no difference anywhere) | 64 |
+| kept: made a difference on some screen | 61 |
+| kept: never matched (hover, focus, open panels, other tenants) | 218 |
+| kept: no difference but a property scripts set inline | 28 |
+| left | 311 |
+
+`css_lint.js` fails when the count goes above 311. Risk: a removed declaration could still matter in a state the probe does not reach (after a click, a drag or a resize); the full suite and the screenshot pass found none.

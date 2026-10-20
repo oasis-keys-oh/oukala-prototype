@@ -4,15 +4,15 @@
 :root:root .rail::before{display:none}
 :root:root .rail::after{background:radial-gradient(130% 22% at 18% -3%,rgba(255,255,255,.20),transparent 62%),linear-gradient(104deg,rgba(255,255,255,.06),transparent 30%)}
 :root:root .rail .nx-favs,:root:root .rail [data-nx-favs],:root:root .rail .r16-favacc{display:none!important}
-.r18-hs,.r18-vcr-v,.r18-vcr-c,.r18-vcr-r{border:0!important;border-radius:var(--rad-2xl);padding:14px 16px}
+.r18-hs,.r18-vcr-v,.r18-vcr-c,.r18-vcr-r{border:0;border-radius:var(--rad-2xl);padding:14px 16px}
 .r18-hs-v{background:color-mix(in srgb,var(--good-f) 11%,transparent)}
 .r18-hs-c{background:color-mix(in srgb,var(--warn-f) 14%,transparent)}
 .r18-hs-r{background:color-mix(in srgb,var(--bad-f) 11%,transparent)}
 .r18-hs-v .r18-vk{color:var(--good-f)}.r18-hs-c .r18-vk{color:color-mix(in srgb,var(--warn-f) 70%,var(--ink))}.r18-hs-r .r18-vk{color:var(--bad-f)}
-.r18-bt{border:0!important}.r18-bt::before{display:none}
+.r18-bt{border:0}.r18-bt::before{display:none}
 .r18-bt-l{border-top:0;padding-top:4px}
-.r18-quote{border:0!important}
-.r18-bc,.r18-cc{border:0!important;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.r18-quote{border:0}
+.r18-bc,.r18-cc{border:0;background:color-mix(in srgb,var(--ink) 4%,transparent)}
 .r18-lbar .r18-lopt{border:0;background:color-mix(in srgb,var(--ink) 5%,transparent)}
 .r18-lbar .r18-lopt.on{background:linear-gradient(140deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#6a4cd6))}
 .r18-homelens .r18-hl-row{gap:12px}

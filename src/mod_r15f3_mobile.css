@@ -50,4 +50,4 @@ body.r3m-on #view{padding-bottom:0}
 .r3m-card.go-r .r3m-swipe.r,.r3m-card.go-l .r3m-swipe.l{opacity:1}
 .r3m-in{background:var(--bg)}
 .r3m-sub .muted{flex-basis:100%;font-size:var(--fs-sm)}
-.screen.r3m{animation:none!important;transform:none!important}
+.screen.r3m{animation:none;transform:none!important}

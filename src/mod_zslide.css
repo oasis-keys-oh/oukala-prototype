@@ -61,7 +61,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 
 /* wrap mode (a native scroll container with its own native bars hidden) */
 .zs-wrap{position:relative;padding-bottom:var(--zs-b,var(--zs-bh));padding-right:var(--zs-r,0px);max-width:100%;box-sizing:border-box}
-.zs-wrap>.zs-scroller{overflow:auto;scrollbar-width:none!important;-ms-overflow-style:none;max-width:100%}
+.zs-wrap>.zs-scroller{overflow:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:100%}
 .zs-wrap>.zs-scroller::-webkit-scrollbar{display:none}
 
 /* ---------- 3. keep each canvas's own corner controls clear of the strips ---------- */

@@ -133,7 +133,7 @@
 .svc-svc .svc-items{margin-top:6px}.svc-offt{font-size:11.5px;}
 .svc-gap2{gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.svc-seg{margin-left:auto;gap:6px}
 .svc-fbar{gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.txtin.ghost,.svc-formcol .fin,.svc-side .fin,.svc-adm .fin,.svc-forbar .fin,.svc-fbar .fin,.svc-forform .txtin,.svc-ai .txtin{background:transparent!important;border:0!important;border-bottom:1.5px solid var(--line,rgba(120,130,140,.45))!important;border-radius:var(--rad-sm) var(--rad-sm) 0 0!important;padding:9px 6px!important;box-shadow:none}
+.txtin.ghost,.svc-formcol .fin,.svc-side .fin,.svc-adm .fin,.svc-forbar .fin,.svc-fbar .fin,.svc-forform .txtin,.svc-ai .txtin{background:transparent;border:0!important;border-bottom:1.5px solid var(--line,rgba(120,130,140,.45))!important;border-radius:var(--rad-sm) var(--rad-sm) 0 0!important;padding:9px 6px;box-shadow:none}
 .txtin.ghost:hover,.svc-formcol .fin:hover,.svc-side .fin:hover,.svc-adm .fin:hover,.svc-forbar .fin:hover,.svc-fbar .fin:hover,.svc-forform .txtin:hover{background:rgba(127,160,170,.08)!important}
 .txtin.ghost:focus,.svc-formcol .fin:focus,.svc-side .fin:focus,.svc-adm .fin:focus,.svc-forbar .fin:focus,.svc-fbar .fin:focus,.svc-forform .txtin:focus,.svc-ai .txtin:focus{border-bottom-color:var(--p1)!important;background:rgba(127,160,170,.1)!important;outline:0}
 .svc-psearch{background:var(--white);border-radius:var(--rad-pill);padding:6px 6px 6px 8px;box-shadow:0 10px 30px var(--shade)}

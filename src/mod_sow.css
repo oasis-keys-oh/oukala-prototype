@@ -91,5 +91,5 @@ button.sow-wk{cursor:pointer;transition:transform .25s var(--ease)}button.sow-wk
 #drawer .sow-quote{font-size:14.5px}
 @media(prefers-reduced-motion:reduce){.sow-stack i,.sow-hbt i,.sow-steps li,.sow-crc{transition:none}}
 @media(max-width:700px){.sow-hbr{grid-template-columns:minmax(0,1fr) 44px}.sow-hbt{grid-column:1/-1;order:3}.sow-rdb{grid-template-columns:96px minmax(30px,1fr) 22px}}
-.sow-need{grid-template-columns:auto minmax(0,1fr)!important}
+.sow-need{grid-template-columns:auto minmax(0,1fr)}
 .sow-need .act{grid-column:1/-1;justify-content:flex-start}

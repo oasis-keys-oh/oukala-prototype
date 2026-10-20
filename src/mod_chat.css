@@ -240,7 +240,7 @@ button.cx-cc.add:hover{color:var(--ink);border-color:var(--accent)}
 
 /* round 8: borderless underline fields, solid picker, opaque dock when overlaying, full-screen on phones */
 .chx .cx-form .fin,.chx .cx-plan .fin,.chx .cx-res .fin,.chx .cx-in .txtin,.chx .cx-picker .fin,.chx .cx-tools .fin,.chx .cx-sel{background:transparent!important;border:0!important;border-bottom:1.5px solid color-mix(in srgb,var(--ink) 22%,transparent)!important;border-radius:0!important;box-shadow:none!important;padding:7px 2px!important;min-height:0;resize:none}
-.chx .cx-form .fin:focus,.chx .cx-plan .fin:focus,.chx .cx-in .txtin:focus,.chx .cx-picker .fin:focus,.chx .cx-tools .fin:focus,.chx .cx-sel:focus{outline:none;border-bottom-color:var(--accent)!important;box-shadow:0 1.5px 0 0 var(--accent)!important}
+.chx .cx-form .fin:focus,.chx .cx-plan .fin:focus,.chx .cx-in .txtin:focus,.chx .cx-picker .fin:focus,.chx .cx-tools .fin:focus,.chx .cx-sel:focus{outline:none;border-bottom-color:var(--accent);box-shadow:0 1.5px 0 0 var(--accent)!important}
 .chx .cx-form textarea.fin{field-sizing:content;min-height:2.4em;max-height:9em}
 .chx .cx-fld label,.chx .cx-fld>span:first-child{font-size:12px;color:var(--muted)}
 .chx .cx-fgrid{gap:12px 16px}

@@ -407,7 +407,7 @@ td .sub{display:block;color:var(--muted);font-size:12.5px}
   main{padding-bottom:120px}.fab{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
   .chat{bottom:calc(88px + env(safe-area-inset-bottom,0px));height:min(560px,calc(100vh - 190px))}
 }
-@media (prefers-reduced-motion:reduce),(prefers-reduced-motion){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+@media (prefers-reduced-motion:reduce),(prefers-reduced-motion){*{animation-duration:.001ms;animation-iteration-count:1;transition-duration:.001ms}}
 :root[data-motion="reduced"] *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 main:focus,main:focus-visible{outline:none}
 .heat{grid-template-columns:minmax(70px,160px) repeat(24,minmax(0,1fr))}

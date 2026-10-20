@@ -37,7 +37,10 @@ DARK = """
 --eb-mix:#FFFFFF;--focus:#8FD3E0;--focus-halo:rgba(6,17,22,.9);--dis-ink:#8FA6AC;--dis-bg:rgba(255,255,255,.06);
 color-scheme:dark;
 """
+# CL-26: cascade layer order for the whole app. Tokens sit in "base"; the other CSS is unlayered for now, and unlayered
+# rules win over every layer, so any later :root override still applies. docs/css-tokens.md explains the plan.
+LAYERS = "@layer base, components, modules, overrides;\n"
 def block():
-    return (":root{" + LIGHT.replace("\n","") + "}\n"
+    return (LAYERS + "@layer base{\n:root{" + LIGHT.replace("\n","") + "}\n"
       "@media (prefers-color-scheme:dark){:root:not([data-theme=\"light\"]){" + DARK.replace("\n","") + "}}\n"
-      ":root[data-theme=\"dark\"]{" + DARK.replace("\n","") + "}\n")
+      ":root[data-theme=\"dark\"]{" + DARK.replace("\n","") + "}\n}\n")

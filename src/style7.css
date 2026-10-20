@@ -113,21 +113,21 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 
 /* ---- F-04c category colours used as TEXT (eyebrows, labels): mixed toward the ink so they hold 4.5:1 on light and dark ---- */
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p1)"]{color:color-mix(in srgb,var(--p1) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p2)"]{color:color-mix(in srgb,var(--p2) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p3)"]{color:color-mix(in srgb,var(--p3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p2)"]{color:color-mix(in srgb,var(--p2) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p3)"]{color:color-mix(in srgb,var(--p3) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p4)"]{color:color-mix(in srgb,var(--p4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p5)"]{color:color-mix(in srgb,var(--p5) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p6)"]{color:color-mix(in srgb,var(--p6) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p5)"]{color:color-mix(in srgb,var(--p5) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p6)"]{color:color-mix(in srgb,var(--p6) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w1)"]{color:color-mix(in srgb,var(--w1) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w3)"]{color:color-mix(in srgb,var(--w3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e1)"]{color:color-mix(in srgb,var(--e1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w3)"]{color:color-mix(in srgb,var(--w3) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e1)"]{color:color-mix(in srgb,var(--e1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e4)"]{color:color-mix(in srgb,var(--e4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s1)"]{color:color-mix(in srgb,var(--s1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s1)"]{color:color-mix(in srgb,var(--s1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s3)"]{color:color-mix(in srgb,var(--s3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s4)"]{color:color-mix(in srgb,var(--s4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u1)"]{color:color-mix(in srgb,var(--u1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s4)"]{color:color-mix(in srgb,var(--s4) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u1)"]{color:color-mix(in srgb,var(--u1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u3)"]{color:color-mix(in srgb,var(--u3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u4)"]{color:color-mix(in srgb,var(--u4) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u4)"]{color:color-mix(in srgb,var(--u4) 45%,var(--eb-mix))}
 /* light fills carry dark text */
 :root:root :is([style*="background:var(--w1)"],[style*="background:var(--w3)"],[style*="background: var(--w1)"]){color:#16262B!important}
 
@@ -142,11 +142,11 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 }
 /* compact status text on tinted chips keeps weight so it stays legible at 12px */
 :root:root .pill{font-weight:700}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--good-f)"]{color:color-mix(in srgb,var(--good-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--warn-f)"]{color:color-mix(in srgb,var(--warn-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--bad-f)"]{color:color-mix(in srgb,var(--bad-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--metric-f)"]{color:color-mix(in srgb,var(--metric-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--story-f)"]{color:color-mix(in srgb,var(--story-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--good-f)"]{color:color-mix(in srgb,var(--good-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--warn-f)"]{color:color-mix(in srgb,var(--warn-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--bad-f)"]{color:color-mix(in srgb,var(--bad-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--metric-f)"]{color:color-mix(in srgb,var(--metric-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--story-f)"]{color:color-mix(in srgb,var(--story-f) 45%,var(--eb-mix))}
 
 /* ---- F-07b empty states from every module share one look ---- */
 :root:root :is(.emptystate,.nx-empty,.vz-empty,.itom-empty,.inbx-empty,.gx-empty,.dev-empty,.empty,.nodata){border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;text-align:center}

@@ -31,7 +31,7 @@ p,li,.story,.muted{text-wrap:pretty}
 @container (min-width:600px){
  .exe-kr{grid-template-columns:minmax(0,1.5fr) minmax(90px,.8fr) auto auto!important;grid-template-areas:"n b v s"!important}
 }
-.exe-krv{white-space:normal!important;overflow-wrap:break-word}
+.exe-krv{white-space:normal;overflow-wrap:break-word}
 
 /* card body rhythm: siblings never touch */
 .card>.cardhead+*{margin-top:0}

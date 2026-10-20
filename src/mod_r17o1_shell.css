@@ -91,7 +91,7 @@
 
  /* pickers (multi-select dropdowns) open as bottom sheets */
  :root:root .mp[open]>.mpp{position:fixed;left:0;right:0;top:auto;bottom:var(--r17o1-kb,0px);width:auto;max-width:none;max-height:min(72vh,560px);max-height:min(72dvh,560px);border-radius:24px 24px 0 0;z-index:calc(var(--z-overlay) + 25);overflow:auto;overscroll-behavior:contain;background:var(--bg);padding:18px 16px calc(18px + var(--r17o1-sab));box-shadow:0 0 0 100vmax rgba(6,17,22,.42),0 -18px 60px var(--shade)}
- :root:root :is(.glass,.card,.tscroll,.pane,.screen,main,#view,.stage):has(.mp[open]){-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transform:none!important;filter:none!important;contain:none!important;will-change:auto!important;animation:none!important;overflow:visible!important}
+ :root:root :is(.glass,.card,.tscroll,.pane,.screen,main,#view,.stage):has(.mp[open]){-webkit-backdrop-filter:none;backdrop-filter:none;transform:none!important;filter:none;contain:none;will-change:auto;animation:none;overflow:visible!important}
  :root:root .mp[open]>.mpp input[type=search]{font-size:16px;height:46px;min-height:46px;flex:none}
  :root:root .mp[open]>.mpp>*{flex-shrink:0}
 

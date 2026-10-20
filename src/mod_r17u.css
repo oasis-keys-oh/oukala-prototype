@@ -28,7 +28,7 @@
  .r17u-st thead{display:none}
  .r17u-st,.r17u-st tbody,.r17u-st tr,.r17u-st td{display:block;width:100%}
  .r17u-st tr{padding:10px 12px;border-bottom:1px solid var(--hair)}
- .r17u-st td{display:grid;grid-template-columns:104px minmax(0,1fr);gap:8px;padding:3px 0;border:0!important;text-align:left!important;white-space:normal!important}
+ .r17u-st td{display:grid;grid-template-columns:104px minmax(0,1fr);gap:8px;padding:3px 0;border:0!important;text-align:left!important;white-space:normal}
  .r17u-st td::before{content:attr(data-l);color:var(--muted);font-size:12px}
  .r17u-st td[data-l=""]::before{content:none}
  .r17u-row{grid-template-columns:auto minmax(0,1fr)}

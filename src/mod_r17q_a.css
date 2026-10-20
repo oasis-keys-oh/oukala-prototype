@@ -157,7 +157,7 @@
 .r17q-screen .r17q-t td.n,.r17q-screen .r17q-t th.n{white-space:nowrap}
 .r17q-pt td:nth-child(2){min-width:220px}.r17q-pt td:nth-child(3){min-width:150px}
 .r17q-dtb td:nth-child(3){min-width:260px}.r17q-dtb td:nth-child(4),.r17q-dtb td:nth-child(5){min-width:160px}
-.r17q-sens{grid-template-columns:minmax(0,1fr)!important}
+.r17q-sens{grid-template-columns:minmax(0,1fr)}
 .r17q-pcol{min-width:0;overflow:hidden}
 .r17q-page table.r17q-pt2{table-layout:fixed;width:100%;display:table}
 .r17q-page table.r17q-pt2 td:first-child{width:56%}
