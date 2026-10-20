@@ -15,5 +15,7 @@ node tools/tests/steps.js build_out
 node tools/tests/guard.js build_out
 node tools/tests/tenant.js build_out
 node tools/tests/tenant_leak.js build_out
+# CL-80: Enterprise scale is real; every screen opens at scale (render times over 800 ms are listed, not failed)
+node tools/tests/fixes_scale.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"
