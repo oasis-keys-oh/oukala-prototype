@@ -267,6 +267,7 @@ function runIP(force){if(Z.ip&&!force)return Z.ip;if(_ipBusy)return Z.ip||{consu
  Z.ip=res;_ipBusy=false;return res}
 function interopMatrix(){const r=runIP();r.expected=expectedFlows();return r}
 function _bust(){_uni=null;_actors=null;_uvV="";Z.dlRev=(Z.dlRev||0)+1}
+try{if(window.DATA)DATA.on("change",_bust)}catch(e){} /* a tenant switch or pack change drops the link universe at once (CL-56) */
 
 /* ---------- event layer: invoice.decided fans out to budget, actuals, forecast, reserve, project, vendor, notify ---------- */
 const POST=[];
