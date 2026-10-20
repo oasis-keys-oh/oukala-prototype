@@ -1,0 +1,7 @@
+/* mod_s_search: search scope notes (PH-12, CL-75) and screen usage (PR-16, mod_s_search_usage.js). Tokens only. */
+.ss-note{display:flex;flex-wrap:wrap;align-items:center;gap:8px;overflow-wrap:break-word}
+.ss-note .btn{min-height:0;padding:2px 10px;font-size:12px}
+.us-n{white-space:nowrap}
+.us-panel .us-stats{margin:4px 0 12px}
+.us-tbl td{vertical-align:top}
+.us-tbl .btn{padding:0;min-height:0;font-weight:600;text-align:left}

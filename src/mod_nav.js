@@ -249,7 +249,7 @@ function mkScreen(id){const s=screenRow(id),m=resolve(id);return {id:"screen:"+i
 function st(){const p=(typeof S!=="undefined"&&S.persona)||"exec";if(STP===p&&ST)return ST;STP=p;ST=store.get("oukala-nav:"+p)||{};
  if(!ST.fav)ST.fav=[];if(!ST.hist)ST.hist=[];if(!ST.rs)ST.rs=[];if(!ST.tel)ST.tel={};
  if(!ST.seeded){ST.seeded=1;const base=now();(SEED_FAV[p]||SEED_FAV.exec).forEach(id=>{if(screenRow(id))ST.fav.push(Object.assign(mkScreen(id),{t:base,seed:1}))});
-  SEED_HIST.forEach(a=>{if(screenRow(a[0]))ST.hist.push(Object.assign(mkScreen(a[0]),{t:base-a[1]*3600*1000-(a[1]>24?86400000:0),n:a[2],dur:a[2]*95000,seed:1}))});ST.hist.sort((a,b)=>b.t-a.t);persist()}
+  SEED_HIST.forEach(a=>{if(screenRow(a[0]))ST.hist.push(Object.assign(mkScreen(a[0]),{t:base-a[1]*3600*1000-(a[1]>24?86400000:0),n:0,dur:0,seed:1}))}); /* PR-16: seeded rows carry no visit count or time; real counts live in USAGE */ST.hist.sort((a,b)=>b.t-a.t);persist()}
  return ST}
 function persist(){clearTimeout(saveT);saveT=0;if(STP)store.set("oukala-nav:"+STP,ST)}
 function persistSoon(){if(saveT)return;saveT=setTimeout(persist,600)}
@@ -288,7 +288,7 @@ function visit(e){if(!e||!e.id||!e.title)return;const s=st();const slot=e.kind==
  if(CUR[slot]&&CUR[slot].id===e.id&&now()-CUR[slot].t0<1200)return;
  finish(slot);
  const i=s.hist.findIndex(h=>h.id===e.id);let h;
- if(i>=0){h=s.hist.splice(i,1)[0];h.n=(h.n||1)+1;h.title=e.title;if(e.sub)h.sub=e.sub;if(e.op)h.op=e.op;if(e.scr)h.scr=e.scr}else{h=Object.assign(stripEntry(e),{n:1,dur:0})}
+ if(i>=0){h=s.hist.splice(i,1)[0];if(h.seed){h.n=1;h.dur=0}else h.n=(h.n||1)+1;h.title=e.title;if(e.sub)h.sub=e.sub;if(e.op)h.op=e.op;if(e.scr)h.scr=e.scr}else{h=Object.assign(stripEntry(e),{n:1,dur:0})}
  h.t=now();delete h.seed;s.hist.unshift(h);if(s.hist.length>200)s.hist.length=200;
  CUR[slot]={id:e.id,t0:now()};
  if(STK[STK.length-1]!==e.id)STK.push(e.id);if(STK.length>60)STK.shift();
@@ -365,12 +365,13 @@ function entryFromDrawer(d,title){const c=CTX;
 function decorateDrawer(ent){const d=q1("#drawer");if(!d)return;const bar=d.querySelector(":scope>.dctl");if(!bar)return;let b=bar.querySelector(".nx-dstar");
  if(!ent){if(b)b.remove();return}
  const html=starBtn("drawer","nx-dstar",ent.title);if(b)b.outerHTML=html;else bar.insertAdjacentHTML("afterbegin",html)}
+/* CL-35: runs from the afterOpenDrawer hook (inside the core openDrawer). The record context (CTX, last click) is read at once;
+   the star is placed one microtask later, after the shell has built the drawer's .dctl header bar. */
 function afterDrawer(){const d=q1("#drawer");if(!d)return;DR.cur=null;
- if(d.querySelector("form.fform")){decorateDrawer(null);return}
- const title=drawerTitle(d);if(!title){decorateDrawer(null);return}
- const ent=entryFromDrawer(d,title);DR.cur=ent;visit(ent);decorateDrawer(ent)}
-const _od=W.openDrawer;
-W.openDrawer=function(html){const r=_od.apply(this,arguments);try{afterDrawer()}catch(e){}return r};
+ if(d.querySelector("form.fform")){queueMicrotask(()=>decorateDrawer(null));return}
+ const title=drawerTitle(d);if(!title){queueMicrotask(()=>decorateDrawer(null));return}
+ const ent=entryFromDrawer(d,title);DR.cur=ent;visit(ent);queueMicrotask(()=>{try{if(DR.cur===ent)decorateDrawer(ent)}catch(e){}})}
+if(W.HOOKS)HOOKS.on("afterOpenDrawer",()=>{try{afterDrawer()}catch(e){}},{id:"nav.drawer"});
 
 /* wrap the named open-a-record functions once everything else has loaded */
 let wrapped=false;
@@ -432,7 +433,7 @@ function refreshFavs(){const n=q1("#nav");if(!n)return;if(collapsed()){try{rende
 /* collapsed rail: a group icon opens a flyout with its screens */
 function openFly(g,btn){let f=q1("#nxFly");if(!f){f=document.createElement("div");f.id="nxFly";f.setAttribute("popover","auto");f.className="nx-fly glass";document.body.appendChild(f)}
  const ids=groupItems(g);let sub="";
- f.innerHTML=`<div class="nx-flyh"><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
+ f.innerHTML=`<div class="nx-flyh"><div><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(gLabel(g))}">${SVG(ICO.x,14,2)}</button></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
   return h+`<div class="nx-fi${S.screen===id?" is-cur":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}).join("");
  try{f.showPopover()}catch(e){}
  const r=btn.getBoundingClientRect();const h=Math.min(f.offsetHeight,innerHeight-24);f.style.left=Math.round(r.right+10)+"px";f.style.top=Math.round(Math.max(12,Math.min(r.top-8,innerHeight-h-12)))+"px"}
@@ -558,7 +559,9 @@ function sources(){const L=[];
  L.push(["Metrics",()=>Object.keys(METRICS).map(id=>{const m=METRICS[id];return mkItem("metric",m.n,mfmt(m)+" · "+m.owner,"--metric-f",()=>go("metrics",id),m.f+" "+id,"metric:"+id)})]);
  L.push(["Processes",()=>(G(()=>PROCLIB.list())||[]).map(p=>mkItem("process",p.name,"Process · "+(p.familyName||"")+" · level "+p.level,"--s3",()=>PROCLIB.open(p.id),p.owner+" "+p.module+" "+p.id,"process:"+p.id))]);
  L.push(["Data entities",()=>(G(()=>PLAT.entities())||[]).map(e=>mkItem("data",e.label,"Data entity · "+(e.domain||"")+" · "+(e.nf||(e.fields||[]).length)+" fields","--u3",()=>ATLAS.focus(e.id),e.id+" "+(e.owner||"")+" "+(e.note||""),"entity:"+e.id))]);
- const sx=typeof SEARCHX!=="undefined"?SEARCHX:[];sx.forEach((fn,i)=>L.push(["Provider "+(i+1),()=>{const r=fn()||[];const o=[];for(let j=0;j<r.length&&j<6000;j++){const x=r[j];if(!x||!x.t)continue;const ty=tyOfGroup(String(x.g||""));if(ty==="screen")continue;o.push(mkItem(ty,x.t,(x.g?x.g+" · ":"")+(x.m||""),x.c,x.f,x.k,"",{g:x.g}))}return o},HEAVY.test(String(fn))?"heavy":"prov"]));
+ /* PH-12: tabs by name (mod_s_search) */
+ (G(()=>W.SRCH&&SRCH.sources?SRCH.sources():[])||[]).forEach(s=>L.push(s));
+ const sx=typeof SEARCHX!=="undefined"?SEARCHX:[];sx.forEach((fn,i)=>L.push(["Provider "+(i+1),()=>{const r=fn()||[];const o=[];for(let j=0;j<r.length&&j<6000;j++){const x=r[j];if(!x||!x.t)continue;const ty=tyOfGroup(String(x.g||""));if(ty==="screen")continue;o.push(mkItem(ty,x.t,(x.g?x.g+" · ":"")+(x.m||""),x.c,x.f,x.k,"",x.tn!==undefined?{g:x.g,tn:x.tn}:{g:x.g}))}return o},HEAVY.test(String(fn))?"heavy":"prov"]));
  L.push(["Data fields",()=>{const o=[];(G(()=>PLAT.entities())||[]).forEach(e=>(e.fields||[]).forEach(f=>{if(o.length<9000)o.push(mkItem("data",f.label||f.k,"Field · "+e.label,"--u3",()=>ATLAS.focus(e.id),f.k+" "+(f.type||"")+" "+e.id,"field:"+e.id+"."+f.k))}));return o}]);
  if(W.SCALE&&SCALE.on){
   L.push(["Enterprise incidents",()=>(G(()=>ITSMX.incidents)||[]).slice(0,1500).map(i=>mkItem("record",i.id+" "+(i.t||i.title||""),"Incident · "+(i.st||i.state||""),"--bad-f",goTbl("itsm_inc",i.id),i.svc||i.service||"","inc:"+i.id))]);
@@ -567,7 +570,7 @@ function sources(){const L=[];
   L.push(["Enterprise projects",()=>(G(()=>SCALE.projects())||[]).slice(0,300).map(p=>mkItem("record",p.n||p.name||p.id,"Project · "+(p.phase||""),"--p4",goTbl("ppm_proj",p.id),p.owner||"","proj:"+p.id))]);
   L.push(["Enterprise RAID",()=>(G(()=>SCALE.raid())||[]).slice(0,1500).map(r=>mkItem("record",r.id+" "+r.t,"RAID · "+r.kind+" · "+r.project,"--warn-f",goTbl("ppm_raid",r.id),r.owner||"","raid:"+r.id))])}
  return L}
-function sigNow(){return [W.SCALE&&SCALE.on?1:0,SCREENS.length,G(()=>DIR.length),G(()=>SEARCHX.length),G(()=>PROCLIB.list().length),G(()=>Object.keys(DATAMODEL.tables).length),G(()=>Object.keys(METRICS).length),Object.keys(MAP).length,Object.keys(OVR).length].join("|")}
+function sigNow(){return [W.SCALE&&SCALE.on?1:0,SCREENS.length,G(()=>DIR.length),G(()=>SEARCHX.length),G(()=>PROCLIB.list().length),G(()=>Object.keys(DATAMODEL.tables).length),G(()=>Object.keys(METRICS).length),Object.keys(MAP).length,Object.keys(OVR).length,G(()=>W.SRCH?SRCH.builder():0)].join("|")}
 let buildTimer=0;
 function ensureIndex(force){const sg=sigNow();if(IDX.building)return;if(IDX.built&&!force&&!IDX.dirty&&IDX.sig===sg)return;
  IDX.building=true;IDX.heavyWait=0;IDX.dirty=false;IDX.sig=sg;const B={items:[],keys:new Set(),vocab:new Set(),n:0,cap:120000};const first=!IDX.built;const t0=performance.now();
@@ -575,7 +578,8 @@ function ensureIndex(force){const sg=sigNow();if(IDX.building)return;if(IDX.buil
  let i=0;const step=()=>{if(i>=L.length){IDX.items=B.items;IDX.vocab=B.vocab;IDX.keys=B.keys;IDX.built=true;IDX.building=false;IDX.buildMs=Math.round(performance.now()-t0);if(PAL.open)refreshPal();return}
   const s=L[i];if(s[2]==="heavy"&&W.SCALE&&SCALE.on){if(PAL.open){buildTimer=setTimeout(step,2500);return}if(!IDX.heavyWait){IDX.heavyWait=1;buildTimer=setTimeout(step,4000);return}}
   i++;const ts=performance.now();let n=0;
-  try{const r=s[1]()||[];r.forEach(it=>{if(it){it.f=it.f||(()=>{});const b=B.items.length;pushTo(B,it);B.n=B.items.length}});n=r.length}catch(e){IDX.skipped.push(s[0])}
+  const tag=W.SRCH&&SRCH.tag?SRCH.tag:null; /* CL-75: tenant tag per item (mod_s_search) */
+  try{const r=s[1]()||[];r.forEach(it=>{if(it){it.f=it.f||(()=>{});if(tag)tag(it,s[0]);pushTo(B,it);B.n=B.items.length}});n=r.length}catch(e){IDX.skipped.push(s[0])}
   const ms=Math.round(performance.now()-ts);IDX.timings.push([s[0],ms,n]);IDX.done=i;
   if(PAL.open&&(first||i%6===0))refreshPal(true);
   buildTimer=setTimeout(step,ms>120?30:0)};
@@ -604,23 +608,24 @@ function scoreItem(it,T,A,q,P,acro_){let sc=0,all=true;const tl=it.tl,h=it.h;
  if(it.key&&(it.key.slice(it.key.indexOf(":")+1).toLowerCase()===q))sc+=90;
  sc+=TYW[it.ty]||0;sc-=Math.min(14,tl.length/12);
  const bs=P.hs.get(it.key)||P.hs.get(tl);if(bs)sc+=12+bs*.45;if(P.fav.has(it.key)||P.fav.has(tl))sc+=34;
+ if(it.sid&&W.SRCH&&SRCH.nameHit)sc+=SRCH.nameHit(it,q); /* PH-12: a named screen or tab ranks first */
  return sc}
 function runSearch(raw,o){o=o||{};const t0=performance.now();let q=String(raw||"").trim(),scope=o.scope||"all";
  const m=q.match(/^in:\s*([a-z]+)\s*(.*)$/i)||q.match(/^(.*?)\s+in:\s*([a-z]+)$/i);
  if(m){const isFirst=/^in:/i.test(q);const key=(isFirst?m[1]:m[2]).toLowerCase(),rest=isFirst?m[2]:m[1];if(SCOPE_ALIAS[key]){scope=SCOPE_ALIAS[key];q=rest}}
  const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{}};
  if(!T.length){out.ms=0;return out}
- const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};
+ const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};const SR=W.SRCH&&SRCH.allow?SRCH:null;if(SR)SR.reset();
  const pass=(A2,T2,penalty)=>{const acro_=T2.length===1&&T2[0].length>=2&&T2[0].length<=6;
   for(let i=0;i<N;i++){const it=items[i];if(scope!=="all"&&it.ty!==scope)continue;if(o.describe&&it.ty!=="screen"&&it.ty!=="action")continue;
-   const s=scoreItem(it,T2,A2,ql,P,acro_);if(s>0){cnt[it.ty]=(cnt[it.ty]||0)+1;let a=per[it.ty];if(!a)a=per[it.ty]=[];const sc=s-penalty;
+   const s=scoreItem(it,T2,A2,ql,P,acro_);if(s>0&&SR&&!SR.allow(it))continue;if(s>0){cnt[it.ty]=(cnt[it.ty]||0)+1;let a=per[it.ty];if(!a)a=per[it.ty]=[];const sc=s-penalty;
     if(a.length<260||sc>a.min){a.push({it,sc});if(a.length>=520){a.sort((x,y)=>y.sc-x.sc);a.length=260}a.min=Math.min(a.min==null?1e9:a.min,sc)}}}};
  pass(A,T,0);
  let total=0;for(const k in cnt)total+=cnt[k];
  if(total<5){const T2=T.map(t=>{const f=fixTok(t);return f||t});const changed=T2.some((t,i)=>t!==T[i]);if(changed){const A2=T2.map(alts);const before=total;pass(A2,T2,22);out.fixed=T2.join(" ");total=0;for(const k in cnt)total+=cnt[k];if(total===before)out.fixed=null}}
  for(const k in per){per[k].sort((x,y)=>y.sc-x.sc)}
  out.by=per;out.counts=cnt;out.total=total;out.ms=Math.round((performance.now()-t0)*10)/10;IDX.lastMs=out.ms;return out}
-NAVX.search=function(q,o){o=o||{};const r=runSearch(q,o);const lim=o.limit||20;const all=[];Object.keys(r.by).forEach(k=>r.by[k].forEach(x=>all.push(x)));all.sort((a,b)=>b.sc-a.sc);return {q:r.q,scope:r.scope,total:r.total,ms:r.ms,fixed:r.fixed,counts:r.counts,results:all.slice(0,lim).map(x=>({type:x.it.ty,title:x.it.t,meta:x.it.m,score:Math.round(x.sc),open:x.it.f}))}};
+NAVX.search=function(q,o){o=o||{};const r=runSearch(q,o);const lim=o.limit||20;const all=[];Object.keys(r.by).forEach(k=>r.by[k].forEach(x=>all.push(x)));all.sort((a,b)=>b.sc-a.sc);return {q:r.q,scope:r.scope,total:r.total,ms:r.ms,fixed:r.fixed,counts:r.counts,results:all.slice(0,lim).map(x=>({type:x.it.ty,title:x.it.t,meta:x.it.m,score:Math.round(x.sc),open:x.it.f,key:x.it.key,sid:x.it.sid||null,tab:x.it.tab||null}))}};
 
 /* ---------- quick actions ---------- */
 function runAct(sc,re){if(!screenRow(sc))return;go(sc);if(!re)return;let n=0;const iv=setInterval(()=>{const b=qa("#view button").find(x=>re.test((x.textContent||"").trim().replace(/\s+/g," ")));if(b){clearInterval(iv);b.click()}else if(++n>16)clearInterval(iv)},150)}
@@ -772,10 +777,11 @@ setTimeout(()=>{if(!(W.SCALE&&SCALE.on)&&!IDX.built&&!IDX.building){const f=()=>
 /* =====================================================================================
    Hooks into the shell, chat intents, and the Feature Contract artifacts
    ===================================================================================== */
-const _render=W.render;
-W.render=function(){const r=_render.apply(this,arguments);try{if(!wrapped)wrapGlobals();ensureChrome();onScreen();decorateHero();markTab();syncStars()}catch(e){console.error("nav hook",e)}return r};
-const _go=W.go;
-W.go=function(screen,arg){closePops();document.documentElement.classList.remove("nx-menu-open");const r=_go.apply(this,arguments);try{onGoArg(screen,arg)}catch(e){}return r};
+/* CL-35: lifecycle through HOOKS instead of wrapping render and go. afterRender work waits one microtask so the screen
+   is complete (wrappers outside the core render finish first); the go argument is recorded after go returns. */
+const afterScreen=()=>{try{if(!wrapped)wrapGlobals();ensureChrome();onScreen();decorateHero();markTab();syncStars()}catch(e){console.error("nav hook",e)}};
+if(W.HOOKS){HOOKS.on("afterRender",()=>{afterScreen();queueMicrotask(()=>{try{decorateHero()}catch(e){}})},{id:"nav.render"});
+ HOOKS.on("beforeGo",(screen,arg)=>{closePops();document.documentElement.classList.remove("nx-menu-open");queueMicrotask(()=>{try{onGoArg(screen,arg)}catch(e){}})},{id:"nav.go"})}
 /* the tab bar needs to know the persona changed: reload favorites and history for the new persona */
 document.addEventListener("change",e=>{if(e.target&&e.target.name==="persona"){STP=null;ST=null;STK.length=0;setTimeout(()=>{st();syncStars();refreshFavs();drawFavPop();drawHist()},0)}});
 window.addEventListener("hashchange",()=>{const id=NAVX.resolveAlias(location.hash);if(id&&id!==S.screen)go(id)});
@@ -863,7 +869,10 @@ function studioSearch(){const ty={};IDX.items.forEach(i=>ty[i.ty]=(ty[i.ty]||0)+
  <div class="card glass"><div class="cardhead"><div><h3>Slowest sources</h3><span class="muted small">Each source is read in its own small slice so the screen never freezes.</span></div></div>
  <div class="tscroll"><table class="tbl"><thead><tr><th>Source</th><th>Items</th><th>Milliseconds</th></tr></thead><tbody>${slow.map(r=>`<tr><td>${E(r[0])}</td><td class="num">${r[2].toLocaleString("en-US")}</td><td class="num">${r[1]}</td></tr>`).join("")||`<tr><td colspan="3" class="muted">Open search once to build the index.</td></tr>`}</tbody></table></div></div></div>
  <div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><h3>Searches with no results</h3></div>${(s.zq&&s.zq.length)?`<div class="row">${s.zq.map(x=>`<span class="pill warn">${E(x)}</span>`).join("")}</div><p class="muted small" style="margin-top:8px">These words found nothing. The Navigation Agent proposes keywords for them.</p>`:`<p class="muted">None on this device yet.</p>`}</div>
- <div class="card glass"><div class="cardhead"><h3>Recent searches</h3></div>${s.rs.length?`<div class="row">${s.rs.map(x=>`<button class="chip" type="button" data-nx-rq="${E(x)}">${E(x)}</button>`).join("")}</div>`:`<p class="muted">None yet.</p>`}</div></div>`}
+ <div class="card glass"><div class="cardhead"><h3>Recent searches</h3></div>${s.rs.length?`<div class="row">${s.rs.map(x=>`<button class="chip" type="button" data-nx-rq="${E(x)}">${E(x)}</button>`).join("")}</div>`:`<p class="muted">None yet.</p>`}</div></div>`+builderCard()}
+/* PH-12: hidden screens are searchable only in builder mode (mod_s_search) */
+function builderCard(){if(!W.SRCH)return"";const on=SRCH.builder();const n=G(()=>SCREENS.filter(x=>SRCH.hiddenScreen(x[0])).length)||0;
+ return `<div class="card glass"><div class="cardhead"><div><h3>Hidden screens in search</h3><span class="muted small">${n} screens are hidden from the menu because another screen replaced them. Search lists them only in builder mode (kept in this browser).</span></div><button class="btn${on?"":" primary"}" type="button" data-srch-builder="${on?0:1}" aria-pressed="${on}">${on?"Turn off builder mode":"Turn on builder mode"}</button></div></div>`}
 function studioPeople(){const s=st();
  return `<div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><div><h3>Favorites for ${E(PERSONAS[S.persona].n)}</h3><span class="muted small">Kept per persona on this device. Drag to reorder in the menu.</span></div></div>
  ${s.fav.length?`<div class="needs">${s.fav.map(f=>`<div class="need" style="grid-template-columns:auto minmax(0,1fr) auto"><div class="ico info">${SVG(ICO.star,16,1.8)}</div><div><b>${E(f.label||f.title)}</b><span class="muted small">${E(f.kind==="screen"?"Module · "+gLabel(resolve(f.key).g):f.type+(f.sub?" · "+f.sub:""))}</span></div><button class="btn quiet" type="button" data-nx-unfav="${E(f.id)}">Remove</button></div>`).join("")}</div>`:`<p class="muted">No favorites yet.</p>`}</div>
@@ -880,7 +889,7 @@ function studioContract(){const procs=G(()=>NAV_PROCS.map(p=>({p,m:PROCLIB.matur
  <div class="card glass"><div class="cardhead"><div><h3>Measures</h3><span class="muted small">Each has a formula, an owner and a remediation. They update as you navigate and search.</span></div></div><div class="grid g3 mgrid">${["m_nav_depth","m_search_success","m_search_zero_results","m_fav_use","m_hist_return"].map(id=>metricRing(id,120)).join("")}</div></div>`}
 REG("nav_studio","Navigation and search","platform","M4 6h16M4 12h10M4 18h7M17 14l4 4M19 16a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",()=>{const c=NAVX.check();
  const story=`All <b data-role="metric">${c.screens}</b> screens sit in exactly one of <b>${GROUPS.filter(g=>NAVX.counts()[g[0]]).length}</b> plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
- return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"],[studioMap(),studioSearch(),studioPeople(),studioContract()])}</div>`});
+ return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"].concat(W.USAGE?["Usage"]:[]),[studioMap(),studioSearch(),studioPeople(),studioContract()].concat(W.USAGE?[G(()=>USAGE.panelHTML())||""]:[]))}</div>`});
 document.addEventListener("change",e=>{const t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.nxSg!=null){S.navs.g=t.value;S.v.nav_v=0;render();return}
  if(t.dataset.nxMvg){NAVX.setOverride(t.dataset.nxMvg,{g:t.value});audit("Moved a screen to another group",t.dataset.nxMvg+" to "+t.value);toast("Moved. The menu and search are updated.","good");S.v.nav_v=0;render();return}
