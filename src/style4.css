@@ -13,12 +13,12 @@ p,li,.story,.muted{text-wrap:pretty}
 /* milestone / task drawer stat tiles: no boxed borders, one rhythm */
 .statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:16px 0}
 .stat{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:var(--rad-2xl);background:var(--glass2);min-width:0}
-.stat small{font-size:var(--fs-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stat small{font-size:var(--fs-2xs);font-weight:700;color:var(--muted)}
 .stat .num{font-size:var(--fs-2xl);line-height:1.1}
 .stat em{font-style:normal;font-size:12.5px;color:var(--muted);line-height:1.35}
 .stat.crit .num{color:var(--bad-f)}.stat.crit em{color:var(--bad-f)}
 .mini.glass{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px 14px;border-radius:var(--rad-2xl);border-color:transparent;box-shadow:none;background:var(--glass2);grid-template-columns:none}
-.mini.glass small{font-size:var(--fs-2xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mini.glass small{font-size:var(--fs-2xs);font-weight:700;color:var(--muted)}
 .mini.glass .num{font-size:26px;line-height:1.1}
 
 /* formulas: readable, not italic */
@@ -69,7 +69,7 @@ p,li,.story,.muted{text-wrap:pretty}
 .wrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 12px;border-radius:var(--rad-card);background:var(--glass2);margin-top:8px;cursor:pointer;border:0;text-align:left;width:100%;font:inherit;color:var(--ink);transition:transform .15s var(--ease),box-shadow .15s}
 .wrow:hover{transform:translateY(-2px);box-shadow:0 8px 20px var(--shade)}
 .wrow b{font-weight:600;min-width:0;overflow-wrap:break-word}.wrow small{color:var(--muted);grid-column:2}
-.wtag{font-size:var(--fs-2xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:var(--rad-pill);background:var(--track);color:var(--muted);white-space:nowrap}
+.wtag{font-size:var(--fs-2xs);font-weight:700;padding:3px 8px;border-radius:var(--rad-pill);background:var(--track);color:var(--muted);white-space:nowrap}
 .loadbar{height:10px;border-radius:var(--rad-pill);background:var(--track);position:relative;overflow:hidden}
 .loadbar u{position:absolute;inset:0 auto 0 0;border-radius:var(--rad-pill);transition:width .5s var(--ease)}
 
@@ -131,7 +131,7 @@ p,li,.story,.muted{text-wrap:pretty}
 .proc .ps:not(:last-child):after{content:"";position:absolute;right:-22px;top:50%;width:22px;height:2px;background:var(--muted);opacity:.6}
 .proc .ps:not(:last-child):before{content:"";position:absolute;right:-22px;top:calc(50% - 4px);border-left:6px solid var(--muted);border-top:5px solid transparent;border-bottom:5px solid transparent;opacity:.6}
 .proc .ps b{font-size:var(--fs-sm)}.proc .ps small{color:var(--muted);font-size:var(--fs-xs)}
-.proc .ps .who{font-size:var(--fs-2xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.proc .ps .who{font-size:var(--fs-2xs);font-weight:700;}
 .proc .ps.human .who{color:var(--good-f)}.proc .ps.agent .who{color:var(--u3)}.proc .ps.auto .who,.proc .ps.sm-robot .who{color:var(--info-f)}.proc .ps.gate .who{color:var(--warn-f)}
 
 /* ---- nav: group parent link and sub captions ---- */

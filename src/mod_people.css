@@ -82,7 +82,7 @@ body.ppl-dragging{cursor:grabbing;user-select:none}
 .ppl-dg{--cols:150px 760px;min-width:920px}
 .ppl-wg{--cols:130px repeat(5,minmax(150px,1fr));min-width:900px}
 .ppl-hr,.ppl-hg,.ppl-hh,.ppl-ar,.ppl-af,.ppl-sr,.ppl-tr,.ppl-dr,.ppl-wr{display:grid;grid-template-columns:var(--cols);gap:5px;align-items:stretch}
-.ppl-hh b{font-size:var(--fs-2xs);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:center;align-self:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ppl-hh b{font-size:var(--fs-2xs);color:var(--muted);text-align:center;align-self:end;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ppl-hg{margin-top:8px;padding:2px 0;align-items:center}
 .ppl-hg>span:first-child{font-size:var(--fs-sm)}
 .ppl-ha{text-align:center;font-weight:800;font-size:var(--fs-xs);border-radius:var(--rad-lg);padding:3px 0;align-self:center}
@@ -165,7 +165,7 @@ body.ppl-dragging .ppl-zone{animation:pplpulse 1.2s ease-in-out infinite}
 .ppl-rc{text-align:left;cursor:pointer}
 /* journeys */
 .ppl-jm{display:grid;gap:8px;align-items:stretch;width:max-content;min-width:100%}
-.ppl-jl{position:sticky;left:0;z-index:calc(var(--z-local) + 2);font-size:var(--fs-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 8px;border-radius:var(--rad-xl);background:var(--glass2);display:flex;flex-direction:column;justify-content:center;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.ppl-jl{position:sticky;left:0;z-index:calc(var(--z-local) + 2);font-size:var(--fs-xs);font-weight:800;color:var(--muted);padding:10px 8px;border-radius:var(--rad-xl);background:var(--glass2);display:flex;flex-direction:column;justify-content:center;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .ppl-jh{display:flex;gap:8px;align-items:center;padding:10px;border-radius:var(--rad-card);background:linear-gradient(135deg,var(--p1),var(--p4));color:var(--accent-ink)}
 .ppl-jh .num{font-size:var(--fs-xl)}.ppl-jh b{font-size:var(--fs-sm);line-height:1.2}
 .ppl-jc{padding:8px;border-radius:var(--rad-xl);background:var(--glass2);display:flex;flex-direction:column;gap:6px;font-size:12.5px;align-items:flex-start}
@@ -329,7 +329,7 @@ body.ppl-dragging .ppl-zone{animation:pplpulse 1.2s ease-in-out infinite}
 .pp2-fb{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start}.pp2-fb p{margin:0 0 4px;line-height:1.5}
 .pp2-tlist{display:flex;flex-direction:column;gap:8px}
 .pp2-nb{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px}
-.pp2-nbaxis{font-size:var(--fs-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center}
+.pp2-nbaxis{font-size:var(--fs-xs);font-weight:800;color:var(--muted);text-align:center}
 .pp2-nbaxis.y{writing-mode:vertical-rl;transform:rotate(180deg)}.pp2-nbaxis:not(.y){grid-column:2}
 .pp2-nbgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .pp2-nbc{display:flex;flex-direction:column;gap:6px;padding:10px;border-radius:var(--rad-card);min-height:160px;min-width:0;background:var(--glass2);border-top:4px solid var(--faint)}
@@ -348,7 +348,7 @@ body.ppl-dragging .ppl-zone{animation:pplpulse 1.2s ease-in-out infinite}
 .pp2-jgrid{min-width:max(100%,calc(var(--jn,5)*230px));display:flex;flex-direction:column;gap:6px}
 .pp2-jh,.pp2-jr{display:grid;grid-template-columns:var(--jc);gap:10px}
 .pp2-jhc{display:flex;flex-direction:column;padding:10px 12px;border-radius:var(--rad-card);background:linear-gradient(135deg,var(--p1),var(--p4));color:var(--accent-ink)}.pp2-jhc small{opacity:.85}
-.pp2-lane{margin-top:8px}.pp2-ln{position:sticky;left:0;font-size:var(--fs-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:4px 2px}
+.pp2-lane{margin-top:8px}.pp2-ln{position:sticky;left:0;font-size:var(--fs-xs);font-weight:800;color:var(--muted);padding:4px 2px}
 .pp2-jc{display:flex;flex-direction:column;gap:8px;min-height:80px;padding:8px;border-radius:var(--rad-card);background:var(--glass2);min-width:0}
 .pp2-bc2{padding:10px;border-radius:var(--rad-xl);background:var(--bg);border-left:4px solid var(--p4);display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 8px var(--shade)}
 .pp2-bt{font-size:13.5px;line-height:1.3}

@@ -161,3 +161,5 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 .pop:popover-open:has(>.row>[popovertargetaction=hide]:not([data-go])){display:flex;flex-direction:column}
 .pop>.row:has(>[popovertargetaction=hide]:not([data-go])){order:-1;justify-content:flex-end;margin-bottom:12px}
 .pop>.row>[popovertargetaction=hide]:not([data-go]){order:99}
+/* PR-04: a popover sits in the DOM inside the chip or label that opens it, so it inherited that label's caps, tracking and weight (the all-caps metric modals); it starts from body text instead */
+.pop{text-transform:none;letter-spacing:normal;font-weight:var(--fw-body)}

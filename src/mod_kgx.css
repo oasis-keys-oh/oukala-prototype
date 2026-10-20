@@ -20,7 +20,7 @@
 .vx-note h3{margin:2px 0 8px;font-size:24px;line-height:1.15}
 .vx-crumb{display:flex;flex-wrap:wrap;gap:2px 4px;align-items:center;font-size:12px;color:var(--muted);margin-bottom:8px}.vx-crumb button{border:0;background:transparent;font:inherit;color:var(--accent);cursor:pointer;padding:2px 3px;border-radius:var(--rad-sm)}.vx-crumb button:hover{text-decoration:underline}
 .vx-props{margin:8px 0}.vx-ex{font-size:14px;line-height:1.5;color:var(--ink);margin:8px 0 12px}
-.vx-sec{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}.vx-sec>b{width:100%;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.vx-sec{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px}.vx-sec>b{width:100%;font-size:12px;color:var(--muted)}
 .vx-empty{display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:var(--rad-2xl);background:color-mix(in srgb,var(--accent) 6%,transparent)}
 .vx-h{margin:0 0 10px;font-size:16px}.vx-bl{display:flex;flex-direction:column;gap:8px;min-height:60px}
 .vx-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--rad-card);background:var(--glass);border:1px solid var(--hair);transition:transform .15s,box-shadow .15s}.vx-row:hover{transform:translateY(-2px);box-shadow:0 8px 22px -12px rgba(0,0,0,.35)}
@@ -50,7 +50,7 @@
 .gx-side{border-left:1px solid var(--hair);padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto;max-height:680px;min-width:0}
 .gx-h{margin:2px 0 6px;font-size:22px;line-height:1.2;overflow-wrap:break-word}
 .gx-kv{margin:6px 0}.gx-act{gap:6px;margin:10px 0}
-.gx-sec{display:flex;flex-direction:column;gap:8px;margin:0 0 6px}.gx-sec>b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.gx-sec{display:flex;flex-direction:column;gap:8px;margin:0 0 6px}.gx-sec>b{font-size:12px;color:var(--muted)}
 .gx-empty{display:flex;flex-direction:column;gap:6px;padding:14px;border-radius:var(--rad-2xl);background:color-mix(in srgb,var(--accent) 6%,transparent);line-height:1.45}
 .gx-ab{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gx-pick{min-height:34px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .gx-chk{display:flex;gap:8px;align-items:center;font-size:13px}

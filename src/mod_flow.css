@@ -31,7 +31,7 @@
 .flw-node.run-done{background:color-mix(in srgb,var(--good-f) 16%,var(--glass2));box-shadow:inset 0 0 0 2px var(--good-f),0 6px 16px var(--shade)}
 .flw-node.can-in{box-shadow:inset 0 0 0 2px var(--story-f),0 0 0 4px color-mix(in srgb,var(--story-f) 25%,transparent)}
 @keyframes flwpulse{50%{transform:scale(1.04)}}
-.flw-nh{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.flw-nh{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:var(--muted)}
 .flw-nh .flw-ni{width:20px;height:20px;border-radius:var(--rad-sm)}.flw-nh .flw-ni svg{width:12px;height:12px}
 .flw-nn{font-weight:700;font-size:var(--fs-sm);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .flw-nm{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -68,7 +68,7 @@ body.flw-dragging{user-select:none;cursor:grabbing}
 .flw-dwrap{overflow-x:auto;padding:2px 2px 6px}
 .flw-dgrid{min-width:760px;display:flex;flex-direction:column;gap:6px}
 .flw-dhead,.flw-drow{display:grid;grid-template-columns:var(--cols);gap:6px;align-items:center}
-.flw-dhead{font-size:var(--fs-xs);font-weight:700;padding:0 6px}.flw-dhead span{display:flex;flex-direction:column}.flw-dhead small{font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.flw-dhead{font-size:var(--fs-xs);font-weight:700;padding:0 6px}.flw-dhead span{display:flex;flex-direction:column}.flw-dhead small{font-weight:600;font-size:10px;color:var(--muted)}
 .flw-dhead .in{color:var(--story)}.flw-dhead .out{color:var(--metric)}
 .flw-dbody{display:flex;flex-direction:column;gap:6px}
 .flw-drow{padding:3px 6px;border-radius:var(--rad-card);background:var(--glass);transition:background .2s,box-shadow .2s;outline:none}
@@ -130,7 +130,7 @@ body.flw-dragging{user-select:none;cursor:grabbing}
 .flw-kill{display:flex;flex-direction:column;gap:10px}
 .flw-kl{display:flex;flex-direction:column;gap:2px;text-align:left;padding:10px 14px;border-radius:var(--rad-2xl);background:var(--glass);box-shadow:inset 3px 0 0 var(--warn-f);transition:transform .2s,box-shadow .2s;color:var(--ink)}
 .flw-kl.l2,.flw-kl.l3{box-shadow:inset 3px 0 0 var(--bad-f)}.flw-kl:hover{transform:translateY(-2px)}.flw-kl.on{background:var(--bad-s)}
-.flw-tbl{width:100%;border-collapse:collapse;font-size:13.5px}.flw-tbl th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:6px 10px;white-space:nowrap}.flw-tbl td{padding:9px 10px;border-top:1px solid var(--hair);vertical-align:top}
+.flw-tbl{width:100%;border-collapse:collapse;font-size:13.5px}.flw-tbl th{text-align:left;font-size:11.5px;color:var(--muted);padding:6px 10px;white-space:nowrap}.flw-tbl td{padding:9px 10px;border-top:1px solid var(--hair);vertical-align:top}
 .flw-tbl tbody tr[role="button"]{cursor:pointer;transition:background .15s}.flw-tbl tbody tr[role="button"]:hover{background:var(--accent-soft)}.flw-tbl tr:focus-visible{outline:3px solid var(--accent)}
 .flw-plan{padding:12px 14px;border-radius:var(--rad-2xl);background:var(--story-s);color:var(--ink)}.flw-plan ol{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.flw-plan li span{margin-right:8px}.flw-plan svg{width:16px;height:16px;vertical-align:-3px}
 .flw-trace{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}.flw-trace li{padding:10px 12px;border-radius:var(--rad-card);background:var(--glass)}.flw-trace li.bad{box-shadow:inset 3px 0 0 var(--bad-f)}
@@ -211,7 +211,7 @@ body.flw-dragging{user-select:none;cursor:grabbing}
 @keyframes wfdp{to{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 35%,transparent)}}
 @media(prefers-reduced-motion:reduce){.wfd-node.run-act{animation:none}}
 .wfd-stripe{position:absolute;left:0;top:8px;bottom:8px;width:5px;border-radius:0 var(--rad-xs) var(--rad-xs) 0}
-.wfd-nh{display:flex;align-items:center;gap:6px;min-width:0;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.wfd-nh{display:flex;align-items:center;gap:6px;min-width:0;font-size:10.5px;font-weight:700;color:var(--muted)}
 .wfd-nt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1 1 auto}
 .wfd-nn{font-weight:700;font-size:var(--fs-sm);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wfd-nm{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

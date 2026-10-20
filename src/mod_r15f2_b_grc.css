@@ -6,7 +6,7 @@
 @media (max-width:1100px){.grc-two{grid-template-columns:minmax(0,1fr)}}
 .grc-cards{gap:16px}
 .grc-tbl{width:100%;border-collapse:collapse;font-size:13px}
-.grc-tbl th{text-align:left;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:8px 12px 8px 0;border-bottom:1px solid var(--hair);white-space:nowrap}
+.grc-tbl th{text-align:left;font-size:11px;color:var(--muted);padding:8px 12px 8px 0;border-bottom:1px solid var(--hair);white-space:nowrap}
 .grc-tbl td{padding:10px 12px 10px 0;border-bottom:1px solid var(--hair);vertical-align:top;color:var(--ink);min-width:60px}
 .grc-tbl tr:last-child td{border-bottom:0}
 .grc-id{font-weight:700;text-align:left}
@@ -31,7 +31,7 @@
 .grc-fw .grc-bar{width:140px}
 .grc-ev{margin:6px 0 0;padding-left:18px}
 .grc-kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:0}
-.grc-kv dt{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.grc-kv dd{margin:2px 0 0;color:var(--ink);font-size:13px}
+.grc-kv dt{font-size:11px;color:var(--muted);}.grc-kv dd{margin:2px 0 0;color:var(--ink);font-size:13px}
 .grc-tl{display:grid;grid-template-columns:110px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:6px 0}
 .grc-tl-t{height:10px;border-radius:var(--rad-sm);background:var(--track);overflow:hidden}
 .grc-tl-t i{display:block;height:100%;border-radius:var(--rad-sm)}.grc-tl-t i.good{background:var(--good)}.grc-tl-t i.warn{background:var(--warn)}.grc-tl-t i.bad{background:var(--bad)}

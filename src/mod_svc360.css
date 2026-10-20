@@ -2,7 +2,7 @@
 .svx{display:block;width:100%;height:auto}
 .svx-map{overflow-x:auto;border-radius:var(--rad-2xl);background:var(--glass2);padding:8px;margin:8px 0}
 .svx-mini{max-height:420px}
-.svx .rl{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+.svx .rl{font-size:10.5px;font-weight:700;fill:var(--muted)}
 .svx-n{cursor:pointer;outline:none}
 .svx-n rect{fill:var(--glass);stroke:var(--hair);stroke-width:1.4;transition:stroke .15s,transform .15s}
 .svx-n:hover rect,.svx-n:focus-visible rect{stroke:var(--accent);stroke-width:2.2}
@@ -52,7 +52,7 @@
 .svx-cols.wide .svx-stack{width:36px}
 .svx-chain{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:12px 0}
 .svx-link{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:var(--rad-card);background:var(--glass2);min-width:130px;flex:1 1 130px}
-.svx-link small{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.svx-link small{font-size:10.5px;font-weight:700;color:var(--muted)}
 .svx-arr{align-self:center;font-size:22px;color:var(--faint)}
 .svx-tree{list-style:none;margin:4px 0 4px 18px;padding:0 0 0 12px;border-left:2px solid var(--line-art)}
 .svx-tree.top{margin-left:0;border-left:0;padding-left:0}

@@ -3,8 +3,8 @@
 .gx-scroll{overflow:auto;position:relative;scrollbar-width:thin;max-width:100%;border-radius:inherit;overscroll-behavior:contain}
 .gx-in{position:relative}
 .gx-head{position:sticky;top:0;z-index:calc(var(--z-local) + 7);height:48px;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
-.gx-head>span{position:absolute;top:22px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.gx-corner{position:sticky;left:0;z-index:calc(var(--z-local) + 8);width:250px;height:48px;display:flex;align-items:flex-end;padding:0 12px 8px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--bg) 92%,transparent)}
+.gx-head>span{position:absolute;top:22px;font-size:11px;font-weight:800;color:var(--muted);white-space:nowrap}
+.gx-corner{position:sticky;left:0;z-index:calc(var(--z-local) + 8);width:250px;height:48px;display:flex;align-items:flex-end;padding:0 12px 8px;font-size:11px;font-weight:700;color:var(--muted);background:color-mix(in srgb,var(--bg) 92%,transparent)}
 .gx-body{position:absolute;left:0}
 .gx-body .glinks{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:calc(var(--z-local) + 1)}
 .gx-body .today{top:-10px;bottom:0;z-index:calc(var(--z-local) + 1)}
@@ -46,7 +46,7 @@
 .wbs-sc{overflow:auto;position:relative;max-width:100%;border-radius:var(--rad-card);border:1px solid var(--hair,var(--track));background:color-mix(in srgb,var(--glass2) 55%,transparent);scrollbar-width:thin;overscroll-behavior:contain}
 .wbs-hd,.wbs-r{display:grid;grid-template-columns:var(--wc);width:var(--tw);align-items:center}
 .wbs-hd{position:sticky;top:0;z-index:calc(var(--z-local) + 6);height:36px;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair,var(--track))}
-.wbs-hh{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:0 8px;white-space:nowrap}
+.wbs-hh{font-size:11px;font-weight:800;color:var(--muted);padding:0 8px;white-space:nowrap}
 .wbs-in{position:relative;width:var(--tw)}
 .wbs-rows{position:absolute;left:0;right:0}
 .wbs-r{height:36px;font-size:13.5px;border-bottom:1px solid color-mix(in srgb,var(--hair,var(--track)) 70%,transparent);background:transparent;outline:none}

@@ -14,7 +14,7 @@
 .r16-wh h3{margin:2px 0 0}
 .r16-wnote{margin:6px 0 4px}
 .r16-wsec{margin-top:12px}
-.r16-wsec h4{margin:0 0 4px;font:700 11.5px/1.2 inherit;font-family:inherit;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.r16-wsec h4{margin:0 0 4px;font:700 11.5px/1.2 inherit;font-family:inherit;color:var(--muted)}
 .r16-wsec ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:13.5px}
 .r16-wf{margin-top:14px}
 @media (max-width:700px){.r16-pha .r16-why-btn{padding:0 10px;font-size:12px}#view .hero>.eyebrow:first-child,#view>.screen>.eyebrow.r15-eb:first-child{padding-right:0;min-height:0;margin-top:40px}}

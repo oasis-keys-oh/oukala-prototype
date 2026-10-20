@@ -23,7 +23,7 @@
 .ct-dots{display:inline-flex;gap:4px}
 .ct-d{display:block;width:10px;height:10px;border-radius:var(--rad-round)}
 .ct-rule{display:flex;flex-direction:column;gap:2px}
-.ct-h4{margin:12px 0 4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.ct-h4{margin:12px 0 4px;font-size:12px;color:var(--muted);font-weight:700}
 .ct-ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px;line-height:1.45}
 .ct-chk{list-style:none;padding-left:0}
 .ct-chk li{position:relative;padding-left:20px}

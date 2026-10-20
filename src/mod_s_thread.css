@@ -37,7 +37,7 @@
 .thr-cn[data-lvl="team"]{margin-left:54px}
 .thr-cnn{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
 .thr-cnn b{overflow-wrap:break-word;min-width:0}
-.thr-lvl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.thr-lvl{font-size:10.5px;color:var(--muted)}
 .thr-cnv{display:flex;align-items:center;gap:8px;justify-self:end}
 .thr-bar{position:relative;display:inline-block;width:90px;height:8px;border-radius:var(--rad-pill);background:var(--track)}
 .thr-bar u{position:absolute;left:0;top:0;bottom:0;border-radius:var(--rad-pill);background:var(--accent)}

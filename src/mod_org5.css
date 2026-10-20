@@ -35,10 +35,10 @@
 .org5-mask{letter-spacing:.12em;color:var(--muted);user-select:none}
 .org5-rs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
 .org5-as{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-.org5-h{margin:18px 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.org5-h{margin:18px 0 8px;font-size:13px;color:var(--muted)}
 .org5-res{padding:4px 2px}
 @media (max-width:700px){.org5-hc{margin-left:0;width:100%}.org5-act{flex-wrap:wrap}}
-.org5-op{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--warn-f);margin-right:3px}
+.org5-op{font-size:10px;font-weight:800;color:var(--warn-f);margin-right:3px}
 .org5-tl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .org5-tl li{padding:8px 10px;border-radius:var(--rad-xl);background:var(--glass);box-shadow:inset 0 0 0 1px var(--hair)}
 .org5-tl1{display:flex;gap:6px 8px;flex-wrap:wrap;align-items:center}

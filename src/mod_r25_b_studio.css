@@ -2,7 +2,7 @@
    colored nodes on lanes, an inspector at the side. Chat left, live build right. */
 .stu-screen{padding:0!important;max-width:none!important}
 .stu{--wh:var(--sm-human);--wg:var(--sm-agent);--wa:var(--sm-robot);--wk:var(--sm-gate);--wf:var(--sm-robot);display:block;min-height:calc(100vh - 120px)}
-.stu-pro{font-size:10.5px;font-style:normal;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:#2a1146;color:#e6d2ff;border-radius:var(--rad-sm);padding:1px 6px;vertical-align:middle;margin-right:6px}
+.stu-pro{font-size:10.5px;font-style:normal;font-weight:700;background:#2a1146;color:#e6d2ff;border-radius:var(--rad-sm);padding:1px 6px;vertical-align:middle;margin-right:6px}
 .stu-play{border:1px solid color-mix(in srgb,var(--accent) 50%,transparent);background:transparent;color:var(--accent);font:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:var(--rad-pill);cursor:pointer}
 .stu-ex{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:0 0 16px}.stu-exc{text-align:left;font:inherit;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:transform .15s}.stu-exc:hover{transform:translateY(-2px)}.stu-exc small{color:var(--muted);font-size:12.5px}
 /* the chat is the assistant box at the bottom right; with it open the canvas keeps its own room */
@@ -18,13 +18,13 @@
 .stu-eb{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}.stu-eb span{text-transform:none;letter-spacing:0;font-weight:500;margin-left:6px}
 .stu-body h2{margin:2px 0 4px;font-size:30px;font-family:var(--serif,Newsreader,Georgia,serif);font-weight:500;line-height:1.15}
 .stu-body h3{margin:18px 0 8px;font-size:15px;font-family:var(--serif,Newsreader,Georgia,serif);font-weight:500}
-.stu-body h4{margin:14px 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stu-body h4{margin:14px 0 6px;font-size:12px;color:var(--muted)}
 .stu-sum{margin:0 0 14px;color:var(--muted);font-size:14.5px;max-width:760px}
 .stu-empty{color:var(--muted);padding:24px 0}.stu-note{margin:12px 0 0;font-size:13px;color:var(--muted)}
 .stu-body .card{padding:16px 18px}
 /* metric tiles */
 .stu-ks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:12px 0 14px}
-.stu-k{display:flex;flex-direction:column;gap:1px;padding:12px 16px!important}.stu-k small{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.stu-k{display:flex;flex-direction:column;gap:1px;padding:12px 16px!important}.stu-k small{font-size:11.5px;color:var(--muted);font-weight:600}
 .stu-k b{font-family:var(--serif,Newsreader,Georgia,serif);font-weight:500;font-size:24px;line-height:1.15;overflow-wrap:anywhere}.stu-k span{font-size:12.5px;color:var(--muted)}.stu-kb{justify-content:center;align-items:flex-start}
 .stu-mix{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin:0 0 10px}.stu-mix span{display:inline-flex;gap:6px;align-items:center}
 .stu-dot{width:10px;height:10px;border-radius:var(--rad-xs);display:inline-block}
@@ -69,12 +69,12 @@
 .stu-pt small{font-size:11px;color:var(--muted);font-weight:600}.stu-pt b{font-size:13.5px;line-height:1.25}.stu-pt span{font-size:12px;color:var(--muted)}
 /* find, governance, standards, strategy */
 .stu-hit{border-left:5px solid var(--accent)!important;margin:6px 0 16px}.stu-hit.new{border-left-color:var(--warn)!important}.stu-hit h3{margin:4px 0}.stu-hit p{margin:2px 0;font-size:14px}.stu-act{color:var(--accent);font-weight:600}
-.stu-tag{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--warn)}.stu-tag.ext{color:var(--accent)}
+.stu-tag{font-size:11px;font-weight:700;color:var(--warn)}.stu-tag.ext{color:var(--accent)}
 .stu-mc{display:flex;flex-direction:column;gap:2px;font-size:14px}.stu-mc span{color:var(--muted);font-size:13px}.stu-mc em{font-style:normal;color:var(--accent);font-weight:600;font-size:13px}
 .stu-gs{display:flex;gap:12px;align-items:center;font-size:14px}.stu-gs b{width:28px;height:28px;border-radius:var(--rad-round);border:2px solid var(--accent);display:grid;place-items:center;font-size:12.5px;flex:none}.stu-gs.done b{background:var(--good);border-color:var(--good);color:var(--white)}
 .stu-sc2{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.stu-sc2 input{margin-top:4px}.stu-sc2 small,.stu-sv small,.stu-gt small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.stu-sc2.on{outline:1.5px solid color-mix(in srgb,var(--accent) 50%,transparent)}
 .stu-sv{display:flex;flex-direction:column;gap:3px;border-left:5px solid var(--muted)!important}.stu-sv.supports{border-left-color:var(--good)!important}.stu-sv.conflicts{border-left-color:var(--bad)!important}
-.stu-vd{font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em}.stu-vd.supports{color:var(--good)}.stu-vd.conflicts{color:var(--bad)}
+.stu-vd{font-weight:700;font-size:11.5px;}.stu-vd.supports{color:var(--good)}.stu-vd.conflicts{color:var(--bad)}
 /* data: a hub and its entities, like the data model */
 .stu-dm{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0;align-items:start}
 .stu-hub{position:sticky;top:8px;display:flex;flex-direction:column;gap:4px;margin-right:34px;border-left:5px solid var(--accent)!important}.stu-hub b{font-family:var(--serif,Newsreader,Georgia,serif);font-weight:500;font-size:18px;line-height:1.2}.stu-hub span{font-size:12.5px;color:var(--muted)}
@@ -84,7 +84,7 @@
 .stu-en::before{content:"";position:absolute;left:-23px;top:26px;width:18px;height:2px;background:color-mix(in srgb,var(--accent) 35%,transparent)}
 .stu-hub::after{content:"";position:absolute;right:-34px;top:26px;width:34px;height:2px;background:color-mix(in srgb,var(--accent) 35%,transparent)}
 .stu-eh{display:flex;gap:10px;align-items:center;margin-bottom:6px}.stu-eh code{font-size:12.5px;color:var(--muted)}
-.stu-tg{font-size:11px;font-weight:700;color:var(--accent);margin-left:auto;text-transform:uppercase;letter-spacing:.05em}.stu-tg.new{color:var(--warn)}.stu-ok{color:var(--good);font-size:12.5px}
+.stu-tg{font-size:11px;font-weight:700;color:var(--accent);margin-left:auto;}.stu-tg.new{color:var(--warn)}.stu-ok{color:var(--good);font-size:12.5px}
 .stu-er{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;align-items:center;padding:8px 0;border-top:1px solid color-mix(in srgb,var(--ink) 8%,transparent);font-size:13.5px}
 .stu-er>b{grid-column:1}.stu-er .stu-src{grid-column:2;justify-self:end;text-align:right}.stu-er .stu-own{grid-column:1}.stu-er .stu-ok{grid-column:2;justify-self:end}
 .stu-src,.stu-own{color:var(--muted);font-size:12.5px;overflow-wrap:anywhere}

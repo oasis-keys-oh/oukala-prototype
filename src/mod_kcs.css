@@ -75,7 +75,7 @@
 .kcs-li[data-kcs-open]{cursor:pointer}.kcs-li[data-kcs-open]:hover{transform:translateY(-2px)}
 .kcs-li>div:first-child{display:flex;flex-direction:column;min-width:0;flex:1 1 200px}
 .kcs-heat{display:grid;grid-template-columns:minmax(110px,1.3fr) repeat(var(--n),minmax(54px,1fr));gap:6px;align-items:center;min-width:480px}
-.kcs-hh{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;overflow:hidden;color:var(--muted);text-align:center}.kcs-ht{font-size:13px;font-weight:600}
+.kcs-hh{font-size:10px;font-weight:700;letter-spacing:.02em;overflow:hidden;color:var(--muted);text-align:center}.kcs-ht{font-size:13px;font-weight:600}
 .kcs-hc{height:38px;border-radius:var(--rad-lg);font-size:13px;transition:transform .15s var(--ease)}.kcs-hc:hover{transform:scale(1.08)}
 .kcs-hc.good{background:var(--good-s);color:var(--good)}.kcs-hc.warn{background:var(--warn-s);color:var(--warn)}.kcs-hc.bad{background:var(--bad-s);color:var(--bad)}.kcs-hc.none{background:var(--hair);color:var(--muted)}
 .kcs-sg{gap:10px}.kcs-sg.done{opacity:.75}

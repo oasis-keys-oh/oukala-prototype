@@ -1,6 +1,6 @@
 /* Cost transparency (TBM and ATUM) */
 .sk{display:block;width:100%;height:auto}
-.sk-h{font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+.sk-h{font-size:14px;font-weight:700;fill:var(--muted)}
 .sk-n{cursor:pointer;outline:none;transition:opacity .15s}
 .sk-n:hover rect,.sk-n:focus-visible rect,.sk-n.sel rect{stroke:var(--ink);stroke-width:2}
 .sk-t{font-size:15px;font-weight:600;fill:var(--ink);paint-order:stroke;stroke:var(--glass2);stroke-width:3px;stroke-linejoin:round}

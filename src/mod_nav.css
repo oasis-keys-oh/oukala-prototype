@@ -2,7 +2,7 @@
 
 /* ---------- "Not sure where to go?" box ---------- */
 .nx-find{display:flex;flex-direction:column;gap:2px;margin:0 2px;padding:7px 8px 7px 14px;border-radius:var(--rad-2xl);background:var(--glass2);box-shadow:inset 0 1px 0 var(--edge),0 0 0 1px var(--hair);color:var(--accent);transition:box-shadow .2s,background .2s}
-.nx-find label{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:text}.nx-find label b{font-weight:800}
+.nx-find label{font-size:11px;color:var(--muted);cursor:text}.nx-find label b{font-weight:800}
 .nx-findrow{display:flex;align-items:center;gap:8px}
 .nx-find:focus-within{box-shadow:0 0 0 2px var(--accent),inset 0 1px 0 var(--edge)}
 .nx-find svg{flex:none}

@@ -192,3 +192,10 @@ Not renamed in the CSS stream: a module is a `.js` and `.css` pair with one name
 | `mod_r33_showroom` | js | `mod_s_showroom_core` (`mod_s_showroom` exists) | Showroom |
 
 The css-only files can be renamed with a `modules.json` edit alone; that is still outside the CSS stream's files, so they are listed too.
+
+## Capitals (PR-04, CSS part)
+Uppercase is for eyebrow labels only: a short label above a heading or a group of items. The 16 rules that keep `text-transform:uppercase`: `.eyebrow`, `.r17p-eb`, `.stu-eb`, the persona hero kicker (`.r21-hero h1`), and the group headings of the rail and menus (`.navgrp`, `.navgd>summary`, `.navsub`, `.nx-fht`, `.pk-g`, `.pk2-g`, `.nw-h`, `.tn-h`, `.r16n-gh`, `.inbx-gh`, `.r27-simple .r27-h`, `.r21-sm-h`).
+
+The other 131 rules (table headers, stat and tile captions, badges, pills, field labels, section labels inside cards) dropped the uppercase and the wide letter-spacing that went with it (130 declarations), so text shows as written, in sentence case. CSS cannot turn text into sentence case, so a label written in capitals or lower case in a script still shows that way; two scripts set capitals inline (`mod_exec.js`, `mod_r17q_c_value.js`, JS stream).
+
+The all-caps metric modals: a popover sits in the DOM inside the chip or label that opens it, so it inherited that label's capitals, tracking and bold weight. `.pop` now starts from body text (`text-transform:none`, normal tracking, body weight); eyebrows inside it stay uppercase.

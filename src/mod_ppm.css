@@ -27,10 +27,10 @@
 .ppm-m{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;text-align:left;padding:10px 14px;border-radius:var(--rad-2xl);background:var(--glass2);border:0;font:inherit;color:var(--ink);cursor:pointer;transition:transform .2s,box-shadow .2s}.ppm-m:hover{transform:translateY(-2px);box-shadow:0 12px 26px var(--shade)}
 .ppm-ring{width:56px;height:56px;border-radius:var(--rad-round);display:grid;place-items:center;background:conic-gradient(var(--c) calc(var(--p)*1%),var(--track) 0)}.ppm-ring b{width:42px;height:42px;border-radius:var(--rad-round);display:grid;place-items:center;background:var(--bg);font-size:13px}
 .ppm-mt{display:flex;flex-direction:column;min-width:0}.ppm-mt small{color:var(--muted)}
-.ppm-rh,.ppm-r{display:grid;grid-template-columns:104px minmax(0,1fr) 72px 70px 112px;gap:12px;align-items:center}.ppm-rh{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 14px 8px}
+.ppm-rh,.ppm-r{display:grid;grid-template-columns:104px minmax(0,1fr) 72px 70px 112px;gap:12px;align-items:center}.ppm-rh{font-size:11px;color:var(--muted);padding:0 14px 8px}
 .ppm-rl{display:flex;flex-direction:column;gap:8px}.ppm-r{text-align:left;padding:11px 14px;border-radius:var(--rad-2xl);background:var(--glass2);border:0;font:inherit;color:var(--ink);cursor:pointer;transition:transform .2s,box-shadow .2s}.ppm-r:hover{transform:translateX(4px);box-shadow:0 10px 26px var(--shade)}
 .ppm-rt{display:flex;flex-direction:column;min-width:0}.ppm-rt small{color:var(--muted)}.ppm-ex{text-align:right;font-size:16px}
-.ppm-heat{display:grid;grid-template-columns:64px repeat(5,minmax(0,1fr));gap:6px;align-items:stretch}.ppm-heat .hy{grid-column:1/-1;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ppm-heat{display:grid;grid-template-columns:64px repeat(5,minmax(0,1fr));gap:6px;align-items:stretch}.ppm-heat .hy{grid-column:1/-1;font-size:11px;color:var(--muted)}
 .ppm-heat .ppm-hl{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;color:var(--muted)}.ppm-hl b{font-size:14px;color:var(--ink)}.ppm-hl small{font-size:11px}.ppm-hx{padding-top:2px}
 .ppm-heat .hc{min-height:64px;border-radius:var(--rad-xl);display:flex;flex-wrap:wrap;gap:4px;align-content:center;justify-content:center;padding:4px;position:relative}
 .hc.good{background:color-mix(in srgb,var(--good-f) 20%,transparent)}.hc.warn{background:color-mix(in srgb,var(--warn-f) 26%,transparent)}.hc.bad{background:color-mix(in srgb,var(--bad-f) 28%,transparent)}
@@ -86,7 +86,7 @@
 .ppm-chk{margin:8px 0 0;padding-left:18px;font-size:13.5px;line-height:1.45}.ppm-chk li.bad{color:var(--bad)}.ppm-chk li.warn{color:var(--warn)}
 /* ---- weekly heat map ---- */
 .ppm-hm{display:grid;grid-template-columns:minmax(170px,230px) repeat(var(--n),minmax(50px,1fr));gap:5px;align-items:center;min-width:760px}
-.ppm-hm>b{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:center}
+.ppm-hm>b{font-size:11px;color:var(--muted);text-align:center}
 .ppm-hm .rn{display:flex;flex-direction:column;gap:2px;text-align:left;background:transparent;border:0;font:inherit;color:var(--ink);padding:4px 6px;border-radius:var(--rad-xl);min-width:0}
 .ppm-hm .rn small{color:var(--muted);font-size:11px;font-weight:600}
 .ppm-hm button.rn{cursor:pointer}.ppm-hm button.rn:hover{background:var(--glass2)}

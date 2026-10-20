@@ -111,7 +111,7 @@ button.meet-bar{cursor:pointer}button.meet-bar:hover .meet-bt{outline:2px solid 
 .cg-row{display:grid;grid-template-columns:56px repeat(var(--n),minmax(0,1fr));position:relative}
 .cg-head{padding-bottom:2px;border-bottom:1px solid var(--hair);position:sticky;top:0;z-index:calc(var(--z-local) + 4);background:var(--bg)}
 .cg-hc{padding:8px 6px 6px;text-align:center;border-left:1px solid var(--hair);min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px}
-.cg-dow{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cg-dow{font-size:12px;font-weight:700;color:var(--muted);}
 .cg-num{font-size:22px;font-weight:700;line-height:1.1;color:var(--ink)}
 .cg-hc em{font-style:normal;font-size:11px;font-weight:700;color:var(--accent-ink);line-height:1.2;background:var(--accent-soft);border-radius:var(--rad-pill);padding:0 7px}
 .cg-hc.cg-today .cg-num{color:var(--accent)}

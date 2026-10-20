@@ -1,7 +1,7 @@
 /* Round 16 H: nested approval tree, status catalog, CI ownership. Tokens only; no literal colours. */
 /* ---- nested approval tree ---- */
 .r16r-tree{display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:760px;min-width:0}
-.r16r-start,.r16r-end{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:6px 12px;border:1px dashed var(--edge);border-radius:var(--rad-pill);background:var(--glass2)}
+.r16r-start,.r16r-end{align-self:flex-start;font-size:12px;font-weight:700;color:var(--muted);padding:6px 12px;border:1px dashed var(--edge);border-radius:var(--rad-pill);background:var(--glass2)}
 .r16r-seq{display:flex;flex-direction:column;min-width:0;position:relative}
 .r16r-seq.nest{margin-left:22px;padding-left:14px;border-left:2px solid var(--hair)}
 .r16r-seq.branch{padding-left:0}

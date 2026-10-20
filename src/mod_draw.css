@@ -138,7 +138,7 @@ body.dr-on #drawer::backdrop{background:transparent;-webkit-backdrop-filter:none
 .dr-plus path{stroke:var(--accent-ink);stroke-width:2.4;stroke-linecap:round;fill:none}
 .dr-plus:hover .dr-plus-bg,.dr-plus:focus-visible .dr-plus-bg{stroke:var(--ink)}
 .dr-mini{position:fixed;z-index:calc(var(--z-top) + 1002);padding:8px;border-radius:var(--rad-2xl);background:var(--glass2,var(--bg));border:1px solid var(--hair);backdrop-filter:blur(14px);box-shadow:0 18px 40px var(--shade,rgba(0,0,0,.3));color:var(--ink);animation:drMini .16s ease-out}
-.dr-mini-t{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:2px 6px 6px}
+.dr-mini-t{font-size:11px;font-weight:800;color:var(--muted);padding:2px 6px 6px}
 .dr-mini-g{display:grid;grid-template-columns:repeat(3,92px);gap:6px}
 .dr-mini-b{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 4px;border-radius:var(--rad-xl);border:1px solid var(--hair);background:transparent;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .dr-mini-b:hover,.dr-mini-b:focus-visible{background:var(--accent-soft);border-color:var(--accent);outline:none}

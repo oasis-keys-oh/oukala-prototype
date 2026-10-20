@@ -74,7 +74,7 @@ body.chx-resizing{user-select:none;cursor:col-resize}body.chx-resizing .chx{tran
 /* context strip */
 .cx-ctx{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 6px 20px;max-height:34vh;overflow:auto}
 .cx-cc{display:inline-flex;align-items:center;gap:6px;border-radius:var(--rad-pill);padding:5px 6px 5px 11px;background:var(--accent-soft);font-size:12.5px;max-width:100%;border:0;color:var(--ink);font-family:inherit}
-.cx-cc b{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.cx-cc b{font-size:11px;color:var(--muted)}
 .cx-cc button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 6px;border-radius:var(--rad-pill)}
 .cx-cc button:hover{color:var(--ink)}
 .cx-cc.you .cx-sel{padding:3px 8px;font-size:12px}
@@ -161,7 +161,7 @@ button.cx-cc.add:hover{color:var(--ink);border-color:var(--accent)}
 .cx-res.tone-warn{border-color:var(--warn-f)}.cx-res.tone-bad{border-color:var(--bad-f)}
 .cx-rt{display:flex;flex-direction:column;gap:2px}
 .cx-tbl{width:100%;border-collapse:collapse;font-size:13px}
-.cx-tbl th{text-align:left;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:6px 8px;white-space:nowrap}
+.cx-tbl th{text-align:left;font-size:11.5px;color:var(--muted);padding:6px 8px;white-space:nowrap}
 .cx-tbl td{padding:6px 8px;border-top:1px solid var(--hair);vertical-align:top}
 .cx-bars{display:flex;flex-direction:column;gap:6px}
 .cx-bar{display:grid;grid-template-columns:minmax(80px,32%) 1fr auto;gap:8px;align-items:center;font-size:13px}

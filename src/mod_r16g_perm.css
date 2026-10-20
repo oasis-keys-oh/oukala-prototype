@@ -19,7 +19,7 @@
 .pm-c.m-hidden{background:transparent;color:var(--muted);text-decoration:line-through}
 .pm-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
 .pm-chip{display:inline-flex;gap:6px;align-items:baseline;padding:3px 10px;border-radius:var(--rad-pill);font-size:var(--fs-xs);border:1px solid var(--cardline);background:var(--glass2);color:var(--ink)}
-.pm-chip small{font-size:var(--fs-2xs);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.pm-chip small{font-size:var(--fs-2xs);color:var(--muted)}
 .pm-chip.rule{border-color:var(--story-f)}.pm-chip.role{border-color:var(--good-f)}.pm-chip.scope{border-color:var(--metric-f)}.pm-chip.group,.pm-chip.default,.pm-chip.class{border-color:var(--warn-f)}
 .pm-kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;font-size:var(--fs-sm);margin:12px 0}
 .pm-kv dt{color:var(--muted)}.pm-kv dd{margin:0}

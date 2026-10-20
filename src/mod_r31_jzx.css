@@ -73,7 +73,7 @@
 .jb-pl{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:var(--rad-pill);background:var(--accent);color:var(--white)}.jb-pl.d{background:var(--muted)}
 .jb-act .btn.on{outline:2px solid var(--accent)}
 /* DC-01: a release that hit the per-step FTE cap (modeled) */
-.jb-cap{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--warn-f)}
+.jb-cap{font-style:normal;font-size:10px;font-weight:700;color:var(--warn-f)}
 /* DC-24: demo view note and the Building blocks explorer */
 .jx-demo{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 2px 10px;color:var(--muted)}
 .jx-parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px;margin:10px 0}

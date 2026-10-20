@@ -30,7 +30,7 @@
  :root:root #view table.r17o2-stack td{display:block;border:0;border-bottom:1px solid var(--hair,var(--cardline));padding:8px 0;white-space:normal;max-width:none;min-width:0;text-align:left;overflow:visible;overflow-wrap:break-word;background:none}
  :root:root #view table.r17o2-stack td:last-child{border-bottom:0}
  :root:root #view table.r17o2-stack td:first-child{min-width:0;font-weight:600}
- :root:root #view table.r17o2-stack td[data-label]::before{display:block;margin-bottom:2px;content:attr(data-label);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:break-word}
+ :root:root #view table.r17o2-stack td[data-label]::before{display:block;margin-bottom:2px;content:attr(data-label);font-size:12px;font-weight:700;color:var(--muted);overflow-wrap:break-word}
  :root:root #view table.r17o2-stack td:not([data-label]),:root:root #view table.r17o2-stack td.r17o2-span{display:block}
  :root:root #view table.r17o2-stack td:empty{display:none}
  :root:root #view table.r17o2-stack td.num{text-align:left}

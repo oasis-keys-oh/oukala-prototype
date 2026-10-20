@@ -13,7 +13,7 @@
 .oc-now{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border-radius:var(--rad-3xl);text-align:left;color:var(--ink);font:inherit;border:0;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s}
 .oc-now:hover{transform:translateY(-3px);box-shadow:0 14px 30px var(--shade)}
 .oc-nr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;width:100%}
-.oc-nr small{flex:0 0 92px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.oc-nr small{flex:0 0 92px;font-size:11px;font-weight:800;color:var(--muted)}
 /* bars */
 .oc-crows{display:flex;flex-direction:column;gap:10px}
 .oc-crow{display:grid;grid-template-columns:minmax(120px,210px) minmax(0,1fr) 56px;gap:12px;align-items:center}
@@ -32,7 +32,7 @@
 .oc-note{padding:12px;border-radius:var(--rad-card);background:var(--glass2);margin-bottom:8px}.oc-note p{margin:6px 0}
 /* tables */
 .oc-t{width:100%;border-collapse:separate;border-spacing:0 6px;min-width:560px;font-size:13.5px}
-.oc-t th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:4px 12px;white-space:nowrap}
+.oc-t th{text-align:left;font-size:11px;color:var(--muted);font-weight:800;padding:4px 12px;white-space:nowrap}
 .oc-t td{padding:9px 12px;background:var(--glass2);vertical-align:middle}
 .oc-t td:first-child{border-radius:var(--rad-xl) 0 0 var(--rad-xl)}.oc-t td:last-child{border-radius:0 var(--rad-xl) var(--rad-xl) 0}
 .oc-t tr.sel td{outline:0;box-shadow:inset 0 0 0 2px var(--accent)}
@@ -87,7 +87,7 @@ button.oc-c:hover{transform:scale(1.18);z-index:calc(var(--z-local) + 1);positio
 .oc-pl{display:flex;flex-wrap:wrap;gap:8px}.oc-chip.pool em{font-style:normal;font-size:11px;font-weight:800;color:var(--accent)}
 /* month */
 .oc-mh,.oc-mg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
-.oc-mh span{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-left:4px}
+.oc-mh span{font-size:11px;font-weight:800;color:var(--muted);padding-left:4px}
 .oc-mg{margin-top:6px}
 .oc-md{display:flex;flex-direction:column;gap:4px;align-items:stretch;text-align:left;padding:8px;border-radius:var(--rad-card);background:var(--glass2);border:0;min-height:84px;color:var(--ink);font:inherit;cursor:pointer;min-width:0}
 .oc-md.out{opacity:.4}.oc-md.ocnow{box-shadow:inset 0 0 0 2px var(--accent)}.oc-md:hover{transform:translateY(-2px)}
