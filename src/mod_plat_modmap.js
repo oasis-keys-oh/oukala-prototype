@@ -768,7 +768,8 @@ function setPair(a,b,fly){
  if(a&&b){const r=between(a,b),ids=[a,b].concat(r.two.slice(0,12).map(p=>p.via));if(fly!==false)flyTo(ids);audit("Module map: compared modules",nameOf(a)+" and "+nameOf(b))}
 }
 /* ---------- inspector ---------- */
-const WHO={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"};
+/* step kinds render through STEPMODE (CL-58); "auto" in older step data reads as robot */
+const WHOPILL=v=>window.STEPMODE?STEPMODE.pill(v):pill(String(v||"human"),"info");
 const FDESC={live:"Updates within seconds","near-live":"Updates within a minute or two",hourly:"Refreshed about every hour",daily:"Refreshed once a day",unknown:"No registered field yet"};
 const MDESC={event:"Sent the moment the trigger happens.",batch:"Sent on a schedule, in a group.",human:"Sent when a person acts or decides."};
 const AUTH={platform:"Oukala is authoritative",external:"External system wins",shared:"Shared, newest wins"};
@@ -790,7 +791,7 @@ function procTab(m){
  const head=list.length?`<div class="eyebrow">${list.length===1?"Process":list.length+" processes"} in this module</div><div class="mm-plist">${list.map(x=>`<button type="button" class="mm-pr" data-mm-popen="${E(x.id)}" title="Open the full process page"><span class="mm-mb mt${Math.max(1,Math.min(5,Math.round(x.level/Math.max(1,mxOf(x))*5)))}">${x.level}</span><span><b>${E(x.name)}</b><small class="muted">${E(x.owner)} · ${x.steps} steps · ${x.below?"below target":"meets target"}</small></span></button>`).join("")}</div>`:"";
  const sh=st||[];
  return `${head}<div class="row mm-pact">${prim?`<button type="button" class="btn primary" data-mm-popen="${E(prim)}">Open full process page</button>`:""}<button type="button" class="btn" data-mm-lib>Process library</button></div>
- ${sh.length?`<p class="small muted mm-sum">${sh.length} steps${mt?`, average maturity ${mt.avg} of 5`:""}. Select a step to open its process page. Each step says who acts, how fast, and how it decides.</p><ol class="mm-steps">${sh.map((s,i)=>`<li><span class="mm-sn">${i+1}</span><button type="button" class="mm-stb" ${prim?`data-mm-popen="${E(prim)}"`:""}><b>${E(s.n)}</b><span class="row">${pill(WHO[s.who||"human"],"info")}${window.PROC&&PROC.modeTag?PROC.modeTag(s):""}${s.sla?`<span class="pill mute">${E(s.sla)}</span>`:""}</span><span class="small muted">${E(s.d||"")}</span></button></li>`).join("")}</ol>`:""}`;
+ ${sh.length?`<p class="small muted mm-sum">${sh.length} steps${mt?`, average maturity ${mt.avg} of 5`:""}. Select a step to open its process page. Each step says who acts, how fast, and how it decides.</p><ol class="mm-steps">${sh.map((s,i)=>`<li><span class="mm-sn">${i+1}</span><button type="button" class="mm-stb" ${prim?`data-mm-popen="${E(prim)}"`:""}><b>${E(s.n)}</b><span class="row">${WHOPILL(s.who||"human")}${window.STEPKIT&&STEPKIT.needsTrigger(s.who)?STEPKIT.trigChip(Object.assign({},s,{trig:s.trig||STEPKIT.guessTrig(s)})):""}${window.PROC&&PROC.modeTag?PROC.modeTag(s):""}${s.sla?`<span class="pill mute">${E(s.sla)}</span>`:""}</span><span class="small muted">${E(s.d||"")}</span></button></li>`).join("")}</ol>`:""}`;
 }
 const mxOf=x=>{const m=window.MAT&&MAT.ALLM?MAT.ALLM().find(q=>q.id===x.model):null;return m?m.lv.length:5};
 function dataTab(m){

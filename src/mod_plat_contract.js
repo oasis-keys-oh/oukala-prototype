@@ -278,7 +278,7 @@ function syncMetrics(mx){
   set("m_contract_full",pct(full,n));set("m_contract_gaps",gaps);set("m_contract_waivers",C.waivers.filter(w=>!w.revoked&&w.exp>=TODAY).length);set("m_contract_ttc",cl.length?r1(cl.reduce((s,c)=>s+c.days,0)/cl.length):0);
   METRICS.m_contract_gaps.max=Math.max(300,gaps*2)}catch(e){}}
 /* ---------- the agent run ---------- */
-const WHO_T={human:"Person",agent:"Agent",auto:"Automatic",gate:"Gate"};
+const WHO_T={human:"Human",robot:"Robot",agent:"Agent",gate:"Approval gate"};WHO_T.auto=WHO_T.robot;
 function templateSteps(name,owner){
  const o=owner||"Feature owner";
  return[{n:"Intake",who:"human",owner:o,sla:"Same day",d:"A request or event starts the work."},{n:"Triage and classify",who:"agent",owner:"Triage Agent",sla:"15 minutes",d:"An agent proposes the class and the route."},{n:"Review and decide",who:"gate",owner:o,sla:"2 days",d:"A person approves, rejects or sends back."},{n:"Do the work",who:"human",owner:o,sla:"5 days",d:"The accountable team completes it."},{n:"Record and measure",who:"auto",owner:"Platform",sla:"Immediate",d:"The result is audited and feeds the metrics."}]}
@@ -413,7 +413,8 @@ function agentCard(a){
  <div class="ct-io"><div><h4 class="ct-h4">Inputs</h4><ul class="ct-ul">${a.inp.map(x=>`<li>${E(x)}</li>`).join("")}</ul></div><div><h4 class="ct-h4">Outputs</h4><ul class="ct-ul">${a.out.map(x=>`<li>${E(x)}</li>`).join("")}</ul></div></div>
  <h4 class="ct-h4">What it checks</h4><ul class="ct-ul ct-chk">${a.checks.map(x=>`<li>${E(x)}</li>`).join("")}</ul>
  <h4 class="ct-h4">Guardrails ${typeof whyPop==="function"?whyPop("These limits are in the agent definition file and enforced again at the gate, so a vibe-coded app cannot skip them."):""}</h4><ul class="ct-ul">${a.guard.map(x=>`<li>${E(x)}</li>`).join("")}</ul>
- <h4 class="ct-h4">Last runs</h4><ul class="ct-runs">${runs}</ul></section>`}
+ <h4 class="ct-h4">Last runs</h4><ul class="ct-runs">${runs}</ul>
+ <div class="row" style="gap:8px;margin-top:8px"><button type="button" class="btn sm" data-stp-agent="${E(a.n)}">Agent definition</button><span class="small muted">Task, prompts, tier, budget, confidence floor, kill switch, sponsor and trigger (simulated)</span></div></section>`}
 function agentsPane(){
  return`<p class="muted small">One definition, three forms. The same four agents exist as Claude Code sub-agent files that a builder or vibe-coding session calls (agents folder), as a skill that orchestrates them (skills folder), and as the runtime checks in this screen, in the gate and in the MCP tool. Their drafts are labeled as AI output and a person always accepts.</p>
  <div class="grid g2" style="gap:16px;align-items:stretch">${AGENTS.map(agentCard).join("")}</div>`}
@@ -491,7 +492,7 @@ PROC.reg("plat_contract",{title:"How a feature earns its place in the platform",
  {n:"Propose the feature",d:"The builder (a person or a coding agent) names the feature, its owner and its purpose, and searches the registry before designing anything.",who:"human",owner:"Feature owner",sla:"1 day",in:"Idea",out:"Draft manifest"},
  {n:"Design agents run",d:"The process architect, data integrator, metrics and maturity steward and connectivity steward each draft their part. Fixes are suggestions; a person accepts.",who:"agent",owner:"Feature contract orchestrator",sla:"15 minutes",in:"Draft manifest",out:"Contract report and fixes"},
  {n:"Gate",d:"Checks ct_process, ct_data, ct_metrics and ct_links run with the other conformance checks. Failing blocks from the team tier up; an exception needs an owner and an expiry.",who:"gate",owner:"Platform team",sla:"1 day",in:"Contract report",out:"Pass, blocked or waived"},
- {n:"Publish",d:"Entities, process, metrics and module flows are registered in one step. Findings and waivers become debt items.",who:"auto",owner:"Platform",sla:"Immediate",in:"Gate decision",out:"Registered feature"},
+ {n:"Publish",d:"Entities, process, metrics and module flows are registered in one step. Findings and waivers become debt items.",who:"robot",owner:"Robot",sla:"Immediate",in:"Gate decision",out:"Registered feature"},
  {n:"Review",d:"The matrix re-scores the feature as the registries change. Owners close gaps from the worklist; waivers are reviewed 30 days before they expire.",who:"human",owner:"Feature owner",sla:"Each quarter",in:"Matrix result",out:"Closed gaps or renewed waiver"}]});
 /* ---------- registering the contract's own records (deferred until the other modules have loaded) ---------- */
 const W=(C.w=C.w||{ent:false,mod:false,proc:false,seed:false});

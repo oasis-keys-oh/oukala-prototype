@@ -8,8 +8,16 @@ const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;","
 const SD=W.STUD;if(!SD)return;
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"").slice(0,28);
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");
-const WHO={human:["Person","h"],auto:["Automatic","a"],fn:["Function","f"],agent:["AI agent","g"],gate:["Approval","k"]};
-const ORDER=["human","auto","fn","agent","gate"];
+/* step kinds come from STEPMODE (R21 to R24, CL-58): human, robot, agent, plus the approval gate. "auto" and "fn" in saved data read as robot. */
+const SMK=v=>W.STEPMODE?STEPMODE.of(v):(v||"human");
+const SML=k=>W.STEPMODE?STEPMODE.label(k):k;
+const WHO={human:[SML("human"),"h sm-human"],robot:[SML("robot"),"f sm-robot"],agent:[SML("agent"),"g sm-agent"],gate:[SML("gate"),"k sm-gate"]};WHO.auto=WHO.fn=WHO.robot;
+const ORDER=["human","robot","agent","gate"];
+const STP=()=>W.STEPKIT||null;
+/* every step on the canvas holds a canonical kind, a real owner and, for robot and agent steps, a trigger (CL-73) */
+function normStep(s,prev){if(!s||typeof s!=="object")return s;const k=SMK(s.who);if(s.who!==k)s.who=k;const P=STP();
+ if(P){s.owner=s.base?s.owner:P.ownerFor(k,s.owner);if(prev&&!s.prev)s.prev=prev.n+" is done";P.ensureTrig(s)}return s}
+function normAll(){const B=Q.B;if(!B)return;const L=B.phases?B.phases.reduce((a,p)=>a.concat(p.steps),[]):B.steps||[];L.forEach((s,i)=>normStep(s,L[i-1]))}
 const GROUPS=["Design","Connect","Govern","Prove","Ship"];
 const STAGES=[["find","Find","Design"],["process","Process","Design"],["std","Standards","Design"],["agents","Agents","Design"],["data","Data","Connect"],["metrics","Measures","Connect"],["access","Access","Connect"],["strat","Strategy","Govern",1],["maturity","Maturity","Govern"],["bcp","Continuity","Govern"],["guard","Guardrails","Prove"],["test","Test","Prove"],["ux","UX and 508","Prove"],["approve","Approval","Ship"],["share","Share","Ship"]];
 const VIEW_OF_STAGE={find:"find",process:"flow",std:"std",agents:"agents",data:"data",metrics:"metrics",access:"access",strat:"strat",maturity:"maturity",bcp:"bcp",guard:"guard",test:"test",ux:"ux",approve:"approve",share:"share"};
@@ -65,7 +73,10 @@ function say(html,cls,list){const pend=Q.msgs.find(m=>m.next);const o={r:"ai",h:
  if(pend){const lab=pend.next;pend.next=null;Q.msgs.push({r:"ai",h:"",next:lab})}drawChat(true);return o}
 function you(t){Q.msgs.push({r:"me",h:E(t),dock:Q.dockEcho?1:0});drawChat(true)}
 function later(fn,ms){const t=setTimeout(fn,Q.fast?10:Math.round(ms*(Q.spd||1)));Q.timers.push(t);return t}
-function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[]}
+function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[];Q.busy=false;Q.queued=false;Q.typing=false}
+/* DC-01: while a message is typing (or a beat is still playing out), Next is queued and runs once the beat settles, never twice */
+function busy(){return !!(Q.typing||Q.busy)}
+function queueIfBusy(){if(busy()){Q.queued=true;return true}return false}
 function optLabels(m){const o=m.ask.opts.map((x,i)=>({l:x.l,r:x.rec?1:0,i}));o.sort((a,b)=>b.r-a.r);return o.map(x=>x.l)}
 function ensureThread(title){const C=CXr();if(!C.newThread)return null;if(Q.thread&&C.hasThread(Q.thread.id)&&!title){C.activate(Q.thread.id);return Q.thread}
  Q.thread=C.newThread(title||"VibeCheck",{studio:1});Q.mi=0;Q.lastCxm=null;return Q.thread}
@@ -103,7 +114,7 @@ function buildRoute(q){const C=CXr();C.pushMsg({me:1,t:E(q)},Q.thread);Q.dockEch
    if(j>=0&&j<opts.length){answer(ai[1],j);return true}
    if(/^(yes|ok|okay|go|sure|recommended|your pick)$/.test(n)){answer(ai[1],Math.max(0,opts.findIndex(o=>o.rec)));return true}}
   const pend=Q.msgs.slice().reverse().find(m=>m.next);
-  if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
+  if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){if(queueIfBusy())return true;const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
   submit(q);return true}finally{Q.dockEcho=false}}
 function isChipOrAnswer(q){const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();const n=norm(q);
  const ai=Q.msgs.find(m=>m.ask&&m.ask.done==null);
@@ -127,7 +138,8 @@ function afterDraw(){const C=W.CHATX;if(!C||!C.cur)return;const ctx=D.getElement
  if(!live){if(st)st.remove();return}
  const t=C.cur(),inThread=Q.thread&&t.id===Q.thread.id,onScr=S_screen()==="studio";
  if(!st){st=D.createElement("div");st.id="stuStrip";st.className="stu-strip";ctx.parentNode.insertBefore(st,ctx)}
- const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet" data-stu-exit aria-label="Close the build bar">'+((inThread&&onScr)?"Exit build":"Close \u00d7")+'</button>';
+ /* PH-10: the close control sits top right on its own, never inline after Back to build (same pattern as #drawer>.dctl .closebtn) */
+ const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b stx-back" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet stx-x" data-stu-exit aria-label="'+((inThread&&onScr)?"Exit the build":"Close the build bar")+'">'+((inThread&&onScr)?"Exit build":"Close")+'</button>';
  if(st.dataset.h!==html){st.dataset.h=html;st.innerHTML=html}
  C.drawSugs&&C.drawSugs()}
 function fixChips(t){if(!buildLive()||Q.hold||!Q.thread||t.id!==Q.thread.id)return;const want=pendingChips();const last=t.msgs[t.msgs.length-1];
@@ -170,8 +182,8 @@ function applyBeat(b){const B=Q.B,sc=Q.sc;
 const CP_VIEWS=["agents","perm","maturity","guard","test","ux","approve"];
 function isCP(b){return !!(b&&(b.ask||CP_VIEWS.indexOf(b.view)>=0))}
 function dwellFor(b,txt){const words=String(txt||"").replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;return Math.max(4000,1500+words*330,b.hold||0)}
-function advance(){const p=Q.msgs.find(m=>m.next);if(p)p.next=null;Q.wait=false;Q.peek=null;nextBeat()}
-function kick(){if(!Q.sc||!Q.wait)return;const last=Q.msgs[Q.msgs.length-1];
+function advance(){if(queueIfBusy())return;const p=Q.msgs.find(m=>m.next);if(p)p.next=null;Q.wait=false;Q.peek=null;nextBeat()}
+function kick(){if(Q.sc&&queueIfBusy())return;if(!Q.sc||!Q.wait)return;const last=Q.msgs[Q.msgs.length-1];
  if(last&&last.ask&&last.ask.done==null){answer(Q.msgs.length-1,Math.max(0,last.ask.opts.findIndex(o=>o.rec)))}
  else{const p=Q.msgs.slice().reverse().find(m=>m.next);if(p){const lab=p.next;p.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat()}}}
 const CTA={agents:"[data-r26-agents]",perm:"[data-r26-comp]",test:"[data-r26-run],[data-r26-fixall]",ux:"[data-r26-run],[data-r26-fixux]",approve:"[data-stu-agree],[data-r26-submit],[data-stu-pub]"};
@@ -180,7 +192,8 @@ function pulse(){D.querySelectorAll(".stu-pulse").forEach(e=>e.classList.remove(
  const sel=b&&CTA[b.view];if(sel&&!(Q.cpDone&&Q.cpDone[Q.i])){const el=[...D.querySelectorAll("#stuCanvas "+sel.split(",").join(",#stuCanvas "))].find(e=>!e.disabled&&e.offsetParent);if(el){el.classList.add("stu-pulse");return}}
  const chip=D.querySelector("#sugs .chip");if(chip)chip.classList.add("stu-pulse")}
 function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.beats[Q.i];
- if(!b){finish();return}
+ if(!b){Q.busy=false;Q.queued=false;finish();return}
+ Q.busy=true;
  applyBeat(b);
  const msgs=(typeof b.say==="function"?b.say():b.say).slice();const allTxt=msgs.join(" ");Q.peek=null;
  const step=()=>{const m=msgs.shift();if(m==null){after();return}
@@ -191,14 +204,15 @@ function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.b
   else if(b.view==="guard"&&!Q.built){Q.msgs.push({r:"ai",h:"",next:"Build the app and all its guardrails"});Q.wait=true;drawChat(true);if(Q.auto)later(()=>{if(live()&&Q.auto&&!Q.built)buildOut()},dw)}
   else{const nb=Q.beats[Q.i+1];if(nb){Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=true;drawChat(true);
    if(Q.auto)later(()=>{if(live()&&Q.auto)advance()},dw)}}
-  pulse()};
+  Q.busy=false;pulse();
+  if(Q.queued){Q.queued=false;if(Q.wait)later(kick,250)}};
  step()}
 function answer(mi,j){const m=Q.msgs[mi];if(!m||!m.ask||m.ask.done!=null)return;const o=m.ask.opts[j];m.ask.done=j;you(o.l);
  if(o.agree){Q.B.agreed=true;Q.B.agreedAt=new Date().toISOString().slice(0,10)}
  if(o.tgt!=null&&X.setTarget)X.setTarget(o.tgt);
  if(o.run&&X[o.run])G(()=>X[o.run](o));
  if(o.own){const who=o.own==="@me"?me():o.own;Q.B.data.forEach(d=>{if(d.kind==="new")d.owner=who})}
- Q.typing=true;drawChat(true);later(()=>{Q.typing=false;if(o.say)say(o.say);Q.wait=false;render();syncRail();later(nextBeat,900)},700)}
+ Q.busy=true;Q.typing=true;drawChat(true);later(()=>{Q.typing=false;if(o.say)say(o.say);Q.wait=false;render();syncRail();later(nextBeat,900)},700)}
 function finish(){}
 
 /* ---------- build the app and the guardrails for real ---------- */
@@ -206,7 +220,7 @@ function buildOut(){
  if(Q.built||!Q.sc)return;Q.built=true;Q.msgs.forEach(m=>{if(m.next)m.next=null});const B=Q.B,sc=Q.sc,own=OWN[sc.id]||[me(),"Casey Rowan"];
  const id="stu_"+slug(B.title);B.id=id;
  const flat=B.phases?B.phases.reduce((a,p)=>a.concat(p.steps.map(s=>Object.assign({ph:p.name},s))),[]):B.steps;
- const stp=flat.map((s,i)=>({n:s.n,d:s.d||"",who:s.who==="fn"?"auto":s.who,owner:s.owner||"Owner",sla:s.sla||"",in:i?flat[i-1].n+" done":"Request",out:s.n+" done"}));
+ const stp=flat.map((s,i)=>Object.assign({n:s.n,d:s.d||"",who:SMK(s.who),owner:s.owner||"Owner",sla:s.sla||"",in:i?flat[i-1].n+" done":"Request",out:s.n+" done"},s.trig?{trig:s.trig}:{}));
  const mids=[];
  B.metrics.forEach(m=>{const mid="m_stu_"+slug(B.title)+"_"+m.ac.toLowerCase();mids.push(mid);G(()=>{if(!METRICS[mid]){const t=parseFloat(m.tgt),c=parseFloat(m.cur);METRICS[mid]={n:m.n,f:m.f,u:m.u,cur:c,tgt:t,badAt:m.dir==="max"?t*.9:t*1.5,dir:m.dir,max:Math.max(t,c)*1.4,tr:m.tr,owner:own[0],use:[B.title],rem:{kind:"sop",ref:"SOP-S-"+m.ac,title:m.off,agent:"Studio Agent",auto:false,state:"idle",prog:"Drafted from the build conversation"}}}})});
  const newEnts=B.data.filter(d=>d.kind==="new");
@@ -224,7 +238,7 @@ function buildOut(){
 const CERT=()=>{const B=Q.B,g=B.guard||{};return[
  ["A named owner and a different backup",!!B.owner,B.owner?B.owner+" and "+((OWN[Q.sc.id]||[])[1]||"a backup"):"missing"],
  ["Ownership accepted",B.agreed,B.agreed?"Accepted":"Waiting for you"],
- ["Every step has a person, an automatic step or an AI agent",B.steps.concat(B.phases?B.phases.reduce((a,p)=>a.concat(p.steps),[]):[]).every(s=>s.who),"Checked on "+(B.nsteps||B.steps.length)+" steps"],
+ ["Every step is human, robot or agent, and every robot and agent step has a trigger",flatSteps().every(s=>s.who&&(!(STP()&&STP().needsTrigger(s.who))||s.trig)),"Checked on "+(B.nsteps||flatSteps().length)+" steps"],
  ["Loopholes found and closed",B.issues.every(i=>i.fixed),B.issues.length+" found"+(B.loops?", "+B.loops+" in the full scan":"")],
  ["Every new data attribute has an owner, source and rule",B.data.filter(d=>d.kind==="new").every(d=>d.owner&&d.src&&d.rule),B.data.filter(d=>d.kind==="new").length+" new"],
  ["Each measure says what to do when off trend",B.metrics.every(m=>m.off),B.metrics.length+" measures"],
@@ -243,16 +257,17 @@ function visPeople(){const s=STAFF();if(Q.vis==="owner")return[Q.B.owner];if(Q.v
 /* ---------- direct edits on the visual ---------- */
 function flatSteps(){return Q.B.phases?Q.B.phases.reduce((a,p)=>a.concat(p.steps),[]):Q.B.steps}
 function cycleWho(ref){const s=stepAt(ref);if(s)setWho(ref,ORDER[(ORDER.indexOf(s.who)+1)%4])}
-function setWho(ref,to){const s=stepAt(ref);if(!s||s.base||s.who===to)return;const from=s.who;s.who=to;s.owner=s.who==="auto"?"Automatic":s.who==="fn"?"Function":s.who==="agent"?(s.owner&&/Agent$/.test(s.owner)?s.owner:"Studio Agent"):(s.owner==="Automatic"||s.owner==="Function"||/Agent$/.test(s.owner)?"Owner":s.owner);
+function setWho(ref,to){to=SMK(to);const s=stepAt(ref);if(!s||s.base||SMK(s.who)===to)return;const from=SMK(s.who);s.who=to;const P=STP();s.owner=P?P.ownerFor(to,s.owner):s.owner;if(P)P.ensureTrig(s);
  let msg="You changed <b>"+E(s.n)+"</b> from "+WHO[from][0].toLowerCase()+" to "+WHO[s.who][0].toLowerCase()+".";
- if(s.who==="auto"&&/approv|sign|decid|review/i.test(s.n))msg+=" I would keep a person on this one: it is a decision. I left it as you set it and logged the risk.";
- else if(s.who==="agent")msg+=" An agent will propose and a person will confirm.";
- else if(s.who==="fn")msg+=" A function is a fixed rule: same input, same answer, tested once.";
+ const tg=s.trig&&W.TRIGGERS?" It starts when "+E(TRIGGERS.label(s.trig).toLowerCase())+"; change the trigger in the step panel.":"";
+ if(s.who==="robot"&&/approv|sign|decid|review/i.test(s.n))msg+=" I would keep a person on this one: it is a decision. I left it as you set it and logged the risk."+tg;
+ else if(s.who==="agent")msg+=" An agent will propose and a person will confirm."+tg;
+ else if(s.who==="robot")msg+=" A robot is a fixed rule: same input, same answer, tested once."+tg;
  else msg+=" I rechecked the flow: nothing else changes.";
  say(msg);render()}
 function addStep(text){const t=text.replace(/^add (a )?step[:\s-]*/i,"").trim();if(!t){say("Tell me the step, for example: <i>add a step: notify the supplier</i>.");return}
  const arr=Q.B.phases?null:Q.B.steps;if(!arr){say("This process is large. Open a phase and use its steps, or tell me which phase to add to.");return}
- arr.splice(Math.max(1,arr.length-1),0,{n:t.charAt(0).toUpperCase()+t.slice(1),who:"human",owner:"Owner",sla:"",add:true});Q.view="flow";Q.stage="process";say("Added <b>"+E(t)+"</b> as a person step before the last one. I checked it for loops and found none. Click its label if an agent or automation should do it.");render();syncRail()}
+ arr.splice(Math.max(1,arr.length-1),0,{n:t.charAt(0).toUpperCase()+t.slice(1),who:"human",owner:"Owner",sla:"",add:true});Q.view="flow";Q.stage="process";say("Added <b>"+E(t)+"</b> as a person step before the last one. I checked it for loops and found none. Click it if a robot or an agent should do it.");render();syncRail()}
 
 /* ---------- free text ---------- */
 const MATCH=[[/damag|return|broken/i,"ret"],[/calibrat|instrument/i,"cal"],[/discount|bundle|promotion/i,"bundle"],[/shutdown|turnaround|outage/i,"turn"]];
@@ -268,11 +283,11 @@ function submit(text){text=String(text||"").trim();if(!text)return;
 function publishPrompt(){say("Use <b>Share</b> on the right when you are ready.");}
 
 /* ---------- visuals: same language as the workflow designer, process map and data model ---------- */
-const LANES=["human","agent","fn","auto","gate"];
+const LANES=["human","agent","robot","gate"];
 const eyebrow=(a,b)=>`<div class="stu-eb">${E(a)}${b?` <span>${E(b)}</span>`:""}</div>`;
 const head=(eb,t,sum)=>`${eyebrow(eb)}<h2>${t}</h2>${sum?`<p class="stu-sum">${sum}</p>`:""}`;
 const tile=(k,v,c)=>`<div class="stu-k card glass"><small>${k}</small><b>${v}</b><span>${c||""}</span></div>`;
-function mixOf(list){const m={human:0,auto:0,fn:0,agent:0,gate:0};list.forEach(s=>m[s.who]++);return m}
+function mixOf(list){const m={human:0,robot:0,agent:0,gate:0};list.forEach(s=>m[SMK(s.who)]++);return m}
 function mixHTML(list){const m=mixOf(list);return ORDER.map(k=>`<span><i class="stu-dot ${WHO[k][1]}"></i><b>${m[k]}</b> ${WHO[k][0].toLowerCase()}</span>`).join("")}
 function barHTML(list){const m=mixOf(list);return `<span class="stu-bar">${ORDER.map(k=>m[k]?`<i class="${WHO[k][1]}" style="flex:${m[k]}"></i>`:"").join("")}</span>`}
 function stepAt(ref){if(ref==null||ref==="")return null;const B=Q.B;return String(ref).indexOf(":")>0?G(()=>B.phases[+ref.split(":")[0]].steps[+ref.split(":")[1]],null):B.steps[+ref]||null}
@@ -280,27 +295,31 @@ function issuesFor(ref,i){return Q.B.issues.filter(x=>x.s===i+1||x.s===ref)}
 /* the swimlane canvas: one lane per kind of doer, one column per step, curved connectors, nodes appear as they are built */
 const CW=176,NW=156,NH=64,RH=80,LX=118,TY=14;
 function canvas(steps,pre){
- const used=LANES.filter(k=>steps.some(s=>s.who===k));if(!used.length)return`<p class="stu-empty">Nothing yet. Describe how it starts and I will draft it here.</p>`;
- const w=LX+steps.length*CW+30,h=TY*2+used.length*RH,pos=steps.map((s,i)=>({x:LX+i*CW,y:TY+used.indexOf(s.who)*RH+(RH-NH)/2}));
+ const used=LANES.filter(k=>steps.some(s=>SMK(s.who)===k));if(!used.length)return`<p class="stu-empty">Nothing yet. Describe how it starts and I will draft it here.</p>`;
+ const w=LX+steps.length*CW+30,h=TY*2+used.length*RH,pos=steps.map((s,i)=>({x:LX+i*CW,y:TY+used.indexOf(SMK(s.who))*RH+(RH-NH)/2}));
  let svg=`<svg class="stu-cvs" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><defs><marker id="stuAr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="currentColor"/></marker></defs>`;
  used.forEach((k,li)=>{svg+=`<rect x="0" y="${TY+li*RH}" width="${w}" height="${RH}" class="stu-lane ${WHO[k][1]}"/>`});
  steps.forEach((s,i)=>{if(!i)return;const a=pos[i-1],b=pos[i],x1=a.x+NW,y1=a.y+NH/2,x2=b.x,y2=b.y+NH/2,m=(x1+x2)/2;svg+=`<path class="stu-ln2 ${s.add?"add":""}" d="M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2-2} ${y2}" marker-end="url(#stuAr)"/>`});
  svg+="</svg>";
  const lab=used.map((k,li)=>`<div class="stu-lab ${WHO[k][1]}" style="top:${TY+li*RH}px;height:${RH}px"><i class="stu-dot ${WHO[k][1]}"></i>${WHO[k][0]}</div>`).join("");
  const nodes=steps.map((s,i)=>{const ref=pre===""?String(i):pre+":"+i,iss=issuesFor(ref,i),key=Q.B.title+"|"+ref+"|"+s.n,fresh=!Q.seen.has(key);Q.seen.add(key);
-  return `<button type="button" class="stu-nd ${WHO[s.who][1]} ${s.base?"base":""} ${s.add?"add":""} ${fresh?"fresh":""} ${String(Q.sel)===ref?"sel":""}" style="left:${pos[i].x}px;top:${pos[i].y}px;--i:${Math.min(i,24)}" data-stu-sel="${ref}" title="${E(s.n)}"><em>${i+1}</em><b>${E(s.n)}</b><small>${E(s.owner||"")}${s.sla?" · "+E(s.sla):""}</small>${iss.length?`<u class="stu-flag" title="${E(iss.map(x=>x.t).join("; "))}">${iss.length}</u>`:""}</button>`}).join("");
+  return `<button type="button" class="stu-nd ${WHO[SMK(s.who)][1]} ${s.base?"base":""} ${s.add?"add":""} ${fresh?"fresh":""} ${String(Q.sel)===ref?"sel":""}" style="left:${pos[i].x}px;top:${pos[i].y}px;--i:${Math.min(i,24)}" data-stu-sel="${ref}" title="${E(s.n+" | "+WHO[SMK(s.who)][0]+(STP()?" | "+STP().trigText(s):""))}"><em>${i+1}</em><b>${E(s.n)}</b>${STP()&&STP().needsTrigger(s.who)?`<small class="stu-ntr">${SMK(s.who)==="agent"?E(s.owner||"")+" · ":""}${E(s.trig&&W.TRIGGERS?TRIGGERS.label(s.trig):"No trigger set")}</small>`:`<small>${E(s.owner||"")}${s.sla?" · "+E(s.sla):""}</small>`}${iss.length?`<u class="stu-flag" title="${E(iss.map(x=>x.t).join("; "))}">${iss.length}</u>`:""}</button>`}).join("");
  return `<div class="stu-tools"><button type="button" class="btn quiet" data-stu-zoom="-1" aria-label="Zoom out">−</button><button type="button" class="btn quiet" data-stu-zoom="1" aria-label="Zoom in">+</button><button type="button" class="btn quiet" data-stu-zoom="0">Fit</button><span class="stu-hintx">Click a step to change who does it, rename it or see what I found. Scroll sideways for more.</span></div>
  <div class="stu-cv card glass" id="stuCv"><div class="stu-cvi" style="width:${w}px;height:${h}px;zoom:${Q.zoom}">${svg}${lab}${nodes}</div></div>`}
 function inspector(){const ref=Q.sel,s=stepAt(ref);
  if(!s)return"";
  const idx=String(ref).indexOf(":")>0?+ref.split(":")[1]:+ref,iss=issuesFor(ref,idx);
- return `<aside class="stu-insp card glass"><small class="stu-eb">STEP ${idx+1} · ${E(WHO[s.who][0]).toUpperCase()}</small><h3 ${s.base?"":'contenteditable="true" spellcheck="false" data-stu-name="'+ref+'"'}>${E(s.n)}</h3>
-  <div class="stu-seg" role="group" aria-label="Who does this step">${ORDER.map(k=>`<button type="button" class="${s.who===k?"on "+WHO[k][1]:""}" data-stu-set="${ref}|${k}" ${s.base?"disabled":""}>${WHO[k][0]}</button>`).join("")}</div>
+ const k=SMK(s.who),P=STP();
+ const trigUI=P&&P.needsTrigger(k)&&W.TRIGGERS?`<div class="stp-tsel"><label class="small" for="stuTrig${E(ref)}"><b>Starts when</b></label><select class="fin" id="stuTrig${E(ref)}" data-stu-trig="${E(ref)}" ${s.base?"disabled":""}>${P.trigOptions(s.trig&&s.trig.type)}</select>${P.trigChip(s)}</div>`:P?`<p class="stu-note">${E(P.trigText(s))}.</p>`:"";
+ const agentBtn=k==="agent"&&P?`<button type="button" class="btn sm" ${P.attrs(s.owner||"Studio Agent",{task:s.d||s.n,trig:s.trig,sponsor:Q.B.owner||me()})}>Open agent definition</button>`:"";
+ return `<aside class="stu-insp card glass"><small class="stu-eb">STEP ${idx+1} · ${E(WHO[k][0]).toUpperCase()}</small><h3 ${s.base?"":'contenteditable="true" spellcheck="false" data-stu-name="'+ref+'"'}>${E(s.n)}</h3>
+  <div class="stu-seg" role="group" aria-label="Who does this step">${ORDER.map(o=>`<button type="button" class="${k===o?"on "+WHO[o][1]:""}" data-stu-set="${ref}|${o}" aria-pressed="${k===o}" ${s.base?"disabled":""}>${WHO[o][0]}</button>`).join("")}</div>
+  ${trigUI}${agentBtn}
   <dl class="stu-dl"><dt>Owner</dt><dd>${E(s.owner||"Not set")}</dd><dt>Time limit</dt><dd>${E(s.sla||"None")}</dd>${s.d?`<dt>Note</dt><dd>${E(s.d)}</dd>`:""}</dl>
   ${s.base?`<p class="stu-note">Owned by ${E(s.owner)}. Extending it needs the owner to agree.</p>`:""}
   ${iss.length?`<h4>What I found</h4><ul class="stu-iss">${iss.map(x=>`<li><b>${E(x.t)}</b><span>${E(x.f)}</span></li>`).join("")}</ul>`:`<p class="stu-note">No loopholes or rework here.</p>`}</aside>`}
-function flowTiles(all){const m=mixOf(all),auto=all.length?Math.round((m.auto+m.agent+m.fn)/all.length*100):0,B=Q.B;
- return `<div class="stu-ks">${tile("Steps",all.length,B.phases?B.phases.length+" phases":"in sequence")}${tile("Automation",auto+"%","automatic, function or AI agent")}${tile("Loopholes",B.loops||B.issues.length,(B.loops?B.loops-B.issues.length+" closed on my own":"all closed"))}${tile("Owner",E((B.adj&&B.adj.owner)||B.owner||"You"),B.adj?"agrees before it extends":"you, until you share it")}</div>`}
+function flowTiles(all){const m=mixOf(all),auto=all.length?Math.round((m.robot+m.agent)/all.length*100):0,B=Q.B;
+ return `<div class="stu-ks">${tile("Steps",all.length,B.phases?B.phases.length+" phases":"in sequence")}${tile("Automation",auto+"%","robot or agent steps")}${tile("Loopholes",B.loops||B.issues.length,(B.loops?B.loops-B.issues.length+" closed on my own":"all closed"))}${tile("Owner",E((B.adj&&B.adj.owner)||B.owner||"You"),B.adj?"agrees before it extends":"you, until you share it")}</div>`}
 function vFlow(){const B=Q.B;
  if(B.phases){const all=flatSteps(),pi=Math.min(Q.ph||0,B.phases.length-1),P=B.phases[pi];
   return `${head("Process",E(B.title),all.length+" steps in "+B.phases.length+" phases. Open a phase to see its steps.")}${flowTiles(all)}<div class="stu-mix">${mixHTML(all)}</div>
@@ -336,7 +355,7 @@ function vAccess(){const B=Q.B;return `${head("Access","Who can see and change i
  <p class="stu-note">Sensitive fields stay masked unless a person's role already allows them.</p>`}
 function vStrat(){const s=Q.B.strat||[];return `${head("Strategy check",'<span class="stu-pro">Pro</span> Does this fit what leadership asked for?',"Checked before anything is built.")}<div class="stu-sg">${s.map(x=>{const o=SD.OBJ.find(y=>y.id===x.o);return `<div class="stu-sv card glass ${x.v}"><span class="stu-vd ${x.v}">${x.v==="supports"?"Supports":x.v==="conflicts"?"Conflicts":"No effect"}</span><b>${E(o.n)}</b><small>${E(x.t)}</small></div>`}).join("")}</div>`}
 const ART_OLD=()=>{const B=Q.B,g=B.guard||{},b=Q.built;const n=B.nsteps||flatSteps().length;
- return [["Process and workflow",n+" steps with a person, automation or agent on each",1],["Data model","Reuses "+(B.data.filter(d=>d.kind!=="new").length)+" existing elements; "+B.data.filter(d=>d.kind==="new").length+" new with owner, source and rule",1],["Measures","Each with a decision, a target and an off-trend action",1],["Access and security",B.people.reduce((a,x)=>a+x.people.length,0)+" people from the org chart; sensitive fields masked",1],["Maturity model",g.maturity,b],["Knowledge articles",(g.articles||[]).map(x=>"“"+x+"”").join(", "),b],["Roadmap",(g.roadmap||[]).join(" · "),b],["Technical debt decisions",(g.debt||[]).join(" "),b],["Ownership agreement",g.agree,b&&B.agreed],["Audit trail and change record","Every edit in this conversation is logged with its author",b],["Test run","12 of 12 sample cases passed",b]]};
+ return [["Process and workflow",n+" steps, each human, robot or agent",1],["Data model","Reuses "+(B.data.filter(d=>d.kind!=="new").length)+" existing elements; "+B.data.filter(d=>d.kind==="new").length+" new with owner, source and rule",1],["Measures","Each with a decision, a target and an off-trend action",1],["Access and security",B.people.reduce((a,x)=>a+x.people.length,0)+" people from the org chart; sensitive fields masked",1],["Maturity model",g.maturity,b],["Knowledge articles",(g.articles||[]).map(x=>"“"+x+"”").join(", "),b],["Roadmap",(g.roadmap||[]).join(" · "),b],["Technical debt decisions",(g.debt||[]).join(" "),b],["Ownership agreement",g.agree,b&&B.agreed],["Audit trail and change record","Every edit in this conversation is logged with its author",b],["Test run","12 of 12 sample cases passed",b]]};
 const glTile=a=>`<div class="stu-gt card glass ${a[2]?"on":""}"><i aria-hidden="true">${a[2]?"✓":""}</i><span><b>${E(a[0])}</b><small>${E(a[1]||"")}</small></span></div>`;
 function vGuard(){const B=Q.B,b=Q.built;const ART=ART_OLD;return `${head("Guardrails","The app and its guardrails",b?"Built. Everything below exists and is linked.":"You asked for one thing. These come with it by default.")}
  <div class="stu-gg">${ART().map(glTile).join("")}</div>
@@ -373,7 +392,7 @@ function canvasHTML(){const f=VIEWS[Q.view]||vHome;return demoBar()+railHTML()+`
 
 /* ---------- mounting ---------- */
 function shell(){return `<div class="stu"><section class="stu-right" id="stuCanvas" aria-label="What is being built"></section></div>`}
-function render(){const c=D.getElementById("stuCanvas");if(!c)return;const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();{const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw&&Q.autoFit!==false){const f=Math.max(.5,Math.min(1,(cv.clientWidth-8)/parseFloat(iw.style.width)));if(Math.abs(f-Q.zoom)>.02){Q.zoom=f;iw.style.zoom=f}}}pulse();if(X.after)G(()=>X.after());{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}}
+function render(){const c=D.getElementById("stuCanvas");if(!c)return;normAll();const ov=D.getElementById("stuCv"),ob=D.querySelector(".stu-body"),sl=ov?ov.scrollLeft:0,st=ob?ob.scrollTop:0;c.innerHTML=canvasHTML();{const cv=D.getElementById("stuCv"),iw=D.querySelector(".stu-cvi");if(cv&&iw&&Q.autoFit!==false){const f=Math.max(.5,Math.min(1,(cv.clientWidth-8)/parseFloat(iw.style.width)));if(Math.abs(f-Q.zoom)>.02){Q.zoom=f;iw.style.zoom=f}}}pulse();if(X.after)G(()=>X.after());{const nv=D.getElementById("stuCv"),nb=D.querySelector(".stu-body");if(nv)nv.scrollLeft=sl;if(nb)nb.scrollTop=st}}
 function syncRail(){}
 function railSet(on){const c=D.getElementById("railCollapse");if(!c||c.checked===on)return false;c.checked=on;c.dispatchEvent(new Event("change",{bubbles:true}));return true}
 function mount(){const r=D.getElementById("stuRoot");if(!r)return;if(r.dataset.m==="1"){return}r.dataset.m="1";if(!W.matchMedia("(max-width:760px)").matches&&railSet(true))Q.railAuto=true;r.innerHTML=shell();const C=CXr();
@@ -389,7 +408,7 @@ D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data
  const d=t.dataset;
  if(d.stuTry){startScenario(SD.SCEN[d.stuTry]);return}
  if(d.stuAns){const[a,b]=d.stuAns.split(":").map(Number);answer(a,b);return}
- if(d.stuNext){const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;Q.wait=false;drawChat();nextBeat();return}
+ if(d.stuNext){if(queueIfBusy())return;const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;Q.wait=false;drawChat();nextBeat();return}
  if(d.stuWho!=null){cycleWho(d.stuWho);return}
  if(d.stuSel!=null){Q.sel=String(Q.sel)===d.stuSel?null:d.stuSel;render();return}
  if(d.stuSet!=null){const[r,k]=d.stuSet.split("|");setWho(r,k);return}
@@ -407,6 +426,7 @@ D.addEventListener("submit",e=>{const f=e.target;if(!f.matches)return;if(f.match
  if(f.matches("[data-stu-cmdform]")){e.preventDefault();const v=f.querySelector("input").value;Q.B.cmd=v;Q.B.people=resolveAccess(v);const n=Q.B.people.reduce((a,x)=>a+x.people.length,0);say("Resolved <b>"+E(v)+"</b> against the org chart: "+n+" people"+(Q.B.people.some(x=>x.ext)?" plus external contractors":"")+".");render()}});
 D.addEventListener("change",e=>{const t=e.target;if(!t.matches||!D.getElementById("stuRoot"))return;
  if(t.matches("[data-stu-own]")){const x=Q.B.data[+t.dataset.stuOwn];x.owner=t.value;const ok=STAFF().some(p=>p.n===t.value);say(ok?"Owner for <b>"+E(x.el)+"</b> set to "+E(t.value)+". I checked the org chart: they exist and are active.":"I could not find <b>"+E(t.value)+"</b> in the org chart. Pick someone from the list.");return}
+ if(t.matches("[data-stu-trig]")){const st=stepAt(t.dataset.stuTrig);if(!st||!W.TRIGGERS)return;const ty=t.value,P=STP();st.trig={type:ty,params:{}};const g=P?P.guessTrig(st):null;if(g&&g.type===ty)st.trig=g;else if(P)st.trig.params[P.mainField(ty)]=ty==="step"?(st.prev||"the previous step is done"):ty==="schedule"?"daily":ty==="metric"?"the step's measure":ty==="record"?"record":"an event is raised";say("<b>"+E(st.n)+"</b> now starts when "+E(TRIGGERS.label(st.trig).toLowerCase())+".");render();return}
  if(t.matches("[data-stu-rule]")){Q.B.data[+t.dataset.stuRule].rule=t.value;say("Rule updated. I will check every new record against it.");return}
  if(t.matches("[data-stu-tgt]")){const m=Q.B.metrics[+t.dataset.stuTgt];m.tgt=t.value;say("Target for <b>"+E(m.n)+"</b> is now "+E(t.value)+". It is "+(((m.dir==="max"&&+m.cur<+t.value)||(m.dir==="min"&&+m.cur>+t.value))?"off target today, so the off-trend action would start now: "+E(m.off):"on target today")+".");return}
  if(t.matches("[data-stu-std]")){Q.B.std[+t.dataset.stuStd].on=t.checked;say(t.checked?"Added the reference to the process and its articles.":"Removed. The steps that came from it stay unless you remove them.");return}
@@ -449,5 +469,5 @@ D.addEventListener("keydown",e=>{if(!buildLive()||S_screen()!=="studio"||Q.auto)
   const p=Q.msgs.find(m=>m.next);if(Q.wait&&p){e.preventDefault();kick()}}
  else if(e.key==="ArrowLeft"){const b=D.querySelector("[data-stu-bk]");if(b&&!b.disabled){e.preventDefault();b.click()}}});
 Object.assign(X,{E,G,Q,WHO,ORDER,head,tile,eyebrow,canvas,flatSteps,stepAt,setWho,say,later,render,syncRail,STAFF,me,OWN,resolveAccess,visPeople,publish,drawChat,slug,mixOf,barHTML,issuesHTML,glTile,ART:ART_OLD,STAGES,VIEW_OF_STAGE,STAGE_OF_VIEW});
-W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=nextBeat;
+W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=()=>{if(queueIfBusy())return;nextBeat()};W.STUDIO.isBusy=busy;
 })();

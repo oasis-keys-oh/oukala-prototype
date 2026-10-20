@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-line run: tools/tests/run.sh   (builds to build_out, then runs smoke and tab tests)
+# One-line run: tools/tests/run.sh   (builds to build_out, then runs smoke, tab, showroom, platform and steps tests)
 # Needs: python3, node, playwright (npm i -D playwright) and a Chromium; set CHROMIUM_PATH if Playwright's own browser is not installed.
 set -e
 cd "$(dirname "$0")/../.."
@@ -9,3 +9,4 @@ node tools/tests/tabs.js build_out
 node tools/tests/showroom.js build_out
 node tools/tests/platform.js build_out
 node tools/tests/people.js build_out
+node tools/tests/steps.js build_out
