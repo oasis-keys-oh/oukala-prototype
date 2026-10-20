@@ -13,6 +13,8 @@ node tools/tests/tabs.js build_out
 node tools/tests/journey.js build_out
 node tools/tests/showroom.js build_out
 node tools/tests/platform.js build_out
+# CL-35, CL-36, CL-38: render/go/openDrawer wrappers, document listeners, observers and intervals never rise above their ceilings
+node tools/tests/runtime.js build_out
 node tools/tests/people.js build_out
 node tools/tests/steps.js build_out
 node tools/tests/guard.js build_out

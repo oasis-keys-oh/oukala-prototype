@@ -1,6 +1,6 @@
 # Observers and intervals (CL-38)
 
-Inventory of every `new MutationObserver` and `setInterval(` in `src/*.js` (quarantined " 2" copies excluded), wave 4, stream runtime. Line numbers are at the stream's head commit. "Off-screen" says whether the callback can run while its own screen is not open. `tools/tests/runtime.js` fails the build if either count rises.
+Inventory of every `new MutationObserver` and `setInterval(` in `src/*.js` (quarantined " 2" copies excluded), wave 4, stream runtime. Line numbers are at the stream's head commit. "Off-screen" says whether the callback can run while its own screen is not open. `tools/tests/runtime.js` fails the run if either count rises above 44 and 39.
 
 Counts: **44 MutationObservers** (backlog row said 40; 41 at wave 3) and **39 setIntervals** (40 before this stream; one removed).
 
@@ -24,7 +24,7 @@ Counts: **44 MutationObservers** (backlog row said 40; 41 at wave 3) and **39 se
 | `mod_flow.js:1518` | runtime | drag ghost above an open drawer | body; acts only on .dnd-ghost | keep (cheap) |
 | `mod_inbox.js:632` | runtime | remount the bell when the top bar is redrawn | top bar only | keep |
 | `mod_meet3.js:209` | runtime | record links in drawers | drawer children only | keep |
-| `mod_org4.js:39` | runtime | agent display names in added text | #view and drawer subtree, one frame | keep |
+| `mod_org4.js:39` | runtime | agent display names in added text | yes; queues added nodes for one frame | keep |
 | `mod_own2.js:155` | runtime | ownership slots (inject) | yes, body subtree, debounced 60 ms | keep; candidate for afterRender plus afterOpenDrawer |
 | `mod_plat_atlas.js:1249` | product-1 | atlas drawer go-links | drawer only | keep (product-1) |
 | `mod_r15c_core.js:134` | product-2 | accessibility pass on view and drawer | view and drawer, debounced 250 ms | keep (product-2) |
