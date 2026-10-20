@@ -127,7 +127,7 @@ function person360(name){const r=who(name);if(!r){toast("No profile for "+name,"
    <div class="loadbar" style="margin:8px 0 18px"><u style="width:${Math.min(100,wl.pct)}%;background:${wl.pct>95?"var(--bad-f)":wl.pct>75?"var(--warn-f)":"var(--good-f)"}"></u></div>
    <div class="eyebrow">Skills</div><div class="row" style="margin:8px 0 14px">${r.skills.map(s=>`<span class="pill info">${H(s)}</span>`).join("")||'<span class="muted">None recorded</span>'}</div>
    <dl class="kv"><dt>Type</dt><dd>${kindPill(r.kind)}</dd><dt>Role</dt><dd>${H(r.role)}</dd><dt>Team</dt><dd>${H(r.team||"")}</dd>${r.org&&r.kind!=="human"?`<dt>Organization</dt><dd>${H(r.org)}</dd>`:""}${mgr?`<dt>Reports to</dt><dd>${window.ownerChip?ownerChip(mgr.name,{role:"Manager"}):pchip(mgr.name)}</dd>`:""}${r.contract?`<dt>Contract</dt><dd>${H(r.contract)}${r.sla?" · "+H(r.sla):""}</dd>`:""}${r.rate?`<dt>Rate</dt><dd class="num">$${r.rate} an hour</dd>`:""}${r.loc?`<dt>Location</dt><dd>${H(r.loc)}</dd>`:""}${r.email?`<dt>Email</dt><dd>${H(r.email)}</dd>`:""}${own?`<dt>Accountable</dt><dd>${r.kind==="ai"&&window.ownerChip?ownerChip((AGENTS.find(a=>a.id===r.agent)||{}).owner||"PMO",{role:"Sponsor"}):H(own)}</dd>`:""}</dl>
-   <div class="row" style="margin-top:14px"><button class="btn primary" data-person-assign="${H(r.name)}">Assign work</button><button class="btn" data-own-msg="person:${H(r.name)}">Message</button><button class="btn" data-person-ask="${H(r.name)}">Ask Oukala about ${H(r.name.split(" ")[0])}</button></div>`,
+   <div class="row" style="margin-top:14px"><button class="btn primary" data-person-assign="${H(r.name)}">Assign work</button><button class="btn" data-own-msg="person:${H(r.name)}">Message</button><button class="btn" data-person-ask="${H(r.name)}">Ask ${BRAND.name} about ${H(r.name.split(" ")[0])}</button></div>`,
   `${lrHTML({id:"p360-"+r.id,groups:lrg,limit:6,search:true,empty:"Nothing assigned right now."})}`,
   `<div class="row" style="margin:0 0 6px"><span class="pill ${perf[0][1]>=88?"good":"warn"}" data-role="metric">On-time delivery ${perf[0][1]}% vs peer median 88% (${perf[0][1]-88>=0?"+":""}${perf[0][1]-88} pts)</span>${r.kind==="ai"?'<span class="pill mute">+ guardrail hits, cost per task</span>':""}</div>${perf.map((p,i)=>pb(p[0],p[1],p[2],i)).join("")}<p class="muted small">Baselines come from the peer median for the same role and team over four quarters. Reviews and goals live in Org chart and workload.</p>`
  ].concat(P360_TABS.map(t=>{try{return t.fn(r)}catch(e){return ""}}));
@@ -352,7 +352,7 @@ per("svc_m365","m36",[["Exchange Online tenant","Cloud resource"],["Teams","Appl
 per("svc_data","dat",[["lakehouse-prod","Cloud resource"],["adf-pipelines","Application"],["synapse-sql","Database"],["data-gateway","Virtual machine"]]);
 per("svc_end","end",[["Intune tenant","Cloud resource"],["Autopilot profiles","Application"]]);
 per("svc_int","int",[["apim-gateway","Application"],["service-bus","Cloud resource"],["logic-connectors","Application"]]);
-per("svc_desk","dsk",[["Service desk phone system","Application"],["Oukala service desk","Application"]]);
+per("svc_desk","dsk",[["Service desk phone system","Application"],[BRAND.name+" service desk","Application"]]);
 const first=(svc)=>CIREG.filter(c=>c.svc===svc);
 /* edges: app -> database -> storage; app -> shared infra */
 [["ci_cod0","ci_cod2"],["ci_cod1","ci_cod2"],["ci_cod4","ci_cod0"],["ci_cod4","ci_cod1"],["ci_cod3","ci_cod0"],["ci_cod3","ci_cod1"],["ci_cod2","ci_cod5"],["ci_cod0","ci_az"],["ci_cod1","ci_az"],["ci_cod4","ci_tenant","uses"],

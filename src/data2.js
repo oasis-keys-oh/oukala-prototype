@@ -528,12 +528,12 @@ Object.assign(METRICS,{
  m_intake:{n:"Demand decision time",f:"Date decided − Date submitted, in days",u:" days",cur:19,tgt:14,badAt:21,dir:"min",max:40,tr:[24,23,22,21,20,20,19,19],owner:"Portfolio office",use:["Demand and priorities"],rem:{kind:"agent",ref:"Portfolio Agent",title:"Nudge stalled reviews",agent:"Portfolio Agent",auto:true,state:"running",prog:"Reminded 2 sponsors about scores due this week"}}});
 
 /* Product log: every update and every piece of feedback, kept for future releases */
-const VERS=[["v1","2026-10-06","Prototype v1","Executive trace, invoice approval, First Officer, AI Control Tower."],["v2","2026-10-06","Oukala v2","Liquid glass shell, personas, process-flow trace, ledger and rule builder, calendars, Control Tower, metrics, knowledge graph."],["v3","2026-10-06","PPM and product log","Demand and priorities, integrated master schedule, project plans, Project Online coverage, this log."],["v4","2026-10-06","Everything on the feature list","Drag and drop, intake, contract ingestion, projects and RAID, knowledge graph, ITSM, ITOM, budgets, executive views, workflow, knowledge, people, admin."]];
+const VERS=[["v1","2026-10-06","Prototype v1","Executive trace, invoice approval, First Officer, AI Control Tower."],["v2","2026-10-06",BRAND.name+" v2","Liquid glass shell, personas, process-flow trace, ledger and rule builder, calendars, Control Tower, metrics, knowledge graph."],["v3","2026-10-06","PPM and product log","Demand and priorities, integrated master schedule, project plans, Project Online coverage, this log."],["v4","2026-10-06","Everything on the feature list","Drag and drop, intake, contract ingestion, projects and RAID, knowledge graph, ITSM, ITOM, budgets, executive views, workflow, knowledge, people, admin."]];
 const LOG0=[
  ["F01","Design","Shell","Floating, collapsible glass sidebar like Apple's menu, with a subtle background graphic.","Done","v2"],
  ["F02","Design","Shell","User profile and preferences.","Done","v2"],
  ["F03","Design","Visual","Liquid glass, floating layers, strong color contrast, hover effects everywhere, subtle animation, no text boxes or visible text boundaries.","Done","v2"],
- ["F04","Design","Visual","Use the supplied color palette. Name the app Oukala.","Done","v2"],
+ ["F04","Design","Visual","Use the supplied color palette. Name the app "+BRAND.name+".","Done","v2"],
  ["F05","Design","Trace","Trace the business process like the Standards Publishing Flow, in a modern vector style, keeping the interactivity.","Done","v2"],
  ["F06","Design","Trace","\"How to read this\" was unreadable and inconsistent.","Done","v2"],
  ["F07","Design","Table","Fix the inconsistent fonts and make the table less boring.","Done","v2"],

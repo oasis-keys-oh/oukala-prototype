@@ -787,14 +787,14 @@ const TOOLS=[
 ["search.clearCache","Clear the search result cache","Lumen API","write","Low","Safe: cache refills on demand."],
 ["search.rebuildIndex","Rebuild the search index","Lumen API","admin","High","Takes 2 to 3 hours; search quality drops while it runs."],
 ["smoke.run","Run the smoke test pack","Test runner","read","Low","Read only checks of the public site."],
-["itsm.updateIncident","Update an incident record","Oukala ITSM","write","Low","Adds work notes, changes state."],
-["itsm.postStatus","Post a status page update","Oukala ITSM","write","Medium","Visible to all staff."],
+["itsm.updateIncident","Update an incident record",BRAND.name+" ITSM","write","Low","Adds work notes, changes state."],
+["itsm.postStatus","Post a status page update",BRAND.name+" ITSM","write","Medium","Visible to all staff."],
 ["teams.notify","Notify a Teams channel","Microsoft Graph MCP","write","Low","Posts a message."],
 ["m365.shareLink","Create an expiring share link","Microsoft Graph MCP","write","Medium","Creates a link that expires in 14 days."],
 ["cr.splitUpload","Split and link large contract scans","Contract Repository API","write","Medium","Splits files and links the parts to one record."],
 ["vpn.reissueProfile","Reissue the VPN client profile","Intune MCP","write","Medium","Pushes a new profile to one device."],
 ["erp.exportLease","Run the lease schedule export","ERP API","read","Low","Read only report run."],
-["kb.draftUpdate","Propose an article change","Oukala Knowledge","write","Low","Creates a draft for a human publisher."]
+["kb.draftUpdate","Propose an article change",BRAND.name+" Knowledge","write","Low","Creates a draft for a human publisher."]
 ];
 const toolOf=id=>TOOLS.find(t=>t[0]===id);
 const GUARDS=["Read only","Dry run first","Needs approval","Rate limited","Business hours only","Notify the owner","Rollback ready"];

@@ -32,7 +32,7 @@ function costStats(){const held=M.meetings().filter(m=>m.st==="done"&&!m.cancel&
 const $k=n=>"$"+(n>=1000?(n/1000).toFixed(1)+"K":Math.round(n));
 function topOwner(){const o={};M.allActs().filter(M.isLate).forEach(a=>o[a.own]=(o[a.own]||0)+1);const e=Object.entries(o).sort((a,b)=>b[1]-a[1])[0];return e?{n:e[0],c:e[1]}:null}
 function contractCardSmall(){const ents=(M.ENTS||[]).length,pm=Object.keys(M.PRC).length,lv=(()=>{try{return PROCLIB.maturity("meet.run").level}catch(e){return null}})();
- return card("How this feature meets the contract","Every feature in Oukala ships with a process model, a data model, metrics with maturity, and links to the rest of the platform.",`<div class="meet-ct">
+ return card("How this feature meets the contract","Every feature in "+BRAND.name+" ships with a process model, a data model, metrics with maturity, and links to the rest of the platform.",`<div class="meet-ct">
  <div><b>1 Process model</b><span class="muted small">${pm} processes, editable in the process library and under each screen.</span></div>
  <div><b>2 Data model</b><span class="muted small">${ents} tables. Reused person, project, RAID item, objective and tickets; added 8 new.</span></div>
  <div><b>3 Metrics and maturity</b><span class="muted small">6 metrics with formula, target and remediation${lv?"; process maturity level "+lv:""}.</span></div>

@@ -332,7 +332,7 @@ D.suggest=suggest;
 /* ---------- JSON export / import ---------- */
 function toJSON(doc){return JSON.stringify({format:"oukala.process-drawing",version:1,process:{id:doc.pid,name:doc.name},exportedAt:new Date().toISOString(),shapes:doc.shapes,connectors:doc.conns},null,2)}
 function fromJSON(txt){let o;try{o=JSON.parse(txt)}catch(e){return{ok:false,msg:"That is not valid JSON."}}
- if(!o||o.format!=="oukala.process-drawing"||!Array.isArray(o.shapes))return{ok:false,msg:"This file is not an Oukala process drawing."};
+ if(!o||o.format!=="oukala.process-drawing"||!Array.isArray(o.shapes))return{ok:false,msg:"This file is not an "+BRAND.name+" process drawing."};
  const doc=newDoc(o.process&&o.process.name||"Imported process",o.process&&o.process.id||null);
  doc.shapes=o.shapes.filter(s=>BY[s.t]).map(s=>Object.assign({id:"n"+(doc.seq++),t:"task",x:0,y:0,w:BY[s.t].w,h:BY[s.t].h,n:"",who:"",owner:"",sla:"",inp:"",out:"",sys:"",ctl:"",rule:"",note:"",lane:""},s));
  const ids=new Set(doc.shapes.map(s=>s.id));
