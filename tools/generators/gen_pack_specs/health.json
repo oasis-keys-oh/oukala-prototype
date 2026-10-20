@@ -119,7 +119,14 @@
   "customer": ["patient", "patients"], "incident": ["patient safety event", "patient safety events"], "ticket": ["service request", "service requests"],
   "request": ["referral", "referrals"], "asset": ["medical device", "medical devices"], "site": ["hospital", "hospitals"], "downtime": ["downtime", "downtime"],
   "workforce": ["care team", "care teams"], "work_item": ["case", "cases"], "frontline": ["access center", "access centers"], "service": ["service line", "service lines"],
-  "order": ["order", "orders"], "case": ["encounter", "encounters"], "supplier": ["supplier", "suppliers"], "revenue": ["net patient revenue", "net patient revenue"]},
+  "order": ["order", "orders"], "case": ["encounter", "encounters"], "supplier": ["supplier", "suppliers"], "revenue": ["net patient revenue", "net patient revenue"],
+  "project": ["initiative", "initiatives"], "change": ["change", "changes"], "problem": ["root cause review", "root cause reviews"], "config_item": ["clinical system component", "clinical system components"],
+  "knowledge_article": ["clinical protocol", "clinical protocols"], "catalog_item": ["service offering", "service offerings"], "alert": ["clinical alarm", "clinical alarms"], "service_level": ["access standard", "access standards"],
+  "rota": ["staffing roster", "staffing rosters"], "risk": ["patient safety risk", "patient safety risks"], "control": ["compliance control", "compliance controls"], "audit": ["accreditation survey", "accreditation surveys"],
+  "finding": ["survey finding", "survey findings"], "policy": ["clinical policy", "clinical policies"], "regulator": ["accreditor", "accreditors"], "contract": ["supplier contract", "supplier contracts"],
+  "cost_center": ["department", "departments"], "purchase_order": ["requisition", "requisitions"], "budget_request": ["capital request", "capital requests"], "capability": ["clinical capability", "clinical capabilities"],
+  "application": ["clinical application", "clinical applications"], "course": ["competency module", "competency modules"], "meeting": ["safety huddle", "safety huddles"], "org_unit": ["department", "departments"],
+  "plan_task": ["task", "tasks"]},
  "coo": {
   "workload": [
    ["Grace Oduya", "Chief operating officer", "Executive office", 112, 45, 7, 16, 8, 9, 5],
@@ -142,5 +149,322 @@
    {"n": "See the patient", "in": true, "who": "Clinician", "min": 45, "note": "In the clinical record"},
    {"n": "Code the visit", "in": true, "who": "Coder", "min": 14, "note": "In the coding work queue"},
    {"n": "Submit the claim", "in": true, "who": "Billing specialist", "min": 6, "note": "Through the claims clearinghouse"},
-   {"n": "Work denials and appeals", "in": false, "who": "Billing specialist", "min": 50, "note": "Spreadsheets and payer portals", "bridge": "Denial Triage Agent groups denials by cause and drafts the appeal for a person to sign", "agent": "Denial Triage Agent"}]}}
+   {"n": "Work denials and appeals", "in": false, "who": "Billing specialist", "min": 50, "note": "Spreadsheets and payer portals", "bridge": "Denial Triage Agent groups denials by cause and drafts the appeal for a person to sign", "agent": "Denial Triage Agent"}]}},
+ "records": {
+  "services": [
+   ["EHR", "Clinical record", "Tier 1", "Keiko Brandvold", "Felix Dunmore", ["Chart access", "Order entry"], 6200, ["INT", "IAM"], 3],
+   ["SCHED", "Scheduling and referrals", "Tier 1", "Ana Morales", "Rosalind Achebe", ["Appointment booking", "Referral intake"], 900, ["EHR", "INT"], 0],
+   ["RCM", "Patient billing and claims", "Tier 1", "Samuel Okonjo", "Ben Kowalski", ["Claim submission", "Denial work queue"], 380, ["EHR", "INT"], 2],
+   ["BED", "Bed management", "Tier 1", "Nadia Ferreira", "Tomasz Brandt", ["Bed board", "Transfer requests"], 650, ["EHR"], 4],
+   ["SPD", "Instrument tracking", "Tier 2", "Gareth Pomeroy", "Owen Ashdown", ["Tray scanning", "Tray catalog"], 140, ["NET"], 1],
+   ["RX", "Pharmacy dispensing", "Tier 1", "Theodore Quist", "Lucinda Vargas", ["Dispensing cabinets", "Medication orders"], 520, ["EHR", "NET"]],
+   ["INT", "Interface engine", "Tier 1", "Felix Dunmore", "Keiko Brandvold", ["Message routing", "Partner feeds"], 40, ["NET"]],
+   ["IAM", "Staff sign-in", "Tier 1", "Felix Dunmore", "Keiko Brandvold", ["Single sign-on", "Badge tap sign-in"], 7400, ["NET"]],
+   ["ANL", "Analytics workspace", "Tier 2", "Ben Kowalski", "Samuel Okonjo", ["Denial dashboards", "Quality reports"], 210, ["EHR"], 5],
+   ["NET", "Clinical network", "Tier 1", "Keiko Brandvold", "Felix Dunmore", ["Wired and wireless network", "Remote clinic links"], 7400, []]
+  ],
+  "ci_kinds": [
+   ["Application", "config_item_appl", "{s} application"],
+   ["Database", "config_item_db", "{s} database"],
+   ["Server", "config_item_server", "{s} server cluster"],
+   ["Interface", "config_item_interface", "{s} interface channel"],
+   ["Network segment", "config_item_net", "{s} network segment"],
+   ["Storage", "config_item_storage", "{s} storage volume"],
+   ["Medical device gateway", "config_item_device_gw", "{s} device gateway"],
+   ["Hosting room", "config_item_site", "Hosting room for {s}"]
+  ],
+  "assets": [
+   ["Workstation on wheels", "Rolling clinical workstation, 22 inch"],
+   ["Laptop", "Standard clinical laptop, 14 inch"],
+   ["Barcode scanner", "Handheld barcode scanner"],
+   ["Badge reader", "Tap badge reader"]
+  ],
+  "sites": ["Larkspur Main Hospital", "Northfield Hospital", "Riverside Hospital", "Elm Park Hospital"],
+  "vendors": [
+   ["Fernhollow Clinical Software", "Scheduling and referral software", "Subscription agreement"],
+   ["Ambervale Nurse Staffing", "Agency nurse staffing", "Staffing agreement"],
+   ["Pellridge Scanners", "Scanning hardware", "Supply agreement"],
+   ["Quillmark Rules Services", "Payer rules configuration", "Statement of work"],
+   ["Cobbleton Analytics", "Analytics workspace", "Subscription agreement"],
+   ["Wardline Capacity Systems", "Bed management software", "License agreement"],
+   ["Brightmoor Medical Supply", "Medical and surgical supplies", "Supply agreement"],
+   ["Stonecrop Hosting", "Data center hosting", "Master services agreement"]
+  ],
+  "risks": {
+   "enterprise": [
+    ["Scheduler overlap runs past six weeks and the access center goes over budget", "Financial", 0],
+    ["Payer rules for the top five payers are late again", "Vendor", 2],
+    ["Sterilizer capacity cannot keep up with two new specialties", "Operational", 1],
+    ["Nurses leave faster than we can hire", "People", 3],
+    ["A ransomware attack takes the clinical record offline", "Cyber", 4],
+    ["Bed management interfaces slip at two hospitals", "Vendor", 4]
+   ],
+   "control": [
+    ["Clinical record unavailable for more than four hours", "Operational"],
+    ["Staff access not removed when people leave", "Privacy"],
+    ["Medication dispensed without a verified order", "Clinical"],
+    ["Instrument trays released without a sterilizer record", "Clinical"],
+    ["Claims submitted with the wrong payer code", "Financial"],
+    ["A supplier holds patient data without an agreement", "Vendor"]
+   ],
+   "finance": [
+    "Agency staffing spend runs over the forecast",
+    "Denials stay above 9 percent and cash collections fall short",
+    "Capital for bed sensors is deferred to next year",
+    "Payer contract rates change mid-year"
+   ],
+   "appetite": [["Clinical", 2], ["Privacy", 2], ["Cyber", 3], ["Financial", 5], ["Operational", 6], ["Vendor", 5]]
+  },
+  "controls": {
+   "fw": ["Patient privacy program", "Clinical safety program"],
+   "list": [
+    ["Access to the clinical record is reviewed every quarter", "Quarterly"],
+    ["Leavers lose access on their last day", "Monthly"],
+    ["Emergency access to a chart is reviewed within a day", "Daily"],
+    ["Medication orders are verified by a pharmacist before dispensing", "Daily"],
+    ["Controlled substance counts match at every shift change", "Daily"],
+    ["Every sterilizer load has a biological indicator result", "Daily"],
+    ["Trays are released only with a complete load record", "Daily"],
+    ["Downtime procedures are tested twice a year", "Semiannual"],
+    ["Backups of the clinical record are restored as a test each month", "Monthly"],
+    ["Claims edits run before every submission", "Daily"],
+    ["Prior authorization is recorded before scheduled procedures", "Daily"],
+    ["Supplier agreements cover patient data before access is granted", "Quarterly"],
+    ["Patient identity is confirmed with two identifiers", "Daily"],
+    ["Interface errors are worked within four hours", "Daily"],
+    ["Changes to clinical systems go through the change board", "Weekly"],
+    ["Privileged accounts use a second factor", "Monthly"],
+    ["Device gateways get security patches each month", "Monthly"],
+    ["Safety event reports are reviewed by quality within three days", "Weekly"],
+    ["Charge changes have a second approver", "Monthly"],
+    ["Staff complete privacy training every year", "Annual"]
+   ]
+  },
+  "audits": [
+   ["Hospital accreditation survey readiness review", "External", "Thornbury Survey Partners"],
+   ["Annual financial statement audit", "External", "Calloway and Pike"],
+   ["Medication management internal audit", "Internal", "Internal audit"]
+  ],
+  "findings": [
+   "Two units missed controlled substance counts in August",
+   "Quarterly access review skipped the agency staff group",
+   "Three sterilizer loads have no indicator result on file",
+   "Downtime binders out of date at Riverside Hospital",
+   "Emergency chart access reviews took longer than a day in July",
+   "One supplier has no data agreement on file",
+   "A charge change was approved by its requester",
+   "The interface error queue went over four hours twice",
+   "Privacy training below target in two departments",
+   "The September restore test of the clinical record is not recorded"
+  ],
+  "policies": [
+   "Patient privacy policy",
+   "Acceptable use of clinical systems",
+   "Medication management policy",
+   "Sterile processing policy",
+   "Downtime and business continuity policy",
+   "Supplier data protection policy",
+   "Change management policy",
+   "Records retention policy"
+  ],
+  "exceptions": [
+   "Legacy lab analyzer signs in with a shared account",
+   "Riverside Hospital keeps paper downtime forms for one more quarter",
+   "Agency nurses use a temporary badge for 30 days",
+   "Old imaging archive stays on an unsupported server until migration",
+   "Pharmacy carousel runs past vendor support until replacement"
+  ],
+  "benefits": [
+   ["Fewer days to a first appointment", "Patient access"],
+   ["Access center staff hours saved", "Productivity hours"],
+   ["Fewer surgeries cancelled for missing instruments", "Cost avoided"],
+   ["Fewer denied claims", "Cash"],
+   ["Prior authorization hours saved", "Productivity hours"],
+   ["More discharges before noon", "Capacity"],
+   ["Fewer readmissions within 30 days", "Cost avoided"],
+   ["Bed turnaround hours saved", "Productivity hours"]
+  ],
+  "scenarios": [
+   ["Baseline", "The plan as it stands today."],
+   ["Prior auth rules slip six weeks", "The payer rules work slips and the denial target moves to next year."],
+   ["Cut the capacity center budget by a fifth", "Fewer bed sensors in the first year; two hospitals go live later."]
+  ],
+  "budget_requests": [
+   ["Six more weeks of scheduler overlap", "Increase"],
+   ["Second tray scanner per hospital", "New"],
+   ["Payer rules for two more payers", "Increase"],
+   ["Follow-up nurse for the weekend", "New"],
+   ["Bed sensors for Elm Park Hospital", "New"],
+   ["Denial analyst for six months", "Increase"],
+   ["Training backfill for access center staff", "Increase"],
+   ["Reallocate unused fit-out budget", "Reallocation"],
+   ["Interface work for two admission systems", "Increase"],
+   ["Analytics licenses for quality staff", "New"]
+  ],
+  "kb": [
+   "Downtime procedure for the clinical record",
+   "How to request a bed transfer",
+   "Reset badge tap sign-in for a clinician",
+   "What to do when a referral fax does not arrive",
+   "Restart a stuck interface channel",
+   "How to scan a tray at each step",
+   "Fix a dispensing cabinet that will not open",
+   "How to read the bed board colors",
+   "Recover a claim stuck in the work queue",
+   "Book a follow-up visit for a patient",
+   "Print wristbands during a printer outage",
+   "Add a new payer rule for review",
+   "Find the sterilizer record for a tray",
+   "Connect a rolling workstation to the network",
+   "Escalate a prior authorization older than three days",
+   "Run the readmission risk report",
+   "Request access for an agency nurse",
+   "What the discharge readiness list means"
+  ],
+  "catalog": [
+   ["Clinical record access", "Access", "Access to the clinical record for a new role."],
+   ["Badge tap sign-in", "Access", "Set up tap sign-in on a clinical workstation."],
+   ["Rolling workstation", "Hardware", "A workstation on wheels for a unit."],
+   ["Barcode scanner", "Hardware", "A handheld scanner for medication or trays."],
+   ["New referral source", "Clinical systems", "Connect a clinic or practice that sends referrals."],
+   ["Bed board display", "Hardware", "A wall display for a unit's bed board."],
+   ["Interface to a partner", "Integration", "A new message feed to or from a partner."],
+   ["Report request", "Analytics", "A new report or dashboard."],
+   ["Payer rule change", "Revenue cycle", "Add or change a payer rule."],
+   ["Dispensing cabinet change", "Pharmacy", "Add a medicine or a user to a dispensing cabinet."],
+   ["Tray catalog change", "Sterile processing", "Add or change an instrument tray."],
+   ["Remote clinic link", "Network", "Connect a new clinic to the network."],
+   ["Shared folder for a department", "Collaboration", "A shared folder for a team."],
+   ["Agency staff account", "Access", "A temporary account for agency staff."]
+  ],
+  "courses": [
+   ["Patient privacy essentials", "Compliance", 30, true],
+   ["Hand hygiene and infection prevention", "Clinical safety", 20, true],
+   ["Fire safety and evacuation", "Safety", 25, true],
+   ["Downtime procedures", "Clinical systems", 40, true],
+   ["Using the bed board", "Clinical systems", 30, false],
+   ["Scanning trays at every step", "Sterile processing", 35, false],
+   ["Working denials by cause", "Revenue cycle", 45, false],
+   ["Leading a safety huddle", "Leadership", 50, false]
+  ],
+  "rooms": [
+   ["Board room, main hospital", 14, "Board room, hybrid"],
+   ["Access center huddle room", 8, "Huddle room"],
+   ["Capacity command center", 12, "Operations room"],
+   ["Sterile processing office", 6, "Small meeting room"],
+   ["Simulation lab classroom", 20, "Classroom"]
+  ],
+  "forums": [
+   ["Quality and patient safety committee", "Every second Thursday, 07:30", "Reviews safety events, trends and corrective actions."],
+   ["Capital and capacity council", "Monthly, first Monday", "Decides capital requests and capacity changes."],
+   ["Clinical systems change board", "Weekly, Tuesday 10:00", "Approves changes to clinical systems."],
+   ["Revenue integrity committee", "Monthly, third Wednesday", "Reviews denials, payer rules and charge changes."]
+  ],
+  "series": [
+   ["Daily safety huddle", "huddle", "Every day, 08:00", "Each unit reports safety concerns and staffing for the day."],
+   ["Patient flow huddle", "flow", "Every day, 10:00", "Beds, transfers and discharges across the four hospitals."],
+   ["Access steering group", "steer", "Every other Monday, 09:00", "Steers the access center consolidation."],
+   ["Revenue cycle review", "review", "Every Friday, 11:00", "Denials, authorizations and cash."]
+  ],
+  "capabilities": [
+   ["Patient access", ["Referral intake", "Scheduling", "Eligibility checks", "Patient communication"]],
+   ["Inpatient care", ["Admission", "Nursing care planning", "Medication administration", "Discharge planning"]],
+   ["Surgical services", ["Case scheduling", "Instrument processing", "Operating room turnover", "Post-operative recovery"]],
+   ["Revenue cycle", ["Prior authorization", "Coding", "Claims", "Denials and appeals"]],
+   ["Pharmacy", ["Order verification", "Dispensing", "Medication reconciliation", "Controlled substances"]],
+   ["Quality and safety", ["Event reporting", "Root cause review", "Infection prevention", "Accreditation readiness"]],
+   ["Capacity management", ["Bed management", "Transfers", "Staffing", "Forecasting"]],
+   ["Clinical systems", ["Clinical record", "Interfaces", "Devices", "Downtime readiness"]]
+  ],
+  "applications": [
+   ["Clinical record system", "Clinical", "Mature", "In house"],
+   ["Referral and scheduling", "Access", "Growing", "Fernhollow Clinical Software"],
+   ["Bed board", "Operations", "New", "Wardline Capacity Systems"],
+   ["Tray tracking", "Sterile processing", "New", "Pellridge Scanners"],
+   ["Payer rules engine", "Revenue cycle", "New", "Quillmark Rules Services"],
+   ["Analytics workspace", "Analytics", "Growing", "Cobbleton Analytics"],
+   ["Pharmacy dispensing", "Pharmacy", "Mature", "In house"],
+   ["Interface engine", "Integration", "Mature", "In house"],
+   ["Staff sign-in", "Security", "Mature", "In house"],
+   ["Supply ordering", "Supply chain", "Mature", "Brightmoor Medical Supply"],
+   ["Agency staffing portal", "Workforce", "Mature", "Ambervale Nurse Staffing"],
+   ["Hosting console", "Infrastructure", "Mature", "Stonecrop Hosting"]
+  ],
+  "builds": [
+   ["Huddle board for nursing units", "Charge nurses record safety concerns and staffing at the daily huddle."],
+   ["Tray exception log", "Sterile processing logs trays at risk and the reason."],
+   ["Referral backlog tracker", "The access center tracks referrals older than 48 hours."],
+   ["Denial appeal tracker", "Billing tracks each appeal to its outcome."],
+   ["Discharge readiness checklist", "Case managers tick off what each patient needs before noon."],
+   ["Supply par level log", "Supply chain records par levels by operating room."],
+   ["Agency shift sign-off", "Managers confirm agency shifts before invoices are paid."],
+   ["Policy acknowledgement tracker", "Quality tracks who has read each new policy."]
+  ],
+  "skills": [
+   ["Referral management", "Access"],
+   ["Scheduling templates", "Access"],
+   ["Case management", "Clinical"],
+   ["Medication reconciliation", "Clinical"],
+   ["Sterile processing", "Clinical"],
+   ["Bed management", "Operations"],
+   ["Prior authorization", "Revenue cycle"],
+   ["Coding", "Revenue cycle"],
+   ["Denial analysis", "Revenue cycle"],
+   ["Interface support", "Clinical systems"],
+   ["Clinical informatics", "Clinical systems"],
+   ["Quality improvement", "Quality"]
+  ],
+  "tech_debt": [
+   "Retire the old fax referral inbox",
+   "Upgrade the interface engine to a supported release",
+   "Replace shared accounts on two lab analyzers",
+   "Move the imaging archive off the unsupported server"
+  ],
+  "finance_events": [
+   "Capital campaign gift restricted to the surgical wing",
+   "State grant for rural clinic links received",
+   "Payer settlement for prior-year claims",
+   "Bed sensor lease signed",
+   "Agency staffing rate increase",
+   "Fit-out work capitalized for the access center",
+   "Year-end accrual for nurse overtime",
+   "Supplier rebate on surgical supplies",
+   "Grant report due for the rural clinic links",
+   "Depreciation starts for the tray scanners"
+  ],
+  "decision_tables": [
+   ["Supplier invoice review", "Decides who looks at a supplier invoice before it is paid."],
+   ["Capital request routing", "Routes a capital request to the right approver by amount and risk."],
+   ["Agency shift approval", "Decides whether an agency shift needs a manager sign-off."]
+  ],
+  "reports": [
+   ["Budget variance by initiative", "variance", "project"],
+   ["Denials by payer", "denials", "payer"],
+   ["Discharges before noon by unit", "noon_discharges", "unit"],
+   ["Trays ready on time by hospital", "trays_on_time", "site"]
+  ],
+  "charts": [
+   "Referrals booked within 48 hours per week",
+   "Denied claims per week",
+   "Discharges before noon per week",
+   "Trays ready on time per week",
+   "Open patient safety events by unit",
+   "Agency shifts per week",
+   "Interface errors per day",
+   "Days to first appointment by clinic"
+  ],
+  "connectors": [
+   ["Clinical record feed", "system", ["encounter", "order"]],
+   ["Scheduling feed", "system", ["appointment", "referral"]],
+   ["Claims clearinghouse", "partner", ["claim", "denial"]],
+   ["Bed board feed", "system", ["bed", "transfer"]],
+   ["Tray scanner feed", "device", ["tray", "load"]],
+   ["Supply ordering", "system", ["purchase_order", "item"]],
+   ["Staff directory", "system", ["person", "team"]],
+   ["Analytics export", "export", ["metric", "report"]]
+  ],
+  "conversations": ["Why is the access center over budget?", "Which surgeries were cancelled for missing instruments this month?", "What is holding up the prior auth invoice?"],
+  "major_incident": "Clinical record slow at every hospital (charts take over ten seconds to open)",
+  "languages": ["English", "Spanish", "Vietnamese"]
+ }
 }

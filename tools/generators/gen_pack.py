@@ -220,23 +220,28 @@ def build_records(spec, rows, info, people, E, W):
     for i, f in enumerate(fns):
         teams.append({"id": up + "-TM" + str(i + 1), "part": "team", "n": f["n"], "mgr": f["lead"]["n"], "fn": f["n"]})
     fn_names = {f["n"] for f in fns}
+    freq = {}
     for p in people:
-        if p["kind"] != "human" or len(teams) >= 8:
-            continue
         t = p.get("team")
-        if t and t not in fn_names and t != "Executive office" and not any(x["n"] == t for x in teams):
-            fn = next((f["n"] for f in fns if t in (f.get("teams") or [])), "")
-            teams.append({"id": up + "-TM" + str(len(teams) + 1), "part": "team", "n": t, "mgr": p["name"], "fn": fn})
+        if p["kind"] == "human" and t and t not in fn_names and t != "Executive office":
+            freq[t] = freq.get(t, 0) + 1
+    for t in sorted(freq, key=lambda k: -freq[k])[:8 - len(teams)]:
+        p = next(x for x in people if x["kind"] == "human" and x.get("team") == t)
+        fn = next((f["n"] for f in fns if t in (f.get("teams") or [])), "")
+        teams.append({"id": up + "-TM" + str(len(teams) + 1), "part": "team", "n": t, "mgr": p["name"], "fn": fn})
     out["teams"] = teams
     TID = {t["n"]: t["id"] for t in teams}
 
-    def team_of(name):
+    def team_of(name, depth=0):
         t = (PBY.get(name) or {}).get("team")
         if t in TID:
             return TID[t]
         for f in fns:
             if t in (f.get("teams") or []) or f["lead"]["n"] == name:
                 return TID.get(f["n"], teams[0]["id"])
+        m = (PBY.get(name) or {}).get("mgr")
+        if m and depth < 4:
+            return team_of(m, depth + 1)
         return teams[0]["id"]
 
     def team_name(name):
@@ -391,9 +396,10 @@ def build_records(spec, rows, info, people, E, W):
     for i in range(15):
         s = services[i % len(services)]
         st = ["Authorize", "Scheduled", "Implement", "Review", "Closed", "New", "Assess"][i % 7]
+        c0 = {"Closed": -r.randint(8, 30), "Review": -r.randint(1, 6), "Implement": 0}.get(st, r.randint(2, 20))
         changes.append({"id": up + "-CHG0" + str(301 + i), "part": "change", "t": CHG_T[i % len(CHG_T)].replace("{s}", s["n"]),
                         "type": ["Normal", "Standard", "Normal", "Emergency", "Normal"][i % 5], "svc": s["n"], "svcId": s["id"], "cis": [s["_ci"][0], s["_ci"][2]],
-                        "st": st, "req": s["backup"], "own": s["owner"], "start": day(r.randint(-20, 20)), "end": day(r.randint(-19, 21)), "win": "Off-hours: 22:00 to 02:00",
+                        "st": st, "req": s["backup"], "own": s["owner"], "start": day(c0), "end": day(c0 + r.randint(0, 2)), "win": "Off-hours: 22:00 to 02:00",
                         "prb": "", "inc": "", "proj": (s["proj"] or [""])[0], "cost": r.randint(0, 12) * 1000, "env": "Production", "grp": team_name(s["owner"]),
                         "appr": "Approved" if st in ("Scheduled", "Implement", "Review", "Closed") else "Requested"})
     changes = [{k: v for k, v in c.items() if not (k == "proj" and v == "")} for c in changes]
@@ -572,7 +578,7 @@ def build_records(spec, rows, info, people, E, W):
     r = rng("risks")
     risks = []
     for i, x in enumerate(rk.get("enterprise") or []):
-        p_ = P[i % len(P)]
+        p_ = P[x[2] % len(P)] if len(x) > 2 else P[i % len(P)]
         risks.append({"id": up + "-RK" + str(i + 1), "part": "enterprise", "n": x[0], "cat": x[1], "proj": p_["id"], "own": p_["owner"], "bak": p_["backup"], "mit": p_["owner"],
                       "plan": "Mitigation owned by " + p_["owner"] + " and reviewed each month.", "p": r.randint(2, 5), "amt": r.randint(4, 40) * 10000,
                       "st": ["Open", "Mitigating", "Watching"][i % 3], "rec": "Review at the next steering meeting", "label": "simulated"})
@@ -821,7 +827,7 @@ def build_records(spec, rows, info, people, E, W):
     for i in range(30):
         led.append({"id": "day-" + str(i + 1), "part": "spend", "day": i + 1, "amt": round(r.uniform(3, 14), 1)})
     for x in led:
-        if x["p"] == "":
+        if x.get("p") == "":
             del x["p"]
             del x["line"]
     out["ledger_entries"] = led
@@ -907,7 +913,8 @@ def build_records(spec, rows, info, people, E, W):
     for t in teams:
         addrole("Team lead: " + t["n"], t["mgr"], other(t["mgr"]), "group", "Org chart")
     for x in [x for x in ap if x["part"] == "doa"]:
-        addrole("Approver: " + x["role"], cfo if "financial" in x["role"].lower() else (lead or cfo), other(cfo), "group", "Delegation of authority")
+        ap_who = cfo if "financial" in x["role"].lower() else (lead or cfo)
+        addrole("Approver: " + x["role"], ap_who, other(ap_who), "group", "Delegation of authority")
     for b in BOTS:
         sp_ = b.get("sponsor") or H[0]
         addrole("Agent sponsor: " + b["name"], sp_, other(sp_), "runtime", "Agent register")
@@ -1166,9 +1173,9 @@ def build_records(spec, rows, info, people, E, W):
         ev.append({"id": up + "-SE" + str(i + 1), "part": "service", "n": n, "src": src, "sev": sev, "to": "Owner and backup", "x": {"inapp": 1, "email": 1}})
     out["events"] = ev
     au, prev, seq = [], "0", 1
-    for ent in ["projects", "services", "changes", "incidents", "controls", "contracts", "vendors", "policies", "agents", "service_requests"]:
-        lst = P if ent == "projects" else out[ent]
-        for x in lst[:15]:
+    for ent in ["projects", "budget_lines", "services", "changes", "incidents", "controls", "contracts", "vendors", "policies", "agents", "service_requests", "risks"]:
+        lst = P if ent == "projects" else (BL if ent == "budget_lines" else out[ent])
+        for x in lst[:20]:
             if seq > 150:
                 break
             who = x.get("owner") or x.get("own") or x.get("requester") or H[seq % len(H)]
