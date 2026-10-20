@@ -8,7 +8,7 @@
 // Usage: node tools/tests/tenant.js <dir containing full.html> [--update]   (--update rewrites the snapshot after a deliberate change)
 const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
 const SNAP=path.join(__dirname,'tenant_core_snapshot.json');const OPEN=['metrics'],LAZY=['processes','workflows'];
-const VOLATILE={audit_log:'*',conversations:'*',config_items:['history'],role_assignments:['ownership']};
+const VOLATILE={audit_log:'*',conversations:'*',events:'*',role_assignments:'*',skills:'*',leave:'*',decisions:'*',capabilities:'*',config_items:['history']}; /* measured: these Meridian stores fill on timers during the first seconds after load */
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const update=process.argv.includes('--update');
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];

@@ -9,7 +9,7 @@
 //  4. the packs listed in FILLED must carry the entities (B1 lanes add their tenant here).
 // Usage: node tools/tests/data_entities.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
-const FILLED=['health','mining'];
+const FILLED=['health','mining','storage'];
 const PLAN=['risks','benefits','trace_links','scenarios','plan_tasks','raid_items','work_items','capacity','budget_requests','cost_centers','vendors','ledger_entries',
  'contracts','purchase_orders','timesheets','approval_policies','finance_policies','services','config_items','changes','knowledge_articles','incidents','service_requests',
  'catalog_items','monitors','problems','service_levels','events','rotas','ops_automations','service_tasks','service_policies','agents','access_grants','audit_log','controls',

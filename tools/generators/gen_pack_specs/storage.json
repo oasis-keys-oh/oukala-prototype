@@ -116,7 +116,14 @@
   "customer": ["customer", "customers"], "incident": ["data recovery event", "data recovery events"], "ticket": ["support case", "support cases"],
   "request": ["service request", "service requests"], "asset": ["appliance", "appliances"], "site": ["customer site", "customer sites"], "downtime": ["outage", "outages"],
   "workforce": ["field team", "field teams"], "work_item": ["support case", "support cases"], "frontline": ["support desk", "support desks"], "service": ["subscription", "subscriptions"],
-  "order": ["order", "orders"], "case": ["support case", "support cases"], "supplier": ["supplier", "suppliers"], "revenue": ["recurring revenue", "recurring revenue"]},
+  "order": ["order", "orders"], "case": ["support case", "support cases"], "supplier": ["supplier", "suppliers"], "revenue": ["recurring revenue", "recurring revenue"],
+  "project": ["program", "programs"], "change": ["change", "changes"], "problem": ["problem", "problems"], "config_item": ["platform component", "platform components"],
+  "knowledge_article": ["knowledge base article", "knowledge base articles"], "catalog_item": ["support offering", "support offerings"], "alert": ["health alert", "health alerts"], "service_level": ["service level agreement", "service level agreements"],
+  "rota": ["on-call rota", "on-call rotas"], "risk": ["risk", "risks"], "control": ["control", "controls"], "audit": ["audit", "audits"],
+  "finding": ["finding", "findings"], "policy": ["policy", "policies"], "regulator": ["data protection authority", "data protection authorities"], "contract": ["contract", "contracts"],
+  "cost_center": ["cost center", "cost centers"], "purchase_order": ["purchase order", "purchase orders"], "budget_request": ["budget request", "budget requests"], "capability": ["product capability", "product capabilities"],
+  "application": ["product system", "product systems"], "course": ["course", "courses"], "meeting": ["stand-up", "stand-ups"], "org_unit": ["business unit", "business units"],
+  "plan_task": ["task", "tasks"]},
  "coo": {
   "workload": [
    ["Hannah Brooks", "Chief operating officer", "Executive office", 108, 45, 8, 17, 9, 8, 6],
@@ -138,5 +145,322 @@
    {"n": "Ship the appliance", "in": true, "who": "Supply chain", "min": 25, "note": "ERP and the carrier portal"},
    {"n": "Install and onboard", "in": false, "who": "Field engineer", "min": 240, "note": "Paper checklists and photos by email", "bridge": "An onboarding checklist in the platform; a robot opens the support account when the install closes", "agent": ""},
    {"n": "Invoice and collect", "in": true, "who": "Finance analyst", "min": 20, "note": "In the ERP"},
-   {"n": "Renew", "in": false, "who": "Account manager", "min": 120, "note": "A spreadsheet of renewal dates and email", "bridge": "Renewal Risk Agent ranks accounts 120 days before the date and explains each rank", "agent": "Renewal Risk Agent"}]}}
+   {"n": "Renew", "in": false, "who": "Account manager", "min": 120, "note": "A spreadsheet of renewal dates and email", "bridge": "Renewal Risk Agent ranks accounts 120 days before the date and explains each rank", "agent": "Renewal Risk Agent"}]}},
+ "records": {
+  "services": [
+   ["CASE", "Support case platform", "Tier 1", "Declan Moriarty", "Ritu Banerjee", ["Case intake", "Case routing"], 2400, ["IAM", "TEL"], 4],
+   ["TEL", "Appliance telemetry", "Tier 1", "Gustav Engel", "Ritu Banerjee", ["Health telemetry", "Phone-home alerts"], 2400, []],
+   ["RBK", "Recovery runbooks", "Tier 1", "Ritu Banerjee", "Declan Moriarty", ["Runbook library", "Guided recovery"], 180, ["CASE", "TEL"], 0],
+   ["CPQ", "Configure, price and quote", "Tier 2", "Hiroko Matsuda", "Diego Alvarez", ["Sizing", "Quotes"], 120, ["ERP"], 2],
+   ["ERP", "Orders and billing", "Tier 1", "Leon Fitzgerald", "Tamsin Okoro", ["Order entry", "Invoicing"], 140, ["IAM"]],
+   ["PRT", "Customer portal", "Tier 1", "Camila Restrepo", "Aisha Rahman", ["Customer sign-in", "Case status"], 2400, ["CASE", "IAM"]],
+   ["FLD", "Field service dispatch", "Tier 2", "Jasper Thorne", "Abena Owusu", ["Engineer dispatch", "Part shipments"], 90, ["ERP"], 3],
+   ["ONB", "Customer onboarding", "Tier 2", "Elif Arslan", "Camila Restrepo", ["Install scheduling", "Data migration"], 80, ["CASE", "ERP"], 1],
+   ["CSP", "Customer success insights", "Tier 2", "Camila Restrepo", "Ruairi Coyle", ["Health scores", "Renewal risk"], 60, ["TEL", "ERP"], 5],
+   ["IAM", "Staff and customer sign-in", "Tier 1", "Gustav Engel", "Marisol Ekdahl", ["Single sign-on", "Customer accounts"], 2600, []]
+  ],
+  "ci_kinds": [
+   ["Application", "config_item_appl", "{s} application"],
+   ["Database", "config_item_db", "{s} database"],
+   ["Server", "config_item_server", "{s} server pool"],
+   ["Interface", "config_item_interface", "{s} API gateway"],
+   ["Network segment", "config_item_net", "{s} network segment"],
+   ["Storage", "config_item_storage", "{s} object store"],
+   ["Appliance", "config_item_appliance", "{s} lab appliance"],
+   ["Hosting zone", "config_item_site", "{s} hosting zone"]
+  ],
+  "assets": [
+   ["Laptop", "Standard laptop, 14 inch"],
+   ["Test appliance", "Lab backup appliance, two units"],
+   ["Field kit", "Field engineer tool kit"],
+   ["Phone", "Support desk headset phone"]
+  ],
+  "sites": ["Corvane head office", "Eastgate support center", "Westbridge depot", "Lab data center"],
+  "vendors": [
+   ["Brackenfold Automation", "Runbook automation", "Statement of work"],
+   ["Velloway Case Systems", "Case platform software", "Subscription agreement"],
+   ["Thistledown Migration Partners", "Data migration services", "Services agreement"],
+   ["Ninebark Pricing Services", "Pricing configuration", "Statement of work"],
+   ["Mossgate Forecasting", "Forecasting software", "Subscription agreement"],
+   ["Pebblecrest Telemetry", "Telemetry platform", "License agreement"],
+   ["Harrowmere Logistics", "Parts logistics", "Logistics agreement"],
+   ["Fallowdeep Hosting", "Data center hosting", "Master services agreement"]
+  ],
+  "risks": {
+   "enterprise": [
+    ["Runbook automation misses the restore time target for large customers", "Operational", 0],
+    ["Onboarding backlog grows past six weeks", "Operational", 1],
+    ["Quote refresh slips and deals wait", "Vendor", 2],
+    ["Spare parts run out in two regions", "Supply", 3],
+    ["Case platform migration loses case history", "Vendor", 4],
+    ["Renewal warnings come too late to save accounts", "Commercial", 5]
+   ],
+   "control": [
+    ["Customer restore data reached by the wrong engineer", "Privacy"],
+    ["Support engineers keep access after they move roles", "Privacy"],
+    ["Firmware released without the test suite", "Operational"],
+    ["Quote approved below the price floor", "Financial"],
+    ["Replacement part shipped without a confirmed failure", "Financial"],
+    ["Telemetry data kept longer than the contract allows", "Privacy"]
+   ],
+   "finance": [
+    "Hardware margin falls with component prices",
+    "Renewal rate drops below the plan",
+    "Field service costs rise with more site visits",
+    "Hosting costs grow faster than subscriptions"
+   ],
+   "appetite": [["Privacy", 2], ["Operational", 4], ["Financial", 5], ["Supply", 4], ["Commercial", 5], ["Vendor", 4]]
+  },
+  "controls": {
+   "fw": ["Customer data protection program", "Product quality program"],
+   "list": [
+    ["Access to customer restore data is approved per case", "Daily"],
+    ["Engineers lose case access when they change roles", "Monthly"],
+    ["Privileged access to telemetry uses a second factor", "Monthly"],
+    ["Firmware passes the full test suite before release", "Weekly"],
+    ["Restore tests run on every new appliance model", "Quarterly"],
+    ["Quotes below the price floor need finance approval", "Daily"],
+    ["Replacement parts ship only after a confirmed failure", "Daily"],
+    ["Telemetry data is deleted at the end of the retention period", "Monthly"],
+    ["Customer data leaves the lab only encrypted", "Daily"],
+    ["Backups of the case platform are restored as a test each month", "Monthly"],
+    ["Changes to the customer portal go through the change board", "Weekly"],
+    ["Supplier agreements cover customer data before access is granted", "Quarterly"],
+    ["Support calls are recorded only with consent", "Daily"],
+    ["Escalated cases have a named owner within an hour", "Daily"],
+    ["Renewal quotes are checked against the contract", "Weekly"],
+    ["Field engineers confirm the customer before a site visit", "Daily"],
+    ["Spare parts stock is counted every month", "Monthly"],
+    ["Customer complaints are reviewed within two days", "Weekly"],
+    ["Order changes after shipment need a second approver", "Daily"],
+    ["Staff complete data protection training every year", "Annual"]
+   ]
+  },
+  "audits": [
+   ["Customer data protection review", "Internal", "Internal audit"],
+   ["Annual financial statement audit", "External", "Ashcombe and Reed"],
+   ["Product security assessment", "External", "Lanternfield Assurance"]
+  ],
+  "findings": [
+   "Three engineers kept case access after moving roles",
+   "Telemetry retention ran 40 days past the contract limit",
+   "Firmware patch released with two tests skipped",
+   "Two quotes approved below the floor without finance",
+   "Replacement part shipped before the failure was confirmed",
+   "Restore test missing for the newest appliance model",
+   "Supplier agreement missing for the migration partner",
+   "Escalated case without an owner for three hours",
+   "Spare parts count differs from the system in the Westbridge depot",
+   "Data protection training below target in field services"
+  ],
+  "policies": [
+   "Customer data protection policy",
+   "Acceptable use policy",
+   "Firmware release policy",
+   "Pricing and discount policy",
+   "Returns and replacement policy",
+   "Data retention policy",
+   "Change management policy",
+   "Supplier security policy"
+  ],
+  "exceptions": [
+   "Legacy case tool stays read only until the migration",
+   "Two large customers keep telemetry for 13 months by contract",
+   "Lab appliances run an older firmware for testing",
+   "Field engineers use personal phones for photos until new phones arrive",
+   "Migration partner works under the old agreement for one more month"
+  ],
+  "benefits": [
+   ["Restore hours saved for customers", "Productivity hours"],
+   ["Onboarding hours saved", "Productivity hours"],
+   ["Faster quotes win more deals", "Revenue"],
+   ["Fewer emergency part shipments", "Cost avoided"],
+   ["Support engineer hours saved", "Productivity hours"],
+   ["More renewals saved", "Revenue"],
+   ["Lower cost to serve per customer", "Cost avoided"],
+   ["Fewer site visits", "Cost avoided"]
+  ],
+  "scenarios": [
+   ["Baseline", "The plan as it stands today."],
+   ["Case platform migration slips six weeks", "Two support centers stay on the old case tool for another quarter."],
+   ["Cut the parts forecasting budget by a fifth", "One region keeps manual forecasts for a year."]
+  ],
+  "budget_requests": [
+   ["Two more escalation engineers", "New"],
+   ["Migration partner for six more weeks", "Increase"],
+   ["Pricing rules for two new appliance models", "Increase"],
+   ["Spare parts stock for the east region", "New"],
+   ["Telemetry storage growth", "Increase"],
+   ["Renewal analyst for a year", "New"],
+   ["Training for the new case platform", "Increase"],
+   ["Reallocate unused onboarding budget", "Reallocation"],
+   ["Lab appliances for restore testing", "New"],
+   ["Portal translation into two languages", "New"]
+  ],
+  "kb": [
+   "Recover a customer after a failed restore",
+   "Read the appliance health telemetry",
+   "Raise a part replacement after a confirmed failure",
+   "Restart a stuck replication job",
+   "What to do when an appliance stops phoning home",
+   "Size a new customer with the quote tool",
+   "Schedule an install with the customer",
+   "Migrate backup data from an old system",
+   "Escalate a case to engineering",
+   "Reset a customer portal account",
+   "Find a customer's contract terms",
+   "Run the guided recovery for a ransomware case",
+   "Check firmware compatibility before an upgrade",
+   "Ship a replacement part overnight",
+   "Close a case with the customer's agreement",
+   "Read the renewal risk score",
+   "Request access to a customer's restore data",
+   "Apply a firmware patch on site"
+  ],
+  "catalog": [
+   ["Support engineer access", "Access", "Access to the case platform for a new engineer."],
+   ["Customer restore data access", "Access", "Time-limited access to a customer's restore data, per case."],
+   ["Laptop", "Hardware", "A standard laptop."],
+   ["Lab appliance", "Hardware", "A backup appliance for the test lab."],
+   ["New quote template", "Sales", "Add or change a quote template."],
+   ["Portal change", "Customer portal", "A change to the customer portal."],
+   ["Telemetry alert rule", "Telemetry", "A new alert rule on appliance telemetry."],
+   ["Report request", "Analytics", "A new report or dashboard."],
+   ["Field kit", "Hardware", "A tool kit for a field engineer."],
+   ["Runbook change", "Support", "Add or change a recovery runbook."],
+   ["Order correction", "Orders", "Correct an order before it ships."],
+   ["Customer account merge", "Customer portal", "Merge two customer portal accounts."],
+   ["Shared folder for a team", "Collaboration", "A shared folder for a team."],
+   ["Partner engineer account", "Access", "A temporary account for a partner engineer."]
+  ],
+  "courses": [
+   ["Customer data protection essentials", "Compliance", 30, true],
+   ["Security awareness", "Security", 25, true],
+   ["Handling a customer escalation", "Support", 40, true],
+   ["Health and safety for field visits", "Safety", 30, true],
+   ["Using the new case platform", "Support", 45, false],
+   ["Sizing and quoting basics", "Sales", 50, false],
+   ["Running a recovery runbook", "Support", 60, false],
+   ["Leading a daily stand-up", "Leadership", 20, false]
+  ],
+  "rooms": [
+   ["Head office board room", 14, "Board room, hybrid"],
+   ["Support center war room", 10, "Operations room"],
+   ["Customer briefing room", 12, "Briefing room"],
+   ["Lab meeting room", 6, "Small meeting room"],
+   ["Training room", 20, "Classroom"]
+  ],
+  "forums": [
+   ["Customer escalation board", "Every Monday, 09:00", "Reviews open escalations and restores at risk."],
+   ["Capital and investment council", "Monthly, first Thursday", "Decides capital requests and investments."],
+   ["Product change board", "Weekly, Wednesday 14:00", "Approves changes to the portal, telemetry and firmware."],
+   ["Renewals forum", "Every other Friday, 10:00", "Reviews renewals at risk and the plan for each."]
+  ],
+  "series": [
+   ["Support stand-up", "standup", "Every day, 08:30", "The support team reviews open cases and restores at risk."],
+   ["Order desk stand-up", "standup", "Every day, 09:00", "Orders, shipments and installs for the day."],
+   ["Customer success review", "review", "Every Thursday, 11:00", "Renewals, health scores and onboarding."],
+   ["Case platform steering group", "steer", "Every other Tuesday, 10:00", "Steers the case platform consolidation."]
+  ],
+  "capabilities": [
+   ["Customer support", ["Case intake", "Case triage", "Escalation", "Recovery"]],
+   ["Customer success", ["Onboarding", "Health scoring", "Renewals", "Expansion"]],
+   ["Sales and quoting", ["Sizing", "Pricing", "Quoting", "Order capture"]],
+   ["Order to delivery", ["Order management", "Shipping", "Installation", "Invoicing"]],
+   ["Field service", ["Dispatch", "Part replacement", "Site visits", "Returns"]],
+   ["Product engineering", ["Firmware release", "Telemetry", "Test lab", "Security"]],
+   ["Supply chain", ["Forecasting", "Spare parts", "Logistics", "Supplier management"]],
+   ["Finance and cost to serve", ["Billing", "Revenue recognition", "Cost allocation", "Margin analysis"]]
+  ],
+  "applications": [
+   ["Support case platform", "Support", "New", "Velloway Case Systems"],
+   ["Telemetry platform", "Engineering", "Growing", "Pebblecrest Telemetry"],
+   ["Runbook automation", "Support", "New", "Brackenfold Automation"],
+   ["Quote tool", "Sales", "Growing", "Ninebark Pricing Services"],
+   ["Orders and billing system", "Finance", "Mature", "In house"],
+   ["Customer portal", "Customer", "Mature", "In house"],
+   ["Field dispatch", "Field service", "Mature", "In house"],
+   ["Forecasting tool", "Supply chain", "New", "Mossgate Forecasting"],
+   ["Migration toolkit", "Services", "Growing", "Thistledown Migration Partners"],
+   ["Parts logistics portal", "Supply chain", "Mature", "Harrowmere Logistics"],
+   ["Hosting console", "Infrastructure", "Mature", "Fallowdeep Hosting"],
+   ["Legacy case tool", "Support", "Retiring", "In house"]
+  ],
+  "builds": [
+   ["Escalation tracker", "Support tracks each escalation to a restored customer."],
+   ["Install scheduling board", "Services schedules installs with customers and engineers."],
+   ["Discount approval log", "Sales records discounts and who approved them."],
+   ["Part shipment log", "Field services logs each replacement part shipped."],
+   ["Renewal call planner", "Account managers plan calls for renewals at risk."],
+   ["Lab booking sheet", "Engineering books lab appliances for tests."],
+   ["Onboarding checklist", "Services ticks off each step for a new customer."],
+   ["Training sign-off", "Managers confirm training for the new case platform."]
+  ],
+  "skills": [
+   ["Backup and restore", "Support"],
+   ["Ransomware recovery", "Support"],
+   ["Case triage", "Support"],
+   ["Customer onboarding", "Services"],
+   ["Data migration", "Services"],
+   ["Sizing and quoting", "Sales"],
+   ["Renewal management", "Customer success"],
+   ["Field repair", "Field service"],
+   ["Firmware testing", "Engineering"],
+   ["Telemetry analysis", "Engineering"],
+   ["Demand forecasting", "Supply chain"],
+   ["Revenue analysis", "Finance"]
+  ],
+  "tech_debt": [
+   "Retire the legacy case tool after the migration",
+   "Upgrade the telemetry collectors to a supported release",
+   "Replace shared lab accounts with named accounts",
+   "Move old quote templates out of the quote tool"
+  ],
+  "finance_events": [
+   "Subscription billing run for October",
+   "Hardware revenue recognized on install",
+   "Deferred revenue released for the quarter",
+   "Warranty provision updated",
+   "Component price increase from a supplier",
+   "Hosting contract renewed",
+   "Field service costs accrued",
+   "Customer credit for a missed restore target",
+   "Commission accrual for the quarter",
+   "Depreciation starts for the lab appliances"
+  ],
+  "decision_tables": [
+   ["Supplier invoice review", "Decides who looks at a supplier invoice before it is paid."],
+   ["Discount approval", "Routes a discount to the right approver by size and deal."],
+   ["Part replacement approval", "Decides whether a part ships before the failure is confirmed."]
+  ],
+  "reports": [
+   ["Budget variance by program", "variance", "project"],
+   ["Restores on time by region", "restores_on_time", "region"],
+   ["Renewals by quarter", "renewals", "quarter"],
+   ["Cost to serve by customer tier", "cost_to_serve", "tier"]
+  ],
+  "charts": [
+   "Restores on time per week",
+   "Open cases per day",
+   "Escalations per week",
+   "Renewal rate per month",
+   "Installs completed per week",
+   "Parts shipped per week",
+   "Quotes sent per week",
+   "Cost to serve per customer per month"
+  ],
+  "connectors": [
+   ["Case platform feed", "system", ["case", "customer"]],
+   ["Telemetry feed", "system", ["appliance", "alert"]],
+   ["Orders and billing feed", "system", ["order", "invoice"]],
+   ["Quote tool feed", "system", ["quote", "price"]],
+   ["Field dispatch feed", "system", ["visit", "part"]],
+   ["Forecasting feed", "system", ["forecast", "part"]],
+   ["Staff directory", "system", ["person", "team"]],
+   ["Logistics partner feed", "partner", ["shipment", "tracking"]]
+  ],
+  "conversations": ["Why did three restores miss the target this week?", "Which renewals are at risk this quarter?", "What is holding up the case platform invoice?"],
+  "major_incident": "Customer portal down for every customer (sign-in fails)",
+  "languages": ["English", "German", "Japanese"]
+ }
 }
