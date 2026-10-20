@@ -1,3 +1,5 @@
+# One deploy path (CL-11): Netlify and a manual deploy both run tools/ship.sh, which builds and stages dist/.
+# Cache headers (CL-12) are in public/_headers; the script copies them into dist/.
 [build]
-  command = 'python3 src/build.py --out $(pwd)/build_out && cp build_out/index.html public/index.html && cp build_out/oukala-js.js public/oukala-js.js && mkdir -p public/hero && cp build_out/hero/* public/hero/ && mkdir -p public/journey && cp -R build_out/journey/. public/journey/'
-  publish = "public"
+  command = "bash tools/ship.sh"
+  publish = "dist"
