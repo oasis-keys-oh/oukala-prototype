@@ -127,5 +127,13 @@ ok(k1.i===1&&k2.pm===k1.key&&k2.key===k1.key&&k2.pressed==='true'&&k2.flow,`keyb
 ok(k2.ring&&k2.ring!=='none','keyboard focus shows a visible focus ring (token stroke)');
 await p.evaluate(()=>{SCN.set('core')});await wait(150);
 
+// 12. JM-09: who sees the Build list (simulated through PERM) and the pilot scope panel (hypothesis)
+const perm=await p.evaluate(async()=>{const out={};const prev=S.persona;SCN.set('core');await new Promise(r=>setTimeout(r,120));
+ for(const ps of ['exec','portfolio','arch','ops','fin']){S.persona=ps;S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const v=document.querySelector('#view .pp2-pane');out[ps]={cards:v.querySelectorAll('.jb-card').length,lock:!!v.querySelector('.jb-lock'),pilot:!!v.querySelector('.jb-pilot'),hyp:/Hypothesis/.test((v.querySelector('.jb-pilot')||{}).innerText||''),acc:JXR.buildAccess().ok}}
+ S.persona=prev;render();return out});
+for(const ps in perm){const c=perm[ps];if(['ops','fin'].indexOf(ps)>=0)ok(c.lock&&!c.cards&&!c.pilot&&!c.acc,`persona ${ps}: Build list is locked (simulated permission)`);
+ else ok(!c.lock&&c.cards>0&&c.pilot&&c.hyp&&c.acc,`persona ${ps}: Build list shown with a pilot scope panel labeled Hypothesis`)}
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
