@@ -101,6 +101,9 @@ if(!only||only==='seats'){const ctx=await b.newContext({viewport:{width:1280,hei
  await a.waitForTimeout(400);
  const peers=await a.evaluate(()=>SEATS.peers().map(x=>x.role));if(!peers.includes('coo'))fail('seats: the CFO seat does not see the COO seat '+peers);
  const before=await c.evaluate(()=>({n:SEATS.arrivals().length,inbox:INBOX.items().filter(x=>/^seat:/.test(x.id)).length}));
+ /* a person acts in the CFO seat: a click, then two audited actions; background audits without a person never cross */
+ await c.waitForTimeout(300);const quiet=await c.evaluate(()=>SEATS.arrivals().length);if(quiet)fail('seats: background audits crossed without a person acting ('+quiet+')');
+ await a.mouse.click(700,450);
  await a.evaluate(()=>{audit("Approved invoice INV-2207","Finance approver group · $45,000");audit("Moved budget","$18,400 from PR1-LAB to PR2-LAB")});
  await c.waitForTimeout(700);
  const got=await c.evaluate(()=>({arr:SEATS.arrivals(),inbox:INBOX.items().filter(x=>/^seat:/.test(x.id)).map(x=>({t:x.title,sim:x.sim,cat:x.cat})),marker:document.querySelectorAll('[data-seat-from]').length,bar:(document.getElementById('seatBar')||{}).textContent||'',notif:(NOTIF.state.items||[]).filter(x=>/^seat:/.test(x.id)).length}));
