@@ -59,7 +59,7 @@ R18.process=id=>{const a=R18.app(id);if(!a)return{steps:[],pid:null,counts:{huma
   st.push(["A person decides","human",(a.builder||"The owner")+" or the team reviews and acts","Decision"]);
   if(arr(a.writes).length||arr(a.newEnts).length)st.push(["Record the outcome","gate","Writes go through the owner of the data, with an approval where needed","Record"]);
   st.push(["Notify and close","robot","Uses the platform notification service","Notice"])}
- const steps=st.map(s=>({n:s[0],who:s[1],d:s[2],out:s[3]}));const counts={human:0,robot:0,ai:0,gate:0};steps.forEach(s=>{const k=s.who==="auto"?"robot":s.who;counts[k]=(counts[k]||0)+1});counts.auto=counts.robot;/* CL-72: auto reads as robot */
+ const steps=st.map(s=>({n:s[0],who:s[1],d:s[2],out:s[3]}));const counts={human:0,robot:0,ai:0,gate:0};steps.forEach(s=>{const k=s.who!=="ai"&&s.who!=="gate"&&STEPMODE.of(s.who)==="robot"?"robot":s.who;counts[k]=(counts[k]||0)+1});counts.auto=counts.robot;/* CL-72: auto reads as robot */
  return{steps,pid:"proc_"+id,counts}};
 
 /* ---------- metrics with formulas and a path to automating on trend ---------- */

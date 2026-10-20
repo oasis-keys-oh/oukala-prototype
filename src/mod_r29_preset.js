@@ -12,10 +12,10 @@ const clamp=U.clamp;
 function build(w){
  const st=w.steps||[],n=st.length||1;
  const byPeople=st.filter(s=>s.type==="human"||s.type==="wait").length;
- const run=st.filter(s=>s.type==="agent"||s.type==="auto"||s.type==="robot").length;
- const shift=st.filter(s=>(s.type==="human"||s.type==="wait")&&(s.tobe==="agent"||s.tobe==="auto"||s.tobe==="robot")).length;
+ const run=st.filter(s=>s.type==="agent"||STEPMODE.of(s.type)==="robot").length;
+ const shift=st.filter(s=>(s.type==="human"||s.type==="wait")&&(s.tobe==="agent"||STEPMODE.of(s.tobe)==="robot")).length;
  const outside=st.filter(s=>s.system&&OUT.test(s.system)).length;
- const after=st.filter(s=>s.tobe==="agent"||s.tobe==="auto"||s.tobe==="robot").length;
+ const after=st.filter(s=>s.tobe==="agent"||STEPMODE.of(s.tobe)==="robot").length;
  const gates=st.filter(s=>s.type==="gate").length;
  const first=st.find(s=>s.tobe==="agent"&&s.type!=="agent")||st.find(s=>s.tobe==="agent")||st[0];
  const id="S_"+w.id;

@@ -327,7 +327,7 @@ const agsForCls=cls=>live().filter(a=>a.proc===cls||(a.procs||[]).includes(cls))
 function stepRows(e){const ags=agsForCls(e.cls);const bud=ags.filter(a=>a.kind==="duration"&&(a.ty==="SLA"||a.ty==="UC")).sort((a,b)=>b.target.hours-a.target.hours)[0];
  const W8={human:3,agent:1,auto:.3,gate:2,wait:1,system:.3};const fixed=e.steps.reduce((a,s,i)=>a+((SL.stepT[e.key+"|"+i]!=null?SL.stepT[e.key+"|"+i]:s.h)||0),0);const open=e.steps.filter((s,i)=>(SL.stepT[e.key+"|"+i]!=null?SL.stepT[e.key+"|"+i]:s.h)==null);const wsum=open.reduce((a,s)=>a+(W8[s.who]||1),0);const room=bud?Math.max(0,bud.target.hours-fixed):0;
  const rs=e.steps.map((s,i)=>{const k=e.key+"|"+i;let tg=SL.stepT[k]!=null?SL.stepT[k]:s.h;let src=SL.stepT[k]!=null?"Set here":s.h!=null?"From the process":"Not set";if(tg==null&&bud&&wsum){tg=Math.round(room*(W8[s.who]||1)/wsum*4)/4;src="Proposed"}const r=RNG("stp|"+k)();const rel=ags.filter(a=>a.kind==="duration"&&a.ty!=="XLA").map(a=>evalAg(a).val).filter(v=>v!=null);const base=rel.length?rel.reduce((a,b)=>a+b,0)/rel.length:90;
-  const n=Math.round(12+r*60);const att=tg==null?null:Math.max(55,Math.min(100,base+(r-.5)*22-(s.who==="human"?2:0)+(s.who==="auto"||s.who==="robot"?4:0)));return {i,k,n:s.n,who:s.who,owner:s.owner,tgt:tg,txt:s.txt,att,cnt:n,tgtSrc:src}});
+  const n=Math.round(12+r*60);const att=tg==null?null:Math.max(55,Math.min(100,base+(r-.5)*22-(s.who==="human"?2:0)+(STEPMODE.of(s.who)==="robot"?4:0)));return {i,k,n:s.n,who:s.who,owner:s.owner,tgt:tg,txt:s.txt,att,cnt:n,tgtSrc:src}});
  const sum=rs.reduce((a,x)=>a+(x.tgt||0),0);return {rows:rs,bud,sum}}
 
 /* ---------------- clock simulator ---------------- */
