@@ -73,7 +73,10 @@ function say(html,cls,list){const pend=Q.msgs.find(m=>m.next);const o={r:"ai",h:
  if(pend){const lab=pend.next;pend.next=null;Q.msgs.push({r:"ai",h:"",next:lab})}drawChat(true);return o}
 function you(t){Q.msgs.push({r:"me",h:E(t),dock:Q.dockEcho?1:0});drawChat(true)}
 function later(fn,ms){const t=setTimeout(fn,Q.fast?10:Math.round(ms*(Q.spd||1)));Q.timers.push(t);return t}
-function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[]}
+function clearTimers(){Q.timers.forEach(clearTimeout);Q.timers=[];Q.busy=false;Q.queued=false;Q.typing=false}
+/* DC-01: while a message is typing (or a beat is still playing out), Next is queued and runs once the beat settles, never twice */
+function busy(){return !!(Q.typing||Q.busy)}
+function queueIfBusy(){if(busy()){Q.queued=true;return true}return false}
 function optLabels(m){const o=m.ask.opts.map((x,i)=>({l:x.l,r:x.rec?1:0,i}));o.sort((a,b)=>b.r-a.r);return o.map(x=>x.l)}
 function ensureThread(title){const C=CXr();if(!C.newThread)return null;if(Q.thread&&C.hasThread(Q.thread.id)&&!title){C.activate(Q.thread.id);return Q.thread}
  Q.thread=C.newThread(title||"VibeCheck",{studio:1});Q.mi=0;Q.lastCxm=null;return Q.thread}
@@ -111,7 +114,7 @@ function buildRoute(q){const C=CXr();C.pushMsg({me:1,t:E(q)},Q.thread);Q.dockEch
    if(j>=0&&j<opts.length){answer(ai[1],j);return true}
    if(/^(yes|ok|okay|go|sure|recommended|your pick)$/.test(n)){answer(ai[1],Math.max(0,opts.findIndex(o=>o.rec)));return true}}
   const pend=Q.msgs.slice().reverse().find(m=>m.next);
-  if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
+  if(pend&&(norm(pend.next)===n||/^(continue|next|go on|go|yes|ok|okay|sure)$/.test(n))){if(queueIfBusy())return true;const lab=pend.next;pend.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat();return true}
   submit(q);return true}finally{Q.dockEcho=false}}
 function isChipOrAnswer(q){const norm=x=>String(x).toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();const n=norm(q);
  const ai=Q.msgs.find(m=>m.ask&&m.ask.done==null);
@@ -179,8 +182,8 @@ function applyBeat(b){const B=Q.B,sc=Q.sc;
 const CP_VIEWS=["agents","perm","maturity","guard","test","ux","approve"];
 function isCP(b){return !!(b&&(b.ask||CP_VIEWS.indexOf(b.view)>=0))}
 function dwellFor(b,txt){const words=String(txt||"").replace(/<[^>]+>/g," ").split(/\s+/).filter(Boolean).length;return Math.max(4000,1500+words*330,b.hold||0)}
-function advance(){const p=Q.msgs.find(m=>m.next);if(p)p.next=null;Q.wait=false;Q.peek=null;nextBeat()}
-function kick(){if(!Q.sc||!Q.wait)return;const last=Q.msgs[Q.msgs.length-1];
+function advance(){if(queueIfBusy())return;const p=Q.msgs.find(m=>m.next);if(p)p.next=null;Q.wait=false;Q.peek=null;nextBeat()}
+function kick(){if(Q.sc&&queueIfBusy())return;if(!Q.sc||!Q.wait)return;const last=Q.msgs[Q.msgs.length-1];
  if(last&&last.ask&&last.ask.done==null){answer(Q.msgs.length-1,Math.max(0,last.ask.opts.findIndex(o=>o.rec)))}
  else{const p=Q.msgs.slice().reverse().find(m=>m.next);if(p){const lab=p.next;p.next=null;Q.wait=false;if(/^build the app/i.test(lab)&&!Q.built)buildOut();else nextBeat()}}}
 const CTA={agents:"[data-r26-agents]",perm:"[data-r26-comp]",test:"[data-r26-run],[data-r26-fixall]",ux:"[data-r26-run],[data-r26-fixux]",approve:"[data-stu-agree],[data-r26-submit],[data-stu-pub]"};
@@ -189,7 +192,8 @@ function pulse(){D.querySelectorAll(".stu-pulse").forEach(e=>e.classList.remove(
  const sel=b&&CTA[b.view];if(sel&&!(Q.cpDone&&Q.cpDone[Q.i])){const el=[...D.querySelectorAll("#stuCanvas "+sel.split(",").join(",#stuCanvas "))].find(e=>!e.disabled&&e.offsetParent);if(el){el.classList.add("stu-pulse");return}}
  const chip=D.querySelector("#sugs .chip");if(chip)chip.classList.add("stu-pulse")}
 function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.beats[Q.i];
- if(!b){finish();return}
+ if(!b){Q.busy=false;Q.queued=false;finish();return}
+ Q.busy=true;
  applyBeat(b);
  const msgs=(typeof b.say==="function"?b.say():b.say).slice();const allTxt=msgs.join(" ");Q.peek=null;
  const step=()=>{const m=msgs.shift();if(m==null){after();return}
@@ -200,14 +204,15 @@ function nextBeat(){if(!Q.sc)return;Q.wait=false;const sc=Q.sc;Q.i++;const b=Q.b
   else if(b.view==="guard"&&!Q.built){Q.msgs.push({r:"ai",h:"",next:"Build the app and all its guardrails"});Q.wait=true;drawChat(true);if(Q.auto)later(()=>{if(live()&&Q.auto&&!Q.built)buildOut()},dw)}
   else{const nb=Q.beats[Q.i+1];if(nb){Q.msgs.push({r:"ai",h:"",next:nb.btn||"Continue"});Q.wait=true;drawChat(true);
    if(Q.auto)later(()=>{if(live()&&Q.auto)advance()},dw)}}
-  pulse()};
+  Q.busy=false;pulse();
+  if(Q.queued){Q.queued=false;if(Q.wait)later(kick,250)}};
  step()}
 function answer(mi,j){const m=Q.msgs[mi];if(!m||!m.ask||m.ask.done!=null)return;const o=m.ask.opts[j];m.ask.done=j;you(o.l);
  if(o.agree){Q.B.agreed=true;Q.B.agreedAt=new Date().toISOString().slice(0,10)}
  if(o.tgt!=null&&X.setTarget)X.setTarget(o.tgt);
  if(o.run&&X[o.run])G(()=>X[o.run](o));
  if(o.own){const who=o.own==="@me"?me():o.own;Q.B.data.forEach(d=>{if(d.kind==="new")d.owner=who})}
- Q.typing=true;drawChat(true);later(()=>{Q.typing=false;if(o.say)say(o.say);Q.wait=false;render();syncRail();later(nextBeat,900)},700)}
+ Q.busy=true;Q.typing=true;drawChat(true);later(()=>{Q.typing=false;if(o.say)say(o.say);Q.wait=false;render();syncRail();later(nextBeat,900)},700)}
 function finish(){}
 
 /* ---------- build the app and the guardrails for real ---------- */
@@ -403,7 +408,7 @@ D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data
  const d=t.dataset;
  if(d.stuTry){startScenario(SD.SCEN[d.stuTry]);return}
  if(d.stuAns){const[a,b]=d.stuAns.split(":").map(Number);answer(a,b);return}
- if(d.stuNext){const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;Q.wait=false;drawChat();nextBeat();return}
+ if(d.stuNext){if(queueIfBusy())return;const last=Q.msgs[Q.msgs.length-1];if(last&&last.next)last.next=null;Q.wait=false;drawChat();nextBeat();return}
  if(d.stuWho!=null){cycleWho(d.stuWho);return}
  if(d.stuSel!=null){Q.sel=String(Q.sel)===d.stuSel?null:d.stuSel;render();return}
  if(d.stuSet!=null){const[r,k]=d.stuSet.split("|");setWho(r,k);return}
@@ -464,5 +469,5 @@ D.addEventListener("keydown",e=>{if(!buildLive()||S_screen()!=="studio"||Q.auto)
   const p=Q.msgs.find(m=>m.next);if(Q.wait&&p){e.preventDefault();kick()}}
  else if(e.key==="ArrowLeft"){const b=D.querySelector("[data-stu-bk]");if(b&&!b.disabled){e.preventDefault();b.click()}}});
 Object.assign(X,{E,G,Q,WHO,ORDER,head,tile,eyebrow,canvas,flatSteps,stepAt,setWho,say,later,render,syncRail,STAFF,me,OWN,resolveAccess,visPeople,publish,drawChat,slug,mixOf,barHTML,issuesHTML,glTile,ART:ART_OLD,STAGES,VIEW_OF_STAGE,STAGE_OF_VIEW});
-W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=nextBeat;
+W.STUDIO.libRows=libRows;W.STUDIO.resolveAccess=resolveAccess;W.STUDIO.search=search;W.STUDIO.buildOut=buildOut;W.STUDIO.cert=CERT;W.STUDIO.publish=publish;W.STUDIO.answer=answer;W.STUDIO.next=()=>{if(queueIfBusy())return;nextBeat()};W.STUDIO.isBusy=busy;
 })();
