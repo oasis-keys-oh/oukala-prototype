@@ -116,6 +116,45 @@ ok(!A.note&&A.npvTile&&A.npvCell&&A.pv&&A.csvNpv&&A.caseNpv&&!A.caseMsg,'PR-29 w
  ok(!sent.length,'PR-11 no network request while ingesting: '+sent.slice(0,3).join(', '));
  await p.evaluate(()=>{try{closeDrawer()}catch(e){}SOWX.ingest.files('CLM-1001').forEach(f=>SOWX.ingest.remove('CLM-1001',f.id))})}
 
+/* ---- CL-30: reduced effects: glass off on a slow device and when the system asks for reduced motion or transparency, plus a
+   preference toggle that persists; unchanged on a fast machine ---- */
+const glassN=pg=>pg.evaluate(()=>[...document.querySelectorAll('*')].filter(e=>{const s=getComputedStyle(e);return s.backdropFilter&&s.backdropFilter!=='none'&&e.getClientRects().length}).length);
+const fxState=pg=>pg.evaluate(()=>({mode:EFFECTS.mode(),reduced:EFFECTS.reduced(),cls:document.documentElement.classList.contains('fx-reduced'),reasons:EFFECTS.reasons(),measured:EFFECTS.measured()}));
+{// fast machine, auto: unchanged unless this run's own measurement or hints say slow (a loaded test machine may be slow)
+ await p.evaluate(()=>EFFECTS.set('auto'));await p.waitForTimeout(200);const s=await fxState(p);const n=await glassN(p);
+ if(!s.reasons.length)ok(!s.cls&&n>0,'CL-30 a fast machine keeps the glass: '+JSON.stringify(s)+' glass '+n);else console.log('note: CL-30 this run reads as slow:',s.reasons.join('; '))}
+{// reduced motion from the system
+ const o=await open({reducedMotion:'reduce'});const s=await fxState(o.p);const n=await glassN(o.p);
+ ok(s.cls&&s.reasons.some(r=>/reduced motion/.test(r))&&n===0,'CL-30 reduced motion turns glass off: '+JSON.stringify(s)+' glass '+n);await o.c.close()}
+{// reduced transparency from the system (Chromium media emulation), and a low-end device hint
+ const o=await open();const cdp=await o.c.newCDPSession(o.p);await o.p.evaluate(()=>EFFECTS.set('auto'));
+ await cdp.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-transparency',value:'reduce'}]});await o.p.waitForTimeout(300);
+ const s=await fxState(o.p);ok(s.cls&&s.reasons.some(r=>/reduced transparency/.test(r))&&await glassN(o.p)===0,'CL-30 reduced transparency turns glass off: '+JSON.stringify(s));await o.c.close();
+ const c2=await b.newContext({viewport:{width:1440,height:900}});await c2.addInitScript(()=>{Object.defineProperty(navigator,'hardwareConcurrency',{get:()=>2})});const p2=await c2.newPage();await p2.route(/^https?:/,r=>r.abort());
+ await p2.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p2.waitForFunction(()=>window.EFFECTS,null,{timeout:120000});
+ const s2=await fxState(p2);ok(s2.cls&&s2.reasons.some(r=>/2 processor cores/.test(r)),'CL-30 a 2-core device turns glass off: '+JSON.stringify(s2));await c2.close()}
+{// slow frames in the first measured second: the page is kept busy so frames take about 45 ms
+ const r=await p.evaluate(async()=>{EFFECTS.set('auto');const iv=setInterval(()=>{const t=performance.now();while(performance.now()-t<45);},0);const m=await EFFECTS.measure(800);clearInterval(iv);
+  return{m,reduced:EFFECTS.reduced(),cls:document.documentElement.classList.contains('fx-reduced')}});
+ ok(r.m&&r.m.slow&&r.reduced&&r.cls,'CL-30 slow measured frames turn glass off: '+JSON.stringify(r));
+ // Full overrides auto and persists through a reload
+ await p.evaluate(()=>EFFECTS.set('full'));const f=await fxState(p);ok(!f.cls&&await glassN(p)>0,'CL-30 Full keeps the glass on: '+JSON.stringify(f));
+ await p.reload({waitUntil:'domcontentloaded'});await p.waitForFunction(()=>window.EFFECTS&&typeof go==='function'&&document.querySelector('#view'),null,{timeout:120000});await p.waitForTimeout(1500);
+ const f2=await fxState(p);ok(f2.mode==='full'&&!f2.cls,'CL-30 the preference persists (U.store): '+JSON.stringify(f2))}
+{// the preference toggle in the profile menu
+ await p.evaluate(()=>{const w=document.querySelector('.whoami');if(w)w.click()});await p.waitForTimeout(500);
+ const has=await p.evaluate(()=>!!document.querySelector('#r27Prefs [data-r27fx][value=reduced]'));ok(has,'CL-30 the profile preferences have a Visual effects choice');
+ if(has){await p.evaluate(()=>{const i=document.querySelector('#r27Prefs [data-r27fx][value=reduced]');i.click()});await p.waitForTimeout(300);
+  const r=await p.evaluate(()=>({mode:EFFECTS.mode(),cls:document.documentElement.classList.contains('fx-reduced'),stored:U.store.get('falconaire.effects',null),note:(document.querySelector('#r27Prefs [data-r27fx-note]')||{}).textContent||''}));
+  ok(r.mode==='reduced'&&r.cls&&r.stored==='reduced'&&/Glass is off now \(your choice\)/.test(r.note),'CL-30 choosing Reduced turns glass off and is kept: '+JSON.stringify(r));
+  await p.evaluate(()=>{const i=document.querySelector('#r27Prefs [data-r27fx][value=auto]');i.click()});await p.waitForTimeout(200)}
+ await p.evaluate(()=>{EFFECTS.set('auto');try{document.getElementById('profilePop').hidePopover()}catch(e){}})}
+
+{// the in-app Motion preference counts like the system setting
+ const r=await p.evaluate(async()=>{EFFECTS.set('auto');const was=PREF.motion;PREF.motion='reduced';applyPrefs();await new Promise(x=>setTimeout(x,50));
+  const on={cls:document.documentElement.classList.contains('fx-reduced'),why:EFFECTS.reasons().join('; ')};PREF.motion=was;applyPrefs();await new Promise(x=>setTimeout(x,50));return on});
+ ok(r.cls&&/Reduce motion/.test(r.why),'CL-30 the Motion preference Reduce motion turns glass off: '+JSON.stringify(r))}
+
 /*@@NEXT@@*/
 
 ok(!errs.length,'page errors: '+errs.slice(0,3).join(' | '));

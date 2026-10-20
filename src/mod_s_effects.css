@@ -1,0 +1,5 @@
+/* CL-30: reduced effects. The root class fx-reduced (set by mod_s_effects.js: slow device, reduced motion or transparency, or the
+   preference) switches every backdrop-filter off. :is(*,#fx-x#fx-x#fx-x) matches every element and carries the specificity of
+   three ids, so it outranks the existing glass rules without !important. Backgrounds are unchanged: they are already 78 to 94
+   percent opaque. */
+:root.fx-reduced :is(*,#fx-x#fx-x#fx-x),:root.fx-reduced :is(*,#fx-x#fx-x#fx-x)::before,:root.fx-reduced :is(*,#fx-x#fx-x#fx-x)::after,:root.fx-reduced :is(*,#fx-x#fx-x#fx-x)::backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}
