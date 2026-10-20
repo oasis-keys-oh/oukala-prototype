@@ -119,6 +119,48 @@ E.audit=audit_;E.gaps=gaps;E.migrate=migrate;
 /* ---------- recording who acted ---------- */
 function record(groupId,by,dec,item,note){seed();A.log.unshift({t:Date.now(),group:groupId,by,dec,item,note:note||""});if(A.log.length>400)A.log.length=400;G(()=>{if(window.STORE&&STORE.put)STORE.put("approver_action",{id:"AGA-"+Date.now().toString(36),group:groupId,by,dec,item,note:note||""})});G(()=>{if(window.EVENTS&&EVENTS.emit)EVENTS.emit("approval.group_decided",{group:groupId,by,decision:dec,item},{source:"r16h_groups",actor:by})})}
 const actsFor=(item)=>A.log.filter(l=>l.item===item);
+/* ---------- PR-20: ONE routing source for catalog, budget and change approvals (R14) ----------
+   APG.route(kind,rec)  -> {kind,id,name,members,why,legacy}   the group that holds the decision on this record
+   APG.check(actor,kind,rec) -> {ok,rule,why,group}           "sod" (requester never decides own), "group" (actor not a member), "member"
+   PERM.approverOf (mod_r16g_a_perm) is an adapter over route(): it returns the legacy GRP-* id of the same group.
+   The inbox adapters (below and in mod_r16g_b_enforce) and BUDREQ.decide call check(); neither keeps its own routing table. */
+const KIND={budget_request:"budget_request",budreq:"budget_request",change_request:"change_request",chg:"change_request",catalog:"catalog",cat:"catalog",request_item:"catalog",invoice:"invoice",inv:"invoice",payment:"invoice"};
+const BR_STAGE={tri:"apg_portfolio_lead",fin:"apg_fin",arc:"apg_arch_sec",val:"apg_portfolio_lead",cnc:"apg_portfolio_board",dec:"apg_cio"};
+const LEGACY_GRP={budget_request:{apg_portfolio_lead:"GRP-PORT",apg_portfolio_board:"GRP-PORT",apg_fin:"GRP-FINREV",apg_arch_sec:"GRP-ARCH",apg_cio:"GRP-BUD",apg_budget_owner:"GRP-BUD",apg_cfo:"GRP-BUD",apg_ceo:"GRP-BUD",apg_board_fin:"GRP-BUD"},change_request:{"*":"GRP-CAB"},invoice:{"*":"GRP-AP"},catalog:{"*":"GRP-GEN"}};
+const KLABEL={budget_request:"budget request",change_request:"change",catalog:"catalog request",invoice:"invoice"};
+function doaGroup(amt){if(amt==null||isNaN(+amt))return null;const t=G(()=>S.bud.doa.find(z=>z.max==null||+amt<=z.max),null);return t&&DOA_G[t.id]||null}
+function route(kind,rec){seed();const k=KIND[kind]||kind;rec=rec||{};let gid=null,why="";const st=A.stg||{};
+ if(!KLABEL[k])return null;
+ if(rec.apg&&byId(rec.apg)){gid=rec.apg;why="The approval step names this group"}
+ else if(k==="budget_request"){const s=rec.stage||rec.st||"dec";const amt=rec.amount!=null?rec.amount:rec.amt;
+  if(s==="dec"&&doaGroup(amt)){gid=doaGroup(amt);why="Funding decision: the delegation of authority tier for the amount"}
+  else if(st[s]&&byId(st[s])){gid=st[s];why="Budget stage set to this group"}
+  else{gid=BR_STAGE[s]||"apg_portfolio_board";why="Budget request stage routes to this group"}}
+ else if(k==="change_request"){const t=rec.role&&byToken(rec.role);if(t){gid=t.id;why="The change stage role "+rec.role+" maps to this group"}else{gid="apg_cab";why="Changes route to the change advisory board"}}
+ else if(k==="catalog"){gid=st.cat&&byId(st.cat)?st.cat:"apg_line";why="Catalog approvals route to the requester's line management unless the item names a group"}
+ else if(k==="invoice"){gid=st.inv&&byId(st.inv)?st.inv:"apg_fin";why="Invoices route to finance approvers"}
+ let g=byId(gid);if(!g)return null;const ctx={requester:rec.requester,service:rec.service};let gap=false;
+ /* the step still names a person who is not in the routed group: route to that person's group in the same scope, and count it as a gap */
+ if(rec.named&&members(g,ctx).indexOf(rec.named)<0){const sc=SCOPE_OF[k];const gs=A.groups.filter(x=>members(x,ctx).indexOf(rec.named)>=0);const fb=gs.find(x=>(x.scope||[]).indexOf(sc)>=0)||gs[0];
+  if(fb){g=fb;gap=true;why="The step names "+rec.named+", who is not in the routed group; it routes to their group "+fb.name+" until the step is moved"}}
+ const L=LEGACY_GRP[k]||{};
+ return{kind:k,id:g.id,name:g.name,members:members(g,ctx),why,gap,legacy:L[g.id]||L["*"]||"GRP-GEN"}}
+const SCOPE_OF={budget_request:"budreq",change_request:"chg",catalog:"cat",invoice:"inv"};
+function check(actor,kind,rec){rec=rec||{};const k=KIND[kind]||kind;const r=route(k,rec);
+ if(!actor)return{ok:false,rule:"actor",why:"No acting person is known",group:r&&r.id};
+ if(rec.requester&&actor===rec.requester)return{ok:false,rule:"sod",why:"Separation of duties: "+actor+" raised this "+(KLABEL[k]||"request")+" and can never approve it",group:r&&r.id};
+ if(!r)return{ok:true,rule:"unrouted",why:"No routed group for "+kind,group:null};
+ if(r.members.indexOf(actor)<0)return{ok:false,rule:"group",why:"This "+(KLABEL[k]||"approval")+" is held by "+r.name+"; "+actor+" is not a member"+(r.members.length?" (members: "+r.members.slice(0,4).join(", ")+")":""),group:r.id};
+ return{ok:true,rule:"member",why:actor+" decides as a member of "+r.name,group:r.id}}
+/* record for an inbox item, so the adapters check the same rule */
+function recOfItem(k,it){it=it||{};const kind=KIND[k];if(!kind)return null;
+ if(kind==="change_request"){const c=G(()=>ITSMX.getChange(it.sid),null);const s=G(()=>c.stages[it.sx].ap[it.ax],null);return{id:it.sid,requester:(c&&c.req)||it.req||"",apg:s&&s.apg||null,role:s&&s.r||"",named:s&&s.w||"",service:c&&c.svc}}
+ if(kind==="catalog"){const r=G(()=>REQREG.find(x=>x.id===it.sid),null);const a=r&&r.ap&&r.ap[it.ap];return{kind:"catalog",id:it.sid,requester:it.req||(r&&(r.requester||r.onBehalfOf))||"",apg:a&&a.apg||null,named:a&&a.who||""}}
+ if(kind==="budget_request"){const r=G(()=>BUDREQ.requests().find(q=>q.id===it.sid),null);return{id:it.sid,requester:r?r.req:it.req||"",stage:r?r.st:it.sx,amount:r?r.amt:it.amt,named:r?G(()=>BUDREQ.rev(r.st,r).name,""):""}}
+ if(kind==="invoice")return{id:it.sid,requester:it.req||""};return null}
+const denied=[];
+function noteDenial(actor,kind,rec,c){denied.unshift({t:Date.now(),actor,kind,id:rec&&rec.id||"",rule:c.rule,why:c.why});if(denied.length>100)denied.length=100;G(()=>audit("Approval refused",actor+" · "+c.why))}
+Object.assign(E,{route,check,recOfItem,denials:()=>denied.slice(),noteDenial,KIND});
 Object.assign(E,{groups:()=>(seed(),A.groups),get:id=>(seed(),byId(id)),byName:n=>(seed(),byName(n)),byToken:t=>(seed(),byToken(t)),members,isMember:(ref,p,ctx)=>(seed(),isMember(ref,p,ctx)),groupsOf:p=>(seed(),groupsOf(p)),colleagues,classify,record,actsFor,quorumText,log:()=>A.log,state:A,
  nameOf:id=>{const g=byId(id);return g?g.name:id},resolveSlot:(tok)=>{seed();const c=classify(tok);return c}});
 window.APG=E;
@@ -130,12 +172,11 @@ const ADK={chg:"Change approvals",cat:"Catalog approvals",gate:"Funding gates",f
 const EXPAND={chg:1,cat:1,gate:1,flow:1,kcs:1,rel:1};
 const FLOWKIND={budget:"apg_budget_owner",contract:"apg_legal",sla:"apg_service_owner",service:"apg_service_owner",change:"apg_cab",security:"apg_arch_sec",access:"apg_line",demand:"apg_portfolio_board",release:"apg_release",catalog:"apg_line"};
 function groupOfItem(it){seed();const k=it.src;
- if(k==="chg"){const s=G(()=>ITSMX.getChange(it.sid).stages[it.sx].ap[it.ax],null);if(s&&s.apg)return byId(s.apg);return byToken(s&&s.r)||byToken(s&&s.w)||byId("apg_cab")}
- if(k==="cat"){const r=G(()=>REQREG.find(x=>x.id===it.sid),null);const a=r&&r.ap&&r.ap[it.ap];return a&&a.apg?byId(a.apg):byId("apg_line")}
+ /* catalog, budget and change resolve through route(): one source (PR-20) */
+ if(k==="chg"||k==="cat"||k==="budreq"){const ro=route(k,recOfItem(k,it));return ro?byId(ro.id):null}
  if(k==="gate"){const q=G(()=>FIN._h.F.gq.find(x=>x.id===it.sid),null);if(q&&q.apg)return byId(q.apg);return byToken(q&&q.role)||byId("apg_cio")}
  if(k==="flow"){let amt=it.amt;if(it.kindKey==="budget"&&amt!=null){const t=G(()=>S.bud.doa.find(z=>z.max==null||amt<=z.max),null);if(t&&DOA_G[t.id])return byId(DOA_G[t.id])}return byId(FLOWKIND[it.kindKey]||"apg_cio")}
  if(k==="wfrun"){return null}
- if(k==="budreq"){const M={tri:"apg_portfolio_lead",fin:"apg_fin",arc:"apg_arch_sec",val:"apg_portfolio_lead",cnc:"apg_portfolio_board",dec:"apg_cio"};return byId((A.stg||{})[it.sx]||M[it.sx]||"apg_portfolio_board")}
  const D={inv:"apg_fin",rel:"apg_release",kcs:"apg_know",ent:"apg_data",sow:"apg_legal",fab:"apg_data",gapp:"apg_platform",debt:"apg_platform",mat:"apg_platform"};return D[k]?byId((A.stg||{})[k]||D[k]):null}
 const MARK=Symbol("r16h");
 function wrapAdapters(){if(!(window.INBOX&&INBOX.adapters))return false;seed();let n=0;
@@ -148,8 +189,10 @@ function wrapAdapters(){if(!(window.INBOX&&INBOX.adapters))return false;seed();l
      if(log.length)it.ev.push(["Group decisions",log.slice(0,4).map(l=>l.by+" "+l.dec).join("; "),"good"]);
      if(isMember(g,me,{requester:it.req}))it.why=(it.viaGroup?"Routed to "+g.name+" and shown to you as a member (named approver: "+it.viaGroup+"). ":"You act as a member of "+g.name+". ")+(it.why||"")}});
    return items};
-  if(ad.approve){const oa=ad.approve.bind(ad);ad.approve=function(it,note){const me=R.viewer();const r=actAs(k,it,"approve",note,oa);if(r&&r.ok!==false&&it.apg)record(it.apg,me,"approved",it.sid||it.id,note);return r}}
-  if(ad.reject){const orj=ad.reject.bind(ad);ad.reject=function(it,why){const me=R.viewer();const r=orj(it,why);if(r&&r.ok!==false&&it.apg)record(it.apg,me,"rejected",it.sid||it.id,why);return r}}});
+  /* PR-20: group binding and "never your own request" hold on every decision, whatever the permission toggle says */
+  const bind=(it)=>{if(!KIND[k])return null;const rec=recOfItem(k,it);const c=check(R.viewer(),k,rec);if(c.ok)return null;noteDenial(R.viewer(),KIND[k],rec,c);return{ok:false,why:c.why,rule:c.rule}};
+  if(ad.approve){const oa=ad.approve.bind(ad);ad.approve=function(it,note){const me=R.viewer();const no=bind(it);if(no)return no;const r=actAs(k,it,"approve",note,oa);if(r&&r.ok!==false&&it.apg)record(it.apg,me,"approved",it.sid||it.id,note);return r}}
+  if(ad.reject){const orj=ad.reject.bind(ad);ad.reject=function(it,why){const me=R.viewer();const no=bind(it);if(no)return no;const r=orj(it,why);if(r&&r.ok!==false&&it.apg)record(it.apg,me,"rejected",it.sid||it.id,why);return r}}});
  return n>0}
 function actAs(k,it,mode,note,orig){
  if(it.viaGroup||it.apg){

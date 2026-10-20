@@ -49,7 +49,11 @@ const GROUPS=[
  {id:"GRP-HR",n:"People Operations",roles:["hr"],users:["Joanna Pierce","Grace Whitfield"],sets:["PS-HR"],owner:"Joanna Pierce"},
  {id:"GRP-MGR",n:"People managers (reporting chain)",roles:["people_manager","hr"],users:[],sets:["PS-MGR"],owner:"Joanna Pierce"},
  {id:"GRP-GEN",n:"Approvers (any approval authority)",roles:["finance_approver","executive","portfolio_lead","change_manager","architect","platform_admin","security","hr","people_manager"],users:[],sets:[],owner:"Rina Okafor"}];
-const APPROVER_OF={budget_request:r=>({cnc:"GRP-PORT",val:"GRP-PORT",fin:"GRP-FINREV",arc:"GRP-ARCH",dec:"GRP-BUD"}[r&&r.stage]||"GRP-BUD"),budget_line:()=>"GRP-BUD",budget_adjustment:()=>"GRP-BUD",invoice:()=>"GRP-AP",payment:()=>"GRP-AP",change_request:()=>"GRP-CAB",pto_request:()=>"GRP-MGR",timesheet:()=>"GRP-MGR",access_review:()=>"GRP-SEC",access_request:()=>"GRP-SEC",permission_change:()=>"GRP-SEC",approval:()=>"GRP-GEN"};
+/* PR-20: budget requests, changes, invoices and catalog approvals resolve through ONE source, APG.route (mod_r16h_c_groups).
+   These entries are adapters: they return the legacy GRP-* id of the group APG routes to, so old callers keep working. */
+const routeOf=(res,r)=>G(()=>W.APG&&APG.route?APG.route(res==="approval"&&r&&r.kind?r.kind:res,r||{}):null,null);
+const viaRoute=(res,fb)=>r=>{const ro=routeOf(res,r);return ro?ro.legacy:fb(r)};
+const APPROVER_OF={budget_request:viaRoute("budget_request",r=>({cnc:"GRP-PORT",val:"GRP-PORT",fin:"GRP-FINREV",arc:"GRP-ARCH",dec:"GRP-BUD"}[r&&r.stage]||"GRP-BUD")),budget_line:()=>"GRP-BUD",budget_adjustment:()=>"GRP-BUD",invoice:viaRoute("invoice",()=>"GRP-AP"),payment:viaRoute("payment",()=>"GRP-AP"),change_request:viaRoute("change_request",()=>"GRP-CAB"),pto_request:()=>"GRP-MGR",timesheet:()=>"GRP-MGR",access_review:()=>"GRP-SEC",access_request:()=>"GRP-SEC",permission_change:()=>"GRP-SEC",approval:r=>{const ro=r&&r.kind?routeOf("approval",r):null;return ro?ro.legacy:"GRP-GEN"}};
 const SETS_EXTRA=[{id:"PS-MGR",n:"People manager",caps:["view"],d:"Performance, PTO and access of your direct reports only.",owner:"Joanna Pierce",risk:"med"}];
 
 /* ---------------- classifications ---------------- */
@@ -152,7 +156,8 @@ function checkExpr(src){try{parse(src);return{ok:true}}catch(e){return{ok:false,
 /* ---------------- records ---------------- */
 function recordOf(entity,ref){if(ref&&typeof ref==="object")return ref;if(ref==null||ref==="")return null;
  if(entity==="person"||/^(compensation_record|pto_|perf_|timesheet)/.test(entity)){const x=graph().by[ref];return{id:ref,person:ref,employee:ref,owner:ref,orgUnit:x?x.team:"",costCenter:x?x.team:"",classification:"restricted",manager:x?x.mgr:""}}
- if(entity==="budget_request"){const r=G(()=>BUDREQ.requests().find(q=>q.id===ref),null);return r?{id:r.id,requester:r.req,owner:r.req,stage:r.st,amount:r.amt,costCenter:r.cc||r.dept||"",classification:"confidential",project:r.proj}:{id:ref,classification:"confidential"}}
+ if(entity==="budget_request"){const r=G(()=>BUDREQ.requests().find(q=>q.id===ref),null);return r?{id:r.id,requester:r.req,owner:r.req,stage:r.st,amount:r.amt,named:G(()=>BUDREQ.rev(r.st,r).name,""),costCenter:r.cc||r.dept||"",classification:"confidential",project:r.proj}:{id:ref,classification:"confidential"}}
+ if(entity==="change_request"){const c=G(()=>ITSMX.getChange(ref),null);return c?{id:c.id,requester:c.req||"",owner:c.own||"",service:c.svc||"",classification:"internal"}:{id:ref}}
  if(entity==="invoice"){const i=G(()=>INVOICES.find(x=>x.id===ref),null);return i?{id:i.id,vendor:i.vendor,owner:i.owner||"",amount:i.amt,classification:"confidential"}:{id:ref,classification:"confidential"}}
  return{id:ref}}
 
@@ -187,8 +192,13 @@ function decide(user,action,res,rec,opt){opt=opt||{};const kind=kindOf(res);cons
  else if(cond){const r0=conds[0];trace.push({k:"rule",v:r0.id,t:r0.name},{k:"scope",v:"row (needs a record)"});out={ok:true,cond:true,effect:"allow",rule:r0,rules:conds,why:"Allowed on rows where "+conds.map(c=>c.when).join(" or "),scope:"row"}}
  else{const b=baseline(user,act,res,kind);trace.push({k:"default",v:b.ok?"baseline allow":"deny by default"});if(entSensitive(res)&&kind==="entity")trace.push({k:"class",v:entityClass(res)});out={ok:b.ok,effect:b.ok?"allow":"deny",def:true,why:b.why,scope:kind,trace}}
  out.trace=out.trace||trace;out.res=res;out.action=act;out.user=user.user;out.persona=user.persona;
- if(out.ok&&act==="approve"&&kind==="entity"&&APPROVER_OF[res]){const gid=APPROVER_OF[res](rec);const g=GROUPS.find(x=>x.id===gid);out.group=gid;out.trace.push({k:"group",v:g?g.n:gid});
-  if(g&&!groupMember(user,gid)){out.ok=false;out.effect="deny";out.why="Approvals for "+res.replace(/_/g," ")+" are decided by "+g.n+"; "+user.user+" is not a member";out.scope="group"}}
+ if(out.ok&&act==="approve"&&kind==="entity"&&APPROVER_OF[res]){const gid=APPROVER_OF[res](rec);const g=GROUPS.find(x=>x.id===gid);out.group=gid;
+  /* PR-20: on a known record of a routed kind, the one group model decides (APG): requester never approves own, actor must be a member */
+  const ro=rec&&(rec.requester||rec.apg||rec.stage||rec.kind)?routeOf(res,rec):null;
+  if(ro&&!user.rolesOnly){out.apg=ro.id;out.trace.push({k:"group",v:ro.name});const c=G(()=>APG.check(user.user,res==="approval"?rec.kind:res,rec),{ok:true});
+   if(!c.ok){out.ok=false;out.effect="deny";out.why=c.why;out.scope=c.rule==="sod"?"sod":"group"}}
+  else{out.trace.push({k:"group",v:g?g.n:gid});
+   if(g&&!groupMember(user,gid)){out.ok=false;out.effect="deny";out.why="Approvals for "+res.replace(/_/g," ")+" are decided by "+g.n+"; "+user.user+" is not a member";out.scope="group"}}}
  return out}
 function can(u,action,res,rec){const user=resolveUser(u);const r=typeof rec==="string"||typeof rec==="number"?recordOf(kindOf(res)==="entity"?res:"person",rec):rec;
  const d=decide(user,action,res,r);return P.enforce?d:Object.assign({},d,{ok:true,off:true})}

@@ -8,3 +8,4 @@ node tools/tests/smoke.js build_out
 node tools/tests/tabs.js build_out
 node tools/tests/showroom.js build_out
 node tools/tests/platform.js build_out
+node tools/tests/guard.js build_out
