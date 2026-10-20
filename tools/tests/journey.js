@@ -84,5 +84,14 @@ const coo=await p.evaluate(async()=>{const names=[...new Set(ODX.people().map(x=
 for(const k in coo){if(k==='core')ok(coo[k].n>0,'core: the COO brief tabs still show the Meridian sample organization');
  else ok(coo[k].n===0&&coo[k].note&&coo[k].lab>0,`${k}: COO brief tabs show no Meridian person or agent name (${coo[k].hits.join(', ')||'none'}), say where data is missing, and label ${coo[k].lab} Meridian sample panels`)}
 
+// 9. JM-01: industry tenants get the org chart built from box owners by default, and the screen says so
+const own=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,150));S.pp2.tab.ppl_jrny=7;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
+ const tx=document.querySelector('#view .pp2-pane').innerText;const sw=document.querySelector('[data-pp2-act="jorgsrc"][data-a="fns"]');let alt=null;
+ if(sw){sw.click();await new Promise(r=>setTimeout(r,150));alt=JXR.orgSource();const b=document.querySelector('[data-pp2-act="jorgsrc"][data-a="owners"]');if(b)b.click();await new Promise(r=>setTimeout(r,100))}
+ out[k]={src:JXR.orgSource(),said:/owning team named on a journey step/.test(tx)&&/HR org chart is an open decision/.test(tx),alt}}
+ SCN.set('core');await new Promise(r=>setTimeout(r,150));return out});
+for(const k in own){if(k==='core')ok(own[k].src==='real','core: the org chart tab shows the real Meridian chart');
+ else ok(own[k].src==='owners'&&own[k].said&&(own[k].alt===null||own[k].alt==='functions'),`${k}: org chart is built from box owners by default and says so (HR import noted as open)${own[k].alt?'; sample functions view available':''}`)}
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
