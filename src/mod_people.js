@@ -737,7 +737,8 @@ ASKX.push(q=>{const l=q.toLowerCase();
 SEARCHX.push(()=>st.rooms.map(r=>({g:"Rooms",t:r.n,m:r.cap+" seats · "+r.tr.st,c:"--p4",f:()=>{go("ppl_av");setTimeout(()=>roomDrawer(r.id),60)},k:r.eq.join(" ")})));
 SEARCHX.push(()=>st.courses.map(c=>({g:"Courses",t:c.t,m:c.cat,c:CATC[c.cat],f:()=>{go("ppl_train");setTimeout(()=>courseDrawer(c.id),60)},k:"training learning "+c.src})));
 SEARCHX.push(()=>st.forums.map(f=>({g:"Forums",t:f.n,m:f.cadence,c:f.c,f:()=>{go("ppl_meet");setTimeout(()=>forumDrawer(f.id),60)},k:"governance decisions minutes"})).concat(st.decs.map(d=>({g:"Decisions",t:d.id+" "+d.t,m:d.st,c:"--w1",f:()=>{S.v.ppl_meet=2;go("ppl_meet")},k:d.why}))));
-const _render=render;render=function(){_render.apply(this,arguments);try{pplAfter()}catch(e){console.error("ppl after",e)}};
+/* CL-35: lifecycle through HOOKS, not a render wrapper */
+HOOKS.on("afterRender",()=>{try{pplAfter()}catch(e){console.error("ppl after",e)}},{id:"ppl.after",order:1001});
 function pplAfter(){if(S.screen!=="ppl_org")return;const w=document.querySelector(".ppl-treewrap"),t=document.querySelector(".ppl-tree");if(!w||!t)return;const ul=t.firstElementChild;t.style.zoom=1;const nat=ul.getBoundingClientRect().width,avail=w.clientWidth-10;if(!st.zoomUser)st.zoom=clamp(avail/nat,.64,1);t.style.zoom=st.zoom;w.scrollLeft=Math.max(0,(w.scrollWidth-w.clientWidth)/2)}
 window.pplDebug={util,overloaded,roomUtil,trainStat,actStat,teamUtil,rightSize,conflicts,peakTeam,findRank,overdueOf};
 try{updMetrics()}catch(e){console.error("ppl metrics",e)}

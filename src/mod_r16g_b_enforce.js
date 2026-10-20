@@ -154,7 +154,8 @@ function sched(){clearTimeout(tm);tm=setTimeout(sweep,40)}
 const mo=new MutationObserver(()=>{if(!busy)sched()});
 function start(){const t=document.body;if(!t){setTimeout(start,100);return}mo.observe(t,{childList:true,subtree:true});sched()}
 start();
-const _od=W.openDrawer;if(typeof _od==="function"&&!W.__pmOD){W.__pmOD=1;openDrawer=function(html){const r=_od.apply(this,arguments);try{if(on())sweepDrawer()}catch(e){console.error("perm drawer",e)}return r}}
+/* CL-35: lifecycle through HOOKS, not an openDrawer wrapper */
+if(!W.__pmOD){W.__pmOD=1;HOOKS.on("afterOpenDrawer",()=>{try{if(on())sweepDrawer()}catch(e){console.error("perm drawer",e)}},{id:"perm.drawer",order:1000})}
 document.addEventListener("input",e=>{if(e.target&&(e.target.id==="q"||/nxPal/.test(e.target.id||"")))setTimeout(sweep,60)},true);
 W.PERM&&(W.PERM.sweep=sweep);
 window.addEventListener("load",()=>{if(W.PERM)PERM.sweep=sweep});

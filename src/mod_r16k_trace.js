@@ -347,8 +347,8 @@ document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.tar
 const R15=W.R15=W.R15||{};R15.alias=R15.alias||{};R15.hidden=R15.hidden||{};
 R15.alias.trace={to:"strat_exec"};R15.hidden.trace=1;
 if(R15.names)R15.names.strat_exec="Strategy to execution";
-const _go=W.go;
-if(typeof _go==="function"&&!W._sxGo){W._sxGo=1;W.go=function(screen,arg){if((screen==="trace"||screen==="strat_exec")&&arg){S.rec=arg;S.flowSel=null;S.v.sx=4}return _go.apply(this,arguments)}}
+/* CL-35: lifecycle through HOOKS, not a go wrapper */
+if(!W._sxGo){W._sxGo=1;HOOKS.on("beforeGo",(screen,arg)=>{if((screen==="trace"||screen==="strat_exec")&&arg){S.rec=arg;S.flowSel=null;S.v.sx=4}},{id:"sx.go"})}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rec-pick]");if(b&&S.screen==="strat_exec"){S.rec=b.dataset.recPick;S.flowSel=null;S.v.sx=4;render()}});
 
 /* ---------------- search, chat, navigation ---------------- */
