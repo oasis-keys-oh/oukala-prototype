@@ -177,3 +177,9 @@
 .exe-bready{margin:14px 0}
 
 .exe-cmp{width:100%;border-collapse:collapse}.exe-cmp th,.exe-cmp td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--line,rgba(128,128,128,.2));vertical-align:top}.exe-cmp thead th{min-width:180px;font-size:13px}.exe-cmp tbody th{font-weight:600;color:var(--muted);white-space:nowrap}.exe-cmp td{white-space:nowrap}.exe-cmp td .pill,.exe-cmp td small{margin-left:8px}
+
+/* PR-22: the roll-up rule shown next to every roll-up, and the weight line on an objective card */
+.exe-ru{margin:0 0 12px;padding:10px 14px;border-radius:var(--rad-card);background:var(--glass2)}
+.exe-ru summary{cursor:pointer}.exe-ru ol{margin:6px 0 2px 18px;padding:0}.exe-ru li{margin:2px 0;overflow-wrap:anywhere}.exe-ru p{margin:6px 0 0}
+.exe-wline{margin:8px 0 0;overflow-wrap:anywhere}
+.exe-wbtn{background:none;border:0;padding:0;font:inherit;color:var(--accent);text-decoration:underline;cursor:pointer}
