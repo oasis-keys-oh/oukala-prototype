@@ -11,14 +11,18 @@ const E=U.esc;
 
 /* ---------- DC-17: build the fix in VibeCheck ----------
    One action for every place a gap shows: a red Journey box (no process), a Build list card, an Agent Action gap and an
-   orphan on the money thread. Any module can offer it with data-sr-fix="kind|ref|title" on a button; the Showroom adds the
-   button to Build list cards and red Journey boxes itself until those modules carry the attribute. */
+   orphan on the money thread. The owning modules render the button with SHOW.fixHTML(kind,ref,title) or put
+   data-sr-fix="kind|ref|title" (SHOW.fixAttr) on their own button (CL-84): Build list cards and red Journey boxes (mod_r31_jzx,
+   mod_r31_jxr), Agent Action gaps (mod_r28_od2) and orphan spend on the thread (mod_s_thread). A module can supply the request text
+   for its kind through SHOW.fixText[kind](ctx). */
 const FIX={
  journey:c=>"Build the process for the step \""+c.title+"\""+(c.ref?" ("+c.ref+")":"")+": nothing runs this journey step today, so give it an owner, the steps and who does each one.",
  build:c=>"Build "+c.title+(c.ref?" ("+c.ref+" on the Build list)":"")+" with its steps, data, measures and guardrails.",
  gap:c=>"Close the gap \""+c.title+"\""+(c.ref?" ("+c.ref+", from Agent Action)":"")+": propose the process, who does each step and how we will know it works.",
  orphan:c=>"Tie the orphan spend \""+c.title+"\""+(c.ref?" ("+c.ref+")":"")+" to a goal, or propose how to stop it, with an owner and a measure."};
-function buildFix(ctx){ctx=ctx||{};const k=FIX[ctx.kind]?ctx.kind:"build";const text=FIX[k]({ref:ctx.ref||"",title:String(ctx.title||"this gap").replace(/\s+/g," ").trim().slice(0,120)});
+SHOW.fixText=SHOW.fixText||{};
+function buildFix(ctx){ctx=ctx||{};const k=FIX[ctx.kind]?ctx.kind:"build";const own=G(()=>SHOW.fixText[k]&&SHOW.fixText[k](ctx),null);
+ const text=own||FIX[k]({ref:ctx.ref||"",title:String(ctx.title||"this gap").replace(/\s+/g," ").trim().slice(0,120)});
  G(()=>{if(W.STUDIO){STUDIO.sc=null;STUDIO.view="home";STUDIO.lastScen=null}});
  SHOW.lastFix={kind:k,ref:ctx.ref||"",title:ctx.title||"",text,from:G(()=>S.screen,""),t:Date.now()};
  G(()=>audit("Build the fix in VibeCheck",text));
@@ -27,18 +31,12 @@ function buildFix(ctx){ctx=ctx||{};const k=FIX[ctx.kind]?ctx.kind:"build";const 
 SHOW.buildFix=buildFix;
 D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-sr-fix]");if(!t)return;e.preventDefault();e.stopPropagation();
  const [kind,ref,title]=String(t.dataset.srFix).split("|");buildFix({kind,ref,title})},true);
-const fixBtn=(kind,ref,title)=>{const b=D.createElement("button");b.type="button";b.className="btn sm srs-fix";b.dataset.srFix=[kind,ref,title].map(x=>String(x||"").replace(/\|/g,"/")).join("|");
- b.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg><span>Build the fix in VibeCheck</span>';
- b.setAttribute("aria-label","Build the fix in VibeCheck: "+title);return b};
-function decorate(){const v=D.getElementById("view");if(!v)return;
- v.querySelectorAll(".jb-card:not([data-srs-fix])").forEach(c=>{c.dataset.srsFix="1";const chip=c.querySelector(".num-chip");const ref=chip?chip.textContent.trim():"";
-  const t=c.querySelector(".jb-t b");const title=t?t.textContent.replace(ref,"").trim():"this build";c.appendChild(fixBtn("build",ref,title));
-  if(c===v.querySelector(".jb-card"))SHOW.firstFixCard={kind:"build",ref,title}});
- v.querySelectorAll("div.noproc:not([data-srs-fix])").forEach(c=>{c.dataset.srsFix="1";const ref=(c.dataset.jb||"").split("|").join(" ");
-  const t=c.querySelector("b,strong,.jb-n,.t");const title=(t?t.textContent:c.textContent).trim().split("\n")[0].slice(0,90);c.appendChild(fixBtn("journey",ref,title))})}
-let decoT=0;const deco=()=>{if(decoT)return;decoT=requestAnimationFrame(()=>{decoT=0;if(G(()=>S.screen,"")==="ppl_jrny")decorate()})};
-G(()=>HOOKS.on("afterRender",s=>{if(s==="ppl_jrny")deco()},{id:"srs-fix"}));
-G(()=>{const v=D.getElementById("view");if(v)new MutationObserver(deco).observe(v,{childList:true,subtree:true})});
+const FIXSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>';
+SHOW.fixAttr=(kind,ref,title)=>E([kind,ref,title].map(x=>String(x||"").replace(/\|/g,"/")).join("|"));
+SHOW.fixHTML=(kind,ref,title)=>`<button type="button" class="btn sm srs-fix" data-sr-fix="${SHOW.fixAttr(kind,ref,title)}" aria-label="${E("Build the fix in VibeCheck: "+(title||""))}">${FIXSVG}<span>Build the fix in VibeCheck</span></button>`;
+/* the first Build list card seen, for the tour's hand-off beat (remembered once a card has been on screen) */
+let firstCard=null;Object.defineProperty(SHOW,"firstFixCard",{configurable:true,get(){const b=G(()=>D.querySelector("#view .jb-card [data-sr-fix]"),null);
+ if(b){const [kind,ref,title]=String(b.dataset.srFix).split("|");firstCard={kind,ref,title}}return firstCard},set(v){firstCard=v}});
 
 /* ---------- PR-18: wedge mode ----------
    The wedge screens are the COO cut's screens (decision 2026-10-19: the COO direction is the wedge), plus Home and the Showroom.

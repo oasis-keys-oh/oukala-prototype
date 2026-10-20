@@ -7,7 +7,7 @@
 const W=window;const SHOW=W.SHOW;if(!SHOW)return;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
 const E=U.esc;
-G(()=>{if(W.R18&&R18.LENS_OF)R18.LENS_OF.clo="clo"}); /* the CLO role reads its own lens (DC-28) */
+/* the CLO role reads its own lens (DC-28): LENS_OF.clo is "clo" in mod_r18g_levels (CL-84) */
 
 /* the lens beat every cut shares: the r18_lens screen with this lens selected */
 const lensBeat=(id,short,line)=>({id:"lens."+id,act:"Lens",point:short+" lens: value, cost and risk on one page",secs:70,go:"r18_lens",setup:"lens:"+id,

@@ -142,7 +142,7 @@ function gaps(){
    <p class="od-why"><b>Why ${E(X.options(g)[rec].n.toLowerCase())}.</b> ${E(X.why(g,o.posture,rec))}</p>
    <div class="od-opts">${["rebuild","bridge","leave"].map(oc).join("")}</div>
    ${m?`<div class="od-meas"><b>How you will know</b> ${E(m.n)}: ${U(m.base,m.u)} to ${U(m.target,m.u)} ${pill(m.src)}</div>`:""}
-   <div class="od-act2"><button class="btn primary" data-od="build|${g.id}">Build the fix in VibeCheck</button><span class="muted small">Opens VibeCheck with this gap and the chosen option. The agent gets a box: tier, budget, confidence floor and a kill switch.</span></div></div>
+   <div class="od-act2"><button class="btn primary" ${W.SHOW&&SHOW.fixAttr?`data-sr-fix="${SHOW.fixAttr("gap",g.id,g.t)}"`:`data-od="build|${g.id}"`}>Build the fix in VibeCheck</button><span class="muted small">Opens VibeCheck with this gap and the chosen option. The agent gets a box: tier, budget, confidence floor and a kill switch.</span></div></div>
   ${g.id==="G07"?o2c(o):""}</div></div>`}
 function o2c(o){
  const S0=X.O2C.steps,now=X.o2cStats("now"),br=X.o2cStats("bridge"),rb=X.o2cStats("rebuild");
@@ -212,9 +212,11 @@ function body(){
  <div class="od-pane">${html}</div>`}
 function screen(){OD();return `<div class="screen od-screen">${hero("Operations and strategy","Agent Action (working name)","Start with the operator's questions: how does the work run today, what do we change first, and how will we know people changed? Ingests filings and a reference architecture, reads the org and its load, and proposes a transition. Not an ideal org chart. A gap-by-gap path with options, a roadmap, and adoption you can measure.",`<div class="row"><span class="od-src od-sim">Prototype: sample data and simulated actuals</span></div>`)}<div id="odRoot">${body()}</div></div>`}
 function paint(keepScroll){const r=D.getElementById("odRoot");if(!r)return;const y=W.scrollY;r.innerHTML=body();if(keepScroll)W.scrollTo(0,y)}
-function buildFix(gid){const o=OD(),g=X.gapById(gid),k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k],bx=X.box(g),m=X.measure(gid);
- const t=`Build a fix for this gap. Gap: ${g.t}. Today: ${g.now}. Next target: ${g.next}. Chosen option: ${op.n}. ${op.d}. ERP posture: ${X.POSTURES[o.posture].n}. Give any agent a box: ${bx.tier} tier, monthly run budget ${bx.budget} (sample), confidence floor ${bx.floor}, kill switch for ${bx.kill}.${m?" Measure: "+m.n+", baseline "+U(m.base,m.u)+", target "+U(m.target,m.u)+".":""}`;
- if(W.STUDIO&&W.STUDIO.open)W.STUDIO.open(t);else go("studio")}
+function fixText(gid){const o=OD(),g=X.gapById(gid);if(!g)return null;const k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k],bx=X.box(g),m=X.measure(gid);
+ return `Build a fix for this gap. Gap: ${g.t}. Today: ${g.now}. Next target: ${g.next}. Chosen option: ${op.n}. ${op.d}. ERP posture: ${X.POSTURES[o.posture].n}. Give any agent a box: ${bx.tier} tier, monthly run budget ${bx.budget} (sample), confidence floor ${bx.floor}, kill switch for ${bx.kill}.${m?" Measure: "+m.n+", baseline "+U(m.base,m.u)+", target "+U(m.target,m.u)+".":""}`}
+function buildFix(gid){const t=fixText(gid);if(W.STUDIO&&W.STUDIO.open)W.STUDIO.open(t);else go("studio")}
+/* CL-84: the Showroom's one hand-off (data-sr-fix kind gap) uses this gap's full request */
+setTimeout(()=>{if(W.SHOW){SHOW.fixText=SHOW.fixText||{};SHOW.fixText.gap=c=>fixText(c.ref)}},0);
 function dl(){const o=OD(),steps=X.roadmap(o.posture,o.choice);const data={workingName:"Agent Action",note:"Prototype export. Sample data, modeled effort, simulated actuals.",posture:o.posture,lens:o.lens,hypotheses:X.hyps().map(h=>({id:h.id,title:h.t,status:o.hyp[h.id]||"proposed",confidence:h.conf})),gaps:X.GAPS.map(g=>({id:g.id,dimension:dimN(g.dim),title:g.t,choice:X.choiceOf(g,o.posture,o.choice)})),steps:steps.map(s=>({id:s.id,wave:s.wave,dimension:dimN(s.dim),type:s.type,title:s.title,activities:s.acts,owner:s.owner,measure:s.measure}))};
  const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=D.createElement("a");a.href=URL.createObjectURL(b);a.download="org-redesign-plan.json";D.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 function readFiles(files){const o=OD();filings();[].slice.call(files).forEach(f=>{const r=new FileReader();r.onload=()=>{o.filings.push({name:f.name,fict:false,parsed:X.parseFiling(String(r.result||""),f.name,false)});o.fsel=o.filings.length-1;paint(true)};r.readAsText(f)})}
