@@ -719,7 +719,7 @@ tryv(()=>NAVX.add("plat_retrofit",{group:"plat",label:"Retrofit matrix",hint:"Re
 SEARCHX.push(()=>[{g:"Platform",t:"Retrofit matrix",m:"Reuse, tenant and people checks",c:"--p4",f:()=>go("plat_retrofit"),k:"retrofit matrix foundation checks ct_reuse ct_tenant ct_people archetype tenant owner chip"}]);
 ASKX.push(q=>{const t=q.toLowerCase();if(!/retrofit|foundation check|ct_reuse|ct_tenant|ct_people|(which|how many) screens.*(tenant|archetype|owner chip)/.test(t))return false;
  const s=foundationStats();go("plat_retrofit");say(q,{t:"<b>"+s.all+" of "+s.screens+"</b> screens pass all three foundation checks. Reuse: "+s.reuse.pass+" met; tenant: "+s.tenant.pass+" met; people: "+s.people.pass+" met. No compliance date is set yet.",steps:["Scored every screen","Opened the Retrofit matrix"]});return true});
-document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-ct-decl]");if(!t)return;declareForm(t.dataset.ctDecl)});
+ROUTER.on("click",e=>{const t=e.target.closest&&e.target.closest("[data-ct-decl]");if(!t)return;declareForm(t.dataset.ctDecl)});
 /* ---------- public API ---------- */
 window.CONTRACT={rules:RULES,agents:AGENTS,evaluate,matrix,run,stats,evaluateManifest,fromDraft,plugGate,plugMcp,runTool,naming,features:()=>ctx().feats.slice(),decisions:()=>C.entDecisions.slice(),waivers:()=>C.waivers.slice(),refresh:bust,sample:{good:SAMPLE_GOOD,bad:SAMPLE_BAD},
  foundationRules:FRULES,archetypes:ARCH,declare,declarations:()=>Object.assign({},C.decl),foundation,foundationMatrix,foundationStats};

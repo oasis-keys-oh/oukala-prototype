@@ -6,8 +6,8 @@ const fs=require('fs'),path=require('path');
 const dir=path.resolve(process.argv[2]||'build_out');const js=fs.readFileSync(path.join(dir,'oukala-js.js'),'utf8');
 const CEIL={
  wrappers:3,          /* mod_people:1850 and mod_r15c_core:36 and :131 (other streams; changes listed in the wave 4 runtime report) */
- docListeners:490,  /* document.addEventListener; ROUTER.on routes are not counted */
- observers:44,      /* new MutationObserver */
+ docListeners:491,  /* document.addEventListener; ROUTER.on routes are not counted; +1 for the bundle loader (assets/runtime/bundle.js), which runs before the router */
+ observers:45,      /* new MutationObserver; +1 for mod_s_effects (CL-30) */
  intervals:39       /* setInterval( */
 };
 /* a wrapper is a reassignment of render, go or openDrawer to a function; temporary stubs inside a dry run (mod_zlink) are listed apart */
