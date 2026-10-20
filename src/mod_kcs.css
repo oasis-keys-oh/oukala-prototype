@@ -157,4 +157,4 @@
 @media(prefers-reduced-motion:reduce){.kx-sc,.kx-bt i{transition:none}}
 
 .kx-st td.wrap .fin{width:100%;min-width:240px}
-.screen.kfast{animation:kfastIn .16s ease-out both}@keyframes kfastIn{from{opacity:.01}to{opacity:1}}@media(prefers-reduced-motion:reduce){.screen.kfast{animation:none}}
+

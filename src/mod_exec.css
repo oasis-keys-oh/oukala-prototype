@@ -145,7 +145,7 @@
 @media(prefers-reduced-motion:reduce){.exe-bar u,.exe-skel.on i,.exe-tile,.exe-dec{animation:none;transition:none}}
 /* tabs 6 to 9 */
 .views>input:nth-of-type(6):checked~.panes .pane:nth-child(6),.views>input:nth-of-type(7):checked~.panes .pane:nth-child(7),.views>input:nth-of-type(8):checked~.panes .pane:nth-child(8),.views>input:nth-of-type(9):checked~.panes .pane:nth-child(9){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(6):checked~.vsw label:nth-child(6),.views>input:nth-of-type(7):checked~.vsw label:nth-child(7),.views>input:nth-of-type(8):checked~.vsw label:nth-child(8),.views>input:nth-of-type(9):checked~.vsw label:nth-child(9){background:var(--accent);color:var(--accent-ink)}
+
 /* landing, maturity chip, workflow */
 .exe-gl{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .exe-glk{display:flex;flex-direction:column;gap:6px;text-align:left;padding:12px 14px;border-radius:var(--rad-xl);border:1px solid var(--line,rgba(128,128,128,.25));background:transparent;color:inherit;cursor:pointer;font:inherit}

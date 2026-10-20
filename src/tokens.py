@@ -4,6 +4,7 @@
 # CL-24: breakpoints (CSS custom media is not available, so media queries use the literal values): phone max 700px, tablet max 900px, laptop max 1100px, wide max 1500px; min-width queries use value+1. docs/css-tokens.md.
 # CL-21: radius scale --rad-xs 4px to --rad-panel 22px, plus --rad-pill and --rad-round (50%).
 # CL-22: --white and --black are the two neutrals module CSS used as literals (same value in both themes).
+# CL-25: the :root custom properties that style.css, style7.css and style8.css declared (radius --r, rail width, easing, card padding, top bar height, spacing) now live here.
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);
@@ -22,7 +23,7 @@ LIGHT = """
 --font:var(--font-sans);--font-ui:var(--font-sans);--f-ui:var(--font-sans);--sans:var(--font-sans);--serif:var(--font-serif);--font-display:var(--font-serif);--f-head:var(--font-serif);
 --z-below:-1;--z-local:0;--z-sticky:20;--z-float:50;--z-overlay:100;--z-drag:200;--z-modal:900;--z-top:9000;
 --rad-xs:4px;--rad-sm:6px;--rad-md:8px;--rad-lg:10px;--rad-xl:12px;--rad-card:14px;--rad-2xl:16px;--rad-3xl:18px;--rad-panel:22px;--rad-pill:999px;--rad-round:50%;
---gap:16px;--gap-lg:16px;--sp-5:24px;--r17-nav-h:84px;
+--gap:16px;--r:22px;--r2:14px;--railw:268px;--ease:cubic-bezier(.2,.7,.2,1);--card-pad:20px;--card-gap:18px;--tb-h:84px;--sp-1:8px;--sp-2:16px;--sp-3:24px;--sp-4:32px;--gap-lg:16px;--sp-5:24px;--r17-nav-h:84px;
 """
 DARK = """
 --art-wash:rgba(6,17,22,.80);--art-wash2:rgba(6,17,22,.68);

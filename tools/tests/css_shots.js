@@ -28,7 +28,7 @@ async function capture(dir,out){fs.mkdirSync(out,{recursive:true});const b=await
   await c.close();}
  await b.close();console.log('captured',fs.readdirSync(out).length,'shots to',out)}
 async function compare(a,bdir,max,noise){const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});const p=await b.newPage();
- const files=fs.readdirSync(a).filter(f=>f.endsWith('.png')).sort();const rows=[];let worst=0;
+ const files=fs.readdirSync(a).filter(f=>f.endsWith('.png')&&!/ 2\.png$/.test(f)).sort();const rows=[];let worst=0;
  const rd=(d,f)=>fs.existsSync(path.join(d,f))?fs.readFileSync(path.join(d,f)).toString('base64'):null;
  for(const f of files){const A=rd(a,f),B=rd(bdir,f);if(!B){rows.push([f,'missing']);continue}
   if(A===B){rows.push([f,0]);continue}

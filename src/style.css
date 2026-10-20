@@ -1,5 +1,5 @@
 /* Layout: floating liquid-glass rail on the left, floating glass top bar, one calm content column of glass cards over a teal-and-violet orb field. Numbers set large in Newsreader, everything else in Hanken Grotesk. */
-:root{--r:22px;--r2:14px;--railw:268px;--ease:cubic-bezier(.2,.7,.2,1)}
+
 :root[data-size="l"]{font-size:17px}:root[data-size="s"]{font-size:14px}
 *{box-sizing:border-box}
 html,body{min-height:100%}
@@ -86,7 +86,7 @@ td,th,.tabular{font-variant-numeric:lining-nums tabular-nums}
 :root:has(#lens:checked) .lensbtn{background:var(--accent);color:var(--accent-ink)}
 main{display:flex;flex-direction:column;gap:18px;min-width:0;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 .screen{display:flex;flex-direction:column;gap:18px;animation:rise .45s var(--ease) both}
-@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
 
 /* hero / story */
 .hero{padding:12px 6px 0;display:flex;flex-direction:column;gap:10px}
@@ -207,7 +207,7 @@ td .sub{display:block;color:var(--muted);font-size:12.5px}
 .edge{fill:none;stroke:var(--faint);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,stroke .25s}
 .edge.rework{stroke:var(--bad-f);stroke-dasharray:6 5}
 .edge.hot{stroke:url(#flowgrad);stroke-width:3.4;stroke-dasharray:8 7;animation:edgeflow .8s linear infinite;filter:drop-shadow(0 0 5px var(--p4))}
-@keyframes edgeflow{to{stroke-dashoffset:-30}}
+
 .edge.dim,.node.dim{opacity:.2}
 .elabel{font:600 var(--fs-2xs) var(--f-body);fill:var(--ink);paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
 .node{cursor:pointer;transition:opacity .25s}
@@ -413,3 +413,5 @@ main:focus,main:focus-visible{outline:none}
 .heat{grid-template-columns:minmax(70px,160px) repeat(24,minmax(0,1fr))}
 .recchips .chip{white-space:normal;text-align:left}
 @media (max-width:900px){.heat{grid-template-columns:70px repeat(24,minmax(0,1fr))}.heat .hn{font-size:var(--fs-2xs)}}
+/* CL-25: shared fast screen entry, used by admin, knowledge, impact graph and visualization screens (was copied in four modules) */
+.screen.kfast{animation:kfastIn .16s ease-out both}@keyframes kfastIn{from{opacity:.01}to{opacity:1}}@media(prefers-reduced-motion:reduce){.screen.kfast{animation:none}}

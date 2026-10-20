@@ -29,7 +29,7 @@
 .r16p-manage{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .r16p-backbar{margin-bottom:8px}
 .r16p-none{padding:20px 4px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
 /* employee view: lighter shell, no admin sidebar */
 html[data-r16-layout="portal"] .rail{display:none}
 html[data-r16-layout="portal"] .app{grid-template-columns:minmax(0,1fr);max-width:1240px;margin:0 auto}

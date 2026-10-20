@@ -92,7 +92,7 @@ button.adm-sl:hover{transform:translateX(3px);box-shadow:0 10px 24px var(--shade
 .fin[type=file]{padding:9px 12px}
 .adm-mx td:first-child{min-width:150px}.adm-mx td.adm-c,.adm-mx th.adm-c{padding-inline:6px}
 textarea.fin.sr{width:1px;height:1px;padding:0;min-width:0}
-.screen.kfast{animation:kfastIn .16s ease-out both}@keyframes kfastIn{from{opacity:.01}to{opacity:1}}@media(prefers-reduced-motion:reduce){.screen.kfast{animation:none}}
+
 .adq-dash{display:flex;flex-direction:column;gap:14px}
 .adq-bars{display:flex;flex-direction:column;gap:8px}.adq-bar{display:grid;grid-template-columns:minmax(90px,150px) minmax(0,1fr) 64px;gap:10px;align-items:center;font-size:12.5px}
 .adq-bl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.adq-bt{height:12px;border-radius:var(--rad-sm);background:var(--track);overflow:hidden}.adq-bt i{display:block;height:100%;border-radius:var(--rad-sm)}.adq-bar b{text-align:right}

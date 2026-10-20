@@ -21,7 +21,7 @@
 .fhov .fcopy{display:none}
 
 /* ---- F-03 cards in a row: equal heights, aligned footers, one padding/radius/shadow ---- */
-:root{--card-pad:20px;--card-gap:18px}
+
 :root:root .grid{align-items:stretch;gap:var(--card-gap)}
 :where(.grid>.card,.grid>.tile,.grid>.stat,.grid>.mini,.row>.card){display:flex;flex-direction:column;align-self:stretch;min-width:0}
 :where(.grid>.card,.row>.card)>:where(.row:last-child,.cardfoot,.foot,.actions,.btnrow){margin-top:auto}
@@ -40,7 +40,7 @@
 :root:root .btn:disabled,:root:root button:disabled{opacity:1;color:var(--dis-ink);background:var(--dis-bg);border-color:var(--hair);box-shadow:none;transform:none}
 
 /* ---- F-05 sticky top bar: sections and anchors never land under it; sticky table heads sit below it ---- */
-:root{--tb-h:84px}
+
 html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 #view :is([id],h2,h3,section,.card,.screen>*){scroll-margin-top:calc(var(--tb-h) + 12px)}
 .topbar{background:color-mix(in srgb,var(--glass) 70%,var(--bg))}

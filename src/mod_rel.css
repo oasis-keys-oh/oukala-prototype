@@ -191,14 +191,14 @@
 @media(max-width:700px){.rel-mr{grid-template-columns:minmax(0,1fr)}.rel-hbr{grid-template-columns:minmax(0,1fr) auto}.rel-hbt{grid-column:1/-1}.rel-roam{grid-template-columns:minmax(0,1fr)}.rel-lgr{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.rel-pb u,.rel-gc,.rel-sc,.rel-tk,.rel-clr,.rel-pcard{transition:none;animation:none}}
 .rel-plan .rel-lane,.rel-prog{max-height:620px;overflow-y:auto}
-.views>input:nth-of-type(6):checked~.panes .pane:nth-child(6){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(6):checked~.vsw label:nth-child(6){background:var(--accent);color:var(--accent-ink)}
-.views>input:nth-of-type(7):checked~.panes .pane:nth-child(7){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(7):checked~.vsw label:nth-child(7){background:var(--accent);color:var(--accent-ink)}
-.views>input:nth-of-type(8):checked~.panes .pane:nth-child(8){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(8):checked~.vsw label:nth-child(8){background:var(--accent);color:var(--accent-ink)}
-.views>input:nth-of-type(9):checked~.panes .pane:nth-child(9){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(9):checked~.vsw label:nth-child(9){background:var(--accent);color:var(--accent-ink)}
+
+
+
+
+
+
+
+
 .rel-stk{display:flex;flex-direction:column;gap:18px;margin:16px 0}
 .rel-ref{width:100%;table-layout:auto}.rel-ref td.wrap{min-width:180px}.rel-ref td:nth-child(2){min-width:160px}
 /* ===== R8 rel fixes ===== */

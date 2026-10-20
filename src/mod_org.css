@@ -73,7 +73,7 @@
 .org-val p{margin:6px 0 0}
 .org-lb{display:inline-flex;gap:3px}
 .org-lb i{width:22px;height:8px;border-radius:var(--rad-pill);background:var(--hair)}
-.org-lb i.on{background:var(--good-f)}.org-lb i.on.info{background:var(--info-f)}.org-lb i.on.warn{background:var(--warn-f)}.org-lb i.on.bad{background:var(--bad-f)}
+.org-lb i.on{background:var(--good-f)}.org-lb i.on.info{background:var(--info-f)}
 .org-pt td:first-child{font-weight:600}
 .org-tb{display:flex;height:22px;border-radius:var(--rad-pill);overflow:hidden;margin:12px 0 8px;box-shadow:inset 0 0 0 1px var(--hair)}
 .org-tb i{display:block;height:100%}

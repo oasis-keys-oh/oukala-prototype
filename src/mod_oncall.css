@@ -56,7 +56,7 @@ button.oc-c:hover{transform:scale(1.18);z-index:calc(var(--z-local) + 1);positio
 .oc-c.pend{box-shadow:inset 0 -4px 0 var(--warn-f)}
 .oc-c.now{outline:2px solid var(--ink);outline-offset:1px}
 .oc-leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin-top:12px}
-.oc-leg span{display:inline-flex;align-items:center;gap:6px}
+
 .oc-leg .oc-c{width:20px;height:14px;cursor:default;pointer-events:none}
 /* daily */
 .oc-day{display:flex;flex-direction:column;gap:10px;min-width:560px}
@@ -140,8 +140,8 @@ button.oc-c:hover{transform:scale(1.18);z-index:calc(var(--z-local) + 1);positio
 .sk-a.oc:after{content:"";position:absolute;left:50%;bottom:3px;width:6px;height:6px;margin-left:-3px;border-radius:var(--rad-round);background:var(--white);box-shadow:0 0 0 1px var(--ink)}
 @media(prefers-reduced-motion:reduce){.oc-now,.oc-c,.oc-md{transition:none}}
 .oc-stk{display:flex;flex-direction:column;gap:18px}
-.views>input:nth-of-type(6):checked~.panes .pane:nth-child(6),.views>input:nth-of-type(7):checked~.panes .pane:nth-child(7),.views>input:nth-of-type(8):checked~.panes .pane:nth-child(8){display:block;animation:rise .35s var(--ease)}
-.views>input:nth-of-type(6):checked~.vsw label:nth-child(6),.views>input:nth-of-type(7):checked~.vsw label:nth-child(7),.views>input:nth-of-type(8):checked~.vsw label:nth-child(8){background:var(--accent);color:var(--accent-ink)}
+
+
 /* R8 */
 .oc-nr small{flex:0 0 112px;white-space:nowrap;font-size:11.5px}
 .oc-now .oc-nr{align-items:center}

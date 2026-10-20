@@ -63,4 +63,4 @@
 @media(prefers-reduced-motion:reduce){.gx *{transition:none!important}}
 
 .gx-res[hidden],.gx-tip[hidden]{display:none}
-.screen.kfast{animation:kfastIn .16s ease-out both}@keyframes kfastIn{from{opacity:.01}to{opacity:1}}@media(prefers-reduced-motion:reduce){.screen.kfast{animation:none}}
+

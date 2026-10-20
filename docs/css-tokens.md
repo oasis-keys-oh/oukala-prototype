@@ -75,6 +75,15 @@ First pass: the 10 largest CSS files that set font sizes (`mod_r20`, `mod_flow`,
 
 1,782 literal radii now use the scale (all sides of shorthands included). 122 of them moved by 1 px (3, 5, 7, 9, 11, 13 px) and 343 pill radii went from 99 to 999 px, which looks the same on anything under 198 px tall. Left as literals (124): 20, 24, 26, 28, 30, 36 px on large panels and sheets and 1 to 2 px on hairline bars; each is 2 px or more from a step, so moving it is a visible change for review. `css_lint.js` keeps the count from rising.
 
+## Shared primitives and keyframes (CL-25)
+- Core `:root` custom properties (`--r`, `--r2`, `--railw`, `--ease`, `--card-pad`, `--card-gap`, `--tb-h`, `--sp-1` to `--sp-4`) moved from style.css, style7.css and style8.css into `tokens.py`. Overrides later in the cascade (phone `--tb-h`, collapsed rail `--railw`) are unchanged.
+- View switcher (`.views` tabs 6 to 20): one copy in style4.css; the copies in mod_rel, mod_exec, mod_mat, mod_ppm, mod_oncall and mod_sla (15 rules) are gone.
+- Screen-reader utility `.sr`: one copy in style.css (copies in mod_dec and mod_r16i_portal removed).
+- Fast screen entry (`.screen.kfast` and `@keyframes kfastIn`, plus its reduced-motion rule): one copy in style.css instead of four (mod_admin, mod_kcs, mod_kgx, mod_viz).
+- Keyframes `rise` and `edgeflow` were each declared twice; the first copy (style.css) never applied, because the last declaration of a name wins. The dead copies are gone.
+- Same-file exact duplicates removed (earlier copy): mod_ppm, mod_oncall, mod_itsm (3), mod_org (2), mod_r17u.
+- Candidates left for a later pass (same frames under different names; renaming touches animation names that JS may set): `flwpulse`/`pplpulse`, `nxfade`/`r17n-fade`/`vzIn`/`vzneed`/`wfdPlus`, `inbx-count`/`r17n-count`, `ct-in`/`vzin`, `mm-dash`/`plk-flow`, `r17pdflow`/`r17t-flow`, `jdraw`/`r26draw`, `svxflow`/`vzdash`. `.chip`, `.btn`, `.card` and `.tile` have one base rule each (style.css); the later rules that name them are deliberate refinements (focus, press, equal heights), not copies.
+
 ## Hex colors (CL-22)
 Hex colors are allowed only in `src/tokens.py`. Module CSS went from 416 to 220 hex literals. Rules for the mapping (no new colors):
 - Two neutrals that modules used as literals are now constants in `tokens.py`: `--white` (#FFFFFF, 134 uses) and `--black` (#000000, 24 uses). They keep the same value in both themes, like the palette steps `--p1` to `--u4`.

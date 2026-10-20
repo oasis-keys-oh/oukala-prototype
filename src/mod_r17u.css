@@ -22,7 +22,7 @@
 .r17u-ac h3{font-size:17px}
 .r17u-flagbox{border:1px solid var(--warn);border-radius:var(--rad-xl);padding:10px 14px;margin:10px 0}
 .r17u-bar2{display:block;height:8px;border-radius:var(--rad-xs);background:var(--hair);margin:3px 0;min-width:90px;overflow:hidden}.r17u-bar2 i{display:block;height:100%;border-radius:var(--rad-xs)}
-.r17u-live{margin-top:8px}
+
 @media(max-width:700px){
  .r17u-st{min-width:0!important;width:100%}
  .r17u-st thead{display:none}
