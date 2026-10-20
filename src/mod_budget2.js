@@ -211,7 +211,7 @@ V.inv=function(id){const k=K(),i=INVOICES.find(x=>x.id===id);if(!i)return head("
 V.led=function(id,foc){const k=K(),e=k.B().led.find(x=>x.id===id);if(!e)return head("","Unknown entry");const l=e.line&&k.LN(e.line),r=e.t==="draw"?k.whoApproves(-e.amt,"Reserve release",e.req,{proj:e.p}):null,can=e.st==="Pending"&&e.t==="draw"&&k.ownerCan(-e.amt,"Reserve release",e.req,{proj:e.p});
  let run=0;k.B().led.slice(0,k.B().led.indexOf(e)+1).forEach(x=>{if(x.st==="Approved")run+=x.amt});
  return head(pill(e.st,e.st==="Approved"?"good":e.st==="Pending"?"warn":"bad")+" "+pill(e.t==="open"?"Opening balance":"Reserve draw","mute"),`${E(e.id)}: <span class="num bd-big">${e.amt<0?"−":"+"}${D$(Math.abs(e.amt))}</span>`,E(e.why))+
- `<dl class="kv"><dt>Date</dt><dd>${k.dfmt(e.d)}</dd><dt>Requested by</dt><dd>${pchip(e.req)}${e.ai?" "+pill("Drafted by an agent","info"):""}</dd><dt>Project</dt><dd>${e.p?dn(E(k.PJ(e.p).short),"proj:"+e.p):"Portfolio"}</dd><dt>Budget line</dt><dd>${l?dn(`<b>${E(l.id)}</b> ${E(l.n)}`,"line:"+l.id):"<span class='muted'>None, whole portfolio</span>"}</dd><dt>Approver</dt><dd>${E(e.apr)}</dd><dt>Balance after this entry</dt><dd data-role="metric">${e.st==="Approved"?dn(D$(run),"m:bal"):"Not posted"}</dd></dl>`+
+ `<dl class="kv"><dt>Date</dt><dd>${k.dfmt(e.d)}</dd><dt>Requested by</dt><dd>${pchip(e.req)}${e.ai?" "+pill("Drafted by an agent","info"):""}</dd><dt>Project</dt><dd>${e.p?dn(E(k.PJ(e.p).short),"proj:"+e.p):"Portfolio"}</dd><dt>Budget line</dt><dd>${l?dn(`<b>${E(l.id)}</b> ${E(l.n)}`,"line:"+l.id):"<span class='muted'>None, whole portfolio</span>"}</dd><dt>Approver</dt><dd>${(e.apr)?ownerChip(e.apr,{role:"Approver"}):""}</dd><dt>Balance after this entry</dt><dd data-role="metric">${e.st==="Approved"?dn(D$(run),"m:bal"):"Not posted"}</dd></dl>`+
  (r?eb("Who must approve")+K().chainHTML(r):"")+
  (can?`<div class="row" style="margin-top:12px"><button class="btn primary" data-bud-led="${e.id}:ok">Approve</button><button class="btn" data-bud-led="${e.id}:no">Reject</button></div>`:"")+
  eb("Neighbouring entries")+ledTable(k.B().led.filter(x=>x.id!==id&&(x.line===e.line||x.p===e.p)).slice(0,6))+
@@ -219,7 +219,7 @@ V.led=function(id,foc){const k=K(),e=k.B().led.find(x=>x.id===id);if(!e)return h
 
 V.xf=function(id){const k=K(),x=k.B().xf.find(y=>y.id===id);if(!x)return head("","Unknown transfer");const l=k.LN(x.line);
  return head(pill(x.st,x.st==="Approved"?"good":x.st==="Pending"?"warn":"bad"),`${E(x.id)}: <span class="num bd-big">${D$(x.amt)}</span>`,E(x.why))+
- `<dl class="kv"><dt>From</dt><dd>${l?dn(`<b>${E(l.id)}</b> ${E(l.n)}`,"line:"+l.id):E(x.line)}</dd><dt>To project</dt><dd>${dn(E(k.PJ(x.to).short),"proj:"+x.to)}</dd><dt>Approver</dt><dd>${E(x.apr)}</dd><dt>Date</dt><dd>${k.dfmt(x.d)}</dd></dl>`+foot(go2("Open Reserve and approvals","bud_over","budv",4))};
+ `<dl class="kv"><dt>From</dt><dd>${l?dn(`<b>${E(l.id)}</b> ${E(l.n)}`,"line:"+l.id):E(x.line)}</dd><dt>To project</dt><dd>${dn(E(k.PJ(x.to).short),"proj:"+x.to)}</dd><dt>Approver</dt><dd>${(x.apr)?ownerChip(x.apr,{role:"Approver"}):""}</dd><dt>Date</dt><dd>${k.dfmt(x.d)}</dd></dl>`+foot(go2("Open Reserve and approvals","bud_over","budv",4))};
 
 V.tier=function(id){const k=K(),B=k.B(),i=B.doa.findIndex(t=>t.id===id);if(i<0)return head("","Unknown tier");const t=B.doa[i],lo=i?B.doa[i-1].max:0;
  const inT=a=>a>lo&&a<=t.max||(i===0&&a<=t.max);const es=B.led.filter(e=>e.t==="draw"&&inT(-e.amt)),ps=B.po.filter(p=>inT(p.ord)),ls=B.lines.filter(l=>inT(l.appr));

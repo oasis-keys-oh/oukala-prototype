@@ -6,9 +6,10 @@
 "use strict";
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const H=s=>esc(s==null?"":String(s));
-const NOW0=Date.UTC(2026,9,6,16,0,0);          /* the prototype's "today": Tue Oct 6 2026 */
+const NOW0=U.todayDate().getTime()+16*36e5;         /* the prototype's "today": Tue Oct 6 2026 */
 const USERS={exec:"Casey Rowan",fin:"Avery Chen",pm:"Priya Shah",ops:"Tom Becker"};
-const ME=()=>USERS[S.persona]||"Casey Rowan";
+/* PR-28: every role approves as its own identity (R15D.me); the four core personas keep their named users */
+const ME=()=>{if(USERS[S.persona])return USERS[S.persona];try{const p=PERSONAS[S.persona];if(p&&p.as&&window.R15D&&R15D.me){const n=R15D.me().name;if(n)return n}}catch(e){}return "Casey Rowan"};
 const FIRST=n=>String(n||"").split(/[ (]/)[0];
 const UNDO_MS=8000;
 const I=S.inbox=S.inbox||{};
@@ -172,9 +173,9 @@ defAdp("mat",{label:"Maturity capability reviews",mod:"Maturity models",fn:"MAT.
 defAdp("sow",{label:"SOW changes",mod:"SOW and contract analyzer",fn:"SOWX.open (record drawer)",wired:false,
  list(me){if(!(window.SOWX&&SOWX.changes))return[];if(me!=="Casey Rowan"&&me!=="Avery Chen")return[];return SOWX.changes().filter(c=>c.stage==="Approval").map(c=>mk({id:"sow:"+c.id,src:"sow",sid:c.id,cat:"Contract change",ic:"contract",title:c.id+" "+c.title,req:c.contract,ageH:50,slaH:96,dueH:46,amt:c.amount||null,risk:Math.abs(c.amount||0)>=50000?"med":"low",
    why:"Contract changes over your tier route to you for approval.",ai:mkAI(c.type+": "+c.title+".",.78,"Contract Analyst",["Contract","Rate card"],"conditions"),guard:"Approved in the SOW and contract analyzer, where the clause diff is shown.",ev:[["Contract",c.contract,""],["Type",c.type,""],["Amount",money0(c.amount||0),""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>{go("ppm_sow");if(SOWX.open)SOWX.open(c.contract)}}))}});
-defAdp("fab",{label:"Fabric connector requests",mod:"Integration fabric",fn:"FAB.openProject (record drawer)",wired:false,
+defAdp("fab",{label:"Integration connector requests",mod:"Integration fabric",fn:"FAB.openProject (record drawer)",wired:false,
  list(me){if(!(window.FAB&&FAB.projects))return[];const p0=FAB.projects.filter(p=>(p.stage==="awaiting"&&me==="Casey Rowan")||((p.stage==="evaluating"||p.stage==="proposed")&&me==="Tom Becker"));return p0.map(p=>mk({id:"fab:"+p.id,src:"fab",sid:p.id,cat:"Connector request",ic:"plug",title:p.id+" "+p.t,req:p.owner||p.by,ageH:(p.created||2)*12,slaH:72,dueH:72-(p.created||2)*12,risk:p.risk==="High"||p.risk==="high"?"high":"med",
-   why:"Routed to "+((p.route||{}).n||"the platform team")+" by the machine-to-machine rules: "+((p.route||{}).why||"standard risk")+".",ai:mkAI(p.purpose||"",.8,"Integration Advisor",["Connector catalog","Data classes"],"conditions"),guard:"Approval creates a connector with the scope you pick. Decide it in the fabric.",ev:[["Systems",(p.systems||[]).join(", "),""],["Direction",p.dir||"",""],["Volume",p.vol||"",""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>{go("plat_fab");if(FAB.openProject)FAB.openProject(p.id)}}))}});
+   why:"Routed to "+((p.route||{}).n||"the platform team")+" by the machine-to-machine rules: "+((p.route||{}).why||"standard risk")+".",ai:mkAI(p.purpose||"",.8,"Integration Advisor",["Connector catalog","Data classes"],"conditions"),guard:"Approval creates a connector with the scope you pick. Decide it in the integration fabric.",ev:[["Systems",(p.systems||[]).join(", "),""],["Direction",p.dir||"",""],["Volume",p.vol||"",""]],can:{approve:false,reject:false,delegate:false},openLabel:"Open to decide",open:()=>{go("plat_fab");if(FAB.openProject)FAB.openProject(p.id)}}))}});
 defAdp("gapp",{label:"Citizen app certification",mod:"Citizen apps",fn:"go plat_gate (screen)",wired:false,
  list(me){if(!(window.GATE&&GATE.apps)||me!=="Casey Rowan")return[];return GATE.apps().filter(a=>a.status==="review").map(a=>{const c=G(()=>GATE.conformance(a.id),{rows:[]});const fail=(c.rows||[]).filter(r=>r.r==="fail");return mk({id:"gapp:"+a.id,src:"gapp",sid:a.id,cat:"App certification",ic:"gate",title:"Certify "+a.n+" at the "+a.tier+" tier",req:a.builder,ageH:96,slaH:240,dueH:120,risk:fail.length?"med":"low",
    why:"You chair the certification board for citizen apps.",ai:mkAI(a.purpose+" "+(fail.length?fail.length+" check"+(fail.length>1?"s":"")+" failing.":"All checks pass."),fail.length?.6:.9,"Platform Governance Agent",["12 conformance checks"],fail.length?"conditions":"approve"),guard:"Hard-stop checks must pass for the tier. Waivers expire.",
@@ -238,7 +239,7 @@ const byId=id=>collect().find(x=>x.id===id);
 const flt=list=>{const f=I.flt||{};let r=list;if(f.kinds&&f.kinds.length)r=r.filter(x=>f.kinds.includes(x.cat));if(f.srcs&&f.srcs.length)r=r.filter(x=>f.srcs.includes(x.src));if(f.grp&&f.grp.length)r=r.filter(x=>f.grp.includes(x.group));if(f.q){const q=f.q.toLowerCase();r=r.filter(x=>(x.title+" "+x.req+" "+x.cat).toLowerCase().includes(q))}return r};
 
 /* ---------- delegation rules, policies ---------- */
-const TODAY_ISO="2026-10-06";
+const TODAY_ISO=U.TODAY_ISO;
 function activeDele(){return I.dele.filter(d=>d.on&&d.from<=TODAY_ISO&&d.until>=TODAY_ISO&&d.owner===ME())}
 function covers(d,it){return it.kind==="approval"&&it.can&&it.can.delegate&&(d.limit==null||it.amt==null||it.amt<=d.limit)&&it.risk!=="high"&&it.src!=="sim"}
 function pols(){const me=ME();I.pol=I.pol||{};if(!I.pol[me]){I.pol[me]=[
@@ -406,7 +407,7 @@ let polled=false;function poll(){const list=collect();if(!polled){list.forEach(x
  list.forEach(x=>{if(I.seenBanner[x.id])return;I.seenBanner[x.id]=1;if(x.urgent&&x.kind==="approval")banner(x)});updateBell()}
 
 /* ---------- delegation and policies (act through the owning modules) ---------- */
-function isoPlus(days){const d=new Date(Date.UTC(2026,9,6+days));return d.toISOString().slice(0,10)}
+function isoPlus(days){const d=new Date(U.todayDate().getTime()+days*864e5);return d.toISOString().slice(0,10)}
 function nextWeekday(name){const wd={sunday:0,monday:1,tuesday:2,wednesday:3,thursday:4,friday:5,saturday:6}[String(name||"").toLowerCase()];if(wd==null)return isoPlus(3);let k=(wd-2+7)%7;if(k===0)k=7;return isoPlus(k)}
 function createDele(o){const me=ME();if(!o.to||o.to===me)return{ok:false,why:"Pick someone other than yourself to cover."};const r={id:"dr"+(I.dele.length+1),owner:me,to:o.to,from:o.from||TODAY_ISO,until:o.until||isoPlus(3),limit:o.limit!=null&&o.limit!==""&&+o.limit>0?+o.limit:null,scope:"Approvals that can be delegated",on:true,applied:0,mod:false,at:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"})};
  I.dele.push(r);audit("Inbox: delegation rule",me+" to "+r.to+" from "+r.from+" until "+r.until+(r.limit?" up to "+money0(r.limit):""));applyDele(r);bump();refreshAll();return{ok:true,rule:r}}
@@ -491,14 +492,14 @@ Object.assign(METRICS,{
  m_inbox_auto_policy_share:{n:"Approvals decided by your own policies",f:"Approvals decided by an auto-approval policy ÷ all approvals decided × 100",u:"%",cur:0,tgt:25,badAt:5,dir:"max",max:100,tr:[0,0,0,0,0,0,0,0],owner:"Each policy owner",use:["My inbox","Auto-approval policies"],rem:{kind:"sop",ref:"SOP-INBOX-4",title:"Review auto-approval policies each quarter",agent:"Approval Advisor",auto:false,state:"idle",prog:"Backtests a policy on the last 60 decisions and lists overrides"}},
  m_inbox_undo_rate:{n:"Decisions undone",f:"Decisions undone inside the 8 second window ÷ (decisions committed + undone) × 100",u:"%",cur:0,tgt:5,badAt:15,dir:"min",max:50,tr:[9,8,8,7,6,6,5,4],owner:"Platform lead",use:["My inbox"],rem:{kind:"kb",ref:"KB-INBOX-5",title:"Slow down on high-risk items",agent:"Approval Advisor",auto:false,state:"idle",prog:"Turns off Approve and next for high-risk items when undo is above 15%"}}});
 PROC.reg("inbox",{title:"Receive, decide, escalate, delegate, audit",std:["itil4","bpmn"],steps:[
- {n:"Receive",d:"The inbox collects what each module says is yours: approvals, assigned work, mentions and alerts, ranked by due time and risk.",who:"auto",owner:"Inbox",sla:"Seconds",in:"Module queues",out:"Ranked inbox items"},
+ {n:"Receive",d:"The inbox collects what each module says is yours: approvals, assigned work, mentions and alerts, ranked by due time and risk.",who:"robot",owner:"Inbox",sla:"Seconds",in:"Module queues",out:"Ranked inbox items"},
  {n:"Summarize and recommend",d:"The advisor writes one line on why it matters, shows its sources and suggests approve, conditions or return.",who:"agent",owner:"Approval Advisor",sla:"Seconds",in:"Inbox item and evidence",out:"Summary and recommendation"},
  {n:"Check authority",d:"Role, delegation, the delegation of authority limit, separation of duties and any required gate decide whether you may approve.",who:"gate",owner:"Process owner",sla:"Instant",in:"Item and your roles",out:"Allowed, blocked or open record"},
  {n:"Decide",d:"You approve, reject with a reason, delegate or snooze. Approve and next moves you on.",who:"human",owner:"Approver",sla:"Per item",in:"Evidence and recommendation",out:"Decision"},
- {n:"Undo window",d:"The decision waits 8 seconds so a slip can be undone. Nothing has reached the owning module yet.",who:"auto",owner:"Inbox",sla:"8 s",in:"Decision",out:"Committed decision"},
- {n:"Commit through the owner",d:"The owning module records the decision with its own state change, audit entry and downstream effects.",who:"auto",owner:"Owning module",sla:"Seconds",in:"Committed decision",out:"Module record updated"},
- {n:"Escalate or delegate",d:"Items past their service level go to the manager. Out of office rules route covered items to the delegate.",who:"auto",owner:"Inbox",sla:"On breach",in:"Overdue item or rule",out:"Rerouted item"},
- {n:"Audit",d:"Every decision, undo, delegation and policy action is logged with who, when, why and by which route.",who:"auto",owner:"Audit service",sla:"Instant",in:"Decision events",out:"Audit trail"}]});
+ {n:"Undo window",d:"The decision waits 8 seconds so a slip can be undone. Nothing has reached the owning module yet.",who:"robot",owner:"Inbox",sla:"8 s",in:"Decision",out:"Committed decision"},
+ {n:"Commit through the owner",d:"The owning module records the decision with its own state change, audit entry and downstream effects.",who:"robot",owner:"Owning module",sla:"Seconds",in:"Committed decision",out:"Module record updated"},
+ {n:"Escalate or delegate",d:"Items past their service level go to the manager. Out of office rules route covered items to the delegate.",who:"robot",owner:"Inbox",sla:"On breach",in:"Overdue item or rule",out:"Rerouted item"},
+ {n:"Audit",d:"Every decision, undo, delegation and policy action is logged with who, when, why and by which route.",who:"robot",owner:"Audit service",sla:"Instant",in:"Decision events",out:"Audit trail"}]});
 
 /* ---------- the My inbox screen ---------- */
 const catOpts=()=>{const m={};collect().forEach(x=>m[x.cat]=(m[x.cat]||0)+1);return Object.keys(m).sort().map(k=>({v:k,l:k,sub:m[k]+""}))};

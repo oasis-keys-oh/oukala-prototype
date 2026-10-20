@@ -17,6 +17,8 @@ node tools/tests/guard.js build_out
 node tools/tests/tenant.js build_out
 node tools/tests/tenant_leak.js build_out
 node tools/tests/thread.js build_out
+# wave 3 sweep-a (CL-45, CL-44, CL-17, CL-72): no em dash, banned name, old product name or "Automatic" step label on the core and mod_admin to mod_obs screens
+node tools/tests/sweep_a.js build_out
 # PH-12: screens, modules and tabs by name in the global search; hidden screens only in builder mode
 node tools/tests/search.js build_out
 # PR-16: real screen-open counts (this browser only), shown on the Screen map and the Usage tab

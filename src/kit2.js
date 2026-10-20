@@ -127,7 +127,7 @@ function person360(name){const r=who(name);if(!r){toast("No profile for "+name,"
    <div class="loadbar" style="margin:8px 0 18px"><u style="width:${Math.min(100,wl.pct)}%;background:${wl.pct>95?"var(--bad-f)":wl.pct>75?"var(--warn-f)":"var(--good-f)"}"></u></div>
    <div class="eyebrow">Skills</div><div class="row" style="margin:8px 0 14px">${r.skills.map(s=>`<span class="pill info">${H(s)}</span>`).join("")||'<span class="muted">None recorded</span>'}</div>
    <dl class="kv"><dt>Type</dt><dd>${kindPill(r.kind)}</dd><dt>Role</dt><dd>${H(r.role)}</dd><dt>Team</dt><dd>${H(r.team||"")}</dd>${r.org&&r.kind!=="human"?`<dt>Organization</dt><dd>${H(r.org)}</dd>`:""}${mgr?`<dt>Reports to</dt><dd>${window.ownerChip?ownerChip(mgr.name,{role:"Manager"}):pchip(mgr.name)}</dd>`:""}${r.contract?`<dt>Contract</dt><dd>${H(r.contract)}${r.sla?" · "+H(r.sla):""}</dd>`:""}${r.rate?`<dt>Rate</dt><dd class="num">$${r.rate} an hour</dd>`:""}${r.loc?`<dt>Location</dt><dd>${H(r.loc)}</dd>`:""}${r.email?`<dt>Email</dt><dd>${H(r.email)}</dd>`:""}${own?`<dt>Accountable</dt><dd>${r.kind==="ai"&&window.ownerChip?ownerChip((AGENTS.find(a=>a.id===r.agent)||{}).owner||"PMO",{role:"Sponsor"}):H(own)}</dd>`:""}</dl>
-   <div class="row" style="margin-top:14px"><button class="btn primary" data-person-assign="${H(r.name)}">Assign work</button><button class="btn" data-own-msg="person:${H(r.name)}">Message</button><button class="btn" data-person-ask="${H(r.name)}">Ask Oukala about ${H(r.name.split(" ")[0])}</button></div>`,
+   <div class="row" style="margin-top:14px"><button class="btn primary" data-person-assign="${H(r.name)}">Assign work</button><button class="btn" data-own-msg="person:${H(r.name)}">Message</button><button class="btn" data-person-ask="${H(r.name)}">Ask ${BRAND.name} about ${H(r.name.split(" ")[0])}</button></div>`,
   `${lrHTML({id:"p360-"+r.id,groups:lrg,limit:6,search:true,empty:"Nothing assigned right now."})}`,
   `<div class="row" style="margin:0 0 6px"><span class="pill ${perf[0][1]>=88?"good":"warn"}" data-role="metric">On-time delivery ${perf[0][1]}% vs peer median 88% (${perf[0][1]-88>=0?"+":""}${perf[0][1]-88} pts)</span>${r.kind==="ai"?'<span class="pill mute">+ guardrail hits, cost per task</span>':""}</div>${perf.map((p,i)=>pb(p[0],p[1],p[2],i)).join("")}<p class="muted small">Baselines come from the peer median for the same role and team over four quarters. Reviews and goals live in Org chart and workload.</p>`
  ].concat(P360_TABS.map(t=>{try{return t.fn(r)}catch(e){return ""}}));
@@ -352,7 +352,7 @@ per("svc_m365","m36",[["Exchange Online tenant","Cloud resource"],["Teams","Appl
 per("svc_data","dat",[["lakehouse-prod","Cloud resource"],["adf-pipelines","Application"],["synapse-sql","Database"],["data-gateway","Virtual machine"]]);
 per("svc_end","end",[["Intune tenant","Cloud resource"],["Autopilot profiles","Application"]]);
 per("svc_int","int",[["apim-gateway","Application"],["service-bus","Cloud resource"],["logic-connectors","Application"]]);
-per("svc_desk","dsk",[["Service desk phone system","Application"],["Oukala service desk","Application"]]);
+per("svc_desk","dsk",[["Service desk phone system","Application"],[BRAND.name+" service desk","Application"]]);
 const first=(svc)=>CIREG.filter(c=>c.svc===svc);
 /* edges: app -> database -> storage; app -> shared infra */
 [["ci_cod0","ci_cod2"],["ci_cod1","ci_cod2"],["ci_cod4","ci_cod0"],["ci_cod4","ci_cod1"],["ci_cod3","ci_cod0"],["ci_cod3","ci_cod1"],["ci_cod2","ci_cod5"],["ci_cod0","ci_az"],["ci_cod1","ci_az"],["ci_cod4","ci_tenant","uses"],
@@ -453,7 +453,7 @@ mq.addEventListener("change",()=>{if(mq.matches)rc()});setTimeout(rc,300);
  const H=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));const pchip=(...a)=>(window.pchip?window.pchip(...a):H(a[0]));
  const MODES={det:{n:"Deterministic",d:"Fixed rules: the same input always gives the same result. Fully testable.",ic:"=" },ai:{n:"AI reasoning",d:"Probabilistic: judges from evidence and shows a confidence score, lineage and guardrails.",ic:"~"},hum:{n:"Human judgment",d:"A person decides using context, experience and accountability.",ic:"●"},mix:{n:"Rules, then judgment",d:"Rules decide the clear cases; AI or a person decides the rest.",ic:"≈"}};
  PROC.modes=MODES;
- PROC.modeOf=s=>s.mode&&MODES[s.mode]?s.mode:({auto:"det",agent:"ai",human:"hum",gate:"mix"})[s.who||"human"]||"hum";
+ PROC.modeOf=s=>s.mode&&MODES[s.mode]?s.mode:({robot:"det",agent:"ai",human:"hum",gate:"mix"})[STEPMODE.of(s.who||"human")]||"hum";
  PROC.modeTag=s=>{const m=PROC.modeOf(s),M=MODES[m];return `<span class="pmode ${m}" title="${H(M.d)}"><i aria-hidden="true">${M.ic}</i>${M.n}</span>`};
  const POL={
   chg:{name:"Change approval",unit:"Change risk",pre:["It matches a pre-approved standard change template","Risk score is low","Not inside a change freeze window","No conflicting change on the same service"],ai:["Risk is low to medium","Rollback plan and test evidence are attached","AI confidence is at least {conf}%","Past success rate for this change type is above 95%"],hum:["Risk is high or the change touches a critical service","It falls in a freeze window","AI confidence is below {conf}% or evidence is missing","Segregation of duties or regulatory scope applies"]},

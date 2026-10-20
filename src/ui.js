@@ -11,8 +11,8 @@ const S={screen:"home",persona:"exec",sel:null,flowSel:null,rec:"I2",inv:"INV-20
  q:"",sort:{k:"n",d:1},extra:[],metricFilter:"all",chat:[],kgStart:"std1",kgSel:null,kgDone:{},kgTasks:null,kgLinked:{}};
 window.KG_EXTRA=[];
 const PREF={theme:"auto",size:"m",density:"comfortable",motion:"system",skill:"standard",contrast:"normal"};
-function loadPrefs(){try{const p=JSON.parse(localStorage.getItem("oukala-v2")||"null");if(p){Object.assign(PREF,p.pref||{});if(PERSONAS[p.persona])S.persona=p.persona}}catch(e){}applyPrefs()}
-function savePrefs(){try{localStorage.setItem("oukala-v2",JSON.stringify({pref:PREF,persona:S.persona}))}catch(e){}}
+function loadPrefs(){try{const p=U.store.get("oukala-v2",null);if(p){Object.assign(PREF,p.pref||{});if(PERSONAS[p.persona])S.persona=p.persona}}catch(e){}applyPrefs()}
+function savePrefs(){try{U.store.set("oukala-v2",{pref:PREF,persona:S.persona})}catch(e){}}
 function applyPrefs(){const r=document.documentElement;PREF.theme==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",PREF.theme);r.dataset.size=PREF.size;r.dataset.density=PREF.density;r.dataset.skill=PREF.skill;r.dataset.contrast=PREF.contrast;PREF.motion==="reduced"?r.dataset.motion="reduced":r.removeAttribute("data-motion")}
 function audit(a,d){AUDIT.unshift({t:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),p:PERSONAS[S.persona].n,s:S.screen,a,d:d||""});const b=$("#auditCount");if(b)b.textContent=AUDIT.length}
 
@@ -68,10 +68,10 @@ function recDrawer(id){const n=N(id)||KGN.find(x=>x.id===id);if(!n)return;const 
  const attrs=n.a||{};const unused=Object.keys(attrs).filter(k=>!ROLE[k]);
  openDrawer(`<span class="pill" style="background:color-mix(in srgb,${col(T[1])} 22%,transparent);color:var(--ink)"><i class="dot" style="background:${col(T[1])}"></i>${T[0]}</span><h2 style="font-size:30px;margin:12px 0 6px;padding-right:60px">${esc(n.n)}</h2>
  <p class="story" data-role="story" style="font-size:17px;margin-bottom:10px">${esc(n.story||n.sub||"")}</p>
- <dl class="kv"><dt>Owner</dt><dd data-role="story">${esc(n.owner||"")}</dd>${n.s?`<dt>Status</dt><dd><span class="pill ${stCls(n.s)}">${stTxt(n.s)}</span></dd>`:""}${n.amt!=null?`<dt>Amount</dt><dd class="num" data-role="metric" style="font-size:22px">${money(n.amt)}</dd>`:""}${Object.entries(attrs).filter(([k])=>k!=="Owner").map(([k,v])=>`<dt>${esc(k)}</dt><dd data-role="${ROLE[k]||"none"}">${esc(v)}</dd>`).join("")}</dl>
+ <dl class="kv"><dt>Owner</dt><dd data-role="story">${(n.owner||"")?ownerChip(n.owner||"",{role:"Owner"}):""}</dd>${n.s?`<dt>Status</dt><dd><span class="pill ${stCls(n.s)}">${stTxt(n.s)}</span></dd>`:""}${n.amt!=null?`<dt>Amount</dt><dd class="num" data-role="metric" style="font-size:22px">${money(n.amt)}</dd>`:""}${Object.entries(attrs).filter(([k])=>k!=="Owner").map(([k,v])=>`<dt>${esc(k)}</dt><dd data-role="${ROLE[k]||"none"}">${esc(v)}</dd>`).join("")}</dl>
  ${unused.length?`<div class="hint" style="display:block;background:var(--warn-s);color:var(--warn);margin-bottom:12px"><b>Clarity check:</b> ${unused.map(esc).join(", ")} ${unused.length>1?"are":"is"} in no story and no metric. Could we remove ${unused.length>1?"them":"it"}?</div>`:""}
  <div class="eyebrow" style="margin:12px 0 8px">Connected to</div>${connectedHTML(id,nb)}
- <div class="row" style="margin-top:20px">${N(id)?`<button class="btn primary" data-trace="${id}">Show in Executive trace</button>`:""}<button class="btn" data-impact="${id}">Run impact analysis</button><button class="btn quiet" data-ask="Tell me about ${esc(n.n)}">Ask Oukala</button></div>`);audit("opened record",id)}
+ <div class="row" style="margin-top:20px">${N(id)?`<button class="btn primary" data-trace="${id}">Show in Executive trace</button>`:""}<button class="btn" data-impact="${id}">Run impact analysis</button><button class="btn quiet" data-ask="Tell me about ${esc(n.n)}">Ask ${BRAND.name}</button></div>`);audit("opened record",id)}
 
 /* ---- navigation ---- */
 function navHelpBtn(){return `<button class="navhelp" popovertarget="navHelp" title="How to read the navigation"><span aria-hidden="true">?</span> How to read this menu</button>`}
@@ -93,7 +93,7 @@ function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();co
 function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */
-function searchIndex(){const out=[];SCREENS.forEach(s=>out.push({g:"Go to",t:s[1],m:"Screen",c:"--accent",f:()=>go(s[0])}));
+function searchIndex(){const out=[];/* CL-87: hidden screens are offered only in builder mode (SRCH, mod_s_search.js) */const hid=id=>{try{return !!(window.SRCH&&SRCH.hiddenScreen&&SRCH.hiddenScreen(id)&&!SRCH.builder())}catch(e){return false}};SCREENS.forEach(s=>{if(!hid(s[0]))out.push({g:"Go to",t:s[1],m:"Screen",c:"--accent",f:()=>go(s[0])})});
  NODES.forEach(n=>out.push({g:"Records",t:n.n,m:TYPES[n.t][0]+" · "+n.id,c:TYPES[n.t][1],f:()=>recDrawer(n.id),k:n.story}));
  KGN.forEach(n=>out.push({g:"Knowledge",t:n.n,m:KT[n.t][0],c:KT[n.t][1],f:()=>go("kg",n.id),k:n.sub}));
  Object.entries(METRICS).forEach(([id,m])=>out.push({g:"Metrics",t:m.n,m:mfmt(m),c:"--metric-f",f:()=>go("metrics",id),k:m.f}));
@@ -102,7 +102,7 @@ function searchIndex(){const out=[];SCREENS.forEach(s=>out.push({g:"Go to",t:s[1
 function showSugg(){const q=$("#q").value.trim().toLowerCase(),box=$("#sugg");if(!q){box.classList.remove("open");return}
  const toks=q.split(/\s+/);let res=searchIndex().filter(r=>toks.every(t=>(r.t+" "+r.m+" "+(r.k||"")).toLowerCase().includes(t))).slice(0,7);const groups={};res.forEach(r=>(groups[r.g]=groups[r.g]||[]).push(r));
  let h="";S._sr=[];Object.entries(groups).forEach(([g,rs])=>{h+=`<div class="grp eyebrow">${g}</div>`;rs.forEach(r=>{S._sr.push(r);h+=`<button data-sr="${S._sr.length-1}"><i class="dotc" style="background:${col(r.c)}"></i><span>${esc(r.t)}</span><span class="meta">${esc(r.m)}</span></button>`})});
- h+=`<div class="grp eyebrow">Ask Oukala</div><button data-sr="ask"><i class="dotc" style="background:var(--accent)"></i><span>${esc($("#q").value.trim())}</span><span class="meta">Press Enter</span></button>`;box.innerHTML=h;box.classList.add("open")}
+ h+=`<div class="grp eyebrow">Ask ${BRAND.name}</div><button data-sr="ask"><i class="dotc" style="background:var(--accent)"></i><span>${esc($("#q").value.trim())}</span><span class="meta">Press Enter</span></button>`;box.innerHTML=h;box.classList.add("open")}
 const REPLY={
  hold:()=>({t:"Two invoices are worth a closer look. INV-20433 (Lumen, $62,900) should be held because accepted work is $390,000 and $412,000 is already paid. INV-20440 (Apex Print, $12,480) looks like a duplicate of one paid on Sep 12.",steps:["Searched 4 open invoices","Compared each to accepted work and prior payments","Applied your approver scope"],act:()=>go("inv","INV-20433")}),
  why:()=>({t:"The portfolio is amber because the Standards beta moved from Nov 4 to Nov 13. Lumen delivered the search indexer nine days late, and Vendor services is now $45,000 over commitment.",steps:["Traced Digital Publishing to its two projects","Followed the slip to Lumen SOW-4","Read the budget line commitments"],act:()=>go("trace","PR1")}),
@@ -117,7 +117,7 @@ function ask(q){const l=q.toLowerCase();let key="def";
  if(/kill|pause|stop.*agent|shut/.test(l)){S.screen="tower";S.ct.scope="agent";render();return say(q,{t:"I opened the Control Tower with the kill switch prepared. Nothing is stopped until you add a reason and confirm.",steps:["Opened Control Tower","Left the confirmation to you"]})}
  if(/impact|ripple|asc|gaap|lease|standard/.test(l))key="impact";else if(/auto|rule|clear automatically/.test(l))key="rule";else if(/hold|invoice|lumen|pay/.test(l))key="hold";else if(/calendar|meeting|tomorrow|schedule/.test(l))key="cal";else if(/portal|slow|incident|stale|article/.test(l))key="portal";else if(/why|amber|slip|slipped|change/.test(l))key="why";
  say(q,REPLY[key]())}
-function say(q,r){S.chat.push({me:1,t:q});S.chat.push({ai:1,t:r.t,steps:r.steps,act:r.act});audit("asked Oukala",q);drawChat();if(r.act)S.chat[S.chat.length-1].go=1;$("#chatOpen").checked=true;drawChat()}
+function say(q,r){S.chat.push({me:1,t:q});S.chat.push({ai:1,t:r.t,steps:r.steps,act:r.act});audit("asked "+BRAND.name,q);drawChat();if(r.act)S.chat[S.chat.length-1].go=1;$("#chatOpen").checked=true;drawChat()}
 function drawChat(){const P=PERSONAS[S.persona];$("#msgs").innerHTML=(S.chat.length?"":`<div class="msg ai">Hi Casey. Ask me anything about what you see, or tell me what to do. I can navigate, explain, draft and act within your access.<ul class="did"><li>Context: ${SCREENS.find(s=>s[0]===S.screen)?.[1]||"Knowledge graph"} as ${esc(P.n)}</li></ul></div>`)+S.chat.map((m,i)=>m.me?`<div class="msg me">${esc(m.t)}</div>`:`<div class="msg ai">${esc(m.t)}<ul class="did">${(m.steps||[]).map(s=>`<li>${esc(s)}</li>`).join("")}</ul><div class="row" style="margin-top:8px">${aiChip({model:"Claude",conf:.9,src:m.steps,title:"How I answered"})}${m.act?`<button class="btn" data-chatact="${i}">Take me there</button>`:""}</div></div>`).join("");
  $("#sugs").innerHTML=P.sugg.concat(["Run impact analysis on Standard 842"]).map(s=>`<button class="chip" data-ask="${esc(s)}">${esc(s)}</button>`).join("");$("#msgs").scrollTop=1e6}
 

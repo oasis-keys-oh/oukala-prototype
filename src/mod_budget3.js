@@ -9,7 +9,7 @@ const H=s=>esc(s==null?"":String(s));
 const D$=n=>typeof money==="function"?money(n):"$"+Math.round(n).toLocaleString("en-US");
 const tryv=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0);
-const TODAY=Date.UTC(2026,9,6);
+const TODAY=U.todayDate().getTime();
 const iso=ms=>new Date(ms).toISOString().slice(0,10);
 const ms=s=>Date.parse(s+"T12:00:00Z");
 const dago=n=>iso(TODAY-n*864e5);
@@ -329,7 +329,7 @@ function requestForm(init){
   <div class="small"><span class="pill mute">AI draft</span> Suggested color <b>${H(sg.id)}</b>${sg.head!=null?" (headroom "+D$(sg.head)+")":""}: ${H(sg.why)}</div>
   ${dp.length?`<div class="small"><span class="pill warn">Check for duplicates</span> ${dp.map(x=>H(x.kind+" "+x.id+": "+x.t)+" ("+Math.round(x.s*100)+"% similar)").join("; ")}. Explain below why this is different, or merge.</div>`:`<div class="small muted">No similar budget line, demand item or earlier request found.</div>`}</div>`};
  const cf=(c)=>({k:"c_"+c,label:c,type:"money"});
- openForm({id:"budreq_new",title:"Request budget",story:"Say what you need, why, and what the business gets. Oukala checks the form, suggests a category and color, looks for duplicates, and shows the route your request will take and who decides. Nothing is approved here; the request goes to triage and you can follow it.",submit:"Submit request",
+ openForm({id:"budreq_new",title:"Request budget",story:"Say what you need, why, and what the business gets. "+BRAND.name+" checks the form, suggests a category and color, looks for duplicates, and shows the route your request will take and who decides. Nothing is approved here; the request goes to triage and you can follow it.",submit:"Submit request",
   fields:[{section:"What and why"},{k:"t",label:"What are you asking for",type:"text",req:true,ph:"Short name, for example Next hosting tier for the Portal"},{k:"type",label:"Type of request",type:"chips",opts:TYPES,req:true},
    {k:"what",label:"Describe it",type:"longtext",req:true,ai:{label:"Draft with Claude",fn:v=>(v.t||"This request")+" supports the standards work by "+(v.type==="Emergency"?"closing an exposure found in the Oct 5 incident":"improving delivery of a service the business depends on")+". Scope, owner and timing to be confirmed at triage."}},
    {k:"why",label:"Why now",type:"longtext",req:true,help:"Emergency requests need a clear reason."},
@@ -389,10 +389,10 @@ if(typeof PROC!=="undefined")PROC.reg("bud_req",{title:"Request budget and decid
  {n:"Triage",d:"Completeness, duplicates, routing by amount.",who:"human",owner:"Portfolio office",sla:"2 days",in:"Checked request",out:"Routed request"},
  {n:"Finance review",d:"Fit to color and budget, reserve and forecast effect.",who:"human",owner:"Finance business partner",sla:"3 days",in:"Routed request",out:"Finance opinion"},
  {n:"Architecture and security review",d:"Linked to existing reviews where present.",who:"human",owner:"Architecture and security lead",sla:"4 days",in:"Finance opinion",out:"Review outcome"},
- {n:"Business value scoring",d:"Demand scoring formula: strategy, return, risk reduction, urgency.",who:"auto",owner:"Portfolio analyst",sla:"3 days",in:"Review outcome",out:"Value score"},
+ {n:"Business value scoring",d:"Demand scoring formula: strategy, return, risk reduction, urgency.",who:"robot",owner:"Portfolio analyst",sla:"3 days",in:"Review outcome",out:"Value score"},
  {n:"Portfolio council ranking",d:"The council ranks requests inside the envelope.",who:"gate",owner:"Portfolio council",sla:"7 days",in:"Value score",out:"Ranked list"},
  {n:"Funding decision",d:"The delegation of authority names the approver; decided at the matching funding gate.",who:"gate",owner:"Approver by DOA tier",sla:"3 days",in:"Ranked or routed request",out:"Decision with reason"},
- {n:"Fund and record",d:"A budget line and a reserve draw are created, the gate is recorded, the requester is told.",who:"auto",owner:"Finance",sla:"Immediate",in:"Approval",out:"Budget line, audit entry"}]});
+ {n:"Fund and record",d:"A budget line and a reserve draw are created, the gate is recorded, the requester is told.",who:"robot",owner:"Finance",sla:"Immediate",in:"Approval",out:"Budget line, audit entry"}]});
 let lastNav=0;
 const cm_=q=>{const t=String(q||"").toLowerCase();let m;
  if((m=t.match(/(?:i|we)\s+(?:need|want)\s+(?:a\s+|some\s+)?budget\s+(?:for|to)\s+(.+)/))||(m=t.match(/(?:request|ask for)\s+budget\s+(?:for|to)\s+(.+)/))||(m=t.match(/can i (?:get|have)\s+\$?([\d.,]+\s*[km]?)?\s*(?:for|to)\s+(.+)/))){

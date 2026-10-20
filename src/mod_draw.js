@@ -48,7 +48,7 @@ const BY={};SH.forEach(s=>BY[s.id]=s);
 const ACT=new Set(["task","subprocess","humantask","aistep","approval","notification","sysaction","integration","apicall"]);
 const EVT=new Set(["start","end","wait"]),GW=new Set(["gateway","parallel","merge"]),DATA=new Set(["document","datastore"]),ANN=new Set(["note","swimlane","risk","control"]);
 const isFlow=t=>ACT.has(t)||EVT.has(t)||GW.has(t);
-const WHOL={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"};
+const WHOL={human:"Person",agent:"AI agent",auto:"Robot",robot:"Robot",gate:"Approval gate"};
 const WHOS=["human","agent","auto","gate"];
 D.SHAPES=SH;D.CATS=CATS;D.BY=BY;D.isFlow=isFlow;D.ACT=ACT;D.GW=GW;D.EVT=EVT;D.DATA=DATA;D.ANN=ANN;D.WHOL=WHOL;D.WHOS=WHOS;D.IC=IC;
 
@@ -233,7 +233,7 @@ function order(doc){
  doc.shapes.filter(s=>isFlow(s.t)&&!seen.has(s.id)).sort((a,b)=>a.x-b.x||a.y-b.y).forEach(s=>{seen.add(s.id);res.push(s)});
  return res;
 }
-function whoOf(s){return s.who&&WHOS.includes(s.who)?s.who:(BY[s.t].who||"human")}
+function whoOf(s){const w=s.who==="robot"?"auto":s.who;return w&&WHOS.includes(w)?w:(BY[s.t].who||"human")}
 function toSteps(doc){
  const ord=order(doc),steps=[];
  ord.forEach(s=>{
@@ -247,7 +247,7 @@ function toSteps(doc){
   const dOut=data(s.id,true),dIn=data(s.id,false);
   const gw=GW.has(s.t);
   const rec={n:s.n,d:s.note||(gw?(s.t==="parallel"?"All of these run together: ":"The path depends on a rule. ")+o.join("; "):(o.length>1?"Leads to: "+o.join("; "):"")),
-   who:gw?(s.who&&WHOS.includes(s.who)?s.who:"auto"):whoOf(s),owner:s.owner||"",sla:s.sla||"",in:s.inp||dIn.join("; "),out:s.out||dOut.join("; "),shape:s.t};
+   who:gw?(s.who&&WHOS.includes(s.who)&&s.who!=="auto"?s.who:"robot"):(whoOf(s)==="auto"?"robot":whoOf(s)),owner:s.owner||"",sla:s.sla||"",in:s.inp||dIn.join("; "),out:s.out||dOut.join("; "),shape:s.t};
   if(s.sys)rec.sys=s.sys;if(ctl)rec.ctl=ctl;if(s.rule)rec.rule=s.rule;
   const risk=around.filter(x=>x.t==="risk").map(x=>x.n);if(risk.length)rec.risk=risk.join("; ");
   if(s.t==="aistep")rec.mode="ai";
@@ -332,7 +332,7 @@ D.suggest=suggest;
 /* ---------- JSON export / import ---------- */
 function toJSON(doc){return JSON.stringify({format:"oukala.process-drawing",version:1,process:{id:doc.pid,name:doc.name},exportedAt:new Date().toISOString(),shapes:doc.shapes,connectors:doc.conns},null,2)}
 function fromJSON(txt){let o;try{o=JSON.parse(txt)}catch(e){return{ok:false,msg:"That is not valid JSON."}}
- if(!o||o.format!=="oukala.process-drawing"||!Array.isArray(o.shapes))return{ok:false,msg:"This file is not an Oukala process drawing."};
+ if(!o||o.format!=="oukala.process-drawing"||!Array.isArray(o.shapes))return{ok:false,msg:"This file is not an "+BRAND.name+" process drawing."};
  const doc=newDoc(o.process&&o.process.name||"Imported process",o.process&&o.process.id||null);
  doc.shapes=o.shapes.filter(s=>BY[s.t]).map(s=>Object.assign({id:"n"+(doc.seq++),t:"task",x:0,y:0,w:BY[s.t].w,h:BY[s.t].h,n:"",who:"",owner:"",sla:"",inp:"",out:"",sys:"",ctl:"",rule:"",note:"",lane:""},s));
  const ids=new Set(doc.shapes.map(s=>s.id));
