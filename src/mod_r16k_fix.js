@@ -6,7 +6,7 @@
 "use strict";
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 
 /* ---- 1. popups flip instead of widening the page ---- */
 D.addEventListener("toggle",e=>{const d=e.target;if(!(d&&d.matches&&d.matches("details.mp")&&d.open))return;const p=d.querySelector(".mpp");if(!p)return;
@@ -52,8 +52,8 @@ function phoneMaps(){if(!(W.matchMedia&&matchMedia("(max-width:640px)").matches)
   el.insertAdjacentHTML("beforebegin",`<div class="k16-mapnote"><b>${name}</b><span class="muted small">The pan and zoom diagram needs a wider screen. Rotate the phone, or open this on a tablet or desktop. The same records are listed in ${lab}.</span><button type="button" class="btn" data-go="${to}">Open ${lab}</button></div>`)})})}
 /* two-pane layouts whose panes differ in height on purpose (tree beside detail) are exempt from the equal-height rule */
 function eqOff(){D.querySelectorAll("#view .itom-mgrid:not([data-eq])").forEach(e=>e.setAttribute("data-eq","off"))}
-const _render=W.render;
-if(typeof _render==="function"&&!W._k16r){W._k16r=1;W.render=function(){const r=_render.apply(this,arguments);try{orgTidy();phoneMaps();eqOff()}catch(e){}return r}}
+/* CL-35: lifecycle through HOOKS, not a render wrapper */
+if(!W._k16r){W._k16r=1;HOOKS.on("afterRender",()=>{try{orgTidy();phoneMaps();eqOff()}catch(e){}},{id:"r16k.fix",order:1010})}
 
 /* ---- 4. metric lineage: map what the first pass left, then say where the rest comes from ---- */
 const tok=s=>String(s||"").toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>2);

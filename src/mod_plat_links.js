@@ -532,7 +532,7 @@ function pickD(id){
 }
 /* ---------- process connections: layout, drawing, panel ---------- */
 const MODEC={event:"info",batch:"mute",human:"warn"},MODEN={event:"Event",batch:"Batch",human:"Human"};
-const WHON={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"},WHOC={human:"mute",agent:"info",auto:"good",gate:"warn"};
+const WHON={human:"Person",agent:"AI agent",robot:"Robot",auto:"Robot",fn:"Robot",gate:"Approval gate"},WHOC={human:"mute",agent:"info",robot:"good",auto:"good",fn:"good",gate:"warn"};
 function layoutP(){
  const P=Z.p,g=pgraph(),nodes=new Map(),boxes=[];
  const sel=P.sel&&!/^fam:/.test(P.sel)?P.sel:null;
@@ -591,10 +591,8 @@ function nodeSvgP(n,st){
 function hoRows(list,dir){
  return list.map(h=>{const o=dir==="in"?h.from:h.to;return{id:h.from+h.to,t:pName(o),sub:h.entities.map(entN).join(", ")+" · "+h.trigger,tag:MODEN[h.mode],st:MODEC[h.mode],go:()=>pickP(o,true)}});
 }
-function stepsHTML(pid){
- const d=PROC.defs[pid];if(!d)return"";const steps=S.proc&&S.proc[pid]||d.steps;
- return `<ol class="plk-steps">${steps.map(s=>`<li><span class="pill ${WHOC[s.who||"human"]}">${WHON[s.who||"human"]}</span> <b>${E(s.n)}</b><span class="small muted"> ${E(s.d||"")}</span></li>`).join("")}</ol>`;
-}
+/* CL-52: the steps render from the one process strip (procCard), which opens each step and the Workflow designer */
+function stepsHTML(pid){return PROC.defs[pid]&&typeof procCard==="function"?procCard(pid):""}
 function panelP(){
  const P=Z.p,g=pgraph();let id=P.sel;
  if(!id)return `<div class="plk-ph"><div class="eyebrow">Nothing selected</div><h3>Pick a process</h3><p class="small muted">Select a family or a process. Its handoffs light up and flow, and this panel lists what comes in and goes out, the data it reads and writes, and its steps.</p></div>
@@ -713,7 +711,7 @@ function pathsHTML(){
   const doc=v.hops.filter(Boolean).length,tot=v.hops.length,ents=new Set();v.hops.forEach(h=>h&&h.entities.forEach(x=>ents.add(x)));
   const weak=v.steps.map((p,i)=>({p,i,n:downstream(p).procs.length})).sort((a,b)=>b.n-a.n)[0];
   const flow=v.steps.map((p,i)=>`<li class="plk-st1"><button type="button" class="plk-step ${Z.p.pstep===c.id+":"+i?"on":""}" data-plk-step="${c.id}:${i}" style="--c:var(--plk-c${FIDX[pFam(p)]})"><span class="small muted">${E(FAM[FIDX[pFam(p)]][1])}</span><b>${E(pName(p))}</b><span class="small">${downstream(p).procs.length} downstream</span></button>${i<v.steps.length-1?`<span class="plk-hop" aria-hidden="true"><i class="${v.hops[i]?MODEC[v.hops[i].mode]:"bad"}"></i><small>${v.hops[i]?E(v.hops[i].entities.slice(0,2).map(entN).join(", ")):"no handoff"}</small></span>`:""}</li>`).join("");
-  return card(c.n,c.d,`<div class="statrow plk-st"><div class="stat"><small>Steps</small><span class="num" data-role="metric">${v.steps.length}</span></div><div class="stat"><small>Handoffs documented</small><span class="num" data-role="metric">${doc} of ${tot}</span></div><div class="stat"><small>Entities carried</small><span class="num" data-role="metric">${ents.size}</span></div><div class="stat"><small>Weakest link</small><span class="num" style="font-size:1.05rem">${E(pName(weak.p))}</span><em>${weak.n} processes downstream</em></div></div><ol class="plk-flow">${flow}</ol>`);
+  return card(c.n,c.d,`<div class="statrow plk-st"><div class="stat"><small>Steps</small><span class="num" data-role="metric">${v.steps.length}</span></div><div class="stat"><small>Handoffs documented</small><span class="num" data-role="metric">${doc} of ${tot}</span></div><div class="stat"><small>Entities carried</small><span class="num" data-role="metric">${ents.size}</span></div><div class="stat"><small>Weakest link</small><span class="num" style="font-size:1.05rem">${E(pName(weak.p))}</span><em>${U.esc(weak.n)} processes downstream</em></div></div><ol class="plk-flow">${flow}</ol>`);
  }).join("");
  return `<div class="plk-lg">${legend([["Event handoff","--info-f"],["Batch handoff","--muted"],["Human handoff","--warn-f"],["No documented handoff","--bad-f"]])}</div><div class="plk-paths">${cards}</div><div class="card glass" data-plk-blast>${blastCard()}</div>`;
 }
@@ -735,7 +733,7 @@ function findingsHTML(){
 /* ---------- field lineage ---------- */
 function srcFor(e,m){
  const t=e.id;
- if(m.auth==="platform")return{n:"Created in Oukala",d:"People and agents create it in "+(e.writers.map(appN).join(", ")||e.owner)+"."};
+ if(m.auth==="platform")return{n:"Created in "+BRAND.name,d:"People and agents create it in "+(e.writers.map(appN).join(", ")||e.owner)+"."};
  let n="External system";
  if(t==="person"||t==="time_off")n="Entra ID and the HR system";
  else if(t==="invoice")n="ERP, the finance ledger";
@@ -744,7 +742,7 @@ function srcFor(e,m){
  else if(t==="pull_request")n="Source control";
  else if(t==="project_task"||t==="wbs_line")n="Project planning tool";
  else if(t==="user_story"||t==="feature")n="Agile tool";
- return{n:m.auth==="shared"?n+" and Oukala":n,d:m.why+"."};
+ return{n:m.auth==="shared"?n+" and "+BRAND.name:n,d:m.why+"."};
 }
 const AUTHP={platform:"good",external:"info",shared:"warn"};
 function linHTML(){
@@ -760,7 +758,7 @@ function linHTML(){
  return `<div class="plk-brow plk-linsel"><label class="small muted">Entity <select class="fin" data-plk-lin="ent" aria-label="Entity">${opts}</select></label><label class="small muted">Field <select class="fin" data-plk-lin="f" aria-label="Field">${e.fields.map(x=>`<option value="${E(x.k)}" ${x.k===f.k?"selected":""}>${E(x.label||x.k)}</option>`).join("")}</select></label><button class="btn quiet" data-plk-appgo="${E(e.id)}" data-ent="1">Show the entity on the graph</button></div>
  <div class="plk-lin">
  ${col("1. Source",`<h4>${E(src.n)}</h4><p class="small">${E(src.d)}</p><p class="small muted">${meta.auth==="platform"?"No external system to mirror.":meta.auth==="external"?"Mirrored read-only. Edits here are blocked.":"Both sides edit. Differences open a reconciliation item."}</p>`)}${arrow}
- ${col("2. Rules in the registry",`<h4>${E(f.label||f.k)} <span class="muted small">(${E(f.k)})</span></h4><p class="small"><span class="pill ${AUTHP[meta.auth]}">${E(meta.auth)} authority</span> ${clsPill(meta.cls)} <span class="pill mute">${E(f.type||"string")}</span></p><dl class="plk-kv"><dt>Direction</dt><dd>${meta.dir==="in"?"In from the source":meta.dir==="out"?"Out of Oukala":"Both ways"}</dd><dt>Freshness</dt><dd>${E(meta.fresh)}</dd><dt>If they disagree</dt><dd>${E(meta.conflict)}</dd><dt>Quality rule</dt><dd>${E(meta.rule)}</dd><dt>Trust score</dt><dd>${Math.round(meta.trust*100)}%</dd>${tg.length?`<dt>Points to</dt><dd>${tg.map(x=>`<button type="button" class="chip plk-chip" data-plk-entgo="${E(x)}">${E(entN(x))}</button>`).join(" ")}</dd>`:""}</dl>`,"focus")}${arrow}
+ ${col("2. Rules in the registry",`<h4>${E(f.label||f.k)} <span class="muted small">(${E(f.k)})</span></h4><p class="small"><span class="pill ${AUTHP[meta.auth]}">${E(meta.auth)} authority</span> ${clsPill(meta.cls)} <span class="pill mute">${E(f.type||"string")}</span></p><dl class="plk-kv"><dt>Direction</dt><dd>${meta.dir==="in"?"In from the source":meta.dir==="out"?"Out of "+BRAND.name:"Both ways"}</dd><dt>Freshness</dt><dd>${E(meta.fresh)}</dd><dt>If they disagree</dt><dd>${E(meta.conflict)}</dd><dt>Quality rule</dt><dd>${E(meta.rule)}</dd><dt>Trust score</dt><dd>${Math.round(meta.trust*100)}%</dd>${tg.length?`<dt>Points to</dt><dd>${tg.map(x=>`<button type="button" class="chip plk-chip" data-plk-entgo="${E(x)}">${E(entN(x))}</button>`).join(" ")}</dd>`:""}</dl>`,"focus")}${arrow}
  ${col("3. Written by",e.writers.length?`<div class="plk-chips">${e.writers.map(a=>chip(a,nown.indexOf(a)>=0?"warn":"")).join("")}</div>${nown.length?`<p class="small muted">Highlighted apps write it but ${E(e.owner)} owns it. See the registry.</p>`:`<p class="small muted">All writers are the owner module.</p>`}`:`<p class="small muted">No app writes this entity yet.</p>`)}${arrow}
  ${col("4. Read by",e.readers.length?`<div class="plk-chips">${e.readers.map(a=>chip(a)).join("")}</div>`:`<p class="small muted">Nothing reads it yet, a candidate for retirement.</p>`)}${arrow}
  ${col("5. Used in",`<p class="small"><b>${mets.length}</b> metrics and <b>${procs.length}</b> processes.</p>${lrHTML({id:"plk_lm",groups:[{key:"m",label:"Metrics on screens that use it",rows:mets.map(k=>({id:k,t:METRICS[k].n,sub:METRICS[k].f,tag:"Metric",st:"info",go:()=>go("metrics")}))},{key:"p",label:"Processes",rows:procs.map(p=>({id:p,t:pName(p),sub:FAM[FIDX[pFam(p)]][1],tag:pEnts(p).w.indexOf(e.id)>=0?"Writes":"Reads",st:"mute",go:()=>pickP(p,true)}))}],limit:5,search:false,empty:"Nothing uses it yet."})}`)}
@@ -879,14 +877,14 @@ REG("plat_dmap","Data connections","platform",IC1,dmapScreen);
 REG("plat_pmap","Process connections","platform","M3 6h6v4H3zM15 6h6v4h-6zM9 14h6v4H9zM6 10v2h12v-2M12 12v2",pmapScreen);
 PROC.reg("plat_dmap",{title:"How the data connection map stays true",std:["dmbok","togaf"],steps:[
  {n:"Fields declare references",d:"A field of type reference names the entity it points to, so every join is known.",who:"human",owner:"Entity steward",out:"Reference list"},
- {n:"Apps declare reads and writes",d:"Each app lists what it reads and writes; the registry compares writers to the owner module.",who:"auto",owner:"Platform",out:"App links"},
- {n:"The graph is built",d:"References, reads and writes become edges. Nothing is drawn by hand.",who:"auto",owner:"Platform",out:"Graph"},
+ {n:"Apps declare reads and writes",d:"Each app lists what it reads and writes; the registry compares writers to the owner module.",who:"robot",owner:"Platform",out:"App links"},
+ {n:"The graph is built",d:"References, reads and writes become edges. Nothing is drawn by hand.",who:"robot",owner:"Platform",out:"Graph"},
  {n:"Gaps are proposed",d:"The Registry Agent spots isolated or duplicate entities and drafts a fix.",who:"agent",owner:"Registry Agent",out:"Findings"},
  {n:"Data council decides",d:"The council accepts, reshapes or rejects each proposed link or entity.",who:"gate",owner:"Data council",sla:"3 days",out:"Registry change"}]});
 PROC.reg("plat_pmap",{title:"How the process connection map stays true",std:["bpmn","togaf"],steps:[
  {n:"Owners define processes",d:"Each screen registers its steps and who does them.",who:"human",owner:"Process owners",out:"Process definitions"},
  {n:"Handoffs are declared",d:"A handoff names the data it carries, the trigger and whether it is an event, a batch or a person.",who:"human",owner:"Process governance lead",out:"Handoff table"},
- {n:"Data sharing is derived",d:"Two processes that touch the same entity are linked automatically through the registry.",who:"auto",owner:"Platform",out:"Dependencies"},
+ {n:"Data sharing is derived",d:"Two processes that touch the same entity are linked automatically through the registry.",who:"robot",owner:"Platform",out:"Dependencies"},
  {n:"Findings are raised",d:"Processes with no shared data, no handoff or a second writer are listed for review.",who:"agent",owner:"Process Agent",out:"Findings"},
  {n:"Governance reviews",d:"The process governance lead accepts or reshapes each finding.",who:"gate",owner:"Process governance lead",sla:"Monthly",out:"Updated map"}]});
 /* ---------- events ---------- */

@@ -8,12 +8,12 @@ const lc=s=>String(s==null?"":s).toLowerCase();
 const norm=s=>lc(s).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();
 const toks=s=>norm(s).split(" ").filter(w=>w.length>2);
 const uniq=a=>[...new Set(a)];
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const addD=(d,n)=>{const t=new Date(d+"T00:00:00Z");t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10)};
 const R=S.r15e=S.r15e||{roles:[],bak:{},gate:[],ver:0,applied:{}};let R15E_ADPS={};
 const ABBR={ceo:"chief executive",cio:"chief information",cfo:"chief financial",coo:"chief operating",cto:"chief technology",pmo:"portfolio project management",hr:"people",cmdb:"configuration",tbm:"technology business management",kcs:"knowledge"};
 const expand=t=>norm(t).split(" ").map(w=>ABBR[w]||w).join(" ");
-const RUNTIME=["automatic","anyone","any user","any admin","workflow engine","inbox","claude","claude sonnet","requester","sponsor","implementer","approvers","approver","the executive","subject matter expert","drawing studio","process library","discovery sources","organizer","secretary","carrier","approver rule","policy"];
+const RUNTIME=["automatic","robot","anyone","any user","any admin","workflow engine","inbox","claude","claude sonnet","requester","sponsor","implementer","approvers","approver","the executive","subject matter expert","drawing studio","process library","discovery sources","organizer","secretary","carrier","approver rule","policy"];
 const isPerson=n=>!!n&&G(()=>DIR.some(d=>d.name===n&&d.kind!=="ai"),false);
 const dirOf=n=>G(()=>DIR.find(d=>d.name===n),null);
 /* ---------- role registry ---------- */

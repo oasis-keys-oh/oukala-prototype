@@ -28,26 +28,26 @@ const RET={fin:"7 years",people:"Employment plus 7 years",service:"5 years",ops:
 const hash=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%9973;return h};
 function fieldMeta(t,f){
  const k=f.k,ty=f.type||"string",dm=domOf(t),isCI=t.indexOf("config_item")===0;
- let auth="platform",fresh="live",cls="internal",why="Created and edited in Oukala";let basis="default";
- if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why="Oukala work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
+ let auth="platform",fresh="live",cls="internal",why="Created and edited in "+BRAND.name;let basis="default";
+ if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why=BRAND.name+" work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
  else if(t==="time_off"){auth="external";fresh="hourly";why="HR system is authoritative"}
- else if(t==="project_task"||t==="wbs_line"){ if(/start|finish|duration|actual|percent/.test(k)){auth="shared";fresh="hourly";why="External planning tool wins dates; Oukala wins dependencies and cost"} }
+ else if(t==="project_task"||t==="wbs_line"){ if(/start|finish|duration|actual|percent/.test(k)){auth="shared";fresh="hourly";why="External planning tool wins dates; "+BRAND.name+" wins dependencies and cost"} }
  else if(t==="invoice"){ if(/amount|status|paid|po|accepted/.test(k)){auth="external";fresh="daily";why="ERP is authoritative for posted amounts"} }
- else if(isCI){ if(/discovered|status|uptime|class|environment|ip|os|serial|cpu|ram|disk|model|firmware|version/.test(k)){auth="external";fresh="hourly";why="Discovery tools are authoritative for attributes"}else if(/owned|support|criticality|business|service/.test(k)){auth="platform";why="Oukala owns relationships, ownership and service mapping"} }
+ else if(isCI){ if(/discovered|status|uptime|class|environment|ip|os|serial|cpu|ram|disk|model|firmware|version/.test(k)){auth="external";fresh="hourly";why="Discovery tools are authoritative for attributes"}else if(/owned|support|criticality|business|service/.test(k)){auth="platform";why=BRAND.name+" owns relationships, ownership and service mapping"} }
  else if(t==="alert_event"||t==="metric_series"||t==="log_pattern"||t==="synthetic_check"){auth="external";fresh=t==="alert_event"?"live":"near-live";why="Monitoring tools are authoritative"}
  else if(t==="pull_request"){auth="external";fresh="near-live";why="Source control is authoritative"}
- else if(t==="user_story"||t==="feature"){auth="shared";fresh="near-live";why="Agile tool and Oukala both edit; newest wins with review"}
+ else if(t==="user_story"||t==="feature"){auth="shared";fresh="near-live";why="Agile tool and "+BRAND.name+" both edit; newest wins with review"}
  else if(t==="incident"||t==="change_request"||t==="request_item"){ if(/state|assignment/.test(k)){fresh="near-live"} }
  if(/amount|cost|price|budget|rate|paid|salary|spend/.test(k)||ty==="currency")cls="confidential";
  if(/email|phone|home|birth|manager|caller|requested_for/.test(k))cls="personal";
  if(t==="person"&&/rate|contract|hours/.test(k))cls="restricted";
  if(/contract|clause|liability/.test(t+k))cls=cls==="restricted"?cls:"confidential";
  if(/^id$|number|name|label|state|status/.test(k)&&cls==="internal")cls="internal";
- if(auth!=="platform"||fresh!=="live"||cls!=="internal"||why!=="Created and edited in Oukala")basis="rule";
- if(f.authority||f.classification){if(f.authority){auth=f.authority;why=f.why||(auth==="external"?"The source system is authoritative":auth==="shared"?"Oukala and the source both edit; newest wins":"Created and edited in Oukala");if(auth==="external"&&fresh==="live")fresh="near-live"}if(f.classification)cls=f.classification;basis="declared"}
+ if(auth!=="platform"||fresh!=="live"||cls!=="internal"||why!=="Created and edited in "+BRAND.name)basis="rule";
+ if(f.authority||f.classification){if(f.authority){auth=f.authority;why=f.why||(auth==="external"?"The source system is authoritative":auth==="shared"?BRAND.name+" and the source both edit; newest wins":"Created and edited in "+BRAND.name);if(auth==="external"&&fresh==="live")fresh="near-live"}if(f.classification)cls=f.classification;basis="declared"}
  else if(basis==="default"&&S.atlas&&S.atlas.confirmed&&S.atlas.confirmed[t])basis="confirmed";
  const dir=auth==="platform"?"out":auth==="external"?"in":"both";
- const conflict=auth==="platform"?"Oukala wins":auth==="external"?"External system wins":"Newest wins, differences open a reconciliation item";
+ const conflict=auth==="platform"?BRAND.name+" wins":auth==="external"?"External system wins":"Newest wins, differences open a reconciliation item";
  const trust=auth==="platform"?0.98:Math.round((0.72+(hash(t+k)%24)/100)*100)/100;
  const rule={ref:"Must resolve to a live record",date:"Valid date; finish is on or after start",datetime:"Valid timestamp, not in the future unless a plan",currency:"Zero or more, two decimals, currency set",enum:"One of the allowed values",percent:"0 to 100","boolean":"True or false",number:"Number in range",list:"No duplicates, each item in catalog",duration:"Non-negative duration"}[ty]||"Trimmed text, required when marked";
  return{auth,dir,fresh,cls,why,conflict,trust,rule,basis};
@@ -65,7 +65,7 @@ const PLANNED=[
  ["position","people","Position","Head of People Operations","Headcount planning needs positions apart from people.","Capacity, hiring"],
  ["application","cmdb","Application","Enterprise architect","Business apps are CI subtypes today; a first-class entity serves the registry and the citizen-app gate.","Application portfolio, citizen apps"],
  ["data_asset","cmdb","Data asset","Data council chair","Classification, retention and lineage need an asset to attach to.","Governance, privacy"],
- ["integration","cmdb","Integration","Integration lead","Each connector instance needs a record with owner, cost and health.","Fabric"],
+ ["integration","cmdb","Integration","Integration lead","Each connector instance needs a record with owner, cost and health.","Platform data layer"],
  ["environment","cmdb","Environment","Platform lead","Dev, test, prod and sandboxes are strings today.","DevOps, promotion"],
  ["risk","portfolio","Risk","Risk manager","Risks sit in RAID and enterprise risk separately.","RAID, enterprise risk"],
  ["control","portfolio","Control","Compliance lead","Evidence collection needs controls as records.","Compliance evidence"],
@@ -84,9 +84,9 @@ const PLANNED=[
  ["tag","service","Tag","Platform lead","Shared labeling.","All"],
  ["debt_item","portfolio","Debt item","Platform lead","The technical debt ledger.","Debt ledger"],
  ["app_manifest","cmdb","App manifest","Platform lead","Declares what a citizen app reads, writes and reuses.","Citizen gate"],
- ["connector","cmdb","Connector","Integration lead","Catalog of enterprise-approved and project connectors.","Fabric"],
- ["mapping","cmdb","Mapping","Integration lead","Versioned field mapping from an external source to the registry.","Fabric"],
- ["sync_run","cmdb","Sync run","Integration lead","Each pipeline run with counts, errors and lineage.","Fabric"]
+ ["connector","cmdb","Connector","Integration lead","Catalog of enterprise-approved and project connectors.","Platform data layer"],
+ ["mapping","cmdb","Mapping","Integration lead","Versioned field mapping from an external source to the registry.","Platform data layer"],
+ ["sync_run","cmdb","Sync run","Integration lead","Each pipeline run with counts, errors and lineage.","Platform data layer"]
 ];
 /* ---------- duplicate fixes ---------- */
 const FIXES=[
@@ -177,7 +177,7 @@ const pill_=(t,c)=>`<span class="pill ${c||"mute"}">${E(t)}</span>`;
 function regScreen(){
  const s=PLAT.stats(),es=PLAT.entities();METRICS.m_reg_dup.cur=s.dups;METRICS.m_reg_reuse.cur=s.reuse;METRICS.m_reg_class.cur=s.classPct;METRICS.m_reg_class.tr=METRICS.m_reg_class.tr.slice(0,-1).concat([s.classPct]);
  const dmCounts=Object.keys(DOM).map(k=>[DOM[k].n,es.filter(e=>e.domain===k).length]);
- const hero_=hero("Platform registry","One catalog every app builds on",`<b data-role="metric">${s.n}</b> canonical entities and <b data-role="metric">${s.nf.toLocaleString()}</b> fields, each with an owner, a steward, a classification and a declared authority. <b data-role="metric">${s.dups}</b> duplicates are open, <b data-role="metric">${s.proposed}</b> entities are proposed and wait for approval, and <b data-role="metric">${s.planned}</b> core entities are still undefined. Citizen apps read this registry before they build anything.`,
+ const hero_=hero("Platform registry","One catalog every app builds on",`<b data-role="metric">${U.esc(s.n)}</b> canonical entities and <b data-role="metric">${s.nf.toLocaleString()}</b> fields, each with an owner, a steward, a classification and a declared authority. <b data-role="metric">${s.dups}</b> duplicates are open, <b data-role="metric">${s.proposed}</b> entities are proposed and wait for approval, and <b data-role="metric">${s.planned}</b> core entities are still undefined. Citizen apps read this registry before they build anything.`,
   `<div class="row">${fchip("m_reg_own")}${fchip("m_reg_dup")}${fchip("m_reg_class")}${fchip("m_reg_reuse")}<button class="btn primary" data-reg-new>Propose an entity</button></div>`);
  const kp=kpiRow([["Canonical entities",s.n,"CI classes counted once"],["Fields",s.nf.toLocaleString(),s.extAuth+" external, "+s.shared+" shared"],["Duplicates open",s.dups,"of 5 planned fixes",{cls:s.dups?"bad":"good",keep:true}],["Undefined core entities",s.planned,s.proposed+" more are proposed"],["Reuse rate",s.reuse+"%","single writer, no duplicate",{metric:"m_reg_reuse"}]]);
  const entTbl=btHTML({id:"reg_ent",cols:[
@@ -275,10 +275,10 @@ document.addEventListener("click",e=>{
 REG("plat_reg","Platform registry","platform","M4 5h16v4H4zM4 11h16v4H4zM4 17h10v3H4z",regScreen);
 PROC.reg("plat_reg",{title:"How the registry stays true",std:["dmbok","togaf"],steps:[
  {n:"Propose",d:"Anyone proposes an entity or field with purpose, owner and steward.",who:"human",owner:"Requester",out:"Proposal"},
- {n:"Reuse check",d:"Names, fields and purpose are matched against the registry.",who:"auto",owner:"Platform",out:"Matches"},
+ {n:"Reuse check",d:"Names, fields and purpose are matched against the registry.",who:"robot",owner:"Platform",out:"Matches"},
  {n:"Draft fields",d:"The Registry Agent drafts type, class, authority and quality rules.",who:"agent",owner:"Registry Agent",out:"Draft catalog"},
  {n:"Approve",d:"Data council and platform team approve. Low-risk additions to an existing entity auto-approve.",who:"gate",owner:"Data council",sla:"3 days",out:"Decision"},
- {n:"Publish",d:"Registry updates, MCP tool list and typed API refresh.",who:"auto",owner:"Platform",out:"New version"}]});
+ {n:"Publish",d:"Registry updates, MCP tool list and typed API refresh.",who:"robot",owner:"Platform",out:"New version"}]});
 SEARCHX.push(()=>PLAT.entities().map(en=>({g:"Registry",t:en.label+" ("+en.id+")",m:en.owner,c:"--p4",f:()=>{go("plat_reg");setTimeout(()=>entDrawer(en.id),150)},k:en.id+" entity registry table owner "+en.steward})));
 ASKX.push(q=>{const t=q.toLowerCase();
  if(/duplicate (entit|record)|registry|who owns|system of record|reuse/.test(t)){const s=PLAT.stats();go("plat_reg");say(q,{t:"The registry has "+s.n+" canonical entities and "+s.nf+" fields. "+s.dups+" duplicates are open and "+s.planned+" core entities are planned.",steps:["Opened the platform registry"]});return true}

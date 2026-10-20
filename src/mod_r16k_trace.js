@@ -7,7 +7,7 @@
 "use strict";
 const W=window;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SX=S.sx=S.sx||{open:{},sel:null,gaps:false,ver:0,own:null,tab:0};
 const OWN="Maya Ortiz",BK="Priya Shah";
 SX.own=SX.own||{gc:{o:OWN,b:BK},cr:{o:OWN,b:BK},rp:{o:OWN,b:BK}};
@@ -17,7 +17,7 @@ const LINKS={gc:"Goal to capability",cr:"Capability to roadmap item",rp:"Roadmap
 const fm=n=>{n=Math.round(n||0);if(!n)return "$0";const a=Math.abs(n);return (n<0?"-":"")+"$"+(a>=1e6?(a/1e6).toFixed(2)+"M":a>=1e3?Math.round(a/1e3)+"K":a)};
 const fmd=n=>{n=Math.round(n||0);return (n<0?"-":"+")+fm(Math.abs(n))};
 const LASTWD=G(()=>WD.length-1,0),LASTT=G(()=>WD[LASTWD],0);
-const dOf=w=>{try{return w<=LASTWD?dateOf(w):new Date(LASTT+Math.round((w-LASTWD)*7/5)*864e5)}catch(e){return new Date(Date.UTC(2026,9,6))}};
+const dOf=w=>{try{return w<=LASTWD?dateOf(w):new Date(LASTT+Math.round((w-LASTWD)*7/5)*864e5)}catch(e){return U.todayDate()}};
 const dtxt=w=>dOf(w).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"});
 const lvName=(n,v)=>{const m=G(()=>MAT.ALLM().find(x=>x.id===n.model),null);return m&&m.lv[Math.round(v)-1]?m.lv[Math.round(v)-1][0]:"Level "+v};
 
@@ -147,7 +147,7 @@ const KL={goal:"Goal",cap:"Capability",road:"Roadmap",proj:"Project",direct:"Dir
 const isOpen=nd=>SX.open[nd.k]!==undefined?SX.open[nd.k]:((nd.kind==="goal"&&innerWidth>600)||nd.kind==="orphan"&&false);
 function levelCell(D,nd){
  if(nd.kind==="cap"){const mx=5;return `<span class="sx-lv" title="Level ${MAT.fv(nd.cur)} now, ${MAT.fv(nd.t1)} Year 1 target"><i style="width:${Math.min(100,nd.cur/mx*100)}%"></i><b style="left:${Math.min(100,nd.t1/mx*100)}%"></b></span><span class="sx-lt">${MAT.fv(nd.cur)} to ${MAT.fv(nd.t1)}${nd.gap>.001?` <em>gap ${MAT.fv(nd.gap)}</em>`:""}</span>`}
- if(nd.kind==="goal"){const R=G(()=>MAT.roll(nd.kids.filter(k=>k.kind==="cap").map(k=>k.n)),null);return R&&R.n?`<span class="sx-lt">${MAT.fv(R.cur)} to ${MAT.fv(R.t1)} <em>${R.n} capabilities</em></span>`:`<span class="sx-lt muted">none</span>`}
+ if(nd.kind==="goal"){const R=G(()=>MAT.roll(nd.kids.filter(k=>k.kind==="cap").map(k=>k.n)),null);return R&&R.n?`<span class="sx-lt">${MAT.fv(R.cur)} to ${MAT.fv(R.t1)} <em>${U.esc(R.n)} capabilities</em></span>`:`<span class="sx-lt muted">none</span>`}
  if(nd.kind==="road")return `<span class="sx-lt">L${nd.from} to L${nd.to}</span>`;
  if(nd.kind==="proj"){const p=nd.p;return `<span class="sx-lt">${p.funded?"Funded":"Not funded"}</span>`}
  return ""}
@@ -347,8 +347,8 @@ document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.tar
 const R15=W.R15=W.R15||{};R15.alias=R15.alias||{};R15.hidden=R15.hidden||{};
 R15.alias.trace={to:"strat_exec"};R15.hidden.trace=1;
 if(R15.names)R15.names.strat_exec="Strategy to execution";
-const _go=W.go;
-if(typeof _go==="function"&&!W._sxGo){W._sxGo=1;W.go=function(screen,arg){if((screen==="trace"||screen==="strat_exec")&&arg){S.rec=arg;S.flowSel=null;S.v.sx=4}return _go.apply(this,arguments)}}
+/* CL-35: lifecycle through HOOKS, not a go wrapper */
+if(!W._sxGo){W._sxGo=1;HOOKS.on("beforeGo",(screen,arg)=>{if((screen==="trace"||screen==="strat_exec")&&arg){S.rec=arg;S.flowSel=null;S.v.sx=4}},{id:"sx.go"})}
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-rec-pick]");if(b&&S.screen==="strat_exec"){S.rec=b.dataset.recPick;S.flowSel=null;S.v.sx=4;render()}});
 
 /* ---------------- search, chat, navigation ---------------- */
@@ -367,7 +367,7 @@ const SC={id:"strat_exec",name:"Strategy to execution",own:OWN,bk:BK,
   {id:"goal_capability_link",label:"Goal to capability link",note:"Which capabilities a strategic goal depends on. Reuses objective and maturity_capability; stores only the link and its owner.",fields:[F1("goal_id","Goal","ref",1,"objective"),F1("capability_id","Capability","ref",1,"maturity_capability"),F1("owner","Mapping owner","ref",1,"person"),F1("backup","Backup","ref",0,"person")]},
   {id:"capability_roadmap_item",label:"Capability roadmap item",note:"A dated step that moves a capability from one maturity level to the next, delivered by a project. Reuses the maturity credit; adds nothing parallel.",fields:[F1("capability_id","Capability","ref",1,"maturity_capability"),F1("from_level","From level","number",1),F1("to_level","To level","number",1),F1("counts_on","Counts on","date"),F1("project_id","Delivering project","ref",0,"project")]},
   {id:"roadmap_project_link",label:"Roadmap item to project link",note:"Which project delivers a roadmap item, with its money and work read from the project registry and budget lines.",fields:[F1("roadmap_item","Roadmap item","ref",1,"capability_roadmap_item"),F1("project_id","Project","ref",1,"project"),F1("share","Share of project money","number"),F1("owner","Mapping owner","ref",1,"person")]}],
- steps:[["Set goals","Strategic goals and their owners are set in Strategy alignment.","human","Casey Rowan","Quarterly","Strategy","Goals"],["Map capabilities","Link each goal to the capabilities it depends on, with current and target maturity level.","human",OWN,"2 weeks","Goals","Goal to capability links"],["Plan the roadmap","Add dated roadmap items that move each capability from level to level.","human","Capability owners","1 month","Capability gaps","Roadmap items"],["Fund and assign","A funded project delivers each roadmap item; the portfolio board decides.","gate","Portfolio board","2 weeks","Roadmap items","Funded projects"],["Reconcile","Money and work roll up to roadmap item, capability and goal and reconcile to Budgets.","auto","Strategy trace service","Immediate","Funded projects, budget lines","Rollups and gaps"],["Review gaps","Goals with no capability, capabilities with no roadmap, roadmap items with no project, orphan work.","human",OWN,"Monthly","Gaps",  "Closed gaps"]],
+ steps:[["Set goals","Strategic goals and their owners are set in Strategy alignment.","human","Casey Rowan","Quarterly","Strategy","Goals"],["Map capabilities","Link each goal to the capabilities it depends on, with current and target maturity level.","human",OWN,"2 weeks","Goals","Goal to capability links"],["Plan the roadmap","Add dated roadmap items that move each capability from level to level.","human","Capability owners","1 month","Capability gaps","Roadmap items"],["Fund and assign","A funded project delivers each roadmap item; the portfolio board decides.","gate","Portfolio board","2 weeks","Roadmap items","Funded projects"],["Reconcile","Money and work roll up to roadmap item, capability and goal and reconcile to Budgets.","robot","Strategy trace service","Immediate","Funded projects, budget lines","Rollups and gaps"],["Review gaps","Goals with no capability, capabilities with no roadmap, roadmap items with no project, orphan work.","human",OWN,"Monthly","Gaps",  "Closed gaps"]],
  met:["m_sx_cover","m_sx_orphan","m_sx_gaps"],
  fin:[["exe_strat","Strategy alignment","objective"],["exe_mat","Maturity models","maturity_capability"],["ppm_proj","Projects and teams","project"],["bud_over","Budgets overall","project"]],fout:[["exe_dash","Leadership dashboard","goal_capability_link"],["exe_board","Board pack","roadmap_project_link"],["chat_home","Ask","capability_roadmap_item"]]};
 const WS={};

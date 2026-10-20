@@ -3,7 +3,7 @@
 (function(){
 S.debt=S.debt||{ov:{},manual:null,tasks:[],rev:0,trace:{kind:"entity",id:"invoice"},hrs:32,ceil:null,taskDone:{}};
 const E=esc,D=S.debt;
-const TODAY="2026-10-06",T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5,RATE=95;
+const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5,RATE=95;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const days=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
 const fD=s=>s?new Date(s+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}):"None";
@@ -208,7 +208,7 @@ function debtScreen(){
  const pane1=`<p class="muted small">Every item has an owner, a steward, interest and principal. Select a row for lineage, remediation steps and actions. Interest is what the item costs each month; principal is the effort to remove it.</p>${legend([["High or critical","--bad-f"],["Medium","--warn-f"],["Low or closed","--good-f"]])}${led}`;
  /* exceptions */
  const exRows=exps.slice().sort((a,b)=>(a.exp||"").localeCompare(b.exp||"")).map(x=>`<tr><td><b>${E(x.title.replace(/^Expired: /,""))}</b><div class="muted small">${E(x.id)} · ${E((x.apps||[]).map(nm).join(", "))}</div></td><td>${whoChip(x.owner2||x.owner)}</td><td class="small">${E(x.reason||"")}</td><td>${E(fD(x.exp))}</td><td>${x.status==="resolved"?pill_("Closed","good"):cdown(x.exp)}</td><td><button class="btn quiet" data-debt-open="${E(x.id)}">Open</button></td></tr>`).join("");
- const taskRows=D.tasks.map(tk=>`<div class="debt-li" style="cursor:default"><span class="debt-li-t">${E(tk.title)}</span><span class="small muted">${E(tk.id)} · ${E(tk.kind)} · due ${fD(tk.due)} · ${E(tk.owner)}</span></div>`).join("");
+ const taskRows=D.tasks.map(tk=>`<div class="debt-li" style="cursor:default"><span class="debt-li-t">${E(tk.title)}</span><span class="small muted">${E(tk.id)} · ${E(tk.kind)} · due ${fD(tk.due)} · ${tk.owner?ownerChip(tk.owner,{role:"Owner"}):""}</span></div>`).join("");
  const pane2=`<div class="dnote" data-role="story" style="margin-bottom:12px"><b>${exps.filter(x=>x.status!=="resolved").length}</b> exceptions are active. The rule is no duplicate data and no second writer. An exception is allowed only with an owner, a reason and an expiry. On the expiry date the item turns into an expired exception and a fix or decommission task is created automatically.</div>
   <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn primary" data-debt-newexc>Request an exception</button>${whyPop("Exceptions are shown to everyone because they are the places where the platform rule is not being followed.")}</div>
   ${kpiRow([["Active",exps.filter(x=>x.status!=="resolved"&&x.type!=="expired").length,"within their expiry"],["Expired",expired.length,"need a decision",{cls:expired.length?"bad":"good",keep:true}],["Expiring in 30 days",soon.length,"plan the fix now"],["Tasks created",D.tasks.length,"fix or decommission"]])}
@@ -230,7 +230,7 @@ function drawer(id){
  const acts=x.status==="resolved"?`<button class="btn quiet" data-debt-act="reopen" data-id="${E(x.id)}">Reopen</button>`:`<button class="btn" data-debt-act="accept" data-id="${E(x.id)}">Accept with expiry</button><button class="btn" data-debt-act="assign" data-id="${E(x.id)}">Assign</button><button class="btn" data-debt-act="demand" data-id="${E(x.id)}">Create project or demand</button><button class="btn primary" data-debt-act="resolve" data-id="${E(x.id)}">Mark resolved</button>`;
  openDrawer(`<div class="dfullgrid"><div><div class="eyebrow">${E(x.id)} · debt item</div><h2 style="margin:4px 0 8px;padding-right:60px">${E(x.title)}</h2>
   <div class="row" style="gap:8px;flex-wrap:wrap">${typePill(x.type)}${sevPill(x.sev)}${stPill(x)}${src}</div>${closedNote}
-  <dl class="kv" style="margin-top:12px"><dt>Owner</dt><dd>${E(x.owner)}</dd><dt>Steward</dt><dd>${E(x.steward)}</dd>${x.assignee?`<dt>Assigned to</dt><dd>${whoChip(x.assignee)}</dd>`:""}<dt>Created</dt><dd>${fD(x.created)} (${x.age} days ago)</dd><dt>${x.source==="exception"?"Expires":"Due"}</dt><dd>${fD(x.exp||x.due)}</dd><dt>Principal</dt><dd><span data-role="metric">${x.principal} h</span> to fix</dd><dt>Interest</dt><dd><span data-role="metric">${x.interest} h a month</span> (${money(x.money)}). <span class="muted small">${E(x.iformula)}</span></dd><dt>Linked fix</dt><dd>${E(x.fix||"None yet")}${x.fixId?` <button class="btn quiet" data-debt-go="plat_reg">Open registry</button>`:""}</dd></dl>
+  <dl class="kv" style="margin-top:12px"><dt>Owner</dt><dd>${x.owner?ownerChip(x.owner,{role:"Owner"}):""}</dd><dt>Steward</dt><dd>${E(x.steward)}</dd>${x.assignee?`<dt>Assigned to</dt><dd>${whoChip(x.assignee)}</dd>`:""}<dt>Created</dt><dd>${fD(x.created)} (${x.age} days ago)</dd><dt>${x.source==="exception"?"Expires":"Due"}</dt><dd>${fD(x.exp||x.due)}</dd><dt>Principal</dt><dd><span data-role="metric">${x.principal} h</span> to fix</dd><dt>Interest</dt><dd><span data-role="metric">${x.interest} h a month</span> (${money(x.money)}). <span class="muted small">${E(x.iformula)}</span></dd><dt>Linked fix</dt><dd>${E(x.fix||"None yet")}${x.fixId?` <button class="btn quiet" data-debt-go="plat_reg">Open registry</button>`:""}</dd></dl>
   ${x.reason?`<h3>Reason given</h3><p class="small">${E(x.reason)}</p>`:""}${x.note?`<p class="small muted">${E(x.note)}</p>`:""}
   <div class="row" style="gap:8px;flex-wrap:wrap;margin-top:12px">${acts}</div></div>
   <div><h3>Lineage</h3><div class="debt-lin"><div><b>What created it</b><p class="small">${E(created)}</p></div><div><b>Where it lives</b><p class="small">${x.ents.length?x.ents.map(e=>`<code>${E(e)}</code>`).join(" "):"No registered entity"}${x.apps.length?" in "+E(x.apps.map(nm).join(", ")):""}.</p></div><div><b>What it blocks</b><p class="small">${E(y.blocks)}</p></div></div>
@@ -330,11 +330,11 @@ document.addEventListener("input",e=>{const t=e.target.closest("[data-debt-hrs]"
 /* ---------- screen, process, search, chat ---------- */
 REG("plat_debt","Technical debt ledger","platform","M4 20h16M6 20V10M12 20V4M18 20v-6M4 8l4 2 4-5 6 5",debtScreen);
 PROC.reg("plat_debt",{title:"How technical debt is found, owned and paid down",std:["cobit","togaf"],steps:[
- {n:"Detect",d:"Detectors scan the registry, who reads and writes, connectors and the citizen app gate. Nothing is typed in.",who:"auto",owner:"Platform",out:"Debt items"},
+ {n:"Detect",d:"Detectors scan the registry, who reads and writes, connectors and the citizen app gate. Nothing is typed in.",who:"robot",owner:"Platform",out:"Debt items"},
  {n:"Classify and price",d:"The Registry Agent sets type, severity, interest and principal using the published formula.",who:"agent",owner:"Registry Agent",out:"Priced item"},
  {n:"Assign",d:"Routed to the owning team; an individual claims it or is assigned with a reason.",who:"human",owner:"Entity owner",sla:"2 days",out:"Owner"},
  {n:"Accept or schedule",d:"Accept with an expiry, or create a demand or project. Exceptions longer than the tier limit need the data council.",who:"gate",owner:"Data council",sla:"5 days",out:"Decision"},
- {n:"Fix and verify",d:"Apply the registry fix or change the app. The detector confirms the cause is gone and closes the item.",who:"auto",owner:"Platform",out:"Closed item"}]});
+ {n:"Fix and verify",d:"Apply the registry fix or change the app. The detector confirms the cause is gone and closes the item.",who:"robot",owner:"Platform",out:"Closed item"}]});
 SEARCHX.push(()=>{const o=[{g:"Platform",t:"Technical debt ledger",m:"Items, exceptions, burn-down",c:"--bad-f",f:()=>go("plat_debt"),k:"technical debt ledger exceptions interest principal burn down"}];
  build().filter(x=>x.status!=="resolved").slice(0,80).forEach(x=>o.push({g:"Debt items",t:x.id+" "+x.title,m:x.sev,c:"--warn-f",f:()=>{go("plat_debt");setTimeout(()=>drawer(x.id),150)},k:x.type+" "+x.owner+" debt"}));return o});
 ASKX.push(q=>{const t=q.toLowerCase();

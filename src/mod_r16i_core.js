@@ -10,7 +10,7 @@ const q1=(s,r)=>(r||D).querySelector(s),qa=(s,r)=>[...(r||D).querySelectorAll(s)
 const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const R16I=W.R16I=W.R16I||{};
 const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];
-const store={get(k,d){try{const v=localStorage.getItem("oukala-r16i-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("oukala-r16i-"+k,JSON.stringify(v))}catch(e){}}};
+const store={get:(k,d)=>U.store.get("oukala-r16i-"+k,d),set:(k,v)=>{U.store.set("oukala-r16i-"+k,v)}};
 R16I.store=store;
 const STAR="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z";
 const svg=(d,s,w)=>`<svg viewBox="0 0 24 24" width="${s||16}" height="${s||16}" fill="none" stroke="currentColor" stroke-width="${w||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
@@ -53,7 +53,7 @@ function whyHTML(){const m=whyModel();
  return `<div class="r16-wh"><div><div class="eyebrow">Why am I seeing this</div><h3 id="r16WhyT">${E(m.label)}</h3></div><button type="button" class="btn quiet" popovertarget="r16WhyPop" popovertargetaction="hide" aria-label="Close">Close</button></div>
  <p class="small muted r16-wnote">Built from platform records for the ${E(m.persona||"current")} role. Not AI text.</p>
  ${sec("Source rule",m.rule.length?m.rule:["No rule recorded for this screen."])}${sec("Data",m.data)}${sec("Audience",[m.aud.join(", ")])}
- <section class="r16-wsec" aria-label="Owner"><h4>Owner</h4><ul><li>${E(m.owner)}${m.backup?` <span class="muted">Backup: ${E(m.backup)}</span>`:""}</li></ul></section>
+ <section class="r16-wsec" aria-label="Owner"><h4>Owner</h4><ul><li>${m.owner?ownerChip(m.owner,{role:"Owner"}):""}${m.backup?` <span class="muted">Backup: ${m.backup?ownerChip(m.backup,{role:"Backup"}):""}</span>`:""}</li></ul></section>
  <div class="row r16-wf"><button type="button" class="btn quiet" data-r16-why-go="${E(m.proc||"")}"${m.proc?"":" hidden"}>Open the process behind it</button></div>`}
 function ensureWhyPop(){let p=q1("#r16WhyPop");if(p)return p;p=D.createElement("div");p.id="r16WhyPop";p.setAttribute("popover","auto");p.setAttribute("role","dialog");p.setAttribute("aria-labelledby","r16WhyT");p.className="pop glass r16-whypop";D.body.appendChild(p);
  p.addEventListener("beforetoggle",e=>{if(e.newState==="open"){p.innerHTML=whyHTML();const b=q1("#r16Why");if(b){const r=b.getBoundingClientRect();const w=Math.min(420,innerWidth-24);p.style.width=w+"px";p.style.left=Math.max(12,Math.min(innerWidth-w-12,r.right-w))+"px";p.style.top=Math.round(r.bottom+8)+"px"}}});

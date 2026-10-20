@@ -9,7 +9,7 @@ const lc=s=>String(s==null?"":s).toLowerCase();
 const norm=s=>lc(s).replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();
 const toks=s=>norm(s).split(" ").filter(w=>w.length>2);
 const uniq=a=>[...new Set(a)];
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const R=window.R15E=window.R15E||{};
 const RS=S.r15e=S.r15e||{roles:[],bak:{},gate:[],ver:0,applied:{}};
 RS.ref=RS.ref||{};RS.kb=RS.kb||{};RS.lin=RS.lin||{};RS.undecl=RS.undecl||{};

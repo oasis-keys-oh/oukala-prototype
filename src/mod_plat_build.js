@@ -5,14 +5,14 @@
 (function(){
 S.build=S.build||{d:null,step:0,vis:{},reg:[],saved:"",mcp:{tool:"validate_manifest",out:null},q:"",pq:"",quar:[],sim:{ent:"budget_table",mod:"Member renewals portal"},missing:[]};
 const B=S.build,E=esc;
-const TODAY="2026-10-06";
+const TODAY=U.TODAY_ISO;
 const STEPS=["Purpose and owner","Data","Process","Connections","Maturity","Metrics","Security and AI","Review"];
 const BANDN={str:"Strategy and portfolio",dem:"Demand and projects",mon:"Money and contracts",bld:"Build and release",ops:"Service operations",inf:"Infrastructure and CMDB",obs:"Observability and automation",ppl:"People and skills",kai:"Knowledge and AI",plt:"Platform and governance"};
-const WHO=[["human","Person"],["agent","AI agent"],["auto","Automatic"],["gate","Gate"]];
+const WHO=[["human","Person"],["agent","AI agent"],["robot","Robot"],["gate","Gate"]];
 const MODES=[["event","Event"],["batch","Batch"],["human","Human"],["api","API call"]];
 const MODEC={event:"--accent",batch:"--p4",human:"--warn-f",api:"--good-f"};
 const FTYPES=["string","number","date","currency","boolean","ref","enum","list"];
-const AUTHS=[["platform","Oukala"],["external","External"],["shared","Shared"]];
+const AUTHS=[["platform",BRAND.name],["external","External"],["shared","Shared"]];
 const CLS=[["public","Public"],["internal","Internal"],["confidential","Confidential"],["restricted","Restricted"],["personal","Personal"]];
 const ROLEOPTS=["Requester","Approver","Fulfiller","Manager","Auditor","Platform admin","Read-only analyst"];
 const GUARDS=["No personal data in prompts","A person approves every write","Citations required for answers","Prompts and answers are logged","Monthly spend cap enforced"];
@@ -100,7 +100,7 @@ const DIMS=[
  ["owned","Owned","Someone is accountable for the process, its steps and its review date."],
  ["measured","Measured","Metrics exist with formulas, owners, targets and remediation."],
  ["integrated","Integrated","Data comes from registered entities and flows connect to other modules."],
- ["automated","Automated","Agents and automatic steps do the repeatable work, under guardrails."],
+ ["automated","Automated","Agents and robots do the repeatable work, under guardrails."],
  ["governed","Governed","Classification, audit, gate approval and AI controls are in place."]];
 function dimCrit(d,g){
  const st=d.proc.steps,mt=d.metrics,cn=d.conns,nonH=st.filter(s=>s.who!=="human").length,ents=d.data.reuse.length+d.data.ext.length+d.data.neu.length;
@@ -110,7 +110,7 @@ function dimCrit(d,g){
   owned:[["An accountable owner is named",!!d.owner],["The owner also stewards new entities",!!d.owner&&(d.data.neu.length>0||ents>0)],["Every step has an owner",st.length>0&&st.every(s=>s.owner)],["A review or sunset date is set",!!d.sunset],["Three or more roles are defined",d.sec.roles.length>=3]],
   measured:[["At least one metric",mt.length>=1],["At least two metrics",mt.length>=2],["Every metric has a formula, owner and target",!!mFull],["Every metric has remediation",!!mRem],["Three metrics, one about time or SLA",mt.length>=3&&mt.some(m=>/time|sla|cycle|lead/i.test(m.n))]],
   integrated:[["Uses at least one registered entity",d.data.reuse.length+d.data.ext.length>0],["At least one connection to another module",cn.length>=1],["Both a pull and a push",cn.some(c=>c.dir==="pull")&&cn.some(c=>c.dir==="push")],["No unresolved duplicate entities",unresolved(d).length===0&&ents>0],["Three or more connections, one by event or API",cn.length>=3&&cn.some(c=>c.mode==="event"||c.mode==="api")]],
-  automated:[["At least one step is not manual",nonH>=1],["An agent or automatic step exists",st.some(s=>s.who==="agent"||s.who==="auto")],["Half the steps are agent, automatic or gate",st.length>0&&nonH*2>=st.length],["Agent work runs under two or more guardrails",!d.sec.ai||d.sec.guard.length>=2],["An event or API flow triggers an automatic step",cn.some(c=>c.mode==="event"||c.mode==="api")&&st.some(s=>s.who==="auto"||s.who==="agent")]],
+  automated:[["At least one step is not manual",nonH>=1],["An agent or robot step exists",st.some(s=>STEPMODE.needsTrigger(s.who))],["Half the steps are agent, robot or gate",st.length>0&&nonH*2>=st.length],["Agent work runs under two or more guardrails",!d.sec.ai||d.sec.guard.length>=2],["An event or API flow triggers a robot or agent step",cn.some(c=>c.mode==="event"||c.mode==="api")&&st.some(s=>STEPMODE.needsTrigger(s.who))]],
   governed:[["Data classification chosen",!!d.sec.cls],["Audit events are on",!!d.sec.audit],["A gate (approval) step exists",st.some(s=>s.who==="gate")],["Conformance has no failures and scores 80 or more",g.ok&&g.score>=80],["AI uses the gateway with a cap and 3 guardrails, or no AI",!d.sec.ai||(d.sec.gw&&d.sec.guard.length>=3&&+d.sec.cap>0)]]
  };
 }
@@ -148,7 +148,7 @@ function counts(d){
  const nf=d.data.neu.reduce((s,n)=>s+n.fields.length,0)+d.data.ext.reduce((s,x)=>s+x.add.length,0);
  return{reuse:d.data.reuse.length,ext:d.data.ext.length,neu:d.data.neu.length,nf,dupPrev:d.dupPrev||0,dupF:d.dupF||0,open:unresolved(d).length,flows:d.conns.length};
 }
-const FREE=[["Sign-in and roles","Single sign-on through Entra ID, role and attribute rules from the policy engine."],["Preferences","Theme, language and persona settings follow the person across modules."],["Audit trail","Every create, change and delete is recorded."],["Search","Records appear in global search once registered."],["Chat control","Ask Oukala can open, find and act on its records."],["Metrics framework","Formula chips, targets, owners and remediation play."],["Process card","Your process shows as a clickable strip on the screen."],["Maturity record","The process is scored in Maturity models and rolls up."]];
+const FREE=[["Sign-in and roles","Single sign-on through Entra ID, role and attribute rules from the policy engine."],["Preferences","Theme, language and persona settings follow the person across modules."],["Audit trail","Every create, change and delete is recorded."],["Search","Records appear in global search once registered."],["Chat control","Ask "+BRAND.name+" can open, find and act on its records."],["Metrics framework","Formula chips, targets, owners and remediation play."],["Process card","Your process shows as a clickable strip on the screen."],["Maturity record","The process is scored in Maturity models and rolls up."]];
 function diagram(d,compact){
  const me=d.sn||d.name||"New module",ins=d.conns.filter(c=>c.dir==="pull"),outs=d.conns.filter(c=>c.dir==="push");
  const rows=Math.max(ins.length,outs.length,1),W=compact?460:620,NW=compact?132:170,NH=34,GAP=compact?44:54,H=Math.max(110,rows*GAP+30);
@@ -228,7 +228,7 @@ function hitsHTML(d,n,i){
 function s2(d){
  const ov=d.proc.tpl?null:procOverlap(d),tp=procTemplates(d);
  const steps=d.proc.steps.map((s,i)=>`<div class="bld-st" data-dnd-id="${s.id}" tabindex="0" aria-label="Step ${i+1} ${E(s.n)}"><span class="grip-wrap">${grip}</span><b class="bld-sn">${i+1}</b>
-  <input class="fin" data-bld-in="proc.steps.${i}.n" value="${E(s.n)}" placeholder="Step name" aria-label="Step name">${sel("proc.steps."+i+".who",s.who,WHO,'aria-label="Who acts"')}<input class="fin" data-bld-in="proc.steps.${i}.owner" value="${E(s.owner)}" placeholder="Owner or agent" aria-label="Step owner"><input class="fin" data-bld-in="proc.steps.${i}.sla" value="${E(s.sla)}" placeholder="SLA, e.g. 1 day" aria-label="Step SLA"><button class="btn quiet" data-bld-act="rm" data-a="proc.steps:${i}" aria-label="Remove step ${i+1}">Remove</button></div>`).join("");
+  <input class="fin" data-bld-in="proc.steps.${i}.n" value="${E(s.n)}" placeholder="Step name" aria-label="Step name">${sel("proc.steps."+i+".who",s.who==="gate"?"gate":STEPMODE.of(s.who),WHO,'aria-label="Who acts"')}<input class="fin" data-bld-in="proc.steps.${i}.owner" value="${E(s.owner)}" placeholder="Owner or agent" aria-label="Step owner"><input class="fin" data-bld-in="proc.steps.${i}.sla" value="${E(s.sla)}" placeholder="SLA, e.g. 1 day" aria-label="Step SLA"><button class="btn quiet" data-bld-act="rm" data-a="proc.steps:${i}" aria-label="Remove step ${i+1}">Remove</button></div>`).join("");
  return `${ov?`<div class="bld-dup bad"><b>A process already exists: ${E(ov.title)}.</b> <span class="small muted">Start from it instead of building a second one, or the gate fails "Reuses existing processes".</span><div style="margin-top:8px"><button class="btn primary" data-bld-act="tpl" data-a="${E(ov.id)}">Start from ${E(ov.title)}</button></div></div>`:""}
  <div class="grid g2" style="gap:14px">${fld("Process name",inp("proc.name",d.proc.name,d.name||"Facilities request handling"))}${fld("Time limit for the whole process",inp("proc.sla",d.proc.sla,"2 business days"))}
  <div class="fld" style="grid-column:1/-1">${fld("What starts it (trigger)",inp("proc.trigger",d.proc.trigger,"A staff member submits a request in the portal"))}</div></div>
@@ -259,7 +259,7 @@ function s4(d){
 }
 const SUGG=[["Cycle time","Average hours from submitted to done = Σ (done − submitted) ÷ count","h","min"],["Triage by agent rate","Requests triaged by an agent without a person ÷ all requests × 100","%","max"],["SLA attainment","Requests done inside the SLA ÷ all requests × 100","%","max"]];
 function s5(d){
- const cards=d.metrics.map((m,i)=>`<div class="bld-mc"><div class="row" style="justify-content:space-between;gap:8px"><b>${E(m.n)}</b><span class="row" style="gap:6px"><button class="btn" data-bld-act="editmet" data-a="${i}">Edit</button><button class="btn quiet" data-bld-act="rm" data-a="metrics:${i}">Remove</button></span></div><div class="small"><b>Formula.</b> ${E(m.f)}</div><div class="small muted">Target ${E(m.tgt)}${E(m.u)} (${m.dir==="min"?"lower":"higher"} is better) · Owner ${E(m.owner)} · Remediation: ${E(m.remKind)} "${E(m.remTitle)}"</div></div>`).join("")||`<p class="small muted">No metrics yet. Every number a module shows must be a metric with a formula.</p>`;
+ const cards=d.metrics.map((m,i)=>`<div class="bld-mc"><div class="row" style="justify-content:space-between;gap:8px"><b>${E(m.n)}</b><span class="row" style="gap:6px"><button class="btn" data-bld-act="editmet" data-a="${i}">Edit</button><button class="btn quiet" data-bld-act="rm" data-a="metrics:${i}">Remove</button></span></div><div class="small"><b>Formula.</b> ${E(m.f)}</div><div class="small muted">Target ${E(m.tgt)}${E(m.u)} (${m.dir==="min"?"lower":"higher"} is better) · Owner ${m.owner?ownerChip(m.owner,{role:"Owner"}):""} · Remediation: ${E(m.remKind)} "${E(m.remTitle)}"</div></div>`).join("")||`<p class="small muted">No metrics yet. Every number a module shows must be a metric with a formula.</p>`;
  return `<div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn primary" data-bld-act="addmet">Add a metric</button>${SUGG.map((s,i)=>`<button class="btn" data-bld-act="suggmet" data-a="${i}">Suggest: ${E(s[0])}</button>`).join("")}</div>
  <div class="bld-mcs">${cards}</div><p class="small muted">On registration each metric is merged into Metrics with its formula, owner, target and remediation, so it gets a formula chip and a popover like every other number on the platform.</p>`;
 }
@@ -278,7 +278,7 @@ function s7(d){
  return `${rg?regResult(rg):""}
  <div class="statrow"><div class="stat"><small>Conformance</small><span class="num" data-role="metric">${g.score}%</span><em>${g.pass} pass, ${g.warn} warn, ${g.fail} fail</em></div><div class="stat"><small>Data</small><span class="num">${c.reuse+c.ext}/${c.reuse+c.ext+c.neu}</span><em>reused or extended of all entities</em></div><div class="stat"><small>Flows</small><span class="num">${c.flows}</span><em>new, shown dashed on the map</em></div><div class="stat"><small>Maturity</small><span class="num">${mi.level}/${mi.target}</span><em>reached of target</em></div></div>
  <div class="tscroll"><table><thead><tr><th>Check</th><th>Result</th><th>Evidence</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>
- ${d.exc.length?`<h4 class="bld-h4">Exceptions raised (${d.exc.length})</h4>${d.exc.map((x,i)=>`<div class="bld-cn"><span class="bld-dir pull">Exception</span><span class="bld-cb"><b>${E((CHK[x.check]||x.check))}</b><span class="small muted">${E(x.reason)} · owner ${E(x.owner)} · until ${E(x.exp)}</span></span><button class="btn quiet" data-bld-act="rm" data-a="exc:${i}">Withdraw</button></div>`).join("")}<p class="small muted">Each exception becomes a debt item with an owner and an expiry when you register.</p>`:""}
+ ${d.exc.length?`<h4 class="bld-h4">Exceptions raised (${d.exc.length})</h4>${d.exc.map((x,i)=>`<div class="bld-cn"><span class="bld-dir pull">Exception</span><span class="bld-cb"><b>${E((CHK[x.check]||x.check))}</b><span class="small muted">${E(x.reason)} · owner ${x.owner?ownerChip(x.owner,{role:"Owner"}):""} · until ${E(x.exp)}</span></span><button class="btn quiet" data-bld-act="rm" data-a="exc:${i}">Withdraw</button></div>`).join("")}<p class="small muted">Each exception becomes a debt item with an owner and an expiry when you register.</p>`:""}
  <div class="story small" style="margin:14px 0"><b>${g.ok&&!miss?"The gate passes.":"The gate blocks."}</b> ${g.ok&&!miss?"Registering adds "+(c.ext+c.neu)+" entit"+((c.ext+c.neu)===1?"y":"ies")+" as Proposed, 1 process, 1 dashed module node and "+c.flows+" flow"+(c.flows===1?"":"s")+".":(miss?"Add a name and purpose first. ":"")+"Fix the failures or raise an exception for each."}</div>
  <div class="row" style="gap:10px;flex-wrap:wrap"><button class="btn primary" data-bld-act="register" ${g.ok&&!miss&&!rg?"":"disabled"}>${rg?"Registered":"Register the module"}</button>${rg?`<button class="btn danger" data-bld-act="withdraw" data-a="${E(rg.id)}">Withdraw and roll back</button>`:""}<button class="btn quiet" data-bld-act="reset">Start over</button></div>`;
 }
@@ -508,11 +508,11 @@ function screen(){
 }
 REG("plat_build","Build a module","platform","M4 4h7v7H4zM13 13h7v7h-7zM17 4v6M14 7h6M7 14v6M4 17h6",screen);
 PROC.reg("plat_build",{title:"How a new module joins the platform",std:["togaf","cmmi","iso27k"],steps:[
- {n:"Reuse check",d:"The blueprint searches the registry and process library while the builder types. A person or an AI client gets the same answer.",who:"auto",owner:"Platform",out:"Reuse report"},
+ {n:"Reuse check",d:"The blueprint searches the registry and process library while the builder types. A person or an AI client gets the same answer.",who:"robot",owner:"Platform",out:"Reuse report"},
  {n:"Blueprint",d:"Purpose, data, process, connections, maturity, metrics, security and AI are declared in eight steps.",who:"human",owner:"Module owner",out:"Manifest"},
  {n:"Draft help",d:"The Registry Agent suggests entities to reuse, fields to label and metrics to define.",who:"agent",owner:"Registry Agent",out:"Suggestions"},
  {n:"Conformance gate",d:"Every conformance check and the debt budget. A failure needs a fix or an exception with an owner and an expiry.",who:"gate",owner:"Platform team",sla:"Instant",out:"Pass or blocked"},
- {n:"Register as Proposed",d:"Entities, process, module node, flows and metrics are added in one step and can be withdrawn in one step.",who:"auto",owner:"Platform",out:"Proposed module"},
+ {n:"Register as Proposed",d:"Entities, process, module node, flows and metrics are added in one step and can be withdrawn in one step.",who:"robot",owner:"Platform",out:"Proposed module"},
  {n:"Data council approval",d:"The council approves new entities and extensions; the module goes live and its maturity is scored.",who:"human",owner:"Data council",sla:"3 days",out:"Live module"}]});
 /* ---------- events ---------- */
 let deb=null;
@@ -616,7 +616,7 @@ document.addEventListener("click",e=>{
   case"todata":toData(x);break;
   case"tometrics":go("metrics");break;
   case"tomcp":go("plat_mcp");break;
-  case"seed":{const s=SEEDS.find(q=>q.id===x);if(s)openDrawer(`<div class="eyebrow">${E(s.stage)}</div><h2 style="margin:4px 0">${E(s.name)}</h2><p class="muted small">Owner ${E(s.owner)} · ${E(BANDN[s.band])}</p><div class="story">${E(s.purpose)}</div><div class="statrow"><div class="stat"><small>Reuse</small><span class="num">${s.reuse}</span></div><div class="stat"><small>Extend</small><span class="num">${s.ext}</span></div><div class="stat"><small>New</small><span class="num">${s.neu}</span></div><div class="stat"><small>Conformance</small><span class="num">${s.conf||"None"}${s.conf?"%":""}</span></div></div><p class="small"><b>Next step.</b> ${E(s.next)}</p>`);break}
+  case"seed":{const s=SEEDS.find(q=>q.id===x);if(s)openDrawer(`<div class="eyebrow">${E(s.stage)}</div><h2 style="margin:4px 0">${E(s.name)}</h2><p class="muted small">Owner ${s.owner?ownerChip(s.owner,{role:"Owner"}):""} · ${E(BANDN[s.band])}</p><div class="story">${E(s.purpose)}</div><div class="statrow"><div class="stat"><small>Reuse</small><span class="num">${s.reuse}</span></div><div class="stat"><small>Extend</small><span class="num">${s.ext}</span></div><div class="stat"><small>New</small><span class="num">${s.neu}</span></div><div class="stat"><small>Conformance</small><span class="num">${s.conf||"None"}${s.conf?"%":""}</span></div></div><p class="small"><b>Next step.</b> ${E(s.next)}</p>`);break}
   case"copy":{const txt=JSON.stringify(manifest(d),null,2);try{navigator.clipboard.writeText(txt).then(()=>toast("Manifest copied","good"),()=>toast("Copy blocked by the browser. Select the text instead.","warn"))}catch(x2){toast("Copy blocked by the browser. Select the text instead.","warn")}audit("Manifest copied",d.name);break}
   case"dl":{try{const b=new Blob([JSON.stringify(manifest(d),null,2)],{type:"application/json"}),u=URL.createObjectURL(b),l=document.createElement("a");l.href=u;l.download="oukala.module.json";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),500);toast("Downloaded oukala.module.json","good")}catch(x2){toast("Download is not available here","warn")}audit("Manifest downloaded",d.name);break}
   case"mcptool":B.mcp.tool=x;B.mcp.out=null;{const m=document.querySelector("[data-bld-man]");if(m)m.innerHTML=manifestPane()}break;

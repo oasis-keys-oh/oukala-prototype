@@ -26,7 +26,7 @@ access_review|Access review|gov|Admin and security|adm_sec|Security lead|Quarter
 connector|Connector|plat|Integration fabric|plat_fab|Integration lead|The integration hub and the fabric each keep a connection list. One catalog covers API, database, file, MCP server and webhook connections.|name:Name:string/q;kind:Kind:enum;vendor:Provider:string;tier:Tier:enum;auth_type:Authentication:enum;status:Status:enum;owner:Owner:ref/p;environment:Environment:enum;last_sync:Last sync:datetime;error_rate:Error rate:percent;calls_30d:Calls, last 30 days:number;latency_p95:Latency p95 (ms):number;credential:Credential:ref
 mapping|Field mapping|plat|Integration fabric|plat_fab|Integration lead|Versioned mapping from an external field to a registry field, with a confidence and an approver.|connector:Connector:ref;source_field:Source field:string/q;source_type:Source type:string;entity:Entity:ref;field:Registry field:string;transform:Transform:string;confidence:Confidence:percent;status:Status:enum;version:Version:number;approved_by:Approved by:ref/p
 sync_run|Sync run|plat|Integration fabric|plat_fab|Integration lead|Each pipeline run, data import kit and platform upgrade pass with counts and errors.|connector:Connector:ref;mode:Mode:enum;started_at:Started:datetime;duration_s:Duration (seconds):number;rows_read:Rows read:number;rows_valid:Rows valid:number;rows_quarantined:Rows quarantined:number;status:Status:enum;error:Error:text
-sync_exception|Sync exception|plat|Integration fabric|plat_fab|Integration lead|Quarantined records, reconciliation differences, dead letter events and directory sync errors share one work queue.|connector:Connector:ref;entity:Entity:ref;record:Record:string;field:Field:string;value:Value:string;platform_value:Oukala value:string;external_value:External value:string/e;reason:Reason:text;status:Status:enum;raised_at:Raised:datetime
+sync_exception|Sync exception|plat|Integration fabric|plat_fab|Integration lead|Quarantined records, reconciliation differences, dead letter events and directory sync errors share one work queue.|connector:Connector:ref;entity:Entity:ref;record:Record:string;field:Field:string;value:Value:string;platform_value:${BRAND.name} value:string;external_value:External value:string/e;reason:Reason:text;status:Status:enum;raised_at:Raised:datetime
 credential|Credential|plat|Admin and security|adm_sec|Security lead|API keys, scan credentials and connector secrets. Only a reference to the vault is stored.|name:Name:string/q;kind:Kind:enum;prefix:Visible prefix:string;scope:Scope:list;owner:Owner:ref/p;created:Created:date;expires:Expires:date;last_used:Last used:datetime;rate_limit:Rate limit per minute:number;vault_ref:Vault reference:string/r
 app_manifest|App manifest|plat|Citizen apps|plat_gate|Platform lead|Declares what a citizen app reads, writes and reuses, and which checks it passed.|name:Name:string/q;owner:Owner:ref/p;tier:Tier:enum;reads:Reads:list;writes:Writes:list;reuses:Reuses:list;new_entities:New entities requested:number;status:Status:enum;published_at:Published:datetime;checks_passed:Checks passed:number
 custom_field|Custom field|plat|Admin studio|adm_studio|Platform lead|Field definitions added in the admin studio: table, label, type, rule and who can see it.|table:Table:string/q;key:Key:string/q;label:Label:string;type:Type:enum;required:Required:boolean;default_value:Default:string;options:Options:list;rule:Rule:string;visibility:Visible to:enum;help:Help text:text
@@ -180,15 +180,15 @@ S.flw.mcps|MCP servers|flw_hub,plat_mcp||5|connector|alias
 S.flw.hooks|Webhooks|flw_hub||4|connector|alias
 S.flw.keys|API keys|flw_hub||3|credential|new
 S.flw.dlq|Dead letter queue|flw_hub||9|sync_exception|alias
-S.fab.conns|Fabric connections|plat_fab|plat_fab|19|connector|new
+S.fab.conns|Data layer connections|plat_fab|plat_fab|19|connector|new
 S.fab.maps|Field mappings|plat_fab|plat_fab|38|mapping|new
 S.fab.runs|Sync runs|plat_fab|plat_fab|176|sync_run|new
 S.fab.quar|Quarantined records|plat_fab|plat_fab|8|sync_exception|new
 S.fab.recon|Reconciliation items|plat_fab|plat_fab|9|sync_exception|alias
 S.fab.events|Data change events|plat_fab|plat_fab|340|audit_event|alias
 S.fab.proj|Project data requests|plat_fab|plat_fab|7|app_manifest|alias
-S.fab.reqs|Fabric requests|plat_fab|plat_fab|7|approval|alias
-S.fab.wi|Fabric work items|plat_fab|plat_fab|2|action_item|alias
+S.fab.reqs|Data layer requests|plat_fab|plat_fab|7|approval|alias
+S.fab.wi|Data layer work items|plat_fab|plat_fab|2|action_item|alias
 S.gate.apps|Citizen apps|plat_gate|plat_gate|8|app_manifest|new
 DEBTITEMS|Debt items|plat_debt|plat_debt|0|debt_item|new|DEBT
 S.kcsx.skills|Agent skills|kcs_skills|kcs_skills|10|agent_skill|new
@@ -558,13 +558,13 @@ function gapDrawer(id){const g=gaps().find(x=>x.id===id);if(!g)return;const t=g.
  if(t.type==="planned")btns+=`<button class="btn" data-go-reg="1">Open the registry</button>`;
  if(g.approve)btns+=`<button class="btn primary" data-cov-approve="${E(g.approve)}">Approve and make live</button>`;
  if(g.confirm)btns+=`<button class="btn primary" data-cov-confirm="${E(g.confirm)}">Confirm the proposed labels</button>`;
- openDrawer(`<div class="eyebrow">${E(g.kind)} · ${E(g.sev)}</div><h2 style="margin:4px 0">${E(g.title)}</h2><div class="story" data-role="story"><b>Remediation.</b> ${E(g.action)}</div><dl class="kv small"><dt>Owner</dt><dd>${E(g.owner)}</dd><dt>Opens</dt><dd>${E(t.type||"")} ${E(t.id||"")}</dd></dl><div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">${btns}</div>`)}
+ openDrawer(`<div class="eyebrow">${E(g.kind)} · ${E(g.sev)}</div><h2 style="margin:4px 0">${E(g.title)}</h2><div class="story" data-role="story"><b>Remediation.</b> ${E(g.action)}</div><dl class="kv small"><dt>Owner</dt><dd>${g.owner?ownerChip(g.owner,{role:"Owner"}):""}</dd><dt>Opens</dt><dd>${E(t.type||"")} ${E(t.id||"")}</dd></dl><div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">${btns}</div>`)}
 function modDrawer(id){const c=coverage(),m=c.modules.find(x=>x.id===id);if(!m)return;const b=compute(true).modules.find(x=>x.id===id);
  const chk=(ok,t)=>`<li>${ok?pill_("Pass","good"):pill_("Gap","warn")} ${E(t)}</li>`;
  const ents=m.owned.map(eid=>PLAT.ent(eid)).filter(Boolean);
  const recs=c.records.filter(x=>x.r.mod===id);
  const fl=c.flows.filter(x=>x.f.from===id||x.f.to===id);
- openDrawer(`<div class="eyebrow">${E(band(m.bi))}</div><h2 style="margin:4px 0">${E(m.name)}</h2><p class="muted small">Owner ${E(m.owner||"")} · ${b?`was <b>${b.state==="full"?"covered":"not covered"}</b> before the audit`:""}</p>
+ openDrawer(`<div class="eyebrow">${E(band(m.bi))}</div><h2 style="margin:4px 0">${E(m.name)}</h2><p class="muted small">Owner ${m.owner?ownerChip(m.owner,{role:"Owner"}):E("")} · ${b?`was <b>${b.state==="full"?"covered":"not covered"}</b> before the audit`:""}</p>
  <div class="story" data-role="story">${m.state==="full"?"Fully covered by live entities.":m.state==="proposed"?"Covered, but some entities are only proposed.":"Gaps remain: "+E(m.gaps.join("; "))+"."}</div>
  <ul class="cv-chk">${chk(m.chk.entities,"Owns a registered entity ("+m.entities+")")}${chk(m.chk.records,m.records+" record collection"+(m.records===1?"":"s")+", "+m.recordsMissing+" not in the model")}${chk(m.chk.flows,m.flows+" flows, "+m.flowsMissing+" with no entity")}${chk(m.chk.labels,N0(m.fields)+" fields, "+N0(m.fieldsDefault)+" with a default label")}</ul>
  <h3>Entities it owns</h3><div class="at-chips">${ents.map(e=>`<button class="chip at-chip" data-atlas-go="${E(e.id)}">${E(e.label)}${e.proposed?' <span class="pill info">Proposed</span>':""}</button>`).join("")||'<span class="muted small">None</span>'}</div>
@@ -616,9 +616,9 @@ SEARCHX.push(()=>{try{const c=coverage();return c.modules.map(m=>({g:"Data model
 /* the atlas shows the color of a domain in the matrix */
 if(window.ATLAS&&!ATLAS.color){}
 PROC.reg("plat_cov",{title:"How the model stays complete",std:["dmbok","togaf"],steps:[
- {n:"Audit",d:"Walk every module, screen, record collection and flow and compare them with the registry.",who:"auto",owner:"Registry Agent",out:"Gap list"},
- {n:"Reuse check",d:"A new entity is compared with existing fields and meanings. Close matches extend an existing entity.",who:"auto",owner:"Platform",out:"Matches and warnings"},
+ {n:"Audit",d:"Walk every module, screen, record collection and flow and compare them with the registry.",who:"robot",owner:"Registry Agent",out:"Gap list"},
+ {n:"Reuse check",d:"A new entity is compared with existing fields and meanings. Close matches extend an existing entity.",who:"robot",owner:"Platform",out:"Matches and warnings"},
  {n:"Define",d:"The Registry Agent drafts fields, authority and classification. The entity is Proposed.",who:"agent",owner:"Registry Agent",out:"Proposed entity"},
  {n:"Approve",d:"The data council approves; the entity becomes live and the audit log records who approved it.",who:"gate",owner:"Data council",sla:"3 days",out:"Live entity"},
- {n:"Re-audit",d:"Coverage recomputes whenever a module adds an entity.",who:"auto",owner:"Platform",out:"New coverage"}]});
+ {n:"Re-audit",d:"Coverage recomputes whenever a module adds an entity.",who:"robot",owner:"Platform",out:"New coverage"}]});
 })();

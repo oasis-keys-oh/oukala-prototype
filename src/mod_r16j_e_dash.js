@@ -6,7 +6,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const slug=s=>String(s||"").toLowerCase().replace(/[0-9$%.,]+/g," ").replace(/[^a-z]+/g,"-").replace(/^-+|-+$/g,"").slice(0,32);
 const D=S.r16d=S.r16d||{edit:false,work:null,mine:{},defs:{},hist:{},pend:[],charts:null,seq:1,perm:{publish:["admin","exec"],team:["admin","exec","portfolio"]},group:{name:"Dashboard governance group",members:["Avery Chen","Maya Ortiz","Jordan Lee"],owner:"Jordan Lee",backup:"Maya Ortiz"},seen:{},loaded:false,log:[]};
 const me=()=>G(()=>INBOX.me(),"Casey Rowan");
@@ -113,7 +113,7 @@ function decide(id,ok){let v=null;Object.values(D.hist).forEach(hs=>hs.forEach(x
 /* ---------- drawers ---------- */
 function histDrawer(scr){const hs=D.hist[scr]||[];const mine=(D.mine[me()]||{})[scr];
  openDrawer(`<div class="eyebrow">Dashboard layout</div><h2 style="font-size:24px;margin:6px 0">Version history: ${H(scrName(scr))}</h2><p class="muted small">${hs.length?hs.length+" published version"+(hs.length>1?"s":""):"No default has been published; everyone sees the built-in layout."}${mine?" You have a personal layout (v"+mine.v+") which overrides defaults for you.":""}</p>
- ${hs.map(v=>`<div class="dl-ver"><div class="row"><b>v${v.n}</b><span class="pill ${v.status==="active"?"good":v.status==="pending"?"warn":v.status==="rejected"?"bad":"mute"}">${H(v.status)}</span><span class="pill info">${H(v.scope==="everyone"?"Everyone":v.scope+": "+v.value)}</span><span class="muted small">${H(v.by)} · ${H(v.at)}</span></div>${v.note?`<p>${H(v.note)}</p>`:""}<ul class="dl-diff">${v.diff.length?v.diff.map(d=>`<li class="${d[0]==="+"?"add":d[0]==="-"?"del":"chg"}"><b>${d[0]}</b> ${H(d[1])}</li>`).join(""):'<li class="muted">No change from the built-in layout.</li>'}</ul>${v.approved?`<div class="muted small">${H(v.approved)}</div>`:""}</div>`).join("")}`)}
+ ${hs.map(v=>`<div class="dl-ver"><div class="row"><b>v${U.esc(v.n)}</b><span class="pill ${v.status==="active"?"good":v.status==="pending"?"warn":v.status==="rejected"?"bad":"mute"}">${H(v.status)}</span><span class="pill info">${H(v.scope==="everyone"?"Everyone":v.scope+": "+v.value)}</span><span class="muted small">${H(v.by)} · ${H(v.at)}</span></div>${v.note?`<p>${H(v.note)}</p>`:""}<ul class="dl-diff">${v.diff.length?v.diff.map(d=>`<li class="${d[0]==="+"?"add":d[0]==="-"?"del":"chg"}"><b>${d[0]}</b> ${H(d[1])}</li>`).join(""):'<li class="muted">No change from the built-in layout.</li>'}</ul>${v.approved?`<div class="muted small">${H(v.approved)}</div>`:""}</div>`).join("")}`)}
 const scrName=id=>G(()=>SCREENS.find(s=>s[0]===id)[1],id);
 function publishForm(){const w=D.work;if(!w)return;const p=canPublish();if(!p.any){audit_("Denied: publish dashboard default",me()+" · "+roleName());openDrawer(`<div class="eyebrow">Not permitted</div><h2 style="font-size:24px;margin:6px 0">${H(roleName())} cannot publish dashboard defaults</h2><p class="muted">Executives and platform admins can publish. You can keep your own layout, or ask the ${H(D.group.name)} to publish it.</p><div class="row"><button class="btn primary" data-dl="ask">Ask ${H(D.group.name)}</button></div>`);return}
  const ef=effective(w.screen);const d=diff(ef.def?ef.def.layout:blank(),w.layout);const roles=G(()=>S.adm.roles.map(r=>[r.id,r.n]),[["exec","Executive"],["admin","Platform admin"]]);const teams=G(()=>TEAMS.map(t=>[t.n,t.n]),[]);

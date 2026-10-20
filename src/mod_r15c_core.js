@@ -67,7 +67,7 @@ function decorateNames(){const id=G(()=>S.screen);if(!id)return;const v=q1("#vie
  else if(!eb){hero.insertAdjacentHTML("afterbegin",`<div class="eyebrow">${crumbHTML(id)}</div>`)}
  if(h1&&!h1.dataset.r15n){const detail=!!RT.arg||R15.detail&&R15.detail(id);h1.dataset.r15n="1";
   if(!detail&&h1.textContent.trim().toLowerCase()!==lab.toLowerCase()){const old=h1.innerHTML;h1.textContent=lab;const tag=D.createElement("p");tag.className="r15-tag";tag.innerHTML=old;h1.insertAdjacentElement("afterend",tag)}}
- document.title=(id==="home"?"Oukala":lab+" · Oukala");
+ document.title=(id==="home"?BRAND.name:lab+" · "+BRAND.name);
  const lv=q1("#r15Live");if(lv)lv.textContent=lab}
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r15-grp]");if(!b)return;const g=b.dataset.r15Grp;
  let pop=q1("#r15GrpPop");if(!pop){pop=D.createElement("div");pop.id="r15GrpPop";pop.setAttribute("popover","auto");pop.className="glass r15-grppop";pop.setAttribute("aria-label","Screens in this group");D.body.appendChild(pop)}

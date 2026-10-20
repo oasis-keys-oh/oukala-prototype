@@ -5,13 +5,13 @@
 (function(){
 const W=window;const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const N0=n=>Number(n).toLocaleString("en-US");
 S.r15d=S.r15d||{};S.r15d.ev=S.r15d.ev||{tab:0,verify:null,fw:"all"};
 
 /* ---------- the hash chain ---------- */
 const KEY="oukala-r15d-auditchain";
-let chain=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}})();
+let chain=U.store.get(KEY,[])||[];
 const earlier=chain.length;
 let seenLen=0,busy=false,pending=false;
 const enc=s=>new TextEncoder().encode(s);
@@ -24,7 +24,7 @@ async function sync(){
   const A=G(()=>AUDIT,[]);const fresh=A.length-seenLen;
   if(fresh>0){const add=A.slice(0,fresh).reverse();
    for(const a of add){const prev=chain.length?chain[chain.length-1].h:"genesis";const e=canon(a);chain.push({n:chain.length+1,e,h:await sha(prev+"|"+e),sess:1})}
-   seenLen=A.length;try{localStorage.setItem(KEY,JSON.stringify(chain.slice(-1500)))}catch(x){}}
+   seenLen=A.length;U.store.set(KEY,chain.slice(-1500))}
  }finally{busy=false;if(pending){pending=false;sync()}}
 }
 async function verify(){
@@ -72,7 +72,7 @@ function tabControls(){
  const L=ctlRows(),cur=controls().filter(CUR).length;
  return card("Controls and their evidence",`${cur} of ${controls().length} controls have current evidence. Select Evidence pack to download the log extract, policy version, owner and date for one control.`,
  `<div class="row" style="margin-bottom:12px">${["all"].concat(fws()).map(f=>`<button type="button" class="chip" data-r15d-evfw="${E(f)}" aria-pressed="${S.r15d.ev.fw===f}">${f==="all"?"All frameworks":E(f)}</button>`).join("")}</div>
- <div class="tablewrap"><table class="tbl"><thead><tr><th>Control</th><th>Framework</th><th>Evidence</th><th>Last evidenced</th><th>Owner</th><th>Items</th><th></th></tr></thead><tbody>${L.map(c=>`<tr><td><b>${E(c.ref)}</b><small class="muted">${E(c.t)}</small></td><td>${E(c.fw)}</td><td><span class="pill ${CUR(c)?"good":c.ev==="missing"?"bad":"warn"}">${E(c.ev)}</span></td><td>${E(c.last)}</td><td>${E(c.own)}</td><td class="num">${(c.items||[]).length}</td><td><button class="btn quiet" data-r15d-pack="${E(c.id)}">Evidence pack</button>${c.go?`<button class="btn quiet" data-go="${E(c.go)}">Open feature</button>`:""}</td></tr>`).join("")}</tbody></table></div>`)}
+ <div class="tablewrap"><table class="tbl"><thead><tr><th>Control</th><th>Framework</th><th>Evidence</th><th>Last evidenced</th><th>Owner</th><th>Items</th><th></th></tr></thead><tbody>${L.map(c=>`<tr><td><b>${E(c.ref)}</b><small class="muted">${E(c.t)}</small></td><td>${E(c.fw)}</td><td><span class="pill ${CUR(c)?"good":c.ev==="missing"?"bad":"warn"}">${E(c.ev)}</span></td><td>${E(c.last)}</td><td>${c.own?ownerChip(c.own,{role:"Owner"}):""}</td><td class="num">${(c.items||[]).length}</td><td><button class="btn quiet" data-r15d-pack="${E(c.id)}">Evidence pack</button>${c.go?`<button class="btn quiet" data-go="${E(c.go)}">Open feature</button>`:""}</td></tr>`).join("")}</tbody></table></div>`)}
 function tabApprovals(){const L=approvals();return card("Approvals",`${L.length} approval records: invoice decisions with the checks behind them, plus approvals waiting in Needs you.`,`<div class="tablewrap"><table class="tbl"><thead><tr><th>Record</th><th>What</th><th>Amount</th><th>Advisor</th><th>Decision</th><th>Basis</th></tr></thead><tbody>${L.map(a=>`<tr><td><code>${E(a.id)}</code></td><td>${E(a.what)}</td><td class="num">${a.amt===""?"":"$"+N0(a.amt)}</td><td>${E(a.rec)}</td><td><span class="pill ${a.decision==="pending"?"warn":"good"}">${E(a.decision)}</span></td><td>${E(a.basis)}</td></tr>`).join("")}</tbody></table></div>`)}
 function chainCard(){
  const v=S.r15d.ev.verify,ci=R15D.chainInfo();

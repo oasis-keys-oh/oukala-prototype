@@ -653,7 +653,7 @@ function refChips(f){
 }
 function mapHTML(){
  const W=LAY.W,H=LAY.H;
- const lanes=LAY.lanes.map(l=>`<div class="mm-lane" style="top:${l.y}px;height:${l.h}px;left:${GL}px;width:${W-GL-6}px;--c:${bandCol(l.bi)}"><span class="mm-lt">${E(l.name)}<small>${l.n} modules</small></span></div>`).join("");
+ const lanes=LAY.lanes.map(l=>`<div class="mm-lane" style="top:${l.y}px;height:${l.h}px;left:${GL}px;width:${W-GL-6}px;--c:${bandCol(l.bi)}"><span class="mm-lt">${E(l.name)}<small>${U.esc(l.n)} modules</small></span></div>`).join("");
  const nodes=MODS.map(m=>`<button type="button" class="mm-n${m.proposed?" prop":""}" data-mm-n="${m.id}" style="left:${m.x}px;top:${m.y}px;--c:${bandCol(m.bi)}" aria-label="${E(m.name)}, ${m.nout} pushes, ${m.nin} pulls${m.proposed?", proposed module":""}${m.proc?"":", no process defined"}"><i class="mm-bar"></i><b>${E(m.sn)}</b><span class="mm-io"><em class="o">${m.nout}</em> out <em class="i">${m.nin}</em> in</span>${m.proposed?`<u class="mm-pp">Proposed</u>`:m.proc?`<i class="mm-mb" data-mm-mb title="Process maturity"></i>`:`<u class="mm-np" title="No process defined for this module yet"></u>`}</button>`).join("");
  const mk=ARR.map(c=>`<marker id="mm-ar-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" class="mm-mk ${c}"/></marker>`).join("");
  return `<div class="mm-vp" data-mm-vp tabindex="0" role="application" aria-label="Module map. Drag to pan. Control plus scroll or the plus and minus buttons to zoom. Select a module for its pushes and pulls."><div class="mm-world" data-mm-world style="width:${W}px;height:${H}px">${lanes}<svg class="mm-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>${mk}</defs><g class="mm-bund" data-mm-bund-g></g><g class="mm-edges" data-mm-edges></g></svg>${nodes}</div>
@@ -699,7 +699,7 @@ function geom(list){
 function drawEdges(){
  const g=document.querySelector("[data-mm-edges]");if(!g)return;
  const list=edgesNow();geom(list);
- g.innerHTML=list.map(e=>`<g class="mm-e ${e.cls}${e.far?" far":""}${MM.edge===e.k?" on":""}" data-mm-edge="${e.k}"><path class="mm-hit" d="${e.d}"/><path class="mm-line" d="${e.d}" marker-end="url(#mm-ar-${e.cls})"/>${e.n>1?`<g class="mm-bub" transform="translate(${e.mx},${e.my})"><circle r="9"/><text y="3.6" text-anchor="middle">${e.n}</text></g>`:""}</g>`).join("");
+ g.innerHTML=list.map(e=>`<g class="mm-e ${e.cls}${e.far?" far":""}${MM.edge===e.k?" on":""}" data-mm-edge="${e.k}"><path class="mm-hit" d="${e.d}"/><path class="mm-line" d="${e.d}" marker-end="url(#mm-ar-${e.cls})"/>${e.n>1?`<g class="mm-bub" transform="translate(${e.mx},${e.my})"><circle r="9"/><text y="3.6" text-anchor="middle">${U.esc(e.n)}</text></g>`:""}</g>`).join("");
  const note=document.querySelector("[data-mm-note]");if(note)note.textContent=noteText(list);
 }
 function noteText(list){
@@ -772,7 +772,7 @@ function setPair(a,b,fly){
 const WHOPILL=v=>window.STEPMODE?STEPMODE.pill(v):pill(String(v||"human"),"info");
 const FDESC={live:"Updates within seconds","near-live":"Updates within a minute or two",hourly:"Refreshed about every hour",daily:"Refreshed once a day",unknown:"No registered field yet"};
 const MDESC={event:"Sent the moment the trigger happens.",batch:"Sent on a schedule, in a group.",human:"Sent when a person acts or decides."};
-const AUTH={platform:"Oukala is authoritative",external:"External system wins",shared:"Shared, newest wins"};
+const AUTH={platform:BRAND.name+" is authoritative",external:"External system wins",shared:"Shared, newest wins"};
 const modChip=id=>`<button type="button" class="mm-mc" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i>${E(MB[id].sn)}</button>`;
 const mdOf=m=>BANDS[m.bi][1];
 function flowRow(f,other){
@@ -813,7 +813,7 @@ function modHTML(m){
  const bl=blastOf(m.id,3).reduce((a,l)=>a+l.length,0);
  const tabs=[["pulls","Pulls from",m.nin],["pushes","Pushes to",m.nout],["proc","Its process",m.steps],["data","Data",m.r.length+m.w.length],["blast","Blast radius",bl]];
  const body=MM.tab==="pushes"?grouped(m,"out"):MM.tab==="proc"?procTab(m):MM.tab==="data"?dataTab(m):MM.tab==="blast"?blastTab(m):grouped(m,"in");
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${E(m.own)}${m.proposed?' <span class="pill warn">Proposed</span>':""}${matOf(m.id)?` <span class="mm-mb mt${matOf(m.id).level}" title="Average process maturity">${matOf(m.id).level}</span> <span class="small muted">process maturity ${matOf(m.id).avg} of 5</span>`:""}</p>
+ return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${m.own?ownerChip(m.own,{role:"Owner"}):""}${m.proposed?' <span class="pill warn">Proposed</span>':""}${matOf(m.id)?` <span class="mm-mb mt${matOf(m.id).level}" title="Average process maturity">${matOf(m.id).level}</span> <span class="small muted">process maturity ${matOf(m.id).avg} of 5</span>`:""}</p>
  <div class="row">${m.scr?`<button type="button" class="btn primary" data-mm-open="${m.id}">Open screen</button>`:""}<button type="button" class="btn" data-mm-cmp="${m.id}">Compare with another</button>${m.proc?`<button type="button" class="btn" data-mm-popen="${window.PROCLIB&&PROCLIB.primary?PROCLIB.primary(m.id):m.id}">Process page</button>`:""}</div></div>
  <div class="mm-tabs" role="tablist">${tabs.map(t=>`<button type="button" role="tab" class="${MM.tab===t[0]?"on":""}" aria-selected="${MM.tab===t[0]}" data-mm-tab="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div><div class="mm-ib" role="tabpanel">${body}</div>`;
 }
@@ -830,7 +830,7 @@ function flowHTML(){
  <div class="mm-chain">${modChip(f.from)}<span aria-hidden="true">&rarr;</span>${modChip(f.to)}</div>
  ${sib.length>1?`<div class="row">${sib.map((x,i)=>`<button type="button" class="chip ${x.id===f.id?"on":""}" data-mm-flow="${x.id}">Flow ${i+1} of ${sib.length}</button>`).join("")}</div>`:""}</div>
  <div class="mm-ib"><dl class="kv"><dt>Trigger</dt><dd>${E(f.trig)}</dd><dt>Mode</dt><dd>${modePillH(f.mode)} ${E(MDESC[f.mode])}</dd><dt>Purpose</dt><dd>${E(f.why)}</dd><dt>Freshness</dt><dd><span class="pill ${f.fresh==="live"||f.fresh==="near-live"?"good":"mute"}">${E(f.fresh)}</span> ${E(FDESC[f.fresh]||"")}</dd>
- <dt>Sending end</dt><dd>${E(A.name)}, accountable ${E(A.own)}</dd><dt>Receiving end</dt><dd>${E(B.name)}, accountable ${E(B.own)}</dd>
+ <dt>Sending end</dt><dd>${E(A.name)}, accountable ${A.own?ownerChip(A.own,{role:"Owner"}):""}</dd><dt>Receiving end</dt><dd>${E(B.name)}, accountable ${B.own?ownerChip(B.own,{role:"Owner"}):""}</dd>
  <dt>Contract</dt><dd>${f.status==="registered"?pill(f.partial?"Registered, part still planned":"Registered","good"):f.status==="planned"?pill("Planned entity only","warn"):pill("No entity yet","bad")}</dd></dl>
  ${f.refs.length?f.refs.map(r=>refBlock(r,f)).join(""):`<div class="mm-rb plan"><p class="small">No registry entity carries this data. It moves as free text or a message, so nobody owns its shape.</p></div>`}
  <div class="row" style="margin-top:12px"><button type="button" class="btn" data-mm-showflow="${f.id}">Show on map</button></div></div>`;
@@ -950,7 +950,7 @@ function screen(){
  const s=ST(),nB=BANDS.length;
  if(!MM._seen){MM._seen=1;if(window.innerWidth<=1000)MM.insp=false}
  const kp=kpiRow([["Modules",s.n,"in "+nB+" bands"],["Data flows",s.nf,"push and pull"],["Push and pull",METRICS.m_mm_pp.cur+"%","modules documented",{metric:"m_mm_pp"}],["With a data contract",METRICS.m_mm_ct.cur+"%","flows, registered entity",{metric:"m_mm_ct"}],["Live or near-live",METRICS.m_mm_live.cur+"%","of contracted flows",{metric:"m_mm_live"}]]);
- const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${s.n}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition${(()=>{try{const t=PROCLIB.stats();return "; "+t.processes+" processes in all, average maturity "+t.avgMaturity+" of 5"}catch(e){return ""}})()}.${s.prop?` ${s.prop} proposed module${s.prop===1?" is":"s are"} drawn dashed.`:""}`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}<button type="button" class="btn" data-mm-lib>Process library</button></div>`);
+ const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${U.esc(s.n)}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition${(()=>{try{const t=PROCLIB.stats();return "; "+t.processes+" processes in all, average maturity "+t.avgMaturity+" of 5"}catch(e){return ""}})()}.${s.prop?` ${s.prop} proposed module${s.prop===1?" is":"s are"} drawn dashed.`:""}`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}<button type="button" class="btn" data-mm-lib>Process library</button></div>`);
  const pane0=`${toolbar()}<div class="mm-cv">${mapHTML()}<aside class="mm-insp glass" data-mm-insp aria-label="Module details"></aside></div><div class="mm-note small muted" data-mm-note aria-live="polite"></div><div style="margin-top:12px">${kp}</div>`;
  setTimeout(mount,0);
  return `<div class="screen mm-screen">${hero_}${lensNote()}${views("mm_v",["Module map","Matrix","Journeys","Coverage","Process areas (original)","Process library"],[pane0,matrixPane(),journeysPane(),coveragePane(),oldPane(),libTab()])}${procCard("plat_map")}</div>`;

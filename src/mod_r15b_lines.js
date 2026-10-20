@@ -15,9 +15,9 @@ const COLS=[
 const GROUPS=[["","No grouping"],["cc","Cost center"],["proj","Project"],["tower","Tower"],["owner","Line owner"],["ccOwner","Cost center owner"],["color","Funding color"],["cat","Category"],["unit","Org unit"],["vendor","Vendor"]];
 const FILTERS=[["cc","Cost center"],["proj","Project"],["cat","Category"],["tower","Tower"],["owner","Line owner"],["color","Funding color"],["var","Variance"]];
 const S_=S.bl=Object.assign({q:"",f:{},sort:{k:"appr",d:-1},group:"",page:0,size:50,cols:null,collapsed:{},scale:"real"},S.bl||{});
-try{if(!S_.cols){const s=JSON.parse(localStorage.getItem("oukala.bl.cols")||"null");if(Array.isArray(s)&&s.length)S_.cols=s}}catch(e){}
+try{if(!S_.cols){const s=U.store.get("oukala.bl.cols",null);if(Array.isArray(s)&&s.length)S_.cols=s}}catch(e){}
 if(!S_.cols)S_.cols=COLS.filter(c=>c.on).map(c=>c.k);
-const saveCols=()=>{try{localStorage.setItem("oukala.bl.cols",JSON.stringify(S_.cols))}catch(e){}};
+const saveCols=()=>{U.store.set("oukala.bl.cols",S_.cols)};
 /* ---- rows ---- */
 let REAL=null,REALKEY="";
 function colorOf(id){const r=tryv(()=>BUDREQ.requests().find(x=>x.lineId===id||x.line===id&&x.st==="funded"),null);return r&&r.color?r.color:"OP-U"}
@@ -57,7 +57,7 @@ function body(rows){const cols=visCols(),n=cols.length;let items=[];
   [...m.entries()].sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).forEach(([k,v])=>{const t=tot(v);items.push({g:k,n:v.length,t});if(!S_.collapsed[S_.group+":"+k])v.forEach(r=>items.push({r}))})}
  else items=rows.map(r=>({r}));
  const size=S_.size,pages=Math.max(1,Math.ceil(items.length/size));if(S_.page>=pages)S_.page=pages-1;const slice=items.slice(S_.page*size,S_.page*size+size);
- const trs=slice.map(x=>{if(x.g!==undefined){const open=!S_.collapsed[S_.group+":"+x.g];return `<tr class="bl-grp"><td colspan="${n}"><button type="button" data-bl-grp="${H(x.g)}" aria-expanded="${open}"><i>${open?"▾":"▸"}</i><b>${H(x.g)}</b> <span class="muted">${x.n} line${x.n===1?"":"s"} · approved ${C$(x.t.appr)} · forecast ${C$(x.t.fcst)} · variance ${sg(x.t.fcst-x.t.appr)}</span></button></td></tr>`}
+ const trs=slice.map(x=>{if(x.g!==undefined){const open=!S_.collapsed[S_.group+":"+x.g];return `<tr class="bl-grp"><td colspan="${n}"><button type="button" data-bl-grp="${H(x.g)}" aria-expanded="${open}"><i>${open?"▾":"▸"}</i><b>${H(x.g)}</b> <span class="muted">${U.esc(x.n)} line${x.n===1?"":"s"} · approved ${C$(x.t.appr)} · forecast ${C$(x.t.fcst)} · variance ${sg(x.t.fcst-x.t.appr)}</span></button></td></tr>`}
   return `<tr>${cols.map(c=>`<td class="${c.num?"num tabular":""} ${c.wrap?"wrap":""} ${c.tok?"tok":""}">${cell(c,x.r)}</td>`).join("")}</tr>`}).join("")||`<tr><td colspan="${n}" class="muted" style="padding:24px">No lines match. Clear a filter or the search.</td></tr>`;
  const t=tot(rows),foot=`<tr class="bl-tot">${cols.map((c,i)=>{if(i===0)return `<td><b>Total</b></td>`;if(i===1&&!c.num)return `<td class="muted">${rows.length.toLocaleString("en-US")} line${rows.length===1?"":"s"}${hasFilter()?" (filtered)":""}</td>`;
   if(c.k==="appr")return `<td class="num tabular"><b>${D$(t.appr)}</b></td>`;if(c.k==="fcst")return `<td class="num tabular"><b>${D$(t.fcst)}</b></td>`;if(c.k==="act")return `<td class="num tabular"><b>${D$(t.act)}</b></td>`;if(c.k==="comm")return `<td class="num tabular"><b>${D$(t.comm)}</b></td>`;
@@ -97,7 +97,7 @@ document.addEventListener("change",e=>{let t;
  if(t=e.target.closest("[data-bl-scale]")){S_.scale=t.checked?"ent":"real";S_.f={};S_.page=0;render();return}
  if(t=e.target.closest("[data-bl-col]")){const k=t.dataset.blCol;S_.cols=COLS.filter(c=>c.k===k?t.checked:S_.cols.includes(c.k)).map(c=>c.k);if(!S_.cols.length)S_.cols=["id"];saveCols();const d=document.querySelector(".bl-cols"),open=d&&d.open;paint();const th=document.querySelector(".bl-cols summary");if(th)th.textContent="Columns ("+S_.cols.length+")";return}});
 function lineDrawer(id){const r=base().find(x=>x.id===id);if(!r)return;derive(r);
- openDrawer(`<h3 class="ftitle">${H(r.id)} · ${H(r.n)}</h3><dl class="kv"><dt>Project</dt><dd>${H(r.proj)} (${H(r.prog)})</dd><dt>Cost center</dt><dd>${H(r.cc)} ${H(r.ccn)}</dd><dt>Org unit</dt><dd>${H(r.unit)}</dd><dt>Line owner</dt><dd>${H(r.owner)}</dd><dt>Cost center owner</dt><dd>${H(r.ccOwner)}</dd><dt>Tower</dt><dd>${H(r.tower)}</dd><dt>Vendor</dt><dd>${H(r.vendor)}</dd><dt>Funding color</dt><dd>${H(r.color)}</dd><dt>Approved</dt><dd class="tabular">${D$(r.appr)}</dd><dt>Committed</dt><dd class="tabular">${D$(r.comm)}</dd><dt>Actual</dt><dd class="tabular">${D$(r.act)}</dd><dt>Forecast</dt><dd class="tabular">${D$(r.fcst)}</dd><dt>Variance</dt><dd class="tabular">${sg(r.vari)}</dd></dl><p class="small muted">Sample line generated for the scale test.</p>`)}
+ openDrawer(`<h3 class="ftitle">${H(r.id)} · ${H(r.n)}</h3><dl class="kv"><dt>Project</dt><dd>${H(r.proj)} (${H(r.prog)})</dd><dt>Cost center</dt><dd>${H(r.cc)} ${H(r.ccn)}</dd><dt>Org unit</dt><dd>${H(r.unit)}</dd><dt>Line owner</dt><dd>${r.owner?ownerChip(r.owner,{role:"Owner"}):""}</dd><dt>Cost center owner</dt><dd>${H(r.ccOwner)}</dd><dt>Tower</dt><dd>${H(r.tower)}</dd><dt>Vendor</dt><dd>${H(r.vendor)}</dd><dt>Funding color</dt><dd>${H(r.color)}</dd><dt>Approved</dt><dd class="tabular">${D$(r.appr)}</dd><dt>Committed</dt><dd class="tabular">${D$(r.comm)}</dd><dt>Actual</dt><dd class="tabular">${D$(r.act)}</dd><dt>Forecast</dt><dd class="tabular">${D$(r.fcst)}</dd><dt>Variance</dt><dd class="tabular">${sg(r.vari)}</dd></dl><p class="small muted">Sample line generated for the scale test.</p>`)}
 /* ---- metric, process model ---- */
 Object.assign(METRICS,{m_bl_over:{n:"Budget lines forecast above approved",f:"Lines whose forecast at completion is above approved ÷ all budget lines × 100",u:"%",cur:47,tgt:25,badAt:50,dir:"min",max:100,tr:[30,34,38,41,41,44,47,47],owner:"Victor Amaya",use:["All budget lines"],rem:{kind:"sop",ref:"SOP-BL1",title:"Review lines over approved and decide: absorb, reserve or reforecast",agent:"",auto:false,state:"idle",prog:""}}});
 function syncM(){const m=METRICS.m_bl_over,L=tryv(()=>K().B().lines,[]);if(!m||!L.length)return;const v=Math.round(100*L.filter(l=>l.fcst>l.appr).length/L.length);m.cur=v;m.tr=m.tr.slice(0,7).concat([v])}
@@ -106,7 +106,7 @@ if(typeof PROC!=="undefined")PROC.reg("bud_lines",{title:"Review the full budget
  {n:"Open all budget lines",d:"One click from the budget home. Every line with approved, forecast, actual, committed, variance, owner, cost center, project, vendor and funding color.",who:"human",owner:"Budget owner",sla:"Instant",in:"Budget lines",out:"Line list"},
  {n:"Filter, group and sort",d:"Group by cost center, project, tower, owner or funding color; totals follow the filter.",who:"human",owner:"Budget owner",sla:"Instant",in:"Line list",out:"Focused view"},
  {n:"Drill into a line",d:"Open the line to see its story, reserve draws and invoices; edit it or reforecast.",who:"human",owner:"Line owner",sla:"Instant",in:"Focused view",out:"Line decision"},
- {n:"Export and share",d:"CSV of the filtered lines for finance and the audit trail records the export.",who:"auto",owner:"Finance systems",sla:"Instant",in:"Focused view",out:"CSV, audit entry"}]});
+ {n:"Export and share",d:"CSV of the filtered lines for finance and the audit trail records the export.",who:"robot",owner:"Finance systems",sla:"Instant",in:"Focused view",out:"CSV, audit entry"}]});
 /* ---- API, wiring ---- */
 window.BUDLINES={rows:()=>filtered(),all:()=>base().map(derive),state:()=>S_,columns:()=>COLS.map(c=>c.k)};
 const W={};

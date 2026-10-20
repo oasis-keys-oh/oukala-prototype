@@ -6,7 +6,7 @@
 const W=window;
 const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];R15D.homes=R15D.homes||{};
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const M=id=>G(()=>METRICS[id],null);
 const mv=id=>{const m=M(id);return m?mfmt(m):"n/a"};
 const ALLG=["my","help","plan","fix","money","people","learn","make","kit","lens","strat","grc","res","ai","reg","tech","plat","story","new"];/* R18: groups follow the Make / Work / Oversee structure */

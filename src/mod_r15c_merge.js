@@ -35,8 +35,8 @@ function switcher(){const id=G(()=>S.screen);const f=famOf[id];if(!f)return;cons
  if(f.views.length<2)return;
  const html=`<nav class="r15-fam" aria-label="Views of ${esc(f.label)}"><span class="r15-fl">${esc(f.label)}</span><span class="r15-fc">${chips}</span></nav>`;const hero=sc.querySelector(":scope > .hero");if(hero)hero.insertAdjacentHTML("afterend",html);else sc.insertAdjacentHTML("afterbegin",html)}
 function railOn(){const id=G(()=>S.screen);const f=famOf[id];if(!f||f.id===id)return;const b=D.querySelector('#nav .navi[data-nav="'+f.id+'"]');if(b){b.setAttribute("aria-current","page");b.closest(".navit")&&b.closest(".navit").classList.add("is-cur")}}
-const _render=W.render;
-W.render=function(){const r=_render.apply(this,arguments);try{switcher();railOn()}catch(e){console.error("r15 merge",e)}return r};
+/* CL-35: lifecycle through HOOKS, not a render wrapper */
+HOOKS.on("afterRender",()=>{try{switcher();railOn()}catch(e){console.error("r15 merge",e)}},{id:"r15.merge",order:1002});
 /* group home for the service catalog owner screen */
 setTimeout(()=>{G(()=>NAVX.add("svc_cat",{label:SINGLE.svc_cat,group:"fix"}))},0);
 })();

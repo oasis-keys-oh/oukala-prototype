@@ -137,7 +137,7 @@ Object.assign(METRICS,{
 const SX=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
 const STEPS=[SX("Open the record","Open any record from a list, search or a link; the shell shows id, status, owner and backup.","human","Platform team","Seconds","Record id","Record header and tabs"),
  SX("Discuss","Comment, @mention a person, add a tag or follow the record.","human","Sam Patel","Same day","Comment text","Comment and watchers"),
- SX("Notify","Mentioned people and watchers get an inbox notice; an event is emitted.","auto","Automatic","Instant","Comment or change","Inbox notice"),
+ SX("Notify","Mentioned people and watchers get an inbox notice; an event is emitted.","robot","Robot","Instant","Comment or change","Inbox notice"),
  SX("Edit in place","Change a field inline. The change is audited and written through the store.","gate","Sam Patel","Seconds","Field and new value","Change history entry"),
  SX("Link evidence","Attach metadata or link another record; no files are stored.","human","Sam Patel","Same day","Record id or address","Attachment and link"),
  SX("Review","The backup reviews follow-ups when the owner is away.","human","Leah Moss","Weekly","Open follow-ups","Updated record")];

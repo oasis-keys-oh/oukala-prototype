@@ -22,8 +22,8 @@ function tfAppr(){const v=q1("#view");const sc=q1(".screen",v);if(!sc||q1(".r15-
  const det=overview(sc,"flw_appr","Overview, delegation and service levels",stats,nodes);
  const anchor=q1(":scope > .r15-fam",sc)||hero;anchor.after(bar);bar.after(queue);if(det)queue.after(det)}
 const TF={flw_appr:tfAppr};
-const _render=W.render;
-W.render=function(){const r=_render.apply(this,arguments);try{const f=TF[G(()=>S.screen)];if(f)f()}catch(e){console.error("r15 task",e)}return r};
+/* CL-35: lifecycle through HOOKS, not a render wrapper */
+HOOKS.on("afterRender",()=>{try{const f=TF[G(()=>S.screen)];if(f)f()}catch(e){console.error("r15 task",e)}},{id:"r15.task",order:1003});
 R15.taskFirst=TF;
 /* ---- rhythm guard: bordered cards that touch (gap under 8px) get a real gap, whoever built the screen ---- */
 const like=el=>{const cs=getComputedStyle(el);if(cs.display==="none"||cs.visibility==="hidden")return false;if(!(parseFloat(cs.borderTopWidth)+parseFloat(cs.borderLeftWidth)>=1)||cs.borderTopStyle==="none")return false;if((parseFloat(cs.borderTopLeftRadius)||0)<8)return false;const r=el.getBoundingClientRect();return r.width>=110&&r.height>=36&&!el.matches("button,.chip,.pill,.btn,input,select,textarea,label,summary,.fchip,.vsw,.vsw *")};
@@ -41,7 +41,7 @@ function rhythm(){const v=q1("#view");if(!v||W.__r15rh)return;W.__r15rh=1;try{le
   else{kids.forEach(k=>{k.style.marginBottom="12px"})}}
  }catch(e){}finally{W.__r15rh=0}}
 let rt=0,rt2=0;const sched=()=>{clearTimeout(rt);clearTimeout(rt2);rt=setTimeout(rhythm,40);rt2=setTimeout(rhythm,420)};
-const _r2=W.render;W.render=function(){const r=_r2.apply(this,arguments);sched();return r};
+HOOKS.on("afterRender",()=>sched(),{id:"r15.rhythm",order:1004});
 const arm=()=>{const v=q1("#view");if(!v)return setTimeout(arm,250);new MutationObserver(sched).observe(v,{childList:true,subtree:true});window.addEventListener("resize",sched)};setTimeout(arm,400);
 R15.rhythm=rhythm;
 })();

@@ -11,8 +11,8 @@ const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">
 const NOW=()=>Date.now(),H=3600e3;
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");
 const KEY=()=>"oukala-r16i-notif:"+G(()=>S.persona,"exec");
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY())||"null")}catch(e){return null}};
-const save=()=>{try{localStorage.setItem(KEY(),JSON.stringify({items:ST.items,seeded:1}))}catch(e){}};
+const load=()=>U.store.get(KEY(),null);
+const save=()=>{U.store.set(KEY(),{items:ST.items,seeded:1})};
 const TYPES=[["alert","Alerts"],["approval","Approvals"],["mention","Mentions"],["decision","Decisions"],["system","System"]];
 const PR=[["high","High"],["normal","Normal"],["low","Low"]];
 const ICON={alert:"M12 3l9 16H3zM12 10v4M12 17h.01",approval:"M5 12l4 4 10-10",mention:"M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM16 12v1.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.5 7",decision:"M4 5h16l-6 8v6l-4-2v-4z",system:"M12 8v4l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"};

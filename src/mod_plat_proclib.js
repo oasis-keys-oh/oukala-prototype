@@ -8,7 +8,7 @@ const PL=S.plib,E=esc;
 const ICON="M5 4h14v4H5zM5 10h14v4H5zM5 16h9v4H5zM17 17l2 2 3-4";
 const scName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:""};
 const hasScr=id=>SCREENS.some(x=>x[0]===id);
-const todayIso=()=>{try{return dateOf(TODAY).toISOString().slice(0,10)}catch(e){return "2026-10-06"}};
+const todayIso=()=>{try{return dateOf(TODAY).toISOString().slice(0,10)}catch(e){return U.TODAY_ISO}};
 const dayN=iso=>Date.parse(iso+"T00:00:00Z")/864e5;
 const slug=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
@@ -23,50 +23,50 @@ const NEW9={
    {n:"Review the variance",d:"The benefits board reviews shortfalls and decides whether the benefit still holds.",who:"human",owner:"Benefits board"},
    {n:"Close or re-forecast",d:"The board closes a realized benefit or restates the forecast.",who:"gate",owner:"Steering committee",out:"Closed or restated benefit"}]},
  bud_over:{name:"Budget control",family:"fin",trigger:"The fiscal budget is approved and loaded",owner:"Finance controller",entities:["cost_allocation","invoice","budget_line","purchase_order","cost_center"],metrics:["m_budvar","m_commit"],model:"tbm",std:["tbm"],
-  steps:[{n:"Load the approved budget",d:"The ledger budget is loaded by cost center and account.",who:"auto",owner:"Finance systems",sla:"Once a year",in:"General ledger budget",out:"Budget lines by cost center"},
-   {n:"Match spend and commitments",d:"Posted invoices and open purchase orders are matched to budget lines.",who:"auto",owner:"Finance systems",in:"Invoices and purchase orders"},
+  steps:[{n:"Load the approved budget",d:"The ledger budget is loaded by cost center and account.",who:"robot",owner:"Finance systems",sla:"Once a year",in:"General ledger budget",out:"Budget lines by cost center"},
+   {n:"Match spend and commitments",d:"Posted invoices and open purchase orders are matched to budget lines.",who:"robot",owner:"Finance systems",in:"Invoices and purchase orders"},
    {n:"Flag overruns",d:"An agent projects each line to year end and flags lines that will pass their limit.",who:"agent",owner:"Forecast Agent",sla:"Weekly",out:"List of at-risk lines"},
    {n:"Explain the variance",d:"The budget owner writes the cause and the plan.",who:"human",owner:"Budget owner"},
    {n:"Approve a transfer",d:"Moving money between lines needs approval at the authority level.",who:"gate",owner:"Finance controller"},
-   {n:"Publish the monthly view",d:"The month-end view goes to owners and the executive dashboard.",who:"auto",owner:"Finance systems"}]},
+   {n:"Publish the monthly view",d:"The month-end view goes to owners and the executive dashboard.",who:"robot",owner:"Finance systems"}]},
  bud_model:{name:"Financial model and forecast",family:"fin",trigger:"Month end closes or a major assumption changes",owner:"Finance controller",entities:["cost_allocation","forecast_entry","gl_account"],metrics:[],model:"tbm",std:[],
   steps:[{n:"Collect the drivers",d:"Headcount, vendor rates, volumes and project plans are gathered as model inputs.",who:"human",owner:"Finance analyst",in:"Plans and rate cards"},
    {n:"Build scenarios",d:"An agent builds base, low and high cases from the drivers and shows what moved.",who:"agent",owner:"Forecast Agent",out:"Three scenarios"},
    {n:"Reconcile with the ledger",d:"Actuals are tied back to the ledger before the forecast is trusted.",who:"human",owner:"Finance analyst"},
    {n:"Approve the forecast",d:"The finance leader approves the reforecast that becomes the plan of record.",who:"gate",owner:"CFO"},
-   {n:"Publish the reforecast",d:"The approved forecast replaces the old one in every view.",who:"auto",owner:"Finance systems"}]},
+   {n:"Publish the reforecast",d:"The approved forecast replaces the old one in every view.",who:"robot",owner:"Finance systems"}]},
  bud_doa:{name:"Delegation of authority",family:"fin",trigger:"Someone submits a spend, contract or change that needs approval",owner:"CFO office",entities:["person","change_approval_policy","approval_policy","organization_unit"],metrics:[],model:"cmmi",std:[],
   steps:[{n:"Set limits by role",d:"The board and CFO set approval limits by role, amount and risk.",who:"human",owner:"CFO office",in:"Board policy"},
-   {n:"Check the requester",d:"When something is submitted, the platform checks the requester against the limits.",who:"auto",owner:"Workflow engine"},
-   {n:"Route to the right approver",d:"The request goes to the lowest role whose limit covers it.",who:"auto",owner:"Workflow engine",sla:"Instant"},
+   {n:"Check the requester",d:"When something is submitted, the platform checks the requester against the limits.",who:"robot",owner:"Workflow engine"},
+   {n:"Route to the right approver",d:"The request goes to the lowest role whose limit covers it.",who:"robot",owner:"Workflow engine",sla:"Instant"},
    {n:"Escalate over-limit items",d:"Anything over every limit goes to the next level, with the reason recorded.",who:"gate",owner:"CFO office"},
-   {n:"Expire delegations",d:"Temporary delegations end on their date and are logged.",who:"auto",owner:"Workflow engine"}]},
+   {n:"Expire delegations",d:"Temporary delegations end on their date and are logged.",who:"robot",owner:"Workflow engine"}]},
  bud_ven:{name:"Vendor and contract management",family:"con",trigger:"A new vendor is proposed or a contract nears renewal",owner:"Procurement lead",entities:["contract","contract_obligation","vendor","ast_contract","invoice"],metrics:["m_vendor"],model:"tbm",std:[],
   steps:[{n:"Register the vendor and tier its risk",d:"Basic facts, data access and spend decide the risk tier.",who:"human",owner:"Procurement lead",in:"Vendor request"},
    {n:"Review the contract terms",d:"An agent compares clauses to the playbook and lists deviations.",who:"agent",owner:"Contract Analyst Agent",out:"Clause deviations"},
    {n:"Approve the award",d:"Procurement and the budget owner approve at their authority level.",who:"gate",owner:"Procurement lead"},
-   {n:"Track obligations and renewals",d:"Dates and duties are tracked and reminders are sent.",who:"auto",owner:"Contract Repository"},
+   {n:"Track obligations and renewals",d:"Dates and duties are tracked and reminders are sent.",who:"robot",owner:"Contract Repository"},
    {n:"Review performance",d:"The vendor owner reviews delivery, credits and risk each quarter.",who:"human",owner:"Vendor owner",sla:"Quarterly"},
    {n:"Renew, renegotiate or exit",d:"A decision is recorded with the evidence.",who:"gate",owner:"Procurement lead"}]},
  adm_gate:{name:"AI gateway and token spend",family:"ai",trigger:"An application or agent calls a model through the gateway",owner:"AI platform lead",entities:["cost_allocation","policy","application"],metrics:["m_aispend"],model:"gai",std:[],
   steps:[{n:"Register the model and route",d:"Each model and approved use gets a route, a budget and an owner.",who:"human",owner:"AI platform lead",in:"Model request"},
-   {n:"Apply policy to each call",d:"Personal data, topic and rate rules run on every request.",who:"auto",owner:"AI gateway",sla:"Instant"},
-   {n:"Meter tokens",d:"Tokens and cost are recorded per request, team and agent.",who:"auto",owner:"AI gateway",out:"Cost per team"},
-   {n:"Enforce the daily cap",d:"Spend over the cap pauses the route and alerts the owner.",who:"auto",owner:"AI gateway"},
+   {n:"Apply policy to each call",d:"Personal data, topic and rate rules run on every request.",who:"robot",owner:"AI gateway",sla:"Instant"},
+   {n:"Meter tokens",d:"Tokens and cost are recorded per request, team and agent.",who:"robot",owner:"AI gateway",out:"Cost per team"},
+   {n:"Enforce the daily cap",d:"Spend over the cap pauses the route and alerts the owner.",who:"robot",owner:"AI gateway"},
    {n:"Review spend and exceptions",d:"The platform lead reviews unusual spend and policy blocks.",who:"human",owner:"AI platform lead"}]},
  tower:{name:"AI oversight and control",family:"ai",trigger:"An agent run finishes, drifts or breaks a guardrail",owner:"AI governance lead",entities:["alert_event","runbook_execution","false_positive_feedback","automation_rule"],metrics:["m_guard"],model:"gai",std:[],
-  steps:[{n:"Watch agent runs",d:"Every run reports its outcome, cost, confidence and any override.",who:"auto",owner:"Control tower",in:"Agent run records"},
+  steps:[{n:"Watch agent runs",d:"Every run reports its outcome, cost, confidence and any override.",who:"robot",owner:"Control tower",in:"Agent run records"},
    {n:"Detect drift and guardrail hits",d:"An agent looks for rising override rates, cost spikes and blocked actions.",who:"agent",owner:"Ops Agent",out:"Findings"},
    {n:"Triage the finding",d:"A person decides whether it is noise, a defect or a risk.",who:"human",owner:"AI governance lead"},
    {n:"Pause or roll back an agent",d:"Pausing a production agent needs an authorized person.",who:"gate",owner:"AI governance lead"},
    {n:"Feed the result back",d:"The outcome becomes a test case and a guardrail update.",who:"agent",owner:"Test Agent"}]},
  adm_sec:{name:"Access and security administration",family:"gov",trigger:"A person asks for access, joins, moves or leaves",owner:"Security lead",entities:["person","role","permission_policy","audit_event"],metrics:[],model:"nist",std:["nist"],
   steps:[{n:"Request access",d:"The requester names the role and the reason.",who:"human",owner:"Requester",in:"Access request"},
-   {n:"Check role and policy",d:"The request is checked against the role catalog and separation-of-duty rules.",who:"auto",owner:"Entra ID"},
+   {n:"Check role and policy",d:"The request is checked against the role catalog and separation-of-duty rules.",who:"robot",owner:"Entra ID"},
    {n:"Approve privileged access",d:"Privileged roles need the security lead to approve.",who:"gate",owner:"Security lead"},
-   {n:"Provision and log",d:"Access is granted and the grant is logged.",who:"auto",owner:"Entra ID",out:"Granted access with log entry"},
+   {n:"Provision and log",d:"Access is granted and the grant is logged.",who:"robot",owner:"Entra ID",out:"Granted access with log entry"},
    {n:"Review access each quarter",d:"Managers confirm or remove each person's access.",who:"human",owner:"Security lead",sla:"Quarterly"},
-   {n:"Revoke on leave or move",d:"A person who separates or moves loses access that no longer fits.",who:"auto",owner:"Entra ID"}]},
+   {n:"Revoke on leave or move",d:"A person who separates or moves loses access that no longer fits.",who:"robot",owner:"Entra ID"}]},
  adm_audit:{name:"Audit and compliance evidence",family:"gov",trigger:"An audit period opens or a control test is due",owner:"Compliance lead",entities:["audit_event","control","policy","exception"],metrics:[],model:"nist",std:[],
   steps:[{n:"Select the control and period",d:"The compliance lead picks the control set and period to test.",who:"human",owner:"Compliance lead"},
    {n:"Collect the evidence",d:"An agent gathers logs, approvals and screenshots from the source systems.",who:"agent",owner:"Registry Agent",out:"Evidence set"},
@@ -183,9 +183,9 @@ function trigOf(P){
 /* ---------- assessment: six dimensions, each a ladder of five written criteria ---------- */
 function signals(P){
  const st=P.steps,n=st.length,mod=modOf(P.module),oi=ownerInfo(P),ed=edges();
- const c=w=>st.filter(s=>(s.who||"human")===w).length;
+ const c=w=>st.filter(s=>STEPMODE.of(s.who)===w).length;
  const withIO=st.filter(s=>s.in&&s.out).length,withOwner=st.filter(s=>s.owner).length,withSla=st.filter(s=>s.sla).length;
- const gates=c("gate"),agents=c("agent"),autos=c("auto"),humans=c("human");
+ const gates=c("gate"),agents=c("agent"),autos=c("robot"),humans=c("human");
  const mets=metricsOf(P),done=mets.filter(mDone),on=done.filter(mOn);
  const flows=mod?mod.inn.concat(mod.out):[],reg=flows.filter(f=>f.reg);
  const inG=(ed.up[P.id]||[]).length,outG=(ed.dn[P.id]||[]).length;
@@ -213,7 +213,7 @@ function crit(P){
   owned:`Accountable role: ${o.role}. ${o.named?"Named owner "+o.owner+(o.seeded?" (sample register)":""):"No named owner"}. ${o.backup?"Backup "+o.backup:"No backup"}. ${g.raci} distinct step owner${g.raci===1?"":"s"}. ${o.rev?"Last review "+o.rev.date+(o.rev.seed?" (sample register)":""):"No review recorded"}.`,
   measured:`${g.mets.length} metric${g.mets.length===1?"":"s"} linked, ${g.done.length} complete (formula, target, remediation), ${g.on.length} on target. ${g.hist?"At least one has six or more months of history.":"No metric has six months of history."}`,
   integrated:`${g.entN} entit${g.entN===1?"y":"ies"} touched, ${g.entReg} registered. ${g.regFlows} of ${g.flows} module data flows carry a registered entity. Handoffs ${g.ho?"run in and out":"are not documented both ways"}. ${g.nonOwn} entit${g.nonOwn===1?"y":"ies"} written without ownership.`,
-  automated:`${g.autos} automatic and ${g.agents} AI agent step${g.agents===1?"":"s"} out of ${g.n} (${Math.round(g.autoShare*100)}%). ${g.humans} by people, ${g.gates} approval gate${g.gates===1?"":"s"}.`,
+  automated:`${g.autos} robot and ${g.agents} AI agent step${g.agents===1?"":"s"} out of ${g.n} (${Math.round(g.autoShare*100)}%). ${g.humans} by people, ${g.gates} approval gate${g.gates===1?"":"s"}.`,
   governed:`Audit trail on. ${g.gates} approval gate${g.gates===1?"":"s"}. ${g.unfenced} AI step${g.unfenced===1?"":"s"} not followed by a person or a gate. ${g.std?"Aligned to a named standard.":"No standard named."} ${g.rvOk?"Reviewed in the last 12 months.":"No review in the last 12 months."}`
  };
  return{T,ev,g};
@@ -239,7 +239,7 @@ function finish(P){
  if(window.MAT&&MAT.tgtN&&P.cap){tg=[0,1,2].map(h=>{try{const v=MAT.tgtN(P.cap,h);return v!=null?v:tg[h]}catch(e){return tg[h]}})}
  const oi=ownerInfo(P);
  const dm=P.steps.map(s=>PROC.modeOf?PROC.modeOf(s):"hum");
- const ai=P.steps.filter(s=>/^(agent|auto)$/.test(s.who||"human")).length,sh=P.steps.length?ai/P.steps.length:0;
+ const ai=P.steps.filter(s=>STEPMODE.needsTrigger(s.who)).length,sh=P.steps.length?ai/P.steps.length:0;
  {const fx=window.OWNFIX&&OWNFIX[P.id];if(fx&&fx.name&&P.name.indexOf(fx.name)<0)P.name=fx.name}
  Object.assign(P,{a,level:mlv,l5:a.level,override:ov&&ov.model===P.model?ov:null,target:tg[0],targets:tg,max:mx,oi,owner:oi.owner||oi.role,mix:sh>=.6?"Mostly automated":sh>=.3?"Mixed":"Mostly people",modeMix:dm,mets:a.sig.mets,
   below:mlv<tg[0],hasOwner:oi.named,hasMetric:a.sig.mets.length>0});
@@ -346,7 +346,7 @@ function refreshMetrics(){
 const bk=P=>Math.max(1,Math.min(5,Math.round(P.level/P.max*5)));
 const lvPill=P=>`<span class="pl-lv pl-b${bk(P)}" title="Level ${P.level} of ${P.max}: ${E(levelName(P.model,P.level))}"><i>${P.level}</i><small>${E(levelName(P.model,P.level))}</small></span>`;
 const dimCell=v=>`<span class="pl-d pl-b${Math.max(0,v)}" title="${v} of 5">${v}</span>`;
-const WHON={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"};
+const WHON={human:"Person",agent:"AI agent",robot:"Robot",gate:"Approval gate"};
 const gof=id=>{const l=idx().by[id];return l||null};
 const primaryOf=mid=>{const L=idx().list;return L.find(P=>P.id===mid)||L.find(P=>P.module===mid)||null};
 const procBtn=(id,label)=>{const P=gof(id);return `<button type="button" class="pl-pc${P?" pl-b"+bk(P):""}" data-pl-open="${E(id)}" title="Open the full process page">${E(label||(P?P.name:id))}${P?`<small>${P.level}</small>`:""}</button>`};
@@ -364,10 +364,10 @@ function dimBars(P){
 const lvLegend=()=>legend([["0 Not met","--pl-c0"],["1","--pl-c1"],["2","--pl-c2"],["3","--pl-c3"],["4","--pl-c4"],["5 Best","--pl-c5"]]);
 const ownerLabel=oi=>oi.owner?(window.who&&who(oi.owner)?pchip(oi.owner):E(oi.owner)):`<span class="pill warn">No named owner</span> <span class="small muted">${E(oi.role)}</span>`;
 const ownerOf=P=>P.oi.owner||P.oi.role;
-function modeCounts(P){const c={};P.steps.forEach(s=>{const w=s.who||"human";c[w]=(c[w]||0)+1});return c}
+function modeCounts(P){const c={};P.steps.forEach(s=>{const w=STEPMODE.of(s.who);c[w]=(c[w]||0)+1});return c}
 function story(P){
  const c=modeCounts(P),mod=modOf(P.module),ed=edges();
- const parts=[`<b>${E(P.name)}</b> is run by ${P.oi.owner?"<b>"+E(P.oi.owner)+"</b>":"the "+E(P.oi.role)+" (no named owner yet)"}${P.oi.backup?", with "+E(P.oi.backup)+" as backup":""}. It has <b data-role="metric">${P.steps.length}</b> steps: ${c.auto||0} automatic, ${c.agent||0} by an AI agent, ${c.human||0} by people and ${c.gate||0} approval gate${c.gate===1?"":"s"}.`];
+ const parts=[`<b>${E(P.name)}</b> is run by ${P.oi.owner?"<b>"+E(P.oi.owner)+"</b>":"the "+E(P.oi.role)+" (no named owner yet)"}${P.oi.backup?", with "+E(P.oi.backup)+" as backup":""}. It has <b data-role="metric">${P.steps.length}</b> steps: ${c.robot||0} by a robot, ${c.agent||0} by an AI agent, ${c.human||0} by people and ${c.gate||0} approval gate${c.gate===1?"":"s"}.`];
  parts.push(`Maturity is <b data-role="metric">level ${P.level} of ${P.max} (${E(levelName(P.model,P.level))})</b> on the ${E(modelName(P.model))} scale${P.override?", set by a manual override with evidence":", assessed from platform signals"}. The Year 1 target is <b>${P.target}</b>${P.below?`, so it is <b>${P.target-P.level} level${P.target-P.level===1?"":"s"} short</b>`:", which it meets"}.`);
  const w=DK.slice().sort((a,b)=>P.a.dims[a]-P.a.dims[b])[0];
  parts.push(`The weakest dimension is <b>${DIMS[DK.indexOf(w)][1]}</b> at ${P.a.dims[w]} of 5.`);
@@ -419,7 +419,7 @@ function maturityPanel(P){
  const evid=DIMS.map(d=>`<tr><th scope="row">${d[1]}</th><td>${dimCell(a.dims[d[0]])}</td><td class="wrap">${E(a.ev[d[0]])}</td></tr>`).join("");
  return `<div class="pl-mat">
   <div class="row sp"><div><div class="eyebrow">Process maturity</div><h3 class="pl-h">Level ${P.level} of ${P.max}, ${E(levelName(P.model,P.level))}</h3></div><div class="row">${aiChip({model:"Maturity Agent",conf:P.override?.85:.7,title:"How this level was assessed",note:"Scores six dimensions from the process steps, owners, linked metrics, module data flows, automation share and gates. A person can override the result with evidence.",src:["Process steps and owners","Linked metrics","Module data flows","Gates and audit trail"],guards:["Reads platform records only","Cannot change a level without a named reviewer","Every override is audited"]})}${stdChip("cmmi","Levels follow the CMMI and ISO/IEC 33020 capability scale.")}</div></div>
-  <p class="small muted" data-role="story">Assessment basis: ${ov?`manual override by <b>${E(ov.reviewer)}</b> on ${E(ov.date)} (computed level was ${toModel(a.level,P.model)})`:`computed from observable platform signals, last recorded ${E((hist[hist.length-1]||{}).date||todayIso())}`}. Level = round(average of six dimensions) = ${a.raw}, capped at weakest dimension + 1 = ${a.weak+1}${a.capped?", so the cap applies":""}. Result ${a.level} on a 0 to 5 scale${a.level===0?"; the platform scale starts at 1, so it shows as Initial":""}.</p>
+  <p class="small muted" data-role="story">Assessment basis: ${ov?`manual override by <b>${ov.reviewer?ownerChip(ov.reviewer,{role:"Reviewer"}):""}</b> on ${E(ov.date)} (computed level was ${toModel(a.level,P.model)})`:`computed from observable platform signals, last recorded ${E((hist[hist.length-1]||{}).date||todayIso())}`}. Level = round(average of six dimensions) = ${a.raw}, capped at weakest dimension + 1 = ${a.weak+1}${a.capped?", so the cap applies":""}. Result ${a.level} on a 0 to 5 scale${a.level===0?"; the platform scale starts at 1, so it shows as Initial":""}.</p>
   <div class="dfullgrid pl-mg"><div class="pl-rwrap">${radar(P)}<div class="legend pl-lg"><span><i class="pl-sw cu"></i>Assessed level</span><span><i class="pl-sw tg"></i>Year 1 target (level ${P.target})</span></div></div><div>${dimBars(P)}</div></div>
   <div class="dfullgrid pl-mg"><div><div class="eyebrow">Level ladder, ${E(modelName(P.model))}</div>${ladder}</div>
    <div><div class="eyebrow">To reach level ${nxt}</div>${a.level>=5?"<p class='small'>Top of the scale.</p>":`<p class="small muted">Every dimension must be at least ${a.level} and the average must round to ${nxt}. Next written criteria, weakest first:</p><ul class="pl-ul">${nextCrit}</ul>`}
@@ -439,7 +439,7 @@ function whereHTML(){
   ${it(2,"From the Process library tab on the map","The Master process flow has a <b>Process library</b> tab and a button in its header. Both open this list.",`<button class="btn" data-pl-goscreen="plat_map" data-pl-tab6>Open the map's library tab</button>`)}
   ${it(3,"From Process connections","Select a process node, then <b>Open full process page</b> in its side panel. Upstream and downstream chips on the page jump to the neighbor.",`<button class="btn" data-pl-goscreen="plat_pmap">Open Process connections</button>`)}
   ${it(4,"From search","Press the search box at the top and type a process name, for example <i>incident</i>, <i>change enablement</i> or <i>benefits</i>. Every process is a result.",`<button class="btn" data-pl-open="itsm_inc">Try: Incidents</button>`)}
-  ${it(5,"From chat","Ask Oukala: <i>show the incident process</i>, <i>what is the maturity of change enablement</i>, <i>which processes are below target</i> or <i>open the process library</i>.",`<button class="btn" data-pl-goscreen="chat_home">Open chat</button>`)}
+  ${it(5,"From chat","Ask "+BRAND.name+": <i>show the incident process</i>, <i>what is the maturity of change enablement</i>, <i>which processes are below target</i> or <i>open the process library</i>.",`<button class="btn" data-pl-goscreen="chat_home">Open chat</button>`)}
   ${it(6,"From this library","Select any row in the table on the first tab, or any cell in the heat map on the Maturity tab.",`<button class="btn" data-pl-lib="0">Go to the table</button>`)}
  </div>`;
 }
@@ -450,7 +450,7 @@ function procPage(P){
  const entChip=(e,kind)=>`<button type="button" class="chip pl-ec" data-pl-ent="${E(e)}" title="Open ${E(entLabel(e))} in the data model">${E(entLabel(e))}${entReg(e)?"":" (planned)"}${kind?` <small>${kind}</small>`:""}</button>`;
  const ents=P.ent.all.length?`<div class="row">${P.ent.w.map(e=>entChip(e,"writes")).join("")}${P.ent.r.filter(e=>!P.ent.w.includes(e)).map(e=>entChip(e,"reads")).join("")}</div>`:`<p class="small muted">No entity is recorded for this process. Name the records it reads and writes so the data model can trace it.</p>`;
  const mets=P.mets.length?`<div class="row">${P.mets.map(k=>fchip(k)).join("")}</div>`:`<p class="small muted">No metric is linked. Without one the Measured dimension stays at 0. <button type="button" class="btn quiet" data-pl-goscreen="metrics">Open Metrics</button></p>`;
- const mix=Object.keys(c).map(w=>`<span class="pill ${w==="agent"?"info":w==="auto"?"good":w==="gate"?"warn":"mute"}">${c[w]} ${WHON[w].toLowerCase()}</span>`).join("");
+ const mix=Object.keys(c).map(w=>`<span class="pill ${w==="agent"?"info":w==="robot"?"good":w==="gate"?"warn":"mute"}">${c[w]} ${WHON[w].toLowerCase()}</span>`).join("");
  const nbHTML=(a,dir)=>a.length?`<div class="pl-nbs">${a.map(x=>edgeChip(x[0],x[1])).join("")}</div>`:`<p class="small muted">No ${dir} processes are documented.</p>`;
  return `<div class="pl-page" data-pl-page="${E(P.id)}">
  <div class="row sp"><div class="row"><span class="eyebrow">${E(famName(P.family))}</span>${mod?`<span class="pill mute">Module: ${E(mod.name)}</span>`:""}${P.src==="new"?'<span class="pill warn">New in Round 10</span>':P.src==="added"?'<span class="pill info">Added</span>':""}</div></div>
@@ -511,7 +511,7 @@ function stats(){
 }
 function famBars(){
  const L=idx().list,fams=[...new Set(L.map(P=>P.family))].map(f=>({f,l:L.filter(P=>P.family===f)})).map(x=>({f:x.f,n:x.l.length,a:avg(x.l.map(P=>P.level/P.max*5)),b:x.l.filter(P=>P.below).length})).sort((p,q)=>p.a-q.a);
- return `<div class="pl-fb">${fams.map(x=>`<div class="pl-fr"><span class="small">${E(famName(x.f))}</span><div class="pl-tk" role="img" aria-label="${E(famName(x.f))}: average level ${r1(x.a)} of 5"><i class="pl-b${Math.max(1,Math.round(x.a))}" style="width:${x.a*20}%"></i></div><span class="num small">${r1(x.a)}</span><span class="small muted">${x.n}</span></div>`).join("")}</div>${lvLegend()}`;
+ return `<div class="pl-fb">${fams.map(x=>`<div class="pl-fr"><span class="small">${E(famName(x.f))}</span><div class="pl-tk" role="img" aria-label="${E(famName(x.f))}: average level ${r1(x.a)} of 5"><i class="pl-b${Math.max(1,Math.round(x.a))}" style="width:${x.a*20}%"></i></div><span class="num small">${r1(x.a)}</span><span class="small muted">${U.esc(x.n)}</span></div>`).join("")}</div>${lvLegend()}`;
 }
 function libPane(){
  const s=stats(),L=idx().list;
@@ -565,7 +565,7 @@ function screen(){
 }
 PROC.reg("plat_proc",{title:"How a process gets into the library and gets a level",std:["cmmi","iso33k","bpmn"],steps:[
  {n:"Define the process",d:"Steps, who acts, inputs and outputs are written on the module's screen or in the Workflow designer.",who:"human",owner:"Process owner",sla:"Ad hoc",in:"How the work is done",out:"Documented steps"},
- {n:"Index and tie to a module",d:"The library finds it, ties it to a module on the map and registers it as a capability in Maturity models.",who:"auto",owner:"Process library",sla:"Instant",in:"Process definition",out:"Library entry"},
+ {n:"Index and tie to a module",d:"The library finds it, ties it to a module on the map and registers it as a capability in Maturity models.",who:"robot",owner:"Process library",sla:"Instant",in:"Process definition",out:"Library entry"},
  {n:"Assess from signals",d:"The Maturity Agent scores six dimensions from steps, owners, metrics, flows, automation and gates.",who:"agent",owner:"Maturity Agent",sla:"Every change",in:"Platform records",out:"Level with evidence"},
  {n:"Review or override",d:"A named reviewer can override a level with written evidence and a date.",who:"gate",owner:"Process governance lead",sla:"Quarterly",in:"Evidence",out:"Confirmed level"},
  {n:"Close the gap",d:"The next criterion becomes a gap action and, if funded, a project in Maturity models.",who:"human",owner:"Process owner",sla:"Per project",in:"Gap action",out:"Higher level"}]});
@@ -584,7 +584,7 @@ function addProcess(def){
  if(!id)return{ok:false,id:null,warnings:["The name could not be turned into an id."]};
  if(PROC.defs[id]||PL.custom.some(c=>c.id===id)||(IDX&&IDX.by[id]))return{ok:false,id,warnings:["A process with the id "+id+" already exists. Pick another name or id."]};
  let module=def.module;if(!modOf(module)){w.push(module?"Module "+module+" is not on the Master process flow. The process was tied to the Platform registry; move it to the right module.":"No module was named. The process was tied to the Platform registry; move it to the right module.");module="plat_reg"}
- const steps=(def.steps||[]).map(s=>({n:s.n||"Step",d:s.d||"",who:/^(human|agent|auto|gate)$/.test(s.who)?s.who:"human",owner:s.owner||"",sla:s.sla||"",in:s.in||"",out:s.out||""}));
+ const steps=(def.steps||[]).map(s=>({n:s.n||"Step",d:s.d||"",who:/^(human|agent|robot|auto|fn|gate)$/.test(s.who)?s.who:"human",owner:s.owner||"",sla:s.sla||"",in:s.in||"",out:s.out||""}));
  if(!steps.length)w.push("No steps. Maturity will stay at the bottom until steps are written.");
  else if(steps.some(s=>!s.in||!s.out))w.push(steps.filter(s=>!s.in||!s.out).length+" of "+steps.length+" steps have no inputs or outputs. The Defined dimension is capped by this.");
  if(!def.owner)w.push("No owner. Name an accountable person and a backup so the Owned dimension can rise.");
@@ -651,14 +651,14 @@ function revForm(id){
   onSubmit:v=>{PL.rev[id]={date:v.date,by:v.by,note:v.note||""};bump();audit("Process library: recorded review",P.name+" by "+v.by);toast("Review recorded","good");render();openProc(id)}});
 }
 function parseSteps(txt){
- const map={person:"human",human:"human",people:"human",agent:"agent","ai agent":"agent",ai:"agent",auto:"auto",automatic:"auto",gate:"gate",approval:"gate","approval gate":"gate"};
+ const map={person:"human",human:"human",people:"human",agent:"agent","ai agent":"agent",ai:"agent",robot:"robot",auto:"robot",automatic:"robot",gate:"gate",approval:"gate","approval gate":"gate"};
  return String(txt||"").split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const m=l.match(/^([A-Za-z ]{2,14}):\s*(.+)$/);const w=m&&map[m[1].toLowerCase().trim()];return w?{n:m[2].trim(),who:w}:{n:l,who:"human"}});
 }
 function addForm(){
  const mods=modsAll();
  openForm({id:"pl_add",title:"Add a process",story:"Adds a process to the library, registers it as a capability in Maturity models and in the process registry, and tells you what is missing. A new process starts honestly low; each warning is the next thing to fill in.",submit:"Add process",
   fields:[{section:"What it is"},{k:"name",label:"Process name",type:"text",req:true,ph:"Vendor onboarding"},{k:"module",label:"Module it belongs to",type:"select",req:true,opts:mods.map(m=>[m.id,m.name])},{k:"family",label:"Family",type:"select",opts:(window.LINKS?LINKS.families:[]).map(f=>[f.id,f.name])},{k:"trigger",label:"Trigger",type:"text",ph:"A vendor is approved by procurement"},{k:"owner",label:"Accountable owner",type:"people"},
-   {section:"How it works"},{k:"steps",label:"Steps, one per line",type:"longtext",wide:true,help:"Start a line with person:, agent:, auto: or gate: to say who acts. Default is a person.",ph:"person: Collect the vendor form\nagent: Check the form against the policy\ngate: Procurement approves\nauto: Create the vendor record"},
+   {section:"How it works"},{k:"steps",label:"Steps, one per line",type:"longtext",wide:true,help:"Start a line with person:, agent:, robot: or gate: to say who acts. Default is a person.",ph:"person: Collect the vendor form\nagent: Check the form against the policy\ngate: Procurement approves\nauto: Create the vendor record"},
    {k:"entities",label:"Entities it touches",type:"multi",opts:(window.PLAT&&PLAT.entities?PLAT.entities():[]).map(e=>[e.id,e.label])},{k:"metrics",label:"Metrics",type:"multi",opts:Object.keys(METRICS).slice(0,260).map(k=>[k,METRICS[k].n])},{k:"model",label:"Maturity model",type:"select",opts:[["","Default for the family"]].concat(matReady()?MAT.ALLM().map(m=>[m.id,m.n]):[])}],
   defaults:{family:"wf",module:"plat_reg"},
   live:v=>{const w=[];if(!v.owner)w.push("no owner");if(!v.trigger)w.push("no trigger");if(!(v.metrics||[]).length)w.push("no metric");if(!String(v.steps||"").trim())w.push("no steps");return `<p class="small muted">${w.length?"Will start with: "+w.join(", ")+".":"Looks complete. The assessment will still score it from signals."}</p>`},
@@ -710,9 +710,9 @@ ASKX.push(q=>{
    before this module loaded are backfilled. Draft levels are modeled from the definition (steps, owner, step kinds, gates); drafts
    have no metrics yet, so Measured is 0. The record is recomputed when the steps change. Drafts are not counted as library processes. */
 const DRAFT_TGT=3;
-function draftAssess(d){const st=(d&&d.steps)||[],n=st.length,kind=s=>{const t=String(s.type||s.who||"human").toLowerCase();return t==="auto"||t==="fn"||t==="robot"?"auto":t};
+function draftAssess(d){const st=(d&&d.steps)||[],n=st.length,kind=s=>{const t=String(s.type||s.who||"human").toLowerCase();return t==="auto"||t==="fn"||t==="robot"?"robot":t};
  const withOwner=st.filter(s=>s.owner||s.team).length,withSla=st.filter(s=>s.sla).length,withIO=st.filter(s=>(s.in&&s.in.length)||(s.out&&s.out.length)||s.system).length;
- const autos=st.filter(s=>kind(s)==="auto").length,agents=st.filter(s=>kind(s)==="agent").length,gates=st.filter(s=>kind(s)==="gate"||kind(s)==="approval").length;
+ const autos=st.filter(s=>kind(s)==="robot").length,agents=st.filter(s=>kind(s)==="agent").length,gates=st.filter(s=>kind(s)==="gate"||kind(s)==="approval").length;
  const share=n?(autos+agents)/n:0;let unf=0;st.forEach((s,i)=>{if(kind(s)==="agent"){const nx=st[i+1];if(!nx||!/^(human|gate|approval)$/.test(kind(nx)))unf++}});
  const ownerNamed=!!(d.owner&&window.who&&who(d.owner)),raci=new Set(st.map(s=>s.owner||s.team).filter(Boolean)).size,std=(d.std||[]).length;
  const T={defined:[n>=3,withIO/(n||1)>=.5,n>0&&withOwner===n&&withIO===n,withSla/(n||1)>=.75&&std>0,false],

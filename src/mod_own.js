@@ -360,7 +360,7 @@ ASKX.unshift(q=>{
  if(topic&&/\b(ci_\w+|server|host|database)\b/.test(topic))topic="";
  if(topic){topic=topic.replace(/^(the|our|a|an)\s+/,"").replace(/\s+(please|today)$/,"");const res=find(topic);
   if(!res.domains.length&&!res.objects.length){say(q,{t:`I could not tie <b>${E(topic)}</b> to a named owner. That is itself a gap: nobody is registered as accountable for it. <button class="btn quiet" data-go="own_gaps">Open Ownership and gaps</button>`,steps:["Matched the words to the accountability domains and every registry record","Found no domain or record that fits"]});return true}
-  const o0=res.specific?res.objects[0]:null;const d0=o0?{label:o0.label,owner:o0.owner,backup:o0.backup}:res.domains[0];const head=d0&&d0.owner?`<b>${E(d0.owner)}</b> owns <b>${E(d0.label)}</b>${d0.backup?`, with <b>${E(d0.backup)}</b> as backup`:" and no backup is named yet"}.`:`Nobody is named as the owner of <b>${E(d0?d0.label:topic)}</b>.`;
+  const o0=res.specific?res.objects[0]:null;const d0=o0?{label:o0.label,owner:o0.owner,backup:o0.backup}:res.domains[0];const head=d0&&d0.owner?`<b>${d0.owner?ownerChip(d0.owner,{role:"Owner"}):""}</b> owns <b>${E(d0.label)}</b>${d0.backup?`, with <b>${d0.backup?ownerChip(d0.backup,{role:"Backup"}):""}</b> as backup`:" and no backup is named yet"}.`:`Nobody is named as the owner of <b>${E(d0?d0.label:topic)}</b>.`;
   say(q,{t:head+ownerCard(res,q),steps:["Matched your words to the "+dom().list.length+" accountability domains and aliases","Resolved the owner and backup to people in the directory","Listed the screens they own so you can go straight there"]});return true}
  if(/^(what|which|show|list|where).*(no owner|unowned|ownership gaps?|without (an )?owner|no backup|orphan)/.test(l)||/^(ownership|owner) gaps?$/.test(l)){const s=stats();say(q,{t:`Ownership coverage is <b>${s.cov}%</b>. <b>${s.unowned}</b> things have no accountable owner, <b>${s.roleonly}</b> name only a role or team, <b>${s.agentonly}</b> are held only by an AI agent or provider, and <b>${s.nobackup}</b> have no backup. <button class="btn primary" data-go="own_gaps">Open Ownership and gaps</button>`,steps:["Counted every registry record","Ranked the gaps by severity and importance"]});return true}
  return false});
@@ -434,7 +434,7 @@ function wire(){
    const st=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
    const fam=tryv(()=>PROCLIB.get("plat_gate").family,undefined);
    const r=tryv(()=>PROCLIB.addProcess({id:"ownership_governance",name:"Ownership governance",module:"own_gaps",family:fam,owner:"Jordan Lee",backup:"Sam Patel",trigger:"A module, process, metric, agent or contract is registered or its owner leaves",
-    steps:[st("Detect gaps","Scan every registry record for no owner, a role only, an AI agent only, a departed owner or no backup.","auto","Ownership service","Hourly","Registry records","Ranked gap list"),
+    steps:[st("Detect gaps","Scan every registry record for no owner, a role only, an AI agent only, a departed owner or no backup.","robot","Ownership service","Hourly","Registry records","Ranked gap list"),
      st("Propose owner and backup","Suggest candidates from the org chart and the accountability domains.","agent","Ownership Agent","Minutes","Ranked gap list","Candidate pairs"),
      st("Assign or accept","A person assigns an owner and backup, asks the likely owner, or accepts the risk with an expiry.","human","Jordan Lee","7 days","Candidate pairs","Assignment or exception"),
      st("Gate","A new module or feature cannot register without a named human owner and backup.","gate","Platform team","Immediate","Manifest","Gate decision"),
@@ -443,7 +443,7 @@ function wire(){
    if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" ")))){WS.proc=1;tryv(()=>{if(S.plib&&S.plib.own&&!S.plib.own.ownership_governance){S.plib.own.ownership_governance={owner:"Jordan Lee",backup:"Sam Patel"};PROCLIB.refresh()}},0)}}
   if(!WS.reg&&W.PROC&&PROC.reg){
    tryv(()=>PROC.reg("own_gaps",{title:"Ownership governance",std:["cobit","itil5"],steps:[
-    {n:"Detect gaps",d:"Scan every registry record for no owner, role only, agent only, departed owner or no backup.",who:"auto",owner:"Ownership service",sla:"Hourly",in:"Registry records",out:"Ranked gaps"},
+    {n:"Detect gaps",d:"Scan every registry record for no owner, role only, agent only, departed owner or no backup.",who:"robot",owner:"Ownership service",sla:"Hourly",in:"Registry records",out:"Ranked gaps"},
     {n:"Propose owner and backup",d:"Suggest candidates from the org chart and domains.",who:"agent",owner:"Ownership Agent",sla:"Minutes",in:"Ranked gaps",out:"Candidates"},
     {n:"Assign or accept",d:"A person assigns, asks the likely owner, or accepts the risk with an expiry of at most 90 days.",who:"human",owner:"Jordan Lee",sla:"7 days",in:"Candidates",out:"Assignment or exception"},
     {n:"Gate",d:"No new module or feature registers without a named human owner and backup.",who:"gate",owner:"Platform team",sla:"Immediate",in:"Manifest",out:"Decision"}]}),0);WS.reg=1}

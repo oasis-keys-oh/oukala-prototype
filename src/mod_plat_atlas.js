@@ -13,6 +13,8 @@ let DMV=1,_dmT=0;
 (function(){const R=DATAMODEL.register;if(!R||R._atlas)return;
  const w=function(t,def){const cur=R.call(this,t,def);
   if(def){["domain","status","ownerMod","steward","note","ownerApp","seed"].forEach(k=>{if(def[k]!=null)cur[k]=def[k]})}
+  /* CL-72: "Automatic" is retired; an entity whose source or owning app is still registered as Automatic reads as the robot */
+  ["source","ownerApp"].forEach(k=>{if(/^automatic$/i.test(String(cur[k]||"")))cur[k]=STEPMODE.label("robot")});
   if(!cur.domain&&/^fin_/.test(t))cur.domain="money";
   DMV++;try{if(window.PLAT&&PLAT.refresh)PLAT.refresh();if(window.LIN)LIN.bump()}catch(e){}
   clearTimeout(_dmT);_dmT=setTimeout(()=>{if(S.screen==="plat_data"||S.screen==="plat_reg"){try{render()}catch(e){}}},120);
@@ -33,7 +35,7 @@ const DPOOL=["--p3","--e1","--s3","--p4"];
 const LAYERS=[["Plan and deliver",["portfolio","agile","fin","money"]],["Run and support",["service","agree","ops"]],["Foundation data and planned",["people","cmdb","planned"]],["Knowledge, AI, governance and platform",["know","gov","plat"]]];
 const dName=k=>k==="planned"?"Planned entities":((window.PLAT&&PLAT.DOM[k])?PLAT.DOM[k].n:k);
 const AUTHC={platform:"--p1",external:"--u3",shared:"--w1"};
-const AUTHN={platform:"Oukala owns it",external:"External system owns it",shared:"Shared, newest wins"};
+const AUTHN={platform:BRAND.name+" owns it",external:"External system owns it",shared:"Shared, newest wins"};
 const CLSC={public:"--s4",internal:"--p5",confidential:"--w1",restricted:"--e4",personal:"--u1"};
 const COVC=["--faint","--p6","--p3","--p1"];
 const COVN=["Feeds no metric","Feeds 1 or 2 metrics","Feeds 3 to 5 metrics","Feeds 6 or more metrics"];
@@ -585,7 +587,7 @@ function worldHTML(M,L){
   eg+=`<path class="${c}" d="${g.d}" marker-end="url(#${hot?"at-arh":"at-ar"})"><title>${E(M.ent.get(ed.from).label+" points to "+M.ent.get(ed.to).label+" through "+ed.fields.join(", "))}</title></path>`});
  if(mode==="domains")bundleRoutes(M,L).forEach(r=>{
   fe+=`<g class="at-fe"><title>${r.tt}</title><path d="${r.d}" style="stroke-width:${Math.min(12,2+r.n*.5)}px"/></g>`;
-  if(r.lab)fl+=`<div class="at-bl" style="left:${r.lab.x.toFixed(0)}px;top:${r.lab.y.toFixed(0)}px" title="${r.tt}"><b>${r.n}</b><span class="at-blw"> references</span></div>`});
+  if(r.lab)fl+=`<div class="at-bl" style="left:${r.lab.x.toFixed(0)}px;top:${r.lab.y.toFixed(0)}px" title="${r.tt}"><b>${U.esc(r.n)}</b><span class="at-blw"> references</span></div>`});
  /* trace token and flows */
  let tok="",flows="";
  if(A.trace&&METRICS[A.trace]){const m=METRICS[A.trace],t=LIN.trace(A.trace),ids=[...Lt.trace].filter(id=>L.pos[id]);
@@ -608,11 +610,11 @@ function miniHTML(M,L){
 /* ----- legend ----- */
 function legendItems(M){
  if(A.ov==="domain")return Object.keys(DC).filter(d=>M.byDom(d).length).map(d=>[dName(d),DC[d]]);
- if(A.ov==="authority")return [["Oukala owns most fields",AUTHC.platform],["External system owns most fields",AUTHC.external],["Shared, newest wins",AUTHC.shared],["Planned, no fields yet","--faint"]];
+ if(A.ov==="authority")return [[BRAND.name+" owns most fields",AUTHC.platform],["External system owns most fields",AUTHC.external],["Shared, newest wins",AUTHC.shared],["Planned, no fields yet","--faint"]];
  if(A.ov==="class")return [["Public",CLSC.public],["Internal",CLSC.internal],["Confidential",CLSC.confidential],["Restricted",CLSC.restricted],["Personal",CLSC.personal]];
  if(A.ov==="metrics")return COVN.map((n,i)=>[n,COVC[i]]);
  return [["Canonical, one copy",STC.canonical],["Duplicate, fix open",STC.duplicate],["Duplicate fixed in preview",STC.fixed],["Proposed, waiting for approval",STC.proposed],["Planned, not built",STC.planned]]}
-function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx at-lgrel"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> A line means a field in one entity points to a record in another. The arrow points to the entity being referenced. Thickness is how many fields. Use Relationships to show domain bundles, the selected entity, or all.</span>`}
+function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (${U.esc(BRAND.name)}, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx at-lgrel"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> A line means a field in one entity points to a record in another. The arrow points to the entity being referenced. Thickness is how many fields. Use Relationships to show domain bundles, the selected entity, or all.</span>`}
 
 /* ----- breadcrumb ----- */
 function bcHTML(M){
@@ -639,7 +641,7 @@ function cardHTML(M){
 
 /* ----- inspector ----- */
 const ITABS=[["fields","Fields"],["conn","Connections"],["used","Used by"],["metrics","Metrics"],["lineage","Lineage"]];
-function pillA(a){const c={platform:"good",external:"info",shared:"warn"}[a]||"mute";return `<span class="pill ${c}">${E(a==="platform"?"Oukala":a==="external"?"External":"Shared")}</span>`}
+function pillA(a){const c={platform:"good",external:"info",shared:"warn"}[a]||"mute";return `<span class="pill ${c}">${E(a==="platform"?BRAND.name:a==="external"?"External":"Shared")}</span>`}
 const CLSP={public:"mute",internal:"mute",confidential:"warn",restricted:"bad",personal:"bad"};
 function inspHTML(M){
  if(!A.sel||!M.ent.get(A.sel)){
@@ -718,7 +720,7 @@ const $r=()=>document.querySelector("[data-at-root]");
 const vpEl=()=>document.querySelector('[data-at-vp="dm"]');
 const worldEl=()=>document.querySelector('[data-at-world="dm"]');
 const lodOf=k=>k<.5?"far":k>=1.15?"near":"mid";
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 function vsize(v){v=v||vpEl();return v?{w:v.clientWidth||900,h:v.clientHeight||600}:{w:900,h:600}}
 function applyCam(){
  const v=vpEl(),w=worldEl();if(!v||!w||!A.cam)return;const c=A.cam;
@@ -1090,11 +1092,11 @@ function lineageDetail(id){
  const imp=sel?LIN.impact(sel.e,sel.k||null):null;
  const M=model();
  const parents=[...LIN.parents(id)];
- let h=`<div class="at-lh"><div class="at-lhm"><div class="eyebrow">Metric · owner ${E(m.owner||"")}</div><h3>${E(m.n)}</h3><div class="formula">${E(m.f)}</div></div>
+ let h=`<div class="at-lh"><div class="at-lhm"><div class="eyebrow">Metric · owner ${m.owner?ownerChip(m.owner,{role:"Owner"}):E("")}</div><h3>${E(m.n)}</h3><div class="formula">${E(m.f)}</div></div>
   <div class="at-lha"><span class="pill ${stClass}">${E(stTxt)} · ${t.pct}%</span><span class="pill mute">Confidence ${t.conf}%</span>${fchip(id)}</div></div>
   <div class="row at-lbtns"><button class="btn primary" data-at-trace="${id}">Trace on the diagram</button><button class="btn" data-go="metrics:${id}">Open in Metrics</button>${LN.hist.length?`<button class="btn quiet" data-at-lback="1">Back to ${E(trunc(METRICS[LN.hist[LN.hist.length-1]].n,26))}</button>`:""}</div>
   <div class="statrow at-ss"><div class="stat"><small>Source fields</small><span class="num" data-role="metric">${srcRows.length}</span><em>in ${ents.size} entit${ents.size===1?"y":"ies"}</em></div><div class="stat"><small>Nested metrics</small><span class="num" data-role="metric">${t.st.nested}</span><em>up to 3 levels</em></div><div class="stat"><small>Needs mapping</small><span class="num" data-role="metric">${G.gapList.length}</span><em>${t.st.ghost+t.st.weak?(t.st.ghost+t.st.weak)+" weak or planned":"none weak"}</em></div><div class="stat"><small>Shown on</small><span class="num" data-role="metric">${(m.use||[]).length}</span><em>screens</em></div></div>
-  <div class="at-legend">${legend([["Oukala owns the field",AUTHC.platform],["External system owns it",AUTHC.external],["Shared, newest wins",AUTHC.shared]])}<span class="muted small">Percent on a field is how sure the match is. Dashed boxes need a mapping. A circle is a step of the calculation.</span></div>
+  <div class="at-legend">${legend([[BRAND.name+" owns the field",AUTHC.platform],["External system owns it",AUTHC.external],["Shared, newest wins",AUTHC.shared]])}<span class="muted small">Percent on a field is how sure the match is. Dashed boxes need a mapping. A circle is a step of the calculation.</span></div>
   <div class="at-vpbox at-lbox"><div class="at-vp at-lvp" data-at-lvp="1" style="height:${Math.min(680,Math.max(300,Math.round(G.H*.7)+60))}px" tabindex="0" role="application" aria-label="Calculation of ${E(m.n)}. Drag to pan, plus and minus to zoom."><div class="at-world" data-at-world="ln" style="width:${G.W}px;height:${G.H}px">${edgeSvg(G,edges)}${nodeHTML(G,t)}</div></div>
    <div class="at-tools" role="group" aria-label="Zoom"><button class="btn quiet" data-at-lz="in" aria-label="Zoom in">+</button><button class="btn quiet" data-at-lz="out" aria-label="Zoom out">−</button><button class="btn quiet" data-at-lz="fit">Fit all</button><button class="btn quiet" data-at-lz="reset">Fit width</button><span class="muted small" data-at-zl>100%</span></div></div>`;
  /* needs mapping */
@@ -1113,7 +1115,7 @@ function lineageDetail(id){
 
 function lineagePane(){
  const st=LIN.stats();
- return `<div class="at-lin" data-at-lin-root><section class="card glass at-lside"><div class="cardhead"><div><h3>${st.n} metrics</h3><span class="muted small" data-role="story">${st.full} fully traced to fields, ${st.part} partly, ${st.none} not yet. Select a row to see how that metric is calculated.</span></div></div>${listHTML()}</section><div class="at-ldet" data-at-ldet>${lineageDetail(A.metric)}</div></div>`}
+ return `<div class="at-lin" data-at-lin-root><section class="card glass at-lside"><div class="cardhead"><div><h3>${U.esc(st.n)} metrics</h3><span class="muted small" data-role="story">${st.full} fully traced to fields, ${st.part} partly, ${st.none} not yet. Select a row to see how that metric is calculated.</span></div></div>${listHTML()}</section><div class="at-ldet" data-at-ldet>${lineageDetail(A.metric)}</div></div>`}
 function fitLn(mode){const v=lnEl();if(!v||!LN.G)return;const s=vsize(v),G=LN.G;
  if(mode==="all"){const k=clamp(Math.min((s.w-32)/G.W,(s.h-32)/G.H),.2,1);LN.cam={k,x:(s.w-G.W*k)/2,y:(s.h-G.H*k)/2}}
  else{const k=clamp((s.w-40)/G.W,.55,1);LN.cam={k,x:20,y:14}}
@@ -1217,7 +1219,7 @@ function atlasScreen(){
  const panes=[cur===0?diagramPane():"",cur===1?lineagePane():"",cur===2?domainPane():"",cur===3?(CV?CV.coverPane():"<p class='muted'>The coverage module is not loaded.</p>"):"",cur===4?(CV?CV.matrixPane():""):"",cur===5?oldPane():""].map((p,i)=>p||`<p class="muted">Opening ${TABS[i]}</p>`);
  const cs=CV&&CV.summary?CV.summary():null;
  const covStory=cs?` Does it cover every module? Now <b data-role="metric">${cs.after.modFull}</b> of <b data-role="metric">${cs.modTotal}</b> (was <b data-role="metric">${cs.before.modFull}</b>), but <b data-role="metric">${cs.proposed}</b> proposed entities wait for your approval and <b data-role="metric">${cs.gapsOpen}</b> gaps remain.`:"";
- return `<div class="screen at-screen">${hero("Data atlas","Master data model, drawn, traced and audited",`<b data-role="metric">${N0(M.list.filter(e=>!e.ghost).length)}</b> tables and <b data-role="metric">${N0(ps.nf)}</b> fields in <b data-role="metric">${new Set(M.list.filter(e=>!e.ghost).map(e=>e.domain)).size}</b> domains, with <b data-role="metric">${M.edges.length}</b> references between them. <b data-role="metric">${st.full}</b> of <b data-role="metric">${st.n}</b> metrics trace all the way to fields.${covStory}`,`<div class="row">${fchip("m_atlas_trace")}${window.METRICS&&METRICS.m_cov_module?fchip("m_cov_module")+fchip("m_cov_flow"):""}${fchip("m_data_ref")}<button class="btn primary" data-cov-open>See what is missing</button>${typeof stdChip==="function"?stdChip("dmbok"):""}</div>`)}${lensNote()}${views("atlas",TABS,panes)}${procCard("plat_data")}</div>`}
+ return `<div class="screen at-screen">${hero("Data atlas","Master data model, drawn, traced and audited",`<b data-role="metric">${N0(M.list.filter(e=>!e.ghost).length)}</b> tables and <b data-role="metric">${N0(ps.nf)}</b> fields in <b data-role="metric">${new Set(M.list.filter(e=>!e.ghost).map(e=>e.domain)).size}</b> domains, with <b data-role="metric">${M.edges.length}</b> references between them. <b data-role="metric">${st.full}</b> of <b data-role="metric">${U.esc(st.n)}</b> metrics trace all the way to fields.${covStory}`,`<div class="row">${fchip("m_atlas_trace")}${window.METRICS&&METRICS.m_cov_module?fchip("m_cov_module")+fchip("m_cov_flow"):""}${fchip("m_data_ref")}<button class="btn primary" data-cov-open>See what is missing</button>${typeof stdChip==="function"?stdChip("dmbok"):""}</div>`)}${lensNote()}${views("atlas",TABS,panes)}${procCard("plat_data")}</div>`}
 REG("plat_data","Master data model","platform","M4 5h7v5H4zM13 5h7v5h-7zM8 14h8v5H8zM7.5 10v4M16.5 10v4",atlasScreen);
 if(PREV)REG("plat_data_old","Data tables and model checks","platform","M4 6h16M4 12h16M4 18h10",()=>PREV());
 document.addEventListener("change",e=>{const t=e.target.closest&&e.target.closest("[data-vw^='atlas:']");if(t)setTimeout(()=>{if(S.screen==="plat_data")render()},0)});

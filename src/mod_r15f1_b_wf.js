@@ -6,7 +6,7 @@
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const H=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const HR=3600000;
-const BASE=new Date(2026,9,6,8,0,0).getTime();   /* the product's "today": Tue Oct 6 2026, 08:00 */
+const BASE=new Date(U.TODAY_ISO+"T08:00:00").getTime();   /* the product's "today": Tue Oct 6 2026, 08:00 */
 const F=(k,label,type,o)=>Object.assign({k,label,type:type||"string",authority:"platform",classification:"internal"},o||{});
 const me=()=>G(()=>INBOX.me(),null)||G(()=>PERSONAS[S.persona].n,"System");
 const ST=()=>window.STORE;
@@ -24,11 +24,11 @@ const MET={
 Object.keys(MET).forEach(k=>{if(!METRICS[k])METRICS[k]=MET[k]});
 PROC.reg("wf_runs",{title:"How a saved workflow runs",std:["bpmn","itil5"],steps:[
  {n:"Start an instance",d:"A person, an event rule, the drawing studio or the process library starts a saved definition. The instance and its context are stored.",who:"human",owner:"Workflow owner",sla:"Instant",in:"Definition and record",out:"Instance"},
- {n:"Execute automatic steps",d:"Decisions evaluate their conditions, connectors run (simulated and labeled), notifications go out, forks and joins keep the paths in step.",who:"auto",owner:"Workflow runtime",sla:"Instant",in:"Ready steps",out:"Step runs"},
+ {n:"Execute robot steps",d:"Decisions evaluate their conditions, connectors run (simulated and labeled), notifications go out, forks and joins keep the paths in step.",who:"robot",owner:"Workflow runtime",sla:"Instant",in:"Ready steps",out:"Step runs"},
  {n:"Wait for people and time",d:"Tasks and approvals appear in the approvals inbox; timers run on the demo clock; each step has an SLA.",who:"human",owner:"Assignee",sla:"Per step",in:"Task or approval",out:"Decision"},
  {n:"Run an agent step",d:"The agent runtime checks the agent state, tier, budget and kill switch; low confidence or a tier gate sends the step to a person.",who:"agent",owner:"Agent sponsor",sla:"Seconds",in:"Agent step",out:"Agent run and result"},
  {n:"Escalate on SLA breach",d:"A step past its SLA is flagged, counted and announced as an event.",who:"gate",owner:"Workflow owner",sla:"On breach",in:"Overdue step",out:"Breach record"},
- {n:"Finish and measure",d:"The instance ends with an outcome; cycle time, failure rate and SLA are recomputed and feed process maturity.",who:"auto",owner:"Workflow runtime",sla:"Instant",in:"End step",out:"Metrics"}]});
+ {n:"Finish and measure",d:"The instance ends with an outcome; cycle time, failure rate and SLA are recomputed and feed process maturity.",who:"robot",owner:"Workflow runtime",sla:"Instant",in:"End step",out:"Metrics"}]});
 const SPEC={id:"wf_runs",pid:"wf_run_process",pname:"Run a saved workflow",name:"Run monitor",sn:"Run monitor",owner:"Nia Brooks",backup:"Priya Shah",ents:ENTS,reads:["workflow_definition","process_definition","person"],writes:["workflow_instance","step_run","engine_state","workflow_run_definition"],metrics:["m_wf_cycle","m_wf_fail","m_wf_sla"],
  trigger:"A person, event rule or drawing starts a saved workflow.",inputs:["Workflow definitions","Triggering records","Approvals"],outputs:["Instances and step runs","Events","Cycle time, failure rate, SLA"],
  flows:[["flw_design","pull","Saved workflow definitions to execute","workflow_definition","api","Instance started"],["inbox","push","Tasks and approvals waiting on a person","approval","event","Task or approval step reached"],["inbox","pull","Decisions on workflow tasks","approval_decision","event","Person decides"],["draw_studio","pull","Drawn processes to run","process_definition","api","Run pressed in the drawing studio"],["plat_store","push","Instance and step records","workflow_instance","api","Any state change"],["org_chart","pull","Agent state and tier for agent steps","person","api","Agent step reached"],["plat_reg","pull","Process definitions","process_definition","api","Run this process"]],
@@ -50,7 +50,7 @@ W.clock=()=>({sim:SIM(),speed:CLK.speed,fmt:fmtSim(SIM())});
 const hrsOf=s=>{if(s==null||s==="")return null;if(typeof s==="number")return s;const t=String(s).trim();let m=t.match(/^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?$/i);if(m&&(m[1]||m[2]||m[3]))return(+m[1]||0)*24+(+m[2]||0)+(+m[3]||0)/60;m=t.match(/^(\d+(?:\.\d+)?)\s*(m|min|minutes?|h|hrs?|hours?|d|days?|w|weeks?)?\b/i);if(!m)return null;const v=+m[1],u=(m[2]||"h").toLowerCase();return u[0]==="m"?v/60:u[0]==="d"?v*24:u[0]==="w"?v*168:v};
 function synthDef(id,name,steps,src){/* a runnable definition from a list of {n,d,who,owner,sla} steps */
  const nodes=[{id:"T1",t:"trigger",n:"Start",a:{src:"api",ev:"Run pressed"},p:{tg:{},asg:{},params:{}}}],edges=[];let prev="T1";
- steps.forEach((s,i)=>{const w=String(s.who||"human"),id="S"+(i+1);const t=w==="agent"?"agent":w==="auto"?"auto":w==="gate"?"approval":"human";
+ steps.forEach((s,i)=>{const w=String(s.who||"human"),id="S"+(i+1);const t=w==="agent"?"agent":w!=="gate"&&STEPMODE.of(w)==="robot"?"auto":w==="gate"?"approval":"human";
   const a=t==="agent"?{agent:s.owner||"Process Drawing Agent",goal:s.d||s.n,tools:[],conf:70,autonomy:"propose",fallback:s.owner||""}:t==="auto"?{op:/notif|email|message/i.test(s.n)?"Send notification":"Call REST API",chan:"Teams",to:s.owner||""}:t==="approval"?{approvers:[s.owner||"Process owner"],mode:"any",allowReturn:true,tiers:"fixed",asm:[]}:{outcomes:["Done"]};
   nodes.push({id,t,n:s.n||("Step "+(i+1)),a,p:{tg:{sla:s.sla&&/\d/.test(s.sla)?s.sla:"",dur:0},asg:{kind:"person",person:s.owner||"",team:s.owner||""},params:{retries:2}}});edges.push({f:prev,p:"next",t:id});prev=id});
  nodes.push({id:"E1",t:"end",n:"End",a:{outcome:"Completed"},p:{tg:{},asg:{},params:{}}});edges.push({f:prev,p:"next",t:"E1"});
@@ -279,7 +279,7 @@ function openInst(id){const i=inst(id);if(!i)return;SS.open=id;const now=SIM();
 W.open=openInst;
 function startForm(pre){const defs=G(()=>FLOWX.flows().filter(f=>!/^gen_/.test(f.id)&&(f.nodes||[]).some(n=>n.t==="trigger")).slice(0,260),[]);
  openForm({id:"r15_wfstart",title:"Start a run",story:"Runs a saved workflow definition on the runtime. Human tasks and approvals appear in the approvals inbox; connector calls are simulated and labeled. Optionally inject a failure to practice retry.",submit:"Start run",
-  fields:[{k:"def",label:"Workflow or process",type:"select",req:true,opts:defs.map(f=>[f.id,f.name+" ("+(f.src||"")+")"])},{k:"rec",label:"Record reference",type:"text",ph:"INV-1042"},{k:"amount",label:"Amount (for approval tiers)",type:"money"},{k:"auto",label:"Simulate assignees (tasks finish on their own)",type:"toggle"},{k:"fail",label:"Inject a connector failure at the first automatic step",type:"toggle"}],
+  fields:[{k:"def",label:"Workflow or process",type:"select",req:true,opts:defs.map(f=>[f.id,f.name+" ("+(f.src||"")+")"])},{k:"rec",label:"Record reference",type:"text",ph:"INV-1042"},{k:"amount",label:"Amount (for approval tiers)",type:"money"},{k:"auto",label:"Simulate assignees (tasks finish on their own)",type:"toggle"},{k:"fail",label:"Inject a connector failure at the first robot step",type:"toggle"}],
   defaults:{def:pre||(defs[0]&&defs[0].id),auto:CLK.auto},
   onSubmit:v=>{const d=getDef(v.def);if(!d){toast("Pick a workflow","warn");return false}const au=d.nodes.find(n=>n.t==="auto"&&!/notif/i.test((n.a||{}).op||""));const r=start(v.def,{id:v.rec||"MAN-"+(CLK.ni+1),amount:+v.amount||0},{source:"manual",auto:!!v.auto,fail:v.fail&&au?[au.id]:[]});if(!r.ok){toast(r.why,"warn");return false}toast("Started "+r.id,"good");closeDrawer();if(S.screen==="wf_runs")render();else{go("wf_runs")}setTimeout(()=>openInst(r.id),80)}})}
 W.startForm=startForm;
