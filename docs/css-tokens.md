@@ -127,3 +127,68 @@ Not mapped (nearest token too far, or a deliberate value):
 | `style.css` | 1 | #16262b (--black dE 16) |
 | `style2.css` | 1 | #1a1200 (--black dE 11) |
 | `style4.css` | 1 | #7a1f7a (--u3 dE 16) |
+
+## mod_r20.css audit (CL-28)
+Prototype fact, measured 2026-10-20 with `tools/tests/css_coverage.js` (CSS rule coverage while all 195 screens open in turn, light, dark and 400 px).
+- Size: 183,370 characters, of which 169,932 (93%) are one inline JPEG, the rail background (`--r20-img`). The rules themselves are about 13.4 KB.
+- 100 rules: 58 matched on at least one screen. The other 42 (5.3 KB) matched nothing, but every one of them styles something that opens or changes on interaction: the profile, View as, lens, New and inbox popovers, the chat dock, hover and focus tooltips (`.r20-pi`, `.r20-ico`), the quiet-mode silence menu (`#r21SilMenu`), the open notification layer, the favorites accordion, roadmap level states. Their class and id names are all written by scripts.
+- Dead rules moved out: none. The rule for this row was to move only rules that coverage shows unused and that cannot match; no rule in mod_r20.css meets both, so nothing went to `tools/scratch/css-dead/`.
+- The size win is the image: serve it as a file (`hero/` already ships next to `index.html`) and reference it with `url(hero/...)`. That needs a new file under `src/assets/hero/` (build territory), so it is a proposal. The file has no JS counterpart; its rules belong to the shell, lens, chat, inbox and persona-home modules and can be moved to those files when they are renamed (CL-29).
+
+## Round-named CSS files: proposed domain names (CL-29)
+Not renamed in the CSS stream: a module is a `.js` and `.css` pair with one name in `src/modules.json`, and the JS file and `modules.json` belong to the JS streams. Rename both files of a pair in one commit and change the entry in `modules.json` in place: the cascade follows `modules.json` order, not file names (CL-16), so a rename in place changes nothing on screen. `mod_s_<domain>` follows docs/ARCHITECTURE.md section 2; where a `mod_s_` name already exists, the proposal says so.
+
+| Current | Pair | Proposed | What it styles |
+|---|---|---|---|
+| `mod_r15b_pick` | js | `mod_s_picklist` | person picklist |
+| `mod_r15d` | css only | `mod_s_agent_front` | agent strip and front-door panels (pairs with `mod_r15d_*.js`) |
+| `mod_r15f1_a_store` | js | `mod_s_entity_store` | entity store screens |
+| `mod_r15f2_a_shell` | js | `mod_s_record_shell` | shared record shell |
+| `mod_r15f2_b_grc` | js | `mod_s_grc` | GRC suite |
+| `mod_r15f3_0` | js | `mod_s_suite_shared` | shared suite styles (prefix r3-) |
+| `mod_r15f3_mobile` | js | `mod_s_mobile_approvals` | mobile approvals and on-call |
+| `mod_r16g_perm` | css only | `mod_s_permissions` | permissions screen |
+| `mod_r16h` | css only | `mod_s_approval_tree` | approval tree, status catalog, CI ownership |
+| `mod_r16i_core` | js | `mod_s_page_header` | page-header actions, favorites, star menu |
+| `mod_r16i_notif` | js | `mod_s_notify_center` | notification center |
+| `mod_r16i_portal` | js | `mod_s_portal` | portal and employee view |
+| `mod_r16j_b_picker` | js | `mod_s_picker` | scalable picker |
+| `mod_r16j_d_admin` | js | `mod_s_admin_scale` | admin studio at scale |
+| `mod_r16j_e_dash` | js | `mod_s_dashboard_builder` | dashboard layout, chart builder |
+| `mod_r16k_fix` | js | `mod_s_layout_fixes` | layout fixes |
+| `mod_r16k_trace` | js | `mod_s_strategy_exec` | strategy to execution |
+| `mod_r16l_a` | css only | `mod_s_resilience` | resilience group |
+| `mod_r16m_a_core` | js | `mod_s_setup` | implementation and setup |
+| `mod_r17n_notify` | js | `mod_s_notify_layer` | notification layer |
+| `mod_r17o1_shell` | js | `mod_s_phone_shell` | phone and tablet shell |
+| `mod_r17o2_content` | js | `mod_s_phone_content` | phone content patterns |
+| `mod_r17p` | css only | `mod_s_tour` | tour |
+| `mod_r17q_a` | css only | `mod_s_value` | value realized, how it was built |
+| `mod_r17r_impact` | js | `mod_s_impact_picker` | impact picker |
+| `mod_r17r_procdiagram` | js | `mod_s_proc_diagram` | process diagram |
+| `mod_r17r_tables` | js | `mod_s_tables` | flat connected tables |
+| `mod_r17s` | css only | `mod_s_rules_scripts` | rules and scripts |
+| `mod_r17t` | css only | `mod_s_actors` | human and AI actors |
+| `mod_r17u` | css only | `mod_s_benefits_dash` | benefits tool and dashboards |
+| `mod_r18` | css only | `mod_s_make_work_oversee` | Make, Work, Oversee shell, builds, lenses |
+| `mod_r20` | css only | `mod_s_rail_lenses` | rail image, lenses, roadmap (see CL-28) |
+| `mod_r21` | css only | `mod_s_persona_home` | persona landing pages |
+| `mod_r24_hero` | js | `mod_s_hero` | painted hero |
+| `mod_r25_b_studio` | js | `mod_s_build_studio` | build studio |
+| `mod_r25_c_flat` | js | `mod_s_flat` | flat interface |
+| `mod_r26_guardrails` | css only | `mod_s_guardrails_studio` (`mod_s_guard` exists for the register) | guardrail building visuals |
+| `mod_r27_prefs` | js | `mod_s_prefs` | preferences and contrast |
+| `mod_r28_brand` | css only | `mod_s_brand_logo` | logo |
+| `mod_r28_cxo` | js | `mod_s_exec_menu` | executive menu |
+| `mod_r28_od` | css only | `mod_s_org_redesign` | org redesign |
+| `mod_r30_jmap` | css only | `mod_s_journey_map` | journey maps |
+| `mod_r31_jx` | js | `mod_s_journey_trace` | journey map details |
+| `mod_r31_jzx` | js | `mod_s_org_assist` | org chart with agent assist |
+| `mod_r32_brand` | css only | `mod_s_wordmark` | wordmark |
+| `mod_r32_num_b` | js | `mod_s_numbers` | record numbers |
+| `mod_r32_orgprop` | js | `mod_s_org_proposals` | recommended agents on the org chart |
+| `mod_r32_scrmap_b_screen` | js | `mod_s_screen_map` | Screen map |
+| `mod_r32_tenant` | js | `mod_s_tenant_switch` | tenant switcher |
+| `mod_r33_showroom` | js | `mod_s_showroom_core` (`mod_s_showroom` exists) | Showroom |
+
+The css-only files can be renamed with a `modules.json` edit alone; that is still outside the CSS stream's files, so they are listed too.
