@@ -4,6 +4,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 python3 src/build.py --out "$PWD/build_out" --full >/dev/null
+# CL-14, CL-15, CL-28, CL-37, CL-39: stage dist/ the way Netlify does, serve it locally and check the split build against full.html (docs/bundle.md)
+SHIP_DIR=dist bash tools/ship.sh >/dev/null
+node tools/tests/bundle.js dist build_out
 # DC-06: a tour over 1,200 seconds (or any SHOW.lint finding) fails the build before the long suites run
 node tools/tests/showlint.js build_out
 # CL-18 to CL-26 (R8): no undefined CSS variables; hex, !important, literal z-index, font stacks, breakpoints and radii stay at or under their ceilings
