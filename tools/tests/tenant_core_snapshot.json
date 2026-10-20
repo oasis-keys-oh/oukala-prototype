@@ -632,11 +632,11 @@
   ]
  },
  "processes": {
-  "count": 264,
+  "count": 286,
   "ids": "not recorded: registers lazily"
  },
  "workflows": {
-  "count": 31,
+  "count": 46,
   "ids": "not recorded: registers lazily"
  },
  "journeys": {
@@ -663,6 +663,160 @@
    "standards-editor",
    "publishing-manager",
    "licensing-and-sales"
+  ]
+ },
+ "key_results": {
+  "count": 11,
+  "ids": [
+   "k11",
+   "k12",
+   "k13",
+   "k21",
+   "k22",
+   "k23",
+   "k31",
+   "k32",
+   "k41",
+   "k42",
+   "k51"
+  ]
+ },
+ "pillars": {
+  "count": 3,
+  "ids": [
+   "MS-PL1",
+   "MS-PL2",
+   "MS-PL3"
+  ]
+ },
+ "demand": {
+  "count": 10,
+  "ids": [
+   "D1",
+   "D2",
+   "D3",
+   "D4",
+   "D5",
+   "D6",
+   "D7",
+   "D8",
+   "D9",
+   "D10"
+  ]
+ },
+ "maturity": {
+  "count": 0,
+  "ids": []
+ },
+ "vocabulary": {
+  "count": 15,
+  "ids": [
+   "customer",
+   "incident",
+   "ticket",
+   "request",
+   "asset",
+   "site",
+   "downtime",
+   "workforce",
+   "work_item",
+   "frontline",
+   "service",
+   "order",
+   "case",
+   "supplier",
+   "revenue"
+  ]
+ },
+ "workload": {
+  "count": 74,
+  "ids": [
+   "wl-catherine-doyle",
+   "wl-casey-rowan",
+   "wl-marcus-reid",
+   "wl-elena-marsh",
+   "wl-joanna-pierce",
+   "wl-theo-marlowe",
+   "wl-maya-ortiz",
+   "wl-priya-shah",
+   "wl-dev-rao",
+   "wl-hannah-lowe",
+   "wl-leila-haddad",
+   "wl-owen-pryce",
+   "wl-jordan-lee",
+   "wl-rina-kovacs",
+   "wl-aaron-whitfield",
+   "wl-sam-patel",
+   "wl-leah-moss",
+   "wl-ben-ito",
+   "wl-elise-park",
+   "wl-mei-tan",
+   "wl-luis-ortega",
+   "wl-ravi-menon",
+   "wl-carla-reyes",
+   "wl-anita-cole",
+   "wl-ben-alvarez",
+   "wl-anil-mehta",
+   "wl-yuki-tanaka",
+   "wl-rosa-delgado",
+   "wl-femi-adeyemi",
+   "wl-tom-becker",
+   "wl-maribel-cruz",
+   "wl-priti-joshi",
+   "wl-ines-duarte",
+   "wl-paula-grant",
+   "wl-wes-hartley",
+   "wl-rina-okafor",
+   "wl-rosa-alvarez",
+   "wl-imran-sheikh",
+   "wl-colette-brandt",
+   "wl-nia-brooks",
+   "wl-hollis-grey",
+   "wl-avery-chen",
+   "wl-noelle-park",
+   "wl-victor-amaya",
+   "wl-camille-ortega",
+   "wl-kenji-watanabe",
+   "wl-noor-haddad",
+   "wl-pierce-caldwell",
+   "wl-isla-fenn",
+   "wl-grace-whitfield",
+   "wl-priya-raman",
+   "wl-greta-halloran",
+   "wl-owen-prescott",
+   "wl-daniel-okoye",
+   "wl-sofia-lindqvist",
+   "wl-tariq-bashir",
+   "wl-lucia-ferrante",
+   "wl-graham-wells",
+   "wl-beatrice-nolan",
+   "wl-dev-anand",
+   "wl-harriet-yu",
+   "wl-ruben-castillo",
+   "wl-naomi-fields",
+   "wl-julian-park",
+   "wl-lena-hargrove",
+   "wl-zainab-ali",
+   "wl-tomas-reyes",
+   "wl-kofi-mensah",
+   "wl-dmitri-kowal",
+   "wl-mei-ling-zhou",
+   "wl-sofia-arenas",
+   "wl-hugo-baptiste",
+   "wl-joel-tran",
+   "wl-alba-torres"
+  ]
+ },
+ "value_chain": {
+  "count": 7,
+  "ids": [
+   "core-vc1",
+   "core-vc2",
+   "core-vc3",
+   "core-vc4",
+   "core-vc5",
+   "core-vc6",
+   "core-vc7"
   ]
  }
 }
