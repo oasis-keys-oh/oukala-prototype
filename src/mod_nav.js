@@ -561,7 +561,7 @@ function sources(){const L=[];
  L.push(["Data entities",()=>(G(()=>PLAT.entities())||[]).map(e=>mkItem("data",e.label,"Data entity · "+(e.domain||"")+" · "+(e.nf||(e.fields||[]).length)+" fields","--u3",()=>ATLAS.focus(e.id),e.id+" "+(e.owner||"")+" "+(e.note||""),"entity:"+e.id))]);
  /* PH-12: tabs by name (mod_s_search) */
  (G(()=>W.SRCH&&SRCH.sources?SRCH.sources():[])||[]).forEach(s=>L.push(s));
- const sx=typeof SEARCHX!=="undefined"?SEARCHX:[];sx.forEach((fn,i)=>L.push(["Provider "+(i+1),()=>{const r=fn()||[];const o=[];for(let j=0;j<r.length&&j<6000;j++){const x=r[j];if(!x||!x.t)continue;const ty=tyOfGroup(String(x.g||""));if(ty==="screen")continue;o.push(mkItem(ty,x.t,(x.g?x.g+" · ":"")+(x.m||""),x.c,x.f,x.k,"",{g:x.g}))}return o},HEAVY.test(String(fn))?"heavy":"prov"]));
+ const sx=typeof SEARCHX!=="undefined"?SEARCHX:[];sx.forEach((fn,i)=>L.push(["Provider "+(i+1),()=>{const r=fn()||[];const o=[];for(let j=0;j<r.length&&j<6000;j++){const x=r[j];if(!x||!x.t)continue;const ty=tyOfGroup(String(x.g||""));if(ty==="screen")continue;o.push(mkItem(ty,x.t,(x.g?x.g+" · ":"")+(x.m||""),x.c,x.f,x.k,"",x.tn!==undefined?{g:x.g,tn:x.tn}:{g:x.g}))}return o},HEAVY.test(String(fn))?"heavy":"prov"]));
  L.push(["Data fields",()=>{const o=[];(G(()=>PLAT.entities())||[]).forEach(e=>(e.fields||[]).forEach(f=>{if(o.length<9000)o.push(mkItem("data",f.label||f.k,"Field · "+e.label,"--u3",()=>ATLAS.focus(e.id),f.k+" "+(f.type||"")+" "+e.id,"field:"+e.id+"."+f.k))}));return o}]);
  if(W.SCALE&&SCALE.on){
   L.push(["Enterprise incidents",()=>(G(()=>ITSMX.incidents)||[]).slice(0,1500).map(i=>mkItem("record",i.id+" "+(i.t||i.title||""),"Incident · "+(i.st||i.state||""),"--bad-f",goTbl("itsm_inc",i.id),i.svc||i.service||"","inc:"+i.id))]);
@@ -578,7 +578,8 @@ function ensureIndex(force){const sg=sigNow();if(IDX.building)return;if(IDX.buil
  let i=0;const step=()=>{if(i>=L.length){IDX.items=B.items;IDX.vocab=B.vocab;IDX.keys=B.keys;IDX.built=true;IDX.building=false;IDX.buildMs=Math.round(performance.now()-t0);if(PAL.open)refreshPal();return}
   const s=L[i];if(s[2]==="heavy"&&W.SCALE&&SCALE.on){if(PAL.open){buildTimer=setTimeout(step,2500);return}if(!IDX.heavyWait){IDX.heavyWait=1;buildTimer=setTimeout(step,4000);return}}
   i++;const ts=performance.now();let n=0;
-  try{const r=s[1]()||[];r.forEach(it=>{if(it){it.f=it.f||(()=>{});const b=B.items.length;pushTo(B,it);B.n=B.items.length}});n=r.length}catch(e){IDX.skipped.push(s[0])}
+  const tag=W.SRCH&&SRCH.tag?SRCH.tag:null; /* CL-75: tenant tag per item (mod_s_search) */
+  try{const r=s[1]()||[];r.forEach(it=>{if(it){it.f=it.f||(()=>{});if(tag)tag(it,s[0]);pushTo(B,it);B.n=B.items.length}});n=r.length}catch(e){IDX.skipped.push(s[0])}
   const ms=Math.round(performance.now()-ts);IDX.timings.push([s[0],ms,n]);IDX.done=i;
   if(PAL.open&&(first||i%6===0))refreshPal(true);
   buildTimer=setTimeout(step,ms>120?30:0)};

@@ -5,8 +5,8 @@
 //     attributes never contain another tenant's organization names, record ids, project names or people names;
 //  3. legacy screens (mode "core"), swept under core and under health on a fresh page each: no industry tenant's fingerprint outside
 //     that tenant, and under health every legacy screen carries the "not tenant-aware yet" label;
-//  4. search never returns another industry tenant's records. Meridian records in search under other tenants are counted as legacy
-//     (search providers are not tenant-aware yet), not failed.
+//  4. search never returns another industry tenant's records, and never Meridian records under another tenant (CL-75: the search
+//     engine scopes every provider centrally, mod_s_search).
 // Excluded on purpose: tenant choosers and the identity card ([data-tenant-chooser]); the signed-in identity's own name (IDENT).
 // Usage: node tools/tests/tenant_leak.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
@@ -59,10 +59,11 @@ for(const t of tenants){
    if(errs.length>n0)fail(t+' '+id+' errors '+errs.slice(n0).join(' | ').slice(0,400))}}
  // 4. search
  const s=await p.evaluate(([t,nc])=>{const idx=searchIndex().filter(x=>!x.chooser);const txt=x=>[x.g,x.t,x.m,x.k].join(' ');
-  const ind=[];let mer=0;idx.forEach(x=>{const tx=txt(x);window.__hits(tx,t,nc).forEach(h=>ind.push(h));if(t!=='core'&&window.__hits(tx,t,['core']).length)mer++});
-  return{n:idx.length,ind:ind.slice(0,4),indN:ind.length,mer}},[t,nonCore]);
+  const ind=[],merS=[];let mer=0;idx.forEach(x=>{const tx=txt(x);window.__hits(tx,t,nc).forEach(h=>ind.push(h));if(t!=='core'){const h=window.__hits(tx,t,['core']);if(h.length){mer++;if(merS.length<4)merS.push(h[0])}}});
+  return{n:idx.length,ind:ind.slice(0,4),indN:ind.length,mer,merS}},[t,nonCore]);
  if(s.indN)fail(t+' search shows another industry tenant ('+s.indN+'): '+s.ind.join(' | '));
- console.log(t,'| search entries',s.n,'| Meridian records in search (legacy, not failed)',s.mer);
+ if(s.mer)fail(t+' search shows Meridian records ('+s.mer+'): '+s.merS.join(' | '));
+ console.log(t,'| search entries',s.n,'| Meridian records in search',s.mer);
 }
 // 3. legacy screens on a fresh page per tenant (some legacy screens add sample records when opened)
 for(const t of ['core','health']){const q=await open();await q.evaluate(t=>TENANT.switch(t),t);await q.waitForTimeout(200);
