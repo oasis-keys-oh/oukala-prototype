@@ -6,7 +6,7 @@
 const H=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const RNG=seed=>{let s=0;for(const c of String(seed))s=(s*31+c.charCodeAt(0))>>>0;if(!s)s=1;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}};
 window.RNG=RNG;
-S.k2=S.k2||{};S.mp=S.mp||{};S.mpSel=S.mpSel||{};S.bt=S.bt||{};S.lr=S.lr||{};S.proc=S.proc||{};S.scale=S.scale||false;
+S.k2=S.k2||{};S.mp=S.mp||{};S.mpSel=S.mpSel||{};S.bt=S.bt||{};S.lr=S.lr||{};S.proc=S.proc||{};
 
 /* ---------------- directory: people, AI agents, contractors, managed service providers ---------------- */
 const KINDS={human:"Employee",ai:"AI agent",contractor:"Contractor",msp:"Managed service provider"};
@@ -249,11 +249,10 @@ function tableFix(){tfq=0;document.querySelectorAll("#view table,#drawer table")
    list.forEach(([td,x])=>{if(want){if(!td.classList.contains("tok")){td.classList.add("tok");td.dataset.tokauto="1";delete td.dataset.tokoff}}else if(td.classList.contains("tok")){td.classList.remove("tok");if(!td.dataset.tokauto)td.dataset.tokoff="1";delete td.dataset.tokauto}})})})}
 new MutationObserver(()=>{if(!tfq)tfq=requestAnimationFrame(tableFix)}).observe(document.documentElement,{childList:true,subtree:true});
 
-/* ---------------- scale: switch to enterprise volumes ---------------- */
+/* ---------------- scale: inert stub (PH-08) ---------------- */
 /* Data volume removed: SCALE stays as an inert stub so older call sites keep working. The app always runs on the sample data set. */
 const SCALE={on:false,built:false,n:{projects:0,cis:0,tickets:0,people:0,assets:0,incidents:0,changes:0,demand:0,raid:0},set(){this.on=false},build(){},projects(){return[]},cis(){return[]},tickets(){return[]},incidents(){return[]},changes(){return[]},demand(){return[]},raid(){return[]},assets(){return[]}};
 window.SCALE=SCALE;
-/* Data volume switch removed: the app always runs on the sample data set. */
 
 
 /* ---------------- shared service and CI registry (one graph every module uses) ----------------
@@ -348,7 +347,6 @@ window.normMetrics=function(){if(typeof METRICS==="undefined")return;for(const i
   if(!m.rem&&!m._remFilled){m._remFilled=1;m.rem={kind:"sop",ref:"SOP-MET-"+(Object.keys(METRICS).indexOf(id)+1),title:"Review "+m.n+" and assign a corrective action",agent:"Metrics Agent",auto:false,state:"standby",prog:"Standing by. When "+m.n+" crosses its threshold, the owner ("+(m.owner||"metric owner")+") is asked to approve the first step."}}}};
 if(typeof METRICS!=="undefined"){const fix={m_ops:["SOP-231","Restore operational health score","Ops Agent"],m_vendor:["SOP-244","Run a vendor performance review","Vendor Agent"],m_mttr:["SOP-118","Cut time to resolve: swarm and escalate","Ops Agent"],m_aispend:["SOP-309","Throttle agents nearing the daily cap","Cost Guard Agent"],m_yield:["SOP-172","Recover missed meeting actions","Meeting Agent"]};
  for(const k in fix){const m=METRICS[k];if(m&&!m.rem)m.rem={kind:"sop",ref:fix[k][0],title:fix[k][1],agent:fix[k][2],auto:false,state:"standby",prog:"Standing by. Starts when the metric crosses its threshold."}}}
-/* scale generators sized for enterprise volumes */
 /* popovers open next to the chip that opened them */
 let anchor=null;
 document.addEventListener("click",e=>{const b=e.target.closest("[popovertarget]");if(!b){return}const t=document.getElementById(b.getAttribute("popovertarget"));if(!t||!t.classList.contains("pop")||t.id==="profilePop")return;if(b.matches(".fchip,.ringcard button,.navhelp,.chip,.mcard button")||b.closest(".hero")){anchor={id:t.id,r:b.getBoundingClientRect()}}},true);
