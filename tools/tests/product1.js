@@ -21,6 +21,18 @@ const r88=await p.evaluate(()=>{const want={ppl_cap:["Collect demand","Subtract 
  return out});
 ok(r88.length===6&&r88.every(x=>x.ok),'CL-88: 6 robot steps are owned by their robot with a human sponsor and a different backup: '+r88.map(x=>x.pid+'/'+x.n+' -> '+x.owner+' (sponsor '+x.sp+')').join('; '));
 
+// JM-13: Build list by purview; the drawer refuses a build outside the purview; the purview is on screen
+const r13=await p.evaluate(async()=>{const out={};window.__p1dr=0;HOOKS.on('afterOpenDrawer',()=>{window.__p1dr++},{id:'p1.drawers'});const prev=S.persona;SCN.set('core');await new Promise(r=>setTimeout(r,120));const ALL=JXR.builds();
+ for(const ps of ['exec','arch','ops','pm','newhire']){S.persona=ps;S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const pv=JXR.purview(),mine=JXR.buildsFor(pv),out1=ALL.filter(o=>!mine.some(m=>m.id===o.id));const v=document.querySelector('#view .pp2-pane');
+  let refused=true;const n0=window.__p1dr;if(out1.length){JXR.buildDrawer(out1[0].id);refused=window.__p1dr===n0}
+  if(mine.length){const n1=window.__p1dr;JXR.buildDrawer(mine[0].id);if(window.__p1dr!==n1+1)refused=false}
+  const bar=v&&v.querySelector('.jb-pv');out[ps]={scope:pv.scope,n:mine.length,total:ALL.length,cards:v?v.querySelectorAll('.jb-card').length:-1,bar:bar?bar.innerText:'',refused,
+   ownOk:pv.scope!=='own'||mine.every(o=>{const w=JXR.buildOwners(o);return [...w.box,...w.step,...w.proc].some(n=>n===pv.user||(pv.role&&n.toLowerCase()===pv.role.toLowerCase()))})}}
+ S.persona=prev;closeDrawer&&closeDrawer();render();return out});
+for(const ps in r13){const c=r13[ps];ok(/Your purview/.test(c.bar)&&/Showing \d+ of \d+ build/.test(c.bar)&&c.cards===Math.min(24,c.n)&&c.refused&&c.ownOk&&!EMDASH.test(c.bar),`JM-13 ${ps}: purview ${c.scope}, ${c.n} of ${c.total} builds shown and named on screen; a build outside it does not open`)}
+ok(r13.exec.scope==='all'&&r13.arch.scope==='all'&&r13.ops.scope==='dept'&&r13.pm.scope==='own'&&r13.newhire.scope==='own','JM-13: leaders and architects all, a department head dept, individual contributors own');
+
 //@@NEXT
 
 ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,8));

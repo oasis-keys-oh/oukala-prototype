@@ -127,13 +127,15 @@ ok(k1.i===1&&k2.pm===k1.key&&k2.key===k1.key&&k2.pressed==='true'&&k2.flow,`keyb
 ok(k2.ring&&k2.ring!=='none','keyboard focus shows a visible focus ring (token stroke)');
 await p.evaluate(()=>{SCN.set('core')});await wait(150);
 
-// 12. JM-09: who sees the Build list (simulated through PERM) and the pilot scope panel (hypothesis)
-const perm=await p.evaluate(async()=>{const out={};const prev=S.persona;SCN.set('core');await new Promise(r=>setTimeout(r,120));
- for(const ps of ['exec','portfolio','arch','ops','fin']){S.persona=ps;S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
-  const v=document.querySelector('#view .pp2-pane');out[ps]={cards:v.querySelectorAll('.jb-card').length,lock:!!v.querySelector('.jb-lock'),pilot:!!v.querySelector('.jb-pilot'),hyp:/Hypothesis/.test((v.querySelector('.jb-pilot')||{}).innerText||''),acc:JXR.buildAccess().ok}}
+// 12. JM-13 (replaces the JM-09 role lock): the Build list by purview (simulated through PERM) and the pilot scope panel (hypothesis)
+const perm=await p.evaluate(async()=>{const out={};const prev=S.persona;SCN.set('core');await new Promise(r=>setTimeout(r,120));const total=JXR.builds().length;
+ for(const ps of ['exec','portfolio','arch','ops','fin','newhire']){S.persona=ps;S.pp2.tab.ppl_jrny=8;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));
+  const v=document.querySelector('#view .pp2-pane');const pv=JXR.purview();out[ps]={scope:pv.scope,dept:pv.dept||'',total,cards:v.querySelectorAll('.jb-card').length,lock:!!v.querySelector('.jb-lock'),bar:!!v.querySelector('.jb-pv[data-purview="'+pv.scope+'"]'),pilot:!!v.querySelector('.jb-pilot'),hyp:/Hypothesis/.test((v.querySelector('.jb-pilot')||{}).innerText||''),acc:JXR.buildAccess().ok}}
  S.persona=prev;render();return out});
-for(const ps in perm){const c=perm[ps];if(['ops','fin'].indexOf(ps)>=0)ok(c.lock&&!c.cards&&!c.pilot&&!c.acc,`persona ${ps}: Build list is locked (simulated permission)`);
- else ok(!c.lock&&c.cards>0&&c.pilot&&c.hyp&&c.acc,`persona ${ps}: Build list shown with a pilot scope panel labeled Hypothesis`)}
+for(const ps in perm){const c=perm[ps];ok(!c.lock&&c.bar&&c.acc,`persona ${ps}: Build list shows the viewer's purview (${c.scope}${c.dept?': '+c.dept:''}), never a role lock`);
+ if(['exec','portfolio','arch'].indexOf(ps)>=0)ok(c.scope==='all'&&c.cards===c.total&&c.pilot&&c.hyp,`persona ${ps}: leader or architect sees every build (${c.cards} of ${c.total}) with a pilot scope panel labeled Hypothesis`);
+ else if(ps==='newhire')ok(c.scope==='own'&&c.cards<=c.total,`persona ${ps}: individual contributor sees only own builds (${c.cards} of ${c.total})`);
+ else ok(c.scope==='dept'&&c.cards>0&&c.cards<c.total,`persona ${ps}: department head sees the department's builds only (${c.dept}: ${c.cards} of ${c.total})`)}
 
 // 13. CL-35: journey Back and Forward and the orgprop reset run from HOOKS, not render or SCN.set wrappers
 const hk=await p.evaluate(async()=>{const ids=n=>HOOKS.list(n).map(h=>h.id);S.pp2.tab.ppl_jrny=0;go('ppl_jrny');await new Promise(r=>setTimeout(r,150));

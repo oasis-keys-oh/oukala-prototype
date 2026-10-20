@@ -11,7 +11,7 @@ const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
 const E=U.esc;
 const TODAY=U.TODAY_ISO;
 const P=S.r16g=S.r16g||{rules:[],fields:[],hist:[],log:[],enforce:true,seedVer:0,sim:"",nx:{r:1,f:1,l:1,c:1}};
-const SEEDVER=3;
+const SEEDVER=4; /* 4: JM-13 narrows section journey.build to leaders and architects */
 
 /* ---------------- roles, personas, groups, permission sets ---------------- */
 const ROLES=[
@@ -312,7 +312,7 @@ function seedRules(){_n=0;const R=[];
  /* CL-85 (sample rule, pending Omar's confirmation): the journey Build list is read by architects, the CIO and executive office, the COO,
     the CFO, and the delivery roles that already saw it (JM-09). Process owners are not added: every persona owns a process, so the
     lock would open for everyone (open question in the sweep-b report). Simulated: nothing here is a real access control. */
- sec("journey.build",["executive","architect","portfolio_lead","project_manager","change_manager","platform_admin"],"","Sample rule: architects, executives and delivery leads read the journey Build list");
+ sec("journey.build",["executive","architect","portfolio_lead"],"","Sample rule: leaders and architects see every build on the journey Build list; department heads and everyone else see their purview (JM-13)");
  sec("journey.build",["*","!vendor_guest"],"persona('coo') or persona('cfo')","Sample rule: the COO and the CFO read the journey Build list");
  sec("org.lifecycle",["hr","executive","platform_admin"],"","Lifecycle tab on the org chart");sec("org.vacancies",["hr","executive","portfolio_lead","platform_admin"],"","Vacancies");sec("org.sync",["hr","platform_admin","executive"],"","Directory sync");
  R.push(A("Org and report tabs are open to staff",STAFF,"section:org.*",["read"],"","Other org chart tabs",{tier:"section"}));

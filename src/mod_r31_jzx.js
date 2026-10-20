@@ -107,7 +107,7 @@ const wl={1:"Wave 1",2:"Wave 2",3:"Wave 3"};
 function bcard(o){const a=A();
  return `<article class="jb-card k-${o.k}"><button class="jb-open" data-pp2-act="jbld" data-a="${o.id}" aria-label="Open the build summary for ${E(o.title)}"><span class="jb-top">${R.av(o.k,o.name,44)}<span class="jb-t"><b>${W.NUM?NUM.bchip(o.key)+" ":""}${E(o.title)}</b><small>${o.k==="agent"?"Agent":"Robot"} ${E(o.name.split(" ")[1])} · ${o.rows.length} step${o.rows.length===1?"":"s"} · ${E(o.js.slice(0,2).join(", "))}${o.js.length>2?" +"+(o.js.length-2):""}</small></span><span class="jb-wv w${o.wave}" title="Build order, a hypothesis: easy and valuable first">${wl[o.wave]}</span></span>${R.bdec[o.id]==="plan"?`<span class="jb-pl">In the build plan</span>`:R.bdec[o.id]==="defer"?`<span class="jb-pl d">Deferred</span>`:""}
   <span class="jb-m"><span><b>${fmt(o.hrs)}</b>h a month covered</span><span><b>${o.ext?fmt(o.freed):(o.freed/FTE_H).toFixed(1)}</b>${o.ext?"h back to them":"FTE released"}${o.capped?`<em class="jb-cap" title="${E(R.capNote())}">capped</em>`:""}</span><span><b>${o.risk}</b>risk of 5</span></span>
-  <span class="jb-r small muted">${o.roles.slice(0,3).map(E).join(", ")}${o.roles.length>3?" +"+(o.roles.length-3):""} · owner ${E(o.teams[0]||"to assign")}</span>
+  <span class="jb-r small muted">${o.roles.slice(0,3).map(E).join(", ")}${o.roles.length>3?" +"+(o.roles.length-3):""} · owner ${E(o.teams[0]||"to assign")}</span>${o.via&&o.via!=="all"?`<span class="jb-via small">In your purview as ${E(o.via)}</span>`:""}
   <span class="jb-chk"><i class="${o.hasProc?"ok":"no"}"></i>${o.hasProc?"Process exists":"Needs a process first"}${o.sys.length?` · <i class="ok"></i>${E(o.sys.slice(0,2).join(", "))}`:""}</span></button>${W.SHOW&&SHOW.fixHTML?SHOW.fixHTML("build",W.NUM&&NUM.build?NUM.build(o.key):"",o.title):""}</article>`}
 
 /* ---------- cross-reference export: journey step -> process step -> build ---------- */
@@ -123,20 +123,56 @@ R.xrefSteps=function(){const a=A(),M=R.pindex(),ten=W.TENANT?TENANT.name():"";co
   f.nodes.filter(n=>n.t!=="trigger"&&n.t!=="end").forEach(n=>{rows.push([ten,NUM.proc(key),a.wfN(p),NUM.step(f,n),n.n,n.t,(n.p&&n.p.asg&&(n.p.asg.person||n.p.asg.team))||"",n.g?"Child step in a sub-flow":""])})});
  csvOut("process-steps.csv",["Tenant","Process no.","Process","Step no.","Step","Type","Owner","Note"],rows)};
 R.xrefBar=()=>`<div class="row jx-xref" role="group" aria-label="Export"><span class="small muted">Numbers: P-014 process, P-014.3 step, P-014.3.1 child step, B-012 build. Type one in search to open it.</span><button class="btn quiet" data-pp2-act="jxref" data-a="journey">Export journey to process to build (CSV)</button><button class="btn quiet" data-pp2-act="jxref" data-a="steps">Export process steps (CSV)</button></div>`;
-/* JM-09: who sees the Build list. Simulated through the one permission model (PERM.can on "section:journey.build"); with no explicit rule for that
-   section, the roles below see it. Nothing here is a real access control. */
-const BUILD_ROLES=["executive","portfolio_lead","project_manager","architect","change_manager","platform_admin"];
+/* JM-13 (replaces the JM-09 role lock): the Build list by purview. Leaders and architects see every build: an explicit PERM rule on
+   "section:journey.build" decides first (it stays the leader and architect rule), else the roles in LEAD_ROLES. Department heads (anyone with
+   direct reports in the org graph) see every build of their department. Everyone else sees the builds they own as box owner, process step
+   owner or process owner. Simulated: this prototype has no sign-in, so nothing is enforced beyond what is shown. */
+const LEAD_ROLES=["executive","portfolio_lead","architect"];
 const roleN=id=>{try{const r=PERM.roles.find(x=>x.id===id);return r?r.n:id}catch(e){return id}};
-R.buildRoles=()=>BUILD_ROLES.slice();
-R.buildAccess=function(){const P=W.PERM;if(!P||!P.can)return {ok:true,why:"No permission model in this build",roles:[],user:""};
- let d=null,u={roles:[],user:""};try{d=P.can(null,"read","section:journey.build")}catch(e){}try{u=P.principal()||u}catch(e){}
- if(d&&d.off)return {ok:true,why:"Permission checks are switched off on the Permissions screen",roles:u.roles,user:u.user};
- if(d&&!d.def)return {ok:!!(d.ok||d.cond),why:d.why,roles:u.roles,user:u.user,rule:true};
- const hit=(u.roles||[]).filter(r=>BUILD_ROLES.indexOf(r)>=0);
- return {ok:hit.length>0,why:hit.length?"Allowed for "+roleN(hit[0]):"None of "+(u.user||"this viewer")+"'s roles may open the Build list",roles:u.roles,user:u.user}};
-const whoMay=()=>BUILD_ROLES.map(roleN).join(", ");
-function lockedBuild(acc){return `${brief(`<b>The Build list is not shown for your role.</b> It names what to automate and where capacity would be released, so it is limited to ${E(whoMay())}. Simulated permission.`)}
- <div class="card glass jb-lock" role="note"><p class="small">${E(acc.why)}. Viewing as <b>${E(acc.user||"this viewer")}</b>${acc.roles&&acc.roles.length?" ("+E(acc.roles.map(roleN).join(", "))+")":""}. Switch the persona in the top bar to an executive, a portfolio lead or an architect to see it.</p><p class="small muted">Read through the platform permission model (section journey.build). Simulated: this prototype has no sign-in, so nothing is enforced beyond what is shown.</p></div>`}
+const G_=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
+const nrm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();
+const stem=s=>{const w=nrm(s).split(" ").filter(x=>x&&!/^(and|the|of|team)$/.test(x));return w.length?w[0].slice(0,6):""};
+/* sample team names differ slightly between journeys and the org graph ("Change manager", "Change management"): matched on the first word */
+const sameTeam=(a,b)=>!!a&&!!b&&(nrm(a)===nrm(b)||(stem(a).length>=3&&stem(a)===stem(b)));
+const byName=()=>G_(()=>PERM.graph().by,{});
+const personOf=n=>{const g=byName()[n];return g?{name:n,team:g.team,role:g.role}:null};
+/* a name on a box or step may be a person, a role title or a team: the teams it stands for */
+function teamsOf(x){const g=byName();if(!x)return [];if(g[x])return [g[x].team];const r=Object.keys(g).filter(n=>nrm(g[n].role)===nrm(x)).map(n=>g[n].team);return r.length?r:[x]}
+/* the owners of one build: box owners (journey), step owners (the process steps it takes over) and process owners */
+function ownersOf(o){if(o._own)return o._own;const box=new Set(),step=new Set(),proc=new Set();
+ o.rows.forEach(x=>{if(x.b.owner)box.add(x.b.owner);(x.b.procs||[]).forEach(p=>{const key=p.src+"|"+p.ref;const f=G_(()=>FLOWX.get(NUM.flowId(key)),null);
+  if(f){if(f.owner)proc.add(f.owner);const ns=f.nodes.filter(n=>n.t!=="trigger"&&n.t!=="end");const one=p.step?ns.filter(n=>n.id===p.step):[];
+   (one.length?one:ns).forEach(n=>{const a=n.p&&n.p.asg;if(!a||a.kind==="agent")return;[a.person,a.team].forEach(v=>{if(v)step.add(v)})})}
+  else{const w=p.src==="WFX"?G_(()=>WFX.get(p.ref),null):null;if(w&&w.owner)proc.add(w.owner)}})});
+ o._own={box:[...box],step:[...step],proc:[...proc]};return o._own}
+R.buildOwners=ownersOf;
+R.buildRoles=()=>LEAD_ROLES.slice();
+R.purview=function(){const P=W.PERM;let u={roles:[],user:""};try{u=(P&&P.principal&&P.principal())||u}catch(e){}
+ const base={user:u.user||"",roles:(u.roles||[]).slice()};
+ if(!P||!P.can)return Object.assign(base,{scope:"all",why:"No permission model in this build"});
+ let d=null;try{d=P.can(null,"read","section:journey.build")}catch(e){}
+ if(d&&d.off)return Object.assign(base,{scope:"all",why:"Permission checks are switched off on the Permissions screen"});
+ const ruled=d&&!d.def;
+ if(ruled&&(d.ok||d.cond))return Object.assign(base,{scope:"all",rule:true,why:"Leader or architect rule: "+(d.why||"allowed")});
+ const lead=base.roles.filter(r=>LEAD_ROLES.indexOf(r)>=0);
+ if(!ruled&&lead.length)return Object.assign(base,{scope:"all",why:"Leader or architect ("+roleN(lead[0])+")"});
+ const me=personOf(base.user),reps=me&&!u.rolesOnly?G_(()=>P.reportsOf(base.user,false).length,0):0;
+ if(me&&(reps>0||(!u.rolesOnly&&base.roles.indexOf("people_manager")>=0)))return Object.assign(base,{scope:"dept",dept:me.team,role:me.role,why:"Department head of "+me.team+(reps?" ("+reps+" direct report"+(reps===1?"":"s")+")":"")});
+ return Object.assign(base,{scope:"own",role:me?me.role:"",why:"Individual contributor: the builds where "+(base.user||"this viewer")+" owns the journey box, a process step or the process"})};
+/* why a build is in the viewer's purview ("" when it is not) */
+R.inPurview=function(o,pv){pv=pv||R.purview();if(pv.scope==="all")return "all";const ow=ownersOf(o),me=pv.user,role=pv.role;
+ const mine=n=>!!n&&(n===me||(!!role&&nrm(n)===nrm(role)));
+ const own=ow.box.some(mine)?"box owner":ow.step.some(mine)?"step owner":ow.proc.some(mine)?"process owner":"";
+ if(own||pv.scope==="own")return own;
+ const inD=n=>teamsOf(n).some(t=>sameTeam(t,pv.dept));
+ return ow.box.some(inD)?"box owned in "+pv.dept:ow.step.some(inD)?"step owned in "+pv.dept:ow.proc.some(inD)?"process owned in "+pv.dept:""};
+R.buildsFor=pv=>{pv=pv||R.purview();return builds().filter(o=>{const v=R.inPurview(o,pv);o.via=v;return !!v})};
+/* kept for callers of the JM-09 API: every viewer now has a purview, so the list is never locked */
+R.buildAccess=function(){const pv=R.purview();return {ok:true,scope:pv.scope,why:pv.why,roles:pv.roles,user:pv.user}};
+const PVL={all:"Everything",dept:"Your department",own:"Your own builds"};
+function purviewBar(pv,n,total){return `<div class="card glass jb-pv" role="status" data-purview="${pv.scope}"><span class="jk-l">Your purview</span><b>${E(PVL[pv.scope])}${pv.scope==="dept"?": "+E(pv.dept):""}</b>
+ <span class="small">${E(pv.why)}. Viewing as <b>${E(pv.user||"this viewer")}</b>${pv.roles.length?" ("+E(pv.roles.map(roleN).join(", "))+")":""}. Showing ${n} of ${total} build${total===1?"":"s"}.</span>
+ <span class="small muted">Leaders and architects see everything; department heads see their whole department; everyone else sees the builds they own as box, step or process owner. Simulated permission read through the platform permission model (section journey.build); this prototype has no sign-in.</span></div>`}
 /* JM-09: a pilot scope a buyer can react to. Every line is a hypothesis; figures are modeled; nothing is priced. */
 R.pilot=function(B){const a=A();B=B||builds();const pick=B.filter(x=>x.wave===1).slice(0,3);if(pick.length<3)B.filter(x=>x.hasProc&&pick.indexOf(x)<0).slice(0,3-pick.length).forEach(x=>pick.push(x));
  if(!pick.length)return "";const rows=pick.flatMap(x=>x.rows);const teams=[...new Set(pick.flatMap(x=>x.teams))],js=[...new Map(rows.map(r=>[r.j.id,r.j])).values()];
@@ -150,7 +186,8 @@ R.pilot=function(B){const a=A();B=B||builds();const pick=B.filter(x=>x.wave===1)
  <div><span class="jk-l">Timeline</span><p class="small">About 90 days: 2 weeks to confirm the processes and data, 6 weeks to build and test with people approving each action, 4 weeks to measure against the targets above.</p></div>
  <div><span class="jk-l">Not in the pilot</span><p class="small">Steps rated 4 or 5 for risk, steps with no process yet, anything outside the organization's own systems, and any price or contract.</p></div></div>
  <p class="small muted">Hypothesis for discussion. Owners: ${teams.slice(0,3).map(E).join(", ")||"to assign"}. Nothing here is approved, built or live.</p></section>`};
-R.buildTab=function(){const acc=R.buildAccess();if(!acc.ok)return lockedBuild(acc);const a=A(),B=builds();const ag=B.filter(x=>x.k==="agent"),rb=B.filter(x=>x.k==="robot"),steps=B.reduce((s,x)=>s+x.rows.length,0);
+R.buildTab=function(){const pv=R.purview(),ALL=builds(),B=R.buildsFor(pv);const pvb=purviewBar(pv,B.length,ALL.length);
+ if(!B.length)return `${brief(`<b>No builds in your purview.</b> ${pv.scope==="own"?"None of the proposed builds take over a journey box, process step or process you own.":"None of the proposed builds touch "+E(pv.dept||"your department")+"."} Simulated permission.`)}${pvb}`;const ag=B.filter(x=>x.k==="agent"),rb=B.filter(x=>x.k==="robot"),steps=B.reduce((s,x)=>s+x.rows.length,0);
  const st=B.filter(x=>!x.ext),fte=st.reduce((s,x)=>s+x.freed,0)/FTE_H,ext=B.filter(x=>x.ext).reduce((s,x)=>s+x.freed,0);
  const show=B.filter(x=>(O.flt==="all"||O.flt===x.k)&&(!O.wave||O.wave===x.wave));const lim_=O.all?show.length:24;
  const chip=(g,id,txt,num)=>`<button class="jmc${(g==="f"?O.flt===id:O.wave===id)?" is-on":""}" data-pp2-act="jbf" data-a="${g}|${id}" aria-pressed="${g==="f"?O.flt===id:O.wave===id}">${num!=null?`<b>${num}</b> `:""}${txt}</button>`;
@@ -160,11 +197,11 @@ R.buildTab=function(){const acc=R.buildAccess();if(!acc.ok)return lockedBuild(ac
  ${(()=>{const pl=B.filter(x=>R.bdec[x.id]==="plan"),nx=pl.slice().sort((x,y)=>x.wave-y.wave||y.freed-x.freed)[0];const pf=pl.filter(x=>!x.ext).reduce((s,x)=>s+x.freed,0)/FTE_H;return `<div class="jb-plan" role="status"><b>Build plan</b> ${pl.length?`${pl.length} build${pl.length===1?"":"s"} · about ${pf.toFixed(1)} FTE released if all are built (modeled)${nx?` <button class="btn sm primary" data-pp2-act="jbvc" data-a="${nx.id}">Build the next one in VibeCheck</button>`:""}`:`<span class="muted">Empty. Open a card and choose Add to the build plan, or Build it in VibeCheck.</span>`}</div>`})()}
  ${R.pilot(B)}
  ${R.xrefBar()}
- <p class="small muted jb-acc">Visible to ${E(whoMay())} (simulated permission). ${E(acc.why)}.</p>
+ ${pvb}
  <div class="jb-grid">${show.slice(0,lim_).map(bcard).join("")||`<p class="muted">Nothing matches these filters.</p>`}</div>
  ${show.length>24?`<div class="row" style="margin-top:10px"><button class="btn quiet" data-pp2-act="jbmore" data-a="">${O.all?"Show the top 24":"Show all "+show.length}</button></div>`:""}
  <p class="muted small jhint">Counted by one rule shared with the org chart: recommended steps of the same kind that share a process are one build, and the same journeys are counted (${R.scopeNow()==="detail"&&R.hasDetail()?"detailed journeys; the end-to-end journey is left out so the same work is not counted twice":"all journeys"}). Waves are a hypothesis: Wave 1 is the most hours released among builds with a process behind them and risk of 3 or less; Wave 3 has risk 5, no process yet, or the least return. FTE is modeled: a robot frees 80% and an agent 60% of a step's hours, ${FTE_H} hours is one FTE a month, and ${E(R.capNote().replace(/^Each/,"each"))}; cards marked capped hit that limit. Limits shown are the proposed starting box (tier, confidence floor, kill switch), not a running configuration. Nothing here is built or live. Teammate names are placeholders.</p>`};
-R.buildDrawer=function(id){const acc=R.buildAccess();if(!acc.ok){try{toast("The build summary is limited to "+whoMay()+" (simulated permission).","info")}catch(e){}return}const a=A(),o=builds().find(x=>x.id===id);if(!o)return;const L=o.lim;
+R.buildDrawer=function(id){const a=A(),o=builds().find(x=>x.id===id);if(!o)return;const pv=R.purview();if(!R.inPurview(o,pv)){try{toast("This build is outside your purview ("+PVL[pv.scope].toLowerCase()+", simulated permission).","info")}catch(e){}return}const L=o.lim;
  const rows=o.rows.slice().sort((x,y)=>y.hrs-x.hrs);const p=o.rows[0].b.procs[0];
  const kv=(k,v)=>`<div class="jb-kv"><span>${k}</span><b>${v}</b></div>`;
  openDrawer(`<div class="jd"><div class="eyebrow">${o.k==="agent"?"Agent":"Robot"} to create · ${wl[o.wave]} ${W.NUM?NUM.bchip(o.key):""}</div><h2 class="jd-t">${E(o.title)}</h2>
