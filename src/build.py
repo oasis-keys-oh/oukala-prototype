@@ -26,7 +26,8 @@ MK=BR.get('mark','')
 if MK and MK.lower() in NAME.lower():
     _i=NAME.lower().index(MK.lower());WM=NAME[:_i]+'<i class="wm-ai">'+NAME[_i:_i+len(MK)]+'</i>'+NAME[_i+len(MK):]
     js=js.replace('<b>'+NAME+'</b><small>','<b class="wm">'+WM+'</b><small>')
-FAV='<link rel="icon" type="image/png" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/favicon.png','rb').read()).decode()+'"><link rel="apple-touch-icon" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/apple-touch-icon.png','rb').read()).decode()+'">'
+FAV_ICO='<link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="data:image/x-icon;base64,'+base64.b64encode(open('assets/brand/favicon.ico','rb').read()).decode()+'">'
+FAV='<link rel="icon" type="image/png" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/favicon.png','rb').read()).decode()+'"><link rel="apple-touch-icon" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/apple-touch-icon.png','rb').read()).decode()+'">'+FAV_ICO
 BOOTLOGO='<img alt="" width=56 height=56 style="display:block;margin:0 auto 10px;border-radius:14px" src="data:image/webp;base64,'+base64.b64encode(open('assets/brand/logo.webp','rb').read()).decode()+'">'
 html=f'<title>{NAME}</title>{FAV}\n{fonts}\n<style>\n{block()}\n'+"\n".join(css)+f'\n</style>\n<script>\n{js}\n</script>\n'
 open(os.path.join(out,'oukala.html'),'w',encoding='utf-8').write(html)
