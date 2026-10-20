@@ -27,6 +27,8 @@ node tools/tests/guard.js build_out
 node tools/tests/gate.js build_out
 node tools/tests/tenant.js build_out
 node tools/tests/tenant_leak.js build_out
+# PR-32: the 58 tenant entities are defined with Meridian rows, and every industry pack carries them with links, owners and threads intact
+node tools/tests/data_entities.js build_out
 node tools/tests/thread.js build_out
 # wave 3 sweep-a (CL-45, CL-44, CL-17, CL-72): no em dash, banned name, old product name or "Automatic" step label on the core and mod_admin to mod_obs screens
 node tools/tests/sweep_a.js build_out
