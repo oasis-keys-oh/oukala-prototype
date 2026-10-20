@@ -93,6 +93,21 @@ function registerTab(rows){const f=S_.fam,st=S_.st,sg=S_.stage;const L=rows.filt
  <div class="tscroll"><table class="gd-reg"><thead><tr><th>ID</th><th>Rule</th><th>Family</th><th>Enforcement</th><th>Owner</th><th>Test</th><th>Where it lives</th><th>Check</th></tr></thead><tbody>${L.map(r=>`<tr data-gd-row="${E(r.id)}"><td><b>${E(r.id)}</b></td><td>${E(r.rule)}${r.note?`<div class="muted small">${E(r.note)}</div>`:""}</td><td>${E(r.famName)}</td><td>${pill(STATUS[r.status].l,STATUS[r.status].c,STATUS[r.status].d)}</td><td>${chip(r.owner,"guardrail:"+r.id,"Owner")}<div class="muted small">Backup ${chip(r.backup,"guardrail:"+r.id,"Backup")}</div></td><td>${r.test==="none"?pill("No test","mute"):pill(r.test,"info","Automated test in tools/tests")}</td><td><button type="button" class="chip" data-link="screen:${E(r.scr)}">${E(scrName(r.scr))}</button><div class="muted small"><code>${E(r.file)}</code></div></td><td>${r.found?pill("Found: "+r.fn,"good"):pill("Not found","bad")}</td></tr>`).join("")||`<tr><td colspan="8" class="muted">Nothing matches these filters.</td></tr>`}</tbody></table></div>`)}
 const TABS=[{l:"Register",h:rows=>registerTab(rows)}];
 GD._tabs=TABS;
+
+/* ---------- DC-19: process stage by guardrail family ----------
+   A cell holds the guardrails of that family that act at that stage; its color is the strongest status among them.
+   An empty cell is a stage the family does not guard. Select a cell to filter the register. */
+function matrix(rows){rows=rows||rails();return FAM.map(f=>({fam:f.id,n:f.n,cells:STAGES.map(s=>{const L=rows.filter(r=>r.fam===f.id&&r.stages.indexOf(s.id)>=0);
+ const best=L.reduce((a,r)=>RANK[r.status]>(RANK[a]||0)?r.status:a,"");return{stage:s.id,ids:L.map(r=>r.id),best}})}))}
+function matrixTab(rows){const M=matrix(rows);const gaps=STAGES.filter(s=>M.every(m=>!m.cells.find(c=>c.stage===s.id).ids.length));
+ const weak=STAGES.map(s=>({s,n:M.filter(m=>{const c=m.cells.find(x=>x.stage===s.id);return c.ids.length&&c.best!=="enforced"}).length}));
+ return card("Stage by family","Rows are guardrail families, columns are the stages of a process. Each cell shows how strongly that family guards that stage today; select it to see the rows.",
+ `<div class="tscroll"><table class="gd-mx"><thead><tr><th>Family</th>${STAGES.map(s=>`<th>${E(s.n)}</th>`).join("")}</tr></thead><tbody>${M.map(m=>`<tr><th scope="row">${E(m.n)}</th>${m.cells.map(c=>c.ids.length?`<td><button type="button" class="gd-cell ${STATUS[c.best].c}" data-gd-cell="${E(m.fam)}|${E(c.stage)}" title="${E(c.ids.join(", "))}" aria-label="${E(m.n+" at "+c.stage+": "+STATUS[c.best].l+", "+c.ids.length+" guardrails")}">${E(STATUS[c.best].l)}<small>${c.ids.length}</small></button></td>`:`<td><span class="gd-cell none">None</span></td>`).join("")}</tr>`).join("")}</tbody></table></div>
+ <div class="row gd-legend">${Object.keys(STATUS).map(k=>`<span class="gd-cell ${STATUS[k].c} sm">${E(STATUS[k].l)}</span>`).join("")}<span class="gd-cell none sm">None: the family does not guard that stage</span></div>
+ <p class="small muted">${gaps.length?"Stages with no guardrail at all: "+E(gaps.map(s=>s.n).join(", "))+". ":"Every stage has at least one guardrail. "}Stages with the most families short of enforced: ${E(weak.sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.s.n+" ("+x.n+")").join(", "))}. Prototype fact, read from the register.</p>`)}
+TABS.push({l:"Stage matrix",h:rows=>matrixTab(rows)});
+GD.matrix=()=>matrix();
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-cell]");if(!t)return;const [f,s]=t.dataset.gdCell.split("|");S_.fam=f;S_.stage=s;S_.st="";S.v.sguard=0;render()});
 function honesty(){return `<div class="gd-honest glass" role="note"><b>Read this first.</b> Everything on this screen runs in a database-free prototype and is simulated. Tenant isolation is simulated, not enforced by infrastructure. There is no security certification; certifications such as SOC 2 are a plan, not a claim. Counsel review (BR-08) is required before any of this is used with a customer. ${simChip()}</div>`}
 
 /* ---------- process (R34 procCard) ---------- */

@@ -63,6 +63,12 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  ok(byId["GR-26"].status==="documented","GR-26 AI gateway is documented only (no model is called)");
  go("guard");const gv=document.getElementById("view").textContent;ok(/Guardrail register/.test(gv)&&!/undefined|NaN/.test(gv),"DC-18 screen renders without undefined");
  ok(/simulated/i.test(gv)&&/BR-08/.test(gv)&&/isolation is simulated/i.test(gv),"DC-18 / CL-71 honesty labels on the screen");
+ /* ---- DC-19: stage by family matrix ---- */
+ const M=GUARD.matrix();ok(M.length===GUARD.families().length&&M.every(m=>m.cells.length===GUARD.stages().length),"DC-19 matrix covers every family and stage");
+ ok(M.every(m=>m.cells.every(c=>c.ids.every(id=>byId[id].fam===m.fam&&byId[id].stages.includes(c.stage)))),"DC-19 cells hold only their family's rows at that stage");
+ S.v.sguard=1;go("guard");ok(document.querySelectorAll("#view .gd-mx [data-gd-cell]").length>0,"DC-19 matrix cells render");
+ ok(!/Not available\./.test(document.getElementById("view").textContent),"every guard tab renders (no failed tab)");
+ document.querySelector("#view .gd-mx [data-gd-cell]").click();ok(S.v.sguard===0&&S.sguard.stage,"DC-19 a cell filters the register");S.sguard.fam=S.sguard.stage="";
  go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
  return f});
 fails.push(...r);
