@@ -128,9 +128,9 @@ function landmarks(){const rail=q1("aside.rail");if(rail&&!rail.getAttribute("ro
  const sk=q1(".skip,.skiplink,a[href=\"#view\"]");if(sk&&!sk.dataset.r15){sk.dataset.r15=1;sk.addEventListener("click",e=>{e.preventDefault();const v2=q1("#view");if(v2){v2.focus({preventScroll:false})}})}}
 
 /* =========================================================  hook render  ========================================================= */
-const _render=W.render;let first=true;
-W.render=function(){if(first){first=false;applyNames()}else reHide();const r=_render.apply(this,arguments);
- try{landmarks();decorateNames();fixA11y();syncHash()}catch(e){console.error("r15 render hook",e)}return r};
+let first=true; /* CL-35: render hooks instead of a render wrapper */
+HOOKS.on("beforeRender",()=>{if(first){first=false;applyNames()}else reHide()},{id:"r15c.names",order:-1900});
+HOOKS.on("afterRender",()=>{try{landmarks();decorateNames();fixA11y();syncHash()}catch(e){console.error("r15 render hook",e)}},{id:"r15c.after",order:1900});
 /* anything that mutates the page without render() (drawers, lazy tabs) gets the same accessibility pass, debounced */
 let mt=0;const mo=new MutationObserver(()=>{clearTimeout(mt);mt=setTimeout(()=>{try{fixA11y(q1("#view"));const d=q1("#drawer");if(d)fixA11y(d)}catch(e){}},250)});
 const arm=()=>{const v=q1("#view");if(!v)return setTimeout(arm,200);mo.observe(v,{childList:true,subtree:true});const d=q1("#drawer");if(d)mo.observe(d,{childList:true,subtree:true})};setTimeout(arm,300);
