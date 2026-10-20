@@ -243,8 +243,19 @@ function finish(P){
  return P;
 }
 let IDXOLD=null,LASTB=0,IDXQ=0,KEYT=0;
+/* DC-38: stable process counts. Modules register their processes on staggered boot timers for about three seconds after load, and
+   the index served a stale copy for up to 40 seconds, so a demo showed 131 or about 316 depending on timing and clicks. Boot
+   registration is now tracked: PROCLIB.settled turns true once registration has been quiet for 2 seconds (cap 15 seconds), the
+   index is rebuilt once at that moment and the stale copy is never served afterwards. PROCLIB.count() reads the ids directly. */
+let SETTLED=false;const SETTLE_CB=[];
+const idsNow=()=>{const s=new Set();if(window.LINKS)G0(()=>LINKS.processes().forEach(p=>s.add(p.id)));PROC_IDS().forEach(i=>s.add(i));PL.custom.forEach(c=>s.add(c.id));return s};
+function G0(f){try{f()}catch(e){}}
+(function watchBoot(){const t0=performance.now();const rk=()=>PROC_IDS().length+"|"+PL.custom.length;let last=rk(),quiet=t0;
+ const iv=setInterval(()=>{const k=rk(),now=performance.now();if(k!==last){last=k;quiet=now;return}
+  if(now-quiet<2000&&now-t0<15000)return;clearInterval(iv);SETTLED=true;IDXOLD=null;bump();G0(()=>idx());
+  SETTLE_CB.splice(0).forEach(f=>G0(f));G0(()=>{if(S.screen==="plat_proc"&&typeof render==="function")render()})},250)})();
 function idx(){
- if(!IDX&&IDXOLD&&performance.now()<40000&&performance.now()-LASTB<7000){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},7100-(performance.now()-LASTB))}return IDXOLD}
+ if(!IDX&&IDXOLD&&!SETTLED&&performance.now()<40000&&performance.now()-LASTB<7000){if(!IDXQ){IDXQ=1;setTimeout(()=>{IDXQ=0;try{idx()}catch(e){}},7100-(performance.now()-LASTB))}return IDXOLD}
  if(IDX&&performance.now()-KEYT<800)return IDX;/* the key below walks the data model and process graph; once per 800 ms is enough, bump() still clears at once */
  const key=[PROC_IDS().length,PL.custom.length,modsAll().length,window.PLAT&&PLAT.entities?PLAT.entities().length:0,Object.keys(S.proc||{}).map(k=>(S.proc[k]||[]).length).join(","),VER,matReady()?MAT.M.xmodels.length:0,window.LINKS?LINKS.processEdges().length:0].join("|");
  if(IDX&&IDXK===key){KEYT=performance.now();return IDX}
@@ -253,7 +264,7 @@ function idx(){
  refreshMetrics();
  return IDX;
 }
-const bump=()=>{VER++;if(IDX)IDXOLD=IDX;IDX=null};
+const bump=()=>{VER++;if(IDX)IDXOLD=IDX;IDX=null;KEYT=0};
 /* ---------- registering every process as a capability in the Maturity models engine ---------- */
 let BY=null;
 function getBY(){
@@ -690,7 +701,9 @@ window.PROCLIB={
  get(id){const P=gof(id)||primaryOf(id);if(!P)return null;return Object.assign(summary(P),{title:P.title,stepsList:P.steps.map(s=>Object.assign({},s)),entities:{r:P.ent.r.slice(),w:P.ent.w.slice()},trigger:trigOf(P),override:P.override?Object.assign({},P.override):null,history:(PL.hist[P.id]||[]).map(h=>Object.assign({},h)),capability:P.cap?P.cap.id:null,assessment:{avg:r1(P.a.avg),raw:P.a.raw,weakest:P.a.weak,capped:P.a.capped,evidence:Object.assign({},P.a.ev)}})},
  addProcess,setSteps,maturity:maturityOf,stats(){const s=stats();return{processes:s.processes,modules:s.modules,modulesCovered:s.covered,avgMaturity:s.avg,belowTarget:s.below,noOwner:s.noOwner,noMetric:s.noMetric,noBackup:s.noBackup,byLevel:s.byLevel,dimensionAverage:s.dimAvg}},
  moduleMaturity,forModule:mid=>idx().list.filter(P=>P.module===mid).map(summary),primary:mid=>{const P=primaryOf(mid);return P?P.id:null},find:q=>{const P=findProc(q);return P?P.id:null},
- refresh(){bump();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()}))
+ refresh(){bump();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()})),
+ /* DC-38 */
+ count:()=>idsNow().size,get settled(){return SETTLED},whenSettled(fn){if(SETTLED)G0(fn);else SETTLE_CB.push(fn)}
 };
 setTimeout(()=>{try{idx();if(window.MODMAP&&MODMAP.refresh)MODMAP.refresh()}catch(e){console.error("proclib init",e)}},0);
 })();
