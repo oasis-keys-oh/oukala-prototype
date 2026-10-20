@@ -30,3 +30,32 @@ jobs:
           name: build_out
           path: build_out/
           retention-days: 7
+  # Deploys main to Netlify production only after the full suite passes (CL-91).
+  # Needs the repository secret NETLIFY_AUTH_TOKEN (a Netlify personal access token); without it this job is skipped.
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: 5ec62ffd-e731-4280-a317-273f5e5b720f
+    steps:
+      - name: Skip when no token is configured
+        if: env.NETLIFY_AUTH_TOKEN == ''
+        run: echo "NETLIFY_AUTH_TOKEN is not set; skipping deploy"
+      - uses: actions/checkout@v4
+        if: env.NETLIFY_AUTH_TOKEN != ''
+      - uses: actions/setup-python@v5
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        with:
+          node-version: "22"
+      - name: Build and deploy
+        if: env.NETLIFY_AUTH_TOKEN != ''
+        run: |
+          bash tools/ship.sh
+          npx --yes netlify-cli@24.8.2 deploy --prod --dir dist --site "$NETLIFY_SITE_ID" --message "CI deploy ${GITHUB_SHA::7}"
