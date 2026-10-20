@@ -91,4 +91,16 @@ SHOW.home.push(()=>{const briefs=SHOW.demos.filter(d=>d.group==="brief");if(!bri
  <p class="muted small">The same story on each sample tenant. Journey maps, the Build list, the org chart and the tenant views follow the tenant; VibeCheck's library is the Meridian sample and the bar says so.</p>
  <div class="srt-grid">${briefs.map(d=>`<article class="srt-c"><b>${E(d.title)}</b><p class="small muted">${E(d.blurb)}</p><div class="row"><button type="button" class="btn sm" data-sr-start="${E(d.id)}">Start</button>${SHOW.leaveBehind?`<button type="button" class="btn quiet sm" data-sr-leave="${E(d.id)}">Leave-behind</button>`:""}</div></article>`).join("")}</div></section>`});
 
+/* ---------- DC-21: guardrail children as optional child beats, and as their own cut ---------- */
+const kids=G(()=>GUARD.children(),[])||[];
+const kidBeat=c=>({id:"g."+c.id,act:c.act,title:c.title,point:c.point,secs:c.secs,go:"guard",arg:c.id,say:c.say.slice(),do:c.do,claims:c.claims.slice()});
+const coo=SHOW.byId("coo");
+if(coo&&kids.length){const actBeat={};coo.beats.forEach(b=>{if(!actBeat[b.act])actBeat[b.act]=b});
+ /* Deliver's child is about agents, so it sits on the agents beat */
+ const at=c=>c.act==="Deliver"?coo.beats.find(b=>b.id==="deliver.3"):actBeat[c.act];
+ kids.forEach(c=>{const b=at(c);if(b){b.kids=b.kids||[];if(!b.kids.some(k=>k.id==="g."+c.id))b.kids.push(kidBeat(c))}})}
+if(kids.length)SHOW.add({id:"guardrails",title:"Guardrails, one act at a time",mins:Math.round(kids.reduce((a,c)=>a+c.secs,0)/60),who:"CIO, CISO, CAIO and audit audiences",persona:"exec",group:"part",
+ blurb:"The six guided guardrail views in the order of the COO cut's acts. Each runs the real prototype check where one exists and says what is simulated.",
+ beats:["tenant","demand","fund","track","deliver","build"].map(id=>kids.find(c=>c.id===id)).filter(Boolean).map(kidBeat)});
+
 })();
