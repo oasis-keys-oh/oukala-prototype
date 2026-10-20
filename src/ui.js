@@ -93,7 +93,7 @@ function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();co
 function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */
-function searchIndex(){const out=[];SCREENS.forEach(s=>out.push({g:"Go to",t:s[1],m:"Screen",c:"--accent",f:()=>go(s[0])}));
+function searchIndex(){const out=[];/* CL-87: hidden screens are offered only in builder mode (SRCH, mod_s_search.js) */const hid=id=>{try{return !!(window.SRCH&&SRCH.hiddenScreen&&SRCH.hiddenScreen(id)&&!SRCH.builder())}catch(e){return false}};SCREENS.forEach(s=>{if(!hid(s[0]))out.push({g:"Go to",t:s[1],m:"Screen",c:"--accent",f:()=>go(s[0])})});
  NODES.forEach(n=>out.push({g:"Records",t:n.n,m:TYPES[n.t][0]+" · "+n.id,c:TYPES[n.t][1],f:()=>recDrawer(n.id),k:n.story}));
  KGN.forEach(n=>out.push({g:"Knowledge",t:n.n,m:KT[n.t][0],c:KT[n.t][1],f:()=>go("kg",n.id),k:n.sub}));
  Object.entries(METRICS).forEach(([id,m])=>out.push({g:"Metrics",t:m.n,m:mfmt(m),c:"--metric-f",f:()=>go("metrics",id),k:m.f}));
