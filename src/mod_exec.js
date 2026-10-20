@@ -109,7 +109,7 @@ E.tab=E.tab||0;
 
 /* ---------------- engine: one snapshot of the portfolio, computed from the shared data ---------------- */
 let _sk="",_sv=null;
-function snap(){const k=JSON.stringify([S.imsSlip,S.w,S.env,S.cap,S.merged,E.risks.map(r=>r.p+":"+r.amt),METRICS.m_burn.cur]);if(k===_sk&&_sv)return _sv;
+function snap(){const k=JSON.stringify([PROJ.length,PROJ.map(p=>p.id).join(),S.imsSlip,S.w,S.env,S.cap,S.merged,E.risks.map(r=>r.p+":"+r.amt),METRICS.m_burn.cur]);if(k===_sk&&_sv)return _sv;
  const P=plan("now"),ev={},fin={};PROJ.forEach(p=>{ev[p.id]=evm(P,p.id);fin[p.id]=projFin(P,p.id)});
  const L=rank(S.w,S.env,S.cap),approved=PROJ.reduce((s,p)=>s+p.bac,0),paid=PROJ.reduce((s,p)=>s+p.paid,0),earned=PROJ.reduce((s,p)=>s+p.bac*ev[p.id].ev,0);
  const forecast=approved*METRICS.m_burn.cur/100,exposure=E.risks.reduce((s,r)=>s+rX(r),0);
@@ -215,7 +215,8 @@ function slipChart(s){const rows=[["Standards beta",s.bBeta,s.beta,"p1_5"],["Sta
  g+=`<line x1="${xs(TODAY)}" x2="${xs(TODAY)}" y1="10" y2="${H-26}" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 4"/><text class="ax" x="${xs(TODAY)+4}" y="22">Today</text>`;
  rows.forEach((r,i)=>{const y=44+i*42,late=r[2]>r[1];g+=`<text class="ax" x="8" y="${y+4}" style="fill:var(--ink);font-size:12.5px">${r[0]}</text><line x1="${xs(r[1])}" x2="${xs(r[2])}" y1="${y}" y2="${y}" stroke="${col(late?"--warn-f":"--good-f")}" stroke-width="5" stroke-linecap="round" opacity=".55"/><circle cx="${xs(r[1])}" cy="${y}" r="6" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/><circle cx="${xs(r[2])}" cy="${y}" r="7" fill="${col(late?"--warn-f":"--good-f")}" stroke="var(--bg)" stroke-width="2"/><text class="ax" x="${xs(Math.max(r[1],r[2]))+12}" y="${y+4}" style="fill:var(--ink)">${dstr(r[2])}${late?` (+${r[2]-r[1]} days)`:""}</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Baseline and forecast dates for four milestones">${g}</svg>`}
-function spendChart(s){const rows=PROJ.map(p=>({p,ev:s.ev[p.id].ev})),W=640,L=118,R=70,H=34+rows.length*46,mx=1300,xs=v=>L+(W-L-R)*v/mx;let g="";
+/* PR-24: a project with no plan in the snapshot (for example added by Self-build) is drawn with no earned value, never an invented one */
+function spendChart(s){const rows=PROJ.map(p=>({p,ev:(s.ev[p.id]||{ev:0}).ev})),W=640,L=118,R=70,H=34+rows.length*46,mx=1300,xs=v=>L+(W-L-R)*v/mx;let g="";
  [0,300,600,900,1200].forEach(v=>{g+=`<line class="grid-l" x1="${xs(v)}" x2="${xs(v)}" y1="8" y2="${H-24}"/><text class="ax" x="${xs(v)}" y="${H-8}" text-anchor="middle">${v?K$(v):"$0"}</text>`});
  rows.forEach((r,i)=>{const y=14+i*46,p=r.p;g+=`<text class="ax" x="6" y="${y+14}" style="fill:var(--ink);font-size:12.5px">${esc(p.short)}</text><rect x="${L}" y="${y}" width="${xs(p.bac)-L}" height="14" rx="7" fill="var(--track)"/><rect x="${L}" y="${y}" width="${Math.max(2,xs(p.paid)-L)}" height="14" rx="7" fill="${col("--p4")}"/><line x1="${xs(p.bac*r.ev)}" x2="${xs(p.bac*r.ev)}" y1="${y-4}" y2="${y+18}" stroke="${col("--metric-f")}" stroke-width="3" stroke-linecap="round"/><text class="ax" x="${xs(p.bac)+8}" y="${y+12}" style="fill:var(--ink)">${K$(p.bac)}</text><text class="ax" x="${L}" y="${y+30}">paid ${K$(p.paid)} · earned ${K$(Math.round(p.bac*r.ev))}</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Approved, paid and earned value for each project"><g>${g}</g></svg><div class="row exe-leg"><span><i style="background:var(--track)"></i>Approved</span><span><i style="background:var(--p4)"></i>Paid</span><span><i style="background:var(--metric-f)"></i>Work earned (planned effort completed)</span></div>`}

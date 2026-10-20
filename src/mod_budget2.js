@@ -160,8 +160,9 @@ V.prg=function(id,foc){const k=K(),ls=k.B().lines.filter(l=>k.PRG[l.p]===id);if(
  return groupView(pill("Program","info"),E(id),`Holds ${[...new Set(ls.map(l=>l.p))].map(p=>p+" "+k.PJ(p).short).join(" and ")}.`,ls,{foc,projCol:true,kpi:f=>"prg:"+id+":"+f,foot:go2("Show in By category","bud_over","budv",2)})};
 
 V.capex=function(id){const k=K(),p=k.PJ(id);if(!p)return head("","Unknown project");const ls=k.PL(id),m=k.B().mp[id],c=k.capTot(ls),f=k.T(ls).fcst;
- return head(pill("CapEx and OpEx","info"),E(p.short)+": capital <span class='num bd-big'>"+D$(c)+"</span>",`${k.pc(c/f*100)} of the ${D$(f)} forecast is capitalized under the project's development stage and direct-labor shares (${m.dev}% development, ${m.dir}% direct).`)+
- `<div class="formula" data-role="metric">CapEx = Labor × ${m.dev}% × ${m.dir}% + Vendor × ${m.dev}% + Hardware × 100% = ${D$(c)}; OpEx = ${D$(f-c)}</div>`+
+ /* PR-24: no stage record for this project: say so instead of reading .dev of undefined */
+ return head(pill("CapEx and OpEx","info"),E(p.short)+": capital <span class='num bd-big'>"+D$(c)+"</span>",m?`${k.pc(c/(f||1)*100)} of the ${D$(f)} forecast is capitalized under the project's development stage and direct-labor shares (${m.dev}% development, ${m.dir}% direct).`:`No project stage is recorded yet, so only hardware is capitalized.`)+
+ (m?`<div class="formula" data-role="metric">CapEx = Labor × ${m.dev}% × ${m.dir}% + Vendor × ${m.dev}% + Hardware × 100% = ${D$(c)}; OpEx = ${D$(f-c)}</div>`:"")+
  eb("Capital share by line")+tbl(["Budget line","Forecast","Capital share","CapEx","OpEx"],ls.map(l=>{const sh=k.capShare(l);return `<tr><td>${dn(`<b>${E(l.id)}</b><span class="sub">${E(l.n)}</span>`,"line:"+l.id+":fcst","bd-row")}</td><td class="tabular">${dn(D$(l.fcst),"line:"+l.id+":fcst")}</td><td class="tabular">${k.pc(sh*100)}</td><td class="tabular">${D$(l.fcst*sh)}</td><td class="tabular">${D$(l.fcst*(1-sh))}</td></tr>`}),560)+
  foot(go2("Open capitalization rules","bud_model","budm",1)+dn("Open the project","proj:"+id,"btn"))};
 
