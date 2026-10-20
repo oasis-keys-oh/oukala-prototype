@@ -191,7 +191,7 @@ Not renamed in the CSS stream: a module is a `.js` and `.css` pair with one name
 | `mod_r32_tenant` | js | `mod_s_tenant_switch` | tenant switcher |
 | `mod_r33_showroom` | js | `mod_s_showroom_core` (`mod_s_showroom` exists) | Showroom |
 
-The css-only files can be renamed with a `modules.json` edit alone; that is still outside the CSS stream's files, so they are listed too.
+The css-only files can be renamed with a `modules.json` edit alone; that is still outside the CSS stream's files, so they are listed too. In all: 50 round-named CSS files, 33 with a JS pair and 17 CSS only; none renamed in this pass.
 
 ## Capitals (PR-04, CSS part)
 Uppercase is for eyebrow labels only: a short label above a heading or a group of items. The 16 rules that keep `text-transform:uppercase`: `.eyebrow`, `.r17p-eb`, `.stu-eb`, the persona hero kicker (`.r21-hero h1`), and the group headings of the rail and menus (`.navgrp`, `.navgd>summary`, `.navsub`, `.nx-fht`, `.pk-g`, `.pk2-g`, `.nw-h`, `.tn-h`, `.r16n-gh`, `.inbx-gh`, `.r27-simple .r27-h`, `.r21-sm-h`).
