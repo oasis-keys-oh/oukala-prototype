@@ -42,6 +42,17 @@ for(const [name,opener] of [['nwPop','#nwBtn'],['r15GrpPop','[data-r15-grp]']]){
 const base=JSON.parse(fs.readFileSync(path.join(root,'tools/tests/nav_close_baseline.json'),'utf8'));
 ok(!base.outliers.some(o=>/#nwPop|#r15GrpPop/.test(o.key)),'CL-89 nav_close baseline no longer lists #nwPop or #r15GrpPop');
 
+/* ---- PR-18 follow-up: the CxO menu carries Strategy to execution and Demand and priorities, so wedge mode shows all ten COO screens ---- */
+const r18=await p.evaluate(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));NAVX.persona.set('coo');await wait(600);SHOW.wedge.set(true);go('home');await wait(1200);
+ const its=[...document.querySelectorAll('#nav [data-nx-it]')];const vis=its.filter(x=>!x.hidden&&x.offsetParent!==null).map(x=>x.dataset.nxIt);const w=SHOW.wedge.screens();
+ const out={wedge:w.length,vis,missing:w.filter(i=>vis.indexOf(i)<0),extra:vis.filter(i=>w.indexOf(i)<0),note:!!document.querySelector('.srs-wnote')};
+ const se=document.querySelector('#nav [data-nx-it=strat_exec] [data-nav]');if(se){se.click();await wait(400);out.opened=S.screen==='strat_exec'}
+ SHOW.wedge.set(false);await wait(300);out.offStill=!!document.querySelector('#nav [data-nx-it=strat_exec]')&&!!document.querySelector('#nav [data-nx-it=port]');
+ NAVX.persona.set('cio');await wait(400);return out});
+ok(r18.wedge===10&&!r18.missing.length&&!r18.extra.length&&r18.note,'PR-18 COO wedge mode shows exactly the ten COO screens: '+JSON.stringify(r18));
+ok(r18.opened,'PR-18 Strategy to execution opens from the CxO menu');
+ok(r18.offStill,'PR-18 the CxO menu keeps Strategy to execution and Demand and priorities with wedge mode off');
+
 /*@@NEXT@@*/
 
 ok(!errs.length,'page errors: '+errs.slice(0,3).join(' | '));
