@@ -93,3 +93,11 @@ button.sow-wk{cursor:pointer;transition:transform .25s var(--ease)}button.sow-wk
 @media(max-width:700px){.sow-hbr{grid-template-columns:minmax(0,1fr) 44px}.sow-hbt{grid-column:1/-1;order:3}.sow-rdb{grid-template-columns:96px minmax(30px,1fr) 22px}}
 .sow-need{grid-template-columns:auto minmax(0,1fr)}
 .sow-need .act{grid-column:1/-1;justify-content:flex-start}
+/* PR-11: simulated contract ingestion on the contract record */
+.sow-ig{margin-top:18px;display:grid;gap:10px}
+.sow-igbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.sow-igbar label.btn{cursor:pointer}
+.sow-igbar label.btn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.sow-igf{border:1px solid var(--cardline);border-radius:var(--rad-card);padding:12px 14px;background:var(--glass2)}
+.sow-igh{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px;overflow-wrap:anywhere}
+.sow-igh .btn{margin-left:auto}

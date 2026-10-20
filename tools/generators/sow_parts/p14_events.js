@@ -55,6 +55,36 @@ document.addEventListener("dragover",e=>{if(e.target.closest&&e.target.closest("
 document.addEventListener("drop",e=>{const z=e.target.closest&&e.target.closest("[data-sow-dz]");if(!z)return;e.preventDefault();const f=e.dataTransfer.files[0];if(!f)return;if(/\.(txt|md)$/i.test(f.name)){const r=new FileReader();r.onload=()=>{const k="f"+Date.now();TXT[k]=String(r.result);startRun(SW.ct,SW.doc,k,f.name)};r.readAsText(f)}else{toast("PDF and Word files need the document service in production. Showing the sample text.","info");startRun(SW.ct,SW.doc,SAMPLEFOR((ctOf(SW.ct)||{}).type),f.name)}});
 /* ---------- the screen ---------- */
 const ICON="M7 3h8l4 4v14H7zM14 3v5h5M10 12h6M10 16h6";
+/* ---------- PR-11: simulated contract ingestion ----------
+   The contract record takes a PDF, Word or text file. Only the file's name, size and type are read, in this browser: nothing is
+   uploaded and the content is not parsed. The extraction is simulated from the file name and the record, labeled simulated, and
+   attached to the record (metadata only, kept through U.store so it survives a reload). A real document service is PR-11's later step. */
+const IGK="falconaire.sow.ingest",IGOK=/\.(pdf|docx|doc|txt|md)$/i;
+const IGS=(()=>{try{return window.U.store.get(IGK,{})||{}}catch(e){return{}}})();
+const igSave=()=>{try{window.U.store.set(IGK,IGS)}catch(e){}};
+const igSize=n=>n<1024?n+" bytes":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(1)+" MB";
+const igKind=name=>{const n=String(name).toLowerCase().replace(/[_\-.]+/g," ");return /\bmsa\b|master/.test(n)?"MSA":/\bdpa\b|data processing/.test(n)?"DPA":/\bnda\b|non ?disclosure/.test(n)?"NDA":/\border\b/.test(n)?"Order form":/licen[cs]e/.test(n)?"Software license":/support/.test(n)?"Support agreement":/\bsow\b|statement of work/.test(n)?"SOW":null};
+const IGCL={SOW:["Scope and deliverables","Milestones and acceptance","Payment schedule","Change control","Key personnel"],MSA:["Term and termination","Limitation of liability","Indemnity","Confidentiality","Governing law"],DPA:["Processing purposes","Subprocessors","Security measures","Breach notice","Data transfers"],NDA:["Definition of confidential information","Permitted use","Term"],"Order form":["Products and quantities","Fees","Term and renewal"],"Software license":["License grant","Usage limits","Fees and true-up","Renewal"],"Support agreement":["Service levels","Response times","Service credits"]};
+function igExtract(c,f){const ext=((String(f.name).match(/\.([a-z0-9]+)$/i)||[])[1]||"").toLowerCase(),kd=igKind(f.name),kind=kd||c.type;
+ const per=ext==="pdf"?45000:ext==="docx"||ext==="doc"?18000:3000,pages=Math.max(1,Math.round((+f.size||0)/per));
+ const org=(()=>{try{return DATA.tenantInfo().org}catch(e){return""}})()||"Meridian Standards Foundation";
+ return {kind,fields:[["Document type",kind,kd?"file name":"contract record"],["Parties",org+" and "+c.vendor,"contract record"],["Effective date",fdt(c.start),"contract record"],["End date",fdt(c.end),"contract record"],["Contract value",D$(c.value),"contract record"],["Renewal",c.auto?"Automatic, "+(c.notice||"unstated")+" days notice":"By written order","contract record"],["Pages",pages+" (estimate)","file size"]],
+  clauses:(IGCL[kind]||IGCL.SOW).slice(),conf:kd?.82:.71}}
+function igAttach(id,f){const c=ctOf(id);if(!c)return null;if(!f||!IGOK.test(f.name)){toast("Choose a PDF, Word or text file","warn");return null}
+ const rec={id:"DOC-"+Date.now().toString(36),name:String(f.name),size:+f.size||0,type:String(f.type||"")||"unknown",at:TDY,by:ME,simulated:true,ext:igExtract(c,f)};
+ (IGS[id]=IGS[id]||[]).unshift(rec);c.files=IGS[id];igSave();aud(ME,"Attached contract file",id,rec.name+" ("+igSize(rec.size)+"), simulated extraction");return rec}
+function igRemove(id,fid){const L=IGS[id]||[],i=L.findIndex(x=>x.id===fid);if(i<0)return false;const r=L.splice(i,1)[0];igSave();aud(ME,"Removed contract file",id,r.name);return true}
+function ingestHTML(c){const L=IGS[c.id]||[];c.files=L;
+ const item=r=>`<div class="sow-igf" data-sow-igf="${esc(r.id)}"><div class="sow-igh"><b>${esc(r.name)}</b><span class="muted small">${esc(igSize(r.size))} · ${esc(r.type)} · attached ${esc(fdt(r.at))} by ${esc(r.by)}</span>${sPill("Simulated extraction","warn")}<button type="button" class="btn quiet sm" data-sow-igdel="${esc(c.id)}|${esc(r.id)}" aria-label="Remove ${esc(r.name)}">Remove</button></div>
+  <dl class="kv">${r.ext.fields.map(x=>`<dt>${esc(x[0])}</dt><dd>${esc(x[1])} <span class="muted small">(simulated, from the ${esc(x[2])})</span></dd>`).join("")}<dt>Clauses found</dt><dd>${r.ext.clauses.map(x=>`<span class="pill mute">${esc(x)}</span>`).join(" ")} <span class="muted small">(simulated)</span></dd><dt>Confidence</dt><dd>${Math.round(r.ext.conf*100)}% <span class="muted small">(simulated)</span></dd></dl></div>`;
+ return `<section class="sow-ig" data-sow-ig="${esc(c.id)}" aria-label="Contract files"><div class="eyebrow">Contract files</div>
+  <div class="sow-igbar"><label class="btn"><input type="file" class="sr" accept=".pdf,.docx,.doc,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" data-sow-ingest="${esc(c.id)}">Attach a contract file</label>
+  <span class="muted small">PDF, Word or text. Read in this browser only (the file name, size and type); nothing is uploaded. The extraction below is simulated: no document service reads the content in this prototype.</span></div>
+  ${L.length?L.map(item).join(""):`<p class="muted small">No file attached to ${esc(c.id)} yet.</p>`}</section>`}
+const IGAPI={attach:igAttach,remove:igRemove,files:id=>(IGS[id]||[]).slice(),html:ingestHTML,extract:igExtract};
+document.addEventListener("change",e=>{const t=e.target;if(!t.matches||!t.matches("[data-sow-ingest]"))return;const f=t.files&&t.files[0];if(!f)return;const id=t.dataset.sowIngest;
+ const r=igAttach(id,f);t.value="";if(r){toast("Attached "+r.name+" to "+id+". Extraction is simulated.","good");openCT(id)}});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-sow-igdel]");if(!b)return;const [id,fid]=b.dataset.sowIgdel.split("|");if(igRemove(id,fid)){toast("File removed from "+id,"info");openCT(id)}});
 REG("ppm_sow","SOW and contract analyzer","portfolio",ICON,()=>{syncMetrics();const a=agg(),s5=lines_("CLM-1002","proposal"),o5=s5.filter(l=>l.m!=="std").length,tr=a.traps[0];
  const story=`<b>${a.n.toLocaleString("en-US")} contracts</b> hold ${fmtTz(a.committed)} of commitments and ${fmtTz(a.billed)} has been paid. Lumen's SOW-5 proposal has <b>${o5} of ${s5.length} lines off playbook</b>, ${s5.filter(l=>l.m==="new").length} of them with no standard term yet. <b>${a.due30.length} obligations</b> fall due in 30 days${a.over.length?" and "+a.over.length+" are overdue":""}${tr?`, and notice to stop the ${esc(tr.vendor)} renewal must go out by <b>${fdt(rdate(tr))}</b>`:""}.`;
  return `<div class="screen">${hero("Portfolio and delivery · Contracts","Every proposal and contract, line by line",story,`<div class="row">${fchip("m_sow_cover")}${fchip("m_sow_ontime")}${fchip("m_sow_cycle")}${fchip("m_sow_leak")}<button class="btn primary" data-sow-upload>Analyze a document</button><button class="btn" data-sow-newcr>Request a change</button>${analyzerChip(.9)}</div>`)}${lensNote()}${views("sow",["Dashboard and contracts","Repository","Analyzer","Terms playbook","Proposal vs contract","Changes","Obligations and calendar"],[tabDash(),tabRepo(),tabAnalyzer(),tabPlaybook(),tabCompare(),tabChanges(),tabObl()])}${procCard("ppm_sow")}</div>`});
@@ -78,6 +108,6 @@ window.SOWX={contracts:()=>CTS().map(c=>({id:c.id,title:c.title,vendor:c.vendor,
  lines:(cid,doc)=>{try{const d=doc||bestDoc(cid)||"contract";return lines_(cid,d).map(l=>({key:l.key,type:l.type,text:l.text||l.t,match:l.m}))}catch(e){return []}},
  obligations:cid=>OBLS().filter(o=>!cid||o.ct===cid).map(o=>({id:o.id,contract:o.ct,title:o.t,party:o.party,owner:o.who,due:o.due,status:obSt(o)})),
  changes:cid=>CRALL().filter(x=>!cid||x.ct===cid).map(x=>({id:x.id,contract:x.ct,type:x.type,stage:x.st,amount:x.amt,title:x.t||x.title})),
- open:id=>{SW.cur=id;go("ppm_sow")}};
+ open:id=>{SW.cur=id;go("ppm_sow")},openRecord:id=>openCT(id),ingest:IGAPI};
 syncMetrics();
 })();

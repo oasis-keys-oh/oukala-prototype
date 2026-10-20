@@ -96,6 +96,26 @@ ok(B.lines.every(l=>l[0]==null&&l[1]==='Enter a platform quote to see NPV and RO
 ok(!B.csvNpv&&B.csvMsg&&!B.caseNpv&&B.caseMsg&&B.shareMsg,'PR-29 the CSV, the one-page business case and the share text follow the same rule: '+JSON.stringify(B));
 ok(!A.note&&A.npvTile&&A.npvCell&&A.pv&&A.csvNpv&&A.caseNpv&&!A.caseMsg,'PR-29 with a quote NPV and ROI appear everywhere: '+JSON.stringify(A));
 
+/* ---- PR-11: simulated contract ingestion: a local PDF, Word or text file is read by name and size only, never sent anywhere,
+   and a simulated extraction labeled simulated is attached to the contract record ---- */
+{const sent=[];const onReq=r=>{const u=r.url();if(!/^(file|data|blob):/.test(u))sent.push(u)};p.on('request',onReq);
+ await p.evaluate(()=>{go('ppm_sow');SOWX.openRecord('CLM-1001')});await p.waitForSelector('#drawer [data-sow-ingest="CLM-1001"]',{state:'attached',timeout:8000});
+ const n0=await p.evaluate(()=>SOWX.ingest.files('CLM-1001').length);
+ await p.setInputFiles('#drawer [data-sow-ingest="CLM-1001"]',{name:'Lumen_MSA_2026.pdf',mimeType:'application/pdf',buffer:Buffer.alloc(90000,1)});await p.waitForTimeout(500);
+ const r11=await p.evaluate(()=>{const f=SOWX.ingest.files('CLM-1001')[0]||{};const d=document.querySelector('#drawer [data-sow-ig]');const t=d?d.innerText:'';
+  return{name:f.name,size:f.size,sim:f.simulated,kind:f.ext&&f.ext.kind,onRecord:(SOWX.contract('CLM-1001').files||[]).length,shown:t.indexOf('Lumen_MSA_2026.pdf')>=0,label:/Simulated extraction/.test(t),simCount:(t.match(/simulated/gi)||[]).length,nothingUploaded:/nothing is uploaded/i.test(t),stored:Object.keys(U.store.get('falconaire.sow.ingest',{})).indexOf('CLM-1001')>=0}});
+ await p.setInputFiles('#drawer [data-sow-ingest="CLM-1001"]',{name:'notes.xlsx',mimeType:'application/vnd.ms-excel',buffer:Buffer.alloc(10,1)});await p.waitForTimeout(300);
+ const n2=await p.evaluate(()=>SOWX.ingest.files('CLM-1001').length);
+ await p.setInputFiles('#drawer [data-sow-ingest="CLM-1001"]',{name:'Lumen SOW-4 redline.docx',mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',buffer:Buffer.alloc(40000,1)});await p.waitForTimeout(400);
+ const r11b=await p.evaluate(()=>{const L=SOWX.ingest.files('CLM-1001');return{n:L.length,kind:L[0].ext.kind,rm:(()=>{const b=document.querySelector('#drawer [data-sow-igdel]');if(!b)return false;b.click();return true})()}});await p.waitForTimeout(300);
+ const n3=await p.evaluate(()=>SOWX.ingest.files('CLM-1001').length);p.off('request',onReq);
+ ok(r11.name==='Lumen_MSA_2026.pdf'&&r11.size===90000&&r11.sim===true&&r11.kind==='MSA'&&r11.onRecord===n0+1,'PR-11 the PDF is attached to the record with its name and size and a simulated extraction: '+JSON.stringify(r11));
+ ok(r11.shown&&r11.label&&r11.simCount>=8&&r11.nothingUploaded&&r11.stored,'PR-11 the record shows the file and labels every extracted value simulated: '+JSON.stringify(r11));
+ ok(n2===n0+1,'PR-11 an unsupported file type is refused');
+ ok(r11b.n===n0+2&&r11b.kind==='SOW'&&r11b.rm&&n3===n0+1,'PR-11 a Word file attaches too, and Remove detaches it: '+JSON.stringify(r11b)+' after '+n3);
+ ok(!sent.length,'PR-11 no network request while ingesting: '+sent.slice(0,3).join(', '));
+ await p.evaluate(()=>{try{closeDrawer()}catch(e){}SOWX.ingest.files('CLM-1001').forEach(f=>SOWX.ingest.remove('CLM-1001',f.id))})}
+
 /*@@NEXT@@*/
 
 ok(!errs.length,'page errors: '+errs.slice(0,3).join(' | '));
