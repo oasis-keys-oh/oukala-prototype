@@ -42,5 +42,7 @@ node tools/tests/fixes_data.js build_out
 node tools/tests/fixes_robots.js build_out
 # DC-38, CL-81: process counts do not depend on click order; every process and workflow draft has a maturity record
 node tools/tests/fixes_procs.js build_out
+# wave 4 product-2: PR-29, PR-30, CL-89, PR-18, CL-87, CL-30, PR-11, CL-79
+node tools/tests/product2.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"

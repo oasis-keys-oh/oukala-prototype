@@ -1,14 +1,16 @@
-/* ===== mod_r28_cxo: the executive menu. A CxO sees seven things and nothing else; search (Ctrl K) and the Full menu setting still reach every screen.
+/* ===== mod_r28_cxo: the executive menu. A CxO sees the COO cut (PR-18: every wedge screen, including Strategy to execution and Demand and priorities) plus Agent Action and a Strategy and value group; search (Ctrl K) and the Full menu setting still reach every screen.
    Applies to the executive personas when the menu style is Simple. ===== */
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const CXO=["exec","ceo","cfo","coo","chro","ciso","caio","clo","cto"];
-const TOP=[["home","Home"],["showroom","Showroom"],["exe_strat","Strategy alignment"],["ppl_jrny","Journey maps"],["exe_dash","Dashboard"],["orgdesign","Agent Action"],["studio","VibeCheck"],["orgassist","Org chart with agent assist"],["bst","Budget and spend traceability"]];
+const TOP=[["home","Home"],["showroom","Showroom"],["exe_strat","Strategy alignment"],["strat_exec","Strategy to execution"],["port","Demand and priorities"],["ppl_jrny","Journey maps"],["exe_dash","Dashboard"],["orgdesign","Agent Action"],["studio","VibeCheck"],["orgassist","Org chart with agent assist"],["bst","Budget and spend traceability"]];
 const SV=[["r18_strategy","Strategy enablement"],["r18_lens","Executive lenses"],["metrics","Measures and targets"],["bud_ben","Benefits realization"],["exe_risk","Risk heat map"],["exe_board","Board pack"]];
 function compose(raw){
  const root=D.createElement("div");root.innerHTML=raw;
- const find=id=>root.querySelector('[data-nx-it="'+id+'"]');
+ /* PR-18: a wedge screen the Simple menu folds into a family (strat_exec sits under Budget and spend traceability) is built
+    from the shared item markup, so wedge mode shows every COO screen */
+ const find=id=>root.querySelector('[data-nx-it="'+id+'"]')||(()=>{const h=G(()=>NAVX.itemHTML(id),"");if(!h)return null;const t=D.createElement("div");t.innerHTML=h;return t.querySelector('[data-nx-it="'+id+'"]')})();
  const item=(id,label)=>{const e=find(id);if(!e)return null;const c=e.cloneNode(true);c.classList.remove("r15d-pin");const l=c.querySelector(".nx-l");if(l)l.textContent=label;const h=c.querySelector(".nx-h");if(h)h.remove();return c};
  const out=D.createElement("div");out.className="r28-cxo";
  TOP.forEach(([id,l])=>{const c=item(id,l);if(c)out.appendChild(c)});
@@ -19,7 +21,7 @@ function compose(raw){
  return out.innerHTML}
 function install(){const base=G(()=>NAVX.html,null);if(!base||base._r28)return;
  const f=function(){let raw=base.apply(this,arguments);
-  try{const p=G(()=>S.persona,"");const on=CXO.indexOf(p)>=0&&G(()=>PREF.nav,"simple")!=="full";if(on)raw=compose(raw);if(D.body){if(on)D.body.setAttribute("data-cxo","1");else D.body.removeAttribute("data-cxo")}}catch(e){console.error("r28 cxo menu",e)}
+  try{const p=G(()=>S.persona,"");const on=CXO.indexOf(p)>=0&&G(()=>PREF.nav,"simple")!=="full";if(on){raw=compose(raw);/* PR-18: the executive menu can be redrawn after the render pass; reapply wedge mode once it is in the page */if(G(()=>SHOW.wedge.on(),false))setTimeout(()=>G(()=>SHOW.wedge.apply()),0)}if(D.body){if(on)D.body.setAttribute("data-cxo","1");else D.body.removeAttribute("data-cxo")}}catch(e){console.error("r28 cxo menu",e)}
   return raw};f._r28=1;NAVX.html=f}
 install();
 D.addEventListener("toggle",e=>{const t=e.target;if(t&&t.dataset&&t.dataset.r28Sv){S.r28=S.r28||{};S.r28.svOpen=t.open}},true);

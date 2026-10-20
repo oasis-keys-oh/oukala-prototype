@@ -71,7 +71,8 @@ function decorateNames(){const id=G(()=>S.screen);if(!id)return;const v=q1("#vie
  const lv=q1("#r15Live");if(lv)lv.textContent=lab}
 D.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-r15-grp]");if(!b)return;const g=b.dataset.r15Grp;
  let pop=q1("#r15GrpPop");if(!pop){pop=D.createElement("div");pop.id="r15GrpPop";pop.setAttribute("popover","auto");pop.className="glass r15-grppop";pop.setAttribute("aria-label","Screens in this group");D.body.appendChild(pop)}
- const ids=G(()=>NAVX.groupItems(g),[]);pop.innerHTML=`<div class="eyebrow">${esc(G(()=>NAVX.groupLabel(g),""))}</div>`+ids.map(i=>`<button type="button" class="r15-gi${i===S.screen?" on":""}" data-nav="${esc(i)}">${esc(label(i))}</button>`).join("");
+ const ids=G(()=>NAVX.groupItems(g),[]);/* CL-89 (PH-10): close control top right in the header row, in flow (styles in mod_r15b_newmenu.css) */
+ pop.innerHTML=`<div class="r15-gphd"><div class="eyebrow">${esc(G(()=>NAVX.groupLabel(g),""))}</div><button type="button" class="btn quiet closebtn r15-gpx" popovertarget="r15GrpPop" popovertargetaction="hide" aria-label="Close" title="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`+ids.map(i=>`<button type="button" class="r15-gi${i===S.screen?" on":""}" data-nav="${esc(i)}">${esc(label(i))}</button>`).join("");
  const r=b.getBoundingClientRect();pop.style.top=Math.round(r.bottom+6)+"px";pop.style.left=Math.max(12,Math.min(Math.round(r.left),innerWidth-300))+"px";try{pop.showPopover()}catch(x){}});
 D.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#r15GrpPop [data-nav]")){try{q1("#r15GrpPop").hidePopover()}catch(x){}}},true);
 

@@ -315,6 +315,15 @@ function reqProgress(r){const st=r.state;return st==="Delivered"?4:st==="Fulfill
 function advanceReq(r){const pend=r.gates.filter(g=>g.st==="pending");if(r.state==="Approvals"&&!pend.length&&!r.gates.some(g=>g.st==="rejected")){r.state="Fulfillment";r.log.push({t:clock(),tx:"All approvals done. Sent to "+({laptop:"Northwind Managed Services (Intune Autopilot)",phone:"Northwind Managed Services",software:"Endpoint team",monitor:"Facilities",access:"Identity team (Entra ID)"}[r.item]||"fulfillment")});G(()=>{const x=S.itsm.req.find(y=>y.id===r.id);if(x)x.st="warn"})}
  if(r.gates.some(g=>g.st==="rejected")){r.state="Rejected";G(()=>{const x=S.itsm.req.find(y=>y.id===r.id);if(x)x.st="bad"})}}
 CX.advanceReq=advanceReq;
+/* PR-30 (R14): an order with no gate list from the chat plan decides each approval through the one approval route, APG.check.
+   A gate is recorded as approved only when its approver passes the check (member of the routed group, never the requester);
+   otherwise it stays pending with the reason in the log. With no approval route loaded every gate stays pending. */
+function gateOrder(r){const A=window.APG&&APG.check?APG:null;
+ r.gates.forEach(g=>{const rec={kind:"catalog",id:r.id,requester:r.by||"",apg:g.apg||null,named:g.who||""};const c=A?G(()=>A.check(g.who,"catalog",rec),null):null;g.apgCheck=c||{ok:false,rule:"unrouted",why:"No approval route is loaded"};
+  if(c&&c.ok){g.st="approved";g.at=clock();g.by=g.who;r.log.push({t:clock(),tx:"Approval recorded for "+g.who+" through the approval route: "+c.why+" (simulated)"})}
+  else{r.log.push({t:clock(),tx:"Approval for "+g.who+" stays pending: "+(c?c.why:"no approval route is loaded")});if(c&&A.noteDenial)G(()=>A.noteDenial(g.who,"catalog",rec,c))}});
+ advanceReq(r);return r}
+CX.gateOrder=gateOrder;
 T({id:"request.order",name:"Order a catalog item",cat:"Fulfillment",desc:"Renders the catalog form inline, prefilled from your words and the person you act for, shows cost and who approves, and submits to the request pipeline.",perm:"request.order",write:true,risk:"medium",confirm:"form",
  kw:[[/\b(order|get|need|request|buy|want|new|replace|replacement)\b.{0,40}\b(laptop|phone|iphone|software|license|licence|monitor|dock|tableau|visio|power bi|acrobat|access to)/,6],[/\b(laptop|iphone|monitor|visio|tableau)\b/,2]],neg:[/\b(status|where is|waiting|who has|who is it|stock|how many)\b/,/\bonboard/],
  ex:["Order a developer laptop for Hana Koval","I need Tableau Creator","Get Priya an iPhone 16"],
@@ -326,7 +335,7 @@ T({id:"request.order",name:"Order a catalog item",cat:"Fulfillment",desc:"Render
   o.who=E.persons.find(n=>n!==ME_NAME)||(/\b(for me|my |i need|i want)\b/.test(l)?ME_NAME:(c.subj||ME_NAME));return o},
  preview:p=>{const cost=orderCost(p),g=orderGates(p),it=CATX[p.item||"laptop"];const c=cost?"<b>"+mon(cost)+"</b>":"<b>No charge</b>";return c+" · delivery in about "+it.eta+" business day"+(it.eta>1?"s":"")+" after approval. "+(g.length?"Approvals: "+g.map(x=>"<b>"+H(x.who)+"</b> ("+H(x.why)+")").join(", ")+".":"No approval needed.")},
  validate:p=>{const e={};const f=orderFields(p);f.forEach(x=>{if(x.req&&(p[x.k]==null||p[x.k]===""))e[x.k]="Needed"});return Object.keys(e).length?e:null},
- run:(p,c,step)=>{const r=submitOrder(p,c,{gates:step&&step.gateList});if(!(step&&step.gateList)&&r.gates.length){r.gates.forEach(g=>{g.st="approved";g.at=clock();g.by=g.who});r.log.push({t:clock(),tx:"Approvals were recorded in the chat plan before submitting"});advanceReq(r)}return{ok:true,summary:r.id+" submitted: "+r.title+" for "+r.for,rec:{type:"Request",id:r.id,go:()=>go("svc_req")},undo:{k:"req",id:r.id},card:{t:"tracker",id:r.id}}},
+ run:(p,c,step)=>{const r=submitOrder(p,c,{gates:step&&step.gateList});if(!(step&&step.gateList)&&r.gates.length)gateOrder(r);return{ok:true,summary:r.id+" submitted: "+r.title+" for "+r.for+(r.state==="Approvals"?" (waiting on "+r.gates.filter(g=>g.st==="pending").map(g=>g.who).join(", ")+")":""),rec:{type:"Request",id:r.id,go:()=>go("svc_req")},undo:{k:"req",id:r.id},card:{t:"tracker",id:r.id}}},
  undo:u=>{const i=ST.reqs.findIndex(x=>x.id===u.id);if(i>=0){const r=ST.reqs[i];r.state="Cancelled";r.log.push({t:clock(),tx:"Cancelled from chat (undo)"});G(()=>{const x=S.itsm.req.findIndex(y=>y.id===u.id);if(x>=0)S.itsm.req.splice(x,1)})}return"Cancelled "+u.id}});
 
 T({id:"request.status",name:"Check request status",cat:"Fulfillment",desc:"Finds a request and shows where it is, who it is sitting with, how much of its SLA is used and what happens next.",perm:"read",write:false,risk:"low",confirm:"never",

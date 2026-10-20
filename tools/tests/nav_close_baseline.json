@@ -1,23 +1,4 @@
 {
  "about": "PH-11 close-control outliers accepted on 2026-10-20 (tools/tests/nav_close.js --update). New outliers fail the test; remove an entry once it is fixed.",
- "outliers": [
-  {
-   "key": "#nwPop | no close control",
-   "where": [
-    "top bar: new"
-   ],
-   "dx": null,
-   "dy": null,
-   "control": null
-  },
-  {
-   "key": "#r15GrpPop | no close control",
-   "where": [
-    "wf_runs (form)"
-   ],
-   "dx": null,
-   "dy": null,
-   "control": null
-  }
- ]
+ "outliers": []
 }
