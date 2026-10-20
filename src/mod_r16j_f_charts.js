@@ -4,7 +4,7 @@
 (function(){
 const W=window;const R=W.R15F3||{};
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const X=()=>W.DASHX,D=()=>DASHX.D;
 const TOKEN=["--p1","--p2","--p3","--p4","--p5","--s2","--s3","--w1"];
 const colv=i=>`var(${TOKEN[i%TOKEN.length]},#17899F)`;

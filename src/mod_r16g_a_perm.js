@@ -8,7 +8,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const TODAY="2026-10-06";
 const P=S.r16g=S.r16g||{rules:[],fields:[],hist:[],log:[],enforce:true,seedVer:0,sim:"",nx:{r:1,f:1,l:1,c:1}};
 const SEEDVER=3;

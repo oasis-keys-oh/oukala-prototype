@@ -4,7 +4,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const PM=()=>W.PERM;
 const on=()=>PM()&&PM().state.enforce;
 const personaName=()=>G(()=>PERSONAS[S.persona].n,S.persona);

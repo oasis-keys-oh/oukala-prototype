@@ -7,7 +7,7 @@
 "use strict";
 const W=window;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SX=S.sx=S.sx||{open:{},sel:null,gaps:false,ver:0,own:null,tab:0};
 const OWN="Maya Ortiz",BK="Priya Shah";
 SX.own=SX.own||{gc:{o:OWN,b:BK},cr:{o:OWN,b:BK},rp:{o:OWN,b:BK}};

@@ -8,7 +8,7 @@
    PICKER.perf = {open,filter,rows,windowRows} for the scale test ===== */
 (function(){
 const W=window;
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
 const ROW=44,HEAD=28,PAGE=200;
 const REG={};let SEQ=0;

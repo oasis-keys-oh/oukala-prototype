@@ -6,7 +6,7 @@
 (function(){
 const W=window;const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];R15D.homes=R15D.homes||{};
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 S.r15d=S.r15d||{};
 const TODAY=new Date(2026,9,6);
 const dstr=d=>d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});

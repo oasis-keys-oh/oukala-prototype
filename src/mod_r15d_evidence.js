@@ -5,7 +5,7 @@
 (function(){
 const W=window;const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const N0=n=>Number(n).toLocaleString("en-US");
 S.r15d=S.r15d||{};S.r15d.ev=S.r15d.ev||{tab:0,verify:null,fw:"all"};
 

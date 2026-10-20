@@ -3,7 +3,7 @@
 (function(){
 const W=window;const R=W.R15F3;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const PM=()=>W.PERM;
 const U=window.PERM_UI={tab:0,ent:"budget_request",role:"service_desk",q:"",cls:"",page:0,rq:"",sim:"ops",simQ:"",exUser:"Dana Whitfield",exAct:"read",exRes:"screen:ppl_perf",exRec:"",exSub:"",fq:""};
 const ACT=["read","create","update","delete","approve","reveal"];

@@ -5,7 +5,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const ASOF={y:2026,m:9,d:6};/* Oct 6, 2026: the prototype date used across screens */
 const asOf="Oct 6, 2026";

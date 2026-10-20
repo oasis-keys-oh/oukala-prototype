@@ -6,7 +6,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const X=S.admx=S.admx||{sub:"fields",table:"project",form:null,f:{mod:"",cls:"",owner:"",cov:""},q:"",ftype:"",fcls:"",freq:false,fsel:{},fn:25,forms:null,seeded:false,cov:{sel:{},n:30,q:""},fp:null,msg:""};
 const MODS={portfolio:"Portfolio",fin:"Finance",money:"Money",service:"Service",people:"People",ppl:"People",gov:"Governance",plat:"Platform",know:"Knowledge",sec:"Security",ops:"Operations",met:"Metrics",other:"Other"};
 const CLS=["restricted","confidential","personal","internal"];

@@ -6,7 +6,7 @@
 (function(){
 const W=window;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const slug=s=>String(s||"").toLowerCase().replace(/[0-9$%.,]+/g," ").replace(/[^a-z]+/g,"-").replace(/^-+|-+$/g,"").slice(0,32);
 const D=S.r16d=S.r16d||{edit:false,work:null,mine:{},defs:{},hist:{},pend:[],charts:null,seq:1,perm:{publish:["admin","exec"],team:["admin","exec","portfolio"]},group:{name:"Dashboard governance group",members:["Avery Chen","Maya Ortiz","Jordan Lee"],owner:"Jordan Lee",backup:"Maya Ortiz"},seen:{},loaded:false,log:[]};
 const me=()=>G(()=>INBOX.me(),"Casey Rowan");

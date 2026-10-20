@@ -718,7 +718,7 @@ const $r=()=>document.querySelector("[data-at-root]");
 const vpEl=()=>document.querySelector('[data-at-vp="dm"]');
 const worldEl=()=>document.querySelector('[data-at-world="dm"]');
 const lodOf=k=>k<.5?"far":k>=1.15?"near":"mid";
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 function vsize(v){v=v||vpEl();return v?{w:v.clientWidth||900,h:v.clientHeight||600}:{w:900,h:600}}
 function applyCam(){
  const v=vpEl(),w=worldEl();if(!v||!w||!A.cam)return;const c=A.cam;

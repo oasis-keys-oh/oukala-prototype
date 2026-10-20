@@ -14,7 +14,7 @@ const DOWN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],dowOf=d=>DOWN[new Date(Da
 const hash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)/4294967295};
 const nowT=()=>new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 const ini=n=>n.split(" ").map(x=>x[0]).join("").slice(0,2);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const TEAMS=Object.keys(CAP);
 const SKILLS=[["si","Search and indexing"],["dm","Data modeling"],["tx","Taxonomy"],["cf","Cloud and failover"],["ia","Integration and APIs"],["ir","Incident response"],["er","Editorial review"],["sa","Security architecture"],["pm","Project management"],["vc","Vendor and contracts"]];
 const SK=Object.fromEntries(SKILLS);
@@ -754,7 +754,7 @@ const st=S.pp2=S.pp2||{};
 const E=esc;
 const WHOC={n:-1,d:null,m:null};
 function who(n){if(!n)return null;if(WHOC.n!==DIR.length||WHOC.d!==DIR[0]){const m=new Map();for(let i=DIR.length-1;i>=0;i--){const d=DIR[i];m.set(d.id,d);m.set(d.name,d)}WHOC.m=m;WHOC.n=DIR.length;WHOC.d=DIR[0]}const k=(typeof ALIAS!=="undefined"&&ALIAS[n])||n;const r=WHOC.m.get(k);return r&&(r.name===k||r.id===k)?r:null}
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const clamp=U.clamp;
 const hs=s=>{let h=2166136261;s=String(s);for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}h^=h>>>13;h=Math.imul(h,1540483477);h^=h>>>15;h=Math.imul(h^(h>>>16),2246822507);h^=h>>>13;return (h>>>0)/4294967295};
 const fmt=n=>Math.round(n).toLocaleString("en-US");
 const f1=n=>(Math.round(n*10)/10).toLocaleString("en-US");

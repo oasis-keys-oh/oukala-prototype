@@ -6,7 +6,7 @@
 "use strict";
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 
 /* ---- 1. popups flip instead of widening the page ---- */
 D.addEventListener("toggle",e=>{const d=e.target;if(!(d&&d.matches&&d.matches("details.mp")&&d.open))return;const p=d.querySelector(".mpp");if(!p)return;

@@ -5,7 +5,7 @@
 (function(){
 const W=window;const R15D=W.R15D=W.R15D||{};
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9$.,\s-]/g," ").replace(/\s+/g," ").trim();
 const STOP=/^(the|a|an|of|is|are|to|for|my|me|i|do|does|can|what|who|whom|how|where|which|status|owns|owner|own|about|on|in|at|please|tell|show|find|open|go|take|us|our|current|currently|now|there|this|that|it)$/;
 const toks=s=>norm(s).split(" ").filter(w=>w.length>1&&!STOP.test(w));
