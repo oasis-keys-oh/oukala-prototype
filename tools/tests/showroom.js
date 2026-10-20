@@ -71,5 +71,13 @@ await p2.goto(URL0+'?showroom=maturity&beat=2&mode=audience',{waitUntil:'domcont
 await p2.waitForFunction(()=>window.SHOW&&SHOW.state.demo==='maturity',null,{timeout:20000}).catch(()=>{});await settle(p2);
 const dl2=await p2.evaluate(()=>({mode:SHOW.state.mode,i:SHOW.state.i,aud:document.body.classList.contains('sr-aud')}));if(dl2.mode!=='audience'||dl2.i!==1||!dl2.aud)fail('deep link with mode '+JSON.stringify(dl2));
 await p2.close();
+// lenses (DC-07, DC-28): every lens is configuration with a cut, metrics that exist, and applying it sets the lens and the role
+if(await p.evaluate(()=>!!SHOW.lenses)){
+ const L=await p.evaluate(()=>SHOW.lenses.map(l=>{const o=SHOW.lensOf(l.id);const cut=SHOW.lensCut(l.id);return{id:l.id,r18:!!R18.LENSES.find(x=>x.id===l.r18),mets:l.metrics.filter(m=>!METRICS[m]),cut:!!cut&&cut.total<=SHOW.LIMIT,screens:o.screens.length,persona:l.persona}}));
+ const want=['coo'];want.forEach(id=>{if(!L.find(l=>l.id===id))fail('lens missing '+id)});
+ L.forEach(l=>{if(!l.r18||l.mets.length||!l.cut||l.screens<4)fail('lens '+JSON.stringify(l))});
+ for(const l of L){const r=await p.evaluate(id=>{SHOW.applyLens(id);go('r18_lens');const on=document.querySelector('.r18-lopt.on');return{lens:R18.st.lens,persona:S.persona,on:on&&on.dataset.r18Lens}},l.id);await p.waitForTimeout(150);
+  if(r.lens!==l.id||r.on!==l.id||r.persona!==l.persona)fail('apply lens '+l.id+' '+JSON.stringify(r))}
+ await p.evaluate(p0=>{NAVX.persona.set(p0)},startT.persona);console.log('lenses:',L.map(l=>l.id+' '+l.screens+' screens').join(', '))}
 // EXT: extension checks follow
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();

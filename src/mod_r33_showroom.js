@@ -151,10 +151,10 @@ ST.approvalRec=approvalRec;ST.personaForApproval=personaForApproval;ST.actorAs=a
 
 /* ---------- quiet the app while presenting ---------- */
 function quiet(){G(()=>CHATX.close());G(()=>INBOX.closePanel());G(()=>INBOX.closeFocus());G(()=>{D.querySelectorAll("dialog[open]").forEach(x=>x.close())});G(()=>closeDrawer());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})}
-function clickTab(txt){if(!txt)return false;const want=txt.toLowerCase();
+function clickTab(txt){if(!txt)return false;const want=txt.toLowerCase();const lab=x=>x.textContent.trim().toLowerCase().replace(/^\d+\s*/,"");
  const bs=[...D.querySelectorAll(".screen .views button, .screen [role=tab]")];
  /* screens that draw their own view switcher: fall back to an exact button label inside the screen */
- const b=bs.find(x=>x.textContent.trim().toLowerCase()===want)||bs.find(x=>x.textContent.trim().toLowerCase().startsWith(want))||[...D.querySelectorAll("#view .screen button")].find(x=>x.textContent.trim().toLowerCase()===want);
+ const b=bs.find(x=>lab(x)===want)||bs.find(x=>lab(x).startsWith(want))||[...D.querySelectorAll("#view .screen button")].find(x=>lab(x)===want);
  if(b){b.click();try{const a=D.activeElement;if(a&&a!==D.body&&a.blur)a.blur()}catch(e){}return true}return false}
 
 /* ---------- what the presenter sees ---------- */
@@ -212,7 +212,7 @@ function open(i,o){o=o||{};const d=BY[st.demo];if(!d)return;
  st.busy=true;quiet();setupBeat(d,b);
  G(()=>go(b.go,b.arg));
  setTimeout(()=>{st.tabMissed=b.tab&&!clickTab(b.tab)?b.tab:null;if(b.setup){const s=String(b.setup),c=s.indexOf(":"),k=c<0?s:s.slice(0,c),a=c<0?"":s.slice(c+1);G(()=>ST.setups[k](a,b))}
-  if(b.go!=="studio")quiet();const v=D.getElementById("view");if(v)v.scrollTop=0;try{W.scrollTo(0,0)}catch(e){}
+  if(b.go!=="studio"&&!b.setup)quiet();const v=D.getElementById("view");if(v)v.scrollTop=0;try{W.scrollTo(0,0)}catch(e){}
   setTimeout(()=>{st.busy=false;paint()},120)},360);
  setTimeout(()=>{G(()=>CHATX.close());G(()=>{const c=D.getElementById("chatOpen");if(c)c.checked=false})},1100);
  G(()=>{const u=new URL(location.href);u.searchParams.set("showroom",st.demo);u.searchParams.set("beat",String(st.i+1));if(st.kid!=null)u.searchParams.set("kid",String(st.kid+1));else u.searchParams.delete("kid");history.replaceState(null,"",u)});
