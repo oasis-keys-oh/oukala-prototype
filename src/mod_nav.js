@@ -559,6 +559,8 @@ function sources(){const L=[];
  L.push(["Metrics",()=>Object.keys(METRICS).map(id=>{const m=METRICS[id];return mkItem("metric",m.n,mfmt(m)+" · "+m.owner,"--metric-f",()=>go("metrics",id),m.f+" "+id,"metric:"+id)})]);
  L.push(["Processes",()=>(G(()=>PROCLIB.list())||[]).map(p=>mkItem("process",p.name,"Process · "+(p.familyName||"")+" · level "+p.level,"--s3",()=>PROCLIB.open(p.id),p.owner+" "+p.module+" "+p.id,"process:"+p.id))]);
  L.push(["Data entities",()=>(G(()=>PLAT.entities())||[]).map(e=>mkItem("data",e.label,"Data entity · "+(e.domain||"")+" · "+(e.nf||(e.fields||[]).length)+" fields","--u3",()=>ATLAS.focus(e.id),e.id+" "+(e.owner||"")+" "+(e.note||""),"entity:"+e.id))]);
+ /* PH-12: tabs by name (mod_s_search) */
+ (G(()=>W.SRCH&&SRCH.sources?SRCH.sources():[])||[]).forEach(s=>L.push(s));
  const sx=typeof SEARCHX!=="undefined"?SEARCHX:[];sx.forEach((fn,i)=>L.push(["Provider "+(i+1),()=>{const r=fn()||[];const o=[];for(let j=0;j<r.length&&j<6000;j++){const x=r[j];if(!x||!x.t)continue;const ty=tyOfGroup(String(x.g||""));if(ty==="screen")continue;o.push(mkItem(ty,x.t,(x.g?x.g+" · ":"")+(x.m||""),x.c,x.f,x.k,"",{g:x.g}))}return o},HEAVY.test(String(fn))?"heavy":"prov"]));
  L.push(["Data fields",()=>{const o=[];(G(()=>PLAT.entities())||[]).forEach(e=>(e.fields||[]).forEach(f=>{if(o.length<9000)o.push(mkItem("data",f.label||f.k,"Field · "+e.label,"--u3",()=>ATLAS.focus(e.id),f.k+" "+(f.type||"")+" "+e.id,"field:"+e.id+"."+f.k))}));return o}]);
  if(W.SCALE&&SCALE.on){
@@ -568,7 +570,7 @@ function sources(){const L=[];
   L.push(["Enterprise projects",()=>(G(()=>SCALE.projects())||[]).slice(0,300).map(p=>mkItem("record",p.n||p.name||p.id,"Project · "+(p.phase||""),"--p4",goTbl("ppm_proj",p.id),p.owner||"","proj:"+p.id))]);
   L.push(["Enterprise RAID",()=>(G(()=>SCALE.raid())||[]).slice(0,1500).map(r=>mkItem("record",r.id+" "+r.t,"RAID · "+r.kind+" · "+r.project,"--warn-f",goTbl("ppm_raid",r.id),r.owner||"","raid:"+r.id))])}
  return L}
-function sigNow(){return [W.SCALE&&SCALE.on?1:0,SCREENS.length,G(()=>DIR.length),G(()=>SEARCHX.length),G(()=>PROCLIB.list().length),G(()=>Object.keys(DATAMODEL.tables).length),G(()=>Object.keys(METRICS).length),Object.keys(MAP).length,Object.keys(OVR).length].join("|")}
+function sigNow(){return [W.SCALE&&SCALE.on?1:0,SCREENS.length,G(()=>DIR.length),G(()=>SEARCHX.length),G(()=>PROCLIB.list().length),G(()=>Object.keys(DATAMODEL.tables).length),G(()=>Object.keys(METRICS).length),Object.keys(MAP).length,Object.keys(OVR).length,G(()=>W.SRCH?SRCH.builder():0)].join("|")}
 let buildTimer=0;
 function ensureIndex(force){const sg=sigNow();if(IDX.building)return;if(IDX.built&&!force&&!IDX.dirty&&IDX.sig===sg)return;
  IDX.building=true;IDX.heavyWait=0;IDX.dirty=false;IDX.sig=sg;const B={items:[],keys:new Set(),vocab:new Set(),n:0,cap:120000};const first=!IDX.built;const t0=performance.now();
@@ -605,23 +607,24 @@ function scoreItem(it,T,A,q,P,acro_){let sc=0,all=true;const tl=it.tl,h=it.h;
  if(it.key&&(it.key.slice(it.key.indexOf(":")+1).toLowerCase()===q))sc+=90;
  sc+=TYW[it.ty]||0;sc-=Math.min(14,tl.length/12);
  const bs=P.hs.get(it.key)||P.hs.get(tl);if(bs)sc+=12+bs*.45;if(P.fav.has(it.key)||P.fav.has(tl))sc+=34;
+ if(it.sid&&W.SRCH&&SRCH.nameHit)sc+=SRCH.nameHit(it,q); /* PH-12: a named screen or tab ranks first */
  return sc}
 function runSearch(raw,o){o=o||{};const t0=performance.now();let q=String(raw||"").trim(),scope=o.scope||"all";
  const m=q.match(/^in:\s*([a-z]+)\s*(.*)$/i)||q.match(/^(.*?)\s+in:\s*([a-z]+)$/i);
  if(m){const isFirst=/^in:/i.test(q);const key=(isFirst?m[1]:m[2]).toLowerCase(),rest=isFirst?m[2]:m[1];if(SCOPE_ALIAS[key]){scope=SCOPE_ALIAS[key];q=rest}}
  const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{}};
  if(!T.length){out.ms=0;return out}
- const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};
+ const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};const SR=W.SRCH&&SRCH.allow?SRCH:null;if(SR)SR.reset();
  const pass=(A2,T2,penalty)=>{const acro_=T2.length===1&&T2[0].length>=2&&T2[0].length<=6;
   for(let i=0;i<N;i++){const it=items[i];if(scope!=="all"&&it.ty!==scope)continue;if(o.describe&&it.ty!=="screen"&&it.ty!=="action")continue;
-   const s=scoreItem(it,T2,A2,ql,P,acro_);if(s>0){cnt[it.ty]=(cnt[it.ty]||0)+1;let a=per[it.ty];if(!a)a=per[it.ty]=[];const sc=s-penalty;
+   const s=scoreItem(it,T2,A2,ql,P,acro_);if(s>0&&SR&&!SR.allow(it))continue;if(s>0){cnt[it.ty]=(cnt[it.ty]||0)+1;let a=per[it.ty];if(!a)a=per[it.ty]=[];const sc=s-penalty;
     if(a.length<260||sc>a.min){a.push({it,sc});if(a.length>=520){a.sort((x,y)=>y.sc-x.sc);a.length=260}a.min=Math.min(a.min==null?1e9:a.min,sc)}}}};
  pass(A,T,0);
  let total=0;for(const k in cnt)total+=cnt[k];
  if(total<5){const T2=T.map(t=>{const f=fixTok(t);return f||t});const changed=T2.some((t,i)=>t!==T[i]);if(changed){const A2=T2.map(alts);const before=total;pass(A2,T2,22);out.fixed=T2.join(" ");total=0;for(const k in cnt)total+=cnt[k];if(total===before)out.fixed=null}}
  for(const k in per){per[k].sort((x,y)=>y.sc-x.sc)}
  out.by=per;out.counts=cnt;out.total=total;out.ms=Math.round((performance.now()-t0)*10)/10;IDX.lastMs=out.ms;return out}
-NAVX.search=function(q,o){o=o||{};const r=runSearch(q,o);const lim=o.limit||20;const all=[];Object.keys(r.by).forEach(k=>r.by[k].forEach(x=>all.push(x)));all.sort((a,b)=>b.sc-a.sc);return {q:r.q,scope:r.scope,total:r.total,ms:r.ms,fixed:r.fixed,counts:r.counts,results:all.slice(0,lim).map(x=>({type:x.it.ty,title:x.it.t,meta:x.it.m,score:Math.round(x.sc),open:x.it.f}))}};
+NAVX.search=function(q,o){o=o||{};const r=runSearch(q,o);const lim=o.limit||20;const all=[];Object.keys(r.by).forEach(k=>r.by[k].forEach(x=>all.push(x)));all.sort((a,b)=>b.sc-a.sc);return {q:r.q,scope:r.scope,total:r.total,ms:r.ms,fixed:r.fixed,counts:r.counts,results:all.slice(0,lim).map(x=>({type:x.it.ty,title:x.it.t,meta:x.it.m,score:Math.round(x.sc),open:x.it.f,key:x.it.key,sid:x.it.sid||null,tab:x.it.tab||null}))}};
 
 /* ---------- quick actions ---------- */
 function runAct(sc,re){if(!screenRow(sc))return;go(sc);if(!re)return;let n=0;const iv=setInterval(()=>{const b=qa("#view button").find(x=>re.test((x.textContent||"").trim().replace(/\s+/g," ")));if(b){clearInterval(iv);b.click()}else if(++n>16)clearInterval(iv)},150)}
@@ -865,7 +868,10 @@ function studioSearch(){const ty={};IDX.items.forEach(i=>ty[i.ty]=(ty[i.ty]||0)+
  <div class="card glass"><div class="cardhead"><div><h3>Slowest sources</h3><span class="muted small">Each source is read in its own small slice so the screen never freezes.</span></div></div>
  <div class="tscroll"><table class="tbl"><thead><tr><th>Source</th><th>Items</th><th>Milliseconds</th></tr></thead><tbody>${slow.map(r=>`<tr><td>${E(r[0])}</td><td class="num">${r[2].toLocaleString("en-US")}</td><td class="num">${r[1]}</td></tr>`).join("")||`<tr><td colspan="3" class="muted">Open search once to build the index.</td></tr>`}</tbody></table></div></div></div>
  <div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><h3>Searches with no results</h3></div>${(s.zq&&s.zq.length)?`<div class="row">${s.zq.map(x=>`<span class="pill warn">${E(x)}</span>`).join("")}</div><p class="muted small" style="margin-top:8px">These words found nothing. The Navigation Agent proposes keywords for them.</p>`:`<p class="muted">None on this device yet.</p>`}</div>
- <div class="card glass"><div class="cardhead"><h3>Recent searches</h3></div>${s.rs.length?`<div class="row">${s.rs.map(x=>`<button class="chip" type="button" data-nx-rq="${E(x)}">${E(x)}</button>`).join("")}</div>`:`<p class="muted">None yet.</p>`}</div></div>`}
+ <div class="card glass"><div class="cardhead"><h3>Recent searches</h3></div>${s.rs.length?`<div class="row">${s.rs.map(x=>`<button class="chip" type="button" data-nx-rq="${E(x)}">${E(x)}</button>`).join("")}</div>`:`<p class="muted">None yet.</p>`}</div></div>`+builderCard()}
+/* PH-12: hidden screens are searchable only in builder mode (mod_s_search) */
+function builderCard(){if(!W.SRCH)return"";const on=SRCH.builder();const n=G(()=>SCREENS.filter(x=>SRCH.hiddenScreen(x[0])).length)||0;
+ return `<div class="card glass"><div class="cardhead"><div><h3>Hidden screens in search</h3><span class="muted small">${n} screens are hidden from the menu because another screen replaced them. Search lists them only in builder mode (kept in this browser).</span></div><button class="btn${on?"":" primary"}" type="button" data-srch-builder="${on?0:1}" aria-pressed="${on}">${on?"Turn off builder mode":"Turn on builder mode"}</button></div></div>`}
 function studioPeople(){const s=st();
  return `<div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><div><h3>Favorites for ${E(PERSONAS[S.persona].n)}</h3><span class="muted small">Kept per persona on this device. Drag to reorder in the menu.</span></div></div>
  ${s.fav.length?`<div class="needs">${s.fav.map(f=>`<div class="need" style="grid-template-columns:auto minmax(0,1fr) auto"><div class="ico info">${SVG(ICO.star,16,1.8)}</div><div><b>${E(f.label||f.title)}</b><span class="muted small">${E(f.kind==="screen"?"Module · "+gLabel(resolve(f.key).g):f.type+(f.sub?" · "+f.sub:""))}</span></div><button class="btn quiet" type="button" data-nx-unfav="${E(f.id)}">Remove</button></div>`).join("")}</div>`:`<p class="muted">No favorites yet.</p>`}</div>

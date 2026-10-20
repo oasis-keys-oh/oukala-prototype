@@ -240,17 +240,19 @@ function scoreIt(it,T,qn,P){const z=zinfo(it);let sc=0;
  if(z.lab.toLowerCase().indexOf(qn)===0)sc+=40;
  sc-=Math.min(14,it.t.length/12);
  const bs=P.hs.get(it.key)||P.hs.get(it.tl);if(bs)sc+=10+bs*.4;if(P.fav.has(it.key)||P.fav.has(it.tl))sc+=30;
- if(window.R15){if(R15.hideItem&&R15.hideItem(it,qn))return 0;if(R15.itemBoost)sc+=R15.itemBoost(it,qn)}
+ /* PH-12: hidden screens are decided by SRCH (builder mode), not dropped here; a named screen or tab ranks first */
+ if(window.R15){if(R15.hideItem&&!(W.SRCH&&it.sid)&&R15.hideItem(it,qn))return 0;if(R15.itemBoost)sc+=R15.itemBoost(it,qn)}
+ if(it.sid&&W.SRCH&&SRCH.nameHit)sc+=SRCH.nameHit(it,qn);
  return sc}
 
 function search(raw,opt){opt=opt||{};const ni=NI();const t0=performance.now();const pq=parseQuery(raw);const out={raw,q:pq.q,scope:pq.scope,owner:pq.owner,groups:[],fams:{},total:0,fixed:null,ms:0,T:[]};
  const qn=norm(pq.q);if(!qn)return out;let T=tokenize(pq.q);if(!T.length)return out;out.T=T;
- const P=ni.pref();const items=ni.IDX.items,N=items.length;const gm={};
- const run=(T2,pen)=>{for(let i=0;i<N;i++){const it=items[i];const s=scoreIt(it,T2,qn,P);if(s>0){const z=zinfo(it);let g=gm[z.lab];if(!g)g=gm[z.lab]={lab:z.lab,fam:z.fam,n:0,items:[],best:0};g.n++;const v=s-pen;g.items.push({it,sc:v});if(v>g.best)g.best=v;if(g.items.length>600){g.items.sort((a,b)=>b.sc-a.sc);g.items.length=300}}}};
+ const P=ni.pref();const items=ni.IDX.items,N=items.length;const gm={};const SR=W.SRCH&&SRCH.allow?SRCH:null;if(SR)SR.reset();
+ const run=(T2,pen)=>{for(let i=0;i<N;i++){const it=items[i];const s=scoreIt(it,T2,qn,P);if(s>0&&SR&&!SR.allow(it))continue;if(s>0){const z=zinfo(it);let g=gm[z.lab];if(!g)g=gm[z.lab]={lab:z.lab,fam:z.fam,n:0,items:[],best:0};g.n++;const v=s-pen;g.items.push({it,sc:v});if(v>g.best)g.best=v;if(g.items.length>600){g.items.sort((a,b)=>b.sc-a.sc);g.items.length=300}}}};
  run(T,0);let total=0;for(const k in gm)total+=gm[k].n;
  if(total<5){const T2=T.map(x=>{const f=ni.fixTok(x.t);if(f&&f!==x.t){const a=tokenize(f)[0];return a||x}return x});if(T2.some((x,i)=>x!==T[i])){for(const k in gm)delete gm[k];run(T2,22);out.fixed=T2.map(x=>x.t).join(" ");out.T=T2;total=0;for(const k in gm)total+=gm[k].n;if(!total)out.fixed=null}}
  const arr=Object.keys(gm).map(k=>gm[k]);arr.forEach(g=>g.items.sort((a,b)=>b.sc-a.sc));
- arr.forEach(g=>{const al=norm(ALIASOF[g.lab]||"");const intent=PRIOR[g.fam]>=40&&(g.lab.toLowerCase().split(" ").some(w=>w.indexOf(qn)===0)||(" "+al+" ").indexOf(" "+qn+" ")>=0||(" "+al+" ").indexOf(" "+qn)>=0&&qn.length>=4);g.rank=Math.min(g.best,140)+(g.best>=420&&window.R15&&R15.itemBoost?900:0)+(PRIOR[g.fam]||0)+(intent?300:0)+(intent&&PRI.has(g.lab)?70:0)+Math.min(20,Math.log2(g.n+1)*4)});
+ arr.forEach(g=>{const al=norm(ALIASOF[g.lab]||"");const intent=PRIOR[g.fam]>=40&&(g.lab.toLowerCase().split(" ").some(w=>w.indexOf(qn)===0)||(" "+al+" ").indexOf(" "+qn+" ")>=0||(" "+al+" ").indexOf(" "+qn)>=0&&qn.length>=4);g.rank=Math.min(g.best,140)+(g.best>=420&&window.R15&&R15.itemBoost?900:0)+(PRIOR[g.fam]||0)+(intent?300:0)+(intent&&PRI.has(g.lab)?70:0)+Math.min(20,Math.log2(g.n+1)*4)+(g.fam==="screen"&&g.best>=1200?2000:0)});
  arr.sort((a,b)=>b.rank-a.rank||FAMORD.indexOf(a.fam)-FAMORD.indexOf(b.fam));
  out.groups=arr;out.total=total;arr.forEach(g=>{out.fams[g.fam]=(out.fams[g.fam]||0)+g.n});
  /* owners of a domain: "who owns budget" */
@@ -314,6 +316,7 @@ function refresh(soft){const ni=NI();const PAL=ni.PAL;const ul=q1("#nxPalList");
  const zero=!gs.length&&!(ni.IDX.building&&!ni.IDX.built);
  if(zero){PAL.zero=true;const alt=suggest(res);h=`<li class="nx-zero" role="presentation"><b>No match for “${E(raw.trim())}”${scope!=="all"?" in this type":""}.</b><span>${scope!=="all"?"Try All types, fewer words, or ask Oukala.":"Try fewer words, another spelling, or ask Oukala. Press Enter to ask."}</span>${alt.length?`<span class="zs-sugg">Try: ${alt.map(a=>`<button type="button" class="chip" data-zs-try="${E(a)}">${E(a)}</button>`).join("")}</span>`:""}</li>`+h;PAL.sel=nav.length-1}else PAL.zero=false;
  if(res.fixed)h=`<li class="nx-fixed" role="presentation">Showing results for <b>${E(res.fixed)}</b></li>`+h;
+ if(W.SRCH&&SRCH.noteHTML)h=(G(()=>SRCH.noteHTML(res))||"")+h;
  if(res.ownerDomain)h=`<li class="nx-fixed" role="presentation">Accountability domain: <b>${E(res.ownerDomain.label)}</b>. Owner and backup first, then everything about it.</li>`+h;
  PAL.rows=nav;if(PAL.sel>=nav.length)PAL.sel=0;ul.innerHTML=h;
  const note=q1("#nxPalNote");if(note){if(single||famMode){note.hidden=false;note.textContent="Showing only "+(single?scope.slice(2):FAMNAME[scope]||scope)+". Press Backspace on an empty box or pick All to widen."}else note.hidden=true}
