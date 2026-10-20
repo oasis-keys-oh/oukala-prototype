@@ -140,6 +140,7 @@ const BUILTIN={
  inGroup:(env,g)=>env.user.groups.indexOf(g)>=0,
  hasRole:(env,r)=>env.user.roles.indexOf(r)>=0,
  hasSet:(env,s)=>env.user.sets.indexOf(s)>=0,
+ persona:(env,k)=>env.user.persona===k,
  cleared:(env)=>{const r=env.record;if(!r)return UNK;const need={public:0,internal:1,personal:1,confidential:2,restricted:3}[r.classification||"internal"];return env.user.clearance>=need}};
 function ev(n,env){switch(n.o){
  case"lit":return n.v;case"arr":return n.a.map(x=>ev(x,env));
@@ -308,6 +309,11 @@ function seedRules(){_n=0;const R=[];
  sec("person.lifecycle",["hr","executive","platform_admin"],"","Lifecycle actions: hire, move, leave");
  sec("person.time",["employee"],"own()","Employees read their own time");sec("person.time",["people_manager","project_manager","portfolio_lead","hr"],"","Time is read by managers and project managers");
  sec("person.overview",STAFF,"","Everyone on staff sees the overview");sec("person.plate",STAFF,"");sec("person.owns",STAFF,"");sec("person.skills",STAFF,"");sec("person.agents",STAFF,"");sec("person.contracts",STAFF,"");sec("person.capacity",STAFF,"");
+ /* CL-85 (sample rule, pending Omar's confirmation): the journey Build list is read by architects, the CIO and executive office, the COO,
+    the CFO, and the delivery roles that already saw it (JM-09). Process owners are not added: every persona owns a process, so the
+    lock would open for everyone (open question in the sweep-b report). Simulated: nothing here is a real access control. */
+ sec("journey.build",["executive","architect","portfolio_lead","project_manager","change_manager","platform_admin"],"","Sample rule: architects, executives and delivery leads read the journey Build list");
+ sec("journey.build",["*","!vendor_guest"],"persona('coo') or persona('cfo')","Sample rule: the COO and the CFO read the journey Build list");
  sec("org.lifecycle",["hr","executive","platform_admin"],"","Lifecycle tab on the org chart");sec("org.vacancies",["hr","executive","portfolio_lead","platform_admin"],"","Vacancies");sec("org.sync",["hr","platform_admin","executive"],"","Directory sync");
  R.push(A("Org and report tabs are open to staff",STAFF,"section:org.*",["read"],"","Other org chart tabs",{tier:"section"}));
  /* ---- entities ---- */
