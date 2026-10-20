@@ -80,6 +80,42 @@ CX.delegation=delegation;
 function newThread(title,o){const t=Object.assign({id:uid("T"),title:title||"New chat",pinned:false,arch:false,created:Date.now(),upd:Date.now(),mode:ST.mode,msgs:[],pend:null,unread:0,ctx:{subj:null,attach:[],off:{}}},o||{});ST.threads.unshift(t);ST.active=t.id;return t}
 const cur=()=>{let t=ST.threads.find(x=>x.id===ST.active&&!x.arch);if(!t){t=ST.threads.find(x=>!x.arch)||newThread()}ST.active=t.id;return t};
 CX.cur=cur;CX.newThread=newThread;CX.hasThread=function(id){return ST.threads.some(x=>x.id===id&&!x.arch)};CX.activate=function(id){if(CX.hasThread(id)){ST.active=id;CX.drawAll&&CX.drawAll()}};
+
+/* ---------------- addressee model (CL-54, rule R13a): every person, team, function, record, process and agent is a CHATADDR address.
+   One thread per address: opening an address again reopens its thread (restored from the archive if needed). The record you came from
+   stays on the thread (t.ctx.rec) and the thread is visible only to people who can read that record. The access check runs through
+   PERM when it is loaded and is labeled simulated. Delivery to people is simulated: nothing leaves the prototype. ---------------- */
+const ADDR_KIND={person:"Person",team:"Team",function:"Function",record:"Record",process:"Process",agent:"AI teammate"};
+const HUMAN_ADDR={person:1,team:1,function:1};
+function addrNorm(a){const p=G(()=>CHATADDR.parse(a),null);if(!p||!p.id)return null;return{key:p.type==="record"?"record:"+p.recType+":"+p.id:p.type+":"+p.id,p}}
+function recOf(s){if(!s)return null;if(typeof s==="object")return s.type&&s.id?{type:String(s.type),id:String(s.id),label:s.label||""}:null;
+ const m=/^(?:record:)?([^:]+):(.+)$/.exec(String(s));return m?{type:m[1],id:m[2],label:""}:null}
+function addrInfo(key){const r=G(()=>window.OWNERX&&OWNERX.resolve?OWNERX.resolve(key):null,null);if(r&&r.label)return r;const p=G(()=>CHATADDR.parse(key),{})||{};
+ return{type:p.type,id:p.id,label:p.type==="record"?p.recType+" "+p.id:String(p.id||key)}}
+function access(rec){if(!rec)return{ok:true,simulated:true,why:"No record on this thread, so it is visible to its participants"};
+ const d=G(()=>window.PERM&&PERM.can?PERM.can(null,"read",rec.type,rec.id):null,null);
+ if(!d)return{ok:true,simulated:true,why:"Permission model not loaded"};return{ok:!!d.ok,simulated:true,why:d.why||(d.ok?"Allowed":"Not allowed")}}
+CX.access=function(t){return access(t&&t.ctx&&t.ctx.rec)};
+CX.canSee=function(t){return access(t&&t.ctx&&t.ctx.rec).ok};
+CX.findAddress=function(a){const n=addrNorm(a);return n?ST.threads.find(t=>t.addr===n.key)||null:null};
+CX.addrInfo=addrInfo;
+CX.openAddress=function(a,o){o=o||{};const n=addrNorm(a);if(!n){G(()=>toast("Not a chat address: "+a,"warn"));return null}
+ let t=ST.threads.find(x=>x.addr===n.key);
+ const rec=n.p.type==="record"?{type:n.p.recType,id:n.p.id,label:o.label||""}:(recOf(o.record)||(t&&t.ctx.rec)||null);
+ const acc=access(rec);
+ if(!acc.ok){G(()=>toast("You cannot see the chat on "+rec.type+" "+rec.id+": "+acc.why+" (simulated access check)","warn"));G(()=>audit("chat: address blocked by record access",n.key));return null}
+ const info=addrInfo(n.key);
+ if(!t){t=newThread(info.label||n.key,{addr:n.key,addrType:n.p.type});
+  sayAI(t,HUMAN_ADDR[n.p.type]?`Thread with <b>${H(info.label)}</b>${n.p.type==="person"?"":" ("+H(ADDR_KIND[n.p.type].toLowerCase())+")"}. Messages here are simulated: they stay in this prototype and nobody is notified.`
+   :n.p.type==="record"?`Thread on <b>${H(info.label)}</b>. Anyone who can read this record can see this thread (simulated access check).`
+   :`Thread with <b>${H(info.label)}</b> (${H(ADDR_KIND[n.p.type].toLowerCase())}). Ask about it here; answers come from the simulated planner.`,{stream:false});
+  G(()=>audit("chat: opened address",n.key))}
+ else{if(t.arch)t.arch=false;G(()=>audit("chat: reopened address",n.key))}
+ if(rec&&n.p.type!=="record"){const had=t.ctx.rec;t.ctx.rec=rec;if(!had||had.type!==rec.type||had.id!==rec.id)sayAI(t,`Record context: <b>${H(rec.type)} ${H(rec.id)}</b>. This thread is now visible only to people who can read it (simulated access check).`,{stream:false})}
+ else if(rec)t.ctx.rec=rec;
+ t.upd=Date.now();ST.active=t.id;
+ if(o.open!==false){if(CX.open)CX.open("chat");else G(()=>{document.getElementById("chatOpen").checked=true})}
+ saveSoon();return t};
 try{Object.defineProperty(S,"chat",{configurable:true,enumerable:true,get(){return cur().msgs},set(v){cur().msgs=Array.isArray(v)?v:[]}})}catch(e){}
 const screenName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:id};
 function lookupRec(id){if(!id)return null;const X=S.itsm||{};let r;
@@ -99,7 +135,7 @@ function trackDrawer(){const d=$("#drawer");if(!d)return;let txt="";try{txt=d.te
  const h=d.querySelector(".p360h h2");if(h){ST.lastPerson={name:h.textContent.trim(),at:Date.now()};ST.lastRec={id:"person:"+h.textContent.trim(),person:h.textContent.trim(),type:"Person",t:h.textContent.trim(),sub:"Person 360",at:Date.now(),screen:S.screen};return}
  const m=REC_RE.exec(txt);if(m){const r=lookupRec(m[1]);ST.lastRec={id:m[1],type:r?r.type:"Record",t:r?r.t:m[1],sub:r?r.sub:"",at:Date.now(),screen:S.screen}}}
 document.addEventListener("toggle",e=>{if(e.target&&e.target.id==="drawer"&&e.newState==="open"){setTimeout(()=>{trackDrawer();CX.drawCtx&&CX.drawCtx()},60)}},true);
-function ctxNow(t){t=t||cur();const c=t.ctx;const rec=ST.lastRec&&!c.off.rec?ST.lastRec:null;
+function ctxNow(t){t=t||cur();const c=t.ctx;const rec=c.rec?{id:c.rec.id,type:c.rec.type,t:c.rec.label||c.rec.type+" "+c.rec.id,sub:"Kept on this thread",thread:true}:ST.lastRec&&!c.off.rec?ST.lastRec:null;
  return{page:c.off.page?null:{id:S.screen,name:screenName(S.screen)},rec,acting:{name:ME_NAME,role:roleName(),caps:capsOf()},subj:c.subj,attach:c.attach,off:c.off,mode:t.mode||ST.mode,thread:t}}
 CX.ctxNow=ctxNow;
 function setSubject(name,t){t=t||cur();t.ctx.subj=name||null;if(name){audit("chat: acting on behalf of",name+" ("+(delegation(name).verified?"delegation verified":"not verified")+")")}else audit("chat: stopped acting on behalf","");CX.drawAll&&CX.drawAll();saveSoon()}
@@ -650,6 +686,8 @@ function handle(q0,o){o=o||{};let q=String(q0||"").trim();if(!q)return;if(CX.hoo
  if(q==="/help"){pushMsg({me:1,t:q},t);sayAI(t,"Slash commands, and everything also works in plain words.",{cards:[{t:"table",title:"Slash commands",h:["Type","Does"],r:SLASH_HELP.map(x=>[x[0],x[1]])}],stream:false});return}
  if(q==="/context"){pushMsg({me:1,t:q},t);CX.open("ctx");return}
  const sm=/^(\/[a-z]+)\s*(.*)$/i.exec(q);if(sm&&SLASH[sm[1].toLowerCase()]){const rewritten=SLASH[sm[1].toLowerCase()](sm[2]);pushMsg({me:1,t:q},t);return plan(rewritten,t,Object.assign({},o,{shown:true}))}
+ if(t.addr&&HUMAN_ADDR[t.addrType]){const inf=addrInfo(t.addr);pushMsg({me:1,t:q,to:t.addr},t);G(()=>audit("chat: message to address",t.addr+" (simulated delivery)"));
+  sayAI(t,`Sent to <b>${H(inf.label)}</b> in the platform chat. Simulated: nobody is notified and no reply will come.`,{stream:false});CX.drawThreads&&CX.drawThreads();return}
  pushMsg({me:1,t:q},t);if(t.title==="New chat"||!t.title){t.title=q.replace(/[?.!]+$/,"").split(/\s+/).slice(0,7).join(" ");if(t.title.length>46)t.title=t.title.slice(0,46).replace(/\s+\S*$/,"")+"…";t.autoT=true}
  return plan(q,t,Object.assign({},o,{shown:true}))}
 CX.handle=handle;
@@ -904,7 +942,10 @@ CX.drawSugs=function(){const el=$("#sugs");if(!el)return;const t=cur();if(CX.pre
 /* --- context strip --- */
 CX.drawCtx=function(){const el=$("#chxCtx");if(!el)return;const t=cur(),c=ctxNow(t);const chips=[];
  if(c.page)chips.push(`<span class="cx-cc" title="The screen you are on. The AI can read what this page shows."><b>Page</b> ${H(c.page.name)}<button aria-label="Remove page from context" data-cx-rm="page">×</button></span>`);
- if(c.rec){const r=c.rec;chips.push(`<span class="cx-cc rec" title="The last record you opened in a drawer"><b>Record</b> <button class="cx-link" data-cx-do="openrec:${H(r.id)}">${H(String(r.id).replace(/^person:/,""))}</button><button aria-label="Remove record from context" data-cx-rm="rec">×</button></span>`)}
+ if(t.addr){const inf=addrInfo(t.addr),ac=CX.access(t);chips.push(`<span class="cx-cc to" title="${H(ADDR_KIND[t.addrType]||"Address")} address ${H(t.addr)}"><b>To</b> ${H(inf.label)} <small class="muted">${HUMAN_ADDR[t.addrType]?"simulated delivery":H((ADDR_KIND[t.addrType]||"").toLowerCase())}</small></span>`);
+  if(t.ctx.rec)chips.push(`<span class="cx-cc vis ${ac.ok?"":"warn"}" title="${H(ac.why)}"><b>Visible to</b> people who can read ${H(t.ctx.rec.type)} ${H(t.ctx.rec.id)} <small class="muted">simulated check</small></span>`)}
+ if(c.rec&&c.rec.thread){const r=c.rec;chips.push(`<span class="cx-cc rec" title="Kept on this thread"><b>Record</b> <button class="cx-link" data-cx-do="openrec:${H(r.id)}">${H(r.type)} ${H(r.id)}</button></span>`)}
+ else if(c.rec){const r=c.rec;chips.push(`<span class="cx-cc rec" title="The last record you opened in a drawer"><b>Record</b> <button class="cx-link" data-cx-do="openrec:${H(r.id)}">${H(String(r.id).replace(/^person:/,""))}</button><button aria-label="Remove record from context" data-cx-rm="rec">×</button></span>`)}
  chips.push(`<span class="cx-cc you" title="Who is acting. Your role decides what the AI may do."><b>You</b> ${avatar(ME_NAME,{size:18})} Casey<select class="cx-sel" aria-label="Acting role and level" data-cx-role>${Object.keys(PERSONAS).map(k=>`<option value="${k}" ${k===S.persona?"selected":""}>${H(PERSONAS[k].n)}</option>`).join("")}</select></span>`);
  chips.push(c.subj?`<span class="cx-cc subj ${delegation(c.subj).verified?"":"warn"}" title="${H(delegation(c.subj).basis)}"><b>For</b> ${avatar(c.subj,{size:18})} ${H(c.subj)}${delegation(c.subj).verified?"":" (read only)"}<button aria-label="Stop acting on behalf of ${H(c.subj)}" data-cx-rm="subj">×</button></span>`:`<button class="cx-cc add" data-cx-do="pick-subj" aria-haspopup="listbox">+ Act on behalf of someone</button>`);
  c.attach.forEach(a=>chips.push(`<span class="cx-cc att" title="Attached by you"><b>${H(a.k)}</b> ${H(String(a.label).slice(0,28))}<button aria-label="Remove ${H(a.label)}" data-cx-rm="att:${H(a.k)}:${H(a.id)}">×</button></span>`));
@@ -913,8 +954,8 @@ CX.drawCtx=function(){const el=$("#chxCtx");if(!el)return;const t=cur(),c=ctxNow
 
 /* --- thread list --- */
 CX.drawThreads=function(){const el=$("#chxThreads");if(!el)return;const q=(ST.tq||"").toLowerCase(),arch=ST.showArch;
- let L=ST.threads.filter(t=>!!t.arch===!!arch);if(q)L=L.filter(t=>(t.title+" "+t.msgs.map(m=>plain(m.t)).join(" ")).toLowerCase().indexOf(q)>=0);L.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||b.upd-a.upd);
- el.innerHTML=`<div class="cx-tools"><input class="fin" type="search" id="chxTq" placeholder="Search ${ST.threads.length} threads" aria-label="Search threads" value="${H(ST.tq||"")}"><button class="btn primary" data-cx-new>New chat</button></div><div class="row"><button class="chip" data-cx-arch="0" aria-pressed="${!arch}">Active</button><button class="chip" data-cx-arch="1" aria-pressed="${!!arch}">Archived (${ST.threads.filter(t=>t.arch).length})</button></div><ul class="cx-tl">${L.map(t=>{const last=[...t.msgs].reverse().find(m=>!m.think);return`<li class="${t.id===ST.active?"on":""}"><button class="cx-tt" data-cx-th="open:${t.id}"><b>${t.pinned?"Pinned · ":""}${H(t.title)}</b><small class="muted">${last?H(plain(last.t).slice(0,70)):"Empty"}</small><span class="row"><span class="pill mute">${H(MODES[t.mode||ST.mode].n)}</span>${t.ctx.subj?`<span class="pill metric">For ${H(firstOf(t.ctx.subj))}</span>`:""}${t.unread?`<span class="pill info">${t.unread} new</span>`:""}<small class="muted">${ago(t.upd)}</small></span></button><div class="cx-ta"><button class="btn quiet" data-cx-th="pin:${t.id}">${t.pinned?"Unpin":"Pin"}</button><button class="btn quiet" data-cx-th="ren:${t.id}">Rename</button><button class="btn quiet" data-cx-th="${t.arch?"unarch":"arch"}:${t.id}">${t.arch?"Restore":"Archive"}</button></div></li>`}).join("")||`<li class="muted">${arch?"Nothing archived.":"No threads match."}</li>`}</ul>`};
+ let L=ST.threads.filter(t=>!!t.arch===!!arch&&CX.canSee(t));if(q)L=L.filter(t=>(t.title+" "+t.msgs.map(m=>plain(m.t)).join(" ")).toLowerCase().indexOf(q)>=0);L.sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)||b.upd-a.upd);
+ el.innerHTML=`<div class="cx-tools"><input class="fin" type="search" id="chxTq" placeholder="Search ${ST.threads.length} threads" aria-label="Search threads" value="${H(ST.tq||"")}"><button class="btn primary" data-cx-new>New chat</button></div><div class="row"><button class="chip" data-cx-arch="0" aria-pressed="${!arch}">Active</button><button class="chip" data-cx-arch="1" aria-pressed="${!!arch}">Archived (${ST.threads.filter(t=>t.arch).length})</button></div><ul class="cx-tl">${L.map(t=>{const last=[...t.msgs].reverse().find(m=>!m.think);return`<li class="${t.id===ST.active?"on":""}"><button class="cx-tt" data-cx-th="open:${t.id}"><b>${t.pinned?"Pinned · ":""}${H(t.title)}</b><small class="muted">${last?H(plain(last.t).slice(0,70)):"Empty"}</small><span class="row"><span class="pill mute">${H(MODES[t.mode||ST.mode].n)}</span>${t.addr?`<span class="pill info">${H(ADDR_KIND[t.addrType]||"Address")}</span>`:""}${t.ctx.subj?`<span class="pill metric">For ${H(firstOf(t.ctx.subj))}</span>`:""}${t.unread?`<span class="pill info">${t.unread} new</span>`:""}<small class="muted">${ago(t.upd)}</small></span></button><div class="cx-ta"><button class="btn quiet" data-cx-th="pin:${t.id}">${t.pinned?"Unpin":"Pin"}</button><button class="btn quiet" data-cx-th="ren:${t.id}">Rename</button><button class="btn quiet" data-cx-th="${t.arch?"unarch":"arch"}:${t.id}">${t.arch?"Restore":"Archive"}</button></div></li>`}).join("")||`<li class="muted">${arch?"Nothing archived.":"No threads match."}</li>`}</ul>`};
 const ago=ts=>{const m=Math.round((Date.now()-ts)/60000);return m<1?"now":m<60?m+"m":m<1440?Math.round(m/60)+"h":Math.round(m/1440)+"d"};
 
 /* --- activities pane --- */
