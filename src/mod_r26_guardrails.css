@@ -153,6 +153,11 @@
 .r26-wgrid{grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr))}.r26-wgrid>*{min-width:0}
 .r26-wgrid .r26-wt{width:100%;max-width:100%;box-sizing:border-box;justify-self:stretch}
 .stu-strip .stx-t{display:block;line-height:1.5;padding:1px 0}
+/* PH-10: build bar close control top right, like #drawer>.dctl .closebtn; Back to build drops to a second row on narrow chat panels */
+.stu-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;column-gap:8px;row-gap:4px}
+.stu-strip .stx-x{grid-column:-2/-1;grid-row:1;justify-self:end;align-self:start;min-width:44px;min-height:32px;margin-left:auto}
+.stu-strip .stx-back{grid-column:3;grid-row:1}
+@media (max-width:480px){.stu-strip .stx-back{grid-column:2/4;grid-row:2;justify-self:start}}
 .r26-wgrid .r26-wt{height:100%;justify-content:flex-start}
 :root:has(#railCollapse:checked) .stu-pill span{display:none}:root:has(#railCollapse:checked) .stu-pill{padding:11px;margin:0 auto 10px;width:44px;height:44px}
 .stu-dnx{background:var(--wk,#6d28d9)!important;color:#fff;border-color:transparent!important}.stu-dnx:disabled{background:transparent!important;color:inherit}

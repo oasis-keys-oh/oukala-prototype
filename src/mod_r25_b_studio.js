@@ -135,7 +135,8 @@ function afterDraw(){const C=W.CHATX;if(!C||!C.cur)return;const ctx=D.getElement
  if(!live){if(st)st.remove();return}
  const t=C.cur(),inThread=Q.thread&&t.id===Q.thread.id,onScr=S_screen()==="studio";
  if(!st){st=D.createElement("div");st.id="stuStrip";st.className="stu-strip";ctx.parentNode.insertBefore(st,ctx)}
- const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet" data-stu-exit aria-label="Close the build bar">'+((inThread&&onScr)?"Exit build":"Close ×")+'</button>';
+ /* PH-10: the close control sits top right on its own, never inline after Back to build (same pattern as #drawer>.dctl .closebtn) */
+ const html='<span class="stx-d" aria-hidden="true"></span><span class="stx-t">Building: <b>'+E(Q.sc.title)+'</b></span>'+((inThread&&onScr)?'':'<button type="button" class="stx-b stx-back" data-stu-back>Back to build</button>')+'<button type="button" class="stx-b quiet stx-x" data-stu-exit aria-label="'+((inThread&&onScr)?"Exit the build":"Close the build bar")+'">'+((inThread&&onScr)?"Exit build":"Close")+'</button>';
  if(st.dataset.h!==html){st.dataset.h=html;st.innerHTML=html}
  C.drawSugs&&C.drawSugs()}
 function fixChips(t){if(!buildLive()||Q.hold||!Q.thread||t.id!==Q.thread.id)return;const want=pendingChips();const last=t.msgs[t.msgs.length-1];
