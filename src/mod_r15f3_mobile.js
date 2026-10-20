@@ -8,7 +8,8 @@ const M=S.r15m=S.r15m||{tab:"appr",offline:false,queue:[],done:{},ack:{},sheet:n
 const need=(a,r)=>window.GUARD&&GUARD.require?GUARD.require(a,r):true;
 /* route: #m opens the mobile view */
 (function(){const w=window.NAVX;if(w&&w.resolveAlias&&!w._r3m){const o=w.resolveAlias;w.resolveAlias=function(s){const t=String(s||"").trim().toLowerCase().replace(/^#/,"");return t==="m"||t==="mobile"?"r15_mobile":o.apply(this,arguments)};w._r3m=1}})();
-setInterval(()=>{const on=S.screen==="r15_mobile";document.body.classList.toggle("r3m-on",on)},250);
+/* CL-38: the body class follows the screen on each render (afterRender), not a 250 ms poll */
+const r3mOn=()=>{const on=S.screen==="r15_mobile";document.body.classList.toggle("r3m-on",on)};HOOKS.on("afterRender",r3mOn,{id:"r3m.on"});r3mOn();
 const ageTxt=h=>h<1?"under 1 h":h<48?Math.round(h)+" h":Math.round(h/24)+" d";
 const money=R.money;
 function items(){return G(()=>INBOX.items().filter(x=>x.can&&x.can.approve&&!M.done[x.id]),[]).sort((a,b)=>(a.sc||0)-(b.sc||0))}
