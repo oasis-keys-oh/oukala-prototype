@@ -13,7 +13,7 @@ const STEPS=[
  ["Build in the editor","When, If, Then, Else. Every action says what it changes. The script step accepts one sandboxed expression only.","human","Rule author","1 day","Draft rule","Complete draft with an owner and a different backup"],
  ["Test on a real record","A dry run shows before and after, the rules that fired in order, messages, blocked saves and notifications. Nothing is saved.","human","Rule author","1 hour","Complete draft","Test result"],
  ["Approve activation","The request goes to the Platform governance board (a group). The author cannot approve their own rule.","gate","Platform governance board","2 working days","Test result","Approved version"],
- ["Run and watch","The approved version runs in the form or on save. Firings, failures and loop stops are logged. A kill switch stops all rules or one type.","auto","Automatic","Instant","Approved version","Firing log"],
+ ["Run and watch","The approved version runs in the form or on save. Firings, failures and loop stops are logged. A kill switch stops all rules or one type.","robot","Robot","Instant","Approved version","Firing log"],
  ["Change with a new version","An edit makes a new draft. The live version keeps running until the new one is approved. Rollback goes to a prior approved version.","human","Rule owner","As needed","Firing log","New version"],
  ["Retire","The owner retires a rule that is no longer needed. It stays in the history and the audit trail.","human","Rule owner","As needed","Rule","Retired rule"]];
 const PROC={id:"r17s_rule_lifecycle",name:"How a rule is built, tested, approved and retired",screen:SCR};

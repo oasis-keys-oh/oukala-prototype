@@ -12,23 +12,8 @@ T.info={
  health:{org:"Larkspur Health System",short:"Larkspur Health",kind:"A regional health system",lead:{n:"Grace Oduya",t:"Chief operating officer"}},
  mining:{org:"Redstone Resources",short:"Redstone Resources",kind:"A mining company with operational technology",lead:{n:"Jonas Whitfield",t:"Chief operating officer"}},
  storage:{org:"Corvane Data Protection",short:"Corvane Data",kind:"A storage and backup vendor",lead:{n:"Hannah Brooks",t:"Chief operating officer"}}};
-/* the org as the journeys see it, grouped under functions; leaders are fictional */
-T.orgs={
- health:{fns:[
-  {n:"Access and patient experience",lead:{n:"Priya Venkataraman",t:"Chief patient experience officer"},teams:["Digital front door","Nurse advice line","Marketing and access","Access center","Patient access","Patient experience","Referral management"]},
-  {n:"Clinical operations",lead:{n:"Dr. Marcus Hale",t:"Chief medical officer"},teams:["Clinical operations","Ambulatory operations","Primary care","Care coordination","Care management","Case management","Diagnostics","Lab and imaging","Pharmacy","Quality","Clinical documentation"]},
-  {n:"Hospital operations",lead:{n:"Tomasz Brandt",t:"VP, hospital operations"},teams:["Emergency department","Surgery","Sterile processing","Inpatient nursing","Hospital medicine","Patient flow","Transport","Women's health","Labor and delivery","Postpartum","Nursing operations","Supply chain"]},
-  {n:"Revenue and finance",lead:{n:"Helena Marsh",t:"Chief financial officer"},teams:["Revenue cycle","Patient financial services","Payer contracting","Payer operations","Coding"]}]},
- mining:{fns:[
-  {n:"Mining operations",lead:{n:"Rafael Moreno",t:"VP, mining operations"},teams:["Mine planning","Drill and blast","Operations","Processing","Logistics"]},
-  {n:"Reliability and maintenance",lead:{n:"Ingrid Solberg",t:"Head of reliability"},teams:["Reliability","Maintenance planning","Maintenance","Supply"]},
-  {n:"Safety, community and compliance",lead:{n:"Dr. Kwame Asante",t:"Chief safety officer"},teams:["HSE","Community and compliance"]},
-  {n:"Commercial and finance",lead:{n:"Mei-Ling Zhou",t:"Chief financial officer"},teams:["Commercial","Finance"]}]},
- storage:{fns:[
-  {n:"Customer operations",lead:{n:"Aisha Rahman",t:"VP, customer operations"},teams:["Customer success","Support","Account management","Services","Field services","Field service"]},
-  {n:"Sales and order management",lead:{n:"Diego Alvarez",t:"VP, sales operations"},teams:["Pre-sales","Presales","Sales operations","Order management"]},
-  {n:"Engineering and supply",lead:{n:"Sofia Lindqvist",t:"VP, engineering and supply"},teams:["Engineering","Supply chain"]},
-  {n:"Finance",lead:{n:"Owen Park",t:"Chief financial officer"},teams:["Finance"]}]}};
+/* the org as the journeys see it, grouped under functions (CL-85): each tenant pack sets TENANT.orgs[id] from its own org (mod_s_pack_*) */
+T.orgs={};
 const DT=W.DATA;
 /* the tenant registry lives in DATA (DC-31); TENANT adds the organization details */
 if(DT)Object.keys(T.info).forEach(k=>DT.addTenant(k,T.info[k]));

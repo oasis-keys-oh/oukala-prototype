@@ -6,11 +6,11 @@
 "use strict";
 const W=window;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=window.U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const U=W.R17U=W.R17U||{};U.G=G;U.H=H;U.arr=arr;
 /* ---------------- dates and numbers ---------------- */
-const TODAY="2026-10-06",TD=Date.UTC(2026,9,6);
+const TODAY=window.U.TODAY_ISO,TD=Date.parse(TODAY+"T00:00:00Z");
 const dd=s=>new Date(s+"T00:00:00Z");
 const iso=d=>new Date(d).toISOString().slice(0,10);
 const addDays=(s,n)=>iso(dd(s).getTime()+n*864e5);
@@ -21,7 +21,7 @@ const usd=n=>{n=Math.round(+n||0);const a=Math.abs(n);return (n<0?"-":"")+"$"+(a
 const usdF=n=>(Math.round(+n||0)<0?"-":"")+"$"+nf(Math.abs(Math.round(+n||0)));
 U.TODAY=TODAY;U.dd=dd;U.iso=iso;U.addDays=addDays;U.daysTo=daysTo;U.fmtD=fmtD;U.nf=nf;U.usd=usd;U.usdF=usdF;
 U.me=()=>G(()=>INBOX.me(),"Casey Rowan");
-U.now=()=>"2026-10-06 "+new Date().toTimeString().slice(0,5);
+U.now=()=>window.U.TODAY_ISO+" "+new Date().toTimeString().slice(0,5);
 const csvq=v=>{v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 U.csv=rows=>rows.map(r=>r.map(csvq).join(",")).join("\r\n");
 U.download=(name,text,type)=>{try{const b=new Blob([text],{type:type||"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500);return true}catch(e){return false}};
@@ -227,9 +227,9 @@ const BEN_SPEC={key:"r17u_ben",name:"Benefits realization",screen:"bud_ben",
   ["Register","Each funded initiative lists its benefits with type, baseline, target, measure source, owner and a different backup.","human",OWN.ben[0],"2 weeks","Business case","Benefit record"],
   ["Link funding","The benefit is tied to the budget line that pays for the work, so net benefit and payback use real cost.","human",OWN.ben[0],"1 week","Benefit record","Linked benefit"],
   ["Measure","The owner records the actual for each quarter with method and evidence; totals and checkpoints update at once.","human","Benefit owner","Quarter end + 10 days","Linked benefit","Recorded actual"],
-  ["Compute checkpoints","Status per quarter is computed from actual against plan; the register flags missing owners, backups, baselines and measurements older than 90 days.","auto","Automatic","Instant","Recorded actual","Checkpoint status"],
+  ["Compute checkpoints","Status per quarter is computed from actual against plan; the register flags missing owners, backups, baselines and measurements older than 90 days.","robot","Robot","Instant","Recorded actual","Checkpoint status"],
   ["Review target changes","A change to a target or planned amount is decided by the Portfolio board group; the proposer cannot decide.","gate","Portfolio board","1 week","Change request","Approved target"],
-  ["Report","Realized and net benefit flow to the executive dashboard and the value case.","auto","Automatic","Daily","Checkpoint status","Reported value"]],
+  ["Report","Realized and net benefit flow to the executive dashboard and the value case.","robot","Robot","Daily","Checkpoint status","Reported value"]],
   inputs:["Business case","Budget lines"],outputs:["Realized benefit","Net benefit and payback"],entities:["benefit","benefit_checkpoint","benefit_actual","budget_line","approval"],metrics:["m_ben_cover","m_ben_attn","m_ben_chk","m_ben_net","m_benefit"]}};
 function F2(a){return a.map(x=>F(x[0],x[1],x[2],x[3],x[4]))}
 const DASH_SPEC={key:"r17u_dash",name:"Dashboards",screen:"r17u_dash",
@@ -242,7 +242,7 @@ const DASH_SPEC={key:"r17u_dash",name:"Dashboards",screen:"r17u_dash",
   ["Share","The owner shares the dashboard to groups; sharing alone does not make it a default.","human",OWN.dash[0],"Same day","Draft dashboard","Shared dashboard"],
   ["Review","The dashboard governance group sees the tiles, sources and who the default is for.","gate","Dashboard governance group","2 working days","Shared dashboard","Reviewed dashboard"],
   ["Publish","One group member other than the proposer approves; the dashboard becomes the default for the chosen persona.","gate","Dashboard governance group","1 working day","Reviewed dashboard","Published default"],
-  ["Deliver","A schedule sends a snapshot to a group or people (simulated in this prototype and labeled).","auto","Automatic","Per schedule","Published default","Delivered snapshot"]],
+  ["Deliver","A schedule sends a snapshot to a group or people (simulated in this prototype and labeled).","robot","Robot","Per schedule","Published default","Delivered snapshot"]],
   inputs:["Metric dictionary","Registries"],outputs:["Published dashboard","Scheduled delivery"],entities:["dashboard","dashboard_tile","report_schedule","approval"],metrics:["m_dash_bound","m_dash_owned","m_dash_pubq"]}};
 U.specs=[BEN_SPEC,DASH_SPEC];
 const PSX=a=>({n:a[0],d:a[1],who:a[2],owner:a[3],sla:a[4],in:a[5],out:a[6]});

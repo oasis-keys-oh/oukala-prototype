@@ -128,6 +128,15 @@ SRCH.allow=function(it){if(!it)return false;const t=tenant();
  if(it.sid&&it.ty==="screen")sayMeridianOnly(it);
  return true};
 
+/* CL-87: Recently viewed and Favorites follow the active tenant. Screens stay (they are product, labeled "Meridian sample only"
+   where that applies); a record entry shows only under the tenant it was opened in: a tenant record ("tn:<tenant>:" key) or one
+   tagged with that tenant. Under another tenant every Meridian record is hidden. SRCH.hist(list) filters a history list. */
+SRCH.histAllow=function(h){if(!h)return false;const t=tenant();if(t==="core")return !h.tn||h.tn==="core";
+ if(h.kind==="screen")return true;
+ if(h.tn!=null)return h.tn===t;
+ const k=String(h.key||h.id||"");if(k.indexOf("tn:"+t+":")===0||k.indexOf("record:tn:"+t+":")===0)return true;
+ return false};
+SRCH.hist=list=>(list||[]).filter(h=>SRCH.histAllow(h));
 /* the core search list (ui.js searchIndex, wrapped by kit.js for SEARCHX providers, read by chat and the leak test) gets the
    same scope: the outermost wrapper filters it for the active tenant and adds that tenant's own records */
 const _si=typeof searchIndex==="function"?searchIndex:null;

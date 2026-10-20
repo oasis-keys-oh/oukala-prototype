@@ -2,8 +2,8 @@
 (function(){
 const D=document,W=window,G=(f,d)=>{try{return f()}catch(e){return d}};
 const KEY="oukala.silence";
-let until=0;G(()=>{until=+localStorage.getItem(KEY)||0});
-const save=()=>G(()=>localStorage.setItem(KEY,String(until)));
+let until=+U.store.get(KEY,0)||0;
+const save=()=>U.store.set(KEY,until);
 const silenced=()=>until===-1||until>Date.now();
 const apply=()=>{D.documentElement.classList.toggle("r21-quiet",silenced());const b=D.getElementById("inbxBell");if(b){b.classList.toggle("r21-muted",silenced());if(silenced())b.title="Notifications silenced "+label()}};
 const label=()=>until===-1?"until you turn them back on":"until "+new Date(until).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"});

@@ -9,7 +9,7 @@
 "use strict";
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
-const H=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const H=U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const uniq=a=>[...new Set(a.filter(x=>x!=null&&x!==""))];
 const usd=n=>G(()=>U.moneyShort(n),"$"+Math.round(+n||0));
@@ -87,6 +87,9 @@ const stp=s=>s?`<span class="thr-st thr-${H(s)}" aria-hidden="true"></span>`:"";
 function rowHTML(o,focus,t){const rec=(o.kind==="line"?"budget_line":o.kind==="led"?"ledger":o.kind==="inv"?"invoice":o.kind==="kr"?"key_result":o.kind==="obj"?"objective":"project")+":"+o.id;
  return `<li class="thr-row${focus?" thr-focus":""}"><div class="thr-rh">${stp(o.st)}<button type="button" class="thr-open" data-num-open="${H(o.num)}" title="Open ${H(o.num)}">${o.num?`<span class="num-chip">${H(o.num)}</span>`:""}<b>${H(o.name)}</b></button></div>
  <div class="thr-rm">${own(o.owner,rec)}${o.fig?`<span class="small thr-fig">${H(o.fig)}${o.money?" "+modeled:""}</span>`:""}</div>${o.sub?`<p class="small muted thr-sub">${H(o.sub)}</p>`:""}</li>`}
+/* CL-84: spend (budget line, invoice, ledger line) that reaches no objective is an orphan; offer the Showroom's Build the fix hand-off */
+const orphanFix=(R,head)=>{const k=R.start.kind;if(!["line","inv","led"].includes(k)||R.levels.obj.length||!(W.SHOW&&SHOW.fixHTML))return"";
+ return `<p class="thr-fix">${SHOW.fixHTML("orphan",R.start.num||R.start.id,head.name||R.start.id)}</p>`};
 T.html=function(R){if(!R)return `<p class="muted">Nothing to trace for that number.</p>`;const st=R.start;
  if(R.process){const P=R.process;if(P.build!=null&&P.records==null)return `<h2 class="thr-h">Thread for ${H(P.num)}${P.build?": "+H(P.build):""}</h2><p class="muted">${H(P.note)}</p><button type="button" class="btn" data-num-open="${H(P.num)}">Open ${H(P.num)}</button>`;
   return `<h2 class="thr-h">Thread for ${H(P.num)}: ${H(P.name||"process")}</h2>${P.records.length?`<p class="small muted">This process governs ${P.kinds.map(k=>H((KLAB[k]||k).toLowerCase())).join(" and ")}. Trace one of them for the full thread.</p><ul class="thr-list">${P.records.map(r=>`<li class="thr-row"><div class="thr-rh"><button type="button" class="thr-open" data-thr-trace="${H(r.num)}"><span class="num-chip">${H(r.num)}</span><b>${H(r.name)}</b></button></div></li>`).join("")}</ul>`:`<p class="muted">No objective, project, budget line, invoice or ledger record is governed by this process in the golden thread. Open it in the designer to see its steps.</p>`}<div class="row"><button type="button" class="btn" data-num-open="${H(P.num)}">Open ${H(P.num)} in the designer</button></div>`}
@@ -96,7 +99,7 @@ T.html=function(R){if(!R)return `<p class="muted">Nothing to trace for that numb
  const steps=R.steps.length?`<ul class="thr-steps">${R.steps.map(s=>`<li><span class="small muted">${H(KLAB[s.kind])}</span> <button type="button" class="thr-open" data-num-open="${H(s.snum||s.pnum)}"><span class="num-chip">${H(s.snum||s.pnum)}</span>${H(s.step||s.proc)}</button> <span class="small muted">in ${H(s.pnum)} ${H(s.proc)}</span></li>`).join("")}</ul>`:"";
  return `<div class="thr" data-thr="${H(st.num||st.id)}"><div class="eyebrow">Golden thread</div><h2 class="thr-h">${st.num?`<span class="num-chip">${H(st.num)}</span> `:""}${H(head.name||st.id)}</h2>
  <p class="small muted">From the objective to the money and the work: each level reads its own registry, and a click opens the record. ${R.tenant!=="core"?"Shown for "+H(G(()=>DATA.tenantInfo(R.tenant).org,R.tenant))+". ":""}Dollar figures are modeled; scores come from key result values (prototype facts).</p>
- ${R.notes.map(n=>`<p class="small thr-note">${H(n)}</p>`).join("")}
+ ${R.notes.map(n=>`<p class="small thr-note">${H(n)}</p>`).join("")}${orphanFix(R,head)}
  <div class="thr-spine">${lv}</div>
  <section class="thr-lv"><div class="thr-lh"><span class="eyebrow">Hand-offs between owners</span><span class="small muted">${R.handoffs.length}</span></div>${ho}</section>
  ${steps?`<section class="thr-lv"><div class="thr-lh"><span class="eyebrow">${H(KLAB.step)}</span></div>${steps}</section>`:""}</div>`};

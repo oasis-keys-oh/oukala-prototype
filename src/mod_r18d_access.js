@@ -15,17 +15,18 @@ const LIVE=s=>s==="approved"||s==="approved_masked"||s==="limited";
 /* ---------- who owns what ---------- */
 const GRP={budget_line:"Budget approvers (delegation of authority)",budget_request:"Budget approvers (delegation of authority)",budget_adjustment:"Budget approvers (delegation of authority)",cost_center:"Finance review group",cost_center_map:"Finance review group",invoice:"Payables approvers",contract:"Finance review group",contract_line:"Finance review group",core_company:"Finance review group",person:"People Operations",objective:"Portfolio council",key_result:"Portfolio council",project:"Portfolio council",project_task:"Portfolio council",wbs_line:"Portfolio council",incident:"Architecture and security review group",change_request:"Change advisory board",config_item:"Architecture and security review group"};
 const DOMG={fin:"Finance review group",people:"People Operations",sec:"Security approvers",plat:"Architecture and security review group"};
-const ALIAS={contract:"contract_line",budget_request:"budget_line"},LABELS={contract:"Contract",budget_request:"Budget request"};
-const ent=id=>G(()=>PLAT.ent(ALIAS[id]||id),null);
-const tbl=id=>G(()=>DATAMODEL.tables[ALIAS[id]||id],null);
-const labelOf=id=>LABELS[id]||(ent(id)||tbl(id)||{}).label||id;
+/* PR-02: entity ids are the registered ones (contract_line, budget_line). OLD only migrates ids saved before the change. */
+const OLD={contract:"contract_line",budget_request:"budget_line"};const realId=id=>OLD[id]||id;
+const ent=id=>G(()=>PLAT.ent(id),null);
+const tbl=id=>G(()=>DATAMODEL.tables[id],null);
+const labelOf=id=>(ent(id)||tbl(id)||{}).label||id;
 const fieldsOf=id=>arr((ent(id)||tbl(id)||{}).fields).map(f=>({k:f.k,label:f.label||f.k,cls:f.classification||"internal"}));
 const clsOf=(id,attrs)=>{const fs=fieldsOf(id).filter(f=>!attrs||attrs.indexOf(f.k)>=0);return fs.reduce((m,f)=>CLS.indexOf(f.cls)>CLS.indexOf(m)?f.cls:m,"internal")};
 const groupFor=id=>GRP[id]||DOMG[(ent(id)||{}).domain]||"Architecture and security review group";
 const ownerOf=id=>(ent(id)||{}).owner||"Platform";
 const stewardOf=id=>(ent(id)||tbl(id)||{}).steward||"";
 /* candidate sources shown in the request wizard (real registered entities) */
-const CANDS=["person","objective","key_result","project","budget_line","cost_center","invoice","contract","core_company","incident","change_request","wbs_line"].filter(id=>ent(id)||tbl(id));
+const CANDS=["person","objective","key_result","project","budget_line","cost_center","invoice","contract_line","core_company","incident","change_request","wbs_line"].filter(id=>ent(id)||tbl(id));
 R18.accessEnts=()=>CANDS.filter(id=>ent(id)||tbl(id));
 
 /* ---------- state and seeds ---------- */
@@ -34,12 +35,12 @@ function mkItem(app,e,state,o){o=o||{};const fs=fieldsOf(e),attrs=o.attrs||fs.sl
  const it={id:"ARI-"+(A.seq++),ent:e,attrs,group:groupFor(e),cls,state,by:o.by||"",at:o.at||"",note:o.note||"",mask:state==="approved_masked",expires:o.expires||"",policy:!!o.policy};return it}
 function seed(){if(A.reqs)return;A.reqs=[];
  const apps=R18.apps();let n=1001;
- apps.forEach(a=>{const reads=arr(a.reads);if(!reads.length)return;const at=a.created||"2026-08-01";let items;
+ apps.forEach(a=>{const reads=arr(a.reads).map(realId);a.reads=reads.length?reads:a.reads;if(!reads.length)return;const at=a.created||"2026-08-01";let items;
   if(a.id==="ca_pipeline"){items=[mkItem(a,"objective","approved",{by:"Portfolio council",at:"2026-10-04",expires:addD("2026-10-04",180),n:5}),mkItem(a,"cost_center","approved_masked",{by:"Finance review group",at:"2026-10-05",expires:addD("2026-10-05",180),n:6,note:"Approved; owner names masked."}),mkItem(a,"person","pending",{n:7}),mkItem(a,"budget_line","pending",{n:8})]}
   else if(a.id==="ca_travel"){items=reads.map(e=>mkItem(a,e,e==="invoice"?"denied":"approved",{by:groupFor(e),at:addD(at,3),expires:addD(at,183),note:e==="invoice"?"Personal-tier builds may not read invoices. Request the team tier first.":"",n:6}))}
   else if(a.id==="ca_lease"){items=reads.map(e=>mkItem(a,e,"expired",{by:groupFor(e),at:addD(at,3),expires:"2026-09-30",note:"Builder has left; recertification was not done.",n:5}))}
   else if(a.id==="ca_budget"){items=reads.map((e,i)=>mkItem(a,e,"approved",{by:groupFor(e),at:addD(at,3),expires:i===0?"2026-10-18":addD(at,183),n:7}))}
-  else if(a.id==="ca_inv_exc"){items=reads.map(e=>mkItem(a,e,e==="contract"?"approved_masked":"approved",{by:groupFor(e),at:"2026-09-30",expires:addD("2026-09-30",180),n:6,note:e==="contract"?"Approved; pricing terms masked.":""}))}
+  else if(a.id==="ca_inv_exc"){items=reads.map(e=>mkItem(a,e,e==="contract_line"?"approved_masked":"approved",{by:groupFor(e),at:"2026-09-30",expires:addD("2026-09-30",180),n:6,note:e==="contract_line"?"Approved; pricing terms masked.":""}))}
   else{items=reads.map(e=>mkItem(a,e,a.status==="sunset"?"revoked":"approved",{by:groupFor(e),at:addD(at,3),expires:addD(at,183),n:6,policy:CLS.indexOf(clsOf(e))<=1}))}
   items.forEach(i=>{if(!i.by)i.by="";i.reqBy=a.builder;i.req=a.id});
   A.reqs.push({id:"AR-"+(n++),app:a.id,by:String(a.builder||"").replace(/\s*\(.*\)$/,""),at,purpose:a.purpose,items})});
@@ -50,7 +51,7 @@ const itemsOf=app=>{const out=[];reqs().filter(r=>r.app===app).forEach(r=>r.item
 const needs=(app,e)=>{const i=latest(app,e);return !i||(!live(i)&&i.state!=="pending")};
 const latest=(app,e)=>{const l=itemsOf(app).filter(i=>i.ent===e);return l.length?l[l.length-1]:null};
 function live(i){if(!i)return false;if(!LIVE(i.state))return false;return !i.expires||i.expires>=TODAY}
-function normalize(){reqs().forEach(r=>r.items.forEach(i=>{if(LIVE(i.state)&&i.expires&&i.expires<TODAY)i.state="expired"}))}
+function normalize(){reqs().forEach(r=>r.items.forEach(i=>{i.ent=realId(i.ent);if(LIVE(i.state)&&i.expires&&i.expires<TODAY)i.state="expired"}));G(()=>R18.apps().forEach(a=>{if(Array.isArray(a.reads)&&a.reads.some(e=>OLD[e]))a.reads=a.reads.map(realId)}))}
 
 const access=R18.access={};
 access.stateOf=app=>{normalize();const a=R18.app(app);const reads=arr(a&&a.reads);if(!reads.length)return{ok:true,pending:0,n:0,missing:0,denied:0};
@@ -119,7 +120,7 @@ const pillS=st=>{const s=STATE[st]||STATE.none;return pill(s[0],s[1])};
 const clsPill=c=>pill(c,CLS.indexOf(c)>=2?"warn":"mute");
 const checkPill=r=>pill(r==="pass"?"Pass":r==="warn"?"Warn":"Fail",r==="pass"?"good":r==="warn"?"warn":"bad");
 function reqCard(r){const a=R18.app(r.app)||{n:r.app};const done=r.items.filter(i=>i.state!=="pending").length;
- return `<article class="card glass r18-req"><div class="cardhead"><div><h3>${H(a.n)}</h3><span class="muted small">${H(r.id)} · requested by ${H(r.by)} on ${H(fD(r.at))} · ${done} of ${r.items.length} decided</span></div><button type="button" class="btn quiet" data-r18-app="${H(r.app)}">Open build</button></div>
+ return `<article class="card glass r18-req"><div class="cardhead"><div><h3>${H(a.n)}</h3><span class="muted small">${H(r.id)} · requested by ${ownerChip(r.by,{role:"Requester"})} on ${H(fD(r.at))} · ${done} of ${r.items.length} decided</span></div><button type="button" class="btn quiet" data-r18-app="${H(r.app)}">Open build</button></div>
  <div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Source</th><th>Approved by</th><th>Fields</th><th>Class</th><th>Decision</th><th>Expires</th></tr></thead><tbody>${r.items.map(i=>`<tr><td><b>${H(labelOf(i.ent))}</b>${i.note?`<small class="muted">${H(i.note)}</small>`:""}</td><td>${H(i.group)}${i.policy?'<small class="muted">Decided by policy</small>':""}</td><td class="num">${i.attrs.length}</td><td>${clsPill(i.cls)}</td><td>${pillS(i.state)}</td><td>${i.expires?H(fD(i.expires)):""}</td></tr>`).join("")}</tbody></table></div></article>`}
 function requestsTab(){const s=stats();
  const list=reqs().slice().reverse().filter(r=>r.items.some(i=>i.state==="pending")||r.at>=addD(TODAY,-30)||true).slice(0,12);
@@ -141,7 +142,7 @@ function newTab(){const d=ST.accDraft=ST.accDraft||{app:ST.reqFor||ST.app,purpos
   <div class="row r18-actrow"><button type="button" class="btn primary" data-r18-submit ${previews.length?"":"disabled"}>Submit ${previews.length?previews.length+" request"+(previews.length>1?"s":""):"request"}</button><span class="muted small">Nothing is shared until each owner approves.</span></div></section></div></div>`}
 function queueTab(){const q=access.queue();const mine=q.filter(x=>canAct(x.i.group)),other=q.filter(x=>!canAct(x.i.group));
  const card=({r,i})=>{const a=R18.app(r.app)||{n:r.app};const rv=i.rv||(i.rv=review(r.app,i));
-  return `<article class="card glass r18-rq"><div class="cardhead"><div><h3>${H(a.n)} needs ${H(labelOf(i.ent))}</h3><span class="muted small">${H(r.id)} · ${H(r.by)} · for ${H(i.group)} · up to ${H(i.cls)} data</span></div>${pill("Recommended: "+REC[rv.rec],rv.rec==="deny"?"bad":rv.rec==="approve"?"good":"warn")}</div>
+  return `<article class="card glass r18-rq"><div class="cardhead"><div><h3>${H(a.n)} needs ${H(labelOf(i.ent))}</h3><span class="muted small">${H(r.id)} · ${ownerChip(r.by,{})} · for ${H(i.group)} · up to ${H(i.cls)} data</span></div>${pill("Recommended: "+REC[rv.rec],rv.rec==="deny"?"bad":rv.rec==="approve"?"good":"warn")}</div>
   <p class="r18-why" data-role="story">${H(r.purpose)}</p><div class="r18-chips">${i.attrs.slice(0,14).map(k=>{const f=fieldsOf(i.ent).find(x=>x.k===k)||{label:k,cls:"internal"};return `<span class="pill ${CLS.indexOf(f.cls)>=2?"warn":"mute"}" title="${H(f.cls)}">${H(f.label)}</span>`}).join("")}${i.attrs.length>14?`<span class="muted small">+${i.attrs.length-14} more</span>`:""}</div>
   <details class="r18-det"><summary>Security review: ${rv.fails} fail, ${rv.warns} warn. ${H(rv.why)}</summary><ul class="r18-ck">${rv.checks.map(c=>`<li>${checkPill(c.r)} <b>${H(c.n)}</b> <span class="muted">${H(c.ev)}</span></li>`).join("")}</ul></details>
   <label class="small muted r18-pickl"><span>Note to the builder</span><input class="fin" type="text" data-r18-note="${H(i.id)}" placeholder="Optional" aria-label="Note to the builder"></label>

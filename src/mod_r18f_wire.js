@@ -10,27 +10,27 @@ const SCR_A="r18_access";
 const PROCS=[
  {id:"r18_data_access",screen:SCR_A,name:"How a build gets access to enterprise data",owner:OWN.access,steps:[
   ["Declare what the build needs","The builder picks each source and the fields the build uses. Only the fields needed are requested.","human","Builder","1 hour","Build","Request"],
-  ["Resolve the owner of each source","Each source is matched to its authoritative owner and the group that approves access. One request is split by owner.","auto","Automatic","Instant","Request","Requests per owner group"],
-  ["Run the security review","Purpose, minimum necessary, data class against the build's tier, AI exposure and named owner and backup are checked. Safe internal requests are decided by policy.","auto","Automatic","Instant","Requests per owner group","Review and recommendation"],
+  ["Resolve the owner of each source","Each source is matched to its authoritative owner and the group that approves access. One request is split by owner.","robot","Robot","Instant","Request","Requests per owner group"],
+  ["Run the security review","Purpose, minimum necessary, data class against the build's tier, AI exposure and named owner and backup are checked. Safe internal requests are decided by policy.","robot","Robot","Instant","Requests per owner group","Review and recommendation"],
   ["Owner group decides","The owner group approves, approves with masking, limits the scope or denies. The builder cannot approve their own request.","gate","Data owner groups","3 working days","Review and recommendation","Decision"],
-  ["Grant with an end date","Approval creates a time-boxed grant. Read access is by API under the owner's rules; no copy is made.","auto","Automatic","Instant","Decision","Grant"],
+  ["Grant with an end date","Approval creates a time-boxed grant. Read access is by API under the owner's rules; no copy is made.","robot","Robot","Instant","Decision","Grant"],
   ["Recertify or lapse","The build owner recertifies before the end date or the grant expires and the build loses the data. Any grant can be revoked at any time.","human","Build owner","30 days before end","Grant","Renewed or ended grant"]]},
  {id:"r18_build_lifecycle",screen:"r18_builds",name:"How a build is registered, checked and offered to others",owner:OWN.builds,steps:[
   ["Build in the tool you already use","A person builds in their own AI tool or the workflow designer. The skills add the guardrail components.","human","Builder","Any","Need","Build"],
-  ["Generate the guardrails","Process map, metrics, maturity roadmap, debt register, data needs and gate checks are generated from the build.","auto","Automatic","Instant","Build","Eight guardrails, drafted"],
+  ["Generate the guardrails","Process map, metrics, maturity roadmap, debt register, data needs and gate checks are generated from the build.","robot","Robot","Instant","Build","Eight guardrails, drafted"],
   ["Confirm the process","The owner reviews the generated process, names the objective it advances and confirms. A different backup is required.","human","Build owner","2 days","Drafted guardrails","Confirmed build"],
   ["Request data access","See How a build gets access to enterprise data.","gate","Data owner groups","3 working days","Confirmed build","Approved data"],
   ["Gate review","The governance group reviews the gate checks and sets the tier.","gate","Platform governance board","5 working days","Approved data","Certified build"],
   ["Offer to other teams","If the build overlaps no other and enough people use it, it can be offered across the enterprise.","human","Build owner","As needed","Certified build","Enterprise service"]]},
  {id:"r18_lens_review",screen:"r18_lens",name:"How an executive reviews value, cost and risk",owner:OWN.lens,steps:[
   ["Choose the lens","The executive picks the lens that matches how they weigh value, cost and risk.","human","Executive","Instant","Need","Lens"],
-  ["Read the balance","Value, cost and risk figures are modeled from the live builds and labeled as illustrative.","auto","Automatic","Instant","Lens","Balance"],
+  ["Read the balance","Value, cost and risk figures are modeled from the live builds and labeled as illustrative.","robot","Robot","Instant","Lens","Balance"],
   ["Open the build behind a figure","Every figure leads to the build, its process and its guardrails.","human","Executive","Any","Balance","Decision"],
   ["Act or assign","The executive asks the build owner to close a gap, merge a duplicate or scale the build.","human","Executive","Any","Decision","Assigned action"]]},
  {id:"r18_strategy_map",screen:"r18_strategy",name:"How each function is shown to enable the strategy",owner:OWN.lens,steps:[
   ["Name the objective","Each build names the strategic objective it advances; the field is required to confirm a build.","human","Build owner","At confirmation","Build","Linked build"],
-  ["Place it on the map","The build appears in its function row and objective column with modeled net value.","auto","Automatic","Instant","Linked build","Map cell"],
-  ["Find the gaps","Objectives with no enabling work and builds with no objective are listed.","auto","Automatic","Instant","Map cell","Gap list"],
+  ["Place it on the map","The build appears in its function row and objective column with modeled net value.","robot","Robot","Instant","Linked build","Map cell"],
+  ["Find the gaps","Objectives with no enabling work and builds with no objective are listed.","robot","Robot","Instant","Map cell","Gap list"],
   ["Decide where to invest","The COO or CEO asks the right function to build toward the empty objective.","human","COO or CEO","Quarterly","Gap list","Assigned build"]]}];
 const fld=(k,label,type,cls)=>({k,label,type,authority:"platform",classification:cls||"internal"});
 function ENTS(){return[

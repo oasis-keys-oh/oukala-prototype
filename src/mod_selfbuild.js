@@ -12,13 +12,13 @@ const GAPS=[
 ["P2","Process","Dashboard-and-list first view still missing on a few admin and budget tabs","Adopt kpi() and statrow on remaining tabs","core"],
 ["P3","Standards","ITIL 5 and service model mappings are summaries, not full practice guides","Curate practice libraries and mapping tables","itsm"],
 ["P3","Quality","No automated regression suite beyond scans","Playwright suite per screen plus visual diffs in CI","core"],
-["P3","Knowledge","Live Obsidian connector deferred","Read and write vault notes through a connector","know"]];
+["P3","Knowledge","Live knowledge vault connector deferred","Read and write vault notes through a connector","know"]];
 let done=false;
 function seed(){
  if(done)return;done=true;const _t=window.toast;window.toast=function(){};
  try{
  let pid=null;
- try{ if(window.addProject){const r=window.addProject({name:"Oukala platform build: prototype to pilot",short:"Oukala build",pm:"Casey Rowan",cost:1850,src:"self-build"});pid=r&&r.id||(PROJ[PROJ.length-1]||{}).id}}catch(e){console.warn("selfbuild project",e)}
+ try{ if(window.addProject){const r=window.addProject({name:(BRAND.name+" platform build: prototype to pilot"),short:(BRAND.name+" build"),pm:"Casey Rowan",cost:1850,src:"self-build"});pid=r&&r.id||(PROJ[PROJ.length-1]||{}).id}}catch(e){console.warn("selfbuild project",e)}
  if(pid&&window.PPMX&&PPMX.addTasks){
   try{WS.forEach(w=>{PPMX.addTasks(pid,w[2].map((n,i)=>({n:w[0]+": "+n,dur:3+i*2,own:"Casey Rowan"})),{phase:w[0],own:"Casey Rowan"})})}catch(e){console.warn("selfbuild tasks",e)}
  }
@@ -27,7 +27,7 @@ function seed(){
   {id:"R-OB2",t:"R",p:pid||"PR1",n:"No real authentication or row-level security",d:"Personas are simulated.",pr:3,im:5,cost:0,own:"Casey Rowan",acc:"Casey Rowan",s:"open",due:"2026-12-15"},
   {id:"R-OB3",t:"R",p:pid||"PR1",n:"Screens slow at Enterprise scale",d:"Several screens exceed 800 ms.",pr:4,im:3,cost:0,own:"Casey Rowan",acc:"Casey Rowan",s:"open",due:"2026-11-15"})}catch(e){}
  try{if(window.addDemand)GAPS.filter(g=>g[0]!=="P3").forEach(g=>addDemand({title:g[1]+": "+g[2],reason:g[3],source:"Self-build gap analysis",cost:60,kind:"Platform build",pm:"Casey Rowan"}))}catch(e){}
- try{if(window.audit)audit("Self-build loaded","Oukala backlog loaded into Demand, Projects, WBS and RAID")}catch(e){}
+ try{if(window.audit)audit("Self-build loaded",(BRAND.name+" backlog loaded into Demand, Projects, WBS and RAID"))}catch(e){}
  }finally{window.toast=_t}
 }
 const pill=p=>`<span class="pill ${p==="P1"?"bad":p==="P2"?"warn":"info"}">${p}</span>`;
@@ -35,7 +35,7 @@ REG("plat_self","Self-build","platform","M4 6h16M4 12h10M4 18h16",()=>{
  seed();
  const avg=Math.round(WS.reduce((a,w)=>a+w[3],0)/WS.length);
  const tasks=WS.reduce((a,w)=>a+w[2].length,0);
- return `${hero("Platform · Self build","Oukala managing its own build","The prototype backlog is loaded into Demand, Projects, the WBS and the RAID log. The gaps below came from running the tool on itself.")}
+ return `${hero("Platform · Self build",(BRAND.name+" managing its own build"),"The prototype backlog is loaded into Demand, Projects, the WBS and the RAID log. The gaps below came from running the tool on itself.")}
  <div class="statrow" style="margin-top:14px"><div class="stat"><small>Workstreams</small><span class="num">${WS.length}</span><em>one per module</em></div><div class="stat"><small>Work packages</small><span class="num">${tasks}</span><em>in the WBS</em></div><div class="stat"><small>Average built</small><span class="num">${avg}%</span><em>prototype depth</em></div><div class="stat"><small>Open gaps</small><span class="num">${GAPS.length}</span><em>${GAPS.filter(g=>g[0]==="P1").length} priority 1</em></div></div>
  <div class="grid g2" style="margin-top:14px;gap:16px">
  <section class="card glass"><h3>Gap analysis</h3><div class="tscroll"><table><thead><tr><th>Priority</th><th>Area</th><th>Gap</th><th>Next step</th></tr></thead><tbody>${GAPS.map(g=>`<tr><td>${pill(g[0])}</td><td><b>${g[1]}</b></td><td style="white-space:normal;min-width:220px">${g[2]}</td><td style="white-space:normal;min-width:220px" class="muted">${g[3]}</td></tr>`).join("")}</tbody></table></div><div class="row" style="margin-top:10px;gap:8px"><button class="btn" onclick="go('port')">Open in Demand</button><button class="btn" onclick="go('ppm_wbs')">Open the WBS</button><button class="btn" onclick="go('ppm_raid')">Open the RAID log</button></div></section>

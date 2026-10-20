@@ -21,6 +21,6 @@ function sweep(root){if(!root||!W.PERM||!PERM.state||!PERM.state.enforce)return;
 let timer=0,obs=null;
 function run(){const v=D.getElementById("view");const d=D.getElementById("drawer");if(obs)obs.disconnect();try{sweep(v);grammar(v);enhance(v);enhance(d)}catch(e){console.error("r18 people",e)}watch()}
 function watch(){const v=D.getElementById("view");if(!v)return;if(!obs)obs=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(run,120)});obs.observe(v,{childList:true,subtree:true,characterData:false})}
-const _render=W.render;W.render=function(){const r=_render.apply(this,arguments);clearTimeout(timer);timer=setTimeout(run,60);return r};
+HOOKS.on("afterRender",()=>{clearTimeout(timer);timer=setTimeout(run,60)},{id:"r18j.people"});
 setTimeout(run,800);
 })();

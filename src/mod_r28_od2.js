@@ -7,7 +7,7 @@ const X=W.ODX;if(!X)return;
 const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const r0=Math.round,r1=n=>Math.round(n*10)/10,sum=a=>a.reduce((s,x)=>s+x,0),avg=a=>a.length?sum(a)/a.length:0;
-const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const clamp=window.U.clamp;
 const U=(v,u)=>v+(u==="%"?"%":" "+u);
 const TABS=["COO brief","Sources","Diagnose","Hypotheses","Gaps and options","Roadmap","Adoption and impact"];
 const LENS={coo:{n:"COO",q:"What changes in how work runs, by when, and what could go wrong?",order:["ops","org","exp","sc","tech","data","fin","gov"]},
@@ -33,6 +33,10 @@ const foreign=()=>TEN()!=="core";
 const tname=()=>{const i=G(()=>W.DATA.tenantInfo(TEN()),{})||{};return i.org||i.n||TEN()};
 const tPeople=()=>G(()=>W.DATA.get("people"),[]).filter(p=>p&&p.kind!=="ai");
 const tLoad=()=>tPeople().filter(p=>p.pct!=null&&!isNaN(+p.pct));
+/* CL-85: the COO brief inputs read the tenant entities through DATA (Meridian rows under core are the same ODX figures) */
+const WL=()=>{const r=G(()=>W.DATA.get("workload"),[]);return r.length||foreign()?r:X.people()};
+const VC=()=>{const r=G(()=>W.DATA.get("value_chain"),[]);return r.length||foreign()?r:X.O2C.steps};
+const PLL=()=>G(()=>W.DATA.get("pillars"),[]);
 const mSample=()=>`<span class="od-src od-msample" title="Drawn from the fictional Meridian Standards Foundation sample organization, because this tenant's pack has no data for it">Meridian sample</span>`;
 const noData=(k,what)=>`<div class="card glass od-tile od-nodata"><span class="od-k">${k}</span><b>No data</b><span class="od-s">${E(tname())} has no ${what} in its pack yet</span><span class="od-src od-gap" title="Recorded as a gap; nothing from another tenant is shown">Gap</span></div>`;
 /* last line of defense: no Meridian person or agent name under another tenant */
@@ -42,19 +46,19 @@ function scrub(html){if(!foreign())return html;let h=html;
 
 /* ---------- 0: the COO brief ---------- */
 function brief(){
- const o=OD(),A=X.after(o.hyp),P=X.people(),L=LENS[o.lens];
+ const o=OD(),A=X.after(o.hyp),P=WL(),L=LENS[o.lens];
  const rows=X.GAPS.map(g=>{const k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k];return{g,k,op,sc:g.reach*(op.val||0)/(op.eff+8)}}).filter(r=>r.k!=="leave").sort((a,b)=>b.sc-a.sc).slice(0,6);
- const outside=X.O2C.steps.filter(s=>!s.in).length;
+ const V=VC(),outside=V.filter(s=>!s.in).length;
  const augH=r0(sum(P.map(p=>p.aug)));
  const steps=X.roadmap(o.posture,o.choice);
  const ad=adoptionAll(steps,o.month);
- const F=foreign(),TL=F?tLoad():null;
+ const F=foreign(),TL=F?P.filter(p=>p.pct!=null&&!isNaN(+p.pct)):null;
  const loadTile=!F?`<div class="card glass od-tile"><span class="od-k">Average workload</span><b>${r0(avg(P.map(p=>p.pct)))}%</b><span class="od-s">${P.filter(p=>p.pct>100).length} of ${P.length} people above 100%</span>${pill("fact")}</div>`
   :TL.length?`<div class="card glass od-tile"><span class="od-k">Average workload</span><b>${r0(avg(TL.map(p=>+p.pct)))}%</b><span class="od-s">${TL.filter(p=>+p.pct>100).length} of ${TL.length} people above 100%, ${E(tname())}</span>${pill("fact")}</div>`:noData("Average workload","workload data");
- const augTile=!F?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>p.tot)))} hours logged</span>${pill("modeled")}</div>`:noData("Hours a week an agent could take","time records");
+ const augTile=!F?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>p.tot)))} hours logged</span>${pill("modeled")}</div>`:P.some(p=>p.aug!=null)?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>+p.tot||0)))} hours logged, ${E(tname())}</span>${pill("modeled")}</div>`:noData("Hours a week an agent could take","time records");
  return `${F?`<div class="card glass od-honest od-tenant" role="note"><b>Tenant: ${E(tname())}.</b><p>Gaps, options, the roadmap and adoption follow this tenant. People, workload and agent figures read this tenant's own data through the tenant data layer; where its pack has none yet the tile says so. Panels marked Meridian sample are drawn from the fictional Meridian sample organization, with every person and agent name left out.</p></div>`:""}<div class="od-grid4">
   ${loadTile}
-  <div class="card glass od-tile"><span class="od-k">Order-to-cash steps outside the system</span><b>${outside} of ${X.O2C.steps.length}</b><span class="od-s">Sample process, fictional</span>${pill("modeled")}${F?mSample():""}</div>
+  <div class="card glass od-tile"><span class="od-k">${F&&V[0]&&V[0].flow?E(V[0].flow)+" steps outside a system":"Order-to-cash steps outside the system"}</span><b>${outside} of ${V.length}</b><span class="od-s">Sample process, fictional</span>${pill("modeled")}${F&&!V.length?mSample():""}</div>
   ${augTile}
   <div class="card glass od-tile"><span class="od-k">Using the new way at month ${o.month}</span><b>${ad.using}%</b><span class="od-s">Built is not the same as used</span>${pill("sim")}</div></div>
  <div class="card glass"><div class="cardhead"><div><h3>How will you treat the ERP?</h3><span class="muted small">This choice changes every recommendation below. Most clients do not have an ideal state; they have a direction and a pace.</span></div></div>
@@ -75,7 +79,7 @@ function sources(){
   ${card("Reference architecture",E(R.n),"Choose below. Used to name the activities each gap and step belongs to.","ok")}
   ${foreign()?card("Org chart",tPeople().length+" people in the pack",E(tname())+": leaders from the tenant pack, read through the tenant data layer. No workload or time records yet.","part"):card("Org chart",X.people().length+" staff, "+Object.keys(X.units()).length+" units","Read from the prototype's sample organization (prototype fact).","ok")}
   ${card("Transactions and outcomes",runs+" agent runs","Agent run history from the prototype. No ERP or ticketing connector is live.","part")}
-  ${foreign()?card("Strategy","Not in the pack","No strategy pillars in "+E(tname())+"'s pack yet. The Meridian sample pillars are not shown here.","part"):card("Strategy","3 sample pillars","Grow member trust, publish faster, spend less per standard. Fictional.","ok")}</div>
+  ${foreign()?(PLL().length?card("Strategy",PLL().length+" pillars",PLL().map(p=>E(p.n)).join(", ")+". From "+E(tname())+"'s pack, read through the tenant data layer (sample).","ok"):card("Strategy","Not in the pack","No strategy pillars in "+E(tname())+"'s pack yet. The Meridian sample pillars are not shown here.","part")):card("Strategy","3 sample pillars","Grow member trust, publish faster, spend less per standard. Fictional.","ok")}</div>
  <div class="card glass"><div class="cardhead"><div><h3>Add a filing</h3><span class="muted small">Drop a 10-K as .txt, .htm or .html. It is split into Items, and themes, risks and headcount mentions are extracted by keyword and structure. A language model is not connected.</span></div></div>
   <label class="od-drop" data-od-drop><input type="file" data-od-file accept=".txt,.htm,.html,.md" multiple hidden><b>Drop files here or choose</b><span>Real filings are public documents. Keep customer-confidential material out.</span></label>
   <div class="od-list">${F.map((f,i)=>{const p=f.parsed;return `<button class="od-row ${o.fsel===i?"on":""}" data-od="fsel|${i}"><span class="od-dim">${f.fict?"Fictional sample":"Added by you"}</span><span class="od-t"><b>${E(f.name)}</b><span>${p.words.toLocaleString()} words, ${p.secs.length} sections found${p.emp?", mentions about "+E(p.emp)+" employees":""}</span></span><span class="od-opt">${i===o.fsel?"Open":"View"}</span></button>`}).join("")}</div>
@@ -109,9 +113,13 @@ function diagnose(){
   <div class="od-table"><div class="od-th2 od-agh"><span>Agent</span><span>Plan h/wk</span><span>Realized</span><span>Runs</span><span>Accepted</span><span>Tier</span></div>
   ${ag.map(a=>`<div class="od-th2 od-agr"><span><b>${E(a.name)}</b><em>Sponsor ${E(a.sponsor||"none")}</em></span><span>${a.plan}</span><span>${r1(a.real)}</span><span>${a.runs}</span><span>${a.acc}%</span><span>${E(a.tier)}</span></div>`).join("")}</div></div>`}`}
 /* JM-07: load under another tenant reads that tenant's people through DATA; it never lists the Meridian people or agents */
-function tenantLoadCard(){const P=tPeople(),TL=tLoad();
+function tenantLoadCard(){const P=tPeople(),WK=WL(),TL=WK.length?WK:tLoad();if(WK.length)return tenantWorkCard(WK);
  return `<div class="card glass"><div class="cardhead"><div><h3>Load: people and agents</h3><span class="muted small">${E(tname())}: ${P.length} people in the tenant pack${TL.length?", "+TL.length+" with workload":""}. Workload and agent run records are not in this tenant's pack yet, so nothing is measured here. Meridian people and agents are not shown under another tenant.</span></div><span class="od-src od-gap">Gap</span></div>
   ${P.length?`<div class="od-table">${P.slice(0,18).map(p=>`<div class="od-ld"><span><b>${E(p.name)}</b><em>${E(p.role||"")}${p.team?" · "+E(p.team):""}</em></span>${p.pct!=null?bar(+p.pct,+p.pct>100?"bad":+p.pct<50?"warn":"")+`<span class="od-v">${r0(+p.pct)}%</span>`:`<span class="muted small">No workload data</span>`}</div>`).join("")}</div>`:`<p class="muted small">No people in this tenant's pack yet.</p>`}</div>`}
+
+function tenantWorkCard(WK){
+ return `<div class="card glass"><div class="cardhead"><div><h3>Load: people</h3><span class="muted small">${E(tname())}: ${WK.length} leaders with workload from the tenant pack, read through the tenant data layer (modeled). Agent run records are not in this tenant's pack yet. Meridian people and agents are not shown under another tenant.</span></div>${pill("modeled")}</div>
+  <div class="od-table">${WK.slice(0,18).map(p=>`<div class="od-ld"><span><b>${E(p.n)}</b><em>${E(p.role||"")}${p.unit?" · "+E(p.unit):""}</em></span>${bar(+p.pct,+p.pct>100?"bad":+p.pct<50?"warn":"")}<span class="od-v">${r0(+p.pct)}%</span></div>`).join("")}</div></div>`}
 
 /* ---------- 3: hypotheses and before/after ---------- */
 function hypotheses(){
@@ -142,7 +150,7 @@ function gaps(){
    <p class="od-why"><b>Why ${E(X.options(g)[rec].n.toLowerCase())}.</b> ${E(X.why(g,o.posture,rec))}</p>
    <div class="od-opts">${["rebuild","bridge","leave"].map(oc).join("")}</div>
    ${m?`<div class="od-meas"><b>How you will know</b> ${E(m.n)}: ${U(m.base,m.u)} to ${U(m.target,m.u)} ${pill(m.src)}</div>`:""}
-   <div class="od-act2"><button class="btn primary" data-od="build|${g.id}">Build the fix in VibeCheck</button><span class="muted small">Opens VibeCheck with this gap and the chosen option. The agent gets a box: tier, budget, confidence floor and a kill switch.</span></div></div>
+   <div class="od-act2"><button class="btn primary" ${W.SHOW&&SHOW.fixAttr?`data-sr-fix="${SHOW.fixAttr("gap",g.id,g.t)}"`:`data-od="build|${g.id}"`}>Build the fix in VibeCheck</button><span class="muted small">Opens VibeCheck with this gap and the chosen option. The agent gets a box: tier, budget, confidence floor and a kill switch.</span></div></div>
   ${g.id==="G07"?o2c(o):""}</div></div>`}
 function o2c(o){
  const S0=X.O2C.steps,now=X.o2cStats("now"),br=X.o2cStats("bridge"),rb=X.o2cStats("rebuild");
@@ -178,7 +186,7 @@ function roadmap(){
   return `<div class="card glass od-wave"><div class="cardhead"><div><h3>Wave ${w.k}: ${E(w.n)}</h3><span class="muted small">${E(w.span)}. ${E(w.d)}</span></div><span class="od-conf">${ws.length} steps</span></div>
   ${ws.map(s=>{const a=stepAdopt(s,o.month);return `<details class="od-step"><summary><span class="od-dim">${E(dimN(s.dim))}</span><span class="od-ty">${E(s.type)}</span><b>${E(s.title)}</b>${s.eff?`<em>${s.eff} person-weeks, modeled</em>`:""}</summary>
    <div class="od-sb"><div><span class="od-k">Activities</span><ol>${s.acts.map(x=>`<li>${E(x)}</li>`).join("")}</ol></div>
-   <div><span class="od-k">Owner</span><p>${E(s.owner)}</p>${s.measure?`<span class="od-k">Measure</span><p>${E(s.measure.n)}: ${U(s.measure.base,s.measure.u)} to ${U(s.measure.target,s.measure.u)} ${pill(s.measure.src)}</p>`:""}
+   <div><span class="od-k">Owner</span><p>${ownerChip(s.owner,{role:"Owner"})}</p>${s.measure?`<span class="od-k">Measure</span><p>${E(s.measure.n)}: ${U(s.measure.base,s.measure.u)} to ${U(s.measure.target,s.measure.u)} ${pill(s.measure.src)}</p>`:""}
    ${s.retrain?`<span class="od-k">Retraining</span><p>${E(s.retrain)}. Audience ${audience(s.dim)} people.</p>`:""}
    ${s.agent?`<span class="od-k">AI agent</span><p>${E(s.agent)}${s.box?`<br>Box: ${s.box.tier} tier, run budget ${s.box.budget} a month (sample), confidence floor ${s.box.floor}, kill switch for ${E(s.box.kill)}.`:""}</p>`:""}
    <span class="od-k">Change adoption</span><p>${a?`Using ${a.st[3]}%, built ${a.built}% at month ${o.month} (simulated).`:`Starts month ${START[s.wave]}.`}</p></div></div></details>`}).join("")||'<p class="muted small">Nothing in this wave for this dimension.</p>'}</div>`}).join("")}`}
@@ -200,7 +208,7 @@ function impact(){
   <details><summary>How each stage is measured</summary><ul class="od-defs">${STAGES.map(s=>`<li><b>${s[0]}.</b> ${E(s[1])}. ${E(s[2])}.</li>`).join("")}<li><b>Leading signals.</b> First-week use, help requests per user, override rate on agent suggestions, and manager check-ins held.</li></ul></details></div>
  <div class="card glass"><div class="cardhead"><div><h3>Measures: baseline, target and simulated actual</h3><span class="muted small">Each measure has an owner, a formula and a dated baseline. Actuals follow adoption: nothing improves until people use it.</span></div>${pill("sim")}</div>
   <div class="od-table"><div class="od-th2 od-mh"><span>Measure</span><span>Baseline</span><span>Target</span><span>Actual</span><span>Owner</span></div>
-  ${per.length?per.map(x=>{const m=x.s.measure,act=m.base+(m.target-m.base)*x.a.st[3]/100;return `<div class="od-th2 od-mr"><span><b>${E(m.n)}</b><em>${E(dimN(x.s.dim))} · ${E(x.s.type)} · formula: ${E(m.f)}</em></span><span>${U(m.base,m.u)}</span><span>${U(m.target,m.u)}</span><span><b>${U(r1(act),m.u)}</b>${bar(clamp(Math.abs(act-m.base)/Math.max(1,Math.abs(m.target-m.base))*100,0,100))}</span><span>${E(x.s.owner)}</span></div>`}).join(""):'<p class="muted small">No measured steps have started at this month.</p>'}</div>
+  ${per.length?per.map(x=>{const m=x.s.measure,act=m.base+(m.target-m.base)*x.a.st[3]/100;return `<div class="od-th2 od-mr"><span><b>${E(m.n)}</b><em>${E(dimN(x.s.dim))} · ${E(x.s.type)} · formula: ${E(m.f)}</em></span><span>${U(m.base,m.u)}</span><span>${U(m.target,m.u)}</span><span><b>${U(r1(act),m.u)}</b>${bar(clamp(Math.abs(act-m.base)/Math.max(1,Math.abs(m.target-m.base))*100,0,100))}</span><span>${ownerChip(x.s.owner,{role:"Owner"})}</span></div>`}).join(""):'<p class="muted small">No measured steps have started at this month.</p>'}</div>
   <div class="od-act2"><button class="btn" data-od="dl">Download the plan (JSON)</button></div></div>`}
 
 /* ---------- the screen ---------- */
@@ -212,9 +220,11 @@ function body(){
  <div class="od-pane">${html}</div>`}
 function screen(){OD();return `<div class="screen od-screen">${hero("Operations and strategy","Agent Action (working name)","Start with the operator's questions: how does the work run today, what do we change first, and how will we know people changed? Ingests filings and a reference architecture, reads the org and its load, and proposes a transition. Not an ideal org chart. A gap-by-gap path with options, a roadmap, and adoption you can measure.",`<div class="row"><span class="od-src od-sim">Prototype: sample data and simulated actuals</span></div>`)}<div id="odRoot">${body()}</div></div>`}
 function paint(keepScroll){const r=D.getElementById("odRoot");if(!r)return;const y=W.scrollY;r.innerHTML=body();if(keepScroll)W.scrollTo(0,y)}
-function buildFix(gid){const o=OD(),g=X.gapById(gid),k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k],bx=X.box(g),m=X.measure(gid);
- const t=`Build a fix for this gap. Gap: ${g.t}. Today: ${g.now}. Next target: ${g.next}. Chosen option: ${op.n}. ${op.d}. ERP posture: ${X.POSTURES[o.posture].n}. Give any agent a box: ${bx.tier} tier, monthly run budget ${bx.budget} (sample), confidence floor ${bx.floor}, kill switch for ${bx.kill}.${m?" Measure: "+m.n+", baseline "+U(m.base,m.u)+", target "+U(m.target,m.u)+".":""}`;
- if(W.STUDIO&&W.STUDIO.open)W.STUDIO.open(t);else go("studio")}
+function fixText(gid){const o=OD(),g=X.gapById(gid);if(!g)return null;const k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k],bx=X.box(g),m=X.measure(gid);
+ return `Build a fix for this gap. Gap: ${g.t}. Today: ${g.now}. Next target: ${g.next}. Chosen option: ${op.n}. ${op.d}. ERP posture: ${X.POSTURES[o.posture].n}. Give any agent a box: ${bx.tier} tier, monthly run budget ${bx.budget} (sample), confidence floor ${bx.floor}, kill switch for ${bx.kill}.${m?" Measure: "+m.n+", baseline "+U(m.base,m.u)+", target "+U(m.target,m.u)+".":""}`}
+function buildFix(gid){const t=fixText(gid);if(W.STUDIO&&W.STUDIO.open)W.STUDIO.open(t);else go("studio")}
+/* CL-84: the Showroom's one hand-off (data-sr-fix kind gap) uses this gap's full request */
+setTimeout(()=>{if(W.SHOW){SHOW.fixText=SHOW.fixText||{};SHOW.fixText.gap=c=>fixText(c.ref)}},0);
 function dl(){const o=OD(),steps=X.roadmap(o.posture,o.choice);const data={workingName:"Agent Action",note:"Prototype export. Sample data, modeled effort, simulated actuals.",posture:o.posture,lens:o.lens,hypotheses:X.hyps().map(h=>({id:h.id,title:h.t,status:o.hyp[h.id]||"proposed",confidence:h.conf})),gaps:X.GAPS.map(g=>({id:g.id,dimension:dimN(g.dim),title:g.t,choice:X.choiceOf(g,o.posture,o.choice)})),steps:steps.map(s=>({id:s.id,wave:s.wave,dimension:dimN(s.dim),type:s.type,title:s.title,activities:s.acts,owner:s.owner,measure:s.measure}))};
  const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=D.createElement("a");a.href=URL.createObjectURL(b);a.download="org-redesign-plan.json";D.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 function readFiles(files){const o=OD();filings();[].slice.call(files).forEach(f=>{const r=new FileReader();r.onload=()=>{o.filings.push({name:f.name,fict:false,parsed:X.parseFiling(String(r.result||""),f.name,false)});o.fsel=o.filings.length-1;paint(true)};r.readAsText(f)})}

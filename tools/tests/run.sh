@@ -23,6 +23,7 @@ node tools/tests/thread.js build_out
 node tools/tests/sweep_a.js build_out
 # wave 3 sweep-b: range screens render no em dash, banned name, Automatic step label or Oukala
 node tools/tests/sweep_b.js build_out
+node tools/tests/sweep_c.js build_out
 # PH-12: screens, modules and tabs by name in the global search; hidden screens only in builder mode
 node tools/tests/search.js build_out
 # PR-16: real screen-open counts (this browser only), shown on the Screen map and the Usage tab

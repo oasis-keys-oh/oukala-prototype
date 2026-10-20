@@ -120,10 +120,10 @@ function markTab(){const t=q1("#r17o1Tab");if(!t)return;const s=G(()=>S.screen,"
 
 /* ============ 6. top rail: logo mark and screen title ============ */
 function buildTop(){const tb=q1(".topbar");if(!tb||q1(".r17o1-ttl",tb))return;
- const m=D.createElement("button");m.type="button";m.className="r17o1-mark";m.setAttribute("data-nav","home");m.setAttribute("aria-label","Oukala home");m.innerHTML=MARK;
+ const m=D.createElement("button");m.type="button";m.className="r17o1-mark";m.setAttribute("data-nav","home");m.setAttribute("aria-label",(BRAND.name+" home"));m.innerHTML=MARK;
  const h=D.createElement("p");h.className="r17o1-ttl";h.setAttribute("aria-hidden","true");
  tb.appendChild(m);tb.appendChild(h);setTitle()}
-function setTitle(){const h=q1(".r17o1-ttl");if(!h)return;const s=G(()=>S.screen,"home");const t=G(()=>NAVX.label(s),"")||D.title.replace(/\s*[|·-].*$/,"")||"Oukala";if(h.textContent!==t)h.textContent=t}
+function setTitle(){const h=q1(".r17o1-ttl");if(!h)return;const s=G(()=>S.screen,"home");const t=G(()=>NAVX.label(s),"")||D.title.replace(/\s*[|·-].*$/,"")||BRAND.name;if(h.textContent!==t)h.textContent=t}
 
 /* ============ 7. page actions: primary action docks in a sticky bar, the rest go to an Actions sheet ============ */
 function buildBar(){

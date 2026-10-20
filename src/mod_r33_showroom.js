@@ -7,7 +7,7 @@
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SELF="showroom",LIMIT=1200;
 
 /* claim chips: what kind of statement a number or a screen is */

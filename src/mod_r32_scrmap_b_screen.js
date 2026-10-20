@@ -7,7 +7,7 @@
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const v=f();return v===undefined?d:v}catch(e){return d}};
-const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const E=U.esc;
 const SELF="scr_map",KEY="oukala-scrmap-v1";
 const DATA=W.SCRMAP_DATA||{generated:"not scanned",files:{},screens:{}};
 const CORE=["data.js","data2.js","ui.js","kit.js","kit2.js","screens1.js","screens2.js","screens3.js","screens4.js"];
@@ -21,10 +21,10 @@ const DK={};DEC.forEach(d=>DK[d.k]=d);
 const NOBAND="Not on the process map";
 const sp=(t,cls,title)=>`<span class="scm-p ${cls||"mute"}"${title?` title="${E(title)}"`:""}>${t}</span>`;
 
-/* ---------- decisions: localStorage with an in-memory fallback ---------- */
+/* ---------- decisions: browser storage (U.store) with an in-memory fallback ---------- */
 let MEM=null;
-function load(){try{const v=localStorage.getItem(KEY);if(v)return JSON.parse(v)}catch(e){}return MEM?JSON.parse(MEM):{}}
-function save(){let s="{}";try{s=JSON.stringify(ST.dec)}catch(e){}MEM=s;try{localStorage.setItem(KEY,s)}catch(e){}}
+function load(){const v=U.store.get(KEY,null);if(v)return v;return MEM?JSON.parse(MEM):{}}
+function save(){let s="{}";try{s=JSON.stringify(ST.dec)}catch(e){}MEM=s;U.store.set(KEY,ST.dec)}
 S.scrmap=S.scrmap||{dec:load(),q:"",fd:"all",fh:"all",by:"band",open:{},arm:0};
 const ST=S.scrmap;
 
@@ -140,7 +140,7 @@ function filesPane(RS){const by={};RS.forEach(r=>{(by[r.file]=by[r.file]||[]).pu
 
 /* ---------- decisions and export pane ---------- */
 function mdOf(RS){const d=new Date().toISOString().slice(0,10),t=tally(RS);
- const sec=(k)=>{const rs=RS.filter(r=>r.decision===k).sort((a,b)=>a.band.localeCompare(b.band)||a.label.localeCompare(b.label));return `## ${DK[k].l} (${rs.length})\n\n${rs.length?rs.map(r=>`- ${r.label} (${r.id}, ${r.band})${r.note?" — "+r.note:""}`).join("\n"):"- none"}\n`};
+ const sec=(k)=>{const rs=RS.filter(r=>r.decision===k).sort((a,b)=>a.band.localeCompare(b.band)||a.label.localeCompare(b.label));return `## ${DK[k].l} (${rs.length})\n\n${rs.length?rs.map(r=>`- ${r.label} (${r.id}, ${r.band})${r.note?": "+r.note:""}`).join("\n"):"- none"}\n`};
  return `# Screen map decisions, ${d}\n\nPrototype facts: ${RS.length} registered screens; ${t.none} undecided. Decisions are the founder's; the signal score is a hypothesis.\n\n${["wedge","keep","defer","cut"].map(sec).join("\n")}`}
 function csvOf(RS){const h=["id","screen","formal_name","band","module","menu_area","hidden","cxo_menu","decision","note","signal_score","links_in","contract_of_4","file","file_kb","last_change"];
  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"';
@@ -230,7 +230,7 @@ D.addEventListener("toggle",e=>{const d=e.target;if(d&&d.matches&&d.matches("det
 /* ---------- wiring: Feature Contract rules 1, 2 and 4 ---------- */
 const sx=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
 const STEPS=[
- sx("Scan the build","gen_scrmap.py reads every source file and the git history; the live registry adds names, menu area, access and contract scores.","auto","Platform owner","On demand","Source and registry","Screen facts"),
+ sx("Scan the build","gen_scrmap.py reads every source file and the git history; the live registry adds names, menu area, access and contract scores.","robot","Platform owner","On demand","Source and registry","Screen facts"),
  sx("Review the evidence","Look at hidden screens, screens with no link, and the signal score band by band.","human","Platform owner","Per session","Screen facts","Shortlist"),
  sx("Decide","Mark each screen Wedge, Keep, Defer or Cut and give a reason. Pre-filled hints stay marked until confirmed.","human","Founder","Per session","Shortlist","Decisions"),
  sx("Check the wedge","The wedge must be 5 to 8 screens. More than 8 means demote some.","human","Founder","Per session","Decisions","Confirmed wedge"),
