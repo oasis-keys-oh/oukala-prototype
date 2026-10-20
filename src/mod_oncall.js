@@ -537,25 +537,25 @@ DATAMODEL.register("skill_claim",{label:"Skill record",source:"Skills database",
 DATAMODEL.register("time_off",{label:"Time off",source:"Availability",fields:[{k:"person",label:"Person",type:"ref"},{k:"type",label:"Type",type:"enum",opts:["Vacation","Sick day","Appointment","Training"]},{k:"from",label:"From",type:"date"},{k:"to",label:"To",type:"date"},{k:"status",label:"Status",type:"enum",opts:["pending","approved","denied"]}]});
 PROC.reg("svc_oncall",{title:"How on-call cover is built and used",std:["itil5"],steps:[
  {n:"Define the rota",d:"A team, service or asset class gets layers: first responder, primary, secondary, escalation. Providers and AI agents can hold layers.",who:"human",owner:"Tom Becker",sla:"Reviewed monthly",out:"Rota with required hours"},
- {n:"Check coverage",d:"Required hours are compared with people scheduled and available, minus time off.",who:"auto",sla:"Continuous",out:"Coverage map and gaps"},
+ {n:"Check coverage",d:"Required hours are compared with people scheduled and available, minus time off.",who:"robot",sla:"Continuous",out:"Coverage map and gaps"},
  {n:"Recommend and fill",d:"The recommendation engine sizes shifts from SLA response time, incident volume and skills, and prices the options.",who:"agent",owner:"Resource Agent",sla:"On every gap",out:"Proposed overrides"},
  {n:"Approve changes",d:"Leads approve swaps, overrides and time off that collide with a shift.",who:"gate",owner:"Tom Becker",sla:"1 business day"},
- {n:"Route and page",d:"Incidents go to the team, then the on-call person is paged by the escalation policy.",who:"auto",sla:"Within the SLA response time",out:"Acknowledged incident"},
+ {n:"Route and page",d:"Incidents go to the team, then the on-call person is paged by the escalation policy.",who:"robot",sla:"Within the SLA response time",out:"Acknowledged incident"},
  {n:"Hand over",d:"The outgoing person writes a hand-over note; the next rotation starts.",who:"human",sla:"At every hand-over"}]});
 PROC.reg("svc_skills",{title:"How skills and availability stay true",std:["itil5"],steps:[
  {n:"Claim a skill",d:"A person adds a skill and a level with evidence. It starts unverified.",who:"human",sla:"Any time",out:"Skill record"},
  {n:"Verify",d:"A lead confirms by assessment, certificate or review.",who:"gate",owner:"Tom Becker",sla:"5 business days"},
- {n:"Expire and renew",d:"Certificates carry an expiry date; expired skills count at two levels lower.",who:"auto",sla:"Daily check",out:"Renewal task"},
+ {n:"Expire and renew",d:"Certificates carry an expiry date; expired skills count at two levels lower.",who:"robot",sla:"Daily check",out:"Renewal task"},
  {n:"Analyze gaps",d:"Skills required by rotas are compared with qualified people to find single points of failure.",who:"agent",owner:"Resource Agent",sla:"Weekly",out:"Cross-training proposals"},
- {n:"Route work",d:"Assignment rules and the Service catalog use routeBy() to rank people by skill, availability and load.",who:"auto",sla:"Per request"}]});
+ {n:"Route work",d:"Assignment rules and the Service catalog use routeBy() to rank people by skill, availability and load.",who:"robot",sla:"Per request"}]});
 const ICON_OC="M12 3a6 6 0 0 0-6 6c0 6-3 7-3 7h18s-3-1-3-7a6 6 0 0 0-6-6zM10 20a2 2 0 0 0 4 0",ICON_SK="M12 3l2.5 5.5L20 9.3l-4 4 1 5.7-5-2.8L7 19l1-5.7-4-4 5.5-.8zM3 21h18";
 const stk=h=>`<div class="oc-stk">${h}</div>`;
 const lazy=(name,i,fn)=>S.v[name]===i||(S.v[name]===undefined&&i===0)?stk((()=>{try{return fn()}catch(e){console.error("LAZYERR",e.stack);throw e}})()):`<div class="muted small" style="padding:12px">Loading this view...</div>`;
 
 const OCTABS={svc_oncall:["Coverage map","Recommendations","Auto-assignment","Escalation","Overrides and swaps"],svc_skills:["Overview","Matrix","Who can do this","Gap analysis","Certifications","Availability","Taxonomy"]};
 Object.keys(OCTABS).forEach(sc=>OCTABS[sc].forEach((nm,i)=>PROC.reg(sc+"_t"+(sc==="svc_oncall"?i+1:i),{title:"Behind this tab: "+nm,std:["itil5"],steps:[
- {n:"Data in",d:"Rotas, layers, time off, skills and availability feed this tab. Nothing is typed twice.",who:"auto",sla:"Continuous",out:"Current cover"},
- {n:"Check",d:"Required hours are compared with people scheduled and available, minus approved time off.",who:"auto",sla:"On every change",out:"Gaps and surplus"},
+ {n:"Data in",d:"Rotas, layers, time off, skills and availability feed this tab. Nothing is typed twice.",who:"robot",sla:"Continuous",out:"Current cover"},
+ {n:"Check",d:"Required hours are compared with people scheduled and available, minus approved time off.",who:"robot",sla:"On every change",out:"Gaps and surplus"},
  {n:"Recommend",d:"The Resource Agent ranks people by skill, availability and load and proposes the fix.",who:"agent",owner:"Resource Agent",out:"Ranked options"},
  {n:"Approve and apply",d:"The team lead accepts the change. Overrides and swaps take effect immediately and are audited.",who:"gate",owner:"Team lead",sla:"Same day",out:"Updated rota"}]})));
 REG("svc_oncall","On-call and escalation","service",ICON_OC,()=>{syncOcMetrics();const a=allStats(),cf=conflicts();const gapRotas=rotas().filter(R=>rstats(R).pct<98);

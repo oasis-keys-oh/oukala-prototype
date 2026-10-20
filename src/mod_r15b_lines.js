@@ -106,7 +106,7 @@ if(typeof PROC!=="undefined")PROC.reg("bud_lines",{title:"Review the full budget
  {n:"Open all budget lines",d:"One click from the budget home. Every line with approved, forecast, actual, committed, variance, owner, cost center, project, vendor and funding color.",who:"human",owner:"Budget owner",sla:"Instant",in:"Budget lines",out:"Line list"},
  {n:"Filter, group and sort",d:"Group by cost center, project, tower, owner or funding color; totals follow the filter.",who:"human",owner:"Budget owner",sla:"Instant",in:"Line list",out:"Focused view"},
  {n:"Drill into a line",d:"Open the line to see its story, reserve draws and invoices; edit it or reforecast.",who:"human",owner:"Line owner",sla:"Instant",in:"Focused view",out:"Line decision"},
- {n:"Export and share",d:"CSV of the filtered lines for finance and the audit trail records the export.",who:"auto",owner:"Finance systems",sla:"Instant",in:"Focused view",out:"CSV, audit entry"}]});
+ {n:"Export and share",d:"CSV of the filtered lines for finance and the audit trail records the export.",who:"robot",owner:"Finance systems",sla:"Instant",in:"Focused view",out:"CSV, audit entry"}]});
 /* ---- API, wiring ---- */
 window.BUDLINES={rows:()=>filtered(),all:()=>base().map(derive),state:()=>S_,columns:()=>COLS.map(c=>c.k)};
 const W={};

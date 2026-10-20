@@ -275,10 +275,10 @@ document.addEventListener("click",e=>{
 REG("plat_reg","Platform registry","platform","M4 5h16v4H4zM4 11h16v4H4zM4 17h10v3H4z",regScreen);
 PROC.reg("plat_reg",{title:"How the registry stays true",std:["dmbok","togaf"],steps:[
  {n:"Propose",d:"Anyone proposes an entity or field with purpose, owner and steward.",who:"human",owner:"Requester",out:"Proposal"},
- {n:"Reuse check",d:"Names, fields and purpose are matched against the registry.",who:"auto",owner:"Platform",out:"Matches"},
+ {n:"Reuse check",d:"Names, fields and purpose are matched against the registry.",who:"robot",owner:"Platform",out:"Matches"},
  {n:"Draft fields",d:"The Registry Agent drafts type, class, authority and quality rules.",who:"agent",owner:"Registry Agent",out:"Draft catalog"},
  {n:"Approve",d:"Data council and platform team approve. Low-risk additions to an existing entity auto-approve.",who:"gate",owner:"Data council",sla:"3 days",out:"Decision"},
- {n:"Publish",d:"Registry updates, MCP tool list and typed API refresh.",who:"auto",owner:"Platform",out:"New version"}]});
+ {n:"Publish",d:"Registry updates, MCP tool list and typed API refresh.",who:"robot",owner:"Platform",out:"New version"}]});
 SEARCHX.push(()=>PLAT.entities().map(en=>({g:"Registry",t:en.label+" ("+en.id+")",m:en.owner,c:"--p4",f:()=>{go("plat_reg");setTimeout(()=>entDrawer(en.id),150)},k:en.id+" entity registry table owner "+en.steward})));
 ASKX.push(q=>{const t=q.toLowerCase();
  if(/duplicate (entit|record)|registry|who owns|system of record|reuse/.test(t)){const s=PLAT.stats();go("plat_reg");say(q,{t:"The registry has "+s.n+" canonical entities and "+s.nf+" fields. "+s.dups+" duplicates are open and "+s.planned+" core entities are planned.",steps:["Opened the platform registry"]});return true}

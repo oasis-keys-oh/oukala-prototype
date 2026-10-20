@@ -110,7 +110,7 @@ const st=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
 const PM=[
  {id:"org_joiner",name:"Join the organization (joiner)",owner:"Joanna Pierce",backup:"Grace Whitfield",trigger:"A person is added to the org chart or an offer is accepted",
   steps:[st("Record the new person","Name, title, team, manager, employment type and FTE, start date. RACI: Responsible HR partner, Accountable Joanna Pierce, Consulted the hiring manager, Informed the CIO.","human","Joanna Pierce","1 day","Offer or approved vacancy","Person record"),
-   st("Create identity and groups","Directory account, team groups and licence from the person.created rule.","auto","Colette Brandt","Immediate","Person record","Identity account"),
+   st("Create identity and groups","Directory account, team groups and licence from the person.created rule.","robot","Colette Brandt","Immediate","Person record","Identity account"),
    st("Order equipment and access","Laptop, building access and role access requests as ITSM tasks.","human","Wes Hartley","3 days","Identity account","Equipment and access ready"),
    st("Plan the first 90 days","Buddy, goals and training path. RACI: Responsible manager, Accountable manager, Consulted People Operations.","human","The manager","5 days","Person record","30/60/90 plan"),
    st("Enroll pay and benefits","Payroll record, benefits election and PTO accrual set up.","human","Joanna Pierce","5 days","Person record","Pay and benefits record"),
@@ -118,7 +118,7 @@ const PM=[
   inputs:["Offer or approved vacancy","Start date"],outputs:["Person record","Identity account","Pay and benefits record"],entities:["person","position","organization_unit","compensation_record","benefit_enrollment","pto_balance"],metrics:["m_org_fte","m_org_hc_plan","m_org_lc"]},
  {id:"org_mover",name:"Change role, team or manager (mover)",owner:"Joanna Pierce",backup:"Grace Whitfield",trigger:"A promotion, transfer, reorganization or manager change is approved",
   steps:[st("Approve the move","Old and new manager and People Operations agree the change and date. RACI: Responsible HR partner, Accountable Joanna Pierce, Consulted both managers, Informed the CIO.","gate","Joanna Pierce","3 days","Move request","Approved move"),
-   st("Update reporting line","Manager, team and title change on the effective date; the chart redraws.","auto","Org chart","Immediate","Approved move","Updated person record"),
+   st("Update reporting line","Manager, team and title change on the effective date; the chart redraws.","robot","Org chart","Immediate","Approved move","Updated person record"),
    st("Hand over owned work","Metrics, processes, data, services and approvals the person owns are kept or handed over.","human","The outgoing manager","5 days","Updated person record","Ownership reassigned"),
    st("Review access","Remove old-team access and grant new-team access.","human","Colette Brandt","5 days","Updated person record","Access reviewed"),
    st("Confirm after 30 days","New manager confirms the move is working.","human","The new manager","30 days","Access reviewed","Move closed")],
@@ -127,18 +127,18 @@ const PM=[
   steps:[st("Record the separation","Last day, reason and rehire eligibility. RACI: Responsible manager, Accountable Joanna Pierce, Consulted legal for dismissals, Informed security and the CIO.","human","Joanna Pierce","1 day","Status change","Separation record"),
    st("Hand over owned work","Every metric, process, entity, service, project, risk and accountability domain gets a named new owner.","gate","The manager","Before last day","Separation record","Ownership reassigned"),
    st("Transfer agent sponsorship","Each AI agent sponsored by the person gets a new human sponsor.","gate","Kenji Watanabe","Before last day","Separation record","Agents re-sponsored"),
-   st("Deprovision identity","Disable account, revoke sessions and licences on the last day.","auto","Colette Brandt","Last day","Separation record","Account disabled"),
+   st("Deprovision identity","Disable account, revoke sessions and licences on the last day.","robot","Colette Brandt","Last day","Separation record","Account disabled"),
    st("Recover equipment and access","Laptop, badge and system access removal tasks.","human","Tom Becker","5 days","Account disabled","Equipment recovered"),
    st("Final pay and benefits","Final pay, PTO payout and benefits end date.","human","Joanna Pierce","Last day","Separation record","Final pay record"),
-   st("Archive","Mailbox and files archived; person moves to former staff.","auto","Directory sync","Last day + 30","Account disabled","Archived person")],
+   st("Archive","Mailbox and files archived; person moves to former staff.","robot","Directory sync","Last day + 30","Account disabled","Archived person")],
   inputs:["Status change"],outputs:["Ownership reassigned","Agents re-sponsored","Account disabled","Final pay record"],entities:["person","role","access_review","compensation_record","benefit_enrollment","pto_balance"],metrics:["m_org_lc","m_org_own","m_org_gov"]},
  {id:"org_vac_hire",name:"Fill an open position (vacancy to hire)",owner:"Joanna Pierce",backup:"Victor Amaya",trigger:"A manager opens a requisition against an approved budget line",
   steps:[st("Open the requisition","Title, team, reports-to, employment type and target start. RACI: Responsible hiring manager, Accountable Joanna Pierce, Consulted finance, Informed the CIO.","human","The hiring manager","2 days","Headcount need","Requisition"),
    st("Approve headcount and budget line","Position is in plan and the budget line has room.","gate","Victor Amaya","3 days","Requisition","Approved position"),
-   st("Publish","Requisition posted to the applicant tracking system.","auto","Applicant tracking","Immediate","Approved position","Open vacancy"),
+   st("Publish","Requisition posted to the applicant tracking system.","robot","Applicant tracking","Immediate","Approved position","Open vacancy"),
    st("Source and interview","Screens, interviews and references.","human","The hiring manager","30 days","Open vacancy","Selected candidate"),
    st("Make the offer","Offer within the pay band; approval by People Operations.","gate","Joanna Pierce","5 days","Selected candidate","Accepted offer"),
-   st("Fill the vacancy","The person is created from the vacancy and the joiner process starts.","auto","Org chart","Immediate","Accepted offer","Active person")],
+   st("Fill the vacancy","The person is created from the vacancy and the joiner process starts.","robot","Org chart","Immediate","Accepted offer","Active person")],
   inputs:["Headcount need"],outputs:["Open vacancy","Active person"],entities:["position","person","budget_line","compensation_record"],metrics:["m_org_vac_age","m_org_hc_plan","m_org_fte"]}];
 const procSteps=id=>G(()=>PROC.defs[id].steps,null)||(PM.find(p=>p.id===id)||{steps:[]}).steps;
 
@@ -191,7 +191,7 @@ function handOver(n,v){const c=ownedCounts(n),moved=[];const to=k=>v[k]||v.h_all
  if(c.backup.length&&to("h_bkp")){c.backup.forEach(id=>G(()=>{const o=S.plib.own;o[id]=Object.assign({},o[id]||{},{backup:to("h_bkp")});PL_DIRTY=1}));moved.push({what:"Backup owner on processes",n:c.backup.length,to:to("h_bkp")})}
  if(c.pend&&v.h_pend)moved.push({what:"Pending approvals delegated",n:c.pend,to:v.h_pend});
 G(()=>{if(PL_DIRTY&&window.PROCLIB&&PROCLIB.refresh){PROCLIB.refresh();PL_DIRTY=0}});O.bump();return moved}
-function mkTasks(kind,subject,eff,steps){const out=[];steps.forEach((s,i)=>{const t={id:"T"+(HR.tasks.length+1),proc:kind,step:s.n,who:s.who,owner:s.owner,subject,due:s.who==="human"||s.who==="gate"?eff:eff,sla:s.sla,state:s.who==="auto"||s.who==="agent"?"done":"open"};HR.tasks.push(t);out.push(t)});return out}
+function mkTasks(kind,subject,eff,steps){const out=[];steps.forEach((s,i)=>{const t={id:"T"+(HR.tasks.length+1),proc:kind,step:s.n,who:s.who,owner:s.owner,subject,due:s.who==="human"||s.who==="gate"?eff:eff,sla:s.sla,state:STEPMODE.needsTrigger(s.who)?"done":"open"};HR.tasks.push(t);out.push(t)});return out}
 function record(kind,subject,eff,evs,tasks,extra){const e=Object.assign({id:"LC-"+(HR.seq++),t:new Date().toISOString().slice(11,16),date:TODAY,kind,subject,eff,actor:viewer(),events:evs.map(r=>({id:r.id,eid:r.eid||r.local,via:r.via,rules:rulesFor(r.id).length,r})),tasks:tasks||[],state:extra&&extra.pend?"Scheduled":"Done"},extra||{});HR.log.unshift(e);
  G(()=>{if(window.STORE&&STORE.put)STORE.put("org_lifecycle",{id:e.id,kind:e.kind,subject:e.subject,eff:e.eff,events:e.events.map(x=>x.id)})});
  audit("People lifecycle: "+kind,subject+" effective "+eff);return e}
@@ -275,7 +275,7 @@ function showResult(rec,title,previewEv){const steps=procSteps(rec.proc||"org_jo
  openDrawer(`<div class="org5-res"><h3 class="ftitle">${H(title)}</h3><p class="muted small">${H(rec.detail||"")} · ${/^(Add person|Fill vacancy|Open position)$/.test(rec.kind)?"starts":"effective"} ${H(fmtD(rec.eff))} · ${H(rec.state)}</p>
  ${rec.moved&&rec.moved.length?`<div class="eyebrow">Handed over</div><div class="row">${rec.moved.map(m=>`<span class="pill info">${H(m.what)} · ${m.n} to ${H(m.to)}</span>`).join("")}</div>`:""}
  <div class="eyebrow" style="margin-top:14px">Process run: ${H(G(()=>PROCLIB.get(rec.proc).name,rec.proc||""))}</div>
- <ol class="org5-steps">${steps.map(s=>{const auto=s.who==="auto"||s.who==="agent";const sch=rec.state==="Scheduled";return `<li><span class="pill ${auto?(sch?"mute":"good"):s.who==="gate"?"warn":"info"}">${auto?(sch?"Queued":"Done"):s.who==="gate"?"Approval":"Task"}</span><b>${H(s.n)}</b><small>${H(s.owner)} · ${H(s.sla||"")}</small></li>`}).join("")}</ol>
+ <ol class="org5-steps">${steps.map(s=>{const auto=STEPMODE.needsTrigger(s.who);const sch=rec.state==="Scheduled";return `<li><span class="pill ${auto?(sch?"mute":"good"):s.who==="gate"?"warn":"info"}">${auto?(sch?"Queued":"Done"):s.who==="gate"?"Approval":"Task"}</span><b>${H(s.n)}</b><small>${H(s.owner)} · ${H(s.sla||"")}</small></li>`}).join("")}</ol>
  ${trigHTML((rec.events.length?rec.events.map(e=>({id:e.id,eid:e.r&&e.r.eid})):(previewEv||[]).map(e=>({id:e}))),{scheduled:rec.state==="Scheduled"})}
  <div class="row" style="margin-top:14px"><button type="button" class="btn primary" data-org5="tab" data-t="act">Open lifecycle activity</button><button type="button" class="btn" data-org5="proc" data-id="${H(rec.proc||"org_joiner")}">Edit this process</button><button type="button" class="btn quiet" data-org5="close">Close</button></div></div>`)}
 

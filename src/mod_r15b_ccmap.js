@@ -115,11 +115,11 @@ Object.assign(METRICS,{
  m_cc_one:{n:"Cost centers mapped one to one",f:"Cost centers with exactly one org unit, an owner and a GL segment ÷ all cost centers × 100",u:"%",cur:50,tgt:70,badAt:30,dir:"max",max:100,tr:[30,32,34,36,40,44,48,50],owner:"Avery Chen",use:["Cost center mapping"],rem:MR("SOP-CC2","Split a shared cost center by org unit")}});
 if(typeof PROC!=="undefined")PROC.reg("bud_ccmap",{title:"Change a cost center",std:["tbm"],steps:[
  {n:"Request the change",d:"The cost center owner or a unit head asks to add, merge, split or remap a cost center, with the org unit, owner and GL segment.",who:"human",owner:"Budget owner",sla:"1 day",in:"Org change or new spend",out:"Change request"},
- {n:"Check the mapping",d:"Rules check for unmapped units, missing owners, missing GL segments and many-to-one sharing.",who:"auto",owner:"Mapping rules",sla:"Instant",in:"Change request",out:"Gap list"},
+ {n:"Check the mapping",d:"Rules check for unmapped units, missing owners, missing GL segments and many-to-one sharing.",who:"robot",owner:"Mapping rules",sla:"Instant",in:"Change request",out:"Gap list"},
  {n:"Finance review",d:"Finance confirms the code, the GL segment and the effect on open budget lines and forecasts.",who:"human",owner:"Victor Amaya",sla:"3 days",in:"Gap list",out:"Finance opinion"},
  {n:"Controller approval",d:"The controller approves the change before the ERP and the mapping change.",who:"gate",owner:"Avery Chen",sla:"2 days",in:"Finance opinion",out:"Approved change"},
- {n:"Update the ERP and the mapping",d:"The ERP segment is created or changed and the mapping table is updated on the same day.",who:"auto",owner:"Finance systems",sla:"Same day",in:"Approved change",out:"Updated mapping"},
- {n:"Re-roll budget lines",d:"Budget lines, forecasts and actuals re-roll to the new org chart owner; owners are told.",who:"auto",owner:"Finance systems",sla:"Same day",in:"Updated mapping",out:"Re-rolled lines, audit entry"}]});
+ {n:"Update the ERP and the mapping",d:"The ERP segment is created or changed and the mapping table is updated on the same day.",who:"robot",owner:"Finance systems",sla:"Same day",in:"Approved change",out:"Updated mapping"},
+ {n:"Re-roll budget lines",d:"Budget lines, forecasts and actuals re-roll to the new org chart owner; owners are told.",who:"robot",owner:"Finance systems",sla:"Same day",in:"Updated mapping",out:"Re-rolled lines, audit entry"}]});
 const W={};
 function wire(){try{syncMetrics();
  if(window.ORGX&&ORGX.domains&&!W.dom){if(!ORGX.domains.some(d=>d.id==="costcenter")){const d={id:"costcenter",label:"Cost center master data and mapping",aliases:["cost center","cost centers","cost centre","gl segment","org mapping","chargeback mapping"],ownerId:"victor-amaya",backupId:"avery-chen"};if(ORGX.addDomain)ORGX.addDomain(d);else ORGX.domains.push(d)}tryv(()=>ORGX.bump&&ORGX.bump());W.dom=1}

@@ -532,7 +532,7 @@ function pickD(id){
 }
 /* ---------- process connections: layout, drawing, panel ---------- */
 const MODEC={event:"info",batch:"mute",human:"warn"},MODEN={event:"Event",batch:"Batch",human:"Human"};
-const WHON={human:"Person",agent:"AI agent",auto:"Automatic",gate:"Approval gate"},WHOC={human:"mute",agent:"info",auto:"good",gate:"warn"};
+const WHON={human:"Person",agent:"AI agent",robot:"Robot",auto:"Robot",fn:"Robot",gate:"Approval gate"},WHOC={human:"mute",agent:"info",robot:"good",auto:"good",fn:"good",gate:"warn"};
 function layoutP(){
  const P=Z.p,g=pgraph(),nodes=new Map(),boxes=[];
  const sel=P.sel&&!/^fam:/.test(P.sel)?P.sel:null;
@@ -879,14 +879,14 @@ REG("plat_dmap","Data connections","platform",IC1,dmapScreen);
 REG("plat_pmap","Process connections","platform","M3 6h6v4H3zM15 6h6v4h-6zM9 14h6v4H9zM6 10v2h12v-2M12 12v2",pmapScreen);
 PROC.reg("plat_dmap",{title:"How the data connection map stays true",std:["dmbok","togaf"],steps:[
  {n:"Fields declare references",d:"A field of type reference names the entity it points to, so every join is known.",who:"human",owner:"Entity steward",out:"Reference list"},
- {n:"Apps declare reads and writes",d:"Each app lists what it reads and writes; the registry compares writers to the owner module.",who:"auto",owner:"Platform",out:"App links"},
- {n:"The graph is built",d:"References, reads and writes become edges. Nothing is drawn by hand.",who:"auto",owner:"Platform",out:"Graph"},
+ {n:"Apps declare reads and writes",d:"Each app lists what it reads and writes; the registry compares writers to the owner module.",who:"robot",owner:"Platform",out:"App links"},
+ {n:"The graph is built",d:"References, reads and writes become edges. Nothing is drawn by hand.",who:"robot",owner:"Platform",out:"Graph"},
  {n:"Gaps are proposed",d:"The Registry Agent spots isolated or duplicate entities and drafts a fix.",who:"agent",owner:"Registry Agent",out:"Findings"},
  {n:"Data council decides",d:"The council accepts, reshapes or rejects each proposed link or entity.",who:"gate",owner:"Data council",sla:"3 days",out:"Registry change"}]});
 PROC.reg("plat_pmap",{title:"How the process connection map stays true",std:["bpmn","togaf"],steps:[
  {n:"Owners define processes",d:"Each screen registers its steps and who does them.",who:"human",owner:"Process owners",out:"Process definitions"},
  {n:"Handoffs are declared",d:"A handoff names the data it carries, the trigger and whether it is an event, a batch or a person.",who:"human",owner:"Process governance lead",out:"Handoff table"},
- {n:"Data sharing is derived",d:"Two processes that touch the same entity are linked automatically through the registry.",who:"auto",owner:"Platform",out:"Dependencies"},
+ {n:"Data sharing is derived",d:"Two processes that touch the same entity are linked automatically through the registry.",who:"robot",owner:"Platform",out:"Dependencies"},
  {n:"Findings are raised",d:"Processes with no shared data, no handoff or a second writer are listed for review.",who:"agent",owner:"Process Agent",out:"Findings"},
  {n:"Governance reviews",d:"The process governance lead accepts or reshapes each finding.",who:"gate",owner:"Process governance lead",sla:"Monthly",out:"Updated map"}]});
 /* ---------- events ---------- */

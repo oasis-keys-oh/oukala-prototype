@@ -722,13 +722,13 @@ DND.on("fab_m2m",(id,from,to)=>{const p=F.proj.find(x=>x.id===id);if(!p||from===
 /* ---------- process, search, ask, work, public API ---------- */
 PROC.reg("plat_fab",{title:"How a connector or feed goes live",std:["dmbok","togaf"],steps:[
  {n:"Propose",d:"Anyone proposes a connector or machine-to-machine project: purpose, systems, entities and fields from the registry, direction, volume, owner, risk.",who:"human",owner:"Requester",out:"Proposal"},
- {n:"Contract and duplicate check",d:"Fields are checked against the registry and the reuse check looks for an existing connector or entity.",who:"auto",owner:"Platform",out:"Fit report"},
+ {n:"Contract and duplicate check",d:"Fields are checked against the registry and the reuse check looks for an existing connector or entity.",who:"robot",owner:"Platform",out:"Fit report"},
  {n:"Security and sandbox test",d:"The Integration Agent reviews scopes, secret references and data class, then runs a 200 record sandbox sample.",who:"agent",owner:"Integration Agent",out:"Review and sample result"},
  {n:"Approval route",d:"Low risk, read-only, internal data on a certified connector type auto-approves. Standard goes to the platform team plus security. High risk or sensitive data goes to the data council.",who:"gate",owner:"Platform team, security or data council",sla:"Instant to 5 days",out:"Certified, project-scoped with expiry, or rejected"},
- {n:"Go live",d:"Secret stored as a vault reference, service identity created, mappings approved, schedule or stream started.",who:"auto",owner:"Platform",out:"Running connector"},
- {n:"Run, validate, load",d:"Extract, validate against the contract, transform, match and merge by field authority, load with idempotency keys, publish change events.",who:"auto",owner:"Platform data layer",out:"Registry updated"},
+ {n:"Go live",d:"Secret stored as a vault reference, service identity created, mappings approved, schedule or stream started.",who:"robot",owner:"Platform",out:"Running connector"},
+ {n:"Run, validate, load",d:"Extract, validate against the contract, transform, match and merge by field authority, load with idempotency keys, publish change events.",who:"robot",owner:"Platform data layer",out:"Registry updated"},
  {n:"Fix quarantine and reconcile",d:"Stewards fix and replay quarantined records and decide differences on shared fields.",who:"human",owner:"Data steward",out:"Resolved items"},
- {n:"Expire or recertify",d:"Project-scoped connectors close at expiry and open a decommission task.",who:"auto",owner:"Platform",out:"Decommission task"}]});
+ {n:"Expire or recertify",d:"Project-scoped connectors close at expiry and open a decommission task.",who:"robot",owner:"Platform",out:"Decommission task"}]});
 SEARCHX.push(()=>{ensure();return F.conns.filter(c=>c.kind!=="roadmap").map(c=>({g:"Integration fabric",t:c.name,m:TIERP[c.tier][0],c:"--p4",f:()=>{go("plat_fab");setTimeout(()=>connDrawer(c.id),150)},k:c.name+" connector "+c.sys+" "+c.ents.join(" ")+" integration fabric"})).concat(F.proj.map(p=>({g:"Integration fabric",t:p.id+" "+p.t,m:"M2M project",c:"--p4",f:()=>{go("plat_fab");setTimeout(()=>projDrawer(p.id),150)},k:p.t+" machine to machine integration project"})))});
 ASKX.push(q=>{const t=q.toLowerCase();
  if(/how fresh|freshness|how current|how up to date/.test(t)&&/schedule|project (date|plan)|planned|task date|dates/.test(t)){ensure();

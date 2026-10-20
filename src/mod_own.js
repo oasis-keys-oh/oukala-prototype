@@ -434,7 +434,7 @@ function wire(){
    const st=(n,d,who,owner,sla,i,o)=>({n,d,who,owner,sla,in:i,out:o});
    const fam=tryv(()=>PROCLIB.get("plat_gate").family,undefined);
    const r=tryv(()=>PROCLIB.addProcess({id:"ownership_governance",name:"Ownership governance",module:"own_gaps",family:fam,owner:"Jordan Lee",backup:"Sam Patel",trigger:"A module, process, metric, agent or contract is registered or its owner leaves",
-    steps:[st("Detect gaps","Scan every registry record for no owner, a role only, an AI agent only, a departed owner or no backup.","auto","Ownership service","Hourly","Registry records","Ranked gap list"),
+    steps:[st("Detect gaps","Scan every registry record for no owner, a role only, an AI agent only, a departed owner or no backup.","robot","Ownership service","Hourly","Registry records","Ranked gap list"),
      st("Propose owner and backup","Suggest candidates from the org chart and the accountability domains.","agent","Ownership Agent","Minutes","Ranked gap list","Candidate pairs"),
      st("Assign or accept","A person assigns an owner and backup, asks the likely owner, or accepts the risk with an expiry.","human","Jordan Lee","7 days","Candidate pairs","Assignment or exception"),
      st("Gate","A new module or feature cannot register without a named human owner and backup.","gate","Platform team","Immediate","Manifest","Gate decision"),
@@ -443,7 +443,7 @@ function wire(){
    if(r&&(r.ok||/already exists/.test((r.warnings||[]).join(" ")))){WS.proc=1;tryv(()=>{if(S.plib&&S.plib.own&&!S.plib.own.ownership_governance){S.plib.own.ownership_governance={owner:"Jordan Lee",backup:"Sam Patel"};PROCLIB.refresh()}},0)}}
   if(!WS.reg&&W.PROC&&PROC.reg){
    tryv(()=>PROC.reg("own_gaps",{title:"Ownership governance",std:["cobit","itil5"],steps:[
-    {n:"Detect gaps",d:"Scan every registry record for no owner, role only, agent only, departed owner or no backup.",who:"auto",owner:"Ownership service",sla:"Hourly",in:"Registry records",out:"Ranked gaps"},
+    {n:"Detect gaps",d:"Scan every registry record for no owner, role only, agent only, departed owner or no backup.",who:"robot",owner:"Ownership service",sla:"Hourly",in:"Registry records",out:"Ranked gaps"},
     {n:"Propose owner and backup",d:"Suggest candidates from the org chart and domains.",who:"agent",owner:"Ownership Agent",sla:"Minutes",in:"Ranked gaps",out:"Candidates"},
     {n:"Assign or accept",d:"A person assigns, asks the likely owner, or accepts the risk with an expiry of at most 90 days.",who:"human",owner:"Jordan Lee",sla:"7 days",in:"Candidates",out:"Assignment or exception"},
     {n:"Gate",d:"No new module or feature registers without a named human owner and backup.",who:"gate",owner:"Platform team",sla:"Immediate",in:"Manifest",out:"Decision"}]}),0);WS.reg=1}

@@ -8,7 +8,7 @@ const B=S.build,E=esc;
 const TODAY="2026-10-06";
 const STEPS=["Purpose and owner","Data","Process","Connections","Maturity","Metrics","Security and AI","Review"];
 const BANDN={str:"Strategy and portfolio",dem:"Demand and projects",mon:"Money and contracts",bld:"Build and release",ops:"Service operations",inf:"Infrastructure and CMDB",obs:"Observability and automation",ppl:"People and skills",kai:"Knowledge and AI",plt:"Platform and governance"};
-const WHO=[["human","Person"],["agent","AI agent"],["auto","Automatic"],["gate","Gate"]];
+const WHO=[["human","Person"],["agent","AI agent"],["robot","Robot"],["gate","Gate"]];
 const MODES=[["event","Event"],["batch","Batch"],["human","Human"],["api","API call"]];
 const MODEC={event:"--accent",batch:"--p4",human:"--warn-f",api:"--good-f"};
 const FTYPES=["string","number","date","currency","boolean","ref","enum","list"];
@@ -100,7 +100,7 @@ const DIMS=[
  ["owned","Owned","Someone is accountable for the process, its steps and its review date."],
  ["measured","Measured","Metrics exist with formulas, owners, targets and remediation."],
  ["integrated","Integrated","Data comes from registered entities and flows connect to other modules."],
- ["automated","Automated","Agents and automatic steps do the repeatable work, under guardrails."],
+ ["automated","Automated","Agents and robots do the repeatable work, under guardrails."],
  ["governed","Governed","Classification, audit, gate approval and AI controls are in place."]];
 function dimCrit(d,g){
  const st=d.proc.steps,mt=d.metrics,cn=d.conns,nonH=st.filter(s=>s.who!=="human").length,ents=d.data.reuse.length+d.data.ext.length+d.data.neu.length;
@@ -110,7 +110,7 @@ function dimCrit(d,g){
   owned:[["An accountable owner is named",!!d.owner],["The owner also stewards new entities",!!d.owner&&(d.data.neu.length>0||ents>0)],["Every step has an owner",st.length>0&&st.every(s=>s.owner)],["A review or sunset date is set",!!d.sunset],["Three or more roles are defined",d.sec.roles.length>=3]],
   measured:[["At least one metric",mt.length>=1],["At least two metrics",mt.length>=2],["Every metric has a formula, owner and target",!!mFull],["Every metric has remediation",!!mRem],["Three metrics, one about time or SLA",mt.length>=3&&mt.some(m=>/time|sla|cycle|lead/i.test(m.n))]],
   integrated:[["Uses at least one registered entity",d.data.reuse.length+d.data.ext.length>0],["At least one connection to another module",cn.length>=1],["Both a pull and a push",cn.some(c=>c.dir==="pull")&&cn.some(c=>c.dir==="push")],["No unresolved duplicate entities",unresolved(d).length===0&&ents>0],["Three or more connections, one by event or API",cn.length>=3&&cn.some(c=>c.mode==="event"||c.mode==="api")]],
-  automated:[["At least one step is not manual",nonH>=1],["An agent or automatic step exists",st.some(s=>s.who==="agent"||s.who==="auto")],["Half the steps are agent, automatic or gate",st.length>0&&nonH*2>=st.length],["Agent work runs under two or more guardrails",!d.sec.ai||d.sec.guard.length>=2],["An event or API flow triggers an automatic step",cn.some(c=>c.mode==="event"||c.mode==="api")&&st.some(s=>s.who==="auto"||s.who==="agent")]],
+  automated:[["At least one step is not manual",nonH>=1],["An agent or robot step exists",st.some(s=>STEPMODE.needsTrigger(s.who))],["Half the steps are agent, robot or gate",st.length>0&&nonH*2>=st.length],["Agent work runs under two or more guardrails",!d.sec.ai||d.sec.guard.length>=2],["An event or API flow triggers a robot or agent step",cn.some(c=>c.mode==="event"||c.mode==="api")&&st.some(s=>STEPMODE.needsTrigger(s.who))]],
   governed:[["Data classification chosen",!!d.sec.cls],["Audit events are on",!!d.sec.audit],["A gate (approval) step exists",st.some(s=>s.who==="gate")],["Conformance has no failures and scores 80 or more",g.ok&&g.score>=80],["AI uses the gateway with a cap and 3 guardrails, or no AI",!d.sec.ai||(d.sec.gw&&d.sec.guard.length>=3&&+d.sec.cap>0)]]
  };
 }
@@ -228,7 +228,7 @@ function hitsHTML(d,n,i){
 function s2(d){
  const ov=d.proc.tpl?null:procOverlap(d),tp=procTemplates(d);
  const steps=d.proc.steps.map((s,i)=>`<div class="bld-st" data-dnd-id="${s.id}" tabindex="0" aria-label="Step ${i+1} ${E(s.n)}"><span class="grip-wrap">${grip}</span><b class="bld-sn">${i+1}</b>
-  <input class="fin" data-bld-in="proc.steps.${i}.n" value="${E(s.n)}" placeholder="Step name" aria-label="Step name">${sel("proc.steps."+i+".who",s.who,WHO,'aria-label="Who acts"')}<input class="fin" data-bld-in="proc.steps.${i}.owner" value="${E(s.owner)}" placeholder="Owner or agent" aria-label="Step owner"><input class="fin" data-bld-in="proc.steps.${i}.sla" value="${E(s.sla)}" placeholder="SLA, e.g. 1 day" aria-label="Step SLA"><button class="btn quiet" data-bld-act="rm" data-a="proc.steps:${i}" aria-label="Remove step ${i+1}">Remove</button></div>`).join("");
+  <input class="fin" data-bld-in="proc.steps.${i}.n" value="${E(s.n)}" placeholder="Step name" aria-label="Step name">${sel("proc.steps."+i+".who",s.who==="gate"?"gate":STEPMODE.of(s.who),WHO,'aria-label="Who acts"')}<input class="fin" data-bld-in="proc.steps.${i}.owner" value="${E(s.owner)}" placeholder="Owner or agent" aria-label="Step owner"><input class="fin" data-bld-in="proc.steps.${i}.sla" value="${E(s.sla)}" placeholder="SLA, e.g. 1 day" aria-label="Step SLA"><button class="btn quiet" data-bld-act="rm" data-a="proc.steps:${i}" aria-label="Remove step ${i+1}">Remove</button></div>`).join("");
  return `${ov?`<div class="bld-dup bad"><b>A process already exists: ${E(ov.title)}.</b> <span class="small muted">Start from it instead of building a second one, or the gate fails "Reuses existing processes".</span><div style="margin-top:8px"><button class="btn primary" data-bld-act="tpl" data-a="${E(ov.id)}">Start from ${E(ov.title)}</button></div></div>`:""}
  <div class="grid g2" style="gap:14px">${fld("Process name",inp("proc.name",d.proc.name,d.name||"Facilities request handling"))}${fld("Time limit for the whole process",inp("proc.sla",d.proc.sla,"2 business days"))}
  <div class="fld" style="grid-column:1/-1">${fld("What starts it (trigger)",inp("proc.trigger",d.proc.trigger,"A staff member submits a request in the portal"))}</div></div>
@@ -508,11 +508,11 @@ function screen(){
 }
 REG("plat_build","Build a module","platform","M4 4h7v7H4zM13 13h7v7h-7zM17 4v6M14 7h6M7 14v6M4 17h6",screen);
 PROC.reg("plat_build",{title:"How a new module joins the platform",std:["togaf","cmmi","iso27k"],steps:[
- {n:"Reuse check",d:"The blueprint searches the registry and process library while the builder types. A person or an AI client gets the same answer.",who:"auto",owner:"Platform",out:"Reuse report"},
+ {n:"Reuse check",d:"The blueprint searches the registry and process library while the builder types. A person or an AI client gets the same answer.",who:"robot",owner:"Platform",out:"Reuse report"},
  {n:"Blueprint",d:"Purpose, data, process, connections, maturity, metrics, security and AI are declared in eight steps.",who:"human",owner:"Module owner",out:"Manifest"},
  {n:"Draft help",d:"The Registry Agent suggests entities to reuse, fields to label and metrics to define.",who:"agent",owner:"Registry Agent",out:"Suggestions"},
  {n:"Conformance gate",d:"Every conformance check and the debt budget. A failure needs a fix or an exception with an owner and an expiry.",who:"gate",owner:"Platform team",sla:"Instant",out:"Pass or blocked"},
- {n:"Register as Proposed",d:"Entities, process, module node, flows and metrics are added in one step and can be withdrawn in one step.",who:"auto",owner:"Platform",out:"Proposed module"},
+ {n:"Register as Proposed",d:"Entities, process, module node, flows and metrics are added in one step and can be withdrawn in one step.",who:"robot",owner:"Platform",out:"Proposed module"},
  {n:"Data council approval",d:"The council approves new entities and extensions; the module goes live and its maturity is scored.",who:"human",owner:"Data council",sla:"3 days",out:"Live module"}]});
 /* ---------- events ---------- */
 let deb=null;

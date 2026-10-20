@@ -616,9 +616,9 @@ SEARCHX.push(()=>{try{const c=coverage();return c.modules.map(m=>({g:"Data model
 /* the atlas shows the color of a domain in the matrix */
 if(window.ATLAS&&!ATLAS.color){}
 PROC.reg("plat_cov",{title:"How the model stays complete",std:["dmbok","togaf"],steps:[
- {n:"Audit",d:"Walk every module, screen, record collection and flow and compare them with the registry.",who:"auto",owner:"Registry Agent",out:"Gap list"},
- {n:"Reuse check",d:"A new entity is compared with existing fields and meanings. Close matches extend an existing entity.",who:"auto",owner:"Platform",out:"Matches and warnings"},
+ {n:"Audit",d:"Walk every module, screen, record collection and flow and compare them with the registry.",who:"robot",owner:"Registry Agent",out:"Gap list"},
+ {n:"Reuse check",d:"A new entity is compared with existing fields and meanings. Close matches extend an existing entity.",who:"robot",owner:"Platform",out:"Matches and warnings"},
  {n:"Define",d:"The Registry Agent drafts fields, authority and classification. The entity is Proposed.",who:"agent",owner:"Registry Agent",out:"Proposed entity"},
  {n:"Approve",d:"The data council approves; the entity becomes live and the audit log records who approved it.",who:"gate",owner:"Data council",sla:"3 days",out:"Live entity"},
- {n:"Re-audit",d:"Coverage recomputes whenever a module adds an entity.",who:"auto",owner:"Platform",out:"New coverage"}]});
+ {n:"Re-audit",d:"Coverage recomputes whenever a module adds an entity.",who:"robot",owner:"Platform",out:"New coverage"}]});
 })();

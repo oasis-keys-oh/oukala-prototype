@@ -330,11 +330,11 @@ document.addEventListener("input",e=>{const t=e.target.closest("[data-debt-hrs]"
 /* ---------- screen, process, search, chat ---------- */
 REG("plat_debt","Technical debt ledger","platform","M4 20h16M6 20V10M12 20V4M18 20v-6M4 8l4 2 4-5 6 5",debtScreen);
 PROC.reg("plat_debt",{title:"How technical debt is found, owned and paid down",std:["cobit","togaf"],steps:[
- {n:"Detect",d:"Detectors scan the registry, who reads and writes, connectors and the citizen app gate. Nothing is typed in.",who:"auto",owner:"Platform",out:"Debt items"},
+ {n:"Detect",d:"Detectors scan the registry, who reads and writes, connectors and the citizen app gate. Nothing is typed in.",who:"robot",owner:"Platform",out:"Debt items"},
  {n:"Classify and price",d:"The Registry Agent sets type, severity, interest and principal using the published formula.",who:"agent",owner:"Registry Agent",out:"Priced item"},
  {n:"Assign",d:"Routed to the owning team; an individual claims it or is assigned with a reason.",who:"human",owner:"Entity owner",sla:"2 days",out:"Owner"},
  {n:"Accept or schedule",d:"Accept with an expiry, or create a demand or project. Exceptions longer than the tier limit need the data council.",who:"gate",owner:"Data council",sla:"5 days",out:"Decision"},
- {n:"Fix and verify",d:"Apply the registry fix or change the app. The detector confirms the cause is gone and closes the item.",who:"auto",owner:"Platform",out:"Closed item"}]});
+ {n:"Fix and verify",d:"Apply the registry fix or change the app. The detector confirms the cause is gone and closes the item.",who:"robot",owner:"Platform",out:"Closed item"}]});
 SEARCHX.push(()=>{const o=[{g:"Platform",t:"Technical debt ledger",m:"Items, exceptions, burn-down",c:"--bad-f",f:()=>go("plat_debt"),k:"technical debt ledger exceptions interest principal burn down"}];
  build().filter(x=>x.status!=="resolved").slice(0,80).forEach(x=>o.push({g:"Debt items",t:x.id+" "+x.title,m:x.sev,c:"--warn-f",f:()=>{go("plat_debt");setTimeout(()=>drawer(x.id),150)},k:x.type+" "+x.owner+" debt"}));return o});
 ASKX.push(q=>{const t=q.toLowerCase();
