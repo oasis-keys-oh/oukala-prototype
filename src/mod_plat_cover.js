@@ -180,15 +180,15 @@ S.flw.mcps|MCP servers|flw_hub,plat_mcp||5|connector|alias
 S.flw.hooks|Webhooks|flw_hub||4|connector|alias
 S.flw.keys|API keys|flw_hub||3|credential|new
 S.flw.dlq|Dead letter queue|flw_hub||9|sync_exception|alias
-S.fab.conns|Fabric connections|plat_fab|plat_fab|19|connector|new
+S.fab.conns|Data layer connections|plat_fab|plat_fab|19|connector|new
 S.fab.maps|Field mappings|plat_fab|plat_fab|38|mapping|new
 S.fab.runs|Sync runs|plat_fab|plat_fab|176|sync_run|new
 S.fab.quar|Quarantined records|plat_fab|plat_fab|8|sync_exception|new
 S.fab.recon|Reconciliation items|plat_fab|plat_fab|9|sync_exception|alias
 S.fab.events|Data change events|plat_fab|plat_fab|340|audit_event|alias
 S.fab.proj|Project data requests|plat_fab|plat_fab|7|app_manifest|alias
-S.fab.reqs|Fabric requests|plat_fab|plat_fab|7|approval|alias
-S.fab.wi|Fabric work items|plat_fab|plat_fab|2|action_item|alias
+S.fab.reqs|Data layer requests|plat_fab|plat_fab|7|approval|alias
+S.fab.wi|Data layer work items|plat_fab|plat_fab|2|action_item|alias
 S.gate.apps|Citizen apps|plat_gate|plat_gate|8|app_manifest|new
 DEBTITEMS|Debt items|plat_debt|plat_debt|0|debt_item|new|DEBT
 S.kcsx.skills|Agent skills|kcs_skills|kcs_skills|10|agent_skill|new

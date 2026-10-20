@@ -65,7 +65,7 @@ const PLANNED=[
  ["position","people","Position","Head of People Operations","Headcount planning needs positions apart from people.","Capacity, hiring"],
  ["application","cmdb","Application","Enterprise architect","Business apps are CI subtypes today; a first-class entity serves the registry and the citizen-app gate.","Application portfolio, citizen apps"],
  ["data_asset","cmdb","Data asset","Data council chair","Classification, retention and lineage need an asset to attach to.","Governance, privacy"],
- ["integration","cmdb","Integration","Integration lead","Each connector instance needs a record with owner, cost and health.","Fabric"],
+ ["integration","cmdb","Integration","Integration lead","Each connector instance needs a record with owner, cost and health.","Platform data layer"],
  ["environment","cmdb","Environment","Platform lead","Dev, test, prod and sandboxes are strings today.","DevOps, promotion"],
  ["risk","portfolio","Risk","Risk manager","Risks sit in RAID and enterprise risk separately.","RAID, enterprise risk"],
  ["control","portfolio","Control","Compliance lead","Evidence collection needs controls as records.","Compliance evidence"],
@@ -84,9 +84,9 @@ const PLANNED=[
  ["tag","service","Tag","Platform lead","Shared labeling.","All"],
  ["debt_item","portfolio","Debt item","Platform lead","The technical debt ledger.","Debt ledger"],
  ["app_manifest","cmdb","App manifest","Platform lead","Declares what a citizen app reads, writes and reuses.","Citizen gate"],
- ["connector","cmdb","Connector","Integration lead","Catalog of enterprise-approved and project connectors.","Fabric"],
- ["mapping","cmdb","Mapping","Integration lead","Versioned field mapping from an external source to the registry.","Fabric"],
- ["sync_run","cmdb","Sync run","Integration lead","Each pipeline run with counts, errors and lineage.","Fabric"]
+ ["connector","cmdb","Connector","Integration lead","Catalog of enterprise-approved and project connectors.","Platform data layer"],
+ ["mapping","cmdb","Mapping","Integration lead","Versioned field mapping from an external source to the registry.","Platform data layer"],
+ ["sync_run","cmdb","Sync run","Integration lead","Each pipeline run with counts, errors and lineage.","Platform data layer"]
 ];
 /* ---------- duplicate fixes ---------- */
 const FIXES=[
