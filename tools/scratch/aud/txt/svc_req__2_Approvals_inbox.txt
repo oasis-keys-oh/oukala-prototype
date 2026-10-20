@@ -20,7 +20,7 @@ Avery Chen (5)
 Rina Okafor (5)
 Sam Patel (4)
 Jordan Lee (3)
-Omar Hamid (3)
+Casey Rowan (3)
 Tom Becker (2)
 Anil Mehta (1)
 Dev Rao (1)
@@ -76,7 +76,7 @@ Budget owner
 Budget owner. Price: $2,899
 
 Requested by
-Omar Hamid
+Casey Rowan
 $2,899
 Approve
 Reject with reason
@@ -187,7 +187,7 @@ RITM0010441	Laptop (new or replacement)	Budget owner
 Avery Chen
 	4.6 h	Price: $3,250	$3,250
 RITM0010557	Laptop (new or replacement)	Manager approval	
-Omar Hamid
+Casey Rowan
 	4.3 h	Every purchase has a named accountable manager.	$2,899
 RITM0010557	Laptop (new or replacement)	Budget owner	
 Maya Ortiz
@@ -214,7 +214,7 @@ RITM0010689	AI agent access and token budget	AI governance review
 Jordan Lee
 	3.5 h	Every change to an agent goes through the registry.	$900
 RITM0010525	Mobile phone	Manager approval	
-Omar Hamid
+Casey Rowan
 	3.5 h	Named accountable manager.	$260
 RITM0010575	Access request	Manager approval	
 Rina Okafor

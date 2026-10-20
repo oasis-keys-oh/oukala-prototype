@@ -149,7 +149,7 @@ D-401	Dependency	Cutover needs Platform team capacity in January	Contracts
 Maya Ortiz
 	employee	n/a	Not rated	Requested	Nov 30, 2026
 X-101	Decision	Approve 2 extra Lumen engineers ($48,000)	Codification	
-Omar Hamid
+Casey Rowan
 	employee	n/a	Not rated	Needed	Oct 9, 2026
 X-201	Decision	Pilot with 40 or 80 editors	Taxonomy	
 Maya Ortiz

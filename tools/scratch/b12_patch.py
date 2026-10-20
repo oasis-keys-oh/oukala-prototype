@@ -77,7 +77,7 @@ rep('''f:()=>{S.v.budv=1;go("bud_over");setTimeout(()=>editForm(l.id),60)}''',''
 # 14 export
 rep('''syncM();
 })();''','''syncM();
-window.BUDX={B,T,LN,PL,PJ,PRG,CATS,CATC,DEPTS,DN,VID,CID,poV,vSpend,vScore,m3,stCon,conPaid,recommend,whoApproves,omarCan,resBal,resPend,resOpen,drawn,pendP,unfunded,burn,capOf,capShare,capTot,FM,ACTM,FCPROF,PLANM,sum,D$,C$,pc,dfmt,dshort,iso,dd,TODAYD,contractDrawer,vendorDrawer,editForm,tierIdx,sgn,vpill,meter,wrap,tcls,dn,stat,chainHTML,notice,daysTo,PROC_SCREEN:"bud_over"};
+window.BUDX={B,T,LN,PL,PJ,PRG,CATS,CATC,DEPTS,DN,VID,CID,poV,vSpend,vScore,m3,stCon,conPaid,recommend,whoApproves,cioCan,resBal,resPend,resOpen,drawn,pendP,unfunded,burn,capOf,capShare,capTot,FM,ACTM,FCPROF,PLANM,sum,D$,C$,pc,dfmt,dshort,iso,dd,TODAYD,contractDrawer,vendorDrawer,editForm,tierIdx,sgn,vpill,meter,wrap,tcls,dn,stat,chainHTML,notice,daysTo,PROC_SCREEN:"bud_over"};
 })();''')
 open(f,'w',encoding='utf-8').write(s)
 print('ok')

@@ -16,7 +16,7 @@ Showback and chargeback
 Scaling model
 Forecast and triggers
 What if demand grows?
-Move a slider and the triggers below update at once. Defaults show the two scenarios on Omar's list.
+Move a slider and the triggers below update at once. Defaults show the two scenarios on the product owner's list.
 AI search of the codification: questions a month
 40,000
 New API licensee: millions of calls a month

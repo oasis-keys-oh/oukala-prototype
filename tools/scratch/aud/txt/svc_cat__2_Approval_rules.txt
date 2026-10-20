@@ -124,7 +124,7 @@ dataOwner	Data owner of the system
 Maya Ortiz
 
 cio	Chief information officer	
-Omar Hamid
+Casey Rowan
 
 aigov	AI governance lead	
 Jordan Lee

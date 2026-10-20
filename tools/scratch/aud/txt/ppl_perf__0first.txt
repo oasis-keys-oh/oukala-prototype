@@ -64,7 +64,7 @@ Watch
 Maya Ortiz has 9 reviews still to submit
 Manager review closes Oct 23. Evidence summaries are drafted and waiting.
 Watch
-Omar Hamid has 2 reviews still to submit
+Casey Rowan has 2 reviews still to submit
 Manager review closes Oct 23. Evidence summaries are drafted and waiting.
 Watch
 Tom Becker has 2 reviews still to submit
@@ -117,7 +117,7 @@ Export CSV
 PERSON	TEAM	MANAGER	REVIEW STATUS	SELF REVIEW	MANAGER RATING	EVIDENCE INDEX	9-BOX POSITION	CALIBRATED
 
 Maya Ortiz
-	PMO	Omar Hamid	Manager draft	Done	Not yet	36	Core contributor	
+	PMO	Casey Rowan	Manager draft	Done	Not yet	36	Core contributor	
 
 Priya Shah
 	Platform team	Maya Ortiz	Submitted	Done	3 Meets	51	Core contributor	
@@ -132,10 +132,10 @@ Avery Chen
 	Finance	Marcus Reid	Manager draft	Done	Not yet	61	Core contributor	
 
 Jordan Lee
-	Architecture	Omar Hamid	Submitted	Done	3 Meets	42	Core contributor	
+	Architecture	Casey Rowan	Submitted	Done	3 Meets	42	Core contributor	
 
 Sam Patel
-	Ops team	Omar Hamid	Manager draft	Done	Not yet	57	High performer	
+	Ops team	Casey Rowan	Manager draft	Done	Not yet	57	High performer	
 
 Nia Brooks
 	Change management	Sam Patel	Submitted	Done	3 Meets	43	Solid specialist	
@@ -144,9 +144,9 @@ Chief Editor
 	Editors	Catherine Doyle	Submitted	Done	2 Partly meets	43	Inconsistent	
 
 Rina Okafor
-	Security	Omar Hamid	Submitted	Done	2 Partly meets	63	Action needed	
+	Security	Casey Rowan	Submitted	Done	2 Partly meets	63	Action needed	
 
-Omar Hamid
+Casey Rowan
 	PMO	Catherine Doyle	Submitted	Done	4 Exceeds	33	Future star	
 
 Marcus Reid
@@ -180,7 +180,7 @@ Tess Whitaker
 	Platform team	Sam Patel	Submitted	Done	3 Meets	52	Solid specialist	
 
 Anil Mehta
-	Data team	Omar Hamid	Submitted	Done	2 Partly meets	56	Inconsistent	
+	Data team	Casey Rowan	Submitted	Done	2 Partly meets	56	Inconsistent	
 
 Yuki Tanaka
 	Data team	Anil Mehta	Manager draft	Done	Not yet	54	Rising talent	

@@ -69,8 +69,8 @@ Every VIP rule is documented, owned and expires.
 Add a level
 LEVEL	STEPS UP	PRIORITY FLOOR	EXPIRES	BASIS AND OWNER	
 Standard	0	None	Never	No adjustment. Priority comes from impact and urgency only.	
-Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Omar Hamid.	Edit
-Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Omar Hamid.	Edit
+Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Casey Rowan.	Edit
+Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Casey Rowan.	Edit
 Level 3: Critical role in a time-boxed window	1	P3 or higher	Nov 20	Chief Editor and senior editors during the Codification beta publishing windows (PR1). Expires when the window closes. Owner: Maya Ortiz.	Edit
 Overrides and approvals
 1 overrides on record. Each has a reason and, for P1 downgrades, a second approver.

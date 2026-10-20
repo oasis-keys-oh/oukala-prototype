@@ -202,7 +202,7 @@ function whoApproves(amt,cat,req,o){o=o||{};const t=B().doa,proj=o.proj||"",why=
  if(revs.length)why.push(`${revs.length} review${revs.length>1?"s":""} must finish first: ${revs.map(r=>r.role).join(", ")}.`);
  return {chain,why,tier:ap,idx:i,revs,final:ap.role,fname:holder(ap.role,proj)}}
 const CIOIDX=()=>B().doa.findIndex(x=>x.role==="CIO");
-const omarCan=(amt,cat,req,o)=>{const r=whoApproves(amt,cat,req,o);return r.idx<=CIOIDX()};
+const cioCan=(amt,cat,req,o)=>{const r=whoApproves(amt,cat,req,o);return r.idx<=CIOIDX()};
 /* ---- vendors, contracts, orders ---- */
 const m3=po=>{const tol=.02;if(po.st==="Pending approval")return["Awaiting approval","info"];if(!po.inv&&!po.rec)return["Awaiting receipt","info"];if(po.inv>po.ord)return["Over PO","bad"];if(po.inv>po.rec*(1+tol)+1)return["Invoice ahead of receipt","bad"];if(po.rec>po.inv*(1+tol)+1)return["Receipt not invoiced","warn"];return["Matched","good"]};
 const poV=v=>B().po.filter(p=>p.v===v);

@@ -50,7 +50,7 @@ Employee
 BUSINESS USERS
 Public readers and subscribers · 180,000 people
 EXECUTIVE SPONSOR
-Omar Hamid Chief information officer
+Casey Rowan Chief information officer
 Employee
 RACI
 Click a cell to cycle Responsible, Accountable, Consulted, Informed. Every activity needs exactly one Accountable (ITIL practice ownership).

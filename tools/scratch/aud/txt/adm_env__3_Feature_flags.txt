@@ -96,7 +96,7 @@ Lets admins apply a theme to the whole tenant. tenant_theme
 	
 	
 	
-	Omar Hamid
+	Casey Rowan
 Break-glass two-person approval
 Requires a second approver for Restricted data. bg_two_person	
 	

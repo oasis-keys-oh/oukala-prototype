@@ -128,7 +128,7 @@ Knowledge Curator
 AI agent	Knowledge drafting agent	AI agents	Meridian Standards Foundation	
  131%	1	Agent hours and $0.60 per task	Articles, Search index
 
-Omar Hamid
+Casey Rowan
 	
 Employee	Chief information officer	PMO	Meridian Standards Foundation	
  93%	0	Hours a week against 40	Executive sponsor, Portfolio, Strategy

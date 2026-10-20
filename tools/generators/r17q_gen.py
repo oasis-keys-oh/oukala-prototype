@@ -7,11 +7,13 @@ rd=lambda p:open(os.path.join(here,p),encoding='utf-8').read()
 log=rd('docs/r17q/oukala-decisions-log.md');stat=rd('docs/r17q/oukala-v4-status.md');reg=rd('docs/spec/register_summary.md')
 NAMING="Naming: no rename until a trademark search clears a shortlist; candidate names that collide with existing products in the same field were dropped."
 RULE="Naming rule: no outside organization's brand names and no accounting-standard names appear in product text. The sample customer is Meridian Standards Foundation."
+OWNER=os.environ.get('OWNER_FIRST_NAME','')
 def clean(s):
     s=s.replace(chr(8212),'-').replace(chr(8211),'-').strip()
-    s=s.replace("pending Omar","pending the product owner").replace("until Omar chooses","until the product owner chooses")
-    s=s.replace("Omar's own","The product owner's own")
-    s=re.sub(r"\bOmar\b","the product owner",s)
+    if OWNER:  # the owner's first name comes from the environment so it never sits in the repo (CL-08)
+        s=s.replace("pending "+OWNER,"pending the product owner").replace("until "+OWNER+" chooses","until the product owner chooses")
+        s=s.replace(OWNER+"'s own","The product owner's own")
+        s=re.sub(r"\b"+re.escape(OWNER)+r"\b","the product owner",s)
     s=s.replace("GAAP vault notes","Accounting-reference vault notes").replace("The FAF IT financial model","The IT financial model")
     if re.search(r"Trellis|Keel|Orchestr8|Govern8|Autom8Ops|ValueAgent|Katelyn|Ballast|Guardrail Tech",s):return NAMING
     if re.search(r"\b(FAF|Codification|ASU|ASC|FASB|GASB)\b",s):return RULE

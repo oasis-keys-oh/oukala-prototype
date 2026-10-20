@@ -38,7 +38,7 @@ Avery Chen
 Jordan Lee
 Sam Patel
 Nia Brooks
-Omar (CIO)
+Casey (CIO)
 New vendor
 Capital spend (CapEx)
 TRY AN EXAMPLE
@@ -49,7 +49,7 @@ $8,000 by a budget owner
 $48,000 reserve release
 $300,000 contract renewal
 The answer
-Omar (CIO) approves
+Casey (CIO) approves
 Tier T3, after 3 reviews
 Claude Sonnet · 95%
 1
@@ -65,7 +65,7 @@ Three competitive quotes are required from $25,000.
 Legal Legal review
 Contract terms and liability need review from $50,000.
 5
-Omar (CIO) CIO approves
+Casey (CIO) CIO approves
 Tier T3: requests up to $100,000 are approved by the CIO.
 WHY
 $75,000 falls in tier T3 (up to $100,000), so the CIO approves.

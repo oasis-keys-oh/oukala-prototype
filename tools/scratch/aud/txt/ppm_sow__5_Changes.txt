@@ -162,7 +162,7 @@ WHEN	WHO	ACTION	CONTRACT	DETAIL
 2026-10-05 16:40	Priya Shah	Routed to legal review	CLM-1002	Limitation of liability, three months of fees.
 2026-10-05 11:05	Rina Okafor	Opened shared review	CLM-1005	AI training on prompts.
 2026-10-02 15:22	Dev Rao	Raised change request	CLM-1001	CR-201 Milestone 3 slips 7 work days.
-2026-09-30 09:30	Omar Hamid	Approved change	CLM-1007	CR-208 storage tier, $21,400 (inside CIO authority).
+2026-09-30 09:30	Casey Rowan	Approved change	CLM-1007	CR-208 storage tier, $21,400 (inside CIO authority).
 2026-09-14 13:00	Priya Shah	Applied change	CLM-1012	CR-206 extension signed, amendment A1 stored.
 From vendor proposal to managed contract
 Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to WorldCC contracting practice, COBIT 2019, PMBOK.

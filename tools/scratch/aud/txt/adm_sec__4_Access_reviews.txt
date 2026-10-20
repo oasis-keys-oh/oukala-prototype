@@ -11,7 +11,7 @@ Who can see this
 Identity and break-glass
 Access reviews
 Q4 access review: Restricted and privileged access
-Due Oct 30. 1 of 8 entitlements decided, 7 waiting for the reviewer (Omar Hamid). Unanswered items auto-revoke after 14 days.
+Due Oct 30. 1 of 8 entitlements decided, 7 waiting for the reviewer (Casey Rowan). Unanswered items auto-revoke after 14 days.
 ƒ Access review completion
 Start a campaign
 Sam Patel

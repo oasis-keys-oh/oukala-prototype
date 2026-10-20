@@ -169,7 +169,7 @@ Avery Chen
 RITM0010466	New service request	
 Maya Ortiz
 	Same person	Pending approval	
-Omar Hamid
+Casey Rowan
 	Approval: Portfolio board	0%	$3	Oct 6	Portfolio and project intake
 RITM0010698	Access request	
 Rosa Delgado
@@ -199,7 +199,7 @@ Maya Ortiz
 RITM0010525	Mobile phone	
 Catherine Doyle
 	Same person	Pending approval	
-Omar Hamid
+Casey Rowan
 	Approval: Manager approval	0%	$260	Oct 6	Endpoint management (Intune)
 RITM0010689	AI agent access and token budget	
 Ines Duarte
@@ -228,9 +228,9 @@ Avery Chen
 Maya Ortiz
 	Approval: Procurement lead	0%	$0	Oct 6	Finance systems
 RITM0010557	Laptop (new or replacement)	
-Omar Hamid
+Casey Rowan
 	Same person	Pending approval	
-Omar Hamid
+Casey Rowan
  
 Maya Ortiz
 	Approval: Manager approval	0%	$2,899	Oct 6	Endpoint management (Intune)

@@ -62,7 +62,7 @@ Back to strategy
 Problem becomes a backlog item
 1
 Strategy and objectives
-Omar Hamid
+Casey Rowan
 COBIT 2019
 TBM Taxonomy and ATUM
 Auto 40%
@@ -146,7 +146,7 @@ Auto 60%
 SLA 100%
 14
 Maturity and improvement
-Omar Hamid
+Casey Rowan
 COBIT 2019
 CMMI
 Auto 29%
@@ -170,7 +170,7 @@ Export CSV
 PROCESS AREA▲	OWNER	STANDARDS	AUTOMATION	LEVEL	SLA COVERAGE	PROCESS DEFINED	WORKFLOWS
 Strategy and objectives
 Strategy alignment
-	Omar Hamid	COBIT 2019, TBM Taxonomy and ATUM	40% · Scripted	Level 2 Scripted	100%	1 of 1	0
+	Casey Rowan	COBIT 2019, TBM Taxonomy and ATUM	40% · Scripted	Level 2 Scripted	100%	1 of 1	0
 Demand and intake
 Demand and priorities
 	Maya Ortiz	TBM Taxonomy and ATUM, ITIL 5	50% · Agentic with approval	Level 3 Agentic with approval	100%	1 of 1	2
@@ -209,7 +209,7 @@ Cost transparency (TBM and ATUM), Budgets overall
 	Avery Chen	TBM Taxonomy and ATUM	60% · Agentic with approval	Level 3 Agentic with approval	100%	1 of 2	1
 Maturity and improvement
 Maturity models
-	Omar Hamid	COBIT 2019, CMMI	29% · Assisted	Level 1 Assisted	100%	1 of 1	0
+	Casey Rowan	COBIT 2019, CMMI	29% · Assisted	Level 1 Assisted	100%	1 of 1	0
 14 of 14 rows
 Scroll for more · rows are drawn as you scroll
 How the master map stays true

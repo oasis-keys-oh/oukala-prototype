@@ -1,7 +1,7 @@
 AUTOMATION · APPROVALS INBOX
 One inbox for every decision that needs a person
 
-17 approvals are waiting on you as Omar Hamid (CIO, Portfolio board, Executive sponsor). 49 are open across the organization and 1 are past their service level. Each one shows what, why, the evidence, the impact and what the AI recommends. Required gates must pass before you can approve. Advisory assessments inform you and you may override them with a reason.
+17 approvals are waiting on you as Casey Rowan (CIO, Portfolio board, Executive sponsor). 49 are open across the organization and 1 are past their service level. Each one shows what, why, the evidence, the impact and what the AI recommends. Required gates must pass before you can approve. Advisory assessments inform you and you may override them with a reason.
 
 ƒ Approval turnaround
 ƒ Approvals past SLA
@@ -100,15 +100,15 @@ APPROVAL	TYPE	AMOUNT	RISK	CLOCK▲	ASSESSMENTS	AI RECOMMENDS	WHO CAN DECIDE	STAT
 Overspend: Azure August actuals are $31,200 over forecast
 AP-2103 · Sam Patel · Azure
 	
-Budget line	$31,200	Medium	Past SLA by 22 h	None	Approve with conditions 74%	Omar Hamid	Waiting
+Budget line	$31,200	Medium	Past SLA by 22 h	None	Approve with conditions 74%	Casey Rowan	Waiting
 Reactivate a break-glass admin account
 AP-2128 · Rina Okafor · Identity (Entra ID)
 	
-Access request	-	High	3 h left	None	Approve 70%	Omar Hamid	Waiting
+Access request	-	High	3 h left	None	Approve 70%	Casey Rowan	Waiting
 Codification Platform 4.2 go or no go
 AP-2120 · Priya Shah · Codification Platform
 	
-Release go or no go	-	Medium	13 h left	None	Approve with conditions 80%	Sam Patel, Omar Hamid	Waiting
+Release go or no go	-	Medium	13 h left	None	Approve with conditions 80%	Sam Patel, Casey Rowan	Waiting
 Contract Repository OCR service v1.1 go or no go
 AP-2121 · Dev Rao · Contract Repository
 	
@@ -116,31 +116,31 @@ Release go or no go	-	Low	17 h left	None	Approve 90%	Priya Shah, Sam Patel	Waiti
 Teams phone licenses for three editors
 AP-2117 · Chief Editor · Microsoft 365
 	
-Access request	-	Low	19 h left	None	Approve 96%	Omar Hamid, Rina Okafor	Waiting
+Access request	-	Low	19 h left	None	Approve 96%	Casey Rowan, Rina Okafor	Waiting
 Release $48,000 of the Q4 reserve to search relevance phase 2
 AP-2101 · Dev Rao · Search and indexing
 	
-Budget line	$48,000	Medium	22 h left	None	Approve 86%	Omar Hamid	Waiting
+Budget line	$48,000	Medium	22 h left	None	Approve 86%	Casey Rowan	Waiting
 Developer laptop, 16-inch, for Hana Koval
 AP-2118 · Maya Ortiz · Endpoint management
 	
-Catalog request	$3,100	Low	34 h left	None	Approve 91%	Omar Hamid	Waiting
+Catalog request	$3,100	Low	34 h left	None	Approve 91%	Casey Rowan	Waiting
 newsvc for Maya Ortiz
 AP-C10466 · Maya Ortiz · Portfolio and project intake
 	
-Catalog request	-	Low	42 h left	None	Approve 90%	Omar Hamid	Waiting
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
 laptop for Hana Koval
 AP-C10450 · Maya Ortiz · Endpoint management (Intune)
 	
-Catalog request	-	Low	42 h left	None	Approve 90%	Omar Hamid	Waiting
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
 software for Jordan Lee
 AP-C10443 · Jordan Lee · Endpoint management (Intune)
 	
-Catalog request	-	Low	42 h left	None	Approve 90%	Omar Hamid	Waiting
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
 aiaccess for Avery Chen
 AP-C10452 · Avery Chen · AI platform and agents
 	
-Catalog request	-	Low	42 h left	None	Approve 90%	Omar Hamid	Waiting
+Catalog request	-	Low	42 h left	None	Approve 90%	Casey Rowan	Waiting
 Retire the 4 hour response OLA for first line on call
 AP-2126 · Sam Patel · On-call
 	
@@ -152,7 +152,7 @@ SLA change	-	Medium	2.3 d left	None	Approve with conditions 62%	Sam Patel, Chief
 E-signature provider: 12 months, $64,000
 AP-2112 · Avery Chen · Contract Repository
 	
-Contract term	$64,000	Medium	2.4 d left	Gate open	Return 77%	Chief Editor, Omar Hamid	Waiting
+Contract term	$64,000	Medium	2.4 d left	Gate open	Return 77%	Chief Editor, Casey Rowan	Waiting
 Northwind MSA amendment: Saturday service desk hours, $18,000 a year
 AP-2105 · Tom Becker · Service desk
 	
@@ -160,11 +160,11 @@ Contract term	$18,000	Low	2.5 d left	None	Approve 88%	Maya Ortiz, Chief Editor	W
 Data lake for member analytics: $640,000 over three years
 AP-2110 · Dev Rao · Data platform
 	
-Demand and funding	$640,000	High	2.8 d left	Advisory passed	Approve with conditions 71%	Omar Hamid, Maya Ortiz	Waiting
+Demand and funding	$640,000	High	2.8 d left	Advisory passed	Approve with conditions 71%	Casey Rowan, Maya Ortiz	Waiting
 Intake: Lumen search relevance phase 3 discovery, $85,000
 AP-2125 · Dev Rao · Search and indexing
 	
-Demand and funding	$85,000	Medium	3.2 d left	None	Approve with conditions 70%	Omar Hamid, Maya Ortiz	Waiting
+Demand and funding	$85,000	Medium	3.2 d left	None	Approve with conditions 70%	Casey Rowan, Maya Ortiz	Waiting
 17 of 17 rows
 Scroll for more · rows are drawn as you scroll
 Required gate: blocks approval until it passes

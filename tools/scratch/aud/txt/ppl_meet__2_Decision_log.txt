@@ -39,7 +39,7 @@ DEC-0410	Sep 29	Architecture Review Board	Use the Taxonomy Data Hub as the singl
 DEC-0409	Sep 29	Architecture Review Board	Reject a second search vendor for the Codification Platform	Lumen owns indexing under SOW-4. A second vendor would double integration work.	Jordan Lee	Rejected
 DEC-0408	Sep 10	Portfolio Council	Fund Disaster recovery for the Portal ahead of the mobile app	A Sev 2 showed there is no tested failover. Tier 1 availability depends on it.	Maya Ortiz	Approved
 DEC-0407	Sep 10	Portfolio Council	Hold the Data warehouse consolidation until the Taxonomy hub pilot	Both draw on the Data team in the same months.	Maya Ortiz	Deferred
-DEC-0406	Sep 16	Security Council	Require the privileged access course before any production role is granted	Two access reviews found roles held without training.	Omar Hamid	Approved
-DEC-0405	Sep 16	Security Council	Keep the Invoice Advisor at tier 1 for another quarter	Four of six holds on Lumen invoices were overridden. It has not earned more autonomy.	Omar Hamid	Approved
+DEC-0406	Sep 16	Security Council	Require the privileged access course before any production role is granted	Two access reviews found roles held without training.	Casey Rowan	Approved
+DEC-0405	Sep 16	Security Council	Keep the Invoice Advisor at tier 1 for another quarter	Four of six holds on Lumen invoices were overridden. It has not earned more autonomy.	Casey Rowan	Approved
 DEC-0404	Sep 15	Architecture Review Board	Adopt xAPI statements as the learning record format	Lets imported SCORM and xAPI courses report into one store.	Jordan Lee	Approved
 DEC-0403	Sep 23	Change Advisory Board	Add standard change template for certificate renewals	They happen four times a year, low risk, always the same steps.	Nia Brooks	Approved

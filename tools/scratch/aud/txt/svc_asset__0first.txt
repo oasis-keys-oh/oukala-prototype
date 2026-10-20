@@ -138,7 +138,7 @@ MSF-10638	Laptop	Dell Latitude 7450 14"	Deployed
 Tess Whitaker
 	Parker HQ	Oct 2	Oct 1	$1,840	Compliant	RITM0010655
 MSF-10639	Phone	iPhone 16	Deployed	
-Omar Hamid
+Casey Rowan
 	Parker HQ	Oct 1	Sep 30	$829	Compliant	RITM0010540
 MSF-10640	Laptop	Dell Latitude 7450 14"	Deployed	
 Dev Rao

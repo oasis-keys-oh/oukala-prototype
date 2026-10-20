@@ -168,7 +168,7 @@ Requester · None
 	Process strip	process	Record change: Record created or chang	8	
  4/0/2	33%	17%	507	97.9%	$147	v1	Registered	2
 How a person, agent, contractor or provider joins the org
-Omar Hamid · None
+Casey Rowan · None
 	Process strip	process	Record change: Record created or chang	8	
  3/1/2	50%	33%	499	99.5%	$103	v1	Registered	2
 Major incident process (ITIL 5 Support)

@@ -25,7 +25,7 @@ Certificates and nudges
 Designer and import
 My learning
 My learning
-Omar's transcript. The mini-player below is what a learner sees; each step it takes sends an xAPI statement to the stream.
+the product owner's transcript. The mini-player below is what a learner sees; each step it takes sends an xAPI statement to the stream.
 Code of conduct and confl… ✓
 Antitrust and fair proces…
 Security awareness 2026

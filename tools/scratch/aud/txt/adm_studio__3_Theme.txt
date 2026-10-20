@@ -70,7 +70,7 @@ Meridian Standards
 Home
 Projects
 Invoices
-Good afternoon, Omar
+Good afternoon, Casey
 
 This panel previews the theme. Only this panel changes until you apply it.
 

@@ -82,7 +82,7 @@ Remove
 5
 Service owner
 Manager
-Omar Hamid
+Casey Rowan
 T+32 min
 Push
 SMS
@@ -95,7 +95,7 @@ Remove
 6
 CIO office
 Manager
-Omar Hamid
+Casey Rowan
 T+62 min
 Push
 SMS
@@ -129,11 +129,11 @@ Tom
 Push, SMS, Phone call
 T+32 min
 5. Service owner
-Omar
+Casey
 Phone call
 T+62 min
 6. CIO office
-Omar
+Casey
 Phone call, Teams
 
 First human is paged at T+2 min against a 30 minute response target: on time.

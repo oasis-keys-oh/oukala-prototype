@@ -82,7 +82,7 @@ Automated
 Today
 
 MANAGE 2.4
-NIST AI RMF	Mechanisms exist to supersede, disengage or deactivate AI systems	Control Tower kill switch	Omar Hamid	
+NIST AI RMF	Mechanisms exist to supersede, disengage or deactivate AI systems	Control Tower kill switch	Casey Rowan	
 Collected
 Oct 3
 

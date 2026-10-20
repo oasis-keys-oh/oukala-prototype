@@ -39,7 +39,7 @@ Monthly lease amortization close
 Lease inventory completeness
 Discount rate approval
 Person or agent
-Omar Hamid · CIO
+Casey Rowan · CIO
 Maya Ortiz · Portfolio lead
 Priya Shah · Project manager
 Dev Rao · Project manager
@@ -95,7 +95,7 @@ Break-glass override Not applicable
 No active time-boxed grant for this person and record.
 Who can see Lumen Data Partners SOW-4
 6 of 13 people and agents can see it; 7 cannot. Select a name to load their trace.
-Omar Hamid
+Casey Rowan
 Allowed
 Maya Ortiz
 Allowed

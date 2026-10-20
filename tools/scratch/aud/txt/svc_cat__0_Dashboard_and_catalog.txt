@@ -65,7 +65,7 @@ Rina Okafor
 5
 Sam Patel
 4
-Omar Hamid
+Casey Rowan
 3
 Fulfillment time against the SLA
 Bar is the median working time over the last 30 days. The line is the SLA target. Green is comfortable, amber is within 25% of it, red is over.

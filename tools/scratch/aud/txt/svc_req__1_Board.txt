@@ -79,7 +79,7 @@ RITM0010466
 New service request
 Maya Ortiz
 0% SLA
-Omar Hamid
+Casey Rowan
 RITM0010450
 Laptop (new or replacement)
 Maya Ortiz for Hana Koval
@@ -89,7 +89,7 @@ RITM0010525
 Mobile phone
 Catherine Doyle
 0% SLA
-Omar Hamid
+Casey Rowan
 RITM0010518
 Mobile phone
 Amara Diallo
@@ -102,9 +102,9 @@ Zoe Hart
 Avery Chen
 RITM0010557
 Laptop (new or replacement)
-Omar Hamid
+Casey Rowan
 0% SLA
-Omar Hamid
+Casey Rowan
 RITM0010441
 Laptop (new or replacement)
 Priya Shah
@@ -164,7 +164,7 @@ Dmitri Volkov for Rosa Delgado
 Scheduled
 RITM0010538
 New hire onboarding
-Omar Hamid
+Casey Rowan
 0% SLA
 Scheduled
 RITM0010535
@@ -236,7 +236,7 @@ Victor Amaya
 Facilities
 RITM0010556
 Mobile phone
-Omar Hamid
+Casey Rowan
 51% SLA
 Vendor (Dell)
 RITM0010501
@@ -261,7 +261,7 @@ Lucas Brandt
 Vendor (Dell)
 RITM0010546
 Mobile phone
-Marcus Webb for Omar Hamid
+Marcus Webb for Casey Rowan
 45% SLA
 Vendor (Dell)
 RITM0010520
@@ -397,7 +397,7 @@ Tess Whitaker
 Sep 28
 RITM0010540
 Mobile phone
-Omar Hamid
+Casey Rowan
 Sep 28
 RITM0010662
 Conference room AV support

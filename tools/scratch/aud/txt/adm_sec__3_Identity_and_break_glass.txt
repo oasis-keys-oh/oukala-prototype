@@ -53,7 +53,7 @@ Break-glass access request
 Emergency access is time-boxed, needs a named approver and a reason, and is reviewed afterward. Nothing stays open.
 Request access
 Jordan Lee
-Lumen Data Partners SOW-4 · approver Omar Hamid
+Lumen Data Partners SOW-4 · approver Casey Rowan
 Review the Lumen SOW-4 integration clause for the indexer architecture change; laptop is in repair.
 38 min left
 Revoke now
@@ -66,4 +66,4 @@ Every request, approval and read is logged and flagged for next-day review.
 Oct 5
 Sam Patel read INC1 worknotes under break-glass for 30 minutes; approved by Tom Becker
 Today
-Jordan Lee granted 60 minutes on the Lumen SOW-4 contract; approved by Omar Hamid
+Jordan Lee granted 60 minutes on the Lumen SOW-4 contract; approved by Casey Rowan

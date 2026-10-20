@@ -72,7 +72,7 @@ ppl_train    opened 3 fullbtn 3 fullworks 0 tried 12 Import a SCORM or xAPI pack
 ppl_av       opened 3 fullbtn 3 fullworks 0 tried 12 Boardroom FULLFAIL | Vendor call FULLFAIL | Finance check-in FULLFAIL
 ppl_jrny     opened 3 fullbtn 3 fullworks 0 tried 19 Welcome message and checklist FULLFAIL | New hire onboarding (parent wo FULLFAIL | Laptop and accounts ready FULLFAIL
 ppl_meet     opened 3 fullbtn 3 fullworks 0 tried 7 File minutes FULLFAIL | Architecture Review Board FULLFAIL | Build an agenda FULLFAIL
-ppl_perf     opened 3 fullbtn 3 fullworks 0 tried 11 Maya Ortiz FULLFAIL | Omar Hamid FULLFAIL | Tom Becker FULLFAIL
+ppl_perf     opened 3 fullbtn 3 fullworks 0 tried 11 Maya Ortiz FULLFAIL | Casey Rowan FULLFAIL | Tom Becker FULLFAIL
 ppm_proj     opened 3 fullbtn 3 fullworks 0 tried 9 Who answers for Triage Agent? FULLFAIL | Contract Repository Refresh FULLFAIL | Who answers for Change Risk Ag FULLFAIL
 ppm_raid     opened 3 fullbtn 3 fullworks 0 tried 10 Lumen slips the search indexer FULLFAIL | Pilot date has no cushion FULLFAIL | Content migration finds malfor FULLFAIL
 itsm_rel     opened 3 fullbtn 3 fullworks 0 tried 17 New release FULLFAIL | Go or no-go: REL-2608 FULLFAIL | Standards API 2.3.1 batch hotf FULLFAIL

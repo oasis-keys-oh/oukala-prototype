@@ -5,7 +5,7 @@ wb=load_workbook(f)
 print(wb.sheetnames)
 ws=wb['Requirements']
 print('freeze',ws.freeze_panes,'filter',ws.auto_filter.ref,'DV',[ (str(d.sqref), d.formula1) for d in ws.data_validations.dataValidation],'CF',len(ws.conditional_formatting))
-BAN=re.compile(r'\b(FAF|Codification|ASU|ASC|FASB|GASB)\b|Omar|Hamid',re.I)
+BAN=re.compile(r'\b(FAF|Codification|ASU|ASC|FASB|GASB)\b|Casey|Rowan',re.I)
 hits=0;empties=collections.Counter();ids=set();dup=0
 hdr=[c.value for c in ws[1]]
 for i,row in enumerate(ws.iter_rows(min_row=2,values_only=True),2):

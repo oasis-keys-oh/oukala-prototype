@@ -60,7 +60,7 @@ for r in ROWS:
 print('rows',len(ROWS),collections.Counter(r['module'] for r in ROWS))
 
 # word filter
-BAN=re.compile(r'\b(FAF|Codification|ASU|ASC|FASB|GASB)\b|Omar|Hamid',re.I)
+BAN=re.compile(r'\b(FAF|Codification|ASU|ASC|FASB|GASB)\b|Casey|Rowan',re.I)
 def check(s):
     return bool(BAN.search(s))
 def san(v):

@@ -65,7 +65,7 @@ Lead who agrees to Critical
 None
 Tom Becker (service desk lead)
 Nia Brooks (change manager)
-Omar Hamid (CIO)
+Casey Rowan (CIO)
 Log an incident with these inputs
 ITIL 5
 Result
@@ -193,8 +193,8 @@ VIP levels
 A VIP raises urgency by documented steps, never above High on its own, with an expiry and an owner.
 LEVEL	STEPS UP	PRIORITY FLOOR	EXPIRES	BASIS AND OWNER
 Standard	0	None	Never	No adjustment. Priority comes from impact and urgency only.
-Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Omar Hamid.
-Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Omar Hamid.
+Level 1: Board and CEO	2	P2 or higher	Jun 30	Board governance depends on the Board portal and on-time papers. Approved by the CIO Sep 1; reviewed every 6 months. Owner: Casey Rowan.
+Level 2: Executive team	1	P3 or higher	Mar 31	Executives run time-boxed external commitments. Approved by the CIO; reviewed every 6 months. Owner: Casey Rowan.
 Level 3: Critical role in a time-boxed window	1	P3 or higher	Nov 20	Chief Editor and senior editors during the Codification beta publishing windows (PR1). Expires when the window closes. Owner: Maya Ortiz.
 Incident process (ITIL 5 Support activity)
 Each step is a person, an AI agent, an automatic action or an approval gate. Select a step to see who owns it and how fast it should be. Aligned to ITIL 5, ISO/IEC 20000.
