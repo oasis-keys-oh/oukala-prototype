@@ -88,7 +88,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 :root:root .proc .ps *{min-width:0}
 :root:root .proc .ps.human .who{color:var(--good)}
 :root:root .proc .ps.agent .who{color:var(--metric)}
-:root:root .proc .ps.auto .who{color:var(--accent)}
+:root:root .proc .ps.auto .who,:root:root .proc .ps.sm-robot .who{color:var(--accent)}
 :root:root .proc .ps.gate .who{color:var(--warn)}
 
 /* ---- F-12 skip link: visible only on keyboard focus ---- */

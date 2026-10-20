@@ -132,7 +132,7 @@ p,li,.story,.muted{text-wrap:pretty}
 .proc .ps:not(:last-child):before{content:"";position:absolute;right:-22px;top:calc(50% - 4px);border-left:6px solid var(--muted);border-top:5px solid transparent;border-bottom:5px solid transparent;opacity:.6}
 .proc .ps b{font-size:13px}.proc .ps small{color:var(--muted);font-size:12px}
 .proc .ps .who{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-.proc .ps.human .who{color:var(--good-f)}.proc .ps.agent .who{color:var(--u3)}.proc .ps.auto .who{color:var(--info-f)}.proc .ps.gate .who{color:var(--warn-f)}
+.proc .ps.human .who{color:var(--good-f)}.proc .ps.agent .who{color:var(--u3)}.proc .ps.auto .who,.proc .ps.sm-robot .who{color:var(--info-f)}.proc .ps.gate .who{color:var(--warn-f)}
 
 /* ---- nav: group parent link and sub captions ---- */
 .navgd summary{display:flex;align-items:center;justify-content:space-between;gap:8px}
