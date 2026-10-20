@@ -6,8 +6,8 @@ const {chromium}=require('playwright');const path=require('path');const fs=requi
 const mods=JSON.parse(fs.readFileSync(path.join(root,'src/modules.json'),'utf8')).modules;const from=mods.indexOf('mod_r16l_e_trace');
 const ids=new Set();mods.slice(from).forEach(m=>{const f=path.join(root,'src',m+'.js');if(!fs.existsSync(f))return;
  const s=fs.readFileSync(f,'utf8');for(const x of s.matchAll(/REG\(\s*\\?["']([\w]+)\\?["']/g))ids.add(x[1])});
-/* screens this range draws or rewires without its own REG call (journey, org chart, home, studio, showroom, tenancy) */
-['journey','orgchart','home','showroom','tenancy','process_designer'].forEach(x=>ids.add(x));
+/* screens this range draws or rewires without its own REG call (journey, org chart, home, showroom, tenancy, funding color note) */
+['journey','orgchart','home','showroom','tenancy','process_designer','fin_color'].forEach(x=>ids.add(x));
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
 p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));await p.route(/^https?:/,r=>r.abort());

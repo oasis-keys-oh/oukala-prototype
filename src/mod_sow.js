@@ -637,7 +637,7 @@ const aud=(who,act,ct,detail)=>{AUD.unshift({at:TDY+" "+String(8+Math.floor(AUD.
 const audSeed=(at,who,act,ct,d)=>AUD.push({at:at,who:who,act:act,ct:ct,d:d});
 /* ---------- Scale: enterprise volumes ---------- */
 function buildGen(){const r=RNG("sowgen"),pick=a=>a[Math.floor(r()*a.length)];
- const A=["Orbit","Helix","Summit","Pioneer","Atlas","Keystone","Vector","Cobalt","Nimbus","Quartz","Lattice","Harbor","Northstar","Redwood","Ironbridge","Clearwater","Bluefin","Skyline","Paragon","Ember","Cascade","Granite","Silverline","Trellis","Monarch"],B=["Systems","Software","Consulting","Cloud","Data","Security","Networks","Services","Analytics","Staffing","Labs","Partners"];
+ const A=["Orbit","Helix","Summit","Pioneer","Atlas","Keystone","Vector","Cobalt","Nimbus","Quartz","Lattice","Harbor","Northstar","Redwood","Ironbridge","Clearwater","Bluefin","Skyline","Paragon","Ember","Cascade","Granite","Silverline","Trestle","Monarch"],B=["Systems","Software","Consulting","Cloud","Data","Security","Networks","Services","Analytics","Staffing","Labs","Partners"];
  const TYPESW=[["SOW",.3],["MSA",.12],["Software license",.2],["DPA",.08],["NDA",.1],["Order form",.12],["Support agreement",.08]];
  const own=DIR.filter(d=>d.kind==="human"&&!d.generated).map(d=>d.name),svcs=SVCREG.map(s=>s.n),pj=SCALE.projects().map(p=>p.id).concat(["PR1","PR2","PR3","PR4"]);
  const list=[];for(let i=0;i<420;i++){const vendor=pick(A)+" "+pick(B);let x=r(),ty="SOW";for(const t of TYPESW){x-=t[1];if(x<=0){ty=t[0];break}}
