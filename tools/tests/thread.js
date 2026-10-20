@@ -101,5 +101,13 @@ add(await step('DC-13',()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-13 '+m)
  S.v.exestratv=6;go('exe_strat');ok(/Quality gate/.test(document.querySelector('#view').innerText),'Author and publish tab renders');S.v.exestratv=0;
  return f}));
 
+/* ---- DC-14: group view (one group, its objectives, spend and work) on Budget and spend traceability ---- */
+add(await step('DC-14',async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push('DC-14 '+m)};
+ EXE.CGRP.forEach(g=>{const d=BSTX.groupData(g.id);ok(d&&d.gobj.length>=1,g.id+' has group objectives');ok(d&&d.lines.length&&d.lines.every(l=>g.proj.includes(l.p)),g.id+' spend is its projects\' budget lines');
+  ok(d&&d.T.appr===d.lines.reduce((s,l)=>s+l.appr,0),g.id+' approved total adds up');ok(d&&d.projs.length===g.proj.length,g.id+' work lists its projects')});
+ go('bst');let el=document.querySelector('#view [data-bst-group]');ok(el&&el.getAttribute('data-bst-group')==='DP'&&/modeled/.test(el.textContent),'group view renders on bst, labeled modeled');
+ const b=document.querySelector('#view [data-bst-grp="OR"]');if(b){b.click();await new Promise(r=>setTimeout(r,150));el=document.querySelector('#view [data-bst-group]');ok(el&&el.getAttribute('data-bst-group')==='OR'&&/Operational Resilience/.test(el.innerText),'choosing a group switches the view')}else ok(false,'group chips');
+ S.thrGrp.g='DP';return f}));
+
 console.log('thread test',fails.length?'FAIL\n - '+fails.join('\n - '):'ok','| page errors',errs.length?errs.slice(0,4):'none');
 await b.close();process.exit(fails.length||errs.length?1:0)})();

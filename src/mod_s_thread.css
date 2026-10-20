@@ -10,7 +10,7 @@
 .thr-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .thr-row{display:flex;flex-direction:column;gap:4px;padding:6px 8px;border-radius:10px;min-width:0}
 .thr-row.thr-focus{background:var(--accent-soft)}
-.thr-rh{display:flex;align-items:center;gap:8px;min-width:0}
+.thr-rh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;min-width:0}
 .thr-rm{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
 .thr-open{display:inline-flex;align-items:center;gap:8px;min-width:0;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
 .thr-open b{overflow-wrap:break-word;min-width:0}
@@ -55,5 +55,5 @@
 /* DC-14 group view */
 .thr-grp{display:flex;flex-direction:column;gap:10px;min-width:0}
 .thr-gpick{display:flex;flex-wrap:wrap;gap:6px}
-.thr-gcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.thr-gcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media (max-width:900px){.thr-gcols{grid-template-columns:minmax(0,1fr)}}
