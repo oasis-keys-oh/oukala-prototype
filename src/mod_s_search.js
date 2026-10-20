@@ -13,8 +13,16 @@ const store={get:(k,d)=>W.U&&U.store?U.store.get(k,d):d,set:(k,v)=>W.U&&U.store?
 
 /* ---------- builder mode: hidden screens become searchable ---------- */
 const BKEY="falconaire-search-builder";
-SRCH.builder=()=>!!store.get(BKEY,false)||G(()=>PREF.nav==="full",false);
-SRCH.setBuilder=on=>{store.set(BKEY,!!on);SRCH.dirty();if(W.audit)G(()=>audit(on?"Turned on builder mode for search":"Turned off builder mode for search",""));return !!on};
+/* CL-87 (Omar 2026-10-20): builder mode is for the Tenant admin and Architect roles only. Granted by the demo identity's roles in
+   the active tenant (IDENT, mod_s_tenant) or by the Architect or Platform admin persona. Simulated permission: nothing is enforced
+   on a server. Everyone else gets a note instead of the switch. */
+const BROLES=["Tenant admin","Architect"],BPERS=["arch","admin"];
+SRCH.builderRoles=()=>BROLES.slice();
+SRCH.canBuild=()=>{const roles=G(()=>IDENT.roles(DATA.tenant()),[])||[];if(roles.some(r=>BROLES.indexOf(r)>=0))return true;return BPERS.indexOf(G(()=>S.persona,""))>=0};
+SRCH.builderWhy=()=>{if(SRCH.canBuild())return"";const who=G(()=>IDENT.me().name,"This identity");const t=G(()=>(DATA.tenantInfo(DATA.tenant())||{}).short,"")||G(()=>DATA.tenant(),"");
+ return"Builder mode is for the Tenant admin and Architect roles. "+who+(t?" has neither role in "+t:" has neither role")+" (simulated permission).";};
+SRCH.builder=()=>SRCH.canBuild()&&(!!store.get(BKEY,false)||G(()=>PREF.nav==="full",false));
+SRCH.setBuilder=on=>{if(on&&!SRCH.canBuild()){G(()=>toast(SRCH.builderWhy(),"warn"));return false}store.set(BKEY,!!on);SRCH.dirty();if(W.audit)G(()=>audit(on?"Turned on builder mode for search":"Turned off builder mode for search",""));return !!on};
 SRCH.dirty=()=>{G(()=>{const I=NAVX.index;if(I&&I.built)I.dirty=true})};
 
 /* ---------- screens ---------- */
@@ -157,7 +165,8 @@ SRCH.label=function(it){if(it&&it.sid&&SRCH.hiddenScreen(it.sid)&&it.m&&it.m.ind
 /* palette notes above the results */
 SRCH.noteHTML=function(){const c=SRCH.counts();let h="";
  if(c.meridian&&c.tenant!=="core")h+=`<li class="nx-fixed ss-note" role="presentation" data-srch-scope="${E(c.tenant)}">Search follows the active tenant, ${E(tname(c.tenant))}. ${c.meridian.toLocaleString("en-US")} result${c.meridian===1?"":"s"} from the Meridian sample ${c.meridian===1?"is":"are"} hidden (tenant isolation is simulated in this prototype).</li>`;
- if(c.hidden&&!SRCH.builder())h+=`<li class="nx-fixed ss-note" role="presentation">${c.hidden} hidden screen${c.hidden===1?"":"s"} also match${c.hidden===1?"es":""}. <button type="button" class="btn quiet sm" data-srch-builder="1">Show hidden screens (builder mode)</button></li>`;
+ if(c.hidden&&!SRCH.canBuild())h+=`<li class="nx-fixed ss-note ss-locked" role="presentation" data-srch-locked="1">${c.hidden} hidden screen${c.hidden===1?"":"s"} also match${c.hidden===1?"es":""}. ${E(SRCH.builderWhy())}</li>`;
+ else if(c.hidden&&!SRCH.builder())h+=`<li class="nx-fixed ss-note" role="presentation">${c.hidden} hidden screen${c.hidden===1?"":"s"} also match${c.hidden===1?"es":""}. <button type="button" class="btn quiet sm" data-srch-builder="1">Show hidden screens (builder mode)</button></li>`;
  else if(SRCH.builder())h+=`<li class="nx-fixed ss-note" role="presentation">Builder mode: hidden screens are included. <button type="button" class="btn quiet sm" data-srch-builder="0">Turn off</button></li>`;
  return h};
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-srch-builder]");if(!b)return;e.preventDefault();e.stopPropagation();
