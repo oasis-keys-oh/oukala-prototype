@@ -1,0 +1,32 @@
+# Runs the full suite (tools/tests/run.sh) on every push and pull request, so a broken merge is caught before a deploy.
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - name: Keep the build for inspection
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_out
+          path: build_out/
+          retention-days: 7
