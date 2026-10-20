@@ -1,12 +1,14 @@
 // CL-03 tab test: every demo scenario x every Experience journeys tab. Fails on thrown errors or blank views.
-// Usage: node tools/tests/tabs.js <dir containing full.html>
+// Usage: node tools/tests/tabs.js <dir containing full.html | URL of a deployed site (JM-10)>
 const {chromium}=require('playwright');const path=require('path');
-(async()=>{const dir=path.resolve(process.argv[2]||'build_out');
+(async()=>{const arg=process.argv[2]||'build_out',remote=/^https?:\/\//.test(arg);const dir=remote?arg:path.resolve(arg);
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();const errs=[];
 p.on('pageerror',e=>errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
-await p.route(/^https?:/,r=>r.abort());
-await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p.waitForTimeout(800);
+if(!remote)await p.route(/^https?:/,r=>r.abort());
+await p.goto(remote?dir:'file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
+await p.waitForFunction(()=>typeof SCREENS!=='undefined'&&typeof go==='function'&&document.querySelector('#view'),null,{timeout:120000});await p.waitForTimeout(800);
+if(remote)console.log('target',dir);
 const scns=await p.evaluate(()=>Object.keys(SCN.list));let n=0,bad=0;console.log('scenarios',scns.join(','));
 for(const k of scns){await p.evaluate(k=>SCN.set(k),k);await p.waitForTimeout(300);
  for(let t=0;t<9;t++){const n0=errs.length;

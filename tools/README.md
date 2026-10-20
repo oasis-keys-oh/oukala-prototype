@@ -12,7 +12,7 @@ Everything that is not shipped source. The build itself is `src/build.py`; modul
 
 ## Tests
 - `npm test` (or `tools/tests/run.sh`): all must pass before any commit or push.
-- Each suite takes a folder holding `full.html`: `node tools/tests/smoke.js build_out`.
+- Each suite takes a folder holding `full.html`: `node tools/tests/smoke.js build_out`. `smoke.js`, `tabs.js` and `showlint.js` also take a deployed URL (JM-10): `node tools/tests/smoke.js https://oukala-prototype.netlify.app`.
 - Needs Node, Playwright and a Chromium (`CHROMIUM_PATH` if Playwright's own is not installed).
 
 ## Generators

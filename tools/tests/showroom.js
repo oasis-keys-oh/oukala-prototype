@@ -26,6 +26,7 @@ for(const d of await p.evaluate(()=>SHOW.demos.map(x=>[x.id,x.beats.length,x.tot
  console.log(id,n,'beats',tot,'s budget: stepped');}
 // deep link
 const p2=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();await p2.route(/^https?:/,r=>r.abort());
-await p2.goto('file://'+dir+'/full.html?showroom=coo&beat=4',{waitUntil:'domcontentloaded',timeout:120000});await p2.waitForTimeout(2200);
+await p2.goto('file://'+dir+'/full.html?showroom=coo&beat=4',{waitUntil:'domcontentloaded',timeout:120000});
+await p2.waitForFunction(()=>typeof S!=='undefined'&&S.screen==='bst'&&document.querySelector('.sr-dot.on'),null,{timeout:20000}).catch(()=>{});await p2.waitForTimeout(300);
 const dl=await p2.evaluate(()=>({scr:S.screen,on:[...document.querySelectorAll('.sr-dot')].findIndex(x=>x.classList.contains('on'))}));if(dl.on!==3||dl.scr!=='bst')fail('deep link '+JSON.stringify(dl));
 console.log('deep link',JSON.stringify(dl),'errors',errs.length?errs:'none','failures',bad);await b.close();process.exit(bad||errs.length?1:0)})();
