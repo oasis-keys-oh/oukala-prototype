@@ -26,3 +26,18 @@ button.gd-cell{cursor:pointer}
 .gd-steps{margin:8px 0 12px;padding-left:22px;display:grid;gap:8px}
 .gd-steps li{line-height:1.45}
 .gd-legend{gap:8px;flex-wrap:wrap;margin:12px 0 6px}
+/* DC-44 Break it free play. Prefix: bk-. */
+.bk{display:grid;gap:12px}
+.bk-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.bk-top .story{flex:1 1 320px;margin:0}
+.bk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.bk-card{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border:1px solid var(--hair);border-radius:var(--rad-xl);background:var(--glass)}
+.bk-card p{margin:0}
+.bk-card.held{border-color:var(--good-f);background:var(--good-s)}
+.bk-card.open{border-color:var(--bad-f);background:var(--bad-s)}
+.bk-card.bonus{border-style:dashed}
+.bk-h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bk-res{display:grid;gap:4px}
+.bk-res code{font-size:var(--fs-xs);word-break:break-word}
+.bk-act{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.bk-act .btn{min-height:44px}

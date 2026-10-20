@@ -117,34 +117,53 @@ const AKEY="guard_attempts";
 let LOG=G(()=>U.store.get(AKEY,[]),[])||[];
 const activeAgent=()=>G(()=>{const L=AGENTRT.registry();return (L.find(r=>r.lifecycle==="active"&&r.tier===3)||L.find(r=>r.lifecycle==="active")||L[0]||{}).name},null);
 const ATTEMPTS=[
- {id:"budget",n:"Run an agent past its daily budget",rail:"GR-14",fn:"AGENTRT.execute",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};const reg=STORE.get("agent_registry",ag);const cap=reg.budget_cap;
+ {id:"budget",n:"Run an agent past its daily budget",rail:"GR-14",fn:"AGENTRT.execute",ctl:"Agent daily budget cap",held:"The agent runtime adds the run's cost to what the agent spent today and stops the run before it starts when the total passes the agent's daily cap.",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};const reg=STORE.get("agent_registry",ag);const cap=reg.budget_cap;
    let r;try{STORE.patch("agent_registry",ag,{budget_cap:0});r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: over budget",step:"Try to break it",origin:"guard playground"})}finally{STORE.patch("agent_registry",ag,{budget_cap:cap})}
    return{refused:!!(r&&r.blocked&&r.by==="budget"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}},
- {id:"confidence",n:"Act on an agent result below the confidence floor",rail:"GR-15",fn:"AGENTRT.execute",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};
+ {id:"confidence",n:"Act on an agent result below the confidence floor",rail:"GR-15",fn:"AGENTRT.execute",ctl:"Confidence floor",held:"Below the confidence floor the runtime does not act on the result: it hands the decision to a person or holds it for the agent's human sponsor.",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};
    const r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: low confidence",step:"Try to break it",conf:99,origin:"guard playground"});
    if(!r.ok)return{refused:true,why:r.why,ref:r.runId,who:ag};return{refused:!!(r.escalated||r.needsApproval),why:"Confidence "+Math.round(r.confidence*100)+"% is below the 99% floor set for this attempt: "+(r.escalated?"escalated to a person":"held for the sponsor to decide"),ref:r.runId,who:ag}}},
- {id:"restricted",n:"Open someone else's pay record as the service desk",rail:"GR-01",fn:"PERM.can",run(){const d=PERM.can("ops","read","compensation_record","Casey Rowan");if(!d.ok)G(()=>PERM.logDenial(PERM.principalFor("ops"),d,{rec:"Casey Rowan"}));
+ {id:"restricted",n:"Open someone else's pay record as the service desk",rail:"GR-01",fn:"PERM.can",ctl:"Deny by default permission model",held:"The permission model grants nothing that is not written down: the service desk role has no read grant on pay records, so the record stays closed and the denial is logged.",run(){const d=PERM.can("ops","read","compensation_record","Casey Rowan");if(!d.ok)G(()=>PERM.logDenial(PERM.principalFor("ops"),d,{rec:"Casey Rowan"}));
    return{refused:!d.ok,why:d.why,who:G(()=>PERM.personaUser.ops,"Service desk")}}},
- {id:"own",n:"Approve your own request (budget, change and catalog)",rail:"GR-05",fn:"APG.check",run(){const br=G(()=>BUDREQ.requests().find(q=>["tri","fin","arc","val","cnc","dec"].indexOf(q.st)>=0),null);const ch=G(()=>ITSMX.changes.find(c=>c.req),null);
+ {id:"own",n:"Approve your own request (budget, change and catalog)",rail:"GR-05",fn:"APG.check",ctl:"Segregation of duties",held:"The one approval route compares the person deciding with the person who asked and refuses a match, on budget, change and catalog requests alike.",run(){const br=G(()=>BUDREQ.requests().find(q=>["tri","fin","arc","val","cnc","dec"].indexOf(q.st)>=0),null);const ch=G(()=>ITSMX.changes.find(c=>c.req),null);
    const out=[];const t=(label,actor,kind,rec)=>{const c=APG.check(actor,kind,rec);if(!c.ok)G(()=>APG.noteDenial(actor,kind,rec,c));out.push([label,c])};
    if(br)t("Budget "+br.id,br.req,"budget_request",{id:br.id,requester:br.req,stage:br.st,amount:br.amt});
    if(ch)t("Change "+ch.id,ch.req,"change_request",{id:ch.id,requester:ch.req});
    t("Catalog request","Casey Rowan","catalog",{kind:"catalog",id:"playground",requester:"Casey Rowan"});
    return{refused:out.every(x=>!x[1].ok&&x[1].rule==="sod"),why:out.map(x=>x[0]+": "+x[1].why).join(" · "),who:out.length+" requests"}}},
- {id:"kill",n:"Run an agent while the kill switch is on",rail:"GR-17",fn:"AGENTRT.setControl",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};let r;
+ {id:"kill",n:"Run an agent while the kill switch is on",rail:"GR-17",fn:"AGENTRT.setControl",ctl:"Kill switch",held:"The runtime reads the kill switch control record before every run; with the switch pulled, nothing starts until a person turns it off again.",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};let r;
    try{AGENTRT.setControl("global","all",true,"kill","Guardrail playground, simulated");r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: kill switch",step:"Try to break it",origin:"guard playground"})}finally{AGENTRT.setControl("global","all",false,"kill","Guardrail playground done")}
-   return{refused:!!(r&&r.blocked&&r.by==="control"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}}];
+   return{refused:!!(r&&r.blocked&&r.by==="control"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}},
+ /* DC-44: overspend a budget line through the real purchase order check (mod_budget.js poForm onSubmit), never committing anything */
+ {id:"overspend",n:"Overspend a budget line with a purchase order",rail:"GR-09",fn:"purchase order headroom check",ctl:"Budget line headroom",held:"The purchase order check compares the amount with what the line has left (approved less committed) and refuses anything over it, so the money cannot be committed.",
+  run(){const X=W.BUDX;if(!X)return{na:"The budget engine is not loaded"};const l=G(()=>X.B().lines.slice().sort((a,b)=>(b.appr-b.comm)-(a.appr-a.comm))[0],null);if(!l)return{na:"No budget line"};
+   const sp=poSpec();if(!sp)return{na:"The purchase order form is not available"};const hr=Math.max(0,l.appr-l.comm),amt=hr+25000,before=l.comm,n0=G(()=>X.B().po.length,0);
+   const r=sp.onSubmit(Object.assign({},sp.defaults||{},{d:"Break it: overspend (simulated)",ord:amt,line:l.id}))||{};
+   const moved=l.comm!==before||G(()=>X.B().po.length,0)!==n0;if(moved){l.comm=before;G(()=>{X.B().po.length=n0})}
+   return{refused:r.close===false&&!moved,why:(r.toast||"No refusal")+" (tried "+U.money(amt)+" on "+l.id+")",who:l.id}}},
+ /* DC-44: cross into another tenant as a demo identity with no membership there (DATA.guard), and look for agent runs outside their tenant (AGENTRT) */
+ {id:"tenant",n:"Cross into another tenant's data",rail:"GR-22",fn:"DATA.guard, AGENTRT.leakCheck",ctl:"Tenant membership and scope",held:"Switching tenants needs a membership in that tenant, so the switch is denied by default; agent runs, retrieval and memory stay in their own tenant's scope. Tenant isolation here is simulated.",
+  run(){if(!W.IDENT||!W.DATA)return{na:"The tenant model is not loaded"};const me=IDENT.cur,cur=DATA.tenant();const c=[];
+   IDENT.people.forEach(p=>DATA.tenants().forEach(t=>{if(t.id!==cur&&!(p.memberships||[]).some(m=>m.tenant===t.id))c.push([p,t])}));
+   const pick=c.find(x=>x[0].id===me)||c[0];if(!pick)return{na:"Every demo identity is a member of every tenant"};let ok=false;
+   try{IDENT.cur=pick[0].id;ok=DATA.setTenant(pick[1].id)}finally{IDENT.cur=me}if(ok)G(()=>DATA.setTenant(cur));
+   const lk=G(()=>AGENTRT.leakCheck(),{bad:[]})||{bad:[]};const bad=(lk.bad||[]).length;const org=pick[1].org||pick[1].n||pick[1].id;
+   return{refused:!ok&&!bad,why:pick[0].name+" has no membership in "+org+", so the switch was denied by default. Agent runs found outside their tenant: "+bad+".",who:pick[0].name}}}];
+/* the purchase order form spec: opened once (its drawer is closed at once) so the real onSubmit check can run */
+function poSpec(){if(typeof FORMSPEC==="undefined")return null;if(!FORMSPEC.bud_npo){const t=document.createElement("button");t.type="button";t.hidden=true;t.setAttribute("data-bud-newpo","");document.body.appendChild(t);
+ try{t.click()}finally{t.remove()}G(()=>closeDrawer())}return FORMSPEC.bud_npo||null}
 function attempt(id){const a=ATTEMPTS.find(x=>x.id===id);if(!a)return null;let res;try{res=a.run()||{}}catch(e){res={na:"The check could not run: "+(e&&e.message||e)}}
- const ent={at:Date.now(),id:a.id,n:a.n,rail:a.rail,fn:a.fn,refused:!!res.refused,na:res.na||"",why:res.na||res.why||"",ref:res.ref||"",who:res.who||"",tenant:G(()=>DATA.tenant(),"core"),sim:true};
- G(()=>audit("Guardrail test (simulated): "+a.n,(ent.na?"not run: ":ent.refused?"refused: ":"NOT refused: ")+ent.why));
+ const ent={at:Date.now(),id:a.id,n:a.n,rail:a.rail,fn:a.fn,refused:!!res.refused,na:res.na||"",why:res.na||res.why||"",ref:res.ref||"",who:res.who||"",tenant:G(()=>DATA.tenant(),"core"),sim:true,control:a.ctl||"",held:a.held||""};
+ G(()=>audit("Guardrail test (simulated): "+a.n,(ent.na?"not run: ":ent.refused?"refused, held by "+(a.ctl||a.rail)+": ":"NOT refused: ")+ent.why));
+ G(()=>W.EVENTS&&EVENTS.emit&&EVENTS.emit("exp.breakit",{id:a.id,refused:ent.refused,rail:a.rail,simulated:true}));
  LOG.unshift(ent);if(LOG.length>40)LOG.length=40;G(()=>U.store.set(AKEY,LOG));return ent}
 function playTab(){const last=id=>LOG.find(x=>x.id===id);
  return card("Try to break it","Each button asks the platform to do something a guardrail should refuse. It calls the real check, puts back anything it changed and writes an audit entry. Simulated: this is the prototype checking itself, not a security test.",
  `<div class="gd-play">${ATTEMPTS.map(a=>{const l=last(a.id);return `<div class="gd-try"><div><b>${E(a.n)}</b><div class="muted small">Guardrail ${E(a.rail)} · check <code>${E(a.fn)}</code></div>${l?`<div class="gd-res">${l.na?pill("Not run","mute"):l.refused?pill("Refused","good"):pill("Not refused","bad")} <span class="small">${E(l.why)}</span></div>`:""}</div><button type="button" class="btn" data-gd-try="${E(a.id)}">Try it</button></div>`}).join("")}</div>
- <div class="row" style="margin-top:12px"><button type="button" class="btn primary" data-gd-try="*">Try all five</button>${simChip()}</div>
+ <div class="row" style="margin-top:12px"><button type="button" class="btn primary" data-gd-try="*">Try all ${ATTEMPTS.length}</button>${simChip()}</div>
  ${LOG.length?`<div class="tscroll" style="margin-top:12px"><table><thead><tr><th>When</th><th>Attempt</th><th>Result</th><th>Why</th><th>Record</th></tr></thead><tbody>${LOG.slice(0,15).map(l=>`<tr><td>${E(new Date(l.at).toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}))}</td><td>${E(l.n)}</td><td>${l.na?pill("Not run","mute"):l.refused?pill("Refused","good"):pill("Not refused","bad")}</td><td class="small">${E(l.why)}</td><td>${l.ref?`<code>${E(l.ref)}</code>`:""}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted small" style="margin-top:12px">No attempts yet. Each attempt is also written to the audit trail.</p>`}`)}
 TABS.push({l:"Try to break it",h:()=>playTab()});
-Object.assign(GD,{attempt,attempts:()=>LOG.slice(),tries:()=>ATTEMPTS.map(a=>({id:a.id,n:a.n,rail:a.rail,fn:a.fn}))});
+Object.assign(GD,{attempt,attempts:()=>LOG.slice(),tries:()=>ATTEMPTS.map(a=>({id:a.id,n:a.n,rail:a.rail,fn:a.fn,control:a.ctl||"",held:a.held||""}))});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-try]");if(!t)return;const id=t.dataset.gdTry;
  const done=(id==="*"?ATTEMPTS.map(a=>attempt(a.id)):[attempt(id)]).filter(Boolean);const bad=done.filter(x=>!x.refused&&!x.na).length;
  G(()=>toast(bad?bad+" attempt"+(bad===1?"":"s")+" not refused":done.length+" attempt"+(done.length===1?"":"s")+" refused (simulated)",bad?"warn":"good"));if(S.screen===SELF)render()});
@@ -191,6 +210,44 @@ TABS.push({l:"Guided views",h:()=>childrenTab()});
 Object.assign(GD,{child,children:()=>CHILDREN.map(c=>JSON.parse(JSON.stringify(c)))});
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-child]");if(!t)return;const id=t.dataset.gdChild;if(id)child(id);else{S_.child="";render()}});
 G(()=>{const q=new URLSearchParams(location.search).get("guardchild");if(q&&CHBY[q])setTimeout(()=>child(q),1200)});
+
+/* ---------- DC-44: Break it, free play ----------
+   The buyer tries the six things a guardrail should stop, in any order, and sees which control held each one. Every attempt runs the
+   real check through GUARD.attempt (APG.check, the purchase order check, AGENTRT, PERM.can, DATA.guard), puts back anything it
+   changed and writes an audit entry. Registered as a three-minute mission when the experience engine (window.EXP) is present.
+   Simulated: the prototype checking itself, not a security test. Prefix: bk- (CSS in mod_s_guard.css). */
+const FREE=[["own","Approve your own request","You asked for it, so you sign it off."],["overspend","Overspend a budget line","Raise a purchase order bigger than what is left."],
+ ["confidence","Push a low-confidence agent result","Act on an answer the agent is not sure of."],["kill","Pull the kill switch, then run an agent","Stop every agent, then try one anyway."],
+ ["restricted","Open a restricted record","Read someone else's pay as the service desk."],["tenant","Cross into another tenant","Open another customer's data."],["budget","Run an agent past its budget","Spend more than the agent's daily cap."]];
+const ATT=id=>ATTEMPTS.find(a=>a.id===id);
+function breakPanel(){const last=id=>LOG.find(x=>x.id===id);const six=FREE.slice(0,6).map(f=>f[0]);const tried=six.filter(id=>last(id)),held=tried.filter(id=>last(id).refused);
+ return `<div class="bk" data-bk-play="1"><div class="bk-top"><p class="story" data-role="story">Six things a guardrail should stop. Try them in any order; each one runs the real check and tells you which control held.</p>
+ <span class="pill ${held.length===six.length?"good":"mute"}" data-bk-score="1">Held ${held.length} of ${tried.length} tried · ${six.length} to try</span>${simChip()}</div>
+ <div class="bk-grid">${FREE.map(([id,t,d],i)=>{const a=ATT(id);if(!a)return"";const l=last(id);return `<section class="bk-card${l?l.refused?" held":" open":""}${i>5?" bonus":""}" aria-label="${E(t)}">
+  <div class="bk-h"><b>${E(t)}</b>${i>5?`<span class="pill mute">Bonus</span>`:""}</div><p class="muted small">${E(d)}</p>
+  ${l?`<div class="bk-res" role="status">${l.na?pill("Not run","mute"):l.refused?pill("Held","good"):pill("Not refused","bad")} <b>${E(a.ctl||"")}</b><p class="small">${E(a.held||"")}</p><p class="muted small">${E(l.why)}</p><p class="muted small">Guardrail ${E(a.rail)} · check <code>${E(a.fn)}</code> · audit entry written</p></div>`:""}
+  <div class="bk-act"><button type="button" class="btn${l?"":" primary"}" data-bk-try="${E(id)}">${l?"Try again":"Try it"}</button>${id==="overspend"?`<button type="button" class="btn quiet" data-bk-self="overspend">Try it yourself in the real form</button>`:""}</div></section>`}).join("")}</div>
+ <p class="muted small">Each attempt is written to the audit trail and the Try to break it log. Nothing is committed: anything an attempt changes is put back. Simulated.</p></div>`}
+TABS.push({l:"Break it",h:()=>breakPanel()});
+const BKTAB=TABS.length-1;
+function openBreakIt(){S.v=S.v||{};S.v.sguard=BKTAB;S_.child="";if(S.screen===SELF)G(()=>render());else G(()=>go(SELF));return BKTAB}
+function repaint(){const h=document.querySelector("[data-bk-play]");if(h)h.outerHTML=breakPanel();else if(S.screen===SELF)G(()=>render())}
+function newPo(){const t=document.createElement("button");t.type="button";t.hidden=true;t.setAttribute("data-bud-newpo","");document.body.appendChild(t);try{t.click()}finally{t.remove()}}
+G(()=>ROUTER.on("click","[data-bk-try],[data-bk-self]",(e,el)=>{if(el.dataset.bkTry){const x=attempt(el.dataset.bkTry);if(x)G(()=>toast(x.refused?"Held: "+(x.control||x.rail)+" (simulated)":x.na?"Not run: "+x.na:"Not refused",x.refused?"good":"warn"));repaint();return}
+ /* the buyer raises the purchase order themselves: the real form, prefilled past the line's headroom */
+ const X=W.BUDX,l=G(()=>X.B().lines.slice().sort((a,b)=>(b.appr-b.comm)-(a.appr-a.comm))[0],null);if(!l)return;newPo();
+ G(()=>{const v=FORMST.bud_npo.vals;v.ord=Math.max(0,l.appr-l.comm)+25000;v.line=l.id;v.d="Break it: overspend (simulated)";refreshForm("bud_npo")});
+ G(()=>toast("Press Raise purchase order and watch the check refuse it","info"))},{id:"bk-click"}));
+const MISSION={id:"break_it",title:"Break it: get past the guardrails",role:"any",tenants:"any",clock:180,
+ brief:"Try six things a guardrail should stop and see which control holds each one.",goal:"All six attempts are refused, each with the control that held.",
+ setup(){openBreakIt()},
+ checkpoints:FREE.slice(0,6).map(([id,t],i)=>({id,when:ev=>{const a=ATT(id);return !!ev&&!!a&&((ev.type==="exp.breakit"&&ev.id===id)||String(ev.a||"")==="Guardrail test (simulated): "+a.n)},hint:{after:20+i*25,text:"Try: "+t+"."},claim:"fact"})),
+ success(){return FREE.slice(0,6).every(([id])=>LOG.some(l=>l.id===id&&l.refused))},ripples:["risk"],
+ debrief(){const six=FREE.slice(0,6).map(f=>f[0]);const h=six.filter(id=>LOG.some(l=>l.id===id&&l.refused));return h.length+" of "+six.length+" held: "+h.map(id=>(ATT(id)||{}).ctl).join(", ")+". Simulated."}};
+let REGD=false;const tryReg=()=>{if(REGD||!W.EXP||typeof EXP.register!=="function")return;try{EXP.register(MISSION);REGD=true}catch(e){console.error("break it mission",e)}};
+G(()=>HOOKS.on("afterRender",tryReg,{id:"guard-breakit-exp"}));setTimeout(tryReg,0);
+Object.assign(GD,{openBreakIt,breakIt:()=>FREE.map(([id,t,d])=>({id,title:t,d,control:(ATT(id)||{}).ctl})),mission:MISSION});
+
 
 /* ---------- process (R34 procCard) ---------- */
 G(()=>PROC.reg(SELF,{title:"How a guardrail is kept true",std:["nist","cobit"],steps:[
