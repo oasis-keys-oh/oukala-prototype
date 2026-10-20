@@ -17,6 +17,7 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  DATA.guard(null);ok(DATA.allowed("zz_reg"),"DATA guard cleared");if(window.IDENT)DATA.guard(id=>!DATA.tenantInfo(id)||IDENT.member(id));
  DATA.screen("zz_scr",{mode:"data",entities:["t_rec"]});ok(DATA.screenMode("zz_scr")==="data"&&DATA.screenMode("home")==="core"&&DATA.screens().length>=SCREENS.length,"DATA screen registry");
  ok(DATA.validate("zz_test").ok&&!DATA.validate("zz_none").ok,"DATA.validate");ok(DATA.snapshot("core").t_rec.ids[0]==="A","DATA.snapshot");
+ DATA.addTenant("zz_rm",{org:"Test org"});DATA.pack("zz_rm",{t_rec:[{id:"Z"}]});ok(DATA.removeTenant("zz_rm")&&!DATA.tenantInfo("zz_rm")&&!DATA.removeTenant("core"),"DATA.removeTenant");
  ok(STEPMODE.of("fn")==="robot"&&STEPMODE.of("auto")==="robot"&&STEPMODE.label("ai")==="Agent","STEPMODE aliases");ok(!/Automatic|Function/.test(STEPMODE.pill("auto")),"STEPMODE never shows retired words");
  ok(TRIGGERS.list().length===5&&TRIGGERS.get("metric"),"TRIGGERS catalog");
  const a=CHATADDR.parse("record:project:PR1");ok(a&&a.recType==="project"&&a.id==="PR1","CHATADDR parse");

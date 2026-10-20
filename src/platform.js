@@ -74,6 +74,9 @@ DATA.setTenant=id=>{if(!id||id===_tenant)return false;if(!DATA.allowed(id)){HOOK
 const TEN={};const TORD=[];
 DATA.addTenant=(id,info)=>{if(!TEN[id])TORD.push(id);TEN[id]=Object.assign({id},TEN[id]||{},info||{});return DATA};
 DATA.tenantInfo=id=>TEN[id==null?_tenant:id]||null;
+/* removeTenant (DC-43): drops a generated tenant, its pack rows and memo; switches back to core if it was active. core cannot be removed. */
+DATA.removeTenant=id=>{if(!id||id==="core"||!TEN[id])return false;if(_tenant===id)DATA.setTenant("core");delete TEN[id];const i=TORD.indexOf(id);if(i>=0)TORD.splice(i,1);
+ delete PACKS[id];[...GAPS].forEach(g=>{if(g.indexOf(id+":")===0)GAPS.delete(g)});MEMO.clear();DATA.version++;LIS.slice().forEach(f=>{try{f(_tenant,_tenant)}catch(e){console.error("DATA change",e)}});return true};
 DATA.tenants=()=>TORD.map(id=>TEN[id]);
 
 /* Tenant-aware screen registry (CL-55). mode: "data" reads through DATA.get · "tenant" follows the tenant through SCN or

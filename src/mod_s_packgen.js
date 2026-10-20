@@ -557,7 +557,7 @@ function forget(){const c=CUR;G(()=>U.store.del(KEY));CUR=null;if(!c)return fals
  if(G(()=>DATA.tenant(),"")===id)G(()=>TENANT.switch("core"));
  G(()=>{const me=IDENT.me();me.memberships=me.memberships.filter(m=>m.tenant!==id)});G(()=>{delete SCN.list[id];delete SCN.pack[id]});
  G(()=>{const empty={};Object.keys((W.TENANT_PACKS[id]||{}).rows||{}).forEach(k=>empty[k]=[]);DATA.pack(id,empty);delete W.TENANT_PACKS[id]});
- G(()=>{delete TENANT.info[id];delete TENANT.orgs[id]});DATA.touch();return true}
+ G(()=>{delete TENANT.info[id];delete TENANT.orgs[id]});G(()=>DATA.removeTenant&&DATA.removeTenant(id));DATA.touch();return true}
 
 /* a company built earlier in this session comes back after a reload (eight hours at most, this browser only) */
 function restore(){const s=G(()=>U.store.get(KEY,null),null);if(!s||!s.answers)return null;if(!s.at||Date.now()-s.at>TTL){G(()=>U.store.del(KEY));return null}
