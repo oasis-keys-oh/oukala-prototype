@@ -69,6 +69,15 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  S.v.sguard=1;go("guard");ok(document.querySelectorAll("#view .gd-mx [data-gd-cell]").length>0,"DC-19 matrix cells render");
  ok(!/Not available\./.test(document.getElementById("view").textContent),"every guard tab renders (no failed tab)");
  document.querySelector("#view .gd-mx [data-gd-cell]").click();ok(S.v.sguard===0&&S.sguard.stage,"DC-19 a cell filters the register");S.sguard.fam=S.sguard.stage="";
+ /* ---- DC-20: try to break it: real checks, audited, all refused, nothing left changed ---- */
+
+ const tries=GUARD.tries();ok(["budget","confidence","restricted","own","kill"].every(id=>tries.some(t=>t.id===id)),"DC-20 five attempts");
+ const res=tries.map(t=>GUARD.attempt(t.id));res.forEach(x=>ok(x&&x.refused&&!x.na,"DC-20 "+(x&&x.id)+" is refused: "+(x&&x.why)));
+ ok(res.every(x=>x.sim),"DC-20 attempts are labeled simulated");
+ ok(AUDIT.slice(0,60).filter(a=>/^Guardrail test/.test(a.a)).length>=5,"DC-20 each attempt writes an audit entry");
+ ok(!STORE.all("agent_control").some(c=>c.scope==="global"&&c.paused),"DC-20 kill switch is back off");
+ if(ag)ok(STORE.get("agent_registry",AGENTRT.registry().find(x=>x.lifecycle==="active")?AGENTRT.registry().find(x=>x.lifecycle==="active").name:ag).budget_cap>0,"DC-20 budget cap restored");
+ S.v.sguard=2;go("guard");ok(/Refused/.test(document.getElementById("view").textContent),"DC-20 results show on the screen");
  go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
  return f});
 fails.push(...r);

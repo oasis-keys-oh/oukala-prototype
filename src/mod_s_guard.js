@@ -110,6 +110,45 @@ GD.matrix=()=>matrix();
 document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-cell]");if(!t)return;const [f,s]=t.dataset.gdCell.split("|");S_.fam=f;S_.stage=s;S_.st="";S.v.sguard=0;render()});
 function honesty(){return `<div class="gd-honest glass" role="note"><b>Read this first.</b> Everything on this screen runs in a database-free prototype and is simulated. Tenant isolation is simulated, not enforced by infrastructure. There is no security certification; certifications such as SOC 2 are a plan, not a claim. Counsel review (BR-08) is required before any of this is used with a customer. ${simChip()}</div>`}
 
+/* ---------- DC-20: "Try to break it" ----------
+   Each attempt calls the real check function (AGENTRT.execute, PERM.can, APG.check, AGENTRT.setControl), restores anything it
+   changed, and writes an audit entry. All of it runs in the prototype and is labeled simulated. */
+const AKEY="guard_attempts";
+let LOG=G(()=>U.store.get(AKEY,[]),[])||[];
+const activeAgent=()=>G(()=>{const L=AGENTRT.registry();return (L.find(r=>r.lifecycle==="active"&&r.tier===3)||L.find(r=>r.lifecycle==="active")||L[0]||{}).name},null);
+const ATTEMPTS=[
+ {id:"budget",n:"Run an agent past its daily budget",rail:"GR-14",fn:"AGENTRT.execute",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};const reg=STORE.get("agent_registry",ag);const cap=reg.budget_cap;
+   let r;try{STORE.patch("agent_registry",ag,{budget_cap:0});r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: over budget",step:"Try to break it",origin:"guard playground"})}finally{STORE.patch("agent_registry",ag,{budget_cap:cap})}
+   return{refused:!!(r&&r.blocked&&r.by==="budget"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}},
+ {id:"confidence",n:"Act on an agent result below the confidence floor",rail:"GR-15",fn:"AGENTRT.execute",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};
+   const r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: low confidence",step:"Try to break it",conf:99,origin:"guard playground"});
+   if(!r.ok)return{refused:true,why:r.why,ref:r.runId,who:ag};return{refused:!!(r.escalated||r.needsApproval),why:"Confidence "+Math.round(r.confidence*100)+"% is below the 99% floor set for this attempt: "+(r.escalated?"escalated to a person":"held for the sponsor to decide"),ref:r.runId,who:ag}}},
+ {id:"restricted",n:"Open someone else's pay record as the service desk",rail:"GR-01",fn:"PERM.can",run(){const d=PERM.can("ops","read","compensation_record","Casey Rowan");if(!d.ok)G(()=>PERM.logDenial(PERM.principalFor("ops"),d,{rec:"Casey Rowan"}));
+   return{refused:!d.ok,why:d.why,who:G(()=>PERM.personaUser.ops,"Service desk")}}},
+ {id:"own",n:"Approve your own request (budget, change and catalog)",rail:"GR-05",fn:"APG.check",run(){const br=G(()=>BUDREQ.requests().find(q=>["tri","fin","arc","val","cnc","dec"].indexOf(q.st)>=0),null);const ch=G(()=>ITSMX.changes.find(c=>c.req),null);
+   const out=[];const t=(label,actor,kind,rec)=>{const c=APG.check(actor,kind,rec);if(!c.ok)G(()=>APG.noteDenial(actor,kind,rec,c));out.push([label,c])};
+   if(br)t("Budget "+br.id,br.req,"budget_request",{id:br.id,requester:br.req,stage:br.st,amount:br.amt});
+   if(ch)t("Change "+ch.id,ch.req,"change_request",{id:ch.id,requester:ch.req});
+   t("Catalog request","Casey Rowan","catalog",{kind:"catalog",id:"playground",requester:"Casey Rowan"});
+   return{refused:out.every(x=>!x[1].ok&&x[1].rule==="sod"),why:out.map(x=>x[0]+": "+x[1].why).join(" · "),who:out.length+" requests"}}},
+ {id:"kill",n:"Run an agent while the kill switch is on",rail:"GR-17",fn:"AGENTRT.setControl",run(){const ag=activeAgent();if(!ag)return{na:"No agent is registered yet"};let r;
+   try{AGENTRT.setControl("global","all",true,"kill","Guardrail playground (simulated)");r=AGENTRT.execute({agent:ag,goal:"Guardrail playground: kill switch",step:"Try to break it",origin:"guard playground"})}finally{AGENTRT.setControl("global","all",false,"kill","Guardrail playground done")}
+   return{refused:!!(r&&r.blocked&&r.by==="control"),why:r&&(r.why||"Run completed"),ref:r&&r.runId,who:ag}}}];
+function attempt(id){const a=ATTEMPTS.find(x=>x.id===id);if(!a)return null;let res;try{res=a.run()||{}}catch(e){res={na:"The check could not run: "+(e&&e.message||e)}}
+ const ent={at:Date.now(),id:a.id,n:a.n,rail:a.rail,fn:a.fn,refused:!!res.refused,na:res.na||"",why:res.na||res.why||"",ref:res.ref||"",who:res.who||"",tenant:G(()=>DATA.tenant(),"core"),sim:true};
+ G(()=>audit("Guardrail test (simulated): "+a.n,(ent.na?"not run: ":ent.refused?"refused: ":"NOT refused: ")+ent.why));
+ LOG.unshift(ent);if(LOG.length>40)LOG.length=40;G(()=>U.store.set(AKEY,LOG));return ent}
+function playTab(){const last=id=>LOG.find(x=>x.id===id);
+ return card("Try to break it","Each button asks the platform to do something a guardrail should refuse. It calls the real check, puts back anything it changed and writes an audit entry. Simulated: this is the prototype checking itself, not a security test.",
+ `<div class="gd-play">${ATTEMPTS.map(a=>{const l=last(a.id);return `<div class="gd-try"><div><b>${E(a.n)}</b><div class="muted small">Guardrail ${E(a.rail)} · check <code>${E(a.fn)}</code></div>${l?`<div class="gd-res">${l.na?pill("Not run","mute"):l.refused?pill("Refused","good"):pill("Not refused","bad")} <span class="small">${E(l.why)}</span></div>`:""}</div><button type="button" class="btn" data-gd-try="${E(a.id)}">Try it</button></div>`}).join("")}</div>
+ <div class="row" style="margin-top:12px"><button type="button" class="btn primary" data-gd-try="*">Try all five</button>${simChip()}</div>
+ ${LOG.length?`<div class="tscroll" style="margin-top:12px"><table><thead><tr><th>When</th><th>Attempt</th><th>Result</th><th>Why</th><th>Record</th></tr></thead><tbody>${LOG.slice(0,15).map(l=>`<tr><td>${E(new Date(l.at).toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}))}</td><td>${E(l.n)}</td><td>${l.na?pill("Not run","mute"):l.refused?pill("Refused","good"):pill("Not refused","bad")}</td><td class="small">${E(l.why)}</td><td>${l.ref?`<code>${E(l.ref)}</code>`:""}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted small" style="margin-top:12px">No attempts yet. Each attempt is also written to the audit trail.</p>`}`)}
+TABS.push({l:"Try to break it",h:()=>playTab()});
+Object.assign(GD,{attempt,attempts:()=>LOG.slice(),tries:()=>ATTEMPTS.map(a=>({id:a.id,n:a.n,rail:a.rail,fn:a.fn}))});
+document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-gd-try]");if(!t)return;const id=t.dataset.gdTry;
+ const done=(id==="*"?ATTEMPTS.map(a=>attempt(a.id)):[attempt(id)]).filter(Boolean);const bad=done.filter(x=>!x.refused&&!x.na).length;
+ G(()=>toast(bad?bad+" attempt"+(bad===1?"":"s")+" not refused":done.length+" attempt"+(done.length===1?"":"s")+" refused (simulated)",bad?"warn":"good"));if(S.screen===SELF)render()});
+
 /* ---------- process (R34 procCard) ---------- */
 G(()=>PROC.reg(SELF,{title:"How a guardrail is kept true",std:["nist","cobit"],steps:[
  {n:"Inventory the check",d:"Find the function that refuses the action and record where it lives.",who:"human",owner:"Rina Okafor",sla:"Per release",in:"Code and screens",out:"Register row"},

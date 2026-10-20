@@ -15,4 +15,8 @@ button.gd-cell{cursor:pointer}
 .gd-cell.good{background:var(--good-f)}.gd-cell.warn{background:var(--warn-f)}.gd-cell.bad{background:var(--bad-f)}
 .gd-cell.none{color:var(--muted);border-style:dashed}
 .gd-cell.sm{min-height:28px;min-width:0}
+.gd-play{display:grid;gap:10px}
+.gd-try{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--hair);border-radius:12px}
+.gd-try .btn{min-height:44px;flex:none}
+.gd-res{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
 .gd-legend{gap:8px;flex-wrap:wrap;margin:12px 0 6px}
