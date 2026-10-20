@@ -11,8 +11,8 @@ const S={screen:"home",persona:"exec",sel:null,flowSel:null,rec:"I2",inv:"INV-20
  q:"",sort:{k:"n",d:1},extra:[],metricFilter:"all",chat:[],kgStart:"std1",kgSel:null,kgDone:{},kgTasks:null,kgLinked:{}};
 window.KG_EXTRA=[];
 const PREF={theme:"auto",size:"m",density:"comfortable",motion:"system",skill:"standard",contrast:"normal"};
-function loadPrefs(){try{const p=JSON.parse(localStorage.getItem("oukala-v2")||"null");if(p){Object.assign(PREF,p.pref||{});if(PERSONAS[p.persona])S.persona=p.persona}}catch(e){}applyPrefs()}
-function savePrefs(){try{localStorage.setItem("oukala-v2",JSON.stringify({pref:PREF,persona:S.persona}))}catch(e){}}
+function loadPrefs(){try{const p=U.store.get("oukala-v2",null);if(p){Object.assign(PREF,p.pref||{});if(PERSONAS[p.persona])S.persona=p.persona}}catch(e){}applyPrefs()}
+function savePrefs(){try{U.store.set("oukala-v2",{pref:PREF,persona:S.persona})}catch(e){}}
 function applyPrefs(){const r=document.documentElement;PREF.theme==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",PREF.theme);r.dataset.size=PREF.size;r.dataset.density=PREF.density;r.dataset.skill=PREF.skill;r.dataset.contrast=PREF.contrast;PREF.motion==="reduced"?r.dataset.motion="reduced":r.removeAttribute("data-motion")}
 function audit(a,d){AUDIT.unshift({t:new Date().toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit",second:"2-digit"}),p:PERSONAS[S.persona].n,s:S.screen,a,d:d||""});const b=$("#auditCount");if(b)b.textContent=AUDIT.length}
 

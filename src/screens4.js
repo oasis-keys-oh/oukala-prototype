@@ -254,7 +254,7 @@ const _ask=ask;ask=function(q){const l=q.toLowerCase();
  if(/gantt|critical path|master schedule|baseline/.test(l)){go("ims");return say(q,{t:"Here is the integrated master schedule. Red bars are the critical path.",steps:["Opened the master schedule"]})}
  if(/demand|priorit|fund(ing)?|intake|portfolio/.test(l)&&!/impact/.test(l)){go("port");return say(q,{t:"Here is demand ranked by priority score, with the funding line for your current envelope.",steps:["Opened Demand and priorities"]})}
  return _ask(q)};
-function addLog(kind,area,text){const id="U"+String(LOGX.length+1).padStart(2,"0");LOGX.push([id,kind,area||"General",text,"Open",""]);try{localStorage.setItem(LOGKEY,JSON.stringify(LOGX))}catch(e){}audit("logged feedback",id+" · "+text)}
+function addLog(kind,area,text){const id="U"+String(LOGX.length+1).padStart(2,"0");LOGX.push([id,kind,area||"General",text,"Open",""]);U.store.set(LOGKEY,LOGX);audit("logged feedback",id+" · "+text)}
 
 document.addEventListener("click",e=>{const t=e.target.closest("[data-dem],[data-task],[data-planto],[data-planproj],[data-slip],[data-imsscen],[data-imsproj],[data-imsopt],[data-gx-tog],[data-imslv],[data-imslv-ex],[data-wbs-go],[data-advance],[data-dapp],[data-merge],[data-capdem],[data-logf],[data-logk],[data-newkind],[data-logadd],[data-logcopy],[data-trend2]");if(!t)return;const d=t.dataset;
  if(d.dem)return demandDrawer(d.dem);

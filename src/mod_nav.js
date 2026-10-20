@@ -13,8 +13,8 @@ const now=()=>Date.now();
 
 /* ---------- storage: localStorage with an in-memory fallback, namespaced per persona ---------- */
 const MEM={};
-const store={get(k){try{const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v)}catch(e){}return MEM[k]==null?null:JSON.parse(MEM[k])},
- set(k,v){let s;try{s=JSON.stringify(v)}catch(e){return}MEM[k]=s;try{localStorage.setItem(k,s)}catch(e){}}};
+const store={get(k){const v=U.store.get(k,null);if(v!=null)return v;return MEM[k]==null?null:JSON.parse(MEM[k])},
+ set(k,v){let s;try{s=JSON.stringify(v)}catch(e){return}MEM[k]=s;U.store.set(k,v)}};
 
 /* ---------- the navigation model: functional groups ---------- */
 const ICO={
