@@ -81,7 +81,7 @@ const STORE={
  export(){const o={format:"oukala-store/1",exportedAt:new Date().toISOString(),by:actor(),entities:{},log:LOG.slice(-1000)};Object.keys(M).forEach(en=>{if(M[en].size)o.entities[en]=[...M[en].values()]});return o},
  import(o,opt){opt=opt||{};if(!o||o.format!=="oukala-store/1"||!o.entities)return{ok:false,why:"Not an "+BRAND.name+" store export (format oukala-store/1)"};let n=0,bad=0;Object.keys(o.entities).forEach(en=>o.entities[en].forEach(r=>{const x=STORE.put(en,r,{keepAudit:true,silent:true});if(x){n++;persistRec(en,x.id,x)}else bad++}));appendLog("import","(store)","",[n+" records"]);flush();notify("*",{op:"import"});return{ok:true,n,bad}},
  reset(){/* wipe every persisted byte and reload from seed data */
-  try{localStorage.removeItem("oukala-store:v1")}catch(e){}
+  U.store.del("oukala-store:v1")
   const done=()=>{try{location.reload()}catch(e){}};
   try{if(DB){DB.close()}const rq=indexedDB.deleteDatabase("oukala-store");rq.onsuccess=rq.onerror=rq.onblocked=done;setTimeout(done,1500)}catch(e){done()}},
  meter(){let n=0;Object.keys(M).forEach(en=>M[en].forEach(r=>{try{n+=ser(r).length}catch(e){}}));return{bytes:n,records:Object.keys(M).reduce((a,k)=>a+M[k].size,0),entities:STORE.entities().length,log:LOG.length,backend:BACKEND}},

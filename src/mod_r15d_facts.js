@@ -11,7 +11,7 @@ R15D.onAfter=fn=>{R15D.after.push(fn)};
 const G=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
 const E=U.esc;
 const N0=n=>Number(n).toLocaleString("en-US");
-const store={get(k,d){try{const v=localStorage.getItem("oukala-r15d-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("oukala-r15d-"+k,JSON.stringify(v))}catch(e){}}};
+const store={get:(k,d)=>U.store.get("oukala-r15d-"+k,d),set:(k,v)=>{U.store.set("oukala-r15d-"+k,v)}};
 R15D.store=store;
 S.r15d=S.r15d||{agFilter:"all",agHour:null};
 

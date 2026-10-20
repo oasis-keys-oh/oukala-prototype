@@ -10,7 +10,7 @@ const q1=(s,r)=>(r||D).querySelector(s),qa=(s,r)=>[...(r||D).querySelectorAll(s)
 const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const R16I=W.R16I=W.R16I||{};
 const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];
-const store={get(k,d){try{const v=localStorage.getItem("oukala-r16i-"+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("oukala-r16i-"+k,JSON.stringify(v))}catch(e){}}};
+const store={get:(k,d)=>U.store.get("oukala-r16i-"+k,d),set:(k,v)=>{U.store.set("oukala-r16i-"+k,v)}};
 R16I.store=store;
 const STAR="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.8z";
 const svg=(d,s,w)=>`<svg viewBox="0 0 24 24" width="${s||16}" height="${s||16}" fill="none" stroke="currentColor" stroke-width="${w||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;

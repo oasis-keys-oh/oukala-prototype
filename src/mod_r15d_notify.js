@@ -5,8 +5,8 @@
 (function(){
 const W=window;const R15D=W.R15D=W.R15D||{};R15D.after=R15D.after||[];
 const KEY="oukala-r15d-dismissed";
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}};
-const save=a=>{try{localStorage.setItem(KEY,JSON.stringify(a.slice(-200)))}catch(e){}};
+const load=()=>U.store.get(KEY,[])||[];
+const save=a=>{U.store.set(KEY,a.slice(-200))};
 let dismissed=load();
 const QUIET=/^(itsm_mi|itom_evt)$/;
 const suppressed=()=>QUIET.test(S.screen)||(document.getElementById("drawer")&&document.getElementById("drawer").matches(":popover-open"));

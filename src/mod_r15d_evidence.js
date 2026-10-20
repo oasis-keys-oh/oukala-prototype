@@ -11,7 +11,7 @@ S.r15d=S.r15d||{};S.r15d.ev=S.r15d.ev||{tab:0,verify:null,fw:"all"};
 
 /* ---------- the hash chain ---------- */
 const KEY="oukala-r15d-auditchain";
-let chain=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return[]}})();
+let chain=U.store.get(KEY,[])||[];
 const earlier=chain.length;
 let seenLen=0,busy=false,pending=false;
 const enc=s=>new TextEncoder().encode(s);
@@ -24,7 +24,7 @@ async function sync(){
   const A=G(()=>AUDIT,[]);const fresh=A.length-seenLen;
   if(fresh>0){const add=A.slice(0,fresh).reverse();
    for(const a of add){const prev=chain.length?chain[chain.length-1].h:"genesis";const e=canon(a);chain.push({n:chain.length+1,e,h:await sha(prev+"|"+e),sess:1})}
-   seenLen=A.length;try{localStorage.setItem(KEY,JSON.stringify(chain.slice(-1500)))}catch(x){}}
+   seenLen=A.length;U.store.set(KEY,chain.slice(-1500))}
  }finally{busy=false;if(pending){pending=false;sync()}}
 }
 async function verify(){

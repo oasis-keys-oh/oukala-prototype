@@ -14,7 +14,7 @@ const ROW=44,HEAD=28,PAGE=200;
 const REG={};let SEQ=0;
 const perf={open:0,filter:0,rows:0,windowRows:0};
 /* ---- storage for recent and starred: per viewer convenience only ---- */
-const ls={get(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return []}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const ls={get:k=>U.store.get(k,[])||[],set:(k,v)=>{U.store.set(k,v)}};
 /* ---- adapters ---- */
 function arrAdapter(arr){const opts=arr.map(x=>Array.isArray(x)?{v:String(x[0]),l:String(x[1]!=null?x[1]:x[0]),sub:x[2]||"",grp:x[3]||""}:(typeof x==="object"?{v:String(x.v),l:String(x.l!=null?x.l:x.v),sub:x.sub||"",grp:x.grp||"",c:x.c}:{v:String(x),l:String(x),sub:"",grp:""}));
  const idx=new Map(opts.map(x=>[x.v,x]));

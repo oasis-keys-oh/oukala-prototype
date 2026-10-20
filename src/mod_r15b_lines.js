@@ -15,9 +15,9 @@ const COLS=[
 const GROUPS=[["","No grouping"],["cc","Cost center"],["proj","Project"],["tower","Tower"],["owner","Line owner"],["ccOwner","Cost center owner"],["color","Funding color"],["cat","Category"],["unit","Org unit"],["vendor","Vendor"]];
 const FILTERS=[["cc","Cost center"],["proj","Project"],["cat","Category"],["tower","Tower"],["owner","Line owner"],["color","Funding color"],["var","Variance"]];
 const S_=S.bl=Object.assign({q:"",f:{},sort:{k:"appr",d:-1},group:"",page:0,size:50,cols:null,collapsed:{},scale:"real"},S.bl||{});
-try{if(!S_.cols){const s=JSON.parse(localStorage.getItem("oukala.bl.cols")||"null");if(Array.isArray(s)&&s.length)S_.cols=s}}catch(e){}
+try{if(!S_.cols){const s=U.store.get("oukala.bl.cols",null);if(Array.isArray(s)&&s.length)S_.cols=s}}catch(e){}
 if(!S_.cols)S_.cols=COLS.filter(c=>c.on).map(c=>c.k);
-const saveCols=()=>{try{localStorage.setItem("oukala.bl.cols",JSON.stringify(S_.cols))}catch(e){}};
+const saveCols=()=>{U.store.set("oukala.bl.cols",S_.cols)};
 /* ---- rows ---- */
 let REAL=null,REALKEY="";
 function colorOf(id){const r=tryv(()=>BUDREQ.requests().find(x=>x.lineId===id||x.line===id&&x.st==="funded"),null);return r&&r.color?r.color:"OP-U"}
