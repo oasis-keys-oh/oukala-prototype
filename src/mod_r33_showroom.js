@@ -303,8 +303,13 @@ ST.demoCard=demoCard;
 function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
  const story=`Guided tours over screens that already exist. Tours run on the fictional Meridian Standards Foundation unless a tenant brief says otherwise, and the bar says which. Nothing on a tour is a live connection, and every number carries a label.`;
  const extra=ST.home.map(f=>G(()=>f(),"")).join("");
- return `<div class="screen sr-home">${hero("Showroom","Showroom",story,`<div class="row"><label class="sr-chk"><input type="checkbox" id="srAud"> Start in audience mode (no talk track or timer)</label></div>`)}
- <div class="grid g2" style="align-items:start">${main.map(demoCard).join("")}</div>${extra}
+ /* DC-40: experiences come first (the buyer drives); guided tours stay as rehearsal and backup */
+ const exp=ST.expHome?G(()=>ST.expHome(),""):"";
+ return `<div class="screen sr-home">${hero("Showroom","Showroom",exp?"Experiences first: the buyer drives a short mission on the real screens and sees every decision ripple. "+story:story,"")}
+ ${exp}
+ <section class="sr-backup" aria-label="Rehearse and backup"><h2 class="sr-bh">Rehearse and backup: guided tours</h2><p class="muted small">Use a tour to rehearse, or when the buyer would rather watch. Experiences are the default.</p>
+ <div class="row"><label class="sr-chk"><input type="checkbox" id="srAud"> Start in audience mode (no talk track or timer)</label></div>
+ <div class="grid g2" style="align-items:start">${main.map(demoCard).join("")}</div>${extra}</section>
  <div class="grid g2" style="align-items:start">
  <section class="sr-card glass"><h3>How labels work</h3><p class="muted small">A label sits on every beat that shows a number or a capability.</p><dl class="kv">${Object.keys(CLAIM).map(k=>`<dt>${chip(k)}</dt><dd>${E(CLAIM[k].d)}</dd>`).join("")}</dl></section>
  <section class="sr-card glass"><h3>Before you present</h3><ul class="sr-ul"><li>Starting a tour switches to the tenant the tour needs (Meridian unless it says otherwise) and the role it is told from, closes chat and notification panels and hides pop-up alerts. The bar names the tenant; exit restores your tenant and role.</li>

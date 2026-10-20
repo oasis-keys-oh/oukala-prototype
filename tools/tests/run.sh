@@ -17,6 +17,8 @@ node tools/tests/smoke.js build_out
 node tools/tests/tabs.js build_out
 node tools/tests/journey.js build_out
 node tools/tests/showroom.js build_out
+# DC-40, DC-41, DC-42: experiences (EXP.lint, 3-minute clocks, every mission start to success, ripples, console, self-serve link, leave-behind)
+node tools/tests/exp.js build_out
 node tools/tests/platform.js build_out
 # CL-35, CL-36, CL-38: render/go/openDrawer wrappers, document listeners, observers and intervals never rise above their ceilings
 node tools/tests/runtime.js build_out
