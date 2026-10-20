@@ -186,6 +186,8 @@ function decide(id,act,note,by){
  /* PR-20: the decision is bound to the group the one routing source (APG.route) names for this stage and amount */
  if(window.APG&&APG.check){const c=APG.check(by,"budget_request",{id:r.id,requester:r.req,stage:sid,amount:r.amt,named:tryv(()=>rev(sid,r).name,"")});if(!c.ok){tryv(()=>APG.noteDenial(by,"budget_request",{id:r.id},c));return {ok:false,why:c.why,rule:c.rule}}}
  if(act!=="Approve"&&!String(note||"").trim())return {ok:false,why:"A reason is required."};
+ /* PR-26: funding from the management reserve is refused when the reserve cannot cover it */
+ if(act==="Approve"&&sid==="dec"){const rc=reserveCheck(r);if(!rc.ok){log(r,"note","Funding refused: "+rc.why,by,sid);audit("Budget request funding refused",r.id+": "+rc.why);return {ok:false,why:rc.why,rule:"reserve"}}}
  const rvw=rev(sid,r),onBehalf=by!==rvw.name&&by!==rvw.back&&!(rvw.role==="CIO"&&by==="Casey Rowan");
  r.rv[sid]={dec:act,by,d:iso(TODAY),note:note||"",behalf:onBehalf};
  const tag=onBehalf?" (on behalf of "+rvw.name+")":"";
@@ -194,7 +196,15 @@ function decide(id,act,note,by){
   const nx=nextStage(r);enter(r,nx==="done"?"dec":nx);audit("Budget request advanced",r.id+" "+SB[sid].n+" to "+SB[r.st].n);return {ok:true,next:r.st}}
  if(act==="Return"){r.rv[sid].returned=true;r.st="returned";log(r,"end","Returned to "+r.req+": "+note,by,sid);audit("Budget request returned",r.id+": "+note);tryv(()=>INBOX.refresh());return {ok:true}}
  const end=act==="Defer"?"deferred":"declined";r.st=end;log(r,"end",(act==="Defer"?"Deferred":"Declined")+" at "+SB[sid].n+tag+": "+note,by,sid);audit("Budget request "+end,r.id+": "+note);tryv(()=>INBOX.refresh());return {ok:true}}
+/* PR-26: can the management reserve fund this request? A pending reserve entry that matches the request is already counted
+   in the pending total, so it only needs the balance; any other reserve-funded ask needs the free reserve (balance less pending). */
+function reserveCheck(r){const k=K();if(!k||!/reserve/i.test(r.src||""))return {ok:true,reserve:false};
+ const B=k.B(),bal=k.resBal(),pend=k.resPend(),pe=r.line?B.led.find(x=>x.st==="Pending"&&x.line===r.line&&-x.amt===r.amt):null;
+ const free=pe?bal-(pend-r.amt):bal-pend;
+ if(r.amt>free)return {ok:false,reserve:true,bal,pend,free,why:"The management reserve has "+D$(Math.max(0,free))+" free (balance "+D$(bal)+" less "+D$(pe?pend-r.amt:pend)+" already requested), and this request asks for "+D$(r.amt)+". Fund it from another source, reduce the ask, or decide the pending reserve requests first."};
+ return {ok:true,reserve:true,bal,pend,free,pending:pe?pe.id:""}}
 function fund(r,by){
+ const rc=reserveCheck(r);if(!rc.ok)return {ok:false,why:rc.why,rule:"reserve"};
  const k=K(),g=gateFor(r);let lineMsg="";
  if(k&&!r.lineId){const B=k.B();
   const dept=(k.DEPTS.find(d=>d[2]===r.cc)||["IT"])[0],proj=r.proj||"PR3",ids=[];
@@ -204,7 +214,9 @@ function fund(r,by){
   else if(r.type==="Reallocation"&&r.fromLine){const f=k.LN(r.fromLine);if(f)f.appr-=r.amt;lineMsg="Moved from "+r.fromLine}
   if(!r.lineId){CATS.forEach(c=>{const a=(r.cost||{})[c]||0;if(!a)return;const id=r.id.replace("BR-","BR")+"-"+c.slice(0,3).toUpperCase();
     B.lines.push({id,p:proj,cat:c,n:r.t+" ("+c.toLowerCase()+")",dept,appr:a,comm:0,act:0,fcst:a,own:r.sp,why:"Funded from budget request "+r.id+". "+r.why,fix:""});ids.push(id)});
-   r.lineId=ids[0]||"";r.lineIds=ids;lineMsg=ids.length+" budget line"+(ids.length===1?"":"s")+" created ("+ids.join(", ")+")"}}
+   r.lineId=ids[0]||"";r.lineIds=ids;lineMsg=ids.length+" budget line"+(ids.length===1?"":"s")+" created ("+ids.join(", ")+")";
+   /* PR-26: a reserve-funded request with no existing line still draws on the reserve */
+   if(reserve&&ids.length){const nx=B.led.length+1;B.led.push({id:"RL-"+String(nx).padStart(2,"0"),d:iso(TODAY),t:"draw",amt:-r.amt,p:proj,line:ids[0],why:"Funded from budget request "+r.id+": "+r.t,req:r.req,apr:by,st:"Approved"});lineMsg+="; reserve draw posted"}}}
  r.st="funded";r.gate=g.id;log(r,"end","Funded at gate "+g.id+(lineMsg?". "+lineMsg:""),by,"dec");log(r,"enter","Approved and funded","System","done");
  audit("Budget request funded",r.id+" "+D$(r.amt)+" at "+g.id+(lineMsg?"; "+lineMsg:""));tryv(()=>INBOX.refresh());syncM();return {ok:true,funded:true,line:lineMsg}}
 function submit(v){
