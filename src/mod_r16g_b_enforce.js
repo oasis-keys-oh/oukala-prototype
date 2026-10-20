@@ -20,8 +20,9 @@ function deniedScreenHTML(id,d){const nm=G(()=>SCREENS.find(s=>s[0]===id)[1],id)
 let wrapN=-1;
 function wrapScreens(){if(typeof _R==="undefined")return;const ks=Object.keys(_R);
  ks.forEach(id=>{const f=_R[id];if(typeof f!=="function"||f.__pm)return;const w=function(){if(on()&&id!=="home"){const d=PM().can(null,"read","screen:"+id);if(!d.ok){PM().logDenial(PM().principal(),d,{rec:""});return deniedScreenHTML(id,d)}}return f.apply(this,arguments)};w.__pm=1;_R[id]=w})}
-const _render=W.render;
-W.render=function(){try{wrapScreens()}catch(e){console.error("perm wrap",e)}const r=_render.apply(this,arguments);try{if(typeof sweep==="function")sweep()}catch(e){console.error("perm sweep",e)}return r};
+/* CL-35: HOOKS, not a render wrapper; orders -2020 and 2020 keep the old wrapper position (outside r15d, inside r18g) */
+HOOKS.on("beforeRender",()=>{try{wrapScreens()}catch(e){console.error("perm wrap",e)}},{id:"perm.wrap",order:-2020});
+HOOKS.on("afterRender",()=>{try{if(typeof sweep==="function")sweep()}catch(e){console.error("perm sweep",e)}},{id:"perm.sweep",order:2020});
 
 /* ---------------- navigation ---------------- */
 function navDenied(id){return !PM().can(null,"read","screen:"+id).ok}
