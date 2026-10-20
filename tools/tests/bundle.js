@@ -35,7 +35,8 @@ async function page(b,base,url,o={}){const c=await b.newContext({viewport:{width
   const t=setInterval(()=>{const v=document.getElementById('view');if(v&&v.innerHTML.length>400&&window.__firstRender==null){window.__firstRender=performance.now();clearInterval(t)}},5)});
  if(o.before)await o.before(p);await p.goto(url,{waitUntil:'domcontentloaded',timeout:120000});return {c,p,errs,reqs}}
 const ready=p=>p.waitForFunction(()=>window.BUNDLE&&BUNDLE.ready&&window.__ready>0,null,{timeout:120000,polling:20});
-const navText=q=>q.evaluate(()=>[...document.querySelectorAll('#nav a,#nav button,#nav summary')].map(x=>x.textContent.trim()).join('|'));
+const navText=q=>q.evaluate(()=>{const n=document.getElementById('nav').cloneNode(true);n.querySelectorAll('.ownx-gn').forEach(x=>x.remove()); /* the ownership-gap badge is a later decoration pass, not menu structure */
+ return [...n.querySelectorAll('a,button,summary')].map(x=>x.textContent.trim()).join('|')});
 // open every screen; returns the ids and the errors
 async function everyScreen(p,errs){const ids=await p.evaluate(()=>SCREENS.map(s=>s[0]));let bad=0;
  for(const id of ids){const n0=errs.length;await p.evaluate(i=>go(i),id).catch(e=>errs.push(id+': '+e.message));await p.waitForTimeout(100);
