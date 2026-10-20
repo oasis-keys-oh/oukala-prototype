@@ -133,7 +133,7 @@ if(W.BUDREQ&&BUDREQ.decide&&!BUDREQ.decide.__pm){const d0=BUDREQ.decide;BUDREQ.d
 /* proactively lock controls that would be refused (the guard above stays the authority) */
 function lockControls(root){const seen={};root.querySelectorAll(CSEL).forEach(el=>{if(el.dataset.pmL==="1")return;const c=classify(el);if(!c)return;const key=c[0]+"|"+c[1]+"|"+(c[2]&&(c[2].id||c[2])||"");let d=seen[key];if(!d)d=seen[key]=PM().can(null,c[0],c[1],c[2]);
   if(!d.ok){el.dataset.pmL="1";el.setAttribute("aria-disabled","true");el.classList.add("pm-locked");el.title=(el.title?el.title+" · ":"")+"Not permitted: "+d.why;if("disabled" in el)el.disabled=true}})}
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("[data-pm-reqperm]");if(b){e.preventDefault();G(()=>closeDrawer());G(()=>NAVX.persona&&0);G(()=>go("r16g_perm"));setTimeout(()=>{G(()=>PM().ui.requestForm())},400)}});
+ROUTER.on("click","[data-pm-reqperm]",(e,b)=>{e.preventDefault();G(()=>closeDrawer());G(()=>NAVX.persona&&0);G(()=>go("r16g_perm"));setTimeout(()=>{G(()=>PM().ui.requestForm())},400)});
 
 /* ---------------- search: no hidden records, no masked fields ---------------- */
 function screenIdByTitle(t){const s=G(()=>SCREENS.find(x=>x[1]===t),null);return s?s[0]:null}

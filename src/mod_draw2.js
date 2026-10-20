@@ -450,7 +450,7 @@ document.addEventListener("mouseover",e=>{
  const cn=t.closest("#drSvg [data-dr-c]"),pl=t.closest(".dr-plus");
  if(cn&&!cn.classList.contains("assoc"))showPlus(cn.dataset.drC);else if(pl)clearTimeout(plusT);else if($q("#drWorld .dr-plus")){clearTimeout(plusT);plusT=setTimeout(hidePlus,320)}
 },true);
-document.addEventListener("focusin",e=>{if(S.screen!=="draw_studio"||!ST.doc)return;const cn=e.target.closest&&e.target.closest("#drSvg [data-dr-c]");if(cn&&!cn.classList.contains("assoc"))showPlus(cn.dataset.drC)});
+ROUTER.on("focusin",e=>{if(S.screen!=="draw_studio"||!ST.doc)return;const cn=e.target.closest&&e.target.closest("#drSvg [data-dr-c]");if(cn&&!cn.classList.contains("assoc"))showPlus(cn.dataset.drC)});
 document.addEventListener("pointerdown",e=>{
  if(S.screen!=="draw_studio")return;const t=e.target;if(!t.closest)return;
  const pl=t.closest("[data-dr-plus]");if(pl){e.preventDefault();e.stopImmediatePropagation();openMini(pl.dataset.drPlus);return}
@@ -546,9 +546,9 @@ document.addEventListener("pointerup",e=>{
 document.addEventListener("click",e=>{if(Date.now()-clickGuard<400&&e.target.closest&&e.target.closest("[data-dr-pi]")){e.preventDefault();e.stopPropagation();return}
  const pi=e.target.closest&&e.target.closest("[data-dr-pi]");if(pi&&S.screen==="draw_studio"&&e.detail===0&&!ST.ro){addAuto(pi.dataset.drPi)}},true);
 document.addEventListener("wheel",e=>{const svg=e.target.closest&&e.target.closest("#drSvg");if(!svg||!ST.doc)return;e.preventDefault();if(e.ctrlKey||e.metaKey){zoomAt(e.deltaY<0?1.1:1/1.1,e.clientX,e.clientY)}else{ST.px-=e.deltaX;ST.py-=e.deltaY;paintNow()}},{passive:false});
-document.addEventListener("dblclick",e=>{const sh=e.target.closest&&e.target.closest("#drSvg [data-dr-s]");if(sh&&!ST.ro){startEdit(sh.dataset.drS)}});
-document.addEventListener("focusin",e=>{const sh=e.target.closest&&e.target.closest("#drSvg [data-dr-s]");if(sh&&!ST.drag&&!ST.ro){const id=sh.dataset.drS;if(!(ST.sel.size===1&&ST.sel.has(id))){ST.sel=new Set([id]);ST.selC=null;ST.kb=true;paint();const dr=drawerEl();if(dr&&dr.dataset.dr)openProps()}}});
-document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest("[data-dr-p],[data-dr-cl]"))ST.fs=null});
+ROUTER.on("dblclick",e=>{const sh=e.target.closest&&e.target.closest("#drSvg [data-dr-s]");if(sh&&!ST.ro){startEdit(sh.dataset.drS)}});
+ROUTER.on("focusin",e=>{const sh=e.target.closest&&e.target.closest("#drSvg [data-dr-s]");if(sh&&!ST.drag&&!ST.ro){const id=sh.dataset.drS;if(!(ST.sel.size===1&&ST.sel.has(id))){ST.sel=new Set([id]);ST.selC=null;ST.kb=true;paint();const dr=drawerEl();if(dr&&dr.dataset.dr)openProps()}}});
+ROUTER.on("focusout",e=>{if(e.target.closest&&e.target.closest("[data-dr-p],[data-dr-cl]"))ST.fs=null});
 
 /* inline rename */
 function startEdit(id){
@@ -563,7 +563,7 @@ function startEdit(id){
 function endEdit(ok){const e=ST.edit;if(!e)return;ST.edit=null;const v=e.inp.value.trim();e.inp.remove();if(ok&&v){const s=D.getS(ST.doc,e.id);if(s&&s.n!==v){mut(()=>{s.n=v});const dr=drawerEl();if(dr&&dr.dataset.dr)openProps()}}}
 
 /* ---------- keyboard ---------- */
-document.addEventListener("keydown",e=>{
+ROUTER.on("keydown",e=>{
  if(!ST.doc||S.screen!=="draw_studio")return;
  const tg=e.target,typing=tg.matches&&tg.matches("input,textarea,select,[contenteditable='true']");
  if(e.key==="Escape"){
@@ -595,7 +595,7 @@ document.addEventListener("keydown",e=>{
  if(e.key==="/"){const q=$q("[data-dr-q]");if(q){e.preventDefault();q.focus()}return}
  if(e.key===" "&&tg.closest&&tg.closest("#drSvg")){space=true;e.preventDefault()}
 });
-document.addEventListener("keyup",e=>{if(e.key===" ")space=false});
+ROUTER.on("keyup",e=>{if(e.key===" ")space=false});
 
 /* ---------- export and import ---------- */
 function download(name,text,type){try{const b=new Blob([text],{type}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}catch(e){}}
@@ -726,7 +726,7 @@ function open(pid,o){
 }
 function btn(pid,label,cls,name){return `<button type="button" class="btn ${cls||""} dr-open" data-dr-open="${H(pid||"")}" ${name?`data-dr-name-hint="${H(name)}"`:""} title="Open this process in the drawing studio">${H(label||"Draw")}</button>`}
 
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t;
  if((t=e.target.closest("[data-dr-open]"))){e.preventDefault();open(t.dataset.drOpen||null,t.dataset.drNameHint?{name:t.dataset.drNameHint}:{});return}
  if((t=e.target.closest("[data-dr-openproc]"))){if(window.PROCLIB)PROCLIB.open(t.dataset.drOpenproc);return}
@@ -744,7 +744,7 @@ document.addEventListener("click",e=>{
  if(e.target.closest("[data-dr-conn]")){const sel=document.querySelector("#drawer [data-dr-cto]"),pr=document.querySelector("#drawer [data-dr-props]");if(sel&&sel.value&&pr){let made=null;mut(()=>{made=connectShapes(pr.dataset.drProps,sel.value)});if(made){openProps();announce("Connected")}else toast_("Already connected, or that direction is not allowed.","warn")}return}
  if(e.target.closest("[data-dr-rule]")){try{S.flw.dsel=S.flw.dsel||"dt_inv"}catch(x){}go("flw_dmn");return}
 });
-document.addEventListener("input",e=>{
+ROUTER.on("input",e=>{
  const el=e.target;
  if(el.matches&&el.matches("[data-dr-q]")){ST.q=el.value;const pal=$q("[data-dr-aside]");if(pal){const pos=el.selectionStart;pal.outerHTML=palHTML();const n=$q("[data-dr-q]");if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(x){}}}return}
  if(el.matches&&el.matches("[data-dr-pick]")){ST.pick=el.value;const l=$q(".dr-plist");const tmp=document.createElement("div");tmp.innerHTML=pickerHTML();const nl=tmp.querySelector(".dr-plist");if(l&&nl)l.innerHTML=nl.innerHTML;return}
@@ -760,7 +760,7 @@ document.addEventListener("input",e=>{
  }
  if(el.matches("[data-dr-cl]")){const c=ST.doc.conns.find(x=>x.id===el.dataset.drCl);if(c){const key="c"+c.id;if(ST.fs!==key){pushU();ST.fs=key}c.lb=el.value;ST.dirty=true;persist();paint()}}
 });
-document.addEventListener("change",e=>{
+ROUTER.on("change",e=>{
  const el=e.target;if(!ST.doc||S.screen!=="draw_studio")return;
  if(el.matches&&el.matches("select[data-dr-p]")){const pr=el.closest("[data-dr-props]"),s=pr&&D.getS(ST.doc,pr.dataset.drProps);if(s){mut(()=>{s[el.dataset.drP]=el.value});toast_(el.value?"Decision rule linked":"Decision rule unlinked")}}
  if(el.matches&&el.matches("[data-dr-p]")&&!el.matches("select")){refresh();const dr=drawerEl();if(dr&&dr.dataset.dr&&el.dataset.drP==="owner")openProps()}
@@ -772,8 +772,8 @@ let tipEl=null;
 function showTip(el){const t=el.getAttribute("data-dr-tip");if(!t)return;if(!tipEl){tipEl=document.createElement("div");tipEl.className="dr-tip";tipEl.setAttribute("role","tooltip");document.body.appendChild(tipEl)}
  const i=t.indexOf(": ");tipEl.innerHTML=`<b>${H(t.slice(0,i))}</b><span>${H(t.slice(i+2))}</span>`;tipEl.hidden=false;const r=el.getBoundingClientRect();tipEl.style.top=Math.max(8,Math.min(innerHeight-tipEl.offsetHeight-8,r.top-4))+"px";tipEl.style.left=Math.max(8,r.left-tipEl.offsetWidth-10)+"px"}
 function hideTip(){if(tipEl)tipEl.hidden=true}
-document.addEventListener("mouseover",e=>{const el=e.target.closest&&e.target.closest("[data-dr-pi]");if(el&&!ST.drag)showTip(el);else if(!el)hideTip()});
-document.addEventListener("focusin",e=>{const el=e.target.closest&&e.target.closest("[data-dr-pi]");if(el)showTip(el);else hideTip()});
+ROUTER.on("mouseover",e=>{const el=e.target.closest&&e.target.closest("[data-dr-pi]");if(el&&!ST.drag)showTip(el);else if(!el)hideTip()});
+ROUTER.on("focusin",e=>{const el=e.target.closest&&e.target.closest("[data-dr-pi]");if(el)showTip(el);else hideTip()});
 document.addEventListener("pointerdown",hideTip,true);
 
 /* ---------- mounting ---------- */

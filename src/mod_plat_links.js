@@ -891,7 +891,7 @@ PROC.reg("plat_pmap",{title:"How the process connection map stays true",std:["bp
 let dragged=false;
 function refocus(sel){const el=document.querySelector(sel);if(el)try{el.focus({preventScroll:true})}catch(x){}}
 const cssq=v=>String(v).replace(/"/g,'\\"');
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  if(dragged){dragged=false;if(e.target.closest("[data-plk-vp]")){e.stopPropagation();return}}
  let t;
  if((t=e.target.closest("[data-plk-n]"))){const vp=t.closest("[data-plk-vp]"),k=vp?vp.dataset.plkVp:"d",id=t.dataset.plkN;
@@ -926,17 +926,16 @@ document.addEventListener("click",e=>{
  if((t=e.target.closest("[data-plk-step]"))){Z.p.pstep=t.dataset.plkStep;document.querySelectorAll("[data-plk-step]").forEach(b=>b.classList.toggle("on",b.dataset.plkStep===Z.p.pstep));const h=document.querySelector("[data-plk-blast]");if(h)h.innerHTML=blastCard();audit("Blast radius viewed",t.dataset.plkStep);return}
  if((t=e.target.closest("[data-plk-mxlev]"))){Z.p.mx=t.dataset.plkMxlev;render();return}
 });
-document.addEventListener("input",e=>{
- const t=e.target.closest("[data-plk-q]");if(!t)return;const k=t.dataset.plkQ;
+ROUTER.on("input","[data-plk-q]",(e,t)=>{const k=t.dataset.plkQ;
  if(k==="d"){Z.d.q=t.value;drawD(false)}else{Z.p.q=t.value;drawP(false)}
 });
-document.addEventListener("change",e=>{
+ROUTER.on("change",e=>{
  let t;
  if((t=e.target.closest("[data-plk-ff]"))){Z.d.ff=t.value;const p=document.querySelector("[data-plk-dhost] [data-plk-panel]");if(p)p.innerHTML=panelD();return}
  if((t=e.target.closest("[data-plk-lin]"))){if(t.dataset.plkLin==="ent"){Z.lin={ent:t.value,f:null}}else Z.lin.f=t.value;const h=document.querySelector("[data-plk-linhost]");if(h)h.innerHTML=linHTML();return}
 });
 /* keyboard: activate nodes, pan and zoom the focused canvas */
-document.addEventListener("keydown",e=>{
+ROUTER.on("keydown",e=>{
  const nd=e.target.closest&&e.target.closest("[data-plk-n],[data-plk-pn],[data-plk-dtoggle],[data-plk-ptoggle]");
  if(nd&&(e.key==="Enter"||e.key===" ")){e.preventDefault();nd.dispatchEvent(new MouseEvent("click",{bubbles:true}));return}
  const vp=e.target.closest&&e.target.closest("[data-plk-vp]");if(!vp)return;const k=vp.dataset.plkVp;
@@ -948,18 +947,18 @@ document.addEventListener("keydown",e=>{
 });
 /* pointer pan, ctrl+wheel zoom */
 let drag=null;
-document.addEventListener("pointerdown",e=>{
+ROUTER.on("pointerdown",e=>{
  const vp=e.target.closest&&e.target.closest("[data-plk-vp]");if(!vp||e.button!==0)return;
  const r=vp.getBoundingClientRect(),cur=vp.getAttribute("viewBox").split(" ").map(Number);
  drag={vp,x:e.clientX,y:e.clientY,cur,sc:Math.max(cur[2]/r.width,cur[3]/r.height),moved:false};
 });
-document.addEventListener("pointermove",e=>{
+ROUTER.on("pointermove",e=>{
  if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
  if(!drag.moved&&Math.hypot(dx,dy)<5)return;drag.moved=true;drag.vp.classList.add("panning");
  const nv=[drag.cur[0]-dx*drag.sc,drag.cur[1]-dy*drag.sc,drag.cur[2],drag.cur[3]];
  stateOf(drag.vp.dataset.plkVp).vb=nv;drag.vp.setAttribute("viewBox",nv.map(v=>+v.toFixed(1)).join(" "));
 });
-document.addEventListener("pointerup",()=>{if(drag){drag.vp.classList.remove("panning");if(drag.moved)dragged=true;setTimeout(()=>{dragged=false},60);drag=null}});
+ROUTER.on("pointerup",()=>{if(drag){drag.vp.classList.remove("panning");if(drag.moved)dragged=true;setTimeout(()=>{dragged=false},60);drag=null}});
 document.addEventListener("wheel",e=>{
  const vp=e.target.closest&&e.target.closest("[data-plk-vp]");if(!vp||!(e.ctrlKey||e.metaKey))return;e.preventDefault();
  const k=vp.dataset.plkVp,r=vp.getBoundingClientRect(),cur=vp.getAttribute("viewBox").split(" ").map(Number);

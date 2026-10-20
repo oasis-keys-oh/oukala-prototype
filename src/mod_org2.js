@@ -123,18 +123,17 @@ function mount(){
  if(OS.q){const q=OS.q.toLowerCase(),m=O.staff.find(p=>hit(p,q));const c=m&&LAST.by[m.n];if(c){OS.x=Math.round(v.clientWidth/2-(c.x+CW/2)*OS.k);OS.y=Math.round(v.clientHeight/3-c.y*OS.k);applyT()}}}
 const _ca=window.coreAfter;window.coreAfter=function(){if(_ca)_ca.apply(this,arguments);try{mount()}catch(e){console.error("org mount",e)}};
 let drag=null;
-document.addEventListener("pointerdown",e=>{const v=e.target.closest&&e.target.closest("#orgvp");if(!v||e.button!==0)return;if(e.target.closest("[data-org-tg]"))return;drag={x:e.clientX,y:e.clientY,ox:OS.x,oy:OS.y,m:false,id:e.pointerId}});
-document.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.m&&Math.abs(dx)+Math.abs(dy)>5){drag.m=true;const v=vp();if(v){v.classList.add("pan");try{v.setPointerCapture(drag.id)}catch(x){}}}if(drag.m){OS.x=drag.ox+dx;OS.y=drag.oy+dy;applyT()}});
+ROUTER.on("pointerdown",e=>{const v=e.target.closest&&e.target.closest("#orgvp");if(!v||e.button!==0)return;if(e.target.closest("[data-org-tg]"))return;drag={x:e.clientX,y:e.clientY,ox:OS.x,oy:OS.y,m:false,id:e.pointerId}});
+ROUTER.on("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.m&&Math.abs(dx)+Math.abs(dy)>5){drag.m=true;const v=vp();if(v){v.classList.add("pan");try{v.setPointerCapture(drag.id)}catch(x){}}}if(drag.m){OS.x=drag.ox+dx;OS.y=drag.oy+dy;applyT()}});
 const endDrag=()=>{if(!drag)return;const m=drag.m;drag=null;const v=vp();if(v)v.classList.remove("pan");if(m){OS._moved=Date.now()}};
 document.addEventListener("pointerup",endDrag);document.addEventListener("pointercancel",endDrag);
 document.addEventListener("wheel",e=>{const v=e.target.closest&&e.target.closest("#orgvp");if(!v)return;if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAt(e.deltaY<0?1.12:.89,e.clientX,e.clientY)}},{passive:false});
-document.addEventListener("keydown",e=>{const v=e.target&&e.target.id==="orgvp"?e.target:null;if(!v)return;const st=60;
+ROUTER.on("keydown",e=>{const v=e.target&&e.target.id==="orgvp"?e.target:null;if(!v)return;const st=60;
  if(e.key==="ArrowLeft"){OS.x+=st;applyT();e.preventDefault()}else if(e.key==="ArrowRight"){OS.x-=st;applyT();e.preventDefault()}else if(e.key==="ArrowUp"){OS.y+=st;applyT();e.preventDefault()}else if(e.key==="ArrowDown"){OS.y-=st;applyT();e.preventDefault()}
  else if(e.key==="+"||e.key==="="){zoomAt(1.15);e.preventDefault()}else if(e.key==="-"){zoomAt(.87);e.preventDefault()}else if(e.key==="0"){fit(false);e.preventDefault()}});
 /* ---------- screen events ---------- */
 let qT=null;
-document.addEventListener("click",e=>{
- const g=e.target.closest&&e.target.closest("[data-org-open],[data-org-agent],[data-org-tg],[data-org-mode],[data-org-f],[data-org-ln],[data-org-all],[data-org-outline],[data-org-z],[data-org-tab],[data-org-rv],[data-org-reset]");if(!g)return;
+ROUTER.on("click","[data-org-open],[data-org-agent],[data-org-tg],[data-org-mode],[data-org-f],[data-org-ln],[data-org-all],[data-org-outline],[data-org-z],[data-org-tab],[data-org-rv],[data-org-reset]",(e,g)=>{
  if(OS._moved&&Date.now()-OS._moved<250&&g.closest("#orgvp")){e.preventDefault();e.stopPropagation();return}
  const d=g.dataset;
  if(d.orgTg!=null){e.preventDefault();e.stopPropagation();const n=d.orgTg;OS.collapsed[n]=!OS.collapsed[n];audit("Org chart",(OS.collapsed[n]?"Collapsed ":"Expanded ")+n+"'s team");if(OS.outline)render();else paintChart();return}
@@ -148,8 +147,8 @@ document.addEventListener("click",e=>{
  if(d.orgTab!=null&&!d.orgOpen){OS.tab=d.orgTab;render();return}
  if(d.orgAgent){e.preventDefault();openAgent(d.orgAgent);return}
  if(d.orgOpen){e.preventDefault();openProfile(d.orgOpen,d.orgTab!=null?+d.orgTab:null)}});
-document.addEventListener("input",e=>{const q=e.target.closest&&e.target.closest("[data-org-q]");if(!q)return;OS.q=q.value;clearTimeout(qT);qT=setTimeout(()=>{if(OS.outline){render();return}paintChart();const m=OS.q.trim()?O.staff.filter(p=>hit(p,OS.q.trim().toLowerCase())).length:0;const n=document.querySelector("[data-org-qn]");if(n)n.textContent=OS.q.trim()?m+" match"+(m===1?"":"es"):"";mount()},160)});
-document.addEventListener("change",e=>{const s=e.target.closest&&e.target.closest("select[data-org-f]");if(!s)return;OS.f[s.dataset.orgF]=s.value;render()});
+ROUTER.on("input","[data-org-q]",(e,q)=>{OS.q=q.value;clearTimeout(qT);qT=setTimeout(()=>{if(OS.outline){render();return}paintChart();const m=OS.q.trim()?O.staff.filter(p=>hit(p,OS.q.trim().toLowerCase())).length:0;const n=document.querySelector("[data-org-qn]");if(n)n.textContent=OS.q.trim()?m+" match"+(m===1?"":"es"):"";mount()},160)});
+ROUTER.on("change","select[data-org-f]",(e,s)=>{OS.f[s.dataset.orgF]=s.value;render()});
 /* ---------- tab 2: reporting structures ---------- */
 function mgrRows(){return O.staff.filter(p=>O.kids(p.n).length).map(p=>{const k=O.kids(p.n).length,ag=O.agentsOf(p.n);const sub=[];const g=x=>O.kids(x).forEach(c=>{sub.push(c);g(c)});g(p.n);const subAg=sub.concat([p.n]).reduce((s,n)=>s+O.agentsOf(n).length,0);
  const hours=sub.reduce((s,n)=>s+(((O.dir(n)||{}).hrs)||40),0)+(((O.dir(p.n)||{}).hrs)||40);const ret=sub.concat([p.n]).reduce((s,n)=>s+O.capacity(n).returned,0);
@@ -204,7 +203,7 @@ function acctPane(){
  return `<div class="statrow">${kpi("Accountability domains",String(all.length),"each needs a named owner and a backup")}${kpi("Fully covered",pct+"%",(all.length-gaps.length)+" of "+all.length+" have owner and backup",{cls:gaps.length?"warn":""})}${kpi("No owner",String(noOwn),"nobody is accountable",{cls:noOwn?"bad":""})}${kpi("No backup",String(noBk),"single point of failure",{cls:noBk?"warn":""})}</div>
  ${card("Accountability map","Who is accountable for each area of the Foundation, and who covers when they are out. Ask 'who owns the budget?' in chat or search and this map answers. Gaps are flagged.",`<div class="row" style="margin-bottom:12px"><button type="button" class="chip" data-org-accf="all" aria-pressed="${!OS.accGap}">All domains · ${all.length}</button><button type="button" class="chip" data-org-accf="gap" aria-pressed="${!!OS.accGap}">Gaps only · ${gaps.length}</button><span class="muted small">Aliases such as budget, forecast, funding, spend and cost all resolve to the Budget domain.</span></div>
  <div class="tscroll"><table class="org-acc"><thead><tr><th>Domain</th><th>Owner</th><th>Backup</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(d=>`<tr><td><b>${H(d.label)}</b><div class="muted small">${H(d.aliases.slice(0,4).join(", "))}</div></td><td>${d.owner?mine(d.owner):`<span class="muted small">Nobody</span>`}</td><td>${d.backup?mine(d.backup):`<span class="muted small">Nobody</span>`}</td><td>${d.gap?`<span class="org-gap ${d.ownerId?"warn":""}">GAP: ${H(d.gap)}</span>`:`<span class="pill good">Covered</span>`}</td><td><button type="button" class="btn quiet" data-org-assign="${H(d.id)}">${d.gap?"Assign":"Change"}</button></td></tr>`).join("")||`<tr><td colspan="5" class="muted">No gaps. Every domain has an owner and a backup.</td></tr>`}</tbody></table></div>`)}`}
-document.addEventListener("click",e=>{const f=e.target.closest&&e.target.closest("[data-org-accf]");if(f){OS.accGap=f.dataset.orgAccf==="gap";render();return}
+ROUTER.on("click",e=>{const f=e.target.closest&&e.target.closest("[data-org-accf]");if(f){OS.accGap=f.dataset.orgAccf==="gap";render();return}
  const a=e.target.closest&&e.target.closest("[data-org-assign]");if(!a)return;const d=O.domains.find(x=>x.id===a.dataset.orgAssign);if(!d)return;
  const opts=[["","(none)"]].concat(O.staff.map(p=>[O.slug(p.n),p.n+" · "+p.role]));
  openForm({id:"org_assign",title:"Assign accountability: "+d.label,story:"Every domain needs one named owner and a different named backup. Saving updates the map, search and chat answers, and the audit log.",submit:"Save accountability",
@@ -279,7 +278,7 @@ function openProfile(n,tab){
  if(S.screen==="org_chart"&&OS.tab==="chart"&&!OS.outline){const cv=document.getElementById("orgcv");if(cv)cv.querySelectorAll(".org-n.sel").forEach(x=>x.classList.remove("sel"));const b=cv&&cv.querySelector(`[data-org-open="${CSS.escape(n)}"]`);if(b&&b.parentNode)b.parentNode.classList.add("sel")}}
 O.openProfile=openProfile;
 function openAgent(name){if(O.openAgent)O.openAgent(name);else toast("Agent studio is loading","warn")}
-document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("[data-org-act]");if(a){const n=a.dataset.n;if(a.dataset.orgAct==="access"){audit("Access change requested",n);toast("Access change request for "+n+" sent to the security lead","good")}else{audit("Access review",n+" added");toast(n+" added to the Q4 access review","good")}return}
+ROUTER.on("click",e=>{const a=e.target.closest&&e.target.closest("[data-org-act]");if(a){const n=a.dataset.n;if(a.dataset.orgAct==="access"){audit("Access change requested",n);toast("Access change request for "+n+" sent to the security lead","good")}else{audit("Access review",n+" added");toast(n+" added to the Q4 access review","good")}return}
  const g=e.target.closest&&e.target.closest("[data-org-go]");if(g){closeDrawer();go(g.dataset.orgGo)}});
 document.addEventListener("pointerdown",()=>{},{passive:true});
 /* ---------- the screen ---------- */

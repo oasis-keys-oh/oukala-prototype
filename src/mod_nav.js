@@ -483,7 +483,7 @@ function markTab(){qa("#nxTab [data-nav]").forEach(b=>{if(b.dataset.nav===S.scre
 /* entering phone width: the rail becomes a drawer, so it must not stay in icon-only mode */
 let wasCollapsed=null;
 phoneMQ.addEventListener("change",()=>{const rc=q1("#railCollapse");if(!rc)return;if(phoneMQ.matches){wasCollapsed=rc.checked;if(rc.checked){rc.checked=false;rc.dispatchEvent(new Event("change"))}}else{menu(false);if(wasCollapsed){rc.checked=true;rc.dispatchEvent(new Event("change"))}wasCollapsed=null}try{renderNav()}catch(e){}});
-document.addEventListener("change",e=>{if(e.target&&e.target.id==="railCollapse")closePops()});
+ROUTER.on("change",e=>{if(e.target&&e.target.id==="railCollapse")closePops()});
 
 /* ---------- events ---------- */
 function focusLab(row){const f=st().fav.find(x=>x.id===row.dataset.nxFav);if(!f)return;const btn=q1(".navi",row);const inp=document.createElement("input");inp.type="text";inp.className="nx-ren";inp.value=f.label||labelOf2(f);inp.maxLength=60;inp.setAttribute("aria-label","Rename favorite");
@@ -510,7 +510,7 @@ document.addEventListener("click",e=>{const t=e.target;if(!t||!t.closest)return;
 },true);
 document.addEventListener("input",e=>{const t=e.target;if(!t)return;if(t.id==="nxHistQ"){HF.q=t.value;drawHist()}
  if(t.id==="q"){e.stopImmediatePropagation();const v=t.value;t.value="";openPalette({q:v})}},true);
-document.addEventListener("focusin",e=>{const t=e.target;if(t&&t.id==="q"){const v=t.value;t.value="";openPalette({q:v});try{t.blur()}catch(x){}}});
+ROUTER.on("focusin",e=>{const t=e.target;if(t&&t.id==="q"){const v=t.value;t.value="";openPalette({q:v});try{t.blur()}catch(x){}}});
 document.addEventListener("keydown",e=>{const t=e.target;
  if(t&&t.id==="nxFind"&&e.key==="Enter"){e.preventDefault();openPalette({q:t.value,describe:true});t.value="";return}
  if(e.key==="Escape"&&document.documentElement.classList.contains("nx-menu-open")){menu(false)}
@@ -783,7 +783,7 @@ const afterScreen=()=>{try{if(!wrapped)wrapGlobals();ensureChrome();onScreen();d
 if(W.HOOKS){HOOKS.on("afterRender",()=>{afterScreen();queueMicrotask(()=>{try{decorateHero()}catch(e){}})},{id:"nav.render"});
  HOOKS.on("beforeGo",(screen,arg)=>{closePops();document.documentElement.classList.remove("nx-menu-open");queueMicrotask(()=>{try{onGoArg(screen,arg)}catch(e){}})},{id:"nav.go"})}
 /* the tab bar needs to know the persona changed: reload favorites and history for the new persona */
-document.addEventListener("change",e=>{if(e.target&&e.target.name==="persona"){STP=null;ST=null;STK.length=0;setTimeout(()=>{st();syncStars();refreshFavs();drawFavPop();drawHist()},0)}});
+ROUTER.on("change",e=>{if(e.target&&e.target.name==="persona"){STP=null;ST=null;STK.length=0;setTimeout(()=>{st();syncStars();refreshFavs();drawFavPop();drawHist()},0)}});
 window.addEventListener("hashchange",()=>{const id=NAVX.resolveAlias(location.hash);if(id&&id!==S.screen)go(id)});
 
 /* ---------- chat intents: star this, what did I look at, find ... ---------- */
@@ -890,11 +890,11 @@ function studioContract(){const procs=G(()=>NAV_PROCS.map(p=>({p,m:PROCLIB.matur
 REG("nav_studio","Navigation and search","platform","M4 6h16M4 12h10M4 18h7M17 14l4 4M19 16a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",()=>{const c=NAVX.check();
  const story=`All <b data-role="metric">${c.screens}</b> screens sit in exactly one of <b>${GROUPS.filter(g=>NAVX.counts()[g[0]]).length}</b> plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
  return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"].concat(W.USAGE?["Usage"]:[]),[studioMap(),studioSearch(),studioPeople(),studioContract()].concat(W.USAGE?[G(()=>USAGE.panelHTML())||""]:[]))}</div>`});
-document.addEventListener("change",e=>{const t=e.target;if(!t||!t.dataset)return;
+ROUTER.on("change",e=>{const t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.nxSg!=null){S.navs.g=t.value;S.v.nav_v=0;render();return}
  if(t.dataset.nxMvg){NAVX.setOverride(t.dataset.nxMvg,{g:t.value});audit("Moved a screen to another group",t.dataset.nxMvg+" to "+t.value);toast("Moved. The menu and search are updated.","good");S.v.nav_v=0;render();return}
  if(t.dataset.nxMvl){const v=t.value.trim();NAVX.setOverride(t.dataset.nxMvl,{l:v||undefined});audit("Renamed a menu item",t.dataset.nxMvl+" to "+v);toast("Menu label saved","good");S.v.nav_v=0;render();return}});
-document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-nx-rst],[data-nx-rebuild],[data-nx-speed],[data-nx-rq],[data-nx-unfav],[data-nx-proc]");if(!t)return;const d=t.dataset;
+ROUTER.on("click","[data-nx-rst],[data-nx-rebuild],[data-nx-speed],[data-nx-rq],[data-nx-unfav],[data-nx-proc]",(e,t)=>{const d=t.dataset;
  if(d.nxRst){NAVX.setOverride(d.nxRst,null);toast("Reset to the standard label and group");S.v.nav_v=0;render();return}
  if(d.nxRebuild!=null){IDX.built=false;ensureIndex(true);toast("Rebuilding the search index in small slices");setTimeout(()=>{if(S.screen==="nav_studio"){S.v.nav_v=1;render()}},1500);return}
  if(d.nxSpeed!=null){ensureIndex();const run=()=>{if(IDX.building){setTimeout(run,300);return}let tot=0,mx=0;const out=[];SPEEDQ.forEach(q=>{const r=runSearch(q,{});tot+=r.ms;mx=Math.max(mx,r.ms);out.push(q+" "+r.ms+" ms")});S.navs.speed=SPEEDQ.length+" searches over "+IDX.items.length.toLocaleString("en-US")+" items: average "+Math.round(tot/SPEEDQ.length*10)/10+" ms, slowest "+mx+" ms ("+(W.SCALE&&SCALE.on?"enterprise volume":"demo volume")+").";const o=q1("#nxSpeedOut");if(o)o.textContent=S.navs.speed};run();return}

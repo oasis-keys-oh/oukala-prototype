@@ -456,12 +456,12 @@ document.addEventListener("click",e=>{const T=e.target;if(!T.closest)return;let 
  if(t=T.closest("[data-inbx-bmax]")){I.bulkMax=+t.dataset.inbxBmax;bulkDialog(Object.keys(I.sel).filter(k=>I.sel[k]));return}
  if(t=T.closest("[data-inbx-simnow]")){const it=simPush();CACHE=null;banner(it);refreshAll();return}
  if(!hostOf(T)&&isOpen(panel)&&!T.closest("#inbxBell,#inbxBanners,#inbxUndo,#drawer,.pop,[popover],#toasts,dialog"))closePanel()},true);
-document.addEventListener("change",e=>{const t=e.target;if(!t.matches)return;
+ROUTER.on("change",e=>{const t=e.target;if(!t.matches)return;
  if(t.matches("[data-inbx-sel]")){I.sel[t.dataset.inbxSel]=t.checked;renderPanel(true);renderFocus();return}
  if(t.matches("[data-inbx-simtoggle]")){I.sim=t.checked;toast(I.sim?"Simulated demo events are on.":"Simulated demo events are off.","info");audit("Inbox: demo events",I.sim?"on":"off");refreshAll();return}
  if(t.matches("[data-inbx-ev]"))return});
 document.addEventListener("toggle",e=>{const t=e.target;if(t.matches&&t.matches("[data-inbx-ev]")&&hostOf(t)){I.evOpen=t.open}},true);
-document.addEventListener("submit",e=>{const f=e.target.closest&&e.target.closest("[data-inbx-form]");if(!f)return;e.preventDefault();const mode=f.dataset.inbxForm,id=f.dataset.id;const note=(f.querySelector("[data-inbx-note]")||{}).value||"",to=(f.querySelector("[data-inbx-to]")||{}).value||"";
+ROUTER.on("submit","[data-inbx-form]",(e,f)=>{e.preventDefault();const mode=f.dataset.inbxForm,id=f.dataset.id;const note=(f.querySelector("[data-inbx-note]")||{}).value||"",to=(f.querySelector("[data-inbx-to]")||{}).value||"";
  const err=f.querySelector("[data-inbx-err]");const r=decide(id,mode,{note:note.trim(),to});if(r.ok===false){if(err){err.textContent=r.why;err.hidden=false}return}closeDrawerCard(id)});
 document.addEventListener("keydown",e=>{
  const open=isOpen(panel)||isOpen(focusEl);const inDr=!!(e.target.closest&&e.target.closest("#drawer [data-inbx-card]"));
@@ -570,7 +570,7 @@ function bulkDialog(ids){if(ids==="review-all"||ids.length===1&&ids[0]==="review
 
 /* screen events */
 function refreshScreen(){if(S.screen!=="inbox")return;const a=document.activeElement;if(a&&a.closest&&a.closest("#view input,#view textarea,#view select"))return;clearTimeout(refreshScreen.t);refreshScreen.t=setTimeout(()=>{try{render()}catch(e){}},60)}
-document.addEventListener("click",e=>{const T=e.target;if(!T.closest)return;let t;
+ROUTER.on("click",e=>{const T=e.target;if(!T.closest)return;let t;
  if(T.closest("[data-inbx-flt-clear]")){I.flt={};["inbx_kind","inbx_src","inbx_grp"].forEach(k=>delete S.mpSel[k]);render();return}
  if(t=T.closest("[data-inbx-view]")){const v=I.views[+t.dataset.inbxView];if(v){I.flt=JSON.parse(JSON.stringify(v.flt));S.mpSel.inbx_kind=I.flt.kinds&&I.flt.kinds.length?I.flt.kinds:undefined;S.mpSel.inbx_src=I.flt.srcs&&I.flt.srcs.length?I.flt.srcs:undefined;S.mpSel.inbx_grp=I.flt.grp&&I.flt.grp.length?I.flt.grp:undefined;["inbx_kind","inbx_src","inbx_grp"].forEach(k=>{if(S.mpSel[k]===undefined)delete S.mpSel[k]});render();toast("Applied view: "+v.n,"info")}return}
  if(T.closest("[data-inbx-saveview]")){openForm({id:"inbx_view",title:"Save this view",story:"A saved view keeps your kind, module and due filters so you can come back to them with one click.",submit:"Save view",fields:[{k:"n",label:"Name",type:"text",req:true,ph:"Overdue finance"}],onSubmit:v=>{I.views.push({n:v.n,flt:JSON.parse(JSON.stringify(I.flt))});audit("Inbox: saved view",v.n);render();return{toast:"Saved view "+v.n}}});return}
@@ -584,7 +584,7 @@ document.addEventListener("click",e=>{const T=e.target;if(!T.closest)return;let 
    onSubmit:v=>{ps.push({id:"pol-"+(Date.now()%100000),name:v.name,src:v.src,max:v.max?+v.max:null,minConf:Math.max(.7,(+v.minConf||90)/100),vendors:v.vendors?String(v.vendors).split(",").map(x=>x.trim()).filter(Boolean):[],on:false,runs:0,exp:v.exp,why:"Written by "+ME()+"."});audit("Inbox: new policy",v.name);bump();render();return{toast:"Policy created. It is off until you turn it on."}}});return}
   if(!p)return;if(a==="toggle"){p.on=!p.on;audit("Inbox: policy "+(p.on?"on":"off"),p.name);toast(p.on?"Policy on. Use Run now to apply it to waiting items.":"Policy off.","info");bump();render()}else if(a==="run"){const n=runPolicy(p);toast(n+" approved by policy. You have 8 seconds to undo.","good")}else if(a==="del"){I.pol[ME()]=ps.filter(x=>x!==p);bump();render()}return}
  if(T.closest("[data-inbx-testpush]")){banner(mk({id:"push:"+Date.now(),src:"sim",kind:"mention",cat:"Mobile push",ic:"bell",title:"Simulated mobile push: 3 approvals are waiting for you",sim:true,flag:true,can:{approve:false,reject:false,delegate:false}}));return}});
-document.addEventListener("change",e=>{const t=e.target;if(!t.matches)return;let m;
+ROUTER.on("change",e=>{const t=e.target;if(!t.matches)return;let m;
  if(m=t.getAttribute("data-inbx-pref")){const [k,c]=m.split(":");I.prefs[k]=Object.assign(prefOf(k),{[c]:t.checked});audit("Inbox: notification preference",k+" "+c+" "+(t.checked?"on":"off"));toast("Saved","good")}
  else if(m=t.getAttribute("data-inbx-quiet")){if(t.type==="checkbox")I.quiet[m]=t.checked;else I.quiet[m]=t.value;audit("Inbox: quiet hours",m+" "+I.quiet[m]);toast("Saved","good")}});
 

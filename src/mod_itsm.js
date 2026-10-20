@@ -663,12 +663,12 @@ function causeForm(pid,cat){const p=PRB(pid);openForm({id:"itsm_fx",title:"Add a
 function moveLeaf(pid,id,to){const p=PRB(pid),r=leafOf(p,id);if(!r||r.c===to)return false;const f=mkFish(p);f[r.c]=f[r.c].filter(x=>x.id!==id);f[to].push(r.l);audit("moved a cause",pid+": "+trunc(r.l.t,40)+" → "+to);toast("Moved to "+to,"good");refreshFish(pid);return true}
 /* pointer drag for causes (SVG items are not HTML, so the kit DND does not apply) */
 let DR=null;
-document.addEventListener("pointerdown",e=>{const g=e.target.closest&&e.target.closest("[data-itsm-leaf]");if(!g||e.button)return;const bx=g.closest("[data-itsm-fishbox]");if(!bx)return;DR={g,id:g.dataset.itsmLeaf,pid:bx.dataset.itsmFishbox,x:e.clientX,y:e.clientY,moved:false,svg:g.ownerSVGElement,pid_:e.pointerId};try{g.setPointerCapture(e.pointerId)}catch(er){}});
-document.addEventListener("pointermove",e=>{if(!DR)return;const dx=e.clientX-DR.x,dy=e.clientY-DR.y;if(!DR.moved&&Math.hypot(dx,dy)<6)return;DR.moved=true;const m=DR.svg.getScreenCTM();DR.g.setAttribute("transform","translate("+(dx/m.a)+" "+(dy/m.d)+")");DR.g.classList.add("drag");const z=document.elementsFromPoint(e.clientX,e.clientY).find(n=>n.dataset&&n.dataset.itsmBone);DR.svg.querySelectorAll(".itsm-bonez").forEach(r=>r.classList.toggle("over",!!z&&r===z))});
-document.addEventListener("pointerup",e=>{if(!DR)return;const d=DR;DR=null;try{d.g.releasePointerCapture(d.pid_)}catch(er){}
+ROUTER.on("pointerdown",e=>{const g=e.target.closest&&e.target.closest("[data-itsm-leaf]");if(!g||e.button)return;const bx=g.closest("[data-itsm-fishbox]");if(!bx)return;DR={g,id:g.dataset.itsmLeaf,pid:bx.dataset.itsmFishbox,x:e.clientX,y:e.clientY,moved:false,svg:g.ownerSVGElement,pid_:e.pointerId};try{g.setPointerCapture(e.pointerId)}catch(er){}});
+ROUTER.on("pointermove",e=>{if(!DR)return;const dx=e.clientX-DR.x,dy=e.clientY-DR.y;if(!DR.moved&&Math.hypot(dx,dy)<6)return;DR.moved=true;const m=DR.svg.getScreenCTM();DR.g.setAttribute("transform","translate("+(dx/m.a)+" "+(dy/m.d)+")");DR.g.classList.add("drag");const z=document.elementsFromPoint(e.clientX,e.clientY).find(n=>n.dataset&&n.dataset.itsmBone);DR.svg.querySelectorAll(".itsm-bonez").forEach(r=>r.classList.toggle("over",!!z&&r===z))});
+ROUTER.on("pointerup",e=>{if(!DR)return;const d=DR;DR=null;try{d.g.releasePointerCapture(d.pid_)}catch(er){}
  if(d.moved){const z=document.elementsFromPoint(e.clientX,e.clientY).find(n=>n.dataset&&n.dataset.itsmBone);if(z&&moveLeaf(d.pid,d.id,z.dataset.itsmBone))return;d.g.removeAttribute("transform");d.g.classList.remove("drag");d.svg.querySelectorAll(".itsm-bonez").forEach(r=>r.classList.remove("over"))}
  else{X.fsel={pid:d.pid,leaf:d.id};refreshFish(d.pid)}});
-document.addEventListener("keydown",e=>{const g=e.target.closest&&e.target.closest("[data-itsm-leaf]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();const bx=g.closest("[data-itsm-fishbox]");X.fsel={pid:bx.dataset.itsmFishbox,leaf:g.dataset.itsmLeaf};refreshFish(bx.dataset.itsmFishbox)}});
+ROUTER.on("keydown",e=>{const g=e.target.closest&&e.target.closest("[data-itsm-leaf]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();const bx=g.closest("[data-itsm-fishbox]");X.fsel={pid:bx.dataset.itsmFishbox,leaf:g.dataset.itsmLeaf};refreshFish(bx.dataset.itsmFishbox)}});
 
 /* ---------- problem forms ---------- */
 function prbForm(init,editId){const e=editId&&PRB(editId),base=Object.assign({pr:"3",st:"New",owner:ME(),incs:[]},init||{});
@@ -1072,7 +1072,7 @@ DND.on("itsm_role",(id,from,to)=>{const m=X.mi;if(from===to){render();return}con
  const r=to.slice(5),prev=m.roles[r];m.roles[r]=id;if(fr&&prev)m.roles[fr]=prev;const rn=MROLES.find(x=>x[0]===r)[1];m.tl.push([0,"System","Update",id+" is now "+rn.toLowerCase()+"."+(prev&&prev!==id?" "+prev+" moved aside.":"")]);done("Role assigned",id+" → "+rn)});
 /* ---------- click events ---------- */
 const INCACT=["start","ack","hold","resolve","assign","link","ovr","claim","reopen","applyai2","prb","chg","major"];
-document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-itsm-a]");if(!t)return;const d=t.dataset,a=d.itsmA,id=d.id;
+ROUTER.on("click","[data-itsm-a]",(e,t)=>{const d=t.dataset,a=d.itsmA,id=d.id;
  if(a==="new")return incForm(d.from==="calc"?calcPrefill():undefined);
  if(a==="applyai"){const st=FORMST.itsm_inc;if(!st)return;const v=st.vals,c=classify((v.title||"")+" "+(v.desc||""));v.cat=c.cat;v.grp=c.grp;if(!v.svc&&c.svc)v.svc=c.svc;if((+v.ua||0)<=1&&c.ua)v.ua=c.ua;if((+v.deg||0)===30&&c.deg)v.deg=c.deg;refreshForm("itsm_inc");audit("applied AI triage",c.cat+" · "+c.grp);toast("Applied AI triage: "+c.cat+", "+c.grp+". Review before saving.","info");return}
  if(a==="note"){const ta=$("#itsmNoteTxt"),x=ta&&ta.value.trim();if(!x){ta&&ta.focus();toast("Write the note first","warn");return}const i=INC(id);i.notes.push({a:0,w:i.own||ME(),k:d.k,x});if(d.k==="Comment"&&i.respH==null)i.respH=i.age;audit("added "+d.k.toLowerCase(),id);toast(d.k+" added");render();return incDrawer(id)}
@@ -1133,7 +1133,7 @@ document.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest
  if(a==="publish"){if(!X.mi.roles.comms){toast("Assign a communications lead first: drag a person into the role in the War room tab","warn");return}X.mi.pub=X.mi.comp.map(c=>c.slice());X.mi.pubAt=hmAt(0);X.mi.tl.push([0,X.mi.roles.comms,"Comms","Status page updated."]);done("Status page published","approved by "+X.mi.roles.comms);return}
  if(a==="pir")return pirForm();
  if(a==="task"){const k=X.tasks.find(x=>x.id===id);k.done=!k.done;done("Task "+(k.done?"completed":"reopened"),k.t.slice(0,50));return}});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest&&e.target.closest(".itsm-row,.itsm-kc,.itsm-cc");if(t&&t===e.target){e.preventDefault();t.click()}});
+ROUTER.on("keydown",e=>{if(e.key!=="Enter")return;const t=e.target.closest&&e.target.closest(".itsm-row,.itsm-kc,.itsm-cc");if(t&&t===e.target){e.preventDefault();t.click()}});
 /* ---------- field events ---------- */
 const calcOut=(k,v)=>{const c=X.calc=Object.assign({},CDEF,X.calc||{});c[k]=v;if(k==="svc"){const sv=SV(v);c.ua=Math.min(c.ua,sv?sv.users:100);render();return}
  const o=$("#itsmCalcOut");if(o)o.innerHTML=prioPanel(calcRec());document.querySelectorAll('[data-itsm-cv="'+k+'"]').forEach(n=>{n.textContent=N0(+v)+(k==="deg"?"%":"")})};

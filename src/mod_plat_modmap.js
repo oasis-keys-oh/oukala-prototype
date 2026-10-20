@@ -976,7 +976,7 @@ function goMap(o){S.v.mm_v=0;Object.assign(MM,o);go("plat_map")}
 function openEnt(id){if(S.map&&S.map.er)S.map.er.sel=id;if(window.ATLAS&&ATLAS.focus)ATLAS.focus(id);else go("plat_data")}
 /* ---------- events ---------- */
 let drag=null,sup=false;const pts=new Map();let pinch=null;
-document.addEventListener("pointerdown",e=>{
+ROUTER.on("pointerdown",e=>{
  const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target.closest(".mm-ctl,.mm-mini,.mm-insp")||!MM.view)return;
  pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
  if(pts.size===1)drag={x:e.clientX,y:e.clientY,vx:MM.view.x,vy:MM.view.y,moved:0};
@@ -991,7 +991,7 @@ window.addEventListener("pointermove",e=>{
 const pend=e=>{pts.delete(e.pointerId);if(drag&&drag.moved>5){sup=true;setTimeout(()=>{sup=false},60)}if(pts.size<2)pinch=null;if(!pts.size)drag=null;const vp=vpEl();if(vp)vp.classList.remove("pan")};
 window.addEventListener("pointerup",pend);window.addEventListener("pointercancel",pend);
 document.addEventListener("click",e=>{if(sup){e.stopPropagation();e.preventDefault();sup=false}},true);
-document.addEventListener("pointerover",e=>{
+ROUTER.on("pointerover",e=>{
  const t=e.target.closest&&e.target.closest("[data-mm-edge],[data-mm-bund]"),tip=document.querySelector("[data-mm-tip]");if(!tip)return;
  if(!t){tip.hidden=true;return}
  let txt="";
@@ -999,7 +999,7 @@ document.addEventListener("pointerover",e=>{
  else{const [i,j]=t.dataset.mmBund.split("-").map(Number),n=(ST().bandPairs.get(t.dataset.mmBund)||[]).length;txt=`<b>${E(BANDS[i][1])} and ${E(BANDS[j][1])}</b><br>${n} flows between the two bands. Select to list them.`}
  tip.innerHTML=txt;tip.hidden=false;const vp=vpEl(),r=vp.getBoundingClientRect();tip.style.left=Math.min(r.width-250,Math.max(8,e.clientX-r.left+12))+"px";tip.style.top=Math.max(8,e.clientY-r.top+14)+"px";
 });
-document.addEventListener("click",e=>{
+ROUTER.on("click",e=>{
  let t;
  if((t=e.target.closest("[data-mm-popen]"))){if(window.PROCLIB&&PROCLIB.open)PROCLIB.open(t.dataset.mmPopen);return}
  if((t=e.target.closest("[data-mm-lib]"))){if(window.PROCLIB){if(t.dataset.mmLib==="full")PROCLIB.openLibrary(0);else{S.v.mm_v=5;if(S.screen==="plat_map")render();else go("plat_map")}}return}
@@ -1029,19 +1029,18 @@ document.addEventListener("click",e=>{
  if((t=e.target.closest("[data-mm-res] [data-mm-pick]"))){const id=t.dataset.mmPick;const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;const q=document.querySelector("[data-mm-q]");if(q)q.value=MB[id].name;selectMod(id,true);return}
  if(!e.target.closest(".mm-search")){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true}
 });
-document.addEventListener("change",e=>{
+ROUTER.on("change",e=>{
  const a=e.target.closest("[data-mm-pa]"),b=e.target.closest("[data-mm-pb]");
  if(a||b){const pa=document.querySelector("[data-mm-pa]").value,pb=document.querySelector("[data-mm-pb]").value;
   if(pa&&pb&&pa===pb){toast("Pick two different modules","warn");return}
   if(pa||pb)setPair(pa,pb);else{MM.pair=null;update()}}
 });
-document.addEventListener("input",e=>{
- const q=e.target.closest("[data-mm-q]");if(!q)return;const r=document.querySelector("[data-mm-res]"),v=q.value.toLowerCase().trim();
+ROUTER.on("input","[data-mm-q]",(e,q)=>{const r=document.querySelector("[data-mm-res]"),v=q.value.toLowerCase().trim();
  if(!v){r.hidden=true;return}
  const hits=MODS.filter(m=>(m.name+" "+m.sn+" "+m.al.join(" ")+" "+BANDS[m.bi][1]+" "+m.r.join(" ")+" "+m.w.join(" ")).toLowerCase().includes(v)).slice(0,8);
  r.innerHTML=hits.length?hits.map(m=>`<button type="button" class="mm-pick" data-mm-pick="${m.id}"><i style="background:${bandCol(m.bi)}"></i><b>${E(m.name)}</b><small>${E(BANDS[m.bi][1])}</small></button>`).join(""):`<span class="small muted" style="padding:8px">No module matches</span>`;r.hidden=false;
 });
-document.addEventListener("keydown",e=>{
+ROUTER.on("keydown",e=>{
  const q=e.target.closest&&e.target.closest("[data-mm-q]");
  if(e.key==="Escape"&&!q&&document.querySelector("[data-mm-insp].open")&&!document.querySelector("#drawer:popover-open")){MM.insp=false;update();applyView();return}
  if(q&&e.key==="Enter"){const f=document.querySelector("[data-mm-res] [data-mm-pick]");if(f){e.preventDefault();f.click()}return}
@@ -1054,7 +1053,7 @@ document.addEventListener("keydown",e=>{
 function miniMove(e){const m=document.querySelector("[data-mm-mini]"),vp=vpEl();if(!m||!vp||!MM.view)return;const r=m.getBoundingClientRect(),VW=LAY.W-GL+8,sc=Math.min(r.width/VW,r.height/LAY.H),ox=(r.width-VW*sc)/2,oy=(r.height-LAY.H*sc)/2;
  MM.touched=true;const wx=(e.clientX-r.left-ox)/sc+GL-8,wy=(e.clientY-r.top-oy)/sc;MM.view={k:MM.view.k,x:vp.clientWidth/2-wx*MM.view.k,y:vp.clientHeight/2-wy*MM.view.k};applyView()}
 let miniDown=false;
-document.addEventListener("pointerdown",e=>{if(e.target.closest&&e.target.closest("[data-mm-mini]")){miniDown=true;miniMove(e);e.preventDefault()}});
+ROUTER.on("pointerdown",e=>{if(e.target.closest&&e.target.closest("[data-mm-mini]")){miniDown=true;miniMove(e);e.preventDefault()}});
 window.addEventListener("pointermove",e=>{if(miniDown)miniMove(e)});window.addEventListener("pointerup",()=>{miniDown=false});
 /* ---------- search and chat ---------- */
 SEARCHX.push(()=>{if(!init())return[];return MODS.map(m=>({g:"Modules",t:m.name,m:BANDS[m.bi][1]+" · "+m.nout+" out, "+m.nin+" in",c:"--p4",f:()=>goMap({sel:m.id,pair:null,jny:null,flow:null,edge:null,flyIds:[m.id]}),k:m.al.join(" ")+" module map pushes pulls "+m.r.join(" ")+" "+m.w.join(" ")}))});

@@ -113,15 +113,15 @@ document.addEventListener("click",e=>{const el=e.target.closest&&e.target.closes
   const hrs=t.shrs*JOV.pct/100;W.openForm({id:"jov_dem",title:"Raise one shared demand",story:"One demand item that fixes "+t.n+" for every journey that depends on it, so the portfolio sees the whole case instead of "+t.rows.length+" small ones.",submit:"Raise demand",fields:[{k:"t",label:"Title",type:"text",req:true},{k:"why",label:"Reason",type:"longtext",wide:true,req:true},{k:"cost",label:"Build cost ($ thousand)",type:"number",min:1}],
    defaults:{t:"Fix "+t.n+" once for "+t.journeys+" journeys",why:"Modeled: "+t.rows.length+" boxes in "+t.journeys+" journeys, "+fmt(t.hrs)+" hours a month ("+fmt(t.shrs)+" of staff time), "+fmt(t.fh)+" friction hours. Removing "+JOV.pct+"% of the effort frees about "+fmt(hrs)+" hours a month, worth about $"+fmt(hrs*api().REC_RATE)+". Metrics moved: "+t.kpis.join(", ")+".",cost:Math.max(20,Math.round(hrs*api().REC_RATE*12/1000/2))},
    onSubmit:v=>{try{W.addDemand({title:v.t,reason:v.why,source:"Journey overlay",cost:+v.cost,kind:"automation"})}catch(x){}return {toast:"Demand raised in the portfolio"}}})}},true);
-document.addEventListener("input",e=>{const r=e.target.closest&&e.target.closest("[data-jov-pct]");if(!r)return;JOV.pct=+r.value;paintFigures()});
-document.addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const g=e.target.closest&&e.target.closest("[data-jov]");if(g&&e.target===g){e.preventDefault();g.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true}))}});
+ROUTER.on("input","[data-jov-pct]",(e,r)=>{JOV.pct=+r.value;paintFigures()});
+ROUTER.on("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const g=e.target.closest&&e.target.closest("[data-jov]");if(g&&e.target===g){e.preventDefault();g.dispatchEvent(new MouseEvent("click",{bubbles:true,cancelable:true}))}});
 /* trace a line: hover a touchpoint or a journey and everything it touches lights up */
 function trace(kind,id){const svg=document.querySelector(".jnet");if(!svg)return;
  const ed=[...svg.querySelectorAll(".jed")];const hit=ed.filter(x=>kind==="t"?x.dataset.t===id:x.dataset.j===id);const js=new Set(hit.map(x=>x.dataset.j)),ts=new Set(hit.map(x=>x.dataset.t));
  svg.classList.remove("has-sel");svg.classList.add("tracing");ed.forEach(x=>x.classList.toggle("is-on",hit.indexOf(x)>=0));
  svg.querySelectorAll(".jnn").forEach(n=>n.classList.toggle("is-on",js.has(n.dataset.jn)));svg.querySelectorAll(".jnt").forEach(n=>n.classList.toggle("is-on",ts.has(n.dataset.tn)))}
 function untrace(){const svg=document.querySelector(".jnet");if(!svg)return;svg.classList.remove("tracing");svg.classList.add("has-sel");svg.querySelectorAll(".is-on").forEach(n=>n.classList.remove("is-on"))}
-document.addEventListener("mouseover",e=>{const t=e.target.closest&&e.target.closest("[data-tn]"),j=e.target.closest&&e.target.closest("[data-jn]");if(t)trace("t",t.dataset.tn);else if(j)trace("j",j.dataset.jn);else untrace()});
+ROUTER.on("mouseover",e=>{const t=e.target.closest&&e.target.closest("[data-tn]"),j=e.target.closest&&e.target.closest("[data-jn]");if(t)trace("t",t.dataset.tn);else if(j)trace("j",j.dataset.jn);else untrace()});
 
 /* ---- hover card on boxes and curve points ---- */
 let peek=null,cur=null;
@@ -134,9 +134,9 @@ function show(el){const a=api(),X=JYX;const [jid,bid]=(el.dataset.jb||"").split(
  document.querySelectorAll('[data-jb="'+el.dataset.jb+'"]').forEach(n=>n.classList.add("hl"));
  p.classList.add("show");const rc=el.getBoundingClientRect(),pw=p.offsetWidth,ph=p.offsetHeight,vw=innerWidth,vh=innerHeight;
  let x=rc.right+12;if(x+pw>vw-12)x=Math.max(12,rc.left-pw-12);let y=rc.top+rc.height/2-ph/2;y=Math.max(12,Math.min(vh-ph-12,y));p.style.left=x+"px";p.style.top=y+"px"}
-document.addEventListener("mouseover",e=>{const el=e.target.closest&&e.target.closest("[data-jb]");if(!el){if(cur)hide();return}if(el===cur)return;hide();show(el)});
-document.addEventListener("focusin",e=>{const el=e.target.closest&&e.target.closest("[data-jb]");if(el&&el!==cur){hide();show(el)}});
-document.addEventListener("focusout",e=>{if(e.target.closest&&e.target.closest("[data-jb]"))hide()});
+ROUTER.on("mouseover",e=>{const el=e.target.closest&&e.target.closest("[data-jb]");if(!el){if(cur)hide();return}if(el===cur)return;hide();show(el)});
+ROUTER.on("focusin",e=>{const el=e.target.closest&&e.target.closest("[data-jb]");if(el&&el!==cur){hide();show(el)}});
+ROUTER.on("focusout",e=>{if(e.target.closest&&e.target.closest("[data-jb]"))hide()});
 document.addEventListener("scroll",hide,true);document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("[data-pp2-act]"))hide()},true);
-document.addEventListener("keydown",e=>{if(e.key==="Escape")hide()});
+ROUTER.on("keydown",e=>{if(e.key==="Escape")hide()});
 })();
