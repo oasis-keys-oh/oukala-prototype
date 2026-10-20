@@ -64,5 +64,16 @@ const tp=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.
  const ix=JOV.index();const keys=Object.keys(ix);out[k]={n:keys.length,named:keys.filter(x=>JYX.TP[x]).length,sys:keys.filter(x=>x.indexOf('sys:')===0).length}}return out});
 for(const k in tp)ok(tp[k].n>=4&&tp[k].named===tp[k].n,`${k}: ${tp[k].n} shared touchpoints on the Overlay, all named in JYX.TP`);
 
+// 7. DC-24: demo view hides four tabs (never the active one) and the Building blocks tab lists the components with live examples
+const demo=await p.evaluate(async()=>{SCN.set('core');await new Promise(r=>setTimeout(r,120));S.pp2.tab.ppl_jrny=1;JX.demoTabs(true);await new Promise(r=>setTimeout(r,150));
+ const vis=()=>[...document.querySelectorAll('#view [data-pp2-tab]')].filter(b=>!b.hidden).map(b=>b.textContent);const on=vis();
+ S.pp2.tab.ppl_jrny=4;render();await new Promise(r=>setTimeout(r,150));const onActive=vis();
+ const stored=U.store.get('jx.demoTabs',false);JX.demoTabs(false);await new Promise(r=>setTimeout(r,150));const off=vis();
+ S.pp2.tab.ppl_jrny=9;render();await new Promise(r=>setTimeout(r,200));const parts=[...document.querySelectorAll('#view .jx-part')];
+ return {on,onActive,off,stored,parts:parts.length,ex:parts.filter(x=>x.querySelector('.jx-pex').children.length).length,api:typeof JX.demoTabs}});
+ok(demo.api==='function'&&demo.on.length===6&&demo.off.length===10&&demo.stored===true,`demo view: ${demo.on.length} of ${demo.off.length} tabs shown (${demo.on.join(', ')}), stored in U.store`);
+ok(demo.onActive.indexOf('Processes')>=0&&demo.onActive.length===7,'demo view keeps the active tab visible even when it is one of the hidden four');
+ok(demo.parts>=8&&demo.ex===demo.parts,`Building blocks: ${demo.parts} components, each with a live example`);
+
 ok(!errs.length,'no page errors'+(errs.length?': '+errs.slice(0,5).join(' | '):''));
 console.log(fail?fail+' journey check(s) failed':'journey checks passed');await b.close();process.exit(fail?1:0)})();
