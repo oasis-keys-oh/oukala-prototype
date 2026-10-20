@@ -50,4 +50,45 @@ SHOW.add({id:"vibe",title:"VibeCheck Executive cut",mins:10,who:"Executives who 
   say:["The lens rolls every build into value, cost and risk for one executive.","The dollar figures are modeled from an editable rate and are illustrative."],
   do:"Switch between the CIO and COO lenses.",claims:["modeled"]}]});
 
+/* ---------- DC-16: tenant VibeCheck briefs ---------- */
+const brief=(t,o)=>({id:"brief-"+t,title:o.title,mins:6,who:o.who,tenant:t,persona:"exec",group:"brief",
+ tenantWhy:"Journey maps, the Build list, the org chart and the tenant views follow this tenant; VibeCheck's library is the Meridian sample and is labeled.",
+ blurb:o.blurb,beats:[
+ {id:t+".1",act:"Journey",point:o.p1,secs:60,go:"ppl_jrny",tab:"Map",
+  say:[o.s1,"Red boxes have no process behind them yet; every name is fictional."],do:"Filter to No process.",claims:["modeled"]},
+ {id:t+".2",act:"Gap",point:"The Build list ranks what to build first, in waves",secs:60,go:"ppl_jrny",tab:"Build list",
+  say:["Agents and robots for this tenant's journeys are ranked by hours returned and ease.","The waves are a hypothesis until this customer reviews them."],do:"Open wave 1.",claims:["modeled","hypothesis"]},
+ {id:t+".3",act:"Team",point:"Where the proposed helpers would sit in the team",secs:60,go:"orgassist",
+  say:["Dashed cards are proposed agents and robots placed under the team they would help.","None of them is running."],do:"Turn the proposal overlay on and off.",claims:["modeled","simulated"]},
+ {id:t+".4",act:"Brief",point:o.p4,secs:90,go:"studio",setup:o.setup,
+  say:[o.s4,"The interview is scripted and the library behind it is the Meridian sample, so show it as a preview."],do:"Press Next in the click-through.",claims:["simulated"]},
+ {id:t+".5",act:"Measure",point:"The tenant's own objectives and measures",secs:60,go:"tn_metrics",
+  say:["Objectives and measures come from this tenant's own data pack, not from Meridian.","Values are sample data, so present them as modeled."],do:"Open one objective.",claims:["modeled"]}]});
+[["health",{title:"Healthcare brief: referral and prior authorization",who:"Health system operations and IT leaders",
+  blurb:"A specialist referral from intake to a booked visit, with prior authorization checked first. Runs on the fictional Healthcare tenant.",
+  p1:"The referral journey as patients and coordinators see it",s1:"Each box is a step a patient, a referral coordinator or a clinician goes through, tied to the process behind it.",
+  p4:"Say the referral and prior authorization brief in plain words",s4:"The brief is typed as a plain request: route a specialist referral and check prior authorization before the visit is booked.",
+  setup:"studio:ask:Route a new specialist referral and check prior authorization before the visit is booked."}],
+ ["mining",{title:"Mining brief: permit to work",who:"Site operations, safety and IT leaders",
+  blurb:"A permit to work for a confined space entry, with isolation checked before work starts. Runs on the fictional Mining tenant.",
+  p1:"The permit to work journey as crews and supervisors see it",s1:"Each box is a step a crew member, a supervisor or a safety officer goes through, tied to the process behind it.",
+  p4:"Say the permit to work brief in plain words",s4:"The brief is typed as a plain request: issue a permit to work for a confined space entry with isolation checked first.",
+  setup:"studio:ask:Issue a permit to work for a confined space entry, with isolation checked before work starts."}],
+ ["storage",{title:"Storage brief: failed drive swap",who:"Support, logistics and IT leaders at a storage company",
+  blurb:"A customer's failed drive swapped within a day, the replacement shipped before the old drive comes back. Runs on the fictional Storage and backup tenant.",
+  p1:"The customer support journey as customers and engineers see it",s1:"Each box is a step a customer, a support engineer or the warehouse goes through, tied to the process behind it.",
+  p4:"Say the failed drive swap brief in plain words",s4:"The brief is typed as a plain request: approve a failed drive swap within one day and ship the replacement first.",
+  setup:"studio:ask:Approve a customer's failed drive swap within one day and ship the replacement first."}],
+ ["core",{title:"Meridian brief: damaged deliveries",who:"Operations leaders at the Meridian sample",
+  blurb:"Printed standards arriving damaged: VibeCheck finds the process that exists and extends it. Runs on the fictional Meridian Standards Foundation.",
+  p1:"The member journey as members and staff see it",s1:"Each box is a step a member or a staff member goes through, tied to the process behind it.",
+  p4:"Damaged deliveries: extend the process that already exists",s4:"The brief is the scripted example: printed standards keep arriving damaged, and VibeCheck extends the existing process.",
+  setup:"studio:scen:ret:find"}]].forEach(([t,o])=>SHOW.add(brief(t,o)));
+
+/* DC-16 home: the tenant briefs */
+SHOW.home.push(()=>{const briefs=SHOW.demos.filter(d=>d.group==="brief");if(!briefs.length)return"";
+ return `<section class="sr-card glass srt" aria-label="Tenant briefs"><div class="sr-ch"><h3>Tenant VibeCheck briefs</h3><span class="sr-pill">About 6 min each</span></div>
+ <p class="muted small">The same story on each sample tenant. Journey maps, the Build list, the org chart and the tenant views follow the tenant; VibeCheck's library is the Meridian sample and the bar says so.</p>
+ <div class="srt-grid">${briefs.map(d=>`<article class="srt-c"><b>${E(d.title)}</b><p class="small muted">${E(d.blurb)}</p><div class="row"><button type="button" class="btn sm" data-sr-start="${E(d.id)}">Start</button>${SHOW.leaveBehind?`<button type="button" class="btn quiet sm" data-sr-leave="${E(d.id)}">Leave-behind</button>`:""}</div></article>`).join("")}</div></section>`});
+
 })();
