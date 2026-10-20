@@ -117,6 +117,12 @@ STEPMODE.ALIAS={human:"human",person:"human",manual:"human",robot:"robot",fn:"ro
 STEPMODE.of=v=>STEPMODE.ALIAS[String(v==null?"":v).toLowerCase()]||"human";
 STEPMODE.label=v=>STEPMODE.MODES[STEPMODE.of(v)].label;
 STEPMODE.kinds=()=>["human","robot","agent"];
+STEPMODE.needsTrigger=v=>{const k=STEPMODE.of(v);return k==="robot"||k==="agent"};
+STEPMODE.ownerFor=(v,cur)=>{const k=STEPMODE.of(v),c=String(cur||"");
+ if(k==="robot")return /^(Automatic|Function|System|Platform)$/i.test(c)||!c||/Agent$/.test(c)?"Robot":c;
+ if(k==="agent")return /Agent$/.test(c)?c:"Studio Agent";
+ return /^(Automatic|Function|Robot|System)$/i.test(c)||/Agent$/.test(c)?"Owner":(c||"Owner")};
+STEPMODE.robotFor=(s,ctx)=>W.OWNERX&&OWNERX.robotFor?OWNERX.robotFor(s,ctx):null;
 STEPMODE.pill=v=>{const k=STEPMODE.of(v);return `<span class="stepmode sm-${k}" title="${U.esc(STEPMODE.MODES[k].desc)}">${STEPMODE.MODES[k].label}</span>`};
 
 /* ---- TRIGGERS: one catalog for every robot and agent step (R21a, CL-73). Human steps start by assignment. ---- */

@@ -20,5 +20,6 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  ok(STEPMODE.of("fn")==="robot"&&STEPMODE.of("auto")==="robot"&&STEPMODE.label("ai")==="Agent","STEPMODE aliases");ok(!/Automatic|Function/.test(STEPMODE.pill("auto")),"STEPMODE never shows retired words");
  ok(TRIGGERS.list().length===5&&TRIGGERS.get("metric"),"TRIGGERS catalog");
  const a=CHATADDR.parse("record:project:PR1");ok(a&&a.recType==="project"&&a.id==="PR1","CHATADDR parse");
+ ok(window.BRAND&&BRAND.name==="Falconaire","BRAND.name");
  ok(/data-owner="/.test(ownerChip("Casey Rowan",{record:"project:PR1"})),"ownerChip markup");return f});
 console.log('platform contract',r.length?'FAIL '+r.join('; '):'ok');await b.close();process.exit(r.length?1:0)})();

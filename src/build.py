@@ -32,6 +32,8 @@ css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.cs
 js="\n".join(js)
 BR=json.load(open('brand.json'));NAME=BR['name'];OLD=BR['replace']
 js=js.replace(OLD,NAME);css=[c.replace(OLD,NAME) for c in css]
+# CL-17: one product-name constant for view code; the literal swap above goes once the sweep has moved every visible string to BRAND.name
+js='window.BRAND=Object.freeze('+json.dumps({'name':NAME,'mark':BR.get('mark','')})+');\n'+js
 MK=BR.get('mark','')
 if MK and MK.lower() in NAME.lower():
     _i=NAME.lower().index(MK.lower());WM=NAME[:_i]+'<i class="wm-ai">'+NAME[_i:_i+len(MK)]+'</i>'+NAME[_i+len(MK):]

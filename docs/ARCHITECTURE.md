@@ -18,6 +18,25 @@ One core file, loaded after `kit2.js` and before every `mod_*.js`. Every name is
 
 Changing a contract: only the orchestrating session edits `platform.js`, except that the tenancy stream may extend the `DATA` section. Anyone else asks in their final report.
 
+### 1b. Module APIs other modules may call (from wave 1 and 2 reports)
+| Global | Module | Use |
+|---|---|---|
+| `STEPMODE.needsTrigger`, `ownerFor`, `robotFor` | platform.js | trigger rule and owner wording per step kind; robots resolve through `OWNERX.robotFor` |
+| `OWNERX.robots`, `robot`, `robotFor` | mod_s_owner | robot directory: every robot step has a human sponsor and a different backup (CL-78) |
+| `DATA.term(key,n)`, `DATA.terms()` | mod_s_tenant | tenant vocabulary (CL-57); entities include `key_results`, `pillars`, `demand`, `maturity`, `vocabulary`, `workload`, `value_chain`; packs in `window.TENANT_PACKS`; `DATA.screen(id,{mode,adapter})` |
+| `NUM` (`pnum`, `snum`, `rec`, `rresolve`, `recordCSV`, `exportRecords`) | mod_r32_num_b | numbers for processes, steps, builds, objectives (O-001), key results (O-001.2), projects (PJ-), budget lines (BL-), invoices (IV-), ledger lines (LG-) |
+| `ZLINK.chains`, `verify`, `refresh` | mod_zlink | the three golden-thread chains |
+| `THREAD.build`, `THREAD.open` | mod_s_thread | Trace this drawer from any number chip |
+| `EXE` (`cascade`, `gateCheck`, `publishStrat`, `krDrawer`) | mod_exec | strategy cascade and authoring with a quality gate |
+| `SHOW` (`add`, `paths`, `setups`, `applyLens`, `wedge`, `reset`, `buildFix`, `lint`) | mod_r33_showroom, mod_s_showroom* | tours, lenses, wedge mode, demo reset, Build the fix hand-off (`data-sr-fix="kind|ref|title"`); the attribute `data-sr` is reserved by the core click handler |
+| `SRCH.allow`, `USAGE` | mod_s_search, mod_s_search_usage | tenant-scoped search; screen, module and tab names rank first; real usage counts (this browser only) |
+| `JX.TABS`, `demoTabs(on)`, `JXR.countBuilds`, `buildKey` | mod_r31_* | journey tabs, demo view, the one shared build count |
+| `GUARD`, `APG.route`, `APG.check` | mod_s_guard, mod_r16h_c_groups | guardrail register, one approval route |
+| `AGENTRT.canDecide`, `delegate`, `towerSync`, `scope` | mod_r15f1_c_agent | sponsor-only agent decisions, kill switch honored at runtime, per-tenant agent memory |
+| `workFor.index(build)`, `workFor.clear()` | kit2 | one work index per render pass |
+| `PROCLIB.count`, `whenSettled`, `draftMaturity` | mod_plat_proclib | stable process counts; every draft has a maturity record |
+| `DATAMODEL.classOf`, `classify`, `inferred` | kit2 | every table has a classification (CL-77) |
+
 ## 2. Module conventions for new work
 - New feature modules: `mod_s_<domain>.js` and `.css`, listed in `src/modules.json` right after `mod_r33_showroom` in alphabetical order (the build fails on an unlisted or missing module). Domain names, not round numbers.
 - Guardrail register and approval routing: `GUARD` (mod_s_guard.js: `rails`, `verify`, `matrix`, `attempt`, `child`), one approval route `APG.route(kind,rec)` with `APG.check` (requester never approves own; group binding).
@@ -61,6 +80,21 @@ Changing a contract: only the orchestrating session edits `platform.js`, except 
 **Wave 3 (parallel: one JS sweep stream, one CSS stream):**
 - `sweep-js` (sequential commits, every module): CL-45, CL-44, CL-17, CL-72, CL-32, CL-34, CL-42, CL-35 (migrate wrappers), CL-53 (migrate plain-text owners), CL-43, CL-52.
 - `css` (CSS files only): CL-18, CL-19, CL-20, CL-21, CL-22, CL-23, CL-24, CL-25, CL-26, CL-29, CL-30 (measure only), PR-04.
+
+**Wave 3 sweep rules (every sweep agent applies the same decisions):**
+- Partition: `sweep-a` = core files (data.js, data2.js, ui.js, kit.js, kit2.js, screens1-4.js; not platform.js) and modules from `mod_admin` to `mod_obs` in modules.json order; `sweep-b` = `mod_oncall` to `mod_r16l_d_plans`; `sweep-c` = `mod_r16l_e_trace` to the end (includes `mod_s_*`, `mod_z*`). An agent edits only JS files in its range; CSS belongs to the `css` stream.
+- CL-45 em dashes: in user-visible strings replace with a comma, colon, parentheses or "to" as the sentence needs; comments may keep them.
+- CL-44 and R31 names: visible "Fabric", "Fabric Enterprise", "Core" (as a product name), "Trellis" become plain descriptions ("platform data layer"); FASB, GASB, FAF, ASC, ASU, Codification become "accounting standards". File and id names stay.
+- CL-17 brand: visible "Oukala" and "Shaheen" become `${BRAND.name}` (global injected by the build). Storage keys, ids and CSS class names that contain "oukala" stay unchanged so saved state survives.
+- CL-72 step kinds: each `who:"auto"` becomes `"robot"` when the step is a fixed rule, `"agent"` when it reasons with a model; ordinary uses of "auto" or "automatic" (auto-save, automatically) stay. Labels go through `STEPMODE`. Saved data keeps reading old values (aliases).
+- CL-32 helpers: a local money, pct, esc, slug, clamp or uid that behaves exactly like `U.*` is replaced by `U.*`; a variant with different output stays and is listed in the report.
+- CL-34 date: literal "Oct 6", "October 6" or "2026-10-06" used as today reads from `U.TODAY_ISO`, `U.todayDate()` or `U.fmtDate(U.todayDate())`; seed data dates stay.
+- CL-42 storage: `localStorage` calls go through `U.store` with the same key names.
+- CL-35 hooks: wrappers of `render`, `go`, `openDrawer` move to `HOOKS.on` with an `id`; keep order with `order` when two depend on each other.
+- CL-53 owners: owner, backup, approver, assignee, sponsor, requester and reviewer names rendered as plain text become `ownerChip(name,{role,record})`; pairs use `ownerChip.pair`.
+- CL-43 escaping: any innerHTML that includes user-typed text uses `U.esc`.
+- CL-57 vocabulary: hard-coded industry nouns on shared screens use `DATA.term(key)` (list in docs/tenant-packs.md section 4).
+- Never change behavior beyond the rule; screens must render identically except for the corrected strings. Run smoke, tabs and the stream's relevant tests per commit and the full suite before the last commit.
 
 **Wave 4 (bundle, lint, gate, final measure):** CL-14, CL-15, CL-39, CL-27, CL-28, CL-36, CL-37, CL-38, CL-40, CL-41 (hide, never delete), CL-46, CL-60, CL-59, CL-61, CL-47, PR-05, PR-08, PR-11 (simulated upload), CL-49.
 
