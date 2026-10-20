@@ -31,7 +31,8 @@ js.append(r("screens3.js"))
 css=[r("style.css"),r("style2.css"),r("style3.css"),r("style4.css"),r("style5.css"),r("style6.css"),r("style7.css")]+([r("style8.css")] if os.path.exists("style8.css") else [])+[r(m+'.css') for m in mods if os.path.exists(m+'.css')]
 js="\n".join(js)
 BR=json.load(open('brand.json'));NAME=BR['name'];OLD=BR['replace']
-js=js.replace(OLD,NAME);css=[c.replace(OLD,NAME) for c in css]
+# CL-17: no global name swap any more; view code reads BRAND.name. Only the header wordmark marker in screens3.js is filled in here.
+js=js.replace('<b>'+OLD+'</b><small>','<b>'+NAME+'</b><small>')
 # CL-17: one product-name constant for view code; the literal swap above goes once the sweep has moved every visible string to BRAND.name
 js='window.BRAND=Object.freeze('+json.dumps({'name':NAME,'mark':BR.get('mark','')})+');\n'+js
 MK=BR.get('mark','')

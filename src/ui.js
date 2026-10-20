@@ -89,7 +89,7 @@ function renderNav(){$("#nav").innerHTML=navHTML();$("#personaName").textContent
 function go(screen,arg){if(window.HOOKS)HOOKS.run("beforeGo",screen,arg);S.screen=screen;S.navOpen={};if(screen==="inv"&&arg)S.inv=arg;if(screen==="trace"&&arg){S.rec=arg;S.flowSel=null}if(screen==="fo"&&arg){S.calSel=arg}if(screen==="metrics"&&arg)S.metricSel=arg;if(screen==="kg"&&arg)S.kgStart=arg;closeDrawer();$$("[popover]:popover-open").forEach(p=>{try{p.hidePopover()}catch(e){}});render();window.scrollTo({top:0,behavior:"smooth"});audit("navigated",screen+(arg?" · "+arg:""))}
 let _R={};
 function navReveal(){const n=$("#nav"),a=n&&n.querySelector("[aria-current=page]");if(!a)return;const nr=n.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.bottom>nr.bottom-8)n.scrollTop+=ar.bottom-nr.bottom+40;else if(ar.top<nr.top+8)n.scrollTop-=nr.top-ar.top+40}
-function render(){if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.dataset.screen=S.screen;v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender();if(window.HOOKS)HOOKS.run("afterRender",S.screen)}
+function render(){if(window.HOOKS)HOOKS.run("beforeRender",S.screen);if(window.normMetrics)normMetrics();renderNav();navReveal();const v=$("#view");v.dataset.screen=S.screen;v.innerHTML=(_R[S.screen]||(()=>"") )();v.focus({preventScroll:true});afterRender();if(window.HOOKS)HOOKS.run("afterRender",S.screen)}
 function afterRender(){if(window.coreAfter)coreAfter();if(S.screen==="fo"&&S.calSel){const m=MEETINGS.find(x=>x.id===S.calSel);S.calSel=null;if(m)meetingDrawer(m.id)}}
 
 /* ---- search-ahead and chat ---- */
