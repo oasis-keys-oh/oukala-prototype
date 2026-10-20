@@ -453,7 +453,7 @@ mq.addEventListener("change",()=>{if(mq.matches)rc()});setTimeout(rc,300);
  const H=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));const pchip=(...a)=>(window.pchip?window.pchip(...a):H(a[0]));
  const MODES={det:{n:"Deterministic",d:"Fixed rules: the same input always gives the same result. Fully testable.",ic:"=" },ai:{n:"AI reasoning",d:"Probabilistic: judges from evidence and shows a confidence score, lineage and guardrails.",ic:"~"},hum:{n:"Human judgment",d:"A person decides using context, experience and accountability.",ic:"●"},mix:{n:"Rules, then judgment",d:"Rules decide the clear cases; AI or a person decides the rest.",ic:"≈"}};
  PROC.modes=MODES;
- PROC.modeOf=s=>s.mode&&MODES[s.mode]?s.mode:({auto:"det",agent:"ai",human:"hum",gate:"mix"})[s.who||"human"]||"hum";
+ PROC.modeOf=s=>s.mode&&MODES[s.mode]?s.mode:({robot:"det",agent:"ai",human:"hum",gate:"mix"})[STEPMODE.of(s.who||"human")]||"hum";
  PROC.modeTag=s=>{const m=PROC.modeOf(s),M=MODES[m];return `<span class="pmode ${m}" title="${H(M.d)}"><i aria-hidden="true">${M.ic}</i>${M.n}</span>`};
  const POL={
   chg:{name:"Change approval",unit:"Change risk",pre:["It matches a pre-approved standard change template","Risk score is low","Not inside a change freeze window","No conflicting change on the same service"],ai:["Risk is low to medium","Rollback plan and test evidence are attached","AI confidence is at least {conf}%","Past success rate for this change type is above 95%"],hum:["Risk is high or the change touches a critical service","It falls in a freeze window","AI confidence is below {conf}% or evidence is missing","Segregation of duties or regulatory scope applies"]},

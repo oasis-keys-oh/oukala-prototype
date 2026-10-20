@@ -820,14 +820,14 @@ CX.actById=id=>ST.acts.find(a=>a.id===id);
 
 /* ================= UI: dock, panes, cards ================= */
 const CBS=new Map();let CBN=0;const cb=fn=>{const k="k"+(++CBN);CBS.set(k,fn);if(CBS.size>600)CBS.delete(CBS.keys().next().value);return k};
-const OWN={agent:"AI agent",human:"Person",auto:"Automatic",gate:"Approval gate"};
+const OWN={agent:"AI agent",human:"Person",auto:"Robot",robot:"Robot",gate:"Approval gate"};
 const STP={queued:["Queued","mute"],running:["Running","info"],awaiting:["Waiting","warn"],done:["Done","good"],failed:["Failed","bad"],blocked:["Blocked","bad"],cancelled:["Cancelled","mute"],skipped:["Skipped","mute"]};
 const ACTP={planned:["Needs your approval","warn"],suggested:["Suggested only","mute"],running:["Running","info"],awaiting:["Waiting on people","warn"],done:["Done","good"],failed:["Stopped","bad"],cancelled:["Cancelled","mute"],blocked:["Not allowed","bad"],undone:["Undone","mute"]};
 function san(html){const s=String(html==null?"":html);if(s.indexOf("<")<0&&s.indexOf("&")<0)return s;try{const d=new DOMParser().parseFromString("<div>"+s+"</div>","text/html");const root=d.body.firstChild;root.querySelectorAll("script,style,iframe,object,embed,link,meta,form,input,textarea,select").forEach(n=>n.remove());root.querySelectorAll("*").forEach(n=>{[...n.attributes].forEach(a=>{if(/^on/i.test(a.name)||/javascript:/i.test(a.value)||(a.name!=="class"&&a.name!=="href"&&a.name!=="title"&&a.name!=="data-go"&&a.name!=="data-person"&&!/^aria-/.test(a.name)&&a.name!=="style"))n.removeAttribute(a.name)});if(n.getAttribute("style")&&!/^[\w\s:;#.,%()-]*$/.test(n.getAttribute("style")))n.removeAttribute("style")});return root.innerHTML}catch(e){return H(plain(s))}}
 const V=x=>{if(x==null)return"";if(typeof x==="object"){if(x.p)return pchip(x.p);if(x.pill)return pill(H(x.pill),x.cls);if(x.h)return san(x.h);return H(JSON.stringify(x))}return H(x)};
 const pillT=(t,c)=>`<span class="pill ${c||"mute"}">${H(t)}</span>`;
 const okChip=(ok,t)=>`<span class="cx-pc ${ok?"ok":"no"}">${ok?"Allowed":"Blocked"}</span> ${H(t)}`;
-const ownHTML=o=>{if(!o)return"";const w=o.who||"";const p=who(w);return`<span class="cx-own k-${o.kind}">${p?avatar(w,{size:20}):`<i class="cx-ownic" aria-hidden="true">${o.kind==="auto"?"A":o.kind==="gate"?"G":"P"}</i>`}<span>${H(w)}</span><small>${OWN[o.kind]||""}</small></span>`};
+const ownHTML=o=>{if(!o)return"";const w=o.who||"";const p=who(w);return`<span class="cx-own k-${o.kind}">${p?avatar(w,{size:20}):`<i class="cx-ownic" aria-hidden="true">${o.kind==="auto"||o.kind==="robot"?"R":o.kind==="gate"?"G":"P"}</i>`}<span>${H(w)}</span><small>${OWN[o.kind]||""}</small></span>`};
 const aiChipL=(l,x)=>aiChip(Object.assign({model:l.model,conf:l.conf,title:l.title||"How I answered",note:l.note,src:l.src,guards:l.guards},x||{}));
 function guardChips(pols){return(pols||[]).map(n=>`<span class="cx-pc ${n.ok?"ok":"no"}" title="${H(n.n+": "+n.txt)}">${H(n.pol)}</span>`).join("")}
 
@@ -1346,12 +1346,12 @@ Object.assign(METRICS,{
 function syncChxM(){const m=liveM();[["m_chx_defl","defl"],["m_chx_done","done"],["m_chx_steps","steps"],["m_chx_esc","esc"]].forEach(([id,k])=>{const x=METRICS[id];if(x.cur!==m[k]){x.cur=m[k];x.tr=x.tr.slice(0,7).concat(m[k])}})}
 syncChxM();
 PROC.reg("chat_home",{title:"Chat and agentic fulfillment",std:["agentic","itil5"],steps:[
- {n:"Understand the ask",d:"The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.",who:"auto",sla:"Under 1 second",out:"Tool and filled parameters"},
- {n:"Check guardrails and permissions",d:"Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.",who:"auto",out:"Allowed, blocked, or needs approval"},
+ {n:"Understand the ask",d:"The planner scores every registered tool against the words, the page, the selected record and who the work is for. It uses rules, not a model, so the same ask gives the same plan.",who:"robot",sla:"Under 1 second",out:"Tool and filled parameters"},
+ {n:"Check guardrails and permissions",d:"Ten written policies and the role of the person acting are checked. If the chat acts for someone else, a delegation must exist.",who:"robot",out:"Allowed, blocked, or needs approval"},
  {n:"Show the plan",d:"Steps, parameters, risk, cost and approvers appear as a card. The person can approve, edit or cancel.",who:"human",owner:"Requester",out:"Approved plan"},
  {n:"Approvals from other people",d:"Manager, budget owner or change advisory board steps wait as gates. The chat never approves its own plan for a person who is not allowed.",who:"gate",owner:"Approver",sla:"Per policy",out:"Approval decision"},
  {n:"Run step by step",d:"Each tool runs against the real module, with live status. A failed step stops the plan and offers retry or handoff.",who:"agent",owner:"Claude",out:"Records created or changed"},
- {n:"Audit and learn",d:"Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.",who:"auto",out:"Audit trail and metrics"}]});
+ {n:"Audit and learn",d:"Every step writes an audit entry with model, confidence and policy. Undo is offered where the tool supports it. Deflection and completion feed the metrics.",who:"robot",out:"Audit trail and metrics"}]});
 const ICON_CHX="M4 5h16v11H9l-5 4zM8 9h8M8 12h5";
 
 function risk(r){r=RISK[r]?r:"medium";return`<span class="pill ${RISK[r].cls}" title="Risk ${RISK[r].n}: ${r==="low"?"reads or reversible":r==="medium"?"changes records, undo available":"hard to reverse or spends money"}">${RISK[r].n}</span>`}

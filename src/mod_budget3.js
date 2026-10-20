@@ -389,10 +389,10 @@ if(typeof PROC!=="undefined")PROC.reg("bud_req",{title:"Request budget and decid
  {n:"Triage",d:"Completeness, duplicates, routing by amount.",who:"human",owner:"Portfolio office",sla:"2 days",in:"Checked request",out:"Routed request"},
  {n:"Finance review",d:"Fit to color and budget, reserve and forecast effect.",who:"human",owner:"Finance business partner",sla:"3 days",in:"Routed request",out:"Finance opinion"},
  {n:"Architecture and security review",d:"Linked to existing reviews where present.",who:"human",owner:"Architecture and security lead",sla:"4 days",in:"Finance opinion",out:"Review outcome"},
- {n:"Business value scoring",d:"Demand scoring formula: strategy, return, risk reduction, urgency.",who:"auto",owner:"Portfolio analyst",sla:"3 days",in:"Review outcome",out:"Value score"},
+ {n:"Business value scoring",d:"Demand scoring formula: strategy, return, risk reduction, urgency.",who:"robot",owner:"Portfolio analyst",sla:"3 days",in:"Review outcome",out:"Value score"},
  {n:"Portfolio council ranking",d:"The council ranks requests inside the envelope.",who:"gate",owner:"Portfolio council",sla:"7 days",in:"Value score",out:"Ranked list"},
  {n:"Funding decision",d:"The delegation of authority names the approver; decided at the matching funding gate.",who:"gate",owner:"Approver by DOA tier",sla:"3 days",in:"Ranked or routed request",out:"Decision with reason"},
- {n:"Fund and record",d:"A budget line and a reserve draw are created, the gate is recorded, the requester is told.",who:"auto",owner:"Finance",sla:"Immediate",in:"Approval",out:"Budget line, audit entry"}]});
+ {n:"Fund and record",d:"A budget line and a reserve draw are created, the gate is recorded, the requester is told.",who:"robot",owner:"Finance",sla:"Immediate",in:"Approval",out:"Budget line, audit entry"}]});
 let lastNav=0;
 const cm_=q=>{const t=String(q||"").toLowerCase();let m;
  if((m=t.match(/(?:i|we)\s+(?:need|want)\s+(?:a\s+|some\s+)?budget\s+(?:for|to)\s+(.+)/))||(m=t.match(/(?:request|ask for)\s+budget\s+(?:for|to)\s+(.+)/))||(m=t.match(/can i (?:get|have)\s+\$?([\d.,]+\s*[km]?)?\s*(?:for|to)\s+(.+)/))){

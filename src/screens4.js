@@ -285,7 +285,7 @@ document.addEventListener("scroll",e=>{const t=e.target;if(!t||!t.dataset||!t.da
 document.addEventListener("change",e=>{const t=e.target;if(t&&t.matches&&t.matches("[data-planselect]")){S.planProj=t.value;audit("picked project plan",t.value);render()}});
 PROC.reg("ims",{title:"How the master schedule stays true",std:["pmbok","safe"],steps:[
  {n:"Project managers update progress",d:"Percent complete and actual dates arrive from task sheets, Teams and First Officer meeting notes.",who:"human",owner:"Priya Shah",sla:"Weekly",in:"Task updates",out:"Updated WBS lines"},
- {n:"Schedule engine recalculates",d:"Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.",who:"auto",sla:"Instant",in:"WBS lines and links",out:"Dates, float, critical path"},
+ {n:"Schedule engine recalculates",d:"Forward and backward passes with all four link types, lags, constraints and actual dates. Summary lines roll up from their children.",who:"robot",sla:"Instant",in:"WBS lines and links",out:"Dates, float, critical path"},
  {n:"PMO Agent flags drift",d:"Compares forecast with baseline, finds new critical chains and cross-project collisions, drafts a recovery option.",who:"agent",owner:"PMO Agent",sla:"Daily",in:"Recalculated schedule",out:"Flags and options"},
  {n:"Portfolio manager reviews",d:"Decides which recovery option to take and whether a milestone moves.",who:"human",owner:"Maya Ortiz",sla:"2 working days",in:"Flags and options",out:"Decision"},
  {n:"Baseline reset approval",d:"A re-baseline needs approval from the steering committee. It is audited and the old baseline is kept.",who:"gate",owner:"Casey Rowan",sla:"Next steering committee",in:"Re-baseline request",out:"New baseline version"}]});
@@ -294,7 +294,7 @@ PROC.reg("plan",{title:"How a project plan is built and kept current",std:["pmbo
  {n:"Estimate and link",d:"Durations, resources and predecessors are set. The engine shows the critical path as you work.",who:"human",owner:"Priya Shah",sla:"Before baseline",in:"WBS",out:"Linked schedule"},
  {n:"AI completeness check",d:"PMO Agent drafts missing deliverables, flags lines with no owner, no resource or no predecessor, and suggests fixes.",who:"agent",owner:"PMO Agent",sla:"Minutes",in:"Linked schedule",out:"Gap list with drafts"},
  {n:"Approve and baseline",d:"The sponsor approves the plan and a baseline is set. Variance is measured from here.",who:"gate",owner:"Casey Rowan",sla:"1 working day",in:"Plan",out:"Baseline"},
- {n:"Track and replan",d:"Actuals flow in, the engine reforecasts, and changes to dates need a reason.",who:"auto",sla:"Continuous",in:"Updates",out:"Forecast and variance"}]});
+ {n:"Track and replan",d:"Actuals flow in, the engine reforecasts, and changes to dates need a reason.",who:"robot",sla:"Continuous",in:"Updates",out:"Forecast and variance"}]});
 /* CL-76: one index of open WBS assignments by person and one schedule per pass (workFor.index), not one plan per person */
 const cl76WbsIdx=()=>{const m=new Map();const U=ulist();U.forEach(t=>{if(!(t.pct<100))return;new Set((t.asg||[]).map(a=>a[0])).forEach(n=>{if(t.own===n)return;let a=m.get(n);if(!a)m.set(n,a=[]);if(a.length<60)a.push(t)})});
  const out=new Map();if(!m.size)return out;const P=plan("now",U);m.forEach((L,n)=>out.set(n,L.map(t=>cl76WbsRow(P,t,n))));return out};

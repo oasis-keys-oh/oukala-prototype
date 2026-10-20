@@ -243,10 +243,10 @@ const INC_NEW=()=>[
 /* ---------- ITIL 5 aligned process strips ---------- */
 const PROCS={
 itsm_inc:{title:"Incident process (ITIL 5 Support activity)",std:["itil5","iso20k"],steps:[
- {n:"Detect and log",d:"Monitoring, a caller or an agent raises the incident against a service and CI.",who:"auto",owner:"Triage Agent",sla:"Seconds",in:"Alert or call",out:"Incident with service and CI"},
- {n:"Calculate priority",d:"Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.",who:"auto",owner:"Incident manager",sla:"Instant",in:"Impact inputs and urgency",out:"P1 to P4"},
+ {n:"Detect and log",d:"Monitoring, a caller or an agent raises the incident against a service and CI.",who:"agent",owner:"Triage Agent",sla:"Seconds",in:"Alert or call",out:"Incident with service and CI"},
+ {n:"Calculate priority",d:"Impact is computed from the service's key metrics. Urgency is the customer's choice within the role bounds. Priority comes from the matrix.",who:"robot",owner:"Incident manager",sla:"Instant",in:"Impact inputs and urgency",out:"P1 to P4"},
  {n:"Confirm triage",d:"An agent suggests category, team and similar incidents. A person confirms.",who:"agent",owner:"Triage Agent",sla:"5 min for P1 or P2",in:"Text and history",out:"Team and category"},
- {n:"Route to a team",d:"Work lands in the team queue. Individuals are not assigned from outside the team.",who:"auto",owner:"Service desk lead",sla:"Instant",in:"Category and service",out:"Assignment group"},
+ {n:"Route to a team",d:"Work lands in the team queue. Individuals are not assigned from outside the team.",who:"robot",owner:"Service desk lead",sla:"Instant",in:"Category and service",out:"Assignment group"},
  {n:"Claim and swarm",d:"A team member claims it, or the team swarms. A direct assignment needs a stated reason.",who:"human",owner:"Team lead",sla:"Response target",in:"Team queue",out:"Owner and swarm"},
  {n:"Diagnose and restore",d:"Work the known error or runbook, link a change if one is needed, communicate.",who:"human",owner:"Resolver",sla:"Resolution target",in:"Runbooks, known errors",out:"Service restored"},
  {n:"Resolve and learn",d:"Record cause and code. An agent drafts the knowledge article and suggests a problem if it repeats.",who:"agent",owner:"Knowledge Curator",sla:"Same day",in:"Resolution notes",out:"Article and problem"}]},
@@ -256,11 +256,11 @@ itsm_prb:{title:"Problem process (ITIL 5 Support and Evolve)",std:["itil5"],step
  {n:"Root cause analysis",d:"Fishbone to find contributing causes by category, then five whys to the root.",who:"human",owner:"Problem owner",sla:"Per priority",in:"Fishbone, five whys",out:"Root cause"},
  {n:"Publish known error",d:"Record the workaround and symptoms so the desk can use them today.",who:"human",owner:"Problem owner",sla:"1 day after workaround",in:"Workaround",out:"Known error"},
  {n:"Fix through change",d:"Raise a change, a knowledge article or a demand for the permanent fix.",who:"gate",owner:"Change manager",sla:"Per change",in:"Root cause",out:"Change, article, demand"},
- {n:"Verify and close",d:"Confirm repeats stopped, retire the known error.",who:"auto",owner:"Problem manager",sla:"4 weeks",in:"Incident trend",out:"Closed problem"}]},
+ {n:"Verify and close",d:"Confirm repeats stopped, retire the known error.",who:"robot",owner:"Problem manager",sla:"4 weeks",in:"Incident trend",out:"Closed problem"}]},
 itsm_chg:{title:"Change enablement process (ITIL 5 Transition)",std:["itil5","devops"],steps:[
  {n:"Request and assess",d:"Describe the change, the service and CIs, plans and the risk questionnaire.",who:"human",owner:"Requester",sla:"Same day",in:"Request",out:"Risk score"},
- {n:"Check conflicts",d:"Collision on the same CI and freeze windows are checked live.",who:"auto",owner:"Change Risk Agent",sla:"Instant",in:"Dates and CIs",out:"Conflicts"},
- {n:"Route approvals",d:"The approval policies decide who approves, in what order, with what quorum.",who:"auto",owner:"Change manager",sla:"Instant",in:"Service, CI, type, risk, group, cost",out:"Approval route"},
+ {n:"Check conflicts",d:"Collision on the same CI and freeze windows are checked live.",who:"agent",owner:"Change Risk Agent",sla:"Instant",in:"Dates and CIs",out:"Conflicts"},
+ {n:"Route approvals",d:"The approval policies decide who approves, in what order, with what quorum.",who:"robot",owner:"Change manager",sla:"Instant",in:"Service, CI, type, risk, group, cost",out:"Approval route"},
  {n:"Approve",d:"Policy picks the approvers. Standard changes from a template need no vote.",who:"gate",owner:"Approvers",sla:"Per policy",in:"Route",out:"Decision"},
  {n:"Schedule and implement",d:"Calendar slot, implementation by the team, backout ready.",who:"human",owner:"Implementer",sla:"Window",in:"Plan",out:"Result"},
  {n:"Review",d:"Outcome feeds the change failure rate. Lessons go to the template or policy.",who:"human",owner:"Change manager",sla:"3 days",in:"Result",out:"Closed change"}]},
@@ -271,7 +271,7 @@ itsm_mi:{title:"Major incident process (ITIL 5 Support)",std:["itil5","iso20k"],
  {n:"Communicate",d:"AI drafts, communications lead approves every update.",who:"gate",owner:"Communications lead",sla:"Every 60 min",in:"Timeline",out:"Updates"},
  {n:"Review",d:"Blameless post-incident review ends in tasks.",who:"human",owner:"Problem manager",sla:"5 business days",in:"Timeline",out:"Actions"}]},
 itsm_home:{title:"Service desk operating rhythm",std:["itil5","iso20k"],steps:[
- {n:"Watch the queue",d:"Priority, timers and team queues.",who:"auto",owner:"Triage Agent",sla:"Live",in:"Incidents",out:"What needs attention"},
+ {n:"Watch the queue",d:"Priority, timers and team queues.",who:"agent",owner:"Triage Agent",sla:"Live",in:"Incidents",out:"What needs attention"},
  {n:"Decide the day",d:"The service desk lead confirms ownership and escalations.",who:"human",owner:"Service desk lead",sla:"Start of shift",in:"Overview",out:"Plan"},
  {n:"Check changes",d:"Next 7 days, collisions, freezes.",who:"human",owner:"Change manager",sla:"Daily",in:"Calendar",out:"Risks to approve or move"},
  {n:"Improve",d:"Trends feed problems, knowledge and the policy.",who:"agent",owner:"Problem manager",sla:"Weekly",in:"Trends",out:"Improvements"}]}};

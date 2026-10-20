@@ -719,7 +719,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-exe-newsc]
 
 /* ---------------- processes behind each screen ---------------- */
 PROC.reg("exe_dash",{title:"How the executive views are built",std:["cobit","tbm"],steps:[
- {n:"Collect",d:"Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.",who:"auto",owner:"Platform",sla:"Live",in:"Operational records",out:"One snapshot"},
+ {n:"Collect",d:"Every tile reads the same registers: projects, risk, applications, services, finance and AI governance. Nothing is retyped.",who:"robot",owner:"Platform",sla:"Live",in:"Operational records",out:"One snapshot"},
  {n:"Arrange by role",d:"The headline, six measures and three decisions are chosen for the CEO, CFO, CIO, COO or Board audit chair.",who:"agent",owner:"Executive Agent",sla:"Daily",in:"Role",out:"Role view"},
  {n:"Decide",d:"Approve or defer a decision. Each choice is audited and the numbers on other screens update.",who:"gate",owner:"The executive",sla:"3 days",in:"Decision request",out:"Decision record"},
  {n:"Explain",d:"Select a tile to open its source screen and see the formula and the owner.",who:"human",owner:"Anyone",sla:"On demand",in:"Tile",out:"Source detail"}]});
@@ -728,15 +728,15 @@ PROC.reg("exe_strat",{title:"How strategy becomes measured work",std:["cobit","t
  {n:"Add key results",d:"Each objective gets measurable results. Measured ones update themselves.",who:"human",owner:"Objective owner",sla:"Quarterly",in:"Objective",out:"Key results"},
  {n:"Link funded work",d:"The Portfolio Agent proposes which projects and requests serve which objective. The office confirms.",who:"agent",owner:"Portfolio Agent",sla:"On intake",in:"Demand",out:"Links"},
  {n:"Break into capabilities",d:"Each objective is broken into capabilities measured on maturity models, with year 1, 3 and 5 targets.",who:"gate",owner:"CIO",sla:"Annual",in:"Objective",out:"Capabilities"},
- {n:"Review gaps",d:"Objectives without funded work, funded work without an objective, and capabilities off their glide path are listed.",who:"auto",owner:"Platform",sla:"Live",in:"Links",out:"Gap list"}]});
+ {n:"Review gaps",d:"Objectives without funded work, funded work without an objective, and capabilities off their glide path are listed.",who:"robot",owner:"Platform",sla:"Live",in:"Links",out:"Gap list"}]});
 PROC.reg("exe_risk",{title:"How risk and date confidence are produced",std:["pmbok","cobit"],steps:[
  {n:"Log a risk",d:"Anyone describes cause, effect, likelihood and dollar impact.",who:"human",owner:"Risk owner",sla:"Ad hoc",in:"Concern",out:"Register entry"},
- {n:"Score",d:"Likelihood and impact place the risk on the heat map. Expected loss is probability times impact.",who:"auto",owner:"Platform",sla:"Instant",in:"Register",out:"Heat map"},
- {n:"Simulate",d:"2,000 trials roll task durations and register risks through the schedule.",who:"auto",owner:"Platform",sla:"Seconds",in:"Plan and risks",out:"P50, P80, P90"},
+ {n:"Score",d:"Likelihood and impact place the risk on the heat map. Expected loss is probability times impact.",who:"robot",owner:"Platform",sla:"Instant",in:"Register",out:"Heat map"},
+ {n:"Simulate",d:"2,000 trials roll task durations and register risks through the schedule.",who:"robot",owner:"Platform",sla:"Seconds",in:"Plan and risks",out:"P50, P80, P90"},
  {n:"Assign mitigation",d:"Every risk above the green zone needs a named owner and a dated action.",who:"gate",owner:"Portfolio lead",sla:"5 days",in:"Risk",out:"Mitigation"}]});
 PROC.reg("exe_apps",{title:"How an application gets its TIME class",std:["tbm","togaf"],steps:[
  {n:"Score",d:"Business value and technical health are scored 0 to 100 by the owner and the architect.",who:"human",owner:"Application owner",sla:"Semiannual",in:"Application",out:"Two scores"},
- {n:"Classify",d:"The scores place it in Invest, Migrate, Tolerate or Eliminate.",who:"auto",owner:"Platform",sla:"Instant",in:"Scores",out:"TIME class"},
+ {n:"Classify",d:"The scores place it in Invest, Migrate, Tolerate or Eliminate.",who:"robot",owner:"Platform",sla:"Instant",in:"Scores",out:"TIME class"},
  {n:"Recommend",d:"The Portfolio Agent finds duplicates and low-value applications and drafts a retirement plan.",who:"agent",owner:"Portfolio Agent",sla:"Weekly",in:"Inventory",out:"Recommendation"},
  {n:"Approve plan",d:"The CIO accepts a retirement or replacement, which commits the saving.",who:"gate",owner:"CIO",sla:"2 weeks",in:"Recommendation",out:"Plan"}]});
 PROC.reg("exe_board",{title:"How the board pack is written and approved",std:["cobit"],steps:[
@@ -746,7 +746,7 @@ PROC.reg("exe_board",{title:"How the board pack is written and approved",std:["c
  {n:"CFO review and publish",d:"The CFO checks financials and publishes. Publishing locks the pack.",who:"gate",owner:"CFO",sla:"2 days",in:"CIO approved",out:"Published pack"}]});
 PROC.reg("exe_scen",{title:"How a scenario is compared",std:["pmbok"],steps:[
  {n:"Set levers",d:"Slip a vendor, add engineers, cut a project or change the funding envelope.",who:"human",owner:"Portfolio lead",sla:"Ad hoc",in:"Question",out:"Scenario"},
- {n:"Run the engines",d:"The same schedule, capacity, demand and Monte Carlo engines run for each scenario.",who:"auto",owner:"Platform",sla:"Seconds",in:"Scenario",out:"Results"},
+ {n:"Run the engines",d:"The same schedule, capacity, demand and Monte Carlo engines run for each scenario.",who:"robot",owner:"Platform",sla:"Seconds",in:"Scenario",out:"Results"},
  {n:"Recommend",d:"The Portfolio Agent picks the scenario that best protects the date at acceptable cost.",who:"agent",owner:"Portfolio Agent",sla:"Instant",in:"Results",out:"Recommendation"},
  {n:"Adopt",d:"Adopting copies the levers into the live plan and is audited.",who:"gate",owner:"CIO",sla:"On decision",in:"Scenario",out:"Live plan"}]});
 
