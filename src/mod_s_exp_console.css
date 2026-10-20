@@ -1,0 +1,16 @@
+/* Facilitator console (mod_s_exp_console). Prefix: exp-con. Tokens only. */
+.exp-con{position:fixed;inset:0;z-index:var(--z-modal);overflow:auto;background:var(--bg);color:var(--ink);padding:16px}
+body.exp-con-on #expHud,body.exp-con-on #expTrail{display:none}
+.exp-con-in{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.exp-con-h{display:flex;align-items:flex-start;gap:8px}
+.exp-con-h>div{flex:1 1 auto;min-width:0}
+.exp-con-h h2{margin:2px 0;font:700 22px var(--f-body);overflow-wrap:break-word}
+.exp-con-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.exp-con-c{border:1px solid var(--hair);border-radius:var(--rad-2xl);padding:12px 14px;background:var(--glass2);display:flex;flex-direction:column;gap:6px;min-width:0;overflow-wrap:break-word}
+.exp-con-c p{margin:0}
+.exp-con-c .row{flex-wrap:wrap}
+.exp-wide{grid-column:1/-1}
+.exp-stuck{border-color:var(--warn-f);background:var(--warn-s)}
+.exp-feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font:400 13px var(--f-body)}
+.exp-feed em{font-style:normal;color:var(--muted);margin-right:6px}
+@media (max-width:700px){.exp-con-g{grid-template-columns:minmax(0,1fr)}}
