@@ -1,3 +1,3 @@
 [build]
-  command = "python3 src/build.py --out build_out && cp build_out/index.html public/index.html && cp build_out/oukala-js.js public/oukala-js.js && mkdir -p public/hero && cp build_out/hero/* public/hero/"
+  command = "python3 src/build.py --out build_out && cp build_out/index.html public/index.html && cp build_out/oukala-js.js public/oukala-js.js && mkdir -p public/hero && cp build_out/hero/* public/hero/ && mkdir -p public/journey && cp -R build_out/journey/. public/journey/"
   publish = "public"
