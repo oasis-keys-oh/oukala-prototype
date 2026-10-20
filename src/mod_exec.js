@@ -10,14 +10,16 @@ const nm=n=>PEOPLE.find(p=>p[0]===n)?n:"Unassigned";
 const stc=(p,tg,bad,dir)=>dir==="max"?(p>=tg?"good":p>=bad?"warn":"bad"):(p<=tg?"good":p<=bad?"warn":"bad");
 const SC={good:"--good-f",warn:"--warn-f",bad:"--bad-f"};
 const go2=(s,a)=>`data-go="${s}${a?":"+a:""}"`;
+/* DC-02: record numbers (O-003, O-003.2) shown next to objectives and key results */
+const numChip=(k,id)=>{try{return window.NUM&&NUM.rchip?NUM.rchip(k,id):""}catch(e){return ""}};
 
 /* ---------------- strategy data ---------------- */
 const OBJ0=[
- {id:"O1",n:"Modernize standards publishing",sub:"Modernize standards",owner:"CEO office",c:"--p4",story:"Cut the time to publish a standard from 23 days to 15 by the end of FY27."},
- {id:"O2",n:"Reduce operating risk",sub:"Resilient operations",owner:"CFO",c:"--e4",story:"Keep Tier 1 services above 99.9% and every vendor above a 0.85 performance index."},
- {id:"O3",n:"Protect revenue through contract discipline",sub:"Contract discipline",owner:"CFO",c:"--w1",story:"Pay only for accepted work and find every contract obligation before it lapses."},
- {id:"O4",n:"Trusted AI",sub:"Trusted AI",owner:"CIO",c:"--u3",story:"Every AI action shows its sources, its guardrails and who is accountable for it."},
- {id:"O5",n:"Improve editor and reviewer experience",sub:"Editor experience",owner:"COO",c:"--s3",story:"Reviewers turn drafts around in five days, not nine, without evening work."}];
+ {id:"O1",n:"Modernize standards publishing",sub:"Modernize standards",owner:"CEO office",metric:"Days to publish a standard",tgt:"15 days",due:"2027-06-30",c:"--p4",story:"Cut the time to publish a standard from 23 days to 15 by the end of FY27."},
+ {id:"O2",n:"Reduce operating risk",sub:"Resilient operations",owner:"CFO",metric:"Tier 1 availability",tgt:"99.9%",due:"2026-12-31",c:"--e4",story:"Keep Tier 1 services above 99.9% and every vendor above a 0.85 performance index."},
+ {id:"O3",n:"Protect revenue through contract discipline",sub:"Contract discipline",owner:"CFO",metric:"Invoices cleared by rule",tgt:"60%",due:"2027-06-30",c:"--w1",story:"Pay only for accepted work and find every contract obligation before it lapses."},
+ {id:"O4",n:"Trusted AI",sub:"Trusted AI",owner:"CIO",metric:"Agents under the AI gateway",tgt:"6 of 6",due:"2027-03-31",c:"--u3",story:"Every AI action shows its sources, its guardrails and who is accountable for it."},
+ {id:"O5",n:"Improve editor and reviewer experience",sub:"Editor experience",owner:"COO",metric:"Reviewer turnaround",tgt:"5 days",due:"2027-06-30",c:"--s3",story:"Reviewers turn drafts around in five days, not nine, without evening work."}];
 const KR0=[
  {id:"k11",o:"O1",n:"Days to publish a standard",u:" days",start:23,cur:20,tgt:15,owner:"Chief Editor"},
  {id:"k12",o:"O1",n:"Standards Platform work earned",u:"%",start:0,tgt:100,owner:"Priya Shah",live:()=>Math.round(snap().ev.PR1.ev*100),exp:()=>Math.round(snap().ev.PR1.pv*100)},
@@ -109,7 +111,7 @@ E.tab=E.tab||0;
 
 /* ---------------- engine: one snapshot of the portfolio, computed from the shared data ---------------- */
 let _sk="",_sv=null;
-function snap(){const k=JSON.stringify([S.imsSlip,S.w,S.env,S.cap,S.merged,E.risks.map(r=>r.p+":"+r.amt),METRICS.m_burn.cur]);if(k===_sk&&_sv)return _sv;
+function snap(){const k=JSON.stringify([PROJ.length,PROJ.map(p=>p.id).join(),S.imsSlip,S.w,S.env,S.cap,S.merged,E.risks.map(r=>r.p+":"+r.amt),METRICS.m_burn.cur]);if(k===_sk&&_sv)return _sv;
  const P=plan("now"),ev={},fin={};PROJ.forEach(p=>{ev[p.id]=evm(P,p.id);fin[p.id]=projFin(P,p.id)});
  const L=rank(S.w,S.env,S.cap),approved=PROJ.reduce((s,p)=>s+p.bac,0),paid=PROJ.reduce((s,p)=>s+p.paid,0),earned=PROJ.reduce((s,p)=>s+p.bac*ev[p.id].ev,0);
  const forecast=approved*METRICS.m_burn.cur/100,exposure=E.risks.reduce((s,r)=>s+rX(r),0);
@@ -215,7 +217,8 @@ function slipChart(s){const rows=[["Standards beta",s.bBeta,s.beta,"p1_5"],["Sta
  g+=`<line x1="${xs(TODAY)}" x2="${xs(TODAY)}" y1="10" y2="${H-26}" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 4"/><text class="ax" x="${xs(TODAY)+4}" y="22">Today</text>`;
  rows.forEach((r,i)=>{const y=44+i*42,late=r[2]>r[1];g+=`<text class="ax" x="8" y="${y+4}" style="fill:var(--ink);font-size:12.5px">${r[0]}</text><line x1="${xs(r[1])}" x2="${xs(r[2])}" y1="${y}" y2="${y}" stroke="${col(late?"--warn-f":"--good-f")}" stroke-width="5" stroke-linecap="round" opacity=".55"/><circle cx="${xs(r[1])}" cy="${y}" r="6" fill="var(--bg)" stroke="var(--muted)" stroke-width="2"/><circle cx="${xs(r[2])}" cy="${y}" r="7" fill="${col(late?"--warn-f":"--good-f")}" stroke="var(--bg)" stroke-width="2"/><text class="ax" x="${xs(Math.max(r[1],r[2]))+12}" y="${y+4}" style="fill:var(--ink)">${dstr(r[2])}${late?` (+${r[2]-r[1]} days)`:""}</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Baseline and forecast dates for four milestones">${g}</svg>`}
-function spendChart(s){const rows=PROJ.map(p=>({p,ev:s.ev[p.id].ev})),W=640,L=118,R=70,H=34+rows.length*46,mx=1300,xs=v=>L+(W-L-R)*v/mx;let g="";
+/* PR-24: a project with no plan in the snapshot (for example added by Self-build) is drawn with no earned value, never an invented one */
+function spendChart(s){const rows=PROJ.map(p=>({p,ev:(s.ev[p.id]||{ev:0}).ev})),W=640,L=118,R=70,H=34+rows.length*46,mx=1300,xs=v=>L+(W-L-R)*v/mx;let g="";
  [0,300,600,900,1200].forEach(v=>{g+=`<line class="grid-l" x1="${xs(v)}" x2="${xs(v)}" y1="8" y2="${H-24}"/><text class="ax" x="${xs(v)}" y="${H-8}" text-anchor="middle">${v?K$(v):"$0"}</text>`});
  rows.forEach((r,i)=>{const y=14+i*46,p=r.p;g+=`<text class="ax" x="6" y="${y+14}" style="fill:var(--ink);font-size:12.5px">${esc(p.short)}</text><rect x="${L}" y="${y}" width="${xs(p.bac)-L}" height="14" rx="7" fill="var(--track)"/><rect x="${L}" y="${y}" width="${Math.max(2,xs(p.paid)-L)}" height="14" rx="7" fill="${col("--p4")}"/><line x1="${xs(p.bac*r.ev)}" x2="${xs(p.bac*r.ev)}" y1="${y-4}" y2="${y+18}" stroke="${col("--metric-f")}" stroke-width="3" stroke-linecap="round"/><text class="ax" x="${xs(p.bac)+8}" y="${y+12}" style="fill:var(--ink)">${K$(p.bac)}</text><text class="ax" x="${L}" y="${y+30}">paid ${K$(p.paid)} · earned ${K$(Math.round(p.bac*r.ev))}</text>`});
  return `<svg class="chart" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Approved, paid and earned value for each project"><g>${g}</g></svg><div class="row exe-leg"><span><i style="background:var(--track)"></i>Approved</span><span><i style="background:var(--p4)"></i>Paid</span><span><i style="background:var(--metric-f)"></i>Work earned (planned effort completed)</span></div>`}
@@ -304,11 +307,11 @@ REG("exe_dash","Executive dashboard","portfolio","M4 4h7v9H4zM13 4h7v5h-7zM13 11
 const objN=id=>(E.objs.find(o=>o.id===id)||{n:"Unlinked",sub:"Unlinked",c:"--faint"});
 const KRSRC={k12:"PR1 earned value from the project plan",k21:"Metric: Tier 1 availability",k22:"Vendor performance index from invoice approval",k23:"PR3 earned value from the project plan",k31:"Metric: Auto-approval rate",k32:"PR4 earned value from the project plan",k41:"Metric: Agent override rate",k42:"AI Control Tower agent list"};
 function krRow(k){const p=krProg(k),e=krExp(k),st=krSt(k),live=!!krLive(k);
- return `<button class="exe-kr" data-exe-kr="${k.id}" aria-label="Open key result ${esc(k.n)}"><span class="exe-krn"><b data-role="story">${esc(k.n)}</b><small class="muted">${esc(k.owner)} · ${live?"measured live":"updated by hand"}</small></span><span class="exe-bar" title="Progress ${Math.round(p*100)}%, expected ${Math.round(e*100)}%"><u style="width:${Math.round(p*100)}%;background:${col(SC[st])}"></u><s style="left:${Math.round(e*100)}%"></s></span><span class="exe-krv num" data-role="metric">${fmtKr(k,k.start)} → <b>${fmtKr(k)}</b> → ${fmtKr(k,k.tgt)}</span>${stPill(st)}</button>`}
+ return `<button class="exe-kr" data-exe-kr="${k.id}" aria-label="Open key result ${esc(k.n)}"><span class="exe-krn"><b data-role="story">${esc(k.n)}</b><small class="muted">${numChip("kr",k.id)} ${esc(k.owner)} · ${live?"measured live":"updated by hand"}</small></span><span class="exe-bar" title="Progress ${Math.round(p*100)}%, expected ${Math.round(e*100)}%"><u style="width:${Math.round(p*100)}%;background:${col(SC[st])}"></u><s style="left:${Math.round(e*100)}%"></s></span><span class="exe-krv num" data-role="metric">${fmtKr(k,k.start)} → <b>${fmtKr(k)}</b> → ${fmtKr(k,k.tgt)}</span>${stPill(st)}</button>`}
 function matChip(oid){if(!window.MAT)return "";const L=MAT.nodesOfObj(oid);if(!L.length)return `<div class="row exe-mchip"><span class="muted small" data-role="story">No capabilities are linked to this objective yet, so its maturity cannot be measured.</span><button class="btn quiet" data-go="exe_mat">Break it into capabilities</button></div>`;const R=MAT.roll(L);return `<button class="exe-mchip exe-mc" data-mat-obj="${oid}" aria-label="Open the maturity path for this objective"><span class="muted small" data-role="metric">Maturity: ${L.length} capabilities at level <b>${MAT.fv(R.cur)}</b> against <b>${MAT.fv(R.exp)}</b> expected today, Year 1 target <b>${MAT.fv(R.t1)}</b></span>${MAT.stPill(R.st)}</button>`}
 function matPane(){if(!window.MAT)return empty("Maturity models are not installed","Install the maturity module to break objectives into capabilities.");return `<div class="grid g2 exe-two">${MAT.objRollRows().map(({o,L,R})=>card(esc(o.n),L.length?`${L.length} capabilities. Level ${MAT.fv(R.cur)} today, ${MAT.fv(R.exp)} expected, ${MAT.fv(R.t1)} wanted by end of FY27.`:"Nothing is measuring this objective yet.",L.length?MAT.glideMini(L,170):empty("No capabilities yet","Map capabilities from a maturity model to this objective."),`<span class="row">${L.length?MAT.stPill(R.st):""}<button class="btn quiet" data-mat-obj="${o.id}">Open the path</button></span>`)).join("")}</div>`}
 function objCard(o){const p=objProg(o),c=coverage().res[o.id],ks=E.krs.filter(k=>k.o===o.id);
- return `<section class="card glass exe-ocard"><div class="cardhead"><div><div class="eyebrow"><i class="exe-dot2" style="background:${col(o.c)}"></i>${esc(o.id)} · ${esc(o.owner)}</div><h3>${esc(o.n)}</h3><span class="muted small" data-role="story">${esc(o.story)}</span></div><div class="exe-orr">${stPill(p.st)}<span class="num" data-role="metric" style="font-size:26px">${Math.round(p.p*100)}%</span></div></div>
+ return `<section class="card glass exe-ocard"><div class="cardhead"><div><div class="eyebrow"><i class="exe-dot2" style="background:${col(o.c)}"></i>${numChip("obj",o.id)||esc(o.id)} · ${esc(o.owner)}</div><h3>${esc(o.n)}</h3><span class="muted small" data-role="story">${esc(o.story)}</span></div><div class="exe-orr">${stPill(p.st)}<span class="num" data-role="metric" style="font-size:26px">${Math.round(p.p*100)}%</span></div></div>
  <div class="exe-krs">${ks.length?ks.map(krRow).join(""):empty("No key results yet","Add one so progress can be measured.")}</div>
  <div class="row exe-ofoot"><span class="muted small" data-role="metric">${c.n} funded initiative${c.n===1?"":"s"} carry ${c.fund?money(Math.round(c.fund)*1000):"$0"} of weighted spend</span><button class="btn quiet" data-exe-newkr="${o.id}">Add key result</button></div>${matChip(o.id)}</section>`}
 function initChip(i,oid){const w=lw(i.id)[oid];return `<div class="exe-init ${i.funded?"":"below"}" data-dnd-id="${i.id}" tabindex="0" data-exe-ini="${i.id}">${grip}<span class="exe-in"><b>${esc(i.n)}</b><small class="muted">${i.id} · ${K$(i.cost)} · ${i.funded?"funded":"below the funding line"}</small></span>${w?`<em class="pill ${i.funded?"info":"mute"}" data-role="metric">${Math.round(w*100)}%</em>`:""}</div>`}
@@ -326,7 +329,7 @@ REG("exe_strat","Strategy alignment","portfolio","M12 3a9 9 0 1 0 0 18 9 9 0 0 0
  return `<div class="screen exe-screen">${hero("Strategy alignment","Is the money pointed at the strategy?",`The alignment score is <b>${Math.round(c.score)}</b> of 100. <b>${E.objs.length-c.gaps.length} of ${E.objs.length}</b> objectives have funded work${g?`; <b>${esc(g.n)}</b> has none because ${c.res[g.id].rows.length?"its linked requests all sit below the funding line":"nothing is linked to it"}`:""}. ${c.orph.length?`<b>${esc(c.orph[0].n)}</b> (${K$(c.orph[0].cost)}) is funded with no objective. `:""}${on} of ${E.objs.length} objectives are on track against where they should be today.`,`<div class="row">${fchip("m_align")}<button class="btn primary" data-exe-newobj>New objective</button><button class="btn" data-exe-newkr="">New key result</button><button class="btn" data-exe-krup>Update progress</button>${whyPop("Objectives and key results are the company's stated aims. Linked initiatives are the work that pays for them. Gaps in either direction are shown so leadership can fix them.")}</div>`)}${lensNote()}
  ${tiles([TL("Alignment score",`<span>${Math.round(c.score*10)/10}</span>`,"Target 90 · "+(c.score>=90?"on target":"below target"),c.score>=90?"good":"warn"),TL("Funded dollars linked",K$(Math.round(c.linked)),`of ${K$(c.tot)} funded`,"good"),TL("Objectives with no funded work",String(c.gaps.length),c.gaps.length?esc(c.gaps[0].sub):"none",c.gaps.length?"bad":"good"),TL("Funded work with no objective",String(c.orph.length),c.orph.length?K$(c.orph.reduce((s,i)=>s+i.cost,0))+" at stake":"none",c.orph.length?"warn":"good")])}
  ${window.MAT?`<div class="row exe-mrow">${fchip("m_matatt")}${fchip("m_matgp")}<span class="muted small" data-role="metric">Capability maturity: attainment ${METRICS.m_matatt.cur}%, glide-path index ${METRICS.m_matgp.cur}. Each objective below shows its capabilities.</span><button class="btn quiet" data-go="exe_mat">Open maturity models</button></div>`:""}
- ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity"],[`<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane()])}${procCard("exe_strat")}</div>`});
+ ${views("exestratv",["Objectives and key results","Link initiatives","Coverage gaps","Score","Capabilities and maturity","Cascade","Author and publish"],[`<div class="grid g2 exe-two">${E.objs.map(objCard).join("")}</div>`,card("Drag initiatives onto objectives",`Drag a card to another column to move its link. A card in two columns splits its contribution; select a card to set the weights. Alt with arrow keys moves it from the keyboard.`,linkBoard(),aiChip({model:"Portfolio Agent",conf:.82,title:"Initial links",note:"Links were proposed from each request's description and the objective's wording, then confirmed by the portfolio office.",src:["Demand descriptions","Objective stories"]})),gapPane(),scorePane(),matPane(),casPane(),authPane()])}${procCard("exe_strat")}</div>`});
 DND.on("exestrat",(id,from,to)=>{if(from===to)return;const L=E.links[id]=E.links[id]||{},ini=inits().find(i=>i.id===id),nm2=ini?ini.n:id;
  if(from==="O0"){E.links[id]={[to]:1}}else if(to==="O0"){delete L[from]}else{const w=L[from]||1;delete L[from];L[to]=(L[to]||0)+w}
  audit("re-linked initiative",`${id} ${from} to ${to}`);toast(to==="O0"?`${nm2} is now unlinked`:`${nm2} now counts toward ${objN(to).sub||objN(to).n}`,to==="O0"?"warn":"good");sync();render()});
@@ -343,8 +346,12 @@ function krDrawer(id){const k=E.krs.find(x=>x.id===id);if(!k)return;const p=krPr
  <div class="row" style="margin-top:16px">${live?`<span class="muted small">This value is measured, so it cannot be typed over.</span>`:`<button class="btn primary" data-exe-krup="${id}">Update progress</button>`}</div>`)}
 function iniDrawer(id){const ini=inits().find(i=>i.id===id);if(!ini)return;weightsForm(id)}
 function objForm(){openForm({id:"exe_obj",title:"New strategic objective",story:"An objective is a plain-English aim with an owner. After saving it appears with no funded work, so the gap is visible until someone links an initiative to it.",submit:"Create objective",
- fields:[{section:"The aim"},{k:"n",label:"Objective",type:"text",req:true,ph:"For example: Make standards easy to find",help:"Start with a verb. One sentence."},{k:"owner",label:"Executive owner",type:"chips",req:true,opts:["CEO office","CFO","CIO","COO","Board audit chair"]},{k:"story",label:"Why it matters",type:"longtext",req:true,help:"Shown on the dashboard and in the board pack.",ai:{label:"Draft with Claude",fn:v=>v.n?`${v.n}: we will know it worked when a named measure moves. Meridian's members and regulators see the result directly, and the owner reviews progress monthly.`:null}},{k:"hz",label:"Horizon",type:"chips",opts:["FY26","FY27","FY26 to FY27"]}],defaults:{owner:"CIO",hz:"FY26"},
- onSubmit:v=>{const id="O"+(E.objs.length+1);E.objs.push({id,n:v.n,sub:v.n.length>26?v.n.slice(0,24)+"...":v.n,owner:v.owner,c:["--p5","--u4","--s4","--w3","--e4"][E.objs.length%5],story:v.story,hz:v.hz});E.links=E.links;audit("created objective",id+" "+v.n);sync();setTimeout(render,0);return {toast:`Objective ${id} created. It has no funded work yet.`}}})}
+ fields:[{section:"The aim"},{k:"n",label:"Objective",type:"text",req:true,ph:"For example: Make standards easy to find",help:"Start with a verb. One sentence."},{k:"owner",label:"Executive owner",type:"chips",req:true,opts:["CEO office","CFO","CIO","COO","Board audit chair"]},{k:"story",label:"Why it matters",type:"longtext",req:true,help:"Shown on the dashboard and in the board pack.",ai:{label:"Draft with Claude",fn:v=>v.n?`${v.n}: we will know it worked when a named measure moves. Meridian's members and regulators see the result directly, and the owner reviews progress monthly.`:null}},{k:"hz",label:"Horizon",type:"chips",opts:["FY26","FY27","FY26 to FY27"]},
+ {section:"How it is measured (quality gate)"},{k:"metric",label:"Metric",type:"text",req:true,ph:"For example: Search success rate"},{k:"tgt",label:"Target",type:"text",req:true,ph:"For example: 80%"},{k:"due",label:"Date",type:"date",req:true},
+ {section:"First key result (optional here, required to publish)"},{k:"kn",label:"Key result",type:"text",ph:"For example: Searches that end in a click"},{k:"kstart",label:"Starting value",type:"number"},{k:"ktgt",label:"Target value",type:"number"},{k:"ku",label:"Unit",type:"text",ph:"%, days, count"},{k:"kown",label:"Key result owner",type:"people"}],defaults:{owner:"CIO",hz:"FY26",due:"2027-06-30",kstart:0,ktgt:100,kown:"Maya Ortiz"},
+ onSubmit:v=>{let n=E.objs.length+1;while(E.objs.some(o=>o.id==="O"+n))n++;const id="O"+n;E.objs.push({id,n:v.n,sub:v.n.length>26?v.n.slice(0,24)+"...":v.n,owner:v.owner,metric:v.metric,tgt:v.tgt,due:v.due,c:["--p5","--u4","--s4","--w3","--e4"][E.objs.length%5],story:v.story,hz:v.hz});
+  if(String(v.kn||"").trim()&&+v.kstart!==+v.ktgt){let k=1;while(E.krs.some(x=>x.id==="k"+n+k))k++;E.krs.push({id:"k"+n+k,o:id,n:v.kn,u:v.ku||"",start:+v.kstart||0,cur:+v.kstart||0,tgt:+v.ktgt,owner:v.kown||v.owner})}
+  E.stv.draft=true;audit("created objective",id+" "+v.n);sync();setTimeout(render,0);return {toast:`Objective ${id} created. It has no funded work yet.`}}})}
 function krForm(oid,krid){const kr=krid&&E.krs.find(k=>k.id===krid);openForm({id:"exe_kr",title:kr?"Edit key result":"New key result",story:"A key result is one measurable outcome with a start, a current value and a target. Progress is computed from those three numbers, so nobody has to say 'about halfway'.",submit:kr?"Save":"Add key result",
  fields:[{k:"o",label:"Objective",type:"select",req:true,opts:E.objs.map(o=>[o.id,o.n])},{k:"n",label:"Key result",type:"text",req:true,ph:"For example: Search success rate"},{k:"dir",label:"Direction",type:"chips",opts:[["up","Higher is better"],["down","Lower is better"]]},{section:"The numbers"},{k:"start",label:"Starting value",type:"number",req:true},{k:"cur",label:"Current value",type:"number",req:true},{k:"tgt",label:"Target",type:"number",req:true},{k:"u",label:"Unit",type:"text",ph:"%, days, count"},{k:"owner",label:"Owner",type:"people",req:true}],
  ...LVX("kr",v=>{const p=clamp((v.cur-v.start)/((v.tgt-v.start)||1),0,1);return `<div class="formula">Progress = (${v.cur} − ${v.start}) ÷ (${v.tgt} − ${v.start}) = ${isNaN(p)?"…":Math.round(p*100)+"%"}</div>`},{o:oid||E.objs[0].id,dir:"up",owner:"Maya Ortiz",start:0,cur:0,tgt:100}),defaults:{o:oid||E.objs[0].id,dir:"up",owner:"Maya Ortiz",start:0,cur:0,tgt:100},
@@ -353,6 +360,117 @@ function krUpForm(id){const man=E.krs.filter(k=>!krLive(k));openForm({id:"exe_kr
  fields:[{k:"id",label:"Key result",type:"select",req:true,opts:man.map(k=>[k.id,`${objN(k.o).sub||objN(k.o).n}: ${k.n}`]),help:"Measured key results update themselves and are not listed."},{k:"v",label:"New value",type:"number",req:true},{k:"note",label:"What changed",type:"longtext",ph:"One sentence for the record",ai:{label:"Draft note",fn:v=>"Updated after the monthly review with the owner; "+(v.v!=null&&v.v!==""?"value is now "+v.v+".":"no change in direction.")}}],
  ...LVX("krup",v=>{const k=E.krs.find(x=>x.id===v.id);if(!k||v.v===""||v.v==null)return "";const p=clamp((v.v-k.start)/((k.tgt-k.start)||1),0,1);return `<div class="formula">Progress becomes ${Math.round(p*100)}% (expected ${Math.round(krExp(k)*100)}%): ${p>=krExp(k)-.05?"on track":p>=krExp(k)-.25?"watch":"needs action"}</div>`},{id:id||(man[0]||{}).id}),defaults:{id:id||(man[0]||{}).id},
  onSubmit:v=>{const k=E.krs.find(x=>x.id===v.id);if(!k)return {toast:"Pick a key result",close:false};const was=fmtKr(k);k.cur=+v.v;(E.krHist[k.id]=E.krHist[k.id]||[]).unshift(["Oct 6",fmtKr(k),v.note||""]);audit("updated key result",`${k.n}: ${was} to ${fmtKr(k)}`);sync();setTimeout(render,0);return {toast:`${k.n} is now ${fmtKr(k)}`}}},{id:id||(man[0]||{}).id})}
+/* ---------------- DC-12: multi-level cascade (company, enterprise, group, team) with contribution math ----------------
+   Company objective at the top; the strategy objectives (E.objs) are the enterprise level; each business group has objectives that
+   contribute to enterprise objectives; team objectives are the leaves and are measured by one key result each.
+   Progress of a node = Σ (weight × child progress) ÷ Σ weight over the children that contribute to it.
+   A leaf's contribution to the company = its progress × the product of its normalized weights up the chain, in percentage points.
+   Weights are sample assumptions (modeled); leaf progress comes from key result values (prototype facts). */
+const CLVL=[["company","Company"],["enterprise","Enterprise"],["group","Group"],["team","Team"]];
+const CGRP=[{id:"DP",n:"Digital Publishing",owner:"Maya Ortiz",proj:["PR1","PR2"]},{id:"OR",n:"Operational Resilience",owner:"Tom Becker",proj:["PR3"]},{id:"RC",n:"Records and Contracts",owner:"Avery Chen",proj:["PR4"]}];
+const CASC0={company:{id:"C1",n:"Trusted standards, published faster, at lower risk",owner:"CEO office"},
+ ent:{O1:.3,O2:.25,O3:.2,O4:.1,O5:.15},
+ nodes:[
+ {id:"G1",lvl:"group",grp:"DP",n:"Publish standards faster",owner:"Maya Ortiz",up:{O1:1}},
+ {id:"G2",lvl:"group",grp:"DP",n:"Lighter reviewer load",owner:"Maya Ortiz",up:{O5:1}},
+ {id:"G3",lvl:"group",grp:"OR",n:"Tier 1 services stay up",owner:"Tom Becker",up:{O2:1}},
+ {id:"G4",lvl:"group",grp:"OR",n:"Govern every agent",owner:"Jordan Lee",up:{O4:1}},
+ {id:"G5",lvl:"group",grp:"RC",n:"Pay only for accepted work",owner:"Avery Chen",up:{O3:1}},
+ {id:"T1",lvl:"team",team:"Platform team",n:"Earn the Standards Platform plan",owner:"Priya Shah",kr:"k12",up:{G1:.5}},
+ {id:"T2",lvl:"team",team:"Editors",n:"Shorten the time to publish",owner:"Chief Editor",kr:"k11",up:{G1:.3}},
+ {id:"T3",lvl:"team",team:"Editors",n:"Draft with AI assistance",owner:"Chief Editor",kr:"k13",up:{G1:.2}},
+ {id:"T4",lvl:"team",team:"Editors",n:"Turn reviews around in five days",owner:"Chief Editor",kr:"k51",up:{G2:1}},
+ {id:"T5",lvl:"team",team:"Ops team",n:"Keep Tier 1 available",owner:"Tom Becker",kr:"k21",up:{G3:.5}},
+ {id:"T6",lvl:"team",team:"Ops team",n:"Close the Sev 2 problem",owner:"Tom Becker",kr:"k23",up:{G3:.3}},
+ {id:"T7",lvl:"team",team:"Vendor management",n:"Hold vendors at the index",owner:"Maya Ortiz",kr:"k22",up:{G3:.2}},
+ {id:"T8",lvl:"team",team:"Architecture",n:"Put every agent under the gateway",owner:"Jordan Lee",kr:"k42",up:{G4:.6}},
+ {id:"T9",lvl:"team",team:"Architecture",n:"Lower the agent override rate",owner:"Jordan Lee",kr:"k41",up:{G4:.4}},
+ {id:"T10",lvl:"team",team:"Finance",n:"Clear invoices by rule",owner:"Avery Chen",kr:"k31",up:{G5:.5}},
+ {id:"T11",lvl:"team",team:"Contracts",n:"Earn the Contract Repository plan",owner:"Maya Ortiz",kr:"k32",up:{G5:.5}}]};
+E.casc=E.casc||JSON.parse(JSON.stringify(CASC0));
+function cascade(){const C=E.casc,nodes=[],by={};
+ const add=n=>{by[n.id]=n;nodes.push(n)};
+ add({id:C.company.id,lvl:"company",n:C.company.n,owner:C.company.owner,up:{}});
+ E.objs.forEach(o=>add({id:o.id,lvl:"enterprise",n:o.n,owner:o.owner,up:C.ent[o.id]?{[C.company.id]:C.ent[o.id]}:{},obj:true}));
+ C.nodes.forEach(n=>add(Object.assign({},n,{up:Object.assign({},n.up)})));
+ const kids=id=>nodes.filter(n=>(n.up[id]||0)>0);
+ const memo={};const prog=n=>{if(memo[n.id]!=null)return memo[n.id];let p=null;
+  if(n.kr){const k=E.krs.find(x=>x.id===n.kr);p=k?krProg(k):null}
+  else{const ks=kids(n.id).map(c=>({c,p:prog(c),w:c.up[n.id]})).filter(x=>x.p!=null);const sw=ks.reduce((s,x)=>s+x.w,0);p=sw?ks.reduce((s,x)=>s+x.w*x.p,0)/sw:null}
+  return memo[n.id]=p};
+ nodes.forEach(n=>{n.p=prog(n);n.kids=kids(n.id).map(c=>c.id);const sw=kids(n.id).reduce((s,c)=>s+c.up[n.id],0);n.sw=sw});
+ /* share of each node in the company score: product of normalized weights up the first chain to the company */
+ const share=n=>{if(n.lvl==="company")return 1;const ups=Object.keys(n.up).filter(u=>by[u]&&n.up[u]>0);if(!ups.length)return 0;
+  return ups.reduce((s,u)=>s+(by[u].sw?n.up[u]/by[u].sw:0)*share(by[u]),0)};
+ nodes.forEach(n=>{n.share=share(n);n.contrib=n.p==null?null:n.p*n.share*100;
+  if(n.obj){const o=E.objs.find(x=>x.id===n.id);n.krScore=o?objProg(o).p:null}});
+ const orphan=nodes.filter(n=>n.lvl!=="company"&&!Object.keys(n.up).some(u=>by[u]&&n.up[u]>0));
+ return {nodes,by,orphan,company:by[C.company.id]}}
+const pctS=v=>v==null?"n/a":Math.round(v*100)+"%";
+function casNode(n,X){const lv=(CLVL.find(l=>l[0]===n.lvl)||[0,n.lvl])[1];const kr=n.kr&&E.krs.find(k=>k.id===n.kr);
+ const ups=Object.keys(n.up).filter(u=>X.by[u]&&n.up[u]>0);const g=n.grp&&CGRP.find(x=>x.id===n.grp);
+ const math=n.kr?(kr?`Measured by key result ${numChip("kr",kr.id)} ${esc(kr.n)}: ${fmtKr(kr,kr.start)} to ${fmtKr(kr)} toward ${fmtKr(kr,kr.tgt)} = ${pctS(n.p)}`:"Its key result is missing, so it has no progress")
+  :n.kids.length?`Progress = Σ weight × child ÷ Σ weight = (${n.kids.map(id=>{const c=X.by[id];return (Math.round(c.up[n.id]*100)/100)+" × "+pctS(c.p)}).join(" + ")}) ÷ ${Math.round(n.sw*100)/100} = ${pctS(n.p)}`:"Nothing below it contributes yet";
+ return `<div class="thr-cn" data-lvl="${n.lvl}" data-exe-cas="${n.id}"><div class="thr-cnn"><span class="thr-lvl">${lv}${g?" · "+esc(g.n):n.team?" · "+esc(n.team):""}</span>${n.obj?numChip("obj",n.id):""}<b>${esc(n.n)}</b>${ownerChip?ownerChip(n.owner,{record:"objective:"+n.id,size:20}):esc(n.owner)}</div>
+ <div class="thr-cnv"><span class="thr-bar" title="Progress ${pctS(n.p)}"><u style="width:${n.p==null?0:Math.round(n.p*100)}%"></u></span><b class="num" data-role="metric">${pctS(n.p)}</b>${n.lvl!=="company"?`<span class="small muted" data-role="metric" title="Share of the company score, modeled">${n.contrib==null?"":(Math.round(n.contrib*10)/10)+" pts of company"}</span>`:""}</div>
+ <p class="small muted thr-cnm" data-role="metric">${math}${ups.length&&n.lvl!=="company"?` · weight ${ups.map(u=>Math.round(n.up[u]*100)+"% into "+esc(X.by[u].n)).join(", ")}`:""}${n.obj&&n.krScore!=null?` · key result score ${pctS(n.krScore)}`:""}</p></div>`}
+function casPane(){const X=cascade(),order=[];const walk=(n,seen)=>{if(seen.has(n.id))return;seen.add(n.id);order.push(n);n.kids.map(id=>X.by[id]).sort((a,b)=>CLVL.findIndex(l=>l[0]===a.lvl)-CLVL.findIndex(l=>l[0]===b.lvl)).forEach(c=>walk(c,seen))};
+ const seen=new Set();walk(X.company,seen);X.orphan.forEach(n=>walk(n,seen));
+ const lc=CLVL.map(l=>[l[1],X.nodes.filter(n=>n.lvl===l[0]).length]);
+ return card("Cascade: company, enterprise, group and team",`Each level rolls up from the one below with stated weights. Team objectives are measured by one key result each; everything above is computed. Weights are modeled sample assumptions; key result values are prototype facts.`,
+  `<div class="thr-legend small muted">${lc.map(x=>`<span><b>${x[1]}</b> ${x[0].toLowerCase()} objective${x[1]===1?"":"s"}</span>`).join("")}<span class="pill info">Weights modeled</span></div>
+  <div class="formula" data-role="metric">Company score = Σ enterprise weight × enterprise progress ÷ Σ weight = <b>${pctS(X.company.p)}</b> (modeled). A team's points of the company score = its progress × its weight share at every level above it.</div>
+  <div class="thr-cas">${order.map(n=>casNode(n,X)).join("")}</div>
+  ${X.orphan.length?`<p class="small" data-role="story"><b>${X.orphan.length}</b> objective${X.orphan.length===1?" is":"s are"} not cascaded to a parent: ${X.orphan.map(n=>esc(n.n)).join(", ")}. Set a weight to bring ${X.orphan.length===1?"it":"them"} into the company score.</p>`:""}`,
+  `<button class="btn quiet" data-exe-casw="">Set weights</button>`)}
+function casWForm(id){const X=cascade();const ns=X.nodes.filter(n=>n.lvl!=="company");const n=X.by[id]||ns[0];if(!n)return;
+ const parents=X.nodes.filter(p=>CLVL.findIndex(l=>l[0]===p.lvl)===CLVL.findIndex(l=>l[0]===n.lvl)-1);
+ const d={id:n.id};parents.forEach(p=>d["w_"+p.id]=Math.round((n.up[p.id]||0)*100));
+ openForm({id:"exe_casw",title:"Cascade weight: "+n.n,story:"How much this objective counts toward each objective one level up. The parent's progress is the weighted average of everything that counts toward it. Weights are a modeled assumption.",submit:"Save weights",
+  fields:parents.map(p=>({k:"w_"+p.id,label:p.n,type:"range",min:0,max:100,step:5,unit:"%"})),defaults:d,
+  onSubmit:v=>{const up={};parents.forEach(p=>{const w=(+v["w_"+p.id]||0)/100;if(w>0)up[p.id]=w});
+   if(n.lvl==="enterprise"){const w=up[E.casc.company.id];if(w)E.casc.ent[n.id]=w;else delete E.casc.ent[n.id]}else{const x=E.casc.nodes.find(z=>z.id===n.id);if(x)x.up=up}
+   audit("changed cascade weight",n.id);setTimeout(render,0);return {toast:"Cascade weights saved for "+n.n}}},d)}
+
+/* ---------------- DC-13: CEO strategy authoring with a quality gate and versions ----------------
+   Gate: every objective has an owner, a metric, a target, a date and at least one key result. Publishing a version is refused while
+   any objective fails, with the reasons. Each published version keeps a snapshot of objectives, key results, links and cascade weights. */
+const GATE=[["owner","an owner",o=>!!String(o.owner||"").trim()],["metric","a metric",o=>!!String(o.metric||"").trim()],["tgt","a target",o=>String(o.tgt==null?"":o.tgt).trim()!==""],["due","a date",o=>/^\d{4}-\d{2}-\d{2}$/.test(String(o.due||""))],["kr","at least one key result",o=>E.krs.some(k=>k.o===o.id)]];
+function gateCheck(){const rows=E.objs.map(o=>({o,miss:GATE.filter(g=>!g[2](o)).map(g=>({k:g[0],l:g[1]}))}));return {rows,ok:rows.every(r=>!r.miss.length),fail:rows.filter(r=>r.miss.length)}}
+const snapStrat=()=>JSON.parse(JSON.stringify({objs:E.objs,krs:E.krs.map(k=>({id:k.id,o:k.o,n:k.n,u:k.u,start:k.start,cur:k.cur,tgt:k.tgt,owner:k.owner})),links:E.links,casc:E.casc}));
+E.stv=E.stv||{cur:1,draft:false,vers:[{v:1,at:"Oct 1",by:"CEO office",note:"FY27 strategy as approved by the board",snap:null}]};
+if(!E.stv.vers[0].snap)E.stv.vers[0].snap=snapStrat();
+function stratDiff(a,b){const A=a.objs||[],B=b.objs||[],ka=new Set((a.krs||[]).map(k=>k.id)),kb=new Set((b.krs||[]).map(k=>k.id));const out=[];
+ B.filter(o=>!A.some(x=>x.id===o.id)).forEach(o=>out.push("Added objective "+o.n));A.filter(o=>!B.some(x=>x.id===o.id)).forEach(o=>out.push("Removed objective "+o.n));
+ B.forEach(o=>{const x=A.find(y=>y.id===o.id);if(!x)return;["n","owner","metric","tgt","due"].forEach(f=>{if(String(x[f]||"")!==String(o[f]||""))out.push(o.id+" "+({n:"name",owner:"owner",metric:"metric",tgt:"target",due:"date"}[f])+": "+(x[f]||"none")+" to "+(o[f]||"none"))})});
+ (b.krs||[]).filter(k=>!ka.has(k.id)).forEach(k=>out.push("Added key result "+k.n));(a.krs||[]).filter(k=>!kb.has(k.id)).forEach(k=>out.push("Removed key result "+k.n));
+ if(JSON.stringify(a.links)!==JSON.stringify(b.links))out.push("Changed links from work to objectives");if(JSON.stringify(a.casc)!==JSON.stringify(b.casc))out.push("Changed cascade weights");return out}
+function publishStrat(note,by){const g=gateCheck();if(!g.ok)return {ok:false,why:"The quality gate fails for "+g.fail.length+" objective"+(g.fail.length===1?"":"s")+": "+g.fail.map(r=>r.o.n+" needs "+r.miss.map(m=>m.l).join(", ")).join("; ")+".",fail:g.fail};
+ const last=E.stv.vers[E.stv.vers.length-1],snap=snapStrat(),ch=stratDiff(last.snap||{},snap);if(!ch.length)return {ok:false,why:"Nothing changed since version "+last.v+"."};
+ const v=last.v+1;E.stv.vers.push({v,at:"Oct 6",by:by||G0(()=>INBOX.me(),"CEO office"),note:note||"",snap,changes:ch});E.stv.cur=v;E.stv.draft=false;audit("published strategy version",v+": "+ch.length+" changes");return {ok:true,v,changes:ch}}
+const G0=(f,d)=>{try{const v=f();return v==null?d:v}catch(e){return d}};
+function authPane(){const g=gateCheck(),last=E.stv.vers[E.stv.vers.length-1],ch=stratDiff(last.snap||{},snapStrat());
+ const flow=["Draft objectives","Add key results","Set metric, target and date","Pass the quality gate","Publish a version"];
+ const stepAt=!E.objs.length?0:E.objs.some(o=>!E.krs.some(k=>k.o===o.id))?1:!g.ok?2:ch.length?4:5;
+ return `<div class="grid g2 exe-two">${card("Author the strategy",`The CEO drafts objectives, adds key results, sets a metric, target and date for each, and publishes a version once every objective passes the quality gate. Published versions are kept and can be compared.`,
+  `<ol class="br-how">${flow.map((s,i)=>`<li${i<stepAt?' class="done"':i===stepAt?' aria-current="step"':""}><b>${s}</b></li>`).join("")}</ol>
+  <div class="row" style="flex-wrap:wrap;gap:8px;margin-top:10px"><button class="btn" data-exe-newobj>New objective</button><button class="btn" data-exe-newkr="">New key result</button><button class="btn${g.ok&&ch.length?" primary":""}" data-exe-pub ${g.ok&&ch.length?"":'aria-disabled="true" title="Publishing needs every objective to pass the gate and at least one change"'}>Publish version ${last.v+1}</button></div>
+  <p class="small muted" data-role="story" style="margin-top:8px">Version ${E.stv.cur} is published. ${ch.length?`<b>${ch.length}</b> unpublished change${ch.length===1?"":"s"}: ${ch.slice(0,4).map(esc).join("; ")}${ch.length>4?"; and more":""}.`:"No unpublished changes."}</p>`)}
+ ${card("Quality gate",`Each objective needs an owner, a metric, a target, a date and at least one key result before a version can be published.`,
+  `<ul class="thr-gate">${g.rows.map(r=>`<li>${numChip("obj",r.o.id)}<b>${esc(r.o.sub||r.o.n)}</b>${r.miss.length?`<span class="small thr-miss">Needs ${r.miss.map(m=>m.l).join(", ")}</span><button class="btn quiet" data-exe-objedit="${r.o.id}">Fix</button>`:`<span class="pill good">Passes</span><span class="small muted">${esc(r.o.metric)}: ${esc(r.o.tgt)} by ${esc(r.o.due)}</span>`}</li>`).join("")}</ul>`,g.ok?pill("Gate passes","good"):pill(g.fail.length+" failing","bad"))}</div>
+ ${card("Versions",`Every published version keeps a snapshot of objectives, key results, links and cascade weights.`,`<div class="tscroll"><table class="thr-ver"><thead><tr><th>Version</th><th>Published</th><th>By</th><th>What changed</th></tr></thead><tbody>${E.stv.vers.slice().reverse().map(x=>`<tr><td><b>${x.v}</b>${x.v===E.stv.cur?" "+pill("current","info"):""}</td><td>${esc(x.at)}</td><td>${ownerChip?ownerChip(x.by,{role:"Publisher",size:20}):esc(x.by)}</td><td class="small">${x.changes?x.changes.map(esc).join("; "):esc(x.note)}</td></tr>`).join("")}</tbody></table></div>`)}`}
+function objEditForm(id){const o=E.objs.find(x=>x.id===id);if(!o)return;
+ openForm({id:"exe_objedit",title:"Complete objective: "+o.n,story:"The quality gate needs an owner, a metric, a target and a date. Add a key result separately if it has none.",submit:"Save objective",
+  fields:[{k:"owner",label:"Executive owner",type:"chips",req:true,opts:["CEO office","CFO","CIO","COO","Board audit chair"]},{k:"metric",label:"Metric",type:"text",req:true,ph:"For example: Days to publish a standard"},{k:"tgt",label:"Target",type:"text",req:true,ph:"For example: 15 days"},{k:"due",label:"Date",type:"date",req:true}],
+  defaults:{owner:o.owner,metric:o.metric||"",tgt:o.tgt||"",due:o.due||"2027-06-30"},
+  onSubmit:v=>{Object.assign(o,{owner:v.owner,metric:v.metric,tgt:v.tgt,due:v.due});audit("completed objective",o.id);sync();setTimeout(render,0);return {toast:o.n+" saved"}}},{owner:o.owner,metric:o.metric||"",tgt:o.tgt||"",due:o.due||"2027-06-30"})}
+function pubForm(){const g=gateCheck(),last=E.stv.vers[E.stv.vers.length-1];if(!g.ok||!stratDiff(last.snap||{},snapStrat()).length){toast(publishStrat().why,"warn");return}
+ openForm({id:"exe_pub",title:"Publish strategy version "+(last.v+1),story:"Publishing records a snapshot that everyone sees as the current strategy. The previous version stays available for comparison.",submit:"Publish",
+  fields:[{k:"note",label:"What this version changes",type:"longtext",req:true}],
+  onSubmit:v=>{const r=publishStrat(v.note);if(!r.ok)return {toast:r.why,close:false};setTimeout(render,0);return {toast:"Version "+r.v+" published with "+r.changes.length+" change"+(r.changes.length===1?"":"s")}}})}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-exe-casw],[data-exe-pub],[data-exe-objedit],[data-exe-cas]");if(c){const d=c.dataset;
+ if(d.exeCasw!=null)return casWForm(d.exeCasw);if(d.exePub!=null)return pubForm();if(d.exeObjedit)return objEditForm(d.exeObjedit);
+ if(d.exeCas&&!e.target.closest("[data-owner],.thr-chip,[data-num-open]")){const n=cascade().by[d.exeCas];if(n&&n.obj&&window.THREAD)return THREAD.open(n.id);if(n&&n.kr)return krDrawer(n.kr);if(n&&n.lvl!=="company")return casWForm(n.id)}}});
 document.addEventListener("click",e=>{const t=e.target.closest("[data-exe-kr],[data-exe-ini],[data-exe-newobj],[data-exe-newkr],[data-exe-krup],[data-exe-quick]");if(!t)return;const d=t.dataset;
  if(d.exeKr)return krDrawer(d.exeKr);if(d.exeIni!=null&&!t.closest(".dnd-ghost"))return iniDrawer(d.exeIni);if(d.exeNewobj!=null)return objForm();if(d.exeNewkr!=null)return krForm(d.exeNewkr);if(d.exeKrup!=null)return krUpForm(d.exeKrup);
  if(d.exeQuick){const [i,o]=d.exeQuick.split(":");E.links[i]={[o]:1};audit("linked funded work",i+" to "+o);toast("Linked to "+(objN(o).sub||objN(o).n));sync();render()}});
@@ -656,5 +774,5 @@ SEARCHX.push(()=>[].concat(
  E.apps.map(a=>({g:"Applications",t:a.n,m:tOf(a)+" · "+K$(a.cost),c:tCol(tOf(a)),f:()=>{S.v.exeappv=2;go("exe_apps");setTimeout(()=>appDrawer(a.id),50)},k:a.cat+" "+a.ven})),
  E.scens.map(s=>({g:"Scenarios",t:s.n,m:"Scenario",c:"--u3",f:()=>go("exe_scen"),k:s.note})),
  [["Board pack","exe_board"],["Executive dashboard","exe_dash"],["Monte Carlo schedule risk","exe_risk"],["Strategy gaps","exe_strat"],["Application retirement","exe_apps"]].map(x=>({g:"Executive",t:x[0],m:"Screen",c:"--accent",f:()=>go(x[1]),k:"board ceo cfo cio coo okr heat map time model"}))));
-window.EXE={snap,mc,coverage,appStats,sync,E};
+window.EXE={snap,mc,coverage,appStats,sync,E,krDrawer,objProg,krProg,krCur,krSt,krExp,fmtKr,inits,lw,objN,cascade,CGRP,gateCheck,publishStrat,stratDiff};
 })();
