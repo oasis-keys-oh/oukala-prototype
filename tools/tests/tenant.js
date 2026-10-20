@@ -22,9 +22,33 @@ const r=await p.evaluate(()=>{const f=[];const snap=DATA.snapshot('core'); /* ta
  ok(JYX.JY.list.every(j=>/^JH/.test(j.id)),'Healthcare journeys only after the switch');
  ok(DATA.tenants().length===4&&DATA.tenants().every(t=>t.org),'tenant registry has four named tenants');
  /* R18: a gap is empty, never Meridian rows */
- TENANT.switch('mining');ok(DATA.get('projects').length===0&&DATA.gaps().includes('mining:projects'),'gap recorded for mining projects');
+ TENANT.switch('mining');const coreP=new Set(DATA.get('projects',{tenant:'core'}).map(x=>x.id));
+ ok(DATA.get('projects').length>0&&DATA.get('projects').every(x=>/^RR-/.test(x.id)&&!coreP.has(x.id)),'mining projects are its own');
  ok(DATA.get('people').length>0&&DATA.get('people').every(x=>x.org!=='Meridian Standards Foundation'),'mining people are its own');
+ DATA.pack('zz_gap',{projects:[{id:'G1',n:'Gap fixture'}]});ok(DATA.get('invoices',{tenant:'zz_gap'}).length===0&&DATA.gaps().includes('zz_gap:invoices'),'a missing entity is an empty list and a recorded gap');
  TENANT.switch('core');
+ /* industry packs (DC-11, DC-22, DC-23): generated, complete, owners and backups, maturity records, COO inputs (JM-07) */
+ const coreNames=new Set(DATA.get('people',{tenant:'core'}).map(x=>x.name));const need=['projects','budget_lines','invoices','people','metrics','objectives','key_results','processes','maturity','vocabulary','workload','value_chain','pillars','demand'];
+ ['health','mining','storage'].forEach(t=>{const g=(e)=>DATA.get(e,{tenant:t});
+  ok(window.TENANT_PACKS&&TENANT_PACKS[t]&&/gen_pack_specs/.test(TENANT_PACKS[t].spec),t+': pack is generated from a spec');
+  need.forEach(e=>ok(g(e).length>0,t+': pack has '+e));
+  const hum=new Set(g('people').filter(p=>p.kind==='human').map(p=>p.name));
+  ok(g('metrics').every(m=>m.owner&&m.backup&&m.owner!==m.backup&&hum.has(m.owner)&&hum.has(m.backup)&&m.f&&m.rem&&m.base!=null),t+': every metric has owner, different backup, formula, baseline and remediation');
+  ok(g('processes').every(p=>{const m=g('maturity').find(x=>x.process===p.id);return m&&Object.keys(m.dims).length===6&&m.target>=1&&m.level===Math.min(...Object.values(m.dims))}),t+': every process has a six-dimension maturity record with a target');
+  ok(g('people').filter(p=>p.kind!=='human').every(p=>hum.has(p.sponsor)),t+': every agent and robot has a human sponsor');
+  ok(g('people').every(p=>!coreNames.has(p.name)),t+': no person shares a name with a Meridian person: '+g('people').filter(p=>coreNames.has(p.name)).map(p=>p.name));
+  ok(g('budget_lines').every(l=>g('projects').some(p=>p.id===l.p))&&g('invoices').every(v=>g('budget_lines').some(l=>l.id===v.line)),t+': the thread links invoice to line to project');
+  ok(g('projects').every(p=>g('objectives').some(o=>o.id===p.obj)),t+': every project serves an objective')});
+ /* vocabulary (CL-57) */
+ ok(DATA.term('incident',{tenant:'core'})==='incident'&&DATA.term('incident',{tenant:'mining'})==='safety event'&&DATA.term('customer',{tenant:'health',many:true})==='patients'&&DATA.term('ticket',{tenant:'storage',cap:true})==='Support case','DATA.term follows the tenant');
+ TENANT.switch('mining');ok(DATA.term('ticket')==='work order'&&DATA.terms().incident==='safety event','DATA.term reads the active tenant');TENANT.switch('core');
+ /* screen adapters: data mode, and they render each tenant's own rows */
+ const ad=(window.STN&&STN.adapters)?STN.adapters():[];ok(ad.length>=8,'screen adapters registered: '+ad.length);
+ ad.forEach(id=>ok(DATA.screenMode(id)==='data','adapter '+id+' is a data screen'));
+ ['health','mining','storage'].forEach(t=>{TENANT.switch(t);const pn=DATA.get('projects')[0].n;ad.forEach(id=>{go(id);const tx=document.getElementById('view').textContent;
+  ok(tx.indexOf(DATA.tenantInfo(t).org)>=0,t+' '+id+' names the tenant');ok(!/could not be drawn/.test(tx),t+' '+id+' renders')});
+  go('strat_exec');ok(document.getElementById('view').textContent.indexOf(pn)>=0,t+' trace detail (strat_exec) follows the dollar through the tenant project')});
+ TENANT.switch('core');go('home');
  /* identity and membership, default deny (CL-63) */
  ok(IDENT.me().id==='casey-rowan'&&TENANT.list().length===4,'demo presenter is a member of four tenants');
  IDENT.use('jordan-lee');ok(TENANT.list().join()==='core','Jordan Lee sees only Meridian');

@@ -23,5 +23,7 @@ node tools/tests/search.js build_out
 node tools/tests/nav_usage.js build_out
 # PH-11: close-control audit; fails only on outliers not in tools/tests/nav_close_baseline.json (list: docs/inventory/close-controls.md)
 node tools/tests/nav_close.js build_out
+# DC-25: every Showroom tour beat under every tenant (no other tenant on screen, tenant-aware screens show the tenant's own data, timings)
+node tools/tests/tenant_tour.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"

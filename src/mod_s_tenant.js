@@ -5,7 +5,11 @@
    CL-56  seamless switch: the same screen re-renders with S (tabs, filters) kept; legacy screens are labeled, not hidden.
    CL-63  demo identity: one person, memberships per tenant, roles per membership, default deny (DATA.guard). Simulated.
    DC-09  tenant pack format, DATA.validate and DATA.snapshot (the Meridian regression snapshot is in tools/tests/tenant.js).
+   DC-11 DC-22 DC-23  industry packs are generated modules (src/mod_s_pack_<id>.js) loaded before this file; reuse of SCN content.
+   CL-57  vocabulary: DATA.term(key, n | {many, cap, tenant}) and DATA.terms(tenant); defaults below, tenant words from the packs.
+   JM-07  COO brief inputs per tenant: entities workload, value_chain, pillars (plus objectives, key_results, people agents).
    Tenant pack format: DATA.pack(tenantId, {entity: rows | () => rows, ...}, {org, short, kind}). Entities: DATA.entities().
+   Format and generator: docs/tenant-packs.md. Screen adapters for existing read-only screens: mod_s_tenant_screens.js.
    Tenant isolation here is simulated (R52): it is application code in one browser page, not enforcement below the application. ===== */
 (function(){
 const W=window,D=document,DT=W.DATA;if(!DT)return;
@@ -28,15 +32,47 @@ DT.define("workflows",{label:"Workflows",core:()=>{const ex=nonCoreIds("wfs");co
 DT.define("journeys",{label:"Journeys",core:()=>G(()=>SCN.pack.core.jys,[]),required:["n"]});
 DT.define("personas",{label:"Journey personas",core:()=>G(()=>SCN.pack.core.pers,[]).map(n=>({id:U.slug(n),name:n}))});
 
-/* ---------- 2. packs for the industry tenants from the content that already exists (journeys, workflows, personas, org leaders) ---------- */
-/* extra rows a later file adds per tenant (the Healthcare spike pack adds people) */
-const STN_EXTRA={};W.STN={extra:STN_EXTRA};
+/* entities added for the industry packs (DC-11, DC-22, DC-23), the COO brief (JM-07) and the vocabulary (CL-57).
+   Their core sources read the Meridian globals live; a module that owns the global keeps owning it. */
+const PILLARS0=[{id:"MS-PL1",n:"Grow member trust",d:"Members trust the standards and the process that makes them.",obj:"O1"},
+ {id:"MS-PL2",n:"Publish faster",d:"A standard moves from draft to published in weeks, not months.",obj:"O1"},
+ {id:"MS-PL3",n:"Spend less per standard",d:"Lower cost per published standard without cutting review quality.",obj:"O2"}];
+/* the platform's default words; a tenant pack replaces any of them (R19) */
+const VOC0={customer:["customer","customers"],incident:["incident","incidents"],ticket:["ticket","tickets"],request:["request","requests"],asset:["asset","assets"],
+ site:["site","sites"],downtime:["outage","outages"],workforce:["team","teams"],work_item:["ticket","tickets"],frontline:["service desk","service desks"],service:["service","services"],
+ order:["order","orders"],case:["case","cases"],supplier:["vendor","vendors"],revenue:["revenue","revenue"]};
+DT.define("key_results",{label:"Key results",core:()=>G(()=>S.exe.krs,[]),required:["n","o"]});
+DT.define("pillars",{label:"Strategy pillars",core:()=>PILLARS0,required:["n"]});
+DT.define("demand",{label:"Demand requests",core:()=>G(()=>DEMAND,[]),required:["n"]});
+DT.define("maturity",{label:"Process maturity records",core:()=>[],required:["process","dims","target"]});
+DT.define("vocabulary",{label:"Vocabulary",core:()=>Object.keys(VOC0).map(k=>({id:k,one:VOC0[k][0],many:VOC0[k][1]})),required:["one","many"]});
+DT.define("workload",{label:"Workload (COO brief)",core:()=>G(()=>ODX.people(),[]).map(p=>Object.assign({id:"wl-"+U.slug(p.n),label:"fact"},p)),required:["n"]});
+DT.define("value_chain",{label:"Value chain steps (COO brief)",core:()=>G(()=>ODX.O2C.steps,[]).map((s,i)=>Object.assign({id:"core-vc"+(i+1),flow:ODX.O2C.n,label:"modeled"},s)),required:["n"]});
+
+/* ---------- 2. tenant packs ----------
+   Each industry tenant has a generated pack (src/mod_s_pack_<id>.js, from tools/generators/gen_pack_specs/<id>.json, DC-09)
+   that loads before this file. Content that already exists is reused, never copied: journeys, workflows and personas come from
+   SCN for any tenant whose pack does not supply them; people fall back to the org leaders when a pack has none. */
+const PK=()=>W.TENANT_PACKS||{};
 const orgPeople=k=>{const o=G(()=>TENANT.orgs[k],null),info=G(()=>TENANT.info[k],{})||{};const out=[];if(!o)return out;
  const add=(n,t,team)=>{if(n&&!out.some(p=>p.name===n))out.push({id:U.slug(n),name:n,kind:"human",role:t,team,org:info.org||"",loc:"",skills:[]})};
  if(info.lead)add(info.lead.n,info.lead.t,"Executive office");o.fns.forEach(f=>add(f.lead.n,f.lead.t,f.n));return out};
-G(()=>Object.keys(SCN.list).filter(k=>k!=="core").forEach(k=>DT.pack(k,{
- journeys:()=>SCN.pack[k].jys,workflows:()=>SCN.pack[k].wfs,personas:()=>SCN.pack[k].pers.map(n=>({id:U.slug(n),name:n})),
- people:()=>orgPeople(k).concat(G(()=>STN_EXTRA[k].people,[]))})));
+G(()=>Object.keys(SCN.list).filter(k=>k!=="core").forEach(k=>{const own=(PK()[k]||{}).rows||{};const add={};
+ if(!own.journeys)add.journeys=()=>SCN.pack[k].jys;
+ if(!own.workflows)add.workflows=()=>SCN.pack[k].wfs;
+ if(!own.personas)add.personas=()=>SCN.pack[k].pers.map(n=>({id:U.slug(n),name:n}));
+ if(!own.people)add.people=()=>orgPeople(k);
+ if(Object.keys(add).length)DT.pack(k,add)}));
+W.STN=W.STN||{};
+
+/* ---------- 2b. vocabulary (CL-57): DATA.term(key, n | {many, cap}) -> the active tenant's word ----------
+   A tenant without its own word for a key gets the platform default (configuration, not another tenant's data). */
+const vocRow=(k,t)=>DT.get("vocabulary",{tenant:t}).find(r=>r.id===k);
+DT.term=(key,o)=>{o=typeof o==="number"?{many:o!==1}:(o||{});const t=o.tenant||DT.tenant();
+ const r=vocRow(key,t)||(t!=="core"?vocRow(key,"core"):null);let w=r?(o.many?r.many:r.one):String(key).replace(/_/g," ");
+ return o.cap?w.charAt(0).toUpperCase()+w.slice(1):w};
+DT.terms=t=>{const o={};Object.keys(VOC0).forEach(k=>o[k]=DT.term(k,{tenant:t||DT.tenant()}));DT.get("vocabulary",{tenant:t||DT.tenant()}).forEach(r=>o[r.id]=r.one);return o};
+const T=(k,o)=>DT.term(k,o);
 
 /* ---------- 3. identity and membership (CL-63, R44): simulated, default deny ---------- */
 const ROLES={Executive:["view","approve"],Approver:["view","approve"],Architect:["view","configure"],"Tenant admin":["view","configure","approve"],"Demo viewer":["view"]};
@@ -78,33 +114,43 @@ G(()=>HOOKS.on("afterRender",()=>{try{label()}catch(e){console.error("stn label"
 S.tn=S.tn||{q:"",kind:"all",ent:"projects"};
 const n0=v=>(+v||0);
 const money=k=>U.moneyShort(n0(k)*1000);
+const LABN={fact:"Prototype fact",modeled:"Modeled",hypothesis:"Hypothesis",simulated:"Simulated"};
+const labPill=k=>`<span class="pill mute" title="How this number was produced">${E(LABN[k]||LABN.simulated)}</span>`;
 const lab=`<span class="pill mute" title="Sample figures for a fictional organization">Sample data · simulated</span>`;
-const head=(eyebrow,h,story)=>{const t=DT.tenant();return `<section class="hero"><div class="eyebrow">${E(eyebrow)} · ${E(tname(t))}</div><h1>${E(h)}</h1><p class="story" data-role="story">${story}</p><div class="stn-row"><span class="pill good">Tenant: ${E(tname(t))}</span>${lab}<span class="pill mute">Reads through the tenant data layer</span><span class="pill mute">Tenant isolation simulated</span></div></section>`};
+const head=(eyebrow,h,story,extra)=>{const t=DT.tenant();return `<section class="hero"><div class="eyebrow">${E(eyebrow)} · ${E(tname(t))}</div><h1>${E(h)}</h1><p class="story" data-role="story">${story}</p><div class="stn-row"><span class="pill good">Tenant: ${E(tname(t))}</span>${lab}<span class="pill mute">Reads through the tenant data layer</span><span class="pill mute">Tenant isolation simulated</span></div>${extra||""}</section>`};
 const gap=(ent)=>empty("No "+String((DT.entities().find(e=>e.entity===ent)||{}).label||ent).toLowerCase()+" in this tenant's pack yet","The gap is recorded (DATA.gaps). Rows from another tenant are never shown in their place.");
 const table=(cols,rows)=>`<div class="stn-tw"><table class="stn-t"><thead><tr>${cols.map(c=>`<th scope="col">${E(c)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+/* owners render through ownerChip (R13); a missing backup shows the badge (R12) */
+const own=(o,b,rec)=>{if(!o)return `<span class="muted">No owner</span>`;return G(()=>W.ownerChip.pair?ownerChip.pair(o,b,{record:rec}):ownerChip(o,{record:rec,role:"Owner"})+(b?" "+ownerChip(b,{record:rec,role:"Backup"}):""),E(o)+(b?", "+E(b):""))};
+const good=m=>m.dir==="min"?n0(m.cur)<=n0(m.tgt):n0(m.cur)>=n0(m.tgt);
+const mst=m=>pill(good(m)?"On target":"Off target",good(m)?"good":"warn");
+const unit=(v,u)=>E(v)+(u&&u.trim()?(/^\s*%/.test(u)?"":" ")+E(u.trim()):"");
+const krProg=k=>{const d=n0(k.tgt)-n0(k.start);return d?U.clamp((n0(k.cur)-n0(k.start))/d,0,1):0};
+/* helpers shared with the screen adapters (mod_s_tenant_screens.js) */
+Object.assign(W.STN,{E,G,T,n0,money,head,gap,table,own,good,mst,unit,krProg,labPill,tname,LABN});
 
 REG("tn_projects","Projects and budget (tenant view)","platform","M3 3h18v18H3zM3 9h18M9 21V9",()=>{
- const P=DT.get("projects"),B=DT.get("budget_lines");const bac=P.reduce((a,p)=>a+n0(p.bac),0),paid=P.reduce((a,p)=>a+n0(p.paid),0);
- const appr=B.reduce((a,l)=>a+n0(l.appr),0),fc=B.reduce((a,l)=>a+n0(l.fcst),0);
- return `<div class="screen stn">${head("Tenant view","Projects and budget",`The projects and budget lines of the active tenant, read only through the tenant data layer. Switch the tenant and this screen stays open with the new tenant's rows.`)}
+ const P=DT.get("projects"),B=DT.get("budget_lines"),I=DT.get("invoices"),O=DT.get("objectives");const bac=P.reduce((a,p)=>a+n0(p.bac),0),paid=P.reduce((a,p)=>a+n0(p.paid),0);
+ const appr=B.reduce((a,l)=>a+n0(l.appr),0),fc=B.reduce((a,l)=>a+n0(l.fcst),0);const on=id=>(O.find(o=>o.id===id)||{}).n||"";
+ return `<div class="screen stn">${head("Tenant view","Projects and budget",`The projects, budget lines and ${E(T("supplier",{many:true}))}' invoices of the active tenant, read only through the tenant data layer. Switch the tenant and this screen stays open with the new tenant's rows.`)}
  ${tiles([TL("Projects",P.length,"Sample count","mute"),TL("Approved budget",P.length?money(bac):"None",P.length?"Sample figure, simulated":"Gap recorded","mute"),TL("Paid to date",P.length?money(paid):"None","Sample figure, simulated","mute"),TL("Budget lines over forecast",B.filter(l=>n0(l.fcst)>n0(l.appr)).length,B.length?"Forecast above approved, simulated":"Gap recorded","mute")])}
- ${card("Projects",P.length+" in this tenant",P.length?table(["Project","Owner","Approved","Paid"],P.map(p=>[`<b>${E(p.n)}</b><small class="muted"> ${E(p.id)}</small>`,E(p.owner||""),money(p.bac),money(p.paid)])):gap("projects"))}
- ${card("Budget lines",B.length?U.moneyShort(appr)+" approved, "+U.moneyShort(fc)+" forecast (simulated)":"",B.length?table(["Line","Project","Category","Approved","Forecast","Owner"],B.map(l=>[E(l.n),E(l.p),E(l.cat||""),U.moneyShort(l.appr),U.moneyShort(l.fcst),E(l.own||"")])):gap("budget_lines"))}</div>`});
+ ${card("Projects",P.length+" in this tenant",P.length?table(["Project","Objective","Owner and backup","Approved","Paid"],P.map(p=>[`<b>${E(p.n)}</b><small class="muted"> ${E(p.id)}</small>`,E(on(p.obj)),own(p.owner,p.backup,"project:"+p.id),money(p.bac),money(p.paid)])):gap("projects"))}
+ ${card("Budget lines",B.length?U.moneyShort(appr)+" approved, "+U.moneyShort(fc)+" forecast (simulated)":"",B.length?table(["Line","Project","Category","Approved","Forecast","Owner and backup"],B.map(l=>[E(l.n),E(l.p),E(l.cat||""),U.moneyShort(l.appr),U.moneyShort(l.fcst),own(l.own,l.bk,"budget_line:"+l.id)])):gap("budget_lines"))}
+ ${card("Invoices",I.length?I.length+" open, "+U.moneyShort(I.reduce((a,v)=>a+n0(v.amt),0))+" (simulated)":"",I.length?table(["Invoice",T("supplier",{cap:true}),"Project","Amount","Recommendation","Owner and backup"],I.map(v=>[`<b>${E(v.id)}</b><small class="muted"> due ${E(v.due||"")}</small>`,E(v.vendor),E(v.p||""),U.money(v.amt),pill(v.rec==="pay"?"Pay":v.rec==="hold"?"Hold":"Review",v.rec==="pay"?"good":v.rec==="hold"?"bad":"warn")+`<small class="muted"> ${E(v.story||"")}</small>`,own(v.own,v.bk,"invoice:"+v.id)])):gap("invoices"))}</div>`});
 
 REG("tn_people","People directory (tenant view)","platform","M16 11a4 4 0 1 0-8 0M4 21a8 8 0 0 1 16 0",()=>{
  const st=S.tn,q=String(st.q||"").toLowerCase();const all=DT.get("people");
  const rows=all.filter(p=>(st.kind==="all"||p.kind===st.kind)&&(!q||(p.name+" "+(p.role||"")+" "+(p.team||"")).toLowerCase().indexOf(q)>=0));
- const kinds=[["all","Everyone"],["human","People"],["agent","AI agents"]];
- return `<div class="screen stn">${head("Tenant view","People directory",`The people and agents of the active tenant. Your filter and search stay when you switch tenant; only the rows change.`)}
+ const kinds=[["all","Everyone"],["human","People"],["agent","AI agents"],["robot","Robots"]];
+ return `<div class="screen stn">${head("Tenant view","People directory",`The people, agents and robots of the active tenant. Your filter and search stay when you switch tenant; only the rows change.`)}
  ${card("Directory",rows.length+" of "+all.length+" shown",`<div class="stn-row" role="group" aria-label="Filter"><label class="stn-q"><span class="muted small">Search</span><input type="search" data-tn-q value="${E(st.q||"")}" placeholder="Name, role or team"></label>${kinds.map(([k,l])=>`<button type="button" class="chip" data-tn-kind="${k}" aria-pressed="${st.kind===k}">${l}</button>`).join("")}</div>
- ${all.length?(rows.length?table(["Name","Kind","Role","Team"],rows.slice(0,60).map(p=>[`<b>${E(p.name)}</b>`,p.kind==="agent"?"AI agent":p.kind==="human"?"Person":E(p.kind||""),E(p.role||""),E(p.team||"")])):empty("Nobody matches the filter","Clear the search or choose Everyone.")):gap("people")}`)}</div>`});
+ ${all.length?(rows.length?table(["Name","Kind","Role","Team","Human sponsor"],rows.slice(0,60).map(p=>[`<b>${E(p.name)}</b>`,p.kind==="agent"?"AI agent":p.kind==="robot"?"Robot":p.kind==="human"?"Person":E(p.kind||""),E(p.role||""),E(p.team||""),p.sponsor?E(p.sponsor):""])):empty("Nobody matches the filter","Clear the search or choose Everyone.")):gap("people")}`)}</div>`});
 
 REG("tn_metrics","Metrics and objectives (tenant view)","platform","M4 19V9M10 19V5M16 19v-7M22 19H2",()=>{
- const M=DT.get("metrics"),O=DT.get("objectives");
- const st=m=>{const good=m.dir==="min"?n0(m.cur)<=n0(m.tgt):n0(m.cur)>=n0(m.tgt);return pill(good?"On target":"Off target",good?"good":"warn")};
- return `<div class="screen stn">${head("Tenant view","Metrics and objectives",`The active tenant's own metrics and objectives, with its own vocabulary. Values are sample figures (simulated).`)}
- ${card("Metrics",M.length+" in this tenant",M.length?table(["Metric","Current","Target","Status","Owner"],M.map(m=>[`<b>${E(m.n)}</b>`,E(m.cur)+" "+E(m.u||""),(m.dir==="min"?"at most ":"at least ")+E(m.tgt)+" "+E(m.u||""),st(m),E(m.owner||"")])):gap("metrics"))}
- ${card("Objectives",O.length+" in this tenant",O.length?table(["Objective","Owner","Outcome"],O.map(o=>[`<b>${E(o.n)}</b>`,E(o.owner||""),E(o.story||"")])):gap("objectives"))}</div>`});
+ const M=DT.get("metrics"),O=DT.get("objectives"),K=DT.get("key_results");
+ return `<div class="screen stn">${head("Tenant view","Metrics and objectives",`The active tenant's own metrics, objectives and key results, with its own vocabulary. Each industry metric has an owner, a backup, a formula, a baseline and a remediation. Values are sample figures (simulated).`)}
+ ${card("Metrics",M.length+" in this tenant",M.length?table(["Metric","Current","Target","Baseline","Status","Owner and backup","Source"],M.map(m=>[`<b>${E(m.n)}</b>${m.f?`<small class="muted"> ${E(m.f)}</small>`:""}`,unit(m.cur,m.u),(m.dir==="min"?"at most ":"at least ")+unit(m.tgt,m.u),m.base!=null?unit(m.base,m.u):`<span class="muted">none</span>`,mst(m),own(m.owner,m.backup,"metric:"+m.id),labPill(m.label)])):gap("metrics"))}
+ ${card("Objectives and key results",O.length+" objectives, "+K.length+" key results",O.length?table(["Objective","Owner and backup","Key results"],O.map(o=>[`<b>${E(o.n)}</b><small class="muted"> ${E(o.story||"")}</small>`,own(o.owner,o.backup,"objective:"+o.id),K.filter(k=>k.o===o.id).map(k=>`<div>${E(k.n)}: ${unit(k.cur,k.u)} toward ${unit(k.tgt,k.u)} (${Math.round(krProg(k)*100)}% of the way)</div>`).join("")||`<span class="muted">No key results</span>`])):gap("objectives"))}</div>`});
 
 /* ---------- 7. the tenancy admin screen: tenants, identity, entities, screen registry, pack validation ---------- */
 REG("tn_admin","Tenancy","platform","M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6",()=>{
@@ -119,6 +165,8 @@ REG("tn_admin","Tenancy","platform","M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6",()=
  <div data-tenant-chooser="1">${card("Who you are",E(me.name)+" · "+E(me.title),`<div class="stn-row" role="group" aria-label="View as">${IDENT.people.map(p=>`<button type="button" class="chip" data-tn-ident="${E(p.id)}" aria-pressed="${p.id===me.id}">${E(p.name)}</button>`).join("")}</div>
   <p class="muted small">View as another demo identity to see default deny: the switcher only offers tenants that identity is a member of. Permissions in ${E(tname(t))}: ${["view","approve","configure"].map(a=>E(a)+" "+(IDENT.can(a,t)?"allowed":"denied")).join(", ")}.</p>`)}</div>
  <div data-tenant-chooser="1">${card("Tenants",tens.length+" registered (all fictional)",table(["Tenant","Kind","Your roles","Pack","" ],tRows))}</div>
+ <div data-tenant-chooser="1">${card("Tenant packs","Generated from a small spec by tools/generators/gen_pack.py, loaded through DATA.pack: the path a real customer's data takes (R20, docs/tenant-packs.md)",table(["Tenant","Source","Reuses","Image","Vocabulary"],tens.filter(x=>x.id!=="core").map(x=>{const pk=PK()[x.id];if(!pk)return[E(x.short||x.id),`<span class="muted">No generated pack</span>`,"","",""];
+  return[`<b>${E(x.short||x.id)}</b>`,`<code>${E(pk.spec)}</code>`,E((pk.reuse||[]).join(", ")),pk.images&&pk.images.hero?`<code>${E(pk.images.hero)}</code><small class="muted"> ${E(pk.images.provenance||"")}</small>`:"",E(["customer","incident","ticket","asset","site"].map(k=>k+": "+DT.term(k,{tenant:x.id})).join(" · "))]})))}</div>
  <div data-tenant-chooser="1">${card("Entities per tenant","Row counts read through DATA.get; a gap is never filled with another tenant's rows",table(["Entity"].concat(tens.map(x=>x.short||x.id)),eRows)+(gaps.length?`<p class="muted small">Gaps recorded so far: ${E(gaps.join(", "))}</p>`:""))}</div>
  ${card("Tenant-aware screen registry",scr.length+" screens",`<p class="muted small">Reads through DATA: ${by.data.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">Follows the tenant another way, not yet DATA: ${by.tenant.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">The other ${cnt("core")} screens show the Meridian sample only and are labeled when another tenant is active. They move to DATA screen by screen (CL-55).</p>`)}
  <p class="muted small">Tenant isolation in this prototype is simulated: one browser page with sample data, no enforcement below the application yet.</p></div>`});
@@ -132,7 +180,9 @@ let qT=null;D.addEventListener("input",e=>{const i=e.target.closest&&e.target.cl
 G(()=>SEARCHX.push(()=>{const t=DT.tenant();if(t==="core")return[];const org=tname(t);
  return DT.get("projects").map(p=>({g:"Projects",t:p.n,m:org+" · "+(p.owner||""),c:"--p4",f:()=>go("tn_projects"),k:"project "+p.n.toLowerCase()+" "+p.id.toLowerCase()}))
   .concat(DT.get("people").map(p=>({g:"People",t:p.name,m:org+" · "+(p.role||""),c:"--s3",f:()=>{S.tn.q=p.name;go("tn_people")},k:"person "+p.name.toLowerCase()})))
-  .concat(DT.get("metrics").map(m=>({g:"Metrics",t:m.n,m:org,c:"--u3",f:()=>go("tn_metrics"),k:"metric "+String(m.n).toLowerCase()})))}));
+  .concat(DT.get("metrics").map(m=>({g:"Metrics",t:m.n,m:org,c:"--u3",f:()=>go("tn_metrics"),k:"metric "+String(m.n).toLowerCase()})))
+  .concat(DT.get("objectives").map(o=>({g:"Objectives",t:o.n,m:org+" · "+(o.owner||""),c:"--p4",f:()=>go("tn_metrics"),k:"objective strategy "+String(o.n).toLowerCase()})))
+  .concat(DT.get("invoices").map(v=>({g:"Invoices",t:v.id+" "+v.vendor,m:org+" · "+U.money(v.amt),c:"--w1",f:()=>go("tn_projects"),k:"invoice "+String(v.id+" "+v.vendor).toLowerCase()})))}));
 G(()=>{if(W.NAVX&&NAVX.add){NAVX.add("tn_admin",{group:"plat",label:"Tenancy",hint:"Tenancy",sub:"Tenants, memberships, data",kw:"tenant tenancy membership identity isolation pack switch customer"});
  NAVX.add("tn_projects",{group:"plat",label:"Projects and budget (tenant view)",hint:"Tenant projects",sub:"Read through the tenant data layer",kw:"tenant projects budget lines"});
  NAVX.add("tn_people",{group:"plat",label:"People directory (tenant view)",hint:"Tenant people",sub:"Read through the tenant data layer",kw:"tenant people directory"});
