@@ -12,7 +12,7 @@ const WHO=[["human","Person"],["agent","AI agent"],["auto","Automatic"],["gate",
 const MODES=[["event","Event"],["batch","Batch"],["human","Human"],["api","API call"]];
 const MODEC={event:"--accent",batch:"--p4",human:"--warn-f",api:"--good-f"};
 const FTYPES=["string","number","date","currency","boolean","ref","enum","list"];
-const AUTHS=[["platform","Oukala"],["external","External"],["shared","Shared"]];
+const AUTHS=[["platform",BRAND.name],["external","External"],["shared","Shared"]];
 const CLS=[["public","Public"],["internal","Internal"],["confidential","Confidential"],["restricted","Restricted"],["personal","Personal"]];
 const ROLEOPTS=["Requester","Approver","Fulfiller","Manager","Auditor","Platform admin","Read-only analyst"];
 const GUARDS=["No personal data in prompts","A person approves every write","Citations required for answers","Prompts and answers are logged","Monthly spend cap enforced"];
@@ -148,7 +148,7 @@ function counts(d){
  const nf=d.data.neu.reduce((s,n)=>s+n.fields.length,0)+d.data.ext.reduce((s,x)=>s+x.add.length,0);
  return{reuse:d.data.reuse.length,ext:d.data.ext.length,neu:d.data.neu.length,nf,dupPrev:d.dupPrev||0,dupF:d.dupF||0,open:unresolved(d).length,flows:d.conns.length};
 }
-const FREE=[["Sign-in and roles","Single sign-on through Entra ID, role and attribute rules from the policy engine."],["Preferences","Theme, language and persona settings follow the person across modules."],["Audit trail","Every create, change and delete is recorded."],["Search","Records appear in global search once registered."],["Chat control","Ask Oukala can open, find and act on its records."],["Metrics framework","Formula chips, targets, owners and remediation play."],["Process card","Your process shows as a clickable strip on the screen."],["Maturity record","The process is scored in Maturity models and rolls up."]];
+const FREE=[["Sign-in and roles","Single sign-on through Entra ID, role and attribute rules from the policy engine."],["Preferences","Theme, language and persona settings follow the person across modules."],["Audit trail","Every create, change and delete is recorded."],["Search","Records appear in global search once registered."],["Chat control","Ask "+BRAND.name+" can open, find and act on its records."],["Metrics framework","Formula chips, targets, owners and remediation play."],["Process card","Your process shows as a clickable strip on the screen."],["Maturity record","The process is scored in Maturity models and rolls up."]];
 function diagram(d,compact){
  const me=d.sn||d.name||"New module",ins=d.conns.filter(c=>c.dir==="pull"),outs=d.conns.filter(c=>c.dir==="push");
  const rows=Math.max(ins.length,outs.length,1),W=compact?460:620,NW=compact?132:170,NH=34,GAP=compact?44:54,H=Math.max(110,rows*GAP+30);

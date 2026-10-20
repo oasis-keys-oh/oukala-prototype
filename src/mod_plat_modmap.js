@@ -772,7 +772,7 @@ function setPair(a,b,fly){
 const WHOPILL=v=>window.STEPMODE?STEPMODE.pill(v):pill(String(v||"human"),"info");
 const FDESC={live:"Updates within seconds","near-live":"Updates within a minute or two",hourly:"Refreshed about every hour",daily:"Refreshed once a day",unknown:"No registered field yet"};
 const MDESC={event:"Sent the moment the trigger happens.",batch:"Sent on a schedule, in a group.",human:"Sent when a person acts or decides."};
-const AUTH={platform:"Oukala is authoritative",external:"External system wins",shared:"Shared, newest wins"};
+const AUTH={platform:BRAND.name+" is authoritative",external:"External system wins",shared:"Shared, newest wins"};
 const modChip=id=>`<button type="button" class="mm-mc" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i>${E(MB[id].sn)}</button>`;
 const mdOf=m=>BANDS[m.bi][1];
 function flowRow(f,other){

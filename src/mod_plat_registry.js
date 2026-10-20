@@ -28,26 +28,26 @@ const RET={fin:"7 years",people:"Employment plus 7 years",service:"5 years",ops:
 const hash=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%9973;return h};
 function fieldMeta(t,f){
  const k=f.k,ty=f.type||"string",dm=domOf(t),isCI=t.indexOf("config_item")===0;
- let auth="platform",fresh="live",cls="internal",why="Created and edited in Oukala";let basis="default";
- if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why="Oukala work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
+ let auth="platform",fresh="live",cls="internal",why="Created and edited in "+BRAND.name;let basis="default";
+ if(t==="person"){ if(/skills|load|kind|hours/.test(k)){auth="platform";why=BRAND.name+" work data"}else{auth="external";fresh="near-live";why="Identity provider and HR are authoritative"} }
  else if(t==="time_off"){auth="external";fresh="hourly";why="HR system is authoritative"}
- else if(t==="project_task"||t==="wbs_line"){ if(/start|finish|duration|actual|percent/.test(k)){auth="shared";fresh="hourly";why="External planning tool wins dates; Oukala wins dependencies and cost"} }
+ else if(t==="project_task"||t==="wbs_line"){ if(/start|finish|duration|actual|percent/.test(k)){auth="shared";fresh="hourly";why="External planning tool wins dates; "+BRAND.name+" wins dependencies and cost"} }
  else if(t==="invoice"){ if(/amount|status|paid|po|accepted/.test(k)){auth="external";fresh="daily";why="ERP is authoritative for posted amounts"} }
- else if(isCI){ if(/discovered|status|uptime|class|environment|ip|os|serial|cpu|ram|disk|model|firmware|version/.test(k)){auth="external";fresh="hourly";why="Discovery tools are authoritative for attributes"}else if(/owned|support|criticality|business|service/.test(k)){auth="platform";why="Oukala owns relationships, ownership and service mapping"} }
+ else if(isCI){ if(/discovered|status|uptime|class|environment|ip|os|serial|cpu|ram|disk|model|firmware|version/.test(k)){auth="external";fresh="hourly";why="Discovery tools are authoritative for attributes"}else if(/owned|support|criticality|business|service/.test(k)){auth="platform";why=BRAND.name+" owns relationships, ownership and service mapping"} }
  else if(t==="alert_event"||t==="metric_series"||t==="log_pattern"||t==="synthetic_check"){auth="external";fresh=t==="alert_event"?"live":"near-live";why="Monitoring tools are authoritative"}
  else if(t==="pull_request"){auth="external";fresh="near-live";why="Source control is authoritative"}
- else if(t==="user_story"||t==="feature"){auth="shared";fresh="near-live";why="Agile tool and Oukala both edit; newest wins with review"}
+ else if(t==="user_story"||t==="feature"){auth="shared";fresh="near-live";why="Agile tool and "+BRAND.name+" both edit; newest wins with review"}
  else if(t==="incident"||t==="change_request"||t==="request_item"){ if(/state|assignment/.test(k)){fresh="near-live"} }
  if(/amount|cost|price|budget|rate|paid|salary|spend/.test(k)||ty==="currency")cls="confidential";
  if(/email|phone|home|birth|manager|caller|requested_for/.test(k))cls="personal";
  if(t==="person"&&/rate|contract|hours/.test(k))cls="restricted";
  if(/contract|clause|liability/.test(t+k))cls=cls==="restricted"?cls:"confidential";
  if(/^id$|number|name|label|state|status/.test(k)&&cls==="internal")cls="internal";
- if(auth!=="platform"||fresh!=="live"||cls!=="internal"||why!=="Created and edited in Oukala")basis="rule";
- if(f.authority||f.classification){if(f.authority){auth=f.authority;why=f.why||(auth==="external"?"The source system is authoritative":auth==="shared"?"Oukala and the source both edit; newest wins":"Created and edited in Oukala");if(auth==="external"&&fresh==="live")fresh="near-live"}if(f.classification)cls=f.classification;basis="declared"}
+ if(auth!=="platform"||fresh!=="live"||cls!=="internal"||why!=="Created and edited in "+BRAND.name)basis="rule";
+ if(f.authority||f.classification){if(f.authority){auth=f.authority;why=f.why||(auth==="external"?"The source system is authoritative":auth==="shared"?BRAND.name+" and the source both edit; newest wins":"Created and edited in "+BRAND.name);if(auth==="external"&&fresh==="live")fresh="near-live"}if(f.classification)cls=f.classification;basis="declared"}
  else if(basis==="default"&&S.atlas&&S.atlas.confirmed&&S.atlas.confirmed[t])basis="confirmed";
  const dir=auth==="platform"?"out":auth==="external"?"in":"both";
- const conflict=auth==="platform"?"Oukala wins":auth==="external"?"External system wins":"Newest wins, differences open a reconciliation item";
+ const conflict=auth==="platform"?BRAND.name+" wins":auth==="external"?"External system wins":"Newest wins, differences open a reconciliation item";
  const trust=auth==="platform"?0.98:Math.round((0.72+(hash(t+k)%24)/100)*100)/100;
  const rule={ref:"Must resolve to a live record",date:"Valid date; finish is on or after start",datetime:"Valid timestamp, not in the future unless a plan",currency:"Zero or more, two decimals, currency set",enum:"One of the allowed values",percent:"0 to 100","boolean":"True or false",number:"Number in range",list:"No duplicates, each item in catalog",duration:"Non-negative duration"}[ty]||"Trimmed text, required when marked";
  return{auth,dir,fresh,cls,why,conflict,trust,rule,basis};

@@ -439,7 +439,7 @@ function whereHTML(){
   ${it(2,"From the Process library tab on the map","The Master process flow has a <b>Process library</b> tab and a button in its header. Both open this list.",`<button class="btn" data-pl-goscreen="plat_map" data-pl-tab6>Open the map's library tab</button>`)}
   ${it(3,"From Process connections","Select a process node, then <b>Open full process page</b> in its side panel. Upstream and downstream chips on the page jump to the neighbor.",`<button class="btn" data-pl-goscreen="plat_pmap">Open Process connections</button>`)}
   ${it(4,"From search","Press the search box at the top and type a process name, for example <i>incident</i>, <i>change enablement</i> or <i>benefits</i>. Every process is a result.",`<button class="btn" data-pl-open="itsm_inc">Try: Incidents</button>`)}
-  ${it(5,"From chat","Ask Oukala: <i>show the incident process</i>, <i>what is the maturity of change enablement</i>, <i>which processes are below target</i> or <i>open the process library</i>.",`<button class="btn" data-pl-goscreen="chat_home">Open chat</button>`)}
+  ${it(5,"From chat","Ask "+BRAND.name+": <i>show the incident process</i>, <i>what is the maturity of change enablement</i>, <i>which processes are below target</i> or <i>open the process library</i>.",`<button class="btn" data-pl-goscreen="chat_home">Open chat</button>`)}
   ${it(6,"From this library","Select any row in the table on the first tab, or any cell in the heat map on the Maturity tab.",`<button class="btn" data-pl-lib="0">Go to the table</button>`)}
  </div>`;
 }

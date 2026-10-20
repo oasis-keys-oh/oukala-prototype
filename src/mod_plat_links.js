@@ -735,7 +735,7 @@ function findingsHTML(){
 /* ---------- field lineage ---------- */
 function srcFor(e,m){
  const t=e.id;
- if(m.auth==="platform")return{n:"Created in Oukala",d:"People and agents create it in "+(e.writers.map(appN).join(", ")||e.owner)+"."};
+ if(m.auth==="platform")return{n:"Created in "+BRAND.name,d:"People and agents create it in "+(e.writers.map(appN).join(", ")||e.owner)+"."};
  let n="External system";
  if(t==="person"||t==="time_off")n="Entra ID and the HR system";
  else if(t==="invoice")n="ERP, the finance ledger";
@@ -744,7 +744,7 @@ function srcFor(e,m){
  else if(t==="pull_request")n="Source control";
  else if(t==="project_task"||t==="wbs_line")n="Project planning tool";
  else if(t==="user_story"||t==="feature")n="Agile tool";
- return{n:m.auth==="shared"?n+" and Oukala":n,d:m.why+"."};
+ return{n:m.auth==="shared"?n+" and "+BRAND.name:n,d:m.why+"."};
 }
 const AUTHP={platform:"good",external:"info",shared:"warn"};
 function linHTML(){
@@ -760,7 +760,7 @@ function linHTML(){
  return `<div class="plk-brow plk-linsel"><label class="small muted">Entity <select class="fin" data-plk-lin="ent" aria-label="Entity">${opts}</select></label><label class="small muted">Field <select class="fin" data-plk-lin="f" aria-label="Field">${e.fields.map(x=>`<option value="${E(x.k)}" ${x.k===f.k?"selected":""}>${E(x.label||x.k)}</option>`).join("")}</select></label><button class="btn quiet" data-plk-appgo="${E(e.id)}" data-ent="1">Show the entity on the graph</button></div>
  <div class="plk-lin">
  ${col("1. Source",`<h4>${E(src.n)}</h4><p class="small">${E(src.d)}</p><p class="small muted">${meta.auth==="platform"?"No external system to mirror.":meta.auth==="external"?"Mirrored read-only. Edits here are blocked.":"Both sides edit. Differences open a reconciliation item."}</p>`)}${arrow}
- ${col("2. Rules in the registry",`<h4>${E(f.label||f.k)} <span class="muted small">(${E(f.k)})</span></h4><p class="small"><span class="pill ${AUTHP[meta.auth]}">${E(meta.auth)} authority</span> ${clsPill(meta.cls)} <span class="pill mute">${E(f.type||"string")}</span></p><dl class="plk-kv"><dt>Direction</dt><dd>${meta.dir==="in"?"In from the source":meta.dir==="out"?"Out of Oukala":"Both ways"}</dd><dt>Freshness</dt><dd>${E(meta.fresh)}</dd><dt>If they disagree</dt><dd>${E(meta.conflict)}</dd><dt>Quality rule</dt><dd>${E(meta.rule)}</dd><dt>Trust score</dt><dd>${Math.round(meta.trust*100)}%</dd>${tg.length?`<dt>Points to</dt><dd>${tg.map(x=>`<button type="button" class="chip plk-chip" data-plk-entgo="${E(x)}">${E(entN(x))}</button>`).join(" ")}</dd>`:""}</dl>`,"focus")}${arrow}
+ ${col("2. Rules in the registry",`<h4>${E(f.label||f.k)} <span class="muted small">(${E(f.k)})</span></h4><p class="small"><span class="pill ${AUTHP[meta.auth]}">${E(meta.auth)} authority</span> ${clsPill(meta.cls)} <span class="pill mute">${E(f.type||"string")}</span></p><dl class="plk-kv"><dt>Direction</dt><dd>${meta.dir==="in"?"In from the source":meta.dir==="out"?"Out of "+BRAND.name:"Both ways"}</dd><dt>Freshness</dt><dd>${E(meta.fresh)}</dd><dt>If they disagree</dt><dd>${E(meta.conflict)}</dd><dt>Quality rule</dt><dd>${E(meta.rule)}</dd><dt>Trust score</dt><dd>${Math.round(meta.trust*100)}%</dd>${tg.length?`<dt>Points to</dt><dd>${tg.map(x=>`<button type="button" class="chip plk-chip" data-plk-entgo="${E(x)}">${E(entN(x))}</button>`).join(" ")}</dd>`:""}</dl>`,"focus")}${arrow}
  ${col("3. Written by",e.writers.length?`<div class="plk-chips">${e.writers.map(a=>chip(a,nown.indexOf(a)>=0?"warn":"")).join("")}</div>${nown.length?`<p class="small muted">Highlighted apps write it but ${E(e.owner)} owns it. See the registry.</p>`:`<p class="small muted">All writers are the owner module.</p>`}`:`<p class="small muted">No app writes this entity yet.</p>`)}${arrow}
  ${col("4. Read by",e.readers.length?`<div class="plk-chips">${e.readers.map(a=>chip(a)).join("")}</div>`:`<p class="small muted">Nothing reads it yet, a candidate for retirement.</p>`)}${arrow}
  ${col("5. Used in",`<p class="small"><b>${mets.length}</b> metrics and <b>${procs.length}</b> processes.</p>${lrHTML({id:"plk_lm",groups:[{key:"m",label:"Metrics on screens that use it",rows:mets.map(k=>({id:k,t:METRICS[k].n,sub:METRICS[k].f,tag:"Metric",st:"info",go:()=>go("metrics")}))},{key:"p",label:"Processes",rows:procs.map(p=>({id:p,t:pName(p),sub:FAM[FIDX[pFam(p)]][1],tag:pEnts(p).w.indexOf(e.id)>=0?"Writes":"Reads",st:"mute",go:()=>pickP(p,true)}))}],limit:5,search:false,empty:"Nothing uses it yet."})}`)}

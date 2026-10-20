@@ -33,7 +33,7 @@ const DPOOL=["--p3","--e1","--s3","--p4"];
 const LAYERS=[["Plan and deliver",["portfolio","agile","fin","money"]],["Run and support",["service","agree","ops"]],["Foundation data and planned",["people","cmdb","planned"]],["Knowledge, AI, governance and platform",["know","gov","plat"]]];
 const dName=k=>k==="planned"?"Planned entities":((window.PLAT&&PLAT.DOM[k])?PLAT.DOM[k].n:k);
 const AUTHC={platform:"--p1",external:"--u3",shared:"--w1"};
-const AUTHN={platform:"Oukala owns it",external:"External system owns it",shared:"Shared, newest wins"};
+const AUTHN={platform:BRAND.name+" owns it",external:"External system owns it",shared:"Shared, newest wins"};
 const CLSC={public:"--s4",internal:"--p5",confidential:"--w1",restricted:"--e4",personal:"--u1"};
 const COVC=["--faint","--p6","--p3","--p1"];
 const COVN=["Feeds no metric","Feeds 1 or 2 metrics","Feeds 3 to 5 metrics","Feeds 6 or more metrics"];
@@ -608,11 +608,11 @@ function miniHTML(M,L){
 /* ----- legend ----- */
 function legendItems(M){
  if(A.ov==="domain")return Object.keys(DC).filter(d=>M.byDom(d).length).map(d=>[dName(d),DC[d]]);
- if(A.ov==="authority")return [["Oukala owns most fields",AUTHC.platform],["External system owns most fields",AUTHC.external],["Shared, newest wins",AUTHC.shared],["Planned, no fields yet","--faint"]];
+ if(A.ov==="authority")return [[BRAND.name+" owns most fields",AUTHC.platform],["External system owns most fields",AUTHC.external],["Shared, newest wins",AUTHC.shared],["Planned, no fields yet","--faint"]];
  if(A.ov==="class")return [["Public",CLSC.public],["Internal",CLSC.internal],["Confidential",CLSC.confidential],["Restricted",CLSC.restricted],["Personal",CLSC.personal]];
  if(A.ov==="metrics")return COVN.map((n,i)=>[n,COVC[i]]);
  return [["Canonical, one copy",STC.canonical],["Duplicate, fix open",STC.duplicate],["Duplicate fixed in preview",STC.fixed],["Proposed, waiting for approval",STC.proposed],["Planned, not built",STC.planned]]}
-function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (Oukala, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx at-lgrel"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> A line means a field in one entity points to a record in another. The arrow points to the entity being referenced. Thickness is how many fields. Use Relationships to show domain bundles, the selected entity, or all.</span>`}
+function legendHTML(M){return legend(legendItems(M))+`<span class="at-lgx"><i class="at-ad" style="background:var(${AUTHC.platform})"></i><i class="at-ad" style="background:var(${AUTHC.external})"></i><i class="at-ad" style="background:var(${AUTHC.shared})"></i> dot on a field: authority (${BRAND.name}, external, shared)</span><span class="at-lgx"><i class="at-propkey" aria-hidden="true"></i> dashed outline and Proposed pill: waiting for approval</span><span class="at-lgx">${lockSvg()} confidential or more</span><span class="at-lgx at-lgrel"><svg width="26" height="8" aria-hidden="true"><path d="M0 4h26" class="at-lgline"/></svg> A line means a field in one entity points to a record in another. The arrow points to the entity being referenced. Thickness is how many fields. Use Relationships to show domain bundles, the selected entity, or all.</span>`}
 
 /* ----- breadcrumb ----- */
 function bcHTML(M){
@@ -639,7 +639,7 @@ function cardHTML(M){
 
 /* ----- inspector ----- */
 const ITABS=[["fields","Fields"],["conn","Connections"],["used","Used by"],["metrics","Metrics"],["lineage","Lineage"]];
-function pillA(a){const c={platform:"good",external:"info",shared:"warn"}[a]||"mute";return `<span class="pill ${c}">${E(a==="platform"?"Oukala":a==="external"?"External":"Shared")}</span>`}
+function pillA(a){const c={platform:"good",external:"info",shared:"warn"}[a]||"mute";return `<span class="pill ${c}">${E(a==="platform"?BRAND.name:a==="external"?"External":"Shared")}</span>`}
 const CLSP={public:"mute",internal:"mute",confidential:"warn",restricted:"bad",personal:"bad"};
 function inspHTML(M){
  if(!A.sel||!M.ent.get(A.sel)){
@@ -1094,7 +1094,7 @@ function lineageDetail(id){
   <div class="at-lha"><span class="pill ${stClass}">${E(stTxt)} · ${t.pct}%</span><span class="pill mute">Confidence ${t.conf}%</span>${fchip(id)}</div></div>
   <div class="row at-lbtns"><button class="btn primary" data-at-trace="${id}">Trace on the diagram</button><button class="btn" data-go="metrics:${id}">Open in Metrics</button>${LN.hist.length?`<button class="btn quiet" data-at-lback="1">Back to ${E(trunc(METRICS[LN.hist[LN.hist.length-1]].n,26))}</button>`:""}</div>
   <div class="statrow at-ss"><div class="stat"><small>Source fields</small><span class="num" data-role="metric">${srcRows.length}</span><em>in ${ents.size} entit${ents.size===1?"y":"ies"}</em></div><div class="stat"><small>Nested metrics</small><span class="num" data-role="metric">${t.st.nested}</span><em>up to 3 levels</em></div><div class="stat"><small>Needs mapping</small><span class="num" data-role="metric">${G.gapList.length}</span><em>${t.st.ghost+t.st.weak?(t.st.ghost+t.st.weak)+" weak or planned":"none weak"}</em></div><div class="stat"><small>Shown on</small><span class="num" data-role="metric">${(m.use||[]).length}</span><em>screens</em></div></div>
-  <div class="at-legend">${legend([["Oukala owns the field",AUTHC.platform],["External system owns it",AUTHC.external],["Shared, newest wins",AUTHC.shared]])}<span class="muted small">Percent on a field is how sure the match is. Dashed boxes need a mapping. A circle is a step of the calculation.</span></div>
+  <div class="at-legend">${legend([[BRAND.name+" owns the field",AUTHC.platform],["External system owns it",AUTHC.external],["Shared, newest wins",AUTHC.shared]])}<span class="muted small">Percent on a field is how sure the match is. Dashed boxes need a mapping. A circle is a step of the calculation.</span></div>
   <div class="at-vpbox at-lbox"><div class="at-vp at-lvp" data-at-lvp="1" style="height:${Math.min(680,Math.max(300,Math.round(G.H*.7)+60))}px" tabindex="0" role="application" aria-label="Calculation of ${E(m.n)}. Drag to pan, plus and minus to zoom."><div class="at-world" data-at-world="ln" style="width:${G.W}px;height:${G.H}px">${edgeSvg(G,edges)}${nodeHTML(G,t)}</div></div>
    <div class="at-tools" role="group" aria-label="Zoom"><button class="btn quiet" data-at-lz="in" aria-label="Zoom in">+</button><button class="btn quiet" data-at-lz="out" aria-label="Zoom out">−</button><button class="btn quiet" data-at-lz="fit">Fit all</button><button class="btn quiet" data-at-lz="reset">Fit width</button><span class="muted small" data-at-zl>100%</span></div></div>`;
  /* needs mapping */

@@ -56,7 +56,7 @@ REG("r15_mobile","Mobile approvals and on-call","people","M8 3h8a2 2 0 0 1 2 2v1
  METRICS.m_mob_share.cur=M.decided?Math.round(M.fromMobile/M.decided*100):18;
  const body={appr:apprTab,oc:ocTab,inc:incTab,more:moreTab}[M.tab]();
  return `<div class="screen r3m" data-r3m-root>${M.banner?`<div class="r3m-page" role="alert"><b>Page: ${E(M.banner.t)}</b><div class="small">${E(M.banner.id)} · ${E(M.banner.svc||"")}</div><div class="r3m-btns two"><button class="r3m-b del" data-r3m-esc="${E(M.banner.id)}">Escalate</button><button class="r3m-b ok" data-r3m-ack="${E(M.banner.id)}">Acknowledge</button></div></div>`:""}
- <header class="r3m-head"><div><div class="eyebrow">Oukala mobile</div><h1 class="r3m-h">${{appr:"Approvals",oc:"On-call",inc:"Incidents",more:"More"}[M.tab]}</h1></div><div class="r3m-st"><span class="pill ${M.offline?"warn":"good"}">${M.offline?"Offline (simulated)":"Online"}</span></div></header>
+ <header class="r3m-head"><div><div class="eyebrow">${BRAND.name} mobile</div><h1 class="r3m-h">${{appr:"Approvals",oc:"On-call",inc:"Incidents",more:"More"}[M.tab]}</h1></div><div class="r3m-st"><span class="pill ${M.offline?"warn":"good"}">${M.offline?"Offline (simulated)":"Online"}</span></div></header>
  <div class="r3m-body">${body}</div>
  <nav class="r3m-tabs" aria-label="Mobile sections">${[["appr","Approvals",n],["oc","On-call",0],["inc","Incidents",ui],["more","More",0]].map(t=>`<button class="r3m-tab ${M.tab===t[0]?"on":""}" data-r3m-tab="${t[0]}" ${M.tab===t[0]?'aria-current="page"':""}>${t[1]}${t[2]?`<i class="r3m-n">${t[2]}</i>`:""}</button>`).join("")}</nav>${sheetHTML()}</div>`});
 PROC.reg("r15_mobile",{title:"Approve or acknowledge from a phone",std:["itil5","nist"],steps:[

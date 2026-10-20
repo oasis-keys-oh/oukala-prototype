@@ -36,7 +36,7 @@ const SOD=[
  {id:"SOD-3",a:"config",b:"approve",n:"Configures controls and approves under them",why:"Can change the rules that govern their own approvals."},
  {id:"SOD-4",a:"fin",b:"config",n:"Controls money and platform configuration",why:"Can change the workflow rules that route their own payments."}];
 const PKGS=[
- {id:"PK-J1",ev:"person.created",n:"Joiner: baseline employee",role:"pm",sets:[],sys:["Entra ID account","M365 license","Teams","Oukala sign-in"],appr:"Line manager",d:"Day-one access for any new employee."},
+ {id:"PK-J1",ev:"person.created",n:"Joiner: baseline employee",role:"pm",sets:[],sys:["Entra ID account","M365 license","Teams",BRAND.name+" sign-in"],appr:"Line manager",d:"Day-one access for any new employee."},
  {id:"PK-J2",ev:"person.created",n:"Joiner: Finance team",role:"finance",sets:["PS-AP"],sys:["Entra ID account","Contract Repository (read)","Lease subledger (read)"],appr:"Controller",d:"Adds payables approval; needs a second approver."},
  {id:"PK-M1",ev:"person.moved",n:"Mover: remove old team access, add new",role:"",sets:[],sys:["Review all grants","Reassign owned records"],appr:"New line manager",d:"Removes permission sets from the old team and opens a recertification of what remains."},
  {id:"PK-L1",ev:"person.terminated",n:"Leaver: remove everything",role:"guest",sets:[],sys:["Disable Entra ID","Revoke tokens","Convert mailbox","Reassign owned records and backups"],appr:"HR partner",d:"Same-day removal; records they own go to the backup."}];
