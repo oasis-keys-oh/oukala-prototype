@@ -120,7 +120,14 @@
   "customer": ["offtake customer", "offtake customers"], "incident": ["safety event", "safety events"], "ticket": ["work order", "work orders"],
   "request": ["work request", "work requests"], "asset": ["piece of equipment", "equipment"], "site": ["mine site", "mine sites"], "downtime": ["unplanned downtime", "unplanned downtime"],
   "workforce": ["crew", "crews"], "work_item": ["work order", "work orders"], "frontline": ["control room", "control rooms"], "service": ["operation", "operations"],
-  "order": ["shipment", "shipments"], "case": ["investigation", "investigations"], "supplier": ["supplier", "suppliers"], "revenue": ["concentrate revenue", "concentrate revenue"]},
+  "order": ["shipment", "shipments"], "case": ["investigation", "investigations"], "supplier": ["supplier", "suppliers"], "revenue": ["concentrate revenue", "concentrate revenue"],
+  "project": ["project", "projects"], "change": ["management of change", "management of change records"], "problem": ["recurring failure", "recurring failures"], "config_item": ["control system component", "control system components"],
+  "knowledge_article": ["standard work procedure", "standard work procedures"], "catalog_item": ["work request type", "work request types"], "alert": ["process alarm", "process alarms"], "service_level": ["production target", "production targets"],
+  "rota": ["shift roster", "shift rosters"], "risk": ["material unwanted event", "material unwanted events"], "control": ["critical control", "critical controls"], "audit": ["safety audit", "safety audits"],
+  "finding": ["audit finding", "audit findings"], "policy": ["site standard", "site standards"], "regulator": ["mine safety regulator", "mine safety regulators"], "contract": ["supply agreement", "supply agreements"],
+  "cost_center": ["cost center", "cost centers"], "purchase_order": ["purchase order", "purchase orders"], "budget_request": ["authorization for expenditure", "authorizations for expenditure"], "capability": ["operating capability", "operating capabilities"],
+  "application": ["operational system", "operational systems"], "course": ["induction module", "induction modules"], "meeting": ["pre-start meeting", "pre-start meetings"], "org_unit": ["operation", "operations"],
+  "plan_task": ["work package", "work packages"]},
  "coo": {
   "workload": [
    ["Jonas Whitfield", "Chief operating officer", "Executive office", 114, 50, 8, 18, 9, 10, 5],
@@ -142,5 +149,326 @@
    {"n": "Process and blend", "in": false, "who": "Metallurgist", "min": 45, "note": "Assays by email, blend set by phone", "bridge": "Blend Advisor Agent proposes tomorrow's blend for the metallurgist to approve", "agent": "Blend Advisor Agent"},
    {"n": "Rail and ship", "in": true, "who": "Logistics coordinator", "min": 35, "note": "Rail booking system"},
    {"n": "Invoice the offtake customer", "in": true, "who": "Finance analyst", "min": 20, "note": "In the ERP"},
-   {"n": "Reconcile final assays and prices", "in": false, "who": "Finance analyst", "min": 90, "note": "Spreadsheets and lab certificates", "bridge": "Shipment Reconciliation Agent matches final assays to provisional invoices and drafts the adjustment", "agent": "Shipment Reconciliation Agent"}]}}
+   {"n": "Reconcile final assays and prices", "in": false, "who": "Finance analyst", "min": 90, "note": "Spreadsheets and lab certificates", "bridge": "Shipment Reconciliation Agent matches final assays to provisional invoices and drafts the adjustment", "agent": "Shipment Reconciliation Agent"}]}},
+ "records": {
+  "services": [
+   ["FMS", "Fleet management", "Tier 1", "Yusuf Demir", "Rafael Moreno", ["Truck dispatch", "Payload tracking"], 420, ["NET", "HIST"]],
+   ["CM", "Condition monitoring", "Tier 1", "Marguerite Lemaire", "Ingrid Solberg", ["Vibration and oil analysis", "Alarm assessment"], 60, ["HIST", "NET"], 0],
+   ["EAM", "Maintenance management", "Tier 1", "Pavel Drozdov", "Sione Taufa", ["Work orders", "Parts reservations"], 310, ["NET"], 1],
+   ["PTW", "Permit to work", "Tier 1", "Hamish Gallagher", "Sione Taufa", ["Permits", "Isolation register"], 380, ["EAM", "NET"], 2],
+   ["PCS", "Plant control system", "Tier 1", "Bram Oosthuizen", "Freya Halvorsen", ["Mill control", "Flotation control"], 45, ["OTN"], 3],
+   ["HIST", "Process historian", "Tier 1", "Freya Halvorsen", "Bram Oosthuizen", ["Process data", "Trend displays"], 150, ["OTN"]],
+   ["LAB", "Assay laboratory", "Tier 2", "Bram Oosthuizen", "Esteban Kovac", ["Sample tracking", "Assay results"], 35, ["NET"]],
+   ["OTN", "Control network", "Tier 1", "Freya Halvorsen", "Yusuf Demir", ["Control room network", "Plant network zones"], 120, [], 4],
+   ["NET", "Site network", "Tier 1", "Freya Halvorsen", "Yusuf Demir", ["Office network", "Site radio links"], 900, []],
+   ["CRM", "Community register", "Tier 3", "Aroha Whitcombe", "Dr. Kwame Asante", ["Commitments", "Grievances"], 40, ["NET"], 5]
+  ],
+  "ci_kinds": [
+   ["Application", "config_item_appl", "{s} application"],
+   ["Database", "config_item_db", "{s} database"],
+   ["Server", "config_item_server", "{s} server"],
+   ["Interface", "config_item_interface", "{s} data link"],
+   ["Network segment", "config_item_net", "{s} network zone"],
+   ["Storage", "config_item_storage", "{s} storage"],
+   ["Field device", "config_item_field_device", "{s} field controller"],
+   ["Equipment room", "config_item_site", "{s} equipment room"]
+  ],
+  "assets": [
+   ["Rugged laptop", "Rugged field laptop, 13 inch"],
+   ["Tablet", "Rugged tablet for permits"],
+   ["Radio", "Handheld site radio"],
+   ["Gas detector", "Personal gas detector"]
+  ],
+  "sites": ["Redstone North Pit", "Redstone South Pit", "Kerrow Processing Plant", "Port loadout"],
+  "vendors": [
+   ["Kestrelwood Sensing", "Condition monitoring sensors", "Supply agreement"],
+   ["Basalt Ridge Integration", "Systems integration", "Statement of work"],
+   ["Ironleaf Mill Services", "Mill maintenance services", "Services agreement"],
+   ["Tallowfield Pumps", "Slurry pumps and parts", "Supply agreement"],
+   ["Saltmarsh Permit Software", "Permit software", "Subscription agreement"],
+   ["Quarrystone Networks", "Industrial networking", "Services agreement"],
+   ["Granitefall Tyres", "Haul truck tyres", "Supply agreement"],
+   ["Copperline Rail", "Rail haulage", "Haulage agreement"]
+  ],
+  "risks": {
+   "enterprise": [
+    ["Sensor rollout slips and haul truck failures continue", "Operational", 0],
+    ["Planners leave before the planning reset lands", "People", 1],
+    ["Permit software is not ready before the shutdown", "Vendor", 2],
+    ["Mill liners fail early and throughput drops", "Operational", 3],
+    ["A cyber attack reaches the plant control network", "Cyber", 4],
+    ["A community grievance stops blasting near the village", "Community", 5]
+   ],
+   "control": [
+    ["Isolation released while work is still under way", "Safety"],
+    ["Unapproved change to the plant control logic", "Operational"],
+    ["Contractor accounts stay active after the job ends", "Cyber"],
+    ["Assay results changed without a record", "Financial"],
+    ["Critical spares out of stock during a failure", "Operational"],
+    ["Water discharge above the permit limit", "Environmental"]
+   ],
+   "finance": [
+    "Diesel price rises above the budget",
+    "Concentrate price falls below the plan",
+    "Tyre costs rise with longer haul roads",
+    "Shutdown overruns and contractor costs grow"
+   ],
+   "appetite": [["Safety", 1], ["Environmental", 2], ["Cyber", 3], ["Operational", 5], ["Financial", 5], ["Community", 2]]
+  },
+  "controls": {
+   "fw": ["Critical control program", "Operational technology security program"],
+   "list": [
+    ["Every isolation point is verified before a permit is released", "Daily"],
+    ["Permits are closed only after a return-to-service check", "Daily"],
+    ["Changes to plant control logic go through the change board", "Weekly"],
+    ["Contractor accounts expire when the job ends", "Monthly"],
+    ["Remote access to the control network uses a second factor", "Monthly"],
+    ["Control network firewall rules are reviewed every quarter", "Quarterly"],
+    ["Backups of the plant control system are restored as a test each quarter", "Quarterly"],
+    ["Assay results have a second check before they are released", "Daily"],
+    ["Critical spares are counted every month", "Monthly"],
+    ["Haul road berms are inspected every shift", "Daily"],
+    ["Light vehicles keep a safe distance from haul trucks", "Daily"],
+    ["Water discharge is sampled every day", "Daily"],
+    ["Blast exclusion zones are cleared and signed off", "Daily"],
+    ["Fatigue checks are done at the start of night shift", "Daily"],
+    ["Gas detectors are bump tested before use", "Daily"],
+    ["Safety events are classified within one shift", "Daily"],
+    ["Corrective actions are closed by their due date", "Weekly"],
+    ["Community commitments are reviewed every month", "Monthly"],
+    ["Field controllers get security patches during shutdowns", "Semiannual"],
+    ["Mobile equipment pre-start checks are recorded", "Daily"]
+   ]
+  },
+  "audits": [
+   ["Critical control verification audit", "Internal", "Internal audit"],
+   ["Annual financial statement audit", "External", "Harrowgate and Lowe"],
+   ["Control network security assessment", "External", "Ironvale Assurance"]
+  ],
+  "findings": [
+   "Two permits closed without a return-to-service check",
+   "Contractor accounts still active after the shutdown",
+   "Firewall rule review missed one quarter",
+   "Spare parts count differs from the system for 14 items",
+   "Berm inspection records missing on two night shifts",
+   "One assay batch released without a second check",
+   "Gas detector bump tests not recorded at the port",
+   "Corrective actions overdue in maintenance",
+   "A remote access account has no second factor",
+   "Water sample missed on a rain day"
+  ],
+  "policies": [
+   "Permit to work standard",
+   "Isolation standard",
+   "Operational technology security standard",
+   "Fatigue management standard",
+   "Mobile equipment standard",
+   "Environmental discharge standard",
+   "Change management standard",
+   "Community commitments standard"
+  ],
+  "exceptions": [
+   "Old mill controller stays on an unsupported release until the shutdown",
+   "Port loadout keeps paper permits for one more month",
+   "Vendor engineer uses a shared remote account during commissioning",
+   "Haul road section with narrow berms until regrading",
+   "Night shift starts 30 minutes early during the shutdown"
+  ],
+  "benefits": [
+   ["Fewer haul truck failures", "Cost avoided"],
+   ["Planner hours saved", "Productivity hours"],
+   ["Permit issue hours saved", "Productivity hours"],
+   ["More tonnes through the mill", "Revenue"],
+   ["Fewer plant stops from network faults", "Cost avoided"],
+   ["Community commitments closed on time", "Social license"],
+   ["Lower maintenance cost per tonne", "Cost avoided"],
+   ["Control room hours saved", "Productivity hours"]
+  ],
+  "scenarios": [
+   ["Baseline", "The plan as it stands today."],
+   ["Permit software slips six weeks", "Digital permits miss the shutdown; paper permits stay for one more quarter."],
+   ["Cut the mill debottleneck budget by a fifth", "One of two cyclone upgrades moves to next year."]
+  ],
+  "budget_requests": [
+   ["Sensors for the last eight haul trucks", "Increase"],
+   ["Two more maintenance planners", "New"],
+   ["Tablets for permit issuers", "New"],
+   ["Second mill liner set", "New"],
+   ["Firewalls for the port loadout", "Increase"],
+   ["Community liaison officer for a year", "New"],
+   ["Training for planning and scheduling", "Increase"],
+   ["Reallocate unused integration budget", "Reallocation"],
+   ["Spare slurry pump", "New"],
+   ["Historian licenses for reliability engineers", "Increase"]
+  ],
+  "kb": [
+   "Restart a truck that drops off dispatch",
+   "How to assess a vibration alarm",
+   "Raise an emergency work order",
+   "Isolate a conveyor for maintenance",
+   "Return a pump to service after a permit",
+   "What to do when the historian stops collecting",
+   "Read the mill control trend display",
+   "Reset a contractor account",
+   "Record a safety event from the pit",
+   "Hand a sample over to the assay laboratory",
+   "Recover a dispatch screen after a network drop",
+   "Request a firewall change on the control network",
+   "Find the isolation points for a mill liner change",
+   "Check a gas detector before a confined space entry",
+   "Close a permit at the end of shift",
+   "Plan a job with the parts reserved",
+   "Report a community grievance",
+   "Escalate a corrective action that is overdue"
+  ],
+  "catalog": [
+   ["Site sign-in account", "Access", "An account for a new starter or contractor."],
+   ["Rugged laptop", "Hardware", "A field laptop for the pit or the plant."],
+   ["Permit tablet", "Hardware", "A tablet for issuing permits."],
+   ["Site radio", "Hardware", "A handheld radio on the site network."],
+   ["Control network access", "Access", "Access to a control network zone, with approval."],
+   ["Historian trend", "Analytics", "A new trend or display in the historian."],
+   ["Firewall rule change", "Network", "A change to a control network firewall rule."],
+   ["Report request", "Analytics", "A new report or dashboard."],
+   ["Work order type change", "Maintenance", "Add or change a work order type."],
+   ["Truck added to dispatch", "Operations", "Add a truck to fleet dispatch."],
+   ["Sensor on new equipment", "Reliability", "Fit condition sensors to a machine."],
+   ["Assay method change", "Laboratory", "Add or change an assay method."],
+   ["Shared folder for a crew", "Collaboration", "A shared folder for a crew."],
+   ["Contractor remote access", "Access", "Time-limited remote access for a vendor engineer."]
+  ],
+  "courses": [
+   ["Site induction", "Safety", 90, true],
+   ["Isolation and permit to work", "Safety", 60, true],
+   ["Fatigue awareness", "Safety", 20, true],
+   ["Operational technology security basics", "Security", 30, true],
+   ["Reading condition monitoring alarms", "Reliability", 45, false],
+   ["Planning and scheduling basics", "Maintenance", 60, false],
+   ["Running a pre-start meeting", "Leadership", 30, false],
+   ["Community commitments and grievances", "Community", 40, false]
+  ],
+  "rooms": [
+   ["Site office board room", 12, "Board room, hybrid"],
+   ["Pit control room meeting space", 8, "Operations room"],
+   ["Plant crib room", 16, "Crib room"],
+   ["Training room", 20, "Classroom"],
+   ["Maintenance planning office", 6, "Small meeting room"]
+  ],
+  "forums": [
+   ["Safety leadership committee", "Every second Wednesday, 07:00", "Reviews safety events, critical controls and corrective actions."],
+   ["Capital and shutdown council", "Monthly, first Tuesday", "Decides capital requests and shutdown scope."],
+   ["Operational technology change board", "Weekly, Thursday 10:00", "Approves changes to plant and control systems."],
+   ["Community reference group", "Monthly, last Friday", "Hears community concerns and tracks commitments."]
+  ],
+  "series": [
+   ["Pre-start meeting", "prestart", "Every shift, 06:00 and 18:00", "The crew reviews hazards, controls and the plan for the shift."],
+   ["Daily production meeting", "production", "Every day, 07:30", "Tonnes, availability and the day's plan across the pits and the plant."],
+   ["Reliability review", "review", "Every Tuesday, 09:00", "Failures, alarms and the backlog."],
+   ["Shutdown steering group", "steer", "Every other Monday, 10:00", "Steers the mill shutdown and the permit rollout."]
+  ],
+  "capabilities": [
+   ["Mine planning", ["Long-range planning", "Short-range scheduling", "Grade control", "Drill and blast design"]],
+   ["Mining operations", ["Fleet dispatch", "Load and haul", "Road maintenance", "Fatigue management"]],
+   ["Processing", ["Crushing and grinding", "Flotation", "Ore blending", "Tailings management"]],
+   ["Asset management", ["Condition monitoring", "Maintenance planning", "Spares management", "Shutdown management"]],
+   ["Safety and health", ["Permit to work", "Critical controls", "Event reporting", "Investigations"]],
+   ["Environment and community", ["Water management", "Commitments tracking", "Grievances", "Closure planning"]],
+   ["Logistics and sales", ["Rail haulage", "Port loadout", "Shipment reconciliation", "Offtake contracts"]],
+   ["Operational technology", ["Control networks", "Historian", "Field devices", "Remote access"]]
+  ],
+  "applications": [
+   ["Fleet dispatch", "Operations", "Mature", "In house"],
+   ["Condition monitoring platform", "Reliability", "New", "Kestrelwood Sensing"],
+   ["Maintenance management system", "Maintenance", "Mature", "In house"],
+   ["Digital permit to work", "Safety", "New", "Saltmarsh Permit Software"],
+   ["Plant control system", "Processing", "Mature", "In house"],
+   ["Process historian", "Operational technology", "Mature", "In house"],
+   ["Laboratory system", "Laboratory", "Mature", "In house"],
+   ["Integration hub", "Integration", "Growing", "Basalt Ridge Integration"],
+   ["Network management console", "Infrastructure", "Growing", "Quarrystone Networks"],
+   ["Tyre tracking", "Maintenance", "Mature", "Granitefall Tyres"],
+   ["Rail booking portal", "Logistics", "Mature", "Copperline Rail"],
+   ["Community register", "Community", "New", "In house"]
+  ],
+  "builds": [
+   ["Pre-start checklist", "Crews record hazards and controls before each shift."],
+   ["Berm inspection log", "Supervisors record berm inspections on each shift."],
+   ["Spare parts count sheet", "Supply counts critical spares each month."],
+   ["Corrective action tracker", "Safety tracks every corrective action to closure."],
+   ["Shutdown readiness board", "The shutdown team tracks permits, parts and crews."],
+   ["Grievance log", "Community staff log and follow up each grievance."],
+   ["Tyre change log", "Maintenance records tyre changes by truck."],
+   ["Contractor induction tracker", "Supervisors check contractors are inducted before they start."]
+  ],
+  "skills": [
+   ["Mine planning", "Planning"],
+   ["Drill and blast", "Operations"],
+   ["Fleet dispatch", "Operations"],
+   ["Condition monitoring", "Reliability"],
+   ["Vibration analysis", "Reliability"],
+   ["Maintenance planning", "Maintenance"],
+   ["Isolation and permits", "Safety"],
+   ["Incident investigation", "Safety"],
+   ["Process control", "Processing"],
+   ["Control network security", "Operational technology"],
+   ["Assay methods", "Laboratory"],
+   ["Community engagement", "Community"]
+  ],
+  "tech_debt": [
+   "Retire the old dispatch radios at the south pit",
+   "Upgrade the historian to a supported release",
+   "Replace shared accounts on the mill controllers",
+   "Move permit records off the paper archive"
+  ],
+  "finance_events": [
+   "Diesel hedge settled for the quarter",
+   "Provisional invoice for the October shipment",
+   "Final assay adjustment on the August shipment",
+   "Rehabilitation provision updated",
+   "Tyre supply rebate",
+   "Shutdown costs capitalized for the mill liners",
+   "Rail haulage rate review",
+   "Royalty payment for the quarter",
+   "Insurance claim for the conveyor fire",
+   "Depreciation starts for the condition sensors"
+  ],
+  "decision_tables": [
+   ["Supplier invoice review", "Decides who looks at a supplier invoice before it is paid."],
+   ["Work order priority", "Sets the priority of a work order from criticality and risk."],
+   ["Capital request routing", "Routes a capital request to the right approver by amount and risk."]
+  ],
+  "reports": [
+   ["Budget variance by project", "variance", "project"],
+   ["Equipment availability by fleet", "availability", "fleet"],
+   ["Safety events by site", "safety_events", "site"],
+   ["Cost per tonne by month", "cost_per_tonne", "month"]
+  ],
+  "charts": [
+   "Haul truck availability per week",
+   "Planned work share per week",
+   "Safety events per week",
+   "Mill throughput per day",
+   "Permits issued per day",
+   "Corrective actions overdue by area",
+   "Alarms assessed within a shift",
+   "Cost per tonne per month"
+  ],
+  "connectors": [
+   ["Fleet dispatch feed", "system", ["truck", "load"]],
+   ["Historian feed", "system", ["tag", "trend"]],
+   ["Maintenance system feed", "system", ["work_order", "asset"]],
+   ["Permit system feed", "system", ["permit", "isolation"]],
+   ["Laboratory feed", "system", ["sample", "assay"]],
+   ["Supply ordering", "system", ["purchase_order", "item"]],
+   ["Staff directory", "system", ["person", "team"]],
+   ["Rail booking feed", "partner", ["shipment", "booking"]]
+  ],
+  "conversations": [
+   "Why is haul truck availability below 90 percent?",
+   "Which permits were closed without a return-to-service check?",
+   "What is holding up the condition monitoring invoice?"
+  ],
+  "major_incident": "Fleet dispatch down in both pits (trucks running on radio)",
+  "languages": ["English", "Spanish"]
+ }
 }
