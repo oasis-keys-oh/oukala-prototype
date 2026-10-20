@@ -2,7 +2,22 @@
 // Usage: node tools/tests/guard.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');const fs=require('fs');
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const fails=[];
+/* ---- CL-71 (R30, R52): no certification or "bank-grade" claim in the built JS outside an explicit plan sentence ----
+   A claim is "bank-grade" anywhere, or SOC 2 said of this product (its name, "our", "we", "the platform") or as "SOC 2 certified/compliant".
+   Every other SOC 2 mention must be third-party evidence (a vendor's report, a framework label on the fictional customer's controls)
+   or sit in a plan sentence; anything else fails too. */
 const js=fs.readFileSync(path.join(dir,'full.html'),'utf8');
+const PLAN=/\b(plan|plans|planned|planning|intend|intends|roadmap|not (yet )?(certified|claimed|attested)|no SOC 2|until it is true)\b/i;
+const OWNCLAIM=/(Falconaire|Oukala|our platform|the platform|\bwe are\b|\bwe're\b|\bour\b)[^.]{0,60}(SOC ?2|bank[- ]grade)|SOC ?2[- ](certified|compliant|attested)|bank[- ]grade/i;
+const THIRD=/SOC ?2 Type I{1,2}|SOC 2 (report|examination|testing|coverage|and DR|and ISO)|SOC 2[":,)]|SOC 2: |\(SOC 2|across SOC 2|soc ?2[ ,"]|fw:"SOC 2|"SOC 2"/i;
+function sentenceAt(t,i){let s=i,e=i;while(s>0&&!/[.!?\n"`]/.test(t[s-1])&&i-s<240)s--;while(e<t.length&&!/[.!?\n"`]/.test(t[e])&&e-i<240)e++;return t.slice(s,e+1)}
+function judge(t,i,len){const sent=sentenceAt(t,i);const near=t.slice(Math.max(0,i-12),i+len+24);
+ if(PLAN.test(sent))return null;if(OWNCLAIM.test(sent))return sent.trim();if(THIRD.test(near))return null;return sent.trim()}
+const RE=/(SOC ?2|bank[- ]grade)/gi;let m;const bad=[];
+while((m=RE.exec(js))){const v=judge(js,m.index,m[0].length);if(v)bad.push(v.slice(0,120))}
+const self=t=>{const x=/(SOC ?2|bank[- ]grade)/i.exec(t);return x?judge(t,x.index,x[0].length):null};
+if(!self('Falconaire is SOC 2 certified.')||!self('Our security is bank-grade.')||!self('We are SOC 2 compliant.')||self('Certifications such as SOC 2 are a plan, not a claim.')||self('Ask the vendor for its SOC 2 Type II report.'))fails.push('CL-71 rule self-test failed');
+if(bad.length)fails.push('CL-71 certification claim outside a plan sentence: '+bad.slice(0,3).join(' | '));
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});const p=await (await b.newContext()).newPage();
 const errs=[];p.on('pageerror',e=>errs.push(String(e)));
 await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
@@ -88,6 +103,8 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  document.querySelector("#view .gd-child [data-gd-child]").click();ok(!document.querySelector("#view .gd-child"),"DC-21 the view closes");
  go("guard","fund");ok(document.querySelector("#view .gd-child"),"DC-21 go(guard, id) opens the view");S.sguard.child="";
  go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
+ /* ---- CL-71: guardrail and agent screens that mention tenants say isolation is simulated ---- */
+ [["guard",/isolation is simulated/i],["ai_runtime",/isolation[^.]{0,40}simulated/i],["r16h_rules",/tenant isolation is simulated/i]].forEach(([id,re])=>{go(id);ok(re.test(document.getElementById("view").textContent),"CL-71 "+id+" labels tenant isolation as simulated")});
  return f});
 fails.push(...r);
 /* DC-21 deep link: ?guardchild=<id> opens the guided view on load */
