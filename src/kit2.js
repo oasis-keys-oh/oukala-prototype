@@ -47,7 +47,11 @@ const DIR=[
 ];
 const ALIAS={"Lumen":"Lumen Search Services","Lumen (vendor)":"Lumen Search Services","Northwind":"Northwind Managed Services","Service desk":"Northwind Managed Services","Maya":"Maya Ortiz","Priya":"Priya Shah"};
 window.DIR=DIR;window.TEAMS=TEAMS;
-const who=n=>{if(!n)return null;const k=ALIAS[n]||n;return DIR.find(d=>d.name===k||d.id===k)||null};
+/* who: Map index over DIR (name and id, first match in DIR order wins, as DIR.find did). Rebuilt when DIR length changes or a hit no longer matches; a miss falls back to the scan so renamed entries are still found. */
+let WIX=null,WIXN=-1;
+const whoIdx=()=>{if(WIX&&WIXN===DIR.length)return WIX;const m=new Map();DIR.forEach((d,i)=>{if(d.name!=null&&!m.has(d.name))m.set(d.name,i);if(d.id!=null&&!m.has(d.id))m.set(d.id,i)});WIX=m;WIXN=DIR.length;return m};
+const who=n=>{if(!n)return null;const k=ALIAS[n]||n;let i=whoIdx().get(k);if(i!==undefined){const d=DIR[i];if(d&&(d.name===k||d.id===k))return d;WIX=null}
+ const d=DIR.find(x=>x.name===k||x.id===k)||null;if(d)WIX=null;return d};
 window.who=who;
 /* make every module see the added people in forms (PEOPLE is the kit's assignable list) */
 [["Chief Editor","Chief editor","--p3"],["Rina Okafor","Security lead","--e3"],["Marco Ellis","Contractor, Lumen","--w2"],["Hana Koval","Contractor, Lumen","--w3"],["Ravi Menon","Contractor, Northwind","--w4"],["Triage Agent","AI agent","--e4"],["PMO Agent","AI agent","--p2"],["Northwind Managed Services","Managed service provider","--e4"]].forEach(p=>{if(!PEOPLE.some(x=>x[0]===p[0]))PEOPLE.push(p)});
