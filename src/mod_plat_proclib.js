@@ -156,7 +156,11 @@ function build(){
  const add=id=>{if(!seen.has(id)){seen.add(id);ids.push(id)}};
  Object.keys(lp).forEach(add);PROC_IDS().forEach(add);PL.custom.forEach(c=>add(c.id));
  const list=[];
- ids.forEach(id=>{
+ ids.forEach(id=>list.push(mkP(id,lp)));
+ return list;
+}
+/* one process record from its sources (used by build and by addProcess for the CL-81 assessment at registration) */
+function mkP(id,lp){{
   const cu=PL.custom.find(c=>c.id===id),nw=NEW9[id];
   const def=cu||nw||null;
   const mod=cu?cu.module:(MODOF[id]||(modOf(id)?id:null));
@@ -167,9 +171,8 @@ function build(){
    declMetrics:def&&def.metrics?def.metrics:null,declEnt:def&&def.entities?def.entities:null,trigger:def&&def.trigger?def.trigger:""};
   P.ent=entitiesOf(P,lp[id]);
   P.model=PL.model[id]||(def&&def.model)||MODEL_BY_ID[id]||MODEL_BY_FAM[family]||"cmmi";
-  list.push(P);
- });
- return list;
+  return P;
+ }
 }
 function trigOf(P){
  if(P.trigger)return P.trigger;
@@ -597,7 +600,10 @@ function addProcess(def){
  PROC.reg(id,{title:name,std:rec.std.slice(),steps:steps.map(s=>Object.assign({},s))});
  bump();
  audit("Process library: added process",name+" ("+w.length+" warning"+(w.length===1?"":"s")+")");
- return{ok:true,id,warnings:w};
+ /* CL-81: assess the new process now, so it has a maturity record (six dimensions, level, Year 1 target) from registration */
+ let maturity=null;try{const lp={};if(window.LINKS)LINKS.processes().forEach(p=>lp[p.id]=p);const P=finish(mkP(id,lp));
+  maturity={model:P.model,level:P.level,target:P.target,max:P.max,dims:Object.assign({},P.a.dims),below:P.below,label:"modeled",assessed:"at registration"};PL.regMat=PL.regMat||{};PL.regMat[id]=maturity}catch(e){console.error("proclib maturity at registration",e)}
+ return{ok:true,id,warnings:w,maturity};
 }
 /* Round 13: the Process drawing studio writes steps back here (guarded caller: DRAW). Keeps PROC.defs, S.proc and any added-process record in step. */
 function setSteps(id,steps,meta){
@@ -695,6 +701,39 @@ ASKX.push(q=>{
  if((m=t.match(/(?:show|open|view|display|find|go to)(?: me)?(?: the)?\s+(.+?)\s+process(?:es)?\b/))||(m=t.match(/process(?:es)? (?:for|of)\s+(.+)$/))){const P=findProc(m[1]);if(P){openProc(P.id);say(q,{t:`${P.name}: ${P.steps.length} steps, level ${P.level} of ${P.max}, owner ${P.oi.owner||P.oi.role}. The full page shows the steps, who acts, data in and out, metrics, controls and neighbors.`,steps:["Found the process","Opened its full page"]});return true}}
  return false;
 });
+/* ---------- CL-81 (R26): a maturity record at registration time ----------
+   Every PROCLIB process: addProcess assesses the new process at once (six dimensions, level, Year 1 target) and returns the record.
+   Every workflow draft in WFX (journey-generated drafts included): WFX.reg is wrapped here so each definition carries
+   d.maturity = {model, level, target, dims (the same six dimensions), evidence} from the moment it is registered; drafts registered
+   before this module loaded are backfilled. Draft levels are modeled from the definition (steps, owner, step kinds, gates); drafts
+   have no metrics yet, so Measured is 0. The record is recomputed when the steps change. Drafts are not counted as library processes. */
+const DRAFT_TGT=3;
+function draftAssess(d){const st=(d&&d.steps)||[],n=st.length,kind=s=>{const t=String(s.type||s.who||"human").toLowerCase();return t==="auto"||t==="fn"||t==="robot"?"auto":t};
+ const withOwner=st.filter(s=>s.owner||s.team).length,withSla=st.filter(s=>s.sla).length,withIO=st.filter(s=>(s.in&&s.in.length)||(s.out&&s.out.length)||s.system).length;
+ const autos=st.filter(s=>kind(s)==="auto").length,agents=st.filter(s=>kind(s)==="agent").length,gates=st.filter(s=>kind(s)==="gate"||kind(s)==="approval").length;
+ const share=n?(autos+agents)/n:0;let unf=0;st.forEach((s,i)=>{if(kind(s)==="agent"){const nx=st[i+1];if(!nx||!/^(human|gate|approval)$/.test(kind(nx)))unf++}});
+ const ownerNamed=!!(d.owner&&window.who&&who(d.owner)),raci=new Set(st.map(s=>s.owner||s.team).filter(Boolean)).size,std=(d.std||[]).length;
+ const T={defined:[n>=3,withIO/(n||1)>=.5,n>0&&withOwner===n&&withIO===n,withSla/(n||1)>=.75&&std>0,false],
+  owned:[!!d.owner,ownerNamed,raci>=2&&ownerNamed,!!d.backup&&ownerNamed,false],
+  measured:[false,false,false,false,false],
+  integrated:[!!(d.service||st.some(s=>s.system)),!!(d.entities&&d.entities.length),false,false,false],
+  automated:[share>0,share>=.25,share>=.5,share>=.7,share>=.85],
+  governed:[true,gates>=1,gates>=1&&unf===0,gates>=1&&unf===0&&std>0,false]};
+ const dims={};DK.forEach(k=>{let L=0;while(L<5&&T[k][L])L++;dims[k]=L});
+ const vals=DK.map(k=>dims[k]),av=avg(vals),weak=Math.min.apply(null,vals),raw=Math.round(av),L=Math.max(0,Math.min(raw,weak+1));
+ const ev={defined:n+" steps, "+withOwner+" with an owner, "+withSla+" with a target time",owned:d.owner?(ownerNamed?"Named owner "+d.owner:"Owner "+d.owner+" (a role or team)")+(d.backup?", backup "+d.backup:", no backup"):"No owner",
+  measured:"No metric linked yet (a draft)",integrated:d.service?"Service "+d.service:"No service or entity named",automated:autos+" robot and "+agents+" agent steps of "+n+" ("+Math.round(share*100)+"%)",governed:gates+" approval gate"+(gates===1?"":"s")+", "+unf+" agent step"+(unf===1?"":"s")+" not followed by a person or gate"};
+ return{dims,avg:av,weak,level5:L,ev}}
+const stepSig=d=>((d&&d.steps)||[]).map(s=>(s.type||s.who||"")+":"+(s.owner||s.team||"")).join("|")+"#"+(d&&d.owner||"");
+function draftMat(d){if(!d||!d.id)return null;const sig=stepSig(d);if(d.maturity&&d.maturity._sig===sig)return d.maturity;
+ const a=draftAssess(d),model="cmmi";const mk=G1(()=>{const x=d.maturity;return x&&x.model},null)||model;
+ const rec={id:d.id,name:d.name||d.id,source:d.industry?"Journey draft ("+d.industry+")":"Workflow draft",model:mk,modelName:modelName(mk),level:toModel(a.level5,mk),levelName:levelName(mk,toModel(a.level5,mk)),
+  target:toModel(DRAFT_TGT,mk),max:mLv(mk),dims:a.dims,evidence:a.ev,label:"modeled",assessed:"at registration",_sig:sig};rec.below=rec.level<rec.target;
+ try{Object.defineProperty(d,"maturity",{value:rec,writable:true,configurable:true,enumerable:false})}catch(e){d.maturity=rec}return rec}
+function G1(f,dv){try{const v=f();return v==null?dv:v}catch(e){return dv}}
+const draftRec=id=>{const d=window.WFX&&WFX.get(id);return d?Object.assign({},draftMat(d),{dims:Object.assign({},draftMat(d).dims)}):null};
+(function wrapWFX(){if(!window.WFX||!WFX.reg||WFX.reg._cl81)return;const r0=WFX.reg;const w=function(d){const x=r0.apply(this,arguments);G1(()=>draftMat(x||d),null);return x};w._cl81=1;WFX.reg=w;
+ WFX.defs.forEach(d=>G1(()=>draftMat(d),null))})();
 window.PROCLIB={
  open:openProc,openLibrary:openLib,pane:libPane,
  list(){return idx().list.map(summary)},
@@ -703,7 +742,9 @@ window.PROCLIB={
  moduleMaturity,forModule:mid=>idx().list.filter(P=>P.module===mid).map(summary),primary:mid=>{const P=primaryOf(mid);return P?P.id:null},find:q=>{const P=findProc(q);return P?P.id:null},
  refresh(){bump();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()})),
  /* DC-38 */
- count:()=>idsNow().size,get settled(){return SETTLED},whenSettled(fn){if(SETTLED)G0(fn);else SETTLE_CB.push(fn)}
+ count:()=>idsNow().size,get settled(){return SETTLED},whenSettled(fn){if(SETTLED)G0(fn);else SETTLE_CB.push(fn)},
+ /* CL-81 */
+ draftMaturity:id=>draftRec(id),drafts:()=>(window.WFX?WFX.defs:[]).map(d=>draftRec(d.id)).filter(Boolean)
 };
 setTimeout(()=>{try{idx();if(window.MODMAP&&MODMAP.refresh)MODMAP.refresh()}catch(e){console.error("proclib init",e)}},0);
 })();
