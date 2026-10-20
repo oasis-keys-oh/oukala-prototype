@@ -19,5 +19,7 @@ node tools/tests/tenant_leak.js build_out
 node tools/tests/fixes_scale.js build_out
 # PR-25, PR-27: tower kill switch reaches the runtime; only the sponsor (or the delegated group) decides a gated run
 node tools/tests/fixes_runtime.js build_out
+# CL-77: every DATAMODEL table has a classification
+node tools/tests/fixes_data.js build_out
 # PR-12 perf report: median render ms of the five heaviest screens at Enterprise scale; warns over 800 ms, never fails the run
 node tools/tests/perf.js build_out || echo "perf report: page errors on a perf screen (report only, see above)"
