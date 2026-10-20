@@ -8,7 +8,8 @@ const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const H=s=>esc(s==null?"":String(s));
 const NOW0=Date.UTC(2026,9,6,16,0,0);          /* the prototype's "today": Tue Oct 6 2026 */
 const USERS={exec:"Casey Rowan",fin:"Avery Chen",pm:"Priya Shah",ops:"Tom Becker"};
-const ME=()=>USERS[S.persona]||"Casey Rowan";
+/* PR-28: every role approves as its own identity (R15D.me); the four core personas keep their named users */
+const ME=()=>{if(USERS[S.persona])return USERS[S.persona];try{const p=PERSONAS[S.persona];if(p&&p.as&&window.R15D&&R15D.me){const n=R15D.me().name;if(n)return n}}catch(e){}return "Casey Rowan"};
 const FIRST=n=>String(n||"").split(/[ (]/)[0];
 const UNDO_MS=8000;
 const I=S.inbox=S.inbox||{};
