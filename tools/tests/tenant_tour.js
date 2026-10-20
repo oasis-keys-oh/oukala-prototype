@@ -1,5 +1,5 @@
 // DC-25 per-tenant rehearsal check. For each tenant, switches with TENANT.switch (the real path, no reload) and walks every beat of
-// every Showroom tour (SHOW.demos): opens the beat's screen, clicks its tab the way the Showroom does, and checks
+// every Showroom tour beat on the tenant the tour declares (beat.tenant, tour.tenant, default core): opens the beat's screen, clicks its tab the way the Showroom does, and checks
 //  1. no other tenant's organization names, record ids, project or people names on screen (same fingerprints as tenant_leak.js);
 //  2. a tenant-aware screen (DATA.screens() mode "data" or "tenant") shows this tenant's own data: its organization name and at
 //     least one of its own record names or ids; a Meridian-only screen carries the "not tenant-aware yet" label instead;
@@ -27,16 +27,16 @@ const setup=await p.evaluate(()=>{const fp={},own={};const esc=s=>s.replace(/[.*
  window.__hits=(txt,t)=>{const out=[];Object.keys(window.__fp).forEach(k=>{if(k===t)return;window.__fp[k].forEach(re=>{const m=re.exec(txt);if(m)out.push(k+':'+m[0].trim())})});return out};
  window.__own=(txt,t)=>window.__fp[t].filter(re=>re.test(txt)).length;
  /* the beat's tab: a view tab first (as the Showroom clicks it), then a family view chip (bst "Trace detail" opens strat_exec) */
- window.__tab=txt=>{if(!txt)return true;const want=txt.toLowerCase();const find=sel=>{const bs=[...document.querySelectorAll(sel)];return bs.find(x=>x.textContent.trim().toLowerCase()===want)||bs.find(x=>x.textContent.trim().toLowerCase().startsWith(want))};
+ window.__tab=txt=>{if(!txt)return true;const want=txt.toLowerCase();const find=sel=>{const bs=[...document.querySelectorAll(sel)];const lab=x=>x.textContent.trim().toLowerCase().replace(/^\d+\s*/,'');return bs.find(x=>lab(x)===want)||bs.find(x=>lab(x).startsWith(want))};
   const b=find('.screen .views button, .screen [role=tab], .screen .views label')||find('.screen .r15-fam button');if(b){b.click();return true}return false};
- const beats=[];SHOW.demos.forEach(d=>d.beats.forEach(x=>beats.push({demo:d.id,id:x.id,go:x.go,tab:x.tab||null,secs:x.secs})));
+ const beats=[];SHOW.demos.forEach(d=>d.beats.forEach(x=>beats.push({demo:d.id,id:x.id,go:x.go,tab:x.tab||null,secs:x.secs,tenant:x.tenant||d.tenant||'core'})));
  return{tenants:DATA.tenants().map(t=>t.id),beats,cuts:SHOW.demos.map(d=>({id:d.id,total:d.total}))}});
 console.log('tours',setup.cuts.map(c=>c.id+' '+c.total+' s').join(', '),'| beats',setup.beats.length,'| tenants',setup.tenants.join(','));
 const report=[];
 for(const t of setup.tenants){
  await p.evaluate(t=>TENANT.switch(t),t);await p.waitForTimeout(250);
  const times=[];let aware=0,legacy=0;const legacyIds=new Set();
- for(const bt of setup.beats){const n0=errs.length;
+ for(const bt of setup.beats){if(bt.tenant!==t)continue; /* a beat is rehearsed on the tenant its tour declares (SHOW contract: default core) */const n0=errs.length;
   const r=await p.evaluate(([bt,t])=>{const t0=performance.now();go(bt.go);const tabOk=window.__tab(bt.tab);const ms=performance.now()-t0;
    const txt=window.__surface();const mode=DATA.screenMode(bt.go);
    return{ms,tabOk,mode,hits:window.__hits(txt,t),own:window.__own(txt,t),org:txt.indexOf(DATA.tenantInfo(t).org)>=0,lab:!!document.querySelector('#view [data-tenant-legacy]'),cur:DATA.tenant()}},[bt,t]);
