@@ -591,10 +591,8 @@ function nodeSvgP(n,st){
 function hoRows(list,dir){
  return list.map(h=>{const o=dir==="in"?h.from:h.to;return{id:h.from+h.to,t:pName(o),sub:h.entities.map(entN).join(", ")+" · "+h.trigger,tag:MODEN[h.mode],st:MODEC[h.mode],go:()=>pickP(o,true)}});
 }
-function stepsHTML(pid){
- const d=PROC.defs[pid];if(!d)return"";const steps=S.proc&&S.proc[pid]||d.steps;
- return `<ol class="plk-steps">${steps.map(s=>`<li><span class="pill ${WHOC[s.who||"human"]}">${WHON[s.who||"human"]}</span> <b>${E(s.n)}</b><span class="small muted"> ${E(s.d||"")}</span></li>`).join("")}</ol>`;
-}
+/* CL-52: the steps render from the one process strip (procCard), which opens each step and the Workflow designer */
+function stepsHTML(pid){return PROC.defs[pid]&&typeof procCard==="function"?procCard(pid):""}
 function panelP(){
  const P=Z.p,g=pgraph();let id=P.sel;
  if(!id)return `<div class="plk-ph"><div class="eyebrow">Nothing selected</div><h3>Pick a process</h3><p class="small muted">Select a family or a process. Its handoffs light up and flow, and this panel lists what comes in and goes out, the data it reads and writes, and its steps.</p></div>
