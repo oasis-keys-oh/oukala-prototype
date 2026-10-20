@@ -14,7 +14,7 @@
 .fin-cc.none{border-style:dashed;border-color:var(--bad-f);background:color-mix(in srgb,var(--bad-f) 12%,transparent);cursor:default;padding:3px 10px}
 .fin-nat{display:inline-block;padding:2px 9px;border-radius:8px;font-size:12px;font-weight:600;white-space:nowrap}
 .fin-nat.op{background:color-mix(in srgb,var(--s3) 16%,transparent)}.fin-nat.cap{background:color-mix(in srgb,var(--u3) 20%,transparent)}.fin-nat.am{background:color-mix(in srgb,var(--w1) 20%,transparent)}
-.fin-gate{display:inline-block;min-width:28px;text-align:center;padding:2px 7px;border-radius:7px;font:700 11.5px/1.3 ui-monospace,Menlo,Consolas,monospace;background:var(--accent-soft);color:var(--ink)}
+.fin-gate{display:inline-block;min-width:28px;text-align:center;padding:2px 7px;border-radius:7px;font:700 11.5px/1.3 var(--f-mono);background:var(--accent-soft);color:var(--ink)}
 .fin-track{display:block;height:8px;border-radius:99px;background:color-mix(in srgb,var(--ink) 9%,transparent);overflow:hidden;min-width:60px}
 .fin-track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}.fin-track.warn i{background:var(--warn-f)}
 .fin-conf{display:grid;grid-template-columns:minmax(80px,1fr) 44px;gap:8px;align-items:center}

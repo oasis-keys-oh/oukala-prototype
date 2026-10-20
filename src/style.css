@@ -1,5 +1,5 @@
 /* Layout: floating liquid-glass rail on the left, floating glass top bar, one calm content column of glass cards over a teal-and-violet orb field. Numbers set large in Newsreader, everything else in Hanken Grotesk. */
-:root{--f-body:"Hanken Grotesk","Segoe UI",system-ui,sans-serif;--f-disp:"Newsreader",Georgia,serif;--r:22px;--r2:14px;--railw:268px;--ease:cubic-bezier(.2,.7,.2,1)}
+:root{--r:22px;--r2:14px;--railw:268px;--ease:cubic-bezier(.2,.7,.2,1)}
 :root[data-size="l"]{font-size:17px}:root[data-size="s"]{font-size:14px}
 *{box-sizing:border-box}
 html,body{min-height:100%}

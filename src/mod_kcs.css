@@ -31,7 +31,7 @@
 .kcs-del{background:var(--bad-s);color:var(--bad);text-decoration:line-through;border-radius:4px;padding:0 2px}
 .kcs-ins{background:var(--good-s);color:var(--good);text-decoration:none;border-radius:4px;padding:0 2px}
 .kcs-diff{white-space:pre-wrap;overflow-wrap:break-word;background:var(--accent-soft);border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.6}
-.kcs-code,textarea.kcs-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;line-height:1.5}
+.kcs-code,textarea.kcs-code{font-family:var(--f-mono);font-size:13px;line-height:1.5}
 .kcs-cite{display:inline-flex;font-weight:800;font-size:12px;color:var(--story);background:var(--story-s);border-radius:8px;padding:0 6px;margin:0 1px;vertical-align:baseline;transition:transform .15s}
 .kcs-cite:hover{transform:translateY(-1px);background:var(--accent);color:var(--accent-ink)}
 .kcs-mini{padding:3px 10px;font-size:12px}

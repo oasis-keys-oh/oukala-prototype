@@ -21,7 +21,7 @@
 .dl-ver{padding:10px 0;border-top:1px solid var(--hair)}
 .dl-diff{list-style:none;margin:6px 0;padding:0;font-size:13px}
 .dl-diff li{padding:2px 0}
-.dl-diff li b{display:inline-block;width:16px;font-family:var(--f-mono,monospace)}
+.dl-diff li b{display:inline-block;width:16px;font-family:var(--f-mono)}
 .dl-diff li.add b{color:var(--good-f,#1a8a4a)}.dl-diff li.del b{color:var(--bad-f,#c0392b)}.dl-diff li.chg b{color:var(--warn-f,#b8860b)}
 .dl-build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px;align-items:start}
 .dl-donut{display:flex;gap:18px;align-items:center;flex-wrap:wrap}

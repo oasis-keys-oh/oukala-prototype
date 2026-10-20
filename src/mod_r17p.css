@@ -13,7 +13,7 @@
 .r17p-proofs{display:inline-flex;flex-wrap:wrap;gap:6px}
 .r17p-proof{display:inline-flex;flex-wrap:wrap;align-items:baseline;gap:2px 6px;padding:4px 11px;border-radius:12px;background:var(--metric-s);border:1px solid var(--hair);font-size:var(--fs-xs);max-width:100%}
 .r17p-proof b{font-size:var(--fs-md);color:var(--ink)}
-.r17p-proof small{flex-basis:100%;font-family:var(--f-mono,ui-monospace,monospace);font-size:var(--fs-2xs);color:var(--muted);overflow-wrap:break-word}
+.r17p-proof small{flex-basis:100%;font-family:var(--f-mono);font-size:var(--fs-2xs);color:var(--muted);overflow-wrap:break-word}
 .r17p-bad{background:var(--warn-s)}
 .r17p-try{display:inline-flex;align-items:center;gap:8px;text-align:left}
 .r17p-try small{font-size:var(--fs-2xs);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:2px}

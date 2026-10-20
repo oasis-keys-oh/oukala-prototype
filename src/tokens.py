@@ -1,4 +1,5 @@
 # Design tokens injected by build.py ahead of all CSS. Value names and scales: docs/css-tokens.md.
+# CL-19: two font stacks, --font-sans and --font-serif (plus --f-mono for code); --f-body, --f-disp, --sans, --serif, --font, --font-ui, --f-ui, --font-display, --f-head stay as aliases.
 # CL-18: the alias line at the end of LIGHT defines names module CSS used without a definition; each maps to an existing token (no new colors).
 LIGHT = """
 --art-wash:rgba(255,255,255,.78);--art-wash2:rgba(255,255,255,.58);
@@ -11,10 +12,10 @@ LIGHT = """
 --good-f:#2F8132;--warn-f:#FFBA01;--bad-f:#D80F20;--metric-f:#A53AA5;--story-f:#17899F;
 --good-s:rgba(14,125,16,.13);--warn-s:rgba(255,186,1,.24);--bad-s:rgba(233,18,36,.12);--metric-s:rgba(147,14,147,.11);--story-s:rgba(23,137,159,.14);
 --orb1:rgba(23,137,159,.45);--orb2:rgba(165,58,165,.28);--orb3:rgba(255,186,1,.30);--line-art:rgba(23,137,159,.28);--track:rgba(22,38,43,.10);
---eb-mix:#16262B;--focus:#0B5C6E;--focus-halo:rgba(255,255,255,.9);--dis-ink:#5F7177;--dis-bg:rgba(22,38,43,.06);--fs-2xs:11px;--fs-xs:12px;--fs-sm:13px;--fs-md:15px;--fs-lg:18px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:38px;--fw-label:700;--fw-ui:600;--fw-body:400;--fw-strong:600;--f-tab:var(--f-body);--f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+--eb-mix:#16262B;--focus:#0B5C6E;--focus-halo:rgba(255,255,255,.9);--dis-ink:#5F7177;--dis-bg:rgba(22,38,43,.06);--fs-2xs:11px;--fs-xs:12px;--fs-sm:13px;--fs-md:15px;--fs-lg:18px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:38px;--fw-label:700;--fw-ui:600;--fw-body:400;--fw-strong:600;--f-tab:var(--f-body);--font-sans:"Hanken Grotesk","Segoe UI",system-ui,sans-serif;--font-serif:"Newsreader",Georgia,serif;--f-body:var(--font-sans);--f-disp:var(--font-serif);--f-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 --info:var(--story);--info-f:var(--story-f);--info-s:var(--story-s);--bad-t:var(--bad);--bad-b:var(--bad-s);--warn-t:var(--warn);--mut:var(--muted);--on-accent:var(--accent-ink);
 --card:var(--glass2);--surface:var(--card);--glass3:var(--glass2);--glass-b:var(--hair);--hover:var(--track);--r17p-dim:rgba(6,17,22,.46);
---font:var(--f-body);--font-ui:var(--f-body);--f-ui:var(--f-body);--sans:var(--f-body);--serif:var(--f-disp);--font-display:var(--f-disp);--f-head:var(--f-disp);
+--font:var(--font-sans);--font-ui:var(--font-sans);--f-ui:var(--font-sans);--sans:var(--font-sans);--serif:var(--font-serif);--font-display:var(--font-serif);--f-head:var(--font-serif);
 --gap:16px;--gap-lg:16px;--sp-5:24px;--r17-nav-h:84px;
 """
 DARK = """

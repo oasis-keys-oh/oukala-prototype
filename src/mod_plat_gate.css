@@ -1,4 +1,4 @@
-.gate-code{margin:0;padding:14px;border-radius:14px;background:var(--accent-soft);font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto;max-height:380px;white-space:pre;color:var(--ink);max-width:100%}
+.gate-code{margin:0;padding:14px;border-radius:14px;background:var(--accent-soft);font:12.5px/1.55 var(--f-mono);overflow:auto;max-height:380px;white-space:pre;color:var(--ink);max-width:100%}
 .gate-rr{display:grid;gap:8px}
 .gate-rrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border-radius:14px;background:var(--glass2)}
 .gate-rrow.bad{box-shadow:inset 3px 0 0 var(--bad-f)}.gate-rrow.warn{box-shadow:inset 3px 0 0 var(--warn-f)}.gate-rrow.good{box-shadow:inset 3px 0 0 var(--good-f)}

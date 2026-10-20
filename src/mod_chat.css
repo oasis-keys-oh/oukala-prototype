@@ -226,7 +226,7 @@ button.cx-cc.add:hover{color:var(--ink);border-color:var(--accent)}
 /* home screen */
 .cx-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
 .cx-kpi{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:22px;background:var(--glass)}
-.cx-kpi b{font-size:30px;font-family:"Newsreader",serif;font-weight:500}
+.cx-kpi b{font-size:30px;font-family:var(--font-serif);font-weight:500}
 .cx-hpol{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;padding:10px 0;border-top:1px solid var(--hair)}
 #cxHomeDash .grid{margin-bottom:14px}
 :focus-visible.cx-grip{outline:3px solid var(--accent)}

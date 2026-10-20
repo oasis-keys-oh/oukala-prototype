@@ -11,7 +11,7 @@
 .r17s-bar i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w,0);background:var(--r17s-c,var(--accent));border-radius:99px}
 .r17s-bar b{text-align:right}
 .r17s-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.r17s-type{display:inline-flex;align-items:center;font:700 11px/1 "Hanken Grotesk",system-ui,sans-serif;padding:4px 8px;border-radius:99px;color:var(--r17s-c,var(--accent));background:color-mix(in srgb,var(--r17s-c,var(--accent)) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--r17s-c,var(--accent)) 35%,transparent);white-space:nowrap}
+.r17s-type{display:inline-flex;align-items:center;font:700 11px/1 var(--font-sans);padding:4px 8px;border-radius:99px;color:var(--r17s-c,var(--accent));background:color-mix(in srgb,var(--r17s-c,var(--accent)) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--r17s-c,var(--accent)) 35%,transparent);white-space:nowrap}
 .r17s-killbar{padding:10px 14px;border-radius:12px;margin:0 0 14px;background:color-mix(in srgb,var(--bad-f) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--bad-f) 40%,transparent)}
 .r17s-sws{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .r17s-sw{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--hair);cursor:pointer}
@@ -49,7 +49,7 @@
 .r17s-n{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:99px;background:var(--accent-soft,rgba(120,120,255,.18));font-weight:700;font-size:12px}
 .r17s-mv{display:flex;gap:4px;margin-left:auto}
 .r17s-sum{margin:0;color:var(--muted)}.r17s-sum b{color:var(--ink)}
-.r17s-script{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;width:100%}
+.r17s-script{font-family:var(--f-mono);width:100%}
 .r17s-serr{margin-top:6px;font-size:13px}.r17s-serr.bad{color:var(--bad-f)}.r17s-serr.ok{color:var(--good-f)}
 .r17s-fchips{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
 .r17s-edfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:6px 0 20px}

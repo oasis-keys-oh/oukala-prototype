@@ -133,7 +133,7 @@ body.ppl-dragging .ppl-zone{animation:pplpulse 1.2s ease-in-out infinite}
 .ppl-xs{display:flex;flex-direction:column;gap:6px}
 .ppl-xr{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;padding:8px 12px;border-radius:14px;background:var(--glass2)}
 .ppl-xr.on{box-shadow:0 0 0 2px var(--accent)}.ppl-xr small{display:block}
-.ppl-json{margin:0;padding:14px;border-radius:16px;background:var(--hair);font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;overflow:auto;max-height:340px;color:var(--ink);white-space:pre}
+.ppl-json{margin:0;padding:14px;border-radius:16px;background:var(--hair);font:12px/1.5 var(--f-mono);overflow:auto;max-height:340px;color:var(--ink);white-space:pre}
 .ppl-player{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px}
 @media(max-width:800px){.ppl-player{grid-template-columns:minmax(0,1fr)}}
 .ppl-pv{display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:20px;background:var(--glass2)}
