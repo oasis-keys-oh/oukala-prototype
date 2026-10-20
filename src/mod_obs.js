@@ -148,7 +148,8 @@ function scaleAlerts(){if(scaleAlerts._c)return scaleAlerts._c;const r=RNG("scal
 let AC=null;
 function computeAll(){const key=O.ver+"|"+SCALE.on+"|"+JSON.stringify(O.corr||0)+"|"+JSON.stringify(O.st).length+"|"+Object.keys(O.fpMark||{}).length;if(AC&&AC.key===key)return AC;
  const alerts=[],hist=[],t0=NOW_T-7*DAYMIN;
- O.rules.forEach(r=>{if(!r.on)return;CIREG.forEach(c=>{if(!inCls(r,c)||!metsOf(c).includes(r.m))return;episodes(r,c,t0,NOW_T,10).forEach(e=>{const sv=c.svc,tier=tierOf(sv);const crit=e.lvl==="crit";const sev=crit?(tier==="Tier 1"&&(r.m==="avail"||r.m==="err")?1:tier==="Tier 3"?3:2):(tier==="Tier 1"?3:4);
+ const MO=new Map(),mo=c=>{let v=MO.get(c);if(!v)MO.set(c,v=metsOf(c));return v};/* PR-12: metric list per CI computed once per pass, not once per rule */
+ O.rules.forEach(r=>{if(!r.on)return;CIREG.forEach(c=>{if(!inCls(r,c)||!mo(c).includes(r.m))return;episodes(r,c,t0,NOW_T,10).forEach(e=>{const sv=c.svc,tier=tierOf(sv);const crit=e.lvl==="crit";const sev=crit?(tier==="Tier 1"&&(r.m==="avail"||r.m==="err")?1:tier==="Tier 3"?3:2):(tier==="Tier 1"?3:4);
    const a=Object.assign({rule:r.id,ci:c.id,m:r.m,svc:sv,sev,src:SRCN(r.m),msg:"",tier},e);a.msg=MET[r.m].n+" "+MET[r.m].fmt(e.peak)+" (threshold "+thTxt(r,e.lvl)+")"+(e.flaps?", flapped "+(e.flaps+1)+" times":"");hist.push(a)})})});
  EXT.forEach(x=>{const c=ciOf(x.ci);hist.push(Object.assign({svc:c?c.svc:"",tier:c?tierOf(c.svc):"Tier 2"},x))});
  hist.sort((a,b)=>a.fired-b.fired);hist.forEach((a,i)=>{a.id=a.id&&/^EX/.test(a.id)?a.id:"A-"+(5000+i);a.k=ak(a)});

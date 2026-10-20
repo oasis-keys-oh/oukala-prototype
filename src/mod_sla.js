@@ -310,13 +310,16 @@ function entities(){const out=[];const seen={};
 const TIERS=()=>Array.from(new Set(SVCREG.map(s=>s.tier))).sort();
 const tierOk=(ag,tier)=>{const a=ag.act;if(a.tiers&&a.tiers.length)return a.tiers.includes(tier);if(a.svcs&&a.svcs.length)return a.svcs.some(n=>{const s=SVCREG.find(x=>x.n===n);return s&&s.tier===tier});return true};
 const svcOk=(ag,svc)=>!ag.act.svcs.length||ag.act.svcs.includes(svc)||false;
-function cover(cls,pred){const need=pred.need;const have={};live().concat(AGS().filter(a=>agStatus(a)==="Scheduled")).forEach(a=>{if(a.proc!==cls&&!(a.procs&&a.procs.includes(cls)))return;if(!pred.ok(a))return;(have[a.ty]=have[a.ty]||[]).push(a)});
+/* PR-12: candidates (live plus scheduled) bucketed by process class once per matrix, not rescanned per cell; bucket order is the original scan order */
+const coverCand=()=>live().concat(AGS().filter(a=>agStatus(a)==="Scheduled"));
+function coverIdx(){const m=new Map();coverCand().forEach(a=>{const ks=new Set([a.proc].concat(a.procs||[]));ks.forEach(k=>{let b=m.get(k);if(!b)m.set(k,b=[]);b.push(a)})});return m}
+function cover(cls,pred,idx){const need=pred.need;const have={};(idx?(idx.get(cls)||[]):coverCand()).forEach(a=>{if(a.proc!==cls&&!(a.procs&&a.procs.includes(cls)))return;if(!pred.ok(a))return;(have[a.ty]=have[a.ty]||[]).push(a)});
  const missing=need.filter(t=>!have[t]||!have[t].some(a=>agStatus(a)!=="Scheduled"));const planned=missing.filter(t=>have[t]);const real=missing.filter(t=>!have[t]);const att=[];Object.values(have).flat().forEach(a=>{const r=evalAg(a);if(r.pctAtt!=null&&agStatus(a)!=="Scheduled")att.push(r.pctAtt)});
  return {need,have,missing:real,planned,state:!need.length?"na":!real.length?"ok":real.length===need.length?"gap":"part",att:att.length?att.reduce((a,b)=>a+b,0)/att.length:null}}
 function covMatrix(){const by=SL.cov.by;const key="CM|"+SL.v+"|"+by+"|"+(SCALE.on?1:0)+"|"+(window.WFX?WFX.defs.length:0)+"|"+Object.keys(PROC.defs).length+"|"+JSON.stringify(SL.need||{});if(CACHE.has(key))return CACHE.get(key);
- let rows=[],cols=[],cell;
- if(by==="process"){rows=entities().map(e=>({k:e.key,t:e.title,cls:e.cls,e,sub:CLSN[e.cls]+" · "+e.src}));cols=TIERS().map(t=>({k:t,t}));cell=(r,c)=>cover(r.cls,{need:needOf(r.cls,c.k),ok:a=>tierOk(a,c.k)})}
- else{rows=SVCREG.map(s=>({k:s.id,t:s.n,s,sub:s.tier+" · owner "+s.owner}));cols=CLS.filter(c=>(NEED0[c[0]]||[]).length).map(c=>({k:c[0],t:c[1]}));cell=(r,c)=>cover(c.k,{need:needOf(c.k,r.s.tier),ok:a=>svcOk(a,r.s.n)&&tierOk(a,r.s.tier)})}
+ let rows=[],cols=[],cell;const CI=coverIdx();
+ if(by==="process"){rows=entities().map(e=>({k:e.key,t:e.title,cls:e.cls,e,sub:CLSN[e.cls]+" · "+e.src}));cols=TIERS().map(t=>({k:t,t}));cell=(r,c)=>cover(r.cls,{need:needOf(r.cls,c.k),ok:a=>tierOk(a,c.k)},CI)}
+ else{rows=SVCREG.map(s=>({k:s.id,t:s.n,s,sub:s.tier+" · owner "+s.owner}));cols=CLS.filter(c=>(NEED0[c[0]]||[]).length).map(c=>({k:c[0],t:c[1]}));cell=(r,c)=>cover(c.k,{need:needOf(c.k,r.s.tier),ok:a=>svcOk(a,r.s.n)&&tierOk(a,r.s.tier)},CI)}
  let need=0,got=0,gaps=0,part=0,full=0;const R=rows.map(r=>{const cs=cols.map(c=>{const x=cell(r,c);need+=x.need.length;got+=x.need.length-x.missing.length;if(x.state==="gap")gaps++;if(x.state==="part")part++;if(x.state==="ok")full++;return x});return {r,cs}});
  const out={by,rows:R,cols,need,got,gaps,part,full,pct:need?got/need*100:100};CACHE.set(key,out);return out}
 /* which agreements touch a process entity, with the end to end budget */

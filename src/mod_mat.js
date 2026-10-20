@@ -146,7 +146,9 @@ const mMax=n=>modelOf(n.model).lv.length;
 function CAPS(){let a=CP.concat(M.xcaps);if(SCALE.on){const g=genCaps();a=a.concat(g.caps)}return a}
 const kids=n=>((n.ids||[]).filter(i=>BYID[i]&&(SCALE.on||!BYID[i].gen)).map(i=>BYID[i]));
 const isLeaf=n=>kids(n).length===0;
-const leaves=set=>(set||CAPS()).filter(isLeaf);
+/* PR-12: while the Maturity models screen renders, the full leaf list and each capability row are computed once (render-scoped memo, cleared after the render; callers get copies) */
+let RM=null;
+const leaves=set=>{if(!set&&RM)return (RM.lv||(RM.lv=CAPS().filter(isLeaf))).slice();return (set||CAPS()).filter(isLeaf)};
 /* register ingested caps in BYID */
 function reg(c){BYID[c.id]=c;if(c.parent&&BYID[c.parent]){const p=BYID[c.parent];p.ids=(p.ids||[]).filter(x=>x!==c.id).concat(c.id)}}
 /* ---------------- projects as credit sources ---------------- */
@@ -281,7 +283,8 @@ function depSVG(w){const lv=w.leafRows.filter(r=>r.gap>0).sort((a,b)=>b.tot-a.to
  return `<svg class="chart mat-dep" viewBox="0 0 ${W} ${Hh}" width="100%" role="img" aria-label="Dependency map from capabilities to services, projects and skills">${e}${g}</svg>`+(lv.length>10?`<p class="muted small">Showing the 10 most expensive of ${lv.length} capabilities. The table below lists all of them.</p>`:"")}
 /* ---------------- shared rows and small views ---------------- */
 const pathOf=n=>{const a=[];let p=n.parent?BYID[n.parent]:null;while(p){a.unshift(p.name);p=p.parent?BYID[p.parent]:null}return a.join(" › ")};
-function capRow(n){const s=status(n),c=cur(n),t1=tgtN(n,0),f1=fore(n,HW[0]),sl=s.sl,o=n.objs.map(x=>objOf(x).sub||objOf(x).n);
+function capRow(n){if(RM){let r=RM.cr.get(n);if(!r){r=capRow0(n);RM.cr.set(n,r)}return Object.assign({},r)}return capRow0(n)}
+function capRow0(n){const s=status(n),c=cur(n),t1=tgtN(n,0),f1=fore(n,HW[0]),sl=s.sl,o=n.objs.map(x=>objOf(x).sub||objOf(x).n);
  return {id:n.id,name:n.name,path:mname(n.model)+(pathOf(n)?" › "+pathOf(n).split(" › ").slice(1).join(" › "):""),model:mname(n.model),mid:n.model,cur:c,t1,t3:tgtN(n,1),t5:tgtN(n,2),f1,st:s.s,sv:s.v,owner:n.owner,obj:o.join(", ")||"Not mapped",conf:n.conf,slack:sl.s,none:!!sl.none,met:!!sl.met,leaf:isLeaf(n),n}}
 const SEV={bad:0,warn:1,good:2};
 function why1(r){if(r.met||r.cur>=r.t1)return "Already at the Year 1 target.";if(r.none)return `No funded project reaches level ${fv(r.t1)}.`;if(r.f1<r.t1-.05)return `Forecast ${fv(r.f1)} against a target of ${fv(r.t1)}.`;if(r.slack!=null&&r.slack<15)return `Only ${Math.max(0,Math.round(r.slack))} work days of slack before the Year 1 date.`;return `Level ${fv(r.cur)} today, target ${fv(r.t1)} with funded work.`}
@@ -593,13 +596,13 @@ PROC.reg("exe_mat",{title:"How a capability's level is set and how it moves",std
  {n:"Accept and credit",d:"A named person accepts the work. Only then does the level count today.",who:"gate",owner:"Capability owner",sla:"5 days",in:"Evidence",out:"Credited level"},
  {n:"Recalculate roll-ups",d:"Objective, service, dashboard and board numbers update automatically.",who:"auto",owner:"Platform",sla:"Instant",in:"Levels",out:"Metrics"}]});
 function slipHead(){const fl=slipSim(),pi=projInfo(M.slip.proj),miss=fl.filter(f=>f.kind==="miss"),wk=M.slip.wk;return miss.length?`If <b>${H(pi.n)}</b> slips <b>${wk} week${wk===1?"":"s"}</b>, <b>${H(miss[0].n.name)}</b>${miss.length>1?` and ${miss.length-1} more`:""} miss${miss.length>1?"":"es"} the ${HZ[0][2]} target.`:fl.length?`If <b>${H(pi.n)}</b> slips <b>${wk} week${wk===1?"":"s"}</b>, nothing misses ${HZ[0][2]}, but ${fl.length} get within three weeks of missing it.`:`If <b>${H(pi.n)}</b> slips <b>${wk} week${wk===1?"":"s"}</b>, no capability misses ${HZ[0][2]}.`}
-REG("exe_mat","Maturity models","portfolio","M4 20V10M10 20V4M16 20v-8M22 20V7M2 20h20",()=>{sync();const R=roll(CAPS()),bad=leaves().map(capRow).filter(r=>r.st==="bad").length,aw=crRows().filter(r=>r.state==="Awaiting acceptance").length,miss=leaves().filter(n=>tgtN(n,0)>fore(n,HW[0])+.05).length;
+REG("exe_mat","Maturity models","portfolio","M4 20V10M10 20V4M16 20v-8M22 20V7M2 20h20",()=>{sync();RM={cr:new Map()};try{const R=roll(CAPS()),bad=leaves().map(capRow).filter(r=>r.st==="bad").length,aw=crRows().filter(r=>r.state==="Awaiting acceptance").length,miss=leaves().filter(n=>tgtN(n,0)>fore(n,HW[0])+.05).length;
  const top=gapActions()[0];
  return `<div class="screen exe-screen mat-screen">${hero("Maturity models","Are we on the path to the strategy?",`<b>${ALLM().length} maturity models</b> measure <b>${leaves().length} capabilities</b>. Attainment against the Year 1 target is <b>${Math.round(R.att)}%</b>, we are at <b>${METRICS.m_matgp.cur}</b> on the glide path (100 is on the line), and <b>${Math.round(R.covn)} of ${R.gaps}</b> gaps have a funded project path. <b>${miss}</b> capabilit${miss===1?"y is":"ies are"} forecast to miss ${HZ[0][2]}${aw?`, and <b>${aw}</b> delivered result${aw===1?" is":"s are"} waiting for acceptance before it counts`:""}.${top?` Largest uncovered gap: <b>${H(top.title.replace(/^Fund the path from level [\d.]+ to \d for /,""))}</b>.`:""}`,
   `<div class="row">${fchip("m_matatt")}${fchip("m_matgp")}${fchip("m_matcov")}${stdChip("cmmi","Level 1 to 5 scales follow CMMI and ISO/IEC 33020.")}${stdChip("itil5","ITIL 5 practice maturity is one of the ingested models.")}${whyPop("A maturity level is a claim about how well something is done. Here every claim has criteria, an owner, evidence and a date. A project raises a level on paper only; the level counts after someone accepts it.")}</div><div class="row"><button class="btn primary" data-mat-newcap>New capability</button><button class="btn" data-mat-tab="5">Ingest a model</button><button class="btn" data-mat-tab="4">What if we need level 5?</button></div>`)}${lensNote()}
  <div class="statrow"><div class="stat"><small>Attainment</small><span class="num" data-role="metric">${Math.round(R.att)}%</span><em>target 85%</em></div><div class="stat ${METRICS.m_matgp.cur<90?"crit":""}"><small>Glide-path index</small><span class="num" data-role="metric">${METRICS.m_matgp.cur}</span><em>100 is on the line</em></div><div class="stat ${METRICS.m_matcov.cur<50?"crit":""}"><small>Delivery coverage</small><span class="num" data-role="metric">${METRICS.m_matcov.cur}%</span><em>gaps with a funded path</em></div><div class="stat ${bad?"crit":""}"><small>Behind the glide path</small><span class="num" data-role="metric">${bad}</span><em>of ${leaves().length} capabilities</em></div><div class="stat"><small>Awaiting acceptance</small><span class="num" data-role="metric">${aw}</span><em>delivered, not yet counted</em></div></div>
  ${views("matv",["Overview and library","Strategy on track?","Models and levels","Projects raise levels","What level do we need?","Ingest a model","Build a model"],[ovPane(),trackPane(),modelsPane(),projPane(),wiPane(),ingestPane(),bldPane()])}
- ${procCard("exe_mat")}</div>`});
+ ${procCard("exe_mat")}</div>`}finally{RM=null}});
 /* ---------------- events ---------------- */
 function tab(i){S.v.matv=i}
 function setHead(){const e=document.getElementById("mat-slip-head");if(e)e.innerHTML=slipHead()}
