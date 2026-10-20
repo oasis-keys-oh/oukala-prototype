@@ -18,6 +18,8 @@ node tools/tests/platform.js build_out
 node tools/tests/people.js build_out
 node tools/tests/steps.js build_out
 node tools/tests/guard.js build_out
+# CL-59, CL-41: foundation checks ct_reuse, ct_tenant, ct_people block at the team tier; retrofit matrix; unreachable screens hidden, never deleted
+node tools/tests/gate.js build_out
 node tools/tests/tenant.js build_out
 node tools/tests/tenant_leak.js build_out
 node tools/tests/thread.js build_out
