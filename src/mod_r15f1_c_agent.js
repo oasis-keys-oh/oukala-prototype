@@ -16,7 +16,7 @@ const $$m=n=>"$"+(n<10?n.toFixed(2):n<1000?n.toFixed(0):Math.round(n).toLocaleSt
 const ENTS=[
  {id:"agent_registry",label:"Agent registry entry",note:"Integration decision: extend. Agents already exist in the org model (sponsor, autonomy, status) and the AI Control Tower (spend, cap). The registry entry adds only what the runtime enforces: lifecycle state, tier, backup owner, monthly budget cap and the control flags. Sponsor and status still come from the org model.",fields:[F("name","Agent"),F("lifecycle","Lifecycle","enum",{opts:["draft","testing","active","paused","retired"]}),F("tier","Tier","number"),F("sponsor","Sponsor","reference"),F("backup","Backup owner","reference"),F("budget_cap","Daily budget cap (USD)","number"),F("confidence_floor","Confidence floor (percent)","number"),F("note","Note","text")]},
  {id:"agent_run",label:"Agent run",note:"Integration decision: new. A run is one execution of an agent for one step: inputs, tools used, output, cost, a confidence value with its basis, the tier gate and who decided. It links to workflow_instance and step_run, and rolls up to the agent's spend.",fields:[F("agent","Agent"),F("instance_id","Workflow instance","reference"),F("step","Step"),F("tier","Tier","number"),F("mode","Mode","enum",{opts:["live","test"]}),F("state","State","enum",{opts:["completed","blocked","escalated","awaiting approval","approved","rejected"]}),F("started_at","Started (simulated ms)","number"),F("model","Model"),F("inputs","Inputs","text"),F("tools_used","Tools used","text"),F("output","Output","text"),F("tokens_in","Tokens in","number"),F("tokens_out","Tokens out","number"),F("cost","Cost (USD)","number"),F("confidence","Confidence","number"),F("basis","Confidence basis","text"),F("gate","Human gate"),F("decided_by","Decided by","reference"),F("blocked_by","Blocked by"),F("origin","Origin","enum",{opts:["live","demo seed","guard playground"]}),F("goal","Goal","text"),F("tenant","Tenant (CL-67: every run runs in exactly one tenant)","reference"),F("gateway","Model route (AI gateway, simulated)")]},
- {id:"agent_control",label:"Agent control",note:"Integration decision: new. One record per kill switch or pause: global, a tier, or one agent. A control wins over every lifecycle state and is checked before each run.",fields:[F("scope","Scope","enum",{opts:["global","tier","agent"]}),F("target","Target"),F("paused","Paused","boolean"),F("kind","Kind","enum",{opts:["pause","kill"]}),F("by","Set by","reference"),F("reason","Reason","text"),F("at","At (simulated ms)","number")]},
+ {id:"agent_control",label:"Agent control",note:"Integration decision: new. One record per kill switch or pause: global, a tier, or one agent. A control wins over every lifecycle state and is checked before each run.",fields:[F("scope","Scope","enum",{opts:["global","tier","agent"]}),F("target","Target"),F("paused","Paused","boolean"),F("kind","Kind","enum",{opts:["pause","kill"]}),F("by","Set by","reference"),F("reason","Reason","text"),F("at","At (simulated ms)","number"),F("origin","Set from","enum",{opts:["runtime","tower"]}),F("simulated","Simulated","boolean")]},
  {id:"agent_event",label:"Agent audit event",note:"Integration decision: new. The run audit trail: lifecycle changes, controls, gate decisions and budget stops, one row each, with the human who acted.",fields:[F("agent","Agent"),F("kind","Kind","enum",{opts:["lifecycle","control","gate","budget","enforcement","run"]}),F("detail","Detail","text"),F("by","By","reference"),F("at","At (simulated ms)","number"),F("tenant","Tenant","reference")]}];
 const MET={
  m_agrt_gate:{n:"Gated agent runs decided by a human",f:"Agent runs that needed a tier gate and were approved or rejected by a named human ÷ agent runs that needed a gate × 100",u:"%",cur:0,tgt:100,badAt:85,dir:"max",max:100,tr:[92,94,95,96,97,97,98,98],owner:"AI platform lead",use:["Agent runtime"],rem:{kind:"sop",ref:"SOP-AGRT-1",title:"Clear the approval queue",agent:"Triage Agent",auto:false,state:"idle",prog:"Lists runs waiting on a sponsor, oldest first"}},
@@ -84,10 +84,11 @@ function execute(o){o=o||{};const name=o.agent||"";const a=oAgent(name);const nm
  if(!a)return block("Not in the agent registry: register it with a sponsor and a backup before it can run","enforcement");
  const r=reg(nm);if(!r)return block("No registry entry","enforcement");
  const lc=lifecycle(nm),tier=r.tier||base.tier;base.tier=tier;
+ G(()=>towerSync(),0);
  let c;
  if(c=ctlOn("global","all"))return block("Global "+c.kind+" is on ("+(c.reason||"no reason given")+")","control");
  if(c=ctlOn("tier",String(tier)))return block("Tier "+tier+" is paused ("+(c.reason||"no reason given")+")","control");
- if(c=ctlOn("agent",nm))return block("Agent "+c.kind+" is on ("+(c.reason||"no reason given")+")","control");
+ if(c=ctlOn("agent",nm))return block((c.origin==="tower"?"AI Control Tower "+(c.kind==="kill"?"kill switch":"pause"):"Agent "+c.kind)+" is on ("+(c.reason||"no reason given")+")","control");
  if(lc==="paused")return block("Agent is paused","control");
  if(lc==="retired")return block("Agent is retired","lifecycle");
  if(lc==="draft")return block("Agent is a draft: move it to testing first","lifecycle");
@@ -118,11 +119,20 @@ R.approve=function(runId,decision,note){const r=ST().get("agent_run",runId);if(!
  if(r.instance_id&&window.WF){const i=WF.get(r.instance_id);const t=i&&i.tokens.find(x=>x.agentRun===runId&&x.st==="wait");if(t){const rr=WF.decide(i.id,t.id,{decision},note,true);R.gate(runId,decision,me(),note);return rr}}
  return R.gate(runId,decision,me(),note)?{ok:true}:{ok:false,why:"Already decided"}};
 /* ---------------- controls ---------------- */
-function setControl(scope,target,paused,kind,reason){ST().put("agent_control",{id:scope+":"+target,scope,target:String(target),paused,kind:kind||"pause",by:me(),reason:reason||"",at:simNow()});
- eventLog(scope==="agent"?target:"(all agents)","control",(paused?(kind==="kill"?"Kill switch":"Pause"):"Resumed")+" · "+scope+" "+target+(reason?" · "+reason:""));
+function setControl(scope,target,paused,kind,reason,origin){ST().put("agent_control",{id:scope+":"+target,scope,target:String(target),paused,kind:kind||"pause",by:me(),reason:reason||"",at:simNow(),origin:origin||"runtime",simulated:true});
+ eventLog(scope==="agent"?target:"(all agents)","control",(paused?(kind==="kill"?"Kill switch":"Pause"):"Resumed")+(origin==="tower"?" from the AI Control Tower":"")+" · "+scope+" "+target+(reason?" · "+reason:""));
  if(scope==="agent"){G(()=>ORGX.setState(target,paused?(kind==="kill"?"killed":"paused"):"running"))}
  audit(paused?"Agent control on":"Agent control off",scope+" "+target);syncMetrics()}
 R.setControl=setControl;
+/* PR-25: the AI Control Tower kill switch and pause (screens3, S.agents) write runtime controls. Each tower agent that is killed or
+   paused gets an agent control with origin "tower" (reason from the tower log); a restore clears only a tower control. The runtime
+   reads these in execute, so runs are refused with the reason and the audit trail shows who acted. Simulated: no live agent exists. */
+function towerSync(){const L=G(()=>S.agents,null);if(!Array.isArray(L))return 0;let n=0;const why=G(()=>S.ct.log[0][1],"")||"";
+ L.forEach(a=>{const nm=a&&a.n;if(!nm||!reg(nm))return;const c=ctl("agent",nm),on=c&&c.paused;
+  if(a.st==="killed"||a.st==="paused"){const kind=a.st==="killed"?"kill":"pause";if(!on||c.kind!==kind){setControl("agent",nm,true,kind,(why||kind)+" (simulated)","tower");n++}}
+  else if(on&&c.origin==="tower"&&(a.st==="running"||a.st==="observed")){setControl("agent",nm,false,"pause","Restored in the AI Control Tower (simulated)","tower");n++}});return n}
+R.towerSync=towerSync;
+document.addEventListener("click",e=>{if(G(()=>S.screen,"")!=="tower")return;const t=e.target&&e.target.closest&&e.target.closest("#fire,#pause,[data-restore],[data-quick]");if(t)setTimeout(()=>G(()=>towerSync(),0),0)});
 function setLifecycle(name,to,reason){const r=reg(name);if(!r)return{ok:false,why:"Unknown agent"};const from=lifecycle(name);
  if(!NEXT[from]||!NEXT[from].includes(to))return{ok:false,why:"An agent in state "+from+" cannot move to "+to+". Allowed: "+((NEXT[from]||[]).join(", ")||"none (final)")};
  if(to==="active"){if(!isHuman(r.sponsor))return{ok:false,why:"Enforcement: an active agent needs a named human sponsor",enforce:1};if(!isHuman(r.backup)||r.backup===r.sponsor)return{ok:false,why:"Enforcement: an active agent needs a backup owner who is a different named human",enforce:1};if(ctlOn("agent",name))setControl("agent",name,false)}
