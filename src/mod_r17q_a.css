@@ -164,3 +164,6 @@
 .r17q-page table.r17q-pt2 td{overflow-wrap:break-word;white-space:normal}
 .r17q-page table.r17q-pt2 td.r17q-pn{white-space:normal;text-align:right}
 .r17q-page table,.r17q-page table.r17q-pt2{min-width:0!important;max-width:100%}
+/* PR-29: the prompt that stands in for NPV and ROI until a platform quote is entered */
+.r17q-quote{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px;border:1px solid var(--cardline);border-radius:var(--rad-card);padding:12px 14px;background:var(--glass2);font-size:var(--fs-sm);line-height:1.5}
+.r17q-quote .btn{margin-left:auto}

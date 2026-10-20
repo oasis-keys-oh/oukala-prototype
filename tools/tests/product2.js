@@ -74,6 +74,28 @@ await p.evaluate(()=>{IDENT.cur=window.__p2cur;U.store.set('falconaire-search-bu
 ok(s87.can&&!s87.on&&s87.offer&&!s87.listed,'CL-87 the Tenant admin is offered builder mode: '+JSON.stringify(s87));
 await p.evaluate(()=>{try{NAVX.palette.close()}catch(e){}});
 
+/* ---- PR-29: the Value screen and its exports hide NPV and ROI until a platform quote is entered; benefits still show, labeled modeled ---- */
+const r29=await p.evaluate(async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));const MSG='Enter a platform quote to see NPV and ROI';const o={};
+ const look=()=>{const v=document.querySelector('#view');const t=v.innerText;const res=document.getElementById('r17q-res');const rt=res?res.innerText:'';const share=(document.getElementById('r17q-share')||{}).value||'';
+  const css=R17Q.csv(),html=R17Q.caseHTML();
+  return{note:!!document.querySelector('#view [data-r17q-quote]'),msg:t.indexOf(MSG)>=0,npvTile:/net present value\s*\n?\s*-?\$/i.test(rt),npvCell:/-year NPV/.test(rt),roiCell:/\bROI\b/.test(rt.split(MSG).join('')),
+   benefit:/Annual benefit at full adoption/.test(rt)&&/modeled/i.test(rt),pv:/Present value/.test(rt),
+   csvNpv:/-year NPV|Present value/.test(css),csvMsg:css.indexOf(MSG)>=0,caseNpv:/<th class="n">NPV<\/th>/.test(html),caseMsg:html.indexOf(MSG)>=0,
+   shareMsg:share.indexOf(MSG)>=0,lines:R17Q.lines(R17Q.model(R17Q.inputs())).filter(l=>l.id==='npv'||l.id==='roi').map(l=>[l.v,R17Q.fmtLine(l)])}};
+ R17Q.inputs&&1;S.v.r17qv=1;go('r17q_value');await wait(500);
+ const pin=document.getElementById('r17q-i-price');if(pin){pin.value='0';pin.dispatchEvent(new Event('input',{bubbles:true}))}await wait(200);
+ o.before=look();
+ S.v.r17qv=2;render();await wait(300);o.before.shareMsg=((document.getElementById('r17q-share')||{}).value||'').indexOf(MSG)>=0;
+ S.v.r17qv=1;render();await wait(300);
+ const pin2=document.getElementById('r17q-i-price');pin2.value='120';pin2.dispatchEvent(new Event('input',{bubbles:true}));await wait(300);
+ o.after=look();
+ pin2.value='0';pin2.dispatchEvent(new Event('input',{bubbles:true}));await wait(100);return o});
+const B=r29.before,A=r29.after;
+ok(B.note&&B.msg&&!B.npvTile&&!B.npvCell&&!B.roiCell&&!B.pv&&B.benefit,'PR-29 without a quote the screen shows the prompt, benefits labeled modeled, and no NPV, ROI or present value: '+JSON.stringify(B));
+ok(B.lines.every(l=>l[0]==null&&l[1]==='Enter a platform quote to see NPV and ROI'),'PR-29 the NPV and ROI lines carry no number: '+JSON.stringify(B.lines));
+ok(!B.csvNpv&&B.csvMsg&&!B.caseNpv&&B.caseMsg&&B.shareMsg,'PR-29 the CSV, the one-page business case and the share text follow the same rule: '+JSON.stringify(B));
+ok(!A.note&&A.npvTile&&A.npvCell&&A.pv&&A.csvNpv&&A.caseNpv&&!A.caseMsg,'PR-29 with a quote NPV and ROI appear everywhere: '+JSON.stringify(A));
+
 /*@@NEXT@@*/
 
 ok(!errs.length,'page errors: '+errs.slice(0,3).join(' | '));

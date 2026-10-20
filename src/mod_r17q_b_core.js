@@ -70,8 +70,12 @@ function model(I,em,cm){
  if(pb==null&&cum>=0&&impl===0)pb=0;
  const roi=sc>0?(sb-sc)/sc:null;
  const cyc=I.days*(1-pcyc/100),waitAvoided=I.appr*12*I.days*pcyc/100;
- return {I,em,cm,mreq,mapp,pcyc,ptool,paud,pout,price,impl,hReq,hApp,hAud,H,lab,tools,out,full,lic,yrs,r,rows,npv,sb,sc,roi,pb,cyc,waitAvoided,benefit1:rows[0]?rows[0].b:0}}
+ return {I,em,cm,mreq,mapp,pcyc,ptool,paud,pout,price,impl,hReq,hApp,hAud,H,lab,tools,out,full,lic,yrs,r,rows,npv,sb,sc,roi,pb,cyc,waitAvoided,benefit1:rows[0]?rows[0].b:0,quoted:+I.price>0}}
 Q.model=model;
+/* PR-29 (Omar 2026-10-20): no platform price exists, so NPV and ROI stay hidden until the viewer enters a platform quote.
+   Benefits still show, labeled modeled. Every view and export of the business case reads Q.quoted and Q.QUOTE_MSG. */
+Q.QUOTE_MSG="Enter a platform quote to see NPV and ROI";
+Q.quoted=x=>{const I=x&&x.I?x.I:(x||inputs());return +I.price>0};
 
 /* Formula lines: formula string and the same formula with the viewer's numbers substituted. */
 function lines(M){
@@ -91,8 +95,9 @@ function lines(M){
  {id:"pb",l:"Payback period",fm:"months until cumulative benefit minus cost passes the implementation cost",sub:M.pb==null?`cumulative after ${M.yrs} years: ${u(M.rows.length?M.rows[M.rows.length-1].cum:0)}`:`${u(M.impl)} recovered by month ${f(M.pb,1)}`,v:M.pb,t:"mo",strong:1},
  {id:"cyc",l:"Approval cycle after",fm:"cycle today × (1 − reduction); not converted to dollars",sub:`${f(I.days,1)} × (1 − ${f(M.pcyc,1)}%)`,v:M.cyc,t:"d"},
  {id:"wait",l:"Approval waiting days avoided per year",fm:"approvals per month × 12 × cycle today × reduction; not converted to dollars",sub:`${f(I.appr)} × 12 × ${f(I.days,1)} × ${f(M.pcyc,1)}%`,v:M.waitAvoided,t:"d"}]}
-Q.lines=lines;
-const fmtV=(l)=>l.v==null?(l.id==="pb"?"Not within "+"the model years":"Not defined"):l.t==="$"?usdF(l.v):l.t==="h"?nf(l.v)+" h":l.t==="%"?nf(l.v)+"%":l.t==="mo"?nf(l.v,1)+" months":nf(l.v,1)+" days";
+/* PR-29: without a quote the NPV and ROI lines carry no number, only the prompt (the formula text stays) */
+Q.lines=M=>{const L=lines(M);if(!M.quoted)L.forEach(l=>{if(l.id==="npv"||l.id==="roi"){l.gated=true;l.v=null;l.sub=Q.QUOTE_MSG}});return L};
+const fmtV=(l)=>l.gated?Q.QUOTE_MSG:l.v==null?(l.id==="pb"?"Not within "+"the model years":"Not defined"):l.t==="$"?usdF(l.v):l.t==="h"?nf(l.v)+" h":l.t==="%"?nf(l.v)+"%":l.t==="mo"?nf(l.v,1)+" months":nf(l.v,1)+" days";
 Q.fmtLine=fmtV;
 /* sensitivity: low, base, high */
 function sens(I,range){const r=Math.max(0,Math.min(90,range))/100;return {low:model(I,1-r,1+r/2),base:model(I,1,1),high:model(I,1+r,1-r/2),range:r*100}}
@@ -249,7 +254,7 @@ if(typeof SEARCHX!=="undefined")SEARCHX.push(()=>{const o=[{g:"Go to",t:"Value r
 if(typeof ASKX!=="undefined")ASKX.push(q=>{const t=String(q||"").toLowerCase();
  if(/(what is|what's|how much).*(platform|oukala|this|product).*(worth|value)|value realized|business case|payback|roi of|hours returned|npv/.test(t)){
   const T=tenant(),h=T.find(x=>x.key==="hours"),M=model(inputs());S.v.r17qv=/business case|payback|roi|npv/.test(t)?1:0;go("r17q_value");
-  say(q,{t:`<b>Measured from this tenant:</b> ${h?h.disp:""} returned per day. <b>Modeled, illustrative inputs:</b> ${usdF(M.npv)} ${M.yrs}-year net present value, payback ${M.pb==null?"not within the model":nf(M.pb,1)+" months"}. The model is not a measured result.`,steps:["Read the agent registry and approval records","Computed the business case from the current inputs"]});return true}
+  say(q,{t:`<b>Measured from this tenant:</b> ${h?h.disp:""} returned per day. <b>Modeled, illustrative inputs:</b> ${M.quoted?`${usdF(M.npv)} ${M.yrs}-year net present value, payback ${M.pb==null?"not within the model":nf(M.pb,1)+" months"}`:`${usdF(M.full)} annual benefit at full adoption. ${Q.QUOTE_MSG}`}. The model is not a measured result.`,steps:["Read the agent registry and approval records","Computed the business case from the current inputs"]});return true}
  if(/(how was|how is) (this|the product|it) (built|designed)|design principles|why was this built|thesis|what (did you|we) choose not to build/.test(t)){S.v.r17qt=/not to build|not build/.test(t)?4:0;go("r17q_thinking");say(q,{t:"Opened How it was built: thesis, design principles, rounds, decisions and evidence.",steps:["Opened the design rationale"]});return true}
  return false});
 Q.audit=(a,d)=>G(()=>audit(a,d),0);
