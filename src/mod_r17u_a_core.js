@@ -274,10 +274,9 @@ function nav(){
   if(f&&!f.views.some(v=>v[0]==="r17u_dash")){f.views.unshift(["r17u_dash","Build and view"]);if(!f.views.some(v=>v[0]==="r16j_dash"))f.views.push(["r16j_dash","Charts and defaults"]);
    R15.famOf=R15.famOf||{};["r17u_dash","r16j_dash"].forEach(id=>{R15.famOf[id]=f;R15.hidden[id]=1;R15.names[id]="Dashboards: "+(id==="r17u_dash"?"Build and view":"Charts and defaults")})}});
  G(()=>{if(NAVX.add&&!nav.d){NAVX.add("r17u_dash",{group:"strat",label:"Dashboards",hint:"Build, share and publish dashboards from live metrics and registries",sub:"Dashboards",kw:"dashboard dashboards builder viewer tiles library template gallery executive service desk finance resilience agents delivery schedule share publish default filter drill print full screen"});nav.d=1}});
- G(()=>{NAVX.alias=NAVX.alias||{};NAVX.alias["dashboards"]="r17u_dash";NAVX.alias["dashboard builder"]="r17u_dash"})}
+ G(()=>{NAVX.alias=NAVX.alias||{};NAVX.alias["dashboards"]="exe_dash";NAVX.alias["dashboard builder"]="r17u_dash"})}
 nav();setTimeout(nav,900);setTimeout(nav,3500);
-/* the sidebar "Dashboards" entry (family exe_dash) lands on the builder; the Leadership view stays one click away in the view switcher */
-document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest('[data-nav="exe_dash"]');if(!b||b.closest(".r15-fam")||b.closest("#view"))return;if(b.dataset.r17uSkip)return;e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();go("r17u_dash")},true);
+/* PH-14: the sidebar Dashboards entry opens Dashboards (exe_dash, the family head in docs/ia); the builder and viewer are views in its switcher */
 SEARCHX.push(()=>{const o=[{g:"Go to",t:"Dashboards",m:"Build, share and publish dashboards",c:"--accent",f:()=>go("r17u_dash"),k:"dashboard dashboards builder viewer tiles template gallery executive service desk finance resilience delivery"},{g:"Go to",t:"Track benefits",m:"Register, timeline, checkpoints, net benefit and payback",c:"--s3",f:()=>go("bud_ben"),k:"benefits realization track register checkpoints net benefit payback baseline target owner backup"}];
  G(()=>(X.dash.items||[]).forEach(d=>o.push({g:"Dashboards",t:d.name,m:d.tiles.length+" tiles · "+d.status,c:"--p4",f:()=>{X.ui.sel=d.id;go("r17u_dash")},k:"dashboard "+d.name+" "+(d.tpl||"")})),0);
  G(()=>U.attention().forEach(x=>o.push({g:"Benefits needing attention",t:x.b.id+" "+x.b.n,m:x.f.map(y=>y.t).join("; "),c:"--warn-f",f:()=>{S.v.budb=5;go("bud_ben")},k:"benefit attention "+x.b.id+" "+x.b.n})),0);

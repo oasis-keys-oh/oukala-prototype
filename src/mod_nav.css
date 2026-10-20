@@ -231,3 +231,30 @@
 
 .nx-fav.is-ren>.nx-ren{margin:4px 8px 4px 22px;flex:1}
 .nx-fav.is-ren>.nx-pen,.nx-fav.is-ren>.nx-star,.nx-fav.is-ren>.grip{display:none}
+
+/* ---------- PH-14: the area rail (areas in fixed order, role pins first, All screens, Showroom, Build and admin gear) ---------- */
+.nx-area>.navit.nx-pin>.navi{font-weight:600}
+.nx-pin .navi .nx-l::after,.nx-fi.nx-pin .nx-l::after{content:"";display:inline-block;width:6px;height:6px;margin-left:6px;border-radius:var(--rad-pill);background:var(--accent);vertical-align:middle}
+.nx-fi.nx-pin .nx-l{font-weight:600}
+.nx-gear>summary .nx-gi{color:var(--muted);background:var(--glass2)}
+.nx-gear[open]>summary .nx-gi{background:var(--muted);color:var(--accent-ink)}
+.nx-all{position:fixed;inset:5vh auto auto 50%;transform:translateX(-50%);margin:0;width:min(1080px,calc(100vw - 32px));max-height:90vh;overflow:auto;border-radius:var(--rad-panel);padding:18px 20px;color:var(--ink);border:1px solid var(--hair)}
+.nx-all:popover-open{animation:pop .2s var(--ease)}
+.nx-allh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.nx-allh h3{margin:2px 0 4px}
+.nx-allf{display:flex;flex-direction:column;gap:8px;margin:10px 0 14px}
+.nx-allf .row{flex-wrap:wrap;gap:6px;align-items:center}
+.nx-allf input{flex:1;min-width:min(260px,100%)}
+.nx-allb2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px;align-items:start}
+.nx-allsp{min-width:0;padding:10px 12px;border-radius:var(--rad-xl);background:var(--glass2)}
+.nx-allsp h4{display:flex;align-items:center;gap:8px;margin:0 0 4px;font-size:14px}
+.nx-allsp h4 em{margin-left:auto;font-style:normal;font-weight:500;font-size:11px;color:var(--muted)}
+.nx-allsub .navsub{padding:8px 0 2px}
+.nx-alli{display:flex;flex-direction:column;align-items:flex-start;width:100%;text-align:left;padding:5px 8px;border-radius:var(--rad-md);color:var(--ink);overflow-wrap:break-word}
+.nx-alli:hover,.nx-alli:focus-visible{background:var(--accent-soft)}
+.nx-alli small{color:var(--muted);font-size:11px}
+.nx-pfacet{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:0 18px 8px}
+.nx-pfacet select{font:inherit;font-size:12px;margin-left:4px}
+.nx-hpins{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 4px}
+.nx-hpin{display:inline-flex;align-items:center;gap:6px}
+.nx-hpin svg{width:16px;height:16px}

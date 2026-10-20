@@ -101,11 +101,11 @@ function decorateNav(){const n=q1("#nav");if(!n||navBusy)return;navBusy=true;
    if(fh.getAttribute("role")!=="button"){fh.setAttribute("role","button");fh.setAttribute("tabindex","0");fh.setAttribute("aria-controls","r16FavBody")}
    fh.setAttribute("aria-expanded",String(open));const body=q1(".nx-favs .nx-favlist,.nx-favs .nx-empty");if(body)body.id="r16FavBody"}
   /* budget requests: own section directly after Money and contracts */
-  const old=q1(".r16-budg",n);const want=showBud();
+  const old=q1(".r16-budg",n);const want=showBud()&&!q1("[data-nx-rail]",n); /* PH-14: the area rail keeps Budget requests as an entry of Money and contracts, not an eighth group */
   if(!want){if(old)old.remove()}
   else{const html=budGroupHTML();if(!old||old.outerHTML.replace(/\s+open=""/,"")!==html.replace(/\s+open=""/,"")){const anchor=q1('details[data-ng="money"]',n);const tmp=D.createElement("div");tmp.innerHTML=html;const el=tmp.firstElementChild;
     if(old){el.open=old.open;old.replaceWith(el)}else if(anchor)anchor.after(el);else n.appendChild(el)}}
-  const it=q1('[data-nx-it="bud_req"]',n);if(it){it.hidden=want;const pv=it.previousElementSibling;if(pv&&pv.classList.contains("navsub")){const nx=it.nextElementSibling;pv.hidden=want&&(!nx||!nx.classList.contains("navit"))}}}
+  const it=q1('[data-nx-it="bud_req"]',n);if(it&&want){it.hidden=true;const pv=it.previousElementSibling;if(pv&&pv.classList.contains("navsub")){const nx=it.nextElementSibling;pv.hidden=want&&(!nx||!nx.classList.contains("navit"))}}}
  finally{try{mo.takeRecords()}catch(e){}navBusy=false}}
 const mo=new MutationObserver(()=>{if(navBusy)return;clearTimeout(mo._t);mo._t=setTimeout(decorateNav,30)});
 function watchNav(){const n=q1("#nav");if(n&&!n._r16){n._r16=1;mo.observe(n,{childList:true,subtree:true});decorateNav()}}

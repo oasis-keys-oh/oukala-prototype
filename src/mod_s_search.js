@@ -126,11 +126,38 @@ function tenantRows(t){const o=[];if(!t||t==="core")return o;
  return o}
 SRCH.tenantRows=tenantRows;
 
+/* ---------- PH-14 (step 6): facets. area (a business area or fixed space) and object (an object word such as invoice).
+   Set from the palette's Area menu (SRCH.setFacet) or typed in the query (area:money, object:invoice, obj:incident); both
+   engines parse the query with SRCH.parseFacets and apply the facets in SRCH.allow. Items without a place (records, people)
+   match an area facet only when their text names an object of that area. ---------- */
+const FAC={area:null,object:null};let QF={area:null,object:null};
+SRCH.facets=()=>({area:QF.area||FAC.area,object:QF.object||FAC.object});
+SRCH.setFacet=(k,v)=>{if(k in FAC)FAC[k]=v||null;SRCH.dirty()};
+const areaOf=q=>{q=String(q||"").trim().toLowerCase();if(!q)return null;const r=G(()=>NAVX.resolveGroup(q),null);if(r)return r;
+ const sp=G(()=>NAVX.taxo.spaces(),[]).find(s=>s.id.indexOf(q)===0||s.label.toLowerCase().indexOf(q)===0||s.label.toLowerCase().split(/[ ,]+/).some(w=>w.indexOf(q)===0&&q.length>=3));return sp?sp.id:null};
+SRCH.parseFacets=function(raw){let q=String(raw||"");const f={area:null,object:null};
+ q=q.replace(/(^|\s)(area|in-area):\s*("[^"]+"|[a-z][a-z-]*)/ig,(m,a,k,v)=>{const id=areaOf(v.replace(/"/g,""));if(id){f.area=id;return a}return m})
+  .replace(/(^|\s)(object|obj|type):\s*("[^"]+"|[a-z][a-z-]*)/ig,(m,a,k,v)=>{f.object=v.replace(/"/g,"").toLowerCase();return a}).replace(/\s+/g," ").trim();
+ /* a facet alone lists what it names: the object word, or the area's own name */
+ if(!q&&f.object)q=f.object;else if(!q&&f.area)q=G(()=>NAVX.taxo.label(f.area),"");
+ QF=f;return {q,facets:SRCH.facets()}};
+const placeArea=it=>{if(it.area)return it.area;if(it.sid){const top=G(()=>NAVX.rail.topOf(it.sid),it.sid);return G(()=>NAVX.taxo.place(top).sp,null)}return null};
+function facetOk(it){const f=SRCH.facets();if(!f.area&&!f.object)return true;
+ const hay=((it.objs||[]).join(" ")+" "+(it.t||"")+" "+(it.m||"")+" "+(it.g||"")).toLowerCase();
+ if(f.object&&hay.indexOf(f.object)<0&&hay.indexOf(f.object.replace(/s$/,""))<0)return false;
+ if(f.area){const a=placeArea(it);if(a)return a===f.area;
+  const objs=G(()=>NAVX.taxo.rows().filter(id=>{const p=NAVX.taxo.place(id);return p.sp===f.area&&p.kind==="entry"}).map(id=>NAVX.taxo.row(id).objs).flat(),[]);
+  return objs.some(o=>{const w=String(o).toLowerCase().split(" ")[0].replace(/s$/,"");return w.length>=4&&hay.indexOf(w)>=0})}
+ return true}
+SRCH.facetOk=facetOk;
+/* wedge mode also limits the view-level results to the wedge screens */
+const wedgeOk=it=>{if(!it.view)return true;return !G(()=>SHOW.wedge.on(),false)||G(()=>SHOW.wedge.screens().indexOf(it.view)>=0,true)};
+
 /* ---------- visibility: one central check, applied by both search engines ---------- */
 const CNT={hiddenIds:new Set(),meridian:new Set()};
 SRCH.reset=()=>{CNT.hiddenIds.clear();CNT.meridian.clear()};
 SRCH.counts=()=>({hidden:CNT.hiddenIds.size,meridian:CNT.meridian.size,tenant:tenant()});
-SRCH.allow=function(it){if(!it)return false;const t=tenant();
+SRCH.allow=function(it){if(!it)return false;const t=tenant();if(!facetOk(it)||!wedgeOk(it))return false;
  if(it.tn!=null&&it.tn!==t){if(it.tn==="core")CNT.meridian.add(it);return false}
  if(it.sid&&SRCH.hiddenScreen(it.sid)){if(!SRCH.builder()){CNT.hiddenIds.add(it.sid);return false}SRCH.label(it)}
  if(it.sid&&it.ty==="screen")sayMeridianOnly(it);

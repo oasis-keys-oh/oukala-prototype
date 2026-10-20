@@ -51,7 +51,10 @@ const ICO={
  menu:"M4 7h16M4 12h16M4 17h16",
  back:"M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3",
  pen:"M4 20h4L19 9l-4-4L4 16zM13 7l4 4",
- x:"M6 6l12 12M18 6L6 18"
+ x:"M6 6l12 12M18 6L6 18",
+ gear:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+ grid:"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z",
+ transform:"M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"
 };
 const SVG=(d,sz,sw)=>`<svg viewBox="0 0 24 24" width="${sz||18}" height="${sz||18}" fill="none" stroke="currentColor" stroke-width="${sw||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
 NAVX.svg=SVG;NAVX.icons=ICO;
@@ -204,7 +207,7 @@ adm_env|plat|Environments and releases|Environments and releases|Administer|envi
 log|plat|Product log|Product log|Administer|product log feedback backlog request feature`;
 const MAP={};
 const OVR=store.get("oukala-nav-map")||{};
-function parseRaw(){let o=0;RAW.split("\n").forEach(line=>{const p=line.split("|");if(p.length<3)return;const id=p[0].trim();MAP[id]={g:p[1].trim(),l:p[2].trim(),h:(p[3]||"").trim(),sub:(p[4]||"").trim(),kw:(p[5]||"").trim(),o:o++}})}
+function parseRaw(){let o=0;RAW.split("\n").forEach(line=>{const p=line.split("|");if(p.length<3)return;const id=p[0].trim();MAP[id]={g:p[1].trim(),l:p[2].trim(),l0:p[2].trim(),h:(p[3]||"").trim(),sub:(p[4]||"").trim(),kw:(p[5]||"").trim(),o:o++}})}
 parseRaw();
 NAVX.map=MAP;
 /* runtime additions: NAVX.add(screenId,{group,label,hint,sub,kw}) */
@@ -219,27 +222,345 @@ NAVX.resolveAlias=function(s){s=String(s||"").trim().toLowerCase().replace(/^#/,
 function screenRow(id){return SCREENS.find(s=>s[0]===id)}
 function oldGroup(id){const s=screenRow(id);return s?((W.NAVGRP&&NAVGRP[id])||s[3]):null}
 /* the resolved entry for any registered screen */
-function resolve(id){const s=screenRow(id);let m=MAP[id];const ov=OVR[id];
- if(!m){const og=oldGroup(id);const g=OLDG[og]||"new";m={g,l:s?String(s[1]).replace(/\s*\([^)]*\)\s*$/,""):id,h:"",sub:"",kw:"",o:9000,unmapped:true}}
- if(ov){m=Object.assign({},m,{g:ov.g&&GID[ov.g]!=null?ov.g:m.g,l:ov.l||m.l,sub:ov.sub!=null?ov.sub:m.sub,edited:true})}
+/* the resolved entry for any registered screen. PH-14 (step 3): the place and the label come from the taxonomy (NAVX.taxo);
+   a family view keeps its "Family: view" name; a saved override (oukala-nav-map) still wins, and an old group id in it resolves
+   to the space that took that group over. g is now a space id (see SPACES); old group ids still resolve through OLDGRP. */
+function resolve(id){const s=screenRow(id);let m=MAP[id];const ov=OVR[id];const t=TX[id];
+ if(!m){m={g:"",l:t?t.l:(s?String(s[1]).replace(/\s*\([^)]*\)\s*$/,""):id),h:"",sub:"",kw:"",o:9000,unmapped:!t}}
+ const pl=placeOf(id);const own=t&&(t.kind==="entry"||t.kind==="role"||t.kind==="search");
+ m=Object.assign({},m,{g:pl.sp,sub:pl.sub,l:own?t.l:(m.l||(t&&t.l)||id),kind:pl.kind,o:t?t.o:m.o});
+ if(ov){if(ov.l)m.l=ov.l;m.edited=true}
  return m}
 const formal=id=>{const s=screenRow(id);return s?String(s[1]):id};
 const labelOf=id=>resolve(id).l;
 const hintOf=id=>{const m=resolve(id),f=formal(id);const h=m.h||f;return h.toLowerCase()===m.l.toLowerCase()?"":h};
-const gLabel=g=>(GROUPS[GID[g]]||GROUPS[GROUPS.length-1])[1];
+const gLabel=g=>{if(SPID[g]!=null)return SPACES[SPID[g]][1];if(OLDGRP[g])return SPACES[SPID[OLDGRP[g]]][1];return (GROUPS[GID[g]]||GROUPS[GROUPS.length-1])[1]};
 const tip=id=>{const m=resolve(id),f=formal(id);return m.l===f?f:m.l+" ("+f+")"};
 NAVX.resolve=resolve;NAVX.label=labelOf;NAVX.hint=hintOf;NAVX.groupLabel=gLabel;NAVX.formal=formal;
 NAVX.setOverride=function(id,o){if(!o){delete OVR[id]}else OVR[id]=Object.assign({},OVR[id]||{},o);store.set("oukala-nav-map",OVR);IDX.dirty=true;try{renderNav()}catch(e){}};
 NAVX.overrides=()=>OVR;
-function groupItems(g){const ids=SCREENS.map(s=>s[0]).filter(id=>id!=="home"&&resolve(id).g===g);
- return ids.map((id,i)=>({id,m:resolve(id),i})).sort((a,b)=>(a.m.o-b.m.o)||(a.i-b.i)).map(x=>x.id)}
+/* the entries of one space (or of the space an old group id maps to), in sub-group order, for the active persona */
+function groupItems(g){const sp=SPID[g]!=null?g:OLDGRP[g];if(!sp)return[];const e=spaceEntries(sp,G(()=>S.persona));return [].concat(...Object.keys(e).map(k=>e[k])).filter(id=>id!=="home"||sp==="home")}
 NAVX.groupItems=groupItems;
+
+/* ---------- PH-14 (step 1): the navigation taxonomy, kept as data beside RAW ----------
+   Seven business areas in one fixed order, plus the fixed spaces (Home, My work, Ask or request, Showroom, Build and admin).
+   Seeded from docs/ia/screen-inventory.csv (Omar approved the proposal 2026-10-20). One row per registered screen:
+   screen id | space | sub-group | label | kind | ref | archetype | R3 comparison | objective level | objects shown
+   kind: entry (one menu place), view (a view of the family ref), merged (merged into ref as a view), search (search only),
+   role (shown only to the persona ref), retire (candidate to retire, Omar decides; the id keeps redirecting to ref).
+   A screen with no row lands in search only, never in a menu (docs/ia/navigation-architecture.md, section g). */
+const SPACES=[
+ ["home","Home","fixed",ICO.home,"Your starting point.",["Home"]],
+ ["my","My work","fixed",ICO.my,"Things waiting on you: approvals, meetings, your first week.",["Approvals","Meetings","Start here"]],
+ ["ask","Ask or request","fixed",ICO.help,"Ask a question, find an answer, report a problem or order something.",["Ask","Request"]],
+ ["strat","Strategy and value","area",ICO.strat,"Goals, measures, value realized and board material.",["Direction","Performance","Value and money"]],
+ ["deliver","Portfolio and delivery","area",ICO.plan,"Choose the work, plan it, staff it and ship it.",["Choose the work","Plan and run","Staff and ship"]],
+ ["ops","Operations and service","area",ICO.fix,"The service desk, changes, the technology behind the services, monitoring and knowledge.",["Service desk","Change and service levels","Technology and services","Monitoring","Knowledge"]],
+ ["money","Money and contracts","area",ICO.money,"Approve and pay, budgets, where money goes, vendors and contracts.",["Approve and pay","Budgets","Where money goes","Vendors and contracts"]],
+ ["people","People and organization","area",ICO.people,"The organization, skills and availability, learning and performance.",["Organization","Capacity and skills","Learning and performance"]],
+ ["risk","Risk, control and AI","area",ICO.grc,"Risk, control and audit, access, AI oversight and resilience.",["Risk","Control, audit and access","AI oversight","Resilience"]],
+ ["transform","Transformation","area",ICO.res,"Redesign the work, processes and maturity, and scale what was built.",["Redesign the work","Processes and maturity","Scale what was built"]],
+ ["show","Showroom","fixed",ICO.story,"Guided tours and executive lenses.",["Showroom"]],
+ ["build","Build and admin","fixed",ICO.kit,"Build, automate, data and integration, access and tenants, and running the platform.",["Build","Automate","Data and integration","Access and tenants","Run the platform","Product"]]];
+const SPID={};SPACES.forEach((s,i)=>SPID[s[0]]=i);
+const AREA_IDS=SPACES.filter(s=>s[2]==="area").map(s=>s[0]);
+/* old group ids (saved menu overrides, crumbs, links) resolve to the space that took them over (section c) */
+const OLDGRP={home:"home",story:"show",my:"my",help:"ask",plan:"deliver",fix:"ops",tech:"ops",money:"money",people:"people",learn:"ops",lens:"strat",strat:"strat",grc:"risk",res:"risk",ai:"risk",reg:"build",make:"transform",kit:"build",auto:"build",plat:"build",new:"build",
+ portfolio:"deliver",service:"ops",ops:"ops",know:"ops",automate:"build",platform:"build"};
+const TAXO=`home|home|Home|Home|entry||Other: landing page|none|individual|role cards, needs, rings, insights
+flw_appr|my|Approvals|My approvals|entry||Approval inbox|inbox|individual|approvals on me, open, decided
+inbox|my|Approvals|Alerts and inbox|view|flw_appr|Approval inbox|flw_appr|individual|alerts, queue, delegation
+meet_hub|my|Meetings|Meetings|entry||Dashboard-first list|fo|individual|meetings, agendas, actions, decisions
+fo|my|Meetings|My calendar and follow-ups|view|meet_hub|Other: AI assistant|meet_hub|individual|meetings, agendas, actions, pre-reads
+meet_act|my|Meetings|Meeting actions|view|meet_hub|Dashboard-first list|meet_hub|individual|action items
+meet_dec|my|Meetings|Decisions made in meetings|view|meet_hub|Dashboard-first list|meet_hub|team|decisions
+meet_series|my|Meetings|Recurring meetings and forums|view|meet_hub|Dashboard-first list|ppl_meet|team|forums, series
+ppl_av|my|Meetings|Book a room|view|meet_hub|Other: calendar|meet_hub|individual|rooms, bookings
+ppl_meet|my|Meetings|Meeting minutes|view|meet_hub|Dashboard-first list|meet_series|team|forums, minutes, actions
+r15d_firstweek|my|Start here|My first week|entry||Other: help or onboarding|ppl_train|individual|accounts, equipment, training, contacts
+chat_home|ask|Ask|Ask ${BRAND.name}|entry||Other: chat|kcs_ask|individual|chat threads, activities, tools, guardrails
+kcs_ask|ask|Ask|Find an answer|entry||Other: assistant|chat_home|individual|answers with sources
+svc_portal|ask|Request|Report a problem or order something|entry||Other: portal|svc_cat|individual|catalog, forms, my requests
+svc_guides|ask|Request|Order guides|view|svc_portal|Intake form|svc_portal|individual|order guides, fulfiller queues
+exe_board|strat|Direction|Board pack|entry||Report|r15d_evidence|company|board sections citing records
+exe_strat|strat|Direction|Goals and objectives|entry||Dashboard-first list|r18_strategy|company|objectives, key results, cascade, links to work
+r18_lens|strat|Direction|Executive lenses|entry||Other: lens picker|r18_strategy|company|value against cost and risk per executive
+exe_scen|strat|Direction|Compare what-if scenarios|merged|exe_strat|Report|exe_strat|enterprise|scenarios
+r18_levels|strat|Direction|Views by level|merged|r18_lens|Other: lens picker|r18_lens|company|executive, manager, specialist views
+r18_strategy|strat|Direction|How each function enables the strategy|view|r18_lens|Other: lens picker|exe_strat|enterprise|functions by objective, gaps
+exe_dash|strat|Performance|Dashboards|entry||Dashboard-first list|r17u_dash|company|executive dashboards by role
+metrics|strat|Performance|Measures and targets|entry||Other: catalog|svc_sla|enterprise|metrics, formulas, owners, targets
+kcs_viz|strat|Performance|Chart library and builder|merged|r16j_dash|Designer canvas|r16j_dash|enterprise|charts, maps, shapes
+r15_rpt|strat|Performance|Reports and subscriptions|view|exe_dash|Report|r16j_dash|enterprise|reports, schedules, run history
+r16j_dash|strat|Performance|Build a dashboard|view|exe_dash|Designer canvas|kcs_viz|enterprise|charts, layouts, defaults
+r17u_dash|strat|Performance|Dashboard viewer and templates|merged|r16j_dash|Dashboard-first list|r16j_dash|enterprise|dashboards, templates, schedules
+bst|strat|Value and money|Budget and spend traceability|entry||Report|strat_exec|enterprise|funded work linked to goals, orphan spend
+bud_ben|strat|Value and money|Benefits and value realized|entry||Dashboard-first list|r17q_value|enterprise|benefits, checkpoints, payback
+r17q_value|strat|Value and money|Value realized|view|bud_ben|Report|bud_ben|enterprise|value layers, business case, scenarios
+r18_spend|strat|Value and money|Spend detail|view|bst|Report|bst|enterprise|spend by domain and type
+strat_exec|strat|Value and money|Trace goals to money and work|view|bst|Report|trace|enterprise|objectives, projects, budget lines, gaps
+trace|strat|Value and money|Trace goals to money and work (old link)|retire|strat_exec|Report|strat_exec|enterprise|objectives, projects, budget lines, records
+port|deliver|Choose the work|Ideas and requests for new work|entry||Dashboard-first list|bud_req|enterprise|demand items, scores, capacity, intake form
+ims|deliver|Plan and run|Schedules across projects|entry||Other: timeline|plan|group|projects, milestones, Gantt, critical path
+ppm_proj|deliver|Plan and run|Projects|entry||Dashboard-first list|ims|group|projects, health, milestones, teams
+ppm_raid|deliver|Plan and run|Risks, issues and decisions|entry||Dashboard-first list|exe_risk|team|RAID items. RAID means risks, assumptions, issues and dependencies
+r15_time|deliver|Plan and run|Timesheets and actuals|entry||Intake form|ppm_proj|individual|time entries, approvals, actuals
+plan|deliver|Plan and run|One project's plan|merged|ims|Other: timeline|ims|team|one project, baseline, milestones
+ppm_wbs|deliver|Plan and run|Tasks and work breakdown|view|ims|Other: spreadsheet|ims|team|tasks, WBS, Gantt, resources
+agile_board|deliver|Staff and ship|Team boards and backlogs|entry||Board|agile_art|team|stories, sprints, backlogs
+dev_pipe|deliver|Staff and ship|Build and release pipelines|entry||Dashboard-first list|itom_dev|team|pipelines, runs, gates, environments, freezes
+itsm_rel|deliver|Staff and ship|Plan and track releases|entry||Dashboard-first list|dev_pipe|team|releases, clashes, readiness, go or no-go
+ppl_cap|deliver|Staff and ship|Who is available to do the work|entry||Dashboard-first list|ppl_org|group|capacity, over capacity, scenarios
+agile_art|deliver|Staff and ship|Planning across teams|view|agile_board|Board|agile_board|group|release trains, increments, objectives
+itom_dev|deliver|Staff and ship|Delivery speed|merged|dev_pipe|Dashboard-first list|dev_pipe|team|DORA measures, environments
+itsm_chg|ops|Change and service levels|Plan and approve changes|entry||Dashboard-first list|obs_std|team|changes, calendar, change board, templates
+svc_cat|ops|Change and service levels|Manage the catalog|entry||Dashboard-first list|svc_portal|team|catalog items, workflows, approval rules
+svc_sla|ops|Change and service levels|Service promises and targets|entry||Dashboard-first list|itom_slo|team|SLAs, OLAs, XLAs, breaches
+obs_std|ops|Change and service levels|Pre-approved changes|merged|itsm_chg|Dashboard-first list|itsm_chg|team|standard changes, runbooks, pre-approvals
+kcs_home|ops|Knowledge|Browse and manage articles|entry||Dashboard-first list|kcs_edit|team|articles, lifecycle, freshness
+kcs_edit|ops|Knowledge|Write or update an article|view|kcs_home|Intake form|kcs_home|team|article draft, versions
+kcs_gap|ops|Knowledge|What knowledge is missing|view|kcs_home|Report|kcs_home|team|search misses, gaps
+vault|ops|Knowledge|Explore connected knowledge|view|kg|Other: graph explorer|kg|team|knowledge graph
+itom_run|ops|Monitoring|Runbooks and automatic fixes|entry||Dashboard-first list|obs_std|team|runbooks, automation rules, history
+obs_dash|ops|Monitoring|Monitor systems|entry||Dashboard-first list|exe_dash|team|hosts, CIs, metrics, logs, traces
+itom_evt|ops|Monitoring|Alerts and events|view|obs_dash|Dashboard-first list|obs_dash|team|alerts, correlation, thresholds
+itom_slo|ops|Monitoring|Reliability targets|view|obs_dash|Dashboard-first list|svc_sla|team|SLOs, error budgets, synthetic checks
+itsm_home|ops|Service desk|Service desk at a glance|entry||Dashboard-first list|grc_home|group|queues, volumes
+itsm_inc|ops|Service desk|Fix what is broken|entry||Dashboard-first list|itsm_mi|team|incidents, priorities, SLA timers
+itsm_mi|ops|Service desk|Run a major outage|entry||Other: command center|itsm_inc|team|major incident, war room, communications
+itsm_prb|ops|Service desk|Find root causes|entry||Dashboard-first list|itsm_inc|team|problems, known errors, root cause analysis
+svc_oncall|ops|Service desk|Who is on call|entry||Dashboard-first list|svc_skills|team|rotas, escalation, overrides
+svc_req|ops|Service desk|Work the request queue|entry||Dashboard-first list|svc_portal|team|requests, queues, approvals
+itom_cmdb|ops|Technology and services|Servers, apps and other technology|entry||Dashboard-first list|itom_model|team|configuration items, classes
+kg|ops|Technology and services|See what a change would affect|entry||Other: graph explorer|itom_graph|team|services, CIs, dependencies, knowledge links
+svc_360|ops|Technology and services|Services we run|entry||360 view|exe_apps|group|services, owners, tiers, map
+svc_asset|ops|Technology and services|Assets and software licenses|entry||Dashboard-first list|itom_cmdb|team|assets, lifecycle, licenses
+exe_apps|ops|Technology and services|Applications we run|view|svc_360|Dashboard-first list|svc_360|team|applications, value and health, TIME quadrants
+itom_disc|ops|Technology and services|Scan and import technology|view|itom_cmdb|Dashboard-first list|itom_cmdb|team|discovery sources, runs, mappings
+itom_graph|ops|Technology and services|Technology dependencies|view|kg|Other: graph explorer|kg|team|dependency graph
+itom_health|ops|Technology and services|Is our technology data trustworthy|view|itom_cmdb|Dashboard-first list|itom_cmdb|team|CI health scores, remediation tasks
+itom_model|ops|Technology and services|How technology records are structured|view|itom_cmdb|Other: graph explorer|itom_cmdb|team|CI classes, relationship types
+r16h_ci|ops|Technology and services|Who owns each technology item|view|itom_cmdb|Dashboard-first list|itom_health|team|CI owners, gaps
+bud_doa|money|Approve and pay|Who can approve what|entry||Dashboard-first list|r16h_rules|group|approval matrix, sample cases, segregation of duties
+bud_req|money|Approve and pay|Budget requests|entry||Dashboard-first list|port|enterprise|funding requests, decision funnel, routing
+inv|money|Approve and pay|Approve invoices|entry||Approval inbox|flw_appr|team|invoices, vendors, milestones, approval rules
+r15_p2p|money|Approve and pay|Procure to pay|entry||Dashboard-first list|inv|group|requisitions, orders, receipts, matching
+bud_over|money|Budgets|Budgets|entry||Dashboard-first list|fin_budget|enterprise|budgets, forecasts, reserves, approvals
+fin_color|money|Budgets|Which funding pays for what|entry||Dashboard-first list|fin_budget|enterprise|funding colors, headroom, rule matrix
+bud_lines|money|Budgets|All budget lines|view|bud_over|Dashboard-first list|bud_over|enterprise|budget lines
+bud_model|money|Budgets|Forecast model|view|bud_over|Report|fin_budget|enterprise|cost plan, capitalization, depreciation, TCO
+fin_budget|money|Budgets|Budget by funding type|view|bud_over|Dashboard-first list|bud_model|enterprise|versions, variance, forecast methods
+fin_gates|money|Budgets|Funding approval gates|view|fin_color|Dashboard-first list|fin_color|enterprise|stage gates, capitalization, release at G3
+fin_model|money|Budgets|IT financial model|view|bud_over|Report|bud_model|enterprise|principles, decisions, roadmap
+fin_rules|money|Budgets|Financial control checks|view|fin_color|Dashboard-first list|grc_ctl|group|validation rules, exceptions, evidence
+fin_spend|money|Budgets|Test the order money is spent|view|fin_color|Other: simulator|fin_color|enterprise|spend-order waterfall
+bud_ven|money|Vendors and contracts|Vendors and contracts|entry||Dashboard-first list|grc_ven|team|vendors, contracts, renewals, purchase orders
+ppm_sow|money|Vendors and contracts|Review a statement of work|entry||Other: document analyzer|bud_ven|team|contracts, clauses, playbook
+tbm_model|money|Where money goes|See what technology costs|entry||Report|fin_alloc|enterprise|cost pools, towers, unit cost
+bud_ccmap|money|Where money goes|Cost center mapping|view|tbm_model|Dashboard-first list|fin_alloc|enterprise|cost centers, roll-up to org chart
+fin_alloc|money|Where money goes|Charge costs to teams|view|tbm_model|Dashboard-first list|tbm_model|team|showback, drivers, splits
+itom_fin|money|Where money goes|Cloud spend|view|tbm_model|Dashboard-first list|tbm_model|enterprise|cloud spend, untagged cost, rightsizing
+svc_skills|people|Capacity and skills|Skills and availability|entry||Dashboard-first list|ppl_cap|group|skills, certificates, availability
+ppl_perf|people|Learning and performance|Performance reviews|entry||Dashboard-first list|exe_strat|individual|goals, reviews, calibration
+ppl_train|people|Learning and performance|Training and courses|entry||Dashboard-first list|svc_skills|individual|courses, assignments, certificates
+org_chart|people|Organization|Org chart|entry||Other: map or diagram|orgassist|company|people, teams, AI teammates, ownership
+ppl_org|people|Organization|Workload by team|view|org_chart|Dashboard-first list|ppl_cap|team|teams, weekly load
+kcs_test|risk|AI oversight|Test AI answers|entry||Dashboard-first list|kcs_prompt|team|test cases, judge results, regression gate
+tower|risk|AI oversight|Watch and control AI agents|entry||Dashboard-first list|r15d_agents|team|agents, budgets, lineage, kill switch
+adm_gate|risk|AI oversight|AI usage and cost|view|tower|Other: admin configuration|tower|team|model routes, tokens, budget guard
+agent_defs|risk|AI oversight|Agent definitions|view|tower|Catalog|r15d_agents|team|agent cards: prompts, guidelines, box
+ai_runtime|risk|AI oversight|Agent runtime|view|tower|Dashboard-first list|wf_runs|team|agent runs, gates, controls
+flw_agent|risk|AI oversight|Workflows with AI agents|view|tower|Designer canvas|flw_design|team|agentic workflows
+kcs_prompt|risk|AI oversight|Prompt library|view|kcs_test|Dashboard-first list|kcs_test|team|prompts, versions, approvals
+kcs_skills|risk|AI oversight|What AI agents can do|view|tower|Dashboard-first list|agent_defs|team|agent skills, tools
+r15d_agents|risk|AI oversight|Agent registry|view|tower|Dashboard-first list|agent_defs|team|agents, owners, sponsors
+grc_home|risk|Control, audit and access|Governance, risk and compliance|entry||Dashboard-first list|exe_risk|enterprise|risk, control, finding and policy summary
+r15_iam|risk|Control, audit and access|Identity and access|entry||Dashboard-first list|r16g_perm|enterprise|roles, access requests, reviews, joiner mover leaver
+r15d_evidence|risk|Control, audit and access|Evidence room|entry||Dashboard-first list|adm_audit|enterprise|controls, approvals, audit trail, decisions, exports
+grc_aud|risk|Control, audit and access|Audit management|view|grc_home|Dashboard-first list|adm_audit|enterprise|audits, requests
+grc_ctl|risk|Control, audit and access|Controls and testing|view|grc_home|Dashboard-first list|fin_rules|enterprise|controls, tests, attestation
+grc_find|risk|Control, audit and access|Issues and findings|view|grc_home|Dashboard-first list|grc_aud|enterprise|findings
+grc_pol|risk|Control, audit and access|Policies|view|grc_home|Dashboard-first list|kcs_home|enterprise|policies, acknowledgements
+r18_access|risk|Control, audit and access|Data access requests|merged|r15_iam|Dashboard-first list|r15_iam|enterprise|data access requests, grants, data owners
+bc_home|risk|Resilience|Resilience|entry||Dashboard-first list|itsm_mi|enterprise|continuity summary
+bc_cal|risk|Resilience|Exercise calendar|view|bc_home|Other: calendar|itsm_chg|enterprise|exercises, windows, results
+bc_decl|risk|Resilience|Declare a disaster|view|bc_home|Intake form|itsm_mi|enterprise|declarations
+bc_frame|risk|Resilience|Resilience framework|view|bc_home|Other: reference|bc_home|enterprise|dimensions, assessment
+bc_metrics|risk|Resilience|Resilience measures|view|bc_home|Report|metrics|enterprise|resilience metrics
+bc_plans|risk|Resilience|Continuity plans|view|bc_home|Dashboard-first list|itom_run|enterprise|plans, call trees, runbooks
+bc_tiers|risk|Resilience|Recovery tiers|view|bc_home|Dashboard-first list|svc_360|enterprise|tiers, obligations, CIs
+bc_trace|risk|Resilience|Continuity traceability|view|bc_home|Report|kg|enterprise|services, CIs, contracts, gaps
+exe_risk|risk|Risk|Risk|entry||Dashboard-first list|grc_risk|enterprise|risks, heat map, Monte Carlo, register
+guard|risk|Risk|Guardrails|entry||Dashboard-first list (register)|r18_app|enterprise|guardrails, stage matrix, guided views
+grc_exc|risk|Risk|Exceptions and acceptances|view|exe_risk|Dashboard-first list|plat_debt|enterprise|exceptions, expiry
+grc_risk|risk|Risk|Risk register|view|exe_risk|Dashboard-first list|ppm_raid|enterprise|risks, owners, due dates
+grc_ven|risk|Risk|Third-party risk|view|exe_risk|Dashboard-first list|bud_ven|enterprise|vendor risk
+exe_mat|transform|Processes and maturity|Process maturity|entry||Dashboard-first list|r18_mature|group|maturity models, levels, scores
+plat_proc|transform|Processes and maturity|Processes|entry||Dashboard-first list|plat_pmap|group|processes, steps, owners, maturity
+draw_studio|transform|Processes and maturity|Draw a process|view|plat_proc|Designer canvas|flw_design|group|process drawings
+flw_bpmn|transform|Processes and maturity|Process models (BPMN)|view|plat_proc|Designer canvas|draw_studio|group|BPMN models
+flw_design|transform|Processes and maturity|Workflow designer|view|plat_proc|Designer canvas|draw_studio|group|workflow steps, gates, step modes
+loop|transform|Processes and maturity|What we learned from overrides|retire|tower|Other: diagram|tower|team|override events, learning items
+r16m_guides|transform|Processes and maturity|Process guides|view|plat_proc|Other: help or onboarding|kcs_home|group|generated guides, link checker
+r18_mature|transform|Processes and maturity|Maturity roadmaps|view|exe_mat|Report|exe_mat|group|roadmaps by process
+orgassist|transform|Redesign the work|Org chart with agent assist|entry||Designer canvas|org_chart|group|proposed org, AI teammates, FTE
+orgdesign|transform|Redesign the work|Agent Action|entry||Other: agent action surface|orgassist|enterprise|COO brief, diagnosis, gaps, roadmap
+ppl_jrny|transform|Redesign the work|Journey maps|entry||Other: map or diagram|orgassist|enterprise|journeys, steps, overlays, process map
+r18_builds|transform|Scale what was built|Build list|entry||Dashboard-first list|plat_gate|team|builds, owners, need action
+studio|transform|Scale what was built|VibeCheck|entry||Other: builder entry|plat_build|team|chat-to-build brief
+plat_gate|transform|Scale what was built|Approve citizen-built apps|view|r18_builds|Dashboard-first list|r18_builds|team|apps, conformance gate, tiers
+r18_app|transform|Scale what was built|App record|search||Record detail drawer|rec_shell|team|one build: guardrails, process, data, metrics, debt
+showroom|show|Showroom|Showroom|entry||Other: demo space|r17p_tour|platform|tours, beats, lenses
+r15_mobile|show|Showroom|Phone approvals and on-call (preview)|view|showroom|Other: device preview|flw_appr|individual|phone preview of approvals
+r17p_tour|show|Showroom|Tour|view|showroom|Other: help or onboarding|showroom|platform|stories, moments, rehearsal
+r17q_thinking|show|Showroom|How it was built|view|showroom|Report|log|platform|design principles, rounds, decisions
+adm_audit|build|Access and tenants|Audit log and retention|entry||Dashboard-first list|r15d_evidence|group|audit log, retention, holds
+r16g_perm|build|Access and tenants|Permissions|entry||Other: admin configuration|r15_iam|team|permission matrix, row and field rules
+tn_admin|build|Access and tenants|Tenancy|entry||Other: admin configuration|r16m_setup|team|tenants, memberships, data packs
+adm_sec|build|Access and tenants|Security and access|view|r16g_perm|Other: admin configuration|r16g_perm|team|roles, policies, labels, access reviews
+r16m_overlay|build|Access and tenants|Tenant overlays|view|tn_admin|Other: admin configuration|tn_admin|team|overlays, compare tenants
+tn_metrics|build|Access and tenants|Metrics and objectives (tenant view)|role|admin|Report|metrics|team|metrics and objectives per tenant
+tn_people|build|Access and tenants|People directory (tenant view)|role|admin|Dashboard-first list|org_chart|team|people per tenant
+tn_projects|build|Access and tenants|Projects and budget (tenant view)|role|admin|Dashboard-first list|ppm_proj|team|projects, budget per tenant
+flw_dmn|build|Automate|Rules and decisions|entry||Designer canvas|dec_cov|team|decision tables, rules, events, notifications
+r16h_groups|build|Automate|Approval groups|entry||Other: admin configuration|bud_doa|team|approver groups, approval paths
+r16h_status|build|Automate|Status catalog|entry||Other: admin configuration|adm_studio|team|statuses, mappings
+wf_runs|build|Automate|Workflow runs|entry||Dashboard-first list|ai_runtime|team|process instances, timers, retries
+dec_cov|build|Automate|Rule coverage|view|flw_dmn|Dashboard-first list|flw_dmn|team|rule coverage, review queue, gaps
+r16h_rules|build|Automate|Approval rules|view|r16h_groups|Other: admin configuration|bud_doa|team|rules, simulation, bindings
+r17s_rules|build|Automate|In-app rules and scripts|view|flw_dmn|Designer canvas|zevt|team|rules, scripts, firing log
+svc_notify|build|Automate|Notifications|view|flw_dmn|Other: admin configuration|zevt|team|channels, templates, delivery log
+zevt|build|Automate|Events and rules|view|flw_dmn|Other: admin configuration|r17s_rules|team|events, rules, firing log
+flw_asmt|build|Build|Assessments and questionnaires|entry||Intake form|r16m_import|team|questionnaires, results
+plat_build|build|Build|Build a module|entry||Intake form|studio|team|blueprint, manifest, worked example
+plat_contract|build|Build|Feature contract|entry||Report|plat_gate|team|contract scores, rules, exceptions
+plat_mcp|build|Build|Connect AI and coding tools|entry||Other: admin configuration|flw_hub|team|tools, clients, contract file
+plat_self|build|Build|Let ${BRAND.name} extend itself|merged|plat_build|Other: builder entry|plat_build|team|self-build proposals
+rec_shell|build|Build|Record shell (pattern reference)|search||Record detail drawer|r18_app|team|one record with activity, comments, related
+flw_hub|build|Data and integration|Connect other systems|entry||Dashboard-first list|plat_fab|team|connectors, webhooks, retries
+plat_map|build|Data and integration|Platform maps|entry||Other: map or diagram|plat_pmap|team|modules, processes, data flows, data model
+plat_reg|build|Data and integration|Registries|entry||Dashboard-first list|plat_store|team|entities, duplicates, field catalog
+r15_sem|build|Data and integration|Semantic model|entry||Other: admin configuration|metrics|team|measures, dimensions, certified metrics
+r16m_sources|build|Data and integration|Data sources|entry||Dashboard-first list|flw_hub|team|sources, field mapping
+own_gaps|build|Data and integration|Ownership and gaps|view|plat_reg|Dashboard-first list|r16h_ci|team|owners, backups, gaps
+plat_data|build|Data and integration|Data model|view|plat_map|Other: graph explorer|plat_data_old|team|entities, fields, lineage
+plat_data_old|build|Data and integration|Data tables and checks (old)|retire|plat_data|Other: graph explorer|plat_data|team|entities, fields
+plat_dmap|build|Data and integration|Data flows|view|plat_map|Other: map or diagram|plat_data|team|data connections, field lineage
+plat_fab|build|Data and integration|Data feeds and mappings|view|flw_hub|Dashboard-first list|flw_hub|team|connectors, mappings, field authority
+plat_pmap|build|Data and integration|How processes connect|view|plat_map|Other: map or diagram|plat_proc|team|process connections, critical paths
+plat_store|build|Data and integration|Entity store|view|plat_reg|Dashboard-first list|plat_reg|team|entities, promotions, change log
+r15d_facts|build|Data and integration|Facts and conflicts|view|plat_reg|Dashboard-first list|metrics|team|shared numbers, conflicts
+r16m_import|build|Data and integration|Import foundation data|view|r16m_sources|Intake form|itom_disc|team|import batches, templates
+zl_conn|build|Data and integration|Connections and gaps|view|plat_map|Other: graph explorer|plat_pmap|team|dead links, orphans, fixes
+log|build|Product|Product log|entry||Other: activity log|r17q_thinking|team|feedback items, releases
+scr_map|build|Product|Screen map|entry||Report|nav_studio|team|screens, keep and cut decisions
+adm_env|build|Run the platform|Environments and releases|entry||Other: admin configuration|dev_pipe|team|environments, migration kits, upgrades, feature flags
+adm_meter|build|Run the platform|Licensing and billing|entry||Dashboard-first list|tbm_model|team|seats, plans, usage meters, statements
+adm_studio|build|Run the platform|Fields, forms and themes|entry||Other: admin configuration|r16h_status|team|fields, layouts, list views, themes, translations
+nav_studio|build|Run the platform|Navigation and search settings|entry||Other: admin configuration|scr_map|team|menu map, search health, usage
+plat_debt|build|Run the platform|Technical debt|entry||Dashboard-first list|r18_debt|team|debt items, exceptions, burn-down
+r16m_setup|build|Run the platform|Implementation and setup|entry||Other: wizard|tn_admin|team|setup steps, tenants, branding, cutover
+r16m_deploy|build|Run the platform|Deployment paths|view|r16m_setup|Other: reference|r16m_setup|team|deployment options, fit finder
+r18_debt|build|Run the platform|Risk and debt|merged|plat_debt|Report|plat_debt|team|debt and risk per build
+plat_retrofit|build|Build|Retrofit matrix|entry||Report|plat_contract|platform|screens, foundation checks, waivers`;
+/* families: canonical id | menu label | views (id:label, * marks a view merged from another screen) (section d) */
+const FAMS=`flw_appr|My approvals|flw_appr:My approvals;inbox:Alerts and inbox
+meet_hub|Meetings|meet_hub:Meetings;fo:My calendar and follow-ups;meet_act:Meeting actions;meet_dec:Decisions made in meetings;meet_series:Recurring meetings and forums;ppl_av:Book a room;ppl_meet:Meeting minutes
+svc_portal|Report a problem or order something|svc_portal:Report a problem or order something;svc_guides:Order guides
+r18_lens|Executive lenses|r18_lens:Executive lenses;r18_strategy:How each function enables the strategy;r18_levels:Views by level*
+exe_dash|Dashboards|exe_dash:Dashboards;r15_rpt:Reports and subscriptions;r16j_dash:Build a dashboard;kcs_viz:Chart library and builder*;r17u_dash:Dashboard viewer and templates*
+bud_ben|Benefits and value realized|bud_ben:Benefits and value realized;r17q_value:Value realized
+bst|Budget and spend traceability|bst:Budget and spend traceability;r18_spend:Spend detail;strat_exec:Trace goals to money and work
+ims|Schedules across projects|ims:Schedules across projects;ppm_wbs:Tasks and work breakdown;plan:One project's plan*
+agile_board|Team boards and backlogs|agile_board:Team boards and backlogs;agile_art:Planning across teams
+kcs_home|Browse and manage articles|kcs_home:Browse and manage articles;kcs_edit:Write or update an article;kcs_gap:What knowledge is missing
+kg|See what a change would affect|kg:See what a change would affect;vault:Explore connected knowledge;itom_graph:Technology dependencies
+obs_dash|Monitor systems|obs_dash:Monitor systems;itom_evt:Alerts and events;itom_slo:Reliability targets
+svc_360|Services we run|svc_360:Services we run;exe_apps:Applications we run
+itom_cmdb|Servers, apps and other technology|itom_cmdb:Servers, apps and other technology;itom_disc:Scan and import technology;itom_health:Is our technology data trustworthy;itom_model:How technology records are structured;r16h_ci:Who owns each technology item
+bud_over|Budgets|bud_over:Budgets;bud_lines:All budget lines;bud_model:Forecast model;fin_budget:Budget by funding type;fin_model:IT financial model
+fin_color|Which funding pays for what|fin_color:Which funding pays for what;fin_gates:Funding approval gates;fin_rules:Financial control checks;fin_spend:Test the order money is spent
+tbm_model|See what technology costs|tbm_model:See what technology costs;bud_ccmap:Cost center mapping;fin_alloc:Charge costs to teams;itom_fin:Cloud spend
+org_chart|Org chart|org_chart:Org chart;ppl_org:Workload by team
+tower|Watch and control AI agents|tower:Watch and control AI agents;adm_gate:AI usage and cost;agent_defs:Agent definitions;ai_runtime:Agent runtime;flw_agent:Workflows with AI agents;kcs_skills:What AI agents can do;r15d_agents:Agent registry
+kcs_test|Test AI answers|kcs_test:Test AI answers;kcs_prompt:Prompt library
+grc_home|Governance, risk and compliance|grc_home:Governance, risk and compliance;grc_aud:Audit management;grc_ctl:Controls and testing;grc_find:Issues and findings;grc_pol:Policies
+bc_home|Resilience|bc_home:Resilience;bc_cal:Exercise calendar;bc_decl:Declare a disaster;bc_frame:Resilience framework;bc_metrics:Resilience measures;bc_plans:Continuity plans;bc_tiers:Recovery tiers;bc_trace:Continuity traceability
+exe_risk|Risk|exe_risk:Risk;grc_exc:Exceptions and acceptances;grc_risk:Risk register;grc_ven:Third-party risk
+plat_proc|Processes|plat_proc:Processes;draw_studio:Draw a process;flw_bpmn:Process models (BPMN);flw_design:Workflow designer;r16m_guides:Process guides
+exe_mat|Process maturity|exe_mat:Process maturity;r18_mature:Maturity roadmaps
+r18_builds|Build list|r18_builds:Build list;plat_gate:Approve citizen-built apps
+showroom|Showroom|showroom:Showroom;r15_mobile:Phone approvals and on-call (preview);r17p_tour:Tour;r17q_thinking:How it was built
+r16g_perm|Permissions|r16g_perm:Permissions;adm_sec:Security and access
+tn_admin|Tenancy|tn_admin:Tenancy;r16m_overlay:Tenant overlays
+flw_dmn|Rules and decisions|flw_dmn:Rules and decisions;dec_cov:Rule coverage;r17s_rules:In-app rules and scripts;svc_notify:Notifications;zevt:Events and rules
+r16h_groups|Approval groups|r16h_groups:Approval groups;r16h_rules:Approval rules
+plat_reg|Registries|plat_reg:Registries;own_gaps:Ownership and gaps;plat_store:Entity store;r15d_facts:Facts and conflicts
+plat_map|Platform maps|plat_map:Platform maps;plat_data:Data model;plat_dmap:Data flows;plat_pmap:How processes connect;zl_conn:Connections and gaps
+flw_hub|Connect other systems|flw_hub:Connect other systems;plat_fab:Data feeds and mappings
+r16m_sources|Data sources|r16m_sources:Data sources;r16m_import:Import foundation data
+r16m_setup|Implementation and setup|r16m_setup:Implementation and setup;r16m_deploy:Deployment paths`;
+/* merge-only targets: the screen absorbs a merged view without becoming a family head; "tab" redirects to an existing tab
+   that already holds the merged content (prefix:index of views()), otherwise the merged screen opens as a view of the target */
+const MERGE={exe_scen:{to:"exe_strat",l:"Compare what-if scenarios"},itom_dev:{to:"dev_pipe",l:"Delivery speed",tab:"dev_v:6"},obs_std:{to:"itsm_chg",l:"Pre-approved changes"},
+ r18_access:{to:"r15_iam",l:"Data access requests"},plat_self:{to:"plat_build",l:"Let "+BRAND.name+" extend itself"},r18_debt:{to:"plat_debt",l:"Risk and debt"},
+ r18_levels:{to:"r18_lens"},kcs_viz:{to:"r16j_dash"},r17u_dash:{to:"r16j_dash"},plan:{to:"ims"}};
+const TX={};let txo=0;
+TAXO.split("\n").forEach(line=>{const p=line.split("|");if(p.length<9)return;TX[p[0]]={sp:p[1],sub:p[2],l:p[3],kind:p[4],ref:p[5]||"",arch:p[6],cmp:p[7],obj:p[8],objs:(p[9]||"").split(/\s*,\s*/).filter(Boolean),o:txo++}});
+const FX=FAMS.split("\n").filter(Boolean).map(line=>{const p=line.split("|");return {id:p[0],label:p[1],views:p[2].split(";").map(v=>{const i=v.indexOf(":");const l=v.slice(i+1);return [v.slice(0,i),l.replace(/\*$/,""),/\*$/.test(l)]})}});
+const spLabel=sp=>(SPACES[SPID[sp]]||[0,sp])[1];
+/* the place of one screen: a saved override (old group id or new space id) moves the entry, the taxonomy row places it, and a
+   screen with no row is search only */
+function placeOf(id){const t=TX[id],ov=OVR[id];let r=t?Object.assign({id},t):{id,sp:OLDGRP[oldGroup(id)]||"build",sub:"",l:null,kind:"search",ref:"",arch:"",cmp:"",obj:"",objs:[],o:9000,untaxed:true};
+ if(ov&&ov.g){const sp=SPID[ov.g]!=null?ov.g:OLDGRP[ov.g];if(sp){r.sp=sp;if(r.kind!=="entry")r.kind="entry";r.moved=true;if(ov.sub!=null)r.sub=ov.sub;else if(SPACES[SPID[sp]][5].indexOf(r.sub)<0)r.sub=SPACES[SPID[sp]][5][0]}}
+ return r}
+function spaceEntries(sp,persona){const out={};SPACES[SPID[sp]][5].forEach(s=>out[s]=[]);
+ SCREENS.forEach(s=>{const id=s[0];if(id==="home"&&sp!=="home")return;const p=placeOf(id);if(p.sp!==sp)return;
+  const shown=p.kind==="entry"||(p.kind==="role"&&persona&&persona===p.ref);if(!shown)return;(out[p.sub]=out[p.sub]||[]).push(id)});
+ Object.keys(out).forEach(k=>out[k].sort((a,b)=>placeOf(a).o-placeOf(b).o));return out}
+NAVX.taxo={spaces:()=>SPACES.map(s=>({id:s[0],label:s[1],kind:s[2],icon:s[3],blurb:s[4],subs:s[5].slice()})),areas:()=>AREA_IDS.slice(),
+ row:id=>TX[id]?Object.assign({id},TX[id]):null,place:placeOf,label:spLabel,entries:spaceEntries,oldGroup:g=>OLDGRP[g]||null,oldGroups:()=>Object.assign({},OLDGRP),
+ families:()=>FX.map(f=>({id:f.id,label:f.label,views:f.views.map(v=>v.slice())})),merges:()=>JSON.parse(JSON.stringify(MERGE)),rows:()=>Object.keys(TX)};
+/* PH-14 step 8 (CL-51): the REG metadata every screen carries by default (REG.meta in kit.js merges a screen's own sixth REG
+   argument over this). personas is a purview hint, not a permission: the personas whose purview or role pins reach the screen. */
+const MENU_OF={entry:"entry",role:"entry",view:"view",merged:"view",search:"search",retire:"search"};
+NAVX.taxo.meta=function(id){const t=TX[id];const p=placeOf(id);const fam=G(()=>R15.famOf[id]);const top=placeOf(topOf(id));
+ const PV=G(()=>R15D.PURVIEW,{})||{};const personas=Object.keys(PV).filter(k=>{const v=PV[k];if((v.pins||[]).indexOf(id)>=0)return true;
+  if(top.sp==="build")return k==="arch"||k==="admin";if(top.sp==="my"||top.sp==="ask"||top.sp==="home")return true;if(top.sp==="show")return k!=="guest";return (v.areas||[]).indexOf(top.sp)>=0});
+ return {area:top.sp,sub:p.kind==="entry"||p.kind==="role"?p.sub:top.sub,objects:t?t.objs.slice():[],archetype:t?t.arch:"",personas,objective:t?t.obj:"",compare:t?t.cmp:"",
+  family:fam&&fam.id!==id?fam.id:null,view:fam&&fam.id!==id?(fam.views.find(v=>v[0]===id)||[])[1]||null:null,menu:t?MENU_OF[t.kind]||"search":"search"}};
+/* the check: every registered screen has exactly one place; every entry sits in one sub-group of one space; the menu stays
+   inside its budget of 7 areas x 7 sub-groups x 7 entries (section g, rule 8) */
+NAVX.taxo.check=function(){const ids=SCREENS.map(s=>s[0]);const by={entry:[],view:[],merged:[],search:[],role:[],retire:[]};const seen={},dup=[];
+ ids.forEach(id=>{const p=placeOf(id);(by[p.kind]=by[p.kind]||[]).push(id)});
+ SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");Object.keys(e).forEach(sub=>e[sub].forEach(id=>{if(seen[id])dup.push(id);seen[id]=s[0]+" / "+sub}))});
+ const famIds=new Set();FX.forEach(f=>f.views.forEach(v=>famIds.add(v[0])));
+ const badRef=ids.filter(id=>{const p=placeOf(id);if(p.kind==="view")return !famIds.has(id)||!ids.includes(p.ref);if(p.kind==="merged"||p.kind==="retire")return !ids.includes(p.ref);return false});
+ const over=[];SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");const subs=Object.keys(e).filter(k=>e[k].length);if(subs.length>7)over.push(s[0]+" has "+subs.length+" sub-groups");subs.forEach(k=>{if(e[k].length>7)over.push(s[0]+" / "+k+" has "+e[k].length+" entries")})});
+ if(AREA_IDS.length>7)over.push(AREA_IDS.length+" areas");
+ return {screens:ids.length,entries:by.entry.length,views:by.view.length,merged:by.merged.length,search:by.search.length,role:by.role.length,retire:by.retire.length,
+  placed:Object.keys(seen).length,duplicates:dup,untaxed:ids.filter(id=>!TX[id]),orphans:Object.keys(TX).filter(id=>!ids.includes(id)),badRef,over,where:seen}};
 /* the unmapped check: every registered screen must have an entry in the map */
-NAVX.unmapped=function(){return SCREENS.map(s=>s[0]).filter(id=>!MAP[id])};
-NAVX.missing=function(){return Object.keys(MAP).filter(id=>!screenRow(id))};
-NAVX.counts=function(){const o={};GROUPS.forEach(g=>o[g[0]]=0);SCREENS.forEach(s=>{const g=resolve(s[0]).g;o[g]=(o[g]||0)+1});return o};
-NAVX.check=function(){const seen={},dup=[];let n=0;GROUPS.forEach(g=>{(g[0]==="home"?["home"]:groupItems(g[0])).forEach(id=>{n++;if(seen[id])dup.push(id);seen[id]=g[0]})});
- const all=SCREENS.map(s=>s[0]);return {screens:all.length,placed:n,notPlaced:all.filter(id=>!seen[id]),duplicates:dup,unmapped:NAVX.unmapped(),orphans:NAVX.missing()}};
+/* PH-14 (step 3): old group ids and labels, and the new area labels, open the area's landing screen (old links, saved hashes);
+   a screen id always wins, and NAVX.resolveGroup turns any old group id into the space that took it over */
+const AREA_HOME={home:"home",my:"flw_appr",ask:"svc_portal",strat:"exe_strat",deliver:"ppm_proj",ops:"itsm_home",money:"bud_over",people:"org_chart",risk:"grc_home",transform:"plat_proc",show:"showroom",build:"plat_map"};
+const OLDGL={story:"story and demo",my:"my work",help:"get help or ask for something",plan:"projects and delivery",fix:"service and support",money:"money and contracts",people:"people and teams",learn:"knowledge and learning",make:"my builds and access",kit:"design, data and controls",lens:"executive lenses",strat:"strategy and value",grc:"risk and control",res:"resilience",ai:"ai oversight",reg:"registry and truth",tech:"enterprise it",plat:"platform admin",new:"new and unsorted"};
+Object.keys(OLDGRP).forEach(g=>{const h=AREA_HOME[OLDGRP[g]];if(h&&g!=="plan"&&g!=="home"&&!ALIAS[g])ALIAS[g]=h});
+Object.keys(OLDGL).forEach(g=>{const h=AREA_HOME[OLDGRP[g]];if(h&&!ALIAS[OLDGL[g]])ALIAS[OLDGL[g]]=h});
+SPACES.forEach(s=>{const h=AREA_HOME[s[0]];if(h&&s[0]!=="home")ALIAS[s[1].toLowerCase()]=h});
+NAVX.areaHome=Object.assign({},AREA_HOME);
+NAVX.resolveGroup=g=>{g=String(g||"").trim();if(SPID[g]!=null)return g;if(OLDGRP[g])return OLDGRP[g];const l=g.toLowerCase();const k=Object.keys(OLDGL).find(x=>OLDGL[x]===l);if(k)return OLDGRP[k];const sp=SPACES.find(x=>x[1].toLowerCase()===l);return sp?sp[0]:null};
+/* the unmapped check: every registered screen must have a row in the taxonomy (a screen with none is search only) */
+NAVX.unmapped=function(){return SCREENS.map(s=>s[0]).filter(id=>!TX[id])};
+NAVX.missing=function(){return Object.keys(TX).filter(id=>!screenRow(id))};
+NAVX.counts=function(){const o={};SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");o[s[0]]=Object.keys(e).reduce((n,k)=>n+e[k].length,0)});return o};
+/* PH-14 scope item 6: every non-hidden screen appears in exactly one menu place; every other screen is reachable through its
+   family, a merge, an alias or search. placed counts the menu entries; notPlaced lists screens with no place at all. */
+NAVX.check=function(){const c=NAVX.taxo.check();const ids=SCREENS.map(s=>s[0]);
+ const fam=id=>!!G(()=>R15.famOf[id])||!!G(()=>R15.alias[id]);
+ const notPlaced=ids.filter(id=>{const p=placeOf(id);if(p.kind==="entry"||p.kind==="role")return !c.where[id];if(p.kind==="view"||p.kind==="merged")return !fam(id);if(p.kind==="retire")return !(fam(id)||screenRow(p.ref));return false});
+ return {screens:ids.length,placed:c.placed,entries:c.entries,views:c.views,merged:c.merged,search:c.search,role:c.role,retire:c.retire,notPlaced,duplicates:c.duplicates,unmapped:c.untaxed,orphans:c.orphans,badRef:c.badRef,over:c.over}};
 
 /* ---------- state per persona: favorites, history, recent searches, telemetry ---------- */
 let ST=null,STP=null,saveT=0;
@@ -407,34 +728,104 @@ const phoneMQ=matchMedia("(max-width:700px),(max-height:500px) and (max-width:95
 const collapsed=()=>!phoneMQ.matches&&!!(q1("#railCollapse")&&q1("#railCollapse").checked);
 function typeIcon(t){t=String(t||"");if(/person|people|contractor/i.test(t))return ICO.user;if(/process|workflow/i.test(t))return ICO.flow;if(/data|field|entity|table/i.test(t))return ICO.table;if(/metric|measure/i.test(t))return ICO.chart;if(/knowledge|article|book/i.test(t))return ICO.doc;if(/module/i.test(t))return ICO.plat;return ICO.doc}
 const BADGE={inv:3,tower:1};
-function itemHTML(id){const s=screenRow(id);if(!s)return"";const m=resolve(id),hint=hintOf(id),cur=S.screen===id;
- return `<div class="navit" data-nx-it="${id}"><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}
+function itemHTML(id,o){o=o||{};const s=screenRow(id);if(!s)return"";const m=resolve(id),hint=o.pin?"":hintOf(id),cur=S.screen===id,lab=o.label||m.l;
+ return `<div class="navit${o.pin?" nx-pin":""}" data-nx-it="${id}"${o.pin?' data-nx-pin="1"':""}><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`}
+NAVX.itemHTML=itemHTML;
 function favRow(f){const scr=f.kind==="screen"&&screenRow(f.key);const name=f.label||(scr?labelOf(f.key):f.title);const icon=scr?IC(scr[2]):IC(typeIcon(f.type));const cur=scr&&S.screen===f.key;
  const meta=scr?"":`<small class="nx-h">${E(f.type)}${f.sub?" · "+E(f.sub):""}</small>`;
  return `<div class="navit nx-fav${cur?" is-cur":""}" data-dnd-id="${E(f.id)}" data-nx-fav="${E(f.id)}">${grip}<button class="navi" type="button" data-nx-open="${E(f.id)}" title="${E(scr?tip(f.key):f.type+": "+f.title)}">${icon}<span class="nx-t"><span class="nx-l" data-nx-lab>${E(name)}</span>${meta}</span></button><button type="button" class="nx-pen" data-nx-ren="${E(f.id)}" aria-label="Rename ${E(name)}" title="Rename">${SVG(ICO.pen,14,1.9)}</button><button type="button" class="nx-star nx-rowstar" data-nx-star="fav:${E(f.id)}" aria-pressed="true" aria-label="Remove ${E(name)} from favorites" title="Remove from favorites">${SVG(ICO.star,16,1.8)}</button></div>`}
 function favsHTML(){const s=st();return `<section class="nx-favs" data-nx-favs aria-label="Favorites"><div class="nx-fh"><span class="nx-fht">${SVG(ICO.star,14,2)}<b>Favorites</b><em class="nx-favcount">${s.fav.length}</em></span></div>${s.fav.length?`<div class="nx-favlist" data-dnd="nxfav" data-dnd-scope="nxfav">${s.fav.map(favRow).join("")}</div>`:`<p class="nx-empty">Star any screen or record to keep it here.</p>`}</section>`}
-function groupHTML(g,cur){const ids=groupItems(g);if(!ids.length)return"";S.navOpen=S.navOpen||{};const open=S.navOpen[g]!==undefined?S.navOpen[g]:cur===g;let sub="";
- const body=ids.map(id=>{const m=resolve(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";return h+itemHTML(id)}).join("");
- return `<details class="navgd" data-ng="${g}" ${open?"open":""}><summary title="${E(GROUPS[GID[g]][3])}"><span class="nx-gi">${SVG(ICO[g]||ICO.new,15,1.9)}</span><span class="nx-gl">${E(gLabel(g))}</span><em class="nx-gc">${ids.length}</em></summary>${body}</details>`}
-function flatHTML(){const s=st();let h=`<button class="navi" type="button" data-nx-search title="Search (Ctrl or Cmd + K)">${IC(ICO.search)}<span>Search</span></button>`;
+/* ---------- PH-14 (step 3): the rail ----------
+   Home, then My work and Ask or request, then the business areas in the persona's purview (always in the fixed order, never
+   reordered; the persona's role pins first inside their own area), then All screens, Showroom and the Build and admin gear.
+   The purview comes from NAVX.purview (mod_r15d_persona.js gives each persona its areas and pins). */
+const ONLY={r15d_firstweek:["newhire","emp"]};
+const READ_HIDE={ask:["Request"]}; /* read-only roles (Board member, Auditor) see no request forms */
+function topOf(id){const f=G(()=>R15.famOf[id]);if(f&&f.id!==id)return topOf(f.id);const a=G(()=>R15.alias[id]);if(a&&a.to!==id)return topOf(a.to);return id}
+function curSpace(){const id=G(()=>S.screen);if(!id||!screenRow(id))return null;return placeOf(topOf(id)).sp}
+/* the purview of a persona: its areas (fixed order), its role pins (at most four), the gear rule, and the Build list scope (JM-13),
+   so menus, All screens, Home and the Build list read one function. The Full menu setting shows every area (never for the guest). */
+NAVX.purview=function(key){key=key||G(()=>S.persona)||"exec";const d=G(()=>R15D.DEFS[key])||{};const v=G(()=>R15D.PURVIEW[key])||{};const P=G(()=>PERSONAS[key])||{};
+ const guest=key==="guest";const full=G(()=>PREF.nav==="full")&&!guest;
+ let areas=(d.areas||v.areas||AREA_IDS).filter(a=>AREA_IDS.indexOf(a)>=0);if(full)areas=AREA_IDS.slice();
+ areas=AREA_IDS.filter(a=>areas.indexOf(a)>=0); /* fixed order, whatever order the definition lists */
+ let pins=(d.navPins||v.pins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
+ /* PR-18 (step 7): wedge mode is a filter over this menu. A wedge screen that is a view (Strategy to execution) is added as a pin
+    in its own area when that area is in the purview, so every wedge screen the persona can reach stays one click away */
+ const wedge=wedgeSet();if(wedge){pins=pins.concat([...wedge].filter(id=>screenRow(id)&&pins.indexOf(id)<0&&placeOf(id).kind!=="entry"&&id!=="home"&&id!=="showroom"&&areas.indexOf(placeOf(topOf(id)).sp)>=0))}
+ return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:!guest,show:!guest,readonly:!!(P.readonly||d.readonly),guest,full,wedge:!!wedge,
+  builds:G(()=>JXR.purview(),null)}};
+function wedgeSet(){return G(()=>SHOW.wedge.on(),false)?new Set(G(()=>SHOW.wedge.screens(),[])):null}
+/* ---------- All screens: every area and every entry the viewer can open, one click from the rail (not for the Vendor guest) ---------- */
+const AS={sp:"all",q:"",mine:false};
+function allHTML(){const P=NAVX.purview();const q=AS.q.trim().toLowerCase();const mine=new Set(["my","ask","show"].concat(P.areas));
+ const sps=SPACES.filter(s=>s[0]!=="home"&&(AS.sp==="all"||AS.sp===s[0])&&(!AS.mine||mine.has(s[0])));
+ const ws=wedgeSet();const hit=id=>{if(ws&&!ws.has(id))return false;if(!q)return true;const t=TX[id]||{};return (labelOf(id)+" "+formal(id)+" "+(t.objs||[]).join(" ")+" "+(t.sub||"")).toLowerCase().indexOf(q)>=0};
+ let n=0;const body=sps.map(s=>{const e=spaceIds(s[0],Object.assign({},P,{readonly:P.readonly}));const subs=Object.keys(e).map(k=>{const ids=e[k].filter(hit);n+=ids.length;if(!ids.length)return"";
+   return `<div class="nx-allsub"><span class="navsub">${E(k)}</span>${ids.map(id=>{const t=TX[id]||{};return `<button type="button" class="nx-alli" data-nav="${id}" data-nx-all-go="1"><b>${E(labelOf(id))}</b>${t.objs&&t.objs.length?`<small>${E(t.objs.slice(0,3).join(", "))}</small>`:""}</button>`}).join("")}</div>`}).join("");
+  return subs?`<section class="nx-allsp" aria-label="${E(s[1])}"><h4>${SVG(s[0]==="build"?ICO.gear:s[3],15,1.9)}<span>${E(s[1])}</span>${mine.has(s[0])?"":`<em>outside your areas</em>`}</h4>${subs}</section>`:""}).join("");
+ const chip=(v,l)=>`<button type="button" class="chip" data-nx-all-sp="${v}" aria-pressed="${AS.sp===v}">${E(l)}</button>`;
+ return `<div class="nx-allh"><div><div class="eyebrow">All screens</div><h3>Every area, every screen you can open</h3><p class="muted small">Areas keep one fixed order. Views of a screen sit in its view switcher; search (Ctrl K) also finds views, tabs and records.${ws?" Wedge mode is on: only the wedge screens are listed.":""}</p></div><button type="button" class="btn quiet closebtn" popovertarget="nxAll" popovertargetaction="hide" aria-label="Close" title="Close">${SVG(ICO.x,16,2.2)}</button></div>
+ <div class="nx-allf"><div class="row" role="group" aria-label="Filter by area">${chip("all","All areas")}${SPACES.filter(s=>s[0]!=="home").map(s=>chip(s[0],s[1])).join("")}</div>
+ <div class="row"><input type="search" class="txtin" data-nx-all-q value="${E(AS.q)}" placeholder="Filter by screen or object, for example invoice" aria-label="Filter by screen or object"><button type="button" class="chip" data-nx-all-mine aria-pressed="${AS.mine}">Only my areas</button><span class="muted small" data-nx-all-n>${n} screen${n===1?"":"s"}</span></div></div>
+ <div class="nx-allb2">${body||`<p class="muted">Nothing matches that filter.</p>`}</div>`}
+function openAll(){if(!NAVX.purview().all)return false;let p=q1("#nxAll");if(!p){p=document.createElement("div");p.id="nxAll";p.setAttribute("popover","auto");p.className="nx-all glass";p.setAttribute("role","dialog");p.setAttribute("aria-label","All screens");document.body.appendChild(p)}
+ p.innerHTML=allHTML();try{p.showPopover()}catch(e){}return true}
+function redrawAll(focusQ){const p=q1("#nxAll");if(!p)return;p.innerHTML=allHTML();if(focusQ){const i=q1("[data-nx-all-q]",p);if(i){i.focus();const v=i.value;i.setSelectionRange(v.length,v.length)}}}
+NAVX.allScreens={open:openAll,html:allHTML,state:AS};
+ROUTER.on("change","[data-nx-area]",(e,t)=>{G(()=>SRCH.setFacet("area",t.value||null));PAL.sel=0;refreshPal();const i=q1("#nxPalIn");if(i)i.focus()},{id:"nav.facet.area"});
+ROUTER.on("click","[data-nx-all]",e=>{e.preventDefault();menu(false);openAll()},{id:"nav.all"});
+ROUTER.on("click","[data-nx-all-sp]",(e,t)=>{AS.sp=t.dataset.nxAllSp;redrawAll()},{id:"nav.all.sp"});
+ROUTER.on("click","[data-nx-all-mine]",()=>{AS.mine=!AS.mine;redrawAll()},{id:"nav.all.mine"});
+ROUTER.on("click","[data-nx-all-go]",()=>{const p=q1("#nxAll");if(p)try{p.hidePopover()}catch(x){}},{id:"nav.all.go"});
+ROUTER.on("input","[data-nx-all-q]",(e,t)=>{AS.q=t.value;redrawAll(true)},{id:"nav.all.q"});
+/* ---------- Home carries the role pins (the same four as inside the areas) ---------- */
+function homePins(){if(G(()=>S.screen)!=="home")return;const v=q1("#view");if(!v||q1(".nx-hpins",v))return;const P=NAVX.purview();if(!P.pins.length)return;
+ const host=q1(".screen",v)||v;const hero=q1(":scope > .hero",host);
+ const html=`<section class="nx-hpins" aria-label="For your role"><span class="eyebrow">For your role</span>${P.pins.map(id=>{const s=screenRow(id);const sp=placeOf(topOf(id)).sp;return `<button type="button" class="chip nx-hpin" data-nav="${id}" title="${E(spLabel(sp))}">${IC(s[2])}<span>${E(pinLabel(id))}</span></button>`}).join("")}</section>`;
+ if(hero)hero.insertAdjacentHTML("afterend",html);else host.insertAdjacentHTML("afterbegin",html)}
+if(W.HOOKS)HOOKS.on("afterRender",()=>{try{homePins()}catch(e){console.error("nav home pins",e)}},{id:"nav.homepins",order:1100});
+function spaceIds(sp,P){const e=spaceEntries(sp,P.key);const ro=P.readonly&&!P.guest?(READ_HIDE[sp]||[]):[];
+ const out={};Object.keys(e).forEach(k=>{if(ro.indexOf(k)>=0)return;const l=e[k].filter(id=>!ONLY[id]||ONLY[id].indexOf(P.key)>=0);if(l.length)out[k]=l});return out}
+function pinsIn(sp,P){return P.pins.filter(id=>placeOf(topOf(id)).sp===sp)}
+const pinLabel=id=>(TX[id]&&TX[id].l)||labelOf(id);
+function spaceBody(sp,P){const e=spaceIds(sp,P);const pins=pinsIn(sp,P);const one=SPACES[SPID[sp]][5].length===1;
+ return pins.map(id=>itemHTML(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>itemHTML(id)).join("")).join("")}
+function groupHTML(sp,cur,P,o){o=o||{};P=P||NAVX.purview();const e=spaceIds(sp,P);const n=Object.keys(e).reduce((a,k)=>a+e[k].length,0);if(!n&&!pinsIn(sp,P).length)return"";
+ S.navOpen=S.navOpen||{};const wedge=G(()=>SHOW.wedge.on(),false);const open=S.navOpen[sp]!==undefined?S.navOpen[sp]:(cur===sp||wedge);const sd=SPACES[SPID[sp]];
+ return `<details class="navgd nx-area${o.gear?" nx-gear":""}" data-ng="${sp}" data-nx-sp="${sp}" ${open?"open":""}><summary title="${E(sd[4])}"><span class="nx-gi">${SVG(o.gear?ICO.gear:sd[3],15,1.9)}</span><span class="nx-gl">${E(sd[1])}</span><em class="nx-gc">${n}</em></summary>${spaceBody(sp,P)}</details>`}
+const allBtn=()=>`<button class="navi nx-allb" type="button" data-nx-all aria-haspopup="dialog" title="Every area and every screen you can open">${IC(ICO.grid)}<span>All screens</span></button>`;
+function railSpaces(P){return ["my","ask"].concat(P.areas)}
+function flatHTML(){const s=st();const P=NAVX.purview();let h=`<span data-nx-rail hidden></span><button class="navi" type="button" data-nx-search title="Search (Ctrl or Cmd + K)">${IC(ICO.search)}<span>Search</span></button>`;
  const one=id=>{const sc=screenRow(id);return sc?`<button class="navi" data-nav="${id}" ${S.screen===id?'aria-current="page"':""} title="${E(tip(id))}">${IC(sc[2])}<span>${E(labelOf(id))}</span></button>`:""};
  h+=one("home");
  s.fav.slice(0,6).forEach(f=>{if(f.kind==="screen"&&screenRow(f.key)){if(f.key!=="home")h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(f.label||labelOf(f.key))}">${IC(screenRow(f.key)[2])}<span>${E(f.label||labelOf(f.key))}</span></button>`}else h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(favName(f))}">${IC(typeIcon(f.type))}<span>${E(favName(f))}</span></button>`});
  h+=`<div class="nx-sep" role="separator"></div>`;
- const cur=screenRow(S.screen)?resolve(S.screen).g:null;
- GROUPS.forEach(g=>{if(g[0]==="home"||!groupItems(g[0]).length)return;h+=`<button class="navi nx-gbtn${cur===g[0]?" is-cur":""}" type="button" data-nx-grp="${g[0]}" aria-haspopup="true" title="${E(g[1])}">${IC(g[2])}<span>${E(g[1])}</span></button>`});
- h+=`<div class="nx-sep" role="separator"></div><button class="navi" type="button" popovertarget="nxHistPop" title="History">${IC(ICO.clock)}<span>History</span></button>`;return h}
-NAVX.html=function(){st();if(collapsed())return flatHTML();
- const cur=screenRow(S.screen)?resolve(S.screen).g:null;
- return navHelpBtn()+itemHTML("home")+favsHTML()+GROUPS.map(g=>g[0]==="home"?"":groupHTML(g[0],cur)).join("")};
+ const cur=curSpace();
+ const btn=(sp,ic)=>{const e=spaceIds(sp,P);if(!Object.keys(e).length&&!pinsIn(sp,P).length)return"";const sd=SPACES[SPID[sp]];return `<button class="navi nx-gbtn${cur===sp?" is-cur":""}" type="button" data-nx-grp="${sp}" aria-haspopup="true" title="${E(sd[1])}">${IC(ic||sd[3])}<span>${E(sd[1])}</span></button>`};
+ railSpaces(P).forEach(sp=>{h+=btn(sp)});
+ h+=`<div class="nx-sep" role="separator"></div>`;if(P.all)h+=allBtn();if(P.show)h+=one("showroom");if(P.gear)h+=btn("build",ICO.gear);
+ h+=`<button class="navi" type="button" popovertarget="nxHistPop" title="History">${IC(ICO.clock)}<span>History</span></button>`;return h}
+NAVX.html=function(){st();if(collapsed())return flatHTML();const P=NAVX.purview();const cur=curSpace();
+ let h=`<span data-nx-rail hidden></span>`+navHelpBtn()+itemHTML("home")+favsHTML();
+ ["my","ask"].forEach(sp=>h+=groupHTML(sp,cur,P));
+ h+=`<div class="nx-sep nx-asep" role="separator"></div>`;
+ P.areas.forEach(sp=>h+=groupHTML(sp,cur,P));
+ h+=`<div class="nx-sep" role="separator"></div>`;
+ if(P.all)h+=allBtn();
+ if(P.show)h+=itemHTML("showroom",{label:spLabel("show")});
+ if(P.gear)h+=groupHTML("build",cur,P,{gear:true});
+ return h};
+NAVX.rail={purview:p=>NAVX.purview(p),spaceIds:(sp,p)=>spaceIds(sp,NAVX.purview(p)),pins:(sp,p)=>pinsIn(sp,NAVX.purview(p)),curSpace,topOf};
 function refreshFavs(){const n=q1("#nav");if(!n)return;if(collapsed()){try{renderNav()}catch(e){}return}
  const old=n.querySelector("[data-nx-favs]");if(old){old.outerHTML=favsHTML()}drawFavPop()}
 
 /* collapsed rail: a group icon opens a flyout with its screens */
 function openFly(g,btn){let f=q1("#nxFly");if(!f){f=document.createElement("div");f.id="nxFly";f.setAttribute("popover","auto");f.className="nx-fly glass";document.body.appendChild(f)}
- const ids=groupItems(g);let sub="";
- f.innerHTML=`<div class="nx-flyh"><div><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(gLabel(g))}">${SVG(ICO.x,14,2)}</button></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
-  return h+`<div class="nx-fi${S.screen===id?" is-cur":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}).join("");
+ const sp=SPID[g]!=null?g:OLDGRP[g];if(!sp)return;const P=NAVX.purview();const sd=SPACES[SPID[sp]];const e=spaceIds(sp,P);const one=sd[5].length===1;
+ const ws=wedgeSet();if(ws)Object.keys(e).forEach(k=>{e[k]=e[k].filter(id=>ws.has(id));if(!e[k].length)delete e[k]});
+ const row=(id,o)=>{o=o||{};const m=resolve(id),hint=o.pin?"":hintOf(id),s=screenRow(id),lab=o.label||m.l;return `<div class="nx-fi${S.screen===id?" is-cur":""}${o.pin?" nx-pin":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`};
+ f.innerHTML=`<div class="nx-flyh"><div><b>${E(sd[1])}</b><small>${E(sd[4])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(sd[1])}">${SVG(ICO.x,14,2)}</button></div>`+pinsIn(sp,P).filter(id=>!ws||ws.has(id)).map(id=>row(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>row(id)).join("")).join("");
  try{f.showPopover()}catch(e){}
  const r=btn.getBoundingClientRect();const h=Math.min(f.offsetHeight,innerHeight-24);f.style.left=Math.round(r.right+10)+"px";f.style.top=Math.round(Math.max(12,Math.min(r.top-8,innerHeight-h-12)))+"px"}
 
@@ -546,9 +937,16 @@ const GMAP=[[/^(go to|screens?|modules?)$/i,"screen"],[/^(people|contractors|pro
 const tyOfGroup=g=>{for(const r of GMAP){if(r[0].test(g))return r[1]}return"record"};
 const goTbl=(screen,id)=>()=>{go(screen);let n=0;const iv=setInterval(()=>{const i=q1("#view [data-bt-q]");if(i){clearInterval(iv);i.value=id;i.dispatchEvent(new Event("input",{bubbles:true}))}else if(++n>12)clearInterval(iv)},150)};
 function sources(){const L=[];
- L.push(["Screens",()=>{const o=[];const MA={};G(()=>MODMAP.modules).forEach(md=>{if(md&&md.scr)MA[md.scr]=((MA[md.scr]||"")+" "+(md.al||[]).join(" ")+" "+(md.name||"")).trim()});SCREENS.forEach(s=>{const id=s[0],m=resolve(id),f=formal(id);const ex=[m.kw,f,hintOf(id),OLDGN[oldGroup(id)]||"",m.sub,gLabel(m.g)].join(" ");
-  o.push(mkItem("screen",m.l,gLabel(m.g)+(hintOf(id)?" · "+hintOf(id):""),"--accent",()=>go(id),ex+" "+(MA[id]||""),"screen:"+id,{sid:id,ac:acro(f)}))});
+ L.push(["Screens",()=>{const o=[];const MA={};G(()=>MODMAP.modules).forEach(md=>{if(md&&md.scr)MA[md.scr]=((MA[md.scr]||"")+" "+(md.al||[]).join(" ")+" "+(md.name||"")).trim()});/* PH-14: an entry also answers to its old names, its aliases and the names of the views folded into it */
+  const AL={};G(()=>Object.keys(ALIAS).forEach(a=>{const v=ALIAS[a];(AL[v]=AL[v]||[]).push(a)}));
+  const FV={};G(()=>(W.R15&&R15.families||[]).forEach(fm=>fm.views.forEach(v=>{if(v[0]!==fm.id)(FV[fm.id]=FV[fm.id]||[]).push(v[1],formal(v[0]))})));
+  SCREENS.forEach(s=>{const id=s[0],m=resolve(id),f=formal(id);const ex=[m.kw,f,hintOf(id),OLDGN[oldGroup(id)]||"",m.sub,gLabel(m.g),(AL[id]||[]).join(" "),(FV[id]||[]).join(" "),(MAP[id]&&MAP[id].l0)||""].join(" ");
+  const tp=placeOf(topOf(id));o.push(mkItem("screen",m.l,gLabel(tp.sp)+(hintOf(id)?" · "+hintOf(id):""),"--accent",()=>go(id),ex+" "+(MA[id]||"")+" "+((TX[id]||{}).objs||[]).join(" "),"screen:"+id,{sid:id,ac:acro(f),area:tp.sp,objs:(TX[id]||{}).objs||[]}))});
   G(()=>MODMAP.modules).forEach(md=>{if(!md||!md.id||(md.scr&&screenRow(md.scr)))return;o.push(mkItem("screen",md.name||md.sn,"Module · process flow","--p4",()=>MODMAP.select(md.id),(md.al||[]).join(" ")+" "+md.id,"module:"+md.id,{ac:acro(md.sn||md.name)}))});return o}]);
+ /* PH-14 (step 6): view-level results. Every view of a family and every merged view is found by its own name and opens that view;
+    it carries the area and objects of its family, and no screen id of its own, so builder mode still decides hidden screens */
+ L.push(["Screen views",()=>{const o=[];G(()=>(W.R15&&R15.families||[]).forEach(fm=>fm.views.forEach(v=>{const id=v[0];if(id===fm.id||!screenRow(id))return;const tp=placeOf(topOf(id));
+  const it=mkItem("screen",v[1],"View in "+fm.label+" · "+spLabel(tp.sp),"--accent",()=>go(id),fm.label+" "+formal(id)+" "+((TX[id]||{}).objs||[]).join(" ")+" view","view:"+id,{view:id,fam:fm.id,area:tp.sp,objs:(TX[id]||{}).objs||[],g:"Views"});if(it)o.push(it)})));return o}]);
  L.push(["Actions",()=>actionItems()]);
  L.push(["People",()=>(G(()=>DIR)||[]).map(d=>mkItem("person",d.name,d.role+" · "+d.team,d.c||"--p4",()=>person360(d.name),(d.skills||[]).join(" ")+" "+(d.email||"")+" "+d.kind+" "+(d.loc||""),"person:"+d.name))]);
  L.push(["Records",()=>{const o=[];G(()=>NODES).forEach(n=>o.push(mkItem("record",n.n,TYPES[n.t][0]+" · "+n.id,TYPES[n.t][1],()=>recDrawer(n.id),n.story,"record:"+n.id)));
@@ -613,7 +1011,8 @@ function scoreItem(it,T,A,q,P,acro_){let sc=0,all=true;const tl=it.tl,h=it.h;
 function runSearch(raw,o){o=o||{};const t0=performance.now();let q=String(raw||"").trim(),scope=o.scope||"all";
  const m=q.match(/^in:\s*([a-z]+)\s*(.*)$/i)||q.match(/^(.*?)\s+in:\s*([a-z]+)$/i);
  if(m){const isFirst=/^in:/i.test(q);const key=(isFirst?m[1]:m[2]).toLowerCase(),rest=isFirst?m[2]:m[1];if(SCOPE_ALIAS[key]){scope=SCOPE_ALIAS[key];q=rest}}
- const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{}};
+ const fq=W.SRCH&&SRCH.parseFacets?SRCH.parseFacets(q):null;if(fq)q=fq.q; /* PH-14 (step 6): area:ops, object:invoice */
+ const ql=q.toLowerCase();const T=toks(q,o.describe);const out={q,scope,tokens:T,by:{},total:0,fixed:null,ms:0,counts:{},facets:fq?fq.facets:null};
  if(!T.length){out.ms=0;return out}
  const P=pref();let A=T.map(alts);const items=IDX.items,N=items.length;const per={},cnt={};const SR=W.SRCH&&SRCH.allow?SRCH:null;if(SR)SR.reset();
  const pass=(A2,T2,penalty)=>{const acro_=T2.length===1&&T2[0].length>=2&&T2[0].length<=6;
@@ -658,7 +1057,8 @@ const PAL={open:false,q:"",scope:"all",sel:0,rows:[],describe:false,res:null,pre
 function buildPalette(){const p=document.createElement("div");p.id="nxPal";p.className="nx-pal";p.hidden=true;p.setAttribute("role","dialog");p.setAttribute("aria-modal","true");p.setAttribute("aria-label","Search "+BRAND.name);
  p.innerHTML=`<div class="nx-palbox glass"><div class="nx-phead">${SVG(ICO.search,20,2)}<input id="nxPalIn" type="text" role="combobox" aria-expanded="true" aria-controls="nxPalList" aria-autocomplete="list" aria-label="Search" placeholder="Search screens, records, people, processes, data, or type in:people" autocomplete="off" spellcheck="false"><button type="button" class="nx-pesc" data-nx-pclose aria-label="Close search">Esc</button></div>
  <div class="nx-chips" role="group" aria-label="Search scope">${SCOPES.map(s=>`<button type="button" class="chip nx-chip" data-nx-scope="${s[0]}" aria-pressed="${s[0]==="all"}">${s[1]}<em></em></button>`).join("")}</div>
- <div class="nx-pnote" id="nxPalNote" hidden></div>
+ <div class="nx-pfacet" data-nx-facets><label class="small muted">Area <select data-nx-area aria-label="Filter results by area"><option value="">All areas</option>${SPACES.filter(s=>s[0]!=="home").map(s=>`<option value="${s[0]}">${E(s[1])}</option>`).join("")}</select></label><span class="small muted">or type <code>area:money</code>, <code>object:invoice</code></span></div>
+  <div class="nx-pnote" id="nxPalNote" hidden></div>
  <div class="nx-pbody"><ul id="nxPalList" class="nx-plist2" role="listbox" aria-label="Results"></ul><aside id="nxPrev" class="nx-prev" aria-label="Preview"></aside></div>
  <div class="nx-pfoot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span><span><kbd>Tab</kbd> next type</span><span><kbd>Ctrl</kbd>+<kbd>↵</kbd> ask ${BRAND.name}</span><span><kbd>Esc</kbd> close</span><span class="nx-pstat" id="nxPalStat" aria-live="polite"></span></div></div>`;
  document.body.appendChild(p);
@@ -853,14 +1253,14 @@ NAVX.wire=WIRE;
    ===================================================================================== */
 S.navs=S.navs||{g:"all",speed:""};
 const SPEEDQ=["inc","incident","approve invoices","lumen","cmdb","who is on call","project plan","maturty","knowldge","sla","in:people maya","fin_"];
-function studioMap(){const c=NAVX.check();const rows=SCREENS.map(s=>s[0]).filter(id=>id!=="home").map(id=>({id,m:resolve(id)})).filter(r=>S.navs.g==="all"||r.m.g===S.navs.g).sort((a,b)=>(GID[a.m.g]-GID[b.m.g])||(a.m.o-b.m.o));
- const opts=(sel)=>GROUPS.filter(g=>g[0]!=="home").map(g=>`<option value="${g[0]}" ${g[0]===sel?"selected":""}>${E(g[1])}</option>`).join("");
+function studioMap(){const c=NAVX.check();const rows=SCREENS.map(s=>s[0]).filter(id=>id!=="home").map(id=>({id,m:resolve(id)})).filter(r=>S.navs.g==="all"||r.m.g===S.navs.g).sort((a,b)=>((SPID[a.m.g]==null?99:SPID[a.m.g])-(SPID[b.m.g]==null?99:SPID[b.m.g]))||(a.m.o-b.m.o));
+ const opts=(sel)=>SPACES.filter(g=>g[0]!=="home").map(g=>`<option value="${g[0]}" ${g[0]===sel?"selected":""}>${E(g[1])}</option>`).join("");
  const cnt=NAVX.counts();
- return `${kpiRow([["Screens",c.screens,"registered right now"],["Placed in a group",c.placed,"each exactly once",{cls:c.placed===c.screens?"":"warn"}],["Not mapped yet",c.unmapped.length,c.unmapped.length?"shown in their old group":"all mapped",{keep:true}],["Groups",GROUPS.filter(g=>cnt[g[0]]).length-0,"plain-language"]])}
- ${c.unmapped.length?`<div class="card glass"><div class="cardhead"><div><h3>Screens without a place yet</h3><span class="muted small">New modules fall back to a group by their old product suite. Give each a plain label and a group below.</span></div></div><div class="row">${c.unmapped.map(id=>`<span class="pill warn">${E(formal(id))}</span>`).join("")}</div></div>`:""}
+ return `${kpiRow([["Screens",c.screens,"registered right now"],["Menu entries",c.placed,"each in exactly one place",{cls:c.notPlaced.length||c.duplicates.length?"warn":""}],["Views and merges",c.views+c.merged,"reached from a view switcher"],["Not mapped yet",c.unmapped.length,c.unmapped.length?"search only until placed":"all mapped",{keep:true}],["Business areas",AREA_IDS.length,"plus My work, Ask or request, Showroom and Build and admin"]])}
+ ${c.unmapped.length?`<div class="card glass"><div class="cardhead"><div><h3>Screens without a place yet</h3><span class="muted small">A screen with no taxonomy row is search only, never in a menu. Give each a plain label and a place below.</span></div></div><div class="row">${c.unmapped.map(id=>`<span class="pill warn">${E(formal(id))}</span>`).join("")}</div></div>`:""}
  ${c.orphans&&c.orphans.length?`<p class="muted small">${c.orphans.length} mapped screen${c.orphans.length===1?"":"s"} waiting for their module to register: ${c.orphans.map(E).join(", ")}.</p>`:""}
- <div class="card glass"><div class="cardhead"><div><h3>Menu map</h3><span class="muted small">Plain label first, formal module name second. Changes apply to the menu and to search at once and stay on this device.</span></div><label class="small">Show <select data-nx-sg aria-label="Show group"><option value="all">All groups</option>${opts(S.navs.g)}</select></label></div>
- <div class="tscroll"><table class="tbl nx-maptbl"><thead><tr><th>Menu label</th><th>Formal name</th><th>Group</th><th>Sub-heading</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><input class="fin nx-mapin" type="text" value="${E(r.m.l)}" data-nx-mvl="${r.id}" aria-label="Menu label for ${E(formal(r.id))}"></td><td class="muted">${E(formal(r.id))}<br><small>${E(r.id)}</small></td><td><select class="fin" data-nx-mvg="${r.id}" aria-label="Group for ${E(formal(r.id))}">${opts(r.m.g)}</select></td><td class="muted small">${E(r.m.sub||"")}</td><td>${r.m.unmapped?`<span class="pill warn">Unmapped</span>`:""}${r.m.edited?`<button type="button" class="btn quiet" data-nx-rst="${r.id}">Reset</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`}
+ <div class="card glass"><div class="cardhead"><div><h3>Menu map</h3><span class="muted small">Plain label first, formal module name second. Changes apply to the menu and to search at once and stay on this device.</span></div><label class="small">Show <select data-nx-sg aria-label="Show area"><option value="all">All areas</option>${opts(S.navs.g)}</select></label></div>
+ <div class="tscroll"><table class="tbl nx-maptbl"><thead><tr><th>Menu label</th><th>Formal name</th><th>Area</th><th>Sub-heading</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><input class="fin nx-mapin" type="text" value="${E(r.m.l)}" data-nx-mvl="${r.id}" aria-label="Menu label for ${E(formal(r.id))}"></td><td class="muted">${E(formal(r.id))}<br><small>${E(r.id)}</small></td><td><select class="fin" data-nx-mvg="${r.id}" aria-label="Area for ${E(formal(r.id))}">${opts(r.m.g)}</select></td><td class="muted small">${E(r.m.sub||"")}</td><td>${r.m.unmapped?`<span class="pill warn">Unmapped</span>`:""}${r.m.edited?`<button type="button" class="btn quiet" data-nx-rst="${r.id}">Reset</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`}
 function studioSearch(){const ty={};IDX.items.forEach(i=>ty[i.ty]=(ty[i.ty]||0)+1);const s=st();const slow=IDX.timings.slice().sort((a,b)=>b[1]-a[1]).slice(0,8);
  return (NAVX.ext&&NAVX.ext.studioTop?(()=>{try{return NAVX.ext.studioTop()}catch(e){return""}})():"")+`${kpiRow([["Items indexed",IDX.items.length.toLocaleString("en-US"),IDX.built?"index is ready":"building"],["Sources",IDX.total||0,IDX.skipped.length?IDX.skipped.length+" skipped":"all answered"],["Index build",(IDX.buildMs||0)+" ms","one time, in small slices",{keep:true}],["Last search",IDX.lastMs+" ms","target under 100 ms",{keep:true}]])}
  <div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><div><h3>What is searchable</h3><span class="muted small">Every registered screen, module, process, data entity, field, metric and person, plus each module's own records.</span></div></div>
@@ -888,7 +1288,7 @@ function studioContract(){const procs=G(()=>NAV_PROCS.map(p=>({p,m:PROCLIB.matur
  <div class="row" style="margin-top:12px"><button class="btn" type="button" data-nav="exe_mat">Open Maturity models</button><button class="btn" type="button" data-nav="plat_map">Open module map</button></div></div></div>
  <div class="card glass"><div class="cardhead"><div><h3>Measures</h3><span class="muted small">Each has a formula, an owner and a remediation. They update as you navigate and search.</span></div></div><div class="grid g3 mgrid">${["m_nav_depth","m_search_success","m_search_zero_results","m_fav_use","m_hist_return"].map(id=>metricRing(id,120)).join("")}</div></div>`}
 REG("nav_studio","Navigation and search","platform","M4 6h16M4 12h10M4 18h7M17 14l4 4M19 16a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",()=>{const c=NAVX.check();
- const story=`All <b data-role="metric">${c.screens}</b> screens sit in exactly one of <b>${GROUPS.filter(g=>NAVX.counts()[g[0]]).length}</b> plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
+ const story=`All <b data-role="metric">${c.screens}</b> screens have one place: <b data-role="metric">${c.placed}</b> are menu entries in <b>${AREA_IDS.length}</b> business areas and four fixed spaces, the rest are views in a family switcher, merges or search only. The formal module name stays a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
  return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"].concat(W.USAGE?["Usage"]:[]),[studioMap(),studioSearch(),studioPeople(),studioContract()].concat(W.USAGE?[G(()=>USAGE.panelHTML())||""]:[]))}</div>`});
 ROUTER.on("change",e=>{const t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.nxSg!=null){S.navs.g=t.value;S.v.nav_v=0;render();return}

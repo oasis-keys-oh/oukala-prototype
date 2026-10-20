@@ -67,6 +67,41 @@ const DEFS={
  const EXTRA={decide:["lens","grc","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
  Object.keys(DEFS).forEach(k=>{const d=DEFS[k],out=[];(d.groups||[]).forEach(g=>(O2N[g]||[g]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)}));(EXTRA[d.family]||[]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)});if(!d.readonly&&out.indexOf("make")<0)out.push("make");d.groups=out})})();
 const FAM={decide:"Decide",operate:"Operate",build:"Build and plan",assure:"Assure",request:"Request"};
+/* PH-14 (step 4, JM-13): menus by purview (docs/ia/navigation-architecture.md, section b; Omar approved 2026-10-20).
+   Each persona sees the business areas in its purview, always in the fixed order (strat, deliver, ops, money, people, risk,
+   transform), with at most four role pins first inside their own area and on Home. My work, Ask or request, All screens and
+   Showroom are fixed; the Build and admin gear shows for the Architect and Platform admin only (everyone else reaches it through
+   search and All screens). The Vendor guest gets no area, no All screens and no Showroom. NAVX.purview (mod_nav.js) reads this. */
+const PURVIEW={
+ ceo:{areas:["strat","deliver","money","people","risk","transform"],pins:["exe_board","r18_lens","exe_strat","exe_dash"]},
+ exec:{areas:["strat","deliver","ops","money","risk","transform"],pins:["bst","exe_dash","tower","r18_builds"]},
+ cfo:{areas:["strat","deliver","money","risk"],pins:["bst","inv","bud_over","exe_dash"]},
+ coo:{areas:["strat","deliver","ops","people","risk","transform"],pins:["exe_strat","strat_exec","ppl_jrny","orgdesign"]},
+ cco:{areas:["strat","ops","money","people","transform"],pins:["metrics","svc_req","org_chart","plat_proc"]},
+ chro:{areas:["strat","people","transform"],pins:["org_chart","ppl_perf","ppl_train","ppl_cap"]},
+ ciso:{areas:["strat","ops","risk"],pins:["grc_home","r15_iam","exe_risk","guard"]},
+ caio:{areas:["strat","risk","transform"],pins:["tower","r15d_agents","kcs_test","r17q_value"]},
+ clo:{areas:["strat","money","risk"],pins:["ppm_sow","grc_pol","grc_exc","bud_ven"]},
+ board:{areas:["strat","risk"],pins:["exe_board","r15d_evidence","exe_risk","exe_dash"]},
+ portfolio:{areas:["strat","deliver","money","people","transform"],pins:["port","ims","ppm_raid","ppl_cap"]},
+ audit:{areas:["strat","money","risk"],pins:["r15d_evidence","grc_home","bud_doa","exe_board"]},
+ pm:{areas:["deliver","money","people"],pins:["ppm_proj","ims","ppm_raid","r15_time"]},
+ ops:{areas:["ops","people","risk"],pins:["itsm_inc","itsm_mi","svc_oncall","kcs_home"]},
+ dist:{areas:["deliver","ops","transform"],pins:["svc_req","plat_proc","metrics","svc_guides"]},
+ fac:{areas:["ops","money","transform"],pins:["svc_req","plat_proc","metrics","bud_ven"]},
+ scm:{areas:["ops","money","transform"],pins:["bud_ven","r15_p2p","ppm_sow","plat_proc"]},
+ plant:{areas:["deliver","ops","risk","transform"],pins:["metrics","plat_proc","exe_mat","svc_req"]},
+ proc:{areas:["ops","risk","transform"],pins:["itsm_chg","plat_proc","metrics","svc_req"]},
+ change:{areas:["deliver","ops","transform"],pins:["itsm_chg","itsm_rel","dev_pipe","itom_run"]},
+ arch:{areas:["deliver","ops","risk","transform"],pins:["plat_map","plat_reg","plat_debt","itom_cmdb"]},
+ admin:{areas:["ops","people","risk"],pins:["adm_studio","r16g_perm","plat_reg","tn_admin"]},
+ fin:{areas:["deliver","money"],pins:["inv","bud_over","bud_req","bud_ven"]},
+ emp:{areas:["people"],pins:["svc_portal","kcs_ask","svc_guides","ppl_train"]},
+ newhire:{areas:["people"],pins:["r15d_firstweek","svc_portal","ppl_train","kcs_ask"]},
+ guest:{areas:[],pins:["svc_portal"]}};
+R15D.PURVIEW=PURVIEW;
+const usePurview=(k,d)=>{const v=PURVIEW[k];if(!v)return;d.areas=v.areas.slice();d.pin=v.pins.slice();d.navPins=v.pins.slice()};
+Object.keys(DEFS).forEach(k=>usePurview(k,DEFS[k]));
 Object.keys(DEFS).forEach(k=>{
  const d=DEFS[k];
  if(PERSONAS[k]){Object.assign(PERSONAS[k],{role:d.role,family:d.family,groups:d.groups,pin:d.pin,kpis:d.kpis});return}
@@ -81,7 +116,7 @@ R15D.addPersona=function(k,d){
  if(PERSONAS[k])return false;
  const O2N={auto:["kit"]},EX={decide:["lens","grc","story"],operate:[],build:["make","kit"],assure:["lens","grc","reg","story"],request:[]};
  const out=[];(d.groups||[]).forEach(g=>(O2N[g]||[g]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)}));(EX[d.family]||[]).forEach(x=>{if(out.indexOf(x)<0)out.push(x)});if(!d.readonly&&out.indexOf("make")<0)out.push("make");
- d=Object.assign({},d,{groups:out});DEFS[k]=d;
+ d=Object.assign({},d,{groups:out});usePurview(k,d);DEFS[k]=d;
  PERSONAS[k]={n:d.n,who:d.who,home:[],rings:d.kpis.slice(0,3),nav:d.pin.slice(),story:"",needs:[],sugg:d.sugg||[],role:d.role,family:d.family,groups:d.groups,pin:d.pin,kpis:d.kpis,generic:true,readonly:!!d.readonly,as:d.as||"Casey Rowan",actions:d.actions};
  try{const caps=G(()=>CX.CAPS,null);if(caps&&!caps[k])caps[k]=["read","incident.create","request.order","report.build","ui.set"]}catch(e){}
  return true};
@@ -115,7 +150,7 @@ if(W.NAVX&&NAVX.html&&!NAVX._r15d){
  NAVX.html=function(){
   const raw=_html.apply(this,arguments);
   try{
-   if(raw.indexOf('class="navgd"')<0)return raw;
+   if(raw.indexOf('class="navgd"')<0||raw.indexOf('data-nx-rail')>=0)return raw; /* PH-14: the area rail is built by purview in mod_nav.js */
    const d=defOf(),p=PERSONAS[S.persona];if(!d||!d.groups)return raw;
    const root=document.createElement("div");root.innerHTML=raw;
    const gs=[...root.querySelectorAll(":scope > details.navgd")];if(!gs.length)return raw;
@@ -169,7 +204,7 @@ function genericHome(){
  ${d.kpis&&d.kpis.length?`<div class="statrow r15d-kpis">${d.kpis.map(kpiTile).join("")}</div>`:""}
  <div class="grid g2" style="align-items:start">
   ${card("Do next","Default actions for this role",`<div class="needs">${acts.map(a=>`<div class="need"><div class="ico info">${ico("bolt")}</div><div><b data-role="story">${E(a[0])}</b><span class="muted" data-role="story">${E(a[1])}</span></div><div class="act"><button class="btn primary" data-needgo="${a[2].join("|")}">${E(a[3])}</button></div></div>`).join("")||'<p class="muted">Nothing assigned to this role yet.</p>'}</div>`)}
-  ${card("Start with a question","Ask answers from the records in your scope and shows where it looked",`<div class="r15d-starters">${(p.sugg||[]).map(q=>`<button class="chip" data-ask="${E(q)}">${E(q)}</button>`).join("")}</div><p class="muted small">Menu order for this role: ${d.groups.slice(0,4).map(g=>G(()=>NAVX.groupLabel(g),g)).map(E).join(", ")}. The rest are under More areas.</p>`)}
+  ${card("Start with a question","Ask answers from the records in your scope and shows where it looked",`<div class="r15d-starters">${(p.sugg||[]).map(q=>`<button class="chip" data-ask="${E(q)}">${E(q)}</button>`).join("")}</div><p class="muted small">Your areas: ${(d.areas||[]).map(g=>G(()=>NAVX.groupLabel(g),g)).map(E).join(", ")||"none (shared requests only)"}. Everything else is one step away in All screens and search.</p>`)}
  </div></div>`;
 }
 const _home=_R.home;

@@ -210,7 +210,7 @@ function zinfo(it){if(it._z)return it._z;
  return(it._z={lab,fam,al,tl,hb,id,gk:lab.toLowerCase()})}
 
 /* ---------- query -> tokens with alternatives ---------- */
-function parseQuery(raw){let q=String(raw||"").trim(),scope=null,owner=null;
+function parseQuery(raw){let q=String(raw||"").trim(),scope=null,owner=null;if(W.SRCH&&SRCH.parseFacets)q=SRCH.parseFacets(q).q; /* PH-14 (step 6): area: and object: facets */
  let m=q.match(/^in:\s*([a-z]+)\s*(.*)$/i)||q.match(/^(.*?)\s+in:\s*([a-z]+)$/i);
  if(m){const first=/^in:/i.test(q);const key=(first?m[1]:m[2]).toLowerCase(),rest=first?m[2]:m[1];const fm=FAMALIAS[key];if(fm){scope=fm;q=rest}}
  const om=q.match(/^(?:who\s+(?:owns|is\s+responsible\s+for|runs|manages|is\s+accountable\s+for|looks\s+after)|who\s+is\s+the\s+owner\s+of|owner\s+of|owners?\s+for)\s+(?:the\s+)?(.+)$/i);
