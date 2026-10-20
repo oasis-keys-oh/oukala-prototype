@@ -183,6 +183,8 @@ function decide(id,act,note,by){
  const r=byId(id);if(!r||isEnd(r)||r.st==="sub")return {ok:false,why:"That request is not waiting for a decision."};
  by=by||ME();const sid=r.st;
  if(by===r.req)return {ok:false,why:"Separation of duties: the requester cannot decide their own request."};
+ /* PR-20: the decision is bound to the group the one routing source (APG.route) names for this stage and amount */
+ if(window.APG&&APG.check){const c=APG.check(by,"budget_request",{id:r.id,requester:r.req,stage:sid,amount:r.amt,named:tryv(()=>rev(sid,r).name,"")});if(!c.ok){tryv(()=>APG.noteDenial(by,"budget_request",{id:r.id},c));return {ok:false,why:c.why,rule:c.rule}}}
  if(act!=="Approve"&&!String(note||"").trim())return {ok:false,why:"A reason is required."};
  const rvw=rev(sid,r),onBehalf=by!==rvw.name&&by!==rvw.back&&!(rvw.role==="CIO"&&by==="Casey Rowan");
  r.rv[sid]={dec:act,by,d:iso(TODAY),note:note||"",behalf:onBehalf};

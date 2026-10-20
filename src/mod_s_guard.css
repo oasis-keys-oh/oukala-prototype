@@ -1,0 +1,28 @@
+/* Guardrails (mod_s_guard). Prefix: gd-. Tokens only. */
+.gd-honest{border:1px solid var(--hair);border-radius:14px;padding:10px 14px;margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--ink)}
+.gd-honest .pill{margin-left:6px}
+.gd-att{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.gd-att li{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;line-height:1.45}
+.gd-filt{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.gd-reg td{vertical-align:top}
+.gd-reg td:nth-child(2){min-width:260px}
+.gd-reg code{font-size:12px;word-break:break-word}
+.gd-mx th,.gd-mx td{text-align:center;vertical-align:middle}
+.gd-mx th[scope=row]{text-align:left;white-space:nowrap}
+.gd-cell{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:84px;min-height:44px;padding:4px 8px;border-radius:10px;border:1px solid var(--hair);font:600 12px var(--f-body);color:var(--ink);background:var(--glass2)}
+.gd-cell small{font-weight:500;color:var(--muted)}
+button.gd-cell{cursor:pointer}
+.gd-cell.good{background:var(--good-s);color:var(--good);border-color:var(--good-f)}.gd-cell.warn{background:var(--warn-s);color:var(--warn);border-color:var(--warn-f)}.gd-cell.bad{background:var(--bad-s);color:var(--bad);border-color:var(--bad-f)}
+.gd-cell.good small,.gd-cell.warn small,.gd-cell.bad small{color:inherit}
+.gd-cell.none{color:var(--muted);border-style:dashed}
+.gd-cell.sm{min-height:28px;min-width:0}
+.gd-play{display:grid;gap:10px}
+.gd-try{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--hair);border-radius:12px}
+.gd-try .btn{min-height:44px;flex:none}
+.gd-res{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
+.gd-child{margin:0 0 14px}
+.gd-ch-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.gd-x{font-size:20px;line-height:1;min-width:44px;min-height:44px;flex:none}
+.gd-steps{margin:8px 0 12px;padding-left:22px;display:grid;gap:8px}
+.gd-steps li{line-height:1.45}
+.gd-legend{gap:8px;flex-wrap:wrap;margin:12px 0 6px}

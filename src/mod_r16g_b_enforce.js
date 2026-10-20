@@ -82,14 +82,20 @@ const SCR_ENT={inv:"invoice",itsm_chg:"change_request",bud_req:"budget_request",
 const ADP_ENT={inv:"invoice",chg:"change_request",budreq:"budget_request",cat:"approval"};
 const BUDACT=/^(approve|reject|decline|decide|defer|return)/i;
 const GENERIC=/^(approve|reject|decline|decide|release|certify|sign off|approve and (fund|next)|return to requester)\b/i;
-function recForBR(id){const r=G(()=>BUDREQ.requests().find(q=>q.id===id),null);return r?{id:r.id,requester:r.req,owner:r.req,stage:r.st,amount:r.amt,classification:"confidential"}:{id,classification:"confidential"}}
+function recForBR(id){const r=G(()=>BUDREQ.requests().find(q=>q.id===id),null);return r?{id:r.id,requester:r.req,owner:r.req,stage:r.st,amount:r.amt,named:G(()=>BUDREQ.rev(r.st,r).name,""),classification:"confidential"}:{id,classification:"confidential"}}
+/* PR-20: change and catalog decisions carry their record, so the one group model (APG) can bind them */
+function recForChg(cid,si,ai){const c=G(()=>ITSMX.getChange(cid),null);const a=G(()=>c.stages[+si].ap[+ai],null);return c?{id:c.id,requester:c.req||"",service:c.svc||"",apg:a&&a.apg||null,role:a&&a.r||"",named:a&&a.w||"",classification:"internal"}:{id:cid}}
+function recForCat(rid,k){const r=G(()=>REQREG.find(x=>x.id===rid),null);const a=r&&r.ap&&r.ap[k];const st=G(()=>svcStatus(rid),{})||{};return{kind:"catalog",id:rid,requester:st.requester||(r&&r.requester)||"",apg:a&&a.apg||null,named:a&&a.who||""}}
+const recOfIt=(k,it)=>G(()=>APG.recOfItem(k,it),null);
 /* returns [action, entity, record, label] or null for an element */
 function classify(el){const ds=el.dataset||{};
  if(ds.brAct!==undefined){const [id,a]=ds.brAct.split(":");return["approve","budget_request",recForBR(id),a+" "+id]}
+ if(ds.itsmA==="cab"&&ds.id){const [cid,si,ai,dec]=ds.id.split(":");return["approve","change_request",recForChg(cid,si,ai),"Decide change "+cid+(dec?" ("+dec+")":"")]}
+ if(ds.svc&&/^(approve|rejectf)\|/.test(ds.svc)){const [,rid,k]=ds.svc.split("|");return["approve","approval",recForCat(rid,k),"Decide catalog request "+rid]}
  if(ds.budLed!==undefined)return["approve","budget_line",null,"Decide a budget ledger entry"];
  if(ds.budEdit!==undefined||ds.budRefc!==undefined||ds.budNewpo!==undefined||ds.budXf!==undefined||ds.budPoa!==undefined)return["update","budget_line",null,"Change a budget line"];
  if(ds.budPo!==undefined||ds.budPoa!==undefined)return["update","budget_line",null,"Purchase order"];
- if(ds.inbxAct&&/^(approve|reject|delegate)$/.test(ds.inbxAct)){const it=G(()=>INBOX.items?INBOX.items().find(x=>x.id===ds.id):null,null);const ent=it&&it.src&&ADP_ENT[it.src]||"approval";return["approve",ent,it&&it.src==="budreq"?recForBR(it.sid):null,"Decide inbox item"]}
+ if(ds.inbxAct&&/^(approve|reject|delegate)$/.test(ds.inbxAct)){const it=G(()=>INBOX.items?INBOX.items().find(x=>x.id===ds.id):null,null);const ent=it&&it.src&&ADP_ENT[it.src]||"approval";return["approve",ent,it&&it.src==="budreq"?recForBR(it.sid):it&&(it.src==="chg"||it.src==="cat")?recOfIt(it.src,it):null,"Decide inbox item"]}
  if(ds.org5==="reveal")return["reveal","compensation_record",ds.n,"Reveal compensation of "+ds.n];
  if(ds.org5==="ptook"||ds.org5==="ptono")return["approve","pto_request",ds.n,"Decide PTO for "+ds.n];
  if(ds.org5==="as")return["update","permission",null,"Switch the viewing identity"];
@@ -99,7 +105,7 @@ function classify(el){const ds=el.dataset||{};
  const tx=(el.textContent||"").trim();
  if(el.matches("button,[role=button]")&&GENERIC.test(tx)&&!el.closest("#r16gperm")){const ent=SCR_ENT[S.screen]||"approval";return["approve",ent,null,tx.slice(0,40)]}
  return null}
-const CSEL="[data-br-act],[data-bud-led],[data-bud-edit],[data-bud-refc],[data-bud-newpo],[data-bud-xf],[data-bud-poa],[data-inbx-act],[data-org5=reveal],[data-org5=ptook],[data-org5=ptono],[data-org5=as],[data-r3i-ok],[data-r3i-no],[data-r3i-keep],[data-r3i-rev],[data-r3i-grevoke],[data-pm-decide],button,[role=button]";
+const CSEL="[data-itsm-a=cab],[data-svc^='approve|'],[data-svc^='rejectf|'],[data-br-act],[data-bud-led],[data-bud-edit],[data-bud-refc],[data-bud-newpo],[data-bud-xf],[data-bud-poa],[data-inbx-act],[data-org5=reveal],[data-org5=ptook],[data-org5=ptono],[data-org5=as],[data-r3i-ok],[data-r3i-no],[data-r3i-keep],[data-r3i-rev],[data-r3i-grevoke],[data-pm-decide],button,[role=button]";
 function ctrlOf(t){const el=t.closest&&t.closest(CSEL);return el}
 function block(e,el){e.preventDefault();e.stopImmediatePropagation();e.stopPropagation()}
 function guardEvent(e){if(!on())return;const el=ctrlOf(e.target);if(!el||el.disabled&&false)return;const c=classify(el);if(!c)return;
@@ -118,8 +124,11 @@ if(typeof submitForm==="function"&&!W.__pmSubmit){W.__pmSubmit=1;const s0=submit
 if(typeof openForm==="function"&&!W.__pmOpenForm){W.__pmOpenForm=1;const o0=openForm;openForm=function(spec,init){if(on()&&spec){const g=FORMGATE.find(x=>x[0].test(spec.id||""));if(g){const rec=g[3]?g[3](spec.title||""):null;if(!PM().require(g[1],g[2],rec,spec.title||spec.id))return}}return o0.apply(this,arguments)}}
 /* inbox adapters and budget API: gate the function, not just the button */
 function wrapAdapters(){const A=G(()=>INBOX.adapters,null);if(!A)return;Object.keys(A).forEach(k=>{const a=A[k];if(!a||a.__pm)return;a.__pm=1;
-  ["approve","reject","delegate"].forEach(m=>{const f=a[m];if(typeof f!=="function")return;a[m]=function(it){if(on()){const ent=ADP_ENT[k]||"approval";const rec=k==="budreq"&&it?recForBR(it.sid):null;if(!PM().require("approve",ent,rec,"Decide "+(it&&it.title||k))){return{ok:false,why:"Not permitted: "+PM().decide(null,"approve",ent,rec).why}}}return f.apply(this,arguments)}})})}
-if(W.BUDREQ&&BUDREQ.decide&&!BUDREQ.decide.__pm){const d0=BUDREQ.decide;BUDREQ.decide=function(id,act,note,by){if(on()&&!PM().require("approve","budget_request",recForBR(id),act+" "+id))return{ok:false,why:"Not permitted"};return d0.apply(this,arguments)};BUDREQ.decide.__pm=1}
+  ["approve","reject","delegate"].forEach(m=>{const f=a[m];if(typeof f!=="function")return;a[m]=function(it){if(on()){const ent=ADP_ENT[k]||"approval";const rec=k==="budreq"&&it?recForBR(it.sid):(k==="chg"||k==="cat")&&it?recOfIt(k,it):null;if(!PM().require("approve",ent,rec,"Decide "+(it&&it.title||k))){return{ok:false,why:"Not permitted: "+PM().decide(null,"approve",ent,rec).why}}}return f.apply(this,arguments)}})})}
+if(W.BUDREQ&&BUDREQ.decide&&!BUDREQ.decide.__pm){const d0=BUDREQ.decide;BUDREQ.decide=function(id,act,note,by){
+  /* PR-20: group binding and the requester rule are checked inside BUDREQ.decide (APG.check), so they hold with enforcement off */
+  const rec=recForBR(id);
+  if(on()&&!PM().require("approve","budget_request",rec,act+" "+id))return{ok:false,why:"Not permitted"};return d0.apply(this,arguments)};BUDREQ.decide.__pm=1}
 /* proactively lock controls that would be refused (the guard above stays the authority) */
 function lockControls(root){const seen={};root.querySelectorAll(CSEL).forEach(el=>{if(el.dataset.pmL==="1")return;const c=classify(el);if(!c)return;const key=c[0]+"|"+c[1]+"|"+(c[2]&&(c[2].id||c[2])||"");let d=seen[key];if(!d)d=seen[key]=PM().can(null,c[0],c[1],c[2]);
   if(!d.ok){el.dataset.pmL="1";el.setAttribute("aria-disabled","true");el.classList.add("pm-locked");el.title=(el.title?el.title+" · ":"")+"Not permitted: "+d.why;if("disabled" in el)el.disabled=true}})}
