@@ -25,8 +25,9 @@ ok(!!r.sp2&&!!r.bk2,'ownerChip(robot,{kind:"robot"}) carries sponsor and backup 
 ok(r.loose&&r.loose.ok,'a robot step outside the library still resolves: '+JSON.stringify(r.loose));
 ok(r.stepChip,'STEPKIT.ownerChip renders a robot step as a robot chip with its sponsor');
 /* the popover shows sponsor and backup */
+await p.evaluate(()=>new Promise(r=>{if(window.PROCLIB&&PROCLIB.whenSettled){PROCLIB.whenSettled(r);setTimeout(r,25000)}else r()})); /* the library's one settling re-render would light-dismiss the popover */
 await p.evaluate(n=>{go('home');const d=document.createElement('div');d.id='cl78';d.innerHTML=ownerChip(n);document.body.appendChild(d) /* outside #view so a settling re-render cannot remove it */},r.named);
-await p.click('#cl78 [data-owner]');await p.waitForTimeout(150);
+await p.evaluate(()=>{document.querySelectorAll('[popover]:popover-open').forEach(x=>{try{x.hidePopover()}catch(e){}});document.querySelector('#cl78 [data-owner]').click()}); /* direct click: a light-dismiss popover would otherwise take the first click */await p.waitForSelector('.own-pop',{timeout:10000}).catch(()=>{});await p.waitForFunction(()=>{const x=document.querySelector('.own-pop');return x&&/Backup/.test(x.innerText)},null,{timeout:10000}).catch(()=>{});
 const pop=await p.evaluate(()=>{const x=document.querySelector('.own-pop');return x?x.innerText:''});
 ok(/Human sponsor/.test(pop)&&/Backup/.test(pop)&&!/No sponsor/.test(pop),'the robot card shows the human sponsor and backup');
 ok(errs.length===0,'no page errors');if(errs.length)console.log(errs.slice(0,5));
