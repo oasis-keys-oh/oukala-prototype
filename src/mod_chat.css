@@ -255,4 +255,12 @@ button.cx-cc.add:hover{color:var(--ink);border-color:var(--accent)}
 .cx-min{min-width:34px;display:inline-grid;place-items:center;padding:7px 9px!important;border:1px solid color-mix(in srgb,currentColor 28%,transparent)!important;border-radius:999px}
 .cx-min:hover{background:color-mix(in srgb,currentColor 14%,transparent)}
 #msgs .cx-m.ai:last-child .cx-foot .chip{display:none}
+/* PH-10: the minimize control sits in the top right corner of the header, in flow (never positioned over content), like the drawer .dctl bar.
+   Docked: row 1 is title and minimize, row 2 the thread controls. Full screen: title, controls, minimize on one row. */
+.cx-head>.cx-ht{order:1;flex:1 1 0}
+.cx-head>.cx-min{order:2;flex:none;margin-left:auto;align-self:flex-start;min-width:44px;min-height:44px}
+.cx-head>.cx-hb{order:3;flex:1 1 100%}
+:root.chx-full .cx-head>.cx-ht{flex:1 1 200px}
+:root.chx-full .cx-head>.cx-hb{order:2;flex:0 1 auto}
+:root.chx-full .cx-head>.cx-min{order:3;align-self:center}
 .chx .cx-cc.to small,.chx .cx-cc.vis small{font-weight:400}

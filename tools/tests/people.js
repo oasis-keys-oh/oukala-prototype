@@ -58,5 +58,15 @@ const r=await p.evaluate(async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  return f});
 fails.push(...r);await p.context().close();
 
+// 2. PH-10: chat minimize control top right, in flow, light and dark, desktop and 400px, docked and full screen
+for(const [w,scheme,full] of [[1440,'light',false],[1440,'dark',false],[1440,'dark',true],[400,'light',false],[400,'dark',false]]){
+ const q=await page(w,scheme);
+ const m=await q.evaluate(async full=>{CHATX.open('chat');await new Promise(r=>setTimeout(r,300));if(full){document.querySelector('#chxFull').click();await new Promise(r=>setTimeout(r,300))}
+  const mb=document.querySelector('.cx-head>.cx-min');if(!mb)return{err:'no .cx-min in header'};const a=mb.getBoundingClientRect(),h=document.querySelector('.cx-head').getBoundingClientRect();
+  const over=[...document.querySelectorAll('.cx-head *')].filter(e=>e!==mb&&!mb.contains(e)).some(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&!(r.right<=a.left||r.left>=a.right||r.bottom<=a.top||r.top>=a.bottom)});
+  return{right:h.right-a.right,top:a.top-h.top,over,pos:getComputedStyle(mb).position,w:a.width,hgt:a.height}},full);
+ const tag=w+' '+scheme+(full?' full screen':'');
+ if(m.err)fails.push(tag+': '+m.err);else{if(m.right>24||m.top>24)fails.push(tag+': minimize not in the top right corner '+JSON.stringify(m));if(m.over)fails.push(tag+': minimize overlaps header content');if(m.pos!=='static')fails.push(tag+': minimize is positioned '+m.pos);if(m.w<44||m.hgt<44)fails.push(tag+': minimize target under 44px')}
+ await q.context().close()}
 if(errs.length)fails.push('page errors: '+errs.slice(0,3).join(' | '));
 console.log('people and chat addressing',fails.length?'FAIL\n  '+fails.join('\n  '):'ok');await b.close();process.exit(fails.length?1:0)})();
