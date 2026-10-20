@@ -6,7 +6,7 @@ const js=fs.readFileSync(path.join(dir,'full.html'),'utf8');
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});const p=await (await b.newContext()).newPage();
 const errs=[];p.on('pageerror',e=>errs.push(String(e)));
 await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
-await p.waitForFunction(()=>window.APG&&APG.route&&window.BUDREQ&&window.ITSMX&&window.REQREG&&window.INBOX&&INBOX.adapters&&INBOX.adapters.budreq,null,{timeout:60000});
+await p.waitForFunction(()=>window.APG&&APG.route&&window.BUDREQ&&window.ITSMX&&window.REQREG&&window.INBOX&&INBOX.adapters&&INBOX.adapters.budreq&&window.AGENTRT&&AGENTRT.registry().length,null,{timeout:60000});
 await p.waitForTimeout(3500);
 const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  /* ---- PR-20: one source; both APIs are adapters over it ---- */
@@ -33,6 +33,17 @@ const r=await p.evaluate(()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  if(ad&&c){let si=-1,ai=-1;c.stages.forEach((s,i)=>(s.ap||[]).forEach((a,j)=>{if(si<0&&a.dec==="pending"){si=i;ai=j}}));
   const prev=window.INBOX.me;const res=PERM.as(c.req,()=>{INBOX.me=()=>c.req;try{return ad.approve({sid:c.id,sx:si,ax:ai,req:c.req},"test")}finally{INBOX.me=prev}});ok(res&&res.ok===false,"PR-20 change inbox adapter refuses the requester")}
  ok(APG.denials().length>0,"PR-20 refusals are recorded");
+ /* ---- CL-67: tenant id on every agent run, per-tenant retrieval, memory and log ---- */
+ const RT=window.AGENTRT;const ag=RT&&RT.registry().map(x=>x.name)[0];ok(!!ag,"CL-67 agent registry present");
+ if(ag){const prev=DATA.tenant();const a=RT.execute({agent:ag,goal:"guard test core",input:{t:1},step:"guard test"});
+  DATA.setTenant("zz_guard");const b2=RT.execute({agent:ag,goal:"guard test other tenant",input:{t:2},step:"guard test"});
+  const runsB=RT.runs();ok(runsB.length>=1&&runsB.every(x=>x.tenant==="zz_guard"),"CL-67 runs are read per tenant");
+  ok(RT.scope("zz_guard").log.some(e=>e.run===b2.runId)&&!RT.scope("zz_guard").log.some(e=>e.run===a.runId),"CL-67 log is scoped per tenant");
+  DATA.setTenant(prev);ok(!RT.runs().some(x=>x.id===b2.runId),"CL-67 other tenant's run is not visible");
+  ok(RT.runs(null,{tenant:"*"}).every(x=>!x.tenant||typeof x.tenant==="string"),"CL-67 tenant field on run records");
+  ok(RT.runs(null,{tenant:"*"}).filter(x=>x.id===a.runId||x.id===b2.runId).every(x=>x.tenant&&x.gateway),"CL-67 tenant and gateway on new runs");
+  ok(RT.leakCheck().ok,"CL-67 leak check: "+RT.leakCheck().bad.slice(0,2).join(", "))}
+ go("ai_runtime");const v=document.getElementById("view").textContent;ok(/only through the AI gateway/.test(v)&&/isolation is simulated|isolation: simulated/i.test(v),"CL-67 gateway and simulated-isolation note on the agent runtime");
  return f});
 fails.push(...r);
 if(errs.length)fails.push('page errors: '+errs.slice(0,3).join(' | '));
