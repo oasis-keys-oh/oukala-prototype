@@ -522,6 +522,14 @@ function spaceEntries(sp,persona){const out={};SPACES[SPID[sp]][5].forEach(s=>ou
 NAVX.taxo={spaces:()=>SPACES.map(s=>({id:s[0],label:s[1],kind:s[2],icon:s[3],blurb:s[4],subs:s[5].slice()})),areas:()=>AREA_IDS.slice(),
  row:id=>TX[id]?Object.assign({id},TX[id]):null,place:placeOf,label:spLabel,entries:spaceEntries,oldGroup:g=>OLDGRP[g]||null,oldGroups:()=>Object.assign({},OLDGRP),
  families:()=>FX.map(f=>({id:f.id,label:f.label,views:f.views.map(v=>v.slice())})),merges:()=>JSON.parse(JSON.stringify(MERGE)),rows:()=>Object.keys(TX)};
+/* PH-14 step 8 (CL-51): the REG metadata every screen carries by default (REG.meta in kit.js merges a screen's own sixth REG
+   argument over this). personas is a purview hint, not a permission: the personas whose purview or role pins reach the screen. */
+const MENU_OF={entry:"entry",role:"entry",view:"view",merged:"view",search:"search",retire:"search"};
+NAVX.taxo.meta=function(id){const t=TX[id];const p=placeOf(id);const fam=G(()=>R15.famOf[id]);const top=placeOf(topOf(id));
+ const PV=G(()=>R15D.PURVIEW,{})||{};const personas=Object.keys(PV).filter(k=>{const v=PV[k];if((v.pins||[]).indexOf(id)>=0)return true;
+  if(top.sp==="build")return k==="arch"||k==="admin";if(top.sp==="my"||top.sp==="ask"||top.sp==="home")return true;if(top.sp==="show")return k!=="guest";return (v.areas||[]).indexOf(top.sp)>=0});
+ return {area:top.sp,sub:p.kind==="entry"||p.kind==="role"?p.sub:top.sub,objects:t?t.objs.slice():[],archetype:t?t.arch:"",personas,objective:t?t.obj:"",compare:t?t.cmp:"",
+  family:fam&&fam.id!==id?fam.id:null,view:fam&&fam.id!==id?(fam.views.find(v=>v[0]===id)||[])[1]||null:null,menu:t?MENU_OF[t.kind]||"search":"search"}};
 /* the check: every registered screen has exactly one place; every entry sits in one sub-group of one space; the menu stays
    inside its budget of 7 areas x 7 sub-groups x 7 entries (section g, rule 8) */
 NAVX.taxo.check=function(){const ids=SCREENS.map(s=>s[0]);const by={entry:[],view:[],merged:[],search:[],role:[],retire:[]};const seen={},dup=[];

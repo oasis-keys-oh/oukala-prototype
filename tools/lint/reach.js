@@ -27,7 +27,7 @@ for(const id of ids){await p.evaluate(i=>{try{closeDrawer()}catch(e){}try{go(i)}
 const rows=await p.evaluate(LB=>{const D=(window.SCRMAP_DATA||{}).screens||{};const groups=new Set(NAVX.groups.map(g=>g.id));
  const tour={};(window.SHOW&&SHOW.demos||[]).forEach(d=>(d.beats||[]).forEach(b=>{[b].concat(b.kids||[]).forEach(k=>{if(k&&k.go)(tour[k.go]=tour[k.go]||[]).push(d.id)})}));
  return SCREENS.map(s=>{const id=s[0],m=NAVX.map[id],d=D[id]||{};const fam=!!(R15.hidden[id]&&((R15.famOf||{})[id]||R15.alias[id]))||!!R15.alias[id];
-  return{id,name:s[1],group:s[3]||'',file:d.f||'',menu:!!(m&&m.g!=='r15hid'&&groups.has(m.g)),family:fam,linksFrom:LB[id]||[],staticLinks:d.nv||0,staticFiles:d.nvF||[],mentions:d.in||0,tour:[...new Set(tour[id]||[])]}})},Object.fromEntries(Object.entries(linkBy).map(([k,v])=>[k,[...v]])));
+  return{id,name:s[1],group:s[3]||'',file:d.f||'',menu:window.NAVX&&NAVX.taxo?['entry','role'].indexOf(NAVX.taxo.place(id).kind)>=0:!!(m&&m.g!=='r15hid'&&groups.has(m.g)), /* PH-14: a menu entry of the navigation taxonomy */family:fam,linksFrom:LB[id]||[],staticLinks:d.nv||0,staticFiles:d.nvF||[],mentions:d.in||0,tour:[...new Set(tour[id]||[])]}})},Object.fromEntries(Object.entries(linkBy).map(([k,v])=>[k,[...v]])));
 await b.close();
 rows.forEach(r=>{r.reach=[r.menu&&'menu',r.family&&'family',(r.linksFrom.length||r.staticLinks)&&'link',r.tour.length&&'tour'].filter(Boolean);r.unreachable=!r.reach.length});
 const un=rows.filter(r=>r.unreachable);

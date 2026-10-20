@@ -13,6 +13,8 @@ const argv=process.argv.slice(2);const has=k=>argv.includes(k);const arg=k=>{con
 
 /* ---------- shared inputs ---------- */
 const files=sources();
+/* --extra <file>: lint one more file as a module, without adding it to src/ (tools/tests/nav_ia.js uses it for the screen-meta rule) */
+if(arg('--extra')){const xp=path.resolve(arg('--extra'));files.push({f:path.basename(xp),ext:xp.endsWith('.css')?'css':'js',t:fs.readFileSync(xp,'utf8'),generated:false,module:true,core:false})}
 const byName=Object.fromEntries(files.map(s=>[s.f,s]));
 const tok=fs.readFileSync(path.join(SRC,'tokens.py'),'utf8');
 /* U helper names (R10) read from platform.js so the list follows the contract */
@@ -41,6 +43,16 @@ if(!certSelf('Falconaire is SOC 2 certified.')||!certSelf('Our security is bank-
 /* a string is "visible-ish" text when it has a letter run and a space; ids, keys, selectors and regex sources are skipped */
 const looksText=v=>/[A-Za-z]{2,}[^<>{}]*\s+[A-Za-z]/.test(v)&&!/^[\w.:#\[\]=*>~+-]+$/.test(v);
 const isId=v=>/^[\w.:@\/-]*$/.test(v);
+
+/* screens with metadata (R2, R3; PH-14 step 8, CL-51): the navigation taxonomy in mod_nav.js (seeded from docs/ia/screen-inventory.csv)
+   gives every listed screen an archetype and an R3 comparison; a screen outside it must declare both itself, either as REG's sixth
+   argument {archetype:"...",compare:"..."} or with CONTRACT.declare("id",{archetype:"...",compared:[...]}) */
+const TAXMETA=new Set();for(const m of (byName['mod_nav.js']||{t:''}).t.matchAll(/^([a-z0-9_]+)\|(?:home|my|ask|strat|deliver|ops|money|people|risk|transform|show|build)\|[^|\n]*\|[^|\n]*\|(?:entry|view|merged|search|role|retire)\|[^|\n]*\|([^|\n]+)\|([^|\n]+)\|/gm))TAXMETA.add(m[1]);
+const DECLARED=new Set();files.forEach(s=>{if(s.ext!=='js')return;for(const m of s.t.matchAll(/CONTRACT\.declare\(\s*["']([a-z0-9_]+)["']\s*,\s*\{[^}]*archetype\s*:\s*["'][^"']+["'][^}]*compared?\s*:/g))DECLARED.add(m[1])});
+const META_INLINE=/\{\s*(?:[a-z]+\s*:\s*(?:"[^"]*"|\[[^\]]*\]|null)\s*,\s*)*archetype\s*:\s*"[^"]+"[^{}]*\bcompare\s*:\s*"[^"]+"|\{\s*(?:[a-z]+\s*:\s*(?:"[^"]*"|\[[^\]]*\]|null)\s*,\s*)*compare\s*:\s*"[^"]+"[^{}]*\barchetype\s*:\s*"[^"]+"/;
+function screenMetaHits(s){const out=[];const re=/\bREG\(\s*["']([a-z0-9_]+)["']/g;let m;const all=[...s.t.matchAll(re)];
+ all.forEach((m,i)=>{const id=m[1];if(TAXMETA.has(id)||DECLARED.has(id))return;const end=i+1<all.length?all[i+1].index:s.t.length;const chunk=s.t.slice(m.index,Math.min(end,m.index+20000));
+  if(META_INLINE.test(chunk))return;out.push({i:m.index,s:'REG("'+id+'") without archetype and R3 comparison'})});return out}
 
 /* CSS custom properties defined anywhere: tokens.py, CSS, or set from JS (same logic as tools/tests/css_lint.js) */
 const defd=new Set();const addDefs=t=>{for(const m of t.matchAll(/(?<![\w-])--([\w-]+)\s*:/g))defd.add(m[1]);for(const m of t.matchAll(/setProperty\(\s*["'`]--([\w-]+)/g))defd.add(m[1])};
@@ -72,6 +84,7 @@ const RULES=[
  {id:'step-label',rule:'R21',ids:'CL-60, CL-72',n:'"Automatic" or "Function" used as a step kind or label',scope:'view',each:(s,L)=>{const out=reHits(L.nc,/\bwho\s*:\s*["'](?:auto|automatic|fn|function)["']/gi);
    for(const x of L.strings)if(/^(Automatic|Function)( step)?$/.test(x.v.trim()))out.push({i:x.i,s:'"'+x.v+'"'});return out}},
  {id:'product-name',rule:'R31',ids:'CL-60, CL-17',n:'Product name typed as a literal (use BRAND.name) or an old product name',scope:'view',each:(s,L)=>strHits(L,/\b(Oukala|Shaheen|Falconaire)\b/,v=>!isId(v)&&!/^[a-z0-9_.:-]+$/.test(v))},
+ {id:'screen-meta',rule:'R2, R3',ids:'PH-14, CL-51',n:'New screen without archetype or R3 comparison (REG metadata)',scope:'js',each:(s)=>screenMetaHits(s)},
  {id:'wrapper',rule:'R40',ids:'CL-60, CL-35',n:'New wrapper of render, go or openDrawer (use HOOKS)',scope:'view',each:(s,L)=>{const out=[];const c=L.code;
    for(const m of c.matchAll(/(\b(?:window|W)\s*\.\s*|[^\w$.\s]\s*|^\s*)\b(render|go|openDrawer)\s*=(?![=>])/gm)){
     const before=c.slice(Math.max(0,m.index-12),m.index+m[1].length);if(/\b(const|let|var|function)\s*$/.test(before))continue;out.push({i:m.index,s:m[0].trim()})}return out}}
@@ -97,7 +110,8 @@ const SELF={
  'owner-text':['x(`<td>${esc(r.owner)}</td>`)','x(`<td>${ownerChip(r.owner)}</td>`)'],
  'step-label':['const s={who:"auto"};','const s={who:"robot"};'],
  'product-name':['x("Welcome to Oukala today")','U.store.get("oukala-pref")'],
- 'wrapper':['const _r=window.render;window.render=function(){_r()};','HOOKS.on("afterRender",f,{id:"x"});']};
+ 'wrapper':['const _r=window.render;window.render=function(){_r()};','HOOKS.on("afterRender",f,{id:"x"});'],
+ 'screen-meta':['REG("zz_new_screen","New","platform","",()=>"");','REG("zz_new_screen","New","platform","",()=>"",{archetype:"Report",compare:"exe_dash",menu:"search"});']};
 for(const r of RULES){const smp=SELF[r.id];if(!smp){console.log('!! no self-test for rule',r.id);process.exit(1)}
  const mk=(t,kind)=>({f:kind==='css'?'self.css':'mod_self.js',ext:kind==='css'?'css':'js',t,generated:false,module:true,core:false});
  const fire=t=>{const s=mk(t,smp[2]);return r.each(s,s.ext==='js'?lex(t):null).length};

@@ -3,7 +3,14 @@
 const NAVG=[["portfolio","Portfolio and delivery"],["service","Service management"],["ops","Operations"],["know","Knowledge"],["people","People and work"],["automate","Automation"],["ai","AI and governance"],["platform","Platform"]];
 const SCREEN_GROUP={trace:"portfolio",inv:"portfolio",port:"portfolio",ims:"portfolio",plan:"portfolio",fo:"people",tower:"ai",metrics:"platform",loop:"platform",log:"platform",kg:"know"};
 SCREENS.forEach(s=>{if(!s[3])s[3]=SCREEN_GROUP[s[0]]||"platform"});
-function REG(id,name,group,icon,render){_R[id]=render;const ex=SCREENS.find(s=>s[0]===id);if(ex){ex[1]=name;ex[2]=icon;ex[3]=group}else SCREENS.push([id,name,icon,group])}
+function REG(id,name,group,icon,render,meta){_R[id]=render;const ex=SCREENS.find(s=>s[0]===id);if(ex){ex[1]=name;ex[2]=icon;ex[3]=group}else SCREENS.push([id,name,icon,group]);if(meta&&typeof meta==="object")REG.META[id]=Object.assign({},REG.META[id]||{},meta)}
+/* PH-14 step 8 (CL-51, R2, R3): screen metadata. REG takes an optional sixth argument
+   {area, sub, objects, archetype, personas, objective, compare, family, view, menu}; REG.meta(id) merges it over the navigation
+   taxonomy (NAVX.taxo.meta, seeded from docs/ia/screen-inventory.csv). A new screen declares at least its archetype and the
+   screen it was compared with (R3); tools/lint/lint.js rule screen-meta fails the build without them. With no metadata a
+   screen lands in search only, never in a menu. */
+REG.META={};
+REG.meta=function(id){const base=(window.NAVX&&NAVX.taxo&&NAVX.taxo.meta)?NAVX.taxo.meta(id):{};return Object.assign({},base||{},REG.META[id]||{})};
 /* Small helpers every screen can use */
 const card=(title,sub,body,right,style)=>`<section class="card glass"${style?` style="${style}"`:""}><div class="cardhead"><div><h3>${title}</h3>${sub?`<span class="muted small" data-role="story">${sub}</span>`:""}</div>${right||""}</div>${body||""}</section>`;
 const TL=(lbl,big,delta,cls)=>`<div class="tile glass"><span class="lbl">${lbl}</span><span class="big num" data-role="metric">${big}</span><span class="delta ${cls||"good"}">${delta}</span></div>`;
