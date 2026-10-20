@@ -5,7 +5,7 @@
 //   A1 index.html links one hashed stylesheet and one hashed script; inline CSS is only the boot screen; no inline JPEG (CL-14, CL-28)
 //   A2 bytes of script before first paint are under budget (BUDGET_FIRST_RAW)                                   (CL-15, CL-48)
 //   A3 app:ready fires exactly once and BUNDLE.ready is true                                                    (CL-37)
-//   A4 on-demand data is fetched only when its screen opens                                                     (CL-39)
+//   A4 on-demand data is fetched only when its screen opens; tenant packs prefetch on idle after app:ready     (CL-39, PR-32)
 //   A5 every screen opens with no page error; screen list and nav order match full.html; screen text matches full.html
 //      (text: screens where two full.html loads agree; report only unless BUNDLE_STRICT=1, since the app decorates on timers)
 // Part B, a two-bundle build made for this test (src/build.py --first-until mod_s_tenant_screens) to keep the split working:
@@ -61,7 +61,7 @@ async function everyScreen(p,errs){const ids=await p.evaluate(()=>SCREENS.map(s=
    before:R.filter(x=>x.responseEnd<=window.__firstRender).reduce((s,x)=>s+(x.decodedBodySize||0),0)+(performance.getEntriesByType('navigation')[0].decodedBodySize||0)}});
   note('first screen rendered at '+Math.round(t.first)+' ms; bytes fetched before it: '+t.before.toLocaleString('en-US')+' (prototype fact, loopback, no compression)');
   ok(t.split===true&&t.n===1,'A3 app:ready fired once ('+t.n+'), at '+Math.round(t.ready)+' ms');
-  ok(!reqs.some(u=>/\/assets\/data\//.test(u)),'A4 no on-demand data fetched on the home screen');
+  ok(!reqs.some(u=>/\/assets\/data\//.test(u)&&!/\/assets\/data\/pack_/.test(u)),'A4 no on-demand screen data fetched on the home screen (tenant packs prefetch on idle after app:ready, PR-32)');
   const got=n=>p.waitForFunction(x=>!!BUNDLE.get(x),n,{timeout:15000}).then(()=>true,()=>false);
   await p.evaluate(()=>go('vault'));const g1=await got('gaapdata');
   ok(g1&&reqs.some(u=>/\/assets\/data\/gaapdata\.[0-9a-f]{10}\.json/.test(u)),'A4 opening vault fetches gaapdata');
