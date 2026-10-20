@@ -1,9 +1,9 @@
 /* tenant switcher */
 .tn-btn{display:block;background:none;border:0;padding:0;margin:0;color:var(--muted);font:inherit;font-size:12px;cursor:pointer;text-align:left}
-.tn-btn:hover,.tn-btn:focus-visible{color:var(--ink,#fff);text-decoration:underline}
-.tn-menu{position:fixed;z-index:9000;min-width:300px;max-width:340px;padding:8px;border-radius:14px;background:var(--glass2,#fff);backdrop-filter:blur(14px);border:1px solid var(--hair);box-shadow:0 18px 44px rgba(0,0,0,.28);color:var(--ink)}
+.tn-btn:hover,.tn-btn:focus-visible{color:var(--ink,var(--white));text-decoration:underline}
+.tn-menu{position:fixed;z-index:var(--z-top);min-width:300px;max-width:340px;padding:8px;border-radius:var(--rad-card);background:var(--glass2,var(--white));backdrop-filter:blur(14px);border:1px solid var(--hair);box-shadow:0 18px 44px rgba(0,0,0,.28);color:var(--ink)}
 .tn-h{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 10px}
-.tn-i{display:block;width:100%;text-align:left;border:0;background:transparent;padding:8px 10px;border-radius:10px;cursor:pointer;font:inherit;color:inherit}
+.tn-i{display:block;width:100%;text-align:left;border:0;background:transparent;padding:8px 10px;border-radius:var(--rad-lg);cursor:pointer;font:inherit;color:inherit}
 .tn-i small{display:block;color:var(--muted);font-size:12px}
 .tn-i:hover,.tn-i:focus-visible{background:color-mix(in srgb,var(--accent) 12%,transparent)}
 .tn-i.on{outline:2px solid var(--accent)}
@@ -11,6 +11,6 @@
 /* tenant org chart: a function under the COO, with its teams below */
 .jo-fns{display:flex;gap:18px;align-items:flex-start;padding:4px 2px 12px;min-width:max-content}
 .jo-fn{display:flex;flex-direction:column;gap:10px;border-top:2px solid var(--hair);padding-top:12px}
-.jo-fh{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px solid var(--ink,#123);background:var(--glass2);flex-wrap:wrap}
+.jo-fh{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:var(--rad-card);border:1.5px solid var(--ink,#123);background:var(--glass2);flex-wrap:wrap}
 .jo-fh small{display:block;color:var(--muted)}
 .jo-fteams{display:flex;gap:10px;align-items:flex-start}

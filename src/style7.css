@@ -16,12 +16,12 @@
 :root:root .formula[data-fc]{position:relative;padding-right:76px}
 :root:root .pop,:root:root .fhov,:root:root #drawer{overflow-wrap:anywhere}
 :root:root :is(.pop,.fhov,.mcard)>*{min-width:0;max-width:100%}
-.fcopy{position:absolute;top:8px;right:8px;font:inherit;font-family:var(--f-body);font-style:normal;font-size:var(--fs-xs);font-weight:var(--fw-label);line-height:1;letter-spacing:0;white-space:nowrap;color:var(--ink);background:var(--glass2);border:1px solid var(--cardline);border-radius:99px;padding:6px 11px;cursor:pointer;min-height:28px;transition:background .15s,transform .15s}
+.fcopy{position:absolute;top:8px;right:8px;font:inherit;font-family:var(--f-body);font-style:normal;font-size:var(--fs-xs);font-weight:var(--fw-label);line-height:1;letter-spacing:0;white-space:nowrap;color:var(--ink);background:var(--glass2);border:1px solid var(--cardline);border-radius:var(--rad-pill);padding:6px 11px;cursor:pointer;min-height:28px;transition:background .15s,transform .15s}
 .fcopy:hover{background:var(--accent-soft)}.fcopy:active{transform:scale(.96)}.fcopy[data-done]{color:var(--good);border-color:var(--good)}
 .fhov .fcopy{display:none}
 
 /* ---- F-03 cards in a row: equal heights, aligned footers, one padding/radius/shadow ---- */
-:root{--card-pad:20px;--card-gap:18px}
+
 :root:root .grid{align-items:stretch;gap:var(--card-gap)}
 :where(.grid>.card,.grid>.tile,.grid>.stat,.grid>.mini,.row>.card){display:flex;flex-direction:column;align-self:stretch;min-width:0}
 :where(.grid>.card,.row>.card)>:where(.row:last-child,.cardfoot,.foot,.actions,.btnrow){margin-top:auto}
@@ -40,7 +40,7 @@
 :root:root .btn:disabled,:root:root button:disabled{opacity:1;color:var(--dis-ink);background:var(--dis-bg);border-color:var(--hair);box-shadow:none;transform:none}
 
 /* ---- F-05 sticky top bar: sections and anchors never land under it; sticky table heads sit below it ---- */
-:root{--tb-h:84px}
+
 html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 #view :is([id],h2,h3,section,.card,.screen>*){scroll-margin-top:calc(var(--tb-h) + 12px)}
 .topbar{background:color-mix(in srgb,var(--glass) 70%,var(--bg))}
@@ -51,7 +51,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 
 /* ---- F-07 empty and loading states share one look ---- */
 .empty,.emptystate,.nodata{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:28px 16px;border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;min-height:96px}
-.skel,.skeleton{position:relative;overflow:hidden;border-radius:10px;background:var(--track);min-height:14px;color:transparent}
+.skel,.skeleton{position:relative;overflow:hidden;border-radius:var(--rad-lg);background:var(--track);min-height:14px;color:transparent}
 .skel::after,.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 9%,transparent),transparent);animation:skelslide 1.3s infinite}
 @keyframes skelslide{to{transform:translateX(100%)}}
 
@@ -92,7 +92,7 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 :root:root .proc .ps.gate .who{color:var(--warn)}
 
 /* ---- F-12 skip link: visible only on keyboard focus ---- */
-.skiplink{position:fixed;left:12px;top:-72px;z-index:10000;padding:12px 18px;border-radius:14px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
+.skiplink{position:fixed;left:12px;top:-72px;z-index:calc(var(--z-top) + 1000);padding:12px 18px;border-radius:var(--rad-card);background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:var(--fs-sm);text-decoration:none;box-shadow:0 10px 30px var(--shade);transition:top .15s}
 .skiplink:focus,.skiplink:focus-visible{top:12px;outline:2px solid var(--focus);outline-offset:3px}
 
 /* ---- F-13 phone top bar fits the viewport (it was 33px too wide on every screen, forcing sideways page scroll) ---- */
@@ -108,26 +108,26 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 }
 
 /* ---- F-04b filled controls: white text holds 4.5:1 on both ends of the gradient in light and dark ---- */
-:root:root .btn.primary{background:linear-gradient(135deg,#0E6478,#13809A);color:#fff}
-:root:root .btn.danger{background:linear-gradient(135deg,#B00D1B,#E91224);color:#fff}
+:root:root .btn.primary{background:linear-gradient(135deg,#0E6478,var(--p1));color:var(--white)}
+:root:root .btn.danger{background:linear-gradient(135deg,#B00D1B,var(--e1));color:var(--white)}
 
 /* ---- F-04c category colours used as TEXT (eyebrows, labels): mixed toward the ink so they hold 4.5:1 on light and dark ---- */
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p1)"]{color:color-mix(in srgb,var(--p1) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p2)"]{color:color-mix(in srgb,var(--p2) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p3)"]{color:color-mix(in srgb,var(--p3) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p2)"]{color:color-mix(in srgb,var(--p2) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p3)"]{color:color-mix(in srgb,var(--p3) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p4)"]{color:color-mix(in srgb,var(--p4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p5)"]{color:color-mix(in srgb,var(--p5) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p6)"]{color:color-mix(in srgb,var(--p6) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p5)"]{color:color-mix(in srgb,var(--p5) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--p6)"]{color:color-mix(in srgb,var(--p6) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w1)"]{color:color-mix(in srgb,var(--w1) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w3)"]{color:color-mix(in srgb,var(--w3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e1)"]{color:color-mix(in srgb,var(--e1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--w3)"]{color:color-mix(in srgb,var(--w3) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e1)"]{color:color-mix(in srgb,var(--e1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--e4)"]{color:color-mix(in srgb,var(--e4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s1)"]{color:color-mix(in srgb,var(--s1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s1)"]{color:color-mix(in srgb,var(--s1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s3)"]{color:color-mix(in srgb,var(--s3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s4)"]{color:color-mix(in srgb,var(--s4) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u1)"]{color:color-mix(in srgb,var(--u1) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--s4)"]{color:color-mix(in srgb,var(--s4) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u1)"]{color:color-mix(in srgb,var(--u1) 45%,var(--eb-mix))}
 :root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u3)"]{color:color-mix(in srgb,var(--u3) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u4)"]{color:color-mix(in srgb,var(--u4) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--u4)"]{color:color-mix(in srgb,var(--u4) 45%,var(--eb-mix))}
 /* light fills carry dark text */
 :root:root :is([style*="background:var(--w1)"],[style*="background:var(--w3)"],[style*="background: var(--w1)"]){color:#16262B!important}
 
@@ -142,11 +142,11 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 }
 /* compact status text on tinted chips keeps weight so it stays legible at 12px */
 :root:root .pill{font-weight:700}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--good-f)"]{color:color-mix(in srgb,var(--good-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--warn-f)"]{color:color-mix(in srgb,var(--warn-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--bad-f)"]{color:color-mix(in srgb,var(--bad-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--metric-f)"]{color:color-mix(in srgb,var(--metric-f) 45%,var(--eb-mix))!important}
-:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--story-f)"]{color:color-mix(in srgb,var(--story-f) 45%,var(--eb-mix))!important}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--good-f)"]{color:color-mix(in srgb,var(--good-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--warn-f)"]{color:color-mix(in srgb,var(--warn-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--bad-f)"]{color:color-mix(in srgb,var(--bad-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--metric-f)"]{color:color-mix(in srgb,var(--metric-f) 45%,var(--eb-mix))}
+:root:root :is(.eyebrow,small,.lbl,.who,b,i,em,span,div)[style*="color:var(--story-f)"]{color:color-mix(in srgb,var(--story-f) 45%,var(--eb-mix))}
 
 /* ---- F-07b empty states from every module share one look ---- */
 :root:root :is(.emptystate,.nx-empty,.vz-empty,.itom-empty,.inbx-empty,.gx-empty,.dev-empty,.empty,.nodata){border:1px dashed var(--cardline);border-radius:var(--r);color:var(--muted);background:transparent;text-align:center}
@@ -157,3 +157,9 @@ html,body,main,#view{scroll-padding-top:calc(var(--tb-h) + 12px)}
 
 /* module grids that hold sibling cards also stretch (list/detail splits, kanban lanes and data-eq="off" are the intentional exceptions) */
 :root:root :is(div,section):has(>.card~.card):not(.dsplit,.listdet,.kan,.dfullgrid,[data-eq="off"]):is(.grid,[class*="-g2"],[class*="-two"],[class*="scg"],[class*="-g3"]){align-items:stretch}
+/* PH-10, PH-11: in a popover whose close sits in an action row at the end (AI chip, metric chip and ring, executive lens, profile, View as), the row moves to the top and the close control ends it: top right, in flow, never over content */
+.pop:popover-open:has(>.row>[popovertargetaction=hide]:not([data-go])){display:flex;flex-direction:column}
+.pop>.row:has(>[popovertargetaction=hide]:not([data-go])){order:-1;justify-content:flex-end;margin-bottom:12px}
+.pop>.row>[popovertargetaction=hide]:not([data-go]){order:99}
+/* PR-04: a popover sits in the DOM inside the chip or label that opens it, so it inherited that label's caps, tracking and weight (the all-caps metric modals); it starts from body text instead */
+.pop{text-transform:none;letter-spacing:normal;font-weight:var(--fw-body)}

@@ -1,5 +1,5 @@
 /* ===== Round 15 (Agent C): usability + rhythm. Tokens first. ===== */
-:root{--sp-1:8px;--sp-2:16px;--sp-3:24px;--sp-4:32px}
+
 /* --- vertical rhythm: panes were display:block, so tiles butted into panels. Shown panes become a column with a real gap. --- */
 :root:root .views>input:nth-of-type(1):checked~.panes .pane:nth-child(1),:root:root .views>input:nth-of-type(2):checked~.panes .pane:nth-child(2),:root:root .views>input:nth-of-type(3):checked~.panes .pane:nth-child(3),:root:root .views>input:nth-of-type(4):checked~.panes .pane:nth-child(4),:root:root .views>input:nth-of-type(5):checked~.panes .pane:nth-child(5),:root:root .views>input:nth-of-type(6):checked~.panes .pane:nth-child(6),:root:root .views>input:nth-of-type(7):checked~.panes .pane:nth-child(7),:root:root .views>input:nth-of-type(8):checked~.panes .pane:nth-child(8),:root:root .views>input:nth-of-type(9):checked~.panes .pane:nth-child(9),:root:root .views>input:nth-of-type(10):checked~.panes .pane:nth-child(10),:root:root .views>input:nth-of-type(11):checked~.panes .pane:nth-child(11),:root:root .views>input:nth-of-type(12):checked~.panes .pane:nth-child(12),:root:root .views>input:nth-of-type(13):checked~.panes .pane:nth-child(13),:root:root .views>input:nth-of-type(14):checked~.panes .pane:nth-child(14),:root:root .views>input:nth-of-type(15):checked~.panes .pane:nth-child(15),:root:root .views>input:nth-of-type(16):checked~.panes .pane:nth-child(16),:root:root .views>input:nth-of-type(17):checked~.panes .pane:nth-child(17),:root:root .views>input:nth-of-type(18):checked~.panes .pane:nth-child(18),:root:root .views>input:nth-of-type(19):checked~.panes .pane:nth-child(19),:root:root .views>input:nth-of-type(20):checked~.panes .pane:nth-child(20){display:flex;flex-direction:column;gap:var(--sp-3)}
 :root:root .views .pane>.statrow,:root:root .views .pane>.exe-tiles,:root:root .screen>.statrow{margin:0}
@@ -17,27 +17,27 @@
 :root:root .cardhead .fkpi{width:auto;min-width:0;max-width:100%;flex:0 0 auto;margin:0}
 :root:root .card>.fkpi,:root:root .card>.cardhead~.fkpi{margin:0 0 var(--sp-2)}
 /* --- breadcrumb and one-name hero --- */
-.r15-crumb{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--muted)}
-.r15-crumb .r15-cg{all:unset;cursor:pointer;color:var(--muted);padding:6px 4px;margin:-6px -4px;border-radius:6px;min-height:20px}
+.r15-crumb{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:700;color:var(--muted)}
+.r15-crumb .r15-cg{all:unset;cursor:pointer;color:var(--muted);padding:6px 4px;margin:-6px -4px;border-radius:var(--rad-sm);min-height:20px}
 .r15-crumb .r15-cg:hover{color:var(--ink);text-decoration:underline}
 .r15-crumb .r15-cg:focus-visible{outline:2px solid var(--focus,var(--accent));outline-offset:2px}
 .r15-crumb .r15-sep{opacity:.55}
 .r15-crumb [aria-current]{color:var(--ink)}
 .r15-tag{margin:0;font-size:16px;font-weight:600;color:var(--ink);max-width:70ch;overflow-wrap:break-word}
 .hero .r15-tag+.story{margin-top:0}
-.r15-grppop{position:fixed;inset:auto;margin:0;padding:12px;border-radius:14px;min-width:240px;max-width:320px;max-height:70vh;overflow:auto;border:1px solid var(--hair);color:var(--ink)}
+.r15-grppop{position:fixed;inset:auto;margin:0;padding:12px;border-radius:var(--rad-card);min-width:240px;max-width:320px;max-height:70vh;overflow:auto;border:1px solid var(--hair);color:var(--ink)}
 .r15-grppop .eyebrow{margin:2px 6px 8px}
-.r15-grppop .r15-gi{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:10px;background:none;border:0;color:var(--ink);font:inherit;font-weight:600;cursor:pointer;min-height:44px}
+.r15-grppop .r15-gi{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:var(--rad-lg);background:none;border:0;color:var(--ink);font:inherit;font-weight:600;cursor:pointer;min-height:44px}
 .r15-grppop .r15-gi:hover,.r15-grppop .r15-gi.on{background:var(--glass2)}
 /* one name in the rail: the formal second line is gone (it stays in the tooltip) */
 #nav .navit:not(.nx-fav) .nx-h{display:none}
 /* --- toast dock: bottom right, above the Ask button, stack of at most three, never over the KPI row --- */
-#toasts{left:auto;right:24px;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:none;align-items:flex-end;max-width:min(400px,calc(100vw - 32px));z-index:130}
-#toasts .toast{pointer-events:auto;border-radius:14px;padding:10px 10px 10px 14px;font-weight:600;font-size:13px;max-width:400px;align-items:center;gap:10px;line-height:1.35}
+#toasts{left:auto;right:24px;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:none;align-items:flex-end;max-width:min(400px,calc(100vw - 32px));z-index:calc(var(--z-overlay) + 30)}
+#toasts .toast{pointer-events:auto;border-radius:var(--rad-card);padding:10px 10px 10px 14px;font-weight:600;font-size:13px;max-width:400px;align-items:center;gap:10px;line-height:1.35}
 #toasts .toast .tmsg{flex:1 1 auto;min-width:0;overflow-wrap:break-word}
 #toasts .toast .tcount{font-size:12px;color:var(--muted)}
-#toasts .toast .tact{flex:none;border:0;border-radius:99px;padding:6px 12px;min-height:32px;font:inherit;font-weight:700;font-size:12.5px;cursor:pointer;background:var(--accent);color:var(--on-accent,#fff)}
-#toasts .toast .tx{flex:none;border:0;background:none;color:var(--muted);font-size:20px;line-height:1;width:32px;height:32px;border-radius:50%;cursor:pointer}
+#toasts .toast .tact{flex:none;border:0;border-radius:var(--rad-pill);padding:6px 12px;min-height:32px;font:inherit;font-weight:700;font-size:12.5px;cursor:pointer;background:var(--accent);color:var(--on-accent,var(--white))}
+#toasts .toast .tx{flex:none;border:0;background:none;color:var(--muted);font-size:20px;line-height:1;width:32px;height:32px;border-radius:var(--rad-round);cursor:pointer}
 #toasts .toast .tx:hover{background:var(--glass2);color:var(--ink)}
 #toasts .toast.sys{opacity:.92;font-weight:500;padding:8px 8px 8px 12px;font-size:12.5px}
 @media(max-width:700px){#toasts{left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom,0px));align-items:stretch;max-width:none}#toasts .toast{max-width:none}}
@@ -49,7 +49,7 @@
  :root:root :is(td,th) :is(button,[role=button],a[href],[data-nav],[data-rec]){min-height:44px;min-width:44px}
  :root:root :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),select,textarea){min-height:44px}
 }
-:root:root .cardhead .fkpi{flex-direction:row;align-items:center;gap:10px;width:auto;min-width:0;padding:6px 14px;border-radius:99px}
+:root:root .cardhead .fkpi{flex-direction:row;align-items:center;gap:10px;width:auto;min-width:0;padding:6px 14px;border-radius:var(--rad-pill)}
 :root:root .cardhead .fkpi .fk-s{display:none}
 :root:root .cardhead .fkpi .fk-h{min-height:0;gap:8px;display:inline-flex}
 :root:root .cardhead .fkpi .fk-v{display:inline-flex;align-items:baseline;gap:6px}
@@ -57,10 +57,10 @@
 :root:root .cardhead .fkpi .fk-n{-webkit-line-clamp:1;line-clamp:1;white-space:nowrap}
 /* --- view switcher for merged screen families --- */
 .r15-fam{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;padding:0 6px}
-.r15-fam .r15-fl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.r15-fam .r15-fl{font-size:12px;font-weight:700;color:var(--muted)}
 .r15-fam .r15-fc{display:flex;gap:8px;flex-wrap:wrap}
 .r15-fam .chip{padding:7px 14px}
-.r15-fam .chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent,#fff);border-color:transparent}
+.r15-fam .chip[aria-pressed=true]{background:var(--accent);color:var(--on-accent,var(--white));border-color:transparent}
 /* --- task first: collapsed overview --- */
 .r15-ov{padding:0;overflow:hidden}
 .r15-ov>summary{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;padding:14px var(--card-pad,20px);cursor:pointer;list-style:none;min-height:48px}
@@ -72,7 +72,7 @@
 .r15-ov .r15-ovb{display:flex;flex-direction:column;gap:var(--sp-3);padding:0 var(--card-pad,20px) var(--card-pad,20px)}
 /* --- inbox banners dock bottom-left of the work area (two at most); toasts dock bottom-right --- */
 :root:root #inbxBanners{top:auto;right:auto;left:316px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:min(400px,calc(100vw - 340px));flex-direction:column}
-:root:root #inbxBanners>.inbx-banner{padding:12px;border-radius:16px}
+:root:root #inbxBanners>.inbx-banner{padding:12px;border-radius:var(--rad-2xl)}
 :root:root #inbxBanners>.inbx-banner:nth-last-child(n+3){display:none}
 @media(max-width:900px){:root:root #inbxBanners{left:16px;width:calc(100vw - 32px);bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
 /* --- org chart load pills: same tint and text pairs as .pill, so contrast matches the audited tokens --- */

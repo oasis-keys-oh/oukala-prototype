@@ -1,6 +1,6 @@
 /* recommended agents and robots on the real org chart: dashed, like an open position, but violet for agents and teal for robots */
-.org-pp .org-card.pp{border:1.5px dashed #7a3fd0;background:color-mix(in srgb,#7a3fd0 7%,var(--card,#fff));text-align:left;gap:8px}
-.org-pp.k-robot .org-card.pp{border-color:#0C6074;background:color-mix(in srgb,#0C6074 7%,var(--card,#fff))}
+.org-pp .org-card.pp{border:1.5px dashed #7a3fd0;background:color-mix(in srgb,#7a3fd0 7%,var(--card,var(--white)));text-align:left;gap:8px}
+.org-pp.k-robot .org-card.pp{border-color:#0C6074;background:color-mix(in srgb,#0C6074 7%,var(--card,var(--white)))}
 .org-pp .org-card.pp:hover{box-shadow:0 4px 14px rgba(91,75,214,.25)}
 .org-pp .org-t b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:150px}
 .org-pp-ol .jav{flex:none}

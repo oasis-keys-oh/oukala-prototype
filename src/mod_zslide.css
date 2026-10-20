@@ -6,8 +6,8 @@
 /* ---------- 1. ordinary overflow containers: always-visible styled scrollbars ----------
    macOS overlay scrollbars hide until you scroll; a sized ::-webkit-scrollbar keeps them on screen. */
 html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(--sb-size);height:var(--sb-size)}
-*::-webkit-scrollbar-track{background:var(--sb-track);border-radius:99px}
-*::-webkit-scrollbar-thumb{background:var(--sb-thumb);border-radius:99px;border:3px solid transparent;background-clip:padding-box;min-height:40px;min-width:40px}
+*::-webkit-scrollbar-track{background:var(--sb-track);border-radius:var(--rad-pill)}
+*::-webkit-scrollbar-thumb{background:var(--sb-thumb);border-radius:var(--rad-pill);border:3px solid transparent;background-clip:padding-box;min-height:40px;min-width:40px}
 *::-webkit-scrollbar-thumb:hover{background:var(--sb-thumb-h);background-clip:padding-box}
 *::-webkit-scrollbar-thumb:active{background:var(--accent);background-clip:padding-box}
 *::-webkit-scrollbar-corner{background:transparent}
@@ -18,22 +18,22 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 
 /* ---------- 2. SLIDERS component ---------- */
 .zs-host{--zs-b:var(--zs-bh);--zs-r:var(--zs-vw)}
-.zs-root{position:absolute;inset:0;pointer-events:none;z-index:30;font:600 12px/1 var(--font,inherit);color:var(--ink)}
+.zs-root{position:absolute;inset:0;pointer-events:none;z-index:calc(var(--z-sticky) + 10);font:600 12px/1 var(--font,inherit);color:var(--ink)}
 .zs-root>*{pointer-events:auto}
 .zs-bt{position:absolute;left:0;right:0;bottom:0;min-height:var(--zs-bh);display:flex;align-items:stretch;flex-wrap:wrap;background:var(--glass2);border-top:1px solid var(--hair);box-sizing:border-box}
 .zs-v{position:absolute;top:0;right:0;bottom:var(--zs-b);width:var(--zs-vw);display:flex;flex-direction:column;background:var(--glass2);border-left:1px solid var(--hair);box-sizing:border-box}
 .zs-root.zs-nov .zs-v{display:none}
 .zs-h{flex:1 1 140px;min-width:96px;display:flex;align-items:center;gap:0;height:var(--zs-bh);padding:0 2px}
-.zs-ab{flex:none;display:grid;place-items:center;margin:0;padding:0;border:0;background:transparent;color:var(--muted);cursor:pointer;position:relative;border-radius:6px}
+.zs-ab{flex:none;display:grid;place-items:center;margin:0;padding:0;border:0;background:transparent;color:var(--muted);cursor:pointer;position:relative;border-radius:var(--rad-sm)}
 .zs-h .zs-ab{width:var(--zs-ab);height:100%}
 .zs-v .zs-ab{height:var(--zs-ab);width:100%}
 .zs-ab:hover:not(:disabled){color:var(--ink);background:var(--hair)}
 .zs-ab:disabled{opacity:.35;cursor:default}
 .zs-ab::after{content:"";position:absolute;inset:-6px}
-.zs-tr{position:relative;flex:1 1 auto;min-width:0;min-height:0;border-radius:99px;background:var(--sb-track);box-shadow:inset 0 0 0 1px var(--hair)}
+.zs-tr{position:relative;flex:1 1 auto;min-width:0;min-height:0;border-radius:var(--rad-pill);background:var(--sb-track);box-shadow:inset 0 0 0 1px var(--hair)}
 .zs-h .zs-tr{height:12px;margin:0 2px}
 .zs-v .zs-tr{width:12px;margin:2px auto}
-.zs-th{position:absolute;border-radius:99px;background:var(--sb-thumb);cursor:grab;touch-action:none;outline:none;box-shadow:0 0 0 1px color-mix(in srgb,var(--bg) 40%,transparent)}
+.zs-th{position:absolute;border-radius:var(--rad-pill);background:var(--sb-thumb);cursor:grab;touch-action:none;outline:none;box-shadow:0 0 0 1px color-mix(in srgb,var(--bg) 40%,transparent)}
 .zs-h .zs-th{top:1px;bottom:1px;min-width:36px}
 .zs-v .zs-th{left:1px;right:1px;min-height:36px}
 .zs-th::before{content:"";position:absolute;inset:-8px -2px}
@@ -44,11 +44,11 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 .zs-th:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .zs-tr.zs-fit{opacity:.7}
 .zs-zm{flex:none;display:flex;align-items:center;gap:4px;padding:0 8px;border-left:1px solid var(--hair);height:var(--zs-bh);box-sizing:border-box}
-.zs-zb{display:grid;place-items:center;width:26px;height:26px;border-radius:99px;border:1px solid var(--hair);background:transparent;color:var(--ink);cursor:pointer;padding:0;position:relative}
+.zs-zb{display:grid;place-items:center;width:26px;height:26px;border-radius:var(--rad-pill);border:1px solid var(--hair);background:transparent;color:var(--ink);cursor:pointer;padding:0;position:relative}
 .zs-zb::after,.zs-fit::after{content:"";position:absolute;inset:-6px}
 .zs-zb:hover:not(:disabled),.zs-fit:hover{background:var(--hair)}
 .zs-zb:disabled{opacity:.35;cursor:default}
-.zs-fit{position:relative;height:26px;padding:0 10px;border-radius:99px;border:1px solid var(--hair);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.zs-fit{position:relative;height:26px;padding:0 10px;border-radius:var(--rad-pill);border:1px solid var(--hair);background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 .zs-fit[aria-pressed="false"]{color:var(--muted);text-decoration:line-through}
 .zs-rng{width:104px;margin:0 2px;accent-color:var(--accent);cursor:pointer;height:20px}
 .zs-pct{min-width:40px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
@@ -61,7 +61,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 
 /* wrap mode (a native scroll container with its own native bars hidden) */
 .zs-wrap{position:relative;padding-bottom:var(--zs-b,var(--zs-bh));padding-right:var(--zs-r,0px);max-width:100%;box-sizing:border-box}
-.zs-wrap>.zs-scroller{overflow:auto;scrollbar-width:none!important;-ms-overflow-style:none;max-width:100%}
+.zs-wrap>.zs-scroller{overflow:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:100%}
 .zs-wrap>.zs-scroller::-webkit-scrollbar{display:none}
 
 /* ---------- 3. keep each canvas's own corner controls clear of the strips ---------- */
@@ -78,7 +78,7 @@ html::-webkit-scrollbar,body::-webkit-scrollbar,*::-webkit-scrollbar{width:var(-
 .gx-cv .gx-leg{bottom:calc(8px + var(--zs-b,0px));right:calc(10px + var(--zs-r,0px))}
 .gx-cv .gx-stat{max-width:calc(100% - var(--zs-r,0px) - 24px)}
 .org-wrap .org-hint{bottom:calc(10px + var(--zs-b,var(--zs-bh)))}
-@media (min-width:1001px){.mm-cv:has(.mm-insp.open) .mm-vp>.zs-root{right:400px}}
+@media (min-width:1101px){.mm-cv:has(.mm-insp.open) .mm-vp>.zs-root{right:400px}}
 .itom-gc .itom-leg{bottom:calc(8px + var(--zs-b,0px));right:calc(10px + var(--zs-r,0px))}
 /* the slider strip carries zoom in, out and fit, so the org chart's own copies step aside */
 .org-wrap.zs-host .org-zoom [data-org-z="in"],.org-wrap.zs-host .org-zoom [data-org-z="out"],.org-wrap.zs-host .org-zoom [data-org-z="fit"]{display:none}

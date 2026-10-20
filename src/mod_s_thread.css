@@ -1,14 +1,14 @@
 /* mod_s_thread: golden thread drawer (DC-10), Trace chip next to numbers, cascade (DC-12), strategy authoring (DC-13), group view (DC-14). Tokens only. Prefix thr- */
-.thr-chip{display:inline-flex;align-items:center;margin-left:4px;padding:0 7px;min-height:20px;border-radius:999px;border:1px solid var(--hair);background:transparent;color:var(--muted);font:600 10.5px/1.6 inherit;letter-spacing:.02em;cursor:pointer;vertical-align:middle}
+.thr-chip{display:inline-flex;align-items:center;margin-left:4px;padding:0 7px;min-height:20px;border-radius:var(--rad-pill);border:1px solid var(--hair);background:transparent;color:var(--muted);font:600 10.5px/1.6 inherit;letter-spacing:.02em;cursor:pointer;vertical-align:middle}
 .thr-chip:hover,.thr-chip:focus-visible{color:var(--ink);border-color:var(--accent);outline:none}
 .thr{display:flex;flex-direction:column;gap:10px;min-width:0}
 .thr-h{font-size:24px;margin:4px 0 2px;padding-right:56px;overflow-wrap:break-word}
-.thr-note{margin:0;padding:8px 10px;border-radius:10px;background:var(--accent-soft)}
+.thr-note{margin:0;padding:8px 10px;border-radius:var(--rad-lg);background:var(--accent-soft)}
 .thr-spine{display:flex;flex-direction:column;gap:8px;position:relative}
-.thr-lv{border:1px solid var(--hair);border-radius:14px;padding:10px 12px;min-width:0}
+.thr-lv{border:1px solid var(--hair);border-radius:var(--rad-card);padding:10px 12px;min-width:0}
 .thr-lh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
 .thr-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.thr-row{display:flex;flex-direction:column;gap:4px;padding:6px 8px;border-radius:10px;min-width:0}
+.thr-row{display:flex;flex-direction:column;gap:4px;padding:6px 8px;border-radius:var(--rad-lg);min-width:0}
 .thr-row.thr-focus{background:var(--accent-soft)}
 .thr-rh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;min-width:0}
 .thr-rm{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
@@ -19,7 +19,7 @@
 .thr-sub{margin:0}
 .thr-tag{font-size:10.5px;padding:0 6px}
 .thr-none{margin:0}
-.thr-st{flex:none;width:9px;height:9px;border-radius:999px;background:var(--faint)}
+.thr-st{flex:none;width:9px;height:9px;border-radius:var(--rad-pill);background:var(--faint)}
 .thr-st.thr-good{background:var(--good)}
 .thr-st.thr-warn{background:var(--warn)}
 .thr-st.thr-bad{background:var(--bad)}
@@ -31,23 +31,23 @@
 
 /* DC-12 cascade */
 .thr-cas{display:flex;flex-direction:column;gap:6px;min-width:0}
-.thr-cn{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:8px 10px;border:1px solid var(--hair);border-radius:12px;min-width:0}
+.thr-cn{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:8px 10px;border:1px solid var(--hair);border-radius:var(--rad-xl);min-width:0}
 .thr-cn[data-lvl="enterprise"]{margin-left:18px}
 .thr-cn[data-lvl="group"]{margin-left:36px}
 .thr-cn[data-lvl="team"]{margin-left:54px}
 .thr-cnn{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
 .thr-cnn b{overflow-wrap:break-word;min-width:0}
-.thr-lvl{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.thr-lvl{font-size:10.5px;color:var(--muted)}
 .thr-cnv{display:flex;align-items:center;gap:8px;justify-self:end}
-.thr-bar{position:relative;display:inline-block;width:90px;height:8px;border-radius:999px;background:var(--track)}
-.thr-bar u{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--accent)}
+.thr-bar{position:relative;display:inline-block;width:90px;height:8px;border-radius:var(--rad-pill);background:var(--track)}
+.thr-bar u{position:absolute;left:0;top:0;bottom:0;border-radius:var(--rad-pill);background:var(--accent)}
 .thr-cnm{grid-column:1 / -1;margin:0}
 .thr-legend{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0}
-@media (max-width:600px){.thr-cn[data-lvl="enterprise"]{margin-left:8px}.thr-cn[data-lvl="group"]{margin-left:16px}.thr-cn[data-lvl="team"]{margin-left:24px}.thr-cn{grid-template-columns:minmax(0,1fr)}.thr-cnv{justify-self:start}}
+@media (max-width:700px){.thr-cn[data-lvl="enterprise"]{margin-left:8px}.thr-cn[data-lvl="group"]{margin-left:16px}.thr-cn[data-lvl="team"]{margin-left:24px}.thr-cn{grid-template-columns:minmax(0,1fr)}.thr-cnv{justify-self:start}}
 
 /* DC-13 strategy authoring */
 .thr-gate{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.thr-gate li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 8px;border-radius:10px;border:1px solid var(--hair)}
+.thr-gate li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 8px;border-radius:var(--rad-lg);border:1px solid var(--hair)}
 .thr-gate .thr-miss{color:var(--bad)}
 .thr-ver{width:100%;border-collapse:collapse}
 .thr-ver th,.thr-ver td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--hair);vertical-align:top}

@@ -11,7 +11,7 @@
 @media (prefers-reduced-motion:reduce){.rail,#drawer{transition:none}}
 
 #view[data-screen="home"] .hero{position:relative;isolation:isolate;min-height:208px;padding:22px 26px 18px;margin-bottom:6px;border-radius:var(--r);overflow:hidden;border:1px solid var(--cardline);background:linear-gradient(90deg,var(--bg) 0%,var(--bg) 34%,color-mix(in srgb,var(--bg) 55%,transparent) 62%,transparent 100%),var(--art-hero) right center/cover no-repeat,var(--bg)}
-#view[data-screen="home"] .hero>*{position:relative;z-index:1}
+#view[data-screen="home"] .hero>*{position:relative;z-index:calc(var(--z-local) + 1)}
 #view[data-screen="home"] .hero .story,#view[data-screen="home"] .hero p{max-width:min(62ch,58%)}
 @media (max-width:900px){#view[data-screen="home"] .hero{background:linear-gradient(180deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 70%,transparent) 55%,transparent 100%),var(--art-hero) center bottom/cover no-repeat,var(--bg)}#view[data-screen="home"] .hero .story,#view[data-screen="home"] .hero p{max-width:100%}}
 .kx-ps .eyebrow{min-height:2.6em;display:block}

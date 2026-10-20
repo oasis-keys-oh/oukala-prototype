@@ -6,6 +6,8 @@ cd "$(dirname "$0")/../.."
 python3 src/build.py --out "$PWD/build_out" --full >/dev/null
 # DC-06: a tour over 1,200 seconds (or any SHOW.lint finding) fails the build before the long suites run
 node tools/tests/showlint.js build_out
+# CL-18 to CL-26 (R8): no undefined CSS variables; hex, !important, literal z-index, font stacks, breakpoints and radii stay at or under their ceilings
+node tools/tests/css_lint.js
 node tools/tests/smoke.js build_out
 node tools/tests/tabs.js build_out
 node tools/tests/journey.js build_out

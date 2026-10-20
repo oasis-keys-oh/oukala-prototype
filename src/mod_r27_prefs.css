@@ -1,6 +1,6 @@
 .r27-simple .r27-h{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin:12px 10px 4px}
 .r27-all{margin-top:10px;border-top:1px solid color-mix(in srgb,currentColor 14%,transparent);padding-top:6px}
-.r27-all>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;border-radius:10px;min-height:44px;display:flex;align-items:center}
+.r27-all>summary{cursor:pointer;list-style:none;padding:10px 12px;font-weight:600;border-radius:var(--rad-lg);min-height:44px;display:flex;align-items:center}
 .r27-all>summary::-webkit-details-marker{display:none}
 .r27-all>summary::after{content:"▾";margin-inline-start:auto}
 .r27-all[open]>summary::after{content:"▴"}
@@ -10,37 +10,37 @@
 
 /* ---- Round 27 accessibility: contrast fixes found by the audit (all light-theme values reach 4.5:1) ---- */
 :root:not([data-theme=dark]){--faint:#59666b}
-:root:not([data-theme=dark]) .bc-cell.good{color:#14532a!important}
-:root:not([data-theme=dark]) .bc-cell.warn{color:#6b3f00!important}
-:root:not([data-theme=dark]) .bc-cell.bad{color:#8f1020!important}
-:root:not([data-theme=dark]) .ppm-lk{color:#2c6676!important}
-:root:not([data-theme=dark]) .sx-kind,:root:not([data-theme=dark]) .r16p-badge.guide{color:#0b6475!important}
+:root:not([data-theme=dark]) .bc-cell.good{color:#14532a}
+:root:not([data-theme=dark]) .bc-cell.warn{color:#6b3f00}
+:root:not([data-theme=dark]) .bc-cell.bad{color:#8f1020}
+:root:not([data-theme=dark]) .ppm-lk{color:#2c6676}
+:root:not([data-theme=dark]) .sx-kind,:root:not([data-theme=dark]) .r16p-badge.guide{color:#0b6475}
 :root:not([data-theme=dark]) .itsm-sla.bad b{color:#9c2530!important}
-:root:not([data-theme=dark]) .itsm-sla.warn b{color:#6b4f00!important}
+:root:not([data-theme=dark]) .itsm-sla.warn b{color:#6b4f00}
 :root:not([data-theme=dark]) .pill.mute{color:#4d5a60!important}
-:root:not([data-theme=dark]) .fchip{color:#7a3f7a!important}
-:root:not([data-theme=dark]) .drow small,:root:not([data-theme=dark]) .dn small,:root:not([data-theme=dark]) .rk.num,:root:not([data-theme=dark]) .bc-dn,:root:not([data-theme=dark]) .statrow .zero.stat sm,:root:not([data-theme=dark]) .stat.zero small{color:#59666b!important}
-:root:not([data-theme=dark]) .pill.info{color:#2c6676!important}
+:root:not([data-theme=dark]) .fchip{color:#7a3f7a}
+:root:not([data-theme=dark]) .drow small,:root:not([data-theme=dark]) .dn small,:root:not([data-theme=dark]) .rk.num,:root:not([data-theme=dark]) .bc-dn,:root:not([data-theme=dark]) .statrow .zero.stat sm,:root:not([data-theme=dark]) .stat.zero small{color:#59666b}
+:root:not([data-theme=dark]) .pill.info{color:#2c6676}
 :root:not([data-theme=dark]) [data-grc-f^="cell"] small{color:#3d474c!important}
 i.av{background-image:linear-gradient(rgba(0,0,0,.22),rgba(0,0,0,.22))!important}
 :root:not([data-theme=dark]) em[data-ca]{filter:brightness(.62)}
 .tscroll:focus-visible,.vsw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 :root:not([data-theme=dark]) :is(.dn small,.drow small,.pill.mute,.ppm-lk,.pill.info,.itsm-sla b,.statrow .zero.stat *,.stat.zero *,.bc-dn,.r18-gap,.ws b){opacity:1!important}
 :root:not([data-theme=dark]) .statrow .zero.stat :is(sm,em,b){color:#4d5a60!important}
-:root:not([data-theme=dark]) .off.bc-day .bc-dn{color:#5c6a70!important}
-#r18LensBtn{color:var(--ink)!important}.r21-hero #r18LensBtn,.r21-hero .r18-lensb{color:#fff!important}
-:root:not([data-theme=dark]) .r17s-type{color:color-mix(in srgb,var(--r17s-c) 45%,#000)!important}
+:root:not([data-theme=dark]) .off.bc-day .bc-dn{color:#5c6a70}
+#r18LensBtn{color:var(--ink)}.r21-hero #r18LensBtn,.r21-hero .r18-lensb{color:#fff!important}
+:root:not([data-theme=dark]) .r17s-type{color:color-mix(in srgb,var(--r17s-c) 45%,#000)}
 :root:not([data-theme=dark]) .r18-vk{color:color-mix(in srgb,currentColor 55%,#000)!important}
-:root:not([data-theme=dark]) .r18-hs-v .r18-vk{color:#14532a!important}.r18-hs-c .r18-vk{color:#6b4f00!important}.r18-hs-r .r18-vk{color:#8f1020!important}
-:root:not([data-theme=dark]) .r18-gap{color:#9c1424!important}
-:root:not([data-theme=dark]) .ws.warn b{color:#6b4f00!important}
+:root:not([data-theme=dark]) .r18-hs-v .r18-vk{color:#14532a!important}.r18-hs-c .r18-vk{color:#6b4f00}.r18-hs-r .r18-vk{color:#8f1020}
+:root:not([data-theme=dark]) .r18-gap{color:#9c1424}
+:root:not([data-theme=dark]) .ws.warn b{color:#6b4f00}
 :root:not([data-theme=dark]) em[data-ca]{color:#6b4000!important;filter:none}
 :root:not([data-theme=dark]) .itsm-sla.bad b{color:#8a1f2a!important}
-:root:not([data-theme=dark]) .dn small span[style*=warn]{color:#6b4f00!important}
+:root:not([data-theme=dark]) .dn small span[style*=warn]{color:#6b4f00}
 /* intentionally dimmed rows (out of scope, zero, off-day) stay readable */
 :root:not([data-theme=dark]) :is(.zero.stat,.bc-day.off,.drow.out,.out.drow,[data-grc-f^="cell"],.fchip){opacity:.92!important}
-:root:not([data-theme=dark]) :is(.zero.stat,.bc-day.off,.drow.out,.out.drow) :is(small,sm,em,span,b,.pill){color:#3f4b50!important}
-#r18LensBtn span,#r18LensBtn b{color:var(--ink)!important}
+:root:not([data-theme=dark]) :is(.zero.stat,.bc-day.off,.drow.out,.out.drow) :is(small,sm,em,span,b,.pill){color:#3f4b50}
+#r18LensBtn span,#r18LensBtn b{color:var(--ink)}
 .r21-hero #r18LensBtn span,.r21-hero #r18LensBtn b{color:#fff!important}
 :root:not([data-theme=dark]) [data-grc-f^="cell"] small{color:#2f393d!important}
 /* the header pills must not fade to 12% when a notification card shows (they sit nowhere near it) */

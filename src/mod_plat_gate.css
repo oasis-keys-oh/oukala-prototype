@@ -1,9 +1,9 @@
-.gate-code{margin:0;padding:14px;border-radius:14px;background:var(--accent-soft);font:12.5px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow:auto;max-height:380px;white-space:pre;color:var(--ink);max-width:100%}
+.gate-code{margin:0;padding:14px;border-radius:var(--rad-card);background:var(--accent-soft);font:12.5px/1.55 var(--f-mono);overflow:auto;max-height:380px;white-space:pre;color:var(--ink);max-width:100%}
 .gate-rr{display:grid;gap:8px}
-.gate-rrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border-radius:14px;background:var(--glass2)}
+.gate-rrow{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border-radius:var(--rad-card);background:var(--glass2)}
 .gate-rrow.bad{box-shadow:inset 3px 0 0 var(--bad-f)}.gate-rrow.warn{box-shadow:inset 3px 0 0 var(--warn-f)}.gate-rrow.good{box-shadow:inset 3px 0 0 var(--good-f)}
 .gate-rrow .pill{white-space:nowrap}
-.gate-dec{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:14px 16px;border-radius:18px;margin-bottom:12px;background:var(--glass2)}
+.gate-dec{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:14px 16px;border-radius:var(--rad-3xl);margin-bottom:12px;background:var(--glass2)}
 .gate-dec.ok{box-shadow:inset 4px 0 0 var(--good-f)}.gate-dec.no{box-shadow:inset 4px 0 0 var(--bad-f)}
 .gate-tbl td,.gate-tbl th{vertical-align:top}.gate-tbl td:nth-child(2){min-width:260px}.gate-tbl td:nth-child(3),.gate-tbl td:nth-child(4){min-width:220px}
 .gate-tier,.gate-svc,.gate-pol,.mcp-tool,.mcp-client{display:flex;flex-direction:column;min-width:0;transition:transform .2s}
@@ -15,4 +15,4 @@
 .gate-pols,.mcp-tools{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 details>summary{cursor:pointer;margin:6px 0}
 @media (prefers-reduced-motion:reduce){.gate-tier,.gate-svc,.gate-pol,.mcp-tool,.mcp-client{transition:none}.gate-tier:hover,.gate-svc:hover,.gate-pol:hover,.mcp-tool:hover,.mcp-client:hover{transform:none}}
-.dnote{padding:12px 16px;border-radius:16px;background:var(--glass2);font-size:14.5px;line-height:1.55;overflow-wrap:break-word}
+.dnote{padding:12px 16px;border-radius:var(--rad-2xl);background:var(--glass2);font-size:14.5px;line-height:1.55;overflow-wrap:break-word}

@@ -1,5 +1,5 @@
 /* Guardrails (mod_s_guard). Prefix: gd-. Tokens only. */
-.gd-honest{border:1px solid var(--hair);border-radius:14px;padding:10px 14px;margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--ink)}
+.gd-honest{border:1px solid var(--hair);border-radius:var(--rad-card);padding:10px 14px;margin:0 0 14px;font-size:14px;line-height:1.5;color:var(--ink)}
 .gd-honest .pill{margin-left:6px}
 .gd-att{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .gd-att li{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 8px;line-height:1.45}
@@ -9,7 +9,7 @@
 .gd-reg code{font-size:12px;word-break:break-word}
 .gd-mx th,.gd-mx td{text-align:center;vertical-align:middle}
 .gd-mx th[scope=row]{text-align:left;white-space:nowrap}
-.gd-cell{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:84px;min-height:44px;padding:4px 8px;border-radius:10px;border:1px solid var(--hair);font:600 12px var(--f-body);color:var(--ink);background:var(--glass2)}
+.gd-cell{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:84px;min-height:44px;padding:4px 8px;border-radius:var(--rad-lg);border:1px solid var(--hair);font:600 12px var(--f-body);color:var(--ink);background:var(--glass2)}
 .gd-cell small{font-weight:500;color:var(--muted)}
 button.gd-cell{cursor:pointer}
 .gd-cell.good{background:var(--good-s);color:var(--good);border-color:var(--good-f)}.gd-cell.warn{background:var(--warn-s);color:var(--warn);border-color:var(--warn-f)}.gd-cell.bad{background:var(--bad-s);color:var(--bad);border-color:var(--bad-f)}
@@ -17,7 +17,7 @@ button.gd-cell{cursor:pointer}
 .gd-cell.none{color:var(--muted);border-style:dashed}
 .gd-cell.sm{min-height:28px;min-width:0}
 .gd-play{display:grid;gap:10px}
-.gd-try{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--hair);border-radius:12px}
+.gd-try{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--hair);border-radius:var(--rad-xl)}
 .gd-try .btn{min-height:44px;flex:none}
 .gd-res{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:baseline}
 .gd-child{margin:0 0 14px}
