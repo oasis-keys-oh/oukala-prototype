@@ -26,6 +26,7 @@ function compose(){
  /* permission filter (same rule as the enforcement module): remove screens this role may not open before regrouping */
  try{const PM=W.PERM;if(PM&&PM.state&&PM.state.enforce){const r0=D.createElement("div");r0.innerHTML=raw;r0.querySelectorAll("[data-nx-it]").forEach(el=>{const id=el.dataset.nxIt;if(id&&id!=="home"&&!PM.can(null,"read","screen:"+id).ok)el.remove()});
   r0.querySelectorAll("details.navgd").forEach(g=>{if(!g.querySelector("[data-nx-it]"))g.remove();else{const c=g.querySelector(".nx-gc");if(c&&/^\d+$/.test(c.textContent.trim()))c.textContent=g.querySelectorAll("[data-nx-it]").length}});raw=r0.innerHTML}}catch(e){}
+ if(raw.indexOf("data-nx-rail")>=0)return raw; /* PH-14: the area rail (mod_nav.js) replaces the Make / Work / Oversee surfaces */
  const NP=NAVX.persona||{};let vis=(NP.visible?NP.visible():[]).slice();const order=NP.groups?NP.groups():[];const all=!!ST.showAll;
  /* executive level keeps four areas on the rail; everything else is one step away under More areas */
  if(!all&&G(()=>R18.levelOf()==='exec',false)){const keep=['lens','money','strat','my'];const f=vis.filter(g=>keep.indexOf(g)>=0);if(f.length)vis=f}

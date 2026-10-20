@@ -51,7 +51,10 @@ const ICO={
  menu:"M4 7h16M4 12h16M4 17h16",
  back:"M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3",
  pen:"M4 20h4L19 9l-4-4L4 16zM13 7l4 4",
- x:"M6 6l12 12M18 6L6 18"
+ x:"M6 6l12 12M18 6L6 18",
+ gear:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z",
+ grid:"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z",
+ transform:"M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"
 };
 const SVG=(d,sz,sw)=>`<svg viewBox="0 0 24 24" width="${sz||18}" height="${sz||18}" fill="none" stroke="currentColor" stroke-width="${sw||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
 NAVX.svg=SVG;NAVX.icons=ICO;
@@ -219,20 +222,25 @@ NAVX.resolveAlias=function(s){s=String(s||"").trim().toLowerCase().replace(/^#/,
 function screenRow(id){return SCREENS.find(s=>s[0]===id)}
 function oldGroup(id){const s=screenRow(id);return s?((W.NAVGRP&&NAVGRP[id])||s[3]):null}
 /* the resolved entry for any registered screen */
-function resolve(id){const s=screenRow(id);let m=MAP[id];const ov=OVR[id];
- if(!m){const og=oldGroup(id);const g=OLDG[og]||"new";m={g,l:s?String(s[1]).replace(/\s*\([^)]*\)\s*$/,""):id,h:"",sub:"",kw:"",o:9000,unmapped:true}}
- if(ov){m=Object.assign({},m,{g:ov.g&&GID[ov.g]!=null?ov.g:m.g,l:ov.l||m.l,sub:ov.sub!=null?ov.sub:m.sub,edited:true})}
+/* the resolved entry for any registered screen. PH-14 (step 3): the place and the label come from the taxonomy (NAVX.taxo);
+   a family view keeps its "Family: view" name; a saved override (oukala-nav-map) still wins, and an old group id in it resolves
+   to the space that took that group over. g is now a space id (see SPACES); old group ids still resolve through OLDGRP. */
+function resolve(id){const s=screenRow(id);let m=MAP[id];const ov=OVR[id];const t=TX[id];
+ if(!m){m={g:"",l:t?t.l:(s?String(s[1]).replace(/\s*\([^)]*\)\s*$/,""):id),h:"",sub:"",kw:"",o:9000,unmapped:!t}}
+ const pl=placeOf(id);const own=t&&(t.kind==="entry"||t.kind==="role"||t.kind==="search");
+ m=Object.assign({},m,{g:pl.sp,sub:pl.sub,l:own?t.l:(m.l||(t&&t.l)||id),kind:pl.kind,o:t?t.o:m.o});
+ if(ov){if(ov.l)m.l=ov.l;m.edited=true}
  return m}
 const formal=id=>{const s=screenRow(id);return s?String(s[1]):id};
 const labelOf=id=>resolve(id).l;
 const hintOf=id=>{const m=resolve(id),f=formal(id);const h=m.h||f;return h.toLowerCase()===m.l.toLowerCase()?"":h};
-const gLabel=g=>(GROUPS[GID[g]]||GROUPS[GROUPS.length-1])[1];
+const gLabel=g=>{if(SPID[g]!=null)return SPACES[SPID[g]][1];if(OLDGRP[g])return SPACES[SPID[OLDGRP[g]]][1];return (GROUPS[GID[g]]||GROUPS[GROUPS.length-1])[1]};
 const tip=id=>{const m=resolve(id),f=formal(id);return m.l===f?f:m.l+" ("+f+")"};
 NAVX.resolve=resolve;NAVX.label=labelOf;NAVX.hint=hintOf;NAVX.groupLabel=gLabel;NAVX.formal=formal;
 NAVX.setOverride=function(id,o){if(!o){delete OVR[id]}else OVR[id]=Object.assign({},OVR[id]||{},o);store.set("oukala-nav-map",OVR);IDX.dirty=true;try{renderNav()}catch(e){}};
 NAVX.overrides=()=>OVR;
-function groupItems(g){const ids=SCREENS.map(s=>s[0]).filter(id=>id!=="home"&&resolve(id).g===g);
- return ids.map((id,i)=>({id,m:resolve(id),i})).sort((a,b)=>(a.m.o-b.m.o)||(a.i-b.i)).map(x=>x.id)}
+/* the entries of one space (or of the space an old group id maps to), in sub-group order, for the active persona */
+function groupItems(g){const sp=SPID[g]!=null?g:OLDGRP[g];if(!sp)return[];const e=spaceEntries(sp,G(()=>S.persona));return [].concat(...Object.keys(e).map(k=>e[k])).filter(id=>id!=="home"||sp==="home")}
 NAVX.groupItems=groupItems;
 
 /* ---------- PH-14 (step 1): the navigation taxonomy, kept as data beside RAW ----------
@@ -526,11 +534,25 @@ NAVX.taxo.check=function(){const ids=SCREENS.map(s=>s[0]);const by={entry:[],vie
  return {screens:ids.length,entries:by.entry.length,views:by.view.length,merged:by.merged.length,search:by.search.length,role:by.role.length,retire:by.retire.length,
   placed:Object.keys(seen).length,duplicates:dup,untaxed:ids.filter(id=>!TX[id]),orphans:Object.keys(TX).filter(id=>!ids.includes(id)),badRef,over,where:seen}};
 /* the unmapped check: every registered screen must have an entry in the map */
-NAVX.unmapped=function(){return SCREENS.map(s=>s[0]).filter(id=>!MAP[id])};
-NAVX.missing=function(){return Object.keys(MAP).filter(id=>!screenRow(id))};
-NAVX.counts=function(){const o={};GROUPS.forEach(g=>o[g[0]]=0);SCREENS.forEach(s=>{const g=resolve(s[0]).g;o[g]=(o[g]||0)+1});return o};
-NAVX.check=function(){const seen={},dup=[];let n=0;GROUPS.forEach(g=>{(g[0]==="home"?["home"]:groupItems(g[0])).forEach(id=>{n++;if(seen[id])dup.push(id);seen[id]=g[0]})});
- const all=SCREENS.map(s=>s[0]);return {screens:all.length,placed:n,notPlaced:all.filter(id=>!seen[id]),duplicates:dup,unmapped:NAVX.unmapped(),orphans:NAVX.missing()}};
+/* PH-14 (step 3): old group ids and labels, and the new area labels, open the area's landing screen (old links, saved hashes);
+   a screen id always wins, and NAVX.resolveGroup turns any old group id into the space that took it over */
+const AREA_HOME={home:"home",my:"flw_appr",ask:"svc_portal",strat:"exe_strat",deliver:"ppm_proj",ops:"itsm_home",money:"bud_over",people:"org_chart",risk:"grc_home",transform:"plat_proc",show:"showroom",build:"plat_map"};
+const OLDGL={story:"story and demo",my:"my work",help:"get help or ask for something",plan:"projects and delivery",fix:"service and support",money:"money and contracts",people:"people and teams",learn:"knowledge and learning",make:"my builds and access",kit:"design, data and controls",lens:"executive lenses",strat:"strategy and value",grc:"risk and control",res:"resilience",ai:"ai oversight",reg:"registry and truth",tech:"enterprise it",plat:"platform admin",new:"new and unsorted"};
+Object.keys(OLDGRP).forEach(g=>{const h=AREA_HOME[OLDGRP[g]];if(h&&g!=="plan"&&g!=="home"&&!ALIAS[g])ALIAS[g]=h});
+Object.keys(OLDGL).forEach(g=>{const h=AREA_HOME[OLDGRP[g]];if(h&&!ALIAS[OLDGL[g]])ALIAS[OLDGL[g]]=h});
+SPACES.forEach(s=>{const h=AREA_HOME[s[0]];if(h&&s[0]!=="home")ALIAS[s[1].toLowerCase()]=h});
+NAVX.areaHome=Object.assign({},AREA_HOME);
+NAVX.resolveGroup=g=>{g=String(g||"").trim();if(SPID[g]!=null)return g;if(OLDGRP[g])return OLDGRP[g];const l=g.toLowerCase();const k=Object.keys(OLDGL).find(x=>OLDGL[x]===l);if(k)return OLDGRP[k];const sp=SPACES.find(x=>x[1].toLowerCase()===l);return sp?sp[0]:null};
+/* the unmapped check: every registered screen must have a row in the taxonomy (a screen with none is search only) */
+NAVX.unmapped=function(){return SCREENS.map(s=>s[0]).filter(id=>!TX[id])};
+NAVX.missing=function(){return Object.keys(TX).filter(id=>!screenRow(id))};
+NAVX.counts=function(){const o={};SPACES.forEach(s=>{const e=spaceEntries(s[0],"admin");o[s[0]]=Object.keys(e).reduce((n,k)=>n+e[k].length,0)});return o};
+/* PH-14 scope item 6: every non-hidden screen appears in exactly one menu place; every other screen is reachable through its
+   family, a merge, an alias or search. placed counts the menu entries; notPlaced lists screens with no place at all. */
+NAVX.check=function(){const c=NAVX.taxo.check();const ids=SCREENS.map(s=>s[0]);
+ const fam=id=>!!G(()=>R15.famOf[id])||!!G(()=>R15.alias[id]);
+ const notPlaced=ids.filter(id=>{const p=placeOf(id);if(p.kind==="entry"||p.kind==="role")return !c.where[id];if(p.kind==="view"||p.kind==="merged")return !fam(id);if(p.kind==="retire")return !(fam(id)||screenRow(p.ref));return false});
+ return {screens:ids.length,placed:c.placed,entries:c.entries,views:c.views,merged:c.merged,search:c.search,role:c.role,retire:c.retire,notPlaced,duplicates:c.duplicates,unmapped:c.untaxed,orphans:c.orphans,badRef:c.badRef,over:c.over}};
 
 /* ---------- state per persona: favorites, history, recent searches, telemetry ---------- */
 let ST=null,STP=null,saveT=0;
@@ -698,34 +720,67 @@ const phoneMQ=matchMedia("(max-width:700px),(max-height:500px) and (max-width:95
 const collapsed=()=>!phoneMQ.matches&&!!(q1("#railCollapse")&&q1("#railCollapse").checked);
 function typeIcon(t){t=String(t||"");if(/person|people|contractor/i.test(t))return ICO.user;if(/process|workflow/i.test(t))return ICO.flow;if(/data|field|entity|table/i.test(t))return ICO.table;if(/metric|measure/i.test(t))return ICO.chart;if(/knowledge|article|book/i.test(t))return ICO.doc;if(/module/i.test(t))return ICO.plat;return ICO.doc}
 const BADGE={inv:3,tower:1};
-function itemHTML(id){const s=screenRow(id);if(!s)return"";const m=resolve(id),hint=hintOf(id),cur=S.screen===id;
- return `<div class="navit" data-nx-it="${id}"><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}
+function itemHTML(id,o){o=o||{};const s=screenRow(id);if(!s)return"";const m=resolve(id),hint=o.pin?"":hintOf(id),cur=S.screen===id,lab=o.label||m.l;
+ return `<div class="navit${o.pin?" nx-pin":""}" data-nx-it="${id}"${o.pin?' data-nx-pin="1"':""}><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`}
+NAVX.itemHTML=itemHTML;
 function favRow(f){const scr=f.kind==="screen"&&screenRow(f.key);const name=f.label||(scr?labelOf(f.key):f.title);const icon=scr?IC(scr[2]):IC(typeIcon(f.type));const cur=scr&&S.screen===f.key;
  const meta=scr?"":`<small class="nx-h">${E(f.type)}${f.sub?" · "+E(f.sub):""}</small>`;
  return `<div class="navit nx-fav${cur?" is-cur":""}" data-dnd-id="${E(f.id)}" data-nx-fav="${E(f.id)}">${grip}<button class="navi" type="button" data-nx-open="${E(f.id)}" title="${E(scr?tip(f.key):f.type+": "+f.title)}">${icon}<span class="nx-t"><span class="nx-l" data-nx-lab>${E(name)}</span>${meta}</span></button><button type="button" class="nx-pen" data-nx-ren="${E(f.id)}" aria-label="Rename ${E(name)}" title="Rename">${SVG(ICO.pen,14,1.9)}</button><button type="button" class="nx-star nx-rowstar" data-nx-star="fav:${E(f.id)}" aria-pressed="true" aria-label="Remove ${E(name)} from favorites" title="Remove from favorites">${SVG(ICO.star,16,1.8)}</button></div>`}
 function favsHTML(){const s=st();return `<section class="nx-favs" data-nx-favs aria-label="Favorites"><div class="nx-fh"><span class="nx-fht">${SVG(ICO.star,14,2)}<b>Favorites</b><em class="nx-favcount">${s.fav.length}</em></span></div>${s.fav.length?`<div class="nx-favlist" data-dnd="nxfav" data-dnd-scope="nxfav">${s.fav.map(favRow).join("")}</div>`:`<p class="nx-empty">Star any screen or record to keep it here.</p>`}</section>`}
-function groupHTML(g,cur){const ids=groupItems(g);if(!ids.length)return"";S.navOpen=S.navOpen||{};const open=S.navOpen[g]!==undefined?S.navOpen[g]:cur===g;let sub="";
- const body=ids.map(id=>{const m=resolve(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";return h+itemHTML(id)}).join("");
- return `<details class="navgd" data-ng="${g}" ${open?"open":""}><summary title="${E(GROUPS[GID[g]][3])}"><span class="nx-gi">${SVG(ICO[g]||ICO.new,15,1.9)}</span><span class="nx-gl">${E(gLabel(g))}</span><em class="nx-gc">${ids.length}</em></summary>${body}</details>`}
-function flatHTML(){const s=st();let h=`<button class="navi" type="button" data-nx-search title="Search (Ctrl or Cmd + K)">${IC(ICO.search)}<span>Search</span></button>`;
+/* ---------- PH-14 (step 3): the rail ----------
+   Home, then My work and Ask or request, then the business areas in the persona's purview (always in the fixed order, never
+   reordered; the persona's role pins first inside their own area), then All screens, Showroom and the Build and admin gear.
+   The purview comes from NAVX.purview (mod_r15d_persona.js gives each persona its areas and pins). */
+const ONLY={r15d_firstweek:["newhire","emp"]};
+const READ_HIDE={ask:["Request"]}; /* read-only roles (Board member, Auditor) see no request forms */
+function topOf(id){const f=G(()=>R15.famOf[id]);if(f&&f.id!==id)return topOf(f.id);const a=G(()=>R15.alias[id]);if(a&&a.to!==id)return topOf(a.to);return id}
+function curSpace(){const id=G(()=>S.screen);if(!id||!screenRow(id))return null;return placeOf(topOf(id)).sp}
+NAVX.purview=function(key){key=key||G(()=>S.persona)||"exec";const d=G(()=>R15D.DEFS[key])||{};const P=G(()=>PERSONAS[key])||{};
+ const full=G(()=>PREF.nav==="full")&&key!=="guest";
+ let areas=(d.areas||AREA_IDS).filter(a=>AREA_IDS.indexOf(a)>=0);if(full)areas=AREA_IDS.slice();
+ areas=AREA_IDS.filter(a=>areas.indexOf(a)>=0); /* fixed order, whatever order the definition lists */
+ const pins=(d.navPins||d.pin||[]).filter(id=>screenRow(id)).slice(0,4);
+ return {key,areas,pins,gear:["arch","admin"].indexOf(key)>=0,all:key!=="guest",show:key!=="guest",readonly:!!(P.readonly||d.readonly),guest:key==="guest",full}};
+function spaceIds(sp,P){const e=spaceEntries(sp,P.key);const ro=P.readonly&&!P.guest?(READ_HIDE[sp]||[]):[];
+ const out={};Object.keys(e).forEach(k=>{if(ro.indexOf(k)>=0)return;const l=e[k].filter(id=>!ONLY[id]||ONLY[id].indexOf(P.key)>=0);if(l.length)out[k]=l});return out}
+function pinsIn(sp,P){return P.pins.filter(id=>placeOf(topOf(id)).sp===sp)}
+const pinLabel=id=>(TX[id]&&TX[id].l)||labelOf(id);
+function spaceBody(sp,P){const e=spaceIds(sp,P);const pins=pinsIn(sp,P);const one=SPACES[SPID[sp]][5].length===1;
+ return pins.map(id=>itemHTML(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>itemHTML(id)).join("")).join("")}
+function groupHTML(sp,cur,P,o){o=o||{};P=P||NAVX.purview();const e=spaceIds(sp,P);const n=Object.keys(e).reduce((a,k)=>a+e[k].length,0);if(!n&&!pinsIn(sp,P).length)return"";
+ S.navOpen=S.navOpen||{};const wedge=G(()=>SHOW.wedge.on(),false);const open=S.navOpen[sp]!==undefined?S.navOpen[sp]:(cur===sp||wedge);const sd=SPACES[SPID[sp]];
+ return `<details class="navgd nx-area${o.gear?" nx-gear":""}" data-ng="${sp}" data-nx-sp="${sp}" ${open?"open":""}><summary title="${E(sd[4])}"><span class="nx-gi">${SVG(o.gear?ICO.gear:sd[3],15,1.9)}</span><span class="nx-gl">${E(sd[1])}</span><em class="nx-gc">${n}</em></summary>${spaceBody(sp,P)}</details>`}
+const allBtn=()=>`<button class="navi nx-allb" type="button" data-nx-all aria-haspopup="dialog" title="Every area and every screen you can open">${IC(ICO.grid)}<span>All screens</span></button>`;
+function railSpaces(P){return ["my","ask"].concat(P.areas)}
+function flatHTML(){const s=st();const P=NAVX.purview();let h=`<span data-nx-rail hidden></span><button class="navi" type="button" data-nx-search title="Search (Ctrl or Cmd + K)">${IC(ICO.search)}<span>Search</span></button>`;
  const one=id=>{const sc=screenRow(id);return sc?`<button class="navi" data-nav="${id}" ${S.screen===id?'aria-current="page"':""} title="${E(tip(id))}">${IC(sc[2])}<span>${E(labelOf(id))}</span></button>`:""};
  h+=one("home");
  s.fav.slice(0,6).forEach(f=>{if(f.kind==="screen"&&screenRow(f.key)){if(f.key!=="home")h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(f.label||labelOf(f.key))}">${IC(screenRow(f.key)[2])}<span>${E(f.label||labelOf(f.key))}</span></button>`}else h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(favName(f))}">${IC(typeIcon(f.type))}<span>${E(favName(f))}</span></button>`});
  h+=`<div class="nx-sep" role="separator"></div>`;
- const cur=screenRow(S.screen)?resolve(S.screen).g:null;
- GROUPS.forEach(g=>{if(g[0]==="home"||!groupItems(g[0]).length)return;h+=`<button class="navi nx-gbtn${cur===g[0]?" is-cur":""}" type="button" data-nx-grp="${g[0]}" aria-haspopup="true" title="${E(g[1])}">${IC(g[2])}<span>${E(g[1])}</span></button>`});
- h+=`<div class="nx-sep" role="separator"></div><button class="navi" type="button" popovertarget="nxHistPop" title="History">${IC(ICO.clock)}<span>History</span></button>`;return h}
-NAVX.html=function(){st();if(collapsed())return flatHTML();
- const cur=screenRow(S.screen)?resolve(S.screen).g:null;
- return navHelpBtn()+itemHTML("home")+favsHTML()+GROUPS.map(g=>g[0]==="home"?"":groupHTML(g[0],cur)).join("")};
+ const cur=curSpace();
+ const btn=(sp,ic)=>{const e=spaceIds(sp,P);if(!Object.keys(e).length&&!pinsIn(sp,P).length)return"";const sd=SPACES[SPID[sp]];return `<button class="navi nx-gbtn${cur===sp?" is-cur":""}" type="button" data-nx-grp="${sp}" aria-haspopup="true" title="${E(sd[1])}">${IC(ic||sd[3])}<span>${E(sd[1])}</span></button>`};
+ railSpaces(P).forEach(sp=>{h+=btn(sp)});
+ h+=`<div class="nx-sep" role="separator"></div>`;if(P.all)h+=allBtn();if(P.show)h+=one("showroom");if(P.gear)h+=btn("build",ICO.gear);
+ h+=`<button class="navi" type="button" popovertarget="nxHistPop" title="History">${IC(ICO.clock)}<span>History</span></button>`;return h}
+NAVX.html=function(){st();if(collapsed())return flatHTML();const P=NAVX.purview();const cur=curSpace();
+ let h=`<span data-nx-rail hidden></span>`+navHelpBtn()+itemHTML("home")+favsHTML();
+ ["my","ask"].forEach(sp=>h+=groupHTML(sp,cur,P));
+ h+=`<div class="nx-sep nx-asep" role="separator"></div>`;
+ P.areas.forEach(sp=>h+=groupHTML(sp,cur,P));
+ h+=`<div class="nx-sep" role="separator"></div>`;
+ if(P.all)h+=allBtn();
+ if(P.show)h+=itemHTML("showroom",{label:spLabel("show")});
+ if(P.gear)h+=groupHTML("build",cur,P,{gear:true});
+ return h};
+NAVX.rail={purview:p=>NAVX.purview(p),spaceIds:(sp,p)=>spaceIds(sp,NAVX.purview(p)),pins:(sp,p)=>pinsIn(sp,NAVX.purview(p)),curSpace,topOf};
 function refreshFavs(){const n=q1("#nav");if(!n)return;if(collapsed()){try{renderNav()}catch(e){}return}
  const old=n.querySelector("[data-nx-favs]");if(old){old.outerHTML=favsHTML()}drawFavPop()}
 
 /* collapsed rail: a group icon opens a flyout with its screens */
 function openFly(g,btn){let f=q1("#nxFly");if(!f){f=document.createElement("div");f.id="nxFly";f.setAttribute("popover","auto");f.className="nx-fly glass";document.body.appendChild(f)}
- const ids=groupItems(g);let sub="";
- f.innerHTML=`<div class="nx-flyh"><div><b>${E(gLabel(g))}</b><small>${E(GROUPS[GID[g]][3])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(gLabel(g))}">${SVG(ICO.x,14,2)}</button></div>`+ids.map(id=>{const m=resolve(id),hint=hintOf(id),s=screenRow(id);let h="";if(m.sub&&m.sub!==sub){sub=m.sub;h=`<span class="navsub">${E(sub)}</span>`}else if(!m.sub)sub="";
-  return h+`<div class="nx-fi${S.screen===id?" is-cur":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(m.l)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",m.l)}</div>`}).join("");
+ const sp=SPID[g]!=null?g:OLDGRP[g];if(!sp)return;const P=NAVX.purview();const sd=SPACES[SPID[sp]];const e=spaceIds(sp,P);const one=sd[5].length===1;
+ const row=(id,o)=>{o=o||{};const m=resolve(id),hint=o.pin?"":hintOf(id),s=screenRow(id),lab=o.label||m.l;return `<div class="nx-fi${S.screen===id?" is-cur":""}${o.pin?" nx-pin":""}"><button type="button" class="nx-fib" data-nav="${id}" title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span></button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`};
+ f.innerHTML=`<div class="nx-flyh"><div><b>${E(sd[1])}</b><small>${E(sd[4])}</small></div><button type="button" class="btn quiet nx-flyx" popovertarget="nxFly" popovertargetaction="hide" aria-label="Close ${E(sd[1])}">${SVG(ICO.x,14,2)}</button></div>`+pinsIn(sp,P).map(id=>row(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>row(id)).join("")).join("");
  try{f.showPopover()}catch(e){}
  const r=btn.getBoundingClientRect();const h=Math.min(f.offsetHeight,innerHeight-24);f.style.left=Math.round(r.right+10)+"px";f.style.top=Math.round(Math.max(12,Math.min(r.top-8,innerHeight-h-12)))+"px"}
 
@@ -1147,14 +1202,14 @@ NAVX.wire=WIRE;
    ===================================================================================== */
 S.navs=S.navs||{g:"all",speed:""};
 const SPEEDQ=["inc","incident","approve invoices","lumen","cmdb","who is on call","project plan","maturty","knowldge","sla","in:people maya","fin_"];
-function studioMap(){const c=NAVX.check();const rows=SCREENS.map(s=>s[0]).filter(id=>id!=="home").map(id=>({id,m:resolve(id)})).filter(r=>S.navs.g==="all"||r.m.g===S.navs.g).sort((a,b)=>(GID[a.m.g]-GID[b.m.g])||(a.m.o-b.m.o));
- const opts=(sel)=>GROUPS.filter(g=>g[0]!=="home").map(g=>`<option value="${g[0]}" ${g[0]===sel?"selected":""}>${E(g[1])}</option>`).join("");
+function studioMap(){const c=NAVX.check();const rows=SCREENS.map(s=>s[0]).filter(id=>id!=="home").map(id=>({id,m:resolve(id)})).filter(r=>S.navs.g==="all"||r.m.g===S.navs.g).sort((a,b)=>((SPID[a.m.g]==null?99:SPID[a.m.g])-(SPID[b.m.g]==null?99:SPID[b.m.g]))||(a.m.o-b.m.o));
+ const opts=(sel)=>SPACES.filter(g=>g[0]!=="home").map(g=>`<option value="${g[0]}" ${g[0]===sel?"selected":""}>${E(g[1])}</option>`).join("");
  const cnt=NAVX.counts();
- return `${kpiRow([["Screens",c.screens,"registered right now"],["Placed in a group",c.placed,"each exactly once",{cls:c.placed===c.screens?"":"warn"}],["Not mapped yet",c.unmapped.length,c.unmapped.length?"shown in their old group":"all mapped",{keep:true}],["Groups",GROUPS.filter(g=>cnt[g[0]]).length-0,"plain-language"]])}
- ${c.unmapped.length?`<div class="card glass"><div class="cardhead"><div><h3>Screens without a place yet</h3><span class="muted small">New modules fall back to a group by their old product suite. Give each a plain label and a group below.</span></div></div><div class="row">${c.unmapped.map(id=>`<span class="pill warn">${E(formal(id))}</span>`).join("")}</div></div>`:""}
+ return `${kpiRow([["Screens",c.screens,"registered right now"],["Menu entries",c.placed,"each in exactly one place",{cls:c.notPlaced.length||c.duplicates.length?"warn":""}],["Views and merges",c.views+c.merged,"reached from a view switcher"],["Not mapped yet",c.unmapped.length,c.unmapped.length?"search only until placed":"all mapped",{keep:true}],["Business areas",AREA_IDS.length,"plus My work, Ask or request, Showroom and Build and admin"]])}
+ ${c.unmapped.length?`<div class="card glass"><div class="cardhead"><div><h3>Screens without a place yet</h3><span class="muted small">A screen with no taxonomy row is search only, never in a menu. Give each a plain label and a place below.</span></div></div><div class="row">${c.unmapped.map(id=>`<span class="pill warn">${E(formal(id))}</span>`).join("")}</div></div>`:""}
  ${c.orphans&&c.orphans.length?`<p class="muted small">${c.orphans.length} mapped screen${c.orphans.length===1?"":"s"} waiting for their module to register: ${c.orphans.map(E).join(", ")}.</p>`:""}
- <div class="card glass"><div class="cardhead"><div><h3>Menu map</h3><span class="muted small">Plain label first, formal module name second. Changes apply to the menu and to search at once and stay on this device.</span></div><label class="small">Show <select data-nx-sg aria-label="Show group"><option value="all">All groups</option>${opts(S.navs.g)}</select></label></div>
- <div class="tscroll"><table class="tbl nx-maptbl"><thead><tr><th>Menu label</th><th>Formal name</th><th>Group</th><th>Sub-heading</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><input class="fin nx-mapin" type="text" value="${E(r.m.l)}" data-nx-mvl="${r.id}" aria-label="Menu label for ${E(formal(r.id))}"></td><td class="muted">${E(formal(r.id))}<br><small>${E(r.id)}</small></td><td><select class="fin" data-nx-mvg="${r.id}" aria-label="Group for ${E(formal(r.id))}">${opts(r.m.g)}</select></td><td class="muted small">${E(r.m.sub||"")}</td><td>${r.m.unmapped?`<span class="pill warn">Unmapped</span>`:""}${r.m.edited?`<button type="button" class="btn quiet" data-nx-rst="${r.id}">Reset</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`}
+ <div class="card glass"><div class="cardhead"><div><h3>Menu map</h3><span class="muted small">Plain label first, formal module name second. Changes apply to the menu and to search at once and stay on this device.</span></div><label class="small">Show <select data-nx-sg aria-label="Show area"><option value="all">All areas</option>${opts(S.navs.g)}</select></label></div>
+ <div class="tscroll"><table class="tbl nx-maptbl"><thead><tr><th>Menu label</th><th>Formal name</th><th>Area</th><th>Sub-heading</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><input class="fin nx-mapin" type="text" value="${E(r.m.l)}" data-nx-mvl="${r.id}" aria-label="Menu label for ${E(formal(r.id))}"></td><td class="muted">${E(formal(r.id))}<br><small>${E(r.id)}</small></td><td><select class="fin" data-nx-mvg="${r.id}" aria-label="Area for ${E(formal(r.id))}">${opts(r.m.g)}</select></td><td class="muted small">${E(r.m.sub||"")}</td><td>${r.m.unmapped?`<span class="pill warn">Unmapped</span>`:""}${r.m.edited?`<button type="button" class="btn quiet" data-nx-rst="${r.id}">Reset</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`}
 function studioSearch(){const ty={};IDX.items.forEach(i=>ty[i.ty]=(ty[i.ty]||0)+1);const s=st();const slow=IDX.timings.slice().sort((a,b)=>b[1]-a[1]).slice(0,8);
  return (NAVX.ext&&NAVX.ext.studioTop?(()=>{try{return NAVX.ext.studioTop()}catch(e){return""}})():"")+`${kpiRow([["Items indexed",IDX.items.length.toLocaleString("en-US"),IDX.built?"index is ready":"building"],["Sources",IDX.total||0,IDX.skipped.length?IDX.skipped.length+" skipped":"all answered"],["Index build",(IDX.buildMs||0)+" ms","one time, in small slices",{keep:true}],["Last search",IDX.lastMs+" ms","target under 100 ms",{keep:true}]])}
  <div class="grid g2" style="align-items:start"><div class="card glass"><div class="cardhead"><div><h3>What is searchable</h3><span class="muted small">Every registered screen, module, process, data entity, field, metric and person, plus each module's own records.</span></div></div>
@@ -1182,7 +1237,7 @@ function studioContract(){const procs=G(()=>NAV_PROCS.map(p=>({p,m:PROCLIB.matur
  <div class="row" style="margin-top:12px"><button class="btn" type="button" data-nav="exe_mat">Open Maturity models</button><button class="btn" type="button" data-nav="plat_map">Open module map</button></div></div></div>
  <div class="card glass"><div class="cardhead"><div><h3>Measures</h3><span class="muted small">Each has a formula, an owner and a remediation. They update as you navigate and search.</span></div></div><div class="grid g3 mgrid">${["m_nav_depth","m_search_success","m_search_zero_results","m_fav_use","m_hist_return"].map(id=>metricRing(id,120)).join("")}</div></div>`}
 REG("nav_studio","Navigation and search","platform","M4 6h16M4 12h10M4 18h7M17 14l4 4M19 16a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",()=>{const c=NAVX.check();
- const story=`All <b data-role="metric">${c.screens}</b> screens sit in exactly one of <b>${GROUPS.filter(g=>NAVX.counts()[g[0]]).length}</b> plain-language groups, with the formal module name kept as a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
+ const story=`All <b data-role="metric">${c.screens}</b> screens have one place: <b data-role="metric">${c.placed}</b> are menu entries in <b>${AREA_IDS.length}</b> business areas and four fixed spaces, the rest are views in a family switcher, merges or search only. The formal module name stays a quiet hint. People reach what they need in <b data-role="metric">${mfmt(METRICS.m_nav_depth)} clicks</b> on average and <b data-role="metric">${mfmt(METRICS.m_search_success)}</b> of searches end in an opened result.`;
  return `<div class="screen">${hero("Platform and administration","Find anything, return to anything",story,`<div class="row">${fchip("m_nav_depth")}${fchip("m_search_success")}${fchip("m_search_zero_results")}${fchip("m_fav_use")}${fchip("m_hist_return")}<button class="btn primary" type="button" data-nx-search>Open search</button></div>`)}${lensNote()}${views("nav_v",["Menu map","Search health","Favorites and history","Process, data and measures"].concat(W.USAGE?["Usage"]:[]),[studioMap(),studioSearch(),studioPeople(),studioContract()].concat(W.USAGE?[G(()=>USAGE.panelHTML())||""]:[]))}</div>`});
 ROUTER.on("change",e=>{const t=e.target;if(!t||!t.dataset)return;
  if(t.dataset.nxSg!=null){S.navs.g=t.value;S.v.nav_v=0;render();return}

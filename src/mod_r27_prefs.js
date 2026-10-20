@@ -144,7 +144,7 @@ W.I18N={LANGS,ROWS,set:setLang,get:()=>cur,missing,translate:tr};
 /* ---------- simple menu ---------- */
 const REC=[];
 function track(){const s=G(()=>S.screen,"");if(s&&s!=="home"&&REC[0]!==s){const i=REC.indexOf(s);if(i>=0)REC.splice(i,1);REC.unshift(s);REC.length=Math.min(REC.length,6)}}
-function simplify(raw){const root=D.createElement("div");root.innerHTML=raw;
+function simplify(raw){if(String(raw).indexOf("data-nx-rail")>=0)return raw; /* PH-14: the area rail is already the simple, purview menu */const root=D.createElement("div");root.innerHTML=raw;
  if(!root.querySelector("details.navgd"))return raw;/* collapsed icon rail stays as is */
  const home=root.querySelector('[data-nx-it="home"]');const pins=root.querySelector("section.r15d-pins");
  const find=id=>{const e=root.querySelector('details.navgd [data-nx-it="'+id+'"]')||root.querySelector('[data-nx-it="'+id+'"]');return e};

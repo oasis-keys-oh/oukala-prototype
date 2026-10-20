@@ -115,7 +115,7 @@ if(W.NAVX&&NAVX.html&&!NAVX._r15d){
  NAVX.html=function(){
   const raw=_html.apply(this,arguments);
   try{
-   if(raw.indexOf('class="navgd"')<0)return raw;
+   if(raw.indexOf('class="navgd"')<0||raw.indexOf('data-nx-rail')>=0)return raw; /* PH-14: the area rail is built by purview in mod_nav.js */
    const d=defOf(),p=PERSONAS[S.persona];if(!d||!d.groups)return raw;
    const root=document.createElement("div");root.innerHTML=raw;
    const gs=[...root.querySelectorAll(":scope > details.navgd")];if(!gs.length)return raw;
