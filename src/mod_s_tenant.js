@@ -99,7 +99,7 @@ G(()=>HOOKS.on("tenantDenied",id=>G(()=>toast("No membership in "+((DT.tenantInf
  .forEach(([id,ents])=>DT.screen(id,{mode:"data",entities:ents,note:"Reads only through DATA.get"}));
 DT.screen("ppl_jrny",{mode:"tenant",entities:["journeys","workflows","personas"],note:"Journey maps, every tab: follows SCN (in-place swap), not yet DATA"});
 DT.screen("orgassist",{mode:"tenant",entities:["people"],note:"Org chart with agent assist: reads TENANT.orgs, not yet DATA"});
-DT.screen("orgdesign",{mode:"core",entities:[],note:"Agent Action: presets per tenant through ODX.preset, but its gaps and options read the Meridian sample organization"});
+DT.screen("orgdesign",{mode:"tenant",entities:["workload","value_chain","pillars","people"],note:"Agent Action: the COO brief reads workload, value chain and pillars through DATA (CL-85); presets per tenant through ODX.preset; gaps and options still read the Meridian sample organization"});
 
 /* ---------- 5. labels: the active tenant is always visible; legacy screens say they show the Meridian sample (R17, R18) ---------- */
 const tname=t=>{const i=DT.tenantInfo(t)||{};return i.org||i.n||t};

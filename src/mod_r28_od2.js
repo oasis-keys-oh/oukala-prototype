@@ -33,6 +33,10 @@ const foreign=()=>TEN()!=="core";
 const tname=()=>{const i=G(()=>W.DATA.tenantInfo(TEN()),{})||{};return i.org||i.n||TEN()};
 const tPeople=()=>G(()=>W.DATA.get("people"),[]).filter(p=>p&&p.kind!=="ai");
 const tLoad=()=>tPeople().filter(p=>p.pct!=null&&!isNaN(+p.pct));
+/* CL-85: the COO brief inputs read the tenant entities through DATA (Meridian rows under core are the same ODX figures) */
+const WL=()=>{const r=G(()=>W.DATA.get("workload"),[]);return r.length||foreign()?r:X.people()};
+const VC=()=>{const r=G(()=>W.DATA.get("value_chain"),[]);return r.length||foreign()?r:X.O2C.steps};
+const PLL=()=>G(()=>W.DATA.get("pillars"),[]);
 const mSample=()=>`<span class="od-src od-msample" title="Drawn from the fictional Meridian Standards Foundation sample organization, because this tenant's pack has no data for it">Meridian sample</span>`;
 const noData=(k,what)=>`<div class="card glass od-tile od-nodata"><span class="od-k">${k}</span><b>No data</b><span class="od-s">${E(tname())} has no ${what} in its pack yet</span><span class="od-src od-gap" title="Recorded as a gap; nothing from another tenant is shown">Gap</span></div>`;
 /* last line of defense: no Meridian person or agent name under another tenant */
@@ -42,19 +46,19 @@ function scrub(html){if(!foreign())return html;let h=html;
 
 /* ---------- 0: the COO brief ---------- */
 function brief(){
- const o=OD(),A=X.after(o.hyp),P=X.people(),L=LENS[o.lens];
+ const o=OD(),A=X.after(o.hyp),P=WL(),L=LENS[o.lens];
  const rows=X.GAPS.map(g=>{const k=X.choiceOf(g,o.posture,o.choice),op=X.options(g)[k];return{g,k,op,sc:g.reach*(op.val||0)/(op.eff+8)}}).filter(r=>r.k!=="leave").sort((a,b)=>b.sc-a.sc).slice(0,6);
- const outside=X.O2C.steps.filter(s=>!s.in).length;
+ const V=VC(),outside=V.filter(s=>!s.in).length;
  const augH=r0(sum(P.map(p=>p.aug)));
  const steps=X.roadmap(o.posture,o.choice);
  const ad=adoptionAll(steps,o.month);
- const F=foreign(),TL=F?tLoad():null;
+ const F=foreign(),TL=F?P.filter(p=>p.pct!=null&&!isNaN(+p.pct)):null;
  const loadTile=!F?`<div class="card glass od-tile"><span class="od-k">Average workload</span><b>${r0(avg(P.map(p=>p.pct)))}%</b><span class="od-s">${P.filter(p=>p.pct>100).length} of ${P.length} people above 100%</span>${pill("fact")}</div>`
   :TL.length?`<div class="card glass od-tile"><span class="od-k">Average workload</span><b>${r0(avg(TL.map(p=>+p.pct)))}%</b><span class="od-s">${TL.filter(p=>+p.pct>100).length} of ${TL.length} people above 100%, ${E(tname())}</span>${pill("fact")}</div>`:noData("Average workload","workload data");
- const augTile=!F?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>p.tot)))} hours logged</span>${pill("modeled")}</div>`:noData("Hours a week an agent could take","time records");
+ const augTile=!F?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>p.tot)))} hours logged</span>${pill("modeled")}</div>`:P.some(p=>p.aug!=null)?`<div class="card glass od-tile"><span class="od-k">Hours a week an agent could take</span><b>${augH}</b><span class="od-s">of ${r0(sum(P.map(p=>+p.tot||0)))} hours logged, ${E(tname())}</span>${pill("modeled")}</div>`:noData("Hours a week an agent could take","time records");
  return `${F?`<div class="card glass od-honest od-tenant" role="note"><b>Tenant: ${E(tname())}.</b><p>Gaps, options, the roadmap and adoption follow this tenant. People, workload and agent figures read this tenant's own data through the tenant data layer; where its pack has none yet the tile says so. Panels marked Meridian sample are drawn from the fictional Meridian sample organization, with every person and agent name left out.</p></div>`:""}<div class="od-grid4">
   ${loadTile}
-  <div class="card glass od-tile"><span class="od-k">Order-to-cash steps outside the system</span><b>${outside} of ${X.O2C.steps.length}</b><span class="od-s">Sample process, fictional</span>${pill("modeled")}${F?mSample():""}</div>
+  <div class="card glass od-tile"><span class="od-k">Order-to-cash steps outside the system</span><b>${outside} of ${V.length}</b><span class="od-s">${F&&V[0]&&V[0].flow?E(V[0].flow)+", sample process":"Sample process, fictional"}</span>${pill("modeled")}${F&&!V.length?mSample():""}</div>
   ${augTile}
   <div class="card glass od-tile"><span class="od-k">Using the new way at month ${o.month}</span><b>${ad.using}%</b><span class="od-s">Built is not the same as used</span>${pill("sim")}</div></div>
  <div class="card glass"><div class="cardhead"><div><h3>How will you treat the ERP?</h3><span class="muted small">This choice changes every recommendation below. Most clients do not have an ideal state; they have a direction and a pace.</span></div></div>
@@ -75,7 +79,7 @@ function sources(){
   ${card("Reference architecture",E(R.n),"Choose below. Used to name the activities each gap and step belongs to.","ok")}
   ${foreign()?card("Org chart",tPeople().length+" people in the pack",E(tname())+": leaders from the tenant pack, read through the tenant data layer. No workload or time records yet.","part"):card("Org chart",X.people().length+" staff, "+Object.keys(X.units()).length+" units","Read from the prototype's sample organization (prototype fact).","ok")}
   ${card("Transactions and outcomes",runs+" agent runs","Agent run history from the prototype. No ERP or ticketing connector is live.","part")}
-  ${foreign()?card("Strategy","Not in the pack","No strategy pillars in "+E(tname())+"'s pack yet. The Meridian sample pillars are not shown here.","part"):card("Strategy","3 sample pillars","Grow member trust, publish faster, spend less per standard. Fictional.","ok")}</div>
+  ${foreign()?(PLL().length?card("Strategy",PLL().length+" pillars",PLL().map(p=>E(p.n)).join(", ")+". From "+E(tname())+"'s pack, read through the tenant data layer (sample).","ok"):card("Strategy","Not in the pack","No strategy pillars in "+E(tname())+"'s pack yet. The Meridian sample pillars are not shown here.","part")):card("Strategy","3 sample pillars","Grow member trust, publish faster, spend less per standard. Fictional.","ok")}</div>
  <div class="card glass"><div class="cardhead"><div><h3>Add a filing</h3><span class="muted small">Drop a 10-K as .txt, .htm or .html. It is split into Items, and themes, risks and headcount mentions are extracted by keyword and structure. A language model is not connected.</span></div></div>
   <label class="od-drop" data-od-drop><input type="file" data-od-file accept=".txt,.htm,.html,.md" multiple hidden><b>Drop files here or choose</b><span>Real filings are public documents. Keep customer-confidential material out.</span></label>
   <div class="od-list">${F.map((f,i)=>{const p=f.parsed;return `<button class="od-row ${o.fsel===i?"on":""}" data-od="fsel|${i}"><span class="od-dim">${f.fict?"Fictional sample":"Added by you"}</span><span class="od-t"><b>${E(f.name)}</b><span>${p.words.toLocaleString()} words, ${p.secs.length} sections found${p.emp?", mentions about "+E(p.emp)+" employees":""}</span></span><span class="od-opt">${i===o.fsel?"Open":"View"}</span></button>`}).join("")}</div>
@@ -109,9 +113,13 @@ function diagnose(){
   <div class="od-table"><div class="od-th2 od-agh"><span>Agent</span><span>Plan h/wk</span><span>Realized</span><span>Runs</span><span>Accepted</span><span>Tier</span></div>
   ${ag.map(a=>`<div class="od-th2 od-agr"><span><b>${E(a.name)}</b><em>Sponsor ${E(a.sponsor||"none")}</em></span><span>${a.plan}</span><span>${r1(a.real)}</span><span>${a.runs}</span><span>${a.acc}%</span><span>${E(a.tier)}</span></div>`).join("")}</div></div>`}`}
 /* JM-07: load under another tenant reads that tenant's people through DATA; it never lists the Meridian people or agents */
-function tenantLoadCard(){const P=tPeople(),TL=tLoad();
+function tenantLoadCard(){const P=tPeople(),WK=WL(),TL=WK.length?WK:tLoad();if(WK.length)return tenantWorkCard(WK);
  return `<div class="card glass"><div class="cardhead"><div><h3>Load: people and agents</h3><span class="muted small">${E(tname())}: ${P.length} people in the tenant pack${TL.length?", "+TL.length+" with workload":""}. Workload and agent run records are not in this tenant's pack yet, so nothing is measured here. Meridian people and agents are not shown under another tenant.</span></div><span class="od-src od-gap">Gap</span></div>
   ${P.length?`<div class="od-table">${P.slice(0,18).map(p=>`<div class="od-ld"><span><b>${E(p.name)}</b><em>${E(p.role||"")}${p.team?" · "+E(p.team):""}</em></span>${p.pct!=null?bar(+p.pct,+p.pct>100?"bad":+p.pct<50?"warn":"")+`<span class="od-v">${r0(+p.pct)}%</span>`:`<span class="muted small">No workload data</span>`}</div>`).join("")}</div>`:`<p class="muted small">No people in this tenant's pack yet.</p>`}</div>`}
+
+function tenantWorkCard(WK){
+ return `<div class="card glass"><div class="cardhead"><div><h3>Load: people</h3><span class="muted small">${E(tname())}: ${WK.length} leaders with workload from the tenant pack, read through the tenant data layer (modeled). Agent run records are not in this tenant's pack yet. Meridian people and agents are not shown under another tenant.</span></div>${pill("modeled")}</div>
+  <div class="od-table">${WK.slice(0,18).map(p=>`<div class="od-ld"><span><b>${E(p.n)}</b><em>${E(p.role||"")}${p.unit?" · "+E(p.unit):""}</em></span>${bar(+p.pct,+p.pct>100?"bad":+p.pct<50?"warn":"")}<span class="od-v">${r0(+p.pct)}%</span></div>`).join("")}</div></div>`}
 
 /* ---------- 3: hypotheses and before/after ---------- */
 function hypotheses(){
