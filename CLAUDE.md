@@ -43,9 +43,9 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 ## Showroom
 The demo space is **Showroom**. Demos are **experiential**: the buyer drives and the presenter coaches (Omar, 2026-10-20). Design and contracts: `docs/showroom/experiences.md` (`window.EXP`, missions, ripples, facilitator console, self-serve links, Bring your company, Two seats, Break it).
 - An experience is a mission on existing screens; a mission that needs a feature that does not exist is dropped and logged, never built as a new business screen (DC-34).
-- Each mission has a one-sentence brief, a goal, a clock of 10 minutes or less, at least one ripple the buyer sees (budget, metric, risk or objective moving), and claims that appear only after the buyer has seen the thing claimed.
+- Each mission has a one-sentence brief, a goal, a clock of 3 minutes or less (180 seconds; Omar 2026-10-20), at least one ripple the buyer sees (budget, metric, risk or objective moving), and claims that appear only after the buyer has seen the thing claimed.
 - One engine serves facilitated sessions (console in a second window, `?exp=console`) and self-serve links; the buyer starts with their own company and falls back to the closest sample company.
-- Every simulated element is labeled (generated tenants, ripples, two seats, agent actions). `EXP.lint()` checks briefs, clocks, labels and that every named screen exists; `tools/tests/exp.js` runs it.
+- Every simulated element is labeled (generated tenants, ripples, two seats, agent actions). `EXP.lint()` checks briefs, clocks (180 seconds at most), labels and that every named screen exists; `tools/tests/exp.js` runs it.
 - Guided tours (`window.SHOW`, `SHOW.demos`) stay as rehearsal and backup and keep their rules: a beat has a point of 12 words or fewer, seconds, two spoken sentences, one interaction and a claim chip, and every cut stays under 1,200 seconds (`SHOW.lint()`, `showroom.js`). Deep link: `?showroom=coo&beat=4`.
 
 ## Where things live

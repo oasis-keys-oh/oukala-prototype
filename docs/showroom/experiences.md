@@ -5,7 +5,7 @@ Describes how the Showroom moves from guided tours to experiences (Omar, 2026-10
 ## Principles
 - **The buyer drives.** They hold the mouse, choose, and discover; nobody narrates.
 - **One engine, two modes.** The same mission runs facilitated (a presenter coaches from a console in a second window) or self-serve (the product coaches by itself through chat hints and checkpoint cards).
-- **Their company first.** Setup generates the buyer's own tenant in about five minutes; it falls back to the closest sample company (Meridian, Larkspur, Redstone, Corvane).
+- **Their company first.** Setup generates the buyer's own tenant in about one minute (three questions, smart defaults); it falls back to the closest sample company (Meridian, Larkspur, Redstone, Corvane).
 - **Consequences, not claims.** Every decision visibly moves budget, metrics, risk and the objective score (ripples). A claim chip appears only after the buyer has seen the thing it claims.
 - **Existing screens only.** A mission plays on screens that exist (DC-34 still holds). New code is the engine, the console, the setup, the ripple trail and the leave-behind.
 - **Honest.** Generated tenants, ripples, two seats and agent actions are labeled simulated; numbers keep their labels (modeled, hypothesis).
@@ -54,6 +54,6 @@ Describes how the Showroom moves from guided tours to experiences (Omar, 2026-10
 
 ## Showroom rules (approved by Omar 2026-10-20; now in CLAUDE.md)
 - An experience is a mission on existing screens; a mission with no existing feature is dropped and logged (DC-34).
-- Each mission has a one-sentence brief, a goal, a clock of 10 minutes or less, at least one ripple the buyer sees, and claims that appear only after the buyer has seen the thing claimed.
-- Every simulated element is labeled; `EXP.lint()` checks briefs, clocks, labels and that every screen a mission names exists; `tools/tests/exp.js` runs it.
+- Each mission has a one-sentence brief, a goal, a clock of 3 minutes or less (180 seconds; Omar 2026-10-20), at least one ripple the buyer sees, and claims that appear only after the buyer has seen the thing claimed.
+- Every simulated element is labeled; `EXP.lint()` checks briefs, clocks (180 seconds at most), labels and that every screen a mission names exists; `tools/tests/exp.js` runs it.
 - Guided tours keep their rules (`SHOW.lint`, 1,200-second cap) as rehearsal and backup.
