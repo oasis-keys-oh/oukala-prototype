@@ -56,7 +56,7 @@ function lineAccept(key){const l=RS.lin[key];if(!l)return;l.state="accepted";con
 function lineReject(key){const l=RS.lin[key];if(!l)return;delete S.atlas.ovr[key];delete RS.lin[key];G(()=>LIN.bump());audit("Lineage rejected",key);toast("Mapping removed","info");render()}
 function traceLine(id){const t=G(()=>LIN.trace(id),null);if(!t)return "";const ent=G(()=>[...(t.srcs instanceof Map?t.srcs.values():Object.values(t.srcs||{}))],[]);const prop=Object.keys(RS.lin).filter(k=>k.indexOf(id+"|")===0&&RS.lin[k].state==="proposed").length;
  return `<div class="r15-lin small"><b>Lineage</b> ${t.pct==null?"":t.pct+"% of terms traced"}${ent.length?" · "+ent.slice(0,4).map(s=>esc(s.ent+"."+s.fld)).join(", ")+(ent.length>4?" +"+(ent.length-4):""):" · not traced"}${prop?` · <span class="pill warn">${prop} proposed</span>`:""}</div>`}
-(function(){const mb=window.metricBody;if(typeof mb!=="function"||mb.__r15e)return;const w=function(id){let h=mb.apply(this,arguments);try{if(METRICS[id])h+=traceLine(id)}catch(e){}return h};w.__r15e=1;window.metricBody=w})();
+(function(){const mb=window.metricBody;if(typeof mb!=="function"||mb.__r15e)return;const w=function(id){let h=mb.apply(this,arguments);try{const m=typeof window.metricOf==="function"?window.metricOf(id):METRICS[id];if(m&&!m.__tenant)h+=traceLine(id)}catch(e){}return h} /* PR-32 B2: lineage is the Meridian registry's; a tenant metric (metricOf) has none yet */;w.__r15e=1;window.metricBody=w})();
 /* ---------- 7. KB stub generator ---------- */
 function ownerFor(team){return G(()=>R.personOf(team),"")||"Noor Haddad"}
 function genKB(){if(!window.KCSX||!S.kcsx)return {n:0};const X=S.kcsx;X.created=X.created||[];const have=new Set(G(()=>KCSX.items(),[]).map(a=>a.id));let n=0;
