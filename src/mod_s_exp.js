@@ -35,7 +35,8 @@ function roleOk(m,r){return !r||m.role==="any"||(Array.isArray(m.role)&&m.role.i
 function tenOk(m,t){return !t||m.tenants==="any"||!m.tenants||(Array.isArray(m.tenants)&&m.tenants.indexOf(t)>=0)}
 function list(o){o=o||{};return MS.filter(m=>roleOk(m,o.role)&&tenOk(m,o.tenant))}
 /* a mission whose screens show only the core sample runs on the core tenant and says so */
-function needsCore(m){return m.screens.some(s=>m.neutral.indexOf(s)<0&&G(()=>DATA.screenMode(s),"core")==="core")}
+/* also when the chosen company has no rows for what the mission needs: m.needs(tenant) returns false (for example releases, until PR-36 adds them to the packs) */
+function needsCore(m,t){return m.screens.some(s=>m.neutral.indexOf(s)<0&&G(()=>DATA.screenMode(s),"core")==="core")||(typeof m.needs==="function"&&t&&t!=="core"&&!G(()=>m.needs(t),false))}
 
 /* ---------- events ---------- */
 function on(ev,fn){(SUBS[ev]=SUBS[ev]||[]).push(fn);return()=>{const a=SUBS[ev]||[];const i=a.indexOf(fn);if(i>=0)a.splice(i,1)}}
@@ -59,7 +60,7 @@ function start(id,o){o=o||{};const m=BY[id];if(!m)return false;if(cur)stop({quie
  const role=o.role||(m.role==="any"?"cio":(Array.isArray(m.role)?m.role[0]:"cio"));
  const want=o.tenant||curTenant()||"core";
  const prev={persona:G(()=>S.persona,null),tenant:curTenant()};
- const ranOn=needsCore(m)?"core":want;
+ const ranOn=needsCore(m,want)?"core":want;
  applyTenant(ranOn);
  G(()=>CHATX.close());G(()=>closeDrawer());G(()=>INBOX.closePanel());
  const p=personaOf(role);G(()=>{if(S.persona!==p)NAVX.persona.set(p)});
@@ -279,7 +280,7 @@ function homeHTML(){const P=S.exph;const ten=P.tenant||curTenant()||"core";const
  <div class="exp-step"><span class="exp-eye">2. Which company</span>${pg?`<div class="row"><button type="button" class="btn ${ownTen.length?"quiet":"primary"}" data-exp-bring="1">Bring your company</button><span class="muted small">About five minutes: industry, size and the pain. Generated in this browser and labeled simulated.</span></div>`:""}
   <div class="row exp-cos" role="radiogroup" aria-label="Company">${(ownTen.concat(cs.filter(c=>ownTen.indexOf(c)<0))).map(c=>`<button type="button" class="btn ${ten===c.id?"primary":"quiet"}" role="radio" aria-checked="${ten===c.id}" data-exp-ten="${E(c.id)}">${E(c.n)}${c.gen?" (generated)":""}</button>`).join("")}</div>${pg?"":`<p class="muted small">Bring your company appears here once the company generator is in the build; until then pick the closest sample.</p>`}</div>
  <div class="exp-step"><span class="exp-eye">3. The mission</span><div class="grid g2 exp-ms">${ms.map(m=>`<article class="exp-mc" data-exp-card="${E(m.id)}"><div class="sr-ch"><h4>${E(m.title)}</h4><span class="sr-pill">${fmt(m.clock)}</span></div>
-  <p class="small">${E(m.brief)}</p><p class="muted small">Screens: ${m.screens.map(s=>E(scrName(s))).join(", ")}${needsCore(m)&&ten!=="core"?`. Runs on the ${E(tName("core"))} sample: these screens are not tenant-aware yet.`:"."}</p>
+  <p class="small">${E(m.brief)}</p><p class="muted small">Screens: ${m.screens.map(s=>E(scrName(s))).join(", ")}${needsCore(m,ten)&&ten!=="core"?`. Runs on the ${E(tName("core"))} sample: this company has no data for it yet.`:"."}</p>
   <div class="row"><button type="button" class="btn primary" data-exp-start="${E(m.id)}" data-exp-mode="facilitated">Start with a presenter</button><button type="button" class="btn" data-exp-start="${E(m.id)}" data-exp-mode="self">Self-serve</button><button type="button" class="btn quiet" data-exp-copy="${E(m.id)}" title="${E(selfLink(m.id,P.role,ten))}">Copy self-serve link</button></div></article>`).join("")||`<p class="muted">No mission for this role yet. Your Monday works for every role.</p>`}</div></div></div>
  <div class="row"><button type="button" class="btn" data-exp-console="1">Open the facilitator console</button><span class="muted small">Opens a second window (<code>?exp=console</code>) that follows the buyer's window on this device.</span></div>
  ${sessions().length?`<p class="muted small">This browser: ${sessions().length} experience${sessions().length===1?"":"s"} started, ${sessions().filter(s=>s.finished).length} finished. Stored here only.</p>`:""}</section>`}

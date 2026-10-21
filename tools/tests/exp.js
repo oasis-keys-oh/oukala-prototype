@@ -49,7 +49,7 @@ for(const id of await p.evaluate(()=>EXP.missions().map(m=>m.id))){const n0=errs
  const ev=await p.evaluate(([id,role,ten])=>{window.__ev=[];['checkpoint','ripple','success'].forEach(k=>EXP.on(k,d=>window.__ev.push(k)));return EXP.start(id,{role,tenant:ten,mode:'facilitated'})},[id,ROLE[id],TEN[id]]);
  if(!ev){fail(id+' did not start');continue}await settle(1600);
  const s0=await conState();if(!s0||s0.mission!==id)fail(id+' console did not receive the state '+JSON.stringify(s0));
- const meta=await p.evaluate(()=>({ran:EXP.state().ranOn,need:EXP.needsCore(EXP.current().m),ten:DATA.tenant(),hud:!!document.querySelector('#expHud .exp-cps')}));
+ const meta=await p.evaluate(t=>({ran:EXP.state().ranOn,need:EXP.needsCore(EXP.current().m,t),ten:DATA.tenant(),hud:!!document.querySelector('#expHud .exp-cps')}),TEN[id]);
  if(!meta.hud)fail(id+' no mission card');if(meta.ten!==meta.ran)fail(id+' tenant '+JSON.stringify(meta));if(!meta.need&&meta.ran!==TEN[id])fail(id+' a tenant-aware mission left the chosen company '+JSON.stringify(meta));
  await RUN[id]();
  const r=await p.evaluate(()=>{const s=EXP.state(),m=EXP.current().m,tr=document.getElementById('expTrail');return{done:s.done,all:m.checkpoints.map(c=>c.id),success:s.success,ripples:s.ripples.length,trail:!!(tr&&!tr.hidden&&tr.querySelectorAll('.exp-tn').length>=2),modeled:!!(tr&&/Modeled/.test(tr.textContent)),ev:window.__ev,claims:s.claims.length}});
