@@ -63,13 +63,16 @@ const hs=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;ret
 const SIM_HOUR=13;
 function hourNow(){const h=S.r15d.agHour;return h==null?SIM_HOUR:h}
 function buildRows(){
- const org=G(()=>ORGX.agents(),[]),gw=G(()=>S.agents,[])||[];
+ /* PR-32 B7: Meridian reads the org chart and the AI gateway; another tenant reads its own agent rows (DATA agents), which carry
+    the gateway fields (runs, spend, cap, state, owner), and has no Meridian org chart agents (R18) */
+ const core=!window.DATA||DATA.tenant()==="core";
+ const org=core?G(()=>ORGX.agents(),[]):[],gw=core?(G(()=>S.agents,[])||[]):G(()=>DATA.get("agents").filter(a=>(a.part||"agent")==="agent"),[]);
  const gwBy={};gw.forEach(g=>gwBy[String(g.n).toLowerCase()]=g);const used=new Set();const rows=[];const h=hourNow();
  const mk=(o,g)=>{
   const name=o?o.name:g.n,key=name.toLowerCase();if(g)used.add(g.id);
   const alw=ALWAYS.test(name),runsToday=g?g.runs:Math.max(3,Math.round(((o.eval&&o.eval.runs)||60)/10));
   const shape=alw?SHAPE_24:SHAPE_BIZ,tot=shape.reduce((a,b)=>a+b,0);
-  const act=g&&g.act&&g.act.length===24?g.act.slice():shape.map(s=>Math.round(runsToday*s/tot));
+  const act=g&&Array.isArray(g.act)&&g.act.length===24?g.act.slice():shape.map(s=>Math.round(runsToday*s/tot));
   const gwState=g?g.st:null;
   const orgState=o?o.status:null;
   const observed=g&&g.st==="observed";
@@ -79,7 +82,7 @@ function buildRows(){
   let state;if(observed)state="observed";else if(!enabled)state="paused";else if(!onShift)state="offshift";else if(runsHour>0)state="working";else state="idle";
   const d=G(()=>agentDisplay(name),{full:name,first:name});
   return {id:(o&&o.id)||(g&&g.id),name,display:d.full,first:d.first,sponsor:o?o.sponsor:(g&&g.owner)||"",source:o&&g?"org chart and gateway":o?"org chart":"gateway",kind:observed?"Third party":"AI agent",
-   gateway:!!g&&!observed,observed,enabled,onShift,runsHour,runsToday,act,state,autonomy:o?o.autonomy:(g?G(()=>AUTO_LEVELS[g.auto],""):""),shift:alw?"24 hours":"07:00 to 19:00",model:(o&&o.model)||(g&&g.model)||"",cap:g?g["cap$"]:null,spend:g?g.spend:null,gid:g?g.id:null}};
+   gateway:!!g&&!observed,observed,enabled,onShift,runsHour,runsToday,act,state,autonomy:o?o.autonomy:(g?G(()=>AUTO_LEVELS[g.auto],"")||g.tier||"":""),shift:alw?"24 hours":"07:00 to 19:00",model:(o&&o.model)||(g&&g.model)||"",cap:g?g["cap$"]:null,spend:g?g.spend:null,gid:g?g.id:null}};
  org.forEach(o=>rows.push(mk(o,gwBy[String(o.name).toLowerCase()])));
  gw.forEach(g=>{if(!used.has(g.id))rows.push(mk(null,g))});
  return rows;
@@ -93,7 +96,7 @@ const AGENTS_STATE=W.AGENTS_STATE={
  rows:buildRows,
  counts(){const r=buildRows(),c={registered:r.length,working:0,idle:0,offshift:0,paused:0,observed:0,enabled:0,gateway:0,gatewayEnabled:0,org:0};
   r.forEach(a=>{c[a.state]++;if(a.enabled)c.enabled++;if(a.gateway)c.gateway++;if(a.gateway&&a.enabled)c.gatewayEnabled++;if(a.source!=="gateway")c.org++});
-  c.governed=r.filter(a=>!a.observed).length;c.gatewayRegistered=G(()=>S.agents.length,0);return c},
+  c.governed=r.filter(a=>!a.observed).length;c.gatewayRegistered=!window.DATA||DATA.tenant()==="core"?G(()=>S.agents.length,0):c.gateway;return c},
  list(f){const r=buildRows();return !f||f==="all"?r:r.filter(a=>f==="enabled"?a.enabled:a.state===f)},
  labels:ST_LABEL,defs:ST_DEF,order:ST_ORDER,
  line(){const c=this.counts();return c.working+" working now · "+c.enabled+" enabled · "+c.registered+" registered"},
@@ -183,6 +186,7 @@ const AGF=["all","working","idle","offshift","paused","observed"];
 function agRowHTML(a){
  const cls=a.state==="working"?"good":a.state==="idle"?"info":a.state==="observed"?"mute":"warn";
  return `<tr><td><button type="button" class="linkish" data-r15d-agopen="${E(a.name)}"><b>${E(a.display)}</b></button><small class="muted">${E(a.kind)} · ${E(a.model||"model not recorded")}</small></td><td>${a.sponsor?ownerChip(a.sponsor,{role:"Sponsor"}):E("none")}</td><td><span class="pill ${cls}">${ST_LABEL[a.state]}</span></td><td class="num">${a.runsHour}</td><td class="num">${a.runsToday}</td><td>${a.shift}</td><td>${a.gateway?"Under the gateway":a.observed?"Outside the gateway":"Org chart only"}</td><td>${E(a.autonomy||"")}</td></tr>`}
+if(window.DATA&&DATA.screen)DATA.screen("r15d_agents",{mode:"data",entities:["agents"],note:"PR-32 B7: AGENTS_STATE reads the tenant's agent rows"});
 REG("r15d_agents","Agent registry","ai","M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7zM9 12l2 2 4-4",()=>{
  const f=AGF.includes(S.r15d.agFilter)?S.r15d.agFilter:"all",c=AGENTS_STATE.counts(),rows=AGENTS_STATE.list(f==="all"?null:f);const h=AGENTS_STATE.hour();
  return `<div class="screen">${hero("AI and governance · Agent registry","One list of every agent, one meaning of working",`<b data-role="metric">${c.working}</b> of <b data-role="metric">${c.registered}</b> registered agents are working at ${AGENTS_STATE.clock()}. <b>${c.enabled}</b> are enabled and <b>${c.governed}</b> run under governance. The top bar, the org chart, the Control Tower and Ask all read this list.`,`<div class="row">${typeof fchip==="function"?"":""}<label class="r15d-hr">Time of day <select class="fin" data-r15d-hour aria-label="Time of day for the shift check">${Array.from({length:24},(_,i)=>`<option value="${i}" ${i===h?"selected":""}>${(i<10?"0":"")+i}:29</option>`).join("")}</select></label></div>`)}${lensNote()}

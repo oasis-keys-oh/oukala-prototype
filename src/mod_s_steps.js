@@ -50,8 +50,12 @@ STEPS.robotTest=def=>{const t=String(def.task||"");const judge=JUDG.test(t)||(de
 const TIERS={1:["Tier 1","Suggests only. A person does the action."],2:["Tier 2","Acts after a person approves each proposal."],3:["Tier 3","Acts inside its limits and reports. A person reviews samples."]};
 const tierOf=v=>v==null?null:typeof v==="number"?Math.max(1,Math.min(3,v)):({suggest:1,propose:1,approval:2,approve:2,act:3,auto:3})[String(v).toLowerCase()]||2;
 const ST=STEPS.state=STEPS.state||{};
+/* PR-32 B7: under another tenant the agents are that tenant's agent rows (DATA agents), shaped like an org chart agent; Meridian keeps ORGX */
+const isCore=()=>!W.DATA||DATA.tenant()==="core";
+const tAgents=()=>isCore()?[]:G(()=>DATA.get("agents").filter(a=>(a.part||"agent")==="agent"),[]);
+const tAgent=name=>{const r=tAgents().find(a=>a.n===name||a.id===name);return r?{name:r.n,does:r.purpose||r.act||"",autonomy:r.tier,sponsor:r.owner||"",model:r.model||"",guards:[],kill:"agent",status:r.st}:null};
 STEPS.agentDef=function(name,ctx){ctx=ctx||{};name=String(name||ctx.name||"Studio Agent");
- const o=G(()=>ORGX.agentByName(name),null),c=G(()=>(W.CONTRACT&&CONTRACT.agents||[]).find(a=>a.n===name||a.id===name),null);
+ const o=(isCore()?null:tAgent(name))||(isCore()?G(()=>ORGX.agentByName(name),null):null),c=G(()=>(W.CONTRACT&&CONTRACT.agents||[]).find(a=>a.n===name||a.id===name),null);
  const task=ctx.task||(o&&o.does)||(c&&c.purpose)||"";
  const tier=tierOf(ctx.tier!=null?ctx.tier:o?o.autonomy:ctx.autonomy)||(c?1:2);
  let conf=ctx.conf!=null?+ctx.conf:c?c.conf:o&&o.eval?o.eval.accept/100:.75;if(conf>1)conf=conf/100;
@@ -90,12 +94,14 @@ STEPS.attrs=(name,ctx)=>{ctx=ctx||{};let a=` data-stp-agent="${E(name)}"`;if(ctx
 
 /* ---------- the registry: every agent, one card each ---------- */
 function allAgents(){const out=[],seen=new Set();
- G(()=>ORGX.agents(),[]).forEach(a=>{if(!seen.has(a.name)){seen.add(a.name);out.push({name:a.name,src:"Org chart",task:a.does,sponsor:a.sponsor})}});
+ if(isCore())G(()=>ORGX.agents(),[]).forEach(a=>{if(!seen.has(a.name)){seen.add(a.name);out.push({name:a.name,src:"Org chart",task:a.does,sponsor:a.sponsor})}});
+ else tAgents().forEach(a=>{if(!seen.has(a.n)){seen.add(a.n);out.push({name:a.n,src:"Agent registry",task:a.purpose||a.act||"",sponsor:a.owner||""})}});
  G(()=>CONTRACT.agents,[]).forEach(a=>{if(!seen.has(a.n)){seen.add(a.n);out.push({name:a.n,src:"Feature contract",task:a.purpose,sponsor:""})}});return out}
 STEPS.agents=allAgents;
 G(()=>REG("agent_defs","Agent definitions","ai","M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z",()=>{const L=allAgents(),rb=L.filter(a=>STEPS.robotTest({task:a.task}).robot).length;
  return `<div class="screen"><section class="card glass"><div class="eyebrow">AI oversight · Agent definitions</div><h2 style="margin:2px 0 6px">Every agent, defined in one card</h2>
  <p class="small muted">${L.length} agents (prototype fact). Each card holds the task, versioned prompts and guidelines, tier, budget, confidence floor, kill switch, human sponsor and trigger. <b>${rb}</b> read as deterministic and could be a robot. All values are simulated.</p>${STEPS.legend()}
  <div class="stp-reg">${L.map(a=>{const r=STEPS.robotTest({task:a.task});return `<button type="button" class="card glass"${STEPS.attrs(a.name,{task:a.task,sponsor:a.sponsor})}><b>${E(a.name)}</b><span class="small muted">${E(a.src)}${a.sponsor?" · sponsor "+E(a.sponsor):""}</span><span class="small">${E(String(a.task||"No task written").slice(0,120))}</span>${r.robot?'<span class="stepmode sm-robot">Could be a robot</span>':""}</button>`}).join("")}</div></section></div>`}));
+G(()=>DATA.screen("agent_defs",{mode:"data",entities:["agents"],note:"PR-32 B7: the tenant's agent rows, plus the platform's feature contract agents"}));
 G(()=>NAVX.add("agent_defs",{group:"ai",label:"Agent definitions",hint:"Task, prompts, tier, budget, confidence floor, kill switch, sponsor and trigger for every agent",sub:"Agent cards",kw:"agent definition card prompt guideline tier budget confidence floor kill switch sponsor trigger robot deterministic"}));
 })();

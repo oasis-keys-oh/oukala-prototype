@@ -11,6 +11,21 @@ const iso=off=>{const d=new Date(TODAY+"T12:00:00");d.setDate(d.getDate()+off);r
 const days=s=>Math.round((new Date(s+"T12:00:00")-new Date(TODAY+"T12:00:00"))/864e5);
 const X=window.GRCX=window.GRCX||{};
 X.TODAY=TODAY;X.iso=iso;X.days=days;
+/* PR-32 B7 tenant views (accessors further down, before the metrics) */
+X.isCore=()=>!window.DATA||DATA.tenant()==="core";
+const VIEW=new WeakMap();
+const FIX={
+ risks:r=>{r.ctl=arr(r.ctl);r.cat=r.cat||"Operational";r.kri=r.kri||null;["proc","ent","met","proj","vend","svc","plan","exc","desc"].forEach(k=>{if(r[k]==null)r[k]=""})},
+ controls:c=>{if(c.part==="test"){c.ev=arr(c.ev);c.notes=c.notes||"";c.res=c.res||"";return}if(c.part==="attestation"){c.ctls=arr(c.ctls);c.at=c.at||"";return}
+  c.maps=arr(c.maps);c.ev=arr(c.ev);c.risks=arr(c.risks);c.ref=c.ref||c.id;["proc","ent","pol","met"].forEach(k=>{if(c[k]==null)c[k]=""});c.st=c.st||"Active";c.res=c.res||"Not tested"},
+ audits:a=>{if(a.part==="finding"){a.steps=arr(a.steps);["ctl","risk","vend","debt","desc","sref"].forEach(k=>{if(a[k]==null)a[k]=""});return}
+  if(!Array.isArray(a.reqs)){a.reqN=+a.reqs||0;a.reqs=[]}a.ctl=arr(a.ctl);a.fw=a.fw||"";a.report=a.report||""},
+ policies:p=>{if(p.part==="exception"){if(Array.isArray(p.ctl))p.ctl=p.ctl[0]||"";["risk","comp","debt","why"].forEach(k=>{if(p[k]==null)p[k]=""});return}
+  p.vers=arr(p.vers).map(v=>Object.assign({st:"Published",change:""},v));if(!p.vers.length)p.vers=[{v:"1.0",date:"",by:p.own,change:"",st:"Published"}];p.ctl=arr(p.ctl);p.fw=arr(p.fw);p.ack=p.ack||{due:"",campaign:""};p.me=!!p.me}};
+X.tv=(entity,part,core)=>{if(X.isCore())return core?core():[];const all=G(()=>DATA.get(entity),[]);if(!all.length)return all;
+ let m=VIEW.get(all);if(!m){m={};VIEW.set(all,m)}
+ if(!m[part]){const TE=window.TENANT_ENTITIES;m[part]=all.filter(r=>r&&(r.part||(TE?TE.part(entity,r):""))===part);if(FIX[entity])m[part].forEach(r=>G(()=>FIX[entity](r)))}
+ return m[part]};
 const humans=()=>arr(G(()=>DIR,[])).filter(d=>d.kind==="human").map(d=>d.name);
 
 /* ---------- scoring: 5 by 5, one scale for every risk source ---------- */
@@ -52,13 +67,16 @@ hydrate("raid_item",X.risks);
 const lOfP=p=>Math.max(1,Math.min(5,Math.ceil((+p||0)/0.2)));
 const iOfAmt=a=>a>=500?5:a>=250?4:a>=100?3:a>=50?2:1;
 X.allRisks=function(){
- const out=X.risks.map(r=>Object.assign({},r,{inh:X.score(r.il,r.ii),res:X.score(r.rl,r.ri),own_:r.own}));
- arr(G(()=>EXE.E.risks,[])).filter(r=>r.st!=="Closed").forEach(r=>out.push({id:r.id,t:r.n,cat:"Project",own:r.own,bak:G(()=>OBK(r.own),""),il:lOfP(r.p),ii:iOfAmt(r.amt),rl:lOfP(r.p),ri:iOfAmt(r.amt),st:r.st,src:"Project risk",ctl:[],proc:"",ent:"",met:"m_riskexp",proj:r.proj,vend:"",svc:"",kri:null,plan:r.plan,due:iso(30),rev:iso(-10),exc:"",desc:"$"+r.amt+"K exposure at "+Math.round(r.p*100)+"% likelihood.",inh:X.score(lOfP(r.p),iOfAmt(r.amt)),res:X.score(lOfP(r.p),iOfAmt(r.amt)),ro:1}));
- arr(G(()=>PPMRAID,[])).filter(r=>r.t==="R"&&r.s!=="closed").forEach(r=>out.push({id:r.id,t:r.n,cat:"Project",own:r.own,bak:G(()=>OBK(r.own),""),il:r.pr,ii:r.im,rl:r.pr,ri:r.im,st:r.s==="active"?"Treating":"Open",src:"Project RAID",ctl:[],proc:"",ent:"",met:"m_riskexp",proj:r.p,vend:"",svc:"",kri:null,plan:r.mit,due:r.due,rev:iso(-7),exc:"",desc:r.d,inh:X.score(r.pr,r.im),res:X.score(r.pr,r.im),ro:1}));
+ const core=X.isCore(),ent=core?arr(G(()=>EXE.E.risks,[])):X.tv("risks","enterprise"),raid=core?arr(G(()=>PPMRAID,[])):X.tv("raid_items","raid");
+ /* PR-32: a pack may state likelihood on the 1 to 5 scale and exposure in dollars; Meridian states a probability and $K */
+ const pl=p=>(+p||0)>1?Math.max(1,Math.min(5,Math.round(+p))):lOfP(p),am=a=>(+a||0)>=1000?(+a)/1000:(+a||0);
+ const out=X.rk().map(r=>Object.assign({},r,{inh:X.score(r.il,r.ii),res:X.score(r.rl,r.ri),own_:r.own}));
+ ent.filter(r=>r.st!=="Closed").forEach(r=>out.push({id:r.id,t:r.n,cat:"Project",own:r.own,bak:core?G(()=>OBK(r.own),""):(r.bak||""),il:pl(r.p),ii:iOfAmt(am(r.amt)),rl:pl(r.p),ri:iOfAmt(am(r.amt)),st:r.st,src:"Project risk",ctl:[],proc:"",ent:"",met:"m_riskexp",proj:r.proj,vend:"",svc:"",kri:null,plan:r.plan,due:iso(30),rev:iso(-10),exc:"",desc:core?"$"+r.amt+"K exposure at "+Math.round(r.p*100)+"% likelihood.":"$"+Math.round(am(r.amt))+"K exposure.",inh:X.score(pl(r.p),iOfAmt(am(r.amt))),res:X.score(pl(r.p),iOfAmt(am(r.amt))),ro:1}));
+ raid.filter(r=>r.t==="R"&&r.s!=="closed").forEach(r=>out.push({id:r.id,t:r.n,cat:"Project",own:r.own,bak:core?G(()=>OBK(r.own),""):(r.bak||""),il:r.pr,ii:r.im,rl:r.pr,ri:r.im,st:r.s==="active"?"Treating":"Open",src:"Project RAID",ctl:[],proc:"",ent:"",met:"m_riskexp",proj:r.p,vend:"",svc:"",kri:null,plan:r.mit,due:r.due,rev:iso(-7),exc:"",desc:r.d,inh:X.score(r.pr,r.im),res:X.score(r.pr,r.im),ro:1}));
  return out};
 function OBK(name){const d=G(()=>ORGX.person&&ORGX.person(name),null);const dm=G(()=>ORGX.domainView("delivery"),null);return dm&&dm.backup&&dm.backup.name!==name?dm.backup.name:"Maya Ortiz"}
 X.riskById=id=>X.allRisks().find(r=>r.id===id)||null;
-X.aboveAppetite=r=>(X.APPETITE[r.cat]!=null)&&r.res>X.APPETITE[r.cat]&&r.st!=="Accepted"&&r.st!=="Closed";
+X.aboveAppetite=r=>(X.app()[r.cat]!=null)&&r.res>X.app()[r.cat]&&r.st!=="Accepted"&&r.st!=="Closed";
 
 /* ---------- controls: the existing library (adm_audit) plus internal controls, one list ---------- */
 const CT=(id,t,fw,maps,own,bak,freq,last,res,ev,o)=>Object.assign({id,ref:id,t,fw,maps,own,bak,freq,last,res,ev:ev||[],risks:[],proc:"",met:"m_grc_ctl_cov",ent:"",pol:"",src:"Internal",st:"Active"},o);
@@ -93,7 +111,7 @@ function buildControls(){
  NEW.forEach(c=>X.controls.push(c));
  X.controls.forEach(c=>{if(c.own===c.bak)c.bak="Theo Marlowe"});
  hydrate("control",X.controls)}
-X.ctl=()=>{buildControls();return X.controls};
+X.ctl=()=>X.tv("controls","control",()=>{buildControls();return X.controls});
 X.ctlById=id=>X.ctl().find(c=>c.id===id)||null;
 X.nextDue=c=>{const f={Monthly:30,Quarterly:91,Semiannual:182,Annual:365}[c.freq]||365;return iso(days(c.last)+f)};
 X.tested=c=>c.res!=="Not tested";
@@ -115,7 +133,7 @@ X.att=[];
 function buildAtt(){if(X.att.length)return;const by={};X.ctl().forEach(c=>{(by[c.own]=by[c.own]||[]).push(c.id)});
  Object.keys(by).sort().forEach((p,i)=>{const done=i%3!==0,over=!done&&i%2===0;X.att.push({id:"ATT-Q4-"+String(i+1).padStart(2,"0"),cycle:"ATT-2026Q4",person:p,ctls:by[p],st:done?"Attested":over?"Overdue":"Pending",at:done?iso(-(i%8)-1):"",note:""})});
  hydrate("attestation",X.att)}
-X.attList=()=>{buildAtt();return X.att};
+X.attList=()=>X.tv("controls","attestation",()=>{buildAtt();return X.att});
 X.attRate=()=>{const l=X.attList();return l.length?Math.round(100*l.filter(a=>a.st==="Attested").length/l.length):0};
 
 /* ---------- findings ---------- */
@@ -199,18 +217,41 @@ hydrate("exception",X.exceptions);
 X.excState=e=>{if(e.st==="Rejected"||e.st==="Closed")return e.st;if(e.st==="Requested")return"Requested";const d=days(e.exp);return d<0?"Expired":d<=30?"Expiring":"Approved"};
 X.excOpen=e=>["Requested","Approved","Expiring","Expired"].includes(X.excState(e));
 
+/* PR-32 B7 tenant views: Meridian reads its registers; another tenant its pack rows (DATA.get), one stable list per part; [] is a gap (R18) */
+X.rk=()=>X.tv("risks","control",()=>X.risks);
+X.tst=()=>X.tv("controls","test",()=>X.tests);
+X.fnd=()=>X.tv("audits","finding",()=>X.findings);
+X.aud=()=>X.tv("audits","audit",()=>X.audits);
+X.pol=()=>X.tv("policies","policy",()=>X.policies);
+X.exc=()=>X.tv("policies","exception",()=>X.exceptions);
+/* appetite per category: Meridian's table, or the tenant's own appetite rows */
+X.app=()=>{if(X.isCore())return X.APPETITE;const o={};X.tv("risks","appetite").forEach(r=>{o[r.cat||r.id]=+r.level});return o};
+X.cats=()=>Object.keys(X.app());
+/* vendors in scope: Meridian's vendor list, or the tenant's vendor rows */
+X.vlist=()=>X.isCore()?arr(G(()=>S.bud.vend,[])):X.tv("vendors","vendor");
+X.contracts=()=>X.isCore()?arr(G(()=>S.bud.con,[])):G(()=>DATA.get("contracts"),[]);
+/* third-party profiles by vendor id: Meridian's assessments, or one profile per tenant vendor from the fields its row carries */
+const VPROF=new WeakMap();
+X.ven=()=>{if(X.isCore())return X.vendors;const vs=X.vlist();if(!vs.length)return {};let o=VPROF.get(vs);if(o)return o;o={};
+ vs.forEach(v=>{o[v.id]=VI(v.id,+v.tier||3,v.risk||"Medium",v.last||null,+v.score||0,v.dom||{},X.fnd().filter(f=>f.vend===v.id).map(f=>f.id),{data:v.data||v.cat||"",contracts:X.contracts().filter(c=>c.v===v.id).map(c=>c.id),lines:[]})});
+ VPROF.set(vs,o);return o};
+/* a named person of the active tenant for form defaults: the Meridian default, or a control owner of the tenant */
+X.who=(name,i)=>{if(X.isCore())return name;const l=[];X.ctl().concat(X.rk()).forEach(r=>{[r.own,r.bak].forEach(n=>{if(n&&!l.includes(n))l.push(n)})});return l[(i||0)%Math.max(1,l.length)]||""};
+/* metric ids that the active tenant carries (Meridian carries every GRC metric) */
+X.hasMetric=id=>X.isCore()?!!METRICS[id]:!!G(()=>DATA.byId("metrics",id),null);
+
 /* ---------- metrics (computed from the live registers) ---------- */
 X.stats=function(){
- const rs=X.allRisks(),cs=X.ctl(),fs=X.findings;
+ const rs=X.allRisks(),cs=X.ctl(),fs=X.fnd(),ps=X.pol(),au=X.aud();
  const above=rs.filter(X.aboveAppetite).length;
  const inScope=cs.filter(c=>c.st==="Active");
  const covered=inScope.filter(c=>c.own&&c.bak&&c.maps.length&&X.testCurrent(c)).length;
  const od=fs.filter(X.overdue).length,openF=fs.filter(X.open).length;
- const exp30=X.exceptions.filter(e=>["Expiring","Expired"].includes(X.excState(e))).length;
- const ven1=Object.values(X.vendors).filter(v=>v.tier===1),ven1ok=ven1.filter(v=>v.last&&days(X.vAssessDue(v))>=0).length;
- const ack=Math.round(100*X.policies.reduce((a,p)=>a+p.done,0)/Math.max(1,X.policies.reduce((a,p)=>a+p.req,0)));
- const ct=X.tests,done=ct.filter(t=>t.st==="Passed"||t.st==="Failed").length;
- return{risks:rs.length,above,ctl:inScope.length,covered,cov:Math.round(100*covered/Math.max(1,inScope.length)),openF,od,att:X.attRate(),exp30,ven1:ven1.length,ven1ok,ven1pct:Math.round(100*ven1ok/Math.max(1,ven1.length)),ack,tests:ct.length,testsDone:done,pol:X.policies.length,polDue:X.policies.filter(X.polDue).length,aud:X.audits.length,reqOpen:X.audits.reduce((n,a)=>n+a.reqs.filter(X.reqOpen).length,0)}};
+ const exp30=X.exc().filter(e=>["Expiring","Expired"].includes(X.excState(e))).length;
+ const ven1=Object.values(X.ven()).filter(v=>v.tier===1),ven1ok=ven1.filter(v=>v.last&&days(X.vAssessDue(v))>=0).length;
+ const ack=Math.round(100*ps.reduce((a,p)=>a+p.done,0)/Math.max(1,ps.reduce((a,p)=>a+p.req,0)));
+ const ct=X.tst(),done=ct.filter(t=>t.st==="Passed"||t.st==="Failed").length;
+ return{risks:rs.length,above,ctl:inScope.length,covered,cov:Math.round(100*covered/Math.max(1,inScope.length)),openF,od,att:X.attRate(),exp30,ven1:ven1.length,ven1ok,ven1pct:Math.round(100*ven1ok/Math.max(1,ven1.length)),ack,tests:ct.length,testsDone:done,pol:ps.length,polDue:ps.filter(X.polDue).length,aud:au.length,reqOpen:au.reduce((n,a)=>n+a.reqs.filter(X.reqOpen).length,0)}};
 const mk=(n,f,u,cur,tgt,badAt,dir,tr,owner,use,rem)=>({n,f,u,cur,tgt,badAt,dir,max:u==="%"?100:30,tr,owner,use,rem});
 Object.assign(METRICS,{
  m_grc_ctl_cov:mk("Control coverage","Controls in scope that have a named owner and backup, a framework mapping and a current test ÷ Controls in scope","%",0,85,60,"max",[48,52,55,58,61,64,66,69],"Rina Okafor",["Controls and testing","GRC overview"],{kind:"sop",ref:"SOP-481",title:"Schedule the overdue control tests",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Lists controls past their test date by owner"}),
@@ -221,7 +262,7 @@ Object.assign(METRICS,{
  m_grc_ven_t1:mk("Tier 1 vendors with a current assessment","Tier 1 vendors assessed within 12 months ÷ Tier 1 vendors","%",0,100,70,"max",[50,50,67,67,67,67,100,100],"Camille Ortega",["Third-party risk","GRC overview"],{kind:"sop",ref:"SOP-486",title:"Assess a vendor before renewal",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Pre-fills the assessment from the contract"}),
  m_grc_pol_ack:mk("Policy acknowledgement rate","Acknowledgements received ÷ Acknowledgements required, across published policies","%",0,95,80,"max",[72,75,78,80,83,85,86,88],"Theo Marlowe",["Policies","GRC overview"],{kind:"sop",ref:"SOP-487",title:"Close an acknowledgement campaign",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Reminds people who have not acknowledged"}),
  m_grc_audit_req:mk("Audit requests on time","Audit requests provided or accepted on or before their due date ÷ Requests due so far","%",0,95,75,"max",[70,72,75,78,80,80,82,83],"Avery Chen",["Audit management"],{kind:"sop",ref:"SOP-488",title:"Clear an overdue audit request",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Finds evidence records already linked to the control"})});
-X.syncMetrics=function(){const s=X.stats();const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=v;m.tr=(m.tr||[]).slice(0,7).concat([v])};
+X.syncMetrics=function(){const s=X.stats();if(!X.isCore())return s; /* Meridian metrics only take Meridian figures */const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=v;m.tr=(m.tr||[]).slice(0,7).concat([v])};
  set("m_grc_ctl_cov",s.cov);set("m_grc_find_od",s.od);set("m_grc_att_rate",s.att);set("m_grc_risk_app",s.above);set("m_grc_exc_exp",s.exp30);set("m_grc_ven_t1",s.ven1pct);set("m_grc_pol_ack",s.ack);
  const due=X.audits.flatMap(a=>a.reqs).filter(r=>days(r.due)<=0||r.st==="Accepted"||r.st==="Provided");const ontime=due.filter(r=>r.st!=="Overdue"&&r.st!=="Open").length;set("m_grc_audit_req",due.length?Math.round(100*ontime/due.length):100);return s};
 X.syncMetrics();
