@@ -1305,4 +1305,6 @@ NAVX.studio=()=>go("nav_studio");
 
 /* expose a few internals for tests and for other modules */
 NAVX.int={PAL,IDX,SCOPES,TYL,TYCOL,TYICO,SCOPE_ALIAS,SYN,pref,toks,alts,fixTok,mark,rowHTML,select,activate,askFrom,entryOf,setScope,drawPrev,refreshPal,emptyRows,screenRow,mkItem,E,SVG,ICO,q1,qa,st,tel,pushMetrics,toggleFav,syncStars};NAVX.wrapGlobals=wrapGlobals;NAVX.ensureChrome=ensureChrome;NAVX.runSearch=runSearch;NAVX.visit=visit;NAVX.entryOf=entryOf;NAVX.mkScreen=mkScreen;NAVX.itemHTML=itemHTML;NAVX.menu=menu;NAVX.closePops=closePops;NAVX.drawer=()=>DR.cur;NAVX.stack=STK;NAVX.openPalette=openPalette;NAVX.syncStars=syncStars;
+/* PR-32 B9: a product page with no tenant business data; it shows nothing Meridian-specific under another tenant */
+if(window.DATA&&DATA.screen)DATA.screen("nav_studio",{mode:"data",entities:[]});
 })();

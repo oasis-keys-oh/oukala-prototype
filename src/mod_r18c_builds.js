@@ -4,6 +4,10 @@
 "use strict";
 const W=window,D=document;const R18=W.R18;if(!R18)return;
 const {G,H,arr,usd,pill,fD}=R18;const ST=R18.st;
+/* PR-32 B9: builds, objectives and debt come through R18 (GATE.apps() and DATA.get under another tenant, see mod_r18_0_core). No rows is a
+   labeled gap; a figure the tenant does not carry reads "Not recorded". The process library is written for Meridian builds only. */
+const TCORE=()=>!W.DATA||DATA.tenant()==="core";const usdN=R18.usdN;
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");
 const STAGE={idea:["Idea","mute"],sandbox:["Sandbox","info"],review:["In review","warn"],certified:["Certified","good"],sunset:["Retired","mute"]};
 const SEV={High:"bad",Medium:"warn",Low:"mute"};
@@ -15,8 +19,8 @@ const nextActions=id=>{const f=R18.facets(id),out=[];f.filter(x=>x.s==="missing"
 
 /* ============================ My builds ============================ */
 function row(a){const m=R18.meta(a.id),v=R18.value(a.id),mt=R18.maturity(a.id),st=STAGE[a.status]||STAGE.idea,cov=R18.coverage(a.id);
- return `<tr class="r18-row" tabindex="0" data-r18-app="${H(a.id)}" aria-label="Open ${H(a.n)}"><td><b>${H(a.n)}</b><small class="muted">${H(m.fn)} · ${H(a.builder||"")}</small></td><td>${m.owner?H(m.owner):'<span class="r18-gap">No owner</span>'}${m.backup?"":' <span class="r18-gap">no backup</span>'}</td><td>${pill(st[0],st[1])}</td><td><span class="r18-pips">${dots(a.id)}</span> <span class="num r18-pct">${cov}%</span></td><td>${bar(mt.lvl,mt.tgt)}</td><td class="n num">${usd(v.net)}</td></tr>`}
-function table(list){if(!list.length)return `<p class="muted r18-none">Nothing here yet.</p>`;
+ return `<tr class="r18-row" tabindex="0" data-r18-app="${H(a.id)}" aria-label="Open ${H(a.n)}"><td><b>${H(a.n)}</b><small class="muted">${H(m.fn)} · ${H(a.builder||"")}</small></td><td>${m.owner?H(m.owner):'<span class="r18-gap">No owner</span>'}${m.backup?"":' <span class="r18-gap">no backup</span>'}</td><td>${pill(st[0],st[1])}</td><td><span class="r18-pips">${dots(a.id)}</span> <span class="num r18-pct">${cov}%</span></td><td>${bar(mt.lvl,mt.tgt)}</td><td class="n num">${usdN(v.net)}</td></tr>`}
+function table(list){if(!list.length)return TCORE()?`<p class="muted r18-none">Nothing here yet.</p>`:TGAP("builds");
  return `<div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Build</th><th>Owner</th><th>Stage</th><th>Guardrails</th><th>Maturity</th><th class="n">Net value a month</th></tr></thead><tbody>${list.map(row).join("")}</tbody></table></div>`}
 function startCards(){
  return `<section class="card glass r18-start"><div class="cardhead"><div><h3>Start something new</h3><span class="muted small">Three ways in. Whichever you use, the process map, metrics, maturity roadmap, debt register, data approvals and security review come attached.</span></div></div>
@@ -26,13 +30,14 @@ function startCards(){
 function buildsScreen(){
  const L=R18.apps().filter(a=>a.status!=="sunset");const P=R18.portfolio();const mine=L.filter(a=>a.builder===me()||a.owner===me());
  const attn=L.filter(a=>R18.facets(a.id).some(f=>f.s==="missing"));
- const kp=typeof kpiRow==="function"?kpiRow([["Builds",P.n,P.users+" people use them"],["Guardrails in place",P.cov+"%","average across builds, 8 per build"],["Modeled net value a month",usd(P.net),"hours returned minus run cost; illustrative",{keep:true}],["Need action",attn.length,"at least one guardrail missing",{cls:attn.length?"warn":""}]]):"";
+ const kp=typeof kpiRow==="function"?kpiRow([["Builds",P.n,P.users+" people use them"],["Guardrails in place",P.cov+"%","average across builds, 8 per build"],["Modeled net value a month",usdN(P.net),"hours returned minus run cost; illustrative",{keep:true}],["Need action",attn.length,"at least one guardrail missing",{cls:attn.length?"warn":""}]]):"";
  return `<div class="screen r18-screen">${hero("Make · My builds","What you built, and what stands between it and the whole organization",`Anyone can build for their own job. Every build is checked against eight guardrails, and the ones that prove valuable can be offered to other teams. <b data-role="metric">${P.scaleReady}</b> of ${P.n} look ready to scale.`)}
  ${kp}
  ${typeof views==="function"?views("r18bv",["All builds ("+L.length+")","Mine ("+mine.length+")","Need action ("+attn.length+")"],[table(L),mine.length?table(mine):`<p class="muted r18-none">You have not built anything yet. ${"Start with the options below."}</p>`,table(attn)]):table(L)}
  ${startCards()}
  ${typeof procCard==="function"?procCard("r18_builds"):""}</div>`}
 REG("r18_builds","My builds","make","M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.4 2.4-2.6-.6-.6-2.6z",buildsScreen);
+DATA.screen("r18_builds",{mode:"data",entities:["builds","objectives","people","tech_debt"]});
 
 /* ============================ App record ============================ */
 function pick(){const L=R18.apps();return `<label class="r18-pickl small muted"><span>Build</span><select class="fin" data-r18-pickapp aria-label="Choose a build">${L.map(a=>`<option value="${H(a.id)}" ${a.id===ST.app?"selected":""}>${H(a.n)}</option>`).join("")}</select></label>`}
@@ -57,7 +62,7 @@ function processTab(a){
  const pr=R18.process(a.id),m=R18.meta(a.id);const who={human:"human",robot:"robot",auto:"robot",ai:"agent",gate:"gate"};
  const owners={human:m.owner||a.builder||"The team",robot:"Robot",auto:"Robot",ai:"AI agent",gate:"Approver group"};
  const list=pr.steps.map(s=>({n:s.n,who:who[s.who]||"human",owner:s.who==="ai"?(arr(a.ai)[0]?arr(a.ai)[0].model:"AI agent"):owners[s.who],in:"",out:s.out}));
- const pid=G(()=>ensureProc(a,pr,m),null);const dg=pid?null:G(()=>R17PD.build(list),null);
+ const pid=TCORE()?G(()=>ensureProc(a,pr,m),null):null;const dg=pid?null:G(()=>R17PD.build(list),null);
  const lab={human:"Person",robot:"Robot",auto:"Robot",ai:"AI",gate:"Approval gate"};
  return `<section class="card glass"><div class="cardhead"><div><h3>Process map</h3><span class="muted small">Generated from what you described. Every step says who acts: a person, a deterministic rule, an AI, or a gate.</span></div><span class="r18-mix">${["human","robot","ai","gate"].map(k=>`<span class="pill mute">${lab[k]} ${pr.counts[k]||0}</span>`).join("")}</span></div>
   ${pid?`<div class="pl-card glass r18-pcard">${G(()=>R17PD.card(pid),"")}</div>`:dg?`<div class="r17pd-wrap tscroll">${dg.svg}</div>`:""}
@@ -71,7 +76,7 @@ function dataTab(a){const s=G(()=>R18.access.rowsFor(a.id),[]);const sc=R18.scal
   ${sc.owns.length?sc.owns.map(e=>`<div class="r18-na"><i class="r18-pip s-${e.approved?"active":"drafted"}"></i><span><b>${H(e.id)}</b><small>${H(e.why||"")}. ${e.approved?"Data council approved it as authoritative.":"Waiting for the data council to confirm it as the authoritative source."}</small></span></div>`).join(""):`<p class="muted small">Nothing yet. It reads shared data and writes only its own working records.</p>`}
   ${sc.dups.length?sc.dups.map(e=>`<div class="r18-na"><i class="r18-pip s-missing"></i><span><b>${H(e.id)}</b><small>Duplicates ${H(e.dupOf)}. Use the registered table instead.</small></span></div>`).join(""):""}</section></div>`}
 function metricsTab(a){const me_=R18.metrics(a.id),mt=R18.maturity(a.id);
- const mrows=me_.map(x=>`<tr><td><b>${H(x.n)}</b></td><td class="r18-f">${H(x.f)}</td><td class="n num">${x.cur}${H(x.u)}</td><td class="n num">${x.tgt}${H(x.u)}</td><td>${pill(x.st==="good"?"On target":x.st==="warn"?"Watch":"Off target",x.st)}</td><td class="r18-f">${H(x.rule)}</td></tr>`).join("");
+ const mrows=me_.map(x=>`<tr><td><b>${H(x.n)}</b></td><td class="r18-f">${H(x.f)}</td><td class="n num">${x.cur==null?"Not measured":x.cur+H(x.u)}</td><td class="n num">${x.tgt}${H(x.u)}</td><td>${x.st==="none"?pill("No reading yet","mute"):pill(x.st==="good"?"On target":x.st==="warn"?"Watch":"Off target",x.st)}</td><td class="r18-f">${H(x.rule)}</td></tr>`).join("");
  const ladder=R18.LEVELS.map((l,i)=>{const c=mt.levels[i],todo=c.filter(z=>!z.ok).length,done=!todo,here=mt.lvl===i+1,next=i+1===mt.lvl+1;const tag=done?(here?"Complete · you are here":"Complete"):todo+" to do"+(next?" · next":"")+(i+1===mt.tgt?" · target":"");return `<li class="r18-lv ${done?"done":""} ${here?"here":""} ${next?"next":""}"><span class="r18-lvn" aria-hidden="true">${done?"&#10003;":i+1}</span><div class="r18-lvb"><div class="r18-lvh"><b>${H(l[0])}</b><span class="r18-lvt">${tag}</span></div><small>${H(l[1])}</small><ul class="r18-ck">${c.map(z=>`<li class="${z.ok?"ok":"no"}"><i aria-hidden="true">${z.ok?"&#10003;":""}</i><span>${H(z.t)}<em class="sr-only">${z.ok?" (done)":" (to do)"}</em></span></li>`).join("")}</ul></div></li>`}).join("");
  return `<section class="card glass"><div class="cardhead"><div><h3>Metrics with formulas</h3><span class="muted small">Each has a formula, a target and a rule for acting on the trend. This is the path to automating outcomes on thresholds.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Metric</th><th>Formula</th><th class="n">Now</th><th class="n">Target</th><th>Status</th><th>When the trend turns</th></tr></thead><tbody>${mrows}</tbody></table></div></section>
  <section class="card glass"><div class="cardhead"><div><h3>Maturity roadmap</h3><span class="muted small">Generated for this process. You are at level ${mt.lvl} of 5; the target for a ${H(a.tier)}-tier build is level ${mt.tgt}.</span></div>${bar(mt.lvl,mt.tgt)}</div><ol class="r18-lvs">${ladder}</ol></section>`}
@@ -80,7 +85,7 @@ function debtTab(a){const d=R18.debt(a.id);
  ${d.length?`<div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Decision made today</th><th>What it costs later</th><th>Fix</th><th>Owner</th><th>Severity</th></tr></thead><tbody>${d.map(x=>`<tr><td><b>${H(x.decision)}</b><small class="muted">${H(x.src)}</small></td><td>${H(x.impact)}</td><td>${H(x.fix)}</td><td>${x.owner?H(x.owner):'<span class="r18-gap">Nobody</span>'}</td><td>${pill(x.sev,SEV[x.sev]||"mute")}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">No open debt.</p>`}
  <div class="row r18-actrow"><button type="button" class="btn quiet" data-go="plat_gate">Open the approval gate</button><button type="button" class="btn quiet" data-go="plat_debt">Platform debt register</button></div></section>`}
 function valueBox(a){const v=R18.value(a.id);
- return `<div data-r18-valbox><div class="statrow">${[["Hours returned a month",v.hours.toLocaleString("en-US"),a.users+" users × "+ST.mins+" min a week"],["Value of that time",usd(v.gross),"at $"+ST.rate+" an hour (illustrative)"],["Run cost a month",usd(v.cost),"platform plus AI usage"],["Modeled net a month",usd(v.net),"value minus cost"]].map(x=>`<div class="stat"><small><span>${H(x[0])}</span></small><span class="num" data-role="metric">${H(x[1])}</span><em>${H(x[2])}</em></div>`).join("")}</div>
+ return `<div data-r18-valbox><div class="statrow">${[["Hours returned a month",v.hours.toLocaleString("en-US"),a.users+" users × "+ST.mins+" min a week"],["Value of that time",usd(v.gross),"at $"+ST.rate+" an hour (illustrative)"],["Run cost a month",usdN(v.cost),"platform plus AI usage"],["Modeled net a month",usdN(v.net),"value minus cost"]].map(x=>`<div class="stat"><small><span>${H(x[0])}</span></small><span class="num" data-role="metric">${H(x[1])}</span><em>${H(x[2])}</em></div>`).join("")}</div>
   <div class="r18-inputs"><label class="small"><span class="muted">Minutes saved per user per week</span><input class="fin" type="number" min="0" max="600" step="5" value="${ST.mins}" data-r18-mins aria-label="Minutes saved per user per week"></label><label class="small"><span class="muted">Loaded cost per hour ($)</span><input class="fin" type="number" min="0" max="500" step="1" value="${ST.rate}" data-r18-rate aria-label="Loaded cost per hour in dollars"></label><span class="pill info">Modeled, not measured</span></div></div>`}
 function scaleTab(a){const sc=R18.scale(a.id),m=R18.meta(a.id);
  const q=(t,body)=>`<div class="r18-q"><b>${H(t)}</b><div>${body}</div></div>`;
@@ -93,12 +98,13 @@ function scaleTab(a){const sc=R18.scale(a.id),m=R18.meta(a.id);
  <section class="card glass"><div class="cardhead"><div><h3>Value, cost and risk</h3><span class="muted small">Edit the two assumptions to see the balance change. Risk comes from open gate checks and high-severity debt.</span></div>${pill("Risk score "+R18.value(a.id).risk+" of 100",R18.value(a.id).risk>40?"bad":R18.value(a.id).risk>15?"warn":"good")}</div>${valueBox(a)}
  <div class="row r18-actrow"><button class="btn primary" type="button" data-go="plat_gate">Request to offer it to more teams</button></div></section>`}
 function appScreen(){
- const a=R18.app(ST.app)||R18.apps()[0];if(!a)return `<div class="screen">${hero("Make · App record","No builds yet","Build something first.")}</div>`;ST.app=a.id;
+ const a=R18.app(ST.app)||R18.apps()[0];if(!a)return `<div class="screen">${hero("Make · App record","No builds yet","Build something first.")}${TCORE()?"":TGAP("builds")}</div>`;ST.app=a.id;
  const m=R18.meta(a.id),st=STAGE[a.status]||STAGE.idea,cov=R18.coverage(a.id);
  const tabs=["Guardrails","Process","Data and access","Metrics and maturity","Risk and debt","Scale, value and risk"];
  return `<div class="screen r18-screen">${hero("Make · My builds / "+H(m.fn),H(a.n),H(a.purpose),`<div class="row r18-hrow">${pill(st[0],st[1])}${pill(a.tier+" tier","mute")}<span class="r18-hm">Built by <b>${H(a.builder||"")}</b></span><span class="r18-hm">Owner <b>${m.owner?H(m.owner):"none"}</b>, backup <b>${m.backup?H(m.backup):"none"}</b></span><span class="r18-hm"><b>${a.users||0}</b> users</span>${pick()}</div>`)}
  ${typeof views==="function"?views("r18av",tabs,[guardrailsTab(a),processTab(a),dataTab(a),metricsTab(a),debtTab(a),scaleTab(a)]):guardrailsTab(a)}</div>`}
 REG("r18_app","App record","make","M4 5h16v14H4zM4 10h16M9 10v9",appScreen);
+DATA.screen("r18_app",{mode:"data",entities:["builds","objectives","people","teams","tech_debt"]});
 /* DC-38: every build's process is registered at load, not when its App record is first opened, so process counts do not depend on clicks */
 G(()=>{const all=()=>R18.apps().forEach(a=>G(()=>ensureProc(a,R18.process(a.id),R18.meta(a.id)),null));if(window.PROCLIB&&PROCLIB.get)all()},null);
 
@@ -107,17 +113,19 @@ function matureScreen(){const L=R18.apps().filter(a=>a.status!=="sunset");const 
  const avg=rows.length?(rows.reduce((s,r)=>s+r.mt.lvl,0)/rows.length).toFixed(1):"0";const below=rows.filter(r=>r.mt.lvl<r.mt.tgt).length;
  return `<div class="screen r18-screen">${hero("Make · My builds / Maturity","Where each build is on the way to a higher level","Every process gets a generated maturity model: what each level means for this build and the next steps to reach it. Targets follow the tier a build is meant for.")}
  ${typeof kpiRow==="function"?kpiRow([["Average level",avg+" of 5","across "+rows.length+" builds"],["Below target",below,"need work before the next tier",{cls:below?"warn":""}],["At target or above",rows.length-below,"ready for the next review"]]):""}
- <section class="card glass"><div class="cardhead"><div><h3>Roadmap by build</h3><span class="muted small">Select a build for the full roadmap.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Build</th><th>Level</th><th>Target</th><th>Next steps to reach the next level</th></tr></thead><tbody>${rows.map(r=>`<tr class="r18-row" tabindex="0" data-r18-app="${H(r.a.id)}" data-r18-tab="3"><td><b>${H(r.a.n)}</b><small class="muted">${H(R18.meta(r.a.id).fn)}</small></td><td>${bar(r.mt.lvl,r.mt.tgt)} <span class="num">${r.mt.lvl}</span></td><td class="num">${r.mt.tgt}</td><td>${r.mt.next.length?H(r.mt.next.slice(0,2).join("; ")):"At the top level"}</td></tr>`).join("")}</tbody></table></div></section>
+ ${rows.length||TCORE()?"":TGAP("builds")}<section class="card glass"><div class="cardhead"><div><h3>Roadmap by build</h3><span class="muted small">Select a build for the full roadmap.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Build</th><th>Level</th><th>Target</th><th>Next steps to reach the next level</th></tr></thead><tbody>${rows.map(r=>`<tr class="r18-row" tabindex="0" data-r18-app="${H(r.a.id)}" data-r18-tab="3"><td><b>${H(r.a.n)}</b><small class="muted">${H(R18.meta(r.a.id).fn)}</small></td><td>${bar(r.mt.lvl,r.mt.tgt)} <span class="num">${r.mt.lvl}</span></td><td class="num">${r.mt.tgt}</td><td>${r.mt.next.length?H(r.mt.next.slice(0,2).join("; ")):"At the top level"}</td></tr>`).join("")}</tbody></table></div></section>
  <section class="card glass"><div class="cardhead"><div><h3>What the levels mean</h3></div></div><ol class="r18-lvs r18-lvs-flat">${R18.LEVELS.map((l,i)=>`<li class="r18-lv"><b>Level ${i+1}: ${H(l[0])}</b><small>${H(l[1])}</small></li>`).join("")}</ol></section></div>`}
 REG("r18_mature","Maturity roadmaps","make","M4 20V10M10 20V4M16 20v-8M22 20V7M2 20h20",matureScreen);
+DATA.screen("r18_mature",{mode:"data",entities:["builds"]});
 
 /* ============================ Risk and debt across builds ============================ */
 function debtScreen(){const L=R18.apps().filter(a=>a.status!=="sunset");const all=[];L.forEach(a=>R18.debt(a.id).forEach(d=>all.push(Object.assign({a},d))));
  const sevN=s=>all.filter(x=>x.sev===s).length;const ord={High:0,Medium:1,Low:2};all.sort((x,y)=>(ord[x.sev]-ord[y.sev])||x.a.n.localeCompare(y.a.n));
  return `<div class="screen r18-screen">${hero("Make · My builds / Risk and debt","Shortcuts taken today that may limit scale tomorrow","Every build keeps a register of the decisions it made to keep things simple, what each could cost later and how to fix it. Nothing is hidden; the point is to decide on purpose.")}
  ${typeof kpiRow==="function"?kpiRow([["Open items",all.length,"across "+L.length+" builds"],["High severity",sevN("High"),"block offering the build to more teams",{cls:sevN("High")?"crit":""}],["Medium",sevN("Medium"),"fix before the next review",{cls:sevN("Medium")?"warn":""}],["Builds with none",L.filter(a=>!R18.debt(a.id).length).length,"clean"]]):""}
- <section class="card glass"><div class="cardhead"><div><h3>Register</h3><span class="muted small">Highest severity first.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Build</th><th>Decision made today</th><th>What it costs later</th><th>Fix</th><th>Severity</th></tr></thead><tbody>${all.map(x=>`<tr class="r18-row" tabindex="0" data-r18-app="${H(x.a.id)}" data-r18-tab="4"><td><b>${H(x.a.n)}</b></td><td>${H(x.decision)}</td><td>${H(x.impact)}</td><td>${H(x.fix)}</td><td>${pill(x.sev,SEV[x.sev]||"mute")}</td></tr>`).join("")||'<tr><td colspan="5" class="muted">No open debt.</td></tr>'}</tbody></table></div></section></div>`}
+ ${L.length||TCORE()?"":TGAP("builds")}<section class="card glass"><div class="cardhead"><div><h3>Register</h3><span class="muted small">Highest severity first.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Build</th><th>Decision made today</th><th>What it costs later</th><th>Fix</th><th>Severity</th></tr></thead><tbody>${all.map(x=>`<tr class="r18-row" tabindex="0" data-r18-app="${H(x.a.id)}" data-r18-tab="4"><td><b>${H(x.a.n)}</b></td><td>${H(x.decision)}</td><td>${H(x.impact)}</td><td>${H(x.fix)}</td><td>${pill(x.sev,SEV[x.sev]||"mute")}</td></tr>`).join("")||'<tr><td colspan="5" class="muted">No open debt.</td></tr>'}</tbody></table></div></section></div>`}
 REG("r18_debt","Risk and debt","make","M12 3l9 16H3zM12 10v4M12 17h.01",debtScreen);
+DATA.screen("r18_debt",{mode:"data",entities:["builds","tech_debt"]});
 
 /* ============================ events ============================ */
 D.addEventListener("click",e=>{

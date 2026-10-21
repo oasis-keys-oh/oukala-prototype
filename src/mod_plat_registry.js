@@ -273,6 +273,8 @@ document.addEventListener("click",e=>{
    onSubmit:v=>{const id=(v.label||"entity").toLowerCase().replace(/[^a-z0-9]+/g,"_");S.plat.proposals.push({id,label:v.label,domain:v.domain||"portfolio",steward:v.steward||"Data council chair",why:v.why,by:"Casey Rowan"});audit("Entity proposed",v.label);toast("Sent to the data council","good");closeDrawer();render()}});return}
 });
 REG("plat_reg","Platform registry","platform","M4 5h16v4H4zM4 11h16v4H4zM4 17h10v3H4z",regScreen);
+/* PR-32 B9: a product page with no tenant business data; it shows nothing Meridian-specific under another tenant */
+if(window.DATA&&DATA.screen)DATA.screen("plat_reg",{mode:"data",entities:[]});
 PROC.reg("plat_reg",{title:"How the registry stays true",std:["dmbok","togaf"],steps:[
  {n:"Propose",d:"Anyone proposes an entity or field with purpose, owner and steward.",who:"human",owner:"Requester",out:"Proposal"},
  {n:"Reuse check",d:"Names, fields and purpose are matched against the registry.",who:"robot",owner:"Platform",out:"Matches"},

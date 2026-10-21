@@ -3,6 +3,17 @@
 (function(){
 S.debt=S.debt||{ov:{},manual:null,tasks:[],rev:0,trace:{kind:"entity",id:"invoice"},hrs:32,ceil:null,taskDone:{}};
 const E=esc,D=S.debt;
+/* PR-32 B9 tenant rows (R16 to R18): Meridian reads S.debt (its seeded manual items, exceptions and tasks) and the registry detectors as before.
+   Another tenant sees only its own rows: its tech_debt tasks (DATA.get, part task), the items the gate detectors find on its own builds and
+   the items added in this session. The Meridian registry detectors, seeds, debt metrics and the monthly trend are Meridian only. */
+const TCORE=()=>!window.DATA||DATA.tenant()==="core";
+const TPARTS=new WeakMap();
+const TROWS=(e,part)=>{const all=DATA.get(e);let m=TPARTS.get(all);if(!m){m={};TPARTS.set(all,m)}return m[part]||(m[part]=all.filter(r=>r.part===part))};
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+U.esc(w):""}.</p>`;
+const fchipT=id=>TCORE()?fchip(id):"";
+const kpT=o=>{if(TCORE()||!o)return o;const c=Object.assign({},o);delete c.metric;return c};
+const MAN=()=>{if(TCORE()){seed();return D.manual}D.mt=D.mt||{};const t=DATA.tenant();return D.mt[t]||(D.mt[t]=[])};
+const TASKS=()=>TCORE()?D.tasks:TROWS("tech_debt","task");
 const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5,RATE=95;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const days=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
@@ -65,7 +76,7 @@ const WORK=[
 function detect(){
  const out=[],applied=S.plat.applied||{};
  const mk=(id,type,title,sev,ents,apps,owner,steward,pr,extra)=>{const ageDays=20+hash(id)%190;const o=Object.assign({id,type,title,sev,source:"auto",ents:ents||[],apps:apps||[],owner,steward,created:iso(-ageDays),principal:pr,status:"open",fix:"",note:""},extra||{});return o};
- PLAT.FIXES.forEach(f=>{
+ if(TCORE()){PLAT.FIXES.forEach(f=>{
   const e0=PLAT.ent(f.ents[0]);const isProc=f.id==="fx_approval";
   const it=mk("DB-"+f.id.replace("fx_","FX-").toUpperCase(),isProc?"dup_proc":"dup_entity",f.debt+" ("+f.ents.map(entL).join(", ")+")",f.risk==="High"?"High":f.risk==="Medium"?"Medium":"Low",f.ents.filter(x=>PLAT.ent(x)),f.apps,(e0&&e0.owner)||"Platform team",(e0&&e0.steward)||"Platform lead",parseInt(f.effort)*8,{fixId:f.id,fix:"Registry fix: "+f.t,plan:f.plan});
   if(applied[f.id]){it.status="resolved";it.closedBy="Registry fix applied";it.closed=TODAY}
@@ -84,6 +95,7 @@ function detect(){
   const it=mk("DB-PL-"+w[0],"unreg","Workaround: "+w[0].replace(/_/g," ")+" is not an entity yet. "+w[2],"Medium",[],w[1],w[3],"Data council chair",24,{fix:prop?"Proposal submitted":"Propose the entity in the registry"});
   if(exists){it.status="resolved";it.closedBy="Entity now in the registry";it.closed=TODAY}else if(prop)it.status="progress";
   out.push(it)});
+ }
  /* citizen apps from the gate */
  if(window.GATE&&GATE.apps){GATE.apps().forEach(a=>{
   if(a.status==="idea"||a.status==="sunset")return;const base="DB-CA-"+a.id.replace("ca_","");
@@ -102,9 +114,9 @@ function detect(){
 let _cache=null,_key="";
 function build(){
  seed();
- const key=[D.rev,Object.keys(S.plat.applied||{}).join(),(S.plat.proposals||[]).length,window.GATE&&GATE.rev?GATE.rev():0,D.manual.length].join("|");
+ const key=[D.rev,Object.keys(S.plat.applied||{}).join(),(S.plat.proposals||[]).length,window.GATE&&GATE.rev?GATE.rev():0,MAN().length,window.GATE&&GATE.apps?GATE.apps().length:0,TCORE()?"":DATA.tenant()+DATA.version].join("|");
  if(_cache&&key===_key)return _cache;
- const all=D.manual.map(x=>Object.assign({},x)).concat(detect());
+ const all=MAN().map(x=>Object.assign({},x)).concat(detect());
  all.forEach(it=>{
   const o=D.ov[it.id]||{};
   if(o.st)it.status=o.st;if(o.exp)it.exp=o.exp;if(o.assignee)it.assignee=o.assignee;if(o.owner)it.owner=o.owner;if(o.note)it.note=o.note;if(o.reason)it.reason=o.reason;
@@ -138,9 +150,11 @@ const DEBT=window.DEBT={TYPES:TY,
  byApp(id){return live().filter(x=>x.apps.includes(id))},
  score:scoreApp,
  add(it){
-  seed();if(!it||!it.title)return null;const id=it.id||"DB-U"+String(D.manual.length+1).padStart(2,"0");
+  seed();if(!it||!it.title)return null;
+  /* findings from platform audits (source other than manual) describe the Meridian registry: they stay on Meridian's list under any tenant (R18) */
+  const ML=TCORE()||(it.source&&it.source!=="manual")?D.manual:MAN();const id=it.id||"DB-U"+String(ML.length+1).padStart(2,"0");
   const type=TY[it.type]?it.type:(TYK.find(k=>TY[k].n.toLowerCase()===String(it.type||"").toLowerCase())||"ooc");
-  D.manual.push(Object.assign({id,type,title:it.title,sev:it.sev||"Medium",source:it.source||"manual",ents:it.ents||[],apps:it.apps||[],owner:it.owner||"Platform team",steward:it.steward||"Platform lead",created:TODAY,principal:it.principal||8,status:it.status||(it.exp?"accepted":"open"),fix:it.fix||"",note:it.note||""},it.exp?{exp:it.exp}:{},it.reason?{reason:it.reason}:{},it.owner2?{owner2:it.owner2}:{},{id}));
+  ML.push(Object.assign({id,type,title:it.title,sev:it.sev||"Medium",source:it.source||"manual",ents:it.ents||[],apps:it.apps||[],owner:it.owner||"Platform team",steward:it.steward||"Platform lead",created:TODAY,principal:it.principal||8,status:it.status||(it.exp?"accepted":"open"),fix:it.fix||"",note:it.note||""},it.exp?{exp:it.exp}:{},it.reason?{reason:it.reason}:{},it.owner2?{owner2:it.owner2}:{},{id}));
   bump();audit("Debt item added",id+" "+it.title);return id},
  byId:find,ceilings:ceil,today:TODAY,rate:RATE,fD,days,
  totals(){const l=live();return{n:l.length,principal:l.reduce((a,x)=>a+x.principal,0),interest:r1(l.reduce((a,x)=>a+x.interest,0))}}
@@ -151,8 +165,8 @@ function ensureTasks(){
 function ensureTasks0(){
  build().filter(x=>x.type==="expired"&&x.status!=="resolved").forEach(x=>{
   if(D.taskDone[x.id])return;D.taskDone[x.id]=1;
-  const t={id:"DT-"+(D.tasks.length+1),item:x.id,title:"Fix or decommission: "+x.title.replace(/^Expired: /,""),due:iso(14),owner:x.owner,kind:"Fix or decommission"};
-  D.tasks.push(t);try{if(window.addDemand)addDemand({title:t.title,reason:"Exception "+x.id+" expired on "+fD(x.exp),source:"Debt ledger",cost:Math.max(5,Math.round(x.principal*RATE/1000)),kind:"Platform build",pm:"Casey Rowan"})}catch(e){}
+  const t={id:"DT-"+(TASKS().length+1),item:x.id,title:"Fix or decommission: "+x.title.replace(/^Expired: /,""),due:iso(14),owner:x.owner,kind:"Fix or decommission"};
+  TASKS().push(t);try{if(window.addDemand)addDemand({title:t.title,reason:"Exception "+x.id+" expired on "+fD(x.exp),source:"Debt ledger",cost:Math.max(5,Math.round(x.principal*RATE/1000)),kind:"Platform build",pm:"Casey Rowan"})}catch(e){}
   audit("Task created for expired exception",x.id+" "+t.title)})
 }
 /* ---------- metrics ---------- */
@@ -163,7 +177,7 @@ Object.assign(METRICS,{
  m_debt_age:{n:"Median age of open debt",f:"Median of (today − created date) in days over open items",u:"d",cur:80,tgt:60,badAt:120,dir:"min",max:200,tr:[40,48,55,60,66,70,76,80],owner:"Platform team",use:["Technical debt ledger"],rem:{kind:"kb",ref:"KB0720",title:"Review the oldest five each sprint",agent:"Registry Agent",auto:false,state:"idle",prog:"Surfaces the five oldest items at sprint planning"}}
 });
 function median(a){if(!a.length)return 0;const s=a.slice().sort((x,y)=>x-y),m=Math.floor(s.length/2);return s.length%2?s[m]:Math.round((s[m-1]+s[m])/2)}
-function syncMetrics(){const l=live(),t=DEBT.totals();METRICS.m_debt_open.cur=t.principal;METRICS.m_debt_int.cur=t.interest;METRICS.m_debt_exp.cur=l.filter(x=>x.type==="expired").length;METRICS.m_debt_age.cur=median(l.map(x=>x.age))}
+function syncMetrics(){if(!TCORE())return;const l=live(),t=DEBT.totals();METRICS.m_debt_open.cur=t.principal;METRICS.m_debt_int.cur=t.interest;METRICS.m_debt_exp.cur=l.filter(x=>x.type==="expired").length;METRICS.m_debt_age.cur=median(l.map(x=>x.age))}
 /* ---------- helpers for charts ---------- */
 function bars(rows,fmt){const mx=Math.max(1,...rows.map(r=>r[1]));return rows.length?`<div class="debt-bars">${rows.map(r=>`<div class="debt-bar"><span class="small">${E(r[0])}</span><div class="debt-track"><i style="width:${Math.round(100*r[1]/mx)}%"></i></div><b>${fmt?fmt(r[1]):r[1]}</b></div>`).join("")}</div>`:`<p class="muted small">Nothing here.</p>`}
 function sevPill(s){return pill_(s,SEVP[s])}
@@ -180,8 +194,8 @@ function debtScreen(){
  const hi=l.filter(x=>SEVW[x.sev]>=3).length,autoN=all.filter(x=>x.source==="auto").length,closed=all.filter(x=>x.status==="resolved").length;
  const hero_=hero("Platform · Technical debt ledger","Track, trace and pay down the debt before it compounds",
   `<b data-role="metric">${l.length}</b> debt items are open with <b data-role="metric">${t.principal} hours</b> of work to fix. They cost about <b data-role="metric">${t.interest} hours a month</b> in rework and risk, roughly <b data-role="metric">${money(Math.round(t.interest*RATE))}</b>. <b data-role="metric">${expired.length}</b> exceptions have expired and ${soon.length} more expire within 30 days. ${autoN} items were found by detectors scanning the registry; ${closed} closed when a registry fix was applied.`,
-  `<div class="row">${fchip("m_debt_open")}${fchip("m_debt_int")}${fchip("m_debt_exp")}${fchip("m_debt_age")}<button class="btn primary" data-debt-newexc>Request an exception</button></div>`);
- const kp=kpiRow([["Open items",l.length,hi+" high or critical",{cls:hi?"bad":"good",keep:true}],["Principal",t.principal+" h","effort to fix everything",{metric:"m_debt_open"}],["Monthly interest",t.interest+" h",money(Math.round(t.interest*RATE))+" a month",{metric:"m_debt_int"}],["Expired exceptions",expired.length,soon.length+" more within 30 days",{cls:expired.length?"bad":"good",keep:true,metric:"m_debt_exp"}],["Median age",METRICS.m_debt_age.cur+" d","oldest "+Math.max(0,...l.map(x=>x.age))+" d",{metric:"m_debt_age"}]]);
+  `<div class="row">${fchipT("m_debt_open")}${fchipT("m_debt_int")}${fchipT("m_debt_exp")}${fchipT("m_debt_age")}<button class="btn primary" data-debt-newexc>Request an exception</button></div>`);
+ const kp=kpiRow([["Open items",l.length,hi+" high or critical",{cls:hi?"bad":"good",keep:true}],["Principal",t.principal+" h","effort to fix everything",kpT({metric:"m_debt_open"})],["Monthly interest",t.interest+" h",money(Math.round(t.interest*RATE))+" a month",kpT({metric:"m_debt_int"})],["Expired exceptions",expired.length,soon.length+" more within 30 days",kpT({cls:expired.length?"bad":"good",keep:true,metric:"m_debt_exp"})],["Median age",median(l.map(x=>x.age))+" d","oldest "+Math.max(0,...l.map(x=>x.age))+" d",kpT({metric:"m_debt_age"})]]);
  /* trend: eight months, last point is live */
  const allPr=all.reduce((a,x)=>a+x.principal,0),curve=[.46,.53,.6,.68,.77,.85,.93],tr=curve.map(c=>Math.round(allPr*c)).concat([t.principal]);
  const mons=["Mar","Apr","May","Jun","Jul","Aug","Sep","Oct"];
@@ -190,7 +204,8 @@ function debtScreen(){
  const ow={};l.forEach(x=>ow[x.owner]=(ow[x.owner]||0)+x.principal);const byOwner=Object.keys(ow).map(k=>[k,ow[k]]).sort((a,b)=>b[1]-a[1]).slice(0,8);
  const oldest=l.slice().sort((a,b)=>b.age-a.age).slice(0,5).map(x=>`<button class="debt-li" data-debt-open="${E(x.id)}"><span class="debt-li-t">${E(x.title)}</span><span class="small muted">${x.age} days old · ${E(x.owner)} · ${x.principal} h</span></button>`).join("");
  const expList=exps.filter(x=>x.status!=="resolved").sort((a,b)=>(a.exp||"").localeCompare(b.exp||"")).slice(0,5).map(x=>`<button class="debt-li" data-debt-open="${E(x.id)}"><span class="debt-li-t">${E(x.title.replace(/^Expired: /,""))}</span><span class="row small" style="gap:8px">${cdown(x.exp)}<span class="muted">expires ${fD(x.exp)}</span></span></button>`).join("");
- const pane0=`${kp}${legend([["Debt principal in hours","--accent"]])}<div class="grid g2" style="gap:16px;margin-top:8px">${card("Debt over the last 8 months","Principal in hours. The last point is live: applying a registry fix lowers it.",trend,aiChip({model:"Registry Agent",conf:.88,title:"Trend and detectors",note:"Detectors scan the registry on every render. Earlier months come from the monthly snapshots the ledger keeps.",src:["Platform registry","Citizen app gate","Exceptions","Manual items"],guards:["Read-only on the registry","Cannot close an item without a linked fix or a human","Every change is audited"]}))}${card("Where the principal sits, by type","Hours to fix, largest first",bars(byType,v=>v+" h"))}</div>
+ const tRows=()=>TASKS().map(tk=>`<div class="debt-li" style="cursor:default"><span class="debt-li-t">${E(tk.title)}</span><span class="small muted">${E(tk.id)} · ${E(tk.kind)} · due ${fD(tk.due)} · ${tk.owner?ownerChip(tk.owner,{role:"Owner"}):""}</span></div>`).join("");
+ const pane0=`${kp}${TCORE()?"":(all.length?"":TGAP("debt items"))+`<div style="margin:8px 0 14px">${card("Fix and decommission tasks","Open tasks to fix or retire debt in this company",tRows()||TGAP("debt tasks"))}</div>`}${legend([["Debt principal in hours","--accent"]])}<div class="grid g2" style="gap:16px;margin-top:8px">${card("Debt over the last 8 months","Principal in hours. The last point is live: applying a registry fix lowers it.",TCORE()?trend:TGAP("monthly debt snapshots"),aiChip({model:"Registry Agent",conf:.88,title:"Trend and detectors",note:"Detectors scan the registry on every render. Earlier months come from the monthly snapshots the ledger keeps.",src:["Platform registry","Citizen app gate","Exceptions","Manual items"],guards:["Read-only on the registry","Cannot close an item without a linked fix or a human","Every change is audited"]}))}${card("Where the principal sits, by type","Hours to fix, largest first",bars(byType,v=>v+" h"))}</div>
   <div class="grid g2" style="gap:16px;margin-top:14px">${card("By owner","Hours to fix, by owning team",bars(byOwner,v=>v+" h"))}${card("Oldest items","Open the oldest first; age is days since detection",`<div class="debt-list">${oldest}</div>`)}</div>
   <div style="margin-top:14px">${card("Exceptions expiring next","An exception overrides the no-duplicate rule for a limited time",`<div class="debt-list">${expList||"<p class='muted small'>No exceptions.</p>"}</div>`)}</div>`;
  const led=btHTML({id:"debt_led",cols:[
@@ -208,10 +223,10 @@ function debtScreen(){
  const pane1=`<p class="muted small">Every item has an owner, a steward, interest and principal. Select a row for lineage, remediation steps and actions. Interest is what the item costs each month; principal is the effort to remove it.</p>${legend([["High or critical","--bad-f"],["Medium","--warn-f"],["Low or closed","--good-f"]])}${led}`;
  /* exceptions */
  const exRows=exps.slice().sort((a,b)=>(a.exp||"").localeCompare(b.exp||"")).map(x=>`<tr><td><b>${E(x.title.replace(/^Expired: /,""))}</b><div class="muted small">${E(x.id)} · ${E((x.apps||[]).map(nm).join(", "))}</div></td><td>${whoChip(x.owner2||x.owner)}</td><td class="small">${E(x.reason||"")}</td><td>${E(fD(x.exp))}</td><td>${x.status==="resolved"?pill_("Closed","good"):cdown(x.exp)}</td><td><button class="btn quiet" data-debt-open="${E(x.id)}">Open</button></td></tr>`).join("");
- const taskRows=D.tasks.map(tk=>`<div class="debt-li" style="cursor:default"><span class="debt-li-t">${E(tk.title)}</span><span class="small muted">${E(tk.id)} · ${E(tk.kind)} · due ${fD(tk.due)} · ${tk.owner?ownerChip(tk.owner,{role:"Owner"}):""}</span></div>`).join("");
+ const taskRows=tRows();
  const pane2=`<div class="dnote" data-role="story" style="margin-bottom:12px"><b>${exps.filter(x=>x.status!=="resolved").length}</b> exceptions are active. The rule is no duplicate data and no second writer. An exception is allowed only with an owner, a reason and an expiry. On the expiry date the item turns into an expired exception and a fix or decommission task is created automatically.</div>
   <div class="row" style="gap:8px;margin-bottom:12px"><button class="btn primary" data-debt-newexc>Request an exception</button>${whyPop("Exceptions are shown to everyone because they are the places where the platform rule is not being followed.")}</div>
-  ${kpiRow([["Active",exps.filter(x=>x.status!=="resolved"&&x.type!=="expired").length,"within their expiry"],["Expired",expired.length,"need a decision",{cls:expired.length?"bad":"good",keep:true}],["Expiring in 30 days",soon.length,"plan the fix now"],["Tasks created",D.tasks.length,"fix or decommission"]])}
+  ${kpiRow([["Active",exps.filter(x=>x.status!=="resolved"&&x.type!=="expired").length,"within their expiry"],["Expired",expired.length,"need a decision",{cls:expired.length?"bad":"good",keep:true}],["Expiring in 30 days",soon.length,"plan the fix now"],["Tasks created",TASKS().length,"fix or decommission"]])}
   <div class="tscroll"><table><thead><tr><th>Exception</th><th>Owner</th><th>Reason</th><th>Expires</th><th>Countdown</th><th></th></tr></thead><tbody>${exRows}</tbody></table></div>
   <div style="margin-top:14px">${card("Fix and decommission tasks","Created automatically when an exception expires",taskRows||"<p class='muted small'>No expired exceptions yet.</p>")}</div>`;
  /* trace */
@@ -308,8 +323,8 @@ function actForm(act,id){
  if(act==="assign")openForm({id:"debt_as",title:"Assign this debt item",submit:"Assign",story:"Assign to a team first. An individual is fine when they claim it or there is a reason. The assignee sees it in Person 360.",fields:[{k:"who",label:"Assign to",type:"people",req:true},{k:"why",label:"Reason",type:"text",ph:"Knows the integration"},{k:"go",label:"Start work now",type:"toggle"}],
   onSubmit:v=>{D.ov[id]=Object.assign(D.ov[id]||{},{assignee:v.who});if(v.go&&x.status==="open")D.ov[id].st="progress";bump();audit("Debt assigned",id+" to "+v.who);toast("Assigned to "+v.who,"good");closeDrawer();reopenScreen()}});
  if(act==="demand")openForm({id:"debt_dm",title:"Create a project or demand",submit:"Create",story:"Creates a demand record in Portfolio so the fix is funded and scheduled. The debt item moves to in progress and links to it.",fields:[{k:"kind",label:"Create as",type:"chips",opts:["Demand","Project"]},{k:"title",label:"Title",type:"text",req:true},{k:"cost",label:"Estimated cost",type:"money"}],defaults:{kind:"Demand",title:"Pay down: "+x.title,cost:x.principal*RATE},
-  onSubmit:v=>{let ref="DT-"+(D.tasks.length+1);try{if(window.addDemand){const r=addDemand({title:v.title,reason:"Debt item "+id,source:"Debt ledger",cost:Math.max(1,Math.round((v.cost||0)/1000)),kind:"Platform build",pm:"Casey Rowan"});if(r&&r.id)ref=r.id}}catch(e){}
-   D.tasks.push({id:ref,item:id,title:v.title,due:iso(30),owner:x.owner,kind:v.kind});D.ov[id]=Object.assign(D.ov[id]||{},{st:"progress",note:v.kind+" "+ref+" created"});bump();audit("Debt demand created",id+" "+ref);toast(v.kind+" created: "+ref,"good");closeDrawer();reopenScreen()}});
+  onSubmit:v=>{let ref="DT-"+(TASKS().length+1);try{if(window.addDemand){const r=addDemand({title:v.title,reason:"Debt item "+id,source:"Debt ledger",cost:Math.max(1,Math.round((v.cost||0)/1000)),kind:"Platform build",pm:"Casey Rowan"});if(r&&r.id)ref=r.id}}catch(e){}
+   TASKS().push({id:ref,item:id,title:v.title,due:iso(30),owner:x.owner,kind:v.kind});D.ov[id]=Object.assign(D.ov[id]||{},{st:"progress",note:v.kind+" "+ref+" created"});bump();audit("Debt demand created",id+" "+ref);toast(v.kind+" created: "+ref,"good");closeDrawer();reopenScreen()}});
  if(act==="resolve")openForm({id:"debt_rs",title:"Mark resolved",submit:"Mark resolved",story:"Closes the item and removes its interest from the ledger. Evidence is kept in the audit trail.",fields:[{k:"how",label:"How was it resolved",type:"select",opts:["Fixed in the registry","Fixed in the app","Merged into the platform entity","App decommissioned","Not debt after review"]},{k:"ev",label:"Evidence",type:"text",ph:"Pull request, change record or link"}],
   onSubmit:v=>{D.ov[id]=Object.assign(D.ov[id]||{},{st:"resolved",closedBy:v.how,closed:TODAY});bump();audit("Debt resolved",id+" "+v.how);toast("Resolved: "+id,"good");closeDrawer();reopenScreen()}});
  if(act==="reopen"){delete D.ov[id];bump();audit("Debt reopened",id);toast("Reopened");closeDrawer();reopenScreen()}
@@ -329,6 +344,7 @@ document.addEventListener("change",e=>{const t=e.target.closest("[data-debt-tsel
 document.addEventListener("input",e=>{const t=e.target.closest("[data-debt-hrs]");if(t){D.hrs=+t.value;const p=document.querySelector("[data-debt-burn]");if(p)p.innerHTML=burnHTML();const n=document.querySelector("[data-debt-hrs]");if(n)n.focus()}});
 /* ---------- screen, process, search, chat ---------- */
 REG("plat_debt","Technical debt ledger","platform","M4 20h16M6 20V10M12 20V4M18 20v-6M4 8l4 2 4-5 6 5",debtScreen);
+DATA.screen("plat_debt",{mode:"data",entities:["tech_debt","builds"]});
 PROC.reg("plat_debt",{title:"How technical debt is found, owned and paid down",std:["cobit","togaf"],steps:[
  {n:"Detect",d:"Detectors scan the registry, who reads and writes, connectors and the citizen app gate. Nothing is typed in.",who:"robot",owner:"Platform",out:"Debt items"},
  {n:"Classify and price",d:"The Registry Agent sets type, severity, interest and principal using the published formula.",who:"agent",owner:"Registry Agent",out:"Priced item"},

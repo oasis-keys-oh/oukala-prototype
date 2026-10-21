@@ -35,6 +35,11 @@ const uid=()=>{D().uid=(D().uid||1)+1;return D().uid};
 const getp=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
 const setp=(o,p,v)=>{const ks=p.split("."),last=ks.pop();const t=ks.reduce((a,k)=>a[k],o);t[last]=v};
 const touch=()=>{B.saved=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",second:"2-digit"})};
+/* PR-32 B9: the in-flight seeds, their owners and the build metrics are Meridian sample values; under another tenant they are a labeled
+   gap and the owner picker lists that tenant's own people (R16 to R18). Under core nothing changes. */
+const TCORE=()=>!window.DATA||DATA.tenant()==="core";
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+E(w):""}.</p>`;
+const fchipT=id=>TCORE()?fchip(id):"";
 const whoChip=n=>window.pchip&&window.DIR&&DIR.some(d=>d.name===n)?pchip(n):E(n||"Not set");
 /* ---------- seeded in-flight modules (history of the path) ---------- */
 const SEEDS=[
@@ -198,7 +203,7 @@ function s0(d){
  ${fld("Review or sunset date",`<input class="fin" type="date" data-bld-in="sunset" value="${E(d.sunset)}">`,"Every module gets a date so it cannot outlive its owner.")}</div>
  ${(()=>{const r=reuseNow(d);return r?`<div class="story small" style="margin-top:12px"><b>Reuse check on your purpose.</b> ${r}</div>`:""})()}`;
 }
-function peopleOpts(cur){const names=(window.DIR?DIR.filter(x=>x.kind==="human").slice(0,40).map(x=>x.name):PEOPLE.map(p=>p[0]));if(cur&&names.indexOf(cur)<0)names.unshift(cur);return names.map(n=>`<option value="${E(n)}" ${n===cur?"selected":""}>${E(n)}</option>`).join("")}
+function peopleOpts(cur){const names=(!TCORE()?DATA.get("people").filter(x=>x&&x.name&&(!x.kind||x.kind==="human")).slice(0,40).map(x=>x.name):window.DIR?DIR.filter(x=>x.kind==="human").slice(0,40).map(x=>x.name):PEOPLE.map(p=>p[0]));if(cur&&names.indexOf(cur)<0)names.unshift(cur);return names.map(n=>`<option value="${E(n)}" ${n===cur?"selected":""}>${E(n)}</option>`).join("")}
 function reuseNow(d){
  if(!(d.name||d.purpose))return"";
  try{const r=GATE.reuseReport(d.name,d.purpose,"",[]);const bad=r.items.filter(i=>i.lvl!=="good").slice(0,2);return bad.length?bad.map(i=>E(i.t+". "+i.d)).join(" "):"Nothing in the registry or process library duplicates this yet."}catch(e){return""}
@@ -318,13 +323,14 @@ const CONTRACTS=[
  ["Metrics","You get","The metric framework: formula chips, popovers, trends and remediation play.","You declare","Each metric with formula, owner, target and remediation, and the maturity model and target.",["ct_metrics"]],
  ["Audit and AI governance","You get","Audit service, AI gateway with spend caps, secret store, accessibility checks.","You declare","Audit hooks, AI use with guardrails, a review or sunset date.",["audit","aigw","secrets","sunset","a11y"]]];
 function stageOf(){
- const out=SEEDS.map(s=>({id:s.id,name:s.name,owner:s.owner,stage:s.stage,reuse:s.reuse,ext:s.ext,neu:s.neu,conf:s.conf,next:s.next,band:s.band,purpose:s.purpose,seed:true}));
+ const out=(TCORE()?SEEDS:[]).map(s=>({id:s.id,name:s.name,owner:s.owner,stage:s.stage,reuse:s.reuse,ext:s.ext,neu:s.neu,conf:s.conf,next:s.next,band:s.band,purpose:s.purpose,seed:true}));
  const d=D();
  if(d&&d.name&&!B.reg.some(r=>!r.withdrawn&&r.id===modId(d))){const g=runGate(d);out.push({id:"draft",name:d.name,owner:d.owner||"Not set",stage:B.step>=7?"Review":"Blueprint",reuse:d.data.reuse.length,ext:d.data.ext.length,neu:d.data.neu.length,conf:g.score,next:"Step "+(B.step+1)+": "+STEPS[B.step],band:d.band,purpose:d.purpose,draft:true})}
  B.reg.filter(r=>!r.withdrawn).forEach(r=>out.push({id:r.id,name:r.name,owner:r.owner,stage:"Registered",reuse:r.reuse,ext:r.ext,neu:r.neu,conf:r.score,next:"Proposed on the map and in the atlas. Data council approval moves it to live.",band:r.band,purpose:r.purpose,reg:true}));
  return out;
 }
 function syncMetrics(){
+ if(!TCORE())return;
  try{
   const L=stageOf(),re=L.reduce((s,x)=>s+x.reuse+x.ext,0),tot=L.reduce((s,x)=>s+x.reuse+x.ext+x.neu,0);
   const cf=L.filter(x=>x.conf>0);
@@ -352,7 +358,7 @@ function stageTiles(L){
 function dashPane(){
  const L=stageOf();
  const list=L.map(x=>`<div class="bld-mod"><div class="row" style="justify-content:space-between;gap:8px;flex-wrap:wrap"><b>${E(x.name)}</b>${pill_(x.stage,x.stage==="Registered"?"good":x.stage==="Review"?"warn":x.stage==="Idea"?"mute":"info")}</div><div class="small muted">${whoChip(x.owner)} · ${E(BANDN[x.band]||x.band)}</div><div class="small">${E(x.purpose||"")}</div><div class="bld-chips"><span class="pill mute">${x.reuse} reuse</span><span class="pill mute">${x.ext} extend</span><span class="pill mute">${x.neu} new</span>${x.conf?`<span class="pill ${x.conf>=80?"good":x.conf>=65?"warn":"bad"}">Conformance ${x.conf}%</span>`:""}</div><div class="small muted"><b>Next:</b> ${E(x.next)}</div><div class="row" style="gap:8px">${x.draft?`<button class="btn primary" data-bld-act="resume">Resume the blueprint</button>`:x.reg?`<button class="btn" data-bld-act="tomap" data-a="${E(x.id)}">Module map</button><button class="btn" data-bld-act="todata" data-a="${E(x.id)}">Data model</button>`:`<button class="btn" data-bld-act="seed" data-a="${E(x.id)}">Details</button>`}</div></div>`).join("");
- return `<div class="statrow">${[["m_bld_mods"],["m_bld_reuse"],["m_bld_dup"],["m_bld_conf"]].map(a=>{const m=METRICS[a[0]];return `<div class="stat"><small>${E(m.n)}</small><span class="num" data-role="metric">${mval(m)}</span><em>${fchip(a[0])}</em></div>`}).join("")}</div>
+ return `${TCORE()?`<div class="statrow">${[["m_bld_mods"],["m_bld_reuse"],["m_bld_dup"],["m_bld_conf"]].map(a=>{const m=METRICS[a[0]];return `<div class="stat"><small>${E(m.n)}</small><span class="num" data-role="metric">${mval(m)}</span><em>${fchip(a[0])}</em></div>`}).join("")}</div>`:TGAP("modules in flight and build metrics")}
  ${card("What every new module gets, and must declare","Five platform contracts. The chips show where your current blueprint stands.",`<div class="bld-cts">${CONTRACTS.map(contractCard).join("")}</div>`)}
  ${card("Modules in flight by stage","Registered modules appear dashed on the module map and Proposed in the data atlas.",stageTiles(L))}
  <div class="bld-mods">${list}</div>`;
@@ -410,7 +416,7 @@ function enforcePane(){
   ["1. Design time: reuse first","check_reuse and the wizard search the registry while you type. A near-duplicate entity cannot be created without a written reason and an exception.","Prevents the problem. Metrics: reuse rate, duplicate fields prevented.","--accent"],
   ["2. Publish: the gate","The conformance checks plus the debt budget decide whether the module registers. Failures need a fix or an exception with an owner and an expiry.","Catches what slipped through. Metrics: average conformance, modules registered.","--warn-f"],
   ["3. Runtime: the guard","Only registered entities are writable. A write to an entity nobody registered is quarantined: held, logged, and sent to the data council instead of landing in a shadow table.","Stops drift in production. Metric: quarantined writes, shown below.","--good-f"]].map(c=>`<div class="bld-en glass" style="--ec:var(${c[3]})"><b>${E(c[0])}</b><p class="small">${E(c[1])}</p><p class="small muted">${E(c[2])}</p></div>`).join("")}</div>
- <div class="statrow">${["m_bld_reuse","m_bld_dup","m_bld_mods","m_bld_conf"].map(id=>`<div class="stat"><small>${E(METRICS[id].n)}</small><span class="num" data-role="metric">${mval(METRICS[id])}</span><em>${fchip(id)}</em></div>`).join("")}</div>
+ ${TCORE()?`<div class="statrow">${["m_bld_reuse","m_bld_dup","m_bld_mods","m_bld_conf"].map(id=>`<div class="stat"><small>${E(METRICS[id].n)}</small><span class="num" data-role="metric">${mval(METRICS[id])}</span><em>${fchip(id)}</em></div>`).join("")}</div>`:TGAP("build metrics")}
  <div class="grid g2" style="gap:16px;align-items:start">${card("Try the runtime guard","Pick a module and an entity name. The guard checks the registry, including entities registered as Proposed from this screen.",`<div class="grid g2" style="gap:12px"><label class="fld"><span class="flab">Module writing</span><input class="fin" data-bld-sim="mod" value="${E(B.sim.mod)}"></label><label class="fld"><span class="flab">Entity it writes</span><input class="fin" data-bld-sim="ent" value="${E(B.sim.ent)}" list="bld-entlist"></label></div><datalist id="bld-entlist">${entities().slice(0,200).map(e=>`<option value="${E(e.id)}">`).join("")}</datalist><div class="row" style="gap:8px;margin:10px 0"><button class="btn primary" data-bld-act="simwrite">Attempt the write</button></div><div class="bld-dup ${so.cls}" data-bld-simout><b>${E(so.t)}</b> <span class="small muted">${E(so.d)}</span></div>`)}
  ${card("Quarantined writes ("+B.quar.length+")","Writes to entities that are not registered. Each one is held for the data council.",B.quar.length?`<div class="tscroll"><table><thead><tr><th>When</th><th>Module</th><th>Entity</th><th>State</th><th>Why</th></tr></thead><tbody>${q}</tbody></table></div>`:`<p class="small muted">None yet. Try writing to an entity that is not in the registry.</p>`)}</div>`;
 }
@@ -499,14 +505,15 @@ function toData(id){
 /* ---------- screen ---------- */
 function heroStory(){
  const L=stageOf(),n=L.length,m=METRICS;
- return `<b>${n} module${n===1?"":"s"}</b> ${n===1?"is":"are"} on the way in, reusing <b>${m.m_bld_reuse.cur}%</b> of their data from the registry. A new application joins the platform the same way whether a person or an AI coding client builds it: reuse first, declare the five contracts, pass the gate, register as Proposed.`;
+ return `<b>${n} module${n===1?"":"s"}</b> ${n===1?"is":"are"} on the way in${TCORE()?`, reusing <b>${m.m_bld_reuse.cur}%</b> of their data from the registry`:""}. A new application joins the platform the same way whether a person or an AI coding client builds it: reuse first, declare the five contracts, pass the gate, register as Proposed.`;
 }
 function screen(){
  syncMetrics();
- const extra=`<div class="row" style="gap:10px;flex-wrap:wrap">${fchip("m_bld_reuse")}${fchip("m_bld_mods")}<button class="btn primary" data-bld-act="${D()?"resume":"start"}">${D()?"Resume the blueprint":"Build a module"}</button></div>`;
+ const extra=`<div class="row" style="gap:10px;flex-wrap:wrap">${fchipT("m_bld_reuse")}${fchipT("m_bld_mods")}<button class="btn primary" data-bld-act="${D()?"resume":"start"}">${D()?"Resume the blueprint":"Build a module"}</button></div>`;
  return `<div class="screen">${hero("Platform","Build a module",heroStory(),extra)}${lensNote()}${views("bld",["Overview","Blueprint","Manifest and AI clients","Worked example","How enforcement works"],[dashPane(),wizardHTML(),`<div data-bld-man>${manifestPane()}</div>`,examplePane(),enforcePane()])}${procCard("plat_build")}</div>`;
 }
 REG("plat_build","Build a module","platform","M4 4h7v7H4zM13 13h7v7h-7zM17 4v6M14 7h6M7 14v6M4 17h6",screen);
+if(window.DATA&&DATA.screen)DATA.screen("plat_build",{mode:"data",entities:["people"]});
 PROC.reg("plat_build",{title:"How a new module joins the platform",std:["togaf","cmmi","iso27k"],steps:[
  {n:"Reuse check",d:"The blueprint searches the registry and process library while the builder types. A person or an AI client gets the same answer.",who:"robot",owner:"Platform",out:"Reuse report"},
  {n:"Blueprint",d:"Purpose, data, process, connections, maturity, metrics, security and AI are declared in eight steps.",who:"human",owner:"Module owner",out:"Manifest"},

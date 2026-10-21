@@ -4,7 +4,7 @@
 (function(){
 "use strict";
 const R=window.R16H;if(!R)return;
-const {G,H,TODAY,fmtD,addDays}=R;
+const {G,H,TODAY,fmtD,addDays,TCORE,TROWS,TGAP,fchipT}=R;
 const A=S.r16h.apg=Object.assign({groups:[],log:[],seeded:false,migrated:null,tab:0,q:"",flt:"all",sel:null,version:1},S.r16h.apg||{});
 const E={};   /* exported API */
 const first=n=>String(n||"").split(/[ (]/)[0];
@@ -231,9 +231,21 @@ R.addScreen({id:"r16h_groups",name:"Approval groups",own:"Casey Rowan",bk:"Rina 
  met:[["m_r16_apg_cov","Approval steps routed to a group","Approval steps that name a registered group ÷ all approval steps audited × 100","%",100,100,90,"max","Move the step to a group","Approval groups, Approval paths tab"],["m_r16_apg_small","Approver groups with fewer than two members","Static groups with fewer than 2 members ÷ all static groups × 100","%",0,0,10,"min","Add a member or a delegate","Approval groups, Gap check tab"]],
  fin:[["adm_sec","Group membership from the directory","person","api"],["org_chart","People and managers","person","api"],["inbox","Pending approvals","approval","event","Inbox opened"]],fout:[["inbox","Group on each approval item","approval","event","Approval created"],["adm_audit","Group decisions","approver_action","event","Member decides"],["flw_design","Groups for approval steps","approver_group","api","Step edited"]]});
 R.apg_screen=true;
-REG("r16h_groups","Approval groups","automate","M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM2 20c0-3 3-5 6-5s6 2 6 5M15 15c3 0 7 1 7 5",()=>{seed();const a=audit_();
+/* PR-32 B9: another sample company sees its own approver groups. Its approval policies name a team (grp); the team is the group, its
+   members are the team's people. The routing engine (APG) and its Meridian groups are unchanged; this view only reads tenant rows (R18). */
+function tenantView(){const teams=TROWS("teams"),pol=TROWS("approval_policies"),ppl=G(()=>DATA.get("people").filter(p=>p.kind==="human"),[]);
+ const LB={doa:"Delegation of authority",control:"Spend control",rule:"Approval rule",binding:"Approval binding"};
+ const use=t=>pol.filter(r=>r.grp===t.id);const mem=t=>{const m=ppl.filter(p=>p.team===t.n).map(p=>p.name);if(t.mgr&&m.indexOf(t.mgr)<0)m.unshift(t.mgr);return m};
+ const gs=teams.filter(t=>use(t).length);const routed=pol.filter(r=>r.grp&&teams.some(t=>t.id===r.grp)).length;const pct=pol.length?Math.round(100*routed/pol.length):0;
+ const org=(DATA.tenantInfo()||{}).org||"";
+ const groupsT=gs.length?`<div class="tscroll"><table><thead><tr><th>Group</th><th>Members</th><th>Used by</th></tr></thead><tbody>${gs.map(t=>{const m=mem(t),u=use(t);return `<tr><td><b>${H(t.n)}</b> <code>${H(t.id)}</code><div class="muted small">${H(t.fn||"")}</div></td><td>${m.slice(0,4).map(x=>pchip(x)).join(" ")}${m.length>4?` <span class="muted small">+${m.length-4}</span>`:""}</td><td>${[...new Set(u.map(r=>LB[r.part]||r.part))].map(x=>`<span class="pill mute">${H(x)}</span>`).join(" ")} <span class="muted small">${u.length}</span></td></tr>`}).join("")}</tbody></table></div>`:TGAP("approver groups");
+ const pathsT=pol.length?`<div class="tscroll"><table><thead><tr><th>Path</th><th>Record</th><th>Approver as written</th><th>Group</th></tr></thead><tbody>${pol.map(r=>{const t=teams.find(x=>x.id===r.grp);return `<tr><td>${H(LB[r.part]||r.part)}</td><td><code>${H(r.id)}</code><div class="muted small">${H(r.name||r.label||r.cat||"")}</div></td><td>${H(r.role||r.owner||"(none)")}</td><td>${t?`<b>${H(t.n)}</b>`:'<span class="muted">No group</span>'}</td></tr>`}).join("")}</tbody></table></div>`:TGAP("approval paths");
+ return `<div class="screen">${hero("Automate · Approvals","Approval groups",pol.length?`<b>${pct}%</b> of ${pol.length} approval policies at ${H(org)} name a group.`:`${H(org)} has no approval policies in this sample yet.`,`<div class="row" style="gap:8px;flex-wrap:wrap">${fchipT("m_r16_apg_cov")}${fchipT("m_r16_apg_small")}<button class="btn" data-link="screen:r16h_rules">Approval rules</button></div>`)}${lensNote()}
+ ${views("r16g_tabsT",["Approver groups","Approval paths","Activity"],[card("Approver groups","Each team named on an approval policy acts as the group. Members are the people of that team.",groupsT),card("Every approval path","Each approval policy of this company and the group that holds it.",pathsT),card("Who in the group acted","Decisions by group members.",TGAP("group decisions"))])}${procCard("r16h_groups")}</div>`}
+REG("r16h_groups","Approval groups","automate","M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM2 20c0-3 3-5 6-5s6 2 6 5M15 15c3 0 7 1 7 5",()=>{if(!TCORE())return tenantView();seed();const a=audit_();
  return `<div class="screen">${hero("Automate · Approvals","Approval groups",`<b>${a.pct}%</b> of ${a.tot} approval steps name a group. ${a.ind} still point at a person.`,`<div class="row" style="gap:8px;flex-wrap:wrap">${fchip("m_r16_apg_cov")}${fchip("m_r16_apg_small")}<button class="btn" data-link="screen:r16h_rules">Approval rules</button></div>`)}${lensNote()}
  ${views("r16g_tabs",TABS,[overview(),groupsTab(),pathsTab(),activity(),gapTab()])}${procCard("r16h_groups")}</div>`});
+G(()=>DATA.screen("r16h_groups",{mode:"data",entities:["approval_policies","teams","people"]}));
 /* ---------- forms and clicks ---------- */
 const peopleOpts=()=>R.people().map(p=>[p,p]);
 function groupForm(g){const isNew=!g;g=g||{id:"apg_"+Date.now().toString(36),name:"",desc:"",members:[],delegates:[],quorum:{mode:"any",n:1},scope:[],tokens:[],kind:"static"};

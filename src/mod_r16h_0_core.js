@@ -12,6 +12,18 @@ const addDays=(s,n)=>{const d=new Date(s+"T00:00:00Z");d.setUTCDate(d.getUTCDate
 const daysBetween=(a,b)=>Math.round((Date.parse(b)-Date.parse(a))/864e5);
 const fmtD=s=>{try{return new Date(s+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})}catch(e){return s||""}};
 Object.assign(R,{G,H,TODAY,addDays,daysBetween,fmtD});
+/* PR-32 B9 tenant rows (R16 to R18): Meridian reads the entity part's own source live through the entity layer (the same objects, so
+   edits and new rows reach it); another tenant reads its own pack rows through DATA.get; no rows is [] and a labeled gap, never Meridian rows. */
+const TCORE=()=>!window.DATA||DATA.tenant()==="core";
+const TPARTS=new WeakMap();
+const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITIES.get(e);const p=d&&(part?d.src.find(x=>x[0]===part):d.src[0]);
+  let v=null;try{v=p?p[1]():null}catch(x){}return v==null?[]:v}
+ const all=DATA.get(e);if(!part)return all;let m=TPARTS.get(all);if(!m){m={};TPARTS.set(all,m)}return m[part]||(m[part]=all.filter(r=>r.part===part))};
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
+const fchipT=id=>typeof fchip!=="function"?"":TCORE()||DATA.byId("metrics",id)?fchip(id):"";   /* a Meridian metric chip is hidden under another tenant (R18) */
+/* people of the active tenant (names); Meridian keeps the org chart list */
+const TPEOPLE=()=>TCORE()?G(()=>ORGX.staff.map(p=>p.n),[]):G(()=>DATA.get("people").filter(p=>p.kind!=="agent"&&p.kind!=="robot").map(p=>p.name).filter(Boolean),[]);
+Object.assign(R,{TCORE,TROWS,TGAP,fchipT,TPEOPLE});
 /* ---------- aliases: old ids keep resolving ---------- */
 R.alias={process:{org_leaver:"org_separation"},event:{},screen:{},term:{Leaver:"Change status",leaver:"change status"}};
 R.resolveProcess=id=>R.alias.process[id]||id;

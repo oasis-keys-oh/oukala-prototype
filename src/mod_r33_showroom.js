@@ -301,7 +301,7 @@ function demoCard(d){return `<article class="sr-card glass" data-sr-card="${E(d.
  <div class="row"><button type="button" class="btn primary" data-sr-start="${d.id}">Start the tour</button><button type="button" class="btn quiet" data-sr-start="${d.id}" data-sr-mode="rehearse">Rehearse</button>${ST.leaveBehind?`<button type="button" class="btn quiet" data-sr-leave="${d.id}">Leave-behind</button>`:""}</div></article>`}
 ST.demoCard=demoCard;
 function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
- const story=`Guided tours over screens that already exist. Tours run on the fictional Meridian Standards Foundation unless a tenant brief says otherwise, and the bar says which. Nothing on a tour is a live connection, and every number carries a label.`;
+ const story=`Guided tours over screens that already exist. Tours run on the fictional ${G(()=>DATA.tenant()!=="core",false)?"sample company each tour names":"Meridian Standards Foundation"} unless a tenant brief says otherwise, and the bar says which. Nothing on a tour is a live connection, and every number carries a label.`;
  const extra=ST.home.map(f=>G(()=>f(),"")).join("");
  /* DC-40: experiences come first (the buyer drives); guided tours stay as rehearsal and backup */
  const exp=ST.expHome?G(()=>ST.expHome(),""):"";

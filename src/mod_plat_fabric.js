@@ -3,6 +3,18 @@
 (function(){
 const E=esc;
 const F=S.fab=S.fab||{edition:"fabric",key:"FAB-MSF-2026-7Q4K",ready:false,mapConn:"c_graph",sel:null,ovr:{},lastSample:{},mapTest:{},mapVer:{},usage:1412,seq:{run:4900,q:60,ev:9000,wi:1300,rec:300,req:40,prj:7}};
+/* PR-32 B9 tenant rows (R16 to R18): Meridian reads the entity part's own source live through the entity layer (S.fab.conns, maps,
+   runs, events and the reconcile work items, the same objects); another tenant reads its own pack rows through DATA.get; no rows is []
+   and a labeled gap. Under another tenant the screen shows the tenant's connectors and mappings and labeled gaps for the rest, since
+   the runs, quarantine, reconciliation, M2M projects and samples here are Meridian records. */
+const TCORE=()=>!window.DATA||DATA.tenant()==="core";
+const TPARTS=new WeakMap();
+const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITIES.get(e);const p=d&&(part?d.src.find(x=>x[0]===part):d.src[0]);
+  let v=null;try{v=p?p[1]():null}catch(x){}return v==null?[]:v}
+ const all=DATA.get(e);if(!part)return all;let m=TPARTS.get(all);if(!m){m={};TPARTS.set(all,m)}return m[part]||(m[part]=all.filter(r=>r.part===part))};
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+U.esc(w):""}.</p>`;
+const fchipT=id=>TCORE()||DATA.byId("metrics",id)?fchip(id):"";
+const CONNS=()=>TROWS("connectors","connection"),MAPS=()=>TROWS("connectors","mapping"),RUNS=()=>TROWS("connectors","run"),FEVTS=()=>TROWS("connectors","event"),WIS=()=>TROWS("work_items","reconcile");
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const NOW=new Date(U.TODAY_ISO+"T15:30:00Z");
 const tsAgo=m=>{const d=new Date(NOW.getTime()-m*60000);return MON[d.getUTCMonth()]+" "+d.getUTCDate()+", "+String(d.getUTCHours()).padStart(2,"0")+":"+String(d.getUTCMinutes()).padStart(2,"0")};
@@ -175,8 +187,8 @@ function pairRule(en,t){if(en==="project_task"&&t.planned_start&&t.planned_finis
  if(en==="project"&&t.start&&t.finish&&t.finish<t.start)return{k:"finish",why:"Finish is before start"};return null}
 const same=(a,b)=>String(a).trim()===String(b).trim();
 function pipeline(connId,sandbox,onlyApproved){
- const c=F.conns.find(x=>x.id===connId),sets=SAMPLES[connId]||[],out={rows:[],read:0,quar:[],events:[],recon:[],loaded:0,held:0,kept:0,same:0,notes:[]};
- sets.forEach(sm=>{const maps=F.maps.filter(m=>m.conn===connId&&m.ent===sm.ent&&m.status!=="rejected"&&(onlyApproved?m.status==="approved":true));
+ const c=CONNS().find(x=>x.id===connId),sets=SAMPLES[connId]||[],out={rows:[],read:0,quar:[],events:[],recon:[],loaded:0,held:0,kept:0,same:0,notes:[]};
+ sets.forEach(sm=>{const maps=MAPS().filter(m=>m.conn===connId&&m.ent===sm.ent&&m.status!=="rejected"&&(onlyApproved?m.status==="approved":true));
   sm.rows.forEach(row=>{out.read++;const rid=sm.nameKey?row[sm.nameKey]:row.id,cur=(sm.cur||{})[rid]||null,tgt={},errs=[];
    if(row.active===false){out.events.push({ent:sm.ent,k:"lifecycle",rec:rid,old:"active",nw:"leaver",type:"person.lifecycle.leaver"});out.notes.push(rid+": SCIM reports the account disabled, so a leaver event revokes access in RBAC and ABAC.")}
    maps.forEach(m=>{if(!(m.src in row))return;const r=coerce(m.ent,m.k,row[m.src],m);if(!r.ok)errs.push({k:m.k,val:row[m.src],why:r.why,src:m.src});else tgt[m.k]=r.val});
@@ -192,7 +204,7 @@ function pipeline(connId,sandbox,onlyApproved){
  return out}
 /* ---------- M2M evaluation and approval routing ---------- */
 function pfields(p){const toks=(p.fields||"").split(/[,;]+/).map(s=>s.trim()).filter(Boolean);return toks.map(t=>{let hit=null;p.ents.forEach(en=>{const e=ent_(en);if(!e||hit)return;const f=e.fields.find(f=>f.k===t||f.label.toLowerCase()===t.toLowerCase());if(f)hit={ent:en,k:f.k}});return{tok:t,hit}})}
-const activeConns=()=>F.conns.filter(c=>c.kind!=="roadmap"&&c.status!=="expired");
+const activeConns=()=>CONNS().filter(c=>c.kind!=="roadmap"&&c.status!=="expired");
 function evaluate(p){
  const pf=pfields(p),unknown=pf.filter(x=>!x.hit),metas=pf.filter(x=>x.hit).map(x=>Object.assign({ent:x.hit.ent,k:x.hit.k},eff(x.hit.ent,x.hit.k)));
  const missEnt=p.ents.filter(e=>!ent_(e)),conflict=p.dir==="Out"?metas.filter(m=>m.auth==="external"):metas.filter(m=>m.auth==="platform");
@@ -229,8 +241,8 @@ const CTYPES=["Generic REST","MCP","Identity provider","Microsoft Graph","Other 
 function mkConnFromProject(p,kind,expiry){
  const id="c_"+p.id.toLowerCase().replace(/-/g,"");const k={"Generic REST":"rest",MCP:"mcp","Identity provider":"idp","Microsoft Graph":"graph"}[p.ctype]||"rest";
  const c={id,name:p.t,kind:k,tier:kind==="certified"?"certified":"project",status:"new",owner:p.owner,min:"fabric",env:"Production",ents:p.ents.slice(),canStream:false,lag:3600,sys:p.systems.join(", "),risk:p.risk,desc:p.purpose,auth:A(["read"],"Set at go-live","pending","vault://meridian-prod/fabric/"+p.id.toLowerCase()+" (created at go-live)","svc-fabric-"+p.id.toLowerCase()),expiry:expiry||undefined,fromProject:p.id};
- F.conns.splice(F.conns.findIndex(x=>x.kind==="roadmap"),0,c);
- pfields(p).filter(x=>x.hit).forEach(x=>F.maps.push({id:"MP-"+(100+F.maps.length),conn:id,src:x.tok,srcType:"string",ent:x.hit.ent,k:x.hit.k,tf:"As is",conf:.82,status:"proposed",lag:3600,em:null,ver:1,ai:true}));
+ CONNS().splice(CONNS().findIndex(x=>x.kind==="roadmap"),0,c);
+ pfields(p).filter(x=>x.hit).forEach(x=>MAPS().push({id:"MP-"+(100+MAPS().length),conn:id,src:x.tok,srcType:"string",ent:x.hit.ent,k:x.hit.k,tf:"As is",conf:.82,status:"proposed",lag:3600,em:null,ver:1,ai:true}));
  return c}
 function decide(p,kind,expiry,reasons){
  if(kind!=="rejected"&&activeConns().length>=ED[F.edition].conn){toast("No free connector slot in the "+ED[F.edition].n+" edition","warn");unlockDrawer("The "+ED[F.edition].n+" edition allows "+ED[F.edition].conn+" connectors and all are in use.");return false}
@@ -238,16 +250,16 @@ function decide(p,kind,expiry,reasons){
  if(kind!=="rejected"){const c=mkConnFromProject(p,kind,expiry);p.conn=c.id;audit("Data layer connector approved",p.id+" as "+(kind==="certified"?"certified":"project-scoped until "+expiry));toast(kind==="certified"?"Approved as certified: "+c.name:"Approved, project-scoped until "+expiry,"good")}
  else{audit("Data layer M2M project rejected",p.id+": "+(reasons||"").slice(0,80));toast("Rejected with reasons recorded","warn")}
  const rq=F.reqs.find(r=>r.ref===p.id);if(rq)rq.state="Decided";return true}
-function expireConn(c){c.status="expired";c.lag=0;if(!F.wi.find(w=>w.ref===c.id)){F.wi.unshift({id:"WI-"+(F.seq.wi++),t:"Decommission "+c.name,sub:"Expired "+c.expiry+"; revoke the secret, remove mappings, archive runs",who:c.owner,due:dayS(7).slice(0,6),st:"open",ref:c.id})}
+function expireConn(c){c.status="expired";c.lag=0;if(!WIS().find(w=>w.ref===c.id)){WIS().unshift({id:"WI-"+(F.seq.wi++),t:"Decommission "+c.name,sub:"Expired "+c.expiry+"; revoke the secret, remove mappings, archive runs",who:c.owner,due:dayS(7).slice(0,6),st:"open",ref:c.id})}
  audit("Data layer connector expired",c.name+": decommission task created")}
-function sweepExpiry(){F.conns.forEach(c=>{if(c.tier==="project"&&c.expiry&&c.status!=="expired"){if(c.expiry<=isoDay(0))expireConn(c);else{const d=Math.round((Date.parse(c.expiry)-Date.parse(isoDay(0)))/86400000);if(d<=30&&c.status==="healthy")c.status="expiring"}}})}
+function sweepExpiry(){CONNS().forEach(c=>{if(c.tier==="project"&&c.expiry&&c.status!=="expired"){if(c.expiry<=isoDay(0))expireConn(c);else{const d=Math.round((Date.parse(c.expiry)-Date.parse(isoDay(0)))/86400000);if(d<=30&&c.status==="healthy")c.status="expiring"}}})}
 /* ---------- derived numbers, metrics ---------- */
-const conn=id=>F.conns.find(c=>c.id===id);
+const conn=id=>CONNS().find(c=>c.id===id);
 const EDO={core:0,fabric:1,enterprise:2};
 const allowed=c=>EDO[F.edition]>=EDO[c.min]&&c.min!=="enterprise";
 const live=c=>c&&c.kind!=="roadmap"&&c.status!=="expired";
-const apprMaps=()=>F.maps.filter(m=>m.status==="approved"&&live(conn(m.conn)));
-const fedCount=id=>new Set(F.maps.filter(m=>m.conn===id&&m.status==="approved").map(m=>m.ent+"."+m.k)).size;
+const apprMaps=()=>MAPS().filter(m=>m.status==="approved"&&live(conn(m.conn)));
+const fedCount=id=>new Set(MAPS().filter(m=>m.conn===id&&m.status==="approved").map(m=>m.ent+"."+m.k)).size;
 function slaStats(){const a=apprMaps().filter(m=>eff(m.ent,m.k).auth!=="platform");let ok=0;const miss=[];a.forEach(m=>{const t=FR[eff(m.ent,m.k).fresh].s,lg=m.lag==null?conn(m.conn).lag:m.lag;if(lg<=t)ok++;else miss.push({m,t,lg})});return{n:a.length,ok,pct:a.length?Math.round(100*ok/a.length):100,miss}}
 function covStats(){const es=new Set();activeConns().filter(c=>c.min!=="core").forEach(c=>c.ents.forEach(e=>es.add(e)));let tot=0,cov=0;const cv=new Set(apprMaps().map(m=>m.ent+"."+m.k));
  PLAT.fieldsAll().forEach(f=>{if(!es.has(f.ent))return;const m=eff(f.ent,f.k);if(m.auth==="platform")return;tot++;if(cv.has(f.ent+"."+f.k))cov++});return{tot,cov,pct:tot?Math.round(100*cov/tot):100}}
@@ -262,7 +274,7 @@ Object.assign(METRICS,{
  m_fab_recon:{n:"Open reconciliation differences",f:"Differences between "+BRAND.name+" and an external value on shared fields that no one has resolved",u:"",cur:8,tgt:5,badAt:15,dir:"min",max:30,tr:[2,3,5,4,6,7,8,8],owner:"Field stewards",use:["Integration fabric","Reconciliation"],rem:{kind:"kb",ref:"KB0743",title:"Choosing which side wins on a shared field",agent:"Integration Agent",auto:false,state:"idle",prog:"Drafts a recommendation using trust score and who edited last"}}});
 function syncMetrics(){const s=slaStats(),c=covStats();METRICS.m_fab_fresh.cur=s.pct;METRICS.m_fab_quar.cur=qOpen().length;METRICS.m_fab_cov.cur=c.pct;METRICS.m_fab_m2m.cur=cycle();METRICS.m_fab_recon.cur=rOpen().length}
 /* ---------- sample runs ---------- */
-function newRun(c,o){F.seq.run++;const r=Object.assign({id:"RUN-"+F.seq.run,conn:c.id,mode:c.lag<=300?"Real-time":"Batch",at:tsAgo(0),min:0,dur:2+(hs(c.id+F.seq.run)%9),read:0,valid:0,quar:0,loaded:0,held:0,kept:0,same:0,events:0,status:"ok",env:c.env==="Sandbox"?"Sandbox":"Production",retries:0,err:"",idem:"idem-"+(hs(c.id+F.seq.run)*7919).toString(16),kind:"sample"},o);F.runs.unshift(r);return r}
+function newRun(c,o){F.seq.run++;const r=Object.assign({id:"RUN-"+F.seq.run,conn:c.id,mode:c.lag<=300?"Real-time":"Batch",at:tsAgo(0),min:0,dur:2+(hs(c.id+F.seq.run)%9),read:0,valid:0,quar:0,loaded:0,held:0,kept:0,same:0,events:0,status:"ok",env:c.env==="Sandbox"?"Sandbox":"Production",retries:0,err:"",idem:"idem-"+(hs(c.id+F.seq.run)*7919).toString(16),kind:"sample"},o);RUNS().unshift(r);return r}
 function runSample(id){
  const c=conn(id);if(!c)return;
  if(!allowed(c)){unlockDrawer("Running "+c.name+" is part of the Integration edition. The Base edition runs only the built-in jobs.");return}
@@ -274,8 +286,8 @@ function runSample(id){
  F.usage++;
  if(!sandbox){r.quar.forEach(q=>{F.quar=F.quar.filter(x=>!(x.rec===q.rec&&x.k===q.k&&x.conn===id&&x.status==="open"));F.quar.unshift({id:"Q-"+(F.seq.q++),conn:id,ent:q.ent,rec:q.rec,k:q.k,val:q.val==null?"":String(q.val),reason:q.reason,at:tsAgo(0),status:"open",attempts:0,run:run.id,raw:q.row,ctx:q.ctx})});
   r.recon.forEach(x=>{if(!F.recon.find(y=>y.ent===x.ent&&y.rec===x.rec&&y.k===x.k&&y.status!=="resolved"))F.recon.unshift({id:"REC-"+(F.seq.rec++),ent:x.ent,rec:x.rec,label:x.label,k:x.k,plat:String(x.plat),ext:String(x.ext),conn:id,at:tsAgo(0),min:0,status:"open",wi:null,how:""})});
-  r.events.forEach(e=>F.events.unshift(mkEvent(e.ent,e.k,e.rec,String(e.old),String(e.nw),id,0,e.type)))}
- F.lastSample[id]={run:run.id,sandbox,r:{read:r.read,quar:r.quar.length,loaded:r.loaded,held:r.held,kept:r.kept,same:r.same,events:r.events.length,rows:r.rows,notes:r.notes},at:run.at,unused:F.maps.filter(m=>m.conn===id&&(sandbox?m.status==="rejected":m.status!=="approved")).length};
+  r.events.forEach(e=>FEVTS().unshift(mkEvent(e.ent,e.k,e.rec,String(e.old),String(e.nw),id,0,e.type)))}
+ F.lastSample[id]={run:run.id,sandbox,r:{read:r.read,quar:r.quar.length,loaded:r.loaded,held:r.held,kept:r.kept,same:r.same,events:r.events.length,rows:r.rows,notes:r.notes},at:run.at,unused:MAPS().filter(m=>m.conn===id&&(sandbox?m.status==="rejected":m.status!=="approved")).length};
  audit("Data layer sample run",c.name+": read "+r.read+", quarantined "+r.quar.length+", "+(sandbox?"sandbox, nothing written":"loaded "+r.loaded));
  toast(sandbox?"Sandbox run finished, nothing was written":"Run finished: "+r.loaded+" loaded, "+r.quar.length+" quarantined","good");
  connDrawer(id);render()}
@@ -339,7 +351,7 @@ function sampleHTML(c){
  ${r.notes.map(n=>`<p class="small story">${E(n)}</p>`).join("")}${ls.unused?`<p class="small muted">${ls.unused} mapping${ls.unused>1?"s":""} not used in this run because ${ls.sandbox?"it is rejected":"it is not approved yet"}.</p>`:""}`}
 function connDrawer(id){
  const c=conn(id);if(!c)return;F.sel=id;const rd=c.kind==="roadmap";
- const maps=F.maps.filter(m=>m.conn===id),runs=F.runs.filter(r=>r.conn===id).slice(0,5);
+ const maps=MAPS().filter(m=>m.conn===id),runs=RUNS().filter(r=>r.conn===id).slice(0,5);
  const days=c.expiry?Math.round((Date.parse(c.expiry)-Date.parse(isoDay(0)))/86400000):null;
  const acts=rd?`<span class="pill mute">On the roadmap. Vote or request early access through your account team.</span>`:`<div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn primary" data-fab-run="${c.id}">${allowed(c)?"Run a sample":"Run a sample (unlock)"}</button><button class="btn" data-fab-bf="${c.id}">Backfill</button><button class="btn quiet" data-fab-tab="2" data-fab-mapconn="${c.id}">Open mappings</button>${c.tier==="community"?`<button class="btn quiet" data-fab-cert="${c.id}">Request certification</button>`:""}${c.tier==="project"&&c.status!=="expired"?`<button class="btn quiet" data-fab-expire="${c.id}">Simulate expiry</button>`:""}</div>`;
  openDrawer(`<div class="eyebrow">${E(KIND[c.kind])} connector</div><h2 style="margin:4px 0">${E(c.name)}</h2><div class="row" style="gap:6px;flex-wrap:wrap">${tierPill(c.tier)} ${stPill(c.status)} ${c.min==="core"?pill("Included in Base","good"):c.min==="enterprise"?pill("Roadmap","mute"):pill("Integration","info")} ${c.risk?pill(c.risk+" risk",c.risk==="High"?"bad":c.risk==="Medium"?"warn":"mute"):""}</div>
@@ -351,7 +363,7 @@ function connDrawer(id){
  <h3>Mapped fields</h3>${lrHTML({id:"fab_lr_"+c.id,groups:Object.values(maps.reduce((a,m)=>{(a[m.ent]=a[m.ent]||{key:m.ent,label:ENTLBL(m.ent),rows:[]}).rows.push({id:m.id,t:m.src+" to "+flabel(m.ent,m.k),sub:m.tf+", "+Math.round(m.conf*100)+"% confidence",tag:m.status,st:m.status==="approved"?"good":"warn",go:()=>{S.fab.mapConn=c.id;closeDrawer();goTab(2)}});return a},{})),limit:6,search:true})}
  <h3>Recent runs</h3>${runs.length?`<div class="tscroll"><table class="fab-tbl"><thead><tr><th>Run</th><th>When</th><th>Read</th><th>Loaded</th><th>Quarantined</th><th>Status</th></tr></thead><tbody>${runs.map(r=>`<tr><td><b>${r.id}</b></td><td>${E(r.at)}</td><td>${r.read}</td><td>${r.loaded}</td><td>${r.quar}</td><td>${pill(r.status,r.status==="ok"?"good":r.status==="partial"?"warn":"bad")}</td></tr>`).join("")}</tbody></table></div>`:`<p class="muted small">No runs yet.</p>`}`}`)}
 function runDrawer(id){
- const r=F.runs.find(x=>x.id===id);if(!r)return;const c=conn(r.conn)||{name:r.conn};
+ const r=RUNS().find(x=>x.id===id);if(!r)return;const c=conn(r.conn)||{name:r.conn};
  openDrawer(`<div class="eyebrow">Run</div><h2 style="margin:4px 0">${E(r.id)}</h2><div class="row" style="gap:6px;flex-wrap:wrap">${pill(r.status,r.status==="ok"?"good":r.status==="partial"?"warn":"bad")} ${pill(r.mode,"info")} ${pill(r.env,r.env==="Sandbox"?"warn":"mute")} ${r.retries?pill(r.retries+" retries","warn"):""}</div>
  <div class="story">${E(c.name)} started ${E(r.at)} and took ${r.dur} seconds. ${r.err?"It failed: "+E(r.err)+". ":""}Replays use the idempotency key below, so replaying a finished run changes nothing.</div>
  <div class="fab-flow">${lineage(r).map((s,i)=>`<div class="fab-fs" style="--fd:${i*60}ms"><i style="background:var(${s[1]})"></i><b>${s[0]}</b><span>${E(s[2])}</span></div>`).join("")}</div>
@@ -360,7 +372,7 @@ function runDrawer(id){
 /* ---------- tabs ---------- */
 const stBar=(items)=>{const t=items.reduce((a,x)=>a+x[1],0)||1;return `<div class="fab-seg" role="img" aria-label="${items.map(x=>x[0]+" "+x[1]).join(", ")}">${items.map(x=>x[1]?`<i style="flex:${x[1]};background:var(${x[2]})" title="${E(x[0])}: ${x[1]}"></i>`:"").join("")}</div>`};
 function attention(){
- const a=[],s=slaStats(),ex=F.conns.filter(c=>c.status==="expired"),exs=F.conns.filter(c=>c.status==="expiring"),aw=F.proj.filter(p=>p.stage==="awaiting"),pm=F.maps.filter(m=>m.status==="proposed"&&live(conn(m.conn))&&conn(m.conn).tier!=="community");
+ const a=[],s=slaStats(),ex=CONNS().filter(c=>c.status==="expired"),exs=CONNS().filter(c=>c.status==="expiring"),aw=F.proj.filter(p=>p.stage==="awaiting"),pm=MAPS().filter(m=>m.status==="proposed"&&live(conn(m.conn))&&conn(m.conn).tier!=="community");
  ex.forEach(c=>a.push(["bad","Expired connector: "+c.name,"Its decommission task is open and assigned to "+c.owner+". The secret must be revoked.",1]));
  exs.forEach(c=>a.push(["warn",c.name+" expires "+c.expiry,"Project-scoped connectors are decommissioned at expiry. Extend it through a new M2M review or let it close.",1]));
  s.miss.slice(0,3).forEach(x=>a.push(["warn","Freshness missed: "+ENTLBL(x.m.ent)+" "+flabel(x.m.ent,x.m.k),"Target "+FR[eff(x.m.ent,x.m.k).fresh].l.toLowerCase()+", but "+conn(x.m.conn).name+" delivers in about "+lagS(x.lg)+". Move it to the event stream or relax the target.",3]));
@@ -368,10 +380,10 @@ function attention(){
  if(rOpen().length)a.push(["warn",rOpen().length+" reconciliation differences","Shared fields where "+BRAND.name+" and the source disagree. Each opens a work item for the field steward.",5]);
  if(aw.length)a.push(["info",aw.length+" machine-to-machine project"+(aw.length>1?"s":"")+" awaiting a decision","Routed by risk and data sensitivity: "+aw.map(p=>p.id+" to "+(p.route?p.route.n:"evaluation")).join("; ")+".",6]);
  if(pm.length)a.push(["info",pm.length+" AI-proposed mappings need approval","Nothing loads from a proposed mapping until a person approves it.",2]);
- F.conns.filter(c=>c.status==="degraded").forEach(c=>a.push(["warn",c.name+" is degraded",c.note||"Retries are succeeding; watch the rate limit.",1]));
+ CONNS().filter(c=>c.status==="degraded").forEach(c=>a.push(["warn",c.name+" is degraded",c.note||"Retries are succeeding; watch the rate limit.",1]));
  return a}
 function paneOver(){
- const ed=ED[F.edition],ac=activeConns(),s=slaStats(),cv=covStats(),r24=F.runs.filter(r=>r.min<=1440),ok24=r24.filter(r=>r.status==="ok").length;
+ const ed=ED[F.edition],ac=activeConns(),s=slaStats(),cv=covStats(),r24=RUNS().filter(r=>r.min<=1440),ok24=r24.filter(r=>r.status==="ok").length;
  const kp=kpiRow([["Connectors in use",ac.length+" of "+ed.conn,isCore()?"Base allows 3. The rest is preview":"edition limit",{cls:ac.length>ed.conn?"bad":"",keep:true}],["Fields fed",apprMaps().reduce((a,m)=>a.add(m.ent+"."+m.k),new Set()).size,"approved field mappings"],["Freshness SLA met",s.pct+"%",s.ok+" of "+s.n+" mapped fields",{metric:"m_fab_fresh"}],["Quarantine open",qOpen().length,"fix and replay",{metric:"m_fab_quar",keep:true}],["Mapping coverage",cv.pct+"%",cv.cov+" of "+cv.tot+" external or shared fields",{metric:"m_fab_cov"}]]);
  const lic=card("Edition and license","Placeholder names while packaging is decided",`<div class="row" style="gap:8px;flex-wrap:wrap">${pill(ed.n,F.edition==="core"?"mute":"good")} <span class="muted small">${E(ed.tag)}</span></div>
   <dl class="kv"><dt>License key</dt><dd><code>${E(F.edition==="core"?"None, free inside the platform":maskKey(F.key))}</code></dd><dt>Includes</dt><dd>${ed.feat.map(f=>E(f)).join("; ")}</dd><dt>Environments</dt><dd>${ed.envs.join(", ")}</dd></dl>
@@ -381,14 +393,14 @@ function paneOver(){
  const attCard=card("What needs attention","Ranked by how soon something breaks or expires",`<div class="fab-att">${att.map(x=>`<div class="fab-ar ${x[0]}"><i aria-hidden="true"></i><div><b>${E(x[1])}</b><div class="muted small">${E(x[2])}</div></div><button class="btn quiet" data-fab-tab="${x[3]}">Open</button></div>`).join("")||`<p class="muted">Nothing needs attention.</p>`}</div>`);
  const cnt={};ac.forEach(c=>cnt[c.status]=(cnt[c.status]||0)+1);
  const health=card("Connector health","One row per connector, newest status",`${stBar([["Healthy",cnt.healthy||0,"--good-f"],["Degraded, expiring or new",(cnt.degraded||0)+(cnt.expiring||0)+(cnt.new||0),"--warn-f"],["Sandbox only",cnt.sandbox||0,"--info-f"]])}${legend([["Healthy","--good-f"],["Degraded, expiring or new","--warn-f"],["Sandbox only","--info-f"]])}
-  <div class="fab-hl">${F.conns.filter(c=>c.kind!=="roadmap").map(c=>`<button class="fab-hr" data-fab-conn="${c.id}"><span class="fab-hn">${E(c.name)}</span>${stPill(c.status)}<span class="muted small">${c.status==="expired"?"stopped":"lag "+lagS(c.lag)}</span></button>`).join("")}</div>`);
+  <div class="fab-hl">${CONNS().filter(c=>c.kind!=="roadmap").map(c=>`<button class="fab-hr" data-fab-conn="${c.id}"><span class="fab-hn">${E(c.name)}</span>${stPill(c.status)}<span class="muted small">${c.status==="expired"?"stopped":"lag "+lagS(c.lag)}</span></button>`).join("")}</div>`);
  const bins=Array.from({length:24},()=>({ok:0,partial:0,failed:0}));r24.forEach(r=>{const h=Math.min(23,Math.floor(r.min/60));bins[h][r.status]++});const mx=Math.max(1,...bins.map(b=>b.ok+b.partial+b.failed));
  const stats=card("Run stats, last 24 hours","Runs per hour, oldest on the left",`<div class="fab-bars" role="img" aria-label="Runs per hour over the last 24 hours">${bins.slice().reverse().map(b=>`<div class="fab-bc">${["failed","partial","ok"].map(k=>b[k]?`<i class="${k}" style="height:${Math.round(100*b[k]/mx)}%"></i>`:"").join("")}</div>`).join("")}</div>${legend([["Clean run","--good-f"],["Run with quarantined records","--warn-f"],["Failed run","--bad-f"]])}
   <div class="statrow">${kpi("Runs",r24.length,Math.round(100*ok24/Math.max(1,r24.length))+"% clean")}${kpi("Records read",r24.reduce((a,r)=>a+r.read,0).toLocaleString(),"extracted")}${kpi("Loaded",r24.reduce((a,r)=>a+r.loaded,0).toLocaleString(),"after validation")}${kpi("Retries",r24.reduce((a,r)=>a+r.retries,0),"automatic",{keep:true})}</div>`);
  const how=card("How the freshness target picks the path","Set per field, not per connector",`<div class="grid g4 fab-fr">${Object.keys(FR).map(k=>`<div class="mini glass"><b>${E(FR[k].l)}</b>${pill(FR[k].mode,FR[k].mode==="Real-time"?"info":"mute")}<span class="small muted">${E(FR[k].how)}</span></div>`).join("")}</div>`);
  return `${prevBanner()}${kp}<div class="grid g2 fab-g">${lic}${lim}</div>${attCard}<div class="grid g2 fab-g">${health}${stats}</div>${how}`}
 function paneConn(){
- const cs=F.conns,n=t=>cs.filter(c=>c.tier===t&&c.kind!=="roadmap").length;
+ const cs=CONNS(),n=t=>cs.filter(c=>c.tier===t&&c.kind!=="roadmap").length;
  const kp=kpiRow([["Certified",n("certified"),"approved by the enterprise"],["Community",n("community"),"sandbox only until evaluated",{cls:"warn",keep:true}],["Project-scoped",n("project"),"temporary, with expiry"],["Expiring in 30 days",cs.filter(c=>c.status==="expiring").length,"decommission at expiry",{keep:true}],["Roadmap",cs.filter(c=>c.kind==="roadmap").length,"later connectors"]]);
  const four=["c_graph","c_idp","c_jira","c_mcp_reg"].map(id=>{const c=conn(id);return `<button class="tile glass fab-four" data-fab-conn="${id}"><span class="eyebrow">${id==="c_jira"?"Generic REST":id==="c_mcp_reg"?"MCP":KIND[c.kind]}</span><b>${E(id==="c_jira"?"Generic REST: Jira Cloud":c.name)}</b><span class="row" style="gap:6px;flex-wrap:wrap">${tierPill(c.tier)}${stPill(c.status)}</span><span class="muted small">${id==="c_mcp_reg"?"Serves "+PLAT.entities().length+" registry entities to agents":fedCount(id)+" fields fed, lag "+lagS(c.lag)}</span></button>`}).join("");
  const tbl=btHTML({id:"fab_conn",cols:[
@@ -401,8 +413,8 @@ function paneConn(){
   {k:"path",label:"Path",fmt:r=>r.kind==="roadmap"?"":r.canStream?"Real-time and batch":"Batch only",val:r=>r.canStream?"Real-time and batch":"Batch only"},
   {k:"lag",label:"Observed lag",fmt:r=>r.kind==="roadmap"||r.status==="expired"?"":lagS(r.lag),val:r=>r.lag||0},
   {k:"ed",label:"Edition",fmt:r=>r.min==="core"?pill("Base","good"):r.min==="enterprise"?pill("Later","mute"):pill(allowed(r)?"Integration":"Integration (locked)",allowed(r)?"info":"warn"),val:r=>r.min}
- ],rows:()=>F.conns,key:"id",h:520,rowH:56,facets:["tier","status","ed"],exportName:"fabric-connectors",open:id=>connDrawer(id)});
- const road=F.conns.filter(c=>c.kind==="roadmap").map(c=>`<button class="mini glass fab-road" data-fab-conn="${c.id}"><b>${E(c.name)}</b><span class="small muted">${E(c.desc)}</span>${pill("Roadmap","mute")}</button>`).join("");
+ ],rows:()=>CONNS(),key:"id",h:520,rowH:56,facets:["tier","status","ed"],exportName:"fabric-connectors",open:id=>connDrawer(id)});
+ const road=CONNS().filter(c=>c.kind==="roadmap").map(c=>`<button class="mini glass fab-road" data-fab-conn="${c.id}"><b>${E(c.name)}</b><span class="small muted">${E(c.desc)}</span>${pill("Roadmap","mute")}</button>`).join("");
  return `${prevBanner()}${kp}<div class="row sp" style="margin:12px 0 4px"><b>Four launch connectors</b><button class="btn primary" data-fab-newconn>Add a connector</button></div><div class="grid g4 fab-g">${four}</div>
  <div style="margin-top:14px">${card("All connectors","Certified, community and project-scoped, plus the roadmap",`${legend([["Certified: enterprise approved","--good-f"],["Community: sandbox only until evaluated","--warn-f"],["Project-scoped: temporary, expires","--p4"]])}${tbl}`)}</div>
  <div style="margin-top:14px">${card("Later connectors","On the roadmap; not available in any edition yet",`<div class="grid g3 fab-g">${road}</div>`)}</div>`}
@@ -410,23 +422,23 @@ function paneConn(){
 const SYN={due:"finish",duedate:"planned finish",start:"start",title:"name",summary:"short description",status:"state",jobtitle:"role",department:"team",manager:"manager",managerid:"manager",assignee:"owner assigned",assignments:"owner",storypoints:"story points",priority:"priority",vendor_name:"vendor",gl_account:"cost",createddatetime:"opened",mobilephone:"phone",employeeid:"id",labels:"skills",sprint:"sprint",currency:"currency",bucketid:"wbs",groups:"team",index_name:"name",shard:"count"};
 const toks=s=>String(s).replace(/([a-z])([A-Z])/g,"$1 $2").toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>1);
 function srcFields(id){const o={};(SAMPLES[id]||[]).forEach(sm=>sm.rows.forEach(r=>Object.keys(r).forEach(k=>{if(k==="id"||k===sm.nameKey&&false)return;if(!(k in o))o[k]={k,type:typeof r[k]==="number"?"int":/^\d{4}-\d\d-\d\d/.test(String(r[k]))?"datetime":"string",sample:String(r[k])}})));(SRCX[id]||[]).forEach(x=>{if(!(x[0] in o))o[x[0]]={k:x[0],type:x[1],sample:x[2]}});return Object.values(o)}
-function mapRows(id){const mp=F.maps.filter(m=>m.conn===id).map(m=>{const sf=srcFields(id).find(x=>x.k===m.src);return Object.assign({sample:sf?sf.sample:"",open:true},m)});
+function mapRows(id){const mp=MAPS().filter(m=>m.conn===id).map(m=>{const sf=srcFields(id).find(x=>x.k===m.src);return Object.assign({sample:sf?sf.sample:"",open:true},m)});
  const have=new Set(mp.map(m=>m.src));const un=srcFields(id).filter(x=>!have.has(x.k)).map(x=>({id:"U-"+id+"-"+x.k,conn:id,src:x.k,srcType:x.type,sample:x.sample,unmapped:true,status:"unmapped",ent:"",k:"",tf:"",conf:0,ver:0}));return mp.concat(un)}
 function proposeFor(id){
- const ents=[...new Set(F.maps.filter(m=>m.conn===id).map(m=>m.ent).concat((SAMPLES[id]||[]).map(s=>s.ent)).concat(conn(id).ents))].filter(e=>ent_(e));let n=0,miss=0;
+ const ents=[...new Set(MAPS().filter(m=>m.conn===id).map(m=>m.ent).concat((SAMPLES[id]||[]).map(s=>s.ent)).concat(conn(id).ents))].filter(e=>ent_(e));let n=0,miss=0;
  mapRows(id).filter(r=>r.unmapped).forEach(r=>{const st=new Set(toks(r.src).concat(toks(SYN[String(r.src).toLowerCase()]||"")));let best=null;
   ents.forEach(en=>ent_(en).fields.forEach(f=>{const ft=new Set(toks(f.k).concat(toks(f.label)));let hit=0;st.forEach(w=>{if(ft.has(w))hit++});const sc=hit/Math.max(1,st.size);if(sc>0&&(!best||sc>best.sc))best={en,f,sc}}));
-  if(best&&best.sc>=.5){F.maps.push({id:"MP-"+(100+F.maps.length),conn:id,src:r.src,srcType:r.srcType,ent:best.en,k:best.f.k,tf:/date/.test(best.f.type||"")?"ISO date to date":"Trim",conf:Math.min(.94,Math.round((.5+best.sc*.4)*100)/100),status:"proposed",lag:conn(id).lag,em:null,ver:1,ai:true});n++}else miss++});
+  if(best&&best.sc>=.5){MAPS().push({id:"MP-"+(100+MAPS().length),conn:id,src:r.src,srcType:r.srcType,ent:best.en,k:best.f.k,tf:/date/.test(best.f.type||"")?"ISO date to date":"Trim",conf:Math.min(.94,Math.round((.5+best.sc*.4)*100)/100),status:"proposed",lag:conn(id).lag,em:null,ver:1,ai:true});n++}else miss++});
  audit("Data layer mapping proposed",conn(id).name+": "+n+" proposed, "+miss+" without a match");toast(n+" mapping"+(n===1?"":"s")+" proposed, "+miss+" with no match in the registry",n?"good":"warn");render()}
-function dryRun(id){const res=[];const maps=F.maps.filter(m=>m.conn===id&&m.status!=="rejected");
+function dryRun(id){const res=[];const maps=MAPS().filter(m=>m.conn===id&&m.status!=="rejected");
  maps.forEach(m=>{let ok=0,fail=0,ex="",bad="";(SAMPLES[id]||[]).filter(s=>s.ent===m.ent).forEach(sm=>sm.rows.forEach(row=>{if(!(m.src in row))return;const r=coerce(m.ent,m.k,row[m.src],m);if(r.ok){ok++;if(!ex)ex=String(row[m.src])+" to "+String(r.val)}else{fail++;if(!bad)bad=r.why}}));res.push({m,ok,fail,ex,bad})});
  F.mapTest[id]={at:tsAgo(0),res:res.map(x=>({id:x.m.id,src:x.m.src,tgt:flabel(x.m.ent,x.m.k),ok:x.ok,fail:x.fail,ex:x.ex,bad:x.bad}))};audit("Data layer mapping tested",conn(id).name+": "+res.reduce((a,x)=>a+x.ok,0)+" passed, "+res.reduce((a,x)=>a+x.fail,0)+" failed on sample data");render()}
-function setMapStatus(ids,st){const cn=F.maps.find(m=>m.id===ids[0]).conn;F.mapVer[cn]=(F.mapVer[cn]||1)+(st==="approved"?1:0);ids.forEach(i=>{const m=F.maps.find(x=>x.id===i);m.status=st;if(st==="approved")m.ver=F.mapVer[cn]});
+function setMapStatus(ids,st){const cn=MAPS().find(m=>m.id===ids[0]).conn;F.mapVer[cn]=(F.mapVer[cn]||1)+(st==="approved"?1:0);ids.forEach(i=>{const m=MAPS().find(x=>x.id===i);m.status=st;if(st==="approved")m.ver=F.mapVer[cn]});
  audit("Data layer mapping "+st,conn(cn).name+": "+ids.length+" mapping"+(ids.length>1?"s":"")+(st==="approved"?" now version "+F.mapVer[cn]:""));toast(st==="approved"?ids.length+" approved, mapping set is now version "+F.mapVer[cn]:"Rejected","good")}
 function paneMap(){
- const id=F.mapConn,c=conn(id)||conn("c_graph"),mp=F.maps.filter(m=>m.conn===id),pend=mp.filter(m=>m.status==="proposed").length,cv=covStats(),tst=F.mapTest[id];
- const kp=kpiRow([["Approved mappings",F.maps.filter(m=>m.status==="approved").length,"across "+new Set(F.maps.filter(m=>m.status==="approved").map(m=>m.conn)).size+" connectors"],["Waiting for approval",F.maps.filter(m=>m.status==="proposed").length,"AI-proposed or edited",{cls:"warn",keep:true}],["Coverage",cv.pct+"%",cv.cov+" of "+cv.tot+" external or shared fields",{metric:"m_fab_cov"}],["This mapping set","v"+(F.mapVer[id]||1),E(c.name)],["Sample test",tst?tst.res.reduce((a,x)=>a+x.ok,0)+" ok":"Not run",tst?tst.res.reduce((a,x)=>a+x.fail,0)+" failed, "+tst.at:"Run it before approving",{keep:true}]]);
- const chips=[...new Set(F.maps.map(m=>m.conn).concat(Object.keys(SAMPLES)))].filter(x=>conn(x)&&conn(x).kind!=="roadmap").map(x=>`<button class="chip ${x===id?"on":""}" data-fab-mapconn="${x}">${E(conn(x).name)}</button>`).join("");
+ const id=F.mapConn,c=conn(id)||conn("c_graph"),mp=MAPS().filter(m=>m.conn===id),pend=mp.filter(m=>m.status==="proposed").length,cv=covStats(),tst=F.mapTest[id];
+ const kp=kpiRow([["Approved mappings",MAPS().filter(m=>m.status==="approved").length,"across "+new Set(MAPS().filter(m=>m.status==="approved").map(m=>m.conn)).size+" connectors"],["Waiting for approval",MAPS().filter(m=>m.status==="proposed").length,"AI-proposed or edited",{cls:"warn",keep:true}],["Coverage",cv.pct+"%",cv.cov+" of "+cv.tot+" external or shared fields",{metric:"m_fab_cov"}],["This mapping set","v"+(F.mapVer[id]||1),E(c.name)],["Sample test",tst?tst.res.reduce((a,x)=>a+x.ok,0)+" ok":"Not run",tst?tst.res.reduce((a,x)=>a+x.fail,0)+" failed, "+tst.at:"Run it before approving",{keep:true}]]);
+ const chips=[...new Set(MAPS().map(m=>m.conn).concat(Object.keys(SAMPLES)))].filter(x=>conn(x)&&conn(x).kind!=="roadmap").map(x=>`<button class="chip ${x===id?"on":""}" data-fab-mapconn="${x}">${E(conn(x).name)}</button>`).join("");
  const tbl=btHTML({id:"fab_maps_"+id,cols:[
   {k:"src",label:"Source field",fmt:r=>`<b>${E(r.src)}</b><div class="muted small">${E(r.srcType)} · e.g. ${E(String(r.sample||"").slice(0,26))}</div>`,val:r=>r.src,w:230,wrap:true},
   {k:"tgt",label:"Registry field",fmt:r=>r.unmapped?`<span class="muted">Not mapped</span>`:`<b>${E(flabel(r.ent,r.k))}</b><div class="muted small">${E(ENTLBL(r.ent))}</div>`,val:r=>r.unmapped?"":flabel(r.ent,r.k),w:210,wrap:true},
@@ -441,7 +453,7 @@ function paneMap(){
  ${card("Mapping studio: "+E(c.name),"Source fields on the left, registry fields on the right. AI proposes; a person approves; each approval bumps the version.",`<div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="btn primary" data-fab-propose="${id}">${ico("sparkle")} Propose mappings with AI</button><button class="btn" data-fab-apprall="${id}" ${pend?"":"disabled"}>Approve ${pend} waiting at 85% or more</button><button class="btn quiet" data-fab-test="${id}">Test with sample data</button><button class="btn quiet" data-fab-run="${id}">Run a sample</button>${aiChip({model:"Claude Sonnet",conf:.88,title:"How mappings are proposed",note:"Matches source field names and types to registry field names, labels and synonyms. Confidence drops when only part of a name matches.",src:["Source field names and sample values","Registry field catalog","Approved mappings on other connectors"],guards:["Proposals never load data","A person approves every mapping","Authority rules still apply at load time"]})}</div>${tbl}`)}
  ${tcard?`<div style="margin-top:14px">${tcard}</div>`:""}`}
 /* ---- field authority ---- */
-function authRows(){const idx={};F.maps.filter(m=>m.status==="approved"&&live(conn(m.conn))).forEach(m=>{(idx[m.ent+"."+m.k]=idx[m.ent+"."+m.k]||[]).push(m)});
+function authRows(){const idx={};MAPS().filter(m=>m.status==="approved"&&live(conn(m.conn))).forEach(m=>{(idx[m.ent+"."+m.k]=idx[m.ent+"."+m.k]||[]).push(m)});
  return PLAT.fieldsAll().map(f=>{const m=eff(f.ent,f.k),mp=idx[f.ent+"."+f.k]||[];const lg=mp.length?Math.min(...mp.map(x=>x.lag==null?conn(x.conn).lag:x.lag)):null;
   return{id:f.ent+"."+f.k,ent:f.ent,entLabel:f.entLabel,k:f.k,label:f.label,type:f.type,auth:m.auth,dir:m.dir,fresh:m.fresh,mode:FR[m.fresh].mode,cls:m.cls,trust:m.trust,conflict:m.conflict,over:!!m.over,fed:mp.map(x=>conn(x.conn).name).filter((v,i,a)=>a.indexOf(v)===i),lag:lg,sla:lg==null?"Not fed":lg<=FR[m.fresh].s?"Met":"Missed"}})}
 function paneAuth(){
@@ -462,7 +474,7 @@ function paneAuth(){
  ],rows:authRows,key:"id",h:520,rowH:54,facets:["auth","fresh","mode","sla"],groupBy:["entLabel","auth","fresh"],exportName:"fabric-field-authority",open:i=>fieldDrawer(i)});
  return `${prevBanner()}${kp}<div style="margin-top:14px">${modes}</div><div style="margin-top:14px">${card("Field authority","Open a field to see its source of truth and to override authority or freshness. Overrides are audited.",`${legend([["Platform authority","--good-f"],["External authority","--info-f"],["Shared","--warn-f"]])}${tbl}`)}</div>`}
 function fieldDrawer(id){
- const r=authRows().find(x=>x.id===id);if(!r)return;const m=eff(r.ent,r.k),o=F.ovr[id],mp=F.maps.filter(x=>x.ent===r.ent&&x.k===r.k);
+ const r=authRows().find(x=>x.id===id);if(!r)return;const m=eff(r.ent,r.k),o=F.ovr[id],mp=MAPS().filter(x=>x.ent===r.ent&&x.k===r.k);
  openDrawer(`<div class="eyebrow">${E(r.entLabel)}</div><h2 style="margin:4px 0">${E(r.label)}</h2><div class="row" style="gap:6px;flex-wrap:wrap">${pill(m.auth,AUTHP[m.auth])} ${pill(FR[m.fresh].mode,FR[m.fresh].mode==="Real-time"?"info":"mute")} ${pill(m.cls,CLSP[m.cls])} ${o?pill("Edited","warn"):""}</div>
  <div class="story">${E(m.why)}. ${E(FR[m.fresh].how)}.</div>
  <dl class="kv"><dt>Direction</dt><dd>${m.dir==="in"?"External to "+BRAND.name:m.dir==="out"?BRAND.name+" only":"Both ways"}</dd><dt>Freshness target</dt><dd>${E(FR[m.fresh].l)}</dd><dt>Conflict rule</dt><dd>${E(m.conflict)}</dd><dt>Trust score</dt><dd>${Math.round(m.trust*100)}%</dd><dt>Quality rule</dt><dd>${E(m.rule)}</dd><dt>Fed by</dt><dd>${r.fed.length?r.fed.map(E).join(", "):"No connector yet"}</dd><dt>Observed lag</dt><dd>${r.lag==null?"Not fed":lagS(r.lag)+" ("+r.sla+")"}</dd>${o?`<dt>Last change</dt><dd>${E(o.by)} on ${E(o.at)}: ${E(o.reason)}</dd>`:""}</dl>
@@ -472,7 +484,7 @@ function fieldDrawer(id){
 const RSTP=s=>pill(s,s==="ok"?"good":s==="partial"?"warn":"bad");
 const QSTP={open:["Open","warn"],replayed:["Replayed","good"],dead:["Dead letter","bad"]};
 function paneRuns(){
- const r24=F.runs.filter(r=>r.min<=1440),ok=r24.filter(r=>r.status==="ok").length,dead=F.quar.filter(q=>q.status==="dead").length;
+ const r24=RUNS().filter(r=>r.min<=1440),ok=r24.filter(r=>r.status==="ok").length,dead=F.quar.filter(q=>q.status==="dead").length;
  const kp=kpiRow([["Runs in 24 hours",r24.length,Math.round(100*ok/Math.max(1,r24.length))+"% finished clean"],["Records loaded",r24.reduce((a,r)=>a+r.loaded,0).toLocaleString(),"after validation and merge"],["In quarantine",qOpen().length,"waiting for a fix",{metric:"m_fab_quar",keep:true}],["Dead letter",dead,"three failed replays",{cls:dead?"bad":"",keep:true}],["Failed runs",r24.filter(r=>r.status==="failed").length,"retried with backoff",{keep:true}]]);
  const stages=[["Extract","--p4","Pull from the source or receive the event"],["Validate","--good-f","Check each record against the registry contract"],["Transform","--accent","Map and convert types"],["Match and merge","--warn-f","Find the record, apply authority and conflict rules"],["Load","--good-f","Write with an idempotency key"],["Publish event","--accent","Send a canonical change event"]];
  const pipe=card("The pipeline every run follows","Failed validation goes to quarantine, never into the registry",`<div class="fab-flow fab-flow6">${stages.map((s,i)=>`<div class="fab-fs"><i style="background:var(${s[1]})"></i><b>${i+1}. ${s[0]}</b><span>${s[2]}</span></div>`).join("")}</div>${legend(stages.map(s=>[s[0],s[1]]))}<p class="muted small">Retries use exponential backoff. Backfill replays a date range. A record that fails three replays moves to the dead letter queue for a steward. Replays are idempotent: the same key loads a record once.</p>`);
@@ -489,7 +501,7 @@ function paneRuns(){
   {k:"status",label:"Status",fmt:r=>RSTP(r.status),val:r=>r.status},
   {k:"env",label:"Environment",fmt:r=>E(r.env),val:r=>r.env},
   {k:"err",label:"Error",fmt:r=>E(r.err||""),val:r=>r.err,wrap:true,w:220}
- ],rows:()=>F.runs,key:"id",h:440,rowH:48,facets:["cn","status","mode","env"],exportName:"fabric-runs",open:i=>runDrawer(i)});
+ ],rows:()=>RUNS(),key:"id",h:440,rowH:48,facets:["cn","status","mode","env"],exportName:"fabric-runs",open:i=>runDrawer(i)});
  const qt=btHTML({id:"fab_quar",cols:[
   {k:"id",label:"Item",fmt:r=>`<b>${r.id}</b>`,val:r=>r.id},
   {k:"cn",label:"Connector",fmt:r=>E(conn(r.conn).name),val:r=>conn(r.conn).name,wrap:true,w:180},
@@ -518,13 +530,13 @@ function fixForm(id){
    if(!r.ok||pr){q.attempts++;if(q.attempts>=3){q.status="dead";toast("Still failing. Moved to the dead letter queue.","bad");audit("Data layer item dead-lettered",q.id+": "+q.rec);closeDrawer()}else{toast("Still fails: "+(pr?pr.why:r.why),"warn");audit("Data layer replay failed",q.id+" attempt "+q.attempts)}render();return}
    q.status="replayed";q.val=String(r.val);F.usage++;const c=conn(q.conn);
    const run=newRun(c,{mode:"Batch",read:1,valid:1,loaded:1,events:1,kind:"replay",idem:"idem-"+hs(q.id)*7919});
-   F.events.unshift(mkEvent(q.ent,q.k,q.rec,"(quarantined)",String(r.val),q.conn,0));audit("Data layer quarantine replayed",q.id+" "+q.rec+" loaded as "+r.val+(v.note?" ("+v.note+")":""));toast("Replayed and loaded: "+q.rec,"good");closeDrawer();render()}})}
+   FEVTS().unshift(mkEvent(q.ent,q.k,q.rec,"(quarantined)",String(r.val),q.conn,0));audit("Data layer quarantine replayed",q.id+" "+q.rec+" loaded as "+r.val+(v.note?" ("+v.note+")":""));toast("Replayed and loaded: "+q.rec,"good");closeDrawer();render()}})}
 /* ---- reconciliation ---- */
 const RECP={open:["Open","warn"],wi:["Work item open","info"],resolved:["Resolved","good"]};
 const steward=en=>({project_task:"Priya Shah",user_story:"Sam Patel",person:"Rina Okafor",invoice:"Avery Chen"})[en]||"Maya Ortiz";
 function paneRecon(){
  const open=rOpen(),sh=authRows().filter(r=>r.auth==="shared").length,age=open.length?Math.max(...open.map(r=>r.min)):0;
- const kp=kpiRow([["Open differences",open.length,"between "+BRAND.name+" and the source",{metric:"m_fab_recon",keep:true}],["Work items open",F.wi.filter(w=>w.st==="open").length,"assigned to stewards",{keep:true}],["Resolved this week",F.recon.filter(r=>r.status==="resolved").length,"decided and audited"],["Oldest open",age>=1440?Math.floor(age/1440)+" days":Math.round(age/60)+" hours","since detection",{keep:true}],["Shared fields",sh,"where both sides may edit"]]);
+ const kp=kpiRow([["Open differences",open.length,"between "+BRAND.name+" and the source",{metric:"m_fab_recon",keep:true}],["Work items open",WIS().filter(w=>w.st==="open").length,"assigned to stewards",{keep:true}],["Resolved this week",F.recon.filter(r=>r.status==="resolved").length,"decided and audited"],["Oldest open",age>=1440?Math.floor(age/1440)+" days":Math.round(age/60)+" hours","since detection",{keep:true}],["Shared fields",sh,"where both sides may edit"]]);
  const tbl=btHTML({id:"fab_recon",cols:[
   {k:"id",label:"Difference",fmt:r=>`<b>${r.id}</b>`,val:r=>r.id},
   {k:"rec",label:"Record",fmt:r=>`<b>${E(r.rec)}</b><div class="muted small">${E(r.label)}</div>`,val:r=>r.rec,wrap:true,w:210},
@@ -535,7 +547,7 @@ function paneRecon(){
   {k:"at",label:"Detected",fmt:r=>E(r.at),val:r=>-r.min},
   {k:"status",label:"Status",fmt:r=>pill(RECP[r.status][0],RECP[r.status][1])+(r.wi?` <span class="muted small">${r.wi}</span>`:""),val:r=>RECP[r.status][0]}
  ],rows:()=>F.recon,key:"id",h:440,rowH:56,facets:["status","cn"],exportName:"fabric-reconciliation",open:i=>reconDrawer(i)});
- const wi=F.wi.length?card("Work items from the platform data layer","Reconciliation and decommission tasks, assigned to a person",`<div class="fab-hl">${F.wi.map(w=>`<div class="fab-hr fab-wi"><span class="fab-hn"><b>${E(w.id)}</b> ${E(w.t)}<br><span class="muted small">${E(w.sub)}</span></span>${pill(w.st==="open"?"Open":"Done",w.st==="open"?"warn":"good")}<span class="small">${own_(w.who)} · due ${E(w.due)}</span></div>`).join("")}</div>`):"";
+ const wi=WIS().length?card("Work items from the platform data layer","Reconciliation and decommission tasks, assigned to a person",`<div class="fab-hl">${WIS().map(w=>`<div class="fab-hr fab-wi"><span class="fab-hn"><b>${E(w.id)}</b> ${E(w.t)}<br><span class="muted small">${E(w.sub)}</span></span>${pill(w.st==="open"?"Open":"Done",w.st==="open"?"warn":"good")}<span class="small">${own_(w.who)} · due ${E(w.due)}</span></div>`).join("")}</div>`):"";
  return `${prevBanner()}${kp}<div style="margin-top:14px">${card("Differences on shared fields","When both sides may edit a field, the newest value wins unless "+BRAND.name+" has an unsynced edit. Then the difference lands here instead of being overwritten.",`${tbl}`)}</div>${wi?`<div style="margin-top:14px">${wi}</div>`:""}`}
 function reconDrawer(id){
  const r=F.recon.find(x=>x.id===id);if(!r)return;const m=eff(r.ent,r.k),c=conn(r.conn);
@@ -548,9 +560,9 @@ function wiForm(id){
  const r=F.recon.find(x=>x.id===id);if(!r)return;if(isCore()){unlockDrawer("Opening reconciliation work items needs the Integration edition.");return}
  openForm({id:"fab_wi",title:"Open a work item for "+r.rec,story:"Creates a task for the field steward with both values and the source attached. It appears in their Person 360 work list. The difference stays open until someone decides.",submit:"Open work item",
   fields:[{k:"who",label:"Assign to",type:"people",req:true},{k:"due",label:"Due",type:"date"},{k:"note",label:"What to decide",type:"longtext",ph:"Which date is right?"}],defaults:{who:steward(r.ent)},
-  onSubmit:v=>{const w={id:"WI-"+(F.seq.wi++),t:"Reconcile "+r.label+": "+flabel(r.ent,r.k),sub:r.id+" on "+r.ent+": "+BRAND.name+" "+r.plat+" versus source "+r.ext,who:v.who||steward(r.ent),due:v.due||dayS(5).slice(0,6),st:"open",ref:r.id};F.wi.unshift(w);r.status="wi";r.wi=w.id;audit("Data layer work item opened",w.id+" for "+r.id);toast(w.id+" opened for "+w.who,"good");closeDrawer();render()}})}
+  onSubmit:v=>{const w={id:"WI-"+(F.seq.wi++),t:"Reconcile "+r.label+": "+flabel(r.ent,r.k),sub:r.id+" on "+r.ent+": "+BRAND.name+" "+r.plat+" versus source "+r.ext,who:v.who||steward(r.ent),due:v.due||dayS(5).slice(0,6),st:"open",ref:r.id};WIS().unshift(w);r.status="wi";r.wi=w.id;audit("Data layer work item opened",w.id+" for "+r.id);toast(w.id+" opened for "+w.who,"good");closeDrawer();render()}})}
 function resolveRecon(id,side){const r=F.recon.find(x=>x.id===id);if(!r)return;r.status="resolved";r.how=side==="plat"?"Kept the "+BRAND.name+" value":"Took the source value";
- const w=F.wi.find(x=>x.ref===id);if(w)w.st="done";if(side==="ext")F.events.unshift(mkEvent(r.ent,r.k,r.rec,r.plat,r.ext,r.conn,0));audit("Data layer difference resolved",r.id+": "+r.how);toast(r.how,"good");closeDrawer();render()}
+ const w=WIS().find(x=>x.ref===id);if(w)w.st="done";if(side==="ext")FEVTS().unshift(mkEvent(r.ent,r.k,r.rec,r.plat,r.ext,r.conn,0));audit("Data layer difference resolved",r.id+": "+r.how);toast(r.how,"good");closeDrawer();render()}
 /* ---- M2M ---- */
 const STAGES=[["proposed","Proposed","Waiting for the platform team"],["evaluating","Evaluating","Five checks running"],["awaiting","Awaiting decision","Routed by risk and sensitivity"],["certified","Approved: certified","Ongoing connector"],["project","Approved: project-scoped","Temporary, with expiry"],["rejected","Rejected","Reasons recorded"]];
 const CKP=s=>s==="pass"?["Pass","good"]:s==="warn"?["Review","warn"]:["Fail","bad"];
@@ -603,7 +615,7 @@ function m2mForm(){
   onSubmit:v=>{const d=draft(v);d.id="M2M-"+(++F.seq.prj).toString().padStart(2,"0");d.owner=v.owner||"Casey Rowan";d.by="Casey Rowan";d.stage="proposed";d.mine=true;d.created=0;d.eval=null;d.route=null;d.outcome=null;F.proj.unshift(d);audit("Data layer M2M project proposed",d.id+": "+d.t);toast(d.id+" proposed. Drag it to Evaluating to run the checks.","good");closeDrawer();S.v.fab=6;render()}})}
 /* ---- event bus ---- */
 function paneBus(){
- const ev=F.events,e24=ev.filter(e=>e.min<=1440).length,dl=SUBS.reduce((a,s)=>a+s.dl,0);
+ const ev=FEVTS(),e24=ev.filter(e=>e.min<=1440).length,dl=SUBS.reduce((a,s)=>a+s.dl,0);
  const kp=kpiRow([["Events in 24 hours",e24.toLocaleString(),"canonical change events"],["Subscribers",SUBS.length,"apps and agents"],["Median delivery",(1.1).toFixed(1)+" s","source to subscriber"],["Dead letters",dl,"undelivered after retries",{cls:dl?"warn":"",keep:true}],["Event types",new Set(ev.map(e=>e.type)).size,"one name per entity field"]]);
  const st=btHTML({id:"fab_subs",cols:[
   {k:"n",label:"Subscriber",fmt:r=>`<b>${E(r.n)}</b>`,val:r=>r.n,wrap:true,w:220},{k:"pat",label:"Listens to",fmt:r=>r.pat.includes("*")?"Every entity":E(r.pat.map(ENTLBL).join(", ")),val:r=>r.pat.join(),wrap:true,w:240},
@@ -615,11 +627,11 @@ function paneBus(){
   {k:"src",label:"Source",fmt:r=>E((conn(r.conn)||{name:r.conn}).name),val:r=>(conn(r.conn)||{name:r.conn}).name,wrap:true},
   {k:"path",label:"Path",fmt:r=>pill(r.path==="stream"?"Stream":"Batch",r.path==="stream"?"info":"mute"),val:r=>r.path},
   {k:"at",label:"Time",fmt:r=>E(r.at),val:r=>-r.min},{k:"n",label:"Delivered to",fmt:r=>r.subs.length+" subscribers",val:r=>r.subs.length}
- ],rows:()=>F.events,key:"id",h:440,rowH:48,facets:["path","src"],exportName:"fabric-events",open:i=>evDrawer(i)});
+ ],rows:()=>FEVTS(),key:"id",h:440,rowH:48,facets:["path","src"],exportName:"fabric-events",open:i=>evDrawer(i)});
  return `${prevBanner()}${kp}<div style="margin-top:14px">${card("Canonical change events","Every load publishes one event per changed field. Subscribers never talk to connectors; they listen here.",`<div class="grid g3 fab-g"><div class="mini glass"><b>One shape</b><span class="small muted">Type is <code>entity.field.changed</code>, with old value, new value, source, run and schema version.</span></div><div class="mini glass"><b>Real-time and batch</b><span class="small muted">A live field publishes within seconds. A daily field publishes when its batch lands.</span></div><div class="mini glass"><b>Masked by policy</b><span class="small muted">Subscribers see only fields their class allows. Restricted values are masked in the event.</span></div></div>`)}</div>
  <div style="margin-top:14px">${card("Subscribers","Who listens, how it is delivered, and how far behind they are",st)}</div><div style="margin-top:14px">${card("Event feed","Newest first; open one to see its envelope and who received it",et)}</div>`}
 function evDrawer(id){
- const e=F.events.find(x=>x.id===id);if(!e)return;const m=eff(e.ent,e.k)||{};
+ const e=FEVTS().find(x=>x.id===id);if(!e)return;const m=eff(e.ent,e.k)||{};
  openDrawer(`<div class="eyebrow">Change event</div><h2 style="margin:4px 0"><code>${E(e.type)}</code></h2><div class="row" style="gap:6px;flex-wrap:wrap">${pill(e.path==="stream"?"Stream":"Batch",e.path==="stream"?"info":"mute")} ${m.cls?pill(m.cls,CLSP[m.cls]):""}</div>
  <div class="story">${E(e.rec)} changed from <b>${E(String(e.old))}</b> to <b>${E(String(e.nw))}</b>, loaded by ${E((conn(e.conn)||{name:e.conn}).name)} at ${E(e.at)}.</div>
  <dl class="kv"><dt>Event id</dt><dd><code>${e.id}</code></dd><dt>Run</dt><dd><code>${E(e.run)}</code></dd><dt>Schema</dt><dd>${e.schema}</dd><dt>Authority</dt><dd>${m.auth?pill(m.auth,AUTHP[m.auth]):""}</dd></dl>
@@ -635,12 +647,12 @@ function mapDrawer(id){
  <div class="row" style="gap:8px;flex-wrap:wrap">${un?`<button class="btn primary" data-fab-chg="${row.id}">Map to a registry field</button><button class="btn quiet" onclick="go('plat_reg')">Propose a new field</button>`:`${row.status!=="approved"?`<button class="btn primary" data-fab-apprmap="${row.id}">Approve</button>`:""}<button class="btn" data-fab-chg="${row.id}">Change target</button>${row.status!=="rejected"?`<button class="btn quiet" data-fab-rejmap="${row.id}">Reject</button>`:""}`}</div>`)}
 function chgForm(id){
  const un=id.indexOf("U-")===0,row=mapRows(F.mapConn).find(r=>r.id===id);if(!row)return;
- const ents=[...new Set(F.maps.filter(m=>m.conn===row.conn).map(m=>m.ent).concat((SAMPLES[row.conn]||[]).map(s=>s.ent)).concat(conn(row.conn).ents))].filter(e=>ent_(e));
+ const ents=[...new Set(MAPS().filter(m=>m.conn===row.conn).map(m=>m.ent).concat((SAMPLES[row.conn]||[]).map(s=>s.ent)).concat(conn(row.conn).ents))].filter(e=>ent_(e));
  const opts=[];ents.forEach(en=>ent_(en).fields.forEach(f=>opts.push([en+"."+f.k,ENTLBL(en)+": "+f.label])));
  openForm({id:"fab_chg",title:un?"Map "+row.src:"Change the target of "+row.src,story:"Pick the registry field this source field should feed. The mapping goes back to Proposed and needs an approval, which bumps the mapping set version.",submit:"Save mapping",
   fields:[{k:"to",label:"Registry field",type:"select",req:true,opts},{k:"tf",label:"Transform",type:"select",opts:TFS}],defaults:{to:un?opts[0][0]:row.ent+"."+row.k,tf:un?"Trim":row.tf},
   live:v=>{const p=(v.to||".").split("."),m=eff(p[0],p.slice(1).join("."));return `<div class="story"><b>Authority:</b> ${E(m.auth)}. ${E(m.conflict)}. Freshness target ${E(FR[m.fresh].l.toLowerCase())}.</div>`},
-  onSubmit:v=>{const i=v.to.indexOf("."),en=v.to.slice(0,i),k=v.to.slice(i+1);if(un)F.maps.push({id:"MP-"+(100+F.maps.length),conn:row.conn,src:row.src,srcType:row.srcType,ent:en,k,tf:v.tf||"Trim",conf:1,status:"proposed",lag:conn(row.conn).lag,em:null,ver:1,ai:false});else{const m=F.maps.find(x=>x.id===id);m.ent=en;m.k=k;m.tf=v.tf||m.tf;m.status="proposed";m.conf=1;m.ai=false}
+  onSubmit:v=>{const i=v.to.indexOf("."),en=v.to.slice(0,i),k=v.to.slice(i+1);if(un)MAPS().push({id:"MP-"+(100+MAPS().length),conn:row.conn,src:row.src,srcType:row.srcType,ent:en,k,tf:v.tf||"Trim",conf:1,status:"proposed",lag:conn(row.conn).lag,em:null,ver:1,ai:false});else{const m=MAPS().find(x=>x.id===id);m.ent=en;m.k=k;m.tf=v.tf||m.tf;m.status="proposed";m.conf=1;m.ai=false}
    audit("Data layer mapping edited",row.src+" to "+en+"."+k);toast("Saved as proposed","good");closeDrawer();render()}})}
 function ovrForm(id){
  const i=id.indexOf("."),en=id.slice(0,i),k=id.slice(i+1),m=eff(en,k),f=fieldOf(en,k);if(!f)return;
@@ -649,7 +661,7 @@ function ovrForm(id){
    {k:"fresh",label:"Freshness target",type:"chips",req:true,opts:[["live","Live, under 5 seconds"],["near-live","Near-live, under 5 minutes"],["hourly","Hourly"],["daily","Daily"]]},
    {k:"conflict",label:"Conflict rule",type:"select",opts:[BRAND.name+" wins","External system wins","Newest wins, differences open a reconciliation item","Always ask the steward"],show:v=>v.auth==="shared"},{k:"reason",label:"Reason",type:"longtext",req:true,ph:"Why this field needs a different authority or freshness"}],
   defaults:{auth:m.auth,fresh:m.fresh,conflict:m.conflict,reason:""},
-  live:v=>{const fr=FR[v.fresh||m.fresh],mp=F.maps.filter(x=>x.ent===en&&x.k===k&&x.status==="approved"),worst=mp.length?Math.min(...mp.map(x=>x.lag==null?conn(x.conn).lag:x.lag)):null;return `<div class="story"><b>Result:</b> ${E(fr.mode)} path. ${E(fr.how)}.${worst!=null?(worst<=fr.s?" Today's connector delivers in about "+lagS(worst)+", so this target is met.":" Today's connector delivers in about "+lagS(worst)+", so this target would be missed until it moves to the event stream."):" No connector feeds it yet."}</div>`},
+  live:v=>{const fr=FR[v.fresh||m.fresh],mp=MAPS().filter(x=>x.ent===en&&x.k===k&&x.status==="approved"),worst=mp.length?Math.min(...mp.map(x=>x.lag==null?conn(x.conn).lag:x.lag)):null;return `<div class="story"><b>Result:</b> ${E(fr.mode)} path. ${E(fr.how)}.${worst!=null?(worst<=fr.s?" Today's connector delivers in about "+lagS(worst)+", so this target is met.":" Today's connector delivers in about "+lagS(worst)+", so this target would be missed until it moves to the event stream."):" No connector feeds it yet."}</div>`},
   onSubmit:v=>{F.ovr[id]={auth:v.auth||m.auth,fresh:v.fresh||m.fresh,conflict:v.conflict||"",reason:v.reason,by:"Casey Rowan",at:dayS(0)};audit("Data layer authority overridden",en+"."+k+": "+m.auth+"/"+m.fresh+" to "+(v.auth||m.auth)+"/"+(v.fresh||m.fresh)+". "+v.reason);toast("Override saved and audited","good");closeDrawer();render()}})}
 function connForm(){
  if(isCore()){unlockDrawer("Adding external connectors needs the Integration edition.");return}
@@ -662,13 +674,13 @@ function connForm(){
   onSubmit:v=>{if(activeConns().length>=ED[F.edition].conn){toast("No free connector slot","warn");unlockDrawer("All "+ED[F.edition].conn+" connector slots in the "+ED[F.edition].n+" edition are used.");return}
    if(v.vault&&!/^vault:\/\//.test(v.vault)){toast("Use a vault:// reference, never a secret","bad");return}
    const p=draftP(v),rt=routeOf(p,evaluate(p)),cert=v.tier==="certified"&&rt.k==="auto",tier=cert?"certified":v.tier==="project"?"project":"community";
-   const c={id:"c_"+hs(v.name+F.conns.length).toString(36),name:v.name,kind:{"Generic REST":"rest",MCP:"mcp","Identity provider":"idp","Microsoft Graph":"graph"}[v.ctype]||"rest",tier,status:tier==="community"?"sandbox":"new",owner:v.owner||"Casey Rowan",min:"fabric",env:tier==="community"?"Sandbox":"Production",ents:p.ents,canStream:false,lag:3600,sys:v.sys,risk:v.risk||"Low",desc:"Added by "+(v.owner||"Casey Rowan")+".",expiry:tier==="project"?v.exp:undefined,auth:A(["read"],"To be set","pending",v.vault||"vault://meridian-sbx/fabric/"+hs(v.name)+" (to be created)","svc-fabric-"+hs(v.name))};
-   F.conns.splice(F.conns.findIndex(x=>x.kind==="roadmap"),0,c);
+   const c={id:"c_"+hs(v.name+CONNS().length).toString(36),name:v.name,kind:{"Generic REST":"rest",MCP:"mcp","Identity provider":"idp","Microsoft Graph":"graph"}[v.ctype]||"rest",tier,status:tier==="community"?"sandbox":"new",owner:v.owner||"Casey Rowan",min:"fabric",env:tier==="community"?"Sandbox":"Production",ents:p.ents,canStream:false,lag:3600,sys:v.sys,risk:v.risk||"Low",desc:"Added by "+(v.owner||"Casey Rowan")+".",expiry:tier==="project"?v.exp:undefined,auth:A(["read"],"To be set","pending",v.vault||"vault://meridian-sbx/fabric/"+hs(v.name)+" (to be created)","svc-fabric-"+hs(v.name))};
+   CONNS().splice(CONNS().findIndex(x=>x.kind==="roadmap"),0,c);
    if(v.tier==="certified"&&!cert)F.reqs.push({id:"REQ-"+(F.seq.req++),kind:"Certify connector",ref:c.id,t:"Certify "+c.name,route:rt,state:"Waiting",at:0});
    audit("Data layer connector added",c.name+" as "+tier+(v.tier==="certified"&&!cert?", certification routed to "+rt.n:""));toast(cert?"Auto-approved as certified":v.tier==="certified"?"Created in the sandbox; certification routed to "+rt.n:"Connector created: "+TIERP[tier][0],"good");closeDrawer();render()}})}
 function certForm(id){
  const c=conn(id);if(isCore()){unlockDrawer("Certification needs the Integration edition.");return}
- const mp=F.maps.filter(m=>m.conn===id),ctype={rest:"Generic REST",mcp:"MCP",idp:"Identity provider",graph:"Microsoft Graph"}[c.kind]||"Other (custom code)";
+ const mp=MAPS().filter(m=>m.conn===id),ctype={rest:"Generic REST",mcp:"MCP",idp:"Identity provider",graph:"Microsoft Graph"}[c.kind]||"Other (custom code)";
  const p={id:c.id,t:c.name,purpose:c.desc,systems:[c.sys],ents:c.ents,fields:mp.map(m=>m.k).join(", "),dir:"In",vol:500,risk:c.risk||"Medium",ctype,len:"ongoing"},ev=evaluate(p),rt=routeOf(p,ev);
  openForm({id:"fab_cert",title:"Request certification",story:"The five checks run on the connector as it is today, then the request goes down the route that fits its risk and data. Auto-approval promotes it immediately.",submit:"Submit request",
   fields:[{k:"why",label:"Why it is ready",type:"longtext",req:true,ph:"Sandbox runs have been clean for two weeks"}],
@@ -682,14 +694,28 @@ function bfForm(id){
   onSubmit:v=>{const d=Math.max(1,Math.round((Date.parse(v.to)-Date.parse(v.from))/86400000)+1),read=d*(c.lag>5000?60:120);const same_=Math.round(read*.8);
    newRun(c,{read,valid:read,loaded:read-same_,same:same_,events:read-same_,kind:"backfill "+v.from+" to "+v.to,dur:20+d*3});F.usage++;audit("Data layer backfill",c.name+": "+v.from+" to "+v.to+", "+read+" read, "+same_+" skipped as already loaded");toast("Backfill done: "+(read-same_)+" new, "+same_+" skipped","good");closeDrawer();render()}})}
 /* ---------- screen ---------- */
+/* another tenant: its own connectors and mappings (pack rows, sample data), labeled gaps for the parts it has no rows for */
+function tenantScreen(){
+ const C=CONNS().filter(c=>c.kind!=="roadmap"),Mp=MAPS(),org=(DATA.tenantInfo()||{}).org||"";const cn=id=>(C.find(c=>c.id===id)||{name:id}).name;
+ const n=f=>C.filter(f).length,ok=n(c=>c.status==="healthy"),ap=Mp.filter(m=>m.status==="approved").length;
+ const ctab=C.length?`<div class="tscroll"><table><thead><tr><th>Connector</th><th>External system</th><th>Tier</th><th>Status</th><th>Feeds</th><th>Delay</th><th>Owner and backup</th></tr></thead><tbody>${C.map(c=>`<tr><td><b>${E(c.name)}</b><br><small class="muted">${E(c.id)}</small></td><td>${E(c.sys||"")}</td><td>${TIERP[c.tier]?tierPill(c.tier):E(c.tier||"")}</td><td>${stPill(c.status)}</td><td class="small">${E((c.ents||[]).join(", "))}</td><td class="num">${c.lag!=null?lagS(c.lag):""}</td><td>${c.owner?own_(c.owner):""}${c.backup?" "+own_(c.backup):""}</td></tr>`).join("")}</tbody></table></div>`:TGAP("connectors");
+ const mtab=Mp.length?`<div class="tscroll"><table><thead><tr><th>Mapping</th><th>Connector</th><th>Source field</th><th>Feeds</th><th>Transform</th><th>Confidence</th><th>Status</th></tr></thead><tbody>${Mp.map(m=>`<tr><td class="num">${E(m.id)}</td><td>${E(cn(m.conn))}</td><td><code>${E(m.src)}</code> <small class="muted">${E(m.srcType||"")}</small></td><td>${E(ENTLBL(m.ent))}.${E(m.k)}</td><td>${E(m.tf||"")}</td><td class="num">${m.conf!=null?Math.round(m.conf*100)+"%":""}</td><td>${pill(m.status,m.status==="approved"?"good":m.status==="proposed"||m.status==="review"?"warn":"mute")}</td></tr>`).join("")}</tbody></table></div>`:TGAP("mappings");
+ const over=kpiRow([["Connectors",C.length,"sample data"],["Healthy",ok,"of "+C.length],["Certified",n(c=>c.tier==="certified"),"approved"],["Mappings",Mp.length,ap+" approved"]])+`<div style="margin-top:14px">${card("Connectors","Sample connectors of "+E(org)+"; runs are simulated",ctab)}</div>`;
+ const g=(t,w)=>card(t,"",TGAP(w));
+ const panes=[over,card("Connectors",C.length+" connectors",ctab),card("Mappings",Mp.length+" mappings from source fields to records",mtab),g("Field authority","field authority overrides"),
+  g("Runs and quarantine","connector runs and quarantined records"),g("Reconciliation","reconciliation items"),g("M2M projects","machine-to-machine projects"),g("Event bus","canonical change events")];
+ const story=`<b data-role="metric">${C.length}</b> sample connectors of ${E(org)} feed records through <b data-role="metric">${Mp.length}</b> mappings; <b data-role="metric">${ok}</b> are healthy. Connector runs are simulated.`;
+ return `<div class="screen fabx">${hero("Platform","Integration fabric: feed any field, keep control",story,`<div class="row" style="gap:8px;flex-wrap:wrap">${fchipT("m_fab_fresh")}${fchipT("m_fab_quar")}${fchipT("m_fab_cov")}</div>`)}${lensNote()}${views("fab",["Overview","Connectors","Mappings","Field authority","Runs and quarantine","Reconciliation","M2M projects","Event bus"],panes)}${procCard("plat_fab")}</div>`}
 function screen(){
+ if(!TCORE())return tenantScreen();
  ensure();sweepExpiry();syncMetrics();
  const ac=activeConns(),s=slaStats(),fed=new Set(apprMaps().map(m=>m.ent+"."+m.k)).size;
  const story=`<b data-role="metric">${ac.length}</b> connectors feed <b data-role="metric">${fed}</b> registry fields, and <b data-role="metric">${s.pct}%</b> meet their freshness target. Take the project schedule: ${U.esc(BRAND.name)} is authoritative, while dates arrive from Planner and Jira (Project Online retired on Sept 30). <b data-role="metric">${qOpen().length}</b> records wait in quarantine and <b data-role="metric">${rOpen().length}</b> differences need a decision. ${isCore()?"You are on the free Base edition, so this is a live preview.":"Edition: "+ED[F.edition].n+"."}`;
- const extra=`<div class="row" style="gap:8px;flex-wrap:wrap">${fchip("m_fab_fresh")}${fchip("m_fab_quar")}${fchip("m_fab_cov")}${stdChip("dmbok","Data integration and interoperability, data quality and metadata: each field has a steward, an authority and a quality rule, and every load is validated and audited.")}${isCore()?`<button class="btn primary" data-fab-unlock>Unlock the Integration edition</button>`:""}</div>`;
+ const extra=`<div class="row" style="gap:8px;flex-wrap:wrap">${fchipT("m_fab_fresh")}${fchipT("m_fab_quar")}${fchipT("m_fab_cov")}${stdChip("dmbok","Data integration and interoperability, data quality and metadata: each field has a steward, an authority and a quality rule, and every load is validated and audited.")}${isCore()?`<button class="btn primary" data-fab-unlock>Unlock the Integration edition</button>`:""}</div>`;
  const panes=[paneOver(),paneConn(),paneMap(),paneAuth(),paneRuns(),paneRecon(),paneM2M(),paneBus()];
  return `<div class="screen fabx">${hero("Platform","Integration fabric: feed any field, keep control",story,extra)}${lensNote()}${views("fab",["Overview","Connectors","Mappings","Field authority","Runs and quarantine","Reconciliation","M2M projects","Event bus"],panes)}${procCard("plat_fab")}</div>`}
 REG("plat_fab","Integration fabric","platform","M3 12h5l2-6 4 12 2-6h5",screen);
+DATA.screen("plat_fab",{mode:"data",entities:["connectors","work_items","metrics"]});
 /* ---------- events ---------- */
 const CL={
  fabUnlock:()=>unlockDrawer(),fabKey:()=>keyForm(),
@@ -698,15 +724,15 @@ const CL={
  fabExpire:v=>{expireConn(conn(v));toast("Expired. A decommission task was created.","warn");connDrawer(v);render()},
  fabNewconn:()=>connForm(),fabMapconn:v=>{F.mapConn=v},
  fabPropose:v=>{if(isCore()){unlockDrawer("Proposing mappings needs the Integration edition.");return}proposeFor(v)},
- fabApprall:v=>{if(isCore()){unlockDrawer("Approving mappings needs the Integration edition.");return}const ids=F.maps.filter(m=>m.conn===v&&m.status==="proposed"&&m.conf>=.85).map(m=>m.id);if(!ids.length){toast("Nothing at 85% or more is waiting","warn");return}setMapStatus(ids,"approved");render()},
+ fabApprall:v=>{if(isCore()){unlockDrawer("Approving mappings needs the Integration edition.");return}const ids=MAPS().filter(m=>m.conn===v&&m.status==="proposed"&&m.conf>=.85).map(m=>m.id);if(!ids.length){toast("Nothing at 85% or more is waiting","warn");return}setMapStatus(ids,"approved");render()},
  fabApprmap:v=>{if(isCore()){unlockDrawer("Approving mappings needs the Integration edition.");return}setMapStatus([v],"approved");closeDrawer();render()},
  fabRejmap:v=>{setMapStatus([v],"rejected");closeDrawer();render()},fabChg:v=>chgForm(v),fabTest:v=>dryRun(v),
  fabOvr:v=>ovrForm(v),fabOvrreset:v=>{delete F.ovr[v];audit("Data layer override reset",v);toast("Back to the registry default");closeDrawer();render()},
  fabFix:v=>fixForm(v),fabRequeue:v=>{const q=F.quar.find(x=>x.id===v);q.status="open";q.attempts=0;audit("Data layer requeued",v);toast("Requeued");quarDrawer(v);render()},
  fabWi:v=>wiForm(v),fabRes:v=>{if(isCore()){unlockDrawer("Resolving differences needs the Integration edition.");return}const p=v.split(":");resolveRecon(p[0],p[1])},
  fabPj:v=>projDrawer(v),fabEval:v=>{const p=F.proj.find(x=>x.id===v);if(startEval(p)){render();projDrawer(v)}},fabRoute:v=>{const p=F.proj.find(x=>x.id===v);sendRoute(p);render();projDrawer(v)},fabDecide:v=>decideForm(v),fabNewm2m:()=>m2mForm(),
- fabReplay:v=>{const r=F.runs.find(x=>x.id===v),c=conn(r.conn);newRun(c,{read:r.read,valid:r.valid,same:r.loaded,loaded:0,kind:"replay of "+r.id,idem:r.idem});audit("Data layer run replayed",r.id+": nothing changed, idempotency keys matched");toast("Replayed "+r.id+": nothing changed, every key matched","good");closeDrawer();render()},
- fabRetry:v=>{const r=F.runs.find(x=>x.id===v),c=conn(r.conn);r.status="ok";r.err="";r.loaded=Math.round(60+hs(v)%80);r.read=r.loaded;r.valid=r.loaded;r.events=r.loaded;r.retries++;audit("Data layer run retried",v+" succeeded after retry");toast("Retry succeeded","good");closeDrawer();render()},
+ fabReplay:v=>{const r=RUNS().find(x=>x.id===v),c=conn(r.conn);newRun(c,{read:r.read,valid:r.valid,same:r.loaded,loaded:0,kind:"replay of "+r.id,idem:r.idem});audit("Data layer run replayed",r.id+": nothing changed, idempotency keys matched");toast("Replayed "+r.id+": nothing changed, every key matched","good");closeDrawer();render()},
+ fabRetry:v=>{const r=RUNS().find(x=>x.id===v),c=conn(r.conn);r.status="ok";r.err="";r.loaded=Math.round(60+hs(v)%80);r.read=r.loaded;r.valid=r.loaded;r.events=r.loaded;r.retries++;audit("Data layer run retried",v+" succeeded after retry");toast("Retry succeeded","good");closeDrawer();render()},
  fabTab:(v)=>{closeDrawer();goTab(+v)}};
 document.addEventListener("click",e=>{
  const t=e.target.closest("[data-fab-unlock],[data-fab-key],[data-fab-ed],[data-fab-conn],[data-fab-run],[data-fab-bf],[data-fab-cert],[data-fab-expire],[data-fab-newconn],[data-fab-mapconn],[data-fab-propose],[data-fab-apprall],[data-fab-apprmap],[data-fab-rejmap],[data-fab-chg],[data-fab-test],[data-fab-ovr],[data-fab-ovrreset],[data-fab-fix],[data-fab-requeue],[data-fab-wi],[data-fab-res],[data-fab-pj],[data-fab-eval],[data-fab-route],[data-fab-decide],[data-fab-newm2m],[data-fab-replay],[data-fab-retry],[data-fab-tab]");
@@ -729,20 +755,20 @@ PROC.reg("plat_fab",{title:"How a connector or feed goes live",std:["dmbok","tog
  {n:"Run, validate, load",d:"Extract, validate against the contract, transform, match and merge by field authority, load with idempotency keys, publish change events.",who:"robot",owner:"Platform data layer",out:"Registry updated"},
  {n:"Fix quarantine and reconcile",d:"Stewards fix and replay quarantined records and decide differences on shared fields.",who:"human",owner:"Data steward",out:"Resolved items"},
  {n:"Expire or recertify",d:"Project-scoped connectors close at expiry and open a decommission task.",who:"robot",owner:"Platform",out:"Decommission task"}]});
-SEARCHX.push(()=>{ensure();return F.conns.filter(c=>c.kind!=="roadmap").map(c=>({g:"Integration fabric",t:c.name,m:TIERP[c.tier][0],c:"--p4",f:()=>{go("plat_fab");setTimeout(()=>connDrawer(c.id),150)},k:c.name+" connector "+c.sys+" "+c.ents.join(" ")+" integration fabric"})).concat(F.proj.map(p=>({g:"Integration fabric",t:p.id+" "+p.t,m:"M2M project",c:"--p4",f:()=>{go("plat_fab");setTimeout(()=>projDrawer(p.id),150)},k:p.t+" machine to machine integration project"})))});
+SEARCHX.push(()=>{ensure();return CONNS().filter(c=>c.kind!=="roadmap").map(c=>({g:"Integration fabric",t:c.name,m:(TIERP[c.tier]||[c.tier])[0],c:"--p4",f:()=>{go("plat_fab");if(TCORE())setTimeout(()=>connDrawer(c.id),150)},k:c.name+" connector "+c.sys+" "+(c.ents||[]).join(" ")+" integration fabric"})).concat((TCORE()?F.proj:[]).map(p=>({g:"Integration fabric",t:p.id+" "+p.t,m:"M2M project",c:"--p4",f:()=>{go("plat_fab");setTimeout(()=>projDrawer(p.id),150)},k:p.t+" machine to machine integration project"})))});
 ASKX.push(q=>{const t=q.toLowerCase();
  if(/how fresh|freshness|how current|how up to date/.test(t)&&/schedule|project (date|plan)|planned|task date|dates/.test(t)){ensure();
-  const sf=eff("project_task","planned_finish"),ml=F.maps.filter(m=>m.ent==="project_task"&&m.k==="planned_finish"&&m.status==="approved"),lg=ml.length?Math.min(...ml.map(m=>m.lag==null?conn(m.conn).lag:m.lag)):null;
+  const sf=eff("project_task","planned_finish"),ml=MAPS().filter(m=>m.ent==="project_task"&&m.k==="planned_finish"&&m.status==="approved"),lg=ml.length?Math.min(...ml.map(m=>m.lag==null?conn(m.conn).lag:m.lag)):null;
   S.v.fab=3;go("plat_fab");say(q,{t:"The project schedule is <b>"+sf.auth+"</b> authority with a <b>"+FR[sf.fresh].l.toLowerCase()+"</b> target ("+FR[sf.fresh].mode.toLowerCase()+"). Dates arrive from "+(ml.map(m=>conn(m.conn).name).join(" and ")||"no connector")+(lg!=null?", about "+lagS(lg)+" behind the source, so the target is "+(lg<=FR[sf.fresh].s?"met":"missed")+".":".")+" Differences open a reconciliation item.",steps:["Read the field authority for planned finish","Compared the connector lag with the target","Opened Field authority"]});return true}
  if(/open the fabric|integration fabric|show the fabric|go to the fabric|data fabric/.test(t)){S.v.fab=0;go("plat_fab");say(q,{t:"Opened the Integration fabric: edition, limits, connector health and what needs attention.",steps:["Opened Integration fabric"]});return true}
- if(/which connectors|list (the )?connectors|what connectors|connectors do we have/.test(t)){ensure();S.v.fab=1;go("plat_fab");const cs=F.conns.filter(c=>c.kind!=="roadmap");
+ if(/which connectors|list (the )?connectors|what connectors|connectors do we have/.test(t)){ensure();S.v.fab=1;go("plat_fab");const cs=CONNS().filter(c=>c.kind!=="roadmap");
   say(q,{t:"There are <b>"+cs.length+"</b> connectors: "+cs.filter(c=>c.tier==="certified").length+" certified, "+cs.filter(c=>c.tier==="community").length+" community (sandbox only) and "+cs.filter(c=>c.tier==="project").length+" project-scoped. Launch connectors: Generic REST, MCP, identity provider and Microsoft Graph. On the roadmap: Perplexity, IDE tools, ERP, HR, CRM and ITSM.",steps:["Listed connectors by tier","Opened Connectors"]});return true}
  if(/quarantine|dead letter|reconcil/.test(t)&&/fabric|integration|quarantine|reconcil/.test(t)){ensure();S.v.fab=/reconcil/.test(t)?5:4;go("plat_fab");say(q,{t:"<b>"+qOpen().length+"</b> records are in quarantine and <b>"+rOpen().length+"</b> differences await a decision on shared fields.",steps:["Counted open items"]});return true}
  return false});
-window.WORK&&WORK.push({kind:"Integration work items",tag:"WI",fn:n=>{ensure();return F.wi.filter(w=>w.who===n&&w.st==="open").map(w=>({id:w.id,t:w.t,sub:w.sub,due:w.due,st:"warn",hrs:1,go:()=>{S.v.fab=5;go("plat_fab")}}))}});
+window.WORK&&WORK.push({kind:"Integration work items",tag:"WI",fn:n=>{ensure();return WIS().filter(w=>w.who===n&&w.st==="open").map(w=>({id:w.id,t:w.t,sub:w.sub,due:w.due,st:"warn",hrs:1,go:()=>{S.v.fab=5;go("plat_fab")}}))}});
 window.FAB={
- get connectors(){ensure();return F.conns.filter(c=>c.kind!=="roadmap").map(c=>({id:c.id,name:c.name,tier:c.tier,status:c.status,owner:c.owner,fields:fedCount(c.id),entities:c.ents.slice()}))},
- get runs(){ensure();return F.runs},get quarantine(){ensure();return F.quar},get projects(){ensure();return F.proj},
+ get connectors(){ensure();return CONNS().filter(c=>c.kind!=="roadmap").map(c=>({id:c.id,name:c.name,tier:c.tier,status:c.status,owner:c.owner,fields:fedCount(c.id),entities:(c.ents||[]).slice()}))},
+ get runs(){ensure();return RUNS()},get quarantine(){ensure();return TCORE()?F.quar:[]},get projects(){ensure();return TCORE()?F.proj:[]},
  open(id){ensure();connDrawer(id)},openProject(id){ensure();projDrawer(id)},openQuarantine(id){ensure();quarDrawer(id)},
  edition(){return F.edition},limits(){return ED[F.edition]},
  freshness(ent,k){ensure();const m=eff(ent,k);return{authority:m.auth,target:m.fresh,mode:FR[m.fresh].mode}}};
