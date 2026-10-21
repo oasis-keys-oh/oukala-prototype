@@ -142,12 +142,22 @@ function diffNote(r,h){const i=r.hist.indexOf(h);const prev=r.hist[i+1];if(!prev
  if(a.name!==b.name)o.push("name");if(a.trigger!==b.trigger)o.push("trigger");if(R.condPlain(a.when,a.entity)!==R.condPlain(b.when,b.entity))o.push("condition");if(JSON.stringify(a.then)!==JSON.stringify(b.then))o.push("actions");if(JSON.stringify(a.else)!==JSON.stringify(b.else))o.push("else actions");if(a.owner!==b.owner||a.backup!==b.backup)o.push("owner or backup");if(JSON.stringify(a.scope)!==JSON.stringify(b.scope))o.push("scope");if(a.script!==b.script)o.push("script");if(JSON.stringify(a.choice)!==JSON.stringify(b.choice))o.push("choices");if(JSON.stringify(a.deliver)!==JSON.stringify(b.deliver))o.push("notification");
  return o.length?"Changed: "+o.join(", "):"No content change"}
 
+/* PR-32 B9: under another sample company the rule catalog (product configuration: names, types, triggers, tables) is shown, but the
+   Meridian owners, firing log, approvals and sample records are not; the pack has no rule owners or firings, so they show a labeled gap (R18). */
+const TCORE=()=>!W.DATA||DATA.tenant()==="core";
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
+function tenantScreen(){const org=G(()=>DATA.tenantInfo().org,"");const L=D.rules.filter(r=>r.status!=="retired");
+ const t=L.length?`<div class="tscroll"><table class="tbl r17s-tbl"><thead><tr><th>Rule</th><th>Type</th><th>Table</th><th>Trigger</th></tr></thead><tbody>${L.map(r=>`<tr><td data-label="Rule"><b>${H(r.body.name||r.id)}</b><div class="small muted">${H(r.id)}</div></td><td data-label="Type">${UI.typePill(r.body.type)}</td><td data-label="Table">${H(entLabel(r.body.entity))}</td><td data-label="Trigger">${H(R.trigLabel(r.body.type,r.body.trigger))}</td></tr>`).join("")}</tbody></table></div>`:"";
+ return `<div class="screen r17s-screen">${hero("Platform and administration · Build and connect","Rules and scripts",`The product ships <b data-role="metric">${L.length}</b> rules. ${H(org)} has not named owners for them or run them in this sample yet.`,"")}
+  ${views("r17svT",["Rules","Owners","Firing log"],[`<section class="card glass r17s-c"><div class="cardhead"><div><h3>Rule catalog</h3><span class="muted small">Product rules by type, table and trigger.</span></div></div>${t}${legend()}</section>`,`<section class="card glass r17s-c"><div class="cardhead"><div><h3>Owners and backups</h3></div></div>${TGAP("rule owners and backups")}</section>`,`<section class="card glass r17s-c"><div class="cardhead"><div><h3>Firing log</h3></div></div>${TGAP("rule firings")}</section>`])}
+  ${typeof procCard==="function"?procCard("r17s_rules"):""}</div>`}
 /* ---------------- screen ---------------- */
-function screen(){const s=R.stats();
+function screen(){if(!TCORE())return tenantScreen();const s=R.stats();
  return `<div class="screen r17s-screen">${hero("Platform and administration · Build and connect","Rules and scripts",`<b data-role="metric">${s.active}</b> rules are live across <b data-role="metric">${Object.keys(s.byTrigger).length}</b> triggers. Client rules run in the form while a person edits, business rules run when the record is saved, notification rules decide who is told and when. Nothing goes live without a test and a group approval. ${s.noOwner.length?`<b data-role="metric">${s.noOwner.length}</b> rules need an owner and backup.`:"Every rule has an owner and a different backup."}`,`<div class="row r17s-heroact">${typeof fchip==="function"?fchip("m_rules_owned")+fchip("m_rules_fired"):""}<button class="btn primary" data-r17s-new="client">New rule</button></div>`)}${typeof lensNote==="function"?lensNote():""}${kill()}
   ${views("r17sv",["Overview","Rules","Editor","Test","Firing log","Library","Governance"],[overview(),rulesTab(),UI.editor?UI.editor():"",UI.test?UI.test():"",logTab(),libTab(),govTab()])}
   ${typeof procCard==="function"?procCard("r17s_rules"):""}</div>`}
 REG("r17s_rules","Rules and scripts","platform","M4 6h10M4 12h6M4 18h10M17 4l3 3-3 3M14 14l3-3 3 3M17 11v9",screen);
+G(()=>DATA.screen("r17s_rules",{mode:"data",entities:["audit_log","incidents","people"]}));
 UI.rerender=()=>{if(S.screen==="r17s_rules")render()};
 UI.openRule=(id,tab)=>{U.sel=id;UI.loadDraft&&UI.loadDraft(id);S.v.r17sv=tab==null?2:tab;go("r17s_rules")};
 
