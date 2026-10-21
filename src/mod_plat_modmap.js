@@ -1,5 +1,4 @@
-/* mod_plat_modmap: the Module map. Takes over plat_map (Master process flow). Every module, every push and pull of data between them,
-   pair paths, journeys, a matrix and a coverage audit. Reads window.PLAT, window.LINKS and PROC lazily because it loads before the registry. */
+/* mod_plat_modmap: the Module map (plat_map): modules, push and pull flows, journeys, matrix, coverage */
 (function(){
 S.mm=S.mm||{sel:"itsm_inc",tab:"pulls",pair:null,jny:null,showPush:true,showPull:true,byMode:false,byMat:false,blast:false,insp:true,view:null,edge:null,q:""};
 const MM=S.mm,E=esc;
@@ -8,7 +7,7 @@ const ICON="M4 6h5v4H4zM15 6h5v4h-5zM9.5 8h5M17.5 10v6M4 16h5v4H4zM15 16h5v4h-5z
 /* ---------- bands ---------- */
 const BANDS=[["str","Strategy and portfolio"],["dem","Demand and projects"],["mon","Money and contracts"],["bld","Build and release"],["ops","Service operations"],["inf","Infrastructure and CMDB"],["obs","Observability and automation"],["ppl","People and skills"],["kai","Knowledge and AI"],["plt","Platform and governance"]];
 const BI={};BANDS.forEach((b,i)=>BI[b[0]]=i);
-/* ---------- module curation: id | short name | band | accountable role | aliases | extra reads | extra writes ---------- */
+/* module curation: id | short name | band | accountable */
 const CUR=`exe_strat|Strategy alignment|str|Chief strategy officer|strategy,objectives,okr,objective||
 exe_dash|Executive dashboard|str|CIO office|executive dashboard,exec dashboard,dashboard||
 exe_risk|Risk heat map|str|Risk manager|risk,risks,risk heat map,monte carlo||
@@ -69,7 +68,7 @@ flw_appr|Approvals inbox|plt|Process governance lead|approvals,approval,workflow
 flw_design|Workflow designer|plt|Process governance lead|workflow designer,workflows|incident,change_request|
 adm_sec|Admin and security|plt|Security lead|security,admin,access,rbac||
 adm_audit|Audit and compliance|plt|Compliance lead|audit,compliance||`;
-/* ---------- flows: from>to | data | entity.fields (; separated, - for none) | trigger | mode e/b/h | why ---------- */
+/* flows: from>to | data | entity.fields (; separated, - */
 const FLOWS=`itom_cmdb>itsm_inc|Affected CI, owner and support group|config_item.name,owned_by,support_group,business_criticality|Caller names a service or an alert links a CI|e|Routes the ticket to the team that owns the CI without a phone call.
 svc_360>itsm_inc|Business service, owner and tier|business_service.name,service_owner,tier|Service picked on the incident form|e|Tier and service owner set the priority and decide who is told.
 ppm_proj>itsm_inc|Affected project and its manager|project.id,name,manager,finish|The service has a live project depending on it|e|Shows which project deadline is at risk before anyone asks.
@@ -487,74 +486,74 @@ const hasScreen=id=>SCREENS.some(x=>x[0]===id);
 const scName=id=>{const s=SCREENS.find(x=>x[0]===id);return s?s[1]:id};
 const stepsOf=id=>{const d=window.PROC&&PROC.defs[id];return d?(S.proc&&S.proc[id])||d.steps||[]:null};
 function init(){
- if(READY)return true;
- if(!window.PLAT||!PLAT.entities||!window.PROC)return false;
- const ents=PLAT.entities();PLN={};(PLAT.PLANNED||[]).forEach(p=>PLN[p[0]]={id:p[0],dom:p[1],label:p[2],steward:p[3],why:p[4],use:p[5]});
- const entMap={};ents.forEach(e=>entMap[e.id]=e);
- MODS=[];MB={};
- CUR.split("\n").forEach(line=>{
-  const c=line.split("|");if(c.length<5)return;
-  const id=c[0],ap=PLAT.APPS.find(a=>a.id===id);
-  const r=new Set(ap?ap.reads:[]),w=new Set(ap?ap.writes:[]);
+if(READY)return true;
+if(!window.PLAT||!PLAT.entities||!window.PROC)return false;
+const ents=PLAT.entities();PLN={};(PLAT.PLANNED||[]).forEach(p=>PLN[p[0]]={id:p[0],dom:p[1],label:p[2],steward:p[3],why:p[4],use:p[5]});
+const entMap={};ents.forEach(e=>entMap[e.id]=e);
+MODS=[];MB={};
+CUR.split("\n").forEach(line=>{
+const c=line.split("|");if(c.length<5)return;
+const id=c[0],ap=PLAT.APPS.find(a=>a.id===id);
+const r=new Set(ap?ap.reads:[]),w=new Set(ap?ap.writes:[]);
   (c[5]||"").split(",").filter(Boolean).forEach(x=>{if(entMap[x])r.add(x)});(c[6]||"").split(",").filter(Boolean).forEach(x=>{if(entMap[x])w.add(x)});
-  const st=stepsOf(id);
-  const m={id,sn:c[1],name:scName(id),band:c[2],bi:BI[c[2]],own:c[3],al:c[4].split(",").map(s=>s.trim().toLowerCase()).filter(Boolean),app:ap?ap.id:null,r:[...r],w:[...w],proc:st?id:null,steps:st?st.length:0,scr:id};
-  m.al.push(m.sn.toLowerCase());if(m.name.toLowerCase()!==m.sn.toLowerCase())m.al.push(m.name.toLowerCase());
-  MODS.push(m);MB[id]=m;
- });
- XMODS.forEach(d=>{
-  const ok=x=>entMap[x]||PLN[x];
-  const m={id:d.id,sn:d.sn||d.name,name:d.name,band:d.band,bi:BI[d.band],own:d.own||"Not assigned",al:[d.name.toLowerCase(),(d.sn||d.name).toLowerCase(),d.id.replace(/_/g," ")],app:null,r:(d.r||[]).filter(ok),w:(d.w||[]).filter(ok),proc:stepsOf(d.id)?d.id:null,steps:(stepsOf(d.id)||[]).length,scr:hasScreen(d.id)?d.id:null,proposed:!!d.proposed,added:true};
-  MODS.push(m);MB[m.id]=m;
- });
+const st=stepsOf(id);
+const m={id,sn:c[1],name:scName(id),band:c[2],bi:BI[c[2]],own:c[3],al:c[4].split(",").map(s=>s.trim().toLowerCase()).filter(Boolean),app:ap?ap.id:null,r:[...r],w:[...w],proc:st?id:null,steps:st?st.length:0,scr:id};
+m.al.push(m.sn.toLowerCase());if(m.name.toLowerCase()!==m.sn.toLowerCase())m.al.push(m.name.toLowerCase());
+MODS.push(m);MB[id]=m;
+});
+XMODS.forEach(d=>{
+const ok=x=>entMap[x]||PLN[x];
+const m={id:d.id,sn:d.sn||d.name,name:d.name,band:d.band,bi:BI[d.band],own:d.own||"Not assigned",al:[d.name.toLowerCase(),(d.sn||d.name).toLowerCase(),d.id.replace(/_/g," ")],app:null,r:(d.r||[]).filter(ok),w:(d.w||[]).filter(ok),proc:stepsOf(d.id)?d.id:null,steps:(stepsOf(d.id)||[]).length,scr:hasScreen(d.id)?d.id:null,proposed:!!d.proposed,added:true};
+MODS.push(m);MB[m.id]=m;
+});
  /* flows */
  FL=[];OUT={};INN={};DROP=[];PAIRN=new Map();
- MODS.forEach(m=>{OUT[m.id]=[];INN[m.id]=[]});
- FLOWS.forEach((line,i)=>{
-  const p=line.split("|");if(p.length<6)return;
-  const ft=p[0].split(">"),a=ft[0],b=ft[1];
-  if(!MB[a]||!MB[b]||a===b){DROP.push({flow:p[0],why:"Unknown module"});return}
-  const refs=[];
-  if(p[2]!=="-")p[2].split(";").forEach(tok=>{
-   const q=tok.split("."),id=q[0],fs=(q[1]||"").split(",").filter(Boolean),e=entMap[id];
-   if(e){const keys={};e.fields.forEach(f=>keys[f.k]=f);const ok=[];fs.forEach(k=>{if(keys[k])ok.push(k);else DROP.push({flow:p[0],why:"Unknown field "+id+"."+k})});
-    refs.push({id,kind:"reg",label:e.label,owner:e.owner,steward:e.steward,cls:e.cls,f:ok.map(k=>{const fm=PLAT.fieldMeta(id,keys[k]);return Object.assign({k,label:keys[k].label||k,type:keys[k].type||"string"},fm)})})}
-   else if(PLN[id])refs.push({id,kind:"plan",label:PLN[id].label,owner:"Not yet registered",steward:PLN[id].steward,why:PLN[id].why,f:[]});
-   else DROP.push({flow:p[0],why:"Unknown entity "+id});
-  });
-  const reg=refs.some(r=>r.kind==="reg"),plan=refs.some(r=>r.kind==="plan");
-  let fresh=null;refs.forEach(r=>r.f.forEach(f=>{const ix=FRESH.indexOf(f.fresh);if(ix>=0&&(fresh===null||ix>FRESH.indexOf(fresh)))fresh=f.fresh}));
-  const f={id:"f"+FL.length,from:a,to:b,data:p[1],refs,trig:p[3],mode:MODEN[p[4]]||"event",why:p[5],reg,plan,partial:reg&&plan,status:reg?"registered":plan?"planned":"none",fresh:fresh||(reg?"live":"unknown")};
-  FL.push(f);OUT[a].push(f);INN[b].push(f);
-  const k=a+">"+b;if(!PAIRN.has(k))PAIRN.set(k,[]);PAIRN.get(k).push(f);
- });
- const NOW=PLAT.nonOwnerWrites();
- MODS.forEach(m=>{m.out=OUT[m.id];m.inn=INN[m.id];m.nout=OUT[m.id].length;m.nin=INN[m.id].length;
+MODS.forEach(m=>{OUT[m.id]=[];INN[m.id]=[]});
+FLOWS.forEach((line,i)=>{
+const p=line.split("|");if(p.length<6)return;
+const ft=p[0].split(">"),a=ft[0],b=ft[1];
+if(!MB[a]||!MB[b]||a===b){DROP.push({flow:p[0],why:"Unknown module"});return}
+const refs=[];
+if(p[2]!=="-")p[2].split(";").forEach(tok=>{
+const q=tok.split("."),id=q[0],fs=(q[1]||"").split(",").filter(Boolean),e=entMap[id];
+if(e){const keys={};e.fields.forEach(f=>keys[f.k]=f);const ok=[];fs.forEach(k=>{if(keys[k])ok.push(k);else DROP.push({flow:p[0],why:"Unknown field "+id+"."+k})});
+refs.push({id,kind:"reg",label:e.label,owner:e.owner,steward:e.steward,cls:e.cls,f:ok.map(k=>{const fm=PLAT.fieldMeta(id,keys[k]);return Object.assign({k,label:keys[k].label||k,type:keys[k].type||"string"},fm)})})}
+else if(PLN[id])refs.push({id,kind:"plan",label:PLN[id].label,owner:"Not yet registered",steward:PLN[id].steward,why:PLN[id].why,f:[]});
+else DROP.push({flow:p[0],why:"Unknown entity "+id});
+});
+const reg=refs.some(r=>r.kind==="reg"),plan=refs.some(r=>r.kind==="plan");
+let fresh=null;refs.forEach(r=>r.f.forEach(f=>{const ix=FRESH.indexOf(f.fresh);if(ix>=0&&(fresh===null||ix>FRESH.indexOf(fresh)))fresh=f.fresh}));
+const f={id:"f"+FL.length,from:a,to:b,data:p[1],refs,trig:p[3],mode:MODEN[p[4]]||"event",why:p[5],reg,plan,partial:reg&&plan,status:reg?"registered":plan?"planned":"none",fresh:fresh||(reg?"live":"unknown")};
+FL.push(f);OUT[a].push(f);INN[b].push(f);
+const k=a+">"+b;if(!PAIRN.has(k))PAIRN.set(k,[]);PAIRN.get(k).push(f);
+});
+const NOW=PLAT.nonOwnerWrites();
+MODS.forEach(m=>{m.out=OUT[m.id];m.inn=INN[m.id];m.nout=OUT[m.id].length;m.nin=INN[m.id].length;
   m.eo=new Set();m.out.forEach(f=>f.refs.forEach(r=>m.eo.add(r.id)));m.ei=new Set();m.inn.forEach(f=>f.refs.forEach(r=>m.ei.add(r.id)));
   m.nonOwn=NOW.filter(x=>x.app===m.id)});
  layout();stats();
- READY=true;return true;
+READY=true;return true;
 }
 function layout(){
- const rowsOf=[];let y=0;const lanes=[];
- BANDS.forEach((bd,bi)=>{
-  const ms=MODS.filter(m=>m.band===bd[0]);const rows=Math.max(1,Math.ceil(ms.length/MAXC));const per=Math.max(1,Math.ceil(ms.length/rows));
-  const h=LTOP+rows*ROWP-14+14;
-  ms.forEach((m,i)=>{const r=Math.floor(i/per),c=i%per;m.col=c;m.row=r;m.x=GL+18+c*(NW+GX);m.y=y+LTOP+r*ROWP;m.cx=m.x+NW/2;m.cy=m.y+NH/2});
-  lanes.push({b:bd[0],name:bd[1],bi,y,h,n:ms.length});y+=h+LGAP;
- });
- LAY={lanes,W:GL+18+MAXC*(NW+GX)+10,H:y};
+let y=0;const lanes=[];
+BANDS.forEach((bd,bi)=>{
+const ms=MODS.filter(m=>m.band===bd[0]);const rows=Math.max(1,Math.ceil(ms.length/MAXC));const per=Math.max(1,Math.ceil(ms.length/rows));
+const h=LTOP+rows*ROWP-14+14;
+ms.forEach((m,i)=>{const r=Math.floor(i/per),c=i%per;m.col=c;m.row=r;m.x=GL+18+c*(NW+GX);m.y=y+LTOP+r*ROWP;m.cx=m.x+NW/2;m.cy=m.y+NH/2});
+lanes.push({b:bd[0],name:bd[1],bi,y,h,n:ms.length});y+=h+LGAP;
+});
+LAY={lanes,W:GL+18+MAXC*(NW+GX)+10,H:y};
 }
 function stats(){
- const real=MODS.filter(m=>!m.proposed),n=real.length,nf=FL.length,prop=MODS.length-n;
- const pp=real.filter(m=>m.out.some(f=>f.reg)&&m.inn.some(f=>f.reg)).length;
- const ct=FL.filter(f=>f.reg).length;
- const reg=FL.filter(f=>f.reg);const live=reg.filter(f=>f.fresh==="live"||f.fresh==="near-live").length;
+const real=MODS.filter(m=>!m.proposed),n=real.length,nf=FL.length,prop=MODS.length-n;
+const pp=real.filter(m=>m.out.some(f=>f.reg)&&m.inn.some(f=>f.reg)).length;
+const ct=FL.filter(f=>f.reg).length;
+const reg=FL.filter(f=>f.reg);const live=reg.filter(f=>f.fresh==="live"||f.fresh==="near-live").length;
  METRICS.m_mm_pp.cur=Math.round(100*pp/Math.max(1,n));METRICS.m_mm_ct.cur=Math.round(100*ct/Math.max(1,nf));METRICS.m_mm_live.cur=Math.round(100*live/Math.max(1,reg.length));
- const bandPairs=new Map();FL.forEach(f=>{const a=MB[f.from].bi,b=MB[f.to].bi;if(a===b)return;const k=Math.min(a,b)+"-"+Math.max(a,b);bandPairs.set(k,(bandPairs.get(k)||[]).concat(f))});
- const fnd={noPush:real.filter(m=>!m.nout),noPull:real.filter(m=>!m.nin),noProc:real.filter(m=>!m.proc),noReg:real.filter(m=>!m.out.some(f=>f.reg)||!m.inn.some(f=>f.reg)),
+const bandPairs=new Map();FL.forEach(f=>{const a=MB[f.from].bi,b=MB[f.to].bi;if(a===b)return;const k=Math.min(a,b)+"-"+Math.max(a,b);bandPairs.set(k,(bandPairs.get(k)||[]).concat(f))});
+const fnd={noPush:real.filter(m=>!m.nout),noPull:real.filter(m=>!m.nin),noProc:real.filter(m=>!m.proc),noReg:real.filter(m=>!m.out.some(f=>f.reg)||!m.inn.some(f=>f.reg)),
   nonOwn:real.filter(m=>m.nonOwn.length),planned:{}};
- FL.forEach(f=>f.refs.forEach(r=>{if(r.kind==="plan")fnd.planned[r.id]=(fnd.planned[r.id]||0)+1}));
+FL.forEach(f=>f.refs.forEach(r=>{if(r.kind==="plan")fnd.planned[r.id]=(fnd.planned[r.id]||0)+1}));
  fnd.noContract=FL.filter(f=>!f.reg);fnd.batch=FL.filter(f=>f.mode==="batch").length;
  window._mmStats=Object.assign({n,nf,pp,ct,live,prop,reg:reg.length,bandPairs},{fnd});
 }
@@ -564,29 +563,29 @@ const flowsBetween=(a,b)=>PAIRN.get(a+">"+b)||[];
 const nameOf=id=>MB[id]?MB[id].sn:id;
 function neighbors(id){const o=new Set(),i=new Set();(OUT[id]||[]).forEach(f=>o.add(f.to));(INN[id]||[]).forEach(f=>i.add(f.from));return{push:[...o],pull:[...i]}}
 function blastOf(id,maxHop){
- maxHop=maxHop||3;const seen=new Set([id]);let fr=[id];const lv=[];
- for(let h=1;h<=maxHop;h++){const nx=[];fr.forEach(x=>(OUT[x]||[]).forEach(f=>{if(!seen.has(f.to)){seen.add(f.to);nx.push(f.to)}}));lv.push(nx);fr=nx}
- return lv;
+maxHop=maxHop||3;const seen=new Set([id]);let fr=[id];const lv=[];
+for(let h=1;h<=maxHop;h++){const nx=[];fr.forEach(x=>(OUT[x]||[]).forEach(f=>{if(!seen.has(f.to)){seen.add(f.to);nx.push(f.to)}}));lv.push(nx);fr=nx}
+return lv;
 }
 function between(a,b){
- const direct=flowsBetween(a,b),rev=flowsBetween(b,a),two=[];
- MODS.forEach(x=>{if(x.id===a||x.id===b)return;
-  const f1=flowsBetween(a,x.id),f2=flowsBetween(x.id,b);if(f1.length&&f2.length)two.push({dir:"ab",via:x.id,h:[f1,f2]});
-  const g1=flowsBetween(b,x.id),g2=flowsBetween(x.id,a);if(g1.length&&g2.length)two.push({dir:"ba",via:x.id,h:[g1,g2]});});
- two.sort((p,q)=>(q.h[0].length*q.h[1].length)-(p.h[0].length*p.h[1].length)||nameOf(p.via).localeCompare(nameOf(q.via)));
- let chain=null;
- if(!direct.length&&!rev.length&&!two.length){
-  const bfs=(s,t,undirected)=>{const prev={};prev[s]=null;let fr=[s];for(let d=0;d<5&&fr.length;d++){const nx=[];for(const x of fr){const nb=undirected?neighbors(x).push.concat(neighbors(x).pull):neighbors(x).push;for(const y of nb)if(!(y in prev)){prev[y]=x;if(y===t){const path=[t];let c=t;while(prev[c]!==null){c=prev[c];path.unshift(c)}return path}nx.push(y)}}fr=nx}return null};
-  chain=bfs(a,b,false)||bfs(b,a,false)||bfs(a,b,true);
- }
+const direct=flowsBetween(a,b),rev=flowsBetween(b,a),two=[];
+MODS.forEach(x=>{if(x.id===a||x.id===b)return;
+const f1=flowsBetween(a,x.id),f2=flowsBetween(x.id,b);if(f1.length&&f2.length)two.push({dir:"ab",via:x.id,h:[f1,f2]});
+const g1=flowsBetween(b,x.id),g2=flowsBetween(x.id,a);if(g1.length&&g2.length)two.push({dir:"ba",via:x.id,h:[g1,g2]});});
+two.sort((p,q)=>(q.h[0].length*q.h[1].length)-(p.h[0].length*p.h[1].length)||nameOf(p.via).localeCompare(nameOf(q.via)));
+let chain=null;
+if(!direct.length&&!rev.length&&!two.length){
+const bfs=(s,t,undirected)=>{const prev={};prev[s]=null;let fr=[s];for(let d=0;d<5&&fr.length;d++){const nx=[];for(const x of fr){const nb=undirected?neighbors(x).push.concat(neighbors(x).pull):neighbors(x).push;for(const y of nb)if(!(y in prev)){prev[y]=x;if(y===t){const path=[t];let c=t;while(prev[c]!==null){c=prev[c];path.unshift(c)}return path}nx.push(y)}}fr=nx}return null};
+chain=bfs(a,b,false)||bfs(b,a,false)||bfs(a,b,true);
+}
  return{a,b,direct,rev,two,chain};
 }
 function matchMods(text){
  init();const t=" "+text.toLowerCase().replace(/[?.,]/g," ")+" ";const al=[];
- MODS.forEach(m=>m.al.forEach(x=>al.push([x,m.id])));al.sort((p,q)=>q[0].length-p[0].length);
- const found=[];let work=t;
- al.forEach(([x,id])=>{let i=work.indexOf(" "+x+" ");if(i<0)i=work.indexOf(" "+x+"s ");if(i<0)i=work.indexOf(" "+x+"'s ");if(i>=0){found.push([i,id]);const len=x.length+2;work=work.slice(0,i)+" ".repeat(len)+work.slice(i+len)}});
- const out=[];found.sort((p,q)=>p[0]-q[0]).forEach(f=>{if(!out.includes(f[1]))out.push(f[1])});return out;
+MODS.forEach(m=>m.al.forEach(x=>al.push([x,m.id])));al.sort((p,q)=>q[0].length-p[0].length);
+const found=[];let work=t;
+al.forEach(([x,id])=>{let i=work.indexOf(" "+x+" ");if(i<0)i=work.indexOf(" "+x+"s ");if(i<0)i=work.indexOf(" "+x+"'s ");if(i>=0){found.push([i,id]);const len=x.length+2;work=work.slice(0,i)+" ".repeat(len)+work.slice(i+len)}});
+const out=[];found.sort((p,q)=>p[0]-q[0]).forEach(f=>{if(!out.includes(f[1]))out.push(f[1])});return out;
 }
 window.MODMAP={
  get modules(){init();return MODS},get flows(){init();return FL},get bands(){return BANDS.map(b=>({id:b[0],name:b[1]}))},get dropped(){init();return DROP},
@@ -599,47 +598,47 @@ MODMAP._cam={get:()=>MM.view,set:v=>{MM.touched=true;MM.view=v;applyView()},fit:
 const MODE_CODE={event:"e",batch:"b",human:"h",api:"e"};
 const clean=t=>String(t==null?"":t).replace(/[|\n\r]+/g," ").replace(/>/g,"-").trim();
 function flowLine(from,to,f){
- const ent=clean(f.entity||"-")||"-";
- return [from+">"+to,clean(f.data)||"Data",ent,clean(f.trig)||"On change",MODE_CODE[f.mode]||"e",clean(f.why||f.data)||"Documented flow"].join("|");
+const ent=clean(f.entity||"-")||"-";
+return [from+">"+to,clean(f.data)||"Data",ent,clean(f.trig)||"On change",MODE_CODE[f.mode]||"e",clean(f.why||f.data)||"Documented flow"].join("|");
 }
 function addModule(def){
- def=def||{};const w=[];
- if(!init())return{ok:false,id:def.id||null,warnings:["The module map is still starting. Try again in a moment."]};
- const id=String(def.id||"").trim();
- if(!/^[a-z][a-z0-9_]*$/i.test(id))return{ok:false,id:id||null,warnings:["A module needs an id of letters, numbers and underscores, for example fin_cost_pools."]};
- if(MB[id])return{ok:false,id,warnings:["A module with the id "+id+" already exists."]};
- if(!def.name)return{ok:false,id,warnings:["A module needs a name."]};
- if(BI[def.band]==null)return{ok:false,id,warnings:["Unknown band "+def.band+". Use one of: "+BANDS.map(b=>b[0]).join(", ")+"."]};
- if(!def.own)w.push("No accountable team or person. Name one so the module has an owner.");
- const known=x=>PLAT.ent(x)||(PLAT.PLANNED||[]).some(p=>p[0]===x);
- const r=(def.r||[]).filter(known),wr=(def.w||[]).filter(known);
- if(r.length!==(def.r||[]).length||wr.length!==(def.w||[]).length)w.push("Some entities are not in the registry or planned list and were left out: "+(def.r||[]).concat(def.w||[]).filter(x=>!known(x)).join(", ")+".");
- if(!(def.r||[]).length&&!(def.w||[]).length)w.push("No entities read or written. Name the records this module owns or uses.");
- const flows=def.flows||[];if(!flows.length)w.push("No data flows. A module that nothing feeds and that feeds nothing is an island.");
- const lines=[];
- flows.forEach(f=>{
-  if(!MB[f.other]){w.push("Flow to "+f.other+" skipped: that module does not exist.");return}
-  if(f.entity&&!known(String(f.entity).split(".")[0]))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
-  lines.push(f.dir==="pull"?flowLine(f.other,id,f):flowLine(id,f.other,f));
- });
- XMODS.push({id,name:def.name,sn:def.sn||def.name,band:def.band,own:def.own||"",r,w:wr,proposed:def.proposed!==false});
- lines.forEach(l=>FLOWS.push(l));
- READY=false;init();
- if(S.screen==="plat_map")render();
+def=def||{};const w=[];
+if(!init())return{ok:false,id:def.id||null,warnings:["The module map is still starting. Try again in a moment."]};
+const id=String(def.id||"").trim();
+if(!/^[a-z][a-z0-9_]*$/i.test(id))return{ok:false,id:id||null,warnings:["A module needs an id of letters, numbers and underscores, for example fin_cost_pools."]};
+if(MB[id])return{ok:false,id,warnings:["A module with the id "+id+" already exists."]};
+if(!def.name)return{ok:false,id,warnings:["A module needs a name."]};
+if(BI[def.band]==null)return{ok:false,id,warnings:["Unknown band "+def.band+". Use one of: "+BANDS.map(b=>b[0]).join(", ")+"."]};
+if(!def.own)w.push("No accountable team or person. Name one so the module has an owner.");
+const known=x=>PLAT.ent(x)||(PLAT.PLANNED||[]).some(p=>p[0]===x);
+const r=(def.r||[]).filter(known),wr=(def.w||[]).filter(known);
+if(r.length!==(def.r||[]).length||wr.length!==(def.w||[]).length)w.push("Some entities are not in the registry or planned list and were left out: "+(def.r||[]).concat(def.w||[]).filter(x=>!known(x)).join(", ")+".");
+if(!(def.r||[]).length&&!(def.w||[]).length)w.push("No entities read or written. Name the records this module owns or uses.");
+const flows=def.flows||[];if(!flows.length)w.push("No data flows. A module that nothing feeds and that feeds nothing is an island.");
+const lines=[];
+flows.forEach(f=>{
+if(!MB[f.other]){w.push("Flow to "+f.other+" skipped: that module does not exist.");return}
+if(f.entity&&!known(String(f.entity).split(".")[0]))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
+lines.push(f.dir==="pull"?flowLine(f.other,id,f):flowLine(id,f.other,f));
+});
+XMODS.push({id,name:def.name,sn:def.sn||def.name,band:def.band,own:def.own||"",r,w:wr,proposed:def.proposed!==false});
+lines.forEach(l=>FLOWS.push(l));
+READY=false;init();
+if(S.screen==="plat_map")render();
  audit("Module map: added "+(def.proposed===false?"module":"proposed module"),def.name+" in "+BANDS[BI[def.band]][1]);
  return{ok:true,id,warnings:w};
 }
 function addFlows(arr){
- const w=[];if(!init())return{ok:false,added:0,warnings:["The module map is still starting."]};
- let k=0;
+const w=[];if(!init())return{ok:false,added:0,warnings:["The module map is still starting."]};
+let k=0;
  (arr||[]).forEach(f=>{
-  if(!MB[f.from]||!MB[f.to]){w.push("Flow "+f.from+" to "+f.to+" skipped: unknown module.");return}
-  if(f.from===f.to){w.push("Flow "+f.from+" to itself skipped.");return}
-  if(flowsBetween(f.from,f.to).some(x=>x.data===clean(f.data))){w.push("Flow \""+f.data+"\" from "+f.from+" to "+f.to+" already exists.");return}
-  if(f.entity&&!(PLAT.ent(String(f.entity).split(".")[0])||(PLAT.PLANNED||[]).some(p=>p[0]===String(f.entity).split(".")[0])))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
-  FLOWS.push(flowLine(f.from,f.to,f));k++;
- });
- if(k){READY=false;init();if(S.screen==="plat_map")render();audit("Module map: added flows",k+" flow"+(k===1?"":"s"))}
+if(!MB[f.from]||!MB[f.to]){w.push("Flow "+f.from+" to "+f.to+" skipped: unknown module.");return}
+if(f.from===f.to){w.push("Flow "+f.from+" to itself skipped.");return}
+if(flowsBetween(f.from,f.to).some(x=>x.data===clean(f.data))){w.push("Flow \""+f.data+"\" from "+f.from+" to "+f.to+" already exists.");return}
+if(f.entity&&!(PLAT.ent(String(f.entity).split(".")[0])||(PLAT.PLANNED||[]).some(p=>p[0]===String(f.entity).split(".")[0])))w.push("Flow \""+f.data+"\" names the entity "+f.entity+", which is not registered or planned.");
+FLOWS.push(flowLine(f.from,f.to,f));k++;
+});
+if(k){READY=false;init();if(S.screen==="plat_map")render();audit("Module map: added flows",k+" flow"+(k===1?"":"s"))}
  return{ok:true,added:k,warnings:w};
 }
 /* ---------- canvas ---------- */
@@ -648,91 +647,91 @@ const bandCol=bi=>"var(--mm-b"+bi+")";
 const matOf=id=>{try{return window.PROCLIB&&PROCLIB.moduleMaturity?PROCLIB.moduleMaturity(id):null}catch(e){return null}};
 function modePillH(md){return `<span class="mm-md ${md}">${md}</span>`}
 function refChips(f){
- if(!f.refs.length)return `<span class="pill mute" title="No registry entity carries this data yet">no entity</span>`;
- return f.refs.slice(0,3).map(r=>`<span class="pill ${r.kind==="reg"?"info":"warn"}" title="${E(r.kind==="reg"?"Registered entity":"Planned entity, not registered yet")}">${E(r.label)}${r.kind==="plan"?" (planned)":""}</span>`).join("")+(f.refs.length>3?`<span class="pill mute">+${f.refs.length-3}</span>`:"");
+if(!f.refs.length)return `<span class="pill mute" title="No registry entity carries this data yet">no entity</span>`;
+return f.refs.slice(0,3).map(r=>`<span class="pill ${r.kind==="reg"?"info":"warn"}" title="${E(r.kind==="reg"?"Registered entity":"Planned entity, not registered yet")}">${E(r.label)}${r.kind==="plan"?" (planned)":""}</span>`).join("")+(f.refs.length>3?`<span class="pill mute">+${f.refs.length-3}</span>`:"");
 }
 function mapHTML(){
- const W=LAY.W,H=LAY.H;
- const lanes=LAY.lanes.map(l=>`<div class="mm-lane" style="top:${l.y}px;height:${l.h}px;left:${GL}px;width:${W-GL-6}px;--c:${bandCol(l.bi)}"><span class="mm-lt">${E(l.name)}<small>${U.esc(l.n)} modules</small></span></div>`).join("");
- const nodes=MODS.map(m=>`<button type="button" class="mm-n${m.proposed?" prop":""}" data-mm-n="${m.id}" style="left:${m.x}px;top:${m.y}px;--c:${bandCol(m.bi)}" aria-label="${E(m.name)}, ${m.nout} pushes, ${m.nin} pulls${m.proposed?", proposed module":""}${m.proc?"":", no process defined"}"><i class="mm-bar"></i><b>${E(m.sn)}</b><span class="mm-io"><em class="o">${m.nout}</em> out <em class="i">${m.nin}</em> in</span>${m.proposed?`<u class="mm-pp">Proposed</u>`:m.proc?`<i class="mm-mb" data-mm-mb title="Process maturity"></i>`:`<u class="mm-np" title="No process defined for this module yet"></u>`}</button>`).join("");
- const mk=ARR.map(c=>`<marker id="mm-ar-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" class="mm-mk ${c}"/></marker>`).join("");
- return `<div class="mm-vp" data-mm-vp tabindex="0" role="application" aria-label="Module map. Drag to pan. Control plus scroll or the plus and minus buttons to zoom. Select a module for its pushes and pulls."><div class="mm-world" data-mm-world style="width:${W}px;height:${H}px">${lanes}<svg class="mm-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>${mk}</defs><g class="mm-bund" data-mm-bund-g></g><g class="mm-edges" data-mm-edges></g></svg>${nodes}</div>
+const W=LAY.W,H=LAY.H;
+const lanes=LAY.lanes.map(l=>`<div class="mm-lane" style="top:${l.y}px;height:${l.h}px;left:${GL}px;width:${W-GL-6}px;--c:${bandCol(l.bi)}"><span class="mm-lt">${E(l.name)}<small>${U.esc(l.n)} modules</small></span></div>`).join("");
+const nodes=MODS.map(m=>`<button type="button" class="mm-n${m.proposed?" prop":""}" data-mm-n="${m.id}" style="left:${m.x}px;top:${m.y}px;--c:${bandCol(m.bi)}" aria-label="${E(m.name)}, ${m.nout} pushes, ${m.nin} pulls${m.proposed?", proposed module":""}${m.proc?"":", no process defined"}"><i class="mm-bar"></i><b>${E(m.sn)}</b><span class="mm-io"><em class="o">${m.nout}</em> out <em class="i">${m.nin}</em> in</span>${m.proposed?`<u class="mm-pp">Proposed</u>`:m.proc?`<i class="mm-mb" data-mm-mb title="Process maturity"></i>`:`<u class="mm-np" title="No process defined for this module yet"></u>`}</button>`).join("");
+const mk=ARR.map(c=>`<marker id="mm-ar-${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L10,5 L0,9 z" class="mm-mk ${c}"/></marker>`).join("");
+return `<div class="mm-vp" data-mm-vp tabindex="0" role="application" aria-label="Module map. Drag to pan. Control plus scroll or the plus and minus buttons to zoom. Select a module for its pushes and pulls."><div class="mm-world" data-mm-world style="width:${W}px;height:${H}px">${lanes}<svg class="mm-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><defs>${mk}</defs><g class="mm-bund" data-mm-bund-g></g><g class="mm-edges" data-mm-edges></g></svg>${nodes}</div>
  <div class="mm-ctl" role="group" aria-label="Zoom"><button type="button" class="btn quiet" data-mm-z="in" aria-label="Zoom in">+</button><button type="button" class="btn quiet" data-mm-z="out" aria-label="Zoom out">&minus;</button><button type="button" class="btn quiet" data-mm-z="fit">Fit all</button><button type="button" class="btn quiet" data-mm-z="cluster">Incident cluster</button><button type="button" class="btn quiet" data-mm-collapse>Details</button><span class="small muted" data-mm-zl>100%</span><details class="mm-lgd"><summary>Legend</summary><div class="mm-lgp glass">${legendHTML()}</div></details></div>
  <svg class="mm-mini" data-mm-mini viewBox="${GL-8} 0 ${W-GL+8} ${H}" preserveAspectRatio="xMidYMid meet" aria-label="Minimap. Click to move."><g data-mm-minig></g><rect class="mm-mvp" data-mm-mvp x="0" y="0" width="10" height="10"/></svg>
  <div class="mm-tip" data-mm-tip hidden></div></div>`;
 }
 function drawStatic(){
- const g=document.querySelector("[data-mm-bund-g]");if(!g)return;
- const s=ST();let h="";
- s.bandPairs.forEach((fl,k)=>{const [i,j]=k.split("-").map(Number),li=LAY.lanes[i],lj=LAY.lanes[j];const y1=li.y+li.h/2,y2=lj.y+lj.h/2,x=GL-10,b=12+Math.min(70,(j-i)*9);
+const g=document.querySelector("[data-mm-bund-g]");if(!g)return;
+const s=ST();let h="";
+s.bandPairs.forEach((fl,k)=>{const [i,j]=k.split("-").map(Number),li=LAY.lanes[i],lj=LAY.lanes[j];const y1=li.y+li.h/2,y2=lj.y+lj.h/2,x=GL-10,b=12+Math.min(70,(j-i)*9);
   h+=`<path class="mm-bu" data-mm-bund="${k}" d="M${x},${y1}C${x-b},${y1} ${x-b},${y2} ${x},${y2}" style="stroke-width:${Math.min(9,1.4+fl.length*.22)}"><title>${E(BANDS[i][1])} and ${E(BANDS[j][1])}: ${fl.length} flows. Select to list them.</title></path>`});
  g.innerHTML=h;
- const mg=document.querySelector("[data-mm-minig]");
- if(mg)mg.innerHTML=LAY.lanes.map(l=>`<rect x="${GL}" y="${l.y}" width="${LAY.W-GL}" height="${l.h}" style="fill:${bandCol(l.bi)}" opacity=".35"/>`).join("")+MODS.map(m=>`<rect x="${m.x}" y="${m.y}" width="${NW}" height="${NH}" rx="8" class="mm-md0" data-mm-mm="${m.id}"/>`).join("");
+const mg=document.querySelector("[data-mm-minig]");
+if(mg)mg.innerHTML=LAY.lanes.map(l=>`<rect x="${GL}" y="${l.y}" width="${LAY.W-GL}" height="${l.h}" style="fill:${bandCol(l.bi)}" opacity=".35"/>`).join("")+MODS.map(m=>`<rect x="${m.x}" y="${m.y}" width="${NW}" height="${NH}" rx="8" class="mm-md0" data-mm-mm="${m.id}"/>`).join("");
 }
 function bandSet(){const s=new Set(mpGet("mm_band"));return s}
 function edgesNow(){
- const bands=bandSet(),allB=bands.size>=BANDS.length,vis=id=>allB||bands.has(MB[id].band),list=[],seen={};
- const add=(a,b,cls)=>{const k=a+">"+b;if(seen[k])return;const fl=flowsBetween(a,b);if(!fl.length||!vis(a)||!vis(b))return;seen[k]=1;list.push({k,a,b,n:fl.length,fl,cls,far:Math.abs(MB[a].bi-MB[b].bi)>2})};
- if(MM.pair&&MM.pair.a&&MM.pair.b){
-  const r=between(MM.pair.a,MM.pair.b);add(r.a,r.b,"pd");add(r.b,r.a,"pr");
-  r.two.slice(0,MM.pairAll?99:12).forEach(p=>{if(p.dir==="ab"){add(r.a,p.via,"p2");add(p.via,r.b,"p2")}else{add(r.b,p.via,"p2");add(p.via,r.a,"p2")}});
-  if(r.chain)for(let i=0;i<r.chain.length-1;i++)add(r.chain[i],r.chain[i+1],"p2");
- }else if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);if(j)for(let i=0;i<j.steps.length-1;i++)add(j.steps[i],j.steps[i+1],"jn")}
- else if(MM.sel&&MB[MM.sel]){
-  if(MM.showPush)neighbors(MM.sel).push.forEach(t=>add(MM.sel,t,"push"));
-  if(MM.showPull)neighbors(MM.sel).pull.forEach(s=>add(s,MM.sel,"pull"));
- }
- if(MM.byMode)list.forEach(e=>{if(e.cls==="push"||e.cls==="pull"){const c={event:0,batch:0,human:0};e.fl.forEach(f=>c[f.mode]++);e.cls=c.human>=c.batch&&c.human>c.event?"human":c.batch>c.event?"batch":"event";e.dirc=1}});
- return list;
+const bands=bandSet(),allB=bands.size>=BANDS.length,vis=id=>allB||bands.has(MB[id].band),list=[],seen={};
+const add=(a,b,cls)=>{const k=a+">"+b;if(seen[k])return;const fl=flowsBetween(a,b);if(!fl.length||!vis(a)||!vis(b))return;seen[k]=1;list.push({k,a,b,n:fl.length,fl,cls,far:Math.abs(MB[a].bi-MB[b].bi)>2})};
+if(MM.pair&&MM.pair.a&&MM.pair.b){
+const r=between(MM.pair.a,MM.pair.b);add(r.a,r.b,"pd");add(r.b,r.a,"pr");
+r.two.slice(0,MM.pairAll?99:12).forEach(p=>{if(p.dir==="ab"){add(r.a,p.via,"p2");add(p.via,r.b,"p2")}else{add(r.b,p.via,"p2");add(p.via,r.a,"p2")}});
+if(r.chain)for(let i=0;i<r.chain.length-1;i++)add(r.chain[i],r.chain[i+1],"p2");
+}else if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);if(j)for(let i=0;i<j.steps.length-1;i++)add(j.steps[i],j.steps[i+1],"jn")}
+else if(MM.sel&&MB[MM.sel]){
+if(MM.showPush)neighbors(MM.sel).push.forEach(t=>add(MM.sel,t,"push"));
+if(MM.showPull)neighbors(MM.sel).pull.forEach(s=>add(s,MM.sel,"pull"));
+}
+if(MM.byMode)list.forEach(e=>{if(e.cls==="push"||e.cls==="pull"){const c={event:0,batch:0,human:0};e.fl.forEach(f=>c[f.mode]++);e.cls=c.human>=c.batch&&c.human>c.event?"human":c.batch>c.event?"batch":"event";e.dirc=1}});
+return list;
 }
 function geom(list){
- const ends={};
- list.forEach(e=>{const A=MB[e.a],B=MB[e.b],same=Math.abs(A.cy-B.cy)<NH;let sa,sb;
-  if(same){sa=sb=(A.cx<B.cx?"t":"b")}else{sa=B.cy>A.cy?"b":"t";sb=sa==="b"?"t":"b"}
+const ends={};
+list.forEach(e=>{const A=MB[e.a],B=MB[e.b],same=Math.abs(A.cy-B.cy)<NH;let sa,sb;
+if(same){sa=sb=(A.cx<B.cx?"t":"b")}else{sa=B.cy>A.cy?"b":"t";sb=sa==="b"?"t":"b"}
   e.sa=sa;e.sb=sb;e.same=same;(ends[e.a+sa]=ends[e.a+sa]||[]).push({e,end:"a",o:B.cx});(ends[e.b+sb]=ends[e.b+sb]||[]).push({e,end:"b",o:A.cx})});
- Object.keys(ends).forEach(k=>{const arr=ends[k].sort((p,q)=>p.o-q.o),c=arr.length,step=Math.min(15,(NW-36)/Math.max(1,c-1));arr.forEach((x,i)=>{x.e["o"+x.end]=(i-(c-1)/2)*step})});
- list.forEach(e=>{const A=MB[e.a],B=MB[e.b],x1=A.cx+e.oa,y1=e.sa==="b"?A.y+NH:A.y,x2=B.cx+e.ob,y2=e.sb==="b"?B.y+NH:B.y;
-  if(e.same){const h=24+Math.min(80,Math.abs(x2-x1)*.17),s=e.sa==="t"?-1:1;e.d=`M${x1},${y1}C${x1},${y1+s*h} ${x2},${y2+s*h} ${x2},${y2}`;e.mx=(x1+x2)/2;e.my=y1+s*h*.75}
-  else{const dy=y2-y1,s=dy>0?1:-1,k=Math.max(30,Math.abs(dy)*.5);e.d=`M${x1},${y1}C${x1},${y1+s*k} ${x2},${y2-s*k} ${x2},${y2}`;e.mx=(x1+x2)/2;e.my=(y1+y2)/2}});
+Object.keys(ends).forEach(k=>{const arr=ends[k].sort((p,q)=>p.o-q.o),c=arr.length,step=Math.min(15,(NW-36)/Math.max(1,c-1));arr.forEach((x,i)=>{x.e["o"+x.end]=(i-(c-1)/2)*step})});
+list.forEach(e=>{const A=MB[e.a],B=MB[e.b],x1=A.cx+e.oa,y1=e.sa==="b"?A.y+NH:A.y,x2=B.cx+e.ob,y2=e.sb==="b"?B.y+NH:B.y;
+if(e.same){const h=24+Math.min(80,Math.abs(x2-x1)*.17),s=e.sa==="t"?-1:1;e.d=`M${x1},${y1}C${x1},${y1+s*h} ${x2},${y2+s*h} ${x2},${y2}`;e.mx=(x1+x2)/2;e.my=y1+s*h*.75}
+else{const dy=y2-y1,s=dy>0?1:-1,k=Math.max(30,Math.abs(dy)*.5);e.d=`M${x1},${y1}C${x1},${y1+s*k} ${x2},${y2-s*k} ${x2},${y2}`;e.mx=(x1+x2)/2;e.my=(y1+y2)/2}});
 }
 function drawEdges(){
- const g=document.querySelector("[data-mm-edges]");if(!g)return;
- const list=edgesNow();geom(list);
+const g=document.querySelector("[data-mm-edges]");if(!g)return;
+const list=edgesNow();geom(list);
  g.innerHTML=list.map(e=>`<g class="mm-e ${e.cls}${e.far?" far":""}${MM.edge===e.k?" on":""}" data-mm-edge="${e.k}"><path class="mm-hit" d="${e.d}"/><path class="mm-line" d="${e.d}" marker-end="url(#mm-ar-${e.cls})"/>${e.n>1?`<g class="mm-bub" transform="translate(${e.mx},${e.my})"><circle r="9"/><text y="3.6" text-anchor="middle">${U.esc(e.n)}</text></g>`:""}</g>`).join("");
- const note=document.querySelector("[data-mm-note]");if(note)note.textContent=noteText(list);
+const note=document.querySelector("[data-mm-note]");if(note)note.textContent=noteText(list);
 }
 function noteText(list){
- if(MM.pair&&MM.pair.a&&MM.pair.b)return `Showing direct flows and up to ${MM.pairAll?"all":"12"} two-step paths between ${nameOf(MM.pair.a)} and ${nameOf(MM.pair.b)}.`;
- if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);return j?`Tracing the journey: ${j.t}.`:""}
- if(MM.sel&&MB[MM.sel]){const m=MB[MM.sel];return `${m.name}: ${list.filter(e=>e.cls!=="pull"&&e.a===m.id).length} modules receive its data, ${list.filter(e=>e.b===m.id).length} send it data. Only this module's flows are drawn.`}
- return "Select a module to draw its pushes and pulls. The faint arcs on the left count flows between bands.";
+if(MM.pair&&MM.pair.a&&MM.pair.b)return `Showing direct flows and up to ${MM.pairAll?"all":"12"} two-step paths between ${nameOf(MM.pair.a)} and ${nameOf(MM.pair.b)}.`;
+if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);return j?`Tracing the journey: ${j.t}.`:""}
+if(MM.sel&&MB[MM.sel]){const m=MB[MM.sel];return `${m.name}: ${list.filter(e=>e.cls!=="pull"&&e.a===m.id).length} modules receive its data, ${list.filter(e=>e.b===m.id).length} send it data. Only this module's flows are drawn.`}
+return "Select a module to draw its pushes and pulls. The faint arcs on the left count flows between bands.";
 }
 function styleNodes(){
- const cls={},add=(id,c)=>{cls[id]=(cls[id]||" hl")+" "+c},bands=bandSet(),allB=bands.size>=BANDS.length;
- let focus=false;
- if(MM.pair&&MM.pair.a){focus=true;add(MM.pair.a,"on pa");if(MM.pair.b){add(MM.pair.b,"on pb");const r=between(MM.pair.a,MM.pair.b);r.two.slice(0,MM.pairAll?99:12).forEach(p=>add(p.via,"nb-via"));(r.chain||[]).forEach(x=>{if(x!==MM.pair.a&&x!==MM.pair.b)add(x,"nb-via")})}}
- else if(MM.jny){focus=true;const j=JOURNEYS.find(x=>x.id===MM.jny);if(j)j.steps.forEach(s=>add(s,"nb-jn"))}
- else if(MM.sel&&MB[MM.sel]){focus=true;add(MM.sel,"on");
-  if(MM.blast){blastOf(MM.sel,3).forEach((lv,i)=>lv.forEach(x=>add(x,"bl"+(i+1))))}
-  else{const nb=neighbors(MM.sel);if(MM.showPush)nb.push.forEach(x=>add(x,"nb-push"));if(MM.showPull)nb.pull.forEach(x=>add(x,"nb-pull"))}}
- document.querySelectorAll("[data-mm-n]").forEach(el=>{const id=el.dataset.mmN,m=MB[id];const mt=matOf(id);el.className="mm-n"+(m.proposed?" prop":"")+(cls[id]||"")+((!allB&&!bands.has(m.band))?" off":"")+(MM.byMat&&mt?" mat mt"+mt.level:"");el.setAttribute("aria-pressed",MM.sel===id?"true":"false");const bd=el.querySelector("[data-mm-mb]");if(bd){bd.textContent=mt?mt.level:"";bd.className="mm-mb"+(mt?" mt"+mt.level:"");bd.title=mt?"Process maturity "+mt.avg+" of 5 across "+mt.n+" process"+(mt.n===1?"":"es")+(mt.below?", "+mt.below+" below target":""):"No maturity yet"}});
- const w=document.querySelector("[data-mm-world]");if(w)w.classList.toggle("focus",focus);
- const mini=document.querySelectorAll("[data-mm-mm]");mini.forEach(r=>{const c=cls[r.dataset.mmMm]||"";r.setAttribute("class","mm-md0"+(/on/.test(c)?" hi":/nb|bl/.test(c)?" nb":""))});
+const cls={},add=(id,c)=>{cls[id]=(cls[id]||" hl")+" "+c},bands=bandSet(),allB=bands.size>=BANDS.length;
+let focus=false;
+if(MM.pair&&MM.pair.a){focus=true;add(MM.pair.a,"on pa");if(MM.pair.b){add(MM.pair.b,"on pb");const r=between(MM.pair.a,MM.pair.b);r.two.slice(0,MM.pairAll?99:12).forEach(p=>add(p.via,"nb-via"));(r.chain||[]).forEach(x=>{if(x!==MM.pair.a&&x!==MM.pair.b)add(x,"nb-via")})}}
+else if(MM.jny){focus=true;const j=JOURNEYS.find(x=>x.id===MM.jny);if(j)j.steps.forEach(s=>add(s,"nb-jn"))}
+else if(MM.sel&&MB[MM.sel]){focus=true;add(MM.sel,"on");
+if(MM.blast){blastOf(MM.sel,3).forEach((lv,i)=>lv.forEach(x=>add(x,"bl"+(i+1))))}
+else{const nb=neighbors(MM.sel);if(MM.showPush)nb.push.forEach(x=>add(x,"nb-push"));if(MM.showPull)nb.pull.forEach(x=>add(x,"nb-pull"))}}
+document.querySelectorAll("[data-mm-n]").forEach(el=>{const id=el.dataset.mmN,m=MB[id];const mt=matOf(id);el.className="mm-n"+(m.proposed?" prop":"")+(cls[id]||"")+((!allB&&!bands.has(m.band))?" off":"")+(MM.byMat&&mt?" mat mt"+mt.level:"");el.setAttribute("aria-pressed",MM.sel===id?"true":"false");const bd=el.querySelector("[data-mm-mb]");if(bd){bd.textContent=mt?mt.level:"";bd.className="mm-mb"+(mt?" mt"+mt.level:"");bd.title=mt?"Process maturity "+mt.avg+" of 5 across "+mt.n+" process"+(mt.n===1?"":"es")+(mt.below?", "+mt.below+" below target":""):"No maturity yet"}});
+const w=document.querySelector("[data-mm-world]");if(w)w.classList.toggle("focus",focus);
+const mini=document.querySelectorAll("[data-mm-mm]");mini.forEach(r=>{const c=cls[r.dataset.mmMm]||"";r.setAttribute("class","mm-md0"+(/on/.test(c)?" hi":/nb|bl/.test(c)?" nb":""))});
 }
 /* ---------- view (pan and zoom) ---------- */
 function vpEl(){return document.querySelector("[data-mm-vp]")}
 function applyView(){
- const vp=vpEl(),w=document.querySelector("[data-mm-world]");if(!vp||!w||!MM.view)return;const v=MM.view;
+const vp=vpEl(),w=document.querySelector("[data-mm-world]");if(!vp||!w||!MM.view)return;const v=MM.view;
  w.style.transform=`translate(${v.x}px,${v.y}px) scale(${v.k})`;vp.classList.toggle("lo",v.k<.62);
- const z=document.querySelector("[data-mm-zl]");if(z)z.textContent=Math.round(v.k*100)+"%";
- const r=document.querySelector("[data-mm-mvp]");if(r){r.setAttribute("x",-v.x/v.k);r.setAttribute("y",-v.y/v.k);r.setAttribute("width",vp.clientWidth/v.k);r.setAttribute("height",vp.clientHeight/v.k)}
+const z=document.querySelector("[data-mm-zl]");if(z)z.textContent=Math.round(v.k*100)+"%";
+const r=document.querySelector("[data-mm-mvp]");if(r){r.setAttribute("x",-v.x/v.k);r.setAttribute("y",-v.y/v.k);r.setAttribute("width",vp.clientWidth/v.k);r.setAttribute("height",vp.clientHeight/v.k)}
 }
 function boxView(ids,pad,maxK,res){
- const vp=vpEl();if(!vp)return null;const ms=ids.map(i=>MB[i]).filter(Boolean);if(!ms.length)return null;
- let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;ms.forEach(m=>{x0=Math.min(x0,m.x);y0=Math.min(y0,m.y);x1=Math.max(x1,m.x+NW);y1=Math.max(y1,m.y+NH)});
+const vp=vpEl();if(!vp)return null;const ms=ids.map(i=>MB[i]).filter(Boolean);if(!ms.length)return null;
+let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;ms.forEach(m=>{x0=Math.min(x0,m.x);y0=Math.min(y0,m.y);x1=Math.max(x1,m.x+NW);y1=Math.max(y1,m.y+NH)});
  x0-=pad;y0-=pad;x1+=pad;y1+=pad;const cw=(vp.clientWidth||900)-(res||0),ch=vp.clientHeight||600;
- const k=Math.max(.2,Math.min(maxK||1.2,cw/(x1-x0),ch/(y1-y0)));
+const k=Math.max(.2,Math.min(maxK||1.2,cw/(x1-x0),ch/(y1-y0)));
  return{k,x:cw/2-k*(x0+x1)/2,y:ch/2-k*(y0+y1)/2};
 }
 const panelOpen=()=>!!(MM.sel||MM.pair||MM.flow||MM.jny)&&MM.insp&&window.innerWidth>1000;
@@ -740,35 +739,35 @@ function clusterView(){return boxView(["itsm_mi","itsm_inc","itsm_prb","itsm_chg
 function fitView(){const vp=vpEl();if(!vp)return null;const cw=vp.clientWidth||900,ch=vp.clientHeight||600,k=Math.min(cw/(LAY.W-GL+80),ch/LAY.H)*.97;return{k,x:cw/2-k*(LAY.W+GL-80)/2+0,y:(ch-LAY.H*k)/2}}
 let anim=0;
 function setView(v,smooth){
- if(!v)return;cancelAnimationFrame(anim);
- const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
- if(!smooth||reduce||!MM.view){MM.view=v;applyView();return}
- const s0=Object.assign({},MM.view),t0=performance.now(),D=380;
- const step=t=>{const p=Math.min(1,(t-t0)/D),e=1-Math.pow(1-p,3);MM.view={x:s0.x+(v.x-s0.x)*e,y:s0.y+(v.y-s0.y)*e,k:s0.k+(v.k-s0.k)*e};applyView();if(p<1)anim=requestAnimationFrame(step)};anim=requestAnimationFrame(step);
+if(!v)return;cancelAnimationFrame(anim);
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(!smooth||reduce||!MM.view){MM.view=v;applyView();return}
+const s0=Object.assign({},MM.view),t0=performance.now(),D=380;
+const step=t=>{const p=Math.min(1,(t-t0)/D),e=1-Math.pow(1-p,3);MM.view={x:s0.x+(v.x-s0.x)*e,y:s0.y+(v.y-s0.y)*e,k:s0.k+(v.k-s0.k)*e};applyView();if(p<1)anim=requestAnimationFrame(step)};anim=requestAnimationFrame(step);
 }
 function zoomAt(f,cx,cy){
- const vp=vpEl();if(!vp||!MM.view)return;const v=MM.view,nk=Math.max(.2,Math.min(2.2,v.k*f));
- cx=cx==null?vp.clientWidth/2:cx;cy=cy==null?vp.clientHeight/2:cy;MM.touched=true;MM.view={x:cx-(cx-v.x)*nk/v.k,y:cy-(cy-v.y)*nk/v.k,k:nk};applyView();
+const vp=vpEl();if(!vp||!MM.view)return;const v=MM.view,nk=Math.max(.2,Math.min(2.2,v.k*f));
+cx=cx==null?vp.clientWidth/2:cx;cy=cy==null?vp.clientHeight/2:cy;MM.touched=true;MM.view={x:cx-(cx-v.x)*nk/v.k,y:cy-(cy-v.y)*nk/v.k,k:nk};applyView();
 }
 function flyTo(ids){const v=boxView(ids,ids.length>1?90:170,1.1,panelOpen()?400:0);if(v){MM.touched=true;setView(v,true)}}
 /* ---------- selection ---------- */
 function update(){styleNodes();drawEdges();const el=document.querySelector("[data-mm-insp]");if(el){el.innerHTML=`<div class="mm-colr"><button type="button" class="btn quiet" data-mm-collapse>Hide panel</button></div>`+inspHTML();el.classList.toggle("open",!!(MM.sel||MM.pair||MM.flow)&&MM.insp)}
- const pa=document.querySelector("[data-mm-pa]"),pb=document.querySelector("[data-mm-pb]");if(pa)pa.value=MM.pair?MM.pair.a||"":"";if(pb)pb.value=MM.pair?MM.pair.b||"":"";
- document.querySelectorAll(".mm-dtog").forEach(b=>b.setAttribute("aria-pressed",String(!!MM.insp)));
- document.querySelectorAll("[data-mm-tg]").forEach(b=>{const k=b.dataset.mmTg;b.setAttribute("aria-pressed",String(k==="push"?MM.showPush:k==="pull"?MM.showPull:k==="mat"?!!MM.byMat:MM.byMode))});
- document.querySelectorAll("[data-mm-jsel]").forEach(b=>b.classList.toggle("on",b.dataset.mmJsel===MM.jny));
+const pa=document.querySelector("[data-mm-pa]"),pb=document.querySelector("[data-mm-pb]");if(pa)pa.value=MM.pair?MM.pair.a||"":"";if(pb)pb.value=MM.pair?MM.pair.b||"":"";
+document.querySelectorAll(".mm-dtog").forEach(b=>b.setAttribute("aria-pressed",String(!!MM.insp)));
+document.querySelectorAll("[data-mm-tg]").forEach(b=>{const k=b.dataset.mmTg;b.setAttribute("aria-pressed",String(k==="push"?MM.showPush:k==="pull"?MM.showPull:k==="mat"?!!MM.byMat:MM.byMode))});
+document.querySelectorAll("[data-mm-jsel]").forEach(b=>b.classList.toggle("on",b.dataset.mmJsel===MM.jny));
 }
 function selectMod(id,fly,tab){
- if(!MB[id])return;MM.sel=id;MM.pair=null;MM.jny=null;MM.flow=null;MM.edge=null;MM.insp=true;if(tab)MM.tab=tab;if(!/^(pulls|pushes|proc|data|blast)$/.test(MM.tab))MM.tab="pulls";
+if(!MB[id])return;MM.sel=id;MM.pair=null;MM.jny=null;MM.flow=null;MM.edge=null;MM.insp=true;if(tab)MM.tab=tab;if(!/^(pulls|pushes|proc|data|blast)$/.test(MM.tab))MM.tab="pulls";
  MM.blast=MM.tab==="blast"&&MM.blast;update();if(fly)flyTo([id].concat(neighbors(id).push.slice(0,0)));
  audit("Module map: selected module",MB[id].name);
 }
 function setPair(a,b,fly){
  MM.pair={a:a||"",b:b||""};MM.sel=null;MM.jny=null;MM.flow=null;MM.edge=null;MM.insp=true;MM.pairAll=false;update();
- if(a&&b){const r=between(a,b),ids=[a,b].concat(r.two.slice(0,12).map(p=>p.via));if(fly!==false)flyTo(ids);audit("Module map: compared modules",nameOf(a)+" and "+nameOf(b))}
+if(a&&b){const r=between(a,b),ids=[a,b].concat(r.two.slice(0,12).map(p=>p.via));if(fly!==false)flyTo(ids);audit("Module map: compared modules",nameOf(a)+" and "+nameOf(b))}
 }
 /* ---------- inspector ---------- */
-/* step kinds render through STEPMODE (CL-58); "auto" in older step data reads as robot */
+/* step kinds render through STEPMODE (CL-58); "auto" in */
 const WHOPILL=v=>window.STEPMODE?STEPMODE.pill(v):pill(String(v||"human"),"info");
 const FDESC={live:"Updates within seconds","near-live":"Updates within a minute or two",hourly:"Refreshed about every hour",daily:"Refreshed once a day",unknown:"No registered field yet"};
 const MDESC={event:"Sent the moment the trigger happens.",batch:"Sent on a schedule, in a group.",human:"Sent when a person acts or decides."};
@@ -776,57 +775,57 @@ const AUTH={platform:BRAND.name+" is authoritative",external:"External system wi
 const modChip=id=>`<button type="button" class="mm-mc" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i>${E(MB[id].sn)}</button>`;
 const mdOf=m=>BANDS[m.bi][1];
 function flowRow(f,other){
- return `<button type="button" class="mm-fr" data-mm-flow="${f.id}"><b>${E(f.data)}</b><span class="mm-fm">${modePillH(f.mode)}<span>${E(f.trig)}</span></span><span class="small muted">${E(f.why)}</span><span class="mm-fe">${refChips(f)}</span></button>`;
+return `<button type="button" class="mm-fr" data-mm-flow="${f.id}"><b>${E(f.data)}</b><span class="mm-fm">${modePillH(f.mode)}<span>${E(f.trig)}</span></span><span class="small muted">${E(f.why)}</span><span class="mm-fe">${refChips(f)}</span></button>`;
 }
 function grouped(m,dir){
- const list=dir==="in"?m.inn:m.out,g={};list.forEach(f=>{const o=dir==="in"?f.from:f.to;(g[o]=g[o]||[]).push(f)});
- const ids=Object.keys(g).sort((a,b)=>MB[a].bi-MB[b].bi||MB[a].sn.localeCompare(MB[b].sn));
- if(!ids.length)return empty(dir==="in"?"Nothing flows in":"Nothing flows out","Add a flow in the curation table so this module is not an island.");
- return `<p class="small muted mm-sum">${dir==="in"?`${E(m.sn)} pulls ${list.length} kinds of data from ${ids.length} modules.`:`${E(m.sn)} pushes ${list.length} kinds of data to ${ids.length} modules.`} Select a row for its data contract.</p>`+ids.map(id=>`<section class="mm-g"><button type="button" class="mm-gh" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i><b>${dir==="in"?"From ":"To "}${E(MB[id].name)}</b><span class="small muted">${E(mdOf(MB[id]))}</span><span class="pill mute">${g[id].length}</span></button>${g[id].map(f=>flowRow(f)).join("")}</section>`).join("");
+const list=dir==="in"?m.inn:m.out,g={};list.forEach(f=>{const o=dir==="in"?f.from:f.to;(g[o]=g[o]||[]).push(f)});
+const ids=Object.keys(g).sort((a,b)=>MB[a].bi-MB[b].bi||MB[a].sn.localeCompare(MB[b].sn));
+if(!ids.length)return empty(dir==="in"?"Nothing flows in":"Nothing flows out","Add a flow in the curation table so this module is not an island.");
+return `<p class="small muted mm-sum">${dir==="in"?`${E(m.sn)} pulls ${list.length} kinds of data from ${ids.length} modules.`:`${E(m.sn)} pushes ${list.length} kinds of data to ${ids.length} modules.`} Select a row for its data contract.</p>`+ids.map(id=>`<section class="mm-g"><button type="button" class="mm-gh" data-mm-sel="${id}" style="--c:${bandCol(MB[id].bi)}"><i></i><b>${dir==="in"?"From ":"To "}${E(MB[id].name)}</b><span class="small muted">${E(mdOf(MB[id]))}</span><span class="pill mute">${g[id].length}</span></button>${g[id].map(f=>flowRow(f)).join("")}</section>`).join("");
 }
 function procTab(m){
- const st=stepsOf(m.id),PL=window.PROCLIB,list=PL&&PL.forModule?PL.forModule(m.id):[];
- const mt=matOf(m.id),prim=PL&&PL.primary?PL.primary(m.id):null;
- if(!st&&!list.length)return empty(m.proposed?"Proposed module":"No process defined yet",m.proposed?"This module is proposed. Define its process when it is built; the Process library will pick it up.":"This module has no steps in the process registry. Process owners add them in the Workflow designer.")+`<div class="row">${m.proposed?"":`<button class="btn" data-nav="flw_design">Open Workflow designer</button>`}</div>`;
- const head=list.length?`<div class="eyebrow">${list.length===1?"Process":list.length+" processes"} in this module</div><div class="mm-plist">${list.map(x=>`<button type="button" class="mm-pr" data-mm-popen="${E(x.id)}" title="Open the full process page"><span class="mm-mb mt${Math.max(1,Math.min(5,Math.round(x.level/Math.max(1,mxOf(x))*5)))}">${x.level}</span><span><b>${E(x.name)}</b><small class="muted">${E(x.owner)} · ${x.steps} steps · ${x.below?"below target":"meets target"}</small></span></button>`).join("")}</div>`:"";
- const sh=st||[];
- return `${head}<div class="row mm-pact">${prim?`<button type="button" class="btn primary" data-mm-popen="${E(prim)}">Open full process page</button>`:""}<button type="button" class="btn" data-mm-lib>Process library</button></div>
+const st=stepsOf(m.id),PL=window.PROCLIB,list=PL&&PL.forModule?PL.forModule(m.id):[];
+const mt=matOf(m.id),prim=PL&&PL.primary?PL.primary(m.id):null;
+if(!st&&!list.length)return empty(m.proposed?"Proposed module":"No process defined yet",m.proposed?"This module is proposed. Define its process when it is built; the Process library will pick it up.":"This module has no steps in the process registry. Process owners add them in the Workflow designer.")+`<div class="row">${m.proposed?"":`<button class="btn" data-nav="flw_design">Open Workflow designer</button>`}</div>`;
+const head=list.length?`<div class="eyebrow">${list.length===1?"Process":list.length+" processes"} in this module</div><div class="mm-plist">${list.map(x=>`<button type="button" class="mm-pr" data-mm-popen="${E(x.id)}" title="Open the full process page"><span class="mm-mb mt${Math.max(1,Math.min(5,Math.round(x.level/Math.max(1,mxOf(x))*5)))}">${x.level}</span><span><b>${E(x.name)}</b><small class="muted">${E(x.owner)} · ${x.steps} steps · ${x.below?"below target":"meets target"}</small></span></button>`).join("")}</div>`:"";
+const sh=st||[];
+return `${head}<div class="row mm-pact">${prim?`<button type="button" class="btn primary" data-mm-popen="${E(prim)}">Open full process page</button>`:""}<button type="button" class="btn" data-mm-lib>Process library</button></div>
  ${sh.length?`<p class="small muted mm-sum">${sh.length} steps${mt?`, average maturity ${mt.avg} of 5`:""}. Select a step to open its process page. Each step says who acts, how fast, and how it decides.</p><ol class="mm-steps">${sh.map((s,i)=>`<li><span class="mm-sn">${i+1}</span><button type="button" class="mm-stb" ${prim?`data-mm-popen="${E(prim)}"`:""}><b>${E(s.n)}</b><span class="row">${WHOPILL(s.who||"human")}${window.STEPKIT&&STEPKIT.needsTrigger(s.who)?STEPKIT.trigChip(Object.assign({},s,{trig:s.trig||STEPKIT.guessTrig(s)})):""}${window.PROC&&PROC.modeTag?PROC.modeTag(s):""}${s.sla?`<span class="pill mute">${E(s.sla)}</span>`:""}</span><span class="small muted">${E(s.d||"")}</span></button></li>`).join("")}</ol>`:""}`;
 }
 const mxOf=x=>{const m=window.MAT&&MAT.ALLM?MAT.ALLM().find(q=>q.id===x.model):null;return m?m.lv.length:5};
 function dataTab(m){
- const chips=(arr,kind)=>arr.length?arr.map(id=>{const e=PLAT.ent(id);return `<button type="button" class="chip mm-ec" data-mm-ent="${id}" title="Open ${E(e?e.label:id)} in the data model">${E(e?e.label:(PLN[id]?PLN[id].label:id))}${kind==="plan"?" (planned)":""}</button>`}).join(""):`<span class="muted small">None</span>`;
- const plan=[...new Set(m.out.concat(m.inn).flatMap(f=>f.refs.filter(r=>r.kind==="plan").map(r=>r.id)))];
- return `<div class="mm-ds"><div class="eyebrow">Writes (declared)</div><div class="row">${chips(m.w)}</div><div class="eyebrow">Reads (declared)</div><div class="row">${chips(m.r)}</div>
+const chips=(arr,kind)=>arr.length?arr.map(id=>{const e=PLAT.ent(id);return `<button type="button" class="chip mm-ec" data-mm-ent="${id}" title="Open ${E(e?e.label:id)} in the data model">${E(e?e.label:(PLN[id]?PLN[id].label:id))}${kind==="plan"?" (planned)":""}</button>`}).join(""):`<span class="muted small">None</span>`;
+const plan=[...new Set(m.out.concat(m.inn).flatMap(f=>f.refs.filter(r=>r.kind==="plan").map(r=>r.id)))];
+return `<div class="mm-ds"><div class="eyebrow">Writes (declared)</div><div class="row">${chips(m.w)}</div><div class="eyebrow">Reads (declared)</div><div class="row">${chips(m.r)}</div>
  <div class="eyebrow">Carried in its outgoing flows</div><div class="row">${chips([...m.eo].filter(i=>PLAT.ent(i)))}</div><div class="eyebrow">Carried in its incoming flows</div><div class="row">${chips([...m.ei].filter(i=>PLAT.ent(i)))}</div>
  ${plan.length?`<div class="eyebrow">Needed but not registered yet</div><div class="row">${plan.map(i=>`<span class="pill warn">${E(PLN[i].label)}</span>`).join("")}</div>`:""}
  ${m.nonOwn.length?`<div class="eyebrow">Writes an entity it does not own</div><div class="row">${m.nonOwn.map(x=>`<span class="pill bad">${E(x.ent)}, owned by ${E(x.owner)}</span>`).join("")}</div>`:""}
  <p class="small muted">Select an entity to open it in the data model.</p></div>`;
 }
 function blastTab(m){
- const lv=blastOf(m.id,3),tot=lv.reduce((a,l)=>a+l.length,0);
- return `<p class="small muted mm-sum">${tot?`If ${E(m.sn)} stops, <b>${lv[0].length}</b> modules lose data at once, <b>${lv[1].length}</b> more within two steps and <b>${lv[2].length}</b> within three.`:`Nothing downstream pulls from ${E(m.sn)}.`}</p>
+const lv=blastOf(m.id,3),tot=lv.reduce((a,l)=>a+l.length,0);
+return `<p class="small muted mm-sum">${tot?`If ${E(m.sn)} stops, <b>${lv[0].length}</b> modules lose data at once, <b>${lv[1].length}</b> more within two steps and <b>${lv[2].length}</b> within three.`:`Nothing downstream pulls from ${E(m.sn)}.`}</p>
  ${lv.map((l,i)=>`<div class="eyebrow">${i+1} step${i?"s":""} away (${l.length})</div><div class="row">${l.length?l.map(modChip).join(""):'<span class="muted small">None</span>'}</div>`).join("")}
  <div class="row" style="margin-top:12px"><button type="button" class="btn ${MM.blast?"primary":""}" data-mm-blast aria-pressed="${MM.blast}">${MM.blast?"Hide on map":"Show on map"}</button></div>`;
 }
 function modHTML(m){
- const bl=blastOf(m.id,3).reduce((a,l)=>a+l.length,0);
- const tabs=[["pulls","Pulls from",m.nin],["pushes","Pushes to",m.nout],["proc","Its process",m.steps],["data","Data",m.r.length+m.w.length],["blast","Blast radius",bl]];
- const body=MM.tab==="pushes"?grouped(m,"out"):MM.tab==="proc"?procTab(m):MM.tab==="data"?dataTab(m):MM.tab==="blast"?blastTab(m):grouped(m,"in");
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${m.own?ownerChip(m.own,{role:"Owner"}):""}${m.proposed?' <span class="pill warn">Proposed</span>':""}${matOf(m.id)?` <span class="mm-mb mt${matOf(m.id).level}" title="Average process maturity">${matOf(m.id).level}</span> <span class="small muted">process maturity ${matOf(m.id).avg} of 5</span>`:""}</p>
+const bl=blastOf(m.id,3).reduce((a,l)=>a+l.length,0);
+const tabs=[["pulls","Pulls from",m.nin],["pushes","Pushes to",m.nout],["proc","Its process",m.steps],["data","Data",m.r.length+m.w.length],["blast","Blast radius",bl]];
+const body=MM.tab==="pushes"?grouped(m,"out"):MM.tab==="proc"?procTab(m):MM.tab==="data"?dataTab(m):MM.tab==="blast"?blastTab(m):grouped(m,"in");
+return `<div class="mm-ih"><div class="row sp"><span class="eyebrow" style="color:${bandCol(m.bi)}">${E(mdOf(m))}</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(m.name)}</h3><p class="small muted">Accountable: ${m.own?ownerChip(m.own,{role:"Owner"}):""}${m.proposed?' <span class="pill warn">Proposed</span>':""}${matOf(m.id)?` <span class="mm-mb mt${matOf(m.id).level}" title="Average process maturity">${matOf(m.id).level}</span> <span class="small muted">process maturity ${matOf(m.id).avg} of 5</span>`:""}</p>
  <div class="row">${m.scr?`<button type="button" class="btn primary" data-mm-open="${m.id}">Open screen</button>`:""}<button type="button" class="btn" data-mm-cmp="${m.id}">Compare with another</button>${m.proc?`<button type="button" class="btn" data-mm-popen="${window.PROCLIB&&PROCLIB.primary?PROCLIB.primary(m.id):m.id}">Process page</button>`:""}</div></div>
  <div class="mm-tabs" role="tablist">${tabs.map(t=>`<button type="button" role="tab" class="${MM.tab===t[0]?"on":""}" aria-selected="${MM.tab===t[0]}" data-mm-tab="${t[0]}">${t[1]}<small>${t[2]}</small></button>`).join("")}</div><div class="mm-ib" role="tabpanel">${body}</div>`;
 }
 function refBlock(r,f){
- if(r.kind==="plan")return `<div class="mm-rb plan"><div class="row sp"><b>${E(r.label)}</b><span class="pill warn">Planned, not registered</span></div><p class="small muted">${E(r.why)}</p><p class="small">Proposed steward: ${E(r.steward)}. Until it exists this data has no single contract.</p></div>`;
- return `<div class="mm-rb"><div class="row sp"><b>${E(r.label)} <code>${E(r.id)}</code></b><span class="pill info">Registered</span></div><p class="small muted">Owner module: ${E(r.owner)}. Steward: ${E(r.steward)}. Highest class: ${E(r.cls)}.</p>
+if(r.kind==="plan")return `<div class="mm-rb plan"><div class="row sp"><b>${E(r.label)}</b><span class="pill warn">Planned, not registered</span></div><p class="small muted">${E(r.why)}</p><p class="small">Proposed steward: ${E(r.steward)}. Until it exists this data has no single contract.</p></div>`;
+return `<div class="mm-rb"><div class="row sp"><b>${E(r.label)} <code>${E(r.id)}</code></b><span class="pill info">Registered</span></div><p class="small muted">Owner module: ${E(r.owner)}. Steward: ${E(r.steward)}. Highest class: ${E(r.cls)}.</p>
  ${r.f.length?r.f.map(x=>`<div class="mm-ff"><b>${E(x.label)}</b><code>${E(x.k)}</code><span class="pill ${x.fresh==="live"||x.fresh==="near-live"?"good":"mute"}">${E(x.fresh)}</span><span class="pill ${x.auth==="external"?"info":x.auth==="shared"?"warn":"good"}">${E(AUTH[x.auth]||x.auth)}</span><span class="pill mute">${E(x.cls)}</span></div>`).join(""):`<p class="small muted">The whole entity travels; no single field is named.</p>`}
  <button type="button" class="btn quiet" data-mm-ent="${r.id}">Open in data model</button></div>`;
 }
 function flowHTML(){
- const f=FL.find(x=>x.id===MM.flow);if(!f){MM.flow=null;return inspHTML()}
- const A=MB[f.from],B=MB[f.to],sib=flowsBetween(f.from,f.to);
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Data contract</span><button type="button" class="btn quiet" data-mm-back>Back</button></div><h3>${E(f.data)}</h3>
+const f=FL.find(x=>x.id===MM.flow);if(!f){MM.flow=null;return inspHTML()}
+const A=MB[f.from],B=MB[f.to],sib=flowsBetween(f.from,f.to);
+return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Data contract</span><button type="button" class="btn quiet" data-mm-back>Back</button></div><h3>${E(f.data)}</h3>
  <div class="mm-chain">${modChip(f.from)}<span aria-hidden="true">&rarr;</span>${modChip(f.to)}</div>
  ${sib.length>1?`<div class="row">${sib.map((x,i)=>`<button type="button" class="chip ${x.id===f.id?"on":""}" data-mm-flow="${x.id}">Flow ${i+1} of ${sib.length}</button>`).join("")}</div>`:""}</div>
  <div class="mm-ib"><dl class="kv"><dt>Trigger</dt><dd>${E(f.trig)}</dd><dt>Mode</dt><dd>${modePillH(f.mode)} ${E(MDESC[f.mode])}</dd><dt>Purpose</dt><dd>${E(f.why)}</dd><dt>Freshness</dt><dd><span class="pill ${f.fresh==="live"||f.fresh==="near-live"?"good":"mute"}">${E(f.fresh)}</span> ${E(FDESC[f.fresh]||"")}</dd>
@@ -836,33 +835,33 @@ function flowHTML(){
  <div class="row" style="margin-top:12px"><button type="button" class="btn" data-mm-showflow="${f.id}">Show on map</button></div></div>`;
 }
 function pairHTML(){
- const p=MM.pair;if(!p.a)return introHTML();const A=MB[p.a];
- if(!p.b)return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Compare</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(A.name)} and ...</h3><p class="small muted">Pick the second module in the Compare menu above the map. You will see every direct and two-step path with the data carried.</p></div>`;
- const B=MB[p.b],r=between(p.a,p.b),nd=r.direct.length+r.rev.length,list=MM.pairAll?r.two:r.two.slice(0,12);
- const path2=q=>{const a=q.dir==="ab"?A:B,b=q.dir==="ab"?B:A,v=MB[q.via];return `<div class="mm-p2"><div class="mm-chain">${modChip(a.id)}<span aria-hidden="true">&rarr;</span>${modChip(q.via)}<span aria-hidden="true">&rarr;</span>${modChip(b.id)}</div><p class="small"><button type="button" class="mm-lk" data-mm-flow="${q.h[0][0].id}">${E(q.h[0][0].data)}</button>${q.h[0].length>1?` (+${q.h[0].length-1})`:""} then <button type="button" class="mm-lk" data-mm-flow="${q.h[1][0].id}">${E(q.h[1][0].data)}</button>${q.h[1].length>1?` (+${q.h[1].length-1})`:""}</p></div>`};
- const sect=(t,fl)=>`<div class="eyebrow">${t} (${fl.length})</div>${fl.length?fl.map(f=>flowRow(f)).join(""):'<p class="small muted">No direct flow in this direction.</p>'}`;
- const story=nd?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> share ${r.direct.length} direct flow${r.direct.length===1?"":"s"} one way and ${r.rev.length} the other, plus ${r.two.length} two-step path${r.two.length===1?"":"s"} through other modules.`:r.two.length?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> do not exchange data directly. They reach each other through ${r.two.length} two-step path${r.two.length===1?"":"s"}.`:r.chain?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> connect only through a longer chain of ${r.chain.length-1} steps.`:`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> have no documented path. That is a gap.`;
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Compare</span><button type="button" class="btn quiet" data-mm-close>Clear</button></div><h3>${E(A.sn)} and ${E(B.sn)}</h3><p class="small story" data-role="story">${story}</p>
+const p=MM.pair;if(!p.a)return introHTML();const A=MB[p.a];
+if(!p.b)return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Compare</span><button type="button" class="btn quiet" data-mm-close>Close</button></div><h3>${E(A.name)} and ...</h3><p class="small muted">Pick the second module in the Compare menu above the map. You will see every direct and two-step path with the data carried.</p></div>`;
+const B=MB[p.b],r=between(p.a,p.b),nd=r.direct.length+r.rev.length,list=MM.pairAll?r.two:r.two.slice(0,12);
+const path2=q=>{const a=q.dir==="ab"?A:B,b=q.dir==="ab"?B:A,v=MB[q.via];return `<div class="mm-p2"><div class="mm-chain">${modChip(a.id)}<span aria-hidden="true">&rarr;</span>${modChip(q.via)}<span aria-hidden="true">&rarr;</span>${modChip(b.id)}</div><p class="small"><button type="button" class="mm-lk" data-mm-flow="${q.h[0][0].id}">${E(q.h[0][0].data)}</button>${q.h[0].length>1?` (+${q.h[0].length-1})`:""} then <button type="button" class="mm-lk" data-mm-flow="${q.h[1][0].id}">${E(q.h[1][0].data)}</button>${q.h[1].length>1?` (+${q.h[1].length-1})`:""}</p></div>`};
+const sect=(t,fl)=>`<div class="eyebrow">${t} (${fl.length})</div>${fl.length?fl.map(f=>flowRow(f)).join(""):'<p class="small muted">No direct flow in this direction.</p>'}`;
+const story=nd?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> share ${r.direct.length} direct flow${r.direct.length===1?"":"s"} one way and ${r.rev.length} the other, plus ${r.two.length} two-step path${r.two.length===1?"":"s"} through other modules.`:r.two.length?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> do not exchange data directly. They reach each other through ${r.two.length} two-step path${r.two.length===1?"":"s"}.`:r.chain?`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> connect only through a longer chain of ${r.chain.length-1} steps.`:`<b>${E(A.sn)}</b> and <b>${E(B.sn)}</b> have no documented path. That is a gap.`;
+return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Compare</span><button type="button" class="btn quiet" data-mm-close>Clear</button></div><h3>${E(A.sn)} and ${E(B.sn)}</h3><p class="small story" data-role="story">${story}</p>
  <div class="row"><button type="button" class="btn" data-mm-swap>Swap</button><button type="button" class="btn quiet" data-mm-open="${A.id}">Open ${E(A.sn)}</button><button type="button" class="btn quiet" data-mm-open="${B.id}">Open ${E(B.sn)}</button></div></div>
  <div class="mm-ib">${sect(E(A.sn)+" pushes to "+E(B.sn),r.direct)}${sect(E(B.sn)+" pushes to "+E(A.sn),r.rev)}
  <div class="eyebrow">Two-step paths (${r.two.length})</div>${list.length?list.map(path2).join(""):'<p class="small muted">None.</p>'}${r.two.length>12?`<button type="button" class="btn quiet" data-mm-pall>${MM.pairAll?"Show fewer":"Show all "+r.two.length}</button>`:""}
  ${r.chain?`<div class="eyebrow">Shortest chain</div><div class="mm-chain">${r.chain.map(modChip).join('<span aria-hidden="true">&rarr;</span>')}</div>`:""}</div>`;
 }
 function jnyPanel(){
- const j=JOURNEYS.find(x=>x.id===MM.jny);if(!j)return introHTML();
- return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Journey</span><button type="button" class="btn quiet" data-mm-close>Clear</button></div><h3>${E(j.t)}</h3><p class="small story">${E(j.story)}</p></div><div class="mm-ib">${j.steps.slice(0,-1).map((s,i)=>{const f=flowsBetween(s,j.steps[i+1])[0];return `<div class="mm-p2"><div class="mm-chain">${modChip(s)}<span aria-hidden="true">&rarr;</span>${modChip(j.steps[i+1])}</div>${f?`<p class="small"><button type="button" class="mm-lk" data-mm-flow="${f.id}">${E(f.data)}</button> ${modePillH(f.mode)}</p>`:`<p class="small"><span class="pill bad">No documented flow</span></p>`}</div>`}).join("")}</div>`;
+const j=JOURNEYS.find(x=>x.id===MM.jny);if(!j)return introHTML();
+return `<div class="mm-ih"><div class="row sp"><span class="eyebrow">Journey</span><button type="button" class="btn quiet" data-mm-close>Clear</button></div><h3>${E(j.t)}</h3><p class="small story">${E(j.story)}</p></div><div class="mm-ib">${j.steps.slice(0,-1).map((s,i)=>{const f=flowsBetween(s,j.steps[i+1])[0];return `<div class="mm-p2"><div class="mm-chain">${modChip(s)}<span aria-hidden="true">&rarr;</span>${modChip(j.steps[i+1])}</div>${f?`<p class="small"><button type="button" class="mm-lk" data-mm-flow="${f.id}">${E(f.data)}</button> ${modePillH(f.mode)}</p>`:`<p class="small"><span class="pill bad">No documented flow</span></p>`}</div>`}).join("")}</div>`;
 }
 function introHTML(){
- const top=MODS.slice().sort((a,b)=>(b.nin+b.nout)-(a.nin+a.nout)).slice(0,6);
- return `<div class="mm-ih"><h3>Start anywhere</h3><p class="small muted">Select a module to see what it pulls from others and what it pushes to them. Select a line to read its data contract. Use Compare to see how any two modules connect.</p></div><div class="mm-ib"><div class="eyebrow">Most connected modules</div><div class="row">${top.map(m=>`<button type="button" class="mm-mc" data-mm-sel="${m.id}" style="--c:${bandCol(m.bi)}"><i></i>${E(m.sn)} <small>${m.nin+m.nout}</small></button>`).join("")}</div>
+const top=MODS.slice().sort((a,b)=>(b.nin+b.nout)-(a.nin+a.nout)).slice(0,6);
+return `<div class="mm-ih"><h3>Start anywhere</h3><p class="small muted">Select a module to see what it pulls from others and what it pushes to them. Select a line to read its data contract. Use Compare to see how any two modules connect.</p></div><div class="mm-ib"><div class="eyebrow">Most connected modules</div><div class="row">${top.map(m=>`<button type="button" class="mm-mc" data-mm-sel="${m.id}" style="--c:${bandCol(m.bi)}"><i></i>${E(m.sn)} <small>${m.nin+m.nout}</small></button>`).join("")}</div>
  <div class="eyebrow">Try these</div><div class="row"><button type="button" class="chip" data-mm-try="itsm_inc,itsm_chg">How do Incidents and Changes connect?</button><button type="button" class="chip" data-mm-try="itsm_inc,bud_over">How does an incident reach Budgets?</button><button type="button" class="chip" data-mm-try="ppm_proj,inv">Projects to Invoices</button></div></div>`;
 }
 function inspHTML(){
- if(MM.flow)return flowHTML();
- if(MM.pair)return pairHTML();
- if(MM.jny)return jnyPanel();
- if(MM.sel&&MB[MM.sel])return modHTML(MB[MM.sel]);
- return introHTML();
+if(MM.flow)return flowHTML();
+if(MM.pair)return pairHTML();
+if(MM.jny)return jnyPanel();
+if(MM.sel&&MB[MM.sel])return modHTML(MB[MM.sel]);
+return introHTML();
 }
 /* ---------- flow list drawer ---------- */
 function openFlows(title,fl,sub){
@@ -870,15 +869,15 @@ function openFlows(title,fl,sub){
 }
 /* ---------- toolbar ---------- */
 function toolbar(){
- const opts=`<option value="">Choose a module</option>`+BANDS.map(b=>`<optgroup label="${E(b[1])}">${MODS.filter(m=>m.band===b[0]).map(m=>`<option value="${m.id}">${E(m.sn)}</option>`).join("")}</optgroup>`).join("");
- return `<div class="mm-bar"><label class="mm-search"><input type="search" class="txtin" data-mm-q placeholder="Incidents, budget, CMDB, invoices" aria-label="Find a module" autocomplete="off"><div class="mm-res glass" data-mm-res hidden></div></label>
+const opts=`<option value="">Choose a module</option>`+BANDS.map(b=>`<optgroup label="${E(b[1])}">${MODS.filter(m=>m.band===b[0]).map(m=>`<option value="${m.id}">${E(m.sn)}</option>`).join("")}</optgroup>`).join("");
+return `<div class="mm-bar"><label class="mm-search"><input type="search" class="txtin" data-mm-q placeholder="Incidents, budget, CMDB, invoices" aria-label="Find a module" autocomplete="off"><div class="mm-res glass" data-mm-res hidden></div></label>
  <div class="mm-pair"><span class="small muted">Compare</span><select class="mm-sel" data-mm-pa aria-label="First module">${opts}</select><span class="small muted">and</span><select class="mm-sel" data-mm-pb aria-label="Second module">${opts}</select></div>
  <div class="mm-tgs" role="group" aria-label="Layers"><button type="button" class="chip" data-mm-tg="push" aria-pressed="${MM.showPush}">Pushes</button><button type="button" class="chip" data-mm-tg="pull" aria-pressed="${MM.showPull}">Pulls</button><button type="button" class="chip" data-mm-tg="mode" aria-pressed="${MM.byMode}">Color by mode</button><button type="button" class="chip" data-mm-tg="mat" aria-pressed="${!!MM.byMat}" title="Tint each module by the average maturity of its processes">Color by maturity</button><button type="button" class="chip mm-dtog" data-mm-collapse aria-pressed="${MM.insp}" title="Show or hide the details panel (Esc also closes it)">Details panel</button></div>
  ${mpHTML({id:"mm_band",label:"Bands",all:"All bands",opts:BANDS.map(b=>({v:b[0],l:b[1]}))})}</div>`;
 }
 function legendHTML(){
- const ln=(c,t,dash)=>`<span class="mm-lgi"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" style="stroke:${c};stroke-width:2.4;${dash?"stroke-dasharray:6 4":""}"/></svg>${t}</span>`;
- return `<div class="mm-lg">${ln("var(--mm-push)","Push: data leaves the selected module",1)}${ln("var(--mm-pull)","Pull: data arrives at it",1)}${ln("var(--mm-event)","Event (with Color by mode)",1)}${ln("var(--mm-batch)","Batch",1)}${ln("var(--mm-human)","Human",1)}${ln("var(--mm-pd)","Direct path between two modules",1)}${ln("var(--mm-p2)","Two-step path",1)}
+const ln=(c,t,dash)=>`<span class="mm-lgi"><svg width="34" height="10" aria-hidden="true"><line x1="1" y1="5" x2="33" y2="5" style="stroke:${c};stroke-width:2.4;${dash?"stroke-dasharray:6 4":""}"/></svg>${t}</span>`;
+return `<div class="mm-lg">${ln("var(--mm-push)","Push: data leaves the selected module",1)}${ln("var(--mm-pull)","Pull: data arrives at it",1)}${ln("var(--mm-event)","Event (with Color by mode)",1)}${ln("var(--mm-batch)","Batch",1)}${ln("var(--mm-human)","Human",1)}${ln("var(--mm-pd)","Direct path between two modules",1)}${ln("var(--mm-p2)","Two-step path",1)}
  <span class="mm-lgi"><svg width="34" height="12" aria-hidden="true"><path d="M30,1 C14,1 14,11 30,11" style="fill:none;stroke:var(--muted);stroke-width:3;opacity:.4"/></svg>Faint arcs: flows between two bands</span>
  <span class="mm-lgi"><i class="mm-npd"></i>No process defined</span><span class="mm-lgi"><i class="mm-mb mt3 mm-lgb">3</i>Badge: average process maturity of the module, 1 to 5</span><span class="mm-lgi"><i class="mm-prop-sw"></i>Dashed outline with a Proposed pill: module not built yet</span><span class="mm-lgi"><i class="mm-sq" style="background:var(--accent)"></i>Selected module</span><span class="mm-lgi">Animated dashes show the direction data moves. Numbers on a line count flows.</span></div>
  ${legend(BANDS.map((b,i)=>[b[1],"--mm-b"+i]))}
@@ -887,23 +886,23 @@ function legendHTML(){
 /* ---------- matrix ---------- */
 const BSH=["Strategy","Projects","Money","Build","Service ops","CMDB","Observe","People","Knowledge","Platform"];
 function matrixPane(){
- const n=MODS.length,bm=BANDS.map(()=>BANDS.map(()=>[]));FL.forEach(f=>bm[MB[f.from].bi][MB[f.to].bi].push(f));
- const hv=c=>c?`--v:${Math.min(1,.2+c*.16).toFixed(2)}`:"";
- const mxMax=Math.max.apply(null,bm.flat().map(a=>a.length));
- const bsum=`<div class="mm-bmx" style="--n:${BANDS.length}"><span class="mm-bh0">From (rows) to (columns)</span>${BANDS.map((b,i)=>`<span class="mm-bh" title="${E(b[1])}">${BSH[i]}</span>`).join("")}${BANDS.map((b,i)=>`<span class="mm-bh r">${E(b[1])}</span>`+BANDS.map((c,j)=>{const k=bm[i][j].length;return k?`<button type="button" class="mm-c big" style="--v:${Math.min(1,.15+k/mxMax*.85).toFixed(2)}" data-mm-bcell="${i}-${j}" aria-label="${E(b[1])} to ${E(c[1])}: ${k} flows">${k}</button>`:`<i class="mm-z"></i>`}).join("")).join("")}</div>`;
- let hdr=`<span class="mm-corner">Pushes from (rows), pulls to (columns)</span>`+MODS.map(m=>`<button type="button" class="mm-ch" data-mm-sel="${m.id}" style="--c:${bandCol(m.bi)}" title="${E(m.name)}">${E(m.sn)}</button>`).join("");
- let rows="";MODS.forEach(a=>{rows+=`<button type="button" class="mm-rh" data-mm-sel="${a.id}" style="--c:${bandCol(a.bi)}"><i></i>${E(a.sn)}</button>`+MODS.map((b,j)=>{const k=flowsBetween(a.id,b.id).length;const bs=j&&MODS[j-1].bi!==b.bi?" bs":"";return a.id===b.id?`<i class="mm-z dg${bs}"></i>`:k?`<button type="button" class="mm-c${bs}" style="${hv(k)}" data-mm-cell="${a.id}>${b.id}" aria-label="${E(a.sn)} to ${E(b.sn)}: ${k} flows">${k}</button>`:`<i class="mm-z${bs}"></i>`}).join("")});
- const sp=BANDS.map(()=>0);
- return `<div class="mm-grid2"><div class="card glass"><div class="eyebrow">Band by band</div><h3 class="mm-h">Where the 10 bands exchange data</h3><p class="small muted">Rows push, columns pull. Darker means more flows. Select a cell to list them.</p><div class="mm-sc">${bsum}</div>${legend([["More flows","--p1"],["No flow","--hair"]])}</div>
+const n=MODS.length,bm=BANDS.map(()=>BANDS.map(()=>[]));FL.forEach(f=>bm[MB[f.from].bi][MB[f.to].bi].push(f));
+const hv=c=>c?`--v:${Math.min(1,.2+c*.16).toFixed(2)}`:"";
+const mxMax=Math.max.apply(null,bm.flat().map(a=>a.length));
+const bsum=`<div class="mm-bmx" style="--n:${BANDS.length}"><span class="mm-bh0">From (rows) to (columns)</span>${BANDS.map((b,i)=>`<span class="mm-bh" title="${E(b[1])}">${BSH[i]}</span>`).join("")}${BANDS.map((b,i)=>`<span class="mm-bh r">${E(b[1])}</span>`+BANDS.map((c,j)=>{const k=bm[i][j].length;return k?`<button type="button" class="mm-c big" style="--v:${Math.min(1,.15+k/mxMax*.85).toFixed(2)}" data-mm-bcell="${i}-${j}" aria-label="${E(b[1])} to ${E(c[1])}: ${k} flows">${k}</button>`:`<i class="mm-z"></i>`}).join("")).join("")}</div>`;
+let hdr=`<span class="mm-corner">Pushes from (rows), pulls to (columns)</span>`+MODS.map(m=>`<button type="button" class="mm-ch" data-mm-sel="${m.id}" style="--c:${bandCol(m.bi)}" title="${E(m.name)}">${E(m.sn)}</button>`).join("");
+let rows="";MODS.forEach(a=>{rows+=`<button type="button" class="mm-rh" data-mm-sel="${a.id}" style="--c:${bandCol(a.bi)}"><i></i>${E(a.sn)}</button>`+MODS.map((b,j)=>{const k=flowsBetween(a.id,b.id).length;const bs=j&&MODS[j-1].bi!==b.bi?" bs":"";return a.id===b.id?`<i class="mm-z dg${bs}"></i>`:k?`<button type="button" class="mm-c${bs}" style="${hv(k)}" data-mm-cell="${a.id}>${b.id}" aria-label="${E(a.sn)} to ${E(b.sn)}: ${k} flows">${k}</button>`:`<i class="mm-z${bs}"></i>`}).join("")});
+const sp=BANDS.map(()=>0);
+return `<div class="mm-grid2"><div class="card glass"><div class="eyebrow">Band by band</div><h3 class="mm-h">Where the 10 bands exchange data</h3><p class="small muted">Rows push, columns pull. Darker means more flows. Select a cell to list them.</p><div class="mm-sc">${bsum}</div>${legend([["More flows","--p1"],["No flow","--hair"]])}</div>
  <div class="card glass"><div class="eyebrow">Reading it</div><h3 class="mm-h">What the matrix tells you</h3><ul class="small mm-ul"><li><b>${ST().fnd.noPush.length+ST().fnd.noPull.length}</b> modules have no push or no pull at all.</li><li>The densest block is <b>${(()=>{let b=[0,0,0];BANDS.forEach((x,i)=>BANDS.forEach((y,j)=>{if(bm[i][j].length>b[2])b=[i,j,bm[i][j].length]}));return E(BANDS[b[0]][1])+" to "+E(BANDS[b[1]][1])+" ("+b[2]+")"})()}</b>.</li><li>A filled cell near the diagonal inside one band is a local handoff. A filled cell far from it is a cross-team dependency that needs an owner.</li><li>Rows are listed in band order, so each block of columns is one band.</li></ul></div></div>
  <div class="card glass" style="margin-top:14px"><div class="eyebrow">Module by module</div><h3 class="mm-h">${n} modules, ${FL.length} flows</h3><div class="mm-mxs" tabindex="0" aria-label="Module by module matrix, scrolls sideways"><div class="mm-mx" style="--n:${n}">${hdr}${rows}</div></div>${legend([["Flow count (1 lightest, 4 or more darkest)","--p1"],["Same module","--hair"]])}</div>`;
 }
 /* ---------- journeys ---------- */
 function journeyCard(j){
- const hops=j.steps.slice(0,-1).map((s,i)=>flowsBetween(s,j.steps[i+1])[0]||null);
- const bandsX=new Set(j.steps.map(s=>MB[s].bi)).size,ev=hops.filter(h=>h&&h.mode==="event").length,hu=hops.filter(h=>h&&h.mode==="human").length,miss=hops.filter(h=>!h).length;
- const steps=j.steps.map((s,i)=>{const m=MB[s],st=stepsOf(s);return `<div class="mm-js"><button type="button" class="mm-jm" data-mm-gomod="${s}" style="--c:${bandCol(m.bi)}"><span class="small muted">Step ${i+1}</span><b>${E(m.sn)}</b><small>${E(BANDS[m.bi][1])}</small></button>${i<hops.length?`<div class="mm-jc">${hops[i]?`<span class="mm-jar" aria-hidden="true"></span><b>${E(hops[i].data)}</b><span class="small muted">${E(hops[i].trig)}</span><span class="row">${modePillH(hops[i].mode)}${hops[i].refs[0]?`<span class="pill ${hops[i].refs[0].kind==="reg"?"info":"warn"}">${E(hops[i].refs[0].label)}</span>`:`<span class="pill mute">no entity</span>`}</span>`:`<span class="pill bad">No documented flow</span>`}</div>`:""}</div>`}).join("");
- return `<div class="card glass mm-jcard"><div class="row sp"><div><div class="eyebrow">Journey</div><h3 class="mm-h">${E(j.t)}</h3></div><div class="row"><button type="button" class="btn primary" data-mm-trace="${j.id}">Trace on map</button></div></div>
+const hops=j.steps.slice(0,-1).map((s,i)=>flowsBetween(s,j.steps[i+1])[0]||null);
+const bandsX=new Set(j.steps.map(s=>MB[s].bi)).size,ev=hops.filter(h=>h&&h.mode==="event").length,hu=hops.filter(h=>h&&h.mode==="human").length,miss=hops.filter(h=>!h).length;
+const steps=j.steps.map((s,i)=>{const m=MB[s],st=stepsOf(s);return `<div class="mm-js"><button type="button" class="mm-jm" data-mm-gomod="${s}" style="--c:${bandCol(m.bi)}"><span class="small muted">Step ${i+1}</span><b>${E(m.sn)}</b><small>${E(BANDS[m.bi][1])}</small></button>${i<hops.length?`<div class="mm-jc">${hops[i]?`<span class="mm-jar" aria-hidden="true"></span><b>${E(hops[i].data)}</b><span class="small muted">${E(hops[i].trig)}</span><span class="row">${modePillH(hops[i].mode)}${hops[i].refs[0]?`<span class="pill ${hops[i].refs[0].kind==="reg"?"info":"warn"}">${E(hops[i].refs[0].label)}</span>`:`<span class="pill mute">no entity</span>`}</span>`:`<span class="pill bad">No documented flow</span>`}</div>`:""}</div>`}).join("");
+return `<div class="card glass mm-jcard"><div class="row sp"><div><div class="eyebrow">Journey</div><h3 class="mm-h">${E(j.t)}</h3></div><div class="row"><button type="button" class="btn primary" data-mm-trace="${j.id}">Trace on map</button></div></div>
  <p class="story small" data-role="story">${E(j.story)}</p><div class="row mm-jstat"><span class="pill info">${j.steps.length} steps</span><span class="pill mute">${bandsX} bands</span><span class="pill good">${ev} event handoffs</span><span class="pill warn">${hu} human handoffs</span>${miss?`<span class="pill bad">${miss} undocumented</span>`:`<span class="pill good">All handoffs documented</span>`}</div>
  <div class="mm-jscroll flowscroll" tabindex="0" aria-label="${E(j.t)} steps, scrolls sideways"><div class="mm-jrow">${steps}</div></div></div>`;
 }
@@ -911,18 +910,18 @@ function journeysPane(){return `<p class="muted small" style="margin:0 0 12px">E
 /* ---------- coverage ---------- */
 const plBelow=()=>{try{return PROCLIB.stats().belowTarget}catch(e){return 0}};
 function covRows(){
- return MODS.map(m=>{const f=[];if(!m.nout)f.push("No push");if(!m.nin)f.push("No pull");if(!m.proc&&!m.proposed)f.push("No process");if(m.proposed)f.push("Proposed, not built");
-  if(m.nout&&!m.out.some(x=>x.reg))f.push("No registered data on push");if(m.nin&&!m.inn.some(x=>x.reg))f.push("No registered data on pull");if(m.nonOwn.length)f.push("Writes "+m.nonOwn.length+" entity not owned");
-  const noEnt=m.out.concat(m.inn).filter(x=>!x.reg).length;
-  const mt=matOf(m.id);
+return MODS.map(m=>{const f=[];if(!m.nout)f.push("No push");if(!m.nin)f.push("No pull");if(!m.proc&&!m.proposed)f.push("No process");if(m.proposed)f.push("Proposed, not built");
+if(m.nout&&!m.out.some(x=>x.reg))f.push("No registered data on push");if(m.nin&&!m.inn.some(x=>x.reg))f.push("No registered data on pull");if(m.nonOwn.length)f.push("Writes "+m.nonOwn.length+" entity not owned");
+const noEnt=m.out.concat(m.inn).filter(x=>!x.reg).length;
+const mt=matOf(m.id);
   return{id:m.id,n:m.name,band:BANDS[m.bi][1],push:m.nout,pull:m.nin,proc:m.proc?m.steps+" steps":"None",mat:mt?mt.avg:0,matBelow:mt?mt.below:0,entities:m.w.length+" write, "+m.r.length+" read",gaps:noEnt,find:f,status:m.proposed?"Proposed":f.length?"Needs work":"Complete"}});
 }
 function coveragePane(){
- const s=ST(),F=s.fnd,rows=covRows();
- const pl=Object.keys(F.planned).sort((a,b)=>F.planned[b]-F.planned[a]);
- const fc=(t,n,body,rem,cls)=>`<div class="mm-fc"><div class="row sp"><b>${t}</b><span class="pill ${cls||(n?"warn":"good")}">${n}</span></div><div class="mm-fcb">${body}</div><p class="small muted mm-fcr">${rem}</p></div>`;
- const chips=a=>a.length?`<div class="row">${a.slice(0,8).map(m=>modChip(m.id)).join("")}${a.length>8?`<span class="pill mute">+${a.length-8}</span>`:""}</div>`:`<span class="small">None. Every module qualifies.</span>`;
- const cards=[
+const s=ST(),F=s.fnd,rows=covRows();
+const pl=Object.keys(F.planned).sort((a,b)=>F.planned[b]-F.planned[a]);
+const fc=(t,n,body,rem,cls)=>`<div class="mm-fc"><div class="row sp"><b>${t}</b><span class="pill ${cls||(n?"warn":"good")}">${n}</span></div><div class="mm-fcb">${body}</div><p class="small muted mm-fcr">${rem}</p></div>`;
+const chips=a=>a.length?`<div class="row">${a.slice(0,8).map(m=>modChip(m.id)).join("")}${a.length>8?`<span class="pill mute">+${a.length-8}</span>`:""}</div>`:`<span class="small">None. Every module qualifies.</span>`;
+const cards=[
   fc("No outgoing flow",F.noPush.length,chips(F.noPush),"Add at least one flow that publishes this module's data.",F.noPush.length?"bad":"good"),
   fc("No incoming flow",F.noPull.length,chips(F.noPull),"Add at least one flow that feeds this module from its source.",F.noPull.length?"bad":"good"),
   fc("No process definition",F.noProc.length,chips(F.noProc),F.noProc.length?"Define who does what in Workflow designer, with times and gates.":"Every module has at least one process in the Process library. Open it to see each one's maturity.",F.noProc.length?"bad":"good"),
@@ -931,123 +930,124 @@ function coveragePane(){
   fc("Writes an entity it does not own",F.nonOwn.length,chips(F.nonOwn),"Move the write behind the owning module or transfer ownership in the registry."),
   fc("Planned entities that block a contract",pl.length,pl.length?`<div class="row">${pl.slice(0,6).map(i=>`<span class="pill warn">${E(PLN[i].label)} ${F.planned[i]}</span>`).join("")}${pl.length>6?`<span class="pill mute">+${pl.length-6}</span>`:""}</div>`:"None.","Registering these removes the most gaps first. The count is flows that need it.")
  ];
- const tbl=btHTML({id:"mm_cov",h:460,rowH:54,key:"id",sort:{k:"n",d:1},exportName:"module-coverage",facets:["band","status"],cols:[
+const tbl=btHTML({id:"mm_cov",h:460,rowH:54,key:"id",sort:{k:"n",d:1},exportName:"module-coverage",facets:["band","status"],cols:[
   {k:"n",label:"Module",val:r=>r.n,fmt:r=>`<b>${E(r.n)}</b>`},{k:"band",label:"Band",val:r=>r.band,fmt:r=>E(r.band)},
   {k:"push",label:"Pushes",val:r=>r.push,fmt:r=>`<span class="num">${r.push}</span>`},{k:"pull",label:"Pulls",val:r=>r.pull,fmt:r=>`<span class="num">${r.pull}</span>`},
   {k:"proc",label:"Process",val:r=>r.proc,fmt:r=>r.proc==="None"?pill("None","warn"):pill(r.proc,"good")},{k:"mat",label:"Process maturity",val:r=>r.mat,fmt:r=>r.mat?`<span class="mm-mb mt${Math.max(1,Math.round(r.mat))}">${Math.round(r.mat*10)/10}</span>${r.matBelow?` <span class="pill warn">${r.matBelow} below target</span>`:""}`:`<span class="muted">None</span>`},{k:"entities",label:"Registry entities",val:r=>r.entities,fmt:r=>E(r.entities)},
   {k:"gaps",label:"Flows with no registered data",val:r=>r.gaps,fmt:r=>`<span class="num">${r.gaps}</span>`},
   {k:"status",label:"Findings",val:r=>r.status+r.find.length,wrap:1,fmt:r=>r.find.length?r.find.map(x=>`<span class="pill warn">${E(x)}</span>`).join(" "):pill("Complete","good")}],rows,open:id=>{S.v.mm_v=0;MM.sel=id;MM.pair=null;MM.jny=null;MM.flow=null;MM.flyIds=[id];render()}});
- return `<div class="mm-fcg">${cards.join("")}</div><div style="margin-top:14px">${tbl}</div>`;
+return `<div class="mm-fcg">${cards.join("")}</div><div style="margin-top:14px">${tbl}</div>`;
 }
 /* ---------- screen ---------- */
 function oldPane(){let h="";try{h=OLD?OLD():"";h=h.replace(procCard("plat_map"),"")}catch(e){h=""}return `<div class="mm-old"><p class="small muted">The original 14-area view: a high-level loop from strategy to demand, projects, build, change, deploy, operate, incident and problem, with its handoffs and process coverage. Kept so nothing is lost.</p>${h}</div>`}
-function libTab(){
- if(!window.PROCLIB||!PROCLIB.pane)return empty("The Process library is not loaded","Open it from the Platform menu.");
- return `<div class="card glass"><div class="row sp"><div><div class="eyebrow">From the map to one process</div><p class="small muted">Every module's processes with their maturity. Select a row for the full page: steps, who acts, data in and out, metrics, controls, neighbors and blast radius. You can also select a module on the map and choose <b>Its process</b>.</p></div><button type="button" class="btn primary" data-mm-lib="full">Open the full Process library</button></div></div><div style="margin-top:14px">${PROCLIB.pane()}</div>`;
+function libTab(){if(!TROWS.core()){const r=DATA.get("processes");return r.length?lrHTML({id:"mm_tp",groups:[{key:"p",label:"Processes of "+TROWS.org(),rows:r.map(p=>({id:p.id,t:p.n||p.id,sub:[p.owner,p.backup].filter(Boolean).join(", backup "),tag:(p.steps||[]).length+" steps",st:"info"}))}],limit:12,search:true,empty:""}):TROWS.gap("processes")}
+if(!window.PROCLIB||!PROCLIB.pane)return empty("The Process library is not loaded","Open it from the Platform menu.");
+return `<div class="card glass"><div class="row sp"><div><div class="eyebrow">From the map to one process</div><p class="small muted">Every module's processes with their maturity. Select a row for the full page: steps, who acts, data in and out, metrics, controls, neighbors and blast radius. You can also select a module on the map and choose <b>Its process</b>.</p></div><button type="button" class="btn primary" data-mm-lib="full">Open the full Process library</button></div></div><div style="margin-top:14px">${PROCLIB.pane()}</div>`;
 }
 function screen(){
- if(!init())return `<div class="screen">${hero("Master process flow","Loading the module map","The platform registry is still starting.","")}</div>`;
- const s=ST(),nB=BANDS.length;
- if(!MM._seen){MM._seen=1;if(window.innerWidth<=1000)MM.insp=false}
- const kp=kpiRow([["Modules",s.n,"in "+nB+" bands"],["Data flows",s.nf,"push and pull"],["Push and pull",METRICS.m_mm_pp.cur+"%","modules documented",{metric:"m_mm_pp"}],["With a data contract",METRICS.m_mm_ct.cur+"%","flows, registered entity",{metric:"m_mm_ct"}],["Live or near-live",METRICS.m_mm_live.cur+"%","of contracted flows",{metric:"m_mm_live"}]]);
- const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${U.esc(s.n)}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition${(()=>{try{const t=PROCLIB.stats();return "; "+t.processes+" processes in all, average maturity "+t.avgMaturity+" of 5"}catch(e){return ""}})()}.${s.prop?` ${s.prop} proposed module${s.prop===1?" is":"s are"} drawn dashed.`:""}`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}<button type="button" class="btn" data-mm-lib>Process library</button></div>`);
- const pane0=`${toolbar()}<div class="mm-cv">${mapHTML()}<aside class="mm-insp glass" data-mm-insp aria-label="Module details"></aside></div><div class="mm-note small muted" data-mm-note aria-live="polite"></div><div style="margin-top:12px">${kp}</div>`;
+if(!init())return `<div class="screen">${hero("Master process flow","Loading the module map","The platform registry is still starting.","")}</div>`;
+const s=ST(),nB=BANDS.length;
+if(!MM._seen){MM._seen=1;if(window.innerWidth<=1000)MM.insp=false}
+const kp=kpiRow([["Modules",s.n,"in "+nB+" bands"],["Data flows",s.nf,"push and pull"],["Push and pull",METRICS.m_mm_pp.cur+"%","modules documented",{metric:"m_mm_pp"}],["With a data contract",METRICS.m_mm_ct.cur+"%","flows, registered entity",{metric:"m_mm_ct"}],["Live or near-live",METRICS.m_mm_live.cur+"%","of contracted flows",{metric:"m_mm_live"}]]);
+const hero_=hero("Master process flow","Every module and how they feed each other",`<b data-role="metric">${U.esc(s.n)}</b> modules in <b data-role="metric">${nB}</b> bands exchange data through <b data-role="metric">${s.nf}</b> documented flows. <b data-role="metric">${s.nf-s.fnd.noContract.length}</b> of them map to a registered entity, <b data-role="metric">${s.fnd.noContract.length}</b> still move data nobody has defined, and <b data-role="metric">${s.fnd.noProc.length}</b> modules have no process definition${(()=>{try{const t=PROCLIB.stats();return "; "+t.processes+" processes in all, average maturity "+t.avgMaturity+" of 5"}catch(e){return ""}})()}.${s.prop?` ${s.prop} proposed module${s.prop===1?" is":"s are"} drawn dashed.`:""}`,`<div class="row">${stdChip("itil5")}${stdChip("togaf")}${stdChip("bpmn")}<button type="button" class="btn" data-mm-lib>Process library</button></div>`);
+const pane0=`${toolbar()}<div class="mm-cv">${mapHTML()}<aside class="mm-insp glass" data-mm-insp aria-label="Module details"></aside></div><div class="mm-note small muted" data-mm-note aria-live="polite"></div><div style="margin-top:12px">${kp}</div>`;
  setTimeout(mount,0);
- return `<div class="screen mm-screen">${hero_}${lensNote()}${views("mm_v",["Module map","Matrix","Journeys","Coverage","Process areas (original)","Process library"],[pane0,matrixPane(),journeysPane(),coveragePane(),oldPane(),libTab()])}${procCard("plat_map")}</div>`;
+return `<div class="screen mm-screen">${hero_}${lensNote()}${views("mm_v",["Module map","Matrix","Journeys","Coverage","Process areas (original)","Process library"],[pane0,matrixPane(),journeysPane(),coveragePane(),oldPane(),libTab()])}${procCard("plat_map")}</div>`;
 }
 REG("plat_map","Master process flow","platform",ICON,screen);
+TROWS.mode("plat_map",["people","processes"],"PR-32 B6: definitions; people and processes are the tenant's");
 /* ---------- mount ---------- */
 let RO=null;
 function mount(){
- const vp=vpEl();if(!vp||!init())return;
- const sizeVp=()=>{if(innerWidth>640)vp.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";else vp.style.height=""};sizeVp();
+const vp=vpEl();if(!vp||!init())return;
+const sizeVp=()=>{if(innerWidth>640)vp.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";else vp.style.height=""};sizeVp();
  {const r=vp.getBoundingClientRect();if(r.bottom>innerHeight-8||r.top<120){try{vp.scrollIntoView({block:"start",behavior:"instant"})}catch(e){vp.scrollIntoView()}}}
- if(!window.__mmRsz){window.__mmRsz=1;window.addEventListener("resize",()=>{const v=vpEl();if(!v||S.screen!=="plat_map")return;if(innerWidth>640)v.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";if(!MM.touched&&v.clientWidth>0){MM.view=clusterView()}applyView()})}
+if(!window.__mmRsz){window.__mmRsz=1;window.addEventListener("resize",()=>{const v=vpEl();if(!v||S.screen!=="plat_map")return;if(innerWidth>640)v.style.height=Math.max(380,Math.min(1100,innerHeight-168))+"px";if(!MM.touched&&v.clientWidth>0){MM.view=clusterView()}applyView()})}
  drawStatic();update();
- if((!MM.view||!MM.touched)&&vp.clientWidth>0){MM.view=clusterView()}
- if(MM.view&&vp.clientWidth>0)applyView();
- if(MM.flyIds&&vp.clientWidth>0){const ids=MM.flyIds;MM.flyIds=null;if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);flyTo(j?j.steps:ids)}else flyTo(ids)}
- if(window.ResizeObserver){if(RO)RO.disconnect();let w0=vp.clientWidth;RO=new ResizeObserver(()=>{const w=vp.clientWidth;if(w>0&&!MM.touched&&(w0===0||Math.abs(w-w0)>30||Math.abs(vp.clientHeight-(vp._h0||0))>20))MM.view=clusterView();vp._h0=vp.clientHeight;if(w>0){applyView()}w0=w});RO.observe(vp)}
+if((!MM.view||!MM.touched)&&vp.clientWidth>0){MM.view=clusterView()}
+if(MM.view&&vp.clientWidth>0)applyView();
+if(MM.flyIds&&vp.clientWidth>0){const ids=MM.flyIds;MM.flyIds=null;if(MM.jny){const j=JOURNEYS.find(x=>x.id===MM.jny);flyTo(j?j.steps:ids)}else flyTo(ids)}
+if(window.ResizeObserver){if(RO)RO.disconnect();let w0=vp.clientWidth;RO=new ResizeObserver(()=>{const w=vp.clientWidth;if(w>0&&!MM.touched&&(w0===0||Math.abs(w-w0)>30||Math.abs(vp.clientHeight-(vp._h0||0))>20))MM.view=clusterView();vp._h0=vp.clientHeight;if(w>0){applyView()}w0=w});RO.observe(vp)}
  /* wheel zoom needs a non-passive listener */
  requestAnimationFrame(()=>requestAnimationFrame(()=>{if(!MM.touched&&vpEl()===vp&&vp.clientWidth>0){MM.view=clusterView();applyView()}}));
- vp.addEventListener("wheel",ev=>{if(!(ev.ctrlKey||ev.metaKey))return;ev.preventDefault();const r=vp.getBoundingClientRect();zoomAt(ev.deltaY<0?1.12:1/1.12,ev.clientX-r.left,ev.clientY-r.top)},{passive:false});
+vp.addEventListener("wheel",ev=>{if(!(ev.ctrlKey||ev.metaKey))return;ev.preventDefault();const r=vp.getBoundingClientRect();zoomAt(ev.deltaY<0?1.12:1/1.12,ev.clientX-r.left,ev.clientY-r.top)},{passive:false});
 }
 function goMap(o){S.v.mm_v=0;Object.assign(MM,o);go("plat_map")}
 function openEnt(id){if(S.map&&S.map.er)S.map.er.sel=id;if(window.ATLAS&&ATLAS.focus)ATLAS.focus(id);else go("plat_data")}
 /* ---------- events ---------- */
 let drag=null,sup=false;const pts=new Map();let pinch=null;
 ROUTER.on("pointerdown",e=>{
- const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target.closest(".mm-ctl,.mm-mini,.mm-insp")||!MM.view)return;
- pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
- if(pts.size===1)drag={x:e.clientX,y:e.clientY,vx:MM.view.x,vy:MM.view.y,moved:0};
- else if(pts.size===2){const p=[...pts.values()];pinch={d:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),k:MM.view.k,vx:MM.view.x,vy:MM.view.y,mx:(p[0].x+p[1].x)/2,my:(p[0].y+p[1].y)/2};drag=null}
+const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target.closest(".mm-ctl,.mm-mini,.mm-insp")||!MM.view)return;
+pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+if(pts.size===1)drag={x:e.clientX,y:e.clientY,vx:MM.view.x,vy:MM.view.y,moved:0};
+else if(pts.size===2){const p=[...pts.values()];pinch={d:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),k:MM.view.k,vx:MM.view.x,vy:MM.view.y,mx:(p[0].x+p[1].x)/2,my:(p[0].y+p[1].y)/2};drag=null}
 });
 window.addEventListener("pointermove",e=>{
- if(pts.has(e.pointerId))pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
- const vp=vpEl();if(!vp)return;
- if(pinch&&pts.size>=2){const p=[...pts.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),nk=Math.max(.2,Math.min(2.2,pinch.k*d/pinch.d)),r=vp.getBoundingClientRect(),cx=pinch.mx-r.left,cy=pinch.my-r.top;MM.view={k:nk,x:cx-(cx-pinch.vx)*nk/pinch.k,y:cy-(cy-pinch.vy)*nk/pinch.k};applyView();sup=true;return}
- if(drag&&pts.has(e.pointerId)){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy));if(drag.moved>5){MM.touched=true;MM.view={k:MM.view.k,x:drag.vx+dx,y:drag.vy+dy};applyView();vp.classList.add("pan")}}
+if(pts.has(e.pointerId))pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+const vp=vpEl();if(!vp)return;
+if(pinch&&pts.size>=2){const p=[...pts.values()],d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),nk=Math.max(.2,Math.min(2.2,pinch.k*d/pinch.d)),r=vp.getBoundingClientRect(),cx=pinch.mx-r.left,cy=pinch.my-r.top;MM.view={k:nk,x:cx-(cx-pinch.vx)*nk/pinch.k,y:cy-(cy-pinch.vy)*nk/pinch.k};applyView();sup=true;return}
+if(drag&&pts.has(e.pointerId)){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy));if(drag.moved>5){MM.touched=true;MM.view={k:MM.view.k,x:drag.vx+dx,y:drag.vy+dy};applyView();vp.classList.add("pan")}}
 });
 const pend=e=>{pts.delete(e.pointerId);if(drag&&drag.moved>5){sup=true;setTimeout(()=>{sup=false},60)}if(pts.size<2)pinch=null;if(!pts.size)drag=null;const vp=vpEl();if(vp)vp.classList.remove("pan")};
 window.addEventListener("pointerup",pend);window.addEventListener("pointercancel",pend);
 document.addEventListener("click",e=>{if(sup){e.stopPropagation();e.preventDefault();sup=false}},true);
 ROUTER.on("pointerover",e=>{
- const t=e.target.closest&&e.target.closest("[data-mm-edge],[data-mm-bund]"),tip=document.querySelector("[data-mm-tip]");if(!tip)return;
- if(!t){tip.hidden=true;return}
- let txt="";
- if(t.dataset.mmEdge){const k=t.dataset.mmEdge.split(">"),fl=flowsBetween(k[0],k[1]);txt=`<b>${E(nameOf(k[0]))} to ${E(nameOf(k[1]))}</b><br>${E(fl[0].data)}${fl.length>1?` and ${fl.length-1} more`:""}. Select for the data contract.`}
- else{const [i,j]=t.dataset.mmBund.split("-").map(Number),n=(ST().bandPairs.get(t.dataset.mmBund)||[]).length;txt=`<b>${E(BANDS[i][1])} and ${E(BANDS[j][1])}</b><br>${n} flows between the two bands. Select to list them.`}
+const t=e.target.closest&&e.target.closest("[data-mm-edge],[data-mm-bund]"),tip=document.querySelector("[data-mm-tip]");if(!tip)return;
+if(!t){tip.hidden=true;return}
+let txt="";
+if(t.dataset.mmEdge){const k=t.dataset.mmEdge.split(">"),fl=flowsBetween(k[0],k[1]);txt=`<b>${E(nameOf(k[0]))} to ${E(nameOf(k[1]))}</b><br>${E(fl[0].data)}${fl.length>1?` and ${fl.length-1} more`:""}. Select for the data contract.`}
+else{const [i,j]=t.dataset.mmBund.split("-").map(Number),n=(ST().bandPairs.get(t.dataset.mmBund)||[]).length;txt=`<b>${E(BANDS[i][1])} and ${E(BANDS[j][1])}</b><br>${n} flows between the two bands. Select to list them.`}
  tip.innerHTML=txt;tip.hidden=false;const vp=vpEl(),r=vp.getBoundingClientRect();tip.style.left=Math.min(r.width-250,Math.max(8,e.clientX-r.left+12))+"px";tip.style.top=Math.max(8,e.clientY-r.top+14)+"px";
 });
 ROUTER.on("click",e=>{
- let t;
- if((t=e.target.closest("[data-mm-popen]"))){if(window.PROCLIB&&PROCLIB.open)PROCLIB.open(t.dataset.mmPopen);return}
- if((t=e.target.closest("[data-mm-lib]"))){if(window.PROCLIB){if(t.dataset.mmLib==="full")PROCLIB.openLibrary(0);else{S.v.mm_v=5;if(S.screen==="plat_map")render();else go("plat_map")}}return}
- if((t=e.target.closest("[data-mm-n]"))){selectMod(t.dataset.mmN,false);return}
- if((t=e.target.closest("[data-mm-edge]"))){const k=t.dataset.mmEdge,fl=PAIRN.get(k);if(fl){MM.edge=k;MM.flow=fl[0].id;MM.insp=true;update()}return}
- if((t=e.target.closest("[data-mm-bund]"))){const k=t.dataset.mmBund,[i,j]=k.split("-").map(Number);openFlows(BANDS[i][1]+" and "+BANDS[j][1],ST().bandPairs.get(k)||[],"Every documented flow between these two bands, both directions.");return}
- if((t=e.target.closest("[data-mm-sel]"))){const id=t.dataset.mmSel;if(t.closest(".mm-insp")){selectMod(id,true)}else{if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();goMap({sel:id,pair:null,jny:null,flow:null,edge:null,flyIds:[id]})}return}
- if((t=e.target.closest("[data-mm-gomod]"))){goMap({sel:t.dataset.mmGomod,pair:null,jny:null,flow:null,edge:null,flyIds:[t.dataset.mmGomod]});return}
- if((t=e.target.closest("[data-mm-tab]"))){MM.tab=t.dataset.mmTab;if(MM.tab!=="blast")MM.blast=false;update();return}
- if((t=e.target.closest("[data-mm-flow]"))){const f=FL.find(x=>x.id===t.dataset.mmFlow);if(f){MM.flow=f.id;MM.edge=f.from+">"+f.to;MM.insp=true;if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();update()}return}
- if((t=e.target.closest("[data-mm-showflow]"))){const f=FL.find(x=>x.id===t.dataset.mmShowflow);if(f){const was=!!document.querySelector("[data-mm-vp]");if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();goMap({sel:f.from,pair:null,jny:null,flow:f.id,edge:f.from+">"+f.to,flyIds:[f.from,f.to]})}return}
- if(e.target.closest("[data-mm-collapse]")){MM.insp=!MM.insp;if(!MM.touched){MM.view=clusterView()}update();applyView();return}
- if(e.target.closest("[data-mm-back]")){MM.flow=null;update();return}
- if((t=e.target.closest("[data-mm-close]"))){MM.sel=null;MM.pair=null;MM.jny=null;MM.flow=null;MM.edge=null;MM.blast=false;update();return}
- if((t=e.target.closest("[data-mm-open]"))){const id=t.dataset.mmOpen;audit("Module map: opened screen",scName(id));go(id);return}
- if((t=e.target.closest("[data-mm-cmp]"))){setPair(t.dataset.mmCmp,"",false);const b=document.querySelector("[data-mm-pb]");if(b)b.focus();return}
- if((t=e.target.closest("[data-mm-try]"))){const p=t.dataset.mmTry.split(",");setPair(p[0],p[1]);return}
- if(e.target.closest("[data-mm-swap]")){if(MM.pair){setPair(MM.pair.b,MM.pair.a)}return}
- if(e.target.closest("[data-mm-pall]")){MM.pairAll=!MM.pairAll;update();return}
- if(e.target.closest("[data-mm-blast]")){MM.blast=!MM.blast;update();return}
- if((t=e.target.closest("[data-mm-ent]"))){openEnt(t.dataset.mmEnt);return}
- if((t=e.target.closest("[data-mm-tg]"))){const k=t.dataset.mmTg;if(k==="push")MM.showPush=!MM.showPush;else if(k==="pull")MM.showPull=!MM.showPull;else if(k==="mat")MM.byMat=!MM.byMat;else MM.byMode=!MM.byMode;update();return}
- if((t=e.target.closest("[data-mm-z]"))){const k=t.dataset.mmZ;if(k==="in")zoomAt(1.25);else if(k==="out")zoomAt(.8);else if(k==="fit"){MM.touched=true;setView(fitView(),true)}else{MM.touched=false;setView(clusterView(),true)}return}
- if((t=e.target.closest("[data-mm-cell]"))){const p=t.dataset.mmCell.split(">"),fl=flowsBetween(p[0],p[1]);openFlows(nameOf(p[0])+" pushes to "+nameOf(p[1]),fl,fl.length+" flow"+(fl.length===1?"":"s")+" in this direction.");return}
- if((t=e.target.closest("[data-mm-bcell]"))){const p=t.dataset.mmBcell.split("-").map(Number),fl=FL.filter(f=>MB[f.from].bi===p[0]&&MB[f.to].bi===p[1]);openFlows(BANDS[p[0]][1]+" pushes to "+BANDS[p[1]][1],fl,fl.length+" flows.");return}
- if((t=e.target.closest("[data-mm-trace]"))){goMap({jny:t.dataset.mmTrace,sel:null,pair:null,flow:null,edge:null,flyIds:[]});audit("Module map: traced journey",t.dataset.mmTrace);return}
- if((t=e.target.closest("[data-mm-res] [data-mm-pick]"))){const id=t.dataset.mmPick;const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;const q=document.querySelector("[data-mm-q]");if(q)q.value=MB[id].name;selectMod(id,true);return}
- if(!e.target.closest(".mm-search")){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true}
+let t;
+if((t=e.target.closest("[data-mm-popen]"))){if(window.PROCLIB&&PROCLIB.open)PROCLIB.open(t.dataset.mmPopen);return}
+if((t=e.target.closest("[data-mm-lib]"))){if(window.PROCLIB){if(t.dataset.mmLib==="full")PROCLIB.openLibrary(0);else{S.v.mm_v=5;if(S.screen==="plat_map")render();else go("plat_map")}}return}
+if((t=e.target.closest("[data-mm-n]"))){selectMod(t.dataset.mmN,false);return}
+if((t=e.target.closest("[data-mm-edge]"))){const k=t.dataset.mmEdge,fl=PAIRN.get(k);if(fl){MM.edge=k;MM.flow=fl[0].id;MM.insp=true;update()}return}
+if((t=e.target.closest("[data-mm-bund]"))){const k=t.dataset.mmBund,[i,j]=k.split("-").map(Number);openFlows(BANDS[i][1]+" and "+BANDS[j][1],ST().bandPairs.get(k)||[],"Every documented flow between these two bands, both directions.");return}
+if((t=e.target.closest("[data-mm-sel]"))){const id=t.dataset.mmSel;if(t.closest(".mm-insp")){selectMod(id,true)}else{if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();goMap({sel:id,pair:null,jny:null,flow:null,edge:null,flyIds:[id]})}return}
+if((t=e.target.closest("[data-mm-gomod]"))){goMap({sel:t.dataset.mmGomod,pair:null,jny:null,flow:null,edge:null,flyIds:[t.dataset.mmGomod]});return}
+if((t=e.target.closest("[data-mm-tab]"))){MM.tab=t.dataset.mmTab;if(MM.tab!=="blast")MM.blast=false;update();return}
+if((t=e.target.closest("[data-mm-flow]"))){const f=FL.find(x=>x.id===t.dataset.mmFlow);if(f){MM.flow=f.id;MM.edge=f.from+">"+f.to;MM.insp=true;if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();update()}return}
+if((t=e.target.closest("[data-mm-showflow]"))){const f=FL.find(x=>x.id===t.dataset.mmShowflow);if(f){const was=!!document.querySelector("[data-mm-vp]");if(t.closest(".mm-dr")&&window.closeDrawer)closeDrawer();goMap({sel:f.from,pair:null,jny:null,flow:f.id,edge:f.from+">"+f.to,flyIds:[f.from,f.to]})}return}
+if(e.target.closest("[data-mm-collapse]")){MM.insp=!MM.insp;if(!MM.touched){MM.view=clusterView()}update();applyView();return}
+if(e.target.closest("[data-mm-back]")){MM.flow=null;update();return}
+if((t=e.target.closest("[data-mm-close]"))){MM.sel=null;MM.pair=null;MM.jny=null;MM.flow=null;MM.edge=null;MM.blast=false;update();return}
+if((t=e.target.closest("[data-mm-open]"))){const id=t.dataset.mmOpen;audit("Module map: opened screen",scName(id));go(id);return}
+if((t=e.target.closest("[data-mm-cmp]"))){setPair(t.dataset.mmCmp,"",false);const b=document.querySelector("[data-mm-pb]");if(b)b.focus();return}
+if((t=e.target.closest("[data-mm-try]"))){const p=t.dataset.mmTry.split(",");setPair(p[0],p[1]);return}
+if(e.target.closest("[data-mm-swap]")){if(MM.pair){setPair(MM.pair.b,MM.pair.a)}return}
+if(e.target.closest("[data-mm-pall]")){MM.pairAll=!MM.pairAll;update();return}
+if(e.target.closest("[data-mm-blast]")){MM.blast=!MM.blast;update();return}
+if((t=e.target.closest("[data-mm-ent]"))){openEnt(t.dataset.mmEnt);return}
+if((t=e.target.closest("[data-mm-tg]"))){const k=t.dataset.mmTg;if(k==="push")MM.showPush=!MM.showPush;else if(k==="pull")MM.showPull=!MM.showPull;else if(k==="mat")MM.byMat=!MM.byMat;else MM.byMode=!MM.byMode;update();return}
+if((t=e.target.closest("[data-mm-z]"))){const k=t.dataset.mmZ;if(k==="in")zoomAt(1.25);else if(k==="out")zoomAt(.8);else if(k==="fit"){MM.touched=true;setView(fitView(),true)}else{MM.touched=false;setView(clusterView(),true)}return}
+if((t=e.target.closest("[data-mm-cell]"))){const p=t.dataset.mmCell.split(">"),fl=flowsBetween(p[0],p[1]);openFlows(nameOf(p[0])+" pushes to "+nameOf(p[1]),fl,fl.length+" flow"+(fl.length===1?"":"s")+" in this direction.");return}
+if((t=e.target.closest("[data-mm-bcell]"))){const p=t.dataset.mmBcell.split("-").map(Number),fl=FL.filter(f=>MB[f.from].bi===p[0]&&MB[f.to].bi===p[1]);openFlows(BANDS[p[0]][1]+" pushes to "+BANDS[p[1]][1],fl,fl.length+" flows.");return}
+if((t=e.target.closest("[data-mm-trace]"))){goMap({jny:t.dataset.mmTrace,sel:null,pair:null,flow:null,edge:null,flyIds:[]});audit("Module map: traced journey",t.dataset.mmTrace);return}
+if((t=e.target.closest("[data-mm-res] [data-mm-pick]"))){const id=t.dataset.mmPick;const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;const q=document.querySelector("[data-mm-q]");if(q)q.value=MB[id].name;selectMod(id,true);return}
+if(!e.target.closest(".mm-search")){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true}
 });
 ROUTER.on("change",e=>{
- const a=e.target.closest("[data-mm-pa]"),b=e.target.closest("[data-mm-pb]");
- if(a||b){const pa=document.querySelector("[data-mm-pa]").value,pb=document.querySelector("[data-mm-pb]").value;
-  if(pa&&pb&&pa===pb){toast("Pick two different modules","warn");return}
-  if(pa||pb)setPair(pa,pb);else{MM.pair=null;update()}}
+const a=e.target.closest("[data-mm-pa]"),b=e.target.closest("[data-mm-pb]");
+if(a||b){const pa=document.querySelector("[data-mm-pa]").value,pb=document.querySelector("[data-mm-pb]").value;
+if(pa&&pb&&pa===pb){toast("Pick two different modules","warn");return}
+if(pa||pb)setPair(pa,pb);else{MM.pair=null;update()}}
 });
 ROUTER.on("input","[data-mm-q]",(e,q)=>{const r=document.querySelector("[data-mm-res]"),v=q.value.toLowerCase().trim();
- if(!v){r.hidden=true;return}
- const hits=MODS.filter(m=>(m.name+" "+m.sn+" "+m.al.join(" ")+" "+BANDS[m.bi][1]+" "+m.r.join(" ")+" "+m.w.join(" ")).toLowerCase().includes(v)).slice(0,8);
+if(!v){r.hidden=true;return}
+const hits=MODS.filter(m=>(m.name+" "+m.sn+" "+m.al.join(" ")+" "+BANDS[m.bi][1]+" "+m.r.join(" ")+" "+m.w.join(" ")).toLowerCase().includes(v)).slice(0,8);
  r.innerHTML=hits.length?hits.map(m=>`<button type="button" class="mm-pick" data-mm-pick="${m.id}"><i style="background:${bandCol(m.bi)}"></i><b>${E(m.name)}</b><small>${E(BANDS[m.bi][1])}</small></button>`).join(""):`<span class="small muted" style="padding:8px">No module matches</span>`;r.hidden=false;
 });
 ROUTER.on("keydown",e=>{
- const q=e.target.closest&&e.target.closest("[data-mm-q]");
- if(e.key==="Escape"&&!q&&document.querySelector("[data-mm-insp].open")&&!document.querySelector("#drawer:popover-open")){MM.insp=false;update();applyView();return}
- if(q&&e.key==="Enter"){const f=document.querySelector("[data-mm-res] [data-mm-pick]");if(f){e.preventDefault();f.click()}return}
- if(q&&e.key==="Escape"){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;return}
- const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target!==vp||!MM.view)return;
- const st=60;if(e.key==="ArrowLeft")MM.view.x+=st;else if(e.key==="ArrowRight")MM.view.x-=st;else if(e.key==="ArrowUp")MM.view.y+=st;else if(e.key==="ArrowDown")MM.view.y-=st;else if(e.key==="+"||e.key==="=")zoomAt(1.2);else if(e.key==="-")zoomAt(.83);else return;
- e.preventDefault();applyView();
+const q=e.target.closest&&e.target.closest("[data-mm-q]");
+if(e.key==="Escape"&&!q&&document.querySelector("[data-mm-insp].open")&&!document.querySelector("#drawer:popover-open")){MM.insp=false;update();applyView();return}
+if(q&&e.key==="Enter"){const f=document.querySelector("[data-mm-res] [data-mm-pick]");if(f){e.preventDefault();f.click()}return}
+if(q&&e.key==="Escape"){const r=document.querySelector("[data-mm-res]");if(r)r.hidden=true;return}
+const vp=e.target.closest&&e.target.closest("[data-mm-vp]");if(!vp||e.target!==vp||!MM.view)return;
+const st=60;if(e.key==="ArrowLeft")MM.view.x+=st;else if(e.key==="ArrowRight")MM.view.x-=st;else if(e.key==="ArrowUp")MM.view.y+=st;else if(e.key==="ArrowDown")MM.view.y-=st;else if(e.key==="+"||e.key==="=")zoomAt(1.2);else if(e.key==="-")zoomAt(.83);else return;
+e.preventDefault();applyView();
 });
 /* minimap click and drag */
 function miniMove(e){const m=document.querySelector("[data-mm-mini]"),vp=vpEl();if(!m||!vp||!MM.view)return;const r=m.getBoundingClientRect(),VW=LAY.W-GL+8,sc=Math.min(r.width/VW,r.height/LAY.H),ox=(r.width-VW*sc)/2,oy=(r.height-LAY.H*sc)/2;
@@ -1058,24 +1058,24 @@ window.addEventListener("pointermove",e=>{if(miniDown)miniMove(e)});window.addEv
 /* ---------- search and chat ---------- */
 SEARCHX.push(()=>{if(!init())return[];return MODS.map(m=>({g:"Modules",t:m.name,m:BANDS[m.bi][1]+" · "+m.nout+" out, "+m.nin+" in",c:"--p4",f:()=>goMap({sel:m.id,pair:null,jny:null,flow:null,edge:null,flyIds:[m.id]}),k:m.al.join(" ")+" module map pushes pulls "+m.r.join(" ")+" "+m.w.join(" ")}))});
 ASKX.push(q=>{
- const t0=q.toLowerCase();
- if(/(hide|close|dismiss|collapse|show|open)\b.*\b(panel|details|inspector)/.test(t0)&&document.querySelector("[data-mm-insp]")){const show=/(show|open)/.test(t0)&&!/(hide|close)/.test(t0);MM.insp=show;if(!show){MM.touched=MM.touched}update();applyView();say(q,{t:show?"Details panel is showing.":"Details panel is hidden. Say show the panel, or use the Details panel button, to bring it back.",steps:[show?"Showed the details panel":"Hid the details panel"]});return true}
- const t=q.toLowerCase();if(!/connect|relat|link|between|reach|path|push|pull|read|module map|how do|how does|what does|what pulls|what reads/.test(t))return false;
- if(!init())return false;const ids=matchMods(q);
- let m;
- if((/connect|relate|link|between|reach|path|talk/.test(t)||/how (do|does)/.test(t))&&ids.length>=2){
-  const r=between(ids[0],ids[1]);goMap({pair:{a:ids[0],b:ids[1]},sel:null,jny:null,flow:null,edge:null,pairAll:false,flyIds:[ids[0],ids[1]].concat(r.two.slice(0,12).map(p=>p.via))});
+const t0=q.toLowerCase();
+if(/(hide|close|dismiss|collapse|show|open)\b.*\b(panel|details|inspector)/.test(t0)&&document.querySelector("[data-mm-insp]")){const show=/(show|open)/.test(t0)&&!/(hide|close)/.test(t0);MM.insp=show;if(!show){MM.touched=MM.touched}update();applyView();say(q,{t:show?"Details panel is showing.":"Details panel is hidden. Say show the panel, or use the Details panel button, to bring it back.",steps:[show?"Showed the details panel":"Hid the details panel"]});return true}
+const t=q.toLowerCase();if(!/connect|relat|link|between|reach|path|push|pull|read|module map|how do|how does|what does|what pulls|what reads/.test(t))return false;
+if(!init())return false;const ids=matchMods(q);
+let m;
+if((/connect|relate|link|between|reach|path|talk/.test(t)||/how (do|does)/.test(t))&&ids.length>=2){
+const r=between(ids[0],ids[1]);goMap({pair:{a:ids[0],b:ids[1]},sel:null,jny:null,flow:null,edge:null,pairAll:false,flyIds:[ids[0],ids[1]].concat(r.two.slice(0,12).map(p=>p.via))});
   say(q,{t:`${nameOf(ids[0])} and ${nameOf(ids[1])}: ${r.direct.length} direct flow${r.direct.length===1?"":"s"} one way, ${r.rev.length} the other, and ${r.two.length} two-step paths. ${r.direct[0]?`For example ${nameOf(ids[0])} sends "${r.direct[0].data}" to ${nameOf(ids[1])}.`:r.chain?"They connect through a longer chain.":""}`,steps:["Opened the module map","Compared the two modules"]});return true}
- if((m=t.match(/what does (.+?) (push|send|write|give)\w* to (.+)/))&&ids.length>=2){
-  const a=ids[0],b=ids[1],fl=flowsBetween(a,b);goMap({pair:{a,b},sel:null,jny:null,flow:null,edge:null,flyIds:[a,b]});
+if((m=t.match(/what does (.+?) (push|send|write|give)\w* to (.+)/))&&ids.length>=2){
+const a=ids[0],b=ids[1],fl=flowsBetween(a,b);goMap({pair:{a,b},sel:null,jny:null,flow:null,edge:null,flyIds:[a,b]});
   say(q,{t:fl.length?`${nameOf(a)} pushes to ${nameOf(b)}: ${fl.map(f=>f.data+" ("+f.trig.toLowerCase()+")").join("; ")}.`:`${nameOf(a)} has no direct push to ${nameOf(b)}. The map shows two-step paths instead.`,steps:["Opened the module map"]});return true}
- if(/what (pulls|reads|takes|uses|consumes)\w* (data )?from/.test(t)&&ids.length){
-  const a=ids[0],nb=neighbors(a).push;goMap({sel:a,tab:"pushes",pair:null,jny:null,flow:null,edge:null,flyIds:[a]});
+if(/what (pulls|reads|takes|uses|consumes)\w* (data )?from/.test(t)&&ids.length){
+const a=ids[0],nb=neighbors(a).push;goMap({sel:a,tab:"pushes",pair:null,jny:null,flow:null,edge:null,flyIds:[a]});
   say(q,{t:nb.length?`${nb.length} modules pull from ${nameOf(a)}: ${nb.map(nameOf).join(", ")}.`:`No module pulls from ${nameOf(a)} yet.`,steps:["Opened the module map on "+nameOf(a)]});return true}
- if(/what does .* pull from|where does .* get|what feeds/.test(t)&&ids.length){
-  const a=ids[0],nb=neighbors(a).pull;goMap({sel:a,tab:"pulls",pair:null,jny:null,flow:null,edge:null,flyIds:[a]});
+if(/what does .* pull from|where does .* get|what feeds/.test(t)&&ids.length){
+const a=ids[0],nb=neighbors(a).pull;goMap({sel:a,tab:"pulls",pair:null,jny:null,flow:null,edge:null,flyIds:[a]});
   say(q,{t:`${nameOf(a)} pulls from ${nb.length} modules: ${nb.map(nameOf).join(", ")}.`,steps:["Opened the module map on "+nameOf(a)]});return true}
- if(/module map|master process flow|every module/.test(t)){goMap({});say(q,{t:`The module map shows ${MODS.length} modules and ${FL.length} data flows.`,steps:["Opened the module map"]});return true}
- return false;
+if(/module map|master process flow|every module/.test(t)){goMap({});say(q,{t:`The module map shows ${MODS.length} modules and ${FL.length} data flows.`,steps:["Opened the module map"]});return true}
+return false;
 });
 })();
