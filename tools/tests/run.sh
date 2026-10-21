@@ -40,6 +40,8 @@ node tools/tests/tenant_screens_b6.js build_out  # PR-32 B6: operations and serv
 node tools/tests/data_entities.js build_out
 node tools/tests/tenant_screens_b23.js build_out
 node tools/tests/thread.js build_out
+# PR-33: contribution thread on every anchored screen, My contribution by level, gaps, menu marks and the All screens filter, all tenants
+node tools/tests/contrib.js build_out
 # wave 3 sweep-a (CL-45, CL-44, CL-17, CL-72): no em dash, banned name, old product name or "Automatic" step label on the core and mod_admin to mod_obs screens
 node tools/tests/sweep_a.js build_out
 # wave 3 sweep-b: range screens render no em dash, banned name, Automatic step label or Oukala
