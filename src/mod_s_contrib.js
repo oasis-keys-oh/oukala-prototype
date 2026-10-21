@@ -1,18 +1,5 @@
-/* ===== mod_s_contrib: the contribution anchor (PR-33, design in docs/ia/navigation-architecture.md section f). CSS prefix ctb-.
-   Everyone sees which part of the enterprise they contribute to:
-   1. The thread in the top bar slot #tbThread on every screen: Company > Enterprise objective > Group objective > Team objective >
-      This screen. Each segment is a number chip that opens THREAD.open. On a screen anchored to a team objective the viewer belongs
-      to, the last segment reads "your team" and shows the team's key result.
-   2. My contribution: a card on Home and in My work (not a new screen), by level (R38): executive, manager, individual. Points are
-      modeled, display only, never a rating or a ranking of people, and no review or pay process reads them (decision 8, section i).
-   3. A small anchor mark on menu entries that serve the viewer's objectives, and the All screens filter "Serves my objectives".
-   4. Gaps: a screen or a piece of work with no path to an objective shows "Not linked to an objective", styled like "No backup".
-   Compute: record > project or process > objective > group > enterprise > company. Person to team from the people directory and
-   ownership; a person's share of a team objective is equal by default, or hours on linked work from timesheets; robot and agent
-   work is credited to the human sponsor's team, never to a person. Points = Σ team leaf contribution (EXE.cascade, DC-12) × share.
-   Meridian reads the DC-12 cascade (read only); every other tenant builds the same shape from DATA objectives and key results, with
-   equal weights (modeled) and no group level when its pack records none. Reads only through DATA, EXE, NUM, REG.meta and NAVX.
-   window.CONTRIB = {model, viewer, anchor, serves, points, threadHTML, cardHTML, badge, gaps, open}. ===== */
+/* mod_s_contrib (PR-33): contribution thread (#tbThread), My contribution card on Home and My work by level, menu anchor marks,
+   All screens filter, gap badge. Design: docs/ia/navigation-architecture.md (f). Points are modeled and display only. Prefix ctb-. */
 (function(){
 "use strict";
 const W=window,D=document;
@@ -28,17 +15,11 @@ const LV={company:"Company",enterprise:"Enterprise objective",group:"Group objec
 const MODELED=`<span class="pill info ctb-tag" title="Modeled: weights and shares are sample assumptions; key result values are prototype facts">modeled</span>`;
 const RULE="Display only. Points describe how work connects to the objectives: they are not a rating, there is no ranking of people, and no review or pay process reads them.";
 const ANCHOR=`<svg class="ctb-ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M5 13a7 7 0 0 0 14 0M8 11h8"/></svg>`;
-
-/* ---------- 1. the cascade for a tenant: company, enterprise, group (Meridian only), team leaves ---------- */
-/* Meridian team words in the people directory that name a team in the DC-12 cascade (sample mapping, modeled) */
 const CORE_TEAM={"Platform team":"Platform team","Platform engineering":"Platform team","Editorial":"Editors","Editors":"Editors","Ops team":"Ops team",
  "Service desk":"Ops team","Service desk and operations":"Ops team","Architecture":"Architecture","Finance":"Finance","Legal and compliance":"Contracts","Contracts":"Contracts","Vendor management":"Vendor management"};
-/* the business areas each Meridian team objective serves first (screen anchor, section f: the REG objective level picks how far up) */
 const CORE_AREA={strat:["T1","T2","T5","T8","T10"],deliver:["T1","T2","T3","T11"],ops:["T5","T6","T7"],money:["T10","T11","T7"],people:["T4","T2"],
  risk:["T8","T9","T6"],transform:["T1","T3","T9"],build:["T8","T9"],my:[],ask:[],home:[]};
-/* screens that serve one team objective directly (Meridian ids; ignored where the screen or node is absent) */
 const CORE_SCREEN={inv:"T10",bud_ven:"T7",ppm_sow:"T7",grc_ven:"T7",itsm_prb:"T6",itsm_inc:"T5",itsm_home:"T5"};
-
 function coreModel(){const X=G(()=>EXE.cascade(),null);if(!X||!X.company)return null;
  const nodes=X.nodes.map(n=>({id:n.id,lvl:n.lvl,n:n.n,owner:n.owner,up:Object.assign({},n.up),p:n.p,contrib:n.contrib,share:n.share,kr:n.kr||"",team:n.team||"",grp:n.grp||"",st:n.st,kids:arr(n.kids).slice()}));
  const by={};nodes.forEach(n=>by[n.id]=n);
@@ -46,7 +27,6 @@ function coreModel(){const X=G(()=>EXE.cascade(),null);if(!X||!X.company)return 
  const links=G(()=>EXE.E.links,{})||{};
  const projOf=objId=>Object.keys(links).map(p=>({p,w:+((links[p]||{})[objId])||0})).filter(x=>x.w>0);
  return {t:"core",company:by[X.company.id],nodes,by,group:true,projOf,teamOf:name=>CORE_TEAM[name]||"",orphan:arr(X.orphan).map(n=>n.id)}}
-
 function packModel(t){const info=G(()=>DATA.tenantInfo(t),{})||{};const objs=rowsOf("objectives",t),krs=rowsOf("key_results",t);if(!objs.length)return null;
  const att=k=>G(()=>ROLLUP.att(k.cur,k.tgt,k.start),null);
  const company={id:"CO-"+t,lvl:"company",n:(info.org||t)+": all objectives",owner:"",up:{},kids:[],num:""};
@@ -57,16 +37,12 @@ function packModel(t){const info=G(()=>DATA.tenantInfo(t),{})||{};const objs=row
   nodes.push(n);by[n.id]=n;by[k.o].kids.push(n.id)});
  const mean=a=>{const v=a.filter(x=>x!=null);return v.length?v.reduce((s,x)=>s+x,0)/v.length:null};
  nodes.filter(n=>n.lvl==="enterprise").forEach(n=>{n.p=mean(n.kids.map(id=>by[id].p))});company.p=mean(company.kids.map(id=>by[id].p));
- /* equal weights at every level (modeled): share = 1/objectives × 1/key results of that objective */
  const ne=company.kids.length||1;nodes.forEach(n=>{if(n.lvl==="company")n.share=1;else if(n.lvl==="enterprise")n.share=1/ne;else{const par=by[Object.keys(n.up)[0]];n.share=(1/ne)*(1/(par.kids.length||1))}
   n.contrib=n.p==null?null:n.p*n.share*100});
  const projs=rowsOf("projects",t);
  const projOf=objId=>projs.filter(p=>p.obj===objId||arr(p.objs).indexOf(objId)>=0).map(p=>({p:p.id,w:1}));
  return {t,company,nodes,by,group:false,projOf,teamOf:name=>name||"",orphan:nodes.filter(n=>n.lvl==="enterprise"&&!n.kids.length).map(n=>n.id)}}
-
-/* ---------- 2. the viewer: the persona's person, their teams, their level ---------- */
 const EXEC=["exec","ceo","cco","cfo","coo","chro","ciso","caio","clo","board"];
-/* in another tenant the persona's seat is the person whose role fits it (sample mapping, labeled on screen) */
 const SEAT={exec:/chief information|chief technology|chief digital|technology|information/i,ceo:/chief executive|president/i,cco:/commercial|sales|customer|member|revenue/i,
  cfo:/chief financial|finance/i,coo:/chief operating|operations/i,chro:/people|human|workforce/i,ciso:/security|risk/i,caio:/\bAI\b|data|analytics|digital/i,clo:/legal|counsel|compliance/i,
  board:/chief executive|president/i,portfolio:/portfolio|program|transformation/i,audit:/audit|compliance|risk/i,pm:/project|program|planning/i,ops:/service|support|desk|operations/i,
@@ -87,8 +63,6 @@ function viewer(M){const t=M?M.t:ten();const key=G(()=>S.persona,"exec")||"exec"
  const owns=M?M.nodes.filter(n=>n.lvl!=="company"&&n.owner===name).map(n=>n.id):[];
  const level=EXEC.indexOf(key)>=0?"executive":owns.some(id=>M.by[id].lvl==="group"||M.by[id].lvl==="enterprise")||rowsOf("teams",t).some(x=>x&&x.mgr===name)?"manager":"individual";
  return {key,persona:P.n||key,name,person,mapped,teams:[...teams],owns,level,team:person?person.team:""}}
-
-/* ---------- 3. shares and points ---------- */
 const sheets=t=>rowsOf("timesheets",t).filter(r=>r&&r.person&&Array.isArray(r.rows));
 const sumH=r=>arr(r.hrs).reduce((s,x)=>s+(+x||0),0);
 function membersOf(M,team){const t=M.t;return humans(t).filter(p=>{if(M.teamOf(p.team)===team)return true;
@@ -105,8 +79,6 @@ function agentsOf(M,team,mem){const ag=rowsOf("agents",M.t);return ag.filter(a=>
 function points(M,V){V=V||viewer(M);const rows=M.nodes.filter(n=>n.lvl==="team"&&n.team&&V.teams.indexOf(n.team)>=0).map(n=>{const s=shareOf(M,n,V.name);const mem=membersOf(M,n.team);
   return {leaf:n,share:s,pts:(n.contrib||0)*s.share,potential:(n.share||0)*100*s.share,agents:agentsOf(M,n.team,mem)}});
  return {rows,total:rows.reduce((s,r)=>s+r.pts,0),potential:rows.reduce((s,r)=>s+r.potential,0)}}
-
-/* ---------- 4. the viewer's own work and its path to an objective ---------- */
 function workOf(M,V){const t=M.t,name=V.name,out=[];if(!name)return out;const ents=new Set(M.nodes.filter(n=>n.lvl==="enterprise").map(n=>n.id));
  const projObjs=p=>{if(t==="core"){const l=G(()=>EXE.E.links[p.id],{})||{};return Object.keys(l).filter(o=>l[o]>0&&ents.has(o))}return [p.obj].concat(arr(p.objs)).filter(o=>o&&ents.has(o))};
  const projs=rowsOf("projects",t);const seen=new Set();
@@ -118,16 +90,12 @@ function workOf(M,V){const t=M.t,name=V.name,out=[];if(!name)return out;const en
  rowsOf("work_items",t).filter(w=>w&&w.owner===name).slice(0,6).forEach(w=>{const p=w.pr&&projs.find(x=>x&&x.id===w.pr);
   out.push({kind:"Work item",id:w.id,n:w.n||w.t||w.title||w.id,num:"",objs:p?projObjs(p):[],closed:/closed|done|resolved/i.test(w.st||w.status||"")})});
  return out}
-
-/* ---------- 5. the model for this render pass (memo cleared before every render and on a tenant change) ---------- */
 let MEMO=null;
 function model(){const t=ten(),k=t+"|"+G(()=>DATA.version,0)+"|"+G(()=>S.persona,"");if(MEMO&&MEMO.k===k)return MEMO.M;
  const M=(t==="core"?coreModel():packModel(t))||null;if(M){M.leaves=M.nodes.filter(n=>n.lvl==="team");M.V=viewer(M);M.anchors={}}
  MEMO={k,M};return M}
 G(()=>HOOKS.on("beforeRender",()=>{MEMO=null},{id:"contrib.memo"}));
 G(()=>HOOKS.on("tenantChange",()=>{MEMO=null},{id:"contrib.memo.tenant"}));
-
-/* ---------- 6. screen anchor: REG objective level decides how far up; area and viewer pick the team objective ---------- */
 function anchor(id){const M=model();if(!M)return {gap:true,why:"This tenant records no objectives yet."};if(M.anchors[id])return M.anchors[id];
  const meta=G(()=>REG.meta(id),{})||{};const lvl=meta.objective||"";let a;
  if(!lvl||!/^(company|enterprise|group|team|individual)$/.test(lvl))a={gap:true,lvl,why:lvl==="platform"?"A platform screen: it builds the product, it serves no business objective directly.":"No objective level is declared for this screen."};
@@ -135,7 +103,6 @@ function anchor(id){const M=model();if(!M)return {gap:true,why:"This tenant reco
   let cand=[];if(M.t==="core"){const o=CORE_SCREEN[id];if(o&&M.by[o])cand=[o];else cand=arr(CORE_AREA[meta.area]).filter(x=>M.by[x])}
   else cand=M.leaves.slice().sort((x,y)=>(y.contrib||0)-(x.contrib||0)).map(n=>n.id);
   const personal=lvl==="individual"||/^(my|ask|home)$/.test(meta.area||"");
-  /* a business screen has one anchor for everyone (its first candidate); My work, Ask and Home follow the viewer's own team */
   let leaf=(personal?mine[0]:null)||M.by[cand[0]]||M.leaves.slice().sort((x,y)=>(y.contrib||0)-(x.contrib||0))[0];
   if(!leaf)a={gap:true,lvl,why:"No team objective is recorded in this tenant."};
   else{let chain=chainOf(M,leaf);const cut={company:1,enterprise:2,group:M.group?3:2,team:9,individual:9}[lvl];chain=chain.slice(0,cut);
@@ -143,10 +110,7 @@ function anchor(id){const M=model();if(!M)return {gap:true,why:"This tenant reco
  M.anchors[id]=a;return a}
 function serves(id){const M=model();if(!M)return false;const a=anchor(id);if(a.gap||a.lvl==="company")return false;if(a.mine)return true;
  const last=a.chain[a.chain.length-1];return M.leaves.some(n=>M.V.teams.indexOf(n.team)>=0&&chainOf(M,n).indexOf(last)>=0)}
-
-/* ---------- 7. render: the thread, the gap badge, the metric chip, the card ---------- */
 const badge=why=>`<span class="pill warn ownx-badge ctb-gapb" title="${H(why||"No path from this to an objective: it is counted in the gaps list")}"><i class="ownx-bd" aria-hidden="true"></i>Not linked to an objective</span>`;
-/* THREAD.open takes a number: an objective or key result opens itself; a company or group node opens the enterprise objective it rolls into */
 function openTarget(M,n,ent){if(n.num)return n.num;if(n.lvl==="group"||n.lvl==="team"){const e=entOf(M,n);return e?e.num:""}
  if(n.lvl==="company"){const e=ent||M.nodes.find(x=>x.lvl==="enterprise"&&x.num);return e?e.num:""}return ""}
 function seg(M,n,o){o=o||{};const tgt=openTarget(M,n,o.ent);const lab=LV[n.lvl]||n.lvl;const kr=n.kr&&o.mine?G(()=>M.t==="core"?EXE.E.krs.find(k=>k.id===n.kr):rowsOf("key_results",M.t).find(k=>k.id===n.kr),null):null;
@@ -160,13 +124,11 @@ function threadHTML(id){const M=model();const a=anchor(id);const scr=G(()=>NAVX.
  if(!M||a.gap)return `${me}${badge(a.why)}<span class="ctb-here small muted">${H(scr)}</span>`;
  const ent=a.chain.find(n=>n.lvl==="enterprise");const segs=a.chain.map((n,i)=>seg(M,n,{ent,mine:a.mine&&i===a.chain.length-1,last:i===a.chain.length-1}));
  return `${me}${segs.join(SEP)}${a.mine?"":SEP+`<span class="ctb-here" title="This screen: ${H(scr)}">This screen</span>`}`}
-
 function fx(M,V,P){const pid=G(()=>U.uid("ctbfx"),"ctbfx"+Date.now());const ownerN=M.nodes.map(n=>n.owner).find(o=>o&&humans(M.t).some(p=>p.name===o))||"";
  return `<button type="button" class="fchip ctb-fx" popovertarget="${pid}" aria-label="Formula for contribution points">ƒ Contribution points</button><div popover id="${pid}" class="pop glass ctb-pop"><div class="eyebrow">Metric · modeled</div><h3>Contribution points</h3>
  <div class="formula">Points = Σ over your team objectives of (that objective's points of the company score × your share of the team). Points of the company score = key result progress × the product of the normalized weights up to the company (DC-12). Share = equal among the team's members, or your hours on work linked to the objective ÷ the team's hours when timesheets record them. Robot and agent work counts for the sponsor's team, never for a person.</div>
  <dl class="ctb-dl"><dt>Owner</dt><dd>${ownerN?own(ownerN,"metric:contribution_points"):badge("No person owns the objectives in this tenant")}</dd><dt>Target</dt><dd>${r1(P.potential)} points: your share if every one of your team objectives is fully met (modeled)</dd><dt>Label</dt><dd>Modeled. Weights and shares are sample assumptions; key result values are prototype facts.</dd><dt>Use</dt><dd>${H(RULE)}</dd></dl>
  <div class="row"><button class="btn" type="button" popovertarget="${pid}" popovertargetaction="hide">Close</button></div></div>`}
-
 let LVSEL="";
 function levelsFor(V){return V.level==="executive"?["executive","manager","individual"]:V.level==="manager"?["manager","individual"]:["individual"]}
 function nodeRow(M,n,extra){const ch=chainOf(M,n).slice(1);return `<li class="ctb-row"><div class="ctb-rh">${ch.map(c=>seg(M,c,{})).join(SEP)}</div><div class="ctb-rm"><span class="small" data-role="metric">${prog(n.p)} progress · ${n.contrib==null?"no progress yet":r1(n.contrib)+" points of the company score"}</span>${own(n.owner,"objective:"+n.id)}${extra||""}</div></li>`}
@@ -191,8 +153,6 @@ function cardHTML(){const M=model();if(!M)return `<section class="card glass ctb
  return `<section class="card glass ctb-card" data-ctb-card="1" aria-label="My contribution"><div class="ctb-ch"><div><div class="eyebrow">${ANCHOR} My contribution</div><h3 class="ctb-h">${head}</h3>
  <p class="small muted">Viewing as ${who} (${H(V.persona)}${V.mapped?", the person in this seat in this tenant: a sample mapping":""}). ${V.teams.length?"Your teams: "+V.teams.map(H).join(", ")+".":"No team in the cascade."}${gaps?" "+gaps+" of your items are not linked to an objective.":""}</p></div>${fx(M,V,P)}</div>
  ${tabs}${body}<p class="small ctb-rule" data-ctb-rule="1"><b>Not a rating.</b> ${H(RULE)}</p></section>`}
-
-/* ---------- 8. wiring: thread slot, cards, menu marks, All screens filter ---------- */
 function fillThread(){const s=D.getElementById("tbThread");if(!s)return false;const id=G(()=>S.screen,"");if(!id){s.hidden=true;return true}
  const html=threadHTML(id);if(s.getAttribute("data-ctb")!==id+"|"+html.length){s.innerHTML=html;s.setAttribute("data-ctb",id+"|"+html.length)}
  s.classList.add("ctb-thread");s.hidden=false;return true}
@@ -208,8 +168,6 @@ let pend=0;
 function pass(){pend=0;G(()=>{if(!fillThread())setTimeout(()=>G(fillThread),80)});G(cardHost);G(()=>markMenus())}
 G(()=>HOOKS.on("afterRender",()=>{G(pass)},{id:"contrib.render",order:1200}));
 const later=()=>{if(pend)return;pend=setTimeout(()=>{pend=0;G(()=>markMenus())},0)};
-
-/* All screens: "Serves my objectives" replaces the interim "Only my areas" chip; the list is filtered after nav draws it */
 const AS={serve:false};
 function allPost(){const p=D.getElementById("nxAll");if(!p)return;const mine=p.querySelector("[data-nx-all-mine]");
  if(mine){const b=D.createElement("button");b.type="button";b.className="chip";b.setAttribute("data-ctb-serve","1");b.setAttribute("aria-pressed",String(AS.serve));b.innerHTML=ANCHOR+"<span>Serves my objectives</span>";mine.replaceWith(b)}
@@ -227,10 +185,7 @@ G(()=>{ROUTER.on("click","[data-nx-all]",allLater,{id:"contrib.all.open"});ROUTE
  ROUTER.on("click","[data-ctb-open]",(e,t)=>{e.preventDefault();e.stopPropagation();const n=t.getAttribute("data-ctb-open");if(n&&W.THREAD)THREAD.open(n);else G(()=>toast("Nothing to trace for this level yet","warn"))},{id:"contrib.open"});
  ROUTER.on("click","[data-ctb-me]",e=>{e.preventDefault();open()},{id:"contrib.me"});
  ROUTER.on("click","[data-ctb-lv]",(e,t)=>{LVSEL=t.getAttribute("data-ctb-lv");const c=t.closest("[data-ctb-card]");if(c)c.outerHTML=cardHTML()},{id:"contrib.lv"})});
-/* the drawer form of the card, from the anchor at the start of the thread */
 function open(){G(()=>openDrawer(`<div class="ctb-dr">${cardHTML()}</div>`));return true}
-
-/* every screen with no path to an objective, for the gaps list (the cascade's orphan list is kept by mod_exec) */
 function gaps(){return G(()=>SCREENS.map(s=>s[0]),[]).filter(id=>anchor(id).gap)}
 W.CONTRIB={model,viewer:()=>{const M=model();return M?M.V:viewer(null)},anchor,serves,points:()=>{const M=model();return M?points(M,M.V):{rows:[],total:0,potential:0}},
  threadHTML,cardHTML,badge,gaps,open,RULE,work:()=>{const M=model();return M?workOf(M,M.V):[]}};
