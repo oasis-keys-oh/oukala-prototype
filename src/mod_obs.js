@@ -1,9 +1,4 @@
-/* ===== Oukala observability, event management and automation (module obs) =====
-   Screens: itom_evt (Event management), obs_dash (Dashboards and metrics), itom_slo (Observability and SLOs),
-   itom_run (Runbooks and automation), obs_std (Standard change catalog and SOPs).
-   Everything on screen is computed from one deterministic metric model: a pure function value(ci, metric, minute).
-   Alerts are episodes found by running the alert rules over that model, so a threshold preview, the alert stream,
-   the patterns and the false positive statistics always agree with each other. */
+/* Oukala observability, event management and automation (module obs) ===== Screens: itom_evt (Event management), obs_dash (Dashboards and metrics), */
 (function(){
 /* PR-32 B6: tenant views (TROWS); under Meridian these are the module stores as before */
 const CO=TROWS.core,TM=TROWS.term,fchip=TROWS.chip,SVCREG=TROWS.arr("services","service",()=>window.SVCREG),CIREG=TROWS.arr("config_items","item",()=>window.CIREG),CIEDGE=TROWS.arr("config_items","relation",()=>window.CIEDGE,r=>[r.from,r.to,r.rel]),

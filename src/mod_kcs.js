@@ -1,5 +1,4 @@
-/* ============ Module: Knowledge management and AI quality (prefix kcs) ============
- Screens: kcs_home, kcs_edit, kcs_ask, kcs_gap (group know); kcs_prompt, kcs_test (group ai). kcs_viz moved to the Viz builder module. */
+/* Module: Knowledge management and AI quality (prefix kcs) ============ Screens: kcs_home, kcs_edit, kcs_ask, kcs_gap (group know); kcs_prompt, */
 (function(METRICS){
 "use strict";
 /* PR-32 B6: tenant views (TROWS). Meridian reads the seeds below as before; another tenant reads its own rows or a labeled gap */

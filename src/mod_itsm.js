@@ -1,5 +1,4 @@
-/* ============ ITSM: incidents, problems, changes, major incident, service desk overview ============
-Aligned to ITIL 5 (Product and Service Lifecycle Model), ISO/IEC 20000, DORA. Release management lives in mod_rel.js. */
+/* ITSM: incidents, problems, changes, major incident, service desk overview ============ Aligned to ITIL 5 (Product and Service Lifecycle Model), */
 (function(){
 /* PR-32 B6: Meridian as before; another tenant reads only its own pack rows */
 const T=TROWS,CO=T.core,TM=(k,o)=>DATA.term(k,o),fchip=T.chip,V={},tn=()=>DATA.tenant(),
