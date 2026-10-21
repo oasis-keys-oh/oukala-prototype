@@ -87,10 +87,34 @@ function traceRows(){const E=G(()=>EXE.E,null);if(!E)return [];const out=[];
 const empty=(t,s)=>typeof W.empty==="function"?W.empty(t,s):`<p class="muted">${H(t)}. ${H(s||"")}</p>`;
 
 /* ---------------- screen ---------------- */
-function render_(){U.syncMetrics();const td=U.toDate(),at=U.attention().length,T=U.totalsNet(X.ben.hz),pend=U.gapp.pending("ben_target").length;
+/* PR-32 B3: under a tenant other than core the register is that tenant's benefits (DATA.get("benefits")) with their projects,
+   objectives and budget lines. Annual value is the pack's driver amount; risk-adjusted value is annual × confidence and net benefit
+   over the horizon subtracts the forecast of the project's budget lines: modeled. Recorded actuals are the pack's own entries. */
+function tBen(){const Xs=window.STN||{},org=(DATA.tenantInfo()||{}).org||DATA.tenant(),hz=X.ben.hz||3;const tb=(c,r)=>Xs.table?Xs.table(c,r):"";const own=(o,b,rec)=>Xs.own?Xs.own(o,b,rec):"";
+ const Bn=DATA.get("benefits"),P=DATA.get("projects"),O=DATA.get("objectives"),L=DATA.get("budget_lines");
+ const ann=b=>+((b.drv||{}).amt)||0,adj=b=>ann(b)*(+b.conf||0),rec=b=>(Array.isArray(b.real)?b.real:[]).reduce((a,x)=>a+(+(x&&(x.v!=null?x.v:x.amt))||0),0);
+ const pn=id=>(P.find(p=>p.id===id)||{}).n||id||"",on=id=>(O.find(o=>o.id===id)||{}).n||id||"";
+ const flags=b=>[!b.bak||b.bak===b.own?"No different backup":"",!b.ev?"No baseline evidence":"",(+b.conf||0)<.65?"Confidence under 65%":"",!rec(b)?"Nothing recorded yet":""].filter(Boolean);
+ const tA=Bn.reduce((a,b)=>a+ann(b),0),tR=Bn.reduce((a,b)=>a+rec(b),0),tAdj=Bn.reduce((a,b)=>a+adj(b),0);
+ const projs=[...new Set(Bn.map(b=>b.p))];const net=projs.map(id=>{const bs=Bn.filter(b=>b.p===id),c=L.filter(l=>l.p===id).reduce((a,l)=>a+(+l.fcst||0),0),v=bs.reduce((a,b)=>a+adj(b),0)*hz;return{id,bs,c,v,net:v-c,pay:bs.reduce((a,b)=>a+adj(b),0)?c/bs.reduce((a,b)=>a+adj(b),0):null}});
+ const k=(l,v,sub)=>`<div class="r17u-k"><span class="r17u-kl">${H(l)}</span><b class="num" data-role="metric">${v}</b><span class="r17u-ks">${H(sub)}</span></div>`;
+ const kp=`<div class="r17u-kpis">${k("Planned a year once running",usd(tA),"driver amounts, simulated")}${k("Risk adjusted a year",usd(tAdj),"annual × confidence, modeled")}${k("Recorded to date",usd(tR),"actuals in the register")}${k("Net benefit, "+hz+" yr",usd(net.reduce((a,x)=>a+x.net,0)),"risk adjusted less forecast cost, modeled")}</div>`;
+ const reg=Bn.length?tb(["Benefit","Type","Initiative","Owner and backup","Annual","Confidence","Recorded","Objective"],Bn.map(b=>[`<b>${H(b.id)}</b> ${H(b.n)}`,H(b.ty||""),H(pn(b.p)),own(b.own,b.bak,"benefit:"+b.id),usd(ann(b)),Math.round((+b.conf||0)*100)+"%",usd(rec(b)),H(on(b.obj))])):(Xs.gap?Xs.gap("benefits"):TREAD.gap("benefits"));
+ const p0=kp+card("Planned against realized","Annual value, risk-adjusted value and what is recorded, per benefit",Bn.length?tb(["Benefit","Annual","Risk adjusted","Recorded"],Bn.map(b=>[H(b.n),usd(ann(b)),usd(adj(b)),usd(rec(b))])):(Xs.gap?Xs.gap("benefits"):TREAD.gap("benefits")));
+ const p2=card("Checkpoints",TREAD.GAP,`<p class="muted small">Quarterly checkpoints need each benefit's plan by quarter. ${H(org)}'s register has annual values and a start only; the gap is recorded and no other company's checkpoints are shown.</p>`);
+ const p3=card("Net benefit and payback","Over "+hz+" years: risk-adjusted benefit less the forecast of the initiative's budget lines (modeled)",net.length?tb(["Initiative","Benefits","Risk-adjusted benefit","Forecast cost","Net","Payback"],net.map(x=>[H(pn(x.id)),String(x.bs.length),usd(x.v),usd(x.c),usd(x.net),x.pay!=null?(Math.round(x.pay*10)/10)+" years":"None"])):(Xs.gap?Xs.gap("benefits"):TREAD.gap("benefits")));
+ const by={};Bn.forEach(b=>{(by[b.own]=by[b.own]||[]).push(b)});
+ const p4=card("By owner","Benefits and annual value per owner",Object.keys(by).length?tb(["Owner","Benefits","Annual"],Object.keys(by).map(o=>[ownerChip(o,{role:"Owner"}),String(by[o].length),usd(by[o].reduce((a,b)=>a+ann(b),0))])):"")+card("By portfolio","Benefits per initiative",tb(["Initiative","Benefits","Annual"],projs.map(id=>[H(pn(id)),String(Bn.filter(b=>b.p===id).length),usd(Bn.filter(b=>b.p===id).reduce((a,b)=>a+ann(b),0))])));
+ const at=Bn.map(b=>({b,f:flags(b)})).filter(x=>x.f.length);
+ const p5=card("Needs attention","Benefits with a missing backup, no baseline, low confidence or nothing recorded",at.length?tb(["Benefit","Owner and backup","Why"],at.map(x=>[H(x.b.n),own(x.b.own,x.b.bak,"benefit:"+x.b.id),H(x.f.join("; "))])):empty("Nothing needs attention","Every benefit has a backup, a baseline, confidence of 65% or more and recorded actuals."));
+ const p6=card("Changes and traceability","Each benefit, the initiative that delivers it and the objective it serves",Bn.length?tb(["Benefit","Initiative","Objective","Why it counts"],Bn.map(b=>[H(b.n),H(pn(b.p)),H(on(b.obj)),H(b.why||"")])):"");
+ return `<div class="screen r17u-scr">${Xs.head?Xs.head("Benefits realization","Benefits of "+H(org),`The register holds <b>${Bn.length}</b> benefits worth <b>${usd(tA)}</b> a year once all are running (simulated); <b>${usd(tR)}</b> is recorded so far. <b>${at.length}</b> need attention.`):""}${lensNote()}
+ ${views("budb",["Planned and realized","Register","Checkpoints","Net benefit and payback","By owner, portfolio, quarter","Needs attention","Changes and traceability"],[p0,card("Register","Owner and backup, value, confidence and objective",reg),p2,p3,p4,p5,p6])}${procCard("bud_ben")}</div>`}
+function render_(){if(!TREAD.core())return tBen();U.syncMetrics();const td=U.toDate(),at=U.attention().length,T=U.totalsNet(X.ben.hz),pend=U.gapp.pending("ben_target").length;
  const m=METRICS.m_benefit;
  return `<div class="screen r17u-scr">${hero("Benefits realization","Recorded benefit is "+td.pct+"% of plan to date; net benefit over "+(X.ben.hz||3)+" years is "+usd(T.net),`The register holds <b>${B().ben.length}</b> benefits worth <b>${usd(B().ben.reduce((a,b)=>a+annual(b),0))}</b> a year once all are running. <b>${usd(td.real)}</b> is recorded against <b>${usd(td.plan)}</b> planned to date. <b>${at}</b> benefits need attention and <b>${pend}</b> target change${pend===1?"":"s"} wait${pend===1?"s":""} on the Portfolio board. Net benefit and payback are computed from the linked budget lines.`,`<div class="row">${fchip("m_benefit")}${fchip("m_ben_chk")}${fchip("m_ben_net")}<button class="btn primary" data-r17u-rec>Record actual</button></div>`)}${lensNote()}
  ${views("budb",["Planned and realized","Register","Checkpoints","Net benefit and payback","By owner, portfolio, quarter","Needs attention","Changes and traceability"],[paneTimeline(),paneRegister(),paneChecks(),paneNet(),paneViews(),paneAttn(),paneChanges()])}${procCard("bud_ben")}</div>`}
+DATA.screen("bud_ben",{mode:"data",entities:["benefits","projects","objectives","budget_lines"],note:"PR-32 B3: other tenants: their benefit register through DATA"});
 REG("bud_ben","Benefits realization","portfolio","M12 3v18M5 9l7-6 7 6M5 15l7 6 7-6",render_);
 
 /* ---------------- drawer ---------------- */

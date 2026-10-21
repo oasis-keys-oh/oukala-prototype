@@ -36,8 +36,25 @@ const SRC={
  projects:{n:"Projects",ent:"project",scr:"ppm_proj",owner:"Maya Ortiz",backup:"Priya Shah",filters:{range:0,owner:1,pf:1},path:"PROJ",
   raw:()=>G(()=>PROJ,[]).map(p=>({id:p.id,t:p.n,owner:p.owner,pf:p.id,date:null,bac:p.bac*1e3,paid:p.paid*1e3,go:()=>go("ppm_proj",p.id)})),dims:["owner","pf"],cols:[["id","Project"],["t","Name"],["owner","Owner"],["bac","Budget at completion"],["paid","Paid"]]}};
 D.SRC=SRC;
+/* PR-32 B3: under a tenant other than core every source reads that tenant's rows through DATA (same normalized fields), source and
+   template owners are not carried over from the core sample (a tenant names its own), the portfolio filter lists its projects and
+   governed metrics come from metricOf. Under core the sources read the registries exactly as before. */
+const tBen=b=>{const real=(Array.isArray(b.real)?b.real:[]).reduce((a,x)=>a+(+(x&&(x.v!=null?x.v:x.amt))||0),0),ann=+((b.drv||{}).amt)||0;return{ann,real,plan:Math.round(ann*(+b.conf||0))}};
+const TRAW={
+ incidents:()=>DATA.get("incidents").map(i=>({id:i.id,t:i.t,owner:i.own||"",pf:"",date:iso(TD-(+i.age||0)*36e5),svc:i.svc,grp:i.grp,st:i.st,age:+i.age||0,open:!/resolved|closed|canceled/i.test(i.st||""),go:()=>go("itsm_inc")})),
+ changes:()=>DATA.get("changes").filter(c=>TREAD.partOf("changes",c)!=="cab").map(c=>({id:c.id,t:c.t,owner:c.own||c.req||"",pf:c.proj||"",date:c.start||TODAY,svc:c.svc,type:c.type,st:c.st,go:()=>go("itsm_chg")})),
+ budget:()=>DATA.get("budget_lines").map(l=>({id:l.id,t:l.n,owner:l.own,pf:l.p,date:null,cat:l.cat,appr:l.appr,comm:l.comm,act:l.act,fcst:l.fcst,over:l.fcst>l.appr,var:l.fcst-l.appr,go:()=>go("tn_projects")})),
+ benefits:()=>DATA.get("benefits").map(b=>{const x=tBen(b);return{id:b.id,t:b.n,owner:b.own||"",pf:b.p,date:null,kind:b.ty||"",ann:x.ann,plan:x.plan,real:x.real,conf:b.conf,flag:!b.bak||b.bak===b.own||!b.ev,status:x.real?"Recording":"Not started",go:()=>go("bud_ben")}}),
+ services:()=>TREAD.rows("services","service").map(v=>({id:v.id,t:v.n,owner:v.owner,pf:(v.proj||[])[0]||"",date:null,tier:v.tier,avail:v.avail,tgt:v.tgt,below:v.avail<v.tgt,cost:v.cost,users:v.users,go:()=>go("svc_360")})),
+ demand:()=>DATA.get("demand").map(d=>({id:d.id,t:d.n,owner:d.sp||d.who,pf:"",date:null,dept:d.who,cost:(+d.cost||0)*1e3,ben:(+d.ben||0)*1e3,fund:!!d.fund,st:d.fund?"Funded":"Not funded",go:()=>go("port")})),
+ agents:()=>TREAD.rows("agents","agent").map(a=>({id:a.id,t:a.n,owner:a.owner||"",pf:"",date:null,state:a.st||"",runs:+a.runs||0,spend:+a.spend||0,enabled:a.st!=="off"&&a.st!=="stopped",working:a.st==="running",model:a.model||"",go:()=>go("r15d_agents")})),
+ invoices:()=>DATA.get("invoices").map(i=>({id:i.id,t:i.vendor,owner:"",pf:i.p||"",date:parseDue(i.due),vendor:i.vendor,amt:i.amt,rec:i.rec,go:()=>go("tn_projects")})),
+ projects:()=>DATA.get("projects").map(p=>({id:p.id,t:p.n,owner:p.owner,pf:p.id,date:null,bac:(+p.bac||0)*1e3,paid:(+p.paid||0)*1e3,go:()=>go("tn_projects")}))};
+Object.keys(SRC).forEach(k=>{const s0=SRC[k],raw=s0.raw,o=s0.owner,b=s0.backup;s0.raw=()=>TREAD.core()||!TRAW[k]?raw():TRAW[k]();
+ Object.defineProperty(s0,"owner",{configurable:true,enumerable:true,get(){return TREAD.core()?o:""},set(v){}});Object.defineProperty(s0,"backup",{configurable:true,enumerable:true,get(){return TREAD.core()?b:""},set(v){}})});
+const _pfs=D.PFS;D.PFS=()=>TREAD.core()?_pfs():DATA.get("projects").map(p=>[p.id,p.id+" "+(p.short||p.n)]);
 let MEMO={};D.clear=()=>{MEMO={}};
-const fk=F=>(F.range||"")+"|"+(F.owner||"")+"|"+(F.pf||"");
+const fk=F=>(F.range||"")+"|"+(F.owner||"")+"|"+(F.pf||"")+(TREAD.core()?"":"|"+DATA.tenant());
 function rowsOf(id,F){const k=id+"|"+fk(F);if(MEMO[k])return MEMO[k];const s=SRC[id];if(!s)return [];let r=s.raw();const st=rangeStart(F.range);
  if(F.owner&&s.filters.owner)r=r.filter(x=>x.owner===F.owner);
  if(F.pf&&s.filters.pf)r=r.filter(x=>x.pf===F.pf);
@@ -78,7 +95,7 @@ Object.keys(M).forEach(k=>M[k].id=k);
 const DIMN={svc:"Service",grp:"Team",owner:"Owner",st:"State",pf:"Portfolio",type:"Type",cat:"Category",kind:"Type",status:"Status",tier:"Tier",dept:"Department",state:"State",model:"Model",vendor:"Vendor",rec:"Recommendation"};
 D.DIMN=DIMN;
 /* ---------------- tile computation ---------------- */
-const mget=id=>G(()=>METRICS[id],null);
+const mget=id=>G(()=>typeof metricOf==="function"?metricOf(id):METRICS[id],null);
 function metricOwner(id){const o=G(()=>OWNX.get("metric",id),null),m=mget(id)||{};return {owner:o&&o.ownerName||m.owner||"",backup:o&&o.backupName||""}}
 function note(src,F){const s=SRC[src],a=[];if(!s)return a;
  if(F.range&&F.range!=="all"&&!s.filters.range)a.push("time range does not apply");if(F.owner&&!s.filters.owner)a.push("owner filter does not apply");if(F.pf&&!s.filters.pf)a.push("portfolio filter does not apply");return a}
@@ -112,7 +129,7 @@ D.measureOpts=()=>Object.keys(M).map(k=>[k,M[k].n+" · "+SRC[M[k].src].n]);
 D.dimsOf=id=>{const m=M[id];return m?SRC[m.src].dims:[]};
 D.listOpts=()=>Object.keys(SRC).map(k=>[k,SRC[k].n]);
 /* owners that exist across registries (humans only), for the owner filter */
-D.owners=()=>{if(D._own)return D._own;const s=new Set();Object.keys(SRC).forEach(k=>{if(!SRC[k].filters.owner)return;SRC[k].raw().forEach(r=>{if(r.owner&&U.isHuman(r.owner))s.add(r.owner)})});return D._own=[...s].sort()};
+D.owners=()=>{if(!TREAD.core()){const s=new Set();Object.keys(SRC).forEach(k=>{if(SRC[k].filters.owner)SRC[k].raw().forEach(r=>{if(r.owner&&TREAD.people().some(x=>x.name===r.owner&&x.kind==="human"))s.add(r.owner)})});return [...s].sort()}if(D._own)return D._own;const s=new Set();Object.keys(SRC).forEach(k=>{if(!SRC[k].filters.owner)return;SRC[k].raw().forEach(r=>{if(r.owner&&U.isHuman(r.owner))s.add(r.owner)})});return D._own=[...s].sort()};
 setTimeout(()=>{D._own=null},4000);
 /* ---------------- templates (each is built from live registries and metrics; a tile whose metric is missing is skipped) ---------------- */
 const T=(type,bind,title,w,h)=>({type,bind,title:title||"",w:w||4,h:h||2});
@@ -126,6 +143,7 @@ D.TEMPLATES=[
  {id:"ag",name:"AI agents",persona:"",owner:"Jordan Lee",backup:"Maya Ortiz",desc:"Agents enabled and working, runs and spend today, and the human sponsor behind each agent.",tiles:()=>[ms("card","ag_n",3,2),ms("card","ag_working",3,2),ms("card","ag_runs",3,2),ms("card","ag_spend",3,2),ms("bar","ag_runs",6,2,"owner",8,"Runs today by human sponsor"),ms("bar","ag_runs",6,2,"state",6,"Runs today by state"),tb("agents",12,3,"",8,"Agents by runs today"),mt("ring","m_guard",3,2),mt("trend","m_aispend",9,2)]},
  {id:"del",name:"Delivery",persona:"pm",owner:"Priya Shah",backup:"Dev Rao",desc:"Project budget use, schedule performance, change volume and the benefits each project must deliver.",tiles:()=>[ms("card","prj_pct",3,2),ms("card","prj_bac",3,2),ms("card","ben_ann",3,2),ms("card","ben_attn",3,2),mt("trend","m_spi",6,2),mt("trend","m_mshit",6,2),ms("bar","chg_total",6,2,"svc",6),ms("bar","ben_ann",6,2,"pf"),tb("benefits",12,3,"flag",8,"Benefits needing attention")]}];
 D.tileObj=(x,i)=>Object.assign({id:"t"+(i+1)},x);
+D.TEMPLATES.forEach(t=>{const o=t.owner,b=t.backup;Object.defineProperty(t,"owner",{configurable:true,enumerable:true,get(){return TREAD.core()?o:""},set(v){}});Object.defineProperty(t,"backup",{configurable:true,enumerable:true,get(){return TREAD.core()?b:""},set(v){}})});
 D.build=tpl=>tpl.tiles().filter(t=>t.bind.k!=="metric"||mget(t.bind.id)).map(D.tileObj);
 /* a tile with an owner (human), a formula and a source is "governed" */
 D.governed=t=>{const c=compute(t,{range:"all",owner:"",pf:""});return !c.err&&!!c.owner&&!!c.formula&&!!c.src};
