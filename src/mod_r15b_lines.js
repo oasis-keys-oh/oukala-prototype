@@ -78,7 +78,11 @@ function view(){const k=K();if(!k)return `<div class="screen">${hero("Budgets","
   `<div class="row"><button class="btn primary" data-bud-req-new>Request budget</button><button class="btn" data-go="bud_over">Budget home</button><button class="btn" data-go="bud_ccmap">Cost center mapping</button><label class="bl-scale"><input type="checkbox" data-bl-scale ${S_.scale==="ent"?"checked":""}> Enterprise scale sample (5,000 lines)</label></div>`)}
   ${S_.scale==="ent"?`<div class="lensnote glass" style="gap:8px"><b>Sample data</b><span class="muted small">5,000 generated lines to test filtering, grouping and paging at enterprise size. These are not Meridian's budget lines.</span></div>`:""}
   ${card("Budget lines","Filter, sort, group and choose columns. Totals follow the filter. Export gives the filtered lines as CSV.",`<div class="bl-wrap">${toolbar()}<div data-bl-tbl>${body(rows)}</div></div>`)}</div>`}
-REG("bud_lines","All budget lines","portfolio","M4 6h16M4 10h16M4 14h16M4 18h10",view);
+/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+DATA.screen("bud_lines",{mode:"data",entities:["budget_lines","projects"],note:"mod_r15b_lines (PR-32 B5)"});
+REG("bud_lines","All budget lines","portfolio","M4 6h16M4 10h16M4 14h16M4 18h10",()=>{const v=window.FIN&&FIN.tv;if(!v||!v.TEN())return view();const L=v.L();
+ return v.Sc("bud_lines","Budgets: All budget lines",L.length?`${L.length} lines: approved ${money(sum(L,l=>+l.appr||0))}, forecast ${money(sum(L,l=>+l.fcst||0))}. Sample figures, simulated.`:"No budget lines in this sample company yet.",[["Lines",()=>v.lines("Budget lines",L.length+" in this sample company",L)]])});
 function paint(){const el=document.querySelector("[data-bl-tbl]");if(!el)return render();const rows=filtered();el.innerHTML=body(rows);const h=document.querySelector(".hero .story");if(h){const t=tot(rows);h.innerHTML=`<b>${rows.length.toLocaleString("en-US")}</b> line${rows.length===1?"":"s"}: approved <b>${C$(t.appr)}</b>, forecast <b>${C$(t.fcst)}</b>, actual <b>${C$(t.act)}</b>, committed <b>${C$(t.comm)}</b>, variance <b>${sg(t.fcst-t.appr)}</b>. Select a line id to open the line.`}}
 document.addEventListener("click",e=>{let t;
  if(t=e.target.closest("[data-bl-sort]")){const k=t.dataset.blSort;S_.sort=S_.sort&&S_.sort.k===k?{k,d:-S_.sort.d}:{k,d:COLS.find(c=>c.k===k).num?-1:1};S_.page=0;paint();return}

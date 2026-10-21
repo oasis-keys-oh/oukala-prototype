@@ -179,7 +179,16 @@ function heroStory(){const trs=triggers();const u=trs.filter(t=>t.kind==="up"),d
 function renderMain(){const tabs=["Cost flow","Unit economics","Showback and chargeback","Scaling model","Forecast and triggers"];const panes=[tabFlow,tabUnit,tabShow,tabScale,tabFore].map(f=>{try{return f()}catch(err){console.error("tbm tab failed",f.name,err);return `<p class="muted">This tab could not be drawn: ${H(err.message)}</p>`}});
  return `<div class="screen">${hero("Technology cost transparency · TBM","See what each service costs, and when it needs more",`<span data-tbm-story>${heroStory()}</span>`,`<div class="row" style="flex-wrap:wrap"><button class="btn primary" data-tbm-tab="4">Forecast demand</button><button class="btn" data-tbm-tab="3">Scaling model</button>${has("bud_over")?'<button class="btn quiet" data-go="bud_over">Budgets</button>':""}${fchip("m_cost_user")}${fchip("m_unit_cost")}${fchip("m_fc_acc")}${stdChip("tbm","TBM Taxonomy v5 and the TBM Taxonomy allocate cost from the ledger through towers to solutions and consumers. This screen draws that model and uses it to forecast capacity.")}</div>`)}${lensNote()}
  ${views("tbmv",tabs,panes)}${procCard("tbm_model")}</div>`}
-REG("tbm_model","Technology cost transparency (TBM)","portfolio","M4 20V10M10 20V4M16 20v-7M22 20H2",renderMain);
+/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+function tvTbm(){const sum=(a,f)=>a.reduce((s,x)=>s+f(x),0),v=FIN.tv,Sv=DATA.get("services").filter(r=>(r.part||"service")==="service"),c=sum(Sv,r=>+r.cost||0),g=s=>()=>v.G(s,"No capacity or demand records in this sample company yet."),sv=v.tw("service");
+ const cols=[[sv,"n"],["Tier","tier"],["Cost a month",r=>money(+r.cost||0)],["Users","users"],["Cost per user",r=>r.users?money((+r.cost||0)/r.users):"No users recorded"],["Owner and backup",v.own("owner","backup")]];
+ return v.Sc("tbm_model","See what technology costs",Sv.length?`${Sv.length} ${DATA.term("service",{many:true})} cost ${money(c)} a month in this sample company. Sample figures, simulated.`:"No services in this sample company yet.",
+ [["Cost flow",()=>v.C("Cost by "+DATA.term("service"),"Monthly cost of each one","services",Sv.slice().sort((a,b)=>(b.cost||0)-(a.cost||0)),cols.slice(0,3).concat([cols[5]]))],["Unit economics",()=>v.C("Unit cost by "+DATA.term("service"),"Cost a month divided by its users","services",Sv,cols)],
+  ["Showback and chargeback",()=>v.C("Who receives the cost",DATA.term("cost_center",{many:true,cap:true}),"cost_centers",DATA.get("cost_centers"),[[v.tw("cost_center"),"name"],["GL segment","gl"],["Owner and backup",v.own("owner","backup")]])],
+  ["Scaling model",g("Scaling model")],["Forecast and triggers",g("Forecast and triggers")]])}
+DATA.screen("tbm_model",{mode:"data",entities:["services","cost_centers"],note:"mod_tbm (PR-32 B5)"});
+REG("tbm_model","Technology cost transparency (TBM)","portfolio","M4 20V10M10 20V4M16 20v-7M22 20H2",()=>window.FIN&&FIN.tv&&FIN.tv.TEN()?tvTbm():renderMain());
 
 /* ============ drawers, forms, events ============ */
 function unitDrawer(r){const s=svcOf(r.sid);const st=STEPS.find(x=>x.svc===r.sid);const f12=r.vol*Math.pow(1+r.g,12);
