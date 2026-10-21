@@ -34,6 +34,7 @@ node tools/tests/tenant_leak.js build_out
 node tools/tests/tenant_screens_b78.js build_out  # PR-32 B7 and B8: risk, control, AI, meetings, training, rooms and forums under every tenant
 # PR-32 B9: build, admin, transformation and showroom screens under every tenant (own rows or a labeled gap, no other tenant on screen)
 node tools/tests/tenant_screens_b9.js build_out
+node tools/tests/tenant_screens_b45.js build_out  # PR-32 B4, B5: portfolio, delivery, money and contract screens under every tenant
 # PR-32: the 58 tenant entities are defined with Meridian rows, and every industry pack carries them with links, owners and threads intact
 node tools/tests/data_entities.js build_out
 node tools/tests/thread.js build_out

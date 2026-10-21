@@ -382,7 +382,17 @@ document.addEventListener("click",e=>{let t;
 });
 DND.on("budrank",(id,from,to,idx)=>{const ids=RQ().filter(r=>r.st==="cnc").sort((a,b)=>(a.rank||99)-(b.rank||99)||scoreNum(b.sc)-scoreNum(a.sc)).map(r=>r.id);const o=ids.indexOf(id);if(o<0)return;ids.splice(o,1);ids.splice(Math.min(idx,ids.length),0,id);ids.forEach((x,i)=>byId(x).rank=i+1);audit("Council ranking changed",id+" to position "+(ids.indexOf(id)+1));toast("Ranking updated","good");render()});
 /* ---------- screen, nav, search, chat, work ---------- */
-REG("bud_req","Budget requests","portfolio","M4 5h16l-6 8v6l-4-2v-4zM8 3h8",viewScreen);
+/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+function tvReq(){const v=FIN.tv,R=DATA.get("budget_requests"),by=f=>{const g={};R.forEach(r=>{const k=f(r)||"Not set";g[k]=g[k]||{n:k,c:0,a:0,w:[]};g[k].c++;g[k].a+=+r.amt||0;g[k].w.push(r.t)});return Object.values(g)},gc=[["Group","n"],["Requests","c"],["Amount",r=>D$(r.a)],["Which",r=>H(r.w.join("; "))]];
+ return v.Sc("bud_req",v.tw("budget_request",1),R.length?`${R.length} ${DATA.term("budget_request",{many:true})} (${D$(sum(R,r=>+r.amt||0))}) are moving through the funnel. Sample figures, simulated.`:"No budget requests in this sample company yet.",
+ [["Decision funnel",()=>v.C("The decision funnel","Requests by stage","budget_requests",by(r=>r.st),gc)],
+  ["Requests",()=>v.C("All "+DATA.term("budget_request",{many:true}),R.length+" in this sample company","budget_requests",R,[["Request",r=>`<b>${H(r.t)}</b><small class="muted"> ${H(r.id)}</small>`],["Type","type"],["Amount",r=>D$(+r.amt||0)],["Source","src"],["Stage","st"],["Days in stage","stIn"],["Requester and sponsor",v.own("req","sp")]])],
+  ["Analytics",()=>v.C("By type","Count and amount","budget_requests",by(r=>r.type),gc)+v.C("By funding source","Count and amount","budget_requests",by(r=>r.src),gc)],
+  ["Routing rules",()=>v.C("Approval tiers","A request is decided by the lowest tier that covers its amount","approval_policies",DATA.get("approval_policies").filter(r=>r.part==="doa"),[["Tier","id"],["Up to",r=>r.max==null||r.max>=1e15?"Any amount":D$(r.max)],["Approver","role"]])],
+  ["How it works",()=>v.C("Review stages","Every request moves through these stages; the requester never approves their own","budget_requests",STG,[["Stage","n"],["Who reviews","role"],["Target days","sla"],["To enter the stage","entry"]])]])}
+DATA.screen("bud_req",{mode:"data",entities:["budget_requests","approval_policies"],note:"mod_budget3 (PR-32 B5)"});
+REG("bud_req","Budget requests","portfolio","M4 5h16l-6 8v6l-4-2v-4zM8 3h8",()=>FIN.tv&&FIN.tv.TEN()?tvReq():viewScreen());
 if(typeof PROC!=="undefined")PROC.reg("bud_req",{title:"Request budget and decide",std:["tbm","cobit"],steps:[
  {n:"Request budget",d:"A guided form: what, why, objective, type, amount, cost model, color, benefits, risk, alternatives, human sponsor.",who:"human",owner:"Requester",sla:"1 day",in:"An idea or a need",out:"Budget request record"},
  {n:"Check and draft",d:"AI suggests a category and color, finds duplicates and similar requests. All suggestions are labeled drafts.",who:"agent",owner:"Budget Request Agent",sla:"Instant",in:"Form values",out:"Checked request"},

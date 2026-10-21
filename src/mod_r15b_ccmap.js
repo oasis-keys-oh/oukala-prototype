@@ -85,7 +85,17 @@ function view(){const c=syncMetrics(),G=gaps(),open=G.filter(x=>x.sev!=="info").
   card("Gaps","Unmapped, ownerless and shared cost centers, with the budget they affect.",gapList()),
   rollup(),
   procPane()])}</div>`}
-REG("bud_ccmap","Cost center mapping","portfolio","M3 6h7v5H3zM14 6h7v5h-7zM3 15h7v4H3zM14 15h7v4h-7zM10 8.5h4M6.5 11v4M17.5 11v4",view);
+/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+function tvCc(){const E=esc,v=FIN.tv,R=DATA.get("cost_centers"),miss=r=>[!r.owner&&"no owner",(!r.backup||r.backup===r.owner)&&"no different backup",!r.gl&&"no GL segment",!(r.units||[]).length&&"no org unit"].filter(Boolean),G=R.filter(r=>miss(r).length);
+ const cc=v.tw("cost_center"),by={};R.forEach(r=>{const k=r.owner||"No owner";(by[k]=by[k]||{n:k,c:0,u:[]}).c++;by[k].u.push(r.name)});
+ return v.Sc("bud_ccmap","See what technology costs: "+cc+" mapping",R.length?`${R.length} ${DATA.term("cost_center",{many:true})}; ${G.length} lack an owner, a different backup, a GL segment or an org unit.`:"No cost centers in this sample company yet.",
+ [["Mapping",()=>v.C(cc+", org unit, owner and GL segment",R.length+" in this sample company","cost_centers",R,[[cc,r=>`<b>${E(r.name)}</b><small class="muted"> ${E(r.code)}</small>`],["Org units",r=>E((r.units||[]).join(", "))],["GL segment","gl"],["Owner and backup",v.own("owner","backup")],["Status","st"]])],
+  ["Gaps ("+G.length+")",()=>G.length?v.C("Gaps","What each one is missing","cost_centers",G,[[cc,"name"],["Missing",r=>E(miss(r).join(", "))]]):v.G("Gaps","No gaps: every "+DATA.term("cost_center")+" has an owner, a backup, a GL segment and an org unit.")],
+  ["Roll-up to the org chart",()=>v.C("By budget owner",cc+"s per owner","cost_centers",Object.values(by),[["Owner","n"],[v.tw("cost_center",1),"c"],["Which",r=>E(r.u.join(", "))]])],
+  ["Change process",()=>v.G("Change a "+DATA.term("cost_center"),"No change requests for this sample company yet.")]])}
+DATA.screen("bud_ccmap",{mode:"data",entities:["cost_centers"],note:"mod_r15b_ccmap (PR-32 B5)"});
+REG("bud_ccmap","Cost center mapping","portfolio","M3 6h7v5H3zM14 6h7v5h-7zM3 15h7v4H3zM14 15h7v4h-7zM10 8.5h4M6.5 11v4M17.5 11v4",()=>FIN.tv&&FIN.tv.TEN()?tvCc():view());
 /* ---- editing ---- */
 function ccForm(code,pre){const r=code?byCode(code):null;const U=unitList();
  openForm({id:"ccm_edit",title:r?"Edit cost center "+r.code:"Add a cost center",story:"Maps one ERP cost center to org chart units, a named budget owner and a GL segment. Changes are recorded and budget lines re-roll to the new owner at once. Approval follows the cost center change process.",submit:r?"Save mapping":"Add cost center",

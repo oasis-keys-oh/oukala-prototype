@@ -348,11 +348,29 @@ function wire(){if(wired>=3)return;
 function ensureWired(){try{wire()}catch(e){}if(wired<2)setTimeout(ensureWired,900)}
 setTimeout(ensureWired,600);
 
+/* PR-32 B5: these four screens under a tenant other than Meridian, from the tenant's rows only (FIN.tv in mod_plat_fin) */
+const tv=FIN.tv;
+const tvP=()=>tv.C("Projects","Budget at completion and paid to date","projects",DATA.get("projects"),[[tv.tw("project"),"n"],["Budget",r=>STN.money(r.bac)],["Paid",r=>STN.money(r.paid)],["Done",r=>(r.pct||0)+"%"],["Owner and backup",tv.own("owner","backup")]]);
+const tvV={
+ fin_budget:()=>{const L=tv.L(),a=sum(L,l=>+l.appr||0),f=sum(L,l=>+l.fcst||0);return tv.Sc("fin_budget","Budgets: Budget by funding type",L.length?`The forecast is ${money(f)} against an approved budget of ${money(a)} across ${L.length} lines. Sample figures, simulated.`:"No budget lines in this sample company yet.",
+  [["Versions and lines",()=>tv.lines("Every line","Approved and forecast",L)],["Variance",()=>tv.lines("Lines off their approved amount","Largest variance first",L.filter(l=>l.fcst!==l.appr).sort((x,y)=>Math.abs(y.fcst-y.appr)-Math.abs(x.fcst-x.appr)))],
+   ["Forecast methods",()=>tv.G("Forecast methods","No forecast method records in this sample company yet.")],["Color-aware forecast",()=>tv.G("Color-aware forecast","The budget lines in this sample company carry no funding color yet.")],
+   ["Capital pipeline",tvP],["Cadence",()=>tv.evs("Cadence calendar")]])},
+ fin_gates:()=>tv.Sc("fin_gates","Which funding pays for what: Funding approvals",`${DATA.get("projects").length} projects and the approval tiers that release their funding. Sample data, simulated.`,
+  [["Gate board",tvP],["Capitalization",()=>tv.G("Capitalization decision","No funding gate records in this sample company yet.")],
+   ["Approvals and DOA",()=>tv.C("Approval tiers","The lowest tier that covers the amount approves","approval_policies",DATA.get("approval_policies").filter(r=>r.part==="doa"),[["Tier","id"],["Up to",r=>r.max==null||r.max>=1e15?"Any amount":money(r.max)],["Approver","role"]])],
+   ["Release at G3",()=>tv.G("Release at G3","No funding gate records in this sample company yet.")]]),
+ fin_alloc:()=>{const g=s=>()=>tv.G(s,"No allocation records in this sample company yet.");return tv.Sc("fin_alloc","See what technology costs: Charge costs to consumers",`${DATA.get("cost_centers").length} ${DATA.term("cost_center",{many:true})} receive shared cost here. Sample data, simulated.`,
+  [["Showback",()=>tv.C(tv.tw("cost_center",1),"Who receives shared cost","cost_centers",DATA.get("cost_centers"),[[tv.tw("cost_center"),"name"],["Code","code"],["GL segment","gl"],["Owner and backup",tv.own("owner","backup")],["Status","st"]])],
+   ["Drivers",g("Allocation drivers")],["Splits",g("Shared cost splits")],["Ladder",g("Showback to chargeback ladder")],["GAAP bridge",g("GAAP bridge")]])},
+ fin_rules:()=>tv.Sc("fin_rules","Which funding pays for what: Financial controls",`${tv.n("rule","validation rules")}, ${tv.n("policy","policies")} and ${tv.n("event","evidence records")} in this sample company. Sample data, simulated.`,
+  [["Validation rules",()=>tv.rules("Validation rules")],["Exception queue",()=>tv.risks("Exception queue")],["Evidence by color",()=>tv.colors("Evidence set per color","Each color and its fund code")],["Governance and policy",()=>tv.pols("Policy documents")],["Evidence register",()=>tv.evs("Evidence register")]])};
+["fin_budget","fin_gates","fin_alloc","fin_rules"].forEach(id=>DATA.screen(id,{mode:"data",entities:["finance_policies","budget_lines","projects","approval_policies","cost_centers","risks"],note:"mod_plat_fin2 (PR-32 B5)"}));
 /* ====================== registration ====================== */
-REG("fin_budget","Budget and forecast","portfolio","M3 20h18M7 16v-4M12 16V8M17 16v-7M5 6l5 3 4-4 5 2",()=>{wire();return vBudget()});
-REG("fin_gates","Funding gates","portfolio","M4 21V5M20 21V5M4 9h16M4 15h16M9 5v16M15 5v16",()=>{wire();return vGates()});
-REG("fin_alloc","Allocation and showback","portfolio","M12 3v6M12 9l-7 6M12 9l7 6M5 15v4M19 15v4M12 15v4",()=>{wire();return vAlloc()});
-REG("fin_rules","Financial controls","portfolio","M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6zM8.5 12l2.5 2.5L16 9.5",()=>{wire();return vRules()});
+REG("fin_budget","Budget and forecast","portfolio","M3 20h18M7 16v-4M12 16V8M17 16v-7M5 6l5 3 4-4 5 2",()=>{if(tv.TEN())return tvV.fin_budget();wire();return vBudget()});
+REG("fin_gates","Funding gates","portfolio","M4 21V5M20 21V5M4 9h16M4 15h16M9 5v16M15 5v16",()=>{if(tv.TEN())return tvV.fin_gates();wire();return vGates()});
+REG("fin_alloc","Allocation and showback","portfolio","M12 3v6M12 9l-7 6M12 9l7 6M5 15v4M19 15v4M12 15v4",()=>{if(tv.TEN())return tvV.fin_alloc();wire();return vAlloc()});
+REG("fin_rules","Financial controls","portfolio","M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6zM8.5 12l2.5 2.5L16 9.5",()=>{if(tv.TEN())return tvV.fin_rules();wire();return vRules()});
 
 /* ====================== chat, search and work ====================== */
 const lineFind=q=>{const s=String(q).toLowerCase();const BL=baseLines();return BL.find(l=>s.includes(l.id.toLowerCase()))||BL.find(l=>l.name&&s.includes(l.name.toLowerCase().split(" ").slice(0,3).join(" ")))||BL.find(l=>l.name&&l.name.toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>4).some(w=>s.includes(w)))};

@@ -27,7 +27,7 @@ U.csv=rows=>rows.map(r=>r.map(csvq).join(",")).join("\r\n");
 U.download=(name,text,type)=>{try{const b=new Blob([text],{type:type||"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},500);return true}catch(e){return false}};
 U.audit=(a,d)=>G(()=>audit(a,d),0);
 U.emit=(id,p)=>G(()=>W.EVENTS&&EVENTS.emit&&EVENTS.emit(id,p||{},{source:"r17u",actor:U.me()}));
-const isHuman=n=>!!n&&G(()=>DIR.some(d=>d.name===n&&d.kind==="human"),false);
+const isHuman=n=>!!n&&G(()=>DATA.get("people").some(d=>d.name===n&&d.kind==="human"),false); /* PR-32 B5: people of the active tenant */
 U.isHuman=isHuman;
 
 /* ---------------- state ---------------- */
@@ -71,7 +71,7 @@ U.gapp={propose,vote,canVote,items:kind=>X.appr.items.filter(x=>!kind||x.kind===
 
 /* ================================================================ benefits model ================================================================ */
 const B=()=>G(()=>BUDX.B(),{ben:[],lines:[]});
-const PJ=id=>G(()=>PROJ.find(p=>p.id===id),null);
+const PJ=id=>G(()=>DATA.get("projects").find(p=>p.id===id),null); /* PR-32 B5: B() is BUDX.B(), which reads the active tenant */
 const PRG=G(()=>BUDX.PRG,{});
 const TYPES=["Cost saving","Cost avoidance","Revenue","Risk reduction","Productivity"];
 const TYC={"Cost saving":"--s3","Cost avoidance":"--e4","Revenue":"--w1","Risk reduction":"--u3","Productivity":"--p4"};
@@ -196,7 +196,7 @@ M0("m_ben_net","Net benefit, risk adjusted","Σ over initiatives of (planned ben
 M0("m_dash_bound","Dashboard tiles bound to a governed source","Tiles whose source is a certified metric or a registry measure with an owner ÷ all tiles on published dashboards × 100","%",100,100,90,"max",100,OWN.dash[0],REM("Rebind a tile to a metric or registry measure","Portfolio Agent",null,"SOP-DASH-01"),["Dashboards"]);
 M0("m_dash_owned","Dashboards with an owner and a different backup","Published dashboards with a named person as owner and another named person as backup ÷ published dashboards × 100","%",100,100,80,"max",100,OWN.dash[0],REM("Name a backup for each dashboard without one","Portfolio Agent",null,"SOP-DASH-02"),["Dashboards"]);
 M0("m_dash_pubq","Dashboard publications waiting on the group","Dashboard publications sent to the approver group and not yet decided","pubs",1,0,3,"min",6,OWN.dash[0],REM("Nudge the approver group","Portfolio Agent",null,"SOP-DASH-03"),["Dashboards"]);
-U.syncMetrics=function(){if(typeof METRICS==="undefined")return;
+U.syncMetrics=function(){if(typeof METRICS==="undefined"||DATA.tenant()!=="core")return; /* the Meridian metrics never take another tenant's figures */
  const bs=B().ben,n=bs.length||1;
  const cov=bs.filter(b=>{const f=flagsOf(b).map(x=>x.k);return !f.includes("owner")&&!f.includes("backup")&&!f.includes("baseline")}).length;
  const at=U.attention().length;
