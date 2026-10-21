@@ -39,8 +39,8 @@ O.teams=function(){if(TREAD.strict())return TREAD.teams().map(x=>({id:x.id,name:
 function findTeam(q){const k=low(q);if(!k)return null;return O.teams().find(t=>low(t.id)===k||low(t.name)===k)||null}
 function findFunc(q){const k=low(q);if(!k)return null;return O.functions().find(f=>f.id===k||low(f.name)===k)||null}
 const isAgentName=n=>TREAD.strict()?!!tAgent(n):!!G(()=>W.R17T&&R17T.isAgent(n),false);
-const agentName=n=>G(()=>R17T.canon(n),null)||n;
-const agentModel=n=>G(()=>R17T.model(agentName(n)),null);
+const agentName=n=>TREAD.strict()?n:G(()=>R17T.canon(n),null)||n; /* PR-32 B2: the core agent registry never names a tenant's agent */
+const agentModel=n=>TREAD.strict()?null:G(()=>R17T.model(agentName(n)),null);
 
 /* ---------- robot directory (CL-78, R23): every robot step resolves to a robot record with a human sponsor and a backup ----------
    A robot runs fixed rules (if, then, else), no model. Its name is the step owner when that names a system (Workflow engine, Finance
