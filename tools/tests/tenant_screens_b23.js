@@ -26,7 +26,6 @@ const SCREENS=[
  ['r15_sem','data',['metrics','reports']],
  ['r15_rpt','data',['reports','projects']],
  ['r16j_dash','data',['reports','projects']],
- ['inv','data',['invoices','budget_lines']],
 ];
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const only=process.argv[3]?process.argv[3].split(','):null;
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
