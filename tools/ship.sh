@@ -36,11 +36,11 @@ E = lambda k, d: int(os.environ.get(k, d))
 B = [  # (label, file, raw budget, gzip budget) in bytes
     ('shell', 'index.html', E('BUDGET_HTML_RAW', 60_000), E('BUDGET_HTML_GZ', 40_000)),
     ('stylesheet', one('assets/style.*.css'), E('BUDGET_CSS_RAW', 1_600_000), E('BUDGET_CSS_GZ', 450_000)),
-    ('first-paint script', one('assets/app.*.js'), E('BUDGET_JS_RAW', 12_500_000), E('BUDGET_JS_GZ', 4_000_000)),
+    ('first-paint script', one('assets/app.*.js'), E('BUDGET_JS_RAW', 12_900_000), E('BUDGET_JS_GZ', 4_200_000)),  # raised 2026-10-21 for PR-32 tenant views (orchestrator); CL-92 is the real fix
     ('second script', one('assets/rest.*.js'), E('BUDGET_REST_RAW', 6_000_000), E('BUDGET_REST_GZ', 2_000_000)),
 ]
 TOTAL = E('BUDGET_TOTAL', 20_000_000)
-FIRST = E('BUDGET_FIRST_GZ', 4_600_000)  # gzip bytes the browser needs before first paint: shell, stylesheet, first-paint script
+FIRST = E('BUDGET_FIRST_GZ', 4_700_000)  # gzip bytes the browser needs before first paint: shell, stylesheet, first-paint script
 warn = 0; first = 0
 for label, f, raw_b, gz_b in B:
     if not f: print(f'size {label}: none (one script)' if label == 'second script' else f'size {label}: MISSING'); continue

@@ -16,7 +16,7 @@
 const {chromium}=require('playwright');const http=require('http'),fs=require('fs'),path=require('path'),os=require('os'),cp=require('child_process');
 const ROOT=path.resolve(__dirname,'../..');
 const a=process.argv.slice(2).filter(x=>!x.startsWith('--'));const dist=path.resolve(a[0]||path.join(ROOT,'dist')),fullDir=path.resolve(a[1]||path.join(ROOT,'build_out'));
-const FIRST_BUDGET=+(process.env.BUDGET_FIRST_RAW||12_500_000);  // script bytes before first paint; baseline 12,316,941 (prototype fact, 2026-10-20)
+const FIRST_BUDGET=+(process.env.BUDGET_FIRST_RAW||12_900_000);  /* raised 2026-10-21 (PR-32 tenant views; CL-92 splits the bundle) */  // script bytes before first paint; baseline 12,316,941 (prototype fact, 2026-10-20)
 const SPLIT_AT=process.env.BUNDLE_SPLIT_AT||'mod_s_tenant_screens';
 const CT={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.txt':'text/plain'};
 const fails=[];const ok=(c,m)=>{console.log((c?'ok   ':'FAIL ')+m);if(!c)fails.push(m)};const note=m=>console.log('     '+m);
