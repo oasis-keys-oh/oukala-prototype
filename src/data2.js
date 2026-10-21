@@ -32,7 +32,13 @@ const IDX={v:-1};
 const TMAP={m:new Map(),n:-1},SMAP={m:new Map(),n:-1};
 let TVER=1;
 const wbsTouch=()=>{TVER++;TMAP.n=-1;SMAP.n=-1;IDX.v=-1};
-const TASK=id=>{if(TMAP.n!==TASKS.length){TMAP.m=new Map(TASKS.map(t=>[t.id,t]));TMAP.n=TASKS.length}let t=TMAP.m.get(id);if(!t&&XT.on){t=XT.m.get(id)}return t};
+/* PR-32 B2: plan tasks of the active tenant. On a tenant-aware screen under another tenant (TREAD.strict, data.js) the task lookups and
+   the schedule engine's default list are that tenant's plan tasks (DATA.get("plan_tasks"), part task), one list per DATA version so
+   the schedule caches keep working; otherwise the Meridian TASKS, exactly as before. */
+let _TT=null,_TTV=-1,_TTN="";
+const tasksNow=()=>{if(!TREAD.strict())return TASKS;const v=DATA.version,t=DATA.tenant();if(_TT&&_TTV===v&&_TTN===t)return _TT;_TT=TREAD.rows("plan_tasks","task");_TTV=v;_TTN=t;return _TT};
+TREAD.tasks=tasksNow;
+const TASK=id=>{if(TREAD.strict())return tasksNow().find(t=>t.id===id);if(TMAP.n!==TASKS.length){TMAP.m=new Map(TASKS.map(t=>[t.id,t]));TMAP.n=TASKS.length}let t=TMAP.m.get(id);if(!t&&XT.on){t=XT.m.get(id)}return t};
 const SUMOF=id=>{if(SMAP.n!==SUMS.length){SMAP.m=new Map(SUMS.map(t=>[t.id,t]));SMAP.n=SUMS.length}return SMAP.m.get(id)||(XT.on?XT.sm.get(id):undefined)};
 const LINE=id=>TASK(id)||SUMOF(id);
 const predId=p=>Array.isArray(p)?p[0]:p, predLag=p=>Array.isArray(p)?(p[1]||0):0, predType=p=>Array.isArray(p)?(p[2]||"FS"):"FS";
@@ -43,7 +49,7 @@ const conOf=t=>t.ct&&t.ct!=="ASAP"&&t.cd?[t.ct,t.cd]:t.snet?["SNET",t.snet]:["AS
 const isoOf=w=>dateOf(w).toISOString().slice(0,10);
 /* Critical path method with all four link types, lags, constraints, deadlines and actual dates.
    Finish is exclusive (ef = es + duration); a milestone has es = ef. opts.noAct ignores actual dates (used for the baseline). */
-function cpm(durOf,list,o){list=list||TASKS;o=o||{};const n=list.length,ix=new Map();for(let i=0;i<n;i++)ix.set(list[i].id,i);
+function cpm(durOf,list,o){list=list||tasksNow();o=o||{};const n=list.length,ix=new Map();for(let i=0;i<n;i++)ix.set(list[i].id,i);
  const pr=new Array(n),sc=new Array(n);for(let i=0;i<n;i++){pr[i]=[];sc[i]=[]}
  for(let i=0;i<n;i++){const t=list[i];(t.pred||[]).forEach(p=>{const j=ix.get(predId(p));if(j==null||j===i)return;const ty=predType(p),lag=predLag(p);pr[i].push([j,ty,lag]);sc[j].push([i,ty,lag])})}
  const deg=pr.map(a=>a.length),q=[];for(let i=0;i<n;i++)if(!deg[i])q.push(i);const order=[];
@@ -69,7 +75,7 @@ function cpm(durOf,list,o){list=list||TASKS;o=o||{};const n=list.length,ix=new M
 const planDur=(ch,extra)=>t=>Math.max(t.ms?0:1,t.dur+(ch[t.id]||0)+(extra[t.id]||0));
 /* Baseline: durations are the baseline durations, actual dates are ignored, frozen baseline dates (bs, bf) win once "set baseline" was used */
 const BCM=new Map();
-function baseCalc(list){list=list||TASKS;const key=TVER+":"+list.length+":"+(list.length>600?"big":list.reduce((a,t,i)=>a+((t.bdur!=null?t.bdur:t.dur)+1)*(i+3)+(t.bs!=null?t.bs:0),0));const hit=BCM.get(list);if(hit&&hit.key===key)return hit.v;
+function baseCalc(list){list=list||tasksNow();const key=TVER+":"+list.length+":"+(list.length>600?"big":list.reduce((a,t,i)=>a+((t.bdur!=null?t.bdur:t.dur)+1)*(i+3)+(t.bs!=null?t.bs:0),0));const hit=BCM.get(list);if(hit&&hit.key===key)return hit.v;
  const b=cpm(t=>t.ms?0:Math.max(1,t.bdur!=null?t.bdur:t.dur),list,{noAct:true});
  list.forEach(t=>{if(t.bs!=null&&t.bf!=null&&b.R[t.id]){b.R[t.id].es=t.bs;b.R[t.id].ef=t.bf;b.R[t.id].d=t.bf-t.bs}});
  const pe={};list.forEach(t=>{pe[t.p]=Math.max(pe[t.p]||0,b.R[t.id].ef)});b.pe=pe;BCM.set(list,{key,v:b});return b}
@@ -77,18 +83,18 @@ const BASE={get R(){return baseCalc().R},set R(v){},get pe(){return baseCalc().p
 /* What-if changes to durations, in work days. Positive slips the task, negative crashes it. */
 const IMS_SCEN=[["now","Current plan",{}],["lumen5","Lumen slips 5 more work days",{p1_3:5}],["lumen10","Lumen slips 10 more work days",{p1_3:10}],["crash","Add two Lumen engineers to the indexer",{p1_3:-4}],["uat","Editor testing takes twice as long",{p1_6:12}]];
 const PC={};
-function plan(scen,list){const ch=(IMS_SCEN.find(s=>s[0]===scen)||IMS_SCEN[0])[2];const extra=S.imsSlip||{};list=list||TASKS;
+function plan(scen,list){const ch=(IMS_SCEN.find(s=>s[0]===scen)||IMS_SCEN[0])[2];const extra=S.imsSlip||{};list=list||tasksNow();
  const key=scen+"|"+JSON.stringify(extra)+"|"+TVER+"|"+list.length+"|"+list.reduce((a,t,i)=>a+(t.dur+1)*(i+3)+(t.pct||0)+(t.as!=null?t.as:0)+(t.af!=null?t.af*2:0),0);
  const hit=PC[scen+"@"+(list===TASKS?"c":"u")];if(hit&&hit.key===key&&hit.l===list)return hit.P;
  const P=cpm(planDur(ch,extra),list);P.scen=scen;PC[scen+"@"+(list===TASKS?"c":"u")]={key,l:list,P};return P}
 const projFin=(P,id)=>{let m=0;for(const t of PTASKS(id)){const r=P.R[t.id];if(r&&r.ef>m)m=r.ef}return m};
-const PTASKS=id=>{const c=PTC;if(c.v!==TVER||c.n!==TASKS.length){c.m=new Map();TASKS.forEach(t=>{(c.m.get(t.p)||c.m.set(t.p,[]).get(t.p)).push(t)});c.v=TVER;c.n=TASKS.length}return c.m.get(id)||(XT.on&&XT.pm.get(id))||[]};
+const PTASKS=id=>{if(TREAD.strict())return tasksNow().filter(t=>t.p===id);const c=PTC;if(c.v!==TVER||c.n!==TASKS.length){c.m=new Map();TASKS.forEach(t=>{(c.m.get(t.p)||c.m.set(t.p,[]).get(t.p)).push(t)});c.v=TVER;c.n=TASKS.length}return c.m.get(id)||(XT.on&&XT.pm.get(id))||[]};
 const PTC={v:-1,n:-1,m:new Map()};
 /* Work (hours) and cost helpers */
 const HRS=8;
 const workOf=t=>{if(t.ms)return 0;const f=(t.res||[]).reduce((a,r)=>a+r[1],0);if(f)return f*t.dur*HRS;const u=(t.asg||[]).reduce((a,r)=>a+r[1],0)/100;return (u||.25)*t.dur*HRS};
 /* Earned value, weighted by effort (work days x FTE). Milestones carry no effort. */
-function evm(P,id){let pv=0,ev=0,tot=0;const B=baseCalc(P.list||TASKS).R;PTASKS(id).forEach(t=>{if(t.ms)return;const fte=t.res.reduce((a,r)=>a+r[1],0)||1,w=fte*t.dur;const b=B[t.id],pp=Math.max(0,Math.min(1,(TODAY-b.es)/Math.max(1,b.ef-b.es)));tot+=w;pv+=w*pp;ev+=w*(t.pct/100)});return {pv:pv/tot,ev:ev/tot,spi:pv?ev/pv:1}}
+function evm(P,id){let pv=0,ev=0,tot=0;const B=baseCalc(P.list||tasksNow()).R;PTASKS(id).forEach(t=>{if(t.ms)return;const fte=t.res.reduce((a,r)=>a+r[1],0)||1,w=fte*t.dur;const b=B[t.id],pp=Math.max(0,Math.min(1,(TODAY-b.es)/Math.max(1,b.ef-b.es)));tot+=w;pv+=w*pp;ev+=w*(t.pct/100)});return {pv:pv/tot,ev:ev/tot,spi:pv?ev/pv:1}}
 
 /* ---- Seed WBS text. One line per WBS element: TAG|id|name|days|predecessors|percent|owner|team FTE|people units%|options
    TAG = S (summary), T (task) or M (milestone) followed by the outline level. Predecessors: id[:FS|SS|FF|SF][+lag]. Options use ~ between key=value pairs. ---- */
@@ -351,7 +357,7 @@ const wbsLn=id=>{wbsIdx();return IDX.map.get(id)||LINE(id)};
 const wbsKids=id=>{const s=wbsLn(id);return s&&s.kids?s.kids.map(wbsLn).filter(Boolean):[]};
 const descOf=id=>{const s=wbsLn(id);if(!s)return[];const arr=wbsOutline(s.p),out=[];for(let i=s.oi+1;i<arr.length&&arr[i].lv>s.lv;i++)out.push(arr[i]);return out};
 const ancOf=id=>{const out=[];let s=wbsLn(id);while(s&&s.parent){s=wbsLn(s.parent);if(s)out.push(s)}return out};
-const projOf=id=>PROJ.find(p=>p.id===id)||XT.proj.find(p=>p.id===id);
+const projOf=id=>TREAD.strict()?(TREAD.rows("projects").find(p=>p.id===id)||null):PROJ.find(p=>p.id===id)||XT.proj.find(p=>p.id===id);
 /* ---- Roll-up: every summary line takes its dates, percent complete, cost and work from its children ---- */
 function rollup(P){if(P._rs&&P._rs.v===TVER)return P._rs;wbsIdx();const B=baseCalc(P.list||TASKS),R=P.R,S={},PJ={};
  const mk=()=>({es:Infinity,ef:-Infinity,bes:Infinity,bef:-Infinity,cost:0,ac:0,work:0,w:0,pw:0,fl:Infinity,crit:false,n:0,nd:0,as:Infinity,af:-Infinity,pv:0,ev:0,ms:0,msd:0,msl:0,late:0});
