@@ -25,16 +25,20 @@ const O=W.OWNERX=W.OWNERX||{};
 const FUNC_SEED=[["Standards","Elena Marsh",["Editors","Editorial"]],["Finance","Avery Chen",["Finance"]],["Delivery","Priya Shah",["PMO","Platform team","Data team"]],
  ["Membership","Maya Ortiz",["PMO"]],["Technology","Jordan Lee",["Architecture","Ops team","Platform team"]],["IT service","Tom Becker",["Service desk","Change management"]],
  ["Security","Rina Okafor",["Security"]],["Facilities","Ruben Castillo",["People operations"]],["People","Joanna Pierce",["People operations"]]];
-O.functions=function(){const names=G(()=>W.R18&&R18.FUNCTIONS&&R18.FUNCTIONS.length?R18.FUNCTIONS:null,null)||FUNC_SEED.map(f=>f[0]);
+/* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict) the directories are that tenant's: people and teams through
+   DATA.get, functions from its organization units (owner and backup by person id), agents from its people and agents. Meridian otherwise. */
+const tPerson=id=>(TREAD.rows("people").find(p=>p&&(p.id===id||p.name===id))||{}).name||"";
+const tAgent=n=>{const a=TREAD.rows("agents").find(x=>x&&x.n===n);if(a)return{sponsor:a.owner||"",backup:a.bak||""};const p=TREAD.rows("people").find(x=>x&&x.name===n&&(x.kind==="agent"||x.kind==="robot"));return p?{sponsor:p.sponsor||"",backup:p.backup||""}:null};
+O.functions=function(){if(TREAD.strict())return TREAD.rows("org_units").map(u=>({id:slug(u.label||u.id),name:u.label||u.id,lead:tPerson(u.ownerId),backup:tPerson(u.backupId),teams:[]}));const names=G(()=>W.R18&&R18.FUNCTIONS&&R18.FUNCTIONS.length?R18.FUNCTIONS:null,null)||FUNC_SEED.map(f=>f[0]);
  return names.map(n=>{const s=FUNC_SEED.find(f=>f[0]===n)||[n,"",[]];return{id:slug(n),name:n,lead:s[1],teams:s[2].slice()}})};
-const dir=()=>G(()=>W.DIR,[])||[];
+const dir=()=>TREAD.strict()?TREAD.people():(G(()=>W.DIR,[])||[]);
 const membersOfTeam=n=>dir().filter(d=>d.team===n).map(d=>d.name);
-O.teams=function(){const t=(G(()=>W.TEAMS,[])||[]).map(x=>({id:x.id,name:x.n,lead:x.mgr,members:membersOfTeam(x.n),source:"Org chart",go:"org_chart",kind:"team"}));
+O.teams=function(){if(TREAD.strict())return TREAD.teams().map(x=>({id:x.id,name:x.n,lead:x.mgr,members:membersOfTeam(x.n),source:"Teams",go:"tn_people",kind:"team"}));const t=(G(()=>W.TEAMS,[])||[]).map(x=>({id:x.id,name:x.n,lead:x.mgr,members:membersOfTeam(x.n),source:"Org chart",go:"org_chart",kind:"team"}));
  const g=(G(()=>W.APG&&APG.groups(),[])||[]).map(x=>({id:x.id,name:x.name,lead:x.owner,backup:x.backup,members:(x.members||[]).slice(),desc:x.desc||"",source:"Approval groups",go:"r16h_groups",kind:"group"}));
  return t.concat(g)};
 function findTeam(q){const k=low(q);if(!k)return null;return O.teams().find(t=>low(t.id)===k||low(t.name)===k)||null}
 function findFunc(q){const k=low(q);if(!k)return null;return O.functions().find(f=>f.id===k||low(f.name)===k)||null}
-const isAgentName=n=>!!G(()=>W.R17T&&R17T.isAgent(n),false);
+const isAgentName=n=>TREAD.strict()?!!tAgent(n):!!G(()=>W.R17T&&R17T.isAgent(n),false);
 const agentName=n=>G(()=>R17T.canon(n),null)||n;
 const agentModel=n=>G(()=>R17T.model(agentName(n)),null);
 
@@ -48,7 +52,7 @@ const GENERIC=/^(automatic|function|system|platform|robot|auto|none|)$/i;
 const ROLE=/(manager|lead|analyst|office|owner|designer|team|pmo|desk|officer|steward|director|partner|finance|sponsor|approver|reviewer|requester)$/i; /* a role is not a system */
 const isHumanName=n=>{const r=G(()=>who(n),null);return !!(r&&r.kind!=="ai"&&r.name===String(n).trim()&&!isAgentName(n))}; /* CL-88: who() matches loosely, so a robot name such as "Resource planning robot" must not read as a person */
 const domainPair=q=>{const d=G(()=>ORGX.byDomain(q),null);return d?{o:d.owner&&d.owner.name,b:d.backup&&d.backup.name}:{}};
-const PLATPAIR=()=>{const d=G(()=>ORGX.byDomain("platform"),null);return{o:(d&&d.owner&&d.owner.name)||"Sam Patel",b:(d&&d.backup&&d.backup.name)||"Ben Ito"}};
+const PLATPAIR=()=>{const d=G(()=>ORGX.byDomain("platform"),null);if(TREAD.strict()){const hu=TREAD.people().filter(x=>x.kind==="human").map(x=>x.name);return{o:(d&&d.owner&&d.owner.name)||hu[0]||"",b:(d&&d.backup&&d.backup.name)||hu[1]||""}}return{o:(d&&d.owner&&d.owner.name)||"Sam Patel",b:(d&&d.backup&&d.backup.name)||"Ben Ito"}};
 function pickBackup(sp,cands){for(const c of cands){if(c&&c!==sp&&isHumanName(c))return c}const m=G(()=>who(sp).mgr,"");if(m&&m!==sp&&isHumanName(m))return m;const pp=PLATPAIR();return [pp.b,pp.o,"Casey Rowan"].find(x=>x&&x!==sp)}
 let RB=null,RBK="",RBT=0;
 function robotName(step,proc){const o=String((step&&step.owner)||"").trim();if(!o||GENERIC.test(o)||ROLE.test(o)||isHumanName(o)||isAgentName(o)||/agent$/i.test(o))return(proc&&proc.name?proc.name:"Process")+" robot";return o}
@@ -58,7 +62,7 @@ function addRobot(M,step,proc){const name=robotName(step,proc),id="robot:"+slug(
   const backup=pickBackup(sponsor,[proc&&proc.backup,dp.b,dp.o,pp.b]);
   r={id,name,kind:"robot",sponsor,backup,processes:[],steps:0,source:proc?"Process library":"Step",simulated:true};M.set(id,r)}
  if(proc&&proc.id&&r.processes.indexOf(proc.id)<0)r.processes.push(proc.id);r.steps++;return r}
-function buildRobots(){const L=G(()=>PROCLIB.list(),[])||[];const k=L.length;if(RB&&RBK===k)return RB;const M=new Map();
+function buildRobots(){const L=G(()=>PROCLIB.list(),[])||[];const k=L.length+(TREAD.strict()?"|"+DATA.tenant():"");if(RB&&RBK===k)return RB;const M=new Map();
  L.forEach(p=>{const g=G(()=>PROCLIB.get(p.id),null);(g&&g.stepsList||[]).forEach(s=>{if(G(()=>STEPMODE.of(s.who),"")==="robot")addRobot(M,s,p)})});
  RB=M;RBK=k;if(!RBT){RBT=1;setTimeout(()=>{RBT=0;RBK=""},0)}return M}
 O.robots=()=>[...buildRobots().values()].map(r=>Object.assign({},r,{processes:r.processes.slice()}));
@@ -119,7 +123,7 @@ function place(pop,chip){const r=chip.getBoundingClientRect(),vw=document.docume
 const btn=(act,label,primary)=>`<button type="button" class="btn${primary?" primary":""}" data-own-act="${act}">${H(label)}</button>`;
 function head(avatarHtml,title,sub){return`<div class="own-hd">${avatarHtml}<div class="own-ht"><b>${H(title)}</b>${sub?`<small>${H(sub)}</small>`:""}</div><button type="button" class="btn quiet own-x" data-own-act="close" aria-label="Close">×</button></div>`}
 function popHTML(d){const rec=d.rec?`<div class="own-rec muted small">${d.role?H(d.role)+" on ":"On "}${H(d.rec.replace(":"," "))}</div>`:(d.role?`<div class="own-rec muted small">${H(d.role)}</div>`:"");
- if(d.kind==="agent"||d.kind==="robot"){const m=d.kind==="agent"?agentModel(d.name):null;const rr=d.kind==="robot"?O.robot(d.name):null;const sponsor=m?m.sponsor:d.sponsor||(rr&&rr.sponsor)||"";const backup=m?m.backup:d.backup||(rr&&rr.backup)||"";
+ if(d.kind==="agent"||d.kind==="robot"){const m=d.kind==="agent"?agentModel(d.name):null;const rr=d.kind==="robot"?O.robot(d.name):null;const ta=d.kind==="agent"&&TREAD.strict()?tAgent(d.name):null;const sponsor=m?m.sponsor:d.sponsor||(ta&&ta.sponsor)||(rr&&rr.sponsor)||"";const backup=m?m.backup:d.backup||(ta&&ta.backup)||(rr&&rr.backup)||"";
   const tier=m?G(()=>R17T.TIERN[m.tier],""):"";const label=m?(m.d.full||m.name):d.name;
   return head(d.kind==="agent"?G(()=>W.avatar(agentName(d.name),{size:34}),""):`<span class="own-gi own-gi-l">${BOT_ICO}</span>`,label,d.kind==="agent"?"AI teammate"+(tier?" · "+tier:""):"Robot step · runs rules, no judgment")+rec+
    `<dl class="own-kv"><dt>Human sponsor</dt><dd>${sponsor?ownerChip(sponsor,{role:"Sponsor"}):'<span class="pill warn">No sponsor</span>'}</dd><dt>Backup</dt><dd>${backup&&!ownerChip.noBackup(sponsor,backup)?ownerChip(backup,{role:"Backup"}):ownerChip.badge(sponsor,backup)}</dd>${rr&&rr.processes.length?`<dt>Runs in</dt><dd class="small">${rr.processes.length} process${rr.processes.length===1?"":"es"}, ${rr.steps} step${rr.steps===1?"":"s"} (directory entry, simulated)</dd>`:""}</dl>
