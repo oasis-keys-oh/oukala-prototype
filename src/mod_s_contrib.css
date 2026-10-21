@@ -1,0 +1,44 @@
+/* ===== mod_s_contrib (PR-33): the contribution thread in the top bar, the My contribution card, menu anchor marks. Prefix ctb-. Tokens only. ===== */
+/* the slot sits in the top bar after the search; the thread takes its own row under it, so the search keeps its width */
+.topbar:has(> #tbThread.ctb-thread:not([hidden])){flex-wrap:wrap;row-gap:2px}
+#tbThread.ctb-thread{order:9;flex:1 0 100%;min-width:0;max-width:100%;gap:var(--sp-1);padding:0 var(--sp-1);white-space:nowrap}
+.ctb-ico{flex:none;vertical-align:-2px}
+.ctb-me{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:var(--rad-pill);color:var(--accent);background:var(--accent-soft)}
+.ctb-me:hover{background:var(--hover)}
+.ctb-me:focus-visible,.ctb-seg:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.ctb-seg{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:22ch;padding:2px 6px;border-radius:var(--rad-sm);color:var(--ink);font-size:var(--fs-xs);background:transparent}
+.ctb-seg:hover{background:var(--hover)}
+.ctb-sn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ctb-lv{flex:none;font-size:var(--fs-2xs);font-weight:var(--fw-label);color:var(--muted)}
+.ctb-thread .ctb-seg{flex:0 1 auto;max-width:34ch}
+.ctb-thread .ctb-mine{max-width:60ch;flex-shrink:0}
+.ctb-thread [data-ctb-lvl=company]{flex-shrink:4}
+.ctb-thread [data-ctb-lvl=enterprise]{flex-shrink:2}
+.ctb-mine{max-width:34ch;background:var(--accent-soft)}
+.ctb-yt{flex:none;font-weight:var(--fw-strong);color:var(--accent)}
+.ctb-kr{flex:none;color:var(--muted);font-size:var(--fs-2xs)}
+.ctb-sep{flex:none;color:var(--faint)}
+.ctb-here{flex:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:var(--fs-xs)}
+.ctb-gapb{flex:none;white-space:nowrap}
+.ctb-anc{display:inline-flex;align-items:center;margin-left:auto;padding-left:4px;color:var(--muted);opacity:.8}
+.ctb-anc .ctb-ico{width:12px;height:12px}
+.ctb-tag{flex:none}
+/* the card on Home and in My work */
+.ctb-card{margin:var(--sp-3) 0;padding:var(--card-pad);display:flex;flex-direction:column;gap:var(--sp-2)}
+.ctb-ch{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-3);flex-wrap:wrap}
+.ctb-ch .eyebrow{display:flex;align-items:center;gap:6px}
+.ctb-h{margin:4px 0;font-size:var(--fs-lg);line-height:1.35}
+.ctb-tabs{gap:var(--sp-1);flex-wrap:wrap}
+.ctb-list,.ctb-wl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--sp-2)}
+.ctb-row{display:flex;flex-direction:column;gap:4px;padding:var(--sp-2) 0;border-top:1px solid var(--hair)}
+.ctb-row:first-child{border-top:0}
+.ctb-rh,.ctb-rm,.ctb-w{display:flex;align-items:center;gap:var(--sp-1);flex-wrap:wrap;min-width:0}
+.ctb-rm{gap:var(--sp-2)}
+.ctb-sub{display:flex;flex-direction:column;gap:var(--sp-1);margin-top:var(--sp-1)}
+.ctb-rule{margin:0;padding:var(--sp-2) var(--sp-3);border-radius:var(--rad-md);background:var(--info-s);color:var(--ink)}
+.ctb-pop{max-width:min(520px,calc(100vw - 32px))}
+.ctb-dl{display:grid;grid-template-columns:auto 1fr;gap:6px var(--sp-3);margin:var(--sp-3) 0;font-size:var(--fs-sm)}
+.ctb-dl dt{font-weight:var(--fw-label);color:var(--muted)}
+.ctb-dl dd{margin:0}
+.ctb-dr .ctb-card{margin:0;box-shadow:none}
+@media(max-width:900px){#tbThread.ctb-thread{display:none}.ctb-seg{max-width:100%}}
