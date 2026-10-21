@@ -90,7 +90,8 @@ def css_split(s):
 # ---- brand images inlined in the shell ----
 FAV_ICO='<link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="data:image/x-icon;base64,'+base64.b64encode(open('assets/brand/favicon.ico','rb').read()).decode()+'">'
 FAV='<link rel="icon" type="image/png" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/favicon.png','rb').read()).decode()+'"><link rel="apple-touch-icon" href="data:image/png;base64,'+base64.b64encode(open('assets/brand/apple-touch-icon.png','rb').read()).decode()+'">'+FAV_ICO
-BOOTLOGO='<img alt="" width=56 height=56 style="display:block;margin:0 auto 10px;border-radius:14px" src="data:image/webp;base64,'+base64.b64encode(open('assets/brand/logo.webp','rb').read()).decode()+'">'
+# BR-11: the boot screen shows the gold falcon mark (AI-generated imagery: BR-05 provenance applies before external use)
+BOOTLOGO='<img alt="" width=60 height=56 style="display:block;margin:0 auto 10px;object-fit:contain" src="data:image/webp;base64,'+base64.b64encode(open('assets/brand/mark-gold.webp','rb').read()).decode()+'">'
 
 # ---- full build: one script, everything inline (tools/tests load full.html) ----
 js=brandify(BRANDJS+embedded_cfg()+RUNTIME+'\n'+CORE+'\n;BUNDLE._core();'+modjs(mods)+'\n;BUNDLE._shell();\n'+S3+'\n;BUNDLE._done();\n')
