@@ -3,6 +3,20 @@
 (function(){
 S.gate=S.gate||{apps:null,ran:{},waive:{},sel:null,sim:{role:"citizen_team",action:"read",ent:"project",app:"ca_budget",route:"gateway",conn:"dropbox"},con:{tool:"check_reuse",args:{}},conOut:null,mcpLog:[],clients:{},rev:0,qc:{name:"Budget tracker",needs:"budget table"},tier:"team"};
 const G=S.gate,E=esc;
+/* PR-32 B9 tenant rows (R16 to R18): Meridian keeps S.gate.apps and the fabric connectors exactly as before; another tenant reads its own
+   builds (part app) and connectors (part connection) through DATA.get at render. A pack build carries fewer fields than a Meridian one:
+   what it does not carry (manifest checks, cost, AI use, connectors) shows as not recorded, never as a Meridian value or a made-up one.
+   Pack words map onto the gate's lifecycle for the checks only: status live = certified, draft = sandbox; tier department = team. */
+const TCORE=()=>!window.DATA||DATA.tenant()==="core";
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+U.esc(w):""}.</p>`;
+const fchipT=id=>TCORE()?fchip(id):"";
+const kpT=o=>{if(TCORE()||!o)return o;const c=Object.assign({},o);delete c.metric;return c};
+const TST={live:"certified",draft:"sandbox"},TTI={department:"team"},TWR=new WeakMap();
+const twrap=r=>{let w=TWR.get(r);if(!w){w=Object.create(r);Object.assign(w,{status:TST[r.status]||r.status,tier:TTI[r.tier]||r.tier,reads:Array.isArray(r.reads)?r.reads.slice():[],writes:Array.isArray(r.writes)?r.writes.slice():[],newEnts:r.newEnts||[],connectors:r.connectors||[],ai:r.ai||[],classes:r.classes||[],purpose:r.purpose||""});TWR.set(r,w)}return w};
+const tapps=()=>{const t=DATA.tenant();G.tadd=G.tadd||{};return(DATA.get("builds")||[]).filter(r=>r&&r.part==="app").map(twrap).concat(G.tadd[t]||[])};
+const addApp=m=>{if(TCORE())apps().push(m);else{const t=DATA.tenant();G.tadd=G.tadd||{};(G.tadd[t]=G.tadd[t]||[]).push(m)}};
+const monT=v=>v==null?"Not recorded":money(v);
+const MCHK={manifest:1,auth:1,notify:1,secrets:1,labels:1,audit:1,a11y:1};
 const TODAY=U.TODAY_ISO,T0=new Date(TODAY+"T12:00:00").getTime(),DAY=864e5;
 const iso=n=>new Date(T0+n*DAY).toISOString().slice(0,10);
 const days=(a,b)=>Math.round((new Date(b+"T12:00:00")-new Date(a+"T12:00:00"))/DAY);
@@ -26,7 +40,7 @@ const CONN0=[
  {id:"azure",name:"Azure Monitor",status:"healthy",approved:true,owner:"Operations lead",last:"1 min ago"},
  {id:"dropbox",name:"Personal file sync",status:"not approved",approved:false,owner:"None",last:"Never"},
  {id:"nocode",name:"No-code automation service",status:"project only",approved:false,owner:"Integration lead",last:"Never"}];
-function conns(){try{if(window.FAB&&Array.isArray(FAB.connectors)&&FAB.connectors.length)return FAB.connectors.map(x=>({id:x.id||x.name,name:x.n||x.name||x.label||x.id,status:x.status||x.health||"unknown",approved:x.approved!==false&&x.scope!=="project",owner:x.owner||"",last:x.last||x.lastSync||x.lastRun||""}))}catch(e){}return CONN0}
+function conns(){if(!TCORE())return(DATA.get("connectors")||[]).filter(x=>x&&x.part==="connection").map(x=>({id:x.id,name:x.name||x.n||x.id,status:x.status||"unknown",approved:x.approved!==false&&x.scope!=="project",owner:x.owner||"",last:x.last||""}));try{if(window.FAB&&Array.isArray(FAB.connectors)&&FAB.connectors.length)return FAB.connectors.map(x=>({id:x.id||x.name,name:x.n||x.name||x.label||x.id,status:x.status||x.health||"unknown",approved:x.approved!==false&&x.scope!=="project",owner:x.owner||"",last:x.last||x.lastSync||x.lastRun||""}))}catch(e){}return CONN0}
 /* ---------- apps ---------- */
 const MOK={manifest:true,ownAuth:false,ownNotify:false,ownReport:false,secrets:false,labels:true,audit:true,a11y:"pass"};
 function seedApps(){
@@ -46,7 +60,7 @@ function seedApps(){
  a({id:"ca_digest",n:"Exposure draft digest",purpose:"Weekly digest of new exposure drafts for committee members.",tier:"personal",builder:"Priya Shah",owner:"Priya Shah",status:"idea",cost:0,users:0,ttfa:0,created:"2026-10-02"})
  ];
 }
-const apps=()=>G.apps||(G.apps=seedApps());
+const apps=()=>TCORE()?(G.apps||(G.apps=seedApps())):tapps();
 const app=id=>apps().find(a=>a.id===id);
 G.waive=G.waive||{};if(!G.seeded){G.seeded=1;G.waive["ca_travel:nodup"]={exp:"2026-11-20",item:"DB-E04"};G.waive["ca_oncall_swap:nowrite"]={exp:"2026-09-15",item:"DB-E05"};G.ran=Object.assign({ca_comments:1,ca_renewals:1,ca_styleguide:1},G.ran)}
 const bump=()=>{G.rev++};
@@ -69,7 +83,7 @@ const CHECKS=[
 ];
 function conformance(id){
  const a=app(id);if(!a)return{rows:[],pass:0,warn:0,fail:0,fails:0,score:0};
- const rows=CHECKS.map(c=>{let x=c.run(a);const w=G.waive[id+":"+c.id];if(x.r==="fail"&&w){if(w.exp>=TODAY){x=R("warn",x.ev+" Waived until "+fD(w.exp)+" by exception "+w.item+".",x.fix)}else x=R("fail",x.ev+" The waiver "+w.item+" expired on "+fD(w.exp)+".",x.fix)}return Object.assign({id:c.id,n:c.n,rule:c.rule,t:c.t},x)});
+ const rows=CHECKS.map(c=>{let x=!a.m&&MCHK[c.id]?Object.assign(R("warn","Not recorded in this sample company yet.","Record the "+c.n.toLowerCase()+" result for this app."),{nr:1}):c.run(a);const w=G.waive[id+":"+c.id];if(x.r==="fail"&&w){if(w.exp>=TODAY){x=R("warn",x.ev+" Waived until "+fD(w.exp)+" by exception "+w.item+".",x.fix)}else x=R("fail",x.ev+" The waiver "+w.item+" expired on "+fD(w.exp)+".",x.fix)}return Object.assign({id:c.id,n:c.n,rule:c.rule,t:c.t},x)});
  const pass=rows.filter(r=>r.r==="pass").length,warn=rows.filter(r=>r.r==="warn").length,fail=rows.filter(r=>r.r==="fail").length;
  return{rows,pass,warn,fail,fails:fail,score:Math.round(100*(pass+.5*warn)/rows.length)};
 }
@@ -89,7 +103,7 @@ function manifestOf(a){
  return{oukala_manifest:"1.0",app:{id:a.id,name:a.n,tier:a.tier,status:a.status,builder:a.builder,support_owner:a.owner||null,review_or_sunset:a.sunset||null},purpose:a.purpose||"",
   data:{reads:a.reads||[],writes:a.writes||[],new_entities:(a.newEnts||[]).map(n=>({id:n.id,reason:n.why||"",duplicate_of:n.dupOf||null}))},data_classes:a.classes||[],connectors:(a.connectors||[]).map(c=>(conns().find(x=>x.id===c)||{name:c}).name),
   ai:(a.ai||[]).map(x=>({model:x.model,route:x.gw?"ai_gateway":"direct",monthly_cap_usd:x.cap||null,purpose:x.use||""})),
-  services:{auth:a.m.ownAuth?"custom":"platform",notifications:a.m.ownNotify?"custom":"platform",reporting:a.m.ownReport?"custom":"platform",audit:!!a.m.audit}};
+  services:a.m?{auth:a.m.ownAuth?"custom":"platform",notifications:a.m.ownNotify?"custom":"platform",reporting:a.m.ownReport?"custom":"platform",audit:!!a.m.audit}:"not recorded"};
 }
 /* ---------- reuse-first check ---------- */
 const STOP=new Set("how the and for with from that this app new our are who what when into your you have has was will can its their per not all any one two".split(" "));
@@ -125,7 +139,7 @@ Object.assign(METRICS,{
  m_mcp_cov:{n:"Builds that checked for reuse first",f:"Citizen apps whose first design step was a check_reuse call ÷ citizen apps created × 100",u:"%",cur:58,tgt:90,badAt:50,dir:"max",max:100,tr:[10,18,26,34,40,46,52,58],owner:"Platform team",use:["AI and coding clients"],rem:{kind:"agent",ref:"AG-MCP1",title:"Make the reuse check the first tool call",agent:"Registry Agent",auto:false,state:"idle",prog:"Adds the platform contract file to each coding client"}}
 });
 function liveApps(){return apps().filter(a=>a.status!=="sunset"&&a.status!=="idea")}
-function syncMetrics(){const L=liveApps();if(!L.length)return;METRICS.m_gate_reuse.cur=Math.round(L.reduce((s,a)=>s+reuseScore(a),0)/L.length);METRICS.m_gate_conf.cur=Math.round(L.reduce((s,a)=>s+conformance(a.id).score,0)/L.length);METRICS.m_gate_dup.cur=Math.round(100*L.filter(a=>(a.newEnts||[]).some(n=>n.dupOf)||a.dupProc).length/L.length)}
+function syncMetrics(){const L=liveApps();if(!L.length||!TCORE())return;METRICS.m_gate_reuse.cur=Math.round(L.reduce((s,a)=>s+reuseScore(a),0)/L.length);METRICS.m_gate_conf.cur=Math.round(L.reduce((s,a)=>s+conformance(a.id).score,0)/L.length);METRICS.m_gate_dup.cur=Math.round(100*L.filter(a=>(a.newEnts||[]).some(n=>n.dupOf)||a.dupProc).length/L.length)}
 /* ---------- policies (OPA and Cedar compatible shape) ---------- */
 const ROLES=[
  {id:"citizen_personal",n:"Citizen app, personal tier",kind:"app",tier:"personal"},
@@ -174,7 +188,7 @@ const POL=[
   hit:c=>isApp(c.role)&&c.action==="use_connector"&&c.conn&&!c.conn.approved}
 ];
 function simulate(s){
- const role=ROLES.find(r=>r.id===s.role),ent=PLAT.ent(s.ent)||PLAT.entities()[0],a=app(s.app),cn=conns().find(c=>c.id===s.conn)||conns()[0];
+ const role=ROLES.find(r=>r.id===s.role),ent=PLAT.ent(s.ent)||PLAT.entities()[0],a=app(s.app),cn=conns().find(c=>c.id===s.conn)||conns()[0]||{id:"",name:"None",approved:false};
  const ctx={role,action:s.action,ent,cls:ent.cls,route:s.route,app:a,conn:cn};
  const forbid=POL.find(p=>p.effect==="forbid"&&p.hit(ctx));
  if(forbid)return{allow:false,by:forbid,why:"A forbid rule matched, and forbid always wins.",ent,masked:[]};
@@ -221,18 +235,19 @@ function bars(rows,fmt){const mx=Math.max(1,...rows.map(r=>r[1]));return `<div c
 const aiLine=a=>(a.ai||[]).length?(a.ai||[]).map(x=>`${E(x.model)}${x.gw?"":" (direct)"}`).join(", "):"None";
 /* ---------- plat_gate screen ---------- */
 function gateScreen(){
- syncMetrics();const L=liveApps(),all=apps();
- const reuseAvg=METRICS.m_gate_reuse.cur,confAvg=METRICS.m_gate_conf.cur,dupRate=METRICS.m_gate_dup.cur;
+ syncMetrics();const L=liveApps(),all=apps();const avgT=f=>L.length?Math.round(L.reduce((s,a)=>s+f(a),0)/L.length):0;
+ const reuseAvg=TCORE()?METRICS.m_gate_reuse.cur:avgT(reuseScore),confAvg=TCORE()?METRICS.m_gate_conf.cur:avgT(a=>conformance(a.id).score),dupRate=TCORE()?METRICS.m_gate_dup.cur:avgT(a=>(a.newEnts||[]).some(n=>n.dupOf)||a.dupProc?100:0);
+ const aiKnown=all.some(a=>a.aiCost!=null),ttfaKnown=all.some(a=>a.ttfa);
  const aiSpend=all.reduce((s,a)=>s+(a.aiCost||0),0),ttfa=Math.round(all.filter(a=>a.ttfa).reduce((s,a)=>s+a.ttfa,0)/Math.max(1,all.filter(a=>a.ttfa).length));
  const orph=all.filter(a=>!a.owner&&a.status!=="sunset").length,blocked=L.filter(a=>!decide(a.id).pass&&a.status!=="certified").length;
  const hero_=hero("Platform · Citizen apps","Build fast on the platform, never beside it",
   `<b data-role="metric">${all.length}</b> citizen apps are registered: <b data-role="metric">${all.filter(a=>a.status==="certified").length}</b> certified, ${all.filter(a=>a.status==="review").length} in review and ${all.filter(a=>a.status==="sandbox").length} in sandbox. Reuse is <b data-role="metric">${reuseAvg}%</b> and <b data-role="metric">${dupRate}%</b> of live apps still ask for a duplicate entity or process. ${orph?orph+" app has no support owner. ":""}Apps are checked against the same registry, policies and core services, so they cannot create a second budget or a second onboarding process.`,
-  `<div class="row">${fchip("m_gate_reuse")}${fchip("m_gate_conf")}${fchip("m_gate_dup")}${stdChip("togaf","Citizen apps follow the architecture principle of reuse before build, enforced by a manifest and a gate.")}<button class="btn primary" data-gate-new>New citizen app</button></div>`);
- const kp=kpiRow([["Citizen apps",all.length,all.filter(a=>a.status==="certified").length+" certified"],["Reuse",reuseAvg+"%","of entities already in the registry",{metric:"m_gate_reuse"}],["Duplicates",dupRate+"%","wanting a second copy",{cls:dupRate>20?"bad":"good",keep:true,metric:"m_gate_dup"}],["Conformance",confAvg+"%",CHECKS.length+" checks per app",{metric:"m_gate_conf"}],["First app",ttfa+" d","from training to sandbox"],["AI spend",money(aiSpend),"a month, all through the gateway"]]);
+  `<div class="row">${fchipT("m_gate_reuse")}${fchipT("m_gate_conf")}${fchipT("m_gate_dup")}${stdChip("togaf","Citizen apps follow the architecture principle of reuse before build, enforced by a manifest and a gate.")}<button class="btn primary" data-gate-new>New citizen app</button></div>`);
+ const kp=kpiRow([["Citizen apps",all.length,all.filter(a=>a.status==="certified").length+" certified"],["Reuse",reuseAvg+"%","of entities already in the registry",kpT({metric:"m_gate_reuse"})],["Duplicates",dupRate+"%","wanting a second copy",kpT({cls:dupRate>20?"bad":"good",keep:true,metric:"m_gate_dup"})],["Conformance",confAvg+"%",CHECKS.length+" checks per app",kpT({metric:"m_gate_conf"})],["First app",ttfaKnown||TCORE()?ttfa+" d":"Not recorded","from training to sandbox"],["AI spend",aiKnown||TCORE()?money(aiSpend):"Not recorded","a month, all through the gateway"]]);
  const matrix=`<div class="tscroll"><table><thead><tr><th>Tier</th>${ST.map(s=>`<th>${cap(s)}</th>`).join("")}</tr></thead><tbody>${TIERS.map(t=>`<tr><td><b>${cap(t)}</b></td>${ST.map(s=>{const n=all.filter(a=>a.tier===t&&a.status===s).length;return `<td>${n?`<span class="pill ${STP[s]}">${n}</span>`:'<span class="muted">0</span>'}</td>`}).join("")}</tr>`).join("")}</tbody></table></div>`;
  const aiRows=all.filter(a=>a.aiCost).sort((a,b)=>b.aiCost-a.aiCost).map(a=>[a.n,a.aiCost]);
  const attn=all.filter(a=>a.status!=="sunset"&&a.status!=="idea").map(a=>({a,d:decide(a.id)})).filter(x=>!x.a.owner||x.d.c.fails>0).sort((x,y)=>y.d.c.fails-x.d.c.fails).slice(0,5).map(x=>`<button class="debt-li" data-gate-open="${E(x.a.id)}"><span class="debt-li-t">${E(x.a.n)}</span><span class="small muted">${x.a.owner?"":"No support owner. "}${x.d.c.fails} failing check${x.d.c.fails===1?"":"s"} · ${cap(x.a.tier)} tier · ${cap(x.a.status)}</span></button>`).join("");
- const pane0=`${kp}<div class="grid g2" style="gap:16px">${card("Apps by tier and status","Number of apps in each cell; color shows the status",matrix+legend([["Certified","--good-f"],["In review","--warn-f"],["Sandbox","--info-f"]]))}${card("AI spend by app","Monthly cost of model calls, all routed through the AI gateway unless noted",bars(aiRows,v=>money(v)),aiChip({model:"AI gateway",title:"Spend data",note:"Spend comes from the gateway meter, not from the apps.",src:["AI gateway meter","App manifests"],guards:["Per-app monthly cap","Approved models only","Prompts and outputs logged"]}))}</div>
+ const pane0=`${kp}${!all.length&&!TCORE()?TGAP("citizen apps"):""}<div class="grid g2" style="gap:16px">${card("Apps by tier and status","Number of apps in each cell; color shows the status",matrix+legend([["Certified","--good-f"],["In review","--warn-f"],["Sandbox","--info-f"]]))}${card("AI spend by app","Monthly cost of model calls, all routed through the AI gateway unless noted",bars(aiRows,v=>money(v)),aiChip({model:"AI gateway",title:"Spend data",note:"Spend comes from the gateway meter, not from the apps.",src:["AI gateway meter","App manifests"],guards:["Per-app monthly cap","Approved models only","Prompts and outputs logged"]}))}</div>
   <div style="margin-top:14px">${card("Needs attention","Apps with a failing gate check or no support owner. "+blocked+" cannot move forward today.",`<div class="debt-list">${attn||"<p class='muted small'>Every live app passes.</p>"}</div>`)}</div>
   <div class="story" style="margin-top:14px" data-role="story"><b>Why this matters.</b> Citizen developers build with AI tools in hours. Without a gate each app grows its own tables and logins, and the enterprise inherits the debt. Here every app declares what it uses, the gate checks it, and the debt ledger prices anything it leaves behind. ${whyPop("A citizen app that reuses the platform costs the enterprise almost nothing to keep. One that copies data costs rework every month.")}</div>`;
  const apt=btHTML({id:"gate_apps",cols:[
@@ -248,7 +263,7 @@ function gateScreen(){
   {k:"nw",label:"New entities",fmt:r=>(r.newEnts||[]).length?pill_((r.newEnts||[]).length+(r.newEnts.some(n=>n.dupOf)?" duplicate":""),r.newEnts.some(n=>n.dupOf)?"bad":"mute"):"0",val:r=>(r.newEnts||[]).length},
   {k:"conn",label:"Connectors",fmt:r=>E((r.connectors||[]).map(c=>(conns().find(x=>x.id===c)||{name:c}).name).join(", ")||"None"),val:r=>(r.connectors||[]).length,wrap:true},
   {k:"ai",label:"AI models",fmt:r=>aiLine(r),val:r=>(r.ai||[]).length,wrap:true},
-  {k:"cost",label:"Cost a month",fmt:r=>money(r.cost),val:r=>r.cost},
+  {k:"cost",label:"Cost a month",fmt:r=>monT(r.cost),val:r=>r.cost},
   {k:"sunset",label:"Sunset date",fmt:r=>r.sunset?fD(r.sunset):"Not set",val:r=>r.sunset||"9999"}
  ],rows:()=>apps(),key:"id",h:480,rowH:64,facets:["tier","status","builder"],groupBy:["tier","status","builder"],exportName:"citizen-apps",open:id=>appDrawer(id)});
  const pane1=`<p class="muted small">The manifest registry. Every citizen app declares what it reads, writes, connects to and spends. Select a row for its manifest, checks and debt.</p>${apt}`;
@@ -266,7 +281,7 @@ function gateScreen(){
 }
 /* ---------- conformance gate tab ---------- */
 function gateRows(id){
- const a=app(id),d=decide(id),c=d.c;const ran=G.ran[id];
+ const a=app(id);if(!a)return TGAP("citizen apps");const d=decide(id),c=d.c;const ran=G.ran[id];
  if(!ran)return `<div class="story">Not run yet for ${E(a.n)}. Select Run the gate to lint the manifest and the repository.</div>`;
  const ic={pass:"pass",warn:"warn",fail:"fail"};
  const rows=c.rows.map(r=>`<tr class="gate-r ${r.r}"><td>${pill_(r.r==="pass"?"Pass":r.r==="warn"?"Warn":"Fail",r.r==="pass"?"good":r.r==="warn"?"warn":"bad")}</td><td><b>${E(r.n)}</b><div class="small muted">${E(r.rule)}</div><div class="small muted">Blocks from the ${U.esc(r.t)} tier</div></td><td class="small">${E(r.ev)}</td><td class="small">${E(r.fix||"None needed")}${r.r==="fail"?`<div style="margin-top:6px"><button class="btn quiet" data-gate-exc="${E(id+":"+r.id)}">Request an exception</button></div>`:""}</td></tr>`).join("");
@@ -274,8 +289,8 @@ function gateRows(id){
  return `${dec}${kpiRow([["Pass",c.pass,"of 12 checks",{cls:"good",keep:true}],["Warn",c.warn,"advisory or waived",{keep:true}],["Fail",c.fail,"fix or request an exception",{cls:c.fail?"bad":"good",keep:true}],["Conformance",c.score+"%","passes + half of warnings"],["Debt score",d.d.score+"%",d.d.principal+" h of "+d.d.ceiling.h+" h"]])}<div class="tscroll"><table class="gate-tbl"><thead><tr><th>Result</th><th>Check and rule</th><th>Evidence</th><th>Fix hint</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function gateTab(){
- if(!G.sel||!app(G.sel))G.sel="ca_budget";
- const a=app(G.sel);
+ if(!G.sel||!app(G.sel))G.sel=TCORE()?"ca_budget":(apps()[0]||{}).id;
+ const a=app(G.sel);if(!a)return TGAP("citizen apps");
  return `<p class="muted small">A runnable linter. Pick an app and run the ${CHECKS.length} checks. Each row shows the rule, the evidence found and a fix hint. The result decides promotion between tiers.</p>
  <div class="grid g2" style="gap:12px;align-items:end;margin-bottom:12px"><label class="fld"><span class="flab">App</span><select class="fin" data-gate-sel>${apps().map(x=>`<option value="${E(x.id)}" ${x.id===G.sel?"selected":""}>${E(x.n)} (${x.tier}, ${x.status})</option>`).join("")}</select></label><div class="row" style="gap:8px"><button class="btn primary" data-gate-run>Run the gate</button><button class="btn quiet" data-gate-open="${E(G.sel)}">Open the app</button></div></div>
  ${legend([["Pass","--good-f"],["Warn","--warn-f"],["Fail","--bad-f"]])}<div data-gate-out>${gateRows(G.sel)}</div>`;
@@ -306,7 +321,7 @@ function appDrawer(id){
  const linked=lrHTML({id:"gate_dr_"+id,limit:5,groups:[{key:"r",label:"Entities it reads",rows:(a.reads||[]).map(e=>({id:e,t:entL(e),sub:(PLAT.ent(e)||{}).owner||"",tag:"read",go:()=>go("plat_reg")}))},{key:"w",label:"Entities it writes",rows:(a.writes||[]).map(e=>({id:e,t:entL(e),sub:"Direct write",tag:"write",go:()=>go("plat_reg")}))},{key:"n",label:"New entities requested",rows:(a.newEnts||[]).map(n=>({id:n.id,t:n.id.replace(/_/g," "),sub:n.dupOf?"Duplicates "+n.dupOf:"Approved addition",tag:n.dupOf?"duplicate":"new"}))},{key:"d",label:"Debt items",rows:its.map(x=>({id:x.id,t:x.title,sub:x.sev+", "+x.principal+" h",tag:x.type,go:()=>go("plat_debt")}))}].filter(g=>g.rows.length)});
  openDrawer(`<div class="dfullgrid"><div><div class="eyebrow">Citizen app · ${E(a.id)}</div><h2 style="margin:4px 0 8px;padding-right:60px">${E(a.n)}</h2><p class="small">${E(a.purpose)}</p>
   <div class="row" style="gap:8px;flex-wrap:wrap">${tierPill(a.tier)}${stPill(a.status)}${a.owner?"":pill_("No support owner","bad")}</div>
-  <dl class="kv" style="margin-top:12px"><dt>Builder</dt><dd>${whoChip(a.builder)}</dd><dt>Support owner</dt><dd>${a.owner?whoChip(a.owner):"None named"}</dd><dt>Users</dt><dd>${a.users}</dd><dt>Cost a month</dt><dd>${money(a.cost)}${a.aiCost?" (AI "+money(a.aiCost)+")":""}</dd><dt>Sunset</dt><dd>${a.sunset?fD(a.sunset):"Not set"}</dd><dt>Reuse</dt><dd><span data-role="metric">${reuseScore(a)}%</span></dd><dt>Conformance</dt><dd><span data-role="metric">${c.score}%</span> (${c.pass} pass, ${c.warn} warn, ${c.fail} fail)</dd><dt>Debt score</dt><dd><span data-role="metric">${dbt.score}%</span>, ${dbt.principal} h against a ${dbt.ceiling.h} h ceiling</dd></dl>
+  <dl class="kv" style="margin-top:12px"><dt>Builder</dt><dd>${whoChip(a.builder)}</dd><dt>Support owner</dt><dd>${a.owner?whoChip(a.owner):"None named"}</dd><dt>Users</dt><dd>${a.users}</dd><dt>Cost a month</dt><dd>${monT(a.cost)}${a.aiCost?" (AI "+money(a.aiCost)+")":""}</dd><dt>Sunset</dt><dd>${a.sunset?fD(a.sunset):"Not set"}</dd><dt>Reuse</dt><dd><span data-role="metric">${reuseScore(a)}%</span></dd><dt>Conformance</dt><dd><span data-role="metric">${c.score}%</span> (${c.pass} pass, ${c.warn} warn, ${c.fail} fail)</dd><dt>Debt score</dt><dd><span data-role="metric">${dbt.score}%</span>, ${dbt.principal} h against a ${dbt.ceiling.h} h ceiling</dd></dl>
   <div class="story small" style="margin:10px 0"><b>${d.pass?"Gate passes.":"Gate blocks."}</b> ${E(d.label)}${d.pass?" is allowed.":": "+E(d.why.slice(0,3).join(" · ")||"nothing to promote")}</div>
   <div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn primary" data-gate-rundrawer="${E(id)}">Run the gate</button>${d.pass?`<button class="btn" data-gate-promote="${E(id)}">${E(d.label)}</button>`:""}<button class="btn" data-gate-assign="${E(id)}">${a.owner?"Change owner":"Name an owner"}</button>${a.status!=="sunset"?`<button class="btn quiet" data-gate-sunset="${E(id)}">Sunset</button>`:""}</div>${aiBlock}</div>
   <div><h3>Manifest</h3><pre class="gate-code" tabindex="0">${E(man)}</pre><h3>Linked records</h3>${linked}</div></div>`);
@@ -327,12 +342,12 @@ function wizard(pre){
   onSubmit:v=>{const m=mk(v);const id="ca_"+(v.name||"app").toLowerCase().replace(/[^a-z0-9]+/g,"_").slice(0,20);
    m.newEnts=m.newEnts.map(n=>{const h=PLAT.reuseCheck(n.id.replace(/_/g," "),"")[0];return h&&h.sc>=.5?Object.assign(n,{dupOf:h.id+(h.kind==="planned"?" (planned)":"")}):n});
    m.id=id+(app(id)?"_"+(apps().length+1):"");m.users=1;m.cost=0;m.ttfa=1;m.created=TODAY;m.dupProc=(procMatches((v.name||"")+" "+(v.purpose||""))[0]||{}).id||"";if(m.dupProc&&!/onboard|approv|incident|release|sla|slo|on-call|oncall|cmdb|request/i.test((v.name||"")+(v.purpose||"")))m.dupProc="";
-   m.builder=v.builder||"Casey Rowan";apps().push(m);bump();audit("Citizen app created",m.n+" ("+m.tier+") in sandbox");toast("Created in sandbox: "+m.n,"good");closeDrawer();render();setTimeout(()=>appDrawer(m.id),200)}});
+   m.builder=v.builder||"Casey Rowan";addApp(m);bump();audit("Citizen app created",m.n+" ("+m.tier+") in sandbox");toast("Created in sandbox: "+m.n,"good");closeDrawer();render();setTimeout(()=>appDrawer(m.id),200)}});
 }
 /* ---------- plat_gate events ---------- */
 document.addEventListener("click",e=>{
  let t=e.target.closest("[data-gate-open]");if(t){appDrawer(t.dataset.gateOpen);return}
- t=e.target.closest("[data-gate-new]");if(t){wizard(t.dataset.gateNew==="budget"?{name:"Budget tracker",purpose:"Track budget against actual spend for the editorial programs",newEnts:"budget table",needs:["invoice","project"],builder:"Dev Rao"}:{});return}
+ t=e.target.closest("[data-gate-new]");if(t){wizard(t.dataset.gateNew==="budget"?{name:"Budget tracker",purpose:"Track budget against actual spend for the editorial programs",newEnts:"budget table",needs:["invoice","project"],builder:TCORE()?"Dev Rao":"Casey Rowan"}:{});return}
  t=e.target.closest("[data-gate-run]");if(t){G.ran[G.sel]=1;const c=conformance(G.sel);const o=document.querySelector("[data-gate-out]");if(o)o.innerHTML=gateRows(G.sel);audit("Gate run",app(G.sel).n+": "+c.pass+" pass, "+c.warn+" warn, "+c.fail+" fail");toast("Gate: "+c.pass+" pass, "+c.warn+" warn, "+c.fail+" fail",c.fail?"warn":"good");return}
  t=e.target.closest("[data-gate-rundrawer]");if(t){G.sel=t.dataset.gateRundrawer;G.ran[G.sel]=1;S.v.gate=3;closeDrawer();render();toast("Gate run for "+app(G.sel).n);return}
  t=e.target.closest("[data-gate-promote]");if(t){const id=t.dataset.gatePromote,a=app(id),d=decide(id);if(!d.pass){toast("The gate blocks this","warn");return}
@@ -353,6 +368,7 @@ document.addEventListener("change",e=>{
 });
 document.addEventListener("input",e=>{const t=e.target.closest("[data-gate-qc]");if(t){G.qc[t.dataset.gateQc]=t.value;const o=document.querySelector("[data-gate-qcout]");if(o)o.innerHTML=reuseHTML(reuseReport(G.qc.name,G.qc.name,G.qc.needs,[]))}});
 REG("plat_gate","Citizen apps","platform","M4 5h7v7H4zM13 5h7v4h-7zM13 11h7v8h-7zM4 14h7v5H4z",gateScreen);
+DATA.screen("plat_gate",{mode:"data",entities:["builds","connectors"]});
 PROC.reg("plat_gate",{title:"How a citizen app goes from idea to certified",std:["togaf","iso27k"],steps:[
  {n:"Describe and reuse check",d:"The builder (or their coding tool) states the purpose; the reuse-first check offers existing entities and processes.",who:"robot",owner:"Platform",out:"Reuse report"},
  {n:"Draft the manifest",d:"The Registry Agent drafts the manifest with labels and a support owner; the builder edits it.",who:"agent",owner:"Registry Agent",out:"Manifest"},
@@ -435,7 +451,7 @@ const SCOPES={read:"Read the registry (search_registry, get_entity, list_connect
 const cl=c=>{const o=G.clients[c.id];return o?Object.assign({},c,{scopes:o.scopes}):c};
 function contractMd(){
  const s=PLAT.stats();const du=window.DEBT?DEBT.totals():{n:0,principal:0};
- return `# PLATFORM.md  (read this first)\n${BRAND.name} platform contract v0.3 (draft), Meridian Standards Foundation\n\n## The rule\nDo not create data, processes or services that the platform already has.\nCall the MCP server before you design anything.\n\n## Order of work\n1. search_registry: what exists? (${s.n} entities, ${s.nf.toLocaleString()} fields)\n2. check_reuse: reuse an entity or call an existing process\n3. get_entity: read owner, steward, class and authority\n4. Write oukala.app.json (manifest)\n5. validate_manifest and run_conformance until nothing fails\n6. request_exception only with a human owner and an expiry\n\n## You must\n- use platform sign-in and access rules (RBAC and ABAC); no user tables\n- send messages with notify, reports with reports, audit with audit\n- route every model call through the AI gateway with a monthly cap\n- label every stored field with a classification\n- keep secrets in the secret store\n\n## You must not\n- create an entity that matches a registered or planned one (${s.planned} planned entities are listed)\n- write a canonical entity directly; call the owner's API\n- use unapproved connectors\n\n## Feature contract (four standing rules)\n1. Process model, editable in the tool (PROC.reg and PROCLIB.addProcess)\n2. Data model plus a recorded reuse, extend or new decision (ATLAS.addEntity)\n3. Metrics with formulas and a maturity record (METRICS, PROCLIB.maturity)\n4. Interconnectivity (MODMAP flows, search, chat, approvals)\nCall run_feature_contract on your draft manifest until all four pass. A waiver needs an owner and an expiry.\n\n## Debt budget\nOpen platform debt today: ${du.n} items, ${du.principal} hours. Your app's budget by tier: personal 8 h, team 24 h, enterprise 40 h.\n\n## Tiers\npersonal (1 builder), team (up to 50 users), enterprise (everyone)\n`;
+ return `# PLATFORM.md  (read this first)\n${BRAND.name} platform contract v0.3 (draft), ${(DATA.tenantInfo()||{}).org||"this company"}\n\n## The rule\nDo not create data, processes or services that the platform already has.\nCall the MCP server before you design anything.\n\n## Order of work\n1. search_registry: what exists? (${s.n} entities, ${s.nf.toLocaleString()} fields)\n2. check_reuse: reuse an entity or call an existing process\n3. get_entity: read owner, steward, class and authority\n4. Write oukala.app.json (manifest)\n5. validate_manifest and run_conformance until nothing fails\n6. request_exception only with a human owner and an expiry\n\n## You must\n- use platform sign-in and access rules (RBAC and ABAC); no user tables\n- send messages with notify, reports with reports, audit with audit\n- route every model call through the AI gateway with a monthly cap\n- label every stored field with a classification\n- keep secrets in the secret store\n\n## You must not\n- create an entity that matches a registered or planned one (${s.planned} planned entities are listed)\n- write a canonical entity directly; call the owner's API\n- use unapproved connectors\n\n## Feature contract (four standing rules)\n1. Process model, editable in the tool (PROC.reg and PROCLIB.addProcess)\n2. Data model plus a recorded reuse, extend or new decision (ATLAS.addEntity)\n3. Metrics with formulas and a maturity record (METRICS, PROCLIB.maturity)\n4. Interconnectivity (MODMAP flows, search, chat, approvals)\nCall run_feature_contract on your draft manifest until all four pass. A waiver needs an owner and an expiry.\n\n## Debt budget\nOpen platform debt today: ${du.n} items, ${du.principal} hours. Your app's budget by tier: personal 8 h, team 24 h, enterprise 40 h.\n\n## Tiers\npersonal (1 builder), team (up to 50 users), enterprise (everyone)\n`;
 }
 function contractJson(){const s=PLAT.stats();return JSON.stringify({contract:"oukala.platform",version:"0.3.0-draft",server:{name:"oukala-platform",transport:["streamable-http"],url:"https://oukala.meridian.example/mcp",auth:"oauth2.1"},registry:{entities:s.n,fields:s.nf,planned:s.planned,open_duplicates:s.dups},first_call:"check_reuse",tools:TOOLS.map(t=>({name:t.n,write:t.write})),rules:CHECKS.map(c=>({id:c.id,blocks_from_tier:c.t})),tiers:Object.keys(TIERDEF).map(k=>({id:k,debt_budget_hours:window.DEBT?DEBT.ceilings()[k].h:null})),core_services:SERVICES.map(x=>x.id)},null,2)}
 /* ---------- MCP screen ---------- */
@@ -444,8 +460,8 @@ function mcpScreen(){
  const t7=totals7(),sum=t7.reduce((a,b)=>a+b,0),cons=CLIENTS.filter(c=>c.st==="connected").length,pil=CLIENTS.filter(c=>c.st==="pilot").length;
  const hero_=hero("AI and coding clients · MCP server","Let AI tools discover what exists before they build",
   `The platform's MCP (Model Context Protocol) server lets frontier models and coding tools ask what the registry already has. <b data-role="metric">${TOOLS.length}</b> tools are proposed (a proposed first set, not final); <b data-role="metric">${cons}</b> clients are connected, ${pil} are in pilot, and Perplexity is on the roadmap. <b data-role="metric">${sum.toLocaleString()}</b> calls came in over the last 7 days, and every call runs with the caller's own access.`,
-  `<div class="row">${fchip("m_mcp_cov")}${fchip("m_gate_reuse")}<button class="btn primary" data-mcp-tab="1">Try a tool</button></div>`);
- const kp=kpiRow([["Proposed tools",TOOLS.length,"1 can write, with approval"],["Clients",cons+pil,cons+" connected, "+pil+" pilot, 1 roadmap"],["Calls in 7 days",sum.toLocaleString(),"all audited"],["Reuse check first",METRICS.m_mcp_cov.cur+"%","of new builds",{metric:"m_mcp_cov"}],["Writes needing approval",1,"request_exception only"]]);
+  `<div class="row">${fchipT("m_mcp_cov")}${fchipT("m_gate_reuse")}<button class="btn primary" data-mcp-tab="1">Try a tool</button></div>`);
+ const kp=kpiRow([["Proposed tools",TOOLS.length,"1 can write, with approval"],["Clients",cons+pil,cons+" connected, "+pil+" pilot, 1 roadmap"],["Calls in 7 days",sum.toLocaleString(),"all audited"],["Reuse check first",TCORE()?METRICS.m_mcp_cov.cur+"%":"Not recorded","of new builds",kpT({metric:"m_mcp_cov"})],["Writes needing approval",1,"request_exception only"]]);
  const ch=lineChart(["Sep 30","Oct 1","Oct 2","Oct 3","Oct 4","Oct 5","Oct 6"],[{vals:t7,color:col("--accent"),area:true}],{w:620,h:220,max:Math.ceil(Math.max(...t7)/200)*200,alt:"MCP calls per day over the last 7 days"});
  const byTool=[["check_reuse",.34],["search_registry",.27],["get_entity",.16],["validate_manifest",.1],["run_conformance",.06],["get_policy",.04],["list_connectors",.02],["request_exception",.01]].map(r=>[r[0],Math.round(r[1]*sum)]);
  const pane0=`${kp}<div class="grid g2" style="gap:16px">${card("Calls per day","All clients together",ch,aiChip({model:"MCP server",title:"Call volume",note:"Counts come from the server log. Each call is tied to a person and a client.",src:["MCP server log","Identity provider"],guards:["Runs with the caller's access","Rate limited per user","Every call audited"]}))}${card("Calls by tool, last 7 days","check_reuse should lead: it is the first call a builder makes",bars(byTool,v=>v.toLocaleString()))}</div>
@@ -459,7 +475,7 @@ function mcpScreen(){
  const pane4=`<div class="dnote" data-role="story" style="margin-bottom:12px">A coding agent reads <b>PLATFORM.md</b> first. It is generated from the live registry, so the counts and rules are never stale. <b>contract.json</b> is the machine readable twin that tools can validate against. ${aiChip({model:"Registry Agent",conf:.9,title:"Contract file",note:"Regenerated whenever the registry, policies or tool list changes. A person approves the version bump.",src:["Platform registry","Policies","Tool list","Debt ledger"],guards:["Draft until approved","Versioned","Signed when published"]})}</div><div class="grid g2" style="gap:16px;align-items:start">${card("PLATFORM.md","Version 0.3 (draft) · "+md.length+" characters",`<pre class="gate-code" tabindex="0">${E(md)}</pre><div class="row" style="margin-top:8px"><button class="btn quiet" data-mcp-copy="md">Copy</button></div>`)}${card("contract.json","Same facts, machine readable",`<pre class="gate-code" tabindex="0">${E(js)}</pre><div class="row" style="margin-top:8px"><button class="btn quiet" data-mcp-copy="json">Copy</button></div>`)}</div>`;
  const pane5=`<div class="grid g2" style="gap:16px;align-items:start">${card("The linter","The same "+CHECKS.length+" checks as the gate, on the builder's machine (proposed names)",`<pre class="gate-code" tabindex="0">${E("# in the repository\nnpx @oukala/lint --manifest oukala.app.json\n\n# pre-commit hook\noukala lint --staged\n\n# CI step (fails the build on a blocking check)\noukala gate --tier team --fail-on blocking")}</pre><p class="small muted">Output matches the Conformance gate tab, row for row, so there are no surprises at review.</p>`)}
   ${card("The SDK","Typed calls to the core services",`<pre class="gate-code" tabindex="0">${E("import { oukala } from '@oukala/sdk'\n\nconst rows = await oukala.db.entity('invoice')\n  .query({ where: { status: 'open' } })\nawait oukala.notify.send({ to: user, template: 'renewal_due' })\nawait oukala.audit.log({ action: 'renewal_sent' })")}</pre><p class="small muted">Every call carries the user's identity, so access rules and masking apply without extra code.</p>`)}</div>
-  <div class="grid g3" style="gap:14px;margin-top:14px">${card("Versioning","Contract and tools","<p class='small'>Semantic versions. Removing a tool or field is a major version with a 90 day overlap. Clients see the version in every response.</p>")}${card("Typed API","For scans too large for MCP","<p class='small'>The same operations are available as a REST and GraphQL API with OpenAPI and schema files, for build servers and bulk jobs.</p>")}${card("Not in scope yet","Gaps","<p class='small'>Perplexity connection, write tools beyond exceptions, and a hosted copy of the contract for clients outside Meridian.</p>")}</div>`;
+  <div class="grid g3" style="gap:14px;margin-top:14px">${card("Versioning","Contract and tools","<p class='small'>Semantic versions. Removing a tool or field is a major version with a 90 day overlap. Clients see the version in every response.</p>")}${card("Typed API","For scans too large for MCP","<p class='small'>The same operations are available as a REST and GraphQL API with OpenAPI and schema files, for build servers and bulk jobs.</p>")}${card("Not in scope yet","Gaps","<p class='small'>Perplexity connection, write tools beyond exceptions, and a hosted copy of the contract for clients outside "+(TCORE()?"Meridian":E((DATA.tenantInfo()||{}).short||"this company"))+".</p>")}</div>`;
  return `<div class="screen">${hero_}${lensNote()}${views("mcp",["Overview","Tools","Try it","Clients","Contract file","SDK and linter"],[pane0,pane1,pane2,pane3,pane4,pane5])}${procCard("plat_mcp")}</div>`;
 }
 /* ---------- console ---------- */
@@ -506,6 +522,7 @@ document.addEventListener("click",e=>{
 });
 document.addEventListener("change",e=>{const t=e.target.closest("[data-mcp-tool]");if(t){G.con.tool=t.value;G.con.args={};G.conOut=null;const f=document.querySelector("[data-mcp-form]");if(f)f.innerHTML=consoleForm();const o=document.querySelector("[data-mcp-out]");if(o)o.innerHTML=outHTML()}});
 REG("plat_mcp","AI and coding clients","ai","M5 8h14v9H5zM9 8V5h6v3M9 13h.01M15 13h.01M3 12v2M21 12v2",mcpScreen);
+DATA.screen("plat_mcp",{mode:"data",entities:[]});
 PROC.reg("plat_mcp",{title:"How an AI or coding client uses the platform",std:["togaf","nist"],steps:[
  {n:"Connect and sign in",d:"The client connects with the signed-in person's identity. Scopes limit the tools it can call.",who:"gate",owner:"Security lead",out:"Scoped token"},
  {n:"Read the contract",d:"The client reads PLATFORM.md and contract.json, generated from the live registry.",who:"robot",owner:"Platform",out:"Rules in context"},

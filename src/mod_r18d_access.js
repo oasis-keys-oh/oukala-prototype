@@ -11,6 +11,11 @@ const me=()=>G(()=>R15D.me().name,"Casey Rowan");
 const CLS=["public","internal","personal","confidential","restricted"];
 const STATE={pending:["Waiting for the owner","warn"],approved:["Approved","good"],approved_masked:["Approved with masking","good"],limited:["Limited scope","info"],denied:["Denied","bad"],expired:["Expired","bad"],revoked:["Revoked","mute"],none:["Not requested","mute"]};
 const LIVE=s=>s==="approved"||s==="approved_masked"||s==="limited";
+/* PR-32 B9: access requests are derived state, seeded from the Meridian builds only. Another tenant starts with no requests (a labeled gap)
+   and keeps the ones made in this session apart from Meridian's; the Meridian access metrics are synced and shown under Meridian only. */
+const TCORE=()=>!W.DATA||DATA.tenant()==="core";
+const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
+const kpT=o=>{if(TCORE()||!o)return o;const c=Object.assign({},o);delete c.metric;return c};
 
 /* ---------- who owns what ---------- */
 const GRP={budget_line:"Budget approvers (delegation of authority)",budget_request:"Budget approvers (delegation of authority)",budget_adjustment:"Budget approvers (delegation of authority)",cost_center:"Finance review group",cost_center_map:"Finance review group",invoice:"Payables approvers",contract:"Finance review group",contract_line:"Finance review group",core_company:"Finance review group",person:"People Operations",objective:"Portfolio council",key_result:"Portfolio council",project:"Portfolio council",project_task:"Portfolio council",wbs_line:"Portfolio council",incident:"Architecture and security review group",change_request:"Change advisory board",config_item:"Architecture and security review group"};
@@ -45,7 +50,7 @@ function seed(){if(A.reqs)return;A.reqs=[];
   items.forEach(i=>{if(!i.by)i.by="";i.reqBy=a.builder;i.req=a.id});
   A.reqs.push({id:"AR-"+(n++),app:a.id,by:String(a.builder||"").replace(/\s*\(.*\)$/,""),at,purpose:a.purpose,items})});
  A.log=[]}
-const reqs=()=>{seed();return A.reqs};
+const reqs=()=>{if(!TCORE()){A.byT=A.byT||{};const t=DATA.tenant();return A.byT[t]||(A.byT[t]=[])}seed();return A.reqs};
 const itemsOf=app=>{const out=[];reqs().filter(r=>r.app===app).forEach(r=>r.items.forEach(i=>out.push(i)));return out};
 /* current item per entity for a build: the latest one wins */
 const needs=(app,e)=>{const i=latest(app,e);return !i||(!live(i)&&i.state!=="pending")};
@@ -113,7 +118,7 @@ function stats(){normalize();const all=[];reqs().forEach(r=>r.items.forEach(i=>a
  const over=R18.apps().filter(a=>a.tier==="personal"&&liveG.some(x=>x.r.app===a.id&&CLS.indexOf(x.i.cls)>=3)).length;
  return{all,decided,pending:all.filter(x=>x.i.state==="pending").length,avg,pol,soon,exp,den,over,grants:liveG.length}}
 access.stats=stats;
-function sync(){const s=stats();G(()=>{const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=+(+v).toFixed(1);m.tr=m.tr.slice(0,-1).concat([m.cur])};set("m_acc_time",s.avg);set("m_acc_policy",s.pol);set("m_acc_recert",s.soon+s.exp);set("m_acc_denied",s.den);set("m_acc_over",s.over)})}
+function sync(){if(!TCORE())return;const s=stats();G(()=>{const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=+(+v).toFixed(1);m.tr=m.tr.slice(0,-1).concat([m.cur])};set("m_acc_time",s.avg);set("m_acc_policy",s.pol);set("m_acc_recert",s.soon+s.exp);set("m_acc_denied",s.den);set("m_acc_over",s.over)})}
 
 /* ---------- screens ---------- */
 const pillS=st=>{const s=STATE[st]||STATE.none;return pill(s[0],s[1])};
@@ -124,8 +129,8 @@ function reqCard(r){const a=R18.app(r.app)||{n:r.app};const done=r.items.filter(
  <div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Source</th><th>Approved by</th><th>Fields</th><th>Class</th><th>Decision</th><th>Expires</th></tr></thead><tbody>${r.items.map(i=>`<tr><td><b>${H(labelOf(i.ent))}</b>${i.note?`<small class="muted">${H(i.note)}</small>`:""}</td><td>${H(i.group)}${i.policy?'<small class="muted">Decided by policy</small>':""}</td><td class="num">${i.attrs.length}</td><td>${clsPill(i.cls)}</td><td>${pillS(i.state)}</td><td>${i.expires?H(fD(i.expires)):""}</td></tr>`).join("")}</tbody></table></div></article>`}
 function requestsTab(){const s=stats();
  const list=reqs().slice().reverse().filter(r=>r.items.some(i=>i.state==="pending")||r.at>=addD(TODAY,-30)||true).slice(0,12);
- return `${typeof kpiRow==="function"?kpiRow([["Waiting for an owner",s.pending,"across "+new Set(s.all.filter(x=>x.i.state==="pending").map(x=>x.i.group)).size+" owner groups",{cls:s.pending?"warn":""}],["Average time to decide",s.avg.toFixed(1)+" days","excluding decisions made by policy",{metric:"m_acc_time",keep:true}],["Decided by policy",s.pol+"%","internal data with every check passing",{metric:"m_acc_policy",keep:true}],["Grants to recertify",s.soon+s.exp,s.exp+" expired, "+s.soon+" due in 30 days",{metric:"m_acc_recert",cls:(s.soon+s.exp)?"warn":"",keep:true}]]):""}
- <div class="r18-stack">${list.map(reqCard).join("")}</div>`}
+ return `${typeof kpiRow==="function"?kpiRow([["Waiting for an owner",s.pending,"across "+new Set(s.all.filter(x=>x.i.state==="pending").map(x=>x.i.group)).size+" owner groups",{cls:s.pending?"warn":""}],["Average time to decide",s.avg.toFixed(1)+" days","excluding decisions made by policy",kpT({metric:"m_acc_time",keep:true})],["Decided by policy",s.pol+"%","internal data with every check passing",kpT({metric:"m_acc_policy",keep:true})],["Grants to recertify",s.soon+s.exp,s.exp+" expired, "+s.soon+" due in 30 days",kpT({metric:"m_acc_recert",cls:(s.soon+s.exp)?"warn":"",keep:true})]]):""}
+ ${list.length||TCORE()?"":TGAP("data access requests")}<div class="r18-stack">${list.map(reqCard).join("")}</div>`}
 function candRow(e,draft){const on=!!draft.ents[e],fs=fieldsOf(e);const sel=draft.ents[e]||[];
  return `<div class="r18-cand ${on?"on":""}"><label class="r18-cl"><input type="checkbox" data-r18-ent="${H(e)}" ${on?"checked":""}><span><b>${H(labelOf(e))}</b><small class="muted">Owned by ${H(ownerOf(e))} · approved by ${H(groupFor(e))} · up to ${H(clsOf(e))}</small></span></label>
  ${on?`<div class="r18-attrs"><div class="r18-ah"><span class="small muted">Fields requested (${sel.length} of ${fs.length}). Ask only for what the build uses.</span><button type="button" class="btn quiet" data-r18-attrs="${H(e)}:min">Fewest</button><button type="button" class="btn quiet" data-r18-attrs="${H(e)}:all">All</button></div><div class="r18-af">${fs.slice(0,40).map(f=>`<label class="r18-fl ${CLS.indexOf(f.cls)>=2?"sens":""}"><input type="checkbox" data-r18-attr="${H(e+"|"+f.k)}" ${sel.indexOf(f.k)>=0?"checked":""}>${H(f.label)} <em>${H(f.cls)}</em></label>`).join("")}</div></div>`:""}</div>`}
@@ -160,6 +165,7 @@ function screen(){normalize();sync();const s=stats();
  ${typeof views==="function"?views("r18acv",["Requests ("+reqs().length+")","New request","Review queue ("+s.pending+")","Active grants ("+s.grants+")","Who owns the data"],[requestsTab(),newTab(),queueTab(),grantsTab(),ownersTab()]):requestsTab()}
  ${typeof procCard==="function"?procCard("r18_access"):""}</div>`}
 REG("r18_access","Data access","make","M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6zM9 12l2 2 4-4",screen);
+DATA.screen("r18_access",{mode:"data",entities:["builds"]});
 
 /* ---------- events ---------- */
 D.addEventListener("change",e=>{const t=e.target;if(!t.closest)return;
