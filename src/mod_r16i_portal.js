@@ -1,8 +1,4 @@
-/* ===== Round 16, Agent I: ONE end-user portal screen for catalog items and order guides.
-   Extends svc_portal (mod_svc.js) without touching it: the customer view is replaced by a unified browse, search and order screen;
-   item pages and the admin view still come from mod_svc.js. Deep link #portal (+ /catalog/<id>, /guides/<id>, /orders/<id>).
-   Employee view layout: lighter shell, no admin sidebar; automatic for the Request personas, optional for everyone else.
-   Back-end management stays where it was: Service catalog (svc_cat) and Order guides (svc_guides). ===== */
+/* Round 16: one end-user portal over svc_portal (mod_svc.js) for catalog items and order guides. Deep link #portal */
 (function(){
 const W=window,D=document;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
@@ -50,7 +46,7 @@ function unifiedHTML(){const L=entries(),cats=catsOf(L),rec=recent(),pop=L.slice
  ${typeof procCard==="function"?procCard("svc_portal"):""}</div>`}
 function paint(){const r=q1("#r16pRes");if(r)r.innerHTML=resultsHTML();qa("[data-r16p-type]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.r16pType===P.type)));qa("[data-r16p-cat]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.r16pCat===P.cat)));const h=q1("#r16pall");if(h)h.textContent=P.cat==="All"?"Everything you can order":P.cat}
 /* ---------- wrap the screen: customer view becomes the unified screen ---------- */
-function install(){const prev=G(()=>_R.svc_portal,null);if(!prev||prev._r16)return;const f=function(){const v=B().V;if(!v||v.pItem||v.pView==="admin")return prev.apply(this,arguments);return unifiedHTML()};f._r16=1;_R.svc_portal=f}
+function install(){const prev=G(()=>_R.svc_portal,null);if(!prev||prev._r16)return;const f=function(){const v=B().V;if(!v||v.pItem||v.pView==="admin"||!TROWS.core())return prev.apply(this,arguments);return unifiedHTML()};f._r16=1;_R.svc_portal=f}
 /* ---------- deep links ---------- */
 const BOOT=location.hash||"";let bootDone=false;/* the shell rewrites the hash while it boots, so keep the one the page was opened with */
 const HASH=/^#portal(?:\/(catalog|guides|orders)\/([^/?#]+))?\/?(?:\?.*)?$/;
