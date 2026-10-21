@@ -100,9 +100,22 @@ function syncDash(){const pub=items().filter(d=>d.status==="published"),tl=pub.f
  set("m_dash_owned",pub.length?Math.round(own/pub.length*100):100,"Published dashboards with a named owner and a different named backup ("+own+" of "+pub.length+") ÷ published dashboards × 100");
  set("m_dash_pubq",U.gapp.pending("dash_publish").length)}
 U.syncDashMetrics=syncDash;
-function render_(){seed();D.clear();const d=cur();syncDash();const pub=items().filter(x=>x.status==="published").length,pend=U.gapp.pending("dash_publish").length;
+/* PR-32 B3: under a tenant other than core the viewer builds each template from that tenant's registries (the sources in
+   mod_r17u_c_dsrc read DATA), keeping only tiles whose source or metric the tenant has; the library lists its own saved reports. The
+   core sample's dashboards, owners and approvals are not shown. */
+function tDash(){const X=window.STN||{},org=(DATA.tenantInfo()||{}).org||DATA.tenant();D.clear();const tb=(c,r)=>X.table?X.table(c,r):"";
+ const T=D.TEMPLATES;const mk=t=>({id:"t_"+t.id,name:t.name,desc:t.desc,tiles:t.tiles().filter(x=>x.bind.k!=="metric"||D.compute(x,{range:"all",owner:"",pf:""}).err==null).map(D.tileObj)});
+ const view=`${filterBar()}${views("r17ut",T.map(t=>H(t.name)),T.map(t=>`<p class="story r17u-desc" data-role="story">${H(t.desc)} Built now from ${H(org)}'s records; no owner is named for this company's dashboards yet.</p>${canvas(mk(t),false,true)}`))}`;
+ const gal=`<div class="grid g3">${T.map(t=>{const dd=mk(t);const ks=dd.tiles.filter(x=>x.type==="card").slice(0,3).map(x=>D.compute(x,F()));return `<div class="card glass r17u-gc"><div class="eyebrow">${dd.tiles.length} tiles for this company</div><h3>${H(t.name)}</h3><p class="small muted">${H(t.desc)}</p><div class="r17u-gp">${ks.map(c=>`<div><b class="num">${H(c.disp||"")}</b><span>${H(c.title||"")}</span></div>`).join("")}</div></div>`}).join("")}</div>`;
+ const R=TREAD.rows("reports","report");
+ const lib=R.length?tb(["Report","Measure","By","Chart","Owner and backup","Shared with"],R.map(r=>[`<b>${H(r.name)}</b>`,H(r.measure||""),H(r.dim||""),H(r.chart||""),X.own?X.own(r.owner,r.backup,"report:"+r.id):"",H(r.share||"")])):(X.gap?X.gap("reports"):TREAD.gap("reports"));
+ const ap=`<p class="muted small">${TREAD.GAP}: ${H(org)} has no publication approvals or delivery schedules recorded. The gap is recorded; nothing from another company is shown.</p>`;
+ return `<div class="screen r17u-scr" data-noag>${X.head?X.head("Dashboards","Pick a dashboard, change what it shows, share it and publish it",`<b>${T.length}</b> templates built from ${H(org)}'s records and <b>${R.length}</b> saved reports. Every tile names its source and shows its formula; the filter bar recomputes the tiles.`):""}${lensNote()}
+ ${views("r17ud",["Viewer","Template gallery","Library","Approvals and schedules"],[view,gal,card("Library","Saved reports of this company",lib),ap])}${procCard("r17u_dash")}</div>`}
+function render_(){if(!TREAD.core())return tDash();seed();D.clear();const d=cur();syncDash();const pub=items().filter(x=>x.status==="published").length,pend=U.gapp.pending("dash_publish").length;
  return `<div class="screen r17u-scr">${hero("Dashboards","Pick a dashboard, change what it shows, share it and publish it",`<b>${items().length}</b> dashboards in the library, <b>${pub}</b> published${pend?`, <b>${pend}</b> waiting on the approver group`:""}. Every tile names its source, shows its formula, says how fresh it is and who owns it. The filter bar recomputes the registry tiles; publishing needs a group, not one person.`,`<div class="row">${fchip("m_dash_bound")}${fchip("m_dash_owned")}${fchip("m_dash_pubq")}</div>`)}${lensNote()}
  ${views("r17ud",["Viewer","Template gallery","Library","Approvals and schedules"],[viewer(d),gallery(),library(),apprPane()])}${procCard("r17u_dash")}</div>`}
+DATA.screen("r17u_dash",{mode:"data",entities:["incidents","changes","budget_lines","benefits","services","demand","agents","invoices","projects","reports"],note:"PR-32 B3: other tenants: templates built from their own registries through DATA"});
 REG("r17u_dash","Dashboards","strat","M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z",render_);
 /* ---------------- drill-down ---------------- */
 function drill(tid,key){const d=cur(),t=d.tiles.find(x=>x.id===tid);if(!t)return;const c=D.compute(t,F());if(c.err)return;

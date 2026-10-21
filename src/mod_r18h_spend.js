@@ -88,7 +88,32 @@ function allocBody(mine){const x=allocModel(mine);const row=(lab,sub,a,f)=>`<tr>
  return `<div class="screen r18-screen">${hero("Budget and spend traceability · "+H(mine)+" purview","How your spend lines up with the enterprise allocations","Your function does not own a spending domain, so this shows what you own directly and the shared technology cost allocated to you by headcount, set against an even share of the enterprise. Allocation by headcount is a modeled working assumption, not a charge-back policy.")}
  ${typeof kpiRow==="function"?kpiRow([["Your function",x.hc+" staff",(x.share*100).toFixed(1)+"% of the enterprise"],["Cost to run it",usd(x.totF),"forecast"],["Even per-head share",usd(x.evenF),"modeled"],["Against an even share",fv(diff),"modeled",{cls:diff>5?"warn":""}]]):""}
  <section class="card glass"><div class="cardhead"><div><h3>Your spend against the enterprise allocation</h3><span class="muted small">Modeled. Direct lines are budget lines whose owner is in your reporting line. The shared pool is cloud and licence cost held in IT operations.</span></div></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Component</th><th class="n">Approved</th><th class="n">Forecast</th><th class="n">Against approved</th></tr></thead><tbody>${body}</tbody></table></div><p class="small muted">The enterprise totals stay with the chief executive, chief operating officer and chief financial officer.</p></section></div>`}
-function screen(){const pv=purview();
+/* ---------- PR-32 B3: under a tenant other than core the spend view is built from that tenant's budget lines and cost centers through
+   DATA: a line belongs to the cost center its budget owner runs (owner, else backup), a cost center to the person who owns it, so nothing
+   is counted twice; lines whose owner runs no cost center are shown as unmapped. Sample figures (simulated). R18.spend.stats follows. ---------- */
+function tModel(){const L=DATA.get("budget_lines"),CC=DATA.get("cost_centers");const ccOf=l=>CC.find(c=>c.owner===l.own)||CC.find(c=>c.backup===l.own)||null;
+ const by={};CC.forEach(c=>by[c.code]={k:c.code,dom:c.name||c.code,exec:c.owner||"",bak:c.backup||"",cc:c.code,appr:0,comm:0,act:0,fcst:0,lines:[]});
+ const un={k:"",dom:"Not mapped to a cost center",exec:"",cc:"",appr:0,comm:0,act:0,fcst:0,lines:[]};
+ L.forEach(l=>{const c=ccOf(l);const d=c?by[c.code]:un;["appr","comm","act","fcst"].forEach(f=>d[f]+=+l[f]||0);d.lines.push(l)});
+ const rows=Object.values(by).concat(un.lines.length?[un]:[]).map(r=>Object.assign(r,{var:varPct(r.fcst,r.appr)}));
+ const A=sum(rows,"appr"),F=sum(rows,"fcst");const ex={};rows.forEach(r=>{const k=r.exec||"Unassigned";(ex[k]=ex[k]||{exec:k,rows:[],appr:0,fcst:0});ex[k].rows.push(r);ex[k].appr+=r.appr;ex[k].fcst+=r.fcst});
+ return{A,F,v:varPct(F,A),rows,execs:Object.values(ex),unowned:rows.filter(r=>!r.exec).length,L}}
+function tScreen(){const X=window.STN||{},st=tModel(),info=DATA.tenantInfo()||{},lead=(info.lead||{}).n||"";const tb=(c,r)=>X.table?X.table(c,r):"";const own=(o,b,rec)=>X.own?X.own(o,b,rec):"";
+ const n=v=>`<span class="num">${usd(v)}</span>`,vp=v=>pill(fv(v),tone(v));const worst=st.rows.slice().sort((a,b)=>b.var-a.var)[0]||{dom:"",var:0};
+ const org=card("Spend along the org chart","Starts at the executive of "+H(info.org||"the company")+" and follows each cost center to the people who own its budget lines",tb(["Org chart","Cost center","Approved","Actual","Forecast","Against approved"],
+  [[`<b>${H(lead||info.org||"")}</b><small class="muted"> ${H((info.lead||{}).t||"")}</small>`,"",n(st.A),n(sum(st.rows,"act")),n(st.F),vp(st.v)]].concat(...st.rows.map(r=>[[`<b>${H(r.dom)}</b>`,H(r.cc),n(r.appr),n(r.act),n(r.fcst),vp(r.var)]].concat(
+   Object.values(r.lines.reduce((o,l)=>{const x=o[l.own]=o[l.own]||{n:l.own,appr:0,act:0,fcst:0};x.appr+=+l.appr||0;x.act+=+l.act||0;x.fcst+=+l.fcst||0;return o},{})).map(o=>[`<span class="muted small">Budget owner</span> ${ownerChip(o.n,{role:"Budget owner"})}`,"",n(o.appr),n(o.act),n(o.fcst),vp(varPct(o.fcst,o.appr))]))))));
+ const exe=card("Spend by executive","Each cost center belongs to the person who owns it, so no dollar is counted twice",tb(["Owner","Cost centers","Approved","Forecast","Against approved"],st.execs.map(e=>[e.exec==="Unassigned"?`<span class="muted">Unassigned</span>`:ownerChip(e.exec,{role:"Cost center owner"}),e.rows.map(r=>H(r.dom)).join(", "),n(e.appr),n(e.fcst),vp(varPct(e.fcst,e.appr))])));
+ const dom=card("Spend by domain","Cost centers of "+H(info.org||"this company"),tb(["Cost center","Code","Approved","Committed","Actual","Forecast","Against approved"],st.rows.slice().sort((a,b)=>b.fcst-a.fcst).map(r=>[`<b>${H(r.dom)}</b>`,H(r.cc),n(r.appr),n(r.comm),n(r.act),n(r.fcst),vp(r.var)])));
+ const cats=[...new Set(st.L.map(l=>l.cat).filter(Boolean))];
+ const typ=card("Spend by type","Budget line categories across every cost center",tb(["Type","Lines","Approved","Actual","Forecast","Against approved"],cats.map(c=>{const l=st.L.filter(x=>x.cat===c);const a=sum(l,"appr"),f=sum(l,"fcst");return[`<b>${H(c)}</b>`,String(l.length),n(a),n(sum(l,"act")),n(f),vp(varPct(f,a))]})));
+ const own_=card("Domains and owners","Cost centers, owners and backups",DATA.get("cost_centers").length?tb(["Cost center","Code","Owner and backup","Status"],DATA.get("cost_centers").map(c=>[`<b>${H(c.name)}</b>`,H(c.code),own(c.owner,c.backup,"cost_center:"+c.code),H(c.st||"")])):(X.gap?X.gap("cost_centers"):TREAD.gap("cost_centers")));
+ return `<div class="screen r18-screen">${X.head?X.head("Budget and spend traceability","Where the money goes across "+H(info.org||"the company"),`Forecast <b>${usd(st.F)}</b> against <b>${usd(st.A)}</b> approved (${fv(st.v)}) across ${st.rows.length} cost centers and ${st.L.length} budget lines. Sample figures, simulated.`):""}
+ ${kpiRow([["Approved",usd(st.A),"all cost centers"],["Forecast",usd(st.F),"all cost centers"],["Forecast against approved",fv(st.v),"company",{cls:st.v>5?"crit":st.v>0?"warn":""}],["Largest overrun",H(worst.dom),fv(worst.var)+" against approved",{cls:worst.var>5?"warn":""}]])}
+ ${st.L.length?views("r18spv",["By org chart","By executive","By domain","By type","Domains and owners"],[org,exe,dom,typ,own_]):(X.gap?X.gap("budget_lines"):TREAD.gap("budget_lines"))}
+ ${procCard("r18_spend")}</div>`}
+const _stats=R18.spend.stats;R18.spend.stats=function(){if(!TREAD.core()){const m=tModel();return{A:m.A,F:m.F,v:m.v,execs:m.execs,unowned:m.unowned,rows:m.rows}}return _stats.apply(this,arguments)};
+function screen(){if(!TREAD.core())return tScreen();const pv=purview();
  if(pv.none)return allocBody(pv.mine);
  if(pv.scoped)CUR={keys:new Set(pv.own.map(r=>r.k))};
  try{return screenBody(pv.st,pv.scoped)}finally{CUR=null}}
@@ -99,6 +124,7 @@ function screenBody(st,scoped){const mine=me();const my=st.execs.find(e=>e.exec=
  ${typeof kpiRow==="function"?kpiRow([["Approved",usd(st.A),"all domains"],["Forecast",usd(st.F),"all domains"],["Forecast against approved",fv(st.v),"enterprise",{cls:st.v>5?"crit":st.v>0?"warn":""}],["Largest overrun",worst.dom,fv(worst.var)+" against approved",{cls:worst.var>5?"warn":""}]]):""}
  ${scoped?"":note}${typeof views==="function"?(scoped?views("r18spv",["By domain","By type"],[byDomainTab(st),byTypeTab()]):views("r18spv",["By org chart","By executive","By domain","By type","Domains and owners"],[byOrgTab(st),byExecTab(st),byDomainTab(st),byTypeTab(),ownersTab()])):byExecTab(st)}
  ${typeof procCard==="function"?procCard("r18_spend"):""}</div>`}
+DATA.screen("r18_spend",{mode:"data",entities:["budget_lines","cost_centers","people"],note:"PR-32 B3: other tenants: cost centers and budget lines through DATA"});
 REG("r18_spend","Enterprise spend","money","M12 2v20M17 6.5C17 4.6 14.8 4 12 4S7 5 7 7c0 4.5 10 2.5 10 7 0 2.2-2.2 3-5 3s-5-.9-5-3",screen);
 
 D.addEventListener("change",e=>{const t=e.target;if(!t.closest)return;

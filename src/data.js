@@ -45,8 +45,37 @@ const EDGES=[["O1","P1","advances"],["O2","P1","advances"],["P1","PR1","contains
 const TYPES={obj:["Objective","--p1"],port:["Portfolio","--u3"],proj:["Project","--p4"],bud:["Budget line","--w1"],con:["Contract","--s3"],inv:["Invoice","--e4"],svc:["Service","--p5"],inc:["Incident","--e1"],kb:["Knowledge","--u4"],risk:["Risk","--w3"]};
 /* attribute roles: story = part of the narrative, metric = measured, none = not in any story or metric */
 const ROLE={Owner:"story",Horizon:"story",Budget:"metric",Health:"metric",Projects:"metric",Sponsor:"story",Milestone:"story",Approved:"metric",Committed:"metric",Paid:"metric",Term:"story",Rate:"metric",PO:"story",Due:"story",Recommendation:"story",Likelihood:"metric",Impact:"metric",Tier:"story",Hosting:"story",Opened:"story",Version:"story",Reviewed:"metric"};
-const N=id=>NODES.find(n=>n.id===id);
-const nbrs=id=>EDGES.filter(e=>e[0]===id||e[1]===id).map(e=>({o:e[0]===id?e[1]:e[0],l:e[2],out:e[0]===id}));
+/* ---- PR-32 B2: shared tenant reads for the core files (R16 to R18). strict(): a tenant other than core is active and the open
+   screen is registered mode "data" (DATA.screen), so the shared helpers (metric chips, people, processes, the work index, node
+   lookups) read only that tenant's rows through DATA.get and show a labeled gap for anything it does not have (R18). Under core,
+   and on screens that are not tenant-aware yet, they read the Meridian sources exactly as before. rows(entity, part) is the
+   active tenant's rows of one entity, optionally one part (TENANT_ENTITIES.part). ---- */
+const TREAD=window.TREAD=(()=>{const R={};
+ R.core=()=>{try{return !window.DATA||DATA.tenant()==="core"}catch(e){return true}};
+ R.strict=()=>{try{return !R.core()&&DATA.screenMode(typeof S!=="undefined"&&S?S.screen:"")==="data"}catch(e){return false}};
+ R.partOf=(entity,r)=>!r?null:(r.part!=null?r.part:(window.TENANT_ENTITIES?TENANT_ENTITIES.part(entity,r):null));
+ R.rows=(entity,part)=>{let rows=[];try{rows=DATA.get(entity)||[]}catch(e){rows=[]}if(part==null)return rows;const ps=[].concat(part);return rows.filter(r=>ps.indexOf(R.partOf(entity,r))>=0)};
+ R.GAP="No data in this sample company yet";
+ /* audit(): how the active tenant's records connect (TENANT_ENTITIES links, owner pairs and people), for the connection screens */
+ R.audit=()=>{const TE=window.TENANT_ENTITIES;const out={ents:[],links:[],pairs:{rows:0,noBackup:[],same:[],notPerson:[]},people:{n:0,bad:[]}};if(!TE)return out;
+  const keyOf=e=>{const d=TE.get(e);return d?d.key:"id"};const ix={};
+  const has=(e,f,v)=>{const k=e+"|"+(f||"");if(!ix[k]){const kf=f||keyOf(e);ix[k]=new Set(R.rows(e).map(r=>r&&r[kf]).filter(x=>x!=null).map(String))}return ix[k].has(String(v))};
+  const pn=new Set(),pi=new Set();R.rows("people").forEach(p=>{if(p&&p.name)pn.add(p.name);if(p&&p.id)pi.add(p.id)});
+  TE.list().forEach(d=>{const rows=R.rows(d.entity),key=d.key;out.ents.push({entity:d.entity,label:d.label,area:d.area,rows:rows.length,parts:TE.parts(d.entity,rows)});
+   TE.links(d.entity).forEach(l=>{const f=l[0],to=l[1],o=l[2]||{};let n=0;const bad=[];
+    rows.forEach(r=>{if(!r||(o.part&&R.partOf(d.entity,r)!==o.part))return;const v=r[f];if(v==null||v==="")return;
+     (Array.isArray(v)?v:[v]).forEach(x=>{if(x==null||x===""||typeof x==="object")return;n++;if(!has(to,o.by,x))bad.push({row:r[key],v:x})})});
+    if(n)out.links.push({from:d.entity,field:f,to,n,bad})});
+   TE.pairs(d.entity).forEach(pr=>{const part=pr[0],of=pr[1],bf=pr[2];rows.forEach(r=>{if(!r||(part&&R.partOf(d.entity,r)!==part))return;const o=r[of];if(o==null||o==="")return;out.pairs.rows++;
+    const b=bf?r[bf]:null,id={entity:d.entity,row:r[key],owner:o,backup:b};if(!pn.has(o))out.pairs.notPerson.push(id);if(bf&&(b==null||b===""))out.pairs.noBackup.push(id);else if(bf&&b===o)out.pairs.same.push(id)})});
+   TE.people(d.entity).forEach(pp=>{const part=pp[0],f=pp[1],by=pp[2];rows.forEach(r=>{if(!r||(part&&R.partOf(d.entity,r)!==part))return;const v=r[f];if(v==null||v==="")return;out.people.n++;
+    if(!(by==="id"?pi.has(v):pn.has(v)))out.people.bad.push({entity:d.entity,row:r[key],v})})})});
+  return out};
+ R.gap=what=>`<span class="pill mute" data-tenant-gap="${String(what||"").replace(/[^a-z0-9_-]/gi,"")}" title="The gap is recorded. Rows from another company are never shown in their place.">${R.GAP}</span>`;
+ return R})();
+/* node lookups: the tenant's trace links (nodes and edges) on a tenant-aware screen, the Meridian graph otherwise */
+const N=id=>TREAD.strict()?TREAD.rows("trace_links","node").find(n=>n.id===id):NODES.find(n=>n.id===id);
+const nbrs=id=>(TREAD.strict()?TREAD.rows("trace_links","edge").map(e=>[e.from,e.to,e.rel]):EDGES).filter(e=>e[0]===id||e[1]===id).map(e=>({o:e[0]===id?e[1]:e[0],l:e[2],out:e[0]===id}));
 
 /* ---- process flow: lanes by owner, numbered steps, like the Standards flow ---- */
 const LANES=[["strat","Strategy and portfolio","--u3"],["deliv","Delivery (PMO)","--p4"],["fin","Finance","--w1"],["vend","Vendors","--s3"],["ops","Operations","--e4"]];
@@ -196,7 +225,7 @@ const KGE=[["std1","par1","contains"],["std1","par2","contains"],["par1","pol1",
  /* cross-links into the delivery graph: the same engine reaches contracts, invoices and services */
  ["ci2","V1","holds contract"],["ci2","V2","holds contract"],["S1","K1","documented in"],["S1","INC1","degrades into"]];
 const ALLN=()=>[...NODES.map(n=>({...n,x:null})),...KGN];
-const ANODE=id=>KGN.find(n=>n.id===id)||NODES.find(n=>n.id===id);
+const ANODE=id=>KGN.find(n=>n.id===id)||N(id);
 const ALLE=()=>[...EDGES,...KGE,...(window.KG_EXTRA||[])];
 const KSCEN=[["std1","standards board amends Standard 842 (hypothetical amendment, effective Jan 1, 2027)"],["ci1","Replace the lease subledger"],["ci2","Contract repository maintenance window"],["S1","Standards Portal major release"],["pol1","Rewrite the lease accounting policy"]];
 const TREE=[["Accounting",[["Policies",[["Lease Accounting Policy v4.docx","linked","f1"],["Capitalization Threshold Policy v2.docx","linked","pol2"],["Revenue Recognition Policy v3.docx","unlinked"]]],["Checklists",[["Lease classification checklist.xlsx","linked","f2"],["Month-end close checklist.xlsx","suggest","sop2","Month-end close for leases (88%)"]]],["Standards",[["Standard 842 summary.pdf","suggest","std1","Standard 842 Leases (96%)"],["public-sector standards board 87 comparison.pdf","unlinked"]]]]],["Vendor management",[["Lumen SOW-4 signed.pdf","suggest","V2","Lumen Data Partners SOW-4 (93%)"],["Vendor scorecard template.xlsx","unlinked"]]],["IT operations",[["Portal failover runbook v7.docx","linked","K1"],["Change request template.docx","unlinked"]]]];

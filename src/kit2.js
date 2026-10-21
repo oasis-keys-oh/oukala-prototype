@@ -50,7 +50,17 @@ window.DIR=DIR;window.TEAMS=TEAMS;
 /* who: Map index over DIR (name and id, first match in DIR order wins, as DIR.find did). Rebuilt when DIR length changes or a hit no longer matches; a miss falls back to the scan so renamed entries are still found. */
 let WIX=null,WIXN=-1;
 const whoIdx=()=>{if(WIX&&WIXN===DIR.length)return WIX;const m=new Map();DIR.forEach((d,i)=>{if(d.name!=null&&!m.has(d.name))m.set(d.name,i);if(d.id!=null&&!m.has(d.id))m.set(d.id,i)});WIX=m;WIXN=DIR.length;return m};
-const who=n=>{if(!n)return null;const k=ALIAS[n]||n;let i=whoIdx().get(k);if(i!==undefined){const d=DIR[i];if(d&&(d.name===k||d.id===k))return d;WIX=null}
+/* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict, data.js) people, teams and agents come from that tenant's
+   rows through DATA.get, seen through a view with the fields the directory helpers draw (kind "agent" reads as the AI kind); a name
+   the tenant does not have resolves to nobody. Under core and on other screens the Meridian directory, exactly as before. */
+const PVIEW=new WeakMap();
+const personView=r=>{if(!r)return null;let v=PVIEW.get(r);if(v)return v;const k=r.kind==="agent"?"ai":(r.kind||"human");
+ v=Object.assign(Object.create(r),{kind:k,skills:Array.isArray(r.skills)?r.skills:[],hrs:r.hrs||(k==="ai"||k==="robot"?168:40),rate:r.rate||0,loc:r.loc||"",role:r.role||"",team:r.team||""});PVIEW.set(r,v);return v};
+const dirNow=()=>TREAD.strict()?TREAD.rows("people").map(personView):DIR;
+const teamsNow=()=>TREAD.strict()?TREAD.rows("teams"):TEAMS;
+const agentOf=r=>TREAD.strict()?(TREAD.rows("agents").find(a=>a&&(a.person===r.id||a.n===r.name))||null):AGENTS.find(a=>a.id===r.agent);
+Object.assign(TREAD,{person:personView,people:dirNow,teams:teamsNow,agentOf});
+const who=n=>{if(!n)return null;if(TREAD.strict()){const r=TREAD.rows("people").find(x=>x&&(x.name===n||x.id===n));return r?personView(r):null}const k=ALIAS[n]||n;let i=whoIdx().get(k);if(i!==undefined){const d=DIR[i];if(d&&(d.name===k||d.id===k))return d;WIX=null}
  const d=DIR.find(x=>x.name===k||x.id===k)||null;if(d)WIX=null;return d};
 window.who=who;
 /* make every module see the added people in forms (PEOPLE is the kit's assignable list) */
@@ -59,7 +69,7 @@ window.who=who;
 /* ---------------- avatars (illustrated, deterministic, no external images) ---------------- */
 const SKIN=["#f3d2b8","#e8b894","#d39e78","#b97d56","#8d5a3a","#6b4128"],HAIR=["#2b2118","#4a3222","#6b4a2e","#8a6a3d","#b89455","#1d1a1a","#7d7d86","#a0502d"],BG=["#cfe3ea","#e1d6ee","#f2dfc6","#d3ead7","#f0d3d6","#d5dcf2","#e8e3c6","#cdebe6"],SHIRT=["#2f6b86","#6a4c93","#c9703a","#3f8a5a","#a8434f","#3d56a0","#8a7a2f","#2c7f78"];
 function avSVG(r,size){const rnd=RNG(r.name);const pick=a=>a[Math.floor(rnd()*a.length)];const bg=pick(BG),sh=pick(SHIRT),skin=pick(SKIN),hair=pick(HAIR),style=Math.floor(rnd()*6),gl=rnd()<.28;const s=size;
- if(r.kind==="ai"){const c1=["#6a5acd","#2f9e9a","#c86b3c","#4d7cc9","#9a4fa3","#3c9a5f"][Math.floor(rnd()*6)];return `<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><rect width="64" height="64" fill="${bg}"/><circle cx="32" cy="34" r="22" fill="${c1}" opacity=".18"/><line x1="32" y1="9" x2="32" y2="17" stroke="${c1}" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="8" r="3.4" fill="${c1}"/><rect x="14" y="17" width="36" height="30" rx="12" fill="${c1}"/><rect x="19" y="24" width="26" height="16" rx="8" fill="#0f1a24" opacity=".85"/><circle cx="26.5" cy="32" r="3.2" fill="#9ff3e7"/><circle cx="37.5" cy="32" r="3.2" fill="#9ff3e7"/><rect x="22" y="49" width="20" height="9" rx="4.5" fill="${c1}" opacity=".8"/><rect x="9" y="27" width="4" height="12" rx="2" fill="${c1}"/><rect x="51" y="27" width="4" height="12" rx="2" fill="${c1}"/></svg>`}
+ if(r.kind==="ai"||r.kind==="robot"){const c1=["#6a5acd","#2f9e9a","#c86b3c","#4d7cc9","#9a4fa3","#3c9a5f"][Math.floor(rnd()*6)];return `<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><rect width="64" height="64" fill="${bg}"/><circle cx="32" cy="34" r="22" fill="${c1}" opacity=".18"/><line x1="32" y1="9" x2="32" y2="17" stroke="${c1}" stroke-width="3" stroke-linecap="round"/><circle cx="32" cy="8" r="3.4" fill="${c1}"/><rect x="14" y="17" width="36" height="30" rx="12" fill="${c1}"/><rect x="19" y="24" width="26" height="16" rx="8" fill="#0f1a24" opacity=".85"/><circle cx="26.5" cy="32" r="3.2" fill="#9ff3e7"/><circle cx="37.5" cy="32" r="3.2" fill="#9ff3e7"/><rect x="22" y="49" width="20" height="9" rx="4.5" fill="${c1}" opacity=".8"/><rect x="9" y="27" width="4" height="12" rx="2" fill="${c1}"/><rect x="51" y="27" width="4" height="12" rx="2" fill="${c1}"/></svg>`}
  if(r.kind==="msp"){const m=r.name.split(/\s+/).slice(0,2).map(x=>x[0]).join("");const c1=["#2f6b86","#6a4c93","#c9703a","#3f8a5a","#a8434f"][Math.floor(rnd()*5)];return `<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><rect width="64" height="64" rx="16" fill="${c1}"/><path d="M0 44c14-8 26 6 40-2s16-10 24-6v28H0z" fill="#fff" opacity=".13"/><circle cx="46" cy="16" r="7" fill="#fff" opacity=".2"/><text x="32" y="40" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="Hanken Grotesk,system-ui,sans-serif">${H(m)}</text></svg>`}
  const hairPaths=[`<path d="M19 27c0-9 5-14 13-14s13 5 13 14c-3-5-7-7-13-7s-10 2-13 7z" fill="${hair}"/>`,`<path d="M18 29c-1-10 5-17 14-17s15 7 14 17c-2-6-6-9-11-10-4 3-10 6-17 10z" fill="${hair}"/>`,`<path d="M17 38c-2-14 3-26 15-26s17 12 15 26c-1 4-3 5-5 5V28c-5-1-10-4-12-8-2 4-6 7-10 8v15c-2 0-3-1-3-5z" fill="${hair}"/>`,`<circle cx="32" cy="11" r="6" fill="${hair}"/><path d="M19 27c0-9 5-13 13-13s13 4 13 13c-3-5-7-7-13-7s-10 2-13 7z" fill="${hair}"/>`,`<g fill="${hair}"><circle cx="21" cy="21" r="6"/><circle cx="29" cy="15" r="7"/><circle cx="38" cy="16" r="7"/><circle cx="44" cy="23" r="6"/></g>`,`<path d="M22 38c0 7 4 10 10 10s10-3 10-10c-3 3-6 4-10 4s-7-1-10-4z" fill="${hair}"/>`];
  let g=`<svg viewBox="0 0 64 64" width="${s}" height="${s}" aria-hidden="true"><rect width="64" height="64" fill="${bg}"/>`;
@@ -72,9 +82,9 @@ function avSVG(r,size){const rnd=RNG(r.name);const pick=a=>a[Math.floor(rnd()*a.
  return g+"</svg>"}
 function avatar(name,o){o=o||{};const r=typeof name==="object"?name:(who(name)||{name:String(name||"?"),kind:"human"});const s=o.size||36;const k=r.kind||"human";
  const badge=k==="ai"?"AI":k==="contractor"?"C":k==="msp"?"M":"";
- return `<span class="avx k-${k}" style="width:${s}px;height:${s}px" title="${H(r.name)}${k!=="human"?" · "+KINDS[k]:""}">${avSVG(r,s)}${badge&&s>=28?`<b class="kb">${badge}</b>`:""}</span>`}
+ return `<span class="avx k-${k}" style="width:${s}px;height:${s}px" title="${H(r.name)}${k!=="human"?" · "+(KINDS[k]||(k==="robot"?"Robot":k)):""}">${avSVG(r,s)}${badge&&s>=28?`<b class="kb">${badge}</b>`:""}</span>`}
 window.avatar=avatar;
-const kindPill=k=>`<span class="kindpill ${k}"><i></i>${KINDS[k]}</span>`;
+const kindPill=k=>`<span class="kindpill ${k}"><i></i>${KINDS[k]||(k==="robot"?"Robot":k)}</span>`;
 window.kindPill=kindPill;
 function pchip(name,o){o=o||{};const r=who(name);return `<button type="button" class="pchipx" data-person="${H(r?r.name:name)}">${avatar(name,{size:o.size||26})}<span>${H(r?r.name:name)}${o.role&&r?` <small>${H(r.role)}</small>`:""}</span></button>`}
 window.pchip=pchip;
@@ -91,8 +101,14 @@ WORK.push({kind:"Invoices to approve",tag:"INV",fn:n=>INVOICES.filter(i=>i.st!==
    Code that changes work and reads it back in the same task calls workFor.clear(). */
 const WFC=new Map(),WFI=new Set();let WFV=-1,WFT=0,WFH=0;
 const wfClear=()=>{WFC.clear();WFT=0;WFI.forEach(f=>f())};
+/* PR-32 B2: on a tenant-aware screen under another tenant the work index is that tenant's open work items (DATA.get("work_items"))
+   owned by the person, grouped by kind; the Meridian providers are not asked, so no other company's work appears. */
+const tenantWork=n=>{const g={},out=[];TREAD.rows("work_items").filter(w=>w&&w.owner===n&&w.st!=="done").forEach(w=>{const kd=w.kind||"Work";
+ if(!g[kd]){g[kd]={kind:kd,tag:w.tag||"WORK",rows:[]};out.push(g[kd])}
+ g[kd].rows.push({id:w.id,t:w.t||w.n||w.id,sub:w.src||"",due:w.due||"",st:w.risk==="high"?"bad":w.risk==="med"?"warn":"info",hrs:+w.h||1,go:()=>go("tn_projects")})});return out};
 const workFor=n=>{if(!WFH&&window.HOOKS&&HOOKS.on){WFH=1;HOOKS.on("beforeGo",wfClear,{id:"workFor-memo"});HOOKS.on("afterRender",wfClear,{id:"workFor-memo"})}
- const v=window.DATA?DATA.version:0;if(v!==WFV){wfClear();WFV=v}const k=String(n);const c=WFC.get(k);if(c)return c;
+ const v=window.DATA?DATA.version:0;if(v!==WFV){wfClear();WFV=v}const st=TREAD.strict(),k=String(n)+(st?"|tenant":"");const c=WFC.get(k);if(c)return c;
+ if(st){const o=tenantWork(n);WFC.set(k,o);if(!WFT){WFT=1;setTimeout(wfClear,0)}return o}
  const out=[];WORK.forEach(w=>{let rows=[];try{rows=w.fn(n,who(n))||[]}catch(e){}if(rows.length)out.push({kind:w.kind,tag:w.tag,rows})});
  WFC.set(k,out);if(!WFT){WFT=1;setTimeout(wfClear,0)}return out};
 workFor.clear=wfClear;
@@ -112,21 +128,21 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-dexpand]")
 
 /* ---------------- person 360 ---------------- */
 function person360(name){const r=who(name);if(!r){toast("No profile for "+name,"warn");return}
- const wl=workload(r.name),W=workFor(r.name);const rnd=RNG(r.name+"perf");const mgr=r.mgr?who(r.mgr):null;const team=TEAMS.find(t=>t.n===r.team);
- const peers=DIR.filter(d=>d.kind===r.kind&&d.team===r.team&&d.name!==r.name).map(d=>({d,w:workload(d.name)})).sort((a,b)=>a.w.pct-b.w.pct);
+ const wl=workload(r.name),W=workFor(r.name);const rnd=RNG(r.name+"perf");const mgr=r.mgr?who(r.mgr):null;const team=teamsNow().find(t=>t.n===r.team);
+ const peers=dirNow().filter(d=>d.kind===r.kind&&d.team===r.team&&d.name!==r.name).map(d=>({d,w:workload(d.name)})).sort((a,b)=>a.w.pct-b.w.pct);
  const verdict=r.kind==="msp"?(wl.pct>85?["bad","Near contract capacity: expect queue growth; raise a change order or shift work"]:["good","Within contracted capacity"]):wl.pct<75?["good",`Yes, about ${Math.round((75-wl.pct)/100*r.hrs)} hours a week of room`]:wl.pct<=95?["warn","Borderline: take new work only if something moves"]:["bad","No: already above sustainable load"+(peers[0]?`; ${peers[0].d.name} is at ${peers[0].w.pct}%`:"")];
  const stat=(l,v,sub,cls)=>`<div class="stat ${cls||""}"><small>${l}</small><span class="num" data-role="metric">${v}</span><em>${sub}</em></div>`;
  const perf=[["On-time delivery",Math.round(80+rnd()*18),"items finished by due date ÷ items finished"],["Quality (rework free)",Math.round(78+rnd()*20),"items accepted first time ÷ items delivered"],["SLA and OLA adherence",Math.round(84+rnd()*14),"items within target time ÷ items with a target"],["Collaboration",Math.round(70+rnd()*26),"peer feedback score, last 4 quarters"]];
  const peerAvg=[88,90,91,82];
  const pb=(l,v,f,i)=>`<div style="margin:12px 0"><div class="row sp"><b>${l}</b><span class="num" data-role="metric">${v}%</span></div><div class="loadbar"><u style="width:${v}%;background:${v>=peerAvg[i]?"var(--good-f)":v>=peerAvg[i]-6?"var(--warn-f)":"var(--bad-f)"}"></u></div><div class="row sp muted small"><span>${f}</span><span>peer median ${peerAvg[i]}%</span></div></div>`;
  const lrg=W.map(g=>({key:g.kind,label:g.kind,rows:g.rows.map(x=>({id:x.id,t:x.t,sub:x.sub,tag:x.due||x.tag||"",st:x.st,go:x.go}))}));
- const own=r.kind==="human"?"":r.kind==="ai"?"Owner: "+((AGENTS.find(a=>a.id===r.agent)||{}).owner||"PMO"):"Contract "+(r.contract||"");
+ const own=r.kind==="human"?"":r.kind==="ai"?"Owner: "+((agentOf(r)||{}).owner||"PMO"):"Contract "+(r.contract||"");
  const tabs=["Overview","On their plate","Performance"].concat(P360_TABS.map(t=>t.label));const panes=[
-  `<div class="p360grid">${stat("Load",wl.pct+"%",wl.hrs+" of "+wl.cap+" hours a week",wl.pct>95?"crit":"")}${stat("Open items",wl.items,"across "+W.length+" areas")}${stat("Skills",r.skills.length,"in the skills database")}${stat(r.kind==="human"?"Next time off":r.kind==="ai"?"Autonomy":"Contract ends",r.kind==="human"?"Nov 24":r.kind==="ai"?((AGENTS.find(a=>a.id===r.agent)||{}).auto!=null?AUTO_LEVELS[Math.max(0,(AGENTS.find(a=>a.id===r.agent)||{}).auto)]||"Suggest":"Act with approval"):(r.end?new Date(r.end+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"Open"),r.kind==="human"?"approved PTO, 3 days":r.kind==="ai"?"set in AI Control Tower":r.contract||"")}</div>
+  `<div class="p360grid">${stat("Load",wl.pct+"%",wl.hrs+" of "+wl.cap+" hours a week",wl.pct>95?"crit":"")}${stat("Open items",wl.items,"across "+W.length+" areas")}${stat("Skills",r.skills.length,"in the skills database")}${stat(r.kind==="human"?"Next time off":r.kind==="ai"?"Autonomy":"Contract ends",r.kind==="human"?"Nov 24":r.kind==="ai"?((agentOf(r)||{}).auto!=null?AUTO_LEVELS[Math.max(0,(agentOf(r)||{}).auto)]||"Suggest":"Act with approval"):(r.end?new Date(r.end+"T00:00:00Z").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}):"Open"),r.kind==="human"?"approved PTO, 3 days":r.kind==="ai"?"set in AI Control Tower":r.contract||"")}</div>
    <div class="row" style="margin:8px 0"><span class="pill ${verdict[0]}">${verdict[0]==="good"?"Can take more":verdict[0]==="warn"?"Borderline":"At capacity"}</span><span class="muted">${verdict[1]}</span></div>
    <div class="loadbar" style="margin:8px 0 18px"><u style="width:${Math.min(100,wl.pct)}%;background:${wl.pct>95?"var(--bad-f)":wl.pct>75?"var(--warn-f)":"var(--good-f)"}"></u></div>
    <div class="eyebrow">Skills</div><div class="row" style="margin:8px 0 14px">${r.skills.map(s=>`<span class="pill info">${H(s)}</span>`).join("")||'<span class="muted">None recorded</span>'}</div>
-   <dl class="kv"><dt>Type</dt><dd>${kindPill(r.kind)}</dd><dt>Role</dt><dd>${H(r.role)}</dd><dt>Team</dt><dd>${H(r.team||"")}</dd>${r.org&&r.kind!=="human"?`<dt>Organization</dt><dd>${H(r.org)}</dd>`:""}${mgr?`<dt>Reports to</dt><dd>${window.ownerChip?ownerChip(mgr.name,{role:"Manager"}):pchip(mgr.name)}</dd>`:""}${r.contract?`<dt>Contract</dt><dd>${H(r.contract)}${r.sla?" · "+H(r.sla):""}</dd>`:""}${r.rate?`<dt>Rate</dt><dd class="num">$${r.rate} an hour</dd>`:""}${r.loc?`<dt>Location</dt><dd>${H(r.loc)}</dd>`:""}${r.email?`<dt>Email</dt><dd>${H(r.email)}</dd>`:""}${own?`<dt>Accountable</dt><dd>${r.kind==="ai"&&window.ownerChip?ownerChip((AGENTS.find(a=>a.id===r.agent)||{}).owner||"PMO",{role:"Sponsor"}):H(own)}</dd>`:""}</dl>
+   <dl class="kv"><dt>Type</dt><dd>${kindPill(r.kind)}</dd><dt>Role</dt><dd>${H(r.role)}</dd><dt>Team</dt><dd>${H(r.team||"")}</dd>${r.org&&r.kind!=="human"?`<dt>Organization</dt><dd>${H(r.org)}</dd>`:""}${mgr?`<dt>Reports to</dt><dd>${window.ownerChip?ownerChip(mgr.name,{role:"Manager"}):pchip(mgr.name)}</dd>`:""}${r.contract?`<dt>Contract</dt><dd>${H(r.contract)}${r.sla?" · "+H(r.sla):""}</dd>`:""}${r.rate?`<dt>Rate</dt><dd class="num">$${r.rate} an hour</dd>`:""}${r.loc?`<dt>Location</dt><dd>${H(r.loc)}</dd>`:""}${r.email?`<dt>Email</dt><dd>${H(r.email)}</dd>`:""}${own?`<dt>Accountable</dt><dd>${r.kind==="ai"&&window.ownerChip?ownerChip((agentOf(r)||{}).owner||"PMO",{role:"Sponsor"}):H(own)}</dd>`:""}</dl>
    <div class="row" style="margin-top:14px"><button class="btn primary" data-person-assign="${H(r.name)}">Assign work</button><button class="btn" data-own-msg="person:${H(r.name)}">Message</button><button class="btn" data-person-ask="${H(r.name)}">Ask ${BRAND.name} about ${H(r.name.split(" ")[0])}</button></div>`,
   `${lrHTML({id:"p360-"+r.id,groups:lrg,limit:6,search:true,empty:"Nothing assigned right now."})}`,
   `<div class="row" style="margin:0 0 6px"><span class="pill ${perf[0][1]>=88?"good":"warn"}" data-role="metric">On-time delivery ${perf[0][1]}% vs peer median 88% (${perf[0][1]-88>=0?"+":""}${perf[0][1]-88} pts)</span>${r.kind==="ai"?'<span class="pill mute">+ guardrail hits, cost per task</span>':""}</div>${perf.map((p,i)=>pb(p[0],p[1],p[2],i)).join("")}<p class="muted small">Baselines come from the peer median for the same role and team over four quarters. Reviews and goals live in Org chart and workload.</p>`
@@ -269,9 +285,15 @@ window.stdChip=(key,detail)=>{const s=STD[key];if(!s)return"";const id=pid();ret
 
 /* ---------------- process strips: every screen shows the process behind it; admins can edit ---------------- */
 const PROC={defs:{},reg(screen,def){this.defs[screen]=def}};window.PROC=PROC;
-window.procCard=function(screen,opts){opts=opts||{};const d=PROC.defs[screen];if(!d)return"";const ed=S.proc[screen]||d.steps;
+/* PR-32 B2: the process behind a screen is tenant data (entity processes). On a tenant-aware screen under another tenant it is that
+   tenant's process for the screen (a pack row with screen and steps); without one the card says so (a labeled gap, R18) and no other
+   company's process is shown. Under core and on other screens the Meridian model in PROC.defs, exactly as before. */
+const procDef=screen=>TREAD.strict()?(TREAD.rows("processes").find(p=>p&&p.screen===screen&&Array.isArray(p.steps)&&p.steps.length)||null):PROC.defs[screen];
+PROC.def=procDef;
+const procGap=screen=>`<div class="k2-procgap" data-tenant-gap="processes">${card("How this works",TREAD.GAP,`<p class="muted small">This company has no process model for this screen yet. The gap is recorded; another company's process is never shown in its place.</p>`)}</div>`;
+window.procCard=function(screen,opts){opts=opts||{};const d=procDef(screen);if(!d)return TREAD.strict()?procGap(screen):"";const ed=(TREAD.strict()?null:S.proc[screen])||d.steps;
  return card(d.title||"How this works","Each step is done by a human, a robot (a fixed rule that runs when its trigger fires) or an AI agent, or is an approval gate, and each says how it decides: by fixed rules, by AI reasoning, or by human judgment. Select a step for owner, timing and, for gates, the approval paths."+(d.std?" Aligned to "+d.std.map(k=>STD[k]?STD[k].n:k).join(", ")+".":""),`<div class="proc" data-proc="${H(screen)}">${ed.map((s,i)=>`<button class="ps ${s.who||"human"} sm-${STEPMODE.of(s.who)}" data-proc-step="${H(screen)}:${i}"><span class="who">${STEPMODE.label(s.who)}</span><b>${H(s.n)}</b><small>${H(s.d||"")}</small>${PROC.modeTag(s)}${(s.who||"human")==="gate"?PROC.fork(screen,s):""}</button>`).join("")}</div>`,`<div class="row"><button class="btn quiet" data-proc-edit="${H(screen)}">Add a step</button><button class="btn quiet" data-nav="flw_design">Open in Workflow designer</button></div>`)};
-document.addEventListener("click",e=>{let t;if(t=e.target.closest("[data-proc-step]")){const [sc,i]=t.dataset.procStep.split(":");const d=PROC.defs[sc],st=(S.proc[sc]||d.steps)[+i];openDrawer(PROC.stepHTML(sc,st));return}
+document.addEventListener("click",e=>{let t;if(t=e.target.closest("[data-proc-step]")){const [sc,i]=t.dataset.procStep.split(":");const d=procDef(sc);if(!d)return;const st=((TREAD.strict()?null:S.proc[sc])||d.steps)[+i];openDrawer(PROC.stepHTML(sc,st));return}
  if(t=e.target.closest("[data-proc-edit]")){const sc=t.dataset.procEdit;openForm({id:"k2_proc",title:"Add a process step",story:"Adds a step to this process. Admins can also draw it in the Workflow designer.",submit:"Add step",fields:[{k:"n",label:"Step name",type:"text",req:true},{k:"d",label:"What happens",type:"longtext"},{k:"who",label:"Done by",type:"chips",opts:STEPMODE.kinds().concat(["gate"]).map(k=>[k,STEPMODE.label(k)])}],defaults:{who:"human"},onSubmit:v=>{const d=PROC.defs[sc];S.proc[sc]=(S.proc[sc]||d.steps.slice()).concat([{n:v.n,d:v.d,who:v.who||"human"}]);audit("edited process",sc+": added "+v.n);toast("Step added","good");closeDrawer();render()}})}});
 
 /* ---------------- legend helper ---------------- */
@@ -399,7 +421,7 @@ document.addEventListener("click",e=>{const g=e.target.closest(".gparent");if(g)
 const esc=x=>String(x==null?"":x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 /* kpi(label,value,sub,{cls,metric,go}) : one tile style everywhere; metric = METRICS id adds an fchip */
 window.kpi=function(label,val,sub,o){o=o||{};const zero=(val===0||val==="0"||val==="$0")&&!o.keep;
- const chip=o.metric&&typeof METRICS!=="undefined"&&METRICS[o.metric]&&window.fchip?fchip(o.metric,"ƒ"):"";
+ const chip=o.metric&&typeof METRICS!=="undefined"&&(window.metricOf?metricOf(o.metric):METRICS[o.metric])&&window.fchip?fchip(o.metric,"ƒ"):"";
  return `<div class="stat ${esc(o.cls||"")}${zero?" zero":""}"><small><span>${esc(label)}</span>${chip}</small><span class="num" data-role="metric">${val}</span>${sub?`<em>${sub}</em>`:""}</div>`};
 window.kpiRow=function(items){return `<div class="statrow">${items.map(i=>kpi(i[0],i[1],i[2],i[3])).join("")}</div>`};
 /* metrics: every metric gets a unit and a remediation so the standard framework is complete */

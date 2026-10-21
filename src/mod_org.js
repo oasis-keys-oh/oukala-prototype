@@ -321,6 +321,11 @@ function stats(){return memoF("stats",()=>{
   inBand:mgrs.filter(p=>{const s=humanKids(p.n).length;return s>=3&&s<=9}).length}})}
 O.stats=stats;
 Object.assign(O,{staff:STAFF,P:n=>BY[n]||null,by:BY,names:NAMES,kids:humanKids,up:chainUp,depth:depthOf,size:orgSize,layers,RT,TM,dir:dirRec,slug,first,bump,sidebar:null,res,rev:()=>REV});
+/* PR-32 B2: ORGX.staff and ORGX.P read the active tenant on a tenant-aware screen (TREAD.strict): that tenant's people in the staff
+   shape (n, role, mgr, unit); the Meridian staff list otherwise (the same array as before). */
+const tStaff=()=>TREAD.rows("people").filter(p=>p&&p.kind==="human").map(p=>({n:p.name,role:p.role||"",mgr:null,unit:p.team||"",loc:p.loc||""}));
+Object.defineProperty(O,"staff",{configurable:true,enumerable:true,get(){return TREAD.strict()?tStaff():STAFF},set(v){}});
+O.P=n=>TREAD.strict()?(tStaff().find(p=>p.n===n)||null):(BY[n]||null);
 /* ---------- engine metrics: used on the screen and in the contract ---------- */
 const MR=(kind,ref,title,agent,prog)=>({kind,ref,title,agent,auto:false,state:"idle",prog});
 Object.assign(METRICS,{
@@ -386,14 +391,21 @@ const pid2=n=>n?slug(n):"";
 const DOMAINS=DOM_RAW.split("\n").map(l=>{const c=l.split("|");return{id:c[0],label:c[1],aliases:c[2].split(",").map(x=>x.trim()).filter(Boolean),ownerId:c[3]?pid2(c[3]):"",backupId:c[4]?pid2(c[4]):""}});
 const DOMBY={};DOMAINS.forEach(d=>DOMBY[d.id]=d);
 const PBYID={};STAFF.forEach(p=>PBYID[slug(p.n)]=p);O.PBYID=PBYID;
-const personRec=idOrName=>{if(!idOrName)return null;const k=String(idOrName);const h=PBYID[k]||PBYID[slug(k)]||null;if(h)return{id:slug(h.n),name:h.n,title:h.role,kind:"human",sponsor:null,unit:h.unit};
+/* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict) people and accountability domains are that tenant's: people
+   through DATA.get("people"), domains from its organization units (DATA.get("org_units"), owner and backup by person id). Meridian otherwise. */
+const tPersonRec=idOrName=>{const k=String(idOrName);const p=TREAD.rows("people").find(x=>x&&(x.id===k||x.name===k||slug(x.name)===k));if(!p)return null;
+ return{id:p.id,name:p.name,title:p.role||"",kind:p.kind==="agent"?"agent":p.kind==="robot"?"robot":"human",sponsor:p.sponsor||null,unit:p.team||""}};
+const tDoms=()=>TREAD.rows("org_units").map(u=>({id:u.id,label:u.label||u.id,aliases:Array.isArray(u.aliases)?u.aliases:[],ownerId:u.ownerId||"",backupId:u.backupId||""}));
+const doms=()=>TREAD.strict()?tDoms():DOMAINS;
+const domBy=id=>TREAD.strict()?(tDoms().find(d=>d.id===id)||null):DOMBY[id];
+const personRec=idOrName=>{if(!idOrName)return null;if(TREAD.strict())return tPersonRec(idOrName);const k=String(idOrName);const h=PBYID[k]||PBYID[slug(k)]||null;if(h)return{id:slug(h.n),name:h.n,title:h.role,kind:"human",sponsor:null,unit:h.unit};
  const a=agentsAll().find(x=>x.name===k||x.id===k||slug(x.name)===k);return a?{id:a.id,name:a.name,title:"AI agent",kind:"agent",sponsor:a.sponsor,unit:"AI agents"}:null};
-Object.defineProperty(O,"people",{configurable:true,enumerable:true,get(){return STAFF.map(p=>personRec(p.n)).concat(agentsAll().map(a=>personRec(a.id)))}});
+Object.defineProperty(O,"people",{configurable:true,enumerable:true,get(){if(TREAD.strict())return TREAD.rows("people").map(p=>tPersonRec(p.id)).filter(Boolean);return STAFF.map(p=>personRec(p.n)).concat(agentsAll().map(a=>personRec(a.id)))}});
 O.domains=DOMAINS;
 O.addDomain=d=>{if(!d||!d.id)return null;if(DOMBY[d.id])return DOMBY[d.id];const x=Object.assign({aliases:[],ownerId:"",backupId:""},d);DOMAINS.push(x);DOMBY[x.id]=x;try{if(O.bump)O.bump()}catch(e){}return x};
 O.person=personRec;
-O.ownerOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.ownerId):null};
-O.backupOf=id=>{const d=typeof id==="string"?DOMBY[id]:id;return d?personRec(d.backupId):null};
+O.ownerOf=id=>{const d=typeof id==="string"?domBy(id):id;return d?personRec(d.ownerId):null};
+O.backupOf=id=>{const d=typeof id==="string"?domBy(id):id;return d?personRec(d.backupId):null};
 const dview=d=>({id:d.id,label:d.label,aliases:d.aliases,ownerId:d.ownerId||null,backupId:d.backupId||null,owner:personRec(d.ownerId),backup:personRec(d.backupId),gap:!d.ownerId?"no owner":!d.backupId?"no backup":""});
 O.domainView=dview;
 function scoreDom(d,q,toks){let s=0;const L=d.label.toLowerCase();if(L===q||d.id===q)s+=100;if(L.indexOf(q)>=0)s+=40;
@@ -403,13 +415,13 @@ function scoreDom(d,q,toks){let s=0;const L=d.label.toLowerCase();if(L===q||d.id
    other modules add aliases in place); the view (owner, backup, gap) is built fresh on every call so owner changes show at once. */
 const RANKC=new Map();let RANKSIG="";
 const domSig=()=>{let a=0;for(let i=0;i<DOMAINS.length;i++)a+=(DOMAINS[i].aliases||[]).length;return DOMAINS.length+":"+a};
-const rankDomains=text=>{const q=String(text||"").toLowerCase().trim();if(!q)return [];const sig=domSig();if(sig!==RANKSIG){RANKC.clear();RANKSIG=sig}
+const rankDomains=text=>{const q=String(text||"").toLowerCase().trim();if(!q)return [];if(TREAD.strict()){const toks=q.split(/[^a-z0-9&-]+/).filter(Boolean);return tDoms().map(d=>({d,s:scoreDom(d,q,toks)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).map(x=>x.d)}const sig=domSig();if(sig!==RANKSIG){RANKC.clear();RANKSIG=sig}
  let r=RANKC.get(q);if(r)return r;const toks=q.split(/[^a-z0-9&-]+/).filter(Boolean);
  r=DOMAINS.map(d=>({d,s:scoreDom(d,q,toks)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).map(x=>x.d);if(RANKC.size>2000)RANKC.clear();RANKC.set(q,r);return r};
 O.searchDomains=text=>rankDomains(text).map(dview);
 O.byDomain=text=>{const r=rankDomains(text);return r.length?dview(r[0]):null};
-O.owns=idOrName=>{const p=personRec(idOrName);if(!p)return [];return DOMAINS.filter(d=>d.ownerId===p.id||d.backupId===p.id).map(d=>({domainId:d.id,label:d.label,role:d.ownerId===p.id?"owner":"backup",other:personRec(d.ownerId===p.id?d.backupId:d.ownerId)}))};
-O.gaps=()=>DOMAINS.filter(d=>!d.ownerId||!d.backupId).map(dview);
+O.owns=idOrName=>{const p=personRec(idOrName);if(!p)return [];return doms().filter(d=>d.ownerId===p.id||d.backupId===p.id).map(d=>({domainId:d.id,label:d.label,role:d.ownerId===p.id?"owner":"backup",other:personRec(d.ownerId===p.id?d.backupId:d.ownerId)}))};
+O.gaps=()=>doms().filter(d=>!d.ownerId||!d.backupId).map(dview);
 O.ownerLine=n=>{const r=O.owns(n).filter(x=>x.role==="owner");return r.map(x=>x.label+(x.other?" (backup: "+x.other.name+")":" (no backup)")).join("; ")};
 
 })();

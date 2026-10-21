@@ -38,6 +38,7 @@ node tools/tests/tenant_screens_b45.js build_out  # PR-32 B4, B5: portfolio, del
 node tools/tests/tenant_screens_b6.js build_out  # PR-32 B6: operations and service screens under every tenant
 # PR-32: the 58 tenant entities are defined with Meridian rows, and every industry pack carries them with links, owners and threads intact
 node tools/tests/data_entities.js build_out
+node tools/tests/tenant_screens_b23.js build_out
 node tools/tests/thread.js build_out
 # wave 3 sweep-a (CL-45, CL-44, CL-17, CL-72): no em dash, banned name, old product name or "Automatic" step label on the core and mod_admin to mod_obs screens
 node tools/tests/sweep_a.js build_out
