@@ -65,7 +65,8 @@ if(!only||only==='company'){const p=await open();
   for(const id of aware){const tabs=id==='ppl_jrny'?[...Array(await p.evaluate(()=>window.JX&&JX.TABS?JX.TABS.length:9)).keys()]:[null];
    for(const tab of tabs){const e0=p.errs.length;await p.evaluate(([id,tab])=>{if(tab!=null)S.pp2.tab[id]=tab;go(id)},[id,tab]).catch(e=>p.errs.push(id+': '+e.message));await p.waitForTimeout(80);checks++;
     /* journeys and workflows are reused from the closest sample by design (shared content, relabeled): their names are not another tenant's records */
-    const h=await p.evaluate(org=>{const skip=new Set(DATA.get('workflows').map(w=>w.name).concat(DATA.get('journeys').map(j=>j.n)));return{hits:window.__hits(window.__surface(),skip),has:window.__surface().indexOf(org)>=0}},r.org);
+    const h=await p.evaluate(org=>{const own=e=>{try{return DATA.get(e).map(r=>r.n||r.name).filter(Boolean)}catch(x){return[]}}; /* a generated company's own names never count as another tenant's */
+    const skip=new Set(DATA.get('workflows').map(w=>w.name).concat(DATA.get('journeys').map(j=>j.n),own('metrics'),own('projects'),own('objectives'),own('key_results'),own('processes')));return{hits:window.__hits(window.__surface(),skip),has:window.__surface().indexOf(org)>=0}},r.org);
     if(h.has)shown++;
     if(h.hits.length)fail(tag+' '+id+(tab!=null?' tab '+tab:'')+' shows another tenant: '+h.hits.slice(0,3).join(' | '));
     if(p.errs.length>e0)fail(tag+' '+id+' errors: '+p.errs.slice(e0).join(' | ').slice(0,300))}}
