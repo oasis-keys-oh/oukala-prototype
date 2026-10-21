@@ -37,6 +37,9 @@ const tenants=await p.evaluate(OPS=>{const fp={},own={};const esc=s=>s.replace(/
    /* operations records: ids with the tenant prefix, and names of three words or more */
    OPS.forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>{if(/^[A-Z]{2}-/.test(String(r.id||'')))add(r.id,1);['n','t','name'].forEach(f=>{const v=r[f];if(typeof v==='string'&&v.split(/\s+/).length>=3)add(v,1)})}))}
   fp[t.id]=[...terms];own[t.id]=[...mine]});
+ /* names Meridian also uses as platform definitions (a proposed table in mod_r24_ops is called "Permit to work", as is a mining
+    service): such a name identifies no tenant */
+ ['Permit to work'].forEach(x=>Object.values(fp).forEach(a=>a.push(x)));
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
  const re=x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])');
  window.__fp={};window.__own={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(re);window.__own[k]=own[k].filter(x=>cnt[x]===1).map(re)});
