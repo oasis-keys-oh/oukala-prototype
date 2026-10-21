@@ -55,6 +55,8 @@ node tools/tests/nav_usage.js build_out
 node tools/tests/nav_close.js build_out
 # PH-14: navigation architecture (areas in fixed order, purview per persona, one place per screen, old ids resolve, gear rule, budget, REG metadata and its lint)
 node tools/tests/nav_ia.js build_out
+# BR-11: gold falcon mark atop the rail, falcon-style icon on every area and fixed item, rail labels at 4.5:1 over the painted panel, reduced effects shows plain navy
+node tools/tests/rail_art.js build_out
 # DC-25: every Showroom tour beat under every tenant (no other tenant on screen, tenant-aware screens show the tenant's own data, timings)
 node tools/tests/tenant_tour.js build_out
 # CL-80: Enterprise scale is real; every screen opens at scale (render times over 800 ms are listed, not failed)

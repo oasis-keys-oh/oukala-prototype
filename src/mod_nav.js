@@ -58,6 +58,8 @@ const ICO={
 };
 const SVG=(d,sz,sw)=>`<svg viewBox="0 0 24 24" width="${sz||18}" height="${sz||18}" fill="none" stroke="currentColor" stroke-width="${sw||1.9}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
 NAVX.svg=SVG;NAVX.icons=ICO;
+/* BR-11: NAVX.railIcon (mod_s_rail_art) or the glyph here */
+const RAIL=(k,d,sz,sw)=>G(()=>NAVX.railIcon&&NAVX.railIcon(k,sz))||SVG(d,sz,sw),RIC=(k,d)=>G(()=>NAVX.railIcon&&NAVX.railIcon(k,21))||IC(d),RKEY={home:"home",showroom:"show"};
 
 const GROUPS=[
  ["home","Home",ICO.home,"Your starting point."],
@@ -729,7 +731,7 @@ const collapsed=()=>!phoneMQ.matches&&!!(q1("#railCollapse")&&q1("#railCollapse"
 function typeIcon(t){t=String(t||"");if(/person|people|contractor/i.test(t))return ICO.user;if(/process|workflow/i.test(t))return ICO.flow;if(/data|field|entity|table/i.test(t))return ICO.table;if(/metric|measure/i.test(t))return ICO.chart;if(/knowledge|article|book/i.test(t))return ICO.doc;if(/module/i.test(t))return ICO.plat;return ICO.doc}
 const BADGE={inv:3,tower:1};
 function itemHTML(id,o){o=o||{};const s=screenRow(id);if(!s)return"";const m=resolve(id),hint=o.pin?"":hintOf(id),cur=S.screen===id,lab=o.label||m.l;
- return `<div class="navit${o.pin?" nx-pin":""}" data-nx-it="${id}"${o.pin?' data-nx-pin="1"':""}><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`}
+ return `<div class="navit${o.pin?" nx-pin":""}" data-nx-it="${id}"${o.pin?' data-nx-pin="1"':""}><button class="navi" data-nav="${id}" ${cur?'aria-current="page"':""} title="${E(tip(id))}">${RKEY[id]?RIC(RKEY[id],s[2]):IC(s[2])}<span class="nx-t"><span class="nx-l">${E(lab)}</span>${hint?`<small class="nx-h">${E(hint)}</small>`:""}</span>${BADGE[id]?`<b class="badge">${BADGE[id]}</b>`:""}</button>${starBtn("screen:"+id,"nx-rowstar",lab)}</div>`}
 NAVX.itemHTML=itemHTML;
 function favRow(f){const scr=f.kind==="screen"&&screenRow(f.key);const name=f.label||(scr?labelOf(f.key):f.title);const icon=scr?IC(scr[2]):IC(typeIcon(f.type));const cur=scr&&S.screen===f.key;
  const meta=scr?"":`<small class="nx-h">${E(f.type)}${f.sub?" · "+E(f.sub):""}</small>`;
@@ -763,7 +765,7 @@ function allHTML(){const P=NAVX.purview();const q=AS.q.trim().toLowerCase();cons
  const ws=wedgeSet();const hit=id=>{if(ws&&!ws.has(id))return false;if(!q)return true;const t=TX[id]||{};return (labelOf(id)+" "+formal(id)+" "+(t.objs||[]).join(" ")+" "+(t.sub||"")).toLowerCase().indexOf(q)>=0};
  let n=0;const body=sps.map(s=>{const e=spaceIds(s[0],Object.assign({},P,{readonly:P.readonly}));const subs=Object.keys(e).map(k=>{const ids=e[k].filter(hit);n+=ids.length;if(!ids.length)return"";
    return `<div class="nx-allsub"><span class="navsub">${E(k)}</span>${ids.map(id=>{const t=TX[id]||{};return `<button type="button" class="nx-alli" data-nav="${id}" data-nx-all-go="1"><b>${E(labelOf(id))}</b>${t.objs&&t.objs.length?`<small>${E(t.objs.slice(0,3).join(", "))}</small>`:""}</button>`}).join("")}</div>`}).join("");
-  return subs?`<section class="nx-allsp" aria-label="${E(s[1])}"><h4>${SVG(s[0]==="build"?ICO.gear:s[3],15,1.9)}<span>${E(s[1])}</span>${mine.has(s[0])?"":`<em>outside your areas</em>`}</h4>${subs}</section>`:""}).join("");
+  return subs?`<section class="nx-allsp" aria-label="${E(s[1])}"><h4>${RAIL(s[0],s[0]==="build"?ICO.gear:s[3],15,1.9)}<span>${E(s[1])}</span>${mine.has(s[0])?"":`<em>outside your areas</em>`}</h4>${subs}</section>`:""}).join("");
  const chip=(v,l)=>`<button type="button" class="chip" data-nx-all-sp="${v}" aria-pressed="${AS.sp===v}">${E(l)}</button>`;
  return `<div class="nx-allh"><div><div class="eyebrow">All screens</div><h3>Every area, every screen you can open</h3><p class="muted small">Areas keep one fixed order. Views of a screen sit in its view switcher; search (Ctrl K) also finds views, tabs and records.${ws?" Wedge mode is on: only the wedge screens are listed.":""}</p></div><button type="button" class="btn quiet closebtn" popovertarget="nxAll" popovertargetaction="hide" aria-label="Close" title="Close">${SVG(ICO.x,16,2.2)}</button></div>
  <div class="nx-allf"><div class="row" role="group" aria-label="Filter by area">${chip("all","All areas")}${SPACES.filter(s=>s[0]!=="home").map(s=>chip(s[0],s[1])).join("")}</div>
@@ -793,16 +795,16 @@ function spaceBody(sp,P){const e=spaceIds(sp,P);const pins=pinsIn(sp,P);const on
  return pins.map(id=>itemHTML(id,{pin:true,label:pinLabel(id)})).join("")+Object.keys(e).map(k=>(one?"":`<span class="navsub">${E(k)}</span>`)+e[k].map(id=>itemHTML(id)).join("")).join("")}
 function groupHTML(sp,cur,P,o){o=o||{};P=P||NAVX.purview();const e=spaceIds(sp,P);const n=Object.keys(e).reduce((a,k)=>a+e[k].length,0);if(!n&&!pinsIn(sp,P).length)return"";
  S.navOpen=S.navOpen||{};const wedge=G(()=>SHOW.wedge.on(),false);const open=S.navOpen[sp]!==undefined?S.navOpen[sp]:(cur===sp||wedge);const sd=SPACES[SPID[sp]];
- return `<details class="navgd nx-area${o.gear?" nx-gear":""}" data-ng="${sp}" data-nx-sp="${sp}" ${open?"open":""}><summary title="${E(sd[4])}"><span class="nx-gi">${SVG(o.gear?ICO.gear:sd[3],15,1.9)}</span><span class="nx-gl">${E(sd[1])}</span><em class="nx-gc">${n}</em></summary>${spaceBody(sp,P)}</details>`}
-const allBtn=()=>`<button class="navi nx-allb" type="button" data-nx-all aria-haspopup="dialog" title="Every area and every screen you can open">${IC(ICO.grid)}<span>All screens</span></button>`;
+ return `<details class="navgd nx-area${o.gear?" nx-gear":""}" data-ng="${sp}" data-nx-sp="${sp}" ${open?"open":""}><summary title="${E(sd[4])}"><span class="nx-gi">${RAIL(sp,o.gear?ICO.gear:sd[3],15,1.9)}</span><span class="nx-gl">${E(sd[1])}</span><em class="nx-gc">${n}</em></summary>${spaceBody(sp,P)}</details>`}
+const allBtn=()=>`<button class="navi nx-allb" type="button" data-nx-all aria-haspopup="dialog" title="Every area and every screen you can open">${RIC("all",ICO.grid)}<span>All screens</span></button>`;
 function railSpaces(P){return ["my","ask"].concat(P.areas)}
 function flatHTML(){const s=st();const P=NAVX.purview();let h=`<span data-nx-rail hidden></span><button class="navi" type="button" data-nx-search title="Search (Ctrl or Cmd + K)">${IC(ICO.search)}<span>Search</span></button>`;
- const one=id=>{const sc=screenRow(id);return sc?`<button class="navi" data-nav="${id}" ${S.screen===id?'aria-current="page"':""} title="${E(tip(id))}">${IC(sc[2])}<span>${E(labelOf(id))}</span></button>`:""};
+ const one=id=>{const sc=screenRow(id);return sc?`<button class="navi" data-nav="${id}" ${S.screen===id?'aria-current="page"':""} title="${E(tip(id))}">${RKEY[id]?RIC(RKEY[id],sc[2]):IC(sc[2])}<span>${E(labelOf(id))}</span></button>`:""};
  h+=one("home");
  s.fav.slice(0,6).forEach(f=>{if(f.kind==="screen"&&screenRow(f.key)){if(f.key!=="home")h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(f.label||labelOf(f.key))}">${IC(screenRow(f.key)[2])}<span>${E(f.label||labelOf(f.key))}</span></button>`}else h+=`<button class="navi nx-favi" type="button" data-nx-open="${E(f.id)}" title="Favorite: ${E(favName(f))}">${IC(typeIcon(f.type))}<span>${E(favName(f))}</span></button>`});
  h+=`<div class="nx-sep" role="separator"></div>`;
  const cur=curSpace();
- const btn=(sp,ic)=>{const e=spaceIds(sp,P);if(!Object.keys(e).length&&!pinsIn(sp,P).length)return"";const sd=SPACES[SPID[sp]];return `<button class="navi nx-gbtn${cur===sp?" is-cur":""}" type="button" data-nx-grp="${sp}" aria-haspopup="true" title="${E(sd[1])}">${IC(ic||sd[3])}<span>${E(sd[1])}</span></button>`};
+ const btn=(sp,ic)=>{const e=spaceIds(sp,P);if(!Object.keys(e).length&&!pinsIn(sp,P).length)return"";const sd=SPACES[SPID[sp]];return `<button class="navi nx-gbtn${cur===sp?" is-cur":""}" type="button" data-nx-grp="${sp}" aria-haspopup="true" title="${E(sd[1])}">${RIC(sp,ic||sd[3])}<span>${E(sd[1])}</span></button>`};
  railSpaces(P).forEach(sp=>{h+=btn(sp)});
  h+=`<div class="nx-sep" role="separator"></div>`;if(P.all)h+=allBtn();if(P.show)h+=one("showroom");if(P.gear)h+=btn("build",ICO.gear);
  h+=`<button class="navi" type="button" popovertarget="nxHistPop" title="History">${IC(ICO.clock)}<span>History</span></button>`;return h}

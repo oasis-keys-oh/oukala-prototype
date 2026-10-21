@@ -1,0 +1,32 @@
+/* mod_s_rail_art (BR-11): painted navy rail panel under a dark scrim, the gold falcon mark, gold line icons. Tokens only. Prefix rart-.
+   The panel is AI-generated imagery: provenance (BR-05) applies before any external use.
+   The scrim (--rail-scrim, --rail-scrim-mid) keeps every rail label at 4.5:1 or better over the brightest part of the panel
+   (tools/tests/rail_art.js measures it). Reduced effects and prefers-reduced-transparency show the plain navy surface. */
+:root:root .rail{background:linear-gradient(180deg,var(--rail-scrim) 0%,var(--rail-scrim-mid) 38%,var(--rail-scrim-mid) 52%,var(--rail-scrim) 78%,var(--rail-scrim) 100%),url(assets/brand/rail-panel.webp) center bottom/cover no-repeat,var(--rail-navy)}
+:root:root.fx-reduced .rail{background:var(--rail-navy)}
+@media (prefers-reduced-transparency:reduce){:root:root .rail{background:var(--rail-navy)}}
+.rail .brand .rart-mark{flex:none;width:40px;height:40px;background:url(assets/brand/mark-gold.webp) center/contain no-repeat}
+/* the line icons: each file in src/assets/brand/icons is a mask over currentColor, so tokens color them (inlined in full.html,
+   hashed files next to the stylesheet in the split build; never in the startup script) */
+.rart-ico{flex:none;display:inline-block;background:currentColor;-webkit-mask:var(--rart-i) center/100% 100% no-repeat;mask:var(--rart-i) center/100% 100% no-repeat}
+.rart-ico[data-rart="home"]{--rart-i:url(assets/brand/icons/home.svg)}
+.rart-ico[data-rart="my"]{--rart-i:url(assets/brand/icons/my.svg)}
+.rart-ico[data-rart="ask"]{--rart-i:url(assets/brand/icons/ask.svg)}
+.rart-ico[data-rart="strat"]{--rart-i:url(assets/brand/icons/strat.svg)}
+.rart-ico[data-rart="deliver"]{--rart-i:url(assets/brand/icons/deliver.svg)}
+.rart-ico[data-rart="ops"]{--rart-i:url(assets/brand/icons/ops.svg)}
+.rart-ico[data-rart="money"]{--rart-i:url(assets/brand/icons/money.svg)}
+.rart-ico[data-rart="people"]{--rart-i:url(assets/brand/icons/people.svg)}
+.rart-ico[data-rart="risk"]{--rart-i:url(assets/brand/icons/risk.svg)}
+.rart-ico[data-rart="transform"]{--rart-i:url(assets/brand/icons/transform.svg)}
+.rart-ico[data-rart="all"]{--rart-i:url(assets/brand/icons/all.svg)}
+.rart-ico[data-rart="show"]{--rart-i:url(assets/brand/icons/show.svg)}
+.rart-ico[data-rart="build"]{--rart-i:url(assets/brand/icons/build.svg)}
+@media (forced-colors:active){.rart-ico{forced-color-adjust:none;background:CanvasText}}
+/* area icons drop the teal tile so the gold line reads on the panel; an open area gets a faint gold wash instead */
+:root:root .rail .rart-ico{color:var(--brand-gold)}
+:root .rail .navgd>summary .nx-gi{width:22px;height:22px;background:transparent;color:var(--brand-gold)}
+:root .rail .navgd[open]>summary .nx-gi{background:color-mix(in srgb,var(--brand-gold) 16%,transparent)}
+:root .rail .navgd>summary .nx-gi .rart-ico{width:18px;height:18px}
+/* sub-headings and the Collapse label were muted for the old glass rail; on the panel they take the lighter rail ink */
+:root .rail .navsub,:root .rail .collapse span{color:var(--rail-sub);opacity:1}
