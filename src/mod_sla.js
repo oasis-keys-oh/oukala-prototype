@@ -1,9 +1,8 @@
-/* ============ Agreements: SLAs, OLAs, underpinning contracts and XLAs (module: sla) ============
-   Registers svc_sla. The engine replays record state history through start, pause, resume, stop, reset and cancel
-   conditions built from real DATAMODEL fields, on a schedule (calendar, time zone, holidays). */
+/* Agreements (SLA, OLA, UC, XLA): svc_sla. Clocks replay record history through start, pause, resume, stop, reset and cancel on a schedule.
+   PR-32 B6: under another tenant, agreements, services, CIs and people are the tenant's; clocks replay its own incidents. */
 (function(){
-const E=esc;
-const NOW=Date.parse(window.U.TODAY_ISO+"T13:30:00Z"); /* Tue Oct 6 2026 13:30, treated as Mountain local clock */
+const E=esc,core=TROWS.core,tk=()=>DATA.tenant(),fchip=TROWS.chip,ME=n=>core()?n:TROWS.me(),SVCREG=TROWS.arr("services","service",()=>window.SVCREG),CIREG=TROWS.arr("config_items","item",()=>window.CIREG),DIR=TROWS.arr("people",null,()=>window.DIR);
+const NOW=Date.parse(window.U.TODAY_ISO+"T13:30:00Z");
 const DAY=864e5,HR=36e5;
 const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const z2=n=>String(n).padStart(2,"0");
@@ -15,13 +14,12 @@ const fdt=t=>{const d=new Date(t);return DN[d.getUTCDay()]+" "+MN[d.getUTCMonth(
 const mpS=(id,def)=>{if(!S.mpSel[id])S.mpSel[id]=(def||[]).slice();return S.mpSel[id].slice()};
 const r1=n=>Math.round(n*10)/10;
 const hrsStr=h=>{if(h==null||isNaN(h))return "n/a";if(h<1)return Math.max(1,Math.round(h*60))+" min";if(h<48)return r1(h)+" h";return r1(h/24)+" days"};
-const pct1=n=>(Math.round(n*10)/10)+"%";
+const pct1=n=>n==null?"No data":(Math.round(n*10)/10)+"%";
 const pickR=(r,a)=>a[Math.floor(r()*a.length)];
 const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 S.sla=S.sla||{sel:null,dr:null,tab:0,v:0,stepT:{},tags:{},credits:{},claims:[],typeF:"All",cov:{by:"process",tierF:"All"},need:null,sim:{ag:"SLA-INC-P2",day:3,hour:15,pAt:2,pLen:3},rec:{},custom:[],edits:{},scaleN:0,desk:{}};
-const SL=S.sla;
+const SL=OCX.tst(S.sla,{custom:()=>[],tags:()=>({}),credits:()=>({}),claims:()=>[],desk:()=>({}),stepT:()=>({}),need:()=>null,dr:()=>null,sel:()=>null,sim:()=>({ag:"",day:3,hour:15,pAt:2,pLen:3})});
 
-/* ---------------- schedules, time zones, holidays ---------------- */
 const TZS={Mountain:0,Central:1,Eastern:2,Pacific:-1,UTC:6,"Central European":8};
 const SCH=[
  {id:"24x7",n:"24x7, every day",days:[0,1,2,3,4,5,6],a:0,b:24},
@@ -29,17 +27,15 @@ const SCH=[
  {id:"ext",n:"Extended hours, Monday to Friday 6:00 to 20:00",days:[1,2,3,4,5],a:6,b:20},
  {id:"24x5",n:"24x5, Monday to Friday around the clock",days:[1,2,3,4,5],a:0,b:24},
  {id:"wkd",n:"7:00 to 19:00, every day",days:[0,1,2,3,4,5,6],a:7,b:19}];
-const HOLSETS={none:"No holidays (every day counts)",us:"Meridian holidays (U.S. federal)"};
+const HOLSETS={none:"No holidays (every day counts)",get us(){return (core()?"Meridian":TROWS.short())+" holidays (U.S. federal)"}};
 const holDays=k=>k==="us"?(window.HOLIDAYS||[]).map(h=>pdate(h.d)):[];
 const calOf=sc=>{sc=sc||{};const c=SCH.find(x=>x.id===sc.cal)||SCH[1];return {c,off:TZS[sc.tz]||0,hs:new Set(holDays(sc.hol||"us")),sc}};
-/* all working windows (Mountain clock) that overlap [s,e] */
 function wins(cal,s,e){const out=[];const zs=s+cal.off*HR,ze=e+cal.off*HR;for(let d=d0(zs),n=0;d<=ze&&n<900;d+=DAY,n++){const dw=new Date(d).getUTCDay();if(!cal.c.days.includes(dw)||cal.hs.has(d))continue;const a=Math.max(d+cal.c.a*HR,zs),b=Math.min(d+cal.c.b*HR,ze);if(b>a)out.push([a-cal.off*HR,b-cal.off*HR])}return out}
 function workBetween(s,e,cal){if(e<=s)return 0;if(cal.c.id==="24x7"&&!cal.hs.size)return(e-s)/HR;let t=0;wins(cal,s,e).forEach(w=>t+=w[1]-w[0]);return t/HR}
 function addWork(s,hours,cal){let left=hours*HR,z=s+cal.off*HR;for(let d=d0(z),n=0;n<1500;d+=DAY,n++){const dw=new Date(d).getUTCDay();if(!cal.c.days.includes(dw)||cal.hs.has(d))continue;const a=Math.max(d+cal.c.a*HR,z),b=d+cal.c.b*HR;if(b<=a)continue;if(left<=b-a)return a+left-cal.off*HR;left-=b-a}return s+hours*HR*3}
 const isOpen=(t,cal)=>wins(cal,t,t+1).length>0;
 const hoursPerDay=cal=>cal.c.b-cal.c.a;
 
-/* ---------------- platform fields (DATAMODEL) ---------------- */
 const F=(k,label,type,o)=>Object.assign({k,label,type:type||"string"},o||{});
 const TEAMN=["Service desk","Network team","Identity team","Endpoint team","Data team","Platform team","Security team"];
 const CUST=["Gold","Silver","Bronze"];
@@ -55,9 +51,8 @@ const FTYPE=t=>({enum:"enum",ref:"ref",string:"string",number:"number",percent:"
 const fieldDef=(tbl,k)=>DATAMODEL.fields(tbl).find(f=>f.k===k);
 const fieldLabel=(tbl,k)=>{const f=fieldDef(tbl,k);return f?f.label:k};
 const SIMTABLES=["incident","request_item","change_request","catalog_task","vendor_ticket"];
-const tblOpts=()=>Object.keys(DATAMODEL.tables).filter(t=>DATAMODEL.fields(t).length).map(t=>[t,DATAMODEL.tables[t].label+(SIMTABLES.includes(t)?"":" (no sample history)")]);
+const tblOpts=()=>Object.keys(DATAMODEL.tables).filter(t=>DATAMODEL.fields(t).length&&(core()||SIMTABLES.includes(t))).map(t=>[t,DATAMODEL.tables[t].label+(SIMTABLES.includes(t)?"":" (no sample history)")]);
 
-/* ---------------- condition engine ---------------- */
 const OPS={"is":(x,v)=>String(x)===String(v),"is not":(x,v)=>String(x)!==String(v),"is one of":(x,v)=>[].concat(v).map(String).includes(String(x)),"is none of":(x,v)=>![].concat(v).map(String).includes(String(x)),"contains":(x,v)=>String(x==null?"":x).toLowerCase().includes(String(v).toLowerCase()),">=":(x,v)=>+x>=+v,"<=":(x,v)=>+x<=+v,"is empty":x=>x==null||x==="","is not empty":x=>!(x==null||x==="")};
 const opsFor=t=>t==="enum"||t==="ref"?["is","is not","is one of","is none of","is empty","is not empty"]:t==="number"?[">=","<=","is","is not"]:t==="boolean"?["is"]:t==="datetime"?["is empty","is not empty"]:["is","is not","contains","is empty","is not empty"];
 const rowMatch=(r,s)=>{const f=OPS[r.op];if(!f)return false;let x=s[r.f];if(x===true)x="true";if(x===false)x="false";return !!f(x,r.v)};
@@ -66,7 +61,6 @@ const rowText=(tbl,r)=>{const f=fieldDef(tbl,r.f);const lab=f?f.label:r.f;const 
 const phaseText=(tbl,ph)=>!ph||!ph.rows||!ph.rows.length?"Not set":ph.rows.map(r=>rowText(tbl,r)).join(ph.m==="any"?"; or ":"; and ");
 const PHASES=[["start","Start","The clock starts the first time this is true.",1],["pause","Pause","While this is true the clock stops counting (for example on hold, waiting for the customer).",0],["resume","Resume","The clock counts again when this is true. Leave empty to resume as soon as the pause condition stops being true.",0],["stop","Stop","The clock stops and the result is recorded: met if inside the target.",1],["reset","Reset","Starts the elapsed time again from zero when this becomes true (for example a request returned to the requester).",0],["cancel","Cancel","The clock is thrown away and nothing is measured (for example the priority changed so another agreement now applies).",0]];
 
-/* ---------------- sample record history (deterministic) ---------------- */
 const PRI=["P1","P2","P3","P4"];
 const PW=[.07,.2,.45,.28];
 const CAUSES=[["Waiting on a vendor",.2],["Sent to the wrong group first",.18],["Short staffed at the peak",.16],["Request was unclear",.14],["Approval delay",.12],["No runbook for this case",.1],["Dependency was down",.1]];
@@ -107,7 +101,6 @@ function genPool(tbl,n,seed){const sp=TSPEC[tbl];if(!sp)return[];const r=RNG("sl
    if(k===2&&tbl==="incident")ev.push({t,set:{first_response_at:t,made_sla:true}});
   }
   ev.sort((a,b)=>a.t-b.t);const e2=ev.filter(x=>x.t<=NOW);
-  /* a few records stay open: cut the tail */
   out.push({id:base.number,tbl,f:base,ev:e2.length?e2:[ev[0]],cause:base.cause});
  }return out}
 const HT=(h,m,d)=>Date.UTC(2026,9,d||6,h,m);
@@ -125,9 +118,14 @@ const HOT=()=>{const mk=(tbl,id,f,evs)=>({id,tbl,f:Object.assign({number:id,cust
   mk("vendor_ticket","NW-55102",{vendor:"Northwind Managed Services",severity:"2",type:"Incident",service:"Endpoint management (Intune)",priority:"P2"},[[HT(13,12),{state:"Opened"}]])],
   request_item:[
   mk("request_item","SR0010441",{priority:"P3",service:"Endpoint management (Intune)",cat_class:"Hardware",assignment_group:"Endpoint team",returned:false},[[HT(9,12,1),{state:"Submitted"}],[HT(9,15,1),{state:"Approval"}],[HT(10,41,5),{state:"Fulfillment"}]])]}};
-const poolOf=tbl=>{const n=SCALE.on?900:260;const k=tbl+"|"+n;if(!POOL[k]){POOL[k]=genPool(tbl,n,SCALE.on?"S":"D");const h=HOT()[tbl];if(h)POOL[k]=h.concat(POOL[k])}return POOL[k]};
+/* another tenant: clocks replay its own incidents (age, respH, resH); other tables have no history yet */
+const TINC=TROWS.arr("incidents","incident",()=>[],x=>{const t=NOW-(+x.age||0)*HR,f={number:x.id,priority:"P"+(x.urg||3),service:x.svc,assignment_group:x.grp||"",ci:x.ci||""},ev=[{t,set:Object.assign({state:"New"},f)}];
+ if(x.respH!=null)ev.push({t:t+x.respH*HR,set:{state:"In progress"}});if(x.resH!=null)ev.push({t:t+x.resH*HR,set:{state:/Closed/.test(x.st)?"Closed":"Resolved"}});return {id:x.id,tbl:"incident",f,ev:ev.filter(e=>e.t<=NOW),cause:null}});
+const TB={request:"request_item",change:"change_request"};
+function normAg(a){const tbl=TB[a.tbl]||a.tbl,p=/\bP([1-4])\b/.exec(a.n),cond=tbl==="incident"&&p?{start:PH([C("priority","is","P"+p[1])]),pause:PH([C("state","is","On hold")]),stop:PH([/first response/i.test(a.n)?C("state","is none of",["New"]):RES])}:{start:PH([]),stop:PH([])};
+ return Object.assign({sch:SCHD(p&&p[1]==="1"?"24x7":"biz","Mountain",p&&p[1]==="1"?"none":"us"),warn:[],retro:false,ver:1},a,{tbl,cond,target:Object.assign({},a.target),act:{from:"2026-01-01",svcs:[],tiers:[],prios:[],cust:[],cis:[],groups:[]}})}
+const poolOf=tbl=>{if(!core())return tbl==="incident"?TINC:[];const n=SCALE.on?900:260;const k=tbl+"|"+n;if(!POOL[k]){POOL[k]=genPool(tbl,n,SCALE.on?"S":"D");const h=HOT()[tbl];if(h)POOL[k]=h.concat(POOL[k])}return POOL[k]};
 
-/* ---------------- clock replay ---------------- */
 function replay(ag,rec,cal,log){const c=ag.cond||{};const snap=Object.assign({},rec.f);delete snap.state;const cur={};let st="idle",run=0,last=null,startT=null,endT=null,pausedH=0,resets=0,pauseStart=null,prevReset=false,justStarted=false;
  const tgt=ag.target.hours;
  for(const ev of rec.ev){Object.assign(cur,ev.set);const s=Object.assign({},snap,cur);
@@ -152,10 +150,8 @@ function replay(ag,rec,cal,log){const c=ag.cond||{};const snap=Object.assign({},
  const stage=st==="stopped"?(breached?"Breached":"Achieved"):st==="cancelled"?"Cancelled":st==="paused"?"Paused":"In progress";
  return {id:rec.id,rec,st,stage,run,tgt,pct:tgt?run/tgt:0,startT,endT,pausedH,resets,breached,open:st==="running"||st==="paused",cause:rec.cause,svc:rec.f.service,prio:rec.f.priority,fin:endT||NOW}}
 
-/* agreement status from activation window */
 const agStatus=ag=>{const a=ag.act||{};if(a.draft)return "Draft";if(a.to&&pdate(a.to)<d0(NOW))return "Retired";if(a.from&&pdate(a.from)>d0(NOW))return "Scheduled";if(a.to&&pdate(a.to)-d0(NOW)<=45*DAY)return "Retiring";return "Active"};
 const stCls=s=>s==="Active"?"good":s==="Retiring"||s==="Scheduled"?"warn":s==="Draft"?"info":"mute";
-/* does an agreement apply to a record */
 function applies(ag,rec,at){const a=ag.act||{};const f=rec.f;const t=at==null?rec.ev[0].t:at;
  if(a.svcs&&a.svcs.length&&!a.svcs.includes(f.service))return false;
  if(a.prios&&a.prios.length&&f.priority&&!a.prios.includes(f.priority))return false;
@@ -166,12 +162,10 @@ function applies(ag,rec,at){const a=ag.act||{};const f=rec.f;const t=at==null?re
  const from=a.from?pdate(a.from):0,to=a.to?pdate(a.to)+DAY:1e15;
  if(a.draft)return false;
  if(t<from&&!ag.retro)return false;if(t>to)return false;return true}
-/* experience responses derived from the record outcome */
 function survey(ag,inst,r){const x=ag.xla||{};const base=x.dim==="Effort"?4.6:x.dim==="Resolution satisfaction"?4.85:4.8;const rr=+(x.resp||.35);if(r()>rr)return null;
  let s=base-(inst&&inst.breached?1.1:0)-((inst&&inst.rec.f.reassignment_count)||0)*.35-(inst&&inst.cause?.35:0)-(inst&&inst.rec.f.reopen_count?1.2:0)-(x.dim==="Effort"&&inst&&inst.rec.f.contact_type==="Phone"?.3:0)+(r()+r()-1)*.9;
  return Math.max(1,Math.min(5,Math.round(s)))}
 
-/* ---------------- agreements: seed data ---------------- */
 const C=(f,op,v)=>({f,op,v});
 const PH=(rows,m)=>({m:m||"all",rows});
 const W=(p,a,ch)=>({p,a,ch:ch||"Teams"});
@@ -237,14 +231,14 @@ const SEED=[
   xla:{dim:"Sentiment",src:"Day-30 pulse survey",q:"On your first day, did you have what you needed to start work?",resp:.6},cond:{start:PH([C("state","is","Delivered"),C("cat_class","is","New hire")])},warn:[W(100,"Ask Human Resources and the hiring manager to review","Email")],act:{from:"2026-09-01"}},
  {id:"XLA-CHG-COM",n:"Change experience: clarity of communication",ty:"XLA",tbl:"change_request",kind:"score",target:{stat:"mean"},goal:4,sch:SCHD("biz"),proc:"change",own:"Nia Brooks",
   xla:{dim:"Sentiment",src:"Teams pulse",q:"Were you told clearly what would change and when?",resp:.25},cond:{start:PH([C("state","is","Closed")])},warn:[W(100,"Ask the change manager to review the notice template","Email")],act:{from:"2026-01-01"}}];
+const SEEDV=TROWS.arr("service_levels","agreement",()=>SEED,normAg);
 SEED.forEach(a=>{a.ver=1;a.retro=a.retro||false;a.act=Object.assign({svcs:[],tiers:[],prios:[],cust:[],cis:[],groups:[]},a.act);a.cond=Object.assign({},a.cond)});
-/* scale: hundreds of agreements by service, customer tier and template */
 const GENT=[["SLA","incident","Incident P2 restore",{hours:8},"biz",{start:PH([C("priority","is","P2")]),pause:PH([C("state","is","On hold")]),stop:PH([RES])},"incident"],["SLA","incident","Incident P3 restore",{hours:27},"biz",{start:PH([C("priority","is","P3")]),pause:PH([C("state","is","On hold")]),stop:PH([RES])},"incident"],["SLA","incident","Incident response",{hours:1},"ext",{start:PH([C("state","is","New")]),stop:PH([C("state","is none of",["New"])])},"incident"],["SLA","request_item","Request fulfill",{hours:45},"biz",{start:PH([C("state","is","Submitted")]),pause:PH([C("state","is","Approval")]),stop:PH([C("state","is","Delivered")])},"request"],["OLA","catalog_task","Fulfillment task",{hours:12},"biz",{start:PH([C("state","is","Open")]),pause:PH([C("state","is","Pending")]),stop:PH([C("state","is","Closed complete")])},"request"],["UC","vendor_ticket","Vendor restore",{hours:8},"biz",{start:PH([C("severity","is one of",["2","3"])]),pause:PH([C("state","is","Waiting on Meridian")]),stop:PH([C("state","is one of",["Restored","Confirmed"])])},"vendor"],["SLA","change_request","Change lead time",{hours:120},"biz",{start:PH([C("state","is","New")]),stop:PH([C("state","is","Scheduled")])},"change"]];
 const TIERMUL={Gold:.8,Silver:1,Bronze:1.4};
 let GEN=null;
 function genAgs(){if(GEN)return GEN;GEN=[];const names={SLA:"SLA",OLA:"OLA",UC:"UC"};SVCREG.forEach(s=>{GENT.forEach((t,ti)=>{CUST.forEach(ct=>{const h=Math.round(t[3].hours*TIERMUL[ct]*10)/10;GEN.push({id:`${t[0]}-${slug(s.n).slice(0,8).toUpperCase()}-${ti}${ct[0]}`,n:`${ct}: ${t[2]}, ${s.n}`,ty:t[0],tbl:t[1],kind:"duration",target:{hours:h},goal:90+(ct==="Gold"?5:ct==="Silver"?3:0),sch:SCHD(t[4]),proc:t[6],own:s.owner,party:t[0]==="OLA"?"Resolver groups":t[0]==="UC"?"Vendors":"",cond:t[5],warn:[W(75,"Notify the owner in Teams"),W(100,"Notify the service owner","Email")],act:{from:"2026-01-01",svcs:[s.n],cust:[ct],tiers:[],prios:[],cis:[],groups:[]},ver:1,retro:false,gen:true})})})});
  SVCREG.forEach(s=>{GEN.push({id:"XLA-"+slug(s.n).slice(0,8).toUpperCase(),n:"Experience: "+s.n,ty:"XLA",tbl:"incident",kind:"score",target:{stat:"favorable"},goal:82,sch:SCHD("biz"),proc:"incident",own:s.owner,xla:{dim:"Sentiment",src:"Post-resolution survey",q:"How did working with IT make you feel?",resp:.3},cond:{start:PH([RES])},warn:[W(100,"Review with the service owner","Email")],act:{from:"2026-01-01",svcs:[s.n],cust:[],tiers:[],prios:[],cis:[],groups:[]},ver:1,gen:true})});return GEN}
-const AGS=()=>SEED.concat(SL.custom).concat(SCALE.on?genAgs():[]);
+const AGS=()=>SEEDV.concat(SL.custom).concat(SCALE.on&&core()?genAgs():[]);
 const agById=id=>AGS().find(a=>a.id===id);
 const SERVICE_OPTS=()=>SVCREG.map(s=>[s.n,s.n]);
 const TYPEN={SLA:"Service level agreement",OLA:"Operational level agreement",UC:"Underpinning contract",XLA:"Experience level agreement"};
@@ -253,8 +247,7 @@ const tPill=t=>`<span class="pill ${typeCls(t)}" title="${TYPEN[t]}">${t}</span>
 const goalTxt=ag=>ag.kind==="duration"?hrsStr(ag.target.hours)+" at "+ag.goal+"%":ag.kind==="ratio"?"At least "+ag.goal+"%":ag.target.stat==="mean"?"Average at least "+ag.goal+" of 5":ag.goal+"% favorable (4 or 5)";
 const kindN=ag=>ag.kind==="duration"?"Time target":ag.kind==="ratio"?"Percentage":"Score";
 
-/* ---------------- evaluation (cached) ---------------- */
-const CACHE=new Map();
+const CM_={},CA=()=>CM_[tk()]||(CM_[tk()]=new Map()),CACHE={has:k=>CA().has(k),get:k=>CA().get(k),set:(k,v)=>CA().set(k,v),delete:k=>CA().delete(k),keys:()=>CA().keys(),get size(){return CA().size}};
 const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=(h*33^s.charCodeAt(i))>>>0;return h};
 const agKey=ag=>ag.id+"|"+hash(JSON.stringify([ag.cond,ag.target,ag.sch,ag.act,ag.retro,ag.kind,ag.tbl,ag.xla,ag.goal]))+"|"+(SCALE.on?1:0);
 function evalAg(ag){const k=agKey(ag);if(CACHE.has(k))return CACHE.get(k);const res=evalCore(ag);CACHE.set(k,res);if(CACHE.size>2500)CACHE.delete(CACHE.keys().next().value);return res}
@@ -280,7 +273,6 @@ const fillTrend=a=>{let last=null;a=a.slice();for(let i=0;i<a.length;i++){if(a[i
 const valTxt=(ag,r)=>r.val==null?"No data":ag.kind==="score"&&ag.target.stat==="mean"?r.val.toFixed(2)+" of 5":Math.round(r.val*10)/10+"%";
 const stOf=(ag,r)=>r.ok==null?"mute":r.ok?"good":r.val!=null&&(ag.kind==="score"&&ag.target.stat==="mean"?r.val>=ag.goal-.3:r.val>=ag.goal-5)?"warn":"bad";
 const live=()=>AGS().filter(a=>{const s=agStatus(a);return s==="Active"||s==="Retiring"});
-/* roll-ups */
 function totals(){const key="T|"+SL.v+"|"+(SCALE.on?1:0)+"|"+AGS().length;if(CACHE.has(key))return CACHE.get(key);const L=live();const t={n:L.length,all:AGS().length,byTy:{},bySvc:{},byCls:{},risk:[],br:0,met:0,open:0,paused:0,xs:[],xn:0,miss:0,weekly:new Array(8).fill(0).map(()=>[0,0])};
  L.forEach(a=>{const r=evalAg(a);const ty=t.byTy[a.ty]=t.byTy[a.ty]||{n:0,ok:0,met:0,br:0,sum:0,cnt:0};ty.n++;if(r.ok)ty.ok++;if(r.ok===false)t.miss++;
   if(a.kind==="duration"){ty.met+=r.met;ty.br+=r.br;t.met+=r.met;t.br+=r.br;t.open+=r.open;t.paused+=r.paused}
@@ -291,10 +283,9 @@ function totals(){const key="T|"+SL.v+"|"+(SCALE.on?1:0)+"|"+AGS().length;if(CAC
   if(a.kind==="duration")r.items.filter(x=>x.open&&(x.breached||x.pct>=.75)).forEach(x=>t.risk.push({ag:a,x}));
   if(a.ty==="XLA"&&r.val!=null){t.xs.push(a.target.stat==="mean"?r.val/5*100:r.val)}
   r.trend.forEach((v,i)=>{if(a.kind==="duration"&&r.n){t.weekly[i][0]+=v*r.n;t.weekly[i][1]+=r.n}})});
- t.risk.sort((a,b)=>b.x.pct-a.x.pct);t.att=t.met+t.br?t.met/(t.met+t.br)*100:100;t.xla=t.xs.length?t.xs.reduce((a,b)=>a+b,0)/t.xs.length:null;CACHE.set(key,t);return t}
+ t.risk.sort((a,b)=>b.x.pct-a.x.pct);t.att=t.met+t.br?t.met/(t.met+t.br)*100:core()?100:null;t.xla=t.xs.length?t.xs.reduce((a,b)=>a+b,0)/t.xs.length:null;CACHE.set(key,t);return t}
 const attOf=o=>o?(o.met+o.br?o.met/(o.met+o.br)*100:o.cnt?o.sum/o.cnt:null):null;
 
-/* ---------------- processes, coverage and per-step targets ---------------- */
 const CLS=[["incident","Incident and problem"],["request","Request fulfillment"],["change","Change enablement"],["release","Release and deployment"],["onboarding","Onboarding"],["access","Access management"],["vendor","Vendor and contract"],["delivery","Project and portfolio delivery"],["risk","Risk and issue handling"],["knowledge","Knowledge"],["service","Service portfolio"],["oncall","On-call and skills"],["gov","Executive and governance"],["other","Other"]];
 const CLSN=Object.fromEntries(CLS);
 const CLSRX=[["onboarding",/onboard|hire|joiner|leaver|offboard/i],["access",/access|identity|entra|iam/i],["risk",/risk|raid/i],["incident",/incident|restore|major|outage|problem|itom|event/i],["change",/change|enablement|cab/i],["release",/release|train|sprint|agile|deploy/i],["request",/request|catalog|fulfil|portal|order|purchase/i],["vendor",/sow|contract|vendor|procure|invoice|supplier|renewal/i],["knowledge",/kcs|knowledge|article/i],["oncall",/on-?call|skills|rota/i],["service",/svc_360|service portfolio|impact/i],["gov",/exe_|board|strategy|maturity|tbm|cost transparency|agreement|sla/i],["delivery",/plan|wbs|schedule|ims|port|demand|ppm|proj|budget|capacity|resource/i]];
@@ -310,7 +301,6 @@ function entities(){const out=[];const seen={};
 const TIERS=()=>Array.from(new Set(SVCREG.map(s=>s.tier))).sort();
 const tierOk=(ag,tier)=>{const a=ag.act;if(a.tiers&&a.tiers.length)return a.tiers.includes(tier);if(a.svcs&&a.svcs.length)return a.svcs.some(n=>{const s=SVCREG.find(x=>x.n===n);return s&&s.tier===tier});return true};
 const svcOk=(ag,svc)=>!ag.act.svcs.length||ag.act.svcs.includes(svc)||false;
-/* PR-12: candidates (live plus scheduled) bucketed by process class once per matrix, not rescanned per cell; bucket order is the original scan order */
 const coverCand=()=>live().concat(AGS().filter(a=>agStatus(a)==="Scheduled"));
 function coverIdx(){const m=new Map();coverCand().forEach(a=>{const ks=new Set([a.proc].concat(a.procs||[]));ks.forEach(k=>{let b=m.get(k);if(!b)m.set(k,b=[]);b.push(a)})});return m}
 function cover(cls,pred,idx){const need=pred.need;const have={};(idx?(idx.get(cls)||[]):coverCand()).forEach(a=>{if(a.proc!==cls&&!(a.procs&&a.procs.includes(cls)))return;if(!pred.ok(a))return;(have[a.ty]=have[a.ty]||[]).push(a)});
@@ -322,15 +312,13 @@ function covMatrix(){const by=SL.cov.by;const key="CM|"+SL.v+"|"+by+"|"+(SCALE.o
  else{rows=SVCREG.map(s=>({k:s.id,t:s.n,s,sub:s.tier+" · owner "+s.owner}));cols=CLS.filter(c=>(NEED0[c[0]]||[]).length).map(c=>({k:c[0],t:c[1]}));cell=(r,c)=>cover(c.k,{need:needOf(c.k,r.s.tier),ok:a=>svcOk(a,r.s.n)&&tierOk(a,r.s.tier)},CI)}
  let need=0,got=0,gaps=0,part=0,full=0;const R=rows.map(r=>{const cs=cols.map(c=>{const x=cell(r,c);need+=x.need.length;got+=x.need.length-x.missing.length;if(x.state==="gap")gaps++;if(x.state==="part")part++;if(x.state==="ok")full++;return x});return {r,cs}});
  const out={by,rows:R,cols,need,got,gaps,part,full,pct:need?got/need*100:100};CACHE.set(key,out);return out}
-/* which agreements touch a process entity, with the end to end budget */
 const agsForCls=cls=>live().filter(a=>a.proc===cls||(a.procs||[]).includes(cls));
 function stepRows(e){const ags=agsForCls(e.cls);const bud=ags.filter(a=>a.kind==="duration"&&(a.ty==="SLA"||a.ty==="UC")).sort((a,b)=>b.target.hours-a.target.hours)[0];
  const W8={human:3,agent:1,auto:.3,gate:2,wait:1,system:.3};const fixed=e.steps.reduce((a,s,i)=>a+((SL.stepT[e.key+"|"+i]!=null?SL.stepT[e.key+"|"+i]:s.h)||0),0);const open=e.steps.filter((s,i)=>(SL.stepT[e.key+"|"+i]!=null?SL.stepT[e.key+"|"+i]:s.h)==null);const wsum=open.reduce((a,s)=>a+(W8[s.who]||1),0);const room=bud?Math.max(0,bud.target.hours-fixed):0;
  const rs=e.steps.map((s,i)=>{const k=e.key+"|"+i;let tg=SL.stepT[k]!=null?SL.stepT[k]:s.h;let src=SL.stepT[k]!=null?"Set here":s.h!=null?"From the process":"Not set";if(tg==null&&bud&&wsum){tg=Math.round(room*(W8[s.who]||1)/wsum*4)/4;src="Proposed"}const r=RNG("stp|"+k)();const rel=ags.filter(a=>a.kind==="duration"&&a.ty!=="XLA").map(a=>evalAg(a).val).filter(v=>v!=null);const base=rel.length?rel.reduce((a,b)=>a+b,0)/rel.length:90;
-  const n=Math.round(12+r*60);const att=tg==null?null:Math.max(55,Math.min(100,base+(r-.5)*22-(s.who==="human"?2:0)+(STEPMODE.of(s.who)==="robot"?4:0)));return {i,k,n:s.n,who:s.who,owner:s.owner,tgt:tg,txt:s.txt,att,cnt:n,tgtSrc:src}});
+  const n=Math.round(12+r*60);const att=tg==null||!core()&&!rel.length?null:Math.max(55,Math.min(100,base+(r-.5)*22-(s.who==="human"?2:0)+(STEPMODE.of(s.who)==="robot"?4:0)));return {i,k,n:s.n,who:s.who,owner:s.owner,tgt:tg,txt:s.txt,att,cnt:n,tgtSrc:src}});
  const sum=rs.reduce((a,x)=>a+(x.tgt||0),0);return {rows:rs,bud,sum}}
 
-/* ---------------- clock simulator ---------------- */
 function simulate(ag,o){const cal=calOf(ag.sch);const tgt=ag.target.hours||1;const st=o.startT;const pauses=o.pauses||[];const cells=[];let run=0,t=st,due=null,pausedWall=0;const warn=(ag.warn||[]).map(w=>({p:w.p,a:w.a,ch:w.ch,t:null}));
  const inPause=x=>pauses.some(p=>x>=st+p.at*HR&&x<st+(p.at+p.len)*HR);
  for(let n=0;n<600;n++){const t1=t+HR;const ps=inPause(t+HR/2);const open=isOpen(t+HR/2,cal);const add=ps?0:workBetween(t,t1,cal);cells.push({t,c:ps?"pause":open?"run":"off"});if(ps)pausedWall++;
@@ -340,23 +328,20 @@ function simulate(ag,o){const cal=calOf(ag.sch);const tgt=ag.target.hours||1;con
  if(due==null)due=t;
  return {cells,due,warn,end:t,tgt,paused:pausedWall,span:t-st}}
 
-/* ---------------- vendor credits ---------------- */
 function creditFor(ag){const c=ag.contract;if(!c)return null;const r=evalAg(ag);let pctC=0,why="";
  if(ag.msp){const sh=Math.max(0,ag.goal-(r.val==null?ag.goal:r.val));pctC=Math.min(c.cap,Math.floor(sh)*c.pct);why=r.val==null?"No data":`Result ${pct1(r.val)} against goal ${ag.goal}%: ${r1(sh)} points short, ${c.pct}% per point, capped at ${c.cap}%`}
  else{const m=r.br;pctC=Math.min(c.cap,m*c.pct);why=`${m} missed in 30 days at ${c.pct}% each, capped at ${c.cap}%`}
  return {ag,c,r,pctC,amt:Math.round(c.fee*pctC/100),why}}
 const credits=()=>AGS().filter(a=>a.contract&&(agStatus(a)==="Active"||agStatus(a)==="Retiring")).map(creditFor).filter(Boolean);
 
-/* ---------------- metrics ---------------- */
 Object.assign(METRICS,{
  m_agr_att:{n:"Agreement attainment",f:"Σ clocks that stopped inside their target ÷ Σ clocks that stopped, across active SLAs, OLAs and underpinning contracts, last 30 days × 100",u:"%",cur:92,tgt:95,badAt:88,dir:"max",max:100,tr:[94,93.6,93.4,93,92.8,92.4,92.2,92],owner:"Service desk",use:["SLAs, OLAs and XLAs"],rem:{kind:"agent",ref:"SOP-212",title:"Rebalance queues before a breach",agent:"Triage Agent",auto:false,state:"idle",prog:"Reassigns at-risk records and pages owners at 75% elapsed"}},
  m_agr_cov:{n:"Agreement coverage of processes",f:"Σ required agreement types that exist ÷ Σ required agreement types, for every process and service tier, where required types follow the coverage policy (Tier 1 needs SLA, OLA and XLA where the process calls for them) × 100",u:"%",cur:60,tgt:85,badAt:50,dir:"max",max:100,tr:[48,50,52,54,56,58,59,60],owner:"Service level manager",use:["SLAs, OLAs and XLAs"],rem:{kind:"sop",ref:"SOP-230",title:"Close an agreement gap",agent:"Resource Agent",auto:false,state:"idle",prog:"Drafts the missing agreement from similar processes for the owner to approve"}},
  m_agr_risk:{n:"Clocks at risk",f:"Running or paused clocks at 75% or more of target elapsed (or already past it) ÷ all running or paused clocks × 100",u:"%",cur:9,tgt:5,badAt:15,dir:"min",max:30,tr:[6,7,6,8,7,9,8,9],owner:"Service desk",use:["SLAs, OLAs and XLAs"],rem:{kind:"agent",ref:"SOP-213",title:"Swarm at-risk clocks",agent:"Triage Agent",auto:false,state:"idle",prog:"Finds the next free qualified person and offers to reassign"}},
  m_xla_score:{n:"Experience score",f:"Average over active XLAs of (average survey score ÷ 5 × 100, or the percent favorable, 4 or 5 out of 5), last 30 days",u:"%",cur:82,tgt:85,badAt:75,dir:"max",max:100,tr:[84,84,83,83,82,82,82,82],owner:"Service desk",use:["SLAs, OLAs and XLAs"],rem:{kind:"kb",ref:"KB0160",title:"Read the unfavorable comments weekly",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Summarizes comments by theme and proposes fixes"}},
  m_agr_credit:{n:"Vendor credits due",f:"Σ over underpinning contracts of monthly fee × credit percent earned, where credit percent = per-miss or per-point rate × misses or shortfall, capped by the contract clause",u:"$",cur:3400,tgt:0,badAt:8000,dir:"min",max:20000,tr:[0,1900,0,1900,3800,1900,3000,3400],owner:"Vendor manager",use:["SLAs, OLAs and XLAs"],rem:{kind:"sop",ref:"SOP-231",title:"Claim a service credit",agent:"Contract Agent",auto:false,state:"idle",prog:"Prepares the credit claim with the evidence and sends it for approval"}}});
-function syncM(){const t=totals(),cm=covMatrix(),cr=credits();const set=(id,v)=>{const m=METRICS[id];m.cur=Math.round(v*10)/10;if(m.tr&&m.tr[m.tr.length-1]!==m.cur)m.tr=m.tr.slice(1).concat(m.cur)};set("m_agr_att",t.att);set("m_agr_cov",cm.pct);const run=t.open;set("m_agr_risk",run?t.risk.length/run*100:0);if(t.xla!=null)set("m_xla_score",t.xla);set("m_agr_credit",cr.reduce((a,x)=>a+(SL.credits[x.ag.id]==="waived"?0:x.amt),0))}
+function syncM(){if(!core())return;const t=totals(),cm=covMatrix(),cr=credits();const set=(id,v)=>{const m=METRICS[id];m.cur=Math.round(v*10)/10;if(m.tr&&m.tr[m.tr.length-1]!==m.cur)m.tr=m.tr.slice(1).concat(m.cur)};set("m_agr_att",t.att);set("m_agr_cov",cm.pct);const run=t.open;set("m_agr_risk",run?t.risk.length/run*100:0);if(t.xla!=null)set("m_xla_score",t.xla);set("m_agr_credit",cr.reduce((a,x)=>a+(SL.credits[x.ag.id]==="waived"?0:x.amt),0))}
 
-/* ================= UI: shared pieces, dashboard, list, drawers ================= */
 const stk=h=>`<div class="sla-stk">${h}</div>`;
 const lazy=(i,fn)=>(S.v.svc_slav===i||(S.v.svc_slav===undefined&&i===0))?stk(fn()):`<div class="muted small" style="padding:12px">Loading this view...</div>`;
 const pc=n=>n&&who(n)?pchip(n):E(n||"Unassigned");
@@ -370,7 +355,6 @@ const resPill=(ag,r)=>{const c=stOf(ag,r);return `<span class="pill ${c}">${E(va
 const trendSpark=(r,c)=>r.trend&&r.trend.length>1?spark(r.trend,84,26,col(c||"--accent")):"";
 const inferCause=x=>{const r=x.rec;if(!r)return "No reason recorded";const f=r.f;if((f.reassignment_count||0)>0)return "Sent to the wrong group first";if(r.ev.some(e=>["On hold","Pending","Waiting on Meridian"].includes(e.set.state)))return "Waiting on a vendor";if(r.ev.some(e=>e.set.state==="Approval"&&r.ev.length>3))return "Approval delay";const h=hash(String(x.id));return ["Short staffed at the peak","Request was unclear","No runbook for this case","Dependency was down","Short staffed at the peak","No reason recorded"][h%6]};
 const tagCause=x=>SL.tags[x.id]||x.cause||inferCause(x);
-/* ---- dashboard ---- */
 function dashboard(){const t=totals(),cm=covMatrix(),L=live(),all=AGS();syncM();
  const sched=all.filter(a=>agStatus(a)==="Scheduled").length,drafts=all.filter(a=>agStatus(a)==="Draft").length,ret=all.filter(a=>agStatus(a)==="Retired").length;
  const types=["SLA","OLA","UC","XLA"].map(k=>{const o=t.byTy[k];return barRow(TYPEN[k],attOf(o),k==="XLA"?85:95,o?(attOf(o)==null?"No data":pct1(attOf(o))):"None",`data-sla-ty="${k}"`,o?o.n+" active, "+o.ok+" at goal":"No active agreements")}).join("");
@@ -400,7 +384,6 @@ function agreementList(){const svcMp=mpHTML({id:"sla_f_svc",label:"Service",opts
   cols:[{k:"id",label:"Agreement",wrap:1,fmt:a=>`<b>${E(a.n)}</b><small class="muted" style="display:block;white-space:nowrap">${E(a.id)}</small>`,val:a=>a.n},{k:"ty",label:"Type",fmt:a=>tPill(a.ty),val:a=>a.ty},{k:"proc",label:"Process",fmt:a=>E(CLSN[a.proc]||a.proc),val:a=>CLSN[a.proc]||a.proc},{k:"ap",label:"Applies to",wrap:1,fmt:a=>E(appliesTxt(a)),val:a=>appliesTxt(a)},{k:"tg",label:"Target",wrap:1,fmt:a=>E(goalTxt(a)),val:a=>a.kind==="duration"?a.target.hours:a.goal},
    {k:"res",label:"Last 30 days",fmt:a=>{const r=evalAg(a);return resPill(a,r)+` <small class="muted">${r.n} ${a.kind==="score"?"responses":"clocks"}</small>`},val:a=>{const r=evalAg(a);return r.pctAtt==null?-1:r.pctAtt}},{k:"tr",label:"Trend",fmt:a=>trendSpark(evalAg(a),"--accent")},{k:"st",label:"Status",fmt:a=>`<span class="pill ${stCls(a.st)}">${a.st}</span>`,val:a=>a.st},{k:"own",label:"Owner",fmt:a=>pc(a.own),val:a=>a.own}],
   rows:()=>{const sel=mpS("sla_f_svc",SVCREG.map(s=>s.n));const all=sel.length===SVCREG.length;return AGS().map(a=>{a.st=agStatus(a);return a}).filter(a=>all||!a.act.svcs.length||a.act.svcs.some(x=>sel.includes(x)))}})}
-/* ---- agreement drawer ---- */
 function openAg(id){const a=agById(id);if(!a)return;const r=evalAg(a);const s=agStatus(a);const items=r.items;
  const grp=(k,l,f)=>({key:k,label:l,rows:items.filter(f).slice(0,60).map(x=>({id:x.id,t:x.id,sub:(x.svc||"")+(x.prio?" · "+x.prio:"")+(a.kind==="duration"?" · "+hrsStr(x.run)+" of "+hrsStr(a.target.hours):x.score?" · scored "+x.score+" of 5":""),tag:x.stage,st:x.breached?"bad":x.pct>=.75&&x.open?"warn":"good",go:()=>openRec(a.id,x.id)}))});
  const lr=lrHTML({id:"sla_lr_"+a.id,limit:6,groups:[grp("br",a.kind==="score"?"Unfavorable and neutral":"Breached",x=>x.breached),grp("risk","At risk (75% or more used)",x=>x.open&&!x.breached&&x.pct>=.75),grp("open","Running or paused",x=>x.open&&!x.breached&&x.pct<.75),grp("ok",a.kind==="score"?"Favorable":"Met",x=>!x.open&&!x.breached&&x.stage!=="Cancelled"),grp("canc","Cancelled",x=>x.stage==="Cancelled")].filter(g=>g.rows.length),empty:"No records measured in the last 30 days."});
@@ -418,7 +401,6 @@ function openAg(id){const a=agById(id);if(!a)return;const r=evalAg(a);const s=ag
  <div><div class="eyebrow">Escalation actions</div><div class="sla-stack sm">${warn}</div>${cr?`<div class="eyebrow" style="margin-top:14px">Service credit</div><p class="muted small">${E(cr.c.line)}: ${E(cr.c.rule)}. Monthly fee ${money(cr.c.fee)}. ${E(cr.why)}. <b>${money(cr.amt)}</b> earned.</p>`:""}
  <div class="eyebrow" style="margin-top:14px">Related</div><div class="row" style="gap:8px;flex-wrap:wrap">${a.act.svcs.slice(0,3).map(n=>`<span class="pill mute">${E(n)}</span>`).join("")}${window.ONCALL&&a.ty!=="XLA"&&(a.proc==="incident"||a.proc==="vendor")?`<button class="btn quiet" data-nav="svc_oncall">On-call cover: ${ONCALL.coverage()}%</button>`:""}<button class="btn quiet" data-sla-tab="3" data-sla-simag="${E(a.id)}">Clock simulator</button></div></div></div>
  <div class="eyebrow" style="margin-top:16px">Linked records measured in the last 30 days</div>${lr}`)}
-/* ---- one record under one agreement: the clock replayed ---- */
 function openRec(agId,recId){const a=agId==="__draft"?(SL.dr&&SL.dr.ag):agById(agId);if(!a)return;const rec=poolOf(a.tbl).find(x=>x.id===recId);if(!rec)return;const cal=calOf(a.sch);
  if(a.kind!=="duration"){const items=evalAg(a).items.find(x=>x.id===recId);openDrawer(`<div class="eyebrow">${E(a.id)}</div><h2 style="font-size:26px;margin:6px 0">${E(recId)}</h2><p class="story" data-role="story">${items&&items.score?`Scored ${items.score} of 5.`:"Counted in the result."} ${E(rec.f.service||"")}, ${E(rec.f.priority||"")}. ${rec.cause?"Recorded reason: "+E(tagCause(rec)):""}</p>`);return}
  const log=[];const x=replay(a,rec,cal,log);const names=fd;
@@ -430,7 +412,6 @@ function openRec(agId,recId){const a=agId==="__draft"?(SL.dr&&SL.dr.ag):agById(a
  <p class="muted small">Elapsed counts only hours inside the schedule, and stops counting while the pause condition is true.</p>
  ${x&&x.breached?`<div class="row" style="margin-top:10px"><button class="btn" data-sla-reason="${E(rec.id)}">Record the breach reason</button></div>`:""}`)}
 
-/* ================= Designer ================= */
 const clone=o=>JSON.parse(JSON.stringify(o));
 const DEFCOND={
  incident:{start:PH([C("priority","is","P2")]),pause:PH([C("state","is","On hold")]),stop:PH([C("state","is one of",["Resolved","Closed"])])},
@@ -438,13 +419,14 @@ const DEFCOND={
  change_request:{start:PH([C("state","is","New")]),stop:PH([C("state","is","Scheduled")])},
  catalog_task:{start:PH([C("state","is","Open")]),pause:PH([C("state","is","Pending")]),stop:PH([C("state","is","Closed complete")])},
  vendor_ticket:{start:PH([C("state","is","Opened")]),pause:PH([C("state","is","Waiting on Meridian")]),stop:PH([C("state","is one of",["Restored","Confirmed"])])}};
-const blankAg=(o)=>{o=o||{};const tbl=o.tbl||"incident";return {id:"",n:o.n||"",ty:o.ty||"SLA",tbl,kind:o.ty==="XLA"?"score":"duration",target:o.ty==="XLA"?{stat:"mean"}:{hours:8},goal:o.ty==="XLA"?4.2:95,sch:SCHD("biz"),proc:o.proc||"incident",own:o.own||"Tom Becker",party:o.party||"",cond:clone(DEFCOND[tbl]||{start:PH([]),stop:PH([])}),warn:[W(75,"Notify the owner in Teams"),W(100,"Notify the service owner","Email")],act:{from:isoD(NOW),to:"",draft:true,svcs:o.svc?[o.svc]:[],tiers:o.tier&&/^Tier/.test(o.tier)?[o.tier]:[],prios:[],cust:[],cis:[],groups:[]},retro:false,ver:1,xla:o.ty==="XLA"?{dim:"Sentiment",src:"Post-resolution survey",q:"How did working with IT make you feel?",resp:.3}:undefined,note:""}};
+const blankAg=(o)=>{o=o||{};const tbl=o.tbl||"incident";return {id:"",n:o.n||"",ty:o.ty||"SLA",tbl,kind:o.ty==="XLA"?"score":"duration",target:o.ty==="XLA"?{stat:"mean"}:{hours:8},goal:o.ty==="XLA"?4.2:95,sch:SCHD("biz"),proc:o.proc||"incident",own:o.own||ME("Tom Becker"),party:o.party||"",cond:clone(DEFCOND[tbl]||{start:PH([]),stop:PH([])}),warn:[W(75,"Notify the owner in Teams"),W(100,"Notify the service owner","Email")],act:{from:isoD(NOW),to:"",draft:true,svcs:o.svc?[o.svc]:[],tiers:o.tier&&/^Tier/.test(o.tier)?[o.tier]:[],prios:[],cust:[],cis:[],groups:[]},retro:false,ver:1,xla:o.ty==="XLA"?{dim:"Sentiment",src:"Post-resolution survey",q:"How did working with IT make you feel?",resp:.3}:undefined,note:""}};
 function loadDr(id){const a=id&&agById(id);SL.dr={src:a?a.id:null,ag:a?clone(a):blankAg(),unit:"h",dirty:false};SL.sel=a?a.id:null;
  const d=SL.dr.ag;S.mpSel["sla_dr_svc"]=d.act.svcs.length?d.act.svcs.slice():SVCREG.map(s=>s.n);S.mpSel["sla_dr_ci"]=d.act.cis.length?d.act.cis.slice():CIREG.map(c=>c.name);const h=d.target.hours;SL.dr.unit=h!=null&&h<1?"min":"h"}
-const dr=()=>{if(!SL.dr)loadDr("SLA-INC-P2");return SL.dr};
+const dr=()=>{if(!SL.dr)loadDr(core()?"SLA-INC-P2":(AGS()[0]||{}).id);return SL.dr};
 const unitMul=(u,ag)=>u==="min"?1/60:u==="bd"?hoursPerDay(calOf(ag.sch)):1;
 const setPath=(o,p,v)=>{const k=p.split(".");let x=o;for(let i=0;i<k.length-1;i++){x[k[i]]=x[k[i]]||{};x=x[k[i]]}x[k[k.length-1]]=v};
-const KNOWNV=(tbl,k)=>k==="service"?SVCREG.map(s=>s.n):k==="assignment_group"?TEAMN:k==="vendor"?["Lumen","Microsoft","Northwind Managed Services","Contoso Cloud Operations"]:null;
+const TEAMV=()=>core()?TEAMN:[...new Set(DATA.get("teams").map(t=>t.n).concat(TINC.map(r=>r.f.assignment_group)).filter(Boolean))];
+const KNOWNV=(tbl,k)=>k==="service"?SVCREG.map(s=>s.n):k==="assignment_group"?TEAMV():k==="vendor"?["Lumen","Microsoft","Northwind Managed Services","Contoso Cloud Operations"]:null;
 function valInput(tbl,ph,i,row){if(row.op==="is empty"||row.op==="is not empty")return `<span class="muted small">no value needed</span>`;const f=fieldDef(tbl,row.f);const ty=f?FTYPE(f.type):"string";const opts=f&&f.opts||KNOWNV(tbl,row.f);const id=`${ph}|${i}`;
  if(opts&&(row.op==="is one of"||row.op==="is none of")){const cur=[].concat(row.v||[]);return `<div class="sla-chs">${opts.map(o=>`<button type="button" class="chip ${cur.includes(o)?"on":""}" aria-pressed="${cur.includes(o)}" data-sla-cv="${id}|${E(o)}">${E(o)}</button>`).join("")}</div>`}
  if(opts)return `<select class="fin" data-sla-cr="${id}|v" aria-label="Value">${["",...opts].map(o=>`<option value="${E(o)}" ${String(row.v)===o?"selected":""}>${o===""?"Choose a value":E(o)}</option>`).join("")}</select>`;
@@ -464,7 +446,7 @@ function previewBox(ag){const open=Object.assign({},ag,{act:Object.assign({},ag.
  const bad=r.items.filter(x=>x.breached).slice(0,4);
  return `<div class="statrow">${statTile("Records measured",r.n,ag.kind==="score"?r.resp+" responses of "+r.pop:r.open+" still running")}${statTile("Result",valTxt(ag,r),"Goal "+(ag.kind==="score"&&ag.target.stat==="mean"?ag.goal+" of 5":ag.goal+"%"),stOf(ag,r))}${statTile(ag.kind==="score"?"Unfavorable":"Breaches",r.br,r.risk+" running clocks at risk")}</div>
  ${delta!=null?`<p class="small" data-role="story">Compared with the saved version, this design would have measured <b class="${delta>=0?"good":"bad"}">${delta>=0?"+":""}${Math.round(delta*10)/10}${ag.kind==="score"&&ag.target.stat==="mean"?"":" points"}</b>.</p>`:""}
- <div class="row sla-trendrow"><span class="muted small">Weekly, oldest to newest</span>${spark(r.trend,180,36,col("--accent"))}</div>
+ <div class="row sla-trendrow"><span class="muted small">Weekly, oldest to newest</span>${r.trend.length?spark(r.trend,180,36,col("--accent")):""}</div>
  ${miss.length?`<p class="small muted">Main reasons for misses: ${miss.map(m=>E(m[0])+" ("+m[1]+")").join("; ")}.</p>`:""}
  ${bad.length?`<div class="row" style="gap:6px;flex-wrap:wrap">${bad.map(x=>`<button class="btn quiet" data-sla-rec="${E(ag.id||"__draft")}|${E(x.id)}">${E(x.id)}</button>`).join("")}</div>`:""}
  <div class="sla-note">${s==="Active"||s==="Retiring"?"This agreement is live, so the numbers match its dashboard row.":"This preview ignores the activation dates and runs the design over the last 30 days of real records, as if it had always been active."} ${pre!=null&&pre>0?`<b>${pre}</b> of those records started before the activation date. ${ag.retro?"Retroactive start is on, so they are measured as if the clock began when each record was created.":"Retroactive start is off, so they will not be measured."}`:""}</div>`}
@@ -475,7 +457,7 @@ function designer(){const D=dr(),ag=D.ag;const list=AGS();const dirty=D.src?JSON
  const basics=card("Agreement","Name, kind and what it measures.",`<div class="sla-fg">${field("Name",fin("n",ag.n,"text",'placeholder="For example: Incident P2, restore service"'),"",1)}${field("Type",fsel("ty",ag.ty,[["SLA","SLA: with the business"],["OLA","OLA: between internal teams"],["UC","UC: underpinning contract with a vendor"],["XLA","XLA: experience"]]),TYPEN[ag.ty])}${field("Measures",fsel("kind",ag.kind,[["duration","A time target per record"],["ratio","A percentage of records"],["score","A survey score"]]),"")}${field("Table (the records it measures)",fsel("tbl",ag.tbl,tblOpts()),SIMTABLES.includes(ag.tbl)?"Sample history is available for this table.":"This table has no sample history, so the preview is empty.")}${field("Process",fsel("proc",ag.proc,CLS.map(c=>[c[0],c[1]])),"Used by the coverage map.")}${field("Owner",`<select class="fin" data-sla-f="own">${DIR.filter(p=>p.kind==="human"||p.kind==="msp").slice(0,SCALE.on?60:80).map(p=>`<option ${p.name===ag.own?"selected":""}>${E(p.name)}</option>`).join("")}${DIR.some(p=>p.name===ag.own)?"":`<option selected>${E(ag.own)}</option>`}</select>`,"")}${ag.ty!=="SLA"?field(ag.ty==="UC"?"Vendor or provider":ag.ty==="OLA"?"Internal team":"Survey owner",fin("party",ag.party,"text"),""):""}${field("Notes",fin("note",ag.note,"text",'placeholder="Why this agreement exists"'),"",1)}</div>`);
  const svcMp=mpHTML({id:"sla_dr_svc",label:"Services",opts:SVCREG.map(s=>({v:s.n,l:s.n,sub:s.tier+" · "+s.owner})),all:"All services",onChange:sel=>{const d=dr().ag;d.act.svcs=sel.length===SVCREG.length?[]:sel;dr().dirty=1;rePrev()}});
  const ciMp=mpHTML({id:"sla_dr_ci",label:"Configuration items",opts:CIREG.slice(0,SCALE.on?3000:400).map(c=>({v:c.name,l:c.name,sub:c.class+" · "+((SVCREG.find(s=>s.id===c.svc)||{}).n||""),grp:c.class})),all:"All CIs",onChange:sel=>{const d=dr().ag;d.act.cis=sel.length>=CIREG.slice(0,SCALE.on?3000:400).length?[]:sel;rePrev()}});
- const act=card("Applies to and activation","Which records this agreement measures, and when it turns on and off.",`<div class="sla-fg">${field("Services",svcMp,"Leave on All services to cover every service.",1)}${field("Service tiers",`<div class="sla-chs">${TIERS().map(t=>tg("act.tiers",t,ag.act.tiers)).join("")}</div>`,"Empty means every tier.")}${field("Priorities",`<div class="sla-chs">${PRI.map(t=>tg("act.prios",t,ag.act.prios)).join("")}</div>`,"Empty means every priority.")}${field("Customer tiers",`<div class="sla-chs">${CUST.map(t=>tg("act.cust",t,ag.act.cust)).join("")}</div>`,"Empty means every customer.")}${field("Assignment groups",`<div class="sla-chs">${TEAMN.map(t=>tg("act.groups",t,ag.act.groups)).join("")}</div>`,"For OLAs, the team that owes the work.",1)}${field("Configuration items",ciMp,"Limit to specific CIs. Empty means any.",1)}${field("Turns on",fin("act.from",ag.act.from,"date"),"First day it measures.")}${field("Turns off",fin("act.to",ag.act.to,"date"),"Leave empty to keep it running.")}${field("Draft",`<label class="sla-chk"><input type="checkbox" data-sla-f="act.draft" ${ag.act.draft?"checked":""}> Keep as a draft (never measures)</label>`,"")}${field("Retroactive start",`<label class="sla-chk"><input type="checkbox" data-sla-f="retro" ${ag.retro?"checked":""}> Also measure records opened before it turns on</label>`,"Clocks begin at the record's own start time.")}</div><p class="sla-sum small" data-role="story">${E(winTxt(ag))}. ${E(appliesTxt(ag))}.</p>`);
+ const act=card("Applies to and activation","Which records this agreement measures, and when it turns on and off.",`<div class="sla-fg">${field("Services",svcMp,"Leave on All services to cover every service.",1)}${field("Service tiers",`<div class="sla-chs">${TIERS().map(t=>tg("act.tiers",t,ag.act.tiers)).join("")}</div>`,"Empty means every tier.")}${field("Priorities",`<div class="sla-chs">${PRI.map(t=>tg("act.prios",t,ag.act.prios)).join("")}</div>`,"Empty means every priority.")}${field("Customer tiers",`<div class="sla-chs">${CUST.map(t=>tg("act.cust",t,ag.act.cust)).join("")}</div>`,"Empty means every customer.")}${field("Assignment groups",`<div class="sla-chs">${TEAMV().map(t=>tg("act.groups",t,ag.act.groups)).join("")}</div>`,"For OLAs, the team that owes the work.",1)}${field("Configuration items",ciMp,"Limit to specific CIs. Empty means any.",1)}${field("Turns on",fin("act.from",ag.act.from,"date"),"First day it measures.")}${field("Turns off",fin("act.to",ag.act.to,"date"),"Leave empty to keep it running.")}${field("Draft",`<label class="sla-chk"><input type="checkbox" data-sla-f="act.draft" ${ag.act.draft?"checked":""}> Keep as a draft (never measures)</label>`,"")}${field("Retroactive start",`<label class="sla-chk"><input type="checkbox" data-sla-f="retro" ${ag.retro?"checked":""}> Also measure records opened before it turns on</label>`,"Clocks begin at the record's own start time.")}</div><p class="sla-sum small" data-role="story">${E(winTxt(ag))}. ${E(appliesTxt(ag))}.</p>`);
  const prev=card("What this would have measured","The design run over the last 30 days of real records.",`<div data-sla-prev>${previewBox(ag)}</div>`,fchip("m_agr_att"));
  const cond=card("Conditions: when the clock starts, pauses, resumes, stops, resets and cancels",ag.kind==="score"?"For an XLA, the start condition picks which records receive the survey. The other conditions are not used.":ag.kind==="ratio"?"The start condition picks the records that count. The stop condition decides which of them are a success.":"Each one is a set of tests on real fields. The clock is checked every time the record changes.",`<div class="sla-phg">${PHASES.filter(p=>ag.kind==="duration"||p[0]==="start"||(ag.kind==="ratio"&&p[0]==="stop")).map(p=>phaseCard(ag,p)).join("")}</div>`);
  const hrsDay=hoursPerDay(calx);
@@ -488,10 +470,9 @@ function saveDr(){const D=dr(),a=D.ag;const err=[];if(!a.n.trim())err.push("Give
  if(err.length){toast(err[0],"warn");return false}
  a.warn=(a.warn||[]).filter(w=>w.a.trim()).sort((x,y)=>x.p-y.p);
  if(D.src){const t=agById(D.src);if(!t){return false}const was=JSON.stringify(t);Object.keys(t).forEach(k=>{if(!(k in a))delete t[k]});Object.assign(t,clone(a),{id:t.id,ver:(t.ver||1)+1});audit("edited agreement",t.id+": "+t.n+" (version "+t.ver+")");toast("Saved "+t.n+" as version "+t.ver,"good")}
- else{a.id=(a.ty+"-"+slug(a.n).toUpperCase().slice(0,10)+"-"+(SL.custom.length+1)).replace(/_/g,"-");a.own=a.own||"Tom Becker";SL.custom.push(clone(a));D.src=a.id;audit("created agreement",a.id+": "+a.n);toast("Created "+a.n+". "+(a.act.draft?"It is a draft until you clear Draft.":"Status: "+agStatus(a)),"good")}
+ else{a.id=(a.ty+"-"+slug(a.n).toUpperCase().slice(0,10)+"-"+(SL.custom.length+1)).replace(/_/g,"-");a.own=a.own||ME("Tom Becker");SL.custom.push(clone(a));D.src=a.id;audit("created agreement",a.id+": "+a.n);toast("Created "+a.n+". "+(a.act.draft?"It is a draft until you clear Draft.":"Status: "+agStatus(a)),"good")}
  SL.v++;D.dirty=false;return true}
 
-/* ================= Coverage by process ================= */
 const TYC={SLA:"info",OLA:"metric",UC:"warn",XLA:"good"};
 function cellHtml(x,rk,ck){const chips=x.need.map(t=>{const has=x.have[t]&&x.have[t].some(a=>agStatus(a)!=="Scheduled"),pl=x.have[t]&&!has;return `<span class="sla-tc ${has?"ok":pl?"plan":"no"}" title="${t}: ${has?x.have[t].length+" active":pl?"scheduled":"missing"}">${t}</span>`}).join("");
  return `<div class="sla-cell ${x.state}" data-dnd="cov|${E(rk)}|${E(ck)}" data-dnd-scope="sla_cov" data-sla-cell="${E(rk)}|${E(ck)}" tabindex="0" role="button" aria-label="${x.state==="na"?"No agreement needed":x.state==="ok"?"Covered":x.state==="part"?"Partly covered":"No agreement"}">${x.need.length?chips:`<span class="muted small">None needed</span>`}${x.att!=null&&x.state!=="na"?`<small class="num ${barCls(x.att,95)}">${Math.round(x.att)}%</small>`:""}</div>`}
@@ -514,15 +495,13 @@ function coveragePane(){const cm=covMatrix(),by=SL.cov.by;syncM();
  ${card("Coverage policy","Which agreement types each kind of process needs. Tier 1 needs all of them, Tier 2 drops the XLA, Tier 3 needs only the first.",`<div class="sla-stack sm">${pol}</div>`,stdChip("itil5","Service level management: every service has agreements that match its criticality."))}</div>
  ${procCard("svc_sla")}`}
 const TYN=t=>({SLA:"an SLA",OLA:"an OLA",UC:"an underpinning contract",XLA:"an XLA"})[t]||t;
-/* ---- process drawer: steps with targets and results ---- */
-function openProc(key){const e=entities().find(x=>x.key===key);if(!e)return;const sr=stepRows(e);const ags=agsForCls(e.cls);const rows=sr.rows.map(s=>`<tr><td><b>${s.i+1}. ${E(s.n)}</b><br><small class="muted">${E(WHON[s.who]||s.who)}${s.owner?" · "+E(s.owner):""}</small></td><td>${s.tgt==null?'<span class="muted">Not set</span>':`<b class="num">${hrsStr(s.tgt)}</b>`}<br><small class="muted">${E(s.tgtSrc)}</small><br><button class="btn quiet" data-sla-step="${E(s.k)}">Set target</button></td><td>${s.att==null?'<span class="muted">No target</span>':`<span class="pill ${barCls(s.att,95)}">${Math.round(s.att)}%</span><br><small class="muted">${s.cnt} completions</small>`}</td></tr>`).join("");
+function openProc(key){const e=entities().find(x=>x.key===key);if(!e)return;const sr=stepRows(e);const ags=agsForCls(e.cls);const rows=sr.rows.map(s=>`<tr><td><b>${s.i+1}. ${E(s.n)}</b><br><small class="muted">${E(WHON[s.who]||s.who)}${s.owner&&core()?" · "+E(s.owner):""}</small></td><td>${s.tgt==null?'<span class="muted">Not set</span>':`<b class="num">${hrsStr(s.tgt)}</b>`}<br><small class="muted">${E(s.tgtSrc)}</small><br><button class="btn quiet" data-sla-step="${E(s.k)}">Set target</button></td><td>${s.att==null?'<span class="muted">No target</span>':`<span class="pill ${barCls(s.att,95)}">${Math.round(s.att)}%</span><br><small class="muted">${s.cnt} completions</small>`}</td></tr>`).join("");
  const over=sr.bud&&sr.sum>sr.bud.target.hours+.3;
  openDrawer(`<div class="row" style="gap:8px;flex-wrap:wrap;padding-right:130px"><span class="pill mute">${E(e.src)}</span><span class="pill info">${E(CLSN[e.cls])}</span>${stdChip("itil5","Each step carries its own target so the end to end agreement can be allocated and checked.")}</div><h2 style="font-size:28px;margin:10px 0 4px">${E(e.title)}</h2>
  <p class="story" data-role="story">${ags.length?ags.length+" active agreements cover this process.":"No active agreement covers this process."} ${sr.bud?`The end to end budget is <b>${hrsStr(sr.bud.target.hours)}</b> (${E(sr.bud.n)}); the steps below add up to <b class="${over?"bad":"good"}">${hrsStr(sr.sum)}</b>${over?", which is over the budget":""}.`:"Add an agreement to give the steps a budget."}</p>
  <div class="eyebrow">How each step is meeting its target</div><div class="tscroll"><table><thead><tr><th>Step</th><th>Target</th><th>Last 30 days</th></tr></thead><tbody>${rows||`<tr><td colspan="3" class="muted">This process has no steps yet. Add them in the workflow designer.</td></tr>`}</tbody></table></div><p class="muted small">Step results are measured from the timestamps each step writes to its record. Targets come from the process itself unless you set one here.</p>
  <div class="eyebrow" style="margin-top:14px">Agreements on this process</div>${ags.length?lrHTML({id:"sla_lrp_"+e.key,limit:6,groups:["SLA","OLA","UC","XLA"].map(t=>({key:t,label:TYPEN[t]+"s",rows:ags.filter(a=>a.ty===t).map(a=>{const r=evalAg(a);return {id:a.id,t:a.n,sub:goalTxt(a)+" · "+valTxt(a,r),tag:a.id,st:stOf(a,r),go:()=>openAg(a.id)}})})).filter(g=>g.rows.length)}):`<p class="muted">None yet.</p>`}
  <div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn primary" data-sla-new="${E(JSON.stringify({proc:e.cls,ty:ags.some(a=>a.ty==="SLA")?"OLA":"SLA"}))}">Create an agreement here</button><button class="btn" data-nav="flw_design">Edit the steps in the workflow designer</button></div>`)}
-/* ================= Clock simulator ================= */
 function simPane(){const L=live().filter(a=>a.kind==="duration"&&!a.gen);if(!L.length)return card("Clock simulator","No time-based agreements.",empty("Nothing to simulate","Create a time-based SLA first."));const sm=SL.sim;let ag=agById(sm.ag);if(!ag||ag.kind!=="duration")ag=L[0];sm.ag=ag.id;
  const startT=d0(NOW)+sm.day*DAY+sm.hour*HR;const pauses=sm.pLen>0?[{at:sm.pAt,len:sm.pLen}]:[];const R=simulate(ag,{startT,pauses}),R0=simulate(ag,{startT,pauses:[]});
  const span=R.end-startT;const runs=[];R.cells.forEach(c=>{const l=runs[runs.length-1];if(l&&l.c===c.c)l.n++;else runs.push({c:c.c,n:1,t:c.t})});
@@ -537,13 +516,11 @@ function simPane(){const L=live().filter(a=>a.kind==="duration"&&!a.gen);if(!L.l
  return `${card("Clock simulator","Pick an agreement and a start time, add a pause, and watch the clock. It uses the same calendar, time zone and holiday logic as live clocks.",`${ctl}<div class="sla-tl" role="img" aria-label="Clock timeline">${runs.map(r=>`<i class="sla-seg2 ${r.c}" style="width:${r.n/R.cells.length*100}%"></i>`).join("")}${marks}</div><div class="sla-tx">${ticks.join("")}</div>${legend([["Clock counting","--accent"],["Outside the schedule (nights, weekends, holidays)","--track"],["Paused","--warn-f"]])}
  <div class="statrow">${statTile("Due",fdt(R.due),hrsStr((R.due-startT)/HR)+" after it opened")}${statTile("Without the pause",fdt(R0.due),pauses.length?"The pause moves the due time by "+hrsStr((R.due-R0.due)/HR):"No pause set")}${statTile("Target",hrsStr(ag.target.hours),"of schedule time")}${statTile("Schedule",SCH.find(s=>s.id===ag.sch.cal).id==="24x7"?"24x7":"Limited hours",ag.sch.tz+" time")}</div><p class="small" data-role="story">${E(st)} Opened ${fdt(startT)}; due ${fdt(R.due)}.</p>`,fchip("m_agr_att"))}
  <div class="grid g2">${card("Warnings and escalation actions","When each action fires for this simulated clock.",`<div class="sla-stack sm">${wl||"<p class='muted'>No actions.</p>"}</div>`)}${card("Due time by when the record is opened","How the schedule changes the real deadline for the same target.",grid)}</div>`}
-/* ================= Breaches and credits ================= */
 const REMED={"Sent to the wrong group first":["Add a routing rule so the catalog class and CI route to the owning group","svc_oncall",3,"Open auto-assignment"],"Waiting on a vendor":["Raise the open vendor tickets at the next service review and claim credits where the contract allows","",4,"See service credits"],"Short staffed at the peak":["Use the on-call recommendation engine to add a peak-hour shift","svc_oncall",2,"Open recommendations"],"Request was unclear":["Make the affected service and what changed required on the form","svc_sla",1,"Open the designer"],"Approval delay":["Auto-approve standard requests under the limit and remind approvers at one business day","svc_sla",2,"Open coverage"],"No runbook for this case":["Ask the Knowledge Curator to draft a runbook from the closed incidents","",4,""],"Dependency was down":["Record the dependency in the service map so the cause is shown, not paged again","svc_360",0,"Open the service map"],"No reason recorded":["Ask resolvers to record a reason when a clock breaches","",4,""]};
 function breachData(){const key="BD|"+SL.v+"|"+(SCALE.on?1:0);if(CACHE.has(key))return CACHE.get(key);const rows=[];const causes={};live().forEach(a=>{if(a.kind==="score")return;const r=evalAg(a);r.items.forEach(x=>{if(x.breached){rows.push({id:x.id+"|"+a.id,rid:x.id,ag:a,x});const c=tagCause(x);causes[a.ty]=causes[a.ty]||{};causes[a.ty][c]=(causes[a.ty][c]||0)+1}})});const out={rows,causes};CACHE.set(key,out);return out}
 function breachesPane(){const t=totals(),bd=breachData(),cr=credits();syncM();
  const ft=SL.pt||"All";const cm={};Object.keys(bd.causes).forEach(ty=>{if(ft==="All"||ft===ty)Object.entries(bd.causes[ty]).forEach(([c,n])=>cm[c]=(cm[c]||0)+n)});const cs=Object.entries(cm).sort((a,b)=>b[1]-a[1]);const tot=cs.reduce((a,b)=>a+b[1],0);let cum=0;
  const par=cs.map(([c,n])=>{cum+=n;return `<div class="sla-pr"><button class="sla-bn" data-sla-cause="${E(c)}">${E(c)}</button><div class="sla-bar"><i class="bad" style="width:${n/cs[0][1]*100}%"></i></div><span class="num">${n}</span><span class="muted small num">${Math.round(cum/tot*100)}% cumulative</span></div>`}).join("");
- /* responders for the drag and drop hand-over */
  const rk=t.risk.slice(0,8);const svcIds=Array.from(new Set(rk.map(r=>(SVCREG.find(s=>s.n===r.x.svc)||{}).id).filter(Boolean)));const cand={};
  if(window.routeBy)svcIds.concat(svcIds.length?[]:[""]).forEach(id=>{try{routeBy({service:id,priority:"P2",limit:4,kinds:["human","contractor"]}).forEach(c=>{if(!cand[c.name]||cand[c.name].score<c.score)cand[c.name]=c})}catch(e){}});
  const people=Object.values(cand).sort((a,b)=>b.score-a.score).slice(0,6);
@@ -563,11 +540,9 @@ function breachesPane(){const t=totals(),bd=breachData(),cr=credits();syncM();
  ${card("Why agreements are missed","Reasons recorded on breached clocks, largest first. Select a reason to see the records and tag more.",`<div class="row" style="margin-bottom:10px"><span class="sla-seg" role="group" aria-label="Agreement type">${["All","SLA","OLA","UC"].map(k=>`<button type="button" class="${ft===k?"on":""}" data-sla-pt="${k}">${k==="All"?"All types":k}</button>`).join("")}</span></div><div class="sla-rows">${par||empty("No breaches","Nothing missed in the last 30 days.")}</div>${legend([["Number of breaches with this reason","--bad-f"]])}`)}
  ${card("Vendor and provider service credits","Credits are worked out from the contract clause attached to each underpinning contract: the monthly fee, the rate per miss or per point of shortfall, and the cap.",`<div class="tscroll"><table><thead><tr><th>Vendor and clause</th><th>Monthly fee</th><th>How it is worked out</th><th>Credit</th><th>Amount</th><th></th></tr></thead><tbody>${credRows}</tbody></table></div><p class="muted small">Contract lines ${window.SOWX?"come from the Contract analyzer.":"are entered here until the Contract analyzer shares its lines."} Providers with an MSP (managed service provider) clause are measured against their goal; others per missed clock.</p>`,fchip("m_agr_credit"))}
  ${card("Every breach in the last 30 days",`${bd.rows.length.toLocaleString("en-US")} clocks. Select one to replay its clock.`,btHTML({id:"sla_breach",h:460,rowH:48,exportName:"breaches",facets:["ty","svc","cause"],key:"id",open:id=>{const [r,a]=id.split("|");openRec(a,r)},cols:[{k:"id",label:"Record",fmt:b=>`<b>${E(b.rid)}</b>`,val:b=>b.rid},{k:"ag",label:"Agreement",wrap:1,fmt:b=>E(b.ag.n),val:b=>b.ag.n},{k:"ty",label:"Type",fmt:b=>tPill(b.ag.ty),val:b=>b.ag.ty},{k:"svc",label:"Service",wrap:1,fmt:b=>E(b.x.svc||""),val:b=>b.x.svc||""},{k:"el",label:"Elapsed of target",fmt:b=>b.ag.kind==="duration"?hrsStr(b.x.run)+" of "+hrsStr(b.ag.target.hours):"Not met",val:b=>b.x.pct||0},{k:"cause",label:"Reason",wrap:1,fmt:b=>E(tagCause(b.x)),val:b=>tagCause(b.x)},{k:"when",label:"Opened",fmt:b=>fd((b.x.rec.ev[0]||{}).t||NOW),val:b=>(b.x.rec.ev[0]||{}).t}],rows:()=>breachData().rows.map(b=>Object.assign({},b,{ty:b.ag.ty,svc:b.x.svc||"",cause:tagCause(b.x)}))}))}`}
-/* ================= Experience (XLA) ================= */
 function xlaPane(){const t=totals();const xs=live().filter(a=>a.ty==="XLA");const seed=xs.filter(a=>!a.gen);const rs=xs.map(a=>({a,r:evalAg(a)}));const resp=rs.reduce((x,y)=>x+y.r.resp,0),pop=rs.reduce((x,y)=>x+y.r.pop,0);const ok=rs.filter(x=>x.r.ok).length;
  const dist=r=>{const c=[0,0,0,0,0];r.scores.forEach(s=>c[s-1]++);const m=Math.max(1,...c);return `<div class="sla-dist" role="img" aria-label="Score counts from 1 to 5">${c.map((n,i)=>`<span><i class="${i>=3?"good":i===2?"warn":"bad"}" style="height:${Math.max(3,n/m*40)}px" title="${n} scored ${i+1}"></i><small>${i+1}</small></span>`).join("")}</div>`};
  const cards=(seed.length?seed:xs.slice(0,6)).map(a=>{const r=evalAg(a);return `<div class="card glass sla-xc"><div class="row sp" style="flex-wrap:wrap;gap:6px"><span class="pill good">${E((a.xla||{}).dim||"")}</span><span class="pill ${stOf(a,r)}">${E(valTxt(a,r))}</span></div><h3 style="font-size:18px">${E(a.n)}</h3><p class="muted small">${E((a.xla||{}).q||"")}</p>${dist(r)}<div class="row sp small"><span class="muted">Goal ${a.target.stat==="mean"?a.goal+" of 5":a.goal+"% favorable"}</span><span class="muted">${r.resp} of ${r.pop} responded</span></div><div class="row sp"><span class="muted small">${E((a.xla||{}).src||"")}</span>${trendSpark(r,"--good-f")}</div><button class="btn quiet" data-sla-open="${E(a.id)}">Open</button></div>`}).join("");
- /* watermelon check */
  const inc=agById("XLA-INC-SAT"),ir=inc?evalAg(inc):null;const rows=SVCREG.map(s=>{const o=t.bySvc[s.n];const sla=attOf(o);const sc=ir&&ir.bySvc[s.n]&&ir.bySvc[s.n].sc||[];const fav=sc.length>=3?sc.filter(x=>x>=4).length/sc.length*100:null;return {s,sla,fav,n:sc.length,flag:sla!=null&&fav!=null&&sla>=90&&fav<75}}).filter(x=>x.sla!=null||x.fav!=null);
  const wm=rows.map(x=>`<tr><td><b>${E(x.s.n)}</b><br><small class="muted">${x.s.tier}</small></td><td>${x.sla==null?"No data":`<span class="pill ${barCls(x.sla,95)}">${Math.round(x.sla)}%</span>`}</td><td>${x.fav==null?`<span class="muted small">Too few responses</span>`:`<span class="pill ${barCls(x.fav,80)}">${Math.round(x.fav)}% favorable</span><br><small class="muted">${x.n} responses</small>`}</td><td>${x.flag?`<span class="pill warn">Looks green, feels red</span>`:""}</td></tr>`).join("");
  const srcs=["Post-resolution survey","Portal feedback","Teams pulse","Day-30 pulse survey","Digital experience telemetry"].map(sn=>{const l=xs.filter(a=>(a.xla||{}).src===sn);const rr=l.reduce((a,x)=>a+evalAg(x).resp,0),pp=l.reduce((a,x)=>a+evalAg(x).pop,0);return `<tr><td><b>${E(sn)}</b></td><td class="num">${l.length}</td><td class="num">${rr}</td><td class="num">${pp?Math.round(rr/pp*100)+"%":"No data"}</td><td>${l.length?`<span class="pill good">Connected</span>`:`<button class="btn quiet" data-sla-new="${E(JSON.stringify({ty:"XLA",proc:"incident"}))}">Use this source</button>`}</td></tr>`}).join("");
@@ -576,7 +551,6 @@ function xlaPane(){const t=totals();const xs=live().filter(a=>a.ty==="XLA");cons
  <div class="grid g2">${card("Does the SLA tell the whole story","A service can meet every time target and still frustrate people. This table lines the two up by service.",`<div class="tscroll"><table><thead><tr><th>Service</th><th>SLA attainment</th><th>Experience</th><th></th></tr></thead><tbody>${wm||`<tr><td colspan="4" class="muted">No data</td></tr>`}</tbody></table></div>`,stdChip("xla","Experience level agreements are read together with SLAs so a green SLA cannot hide a poor experience."))}
  ${card("Where responses come from","Each source feeds one or more XLAs. Surveys are short: one question each, asked once per record.",`<div class="tscroll"><table><thead><tr><th>Source</th><th>XLAs</th><th>Responses</th><th>Response rate</th><th></th></tr></thead><tbody>${srcs}</tbody></table></div>`,fchip("m_xla_score"))}</div>`}
 
-/* ================= forms ================= */
 function agForm(pre){pre=pre||{};const tiers=TIERS();
  openForm({id:"sla_new",title:pre.ty==="XLA"?"New experience level agreement":"New agreement",story:"Starts a draft with sensible conditions for the table you pick. You then refine it in the designer, where a live preview shows what it would have measured over the last 30 days. Nothing measures until you clear Draft.",submit:"Create draft and open the designer",
   fields:[{section:"What it is"},{k:"n",label:"Name",type:"text",req:true,ph:"For example: Contract Repository, P2 restore",help:"Say what is promised and for what.",ai:{label:"Suggest",fn:v=>{const pn=(CLSN[v.proc]||"Service").replace(/ and .*/,"");return v.ty==="XLA"?pn+" experience: "+(v.dim||"sentiment").toLowerCase():v.ty==="UC"?"Vendor: "+pn+" turnaround":v.ty==="OLA"?"Resolver team: "+pn+" hand-off":pn+": respond and resolve"}}},
@@ -589,13 +563,13 @@ function agForm(pre){pre=pre||{};const tiers=TIERS();
    {section:"Target"},{k:"hours",label:"Target time (hours of schedule time)",type:"number",min:.1,step:.1,show:v=>v.ty!=="XLA",help:"You can switch to minutes or business days in the designer."},
    {k:"goal",label:"Goal",type:"number",unit:"%",min:1,max:100,show:v=>v.ty!=="XLA",help:"Share of records that must meet the target."},
    {k:"xdim",label:"What the survey asks about",type:"chips",opts:["Sentiment","Effort","Resolution satisfaction"],show:v=>v.ty==="XLA"}],
-  defaults:{n:pre.n||"",ty:pre.ty||"SLA",proc:pre.proc||"incident",tbl:pre.tbl||(pre.proc==="request"||pre.proc==="access"||pre.proc==="onboarding"?"request_item":pre.proc==="change"?"change_request":pre.proc==="vendor"?"vendor_ticket":"incident"),svc:pre.svc?[pre.svc]:[],tier:pre.tier||"Any",own:"Tom Becker",from:isoD(NOW),hours:8,goal:95,xdim:"Sentiment"},
+  defaults:{n:pre.n||"",ty:pre.ty||"SLA",proc:pre.proc||"incident",tbl:pre.tbl||(pre.proc==="request"||pre.proc==="access"||pre.proc==="onboarding"?"request_item":pre.proc==="change"?"change_request":pre.proc==="vendor"?"vendor_ticket":"incident"),svc:pre.svc?[pre.svc]:[],tier:pre.tier||"Any",own:ME("Tom Becker"),from:isoD(NOW),hours:8,goal:95,xdim:"Sentiment"},
   live:v=>`<p class="muted small" data-role="story">${E(v.ty||"SLA")} · ${E(CLSN[v.proc]||"")} · ${(DATAMODEL.tables[v.tbl]||{label:v.tbl}).label} fields. ${v.ty==="XLA"?"The survey is sent after the record closes.":"The clock starts and stops from the conditions you set next."}</p>`,
   onSubmit:v=>{const a=blankAg({ty:v.ty,proc:v.proc,tbl:v.tbl,svc:(v.svc||[])[0],tier:v.tier==="Any"?"":v.tier,own:v.own,n:v.n});a.n=v.n;a.act.svcs=(v.svc||[]).slice();a.act.from=v.from||isoD(NOW);a.act.draft=true;a.own=v.own;if(v.ty==="XLA"){a.xla.dim=v.xdim||"Sentiment"}else{a.target.hours=+v.hours||8;a.goal=+v.goal||95}
    a.id=(a.ty+"-"+slug(a.n).toUpperCase().slice(0,10)+"-"+(SL.custom.length+1)).replace(/_/g,"-");SL.custom.push(a);SL.v++;SL.dr=null;loadDr(a.id);SL.dr.dirty=false;S.v.svc_slav=1;closeDrawer();audit("created draft agreement",a.id+": "+a.n);if(S.screen!=="svc_sla")go("svc_sla");else render();return {toast:"Draft created. Refine the conditions in the designer.",close:false}}})}
 function creditForm(id){const a=agById(id);const x=a&&creditFor(a);if(!x)return;openForm({id:"sla_credit",title:"Claim a service credit from "+a.party,story:"Records the claim against "+x.c.line+", attaches the clock evidence and asks the approver to send it. The earned amount is "+money(x.amt)+" ("+x.why+").",submit:"Submit the claim",
  fields:[{section:"Claim"},{k:"amt",label:"Amount to claim",type:"money",req:true,help:"Worked out from the clause. Change it only with a reason."},{k:"ev",label:"Evidence",type:"longtext",req:true,help:"Which clocks missed, and when."},{k:"ap",label:"Approver",type:"people",req:true},{k:"inv",label:"Apply the credit to",type:"chips",opts:["Next invoice","Cash refund"]}],
- defaults:{amt:x.amt,ev:x.r.items.filter(i=>i.breached).slice(0,5).map(i=>i.id+" ("+hrsStr(i.run)+" of "+hrsStr(a.target.hours)+")").join("; ")||"Result "+valTxt(a,x.r)+" against goal "+a.goal+"%.",ap:"Avery Chen",inv:"Next invoice"},
+ defaults:{amt:x.amt,ev:x.r.items.filter(i=>i.breached).slice(0,5).map(i=>i.id+" ("+hrsStr(i.run)+" of "+hrsStr(a.target.hours)+")").join("; ")||"Result "+valTxt(a,x.r)+" against goal "+a.goal+"%.",ap:ME("Avery Chen"),inv:"Next invoice"},
  live:v=>`<p class="muted small">Clause: ${E(x.c.line)}. ${E(x.c.rule)}. Cap ${x.c.cap}% of ${money(x.c.fee)}.</p>`,
  onSubmit:v=>{SL.credits[id]="claimed";SL.claims.unshift({id,amt:+v.amt,by:v.ap,at:NOW});SL.v++;audit("claimed service credit",a.party+" "+money(+v.amt));closeDrawer();render();return {toast:"Claim for "+money(+v.amt)+" sent to "+v.ap}}})}
 function policyForm(cls){openForm({id:"sla_policy",title:"Coverage policy: "+CLSN[cls],story:"Sets which agreement types this kind of process must have at Tier 1. Tier 2 drops the XLA and Tier 3 needs only the first type. The coverage map recomputes at once.",submit:"Save the policy",fields:[{k:"types",label:"Required agreement types",type:"multi",opts:["SLA","OLA","UC","XLA"],help:"Order matters for Tier 3: the first type is the one required there."}],defaults:{types:((SL.need&&SL.need[cls])||NEED0[cls]||[]).slice()},onSubmit:v=>{SL.need=SL.need||{};SL.need[cls]=v.types||[];SL.v++;audit("changed coverage policy",CLSN[cls]+": "+(v.types||[]).join(", "));render();return {toast:"Policy saved. Coverage is now "+pct1(covMatrix().pct)}}})}
@@ -608,7 +582,6 @@ function cellDrawer(rk,ck){const cm=covMatrix();const rw=cm.rows.find(r=>r.r.k==
  openDrawer(`<div class="eyebrow">${by==="process"?"Process and tier":"Service and process"}</div><h2 style="font-size:28px;margin:8px 0">${E(rw.r.t)}</h2><p class="story" data-role="story">${E(col.t)}. ${x.need.length?"Policy requires "+x.need.join(", ")+".":"No agreement is needed here."} ${x.missing.length?`Missing: <b>${x.missing.join(", ")}</b>.`:x.need.length?"Everything required is in place.":""}</p>
  <div class="eyebrow">Agreements here</div><div class="sla-stack sm">${list.join("")||'<p class="muted">None.</p>'}</div>
  <div class="row" style="gap:8px;margin-top:14px;flex-wrap:wrap">${x.missing.map(t=>`<button class="btn primary" data-sla-new="${E(JSON.stringify({proc:rw.r.cls||ck,ty:t,tier:rw.r.s?rw.r.s.tier:ck,svc:rw.r.s?rw.r.s.n:""}))}">Create ${t}</button>`).join("")}${rw.r.e?`<button class="btn" data-sla-proc="${E(rw.r.k)}">Open the process steps</button>`:""}</div>`)}
-/* ================= registration ================= */
 PROC.reg("svc_sla",{title:"How an agreement is made, measured and kept",std:["itil5","xla"],steps:[
  {n:"Define the agreement",d:"The service level manager names what is promised, to whom, and for which services, CIs, priorities and customer tiers.",who:"human",owner:"Tom Becker",sla:"Reviewed each quarter",out:"Agreement draft"},
  {n:"Choose real fields",d:"Conditions for start, pause, resume, stop, reset and cancel are built from fields in the platform data model, so the clock reads the same records everyone else does.",who:"human",owner:"Tom Becker",in:"Data model fields",out:"Conditions"},
@@ -629,7 +602,7 @@ REG("svc_sla","SLAs, OLAs and XLAs","service",ICON_SLA,()=>{const t=totals(),cm=
  return `<div class="screen">${hero("Service management · SLAs, OLAs and XLAs","Are we keeping our promises, and does every process have one?",`<b>${pct1(t.att)}</b> of agreement clocks stopped inside their target over the last 30 days, across <b>${t.n}</b> active agreements (service level, operational level, underpinning contract and experience level). <b>${t.risk.length}</b> clocks are at risk right now and <b>${t.br}</b> have breached. Only <b>${pct1(cm.pct)}</b> of the agreements our processes call for exist, with <b>${cm.gaps}</b> processes or services uncovered.`,`<div class="row" style="gap:8px;flex-wrap:wrap">${fchip("m_agr_att")}${fchip("m_agr_cov")}${fchip("m_agr_risk")}${fchip("m_xla_score")}${stdChip("itil5","Service level management: targets, clocks and reviews.")}${stdChip("xla","Experience measured next to speed.")}<button class="btn primary" data-sla-new="{}">New agreement</button><button class="btn" data-sla-tab="1">Open the designer</button></div>`)}${lensNote()}
  ${views("svc_slav",["Dashboard and agreements","Designer","Coverage by process","Clock simulator","Breaches and credits","Experience (XLA)"],[lazy(0,dashboard),lazy(1,()=>designer()+procCard("svc_sla_t1")),lazy(2,coveragePane),lazy(3,()=>simPane()+procCard("svc_sla_t3")),lazy(4,()=>breachesPane()+procCard("svc_sla_t4")),lazy(5,()=>xlaPane()+procCard("svc_sla_t5"))])}</div>`});
 document.addEventListener("change",e=>{const v=e.target.closest&&e.target.closest("[data-vw^='svc_slav:']");if(v)setTimeout(render,0)});
-/* ================= handlers ================= */
+TROWS.mode("svc_sla",["service_levels","services","config_items","incidents","people"]);
 const drDirty=()=>{dr().dirty=true};
 document.addEventListener("click",e=>{const T=e.target;let t;
  if(t=T.closest("[data-sla-open]")){openAg(t.dataset.slaOpen);return}
@@ -654,11 +627,10 @@ document.addEventListener("click",e=>{const T=e.target;let t;
  if(t=T.closest("[data-sla-reason]")){reasonForm(t.dataset.slaReason);return}
  if(t=T.closest("[data-sla-pt]")){SL.pt=t.dataset.slaPt;render();return}
  if(t=T.closest("[data-sla-cause]")){const c=t.dataset.slaCause;const rows=breachData().rows.filter(b=>tagCause(b.x)===c);openDrawer(`<div class="eyebrow">Breach reason</div><h2 style="font-size:28px;margin:8px 0">${E(c)}</h2><p class="story" data-role="story">${rows.length} breaches. ${E((REMED[c]||REMED["No reason recorded"])[0])}.</p>${lrHTML({id:"sla_lrc",limit:8,groups:[{key:"r",label:"Breached clocks",rows:rows.map(b=>({id:b.rid,t:b.rid,sub:b.ag.n+" · "+(b.x.svc||""),tag:b.ag.ty,st:"bad",go:()=>openRec(b.ag.id,b.rid)}))}]})}`);return}
- if(T.closest("[data-sla-claimall]")){const l=credits().filter(x=>x.amt>0&&!SL.credits[x.ag.id]);l.forEach(x=>{SL.credits[x.ag.id]="claimed";SL.claims.unshift({id:x.ag.id,amt:x.amt,by:"Avery Chen",at:NOW})});SL.v++;audit("claimed service credits",l.length+" claims");toast(l.length+" credit claims prepared for approval","good");render();return}
+ if(T.closest("[data-sla-claimall]")){const l=credits().filter(x=>x.amt>0&&!SL.credits[x.ag.id]);l.forEach(x=>{SL.credits[x.ag.id]="claimed";SL.claims.unshift({id:x.ag.id,amt:x.amt,by:ME("Avery Chen"),at:NOW})});SL.v++;audit("claimed service credits",l.length+" claims");toast(l.length+" credit claims prepared for approval","good");render();return}
  if(t=T.closest("[data-sla-ty]")){const k=t.dataset.slaTy;openList(TYN(k).replace(/^an? /,"").replace(/^./,c=>c.toUpperCase())+"s",TYPEN[k]+"s.",a=>a.ty===k);return}
  if(t=T.closest("[data-sla-cls]")){const k=t.dataset.slaCls;openList(CLSN[k]||k,"Agreements on this process.",a=>a.proc===k);return}
  if(t=T.closest("[data-sla-svc]")){const k=t.dataset.slaSvc;openList(k,"Agreements that apply to this service.",a=>!a.act.svcs.length||a.act.svcs.includes(k));return}
- /* designer */
  if(T.closest("[data-sla-save]")){if(saveDr())render();return}
  if(T.closest("[data-sla-discard]")){const s=dr().src;loadDr(s);toast("Changes discarded","info");render();return}
  if(t=T.closest("[data-sla-tg]")){const [p,v]=t.dataset.slaTg.split("|");const D=dr().ag;const k=p.split(".");const arr=D[k[0]][k[1]];const i=arr.indexOf(v);i>=0?arr.splice(i,1):arr.push(v);drDirty();render();return}
@@ -685,11 +657,9 @@ document.addEventListener("change",e=>{const T=e.target;let t;
   drDirty();render();return}
  if(t=T.closest("[data-sla-w]")){const [i,k]=t.dataset.slaW.split("|");const w=dr().ag.warn[+i];w[k]=k==="p"?Math.max(1,Math.min(200,+T.value||1)):T.value;drDirty();render();return}
  if(t=T.closest("[data-sla-sim]")){const k=t.dataset.slaSim;SL.sim[k]=k==="ag"?T.value:+T.value;render();return}});
-/* ================= drag and drop ================= */
 DND.on("sla_swarm",(id,from,to)=>{if(!to||!/^P\|/.test(to))return render();const rid=id.split("|")[1],nm=to.split("|")[1];const w=totals().risk.find(x=>x.x.id===rid);if(!w)return render();SL.desk[rid]=nm;SL.v++;audit("handed over at-risk clock",rid+" to "+nm);const av=window.AVAIL?AVAIL(nm,NOW):{ok:true};toast(rid+" handed to "+nm+(av.ok?"":". Warning: "+av.reason),av.ok?"good":"warn");render()});
 DND.on("sla_cov",(id,from,to)=>{if(!to||!/^cov\|/.test(to))return render();const aid=id.split("|")[1];const a=agById(aid);if(!a)return render();const [,rk,ck]=to.split("|");const cm=covMatrix();const by=cm.by;let cls,tier,svc;if(by==="process"){const rw=cm.rows.find(r=>r.r.k===rk);cls=rw&&rw.r.cls;tier=ck}else{cls=ck;const s=SVCREG.find(x=>x.id===rk);svc=s&&s.n;tier=s&&s.tier}
  if(!cls)return render();a.procs=Array.from(new Set((a.procs||[]).concat(a.proc!==cls?[cls]:[])));if(a.act.tiers.length&&tier&&!a.act.tiers.includes(tier))a.act.tiers.push(tier);if(svc&&a.act.svcs.length&&!a.act.svcs.includes(svc))a.act.svcs.push(svc);a.ver=(a.ver||1)+1;SL.v++;audit("extended agreement coverage",a.id+" now covers "+(CLSN[cls]||cls)+(tier?" at "+tier:""));toast(a.n+" now covers "+(CLSN[cls]||cls)+(svc?" for "+svc:" at "+tier)+". Coverage is "+pct1(covMatrix().pct),"good");render()});
-/* ================= chat, search, work ================= */
 ASKX.push(q=>{
  if(/(sla|ola|agreement|clock|target)s?.{0,30}(at risk|about to|breach|miss|late)|(at risk|breach).{0,30}(sla|ola|agreement|clock)/i.test(q)){const t=totals();S.v.svc_slav=4;go("svc_sla");say(q,{t:`${t.risk.length} clocks are at 75% or more of target and ${t.br} breached in the last 30 days. ${t.risk.slice(0,3).map(r=>`<b>${E(r.x.id)}</b> (${E(r.ag.n)}, ${Math.round(r.x.pct*100)}%)`).join("; ")||"Nothing is at risk."}`,steps:["Replayed every record through its agreement conditions","Counted schedule time, not clock time","Ranked by share of target used"]});return true}
  if(/(sla|ola|agreement).{0,25}(attain|perform|how are|status)|how are (we|our) (sla|slas)/i.test(q)){const t=totals();S.v.svc_slav=0;go("svc_sla");say(q,{t:`Attainment is <b>${pct1(t.att)}</b> over 30 days across ${t.n} active agreements. ${t.miss} are below their goal. ${["SLA","OLA","UC","XLA"].filter(k=>t.byTy[k]).map(k=>k+" "+pct1(attOf(t.byTy[k]))).join(", ")}.`,steps:["Counted clocks that stopped inside the target","Weighted by clock volume","Excluded cancelled clocks"]});return true}
@@ -699,14 +669,12 @@ ASKX.push(q=>{
  if(/(create|add|new|draft).{0,12}(an? )?(sla|ola|xla|agreement)/i.test(q)){const ty=/xla/i.test(q)?"XLA":/ola/i.test(q)?"OLA":"SLA";go("svc_sla");agForm({ty});say(q,{t:`Opened a new ${ty} form. Pick the process and table, then refine the conditions in the designer.`,steps:["Pre-filled sensible start and stop conditions","Left it as a draft until you activate it"]});return true}
  if(/what would.{0,30}(measure|have)|preview.{0,15}(sla|agreement)|simulat.{0,15}(sla|clock)/i.test(q)){S.v.svc_slav=1;go("svc_sla");say(q,{t:"The designer shows what an agreement would have measured over the last 30 days. Pick one, change a condition, and the preview updates. The clock simulator tab shows a single record minute by minute.",steps:["Ran the conditions over recent records","Compared with the saved version"]});return true}
  return false});
-SEARCHX.push(()=>SEED.concat(SL.custom).map(a=>({g:"Agreements",t:a.n,m:a.ty+" · "+goalTxt(a),c:"--"+(a.ty==="SLA"?"u2":a.ty==="OLA"?"u3":a.ty==="UC"?"s3":"s2"),f:()=>{go("svc_sla");openAg(a.id)},k:(a.id+" "+a.party+" "+a.proc+" sla ola xla uc agreement "+(a.act.svcs||[]).join(" ")).toLowerCase()})));
-/* CL-76: agreements are grouped by owner once per pass (workFor.index); generated agreements were never listed here */
-const cl76SlaIdx=()=>{const m=new Map();SEED.concat(SL.custom).forEach(a=>{if(a.gen||!a.own||!(agStatus(a)==="Active"||agStatus(a)==="Retiring"))return;let x=m.get(a.own);if(!x)m.set(a.own,x=[]);x.push(a)});return m};
+SEARCHX.push(()=>SEEDV.concat(SL.custom).map(a=>({g:"Agreements",t:a.n,m:a.ty+" · "+goalTxt(a),c:"--"+(a.ty==="SLA"?"u2":a.ty==="OLA"?"u3":a.ty==="UC"?"s3":"s2"),f:()=>{go("svc_sla");openAg(a.id)},k:(a.id+" "+a.party+" "+a.proc+" sla ola xla uc agreement "+(a.act.svcs||[]).join(" ")).toLowerCase()})));
+const cl76SlaIdx=()=>{const m=new Map();SEEDV.concat(SL.custom).forEach(a=>{if(a.gen||!a.own||!(agStatus(a)==="Active"||agStatus(a)==="Retiring"))return;let x=m.get(a.own);if(!x)m.set(a.own,x=[]);x.push(a)});return m};
 const cl76SlaBy=window.workFor&&workFor.index?workFor.index(cl76SlaIdx):n=>cl76SlaIdx().get(n)||[];
 WORK.push({kind:"Agreements to review",tag:"SLA",fn:n=>{const out=[];cl76SlaBy(n).forEach(a=>{const r=evalAg(a);if(r.ok===false)out.push({id:a.id,t:"Review "+a.n,sub:valTxt(a,r)+" against goal "+(a.kind==="score"&&a.target.stat==="mean"?a.goal+" of 5":a.goal+"%"),due:"This week",st:"warn",hrs:1,go:()=>{go("svc_sla");openAg(a.id)}})});
   Object.keys(SL.desk).forEach(rid=>{if(SL.desk[rid]===n){const w=totals().risk.find(x=>x.x.id===rid);out.push({id:rid,t:"At-risk clock "+rid,sub:w?w.ag.n+", "+Math.round(w.x.pct*100)+"% of target used":"Handed over from the SLA board",due:"Now",st:"bad",hrs:1,go:()=>{go("svc_sla");w&&openRec(w.ag.id,rid)}})}});return out}});
 
-/* R8: plain-language explanation of how a clock is measured (chat, workflows) */
 function explain(q){const all=AGS();const key=String(q==null?"":q).toLowerCase();let a=agById(q)||all.find(x=>x.n.toLowerCase()===key)||all.find(x=>key&&(x.n.toLowerCase().includes(key)||key.includes(x.n.toLowerCase())))||all.find(x=>!x.gen&&x.ty==="SLA");
  if(!a)return {ok:false,text:"No agreement found."};const r=evalAg(a),cal=calOf(a.sch);
  const ph=PHASES.map(p=>({phase:p[1],rule:phaseText(a.tbl,a.cond[p[0]])}));
