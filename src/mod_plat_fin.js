@@ -688,9 +688,9 @@ const SCR_STEPS={
  fin_spend:[st_("Describe the cost","Amount, nature, consumers, gate and date.","human","Service owner","Minutes","Request","Cost"),st_("Apply the rules","Allowability, eligibility, dates and balance.","robot","Finance systems","Seconds","Cost","Candidates"),st_("Order and split","Rank, expiry, id; split when a balance runs out.","agent","FinOps Agent","Seconds","Candidates","Result lines"),st_("Override if needed","Needs the target color's approval authority.","gate","Color authority","2 days","Result","Final lines"),st_("Record why","Policy version, candidates and rationale are logged.","robot","Finance systems","Seconds","Final lines","Audit row")]};
 function regProc(){Object.keys(SCR_STEPS).forEach(k=>PROC.reg(k,{title:{fin_model:"How the IT financial model runs",fin_color:"How a color is created, approved and released",fin_spend:"How a cost gets its color"}[k],std:SCR_STD[k],steps:SCR_STEPS[k]}));FINPROC.forEach(p=>PROC.reg(p.key,{title:p.name,std:["itil4","tbm","cobit"],steps:p.steps}))}
 regProc();
-REG("fin_model","IT financial model","portfolio","M3 20h18M6 16V9M11 16V5M16 16v-5M21 16V8",()=>vModel());
-REG("fin_color","Funding color","portfolio","M12 3a9 9 0 100 18 4 4 0 003-6.5A3 3 0 0112 11V3zM8 9h.01M7 14h.01M16 8h.01",()=>vColor());
-REG("fin_spend","Spend-order simulator","portfolio","M4 6h10M4 12h16M4 18h7M17 4l3 2-3 2M14 16l3 2 3-2",()=>vSpend());
+REG("fin_model","IT financial model","portfolio","M3 20h18M6 16V9M11 16V5M16 16v-5M21 16V8",()=>TV.TEN()?TV.model():vModel());
+REG("fin_color","Funding color","portfolio","M12 3a9 9 0 100 18 4 4 0 003-6.5A3 3 0 0112 11V3zM8 9h.01M7 14h.01M16 8h.01",()=>TV.TEN()?TV.color():vColor());
+REG("fin_spend","Spend-order simulator","portfolio","M4 6h10M4 12h16M4 18h7M17 4l3 2-3 2M14 16l3 2 3-2",()=>TV.TEN()?TV.spend():vSpend());
 
 /* ---------- decisions and risks ---------- */
 function regItem(id){return F.decs.find(d=>d.id===id)||F.risks.find(r=>r.id===id)}
@@ -747,8 +747,41 @@ document.addEventListener("change",e=>{const t=e.target.closest("[data-fin-chang
  else if(a==="simpref"){F.sim.pref=v;if(F.sim.ovr&&F.sim.ovr.color!==v)F.sim.ovr=null;render()}
  else if(a==="simline"){const l=leafLines().find(x=>x.id===v);if(l){const s=F.sim;s.ex="cu";s.amt=Math.max(0,l.fcst-l.act)||l.fcst;s.nat=l.nature;s.gate=assignGate(l);s.cons=l.cons.slice();s.date=TODAY;const c=ctxOf(l);s.prob=c.prob;s.dev=c.dev;audit("loaded line into spend-order simulator",l.id);render()}}});
 
+/* ---------- PR-32 B5: the funding screens under a tenant other than Meridian ----------
+   The same screens, purpose and tab names, drawn only from this tenant's rows (DATA.get: finance_policies by part, budget lines,
+   ledger, projects, cost centers, approval tiers), in its words (DATA.term). Sample figures, simulated; a view with no rows of its
+   own is a labeled gap (R18), never a Meridian figure. Meridian renders the views of this module and mod_plat_fin2, unchanged.
+   Shared with mod_plat_fin2 through FIN.tv. */
+const TV=(()=>{const TEN=()=>DATA.tenant()!=="core",fp=p=>DATA.get("finance_policies").filter(r=>r.part===p),tw=(k,m)=>DATA.term(k,{cap:true,many:!!m});
+ const C=(h,sub,ent,R,cols)=>card(h,sub,R.length?STN.table(cols.map(c=>c[0]),R.map(r=>cols.map(c=>typeof c[1]==="function"?c[1](r):E(r[c[1]]==null?"":r[c[1]])))):STN.gap(ent));
+ const G=(h,s)=>card(h,"",empty(s,"Rows from another company are never shown in their place."));
+ const Sc=(id,h,story,tabs)=>{const c=Math.min(+((S.stn||{}).tab||{})[id]||0,tabs.length-1);
+  return `<div class="screen stn">${STN.head("Money and contracts",h,story)}${tabs.length>1?`<div class="stn-tabs" role="tablist" aria-label="Views">${tabs.map((t,i)=>`<button type="button" role="tab" class="chip" aria-selected="${i===c}" aria-pressed="${i===c}" data-stn-tab="${id}|${i}">${E(t[0])}</button>`).join("")}</div>`:""}<div role="tabpanel" class="stn-pane">${tabs[c][1]()}</div></div>`};
+ const own=(o,b)=>r=>STN.own(r[o],r[b]),m=k=>r=>U(r[k]||0);
+ const colN=id=>((fp("color").find(c=>c.id===id)||{}).name||id||"");
+ const colors=(h,sub)=>C(h,sub,"finance_policies",fp("color"),[["Color","name"],["Fund code","fund"],["Available",m("avail")],["Status","status"]]);
+ const rules=h=>C(h,"Which color may pay for which nature of cost, at which gate","finance_policies",fp("rule"),[["Rule","id"],["Color",r=>E(colN(r.color))],["Nature","nature"],["Gate","gate"],["Allowed","allowed"],["Rule text","text"],["Approver","approver"]]);
+ const risks=h=>C(h,"Open finance risks with an owner and a backup","risks",DATA.get("risks").filter(r=>r.part==="finance"),[[tw("risk"),"t"],["Why","why"],["Owner and backup",own("owner","backup")],["Control","ctl"],["Due","due"],["Status","st"]]);
+ const pols=h=>C(h,"Policies with an owner and a backup","finance_policies",fp("policy"),[[tw("policy"),"n"],["What it covers","d"],["Owner and backup",own("owner","backup")],["Status","st"]]);
+ const evs=h=>C(h,"Funding events and their evidence","finance_policies",fp("event"),[["Event","c"],["Source","src"],["Date","t"],["Status","st"]]);
+ const L=()=>DATA.get("budget_lines"),pj=id=>E((DATA.get("projects").find(p=>p.id===id)||{}).short||id||"");
+ const lines=(h,sub,R)=>C(h,sub,"budget_lines",R,[["Budget line",r=>`<b>${E(r.n)}</b><small class="muted"> ${E(r.id)}</small>`],[tw("project"),r=>pj(r.p)],["Category","cat"],["Approved",m("appr")],["Forecast",m("fcst")],["Variance",r=>U((r.fcst||0)-(r.appr||0))],["Owner and backup",own("own","bk")]]);
+ const n=(p,w)=>fp(p).length+" "+w;
+ return {TEN,fp,tw,C,G,Sc,own,m,colors,rules,risks,pols,evs,L,lines,n,
+ model:()=>Sc("fin_model","Budgets: IT financial model",`${n("color","funding colors")}, ${n("rule","color rules")} and ${n("policy","finance policies")} hold the money model here. Sample data, simulated.`,
+  [["Overview",()=>colors("Funding colors","Each color says what its money may pay for")],["Principles and scope",()=>pols("Finance policies")],["Decisions and risks",()=>risks("Finance risks")],
+   ["Roadmap and Standards Update 2025-06",()=>G("Roadmap","No roadmap for the financial model in this sample company yet.")],
+   ["Data model and reuse",()=>C("Finance records in this tenant","Row counts read through the tenant data layer (prototype fact)","finance_policies",[["Budget lines","budget_lines"],["Ledger entries","ledger_entries"],["Finance policies, colors, rules and events","finance_policies"],["Cost centers","cost_centers"],[tw("contract",1),"contracts"],[tw("purchase_order",1),"purchase_orders"]].map(x=>({n:x[0],c:DATA.get(x[1]).length})),[["Records","n"],["Rows","c"]])],
+   ["Finance processes",()=>C("Processes","Each with an owner and a backup","processes",DATA.get("processes"),[["Process","n"],["Owner and backup",own("owner","backup")]])]]),
+ color:()=>Sc("fin_color","Which funding pays for what",`${n("color","funding colors")} hold ${U(fp("color").reduce((a,c)=>a+(+c.avail||0),0))} available, and ${n("rule","rules")} say what each may pay for. Sample figures, simulated.`,
+  [["Balances and headroom",()=>colors("Color balances","Available to spend, by color")],["Colors",()=>colors("Color table","Fund code and status")],["Rule matrix",()=>rules("Color by nature rule matrix")],
+   ["Releases",()=>G("Release timeline","No restriction releases in this sample company yet.")],
+   ["Reconciliation",()=>C("Ledger entries","The ledger the colors reconcile to","ledger_entries",DATA.get("ledger_entries").filter(e=>e.part==="entry"),[["Entry","id"],["Date","d"],["Kind","t"],["Amount",m("amt")],["Why","why"],["Status","st"]])]]),
+ spend:()=>Sc("fin_spend","Which funding pays for what: Test the order",`The colors and rules a cost is tested against in this sample company: ${n("color","colors")}, ${n("rule","rules")}.`,
+  [["Test",()=>colors("Candidate colors","Every color a cost could draw on")+rules("The policy in force")]])}})();
+["fin_model","fin_color","fin_spend"].forEach(id=>DATA.screen(id,{mode:"data",entities:["finance_policies","budget_lines","ledger_entries","risks","processes"],note:"mod_plat_fin (PR-32 B5)"}));
 /* ---------- public contract ---------- */
-window.FIN={version:"0.1",TODAY,
+window.FIN={version:"0.1",TODAY,tv:TV,
  get colors(){return F.colors.map(c=>({...c}))},natures:NAT.map(n=>({id:n[0],label:n[1]})),get gates(){return GATES.map(g=>({...g}))},get rules(){return Object.values(F.rules).map(r=>({...r}))},
  get balances(){const b=balances().col;return F.colors.map(c=>({color:c.id,open:b[c.id].open,authorizations:b[c.id].auth,spend:b[c.id].spend,releases:b[c.id].rel,closing:b[c.id].close,forecastRemaining:b[c.id].fc,headroom:b[c.id].head}))},
  get lines(){return leafLines().map(l=>({id:l.id,parent:l.parent||"",name:l.name,project:l.p,amount:l.fcst,actual:l.act,nature:l.nature,color:l.color,source:l.src,fundCode:l.fund,gate:l.gate,consumers:l.cons,pool:l.pool,subPool:l.sub,tower:l.tower,solution:l.sol,driver:l.drv,mappingConfidence:l.conf}))},

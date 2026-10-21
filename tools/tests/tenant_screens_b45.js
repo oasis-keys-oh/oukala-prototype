@@ -1,7 +1,8 @@
 // PR-32 B4 (portfolio and delivery) and B5 (money and contracts): the screens these batches moved to the tenant data layer, under every tenant.
 // For each screen and each tenant (Meridian, the three industry packs and one company made by Bring your company):
 //  1. the screen is registered as mode "data" and renders (no page error, not blank);
-//  2. it shows that tenant's own rows (an id or name from one of the entities it registers) or a labeled gap;
+//  2. it shows that tenant's own rows (an id or name from one of the entities it registers) or a labeled gap (a screen that
+//     registers no entities, such as the Product log, carries no tenant business data);
 //  3. it never shows another tenant's names or record ids (organization, people, projects, invoices, plus the ids and names of the
 //     B4 and B5 entities: plan tasks, RAID items, budget requests, cost centers, vendors, contracts, purchase orders, timesheets);
 //  4. each view tab the screen offers ([role=tab], view switchers) is clicked and checked the same way.
@@ -28,7 +29,7 @@ await p.evaluate(()=>{const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const
   ENT.forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>{if(!r)return;
    if(e==='people'){if(r.kind==='human'||t.id!=='core')add(r.name);return}
    if(e==='projects'){add(r.n);if(t.id!=='core')add(r.id);return}
-   if(['vendors'].includes(e)){add(r.n);return}
+   if(e==='vendors'){if(t.id!=='core'||String(r.n).split(/\s+/).length>=2)add(r.n);return} /* a one-word product name (a tool the log mentions) identifies no tenant */
    if(e==='invoices'){add(r.id);return}
    if(t.id!=='core'||/^(PO|CT|TS|BR|R)-/.test(String(r.id||'')))add(r.id||r.code)}));
   fp[t.id]=[...terms]});
@@ -39,6 +40,7 @@ await p.evaluate(()=>{const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const
  window.__b45.hits=(txt,except)=>{const out=[];Object.keys(window.__b45.fp).forEach(k=>{if(k===except)return;window.__b45.fp[k].forEach(re=>{const m=re.exec(txt);if(m)out.push(k+':'+m[0].trim()+' [..'+txt.slice(Math.max(0,m.index-50),m.index+m[0].length+10).replace(/\s+/g,' ')+'..]')})});return out};
  /* own rows: any id or name from the entities the screen registers, read for this tenant */
  window.__b45.own=(id,t)=>{const s=DATA.screens().find(x=>x.id===id)||{};const txt=window.__b45.surface();let rows=0;
+  if(!(s.entities||[]).length)return {ok:true,via:'no tenant business data on this screen'};
   for(const e of (s.entities||[])){const R=DATA.get(e,{tenant:t});rows+=R.length;for(const r of R){for(const f of ['n','name','short','id','code','t','title','team','d']){const v=r&&r[f];if(typeof v==='string'&&v.length>=4&&txt.indexOf(v)>=0)return {ok:true,via:e+'.'+f+'='+v}}}}
   const gap=/No data in this sample company yet|in this tenant's pack yet|gap is recorded|No .* in this sample company/i.test(txt);return {ok:gap,via:gap?'labeled gap':'none',rows}}});
 const tenants=await p.evaluate(()=>DATA.tenants().map(t=>t.id));console.log('tenants',tenants.join(','),'| screens',SCREENS.length);
@@ -51,7 +53,7 @@ const check=async(t,id,where)=>{checks++;const r=await p.evaluate(([t,id])=>({h:
 for(const t of tenants){await p.evaluate(t=>TENANT.switch(t),t);await p.waitForTimeout(250);
  if(await p.evaluate(()=>DATA.tenant())!==t){fail(t+': switch refused');continue}
  for(const id of list){const n0=errs.length;
-  const mode=await p.evaluate(id=>DATA.screenMode(id),id);if(mode!=='data')fail(id+' is mode '+mode+', not data');
+  const mode=await p.evaluate(id=>{if(S.stn&&S.stn.tab)delete S.stn.tab[id];return DATA.screenMode(id)},id);if(mode!=='data')fail(id+' is mode '+mode+', not data');
   await p.evaluate(id=>go(id),id).catch(e=>errs.push(id+': '+e.message));await p.waitForTimeout(140);
   await check(t,id,'');
   const own=await p.evaluate(([id,t])=>window.__b45.own(id,t),[id,t]);if(!own.ok)fail(t+' '+id+' shows neither its own rows nor a labeled gap (rows '+own.rows+')');
