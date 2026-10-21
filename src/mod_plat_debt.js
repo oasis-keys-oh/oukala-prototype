@@ -150,9 +150,11 @@ const DEBT=window.DEBT={TYPES:TY,
  byApp(id){return live().filter(x=>x.apps.includes(id))},
  score:scoreApp,
  add(it){
-  seed();if(!it||!it.title)return null;const id=it.id||"DB-U"+String(MAN().length+1).padStart(2,"0");
+  seed();if(!it||!it.title)return null;
+  /* findings from platform audits (source other than manual) describe the Meridian registry: they stay on Meridian's list under any tenant (R18) */
+  const ML=TCORE()||(it.source&&it.source!=="manual")?D.manual:MAN();const id=it.id||"DB-U"+String(ML.length+1).padStart(2,"0");
   const type=TY[it.type]?it.type:(TYK.find(k=>TY[k].n.toLowerCase()===String(it.type||"").toLowerCase())||"ooc");
-  MAN().push(Object.assign({id,type,title:it.title,sev:it.sev||"Medium",source:it.source||"manual",ents:it.ents||[],apps:it.apps||[],owner:it.owner||"Platform team",steward:it.steward||"Platform lead",created:TODAY,principal:it.principal||8,status:it.status||(it.exp?"accepted":"open"),fix:it.fix||"",note:it.note||""},it.exp?{exp:it.exp}:{},it.reason?{reason:it.reason}:{},it.owner2?{owner2:it.owner2}:{},{id}));
+  ML.push(Object.assign({id,type,title:it.title,sev:it.sev||"Medium",source:it.source||"manual",ents:it.ents||[],apps:it.apps||[],owner:it.owner||"Platform team",steward:it.steward||"Platform lead",created:TODAY,principal:it.principal||8,status:it.status||(it.exp?"accepted":"open"),fix:it.fix||"",note:it.note||""},it.exp?{exp:it.exp}:{},it.reason?{reason:it.reason}:{},it.owner2?{owner2:it.owner2}:{},{id}));
   bump();audit("Debt item added",id+" "+it.title);return id},
  byId:find,ceilings:ceil,today:TODAY,rate:RATE,fD,days,
  totals(){const l=live();return{n:l.length,principal:l.reduce((a,x)=>a+x.principal,0),interest:r1(l.reduce((a,x)=>a+x.interest,0))}}
