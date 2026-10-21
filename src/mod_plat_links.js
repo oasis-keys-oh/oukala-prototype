@@ -836,8 +836,42 @@ function gapTable(){
   {k:"why",label:"Why",fmt:r=>E(r.why),val:r=>r.why,wrap:true,w:340}
  ],rows:()=>PLAT.PLANNED.map(p=>{const c=m.conn[p[0]];return{id:p[0],label:p[2],domain:p[1],ne:c.ents.length,na:c.apps.length,all:c.all,why:p[4]}}),key:"id",h:380,rowH:56,facets:["domain"],exportName:"planned-connections",open:id=>{Z.g.sel=nidG(id);drawG()}});
 }
+/* ---------- PR-32 B2: tenant views. Under a tenant other than core both screens read that tenant's records through DATA: the data map
+   from its entities and the links between their rows (TREAD.audit), the process map from its processes, the metrics they report on and
+   the objectives those metrics serve. Same purpose and tab names as the Meridian views; every figure is sample data (simulated). ---------- */
+const tX=()=>window.STN||{};
+const tTbl=(c,r)=>tX().table?tX().table(c,r):"";
+const tMet=()=>DATA.get("metrics"),tObj=()=>DATA.get("objectives");
+const tMetN=id=>(tMet().find(m=>m.id===id)||{}).n||id;
+const tProcs=()=>DATA.get("processes");
+function tDmap(){const A=TREAD.audit(),org=(DATA.tenantInfo()||{}).org||DATA.tenant();const lab=e=>E((A.ents.find(x=>x.entity===e)||{}).label||e);
+ const withRows=A.ents.filter(e=>e.rows),gaps=A.ents.filter(e=>!e.rows),refs=A.links.reduce((n,l)=>n+l.n,0),bad=A.links.reduce((n,l)=>n+l.bad.length,0);
+ const linked=new Set();A.links.forEach(l=>{linked.add(l.from);linked.add(l.to)});const iso=withRows.filter(e=>!linked.has(e.entity));
+ const k0=kpiRow([["Entities with rows",withRows.length,"of "+A.ents.length+" defined"],["Links between records",refs,"field points to a record"],["Unresolved links",bad,"target not in this company",{cls:bad?"warn":"good",keep:true}],["Not linked",iso.length,"entities with rows and no link",{keep:true}]]);
+ const p0=k0+card("Connections","Entity, field and the entity it points to, counted over this company's rows",tTbl(["From","Field","To","Links","Unresolved"],A.links.map(l=>[lab(l.from),E(l.field),lab(l.to),String(l.n),String(l.bad.length)])));
+ const M=tMet(),O=tObj();
+ const p1=card("Field lineage","Each metric, its formula and the objective it serves",M.length?tTbl(["Metric","Formula","Objective","Owner and backup"],M.map(m=>[`<b>${E(m.n)}</b>`,E(m.f||""),E((O.find(o=>o.id===m.obj)||{}).n||""),tX().own?tX().own(m.owner,m.backup,"metric:"+m.id):""])):(tX().gap?tX().gap("metrics"):TREAD.gap("metrics")));
+ const pairs={};A.links.forEach(l=>{const k=l.from+"|"+l.to;pairs[k]=(pairs[k]||0)+l.n});
+ const p2=card("Matrix","How many links run from each entity to each other entity",tTbl(["From","To","Links"],Object.keys(pairs).sort((a,b)=>pairs[b]-pairs[a]).map(k=>{const [a,b]=k.split("|");return[lab(a),lab(b),String(pairs[k])]})));
+ const p3=card("Gaps",gaps.length+" entities have no rows in "+E(org)+" yet (recorded gaps, never filled from another company)",gaps.length?tTbl(["Entity","Area"],gaps.map(e=>[E(e.label),E(e.area||"")])):empty("No gaps","Every entity has rows in this company."))
+  +card("Unresolved links","Record, field and missing target",bad?tTbl(["From","Record","Field","Missing"],[].concat(...A.links.map(l=>l.bad.map(b=>[lab(l.from),E(b.row),E(l.field),E(l.to)+": "+E(b.v)]))).slice(0,60)):empty("Every link resolves",refs+" links checked."));
+ const head=tX().head?tX().head("Data connections","How every data element connects to every other",`<b data-role="metric">${withRows.length}</b> entities with rows and <b data-role="metric">${refs}</b> links between ${E(org)}'s records, read through the tenant data layer. <b data-role="metric">${bad}</b> links do not resolve and <b data-role="metric">${gaps.length}</b> entities are recorded gaps.`):"";
+ return `<div class="screen plk-screen">${head}${lensNote()}${views("plk_d",["Connections","Field lineage","Matrix","Gaps"],[p0,p1,p2,p3])}${procCard("plat_dmap")}</div>`}
+function tPmap(){const P=tProcs(),M=tMet(),O=tObj(),W=DATA.get("workflows"),org=(DATA.tenantInfo()||{}).org||DATA.tenant();
+ const mets=p=>Array.isArray(p.metrics)?p.metrics:[];const share=(a,b)=>mets(a).filter(x=>mets(b).indexOf(x)>=0);
+ const ho=[];P.forEach((a,i)=>P.slice(i+1).forEach(b=>{const s_=share(a,b);if(s_.length)ho.push({a,b,s:s_})}));
+ const objOf=p=>[...new Set(mets(p).map(id=>(M.find(m=>m.id===id)||{}).obj).filter(Boolean))];
+ const noMet=P.filter(p=>!mets(p).length),noWf=P.filter(p=>!p.wf||!W.some(w=>w.id===p.wf)),noBak=P.filter(p=>!p.backup||p.backup===p.owner),noHo=P.filter(p=>!ho.some(h=>h.a===p||h.b===p));
+ const k0=kpiRow([["Processes",P.length,"in this company"],["Shared-metric links",ho.length,"two processes report on one metric"],["With a workflow",P.length-noWf.length,"steps defined"],["Objectives served",new Set([].concat(...P.map(objOf))).size,"of "+O.length]]);
+ const p0=k0+card("Map","Each process, its workflow, the metrics it reports on and the objectives they serve",P.length?tTbl(["Process","Owner and backup","Metrics","Objectives"],P.map(p=>[`<b>${E(p.n||p.id)}</b><small class="muted"> ${E(p.id)}</small>`,tX().own?tX().own(p.owner,p.backup,"process:"+p.id):"",mets(p).map(id=>E(tMetN(id))).join(", ")||`<span class="muted">none</span>`,objOf(p).map(id=>E((O.find(o=>o.id===id)||{}).n||id)).join(", ")||`<span class="muted">none</span>`])):(tX().gap?tX().gap("processes"):TREAD.gap("processes")));
+ const p1=card("Dependency matrix","Pairs of processes that report on the same metric",ho.length?tTbl(["Process","Process","Shared metrics"],ho.map(h=>[E(h.a.n),E(h.b.n),h.s.map(id=>E(tMetN(id))).join(", ")])):empty("No shared metrics","No two processes in this company report on the same metric."));
+ const p2=card("Critical paths","Objective, the metrics that measure it and the processes that move them",O.length?tTbl(["Objective","Metrics","Processes"],O.map(o=>{const ms=M.filter(m=>m.obj===o.id);return[`<b>${E(o.n)}</b>`,ms.map(m=>E(m.n)).join(", ")||`<span class="muted">none</span>`,P.filter(p=>mets(p).some(id=>ms.some(m=>m.id===id))).map(p=>E(p.n)).join(", ")||`<span class="muted">none</span>`]})):(tX().gap?tX().gap("objectives"):TREAD.gap("objectives")));
+ const f=[["No metric",noMet],["No workflow steps",noWf],["No backup",noBak],["No shared metric",noHo]];
+ const p3=kpiRow(f.map(x=>[x[0],x[1].length,"processes",{cls:x[1].length?"warn":"good",keep:true}]))+card("Orphans and findings","Processes with a missing connection",f.some(x=>x[1].length)?tTbl(["Finding","Processes"],f.filter(x=>x[1].length).map(x=>[E(x[0]),x[1].map(p=>E(p.n||p.id)).join(", ")])):empty("No findings","Every process has a metric, a workflow, a backup and a shared metric."));
+ const head=tX().head?tX().head("Process connections","No process runs alone",`<b data-role="metric">${P.length}</b> processes of ${E(org)}, joined by <b data-role="metric">${ho.length}</b> shared metrics. <b data-role="metric">${noHo.length}</b> processes share no metric with another, read through the tenant data layer.`):"";
+ return `<div class="screen plk-screen">${head}${lensNote()}${views("plk_p",["Map","Dependency matrix","Critical paths","Orphans and findings"],[p0,p1,p2,p3])}${procCard("plat_pmap")}</div>`}
 /* ---------- screens ---------- */
-function dmapScreen(){
+function dmapScreen(){if(!TREAD.core())return tDmap();
  const s=syncMetrics(),m=model(),refs=m.raw.filter(e=>e.type==="ref"&&!e.ghost).length,gref=m.raw.filter(e=>e.type==="ref"&&e.ghost).length;
  const hero_=hero("Data connections","How every data element connects to every other",`<b data-role="metric">${s.entities}</b> entities, <b data-role="metric">${refs}</b> field references between them and <b data-role="metric">${PLAT.APPS.length}</b> apps that read or write them, drawn as one graph. Select any node to see who writes it, who reads it and what breaks if a field changes. <b data-role="metric">${s.isolated.length}</b> entities are not linked to anything and <b data-role="metric">${PLAT.PLANNED.length}</b> planned entities would add ${gref} more links.`,
   `<div class="row">${fchip("m_plk_single")}${fchip("m_plk_conn")}${fchip("m_plk_reuse")}${stdChip("dmbok","Entity relationships and data lineage are the core of DMBOK data architecture.")}${stdChip("togaf","The graph is the TOGAF data architecture view, with apps as the application layer.")}</div>`);
@@ -854,7 +888,7 @@ function dmapScreen(){
  const pane3=`${k3}<div data-plk-ghost>${gHost()}</div><div style="margin-top:14px">${gapTable()}</div>`;
  return `<div class="screen plk-screen">${hero_}${lensNote()}${views("plk_d",["Connections","Field lineage","Matrix","Gaps"],[pane0,pane1,pane2,pane3])}${procCard("plat_dmap")}</div>`;
 }
-function pmapScreen(){
+function pmapScreen(){if(!TREAD.core())return tPmap();
  const s=syncMetrics(),g=pgraph(),fl=FAM.filter(f=>g.ids.some(p=>pFam(p)===f[0])).length;
  const fd=findingsHTML();
  const hero_=hero("Process connections","No process runs alone",`<b data-role="metric">${g.ids.length}</b> processes in <b data-role="metric">${fl}</b> families, joined by <b data-role="metric">${g.ho.length}</b> documented handoffs and <b data-role="metric">${g.dep.length}</b> shared-data dependencies. <b data-role="metric">${s.noShare.length}</b> processes keep their data outside the registry and <b data-role="metric">${s.noHand.length}</b> have no documented handoff.`,
@@ -875,6 +909,8 @@ function pmapScreen(){
 const IC1="M5 6a2 2 0 1 0 0 .01M19 6a2 2 0 1 0 0 .01M12 19a2 2 0 1 0 0 .01M7 7l4 10M17 7l-4 10M7 6h10";
 REG("plat_dmap","Data connections","platform",IC1,dmapScreen);
 REG("plat_pmap","Process connections","platform","M3 6h6v4H3zM15 6h6v4h-6zM9 14h6v4H9zM6 10v2h12v-2M12 12v2",pmapScreen);
+try{DATA.screen("plat_dmap",{mode:"data",entities:["metrics","objectives","processes","trace_links"],note:"PR-32 B2: other tenants map their own entities and links through DATA"});
+ DATA.screen("plat_pmap",{mode:"data",entities:["processes","metrics","objectives","workflows"],note:"PR-32 B2: other tenants map their own processes through DATA"})}catch(e){console.error("plk tenant",e)}
 PROC.reg("plat_dmap",{title:"How the data connection map stays true",std:["dmbok","togaf"],steps:[
  {n:"Fields declare references",d:"A field of type reference names the entity it points to, so every join is known.",who:"human",owner:"Entity steward",out:"Reference list"},
  {n:"Apps declare reads and writes",d:"Each app lists what it reads and writes; the registry compares writers to the owner module.",who:"robot",owner:"Platform",out:"App links"},

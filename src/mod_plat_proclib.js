@@ -557,7 +557,26 @@ function matPane(){
    <div class="tscroll"><table class="pl-crit"><thead><tr><th scope="col">Dimension</th>${[1,2,3,4,5].map(k=>`<th scope="col">Score ${k}</th>`).join("")}</tr></thead><tbody>${DIMS.map(d=>`<tr><th scope="row">${d[1]}<small class="muted">${E(d[2])}</small></th>${d[3].map(t=>`<td class="wrap small">${E(t)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`;
 }
 function whereCard(){return `<div class="card glass"><div class="eyebrow">Where to click</div><h3 class="pl-h">Six ways to reach one process</h3>${whereHTML()}</div>`}
-function screen(){
+/* ---------- PR-32 B2: the library of the active tenant. Under a tenant other than core the library lists that tenant's processes
+   (DATA.get("processes")) with their workflow steps (workflows), metrics and maturity records (maturity, simulated in the pack); on a
+   tenant-aware screen PROCLIB.list and PROCLIB.get answer from the same rows, so process panels never show another company's process. */
+const tStep=st=>({n:st.n||st.name||st.t||"",who:st.who||st.type||"human",owner:st.owner||st.role||"",d:st.d||""});
+function tProcs(){const mats=DATA.get("maturity"),wfs=DATA.get("workflows");
+ return DATA.get("processes").map(p=>{const m=mats.find(x=>x&&x.process===p.id)||{},wf=wfs.find(w=>w&&w.id===p.wf)||null,steps=wf&&Array.isArray(wf.steps)?wf.steps.map(tStep):[];
+  return{id:p.id,name:p.n||p.id,module:"",family:"",familyName:"",owner:p.owner||"",backup:p.backup||null,named:!!p.owner,level:m.level!=null?m.level:null,target:m.target!=null?m.target:null,model:m.model||"",
+   below:m.level!=null&&m.target!=null&&m.level<m.target,steps:steps.length,metrics:Array.isArray(p.metrics)?p.metrics.slice():[],mix:{},source:"Tenant pack",dims:Object.assign({},m.dims||{}),
+   title:p.n||p.id,stepsList:steps,workflow:wf?(wf.name||wf.n||wf.id):"",matLabel:m.label||"simulated"}})}
+function tScreen(){const X=window.STN||{},L=tProcs(),M=DATA.get("metrics"),org=(DATA.tenantInfo()||{}).org||DATA.tenant();
+ const tb=(c,r)=>X.table?X.table(c,r):"";const mn=id=>(M.find(m=>m.id===id)||{}).n||id;const lv=L.filter(p=>p.level!=null);
+ const avg=lv.length?Math.round(10*lv.reduce((a,p)=>a+p.level,0)/lv.length)/10:0,below=L.filter(p=>p.below).length,noM=L.filter(p=>!p.metrics.length).length;
+ const lib=kpiRow([["Processes",L.length,"in this company"],["Average maturity",lv.length?avg+" of 5":"None",lv.length?"maturity records, simulated":"gap recorded"],["Below target",below,"processes",{keep:true}],["No metric",noM,"processes",{keep:true}]])
+  +card("Library","Owner and backup, workflow, metrics and level",L.length?tb(["Process","Owner and backup","Workflow","Metrics","Level"],L.map(p=>[`<b>${E(p.name)}</b><small class="muted"> ${E(p.id)}</small>`,X.own?X.own(p.owner,p.backup,"process:"+p.id):"",p.workflow?E(p.workflow)+`<small class="muted"> ${p.steps} steps</small>`:`<span class="muted">No workflow</span>`,p.metrics.map(id=>E(mn(id))).join(", ")||`<span class="muted">none</span>`,p.level!=null?"Level "+p.level+" of target "+p.target:`<span class="muted">Not assessed</span>`])):(X.gap?X.gap("processes"):TREAD.gap("processes")));
+ const dia=L.length?L.map(p=>card(p.name,p.workflow?"Workflow "+p.workflow:TREAD.GAP,p.stepsList.length?`<ol class="steps">${p.stepsList.map(st=>`<li>${STEPMODE.pill?STEPMODE.pill(st.who):E(STEPMODE.label(st.who))} <b>${E(st.n)}</b></li>`).join("")}</ol>`:`<p class="muted small">No workflow steps for this process yet.</p>`)).join(""):(X.gap?X.gap("processes"):TREAD.gap("processes"));
+ const dk=[...new Set([].concat(...lv.map(p=>Object.keys(p.dims))))];
+ const mat=card("Maturity","Six dimensions scored 0 to 5 in this company's maturity records (simulated)",lv.length?tb(["Process","Level","Target"].concat(dk.map(k=>k.charAt(0).toUpperCase()+k.slice(1))),lv.map(p=>[E(p.name),String(p.level),String(p.target)].concat(dk.map(k=>p.dims[k]==null?"":String(p.dims[k]))))):(X.gap?X.gap("maturity"):TREAD.gap("maturity")));
+ const head=X.head?X.head("Process library",`${L.length} processes of ${E(org)}`,`<b data-role="metric">${L.length}</b> processes, average maturity <b data-role="metric">${lv.length?avg+" of 5":"not assessed"}</b>, <b data-role="metric">${below}</b> below target and <b data-role="metric">${noM}</b> with no metric. Read through the tenant data layer.`):"";
+ return `<div class="screen pl-screen">${head}${lensNote()}${views("pl_v",["Library","Diagrams","Maturity","Where to click"],[lib,dia,mat,whereCard()])}${procCard("plat_proc")}</div>`}
+function screen(){if(!TREAD.core())return tScreen();
  const s=stats();
  const hero_=hero("Process library",`${s.processes} processes, ${s.covered} of ${s.modules} modules covered`,`Every module now has a defined process, <b data-role="metric">${s.processes}</b> in all. Average maturity is <b data-role="metric">${s.avg} of 5</b>, <b data-role="metric">${s.below}</b> are below their Year 1 target, <b data-role="metric">${s.noOwner}</b> have no named owner and <b data-role="metric">${s.noMetric}</b> have no metric. Levels come from observable platform signals across six dimensions, not from opinion; anyone can override a level with evidence.`,
   `<div class="row">${fchip("m_pl_avg")}${fchip("m_pl_below")}${fchip("m_pl_cov")}${stdChip("cmmi")}${stdChip("iso33k")}${stdChip("bpmn")}${window.DRAW&&DRAW.btn?DRAW.btn("","Draw a process"):""}<button class="btn" data-pl-goscreen="plat_map">Master process flow</button></div>`);
@@ -570,6 +589,7 @@ PROC.reg("plat_proc",{title:"How a process gets into the library and gets a leve
  {n:"Review or override",d:"A named reviewer can override a level with written evidence and a date.",who:"gate",owner:"Process governance lead",sla:"Quarterly",in:"Evidence",out:"Confirmed level"},
  {n:"Close the gap",d:"The next criterion becomes a gap action and, if funded, a project in Maturity models.",who:"human",owner:"Process owner",sla:"Per project",in:"Gap action",out:"Higher level"}]});
 REG("plat_proc","Process library","platform",ICON,screen);
+DATA.screen("plat_proc",{mode:"data",entities:["processes","workflows","maturity","metrics","people"],note:"PR-32 B2: other tenants list their own processes through DATA"});
 /* ---------- public API ---------- */
 function summary(P){return{id:P.id,name:P.name,module:P.module,family:P.family,familyName:famName(P.family),owner:P.oi.owner||P.oi.role,backup:P.oi.backup||null,named:P.hasOwner,level:P.level,target:P.target,model:P.model,below:P.below,steps:P.steps.length,metrics:P.mets.slice(),mix:P.mix,source:P.src,dims:Object.assign({},P.a.dims)}}
 function maturityOf(id){
@@ -738,8 +758,8 @@ const draftRec=id=>{const d=window.WFX&&WFX.get(id);return d?Object.assign({},dr
  WFX.defs.forEach(d=>G1(()=>draftMat(d),null))})();
 window.PROCLIB={
  open:openProc,openLibrary:openLib,pane:libPane,
- list(){return idx().list.map(summary)},
- get(id){const P=gof(id)||primaryOf(id);if(!P)return null;return Object.assign(summary(P),{title:P.title,stepsList:P.steps.map(s=>Object.assign({},s)),entities:{r:P.ent.r.slice(),w:P.ent.w.slice()},trigger:trigOf(P),override:P.override?Object.assign({},P.override):null,history:(PL.hist[P.id]||[]).map(h=>Object.assign({},h)),capability:P.cap?P.cap.id:null,assessment:{avg:r1(P.a.avg),raw:P.a.raw,weakest:P.a.weak,capped:P.a.capped,evidence:Object.assign({},P.a.ev)}})},
+ list(){if(TREAD.strict())return tProcs().map(p=>{const o=Object.assign({},p);delete o.stepsList;return o});return idx().list.map(summary)},
+ get(id){if(TREAD.strict()){const p=tProcs().find(x=>x.id===id||x.name===id);return p?Object.assign({},p,{stepsList:p.stepsList.map(x=>Object.assign({},x))}):null}const P=gof(id)||primaryOf(id);if(!P)return null;return Object.assign(summary(P),{title:P.title,stepsList:P.steps.map(s=>Object.assign({},s)),entities:{r:P.ent.r.slice(),w:P.ent.w.slice()},trigger:trigOf(P),override:P.override?Object.assign({},P.override):null,history:(PL.hist[P.id]||[]).map(h=>Object.assign({},h)),capability:P.cap?P.cap.id:null,assessment:{avg:r1(P.a.avg),raw:P.a.raw,weakest:P.a.weak,capped:P.a.capped,evidence:Object.assign({},P.a.ev)}})},
  addProcess,setSteps,maturity:maturityOf,stats(){const s=stats();return{processes:s.processes,modules:s.modules,modulesCovered:s.covered,avgMaturity:s.avg,belowTarget:s.below,noOwner:s.noOwner,noMetric:s.noMetric,noBackup:s.noBackup,byLevel:s.byLevel,dimensionAverage:s.dimAvg}},
  moduleMaturity,forModule:mid=>idx().list.filter(P=>P.module===mid).map(summary),primary:mid=>{const P=primaryOf(mid);return P?P.id:null},find:q=>{const P=findProc(q);return P?P.id:null},
  refresh(){bump();return true},dims:DIMS.map(d=>({id:d[0],name:d[1],what:d[2],criteria:d[3].slice()})),
