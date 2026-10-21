@@ -3,8 +3,8 @@
 // shows rows of that tenant (a name or id from that tenant's own records, read from DATA, outside the tenant chip), it shows no other
 // tenant's organization, people, record ids or record names, and it raises no page error.
 // Fingerprints: the organization names, and for each tenant the ids and names (n, name, t, title) of its records in the entities
-// listed per screen plus people and projects; a term two tenants share identifies neither; names under three words are left out
-// (generic words such as "Clinical" or "Baseline" identify nobody).
+// listed per screen plus people and projects (for core: record ids, human people and project names, as tenant_leak.js); a term two
+// tenants share identifies neither; names under three words and ids without a digit are left out (generic words identify nobody).
 // Usage: node tools/tests/tenant_screens_b23.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
 /* id, expected mode, entities whose rows identify the tenant on that screen */
@@ -13,6 +13,20 @@ const SCREENS=[
  ['plat_pmap','data',['metrics','processes']],
  ['plat_proc','data',['processes','metrics','people']],
  ['zl_conn','data',['people','projects','risks','services']],
+ /* B3 */
+ ['r18_spend','data',['budget_lines','cost_centers']],
+ ['r18_levels','data',[]],
+ ['kcs_viz','data',['reports','metrics']],
+ ['exe_risk','data',['risks','projects']],
+ ['exe_apps','data',['applications']],
+ ['exe_board','data',['objectives','key_results','projects','risks']],
+ ['exe_scen','data',['scenarios','projects']],
+ ['bud_ben','data',['benefits','projects']],
+ ['r17u_dash','data',['projects','incidents','reports','budget_lines']],
+ ['r15_sem','data',['metrics','reports']],
+ ['r15_rpt','data',['reports','projects']],
+ ['r16j_dash','data',['reports','projects']],
+ ['inv','data',['invoices','budget_lines']],
 ];
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const only=process.argv[3]?process.argv[3].split(','):null;
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});
@@ -26,8 +40,12 @@ const tenants=await p.evaluate(()=>DATA.tenants().map(t=>t.id));
 await p.evaluate(()=>{DATA.tenants().forEach(t=>{try{if(t.id!=='core'&&window.BUNDLE&&BUNDLE.need)BUNDLE.need('pack_'+t.id)}catch(e){}})});await p.waitForTimeout(600);
 const ents=[...new Set(['people','projects'].concat(...list.map(s=>s[2])))];
 await p.evaluate(ents=>{const me=new Set(IDENT.people.map(x=>x.name));const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const fp={};
- DATA.tenants().forEach(t=>{const T=new Set([t.org].filter(Boolean));const add=v=>{v=String(v==null?'':v).trim();if(v.length>=4&&!me.has(v))T.add(v)};
+ /* platform labels (data model tables) are not a tenant's fingerprint even when a pack names a process the same way */
+ const plat=new Set();try{DATAMODEL.list().forEach(x=>plat.add(String(x.label||'')))}catch(e){}
+ DATA.tenants().forEach(t=>{const T=new Set([t.org].filter(Boolean));const add=v=>{v=String(v==null?'':v).trim();if(v.length>=4&&!me.has(v)&&!plat.has(v))T.add(v)};
   ents.forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>{if(!r||typeof r!=='object')return;if(e!=='metrics'&&e!=='processes'&&/\d/.test(String(r.id)))add(r.id);
+   /* core names: only its human people and project names (as tenant_leak.js); core record names such as metric titles reuse platform labels */
+   if(t.id==='core'&&!(e==='projects'||(e==='people'&&r.kind==='human')))return;
    ['n','name','t','title'].forEach(k=>{const v=r[k];if(typeof v==='string'&&(e==='people'?v.split(/\s+/).length>=2:v.split(/\s+/).length>=3))add(v)})}));
   fp[t.id]=[...T]});
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));

@@ -24,7 +24,7 @@ function simple(){const k=S.persona,P=PERSONAS[k];const sm=G(()=>R18.spend.stats
  const story=head+(P.story||"");
  const needs=Object.assign({},P,{needs:arr(P.needs).slice(0,3)});
  const lh=G(()=>R18.lensHome?R18.lensHome():"","");
- return `<div class="screen r18-screen r18-exec">${hero(G(()=>NOW.day,"Today")+" · Meridian Standards Foundation","Good afternoon, "+E(G(()=>meOf().split(" ")[0],"Casey")),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(P.n)}</b> · Executive level</span><button type="button" class="chip" data-r18-full="1" title="Show the full working home for this role">Show everything</button></div>`)}
+ return `<div class="screen r18-screen r18-exec">${hero(G(()=>NOW.day,"Today")+" · "+(TREAD.core()?"Meridian Standards Foundation":E((DATA.tenantInfo()||{}).org||DATA.tenant())),"Good afternoon, "+E(G(()=>meOf().split(" ")[0],"Casey")),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(P.n)}</b> · Executive level</span><button type="button" class="chip" data-r18-full="1" title="Show the full working home for this role">Show everything</button></div>`)}
  ${lh}
  <section class="card glass"><div class="cardhead"><h3>How we're doing</h3><span class="muted small">Three scores. Select one for its formula and trend.</span></div><div class="rings">${arr(P.rings).slice(0,3).map(id=>G(()=>metricRing(id,132),"")).join("")}</div></section>
  ${arr(P.needs).length?BLK.needs(needs):""}${drill()}</div>`}
@@ -56,9 +56,12 @@ function execNote(){if(lvl()!=="exec")return;if(S.screen!=="exe_dash")return;con
 function levelsScreen(){const me=lvl();
  const rows=LEVELS.map(l=>`<tr class="${l.id===me?"on":""}"><td><b>${E(l.n)}</b>${l.id===me?" "+pill("Your level","info"):""}<small class="muted">${E(l.who)}</small></td><td>${E(l.see)}</td><td>${E(l.ctl)}</td><td>${E(l.not)}</td></tr>`).join("");
  const roles=Object.keys(PERSONAS).map(k=>`<tr><td>${E(PERSONAS[k].n)}</td><td>${E((LEVELS.find(l=>l.id===LV[k])||{}).n||"Manager")}</td><td>${E(LENS_OF[k]?LENS_OF[k].toUpperCase():"None")}</td></tr>`).join("");
- return `<div class="screen r18-screen">${hero("Oversee · Views by level","Each level sees what it needs, and can reach the rest","Executives get the headline and drill into anything. Directors and managers get working views and control for their part. Specialists and contributors see their own work. The permission model underneath is one nested model, so a higher level can always open what is below it.")}
+ /* PR-32 B3: levels and roles are platform configuration; under another tenant the screen names that tenant and its process card reads the tenant (procCard) */
+ const tn=TREAD.core()?"":`<p class="small muted r18-lvten">The levels are the platform's and apply to every company. Shown for <b>${E((DATA.tenantInfo()||{}).org||DATA.tenant())}</b>; the people in each role come from its own directory.</p>`;
+ return `<div class="screen r18-screen">${hero("Oversee · Views by level","Each level sees what it needs, and can reach the rest","Executives get the headline and drill into anything. Directors and managers get working views and control for their part. Specialists and contributors see their own work. The permission model underneath is one nested model, so a higher level can always open what is below it.")}${tn}
  <section class="card glass"><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Level</th><th>What they see first</th><th>What they can do</th><th>What stays out of the way</th></tr></thead><tbody>${rows}</tbody></table></div></section>
  <section class="card glass"><div class="cardhead"><h3>Roles and their level</h3><span class="muted small">Switch roles from the top bar to see the difference.</span></div><div class="tscroll"><table class="tbl r18-t"><thead><tr><th>Role</th><th>Level</th><th>Default lens</th></tr></thead><tbody>${roles}</tbody></table></div></section>
  ${typeof procCard==="function"?procCard("r18_levels"):""}</div>`}
+DATA.screen("r18_levels",{mode:"data",entities:["processes"],note:"PR-32 B3: platform levels; the tenant is named and its process is read through DATA"});
 REG("r18_levels","Views by level","lens","M4 20V10M10 20V4M16 20v-8M22 20H2",levelsScreen);
 })();
