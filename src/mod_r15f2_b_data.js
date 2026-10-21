@@ -217,10 +217,7 @@ hydrate("exception",X.exceptions);
 X.excState=e=>{if(e.st==="Rejected"||e.st==="Closed")return e.st;if(e.st==="Requested")return"Requested";const d=days(e.exp);return d<0?"Expired":d<=30?"Expiring":"Approved"};
 X.excOpen=e=>["Requested","Approved","Expiring","Expired"].includes(X.excState(e));
 
-/* ---------- PR-32 B7: tenant views (R16 to R18). Meridian reads the registers above (the entity core getters in
-   mod_s_tenant_entities read the same arrays, so writes stay live). Another tenant reads its own pack rows through DATA.get:
-   one stable list per pack and part, so records added in the session stay; a tenant with no rows gets [] (a recorded gap),
-   never Meridian rows. Pack rows are thinner than the Meridian sample: missing lists and labels get empty defaults, never figures. ---------- */
+/* PR-32 B7 tenant views: Meridian reads its registers; another tenant its pack rows (DATA.get), one stable list per part; [] is a gap (R18) */
 X.rk=()=>X.tv("risks","control",()=>X.risks);
 X.tst=()=>X.tv("controls","test",()=>X.tests);
 X.fnd=()=>X.tv("audits","finding",()=>X.findings);

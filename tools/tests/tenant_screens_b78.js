@@ -8,7 +8,7 @@
 // Usage: node tools/tests/tenant_screens_b78.js <dir containing full.html> [--verbose] [screen ...]
 const {chromium}=require('playwright');const path=require('path');
 const B7=['grc_home','grc_risk','grc_ctl','grc_find','grc_pol','grc_aud','grc_ven','grc_exc','r15d_agents','agent_defs','ai_runtime'];
-const B8=[]; /* B8 screens join in the B8 commit */
+const B8=['meet_hub','meet_act','meet_dec','meet_series','ppl_train','ppl_av','ppl_meet'];
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');const verbose=process.argv.includes('--verbose');
 const only=process.argv.slice(3).filter(a=>!a.startsWith('--'));const SCREENS=(only.length?only:B7.concat(B8));
 const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{});

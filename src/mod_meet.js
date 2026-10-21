@@ -66,7 +66,7 @@ const SER=[
   dates:["2026-10-09","2026-10-22","2026-10-29"],mids:{"2026-10-09":"m10","2026-10-22":"m12"},ex:{},links:[["project","PR1"],["service","Standards Portal"]]}
 ];
 M.series=SER;
-const serById=id=>SER.find(s=>s.id===id)||(M.scSer||[]).find(s=>s.id===id);
+const serById=id=>isCore()?(SER.find(s=>s.id===id)||(M.scSer||[]).find(s=>s.id===id)):tview().S.find(s=>s.id===id);
 M.serById=serById;
 
 /* ---------- people helpers ---------- */
@@ -82,11 +82,35 @@ const ACTS=[],DECS=[];
 M.acts=ACTS;M.decs=DECS;
 let scM=[],scA=[],scD=[];
 M.scM=()=>scM;
-const allM=()=>MEETINGS.concat(scM),allA=()=>ACTS.concat(scA),allD=()=>DECS.concat(scD);
+/* PR-32 B8: another tenant reads its own meetings, series, decisions and actions (DATA.get), shaped once per pack; none is a gap (R18) */
+function isCore(){return !window.DATA||DATA.tenant()==="core"}
+M.isCore=isCore;
+const TALIAS={huddle:"standup",prestart:"standup",production:"standup",flow:"design",review:"design",proj:"steer"};
+const TVC=new WeakMap();
+function tview(){const g=(e,part)=>{try{return DATA.get(e).filter(r=>r&&(r.part||part)===part)}catch(x){return []}};
+ let all=[];try{all=DATA.get("meetings")}catch(x){}
+ let v=TVC.get(all);if(v)return v;v={M:[],S:[],A:[],D:[]};if(!all.length)return v;TVC.set(all,v);
+ const proj=new Set(((()=>{try{return DATA.get("projects")}catch(x){return []}})()).map(p=>p.id));
+ v.M=g("meetings","meeting").map(m=>{if(m._b8)return m;m._b8=1;m.ttype=m.type;if(!TYPES[m.type])m.type=TALIAS[m.type]||"steer";m.k=TYPES[m.type].k;m.d=dOf(m.dt);
+  const held=m.st==="done";m.st=held?"done":"next";const names=[];[m.chair].concat(m.att||[]).forEach(n=>{if(n&&!names.includes(n))names.push(n)});
+  m.inv=names.map(n=>({n,role:"req",rsvp:held?"yes":"none",att:held?"present":null,dlg:"",tz:"ET"}));m.att=names.slice();
+  m.links=m.link?[{k:proj.has(m.link)?"project":"objective",id:m.link}]:[];m.agenda=[];m.files=[];m.aud=[];m.minutes={st:"none"};m.nt="";m.prop=[];m.tz="ET";m.prep=null;m.online="";m.sum=m.sum||"";return m});
+ v.S=g("meetings","series").map(x=>{if(x._b8)return x;x._b8=1;const ms=v.M.filter(m=>m.series===x.id).sort((a,b)=>a.dt<b.dt?-1:1);x.ttype=x.type;if(!TYPES[x.type])x.type=TALIAS[x.type]||"steer";
+  const mem=[];[x.chair,x.secy].concat(...ms.map(m=>m.att)).forEach(n=>{if(n&&!mem.some(y=>y[0]===n))mem.push([n,"req"])});
+  x.mem=mem;x.dates=ms.map(m=>m.dt);x.mids={};ms.forEach(m=>x.mids[m.dt]=m.id);x.ex={};x.links=[];x.rights=x.rights||"";x.esc=x.esc||"";ms.forEach((m,i)=>{m.occ=i+1;m.idx=i});return x});
+ const mdt=id=>(v.M.find(m=>m.id===id)||{}).dt||TODAY;
+ v.A=g("action_items","action").map(a=>{if(a._b8)return a;a._b8=1;if(a.st==="overdue")a.st="open";if(!ST_A[a.st])a.st="open";a.carry=a.carry===true?1:+a.carry||0;a.link=a.link||null;a.raid=a.raid||"";a.created=a.created||mdt(a.mid);a.closed=a.closed||"";a.from=a.from||"";return a});
+ v.D=g("decisions","meeting").map(d=>{if(d._b8)return d;d._b8=1;d.alts=Array.isArray(d.alts)?d.alts:[];d.eff=d.eff||d.dt;if(d.rev==null)d.rev=true;d.raid=d.raid||"";
+   if(d.rat===true){d.rat="ratified";d.ratBy=d.ratBy||d.by;d.ratAt=d.ratAt||d.dt}else if(d.rat!=="pending"&&d.rat!=="ratified"&&d.rat!=="rejected")d.rat="na";
+  d.links=d.links||[];d.src=d.src||"note";d.conf=d.conf||0;d.gov=d.rat!=="na";return d});
+ return v}
+const allM=()=>isCore()?MEETINGS.concat(scM):tview().M,allA=()=>isCore()?ACTS.concat(scA):tview().A,allD=()=>isCore()?DECS.concat(scD):tview().D;
+M.ser=()=>isCore()?SER:tview().S;
+const pushA=a=>(isCore()?ACTS:tview().A).push(a),pushD=d=>(isCore()?DECS:tview().D).push(d);
 Object.assign(M,{meetings:allM,allActs:allA,allDecs:allD});
-const mById=id=>MEETINGS.find(m=>m.id===id)||scM.find(m=>m.id===id);
-const aById=id=>ACTS.find(a=>a.id===id)||scA.find(a=>a.id===id);
-const dById=id=>DECS.find(a=>a.id===id)||scD.find(a=>a.id===id);
+const mById=id=>isCore()?(MEETINGS.find(m=>m.id===id)||scM.find(m=>m.id===id)):tview().M.find(m=>m.id===id);
+const aById=id=>isCore()?(ACTS.find(a=>a.id===id)||scA.find(a=>a.id===id)):tview().A.find(a=>a.id===id);
+const dById=id=>isCore()?(DECS.find(a=>a.id===id)||scD.find(a=>a.id===id)):tview().D.find(a=>a.id===id);
 Object.assign(M,{mById,aById,dById});
 const ST_A={open:["Open","info"],prog:["In progress","info"],blocked:["Blocked","bad"],done:["Done","good"],carried:["Carried over","mute"],cancelled:["Cancelled","mute"]};
 M.ST_A=ST_A;
@@ -101,8 +125,8 @@ const LK={project:["Project","--p4"],objective:["Strategy item","--p1"],incident
 M.LK=LK;
 function itsm(kind){try{return kind==="incident"?ITSMX.incidents:kind==="change"?ITSMX.changes:ITSMX.problems}catch(e){return []}}
 function linkLabel(l){if(!l)return "";const id=l.id;try{
- if(l.k==="project"){const p=PROJ.find(x=>x.id===id)||(window.allProj&&allProj().find(x=>x.id===id));return p?p.n:id}
- if(l.k==="objective"){const o=OBJS.find(x=>x[0]===id);return o?o[1]:id}
+ if(l.k==="project"){const p=(isCore()?PROJ:DATA.get("projects")).find(x=>x.id===id)||(window.allProj&&allProj().find(x=>x.id===id));return p?p.n:id}
+ if(l.k==="objective"){if(!isCore()){const o=DATA.get("objectives").find(x=>x.id===id);return o?o.n:id}const o=OBJS.find(x=>x[0]===id);return o?o[1]:id}
  if(l.k==="incident"||l.k==="change"||l.k==="problem"){const r=itsm(l.k).find(x=>x.id===id);return r?r.t:id}
  if(l.k==="contract"||l.k==="budget"){const n=N(id);return n?n.n:id}
  if(l.k==="process"){const d=PROC.defs[id];return d?d.title:id}
@@ -119,7 +143,7 @@ function linkables(q,kinds){q=(q||"").toLowerCase();const out=[];const add=(k,id
  try{SVCREG.forEach(s=>add("service",s.n,s.n,"Tier "+s.tier))}catch(e){}
  return out.slice(0,q?40:80)}
 M.linkables=linkables;
-function projOf(m){const l=(m.links||[]).find(x=>x.k==="project");return l?l.id:"PR1"}
+function projOf(m){const l=(m.links||[]).find(x=>x.k==="project");return l?l.id:isCore()?"PR1":""}
 M.projOf=projOf;
 function openByGlobalSearch(id){for(const fn of SEARCHX){try{const r=fn().find(x=>String(x.t).split(" ")[0]===id||String(x.t)===id);if(r){r.f();return true}}catch(e){}}return false}
 M.linkGo=function(l){try{
@@ -292,9 +316,9 @@ MEETINGS.forEach(m=>{if(m.st!=="done"||m.cancel){return}
 });
 /* a few older actions refer to the removed no-outcome meetings; fix numbering gaps is not needed, ids stay unique */
 /* meetings: AI prep brief for upcoming */
-M.prepBrief=function(m){const T=TYPES[m.type]||TYPES.steer;const prev=MEETINGS.filter(x=>x.series&&x.series===m.series&&x.dt<m.dt).sort((a,b)=>a.dt<b.dt?-1:1).pop();
- const open=ACTS.concat(scA).filter(a=>isOpenA(a)&&((prev&&a.mid===prev.id)||(m.series&&mById(a.mid)&&mById(a.mid).series===m.series)));const late=open.filter(isLate);
- const pend=DECS.filter(d=>d.rat==="pending"&&((mById(d.mid)||{}).series===m.series));
+M.prepBrief=function(m){const T=TYPES[m.type]||TYPES.steer;const prev=allM().filter(x=>x.series&&x.series===m.series&&x.dt<m.dt).sort((a,b)=>a.dt<b.dt?-1:1).pop();
+ const open=allA().filter(a=>isOpenA(a)&&((prev&&a.mid===prev.id)||(m.series&&mById(a.mid)&&mById(a.mid).series===m.series)));const late=open.filter(isLate);
+ const pend=allD().filter(d=>d.rat==="pending"&&((mById(d.mid)||{}).series===m.series));
  const lk=(m.links||[]).filter(l=>l.k!=="process").map(l=>{const t=linkLabel(l);return t===l.id?l.id:l.id+" "+t});
  const bits=[];bits.push(open.length?open.length+" open action"+(open.length>1?"s":"")+" from earlier meetings, "+late.length+" overdue"+(late.length?" ("+late.slice(0,2).map(a=>M.kindOf(a.own)==="ai"?a.own:a.own.split(" ")[0]).filter((v,i,s)=>s.indexOf(v)===i).join(", ")+")":"")+".":"No open actions from earlier meetings.");
  if(pend.length)bits.push(pend.length+" decision"+(pend.length>1?"s":"")+" from this forum still await ratification.");
@@ -325,12 +349,12 @@ M.setAction=function(id,st,why){const a=aById(id);if(!a)return;const was=a.st;a.
  M.sync();return a};
 M.carryOver=function(id){const a=aById(id);if(!a)return null;const m=mById(a.mid);const nx=allM().filter(x=>m&&x.series&&x.series===m.series&&x.dt>TODAY&&!x.cancel).sort((p,q)=>p.dt<q.dt?-1:1)[0];
  if(!nx){toast("No later meeting in this series to carry to","warn");return null}
- a.st="carried";a.nextMid=nx.id;const c=Object.assign({},a,{id:M.nextA(),mid:nx.id,st:"open",carry:(a.carry||0)+1,from:a.id,created:TODAY,closed:"",raid:""});ACTS.push(c);
+ a.st="carried";a.nextMid=nx.id;const c=Object.assign({},a,{id:M.nextA(),mid:nx.id,st:"open",carry:(a.carry||0)+1,from:a.id,created:TODAY,closed:"",raid:""});pushA(c);
  maud(m,"Action carried over",a.id+" to "+nx.t+" on "+fd(nx.dt));maud(nx,"Action carried in",c.id+" from "+a.id);M.sync();return c};
-M.addAction=function(m,o){const a=Object.assign({id:M.nextA(),mid:m.id,t:"",own:m.chair,due:addD(TODAY,7),st:"open",pri:"Medium",link:null,raid:"",carry:0,from:"",created:TODAY,closed:"",src:"manual",conf:0},o);ACTS.push(a);maud(m,"Action added",a.id+" for "+a.own+", due "+fd(a.due));
+M.addAction=function(m,o){const a=Object.assign({id:M.nextA(),mid:m.id,t:"",own:m.chair,due:addD(TODAY,7),st:"open",pri:"Medium",link:null,raid:"",carry:0,from:"",created:TODAY,closed:"",src:"manual",conf:0},o);pushA(a);maud(m,"Action added",a.id+" for "+a.own+", due "+fd(a.due));
  if(a.link&&a.link.k==="task"){try{if(window.PPMX&&PPMX.addTasks)PPMX.addTasks(projOf(m),[{n:a.t,dur:2,own:a.own}])}catch(e){}}
  M.sync();return a};
-M.addDecision=function(m,o){const d=Object.assign({id:M.nextD(),mid:m.id,t:"",why:"",alts:[],by:m.chair,dt:m.dt,eff:addD(m.dt,3),rev:true,raid:"",rat:"na",ratBy:"",ratAt:"",links:(m.links||[]).slice(0,2).map(l=>({k:l.k,id:l.id})),src:"manual",conf:0,gov:!!(TYPES[m.type]||{}).gov},o);DECS.push(d);maud(m,"Decision recorded",d.id+": "+d.t);
+M.addDecision=function(m,o){const d=Object.assign({id:M.nextD(),mid:m.id,t:"",why:"",alts:[],by:m.chair,dt:m.dt,eff:addD(m.dt,3),rev:true,raid:"",rat:"na",ratBy:"",ratAt:"",links:(m.links||[]).slice(0,2).map(l=>({k:l.k,id:l.id})),src:"manual",conf:0,gov:!!(TYPES[m.type]||{}).gov},o);pushD(d);maud(m,"Decision recorded",d.id+": "+d.t);
  if(d.gov&&d.rat==="na")d.rat="pending";M.sync();return d};
 M.ratify=function(id,ok,by){const d=dById(id);if(!d)return;d.rat=ok?"ratified":"rejected";d.ratBy=by||"Casey Rowan";d.ratAt=TODAY;const m=mById(d.mid);if(m)maud(m,ok?"Decision ratified":"Decision rejected",d.id+" by "+d.ratBy);
  if(d.raid&&window.PPMRAID){const r=PPMRAID.find(x=>x.id===d.raid);if(r){r.s=ok?"done":"open";r.mit=(r.mit||"")+" "+(ok?"Ratified by ":"Rejected by ")+d.ratBy+" on "+fd(TODAY)+"."}}M.sync();return d};
@@ -368,7 +392,7 @@ M.stats=function(){
   closed:due.length?Math.round(onTime.length/due.length*100):100,due:due.length,noAgenda:MS.filter(m=>m.st==="next"&&!m.cancel&&m.dt<=addD(TODAY,14)&&!m.agenda.length),noOutcome:heldAll.filter(m=>!A.some(a=>a.mid===m.id)&&!Dc.some(d=>d.mid===m.id)),
   unpub:old.filter(m=>m.minutes.st!=="published"),pubPct:old.length?Math.round(pub.length/old.length*100):100,lat:lat.length?+(lat.reduce((a,b)=>a+b,0)/lat.length).toFixed(1):0,cost30:Math.round(cost30/100)/10,
   openA:A.filter(isOpenA),late:A.filter(isLate),awaiting:Dc.filter(d=>d.rat==="pending"),held:heldAll.length,heldAll,wkMeet:MS.filter(m=>m.dt>=TODAY&&m.dt<=wk&&!m.cancel)}};
-M.sync=function(){try{const s=M.stats();METRICS.m_meet_prep.cur=s.prep;METRICS.m_meet_actions_closed.cur=s.closed;METRICS.m_meet_decision_latency.cur=s.lat;METRICS.m_meet_attendance.cur=s.att;METRICS.m_meet_cost.cur=s.cost30;METRICS.m_meet_notes_published.cur=s.pubPct;raidSync()}catch(e){}};
+M.sync=function(){try{if(!isCore())return;const s=M.stats();METRICS.m_meet_prep.cur=s.prep;METRICS.m_meet_actions_closed.cur=s.closed;METRICS.m_meet_decision_latency.cur=s.lat;METRICS.m_meet_attendance.cur=s.att;METRICS.m_meet_cost.cur=s.cost30;METRICS.m_meet_notes_published.cur=s.pubPct;raidSync()}catch(e){}};
 
 /* ---------- scaled data (Enterprise mode) ---------- */
 function buildScale(){scM=[];scA=[];scD=[];M.scSer=[];if(!SCALE.on)return;
@@ -394,7 +418,7 @@ SEARCHX.push(()=>[].concat(
  allM().filter(m=>!m.scaled||(m.idx%3===0)).slice(0,260).map(m=>({g:"Meetings",t:m.t+" "+fd(m.dt),m:(TYPES[m.type]||{}).n+" · "+tm(m.s),c:(TYPES[m.type]||{c:"--p4"}).c,f:()=>M.open(m.id),k:(m.inv||[]).map(x=>x.n).join(" ")+" "+(m.sum||"")+" "+(m.links||[]).map(l=>l.id).join(" ")})),
  allA().slice(0,400).map(a=>({g:"Meeting actions",t:a.id+" "+a.t,m:a.own+" · "+(ST_A[a.st]||[a.st])[0]+" · due "+fd(a.due),c:isLate(a)?"--bad-f":"--info-f",f:()=>M.open(a.mid),k:(mById(a.mid)||{}).t})),
  allD().slice(0,300).map(d=>({g:"Meeting decisions",t:d.id+" "+d.t,m:d.by+" · "+fd(d.dt)+(d.rat==="pending"?" · awaiting ratification":""),c:"--s3",f:()=>M.open(d.mid),k:d.why+" "+(d.alts||[]).join(" ")})),
- SER.map(s=>({g:"Forums",t:s.n,m:s.cad,c:(TYPES[s.type]||{}).c,f:()=>{S.meet.ser=s.id;go("meet_series")},k:s.purpose}))));
+ M.ser().map(s=>({g:"Forums",t:s.n,m:s.cad,c:(TYPES[s.type]||{}).c,f:()=>{S.meet.ser=s.id;go("meet_series")},k:s.purpose}))));
 function nameIn(q){const l=q.toLowerCase();return DIR.filter(d=>{const f=d.name.split(" ")[0].toLowerCase();return l.includes(d.name.toLowerCase())||(f.length>2&&new RegExp("\\b"+f+"\\b").test(l)&&d.kind!=="msp")})}
 function nextDow(name){const i=DN.findIndex(d=>d.toLowerCase().startsWith(name.slice(0,3)));if(i<0)return null;let x=dOf(TODAY);for(let k=1;k<=7;k++){if(dowOf(isoOf(x+k))===i)return isoOf(x+k)}return null}
 ASKX.push(q=>{const l=q.toLowerCase();
