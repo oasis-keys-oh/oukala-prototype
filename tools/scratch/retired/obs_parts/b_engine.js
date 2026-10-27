@@ -8,7 +8,7 @@ const incFor=svc=>{const a=[svc].concat(ALIAS_INC[svc]||[]);return((S.itsm&&S.it
 const SEVN={1:["Sev 1","bad"],2:["Sev 2","bad"],3:["Sev 3","warn"],4:["Sev 4","info"]};
 const thTxt=(r,lvl)=>r.kind==="static"?(r.op+" "+MET[r.m].fmt(lvl==="crit"?r.crit:r.warn)):(r.kind==="baseline"?"above learned weekly baseline":"outside learned band, sensitivity "+(r.sens||3));
 const EXT=[
- {id:"EX1",ci:"ci_por2",m:"event",fired:NOW_T-470,from:NOW_T-470,to:NOW_T,lvl:"warn",count:3,flaps:0,active:true,peak:14,sev:4,msg:"TLS certificate for standards.meridian.example expires in 14 days (renewal failed validation twice)",src:"Azure Monitor",rule:"EXT"},
+ {id:"EX1",ci:"ci_por2",m:"event",fired:NOW_T-470,from:NOW_T-470,to:NOW_T,lvl:"warn",count:3,flaps:0,active:true,peak:14,sev:4,msg:"TLS certificate for standards.atlantic.example expires in 14 days (renewal failed validation twice)",src:"Azure Monitor",rule:"EXT"},
  {id:"EX2",ci:"ci_ca",m:"event",fired:680,from:672,to:NOW_T,lvl:"warn",count:12,flaps:0,active:true,peak:212,sev:3,msg:"Blocked legacy sign-ins: 212 in 10 minutes (CA-007, one mail client)",src:"Entra ID",rule:"EXT"},
  {id:"EX3",ci:"ci_end0",m:"event",fired:495,from:495,to:NOW_T,lvl:"warn",count:8,flaps:0,active:true,peak:8,sev:4,msg:"8 devices fail the disk encryption compliance check",src:"Intune",rule:"EXT"},
  {id:"EX4",ci:"ci_m362",m:"event",fired:300,from:300,to:312,lvl:"warn",count:2,flaps:0,active:false,peak:1,sev:4,msg:"Teams recording webhook returned 429 twice",src:"Microsoft Graph",rule:"EXT"}];

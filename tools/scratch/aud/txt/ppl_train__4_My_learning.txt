@@ -57,11 +57,11 @@ Every launch, progress step and result the player sends is a statement: who (act
 Learning Coach · 90%
 failed
 Greg Nolan
-Using AI safely at Meridian
+Using AI safely at Atlantic
 08:55:13
 launched
 Greg Nolan
-Using AI safely at Meridian
+Using AI safely at Atlantic
 08:40:51
 passed
 Leah Moss
@@ -84,7 +84,7 @@ Security awareness 2026
   "actor": {
     "objectType": "Agent",
     "name": "Greg Nolan",
-    "mbox": "mailto:greg.nolan@meridian.example"
+    "mbox": "mailto:greg.nolan@atlantic.example"
   },
   "verb": {
     "id": "http://adlnet.gov/expapi/verbs/failed",
@@ -94,11 +94,11 @@ Security awareness 2026
   },
   "object": {
     "objectType": "Activity",
-    "id": "https://learn.meridian.example/courses/C6",
+    "id": "https://learn.atlantic.example/courses/C6",
     "definition": {
       "type": "http://adlnet.gov/expapi/activities/course",
       "name": {
-        "en-US": "Using AI safely at Meridian"
+        "en-US": "Using AI safely at Atlantic"
       }
     }
   },

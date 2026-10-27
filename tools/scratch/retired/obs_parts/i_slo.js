@@ -31,16 +31,16 @@ function sloPane(){const sel=O.slos.find(s=>s.id===O.slo.sel)||O.slos[0],c=sloCa
  ${card("Multi-window, multi-burn-rate alerts","The standard SRE pattern: page quickly for fast burns, ticket for slow burns, and avoid pages for blips.",burn)}
  ${card("All SLOs","Sorted by what needs attention.",T)}`}
 const SYND=()=>[
- {id:"SY1",n:"Portal home page",type:"HTTP",tgt:"https://standards.meridian.example/",ci:"ci_por4",every:1,loc:["East US","West US 2","West Europe","UK South"],svc:"svc_portal",as:["Status is 200","Body contains \"Standards\"","Response under 3 s"]},
+ {id:"SY1",n:"Portal home page",type:"HTTP",tgt:"https://standards.atlantic.example/",ci:"ci_por4",every:1,loc:["East US","West US 2","West Europe","UK South"],svc:"svc_portal",as:["Status is 200","Body contains \"Standards\"","Response under 3 s"]},
  {id:"SY2",n:"Editor sign-in and open a draft",type:"Browser flow",tgt:"standards-platform (5 steps)",ci:"ci_cod4",every:5,loc:["East US","West US 2"],svc:"svc_cod",as:["Sign in with MFA test account","Open workspace","Open a draft","Save without error","Total under 8 s"],steps:[["Load sign-in",.7],["Entra ID redirect",1.1],["Workspace",1.4],["Open draft",.9],["Save draft",1.6]]},
  {id:"SY3",n:"Search API query",type:"API",tgt:"GET /v1/search?q=lease",ci:"ci_sea2",every:1,loc:["East US","West Europe","UK South"],svc:"svc_search",as:["Status is 200","At least 1 result","Response under 1.5 s"]},
  {id:"SY4",n:"Standards API health",type:"API",tgt:"GET /v2/health",ci:"ci_cod4",every:1,loc:["East US","West US 2"],svc:"svc_cod",as:["Status is 200","version field present"]},
- {id:"SY5",n:"DNS resolution of the portal",type:"DNS",tgt:"standards.meridian.example",ci:"ci_dns",every:5,loc:["East US","West Europe"],svc:"svc_net",as:["Resolves to the Front Door address"]},
- {id:"SY6",n:"Portal TLS certificate",type:"TLS",tgt:"standards.meridian.example:443",ci:"ci_por2",every:60,loc:["East US"],svc:"svc_portal",as:["Valid for 15 days or more"],cert:14},
- {id:"SY7",n:"VPN tunnel up",type:"ICMP and TCP",tgt:"vpn.meridian.example:443",ci:"ci_vpn",every:1,loc:["East US","West Europe"],svc:"svc_net",as:["Port 443 open","Round trip under 150 ms"]},
+ {id:"SY5",n:"DNS resolution of the portal",type:"DNS",tgt:"standards.atlantic.example",ci:"ci_dns",every:5,loc:["East US","West Europe"],svc:"svc_net",as:["Resolves to the Front Door address"]},
+ {id:"SY6",n:"Portal TLS certificate",type:"TLS",tgt:"standards.atlantic.example:443",ci:"ci_por2",every:60,loc:["East US"],svc:"svc_portal",as:["Valid for 15 days or more"],cert:14},
+ {id:"SY7",n:"VPN tunnel up",type:"ICMP and TCP",tgt:"vpn.atlantic.example:443",ci:"ci_vpn",every:1,loc:["East US","West Europe"],svc:"svc_net",as:["Port 443 open","Round trip under 150 ms"]},
  {id:"SY8",n:"Contract upload (API)",type:"API",tgt:"POST /contracts (1 MB test file)",ci:"ci_cr0",every:15,loc:["East US"],svc:"svc_cr",as:["Status is 201","Under 5 s"]},
- {id:"SY9",n:"Entra ID sign-in page",type:"HTTP",tgt:"login.microsoftonline.com/meridian",ci:"ci_tenant",every:5,loc:["East US","West Europe"],svc:"svc_id",as:["Status is 200"]},
- {id:"SY10",n:"Lakehouse SQL endpoint",type:"TCP",tgt:"synapse-meridian:1433",ci:"ci_dat0",every:5,loc:["East US"],svc:"svc_data",as:["Port open","Connect under 500 ms"]}];
+ {id:"SY9",n:"Entra ID sign-in page",type:"HTTP",tgt:"login.microsoftonline.com/atlantic",ci:"ci_tenant",every:5,loc:["East US","West Europe"],svc:"svc_id",as:["Status is 200"]},
+ {id:"SY10",n:"Lakehouse SQL endpoint",type:"TCP",tgt:"synapse-atlantic:1433",ci:"ci_dat0",every:5,loc:["East US"],svc:"svc_data",as:["Port open","Connect under 500 ms"]}];
 O.syn=O.syn||SYND();
 const LOCOFF={"East US":0,"West US 2":62,"West Europe":88,"UK South":96};
 function synRes(s,loc,t){const c=ciOf(s.ci)||{},m=metsOf(c).includes("lat")?"lat":null,ms=(m?val(s.ci,"lat",t):90)*(s.type==="Browser flow"?1.6:.55)+(LOCOFF[loc]||0)+hn(s.id+loc,t)*18;const e=metsOf(c).includes("err")?val(s.ci,"err",t):0,av=metsOf(c).includes("avail")?val(s.ci,"avail",t):100;let ok=e<5&&av>98&&ms<(s.type==="Browser flow"?9000:s.type==="API"?5000:9000);if(s.cert!=null&&s.cert<15)ok=false;return {ok,ms:Math.round(ms)}}

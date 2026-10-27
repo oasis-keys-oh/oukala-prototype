@@ -46,7 +46,7 @@ Helpful votes
 76%
 average of published articles
 Article quality score
-Average 83 across 17 live articles. Lowest: Share a draft standard with a reviewer outside Meridian at 57.
+Average 83 across 17 live articles. Lowest: Share a draft standard with a reviewer outside Atlantic at 57.
 ƒ Article quality score
 Quality = 0.35 × Completeness + 0.25 × Clarity + 0.15 × Citations + 0.25 × Freshness
 Completeness
@@ -92,7 +92,7 @@ Deflection counts a search that ends on the article with no ticket from that per
 Score by article
 Lowest first. Click a row to open it.
 ARTICLE	QUALITY	COMPLETENESS	CLARITY	CITATIONS	FRESHNESS
-Share a draft standard with a reviewer outside Meridian
+Share a draft standard with a reviewer outside Atlantic
 KB0140 · Published
 	57	
  90	

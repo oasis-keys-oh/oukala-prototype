@@ -6,7 +6,7 @@ SRC=os.environ.get('SRC') or os.path.join(here,'..','..','src')
 rd=lambda p:open(os.path.join(here,p),encoding='utf-8').read()
 log=rd('docs/r17q/oukala-decisions-log.md');stat=rd('docs/r17q/oukala-v4-status.md');reg=rd('docs/spec/register_summary.md')
 NAMING="Naming: no rename until a trademark search clears a shortlist; candidate names that collide with existing products in the same field were dropped."
-RULE="Naming rule: no outside organization's brand names and no accounting-standard names appear in product text. The sample customer is Meridian Standards Foundation."
+RULE="Naming rule: no outside organization's brand names and no accounting-standard names appear in product text. The sample customer is Atlantic Systems."
 OWNER=os.environ.get('OWNER_FIRST_NAME','')
 def clean(s):
     s=s.replace(chr(8212),'-').replace(chr(8211),'-').strip()

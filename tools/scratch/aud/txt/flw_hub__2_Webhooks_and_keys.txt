@@ -33,7 +33,7 @@ DocuSign envelope completed
 https://hooks.oukala.example/in/dsig/22be90
 	Inbound	envelope.completed	HMAC-SHA256	1 h ago	100%	Healthy
 Approval decided to ERP
-https://erp.meridian.example/odata/approvals
+https://erp.atlantic.example/odata/approvals
 	Outbound	approval.decided	mTLS	3 h ago	0%	Failing
 Incident opened to Teams
 https://graph.microsoft.com/v1.0/teams/.../messages

@@ -37,7 +37,7 @@ accountEnabled	active	Identity step
 Sync now
 Provisioning errors
 3 items blocked, so some people have stale access until fixed.
-j.mendez@meridian.example
+j.mendez@atlantic.example
 Duplicate userPrincipalName with an existing guest account
 Fix: Merge the guest into the member account, then retry.
 Retry

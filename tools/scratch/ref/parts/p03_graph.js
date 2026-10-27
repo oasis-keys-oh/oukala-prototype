@@ -11,7 +11,7 @@ function supSet(){const g=G_();if(g.sup)return g.sup;const s=new Set(),q=SVCREG.
 const degOf=id=>{const g=G_();return(g.out.get(id)||[]).length+(g.inn.get(id)||[]).length};
 function famOf(cls){if(isA(cls,"cmdb_ci_service")||cls==="cmdb_ci_query_based_service"||cls==="cmdb_ci_business_capability")return"svc";if(isA(cls,"cmdb_ci_software"))return"sw";if(isA(cls,"cmdb_ci_cloud"))return"cl";if(isA(cls,"cmdb_ci_hardware"))return"hw";if(isA(cls,"cmdb_ci_site"))return"loc";return"rec"}
 const FAMC={svc:["Services and capabilities","--u3"],sw:["Software","--p4"],hw:["Hardware","--s3"],cl:["Cloud","--w1"],loc:["Locations","--e4"],rec:["Vendors, contracts, information","--p2"]};
-const normName=n=>String(n||"").toLowerCase().replace(/\.(meridian\.local|meridian\.example|local)$/,"").replace(/[^a-z0-9]+/g,"");
+const normName=n=>String(n||"").toLowerCase().replace(/\.(atlantic\.local|atlantic\.example|local)$/,"").replace(/[^a-z0-9]+/g,"");
 const ruleApplies=(r,c)=>isA(c.cls,r.cls)&&!(r.id==="RR1"&&c.cls==="cmdb_ci_business_app")&&!c.svcLayer&&(!r.onlyIf||r.onlyIf(c));
 const crOff=I.crOff=I.crOff||{};
 function relFail(r,c){const g=G_(),L=g.out.get(c.id)||[];let n=0;for(const e of L){const t=ciOf(e[1]);if(t&&r.to.some(x=>isA(t.cls,x)))n++}return n<r.min}

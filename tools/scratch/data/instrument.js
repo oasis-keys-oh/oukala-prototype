@@ -1,6 +1,6 @@
 // PR-32 measurement harness (read-only audit, docs/data/). Not a test; changes no product code.
 // Usage: node tools/scratch/data/instrument.js [build_out] [out.json]
-// Opens build_out/full.html under the core tenant, wraps the Meridian sample data in place with read trackers
+// Opens build_out/full.html under the core tenant, wraps the Atlantic sample data in place with read trackers
 // (array index getters and method wrappers, object property accessors), opens every registered screen with go(id),
 // clicks up to 8 tabs per screen, and records which data globals were read and which DATA entities were asked for.
 // Phases: "render" = inside the screen's registered render function; "after" = afterRender hooks and timers until settle;

@@ -4,7 +4,7 @@ const BE=(id,t,ln,col,n,biz,bind,work,wait,vol,extra)=>Object.assign({id,t,ln,co
 F.bps=F.bps||[
  {id:"bp_dem",name:"Demand to project",owner:"Portfolio lead",story:"From a one-page idea to a staffed, baselined project.",flowId:null,lanes:["Requester","Portfolio lead","Finance","Delivery (PMO)"],
   happy:["s1","t1","t2","g1","t3","t4","g2","t5","t6","e1"],
-  els:[BE("s1","start",0,0,"Idea submitted","Anyone at Meridian can raise a need.","Event demand.created · Form DEM-001 · Entra ID sign-in",0,0,31),
+  els:[BE("s1","start",0,0,"Idea submitted","Anyone at Atlantic can raise a need.","Event demand.created · Form DEM-001 · Entra ID sign-in",0,0,31),
    BE("t1","user",0,1,"Complete demand form","The requester explains the problem, the benefit and a rough cost.","User task · Form DEM-001 · Assignee: requester",.8,0,31,{sla:24}),
    BE("t2","service",1,2,"Score with AI","Claude scores value, risk and fit and drafts a one-page summary.","Service task · Forform: Forecast Agent · autonomy: suggest only · Demand and Capacity read scopes".replace("Forform","Agent"),.2,.4,31),
    BE("g1","gw",1,3,"Score at least 60?","Low scores go back with feedback. Strong ones move on.","Exclusive gateway · decision table dt_demand_screen · score >= 60",0,0,31),

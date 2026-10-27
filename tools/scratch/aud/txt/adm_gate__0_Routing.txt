@@ -16,9 +16,9 @@ The gateway picks a model per task. The first matching policy wins, so order is 
 New routing policy
 1
 Any task when data is Confidential+
-Confidential or Restricted data never leaves the Meridian tenant.
+Confidential or Restricted data never leaves the Atlantic tenant.
 Primary
-Azure OpenAI GPT-4.1 (Meridian tenant)
+Azure OpenAI GPT-4.1 (Atlantic tenant)
 Fallback
 Llama 4 Scout (self-hosted)
 Ceiling
@@ -87,7 +87,7 @@ Default for everything else.
 Primary
 Claude Haiku 5
 Fallback
-Azure OpenAI GPT-4.1 (Meridian tenant)
+Azure OpenAI GPT-4.1 (Atlantic tenant)
 Ceiling
 $0.05 per run
 Edit

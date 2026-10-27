@@ -89,7 +89,7 @@ CR-202 waiting for approval: Add two Lumen engineers for six weeks
 +$96,000 needs CIO. That is you (CIO) under the delegation of authority.
 Review the change
 $8,200 of Northwind service credit not claimed
-Q3 availability was 99.62 percent against 99.9 percent. The contract lets Meridian claim the credit within 30 days of quarter end.
+Q3 availability was 99.62 percent against 99.9 percent. The contract lets Atlantic claim the credit within 30 days of quarter end.
 Open obligation
 All contracts
 13 contracts and statements of work. Filter by vendor, type, status, risk or renewal window. Select a row for the full record.

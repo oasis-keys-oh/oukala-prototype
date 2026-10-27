@@ -95,7 +95,7 @@ const TPL=[
   ["T1","trigger","Hire accepted",c(0),r(1),{event:"Hire accepted (Workday)"}],["A1","action","Create Entra ID account",c(1),r(1),{op:"Create Entra ID account",onError:"Retry 3 times, then alert owner"}],
   ["A2","action","Assign M365 E5 license",c(2),r(1),{op:"Assign M365 license",onError:"Retry 3 times, then alert owner"}],["S1","subflow","Provision laptop",c(3),r(0),{flow:"Provision laptop",onError:"Route to exception queue"}],
   ["AP1","approval","Manager confirms equipment",c(3),r(2),{approver:"Requester's manager",sla:48,onTimeout:"Remind every 4 hours"}],["W1","wait","Wait until start date",c(4),r(1),{dur:"Until start date"}],
-  ["N1","notify","Day 1 welcome",c(5),r(1),{channel:"Teams",to:"New hire",msg:"Welcome to Meridian. Your checklist is ready."}],["E1","end","Completed",c(6),r(1),{outcome:"Completed"}]],
+  ["N1","notify","Day 1 welcome",c(5),r(1),{channel:"Teams",to:"New hire",msg:"Welcome to Atlantic. Your checklist is ready."}],["E1","end","Completed",c(6),r(1),{outcome:"Completed"}]],
   [["T1","A1"],["A1","A2"],["A2","S1"],["A2","AP1"],["S1","W1"],["AP1","W1","Approved"],["AP1","W1","Rejected"],["W1","N1"],["N1","E1"]])},
  {id:"t_chg",n:"Standard change",d:"Pre-approved changes skip the board; everything else goes to the change manager.",f:()=>mkflow(null,"Standard change","Pre-approved templates are scheduled straight away.",[
   ["T1","trigger","Change requested",c(0),r(1),{event:"Standard change requested"}],["G1","condition","Matches a pre-approved template?",c(1),r(1),{expr:"risk == Low",dmn:"dt_chg"}],

@@ -40,15 +40,15 @@ Approve
 Deny
 In review
 
-Azure OpenAI GPT-4.1 (Meridian tenant)
+Azure OpenAI GPT-4.1 (Atlantic tenant)
 Microsoft	$2.00	$8.00	1.4s	86
 	US East, private endpoint	Yes	Restricted	
 Approve
 Deny
 
 Llama 4 Scout (self-hosted)
-Meridian Azure	$0.20	$0.20	0.9s	72
-	Meridian Azure, no egress	Yes	Restricted	
+Atlantic Azure	$0.20	$0.20	0.9s	72
+	Atlantic Azure, no egress	Yes	Restricted	
 Approve
 Deny
 
@@ -58,4 +58,4 @@ Other	$1.00	$3.00	1.2s	70
 Approve
 Deny
 
-Quality is the score on Meridian's own 200-task evaluation set (drafting, scoring, summarizing), not a vendor benchmark. Latency is the median time to a full answer.
+Quality is the score on Atlantic's own 200-task evaluation set (drafting, scoring, summarizing), not a vendor benchmark. Latency is the median time to a full answer.

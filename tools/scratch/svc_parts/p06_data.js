@@ -88,7 +88,7 @@ const SEEDS=[
  ["phone","fulfilling",{id:"RITM0010462",req:"REQ0010205",by:"Maya Ortiz",vals:{reason:"Replacement, end of life",model:"iPhone 16 Pro",case:true,plan:"International roaming",port:false,trips:["United Kingdom","Czechia"]},frac:.4}],
  ["move","approved",{id:"RITM0010464",req:"REQ0010207",by:"Tom Becker",vals:{who:"Nia Brooks",eff:"2026-11-02",team:"Security",newmgr:"Rina Okafor",loc:"Same",keep:false,tier:"Elevated",cc:true},delayH:150}],
  ["newsvc","pending",{id:"RITM0010466",req:"REQ0010209",by:"Maya Ortiz",vals:{sname:"Digital signatures",owner:"Avery Chen",tier:"Tier 2",users:120,offs:"Sign documents\nTemplates and bulk send",tbm:"Applications",cost:64000,deps:["Identity (Entra ID)","Contract Repository"]},hold:["A2"]}],
- ["vendor","fulfilling",{id:"RITM0010468",req:"REQ0010211",by:"Avery Chen",vals:{vname:"Meridian Translate GmbH",country:"Germany",kind:"Professional services",spend:140000,data:true,ai:false},frac:.5}],
+ ["vendor","fulfilling",{id:"RITM0010468",req:"REQ0010211",by:"Avery Chen",vals:{vname:"Atlantic Translate GmbH",country:"Germany",kind:"Professional services",spend:140000,data:true,ai:false},frac:.5}],
  ["mailbox","deployed",{id:"RITM0010470",req:"REQ0010213",by:"Tom Becker",vals:{kind:"Shared mailbox",name:"standards-support",owners:"Tom Becker",guest:false},ageDays:5}]];
 const BULKN=()=>SCALE.on?6400:240;
 const ITW=()=>CAT.map(c=>[c.id,c.pop]);

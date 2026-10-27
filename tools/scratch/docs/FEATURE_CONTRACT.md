@@ -124,7 +124,7 @@ A feature that cannot meet a rule yet needs a waiver. It names the feature and t
 
 ## Naming rule
 
-This is a standalone product that may be shown to peers of the first customer. Never use the words FAF, Codification or ASU, and do not use ASC, FASB or GASB in new text. The sample customer is Meridian Standards Foundation; its sample systems are the Standards Portal and the Standards Platform. Other organizations' processes arrive later as process content. The contract report lints every draft and fails when it finds one.
+This is a standalone product that may be shown to peers of the first customer. Never use the words FAF, Codification or ASU, and do not use ASC, FASB or GASB in new text. The sample customer is Atlantic Systems; its sample systems are the Standards Portal and the Standards Platform. Other organizations' processes arrive later as process content. The contract report lints every draft and fails when it finds one.
 
 ## Related files
 

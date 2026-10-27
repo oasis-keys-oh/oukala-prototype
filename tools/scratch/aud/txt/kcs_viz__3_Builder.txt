@@ -15,10 +15,10 @@ Shape charts
 Builder
 Dashboards
 1. Data
-Meridian samples Incident records, geocoded to the reader or office location · DATAMODEL.incident
+Atlantic samples Incident records, geocoded to the reader or office location · DATAMODEL.incident
 Source
-Meridian incidents (with location)
-Meridian sites (offices, data centers, customers)
+Atlantic incidents (with location)
+Atlantic sites (offices, data centers, customers)
 Site-to-site replication and traffic
 On-call coverage by region
 Car sales by model, region and quarter

@@ -45,7 +45,7 @@ New request form
 Full form with live score preview
 Open the form
 Email to intake
-Forward a note to intake@meridian.example. Claude fills the form and asks the sender to confirm.
+Forward a note to intake@atlantic.example. Claude fills the form and asks the sender to confirm.
 Try an example
 From a contract
 Upload a statement of work and its milestones, invoices and service levels are read for you.

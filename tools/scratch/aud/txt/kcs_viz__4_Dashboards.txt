@@ -104,7 +104,7 @@ P4
 9.81 h
 17.1 h
 Sev 2 target 4 h
-Meridian incidents (with location)
+Atlantic incidents (with location)
 1,800 rows
 ƒ Mean time to resolve (Sev 2)
 Incident records, geocoded to the reader or office location · DATAMODEL.incident

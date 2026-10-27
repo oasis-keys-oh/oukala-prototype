@@ -85,7 +85,7 @@ codif-app-01
 89.6%
 codif-app-02
 86.3%
-lumen-indexer-01.meridian.local
+lumen-indexer-01.atlantic.local
 70.8%
 erp-app-01
 69.9%

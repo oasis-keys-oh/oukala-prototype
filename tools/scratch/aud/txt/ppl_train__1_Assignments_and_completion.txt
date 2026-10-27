@@ -169,7 +169,7 @@ Mandatory · Security awareness
 Privileged access and change control
 Mandatory · Security awareness
 	Platform team Ops team Architecture	Oct 23	16	7	0	Assign
-Using AI safely at Meridian
+Using AI safely at Atlantic
 Mandatory · AI safe use
 	All	Oct 30	39	13	0	Assign
 Working with the AI drafting assistant

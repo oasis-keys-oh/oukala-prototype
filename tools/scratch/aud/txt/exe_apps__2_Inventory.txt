@@ -1,7 +1,7 @@
 APPLICATION PORTFOLIO
 Which applications earn their keep?
 
-Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+Atlantic runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
 
 ƒ Application spend to retire or move
 Add application
@@ -30,7 +30,7 @@ Cloud hosting (Northwind)
 Infrastructure · Northwind Cloud
 	
 Invest	$1,050,000	service	n/a	Mature	82 / 72	Tom Becker	·
-Meridian ERP
+Atlantic ERP
 Finance · Oracle
 	
 Invest	$640,000	120	$5,333	Mature	85 / 70	Avery Chen	·
@@ -51,7 +51,7 @@ Data · Microsoft
 	
 Invest	$280,000	55	$5,091	Mature	68 / 52	Dev Rao	·
 Lease subledger (ERP)
-Finance · Meridian ERP
+Finance · Atlantic ERP
 	
 Migrate	$230,000	14	$16,429	Sunset	66 / 29	Avery Chen	·
 Codification Portal

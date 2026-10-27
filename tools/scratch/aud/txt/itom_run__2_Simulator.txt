@@ -52,7 +52,7 @@ Sev 3 · Error rate 3.89% (threshold > 2.00%) · codif-lb
 Sev 4 · CPU 86.2% (threshold > 80.0%) · erp-sql-01
 Sev 4 · 8 devices fail the disk encryption compliance check · Intune tenant
 Sev 4 · Memory 92.7% (threshold > 85.0%) · data-gateway
-Sev 4 · TLS certificate for standards.meridian.example expires in 14 days (ren · portal-cdn
+Sev 4 · TLS certificate for standards.atlantic.example expires in 14 days (ren · portal-cdn
 Sev 4 · Teams recording webhook returned 429 twice · SharePoint Online
 Sev 4 · Error rate 3.60% (threshold > 1.00%) · contract-blob
 Sev 4 · Memory 87.6% (threshold > 85.0%), flapped 2 times · data-gateway

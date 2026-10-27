@@ -518,7 +518,7 @@ Assignment group's location
 Prototype measures with the fixed zone.
 Holidays
 No holidays (every day counts)
-Meridian holidays (U.S. federal)
+Atlantic holidays (U.S. federal)
 Holidays do not count as working time.
 Mon
 Tue

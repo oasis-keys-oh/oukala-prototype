@@ -1,7 +1,7 @@
 APPLICATION PORTFOLIO
 Which applications earn their keep?
 
-Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
+Atlantic runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, and replacing 2 through projects already funded.
 
 ƒ Application spend to retire or move
 Add application
@@ -35,7 +35,7 @@ Search indexer
 $310K a year · 260 users · Growth
 Taxonomy API
 $120K a year · 40 users · Growth
-Meridian ERP
+Atlantic ERP
 $640K a year · 120 users · Mature
 Microsoft 365 (E5)
 $520K a year · 310 users · Mature

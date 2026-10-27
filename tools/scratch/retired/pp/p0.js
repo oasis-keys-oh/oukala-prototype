@@ -63,7 +63,7 @@ const LEADS={"Platform team":"sp","Data team":"am","Ops team":"tb","Editors":"em
 function seedPeople(){return ROSTER.map(r=>({id:r[0],n:r[1],role:r[2],team:r[3],mgr:r[4],fte:r[5],type:r[6],sk:Object.fromEntries(r[7].split(" ").map(x=>[x.slice(0,2),+x[2]])),bau:r[8],kind:"human",start:"2021-03-01",c:["--p4","--s3","--u3","--e4","--w1","--p2","--s2","--u2"][Math.floor(hash(r[0])*8)]}))}
 /* agents: tier 1 assistive (suggests and drafts), tier 2 supervised (acts after a person approves), tier 3 autonomous within limits */
 const TIERS={1:{n:"Tier 1 · Assistive",s:"Suggests and drafts. A person does the work.",c:"--story-f",ic:"T1"},2:{n:"Tier 2 · Supervised",s:"Acts, but a person approves each step.",c:"--u3",ic:"T2"},3:{n:"Tier 3 · Autonomous within limits",s:"Acts alone inside spend, data and action limits.",c:"--w1",ic:"T3"}};
-const KILLS=[["run","One run"],["agent","This agent"],["capability","Its capability"],["provider","Its model provider"],["tenant","Everything at Meridian"]];
+const KILLS=[["run","One run"],["agent","This agent"],["capability","Its capability"],["provider","Its model provider"],["tenant","Everything at Atlantic"]];
 const MODELS=["Claude Sonnet","Claude Haiku","GPT (OpenAI)","Gemini (Google)"];
 function seedAgents(){const A=(id,n,tier,model,owner,scope,cap,base,kill,guards,does)=>({id,n,tier,model,owner,scope,cap,base,kill,guards,does,kind:"agent",c:TIERS[tier].c});
  return [A("fo","First Officer",3,"Claude Sonnet","mo",["meetings","minutes","records"],40,30,"agent",["No external email without approval","Redacts personal data","Files only records with confidence 85% or higher"],"Joins meetings, takes notes, files decisions and actions."),

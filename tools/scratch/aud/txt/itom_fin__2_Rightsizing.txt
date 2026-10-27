@@ -36,7 +36,7 @@ Always on for 14 months
 $2.1K/mo
 FinOps Agent · 82%
 Accept
-law-meridian-prod Low risk
+law-atlantic-prod Low risk
 Move verbose tables to Basic logs
 6 tables, no alert queries
 $1.9K/mo
@@ -54,7 +54,7 @@ No production data
 $0.9K/mo
 FinOps Agent · 80%
 Accept
-afd-meridian-internal Medium risk
+afd-atlantic-internal Medium risk
 Front Door Premium to Standard
 No private link or WAF custom rules used
 $2.9K/mo

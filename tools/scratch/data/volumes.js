@@ -1,4 +1,4 @@
-// PR-32: record counts behind each core data path (Meridian today), at demo scale and with Enterprise scale on.
+// PR-32: record counts behind each core data path (Atlantic today), at demo scale and with Enterprise scale on.
 // Usage: node tools/scratch/data/volumes.js [build_out] [reads.json] [out.json]
 // Reads the path list from reads.json (instrument.js), opens every screen once so lazy stores fill, then counts rows per path.
 const {chromium}=require('playwright');const path=require('path');const fs=require('fs');

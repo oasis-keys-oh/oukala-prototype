@@ -1,7 +1,7 @@
 PLATFORM · ADMIN STUDIO
 Shape the platform without code
 
-Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+Four objects are defined as data, with 1 custom field added by Atlantic. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
 
 ƒ Promotions passing gates first time
 Claude Sonnet · 84%
@@ -12,7 +12,7 @@ List views
 Theme
 Localization
 Theme editor
-Meridian blue: in preview. The rest of the app is untouched.
+Atlantic blue: in preview. The rest of the app is untouched.
 Theme name
 Brand primary
 #14788E
@@ -66,7 +66,7 @@ Contrast = (L1 + 0.05) ÷ (L2 + 0.05) where L is relative luminance of each colo
 Live preview
 CSS variables are set on this panel only.
 M
-Meridian Standards
+Atlantic Standards
 Home
 Projects
 Invoices

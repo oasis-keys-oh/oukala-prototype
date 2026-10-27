@@ -56,7 +56,7 @@ Guardrails
 Who can do what in a contract review.
 AI reads, classifies, drafts redlines and suggests a route. It cannot accept a term, change a price or send anything to the vendor.
 Business owner confirms standard and low risk lines and picks a route.
-Meridian Legal must approve every high risk exception and every new clause.
+Atlantic Legal must approve every high risk exception and every new clause.
 Signer is set by value under the delegation of authority ($348,000 needs CEO).
 Review queue
 Reviews in progress
@@ -149,13 +149,13 @@ CLAUSE	TOPIC	POSITION	VENDOR ASK	AI RECOMMENDS	ROUTE	STATUS	RISK	CONFIDENCE
 §6.3	Warranty period Warranty	Standard	90 days	Confirm standard	Not chosen	Accepted	Medium	
 91%
 
-§7.1	Ownership of deliverables Intellectual property	Standard	Meridian owns	Confirm standard	Not chosen	Agreed	High	
+§7.1	Ownership of deliverables Intellectual property	Standard	Atlantic owns	Confirm standard	Not chosen	Agreed	High	
 94%
 
 
 41 of 41 rows
 Scroll for more · rows are drawn as you scroll
-Meridian standard terms library
+Atlantic standard terms library
 26 clauses with approved language, fallback positions and a risk rating. Legal owns each clause.
 New clause
 Category
@@ -167,125 +167,125 @@ All
 Export CSV
 ID	CLAUSE	CATEGORY	RISK	APPROVED LANGUAGE	FALLBACK	LINES SEEN	VERSION	OWNER
 PB-PAY	Payment terms	Commercial	Medium	
-Meridian pays undisputed amounts within 45 days of receiving a correct invoice.
+Atlantic pays undisputed amounts within 45 days of receiving a correct invoice.
 	
 Net 30 is acceptable only with a 2 percent discount for payment within 10 days.
-	0	v1 Sep 6	Meridian Legal
+	0	v1 Sep 6	Atlantic Legal
 PB-ACC	Payment only after acceptance	Commercial	High	
-Milestone payments become due only after Meridian gives written acceptance of the deliverable. No advance payments are made.
+Milestone payments become due only after Atlantic gives written acceptance of the deliverable. No advance payments are made.
 	
 A mobilization advance up to 5 percent is acceptable if it is secured by a credit against the final milestone.
-	0	v2 Aug 20	Meridian Legal
+	0	v2 Aug 20	Atlantic Legal
 PB-LOL	Limitation of liability	Legal	High	
 Each party's aggregate liability is limited to the fees paid or payable in the 12 months before the claim, with a 3x super-cap for data breach and no cap for IP indemnity, gross negligence or willful misconduct.
 	
 A 2x super-cap for data breach is acceptable. A cap below 12 months of fees is not.
-	0	v3 Aug 3	Meridian Legal
+	0	v3 Aug 3	Atlantic Legal
 PB-IND	IP infringement indemnity	Legal	High	
-The supplier will defend and indemnify Meridian against third-party claims that the deliverables or services infringe intellectual property rights, without a cap.
+The supplier will defend and indemnify Atlantic against third-party claims that the deliverables or services infringe intellectual property rights, without a cap.
 	
 None. This clause is not negotiable.
-	0	v4 Jul 17	Meridian Legal
+	0	v4 Jul 17	Atlantic Legal
 PB-TFC	Termination rights	Legal	Medium	
-Meridian may terminate for convenience on 30 days written notice and pays only for accepted work. Either party may terminate for uncured material breach after 30 days.
+Atlantic may terminate for convenience on 30 days written notice and pays only for accepted work. Either party may terminate for uncured material breach after 30 days.
 	
 60 days notice for convenience is acceptable on subscriptions with a prepaid term refund.
-	0	v1 Jun 30	Meridian Legal
+	0	v1 Jun 30	Atlantic Legal
 PB-REN	Renewal and auto-renewal	Commercial	High	
-The agreement renews only by a written order signed by Meridian. The supplier sends a renewal reminder at least 120 days before the term ends.
+The agreement renews only by a written order signed by Atlantic. The supplier sends a renewal reminder at least 120 days before the term ends.
 	
 Automatic renewal is acceptable only if notice of non-renewal is 60 days or less and the supplier sends a reminder 120 days before.
-	0	v2 Jun 13	Meridian Legal
+	0	v2 Jun 13	Atlantic Legal
 PB-CAP	Price increases and rate card	Commercial	Medium	
 Rates are fixed for the term. Renewal price increases are capped at 3 percent a year or the consumer price index, whichever is lower.
 	
 A 5 percent cap is acceptable with 90 days written notice.
-	0	v3 May 27	Meridian Legal
+	0	v3 May 27	Atlantic Legal
 PB-SLA	Availability service level	Service levels	Medium	
-The service is available at least 99.9 percent of each month, measured by Meridian monitoring, excluding agreed maintenance.
+The service is available at least 99.9 percent of each month, measured by Atlantic monitoring, excluding agreed maintenance.
 	
 99.5 percent is acceptable for Tier 2 services only.
-	0	v4 May 10	Meridian Legal
+	0	v4 May 10	Atlantic Legal
 PB-SLC	Service credits	Service levels	Medium	
 For each month below the availability target the supplier credits at least 10 percent of the monthly fee, rising to 25 percent below 99 percent. Credits are not the exclusive remedy.
 	
 A 7.5 percent credit is acceptable if repeated misses allow termination.
-	0	v1 Apr 23	Meridian Legal
+	0	v1 Apr 23	Atlantic Legal
 PB-RSP	Severity 1 response time	Service levels	Medium	
 The supplier responds to a Severity 1 incident within 30 minutes, around the clock.
 	
 60 minutes is acceptable outside Tier 1 services.
-	0	v2 Apr 6	Meridian Legal
+	0	v2 Apr 6	Atlantic Legal
 PB-DPA	Breach notification	Data and security	High	
-The supplier notifies Meridian of a security incident affecting Meridian data within 48 hours of discovery.
+The supplier notifies Atlantic of a security incident affecting Atlantic data within 48 hours of discovery.
 	
 72 hours is acceptable where the supplier also gives hourly updates for Severity 1 events.
-	0	v3 Mar 20	Meridian Legal
+	0	v3 Mar 20	Atlantic Legal
 PB-DPI	Processing on instructions	Data and security	High	
-The supplier processes personal data only on Meridian's documented instructions under the data processing addendum.
+The supplier processes personal data only on Atlantic's documented instructions under the data processing addendum.
 	
 None.
-	0	v4 Mar 3	Meridian Legal
+	0	v4 Mar 3	Atlantic Legal
 PB-SUB	Subcontractors and subprocessors	Data and security	Medium	
-The supplier may engage subcontractors or subprocessors only with Meridian's prior written consent and remains responsible for them.
+The supplier may engage subcontractors or subprocessors only with Atlantic's prior written consent and remains responsible for them.
 	
 Notice of 30 days with a right to object is acceptable for cloud infrastructure subprocessors.
-	0	v1 Sep 2	Meridian Legal
+	0	v1 Sep 2	Atlantic Legal
 PB-SEC	Security certifications	Data and security	Medium	
 The supplier maintains a SOC 2 Type II report or ISO/IEC 27001 certification, provides it annually, encrypts data in transit and at rest, and runs an annual penetration test.
 	
 A SOC 2 Type I report is acceptable for one year for a new supplier.
-	0	v2 Aug 16	Meridian Legal
+	0	v2 Aug 16	Atlantic Legal
 PB-RES	Data residency	Data and security	Medium	
-Meridian data is stored and processed in the United States.
+Atlantic data is stored and processed in the United States.
 	
 EU regions are acceptable for backup only.
-	0	v3 Jul 30	Meridian Legal
+	0	v3 Jul 30	Atlantic Legal
 PB-IPO	Ownership of deliverables	Intellectual property	High	
-Meridian owns all deliverables and work product created under the agreement, and the supplier assigns all rights to Meridian on payment.
+Atlantic owns all deliverables and work product created under the agreement, and the supplier assigns all rights to Atlantic on payment.
 	
 A license is acceptable for the supplier's own tools, never for custom deliverables.
-	0	v4 Jul 13	Meridian Legal
+	0	v4 Jul 13	Atlantic Legal
 PB-BIP	Background IP license	Intellectual property	Medium	
-The supplier grants Meridian a perpetual, royalty-free license to supplier tools embedded in the deliverables.
+The supplier grants Atlantic a perpetual, royalty-free license to supplier tools embedded in the deliverables.
 	
 A term license that matches the life of the service is acceptable for SaaS.
-	0	v1 Jun 26	Meridian Legal
+	0	v1 Jun 26	Atlantic Legal
 PB-WAR	Warranty period	Legal	Medium	
 The supplier warrants that deliverables conform to the specification for 90 days after acceptance and corrects defects at no charge.
 	
 60 days is acceptable for low-risk deliverables.
-	0	v2 Jun 9	Meridian Legal
+	0	v2 Jun 9	Atlantic Legal
 PB-ACP	Acceptance	Delivery	High	
-Meridian has 10 business days to review each deliverable against agreed criteria. Silence is never acceptance.
+Atlantic has 10 business days to review each deliverable against agreed criteria. Silence is never acceptance.
 	
 A 5 business day reminder before a deliverable is escalated is acceptable.
-	0	v3 May 23	Meridian Legal
+	0	v3 May 23	Atlantic Legal
 PB-CHG	Change control	Delivery	Medium	
 Changes take effect only through a written change order signed by both parties before work begins.
 	
 None.
-	0	v4 May 6	Meridian Legal
+	0	v4 May 6	Atlantic Legal
 PB-EXP	Travel and expenses	Commercial	Low	
-Travel and expenses are reimbursed at cost only with Meridian's prior written approval and within a cap.
+Travel and expenses are reimbursed at cost only with Atlantic's prior written approval and within a cap.
 	
 A pre-approved annual travel budget is acceptable.
-	0	v1 Apr 19	Meridian Legal
+	0	v1 Apr 19	Atlantic Legal
 PB-KEY	Key personnel	Delivery	Medium	
-Named key personnel are assigned for the term and are replaced only with Meridian's written consent and a 10 business day handover.
+Named key personnel are assigned for the term and are replaced only with Atlantic's written consent and a 10 business day handover.
 	
 Replacement with equal skills on 10 days notice is acceptable.
-	0	v2 Apr 2	Meridian Legal
+	0	v2 Apr 2	Atlantic Legal
 PB-ASM	Assumption failure	Delivery	Medium	
 If an assumption proves false, the supplier raises a change request within 5 business days. Dates and fees do not change automatically.
 	
 Dates may slip day for day for a documented customer delay of more than 5 business days.
-	0	v3 Mar 16	Meridian Legal
+	0	v3 Mar 16	Atlantic Legal
 PB-CONF	Confidentiality	Legal	Low	
 Confidentiality is mutual for five years after the term, and indefinitely for trade secrets and personal data.
 	
 Three years for non-sensitive material.
-	0	v4 Feb 27	Meridian Legal
+	0	v4 Feb 27	Atlantic Legal
 
 26 of 26 rows
 Scroll for more · rows are drawn as you scroll

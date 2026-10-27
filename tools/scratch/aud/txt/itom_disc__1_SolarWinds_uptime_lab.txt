@@ -50,7 +50,7 @@ JOIN Orion.ResponseTimeHistory r ON r.NodeID = n.NodeID
 WHERE r.DateTime > ADDDAY(-30, GETUTCDATE())
 GROUP BY n.NodeID, n.Caption, n.IPAddress, n.Status, n.StatusDescription, n.LastBoot, n.MachineType, n.Vendor
 Endpoint
-https://orion.meridian.example:17774/SolarWinds/InformationService/v3/Json
+https://orion.atlantic.example:17774/SolarWinds/InformationService/v3/Json
 Modules
 NPM, SAM
 Matching

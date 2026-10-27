@@ -85,13 +85,13 @@ Oct 8
 Contoso Cloud Operations MSA · Contoso Cloud Operations
 Legal returns redlines on liability, renewal and AI terms
 Oct 13
-Lumen Data Partners SOW-5 · Meridian Legal
+Lumen Data Partners SOW-5 · Atlantic Legal
 8 to 30 days
 9
-Meridian provides the Azure landing zone
+Atlantic provides the Azure landing zone
 Oct 15
 Contoso Cloud Operations MSA · Sam Patel
-Meridian reviews the Milestone 3 deliverable within 10 business days
+Atlantic reviews the Milestone 3 deliverable within 10 business days
 Oct 23
 Lumen Data Partners SOW-4 · Dev Rao
 Hold the quarterly business review
@@ -112,7 +112,7 @@ Show 3 more of 3 remaining
 Decide on extension notice
 Nov 18
 Northwind Staffing Order form · Priya Shah
-Meridian signs or rejects proposal v2 (target date)
+Atlantic signs or rejects proposal v2 (target date)
 Nov 20
 Lumen Data Partners SOW-5 · Priya Shah
 Negotiate Beacon terms and target signature
@@ -180,29 +180,29 @@ All
 Export CSV
 ID	OBLIGATION	CONTRACT	PARTY	OWNER	KIND	DUE	DAYS	STATE
 OB-101	Lumen delivers Milestone 3, the taxonomy ingestion pipeline	Lumen Data Partners SOW-4	Vendor	Marco Ellis	Deliverable	Sep 30, 2026	-6	Overdue
-OB-102	Meridian reviews the Milestone 3 deliverable within 10 business days	Lumen Data Partners SOW-4	Meridian	Dev Rao	Deliverable	Oct 23, 2026	17	Open
+OB-102	Atlantic reviews the Milestone 3 deliverable within 10 business days	Lumen Data Partners SOW-4	Atlantic	Dev Rao	Deliverable	Oct 23, 2026	17	Open
 OB-103	Lumen delivers Milestone 4, indexer running in the test environment	Lumen Data Partners SOW-4	Vendor	Marco Ellis	Deliverable	Oct 30, 2026	24	At risk
 OB-104	Lumen delivers 8 hours of operator training and the runbook	Lumen Data Partners SOW-4	Vendor	Hana Koval	Deliverable	Dec 4, 2026	59	Open
-OB-105	Final acceptance of all deliverables (Milestone 5)	Lumen Data Partners SOW-4	Meridian	Chief Editor	Deliverable	Dec 18, 2026	73	Open
-OB-106	Meridian provides production-like data	Lumen Data Partners SOW-4	Meridian	Dev Rao	Other	Apr 15, 2026		Done
+OB-105	Final acceptance of all deliverables (Milestone 5)	Lumen Data Partners SOW-4	Atlantic	Chief Editor	Deliverable	Dec 18, 2026	73	Open
+OB-106	Atlantic provides production-like data	Lumen Data Partners SOW-4	Atlantic	Dev Rao	Other	Apr 15, 2026		Done
 OB-107	Lumen delivers Milestone 2, indexer design accepted	Lumen Data Partners SOW-4	Vendor	Marco Ellis	Deliverable	May 22, 2026		Done
 OB-108	Lumen delivers Milestone 1, data model approved	Lumen Data Partners SOW-4	Vendor	Hana Koval	Deliverable	Apr 10, 2026		Done
-OB-109	Meridian signs or rejects proposal v2 (target date)	Lumen Data Partners SOW-5	Meridian	Priya Shah	Other	Nov 20, 2026	45	Open
-OB-110	Legal returns redlines on liability, renewal and AI terms	Lumen Data Partners SOW-5	Meridian	Meridian Legal	Renewal notice	Oct 13, 2026	7	Open
+OB-109	Atlantic signs or rejects proposal v2 (target date)	Lumen Data Partners SOW-5	Atlantic	Priya Shah	Other	Nov 20, 2026	45	Open
+OB-110	Legal returns redlines on liability, renewal and AI terms	Lumen Data Partners SOW-5	Atlantic	Atlantic Legal	Renewal notice	Oct 13, 2026	7	Open
 OB-111	Northwind sends the monthly SLA report by the 5th	Northwind Managed Services MSA	Vendor	Northwind Managed Services	Report	Oct 5, 2026	-1	Overdue
-OB-112	Hold the quarterly business review	Northwind Managed Services MSA	Meridian	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
-OB-113	Decide on renewal or send notice (120 days before Oct 31, 2028)	Northwind Managed Services MSA	Meridian	Tom Becker	Renewal notice	Jul 3, 2028	636	Open
+OB-112	Hold the quarterly business review	Northwind Managed Services MSA	Atlantic	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
+OB-113	Decide on renewal or send notice (120 days before Oct 31, 2028)	Northwind Managed Services MSA	Atlantic	Tom Becker	Renewal notice	Jul 3, 2028	636	Open
 OB-114	Northwind sends the September SLA report	Northwind Managed Services MSA	Vendor	Northwind Managed Services	Report	Sep 5, 2026		Done
-OB-115	Annual true-up of seat counts	Microsoft Software license	Meridian	Jordan Lee	Other	Nov 30, 2026	55	Open
-OB-116	Decide on renewal enrollment (notice 90 days before Jun 30, 2027)	Microsoft Software license	Meridian	Jordan Lee	Renewal notice	Apr 1, 2027	177	Open
-OB-117	Negotiate Beacon terms and target signature	Beacon Analytics Software license	Meridian	Dev Rao	Other	Nov 20, 2026	45	Open
-OB-118	Claim the Q3 availability service credit of $8,200	Northwind Cloud MSA	Meridian	Tom Becker	Other	Oct 31, 2026	25	Open
+OB-115	Annual true-up of seat counts	Microsoft Software license	Atlantic	Jordan Lee	Other	Nov 30, 2026	55	Open
+OB-116	Decide on renewal enrollment (notice 90 days before Jun 30, 2027)	Microsoft Software license	Atlantic	Jordan Lee	Renewal notice	Apr 1, 2027	177	Open
+OB-117	Negotiate Beacon terms and target signature	Beacon Analytics Software license	Atlantic	Dev Rao	Other	Nov 20, 2026	45	Open
+OB-118	Claim the Q3 availability service credit of $8,200	Northwind Cloud MSA	Atlantic	Tom Becker	Other	Oct 31, 2026	25	Open
 OB-119	Northwind sends the September usage report	Northwind Cloud MSA	Vendor	Northwind Cloud	Report	Oct 5, 2026		Done
-OB-120	Hold the quarterly business review	Northwind Cloud MSA	Meridian	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
-OB-121	Send notice of non-renewal to LegacyDocs (60 days before Dec 31)	LegacyDocs Inc. Support agreement	Meridian	Maya Ortiz	Renewal notice	Nov 1, 2026	26	At risk
-OB-122	Export all repository data before support ends	LegacyDocs Inc. Support agreement	Meridian	Jordan Lee	Deliverable	Dec 15, 2026	70	Open
-OB-123	Review storage capacity at the quarterly review	Northwind Cloud Order form	Meridian	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
-OB-124	Meridian provides the Azure landing zone	Contoso Cloud Operations MSA	Meridian	Sam Patel	Other	Oct 15, 2026	9	At risk
+OB-120	Hold the quarterly business review	Northwind Cloud MSA	Atlantic	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
+OB-121	Send notice of non-renewal to LegacyDocs (60 days before Dec 31)	LegacyDocs Inc. Support agreement	Atlantic	Maya Ortiz	Renewal notice	Nov 1, 2026	26	At risk
+OB-122	Export all repository data before support ends	LegacyDocs Inc. Support agreement	Atlantic	Jordan Lee	Deliverable	Dec 15, 2026	70	Open
+OB-123	Review storage capacity at the quarterly review	Northwind Cloud Order form	Atlantic	Tom Becker	Review or acceptance	Oct 28, 2026	22	Open
+OB-124	Atlantic provides the Azure landing zone	Contoso Cloud Operations MSA	Atlantic	Sam Patel	Other	Oct 15, 2026	9	At risk
 OB-125	Contoso sends the monthly patch compliance report	Contoso Cloud Operations MSA	Vendor	Contoso Cloud Operations	Report	Oct 8, 2026	2	Open
 
 30 of 30 rows

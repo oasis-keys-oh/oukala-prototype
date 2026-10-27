@@ -1,7 +1,7 @@
 PLATFORM · ADMIN STUDIO
 Shape the platform without code
 
-Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
+Four objects are defined as data, with 1 custom field added by Atlantic. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.
 
 ƒ Promotions passing gates first time
 Claude Sonnet · 84%
@@ -12,7 +12,7 @@ List views
 Theme
 Localization
 Incident fields
-12 fields, 1 added by Meridian. Drag a row to change the order used in lists and the API.
+12 fields, 1 added by Atlantic. Drag a row to change the order used in lists and the API.
 Add a field
 Incident
 Project

@@ -50,7 +50,7 @@ NAME	KIND	ROLE	TEAM	ORGANIZATION	LOAD▼	PROJECTS	HOW CAPACITY IS MEASURED	SKILL
 
 Sam Patel
 	
-Employee	Platform engineer	Ops team	Meridian Standards Foundation	
+Employee	Platform engineer	Ops team	Atlantic Systems	
  1128%	2	Hours a week against 40	Azure, Kubernetes, Terraform
 
 Ravi Menon
@@ -60,17 +60,17 @@ Contractor	Site reliability engineer	Ops team	Northwind Staffing
 
 Maya Ortiz
 	
-Employee	Portfolio lead	PMO	Meridian Standards Foundation	
+Employee	Portfolio lead	PMO	Atlantic Systems	
  421%	1	Hours a week against 40	Portfolio management, PMP, Vendor management
 
 Nia Brooks
 	
-Employee	Change manager	Change management	Meridian Standards Foundation	
+Employee	Change manager	Change management	Atlantic Systems	
  399%	1	Hours a week against 40	ITIL 4 Change, CAB facilitation, Risk assessment
 
 Jordan Lee
 	
-Employee	Architect	Architecture	Meridian Standards Foundation	
+Employee	Architect	Architecture	Atlantic Systems	
  388%	3	Hours a week against 40	Enterprise architecture, Azure, Integration
 
 Hana Koval
@@ -80,7 +80,7 @@ Contractor	Taxonomy engineer	Lumen (vendor)	Lumen Search Services
 
 Tom Becker
 	
-Employee	Service desk lead	Service desk	Meridian Standards Foundation	
+Employee	Service desk lead	Service desk	Atlantic Systems	
  324%	1	Hours a week against 40	ITIL 4, Incident management, ServiceNow
 
 Elise Park
@@ -95,52 +95,52 @@ Contractor	Lead engineer, search indexer	Lumen (vendor)	Lumen Search Services
 
 Dev Rao
 	
-Employee	Project manager	Data team	Meridian Standards Foundation	
+Employee	Project manager	Data team	Atlantic Systems	
  230%	1	Hours a week against 40	Data engineering, PMP, Azure Data Factory
 
 Avery Chen
 	
-Employee	Controller	Finance	Meridian Standards Foundation	
+Employee	Controller	Finance	Atlantic Systems	
  208%	1	Hours a week against 40	Accounting, ASC 842, Invoice approval
 
 Priya Shah
 	
-Employee	Project manager	Platform team	Meridian Standards Foundation	
+Employee	Project manager	Platform team	Atlantic Systems	
  196%	1	Hours a week against 40	PMP, Agile delivery, Release planning
 
 Rina Okafor
 	
-Employee	Security lead	Security	Meridian Standards Foundation	
+Employee	Security lead	Security	Atlantic Systems	
  194%	0	Hours a week against 40	Entra ID, Defender, NIST CSF
 
 Chief Editor
 	
-Employee	Chief editor	Editors	Meridian Standards Foundation	
+Employee	Chief editor	Editors	Atlantic Systems	
  143%	1	Hours a week against 40	Standards writing, Editorial review, Codification
 
 Test Agent
 	
-AI agent	Quality and testing agent	AI agents	Meridian Standards Foundation	
+AI agent	Quality and testing agent	AI agents	Atlantic Systems	
  136%	1	Agent hours and $0.50 per task	Test runner, Sandbox
 
 Knowledge Curator
 	
-AI agent	Knowledge drafting agent	AI agents	Meridian Standards Foundation	
+AI agent	Knowledge drafting agent	AI agents	Atlantic Systems	
  131%	1	Agent hours and $0.60 per task	Articles, Search index
 
 Casey Rowan
 	
-Employee	Chief information officer	PMO	Meridian Standards Foundation	
+Employee	Chief information officer	PMO	Atlantic Systems	
  93%	0	Hours a week against 40	Executive sponsor, Portfolio, Strategy
 
 Contract Analyst Agent
 	
-AI agent	Contract and SOW analysis agent	AI agents	Meridian Standards Foundation	
+AI agent	Contract and SOW analysis agent	AI agents	Atlantic Systems	
  80%	1	Agent hours and $2.60 per task	Clause extraction, Playbook matching, Obligation tracking
 
 Ben Alvarez
 	
-Employee	QA analyst	Platform team	Meridian Standards Foundation	
+Employee	QA analyst	Platform team	Atlantic Systems	
  61%	0	Hours a week against 40	Manual testing, UAT coordination, Test design
 
 LS
@@ -168,7 +168,7 @@ Managed service provider	Managed service provider: service desk and endpoint	Ser
 
 Leila Haddad
 	
-Employee	Communications lead	PMO	Meridian Standards Foundation	
+Employee	Communications lead	PMO	Atlantic Systems	
  55%	0	Hours a week against 40	Communications, Publishing, Stakeholder messaging
 
 Marta Kessler
@@ -178,7 +178,7 @@ Contractor	Lumen delivery lead	Lumen (vendor)	Lumen Search Services
 
 Zoe Hart
 	
-Employee	Developer	Platform team	Meridian Standards Foundation	
+Employee	Developer	Platform team	Atlantic Systems	
  48%	0	Hours a week against 40	TypeScript, Editor UX, Playwright
 
 Priyanka Nair

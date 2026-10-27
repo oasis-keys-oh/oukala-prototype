@@ -143,7 +143,7 @@ ServiceNow import
 Healthy
 IT service management
 
-Read-only copy of the old ServiceNow CMDB while Meridian cuts over. Uses the Service Graph Connector pattern: every row carries its sys_class_name so identification can pick the right class.
+Read-only copy of the old ServiceNow CMDB while Atlantic cuts over. Uses the Service Graph Connector pattern: every row carries its sys_class_name so identification can pick the right class.
 
 Schedule
 Daily at 02:00
