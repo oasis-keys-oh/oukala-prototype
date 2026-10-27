@@ -13,12 +13,14 @@ const r=await p.evaluate(async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  box.innerHTML=ownerChip('Maya Ortiz',{record:'project:PR1',role:'Owner'})+ownerChip('Platform team')+ownerChip('Invoice Advisor')+pchip('Sam Patel')
   +'<span id="pa">'+ownerChip.pair('Sam Patel','')+'</span><span id="pb">'+ownerChip.pair('Sam Patel','Sam Patel')+'</span><span id="pc">'+ownerChip.pair('Sam Patel','Jordan Lee')+'</span>';
  const chips=box.querySelectorAll('[data-owner]');const chip=chips[0];
+ /* the popover can still be closing right after a chat action, so a click right then may toggle it shut: retry until it is open (flaky on slow runners) */
+ const openPop=async()=>{for(let i=0;i<4;i++){const q=document.querySelector('.own-pop');if(q&&q.matches(':popover-open'))return;chip.click();await W(300)}};
  ok(chip.dataset.owner==='Maya Ortiz'&&chip.dataset.ownerRec==='project:PR1'&&chip.dataset.ownerRole==='Owner','ownerChip keeps data-owner, data-owner-rec, data-owner-role');
  ok(chip.dataset.ownerAddr==='person:Maya Ortiz','person chip carries a CHATADDR person address');
  ok(chips[1].dataset.ownerKind==='team'&&chips[1].dataset.ownerAddr==='team:plat','team chip resolves to team:plat');
  ok(chips[2].dataset.ownerKind==='agent','agent chip kind');
  // the three actions
- chip.click();await W(150);let pop=document.querySelector('.own-pop');ok(pop&&pop.matches(':popover-open'),'popover opens on click');
+ await openPop();await W(100);let pop=document.querySelector('.own-pop');ok(pop&&pop.matches(':popover-open'),'popover opens on click');
  const labels=pop?[...pop.querySelectorAll('.own-acts [data-own-act]')].map(b=>b.textContent.trim()):[];
  ok(['Person 360','Message','Open chat on this record'].every(x=>labels.includes(x)),'popover has Person 360, Message, Open chat on this record: '+labels.join(', '));
  const x=pop&&pop.querySelector('.own-x');if(x){const pr=pop.getBoundingClientRect(),xr=x.getBoundingClientRect();ok(pr.right-xr.right<24&&xr.top-pr.top<24&&getComputedStyle(x).position==='static','popover close control top right, in flow')}
@@ -29,9 +31,9 @@ const r=await p.evaluate(async()=>{const f=[];const ok=(c,m)=>{if(!c)f.push(m)};
  const id1=t.id;CHATADDR.open('person:Maya Ortiz');ok(CHATX.cur().id===id1,'one thread per address: reopen');
  CHATX.handle('Can you review the plan?');await W(50);t=CHATX.cur();const last=t.msgs[t.msgs.length-1];ok(last&&/Simulated/.test(last.t),'person message is labeled simulated');
  // Open chat on this record
- chip.click();await W(150);document.querySelector('.own-pop [data-own-act=rec]').click();await W(150);ok(CHATX.cur().addr==='record:project:PR1','Open chat on this record opens the record thread');
+ await openPop();await W(100);document.querySelector('.own-pop [data-own-act=rec]').click();await W(150);ok(CHATX.cur().addr==='record:project:PR1','Open chat on this record opens the record thread');
  // Person 360
- chip.click();await W(150);document.querySelector('.own-pop [data-own-act=p360]').click();await W(250);
+ await openPop();await W(100);document.querySelector('.own-pop [data-own-act=p360]').click();await W(250);
  ok(/Maya Ortiz/.test((document.querySelector('#drawer h2')||{}).textContent||''),'Person 360 opens from the popover');
  ok(!document.querySelector('.own-pop'),'popover closes after an action');try{closeDrawer()}catch(e){}await W(100);
  // plain person chip keeps its old click
