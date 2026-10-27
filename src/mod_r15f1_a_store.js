@@ -188,8 +188,8 @@ STORE.promote=promote;
 const when=t=>t?new Date(t).toLocaleString("en-US",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"}):"";
 function fmtB(n){return n<1024?n+" B":n<1048576?(n/1024).toFixed(1)+" KB":(n/1048576).toFixed(1)+" MB"}
 let EST=null;G(()=>{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(e=>{EST=e;if(S.screen==="plat_store")render()})},0);
-/* PR-32 B9 tenant rows (R16 to R18): Meridian reads STORE.log live through the entity layer (audit_log part "store"); another tenant
-   reads its own pack rows through DATA.get; no rows is [] and a labeled gap, never Meridian rows or people. */
+/* PR-32 B9 tenant rows (R16 to R18): Atlantic Systems reads STORE.log live through the entity layer (audit_log part "store"); another tenant
+   reads its own pack rows through DATA.get; no rows is [] and a labeled gap, never Atlantic Systems rows or people. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TPARTS=new WeakMap();
 const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITIES.get(e);const p=d&&(part?d.src.find(x=>x[0]===part):d.src[0]);

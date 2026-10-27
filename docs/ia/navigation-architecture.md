@@ -4,7 +4,7 @@ Design paper for backlog item PH-14 (sidenav sprint), written with PR-06 (top ba
 
 Binding inputs: Omar's decisions of 2026-10-20 (menu by role, six business areas, a separate Build and admin space, an own Transformation group, a contribution anchor for every person, team and screen) and the platform rules in `docs/PLATFORM_RULES.md` (R2 archetypes, R3 no new screen when a view will do, R34 screen order, R38 information by level).
 
-**Labels.** Counts of screens, groups, families, tabs and links are **prototype facts**, measured on 2026-10-20 by building the prototype (`python3 src/build.py --full`) and reading the live registry in a headless browser (`tools/scratch/ia/extract.js`, `tools/scratch/ia/demos.js`). Proposed placements, labels and families are **proposals**. Science claims are summaries of well-known findings, each one line; effect sizes are not claimed. Targets in section (g) are **hypotheses** until measured. Contribution points in section (f) are **modeled**. All people, teams and objectives named are fictional sample data for the Meridian Standards Foundation.
+**Labels.** Counts of screens, groups, families, tabs and links are **prototype facts**, measured on 2026-10-20 by building the prototype (`python3 src/build.py --full`) and reading the live registry in a headless browser (`tools/scratch/ia/extract.js`, `tools/scratch/ia/demos.js`). Proposed placements, labels and families are **proposals**. Science claims are summaries of well-known findings, each one line; effect sizes are not claimed. Targets in section (g) are **hypotheses** until measured. Contribution points in section (f) are **modeled**. All people, teams and objectives named are fictional sample data for the Atlantic Systems.
 
 ## What the prototype has today (prototype facts)
 
@@ -17,7 +17,7 @@ Binding inputs: Omar's decisions of 2026-10-20 (menu by role, six business areas
 | View-switcher families (`R15.families`, after `mod_r18b_families`) | 19 |
 | Personas (`PERSONAS`) | 26 |
 | What the CIO persona sees by default | The CxO Simple menu (`mod_r28_cxo.js`): 9 fixed items and a 6-item Strategy and value block. With the Full menu: 4 role pins, 8 groups, and 11 more groups behind "More areas" |
-| Screens that read through the tenant data layer (`DATA.screenMode`) | 15 (12 data, 3 tenant); 180 are Meridian-only (core) |
+| Screens that read through the tenant data layer (`DATA.screenMode`) | 15 (12 data, 3 tenant); 180 are Atlantic-only (core) |
 | Showroom tours (`SHOW.demos`) | 16, opening 37 distinct screens; none of the 37 is merged, retired or search-only in this proposal, so every beat keeps its deep link |
 | Screens with no shared group in `REG` (`port`, `ims`, `plan`, `log`) | 4 |
 

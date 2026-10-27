@@ -33,5 +33,5 @@ The process steps, the entities the feature reads and writes (from the data inte
 - Never create a second copy of notifications, approvals, audit, sign-in or reports.
 - Every flow states a trigger and a mode; "sync" is not a mode.
 - Drafts are AI-suggested; a person accepts before anything is registered.
-- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Meridian Standards Foundation; sample systems the Standards Portal and the Standards Platform.
+- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Atlantic Systems; sample systems the Standards Portal and the Standards Platform.
 - Plain American English, no em dashes.

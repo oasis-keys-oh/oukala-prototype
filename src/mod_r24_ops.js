@@ -1,4 +1,4 @@
-/* Round 24: the Operations division. Meridian also distributes what it publishes, runs a pilot plant where draft standards are proved,
+/* Round 24: the Operations division. Atlantic Systems also distributes what it publishes, runs a pilot plant where draft standards are proved,
    keeps its buildings working and buys what it needs. Six new roles, each with named people, processes, metrics and data.
    Additive only: every id is new, every entity reuses an existing one first, and each process has an owner and a different backup. */
 (function(){

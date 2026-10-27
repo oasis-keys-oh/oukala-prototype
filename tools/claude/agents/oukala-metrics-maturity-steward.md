@@ -26,5 +26,5 @@ The process model (steps and owners), the entities it uses, the strategy objecti
 - Do not build a second maturity scale or a second metric framework.
 - Do not claim a current value you cannot compute; use 0 with the note "first reading after go-live".
 - Drafts are AI-suggested and labeled; a person accepts.
-- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Meridian Standards Foundation.
+- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Atlantic Systems.
 - Plain American English, define acronyms, no em dashes.

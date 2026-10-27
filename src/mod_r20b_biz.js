@@ -1,4 +1,4 @@
-/* Round 20b: the business layer. Meridian is a standards body, not an IT shop: add the operating processes,
+/* Round 20b: the business layer. Atlantic Systems is a standards body, not an IT shop: add the operating processes,
    modules and metrics that the business teams run, each with a named owner and backup. Additive only. */
 (function(){
 const G=(f,d)=>{try{return f()}catch(e){return d}};

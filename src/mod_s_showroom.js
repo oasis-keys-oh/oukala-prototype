@@ -2,7 +2,7 @@
    SHOW.buildFix(ctx)   "Build the fix in VibeCheck": opens the studio with the gap as a plain request (DC-17)
    SHOW.wedge           wedge mode: only the wedge screens (the COO cut) in the menu and search; the rest is hidden, never deleted (PR-18)
    SHOW.reset(o)        demo reset and role preset: clears the browser storage the app uses, resets the demo state, sets
-                        tenant Meridian and the tour's role, and reloads clean (PR-19)
+                        tenant Atlantic Systems and the tour's role, and reloads clean (PR-19)
    Fictional sample data only. Prefix: srs-. ===== */
 (function(){
 const W=window,D=document;const SHOW=W.SHOW;if(!SHOW)return;
@@ -89,7 +89,7 @@ G(()=>{const q=new URLSearchParams(location.search);if(!q.get("srreset"))return;
  setTimeout(()=>{G(()=>{if(p&&G(()=>PERSONAS[p],null)&&S.persona!==p&&!SHOW.state.demo)NAVX.persona.set(p)});
   G(()=>{const u=new URL(location.href);u.searchParams.delete("srreset");u.searchParams.delete("srpersona");history.replaceState(null,"",u)});
   SHOW.lastReset={at:new Date().toISOString(),reloaded:true,persona:p,tenant:G(()=>DATA.tenant(),"core")};
-  if(!SHOW.state.demo)G(()=>toast("Demo reset: browser storage cleared, Meridian sample, viewing as "+G(()=>PERSONAS[S.persona].n,""),"good"))},1400)});
+  if(!SHOW.state.demo)G(()=>toast("Demo reset: browser storage cleared, Atlantic Systems sample, viewing as "+G(()=>PERSONAS[S.persona].n,""),"good"))},1400)});
 
 /* ---------- Showroom home: presenter settings ---------- */
 SHOW.home.push(()=>{const main=SHOW.demos.filter(d=>!d.group||d.group==="main"||d.group==="lens");const ws=wedgeSet();
@@ -98,7 +98,7 @@ SHOW.home.push(()=>{const main=SHOW.demos.filter(d=>!d.group||d.group==="main"||
  <p class="small">${[...ws].map(id=>E(G(()=>NAVX.label(id),id)||id)).join(", ")}</p>
  <div class="row"><button type="button" class="btn ${wedgeOn?"":"primary"}" data-srs-wedge="${wedgeOn?"0":"1"}" aria-pressed="${wedgeOn}">${wedgeOn?"Turn wedge mode off":"Turn wedge mode on"}</button></div></section>
  <section class="sr-card glass srs" aria-label="Demo reset"><div class="sr-ch"><h3>Demo reset</h3></div>
- <p class="muted small">One action so every demo starts the same: clears the browser storage this app uses (${storageKeys().length} keys today, wedge mode kept), resets the demo state, switches to the Meridian sample and the tour's role, then reloads clean.</p>
+ <p class="muted small">One action so every demo starts the same: clears the browser storage this app uses (${storageKeys().length} keys today, wedge mode kept), resets the demo state, switches to the Atlantic Systems sample and the tour's role, then reloads clean.</p>
  <div class="row"><label class="sr-chk" for="srsResetDemo">Then start</label><select id="srsResetDemo" class="fin"><option value="">No tour (Home, as the CIO)</option>${main.map(d=>`<option value="${E(d.id)}">${E(d.title)}</option>`).join("")}</select>
  <button type="button" class="btn" data-srs-reset="1">Reset the demo</button></div></section></div>`});
 })();

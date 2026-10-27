@@ -9,8 +9,8 @@ const arr=x=>Array.isArray(x)?x:[];
 const Z=S.zevt=S.zevt||{tab:0,sel:null,dry:null,records:[],connectors:[],tasks:[],hooks:[]};
 const CATALOG=new Map(),SUBS=new Map(),LOG=[],RULES=[];
 let SEQ=0,PERSIST_FAIL=0;
-/* PR-32 B9 tenant rows (R16 to R18): Meridian reads the entity part's own source live through the entity layer; another tenant reads its
-   own pack rows through DATA.get; no rows is [] and a labeled gap, never Meridian rows. Events fired while a tenant is active carry its id. */
+/* PR-32 B9 tenant rows (R16 to R18): Atlantic Systems reads the entity part's own source live through the entity layer; another tenant reads its
+   own pack rows through DATA.get; no rows is [] and a labeled gap, never Atlantic Systems rows. Events fired while a tenant is active carry its id. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TPARTS=new WeakMap();
 const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITIES.get(e);const p=d&&(part?d.src.find(x=>x[0]===part):d.src[0]);
@@ -18,7 +18,7 @@ const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITI
  const all=DATA.get(e);if(!part)return all;let m=TPARTS.get(all);if(!m){m={};TPARTS.set(all,m)}return m[part]||(m[part]=all.filter(r=>r.part===part))};
 const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+U.esc(w):""}.</p>`;
 const fchipT=id=>TCORE()||DATA.byId("metrics",id)?fchip(id):"";
-/* Meridian people (core people and the directory) are not shown under another tenant: an owner or holder name becomes "" (R18) */
+/* Atlantic Systems people (core people and the directory) are not shown under another tenant: an owner or holder name becomes "" (R18) */
 let TFV=-1,TFS=null;
 const TFOR=()=>{if(TFV!==DATA.version){TFV=DATA.version;const mine=new Set(DATA.get("people").map(r=>r.name));TFS=new Set();
   DATA.get("people",{tenant:"core"}).concat(G(()=>DIR,[])||[]).forEach(r=>{if(r&&r.name&&!mine.has(r.name))TFS.add(r.name)})}return TFS};

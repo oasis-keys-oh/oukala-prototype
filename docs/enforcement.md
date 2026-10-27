@@ -19,7 +19,7 @@ Kinds: **gate** = platform gate or Feature contract check at runtime (`mod_plat_
 | `price` | R30 | a dollar amount per user or per seat, or "per user per month" | 11 in 2 files |
 | `cert` | R30, R52 | SOC 2 or "bank-grade" outside a plan sentence (the CL-71 rule from `guard.js`) | 0 |
 | `js-literal` | R8 | literal hex, `rgb()`, `font-size`, `border-radius` and `z-index` values in JS view code | 475 in 49 files |
-| `sample-data` | R9 | a sample person (kit.js `PEOPLE`, kit2.js `DIR`, Casey Rowan) or "Meridian" as a string literal in a module (tenant packs exempt) | 3,509 in 136 files |
+| `sample-data` | R9 | a sample person (kit.js `PEOPLE`, kit2.js `DIR`, Casey Rowan) or "Atlantic Systems" as a string literal in a module (tenant packs exempt) | 3,509 in 136 files |
 | `helper` | R10 | a local `money`, `pct`, `esc`, `slug`, `clamp`, `uid` or date helper that redeclares a `U` helper (names read from platform.js) | 56 in 46 files |
 | `owner-text` | R13 | `${x.owner}`, `${esc(x.backup)}` and similar interpolations outside `ownerChip` (heuristic) | 140 in 55 files |
 | `step-label` | R21 | `who:"auto"` or `who:"fn"`, or a string that is exactly "Automatic" or "Function" | 4 in 4 files |

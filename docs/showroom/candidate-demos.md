@@ -1,8 +1,8 @@
 # Candidate extra demos: ratings from opening each screen
 
-Read-only rating for backlog item DC-27. Each of the 13 candidate demos named in the Demo Center plan was checked by opening its screens in the built prototype (`python3 src/build.py --full`, headless Chromium, 2026-10-20, Meridian scenario, role CIO). Nothing was built. This page carries no status or priority; the backlog decides what, if anything, becomes a tour. A candidate that needs a screen that does not exist would be dropped and logged under DC-34; none of the 13 needs one.
+Read-only rating for backlog item DC-27. Each of the 13 candidate demos named in the Demo Center plan was checked by opening its screens in the built prototype (`python3 src/build.py --full`, headless Chromium, 2026-10-20, Atlantic Systems scenario, role CIO). Nothing was built. This page carries no status or priority; the backlog decides what, if anything, becomes a tour. A candidate that needs a screen that does not exist would be dropped and logged under DC-34; none of the 13 needs one.
 
-All counts below are **prototype facts** measured on 2026-10-20. Every figure shown on the screens themselves is **modeled** sample data for the fictional Meridian Standards Foundation.
+All counts below are **prototype facts** measured on 2026-10-20. Every figure shown on the screens themselves is **modeled** sample data for the fictional Atlantic Systems.
 
 ## How the rating works
 
@@ -12,7 +12,7 @@ All counts below are **prototype facts** measured on 2026-10-20. Every figure sh
 | B | Usable: the screens exist and open clean, but the story needs a decision, a wording check or one more screen check before a cut is written. |
 | C | Thin: the screens exist, but they do not yet carry the story on their own. |
 
-Common to all 13: every screen opened with no page error; none is tenant-aware (`DATA.screenMode` is `core` for all), so each would run on the Meridian sample and be labeled that way under another tenant, exactly as the maturity tour is (DC-32, DC-36).
+Common to all 13: every screen opened with no page error; none is tenant-aware (`DATA.screenMode` is `core` for all), so each would run on the Atlantic Systems sample and be labeled that way under another tenant, exactly as the maturity tour is (DC-32, DC-36).
 
 ## Ratings
 
@@ -43,4 +43,4 @@ Common to all 13: every screen opened with no page error; none is tenant-aware (
 
 - Screens were opened with `go(id)` and read after 450 ms; "metric chips" counts `.fchip` and `[data-metric]` elements; text was searched for "simulated", "modeled" and "illustrative".
 - Tab counts were not used for the rating because several screens draw extra buttons with the same roles.
-- Not checked: other tenants (all 13 are Meridian-only today), mobile width, and how long each cut would run.
+- Not checked: other tenants (all 13 are Atlantic-only today), mobile width, and how long each cut would run.

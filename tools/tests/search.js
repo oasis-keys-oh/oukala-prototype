@@ -48,12 +48,12 @@ h=await p.evaluate(s=>({inRows:NAVX.int.PAL.rows.some(r=>r.sid===s),first:(NAVX.
 if(!h.inRows)fail('hidden screen '+HIDDEN.screen+' not listed in builder mode');else console.log('ok   hidden screen in builder mode:',HIDDEN.screen,'|',h.meta);
 if(!/Hidden from the menu/.test(h.meta))fail('hidden screen result does not say it is hidden: '+h.meta);
 await p.evaluate(()=>{SRCH.setBuilder(false);NAVX.palette.close()});
-// CL-75: under another tenant the palette shows no Meridian record, says how many it hid, and finds that tenant's own records
+// CL-75: under another tenant the palette shows no Atlantic Systems record, says how many it hid, and finds that tenant's own records
 const tq=await p.evaluate(()=>{TENANT.switch('health');const pr=DATA.get('projects',{tenant:'health'})[0];return pr?pr.n:null});
 await typeQ('lumen');
-let ts=await p.evaluate(()=>({mer:NAVX.int.PAL.rows.filter(r=>r.ty!=='ask'&&SRCH.isMeridian([r.t,r.m,r.k].join(' '))).map(r=>r.t),note:!!document.querySelector('#nxPalList [data-srch-scope="health"]'),api:NAVX.search('lumen',{limit:50}).results.filter(r=>SRCH.isMeridian(r.title+' '+r.meta)).length}));
-if(ts.mer.length||ts.api)fail('Meridian records in search under health: '+ts.mer.slice(0,3).join(' | ')+' api '+ts.api);
-if(!ts.note)fail('no tenant scope note under health');else console.log('ok   under health "lumen": no Meridian records, scope note shown');
+let ts=await p.evaluate(()=>({mer:NAVX.int.PAL.rows.filter(r=>r.ty!=='ask'&&SRCH.isAtlantic([r.t,r.m,r.k].join(' '))).map(r=>r.t),note:!!document.querySelector('#nxPalList [data-srch-scope="health"]'),api:NAVX.search('lumen',{limit:50}).results.filter(r=>SRCH.isAtlantic(r.title+' '+r.meta)).length}));
+if(ts.mer.length||ts.api)fail('Atlantic Systems records in search under health: '+ts.mer.slice(0,3).join(' | ')+' api '+ts.api);
+if(!ts.note)fail('no tenant scope note under health');else console.log('ok   under health "lumen": no Atlantic Systems records, scope note shown');
 if(tq){await typeQ(tq);ts=await p.evaluate(q=>{const r=NAVX.int.PAL.rows.find(x=>x.t===q);return r?{m:r.m}:null},tq);
  if(!ts)fail('health project "'+tq+'" not found under health');else console.log('ok   under health finds its own project:',tq,'|',ts.m)}
 await p.evaluate(()=>{NAVX.palette.close();TENANT.switch('core')});

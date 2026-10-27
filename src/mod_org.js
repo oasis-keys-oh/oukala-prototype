@@ -12,7 +12,7 @@ const first=n=>String(n).split(" ")[0];
 const rnd=(seed)=>RNG(seed);
 const TODAY="2026-10-10";
 
-/* ---------- the 59 staff of Meridian Standards Foundation. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
+/* ---------- the 59 staff of Atlantic Systems. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
 const RAW=`Catherine Doyle|Chief executive|-|Executive office|ceo|||Board relations and annual priorities;The final call when two departments disagree;Member and regulator relationships|Keeps 300 member organizations confident that the standards they rely on are independent, current and trusted.|Norwalk, CT|3
 Casey Rowan|Chief information officer|Catherine Doyle|Technology|cio|||Technology strategy and the portfolio;Spend above $25,000 on technology;Escalated vendor problems|Turns the Foundation's publishing mission into systems that work, and protects every dollar of technology spend.|Norwalk, CT|6
 Marcus Reid|Chief financial officer|Catherine Doyle|Finance|cfo|||Budget and forecast questions;Audit, tax and treasury;Spend above $100,000|Gives the board a single, trusted view of the Foundation's money and keeps it audit-ready.|Norwalk, CT|5
@@ -126,7 +126,7 @@ A("Sam Patel","platform team,platform owner,platform lead,release train engineer
 A("Maya Ortiz","pmo,pmo director,portfolio office,portfolio office lead,resource office,resource management,resource manager,capacity planning,benefit owners,pmo and procurement");A("Avery Chen","finance,controller,finance controller,accounting policy,finance and it ops,finance (controller)");
 A("Marcus Reid","cfo,cfo office");A("Casey Rowan","cio office,executive office");A("Catherine Doyle","chief strategy officer,strategy office,chief of staff");A("Anil Mehta","data council,data council chair");A("Rosa Delgado","data governance,data stewards,field stewards");
 A("Kenji Watanabe","ai governance,ai governance board,ai platform lead,ai governance lead,governance office");A("Noor Haddad","knowledge,knowledge manager,knowledge office,knowledge and automation");A("Nia Brooks","change manager,change management,process governance lead,process office,process owners");
-A("Hollis Grey","release management,release manager,release office");A("Camille Ortega","vendor management,vendor mgmt,vendor manager,contract owners,procurement lead");A("Theo Marlowe","compliance lead,meridian legal,procurement and legal,general counsel delegate,internal audit");
+A("Hollis Grey","release management,release manager,release office");A("Camille Ortega","vendor management,vendor mgmt,vendor manager,contract owners,procurement lead");A("Theo Marlowe","compliance lead,atlantic legal,procurement and legal,general counsel delegate,internal audit");
 A("Leila Haddad","experience office");A("Rina Kovacs","data architect");A("Jordan Lee","architecture,enterprise architect");A("Noelle Park","finance operations,accounts payable");A("Joanna Pierce","people office,head of people operations");A("Ines Duarte","cmdb owner,cmdb team,configuration manager,it asset management");
 A("Priti Joshi","service level manager,problem manager");A("Rina Okafor","security,security lead,security and risk");A("Carla Reyes","integration lead,integration team");A("Leah Moss","automation team");A("Victor Amaya","tbm practice lead,fp&a,finops,it finance");A("Ruben Castillo","facilities,facilities lead,facilities and campus lead,campus");A("Wes Hartley","room bookings");A("Lena Hargrove","commercial,chief commercial officer,customer experience,sales");A("Tomas Reyes","distribution,fulfillment,warehouse,distribution and fulfillment manager");A("Dmitri Kowal","plant,plant operations,pilot plant,plant operations manager");A("Sofia Arenas","process control,control room,control systems");A("Mei-Ling Zhou","quality engineer,quality");A("Joel Tran","maintenance,maintenance planner");A("Alba Torres","buyer,purchasing");A("Zainab Ali","customer care,customer care lead");A("Ben Alvarez","quality,ai quality");A("Anita Cole","design systems");A("Dev Rao","service portfolio manager");A("Elena Marsh","chief editor");
 /* ---------- build the staff list and make sure the directory has everyone ---------- */
@@ -137,10 +137,10 @@ const SKILL_BY={ceo:["Executive leadership","Board relations"],cio:["Executive s
 const COLS=["--p1","--p2","--p3","--p4","--s2","--s3","--e3","--e4","--u2","--u3","--w1","--w2"];
 function ensureDir(){
  STAFF.forEach((p,i)=>{if(window.who&&who(p.n))return;
-  const id=slug(p.n);DIR.push({id,name:p.n,kind:"human",role:p.role,team:p.unit,org:"Meridian Standards Foundation",skills:(SKILL_BY[p.rt]||[]).slice(),loc:p.loc,hrs:40,rate:0,c:COLS[i%COLS.length],email:id.replace(/-/g,".")+"@meridian.example",mgr:p.mgr||undefined,tenure:p.yrs})})}
+  const id=slug(p.n);DIR.push({id,name:p.n,kind:"human",role:p.role,team:p.unit,org:"Atlantic Systems",skills:(SKILL_BY[p.rt]||[]).slice(),loc:p.loc,hrs:40,rate:0,c:COLS[i%COLS.length],email:id.replace(/-/g,".")+"@atlantic.example",mgr:p.mgr||undefined,tenure:p.yrs})})}
 /* data hygiene: a person must never carry a role as a name. The seeded directory had "Chief Editor" as a person; the person is Elena Marsh. */
-(function(){const d=DIR.find(x=>x.name==="Chief Editor"&&x.kind==="human");if(d){Object.assign(d,{name:"Elena Marsh",id:"elena-marsh",role:"Chief editor",team:"Editorial",email:"elena.marsh@meridian.example",mgr:"Catherine Doyle"})}
- const c=DIR.find(x=>x.name==="Casey Rowan");if(c)c.email="casey.rowan@meridian.example"})();
+(function(){const d=DIR.find(x=>x.name==="Chief Editor"&&x.kind==="human");if(d){Object.assign(d,{name:"Elena Marsh",id:"elena-marsh",role:"Chief editor",team:"Editorial",email:"elena.marsh@atlantic.example",mgr:"Catherine Doyle"})}
+ const c=DIR.find(x=>x.name==="Casey Rowan");if(c)c.email="casey.rowan@atlantic.example"})();
 ensureDir();
 O.ensureDir=ensureDir;
 const dirRec=n=>(window.who&&who(n))||null;
@@ -322,7 +322,7 @@ function stats(){return memoF("stats",()=>{
 O.stats=stats;
 Object.assign(O,{staff:STAFF,P:n=>BY[n]||null,by:BY,names:NAMES,kids:humanKids,up:chainUp,depth:depthOf,size:orgSize,layers,RT,TM,dir:dirRec,slug,first,bump,sidebar:null,res,rev:()=>REV});
 /* PR-32 B2: ORGX.staff and ORGX.P read the active tenant on a tenant-aware screen (TREAD.strict): that tenant's people in the staff
-   shape (n, role, mgr, unit); the Meridian staff list otherwise (the same array as before). */
+   shape (n, role, mgr, unit); the Atlantic Systems staff list otherwise (the same array as before). */
 const tStaff=()=>TREAD.rows("people").filter(p=>p&&p.kind==="human").map(p=>({n:p.name,role:p.role||"",mgr:null,unit:p.team||"",loc:p.loc||""}));
 Object.defineProperty(O,"staff",{configurable:true,enumerable:true,get(){return TREAD.strict()?tStaff():STAFF},set(v){}});
 O.P=n=>TREAD.strict()?(tStaff().find(p=>p.n===n)||null):(BY[n]||null);
@@ -338,7 +338,7 @@ O.sync=function(){const s=stats();const set=(id,v)=>{const m=METRICS[id];if(!m)r
  const sp=STAFF.reduce((a,p)=>a+(((dirRec(p.n)||{}).hrs)||40),0);set("m_org_cap",+(100*s.returned/sp).toFixed(1));set("m_org_gov",s.govPct);set("m_org_own",s.ownPct);set("m_org_span",s.mgrs?Math.round(100*s.inBand/s.mgrs):100);if(s.accept)set("m_org_accept",s.accept)};
 /* Person 360 gets a tab that points to the full org profile */
 P360_TABS.push({label:"Role and agents",fn:r=>{const p=BY[r.name];if(r.kind==="ai"){const a=agentsAll().find(x=>x.name===r.name);return a?`<div class="org-facts"><span class="org-fc"><small>Sponsor</small><b>${a.sponsor?ownerChip(a.sponsor,{role:"Sponsor"}):""}</b></span><span class="org-fc"><small>Autonomy</small><b>${H(LVL[a.autonomy].n)}</b></span><span class="org-fc"><small>Hours returned</small><b data-role="metric">${a.hrs} h/wk</b></span><span class="org-fc"><small>State</small><b>${H(a.status)}</b></span></div><div class="row"><button class="btn primary" data-org-open="${H(a.sponsor)}" data-org-tab="6">Open ${H(first(a.sponsor))}'s agent studio</button></div>`:"<p class='muted'>Not in the org chart.</p>"}
- if(!p)return "<p class='muted'>This person is not on the Meridian org chart.</p>";const c=capacity(p.n);
+ if(!p)return "<p class='muted'>This person is not on the Atlantic Systems org chart.</p>";const c=capacity(p.n);
  return `<p class="story" data-role="story"><b>Go to ${H(first(p.n))} for:</b> ${p.fn.map(H).join("; ")}.</p><p class="muted">${H(p.value)}</p><div class="row"><span class="pill info">${agentsOf(p.n).length} agent${agentsOf(p.n).length===1?"":"s"}</span><span class="pill good">${c.returned} h/week returned</span><span class="pill warn">${c.available} h/week still available</span></div><div class="row" style="margin-top:12px"><button class="btn primary" data-org-open="${H(p.n)}">Open org profile</button><button class="btn" data-org-open="${H(p.n)}" data-org-tab="6">Agent studio</button></div>`}});
 
 /* ---------- ORGX contract (Round 13): people, accountability domains, ownerOf, byDomain, owns. Consumed by search, gap detection and the budget funnel. ---------- */
@@ -392,7 +392,7 @@ const DOMAINS=DOM_RAW.split("\n").map(l=>{const c=l.split("|");return{id:c[0],la
 const DOMBY={};DOMAINS.forEach(d=>DOMBY[d.id]=d);
 const PBYID={};STAFF.forEach(p=>PBYID[slug(p.n)]=p);O.PBYID=PBYID;
 /* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict) people and accountability domains are that tenant's: people
-   through DATA.get("people"), domains from its organization units (DATA.get("org_units"), owner and backup by person id). Meridian otherwise. */
+   through DATA.get("people"), domains from its organization units (DATA.get("org_units"), owner and backup by person id). Atlantic Systems otherwise. */
 const tPersonRec=idOrName=>{const k=String(idOrName);const p=TREAD.rows("people").find(x=>x&&(x.id===k||x.name===k||slug(x.name)===k));if(!p)return null;
  return{id:p.id,name:p.name,title:p.role||"",kind:p.kind==="agent"?"agent":p.kind==="robot"?"robot":"human",sponsor:p.sponsor||null,unit:p.team||""}};
 const tDoms=()=>TREAD.rows("org_units").map(u=>({id:u.id,label:u.label||u.id,aliases:Array.isArray(u.aliases)?u.aliases:[],ownerId:u.ownerId||"",backupId:u.backupId||""}));

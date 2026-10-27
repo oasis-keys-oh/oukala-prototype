@@ -1,6 +1,6 @@
 /* Round 25: Guardrails in a box. Content for the build studio: four worked examples that run in five minutes or less and one that
    shows a hundred-step process. Each scenario is a list of beats; a beat is what Oukala says, the visual it updates, and, only when a person must
-   choose, a decision. Everything here is Meridian sample content. */
+   choose, a decision. Everything here is Atlantic Systems sample content. */
 (function(){
 const S=window.STUD=window.STUD||{};
 const st=(n,who,owner,sla,d)=>({n,who,owner,sla:sla||"",d:d||""});

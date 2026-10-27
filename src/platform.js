@@ -37,14 +37,14 @@ HOOKS.run=(name,...a)=>{(HK[name]||[]).slice().forEach(h=>{try{h.fn(...a)}catch(
 HOOKS.list=name=>(HK[name]||[]).map(h=>({id:h.id,order:h.order}));
 
 /* ---- DATA: tenant-scoped data access layer (R16 to R20, CL-55) ----
-   DATA.define(entity,{core:()=>rows,key,label})   the Meridian (core) source, usually a getter over an existing global
+   DATA.define(entity,{core:()=>rows,key,label})   the Atlantic Systems (core) source, usually a getter over an existing global
    DATA.pack(tenant,{entity:rows|()=>rows,...})      a tenant pack supplies its own rows (DC-09 pack format)
    DATA.get(entity,{tenant,where})                   rows for the active tenant; memoized by version
    DATA.tenant() · DATA.setTenant(id) -> bool · DATA.version · DATA.on("change",fn) · DATA.entities() · DATA.gaps()
    DATA.addTenant(id,info) · DATA.tenants() · DATA.tenantInfo(id) · DATA.guard(fn) · DATA.allowed(id)   one tenant model (DC-31, CL-63)
    DATA.screen(id,{mode,entities}) · DATA.screens() · DATA.screenMode(id)                                tenant-aware screen registry
    DATA.validate(tenant) · DATA.snapshot(tenant)                                                         pack format checks (DC-09)
-   No leakage (R18): a non-core tenant with no rows for an entity gets [] and the gap is recorded, never Meridian rows. */
+   No leakage (R18): a non-core tenant with no rows for an entity gets [] and the gap is recorded, never Atlantic Systems rows. */
 const DEF={},PACKS={},MEMO=new Map(),GAPS=new Set(),LIS=[];
 const DATA=W.DATA=W.DATA||{};
 DATA.version=1;
@@ -80,7 +80,7 @@ DATA.removeTenant=id=>{if(!id||id==="core"||!TEN[id])return false;if(_tenant===i
 DATA.tenants=()=>TORD.map(id=>TEN[id]);
 
 /* Tenant-aware screen registry (CL-55). mode: "data" reads through DATA.get · "tenant" follows the tenant through SCN or
-   TENANT (not yet DATA) · "core" shows the Meridian sample only (the default for any screen not declared). */
+   TENANT (not yet DATA) · "core" shows the Atlantic Systems sample only (the default for any screen not declared). */
 const SCR={};
 DATA.screen=(id,o)=>{SCR[id]=Object.assign({id,mode:"data",entities:[]},SCR[id]||{},o||{});return DATA};
 DATA.screens=()=>{const all=safe(()=>SCREENS.map(s=>({id:s[0],name:s[1],group:s[3]})),[]);const seen=new Set(all.map(s=>s.id));

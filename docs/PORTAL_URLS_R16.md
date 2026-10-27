@@ -26,7 +26,7 @@ One host per tenant, one path per object. Paths mirror the prototype hash, minus
 | `https://portal.<tenant>.<domain>/guides/<id>` | Order guide form (one order, several fulfilled parts) |
 | `https://portal.<tenant>.<domain>/orders/<id>` | Status of one order or request, as the requester sees it |
 
-Example for the first customer: `https://portal.meridian.example/catalog/laptop`.
+Example for the first customer: `https://portal.atlantic.example/catalog/laptop`.
 
 Rules:
 

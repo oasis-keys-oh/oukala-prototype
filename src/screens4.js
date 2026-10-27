@@ -231,10 +231,10 @@ _R.plan=()=>{if(PDTV.TEN())return tvPlan();if(!pr(S.planProj))S.planProj="PR1";c
 function evCard(P,id){const rs=rollup(P),ph=wbsOutline(id).filter(x=>x.sum&&x.lv===1).map(s=>({s,a:rs.S[s.id]||{}}));const tot=rs.PJ[id]||{cost:0,ac:0,ev:0,pv:0};
  return `<section class="card glass"><div class="cardhead"><div><h3>Earned value by phase</h3><span class="muted small" data-role="story">Planned value is budget times planned percent; earned value is budget times percent complete.</span></div></div><div class="needs">${ph.map(({s,a})=>{const cpi=a.ac>0?a.ev/a.ac:null,spi=a.pv>0?a.ev/a.pv:null;return `<button class="need" data-task="${s.id}" style="grid-template-columns:minmax(0,1fr) auto"><div><b data-role="story">${s.wbs} ${esc(s.n)}</b><span class="muted">Budget ${K$(a.cost)} · planned ${K$(a.pv)} · earned ${K$(a.ev)} · spent ${K$(a.ac)}</span></div><span style="text-align:right"><span class="pill ${spi==null?"mute":spi<.9?"warn":"good"}" data-role="metric">SPI ${spi==null?"n/a":spi.toFixed(2)}</span> <span class="pill ${cpi==null?"mute":cpi<.9?"bad":"good"}" data-role="metric">CPI ${cpi==null?"n/a":cpi.toFixed(2)}</span></span></button>`}).join("")}</div><p class="muted small" style="margin-top:10px">Project total: budget ${K$(tot.cost)}, earned ${K$(tot.ev)}, spent ${K$(tot.ac)}.</p></section>`}
 
-/* ---------- PR-32 B4: portfolio and delivery screens under a tenant other than Meridian ----------
+/* ---------- PR-32 B4: portfolio and delivery screens under a tenant other than Atlantic Systems ----------
    window.PDTV is the small tenant view kit these screens share (screens4, mod_ppm, mod_wbs, mod_rel, mod_r15f3_time): the same
    screen, purpose and tab names, drawn only from the tenant's rows (DATA.get), in its words (DATA.term). Sample figures,
-   simulated; a view with no rows of its own is a labeled gap (R18), never a Meridian row. Meridian renders as before. */
+   simulated; a view with no rows of its own is a labeled gap (R18), never an Atlantic Systems row. Atlantic Systems renders as before. */
 window.PDTV=(()=>{const E=esc,TEN=()=>DATA.tenant()!=="core",tw=(k,m)=>DATA.term(k,{cap:true,many:!!m});
  const C=(h,sub,ent,R,cols)=>card(h,sub,R.length?STN.table(cols.map(c=>c[0]),R.map(r=>cols.map(c=>typeof c[1]==="function"?c[1](r):E(r[c[1]]==null?"":r[c[1]])))):STN.gap(ent));
  const G=(h,s)=>card(h,"",empty(s||"No records for this in this sample company yet","Rows from another company are never shown in their place."));

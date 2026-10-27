@@ -1,6 +1,6 @@
 # Falconaire prototype
 
-Database-free, single-page prototype of Falconaire, an AI-native work platform for enterprise IT and operations leaders. All data is fictional sample data (sample customer Meridian Standards Foundation). The name is a working name, not trademark-cleared: do not use it externally.
+Database-free, single-page prototype of Falconaire, an AI-native work platform for enterprise IT and operations leaders. All data is fictional sample data (sample customer Atlantic Systems). The name is a working name, not trademark-cleared: do not use it externally.
 
 Live: https://oukala-prototype.netlify.app (Netlify project `oukala-prototype`).
 

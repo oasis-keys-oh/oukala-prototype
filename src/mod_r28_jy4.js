@@ -165,10 +165,10 @@ const TAGS={JH0:{b7:"ELIG",b8:"SCHED",b10:"ID",b12:"DOC",b13:"RES",b14:"RES",b17
  JH1:{b3:"ELIG",b4:"ELIG",b6:"SCHED",b7:"SCHED",b10:"ID",b11:"DOC"},
  JH2:{b1:"DC",b2:"DC",b3:"MEDREC",b4:"MEDREC",b5:"XFER",b6:"FUP",b7:"CODE",b8:"DEN",b9:"PAY",b10:"FUP",b11:"FUP"}};
 
-/* JM-05, DC-24: shared touchpoints for the Meridian, mining and storage samples too, so their overlays, Process map "shared" counts and
+/* JM-05, DC-24: shared touchpoints for the Atlantic Systems, mining and storage samples too, so their overlays, Process map "shared" counts and
    touchpoint images are not thin. Each key sits in at least two journeys of its own scenario. Fictional samples; names are generic. */
 Object.assign(X.TP,{
- /* Meridian Standards Foundation (core) */
+ /* Atlantic Systems (core) */
  PORTAL:{n:"Self-service portal and request intake",kind:"System of record",d:"Where a person asks for something: one form, one record, one status to follow."},
  APPR:{n:"Manager and budget approvals",kind:"Decision",d:"A manager, budget owner or steering group says yes or no. Waits pile up here."},
  ASSET:{n:"Laptop and equipment hand-over",kind:"Handoff",d:"The device is staged, handed over and recorded against the person."},

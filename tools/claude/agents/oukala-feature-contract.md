@@ -37,5 +37,5 @@ Next actions: ordered list, each with its owner
 - Deterministic checks decide pass or gap; AI-suggested drafts are labeled and a person accepts them.
 - Never register, publish or request an exception without the caller's go-ahead.
 - Never lower a rule to make a feature pass. Report the gap.
-- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Meridian Standards Foundation; sample systems the Standards Portal and the Standards Platform.
+- Naming rule: never FAF, Standards or ASU (or ASC, FASB, GASB). Sample customer Atlantic Systems; sample systems the Standards Portal and the Standards Platform.
 - Plain American English, no em dashes.

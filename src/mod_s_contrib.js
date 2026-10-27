@@ -10,7 +10,7 @@
    Compute: record > project or process > objective > group > enterprise > company. Person to team from the people directory and
    ownership; a person's share of a team objective is equal by default, or hours on linked work from timesheets; robot and agent
    work is credited to the human sponsor's team, never to a person. Points = Σ team leaf contribution (EXE.cascade, DC-12) × share.
-   Meridian reads the DC-12 cascade (read only); every other tenant builds the same shape from DATA objectives and key results, with
+   Atlantic Systems reads the DC-12 cascade (read only); every other tenant builds the same shape from DATA objectives and key results, with
    equal weights (modeled) and no group level when its pack records none. Reads only through DATA, EXE, NUM, REG.meta and NAVX.
    window.CONTRIB = {model, viewer, anchor, serves, points, threadHTML, cardHTML, badge, gaps, open}. ===== */
 (function(){
@@ -29,14 +29,14 @@ const MODELED=`<span class="pill info ctb-tag" title="Modeled: weights and share
 const RULE="Display only. Points describe how work connects to the objectives: they are not a rating, there is no ranking of people, and no review or pay process reads them.";
 const ANCHOR=`<svg class="ctb-ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2"/><path d="M12 7v14M5 13a7 7 0 0 0 14 0M8 11h8"/></svg>`;
 
-/* ---------- 1. the cascade for a tenant: company, enterprise, group (Meridian only), team leaves ---------- */
-/* Meridian team words in the people directory that name a team in the DC-12 cascade (sample mapping, modeled) */
+/* ---------- 1. the cascade for a tenant: company, enterprise, group (Atlantic Systems only), team leaves ---------- */
+/* Atlantic Systems team words in the people directory that name a team in the DC-12 cascade (sample mapping, modeled) */
 const CORE_TEAM={"Platform team":"Platform team","Platform engineering":"Platform team","Editorial":"Editors","Editors":"Editors","Ops team":"Ops team",
  "Service desk":"Ops team","Service desk and operations":"Ops team","Architecture":"Architecture","Finance":"Finance","Legal and compliance":"Contracts","Contracts":"Contracts","Vendor management":"Vendor management"};
-/* the business areas each Meridian team objective serves first (screen anchor, section f: the REG objective level picks how far up) */
+/* the business areas each Atlantic Systems team objective serves first (screen anchor, section f: the REG objective level picks how far up) */
 const CORE_AREA={strat:["T1","T2","T5","T8","T10"],deliver:["T1","T2","T3","T11"],ops:["T5","T6","T7"],money:["T10","T11","T7"],people:["T4","T2"],
  risk:["T8","T9","T6"],transform:["T1","T3","T9"],build:["T8","T9"],my:[],ask:[],home:[]};
-/* screens that serve one team objective directly (Meridian ids; ignored where the screen or node is absent) */
+/* screens that serve one team objective directly (Atlantic Systems ids; ignored where the screen or node is absent) */
 const CORE_SCREEN={inv:"T10",bud_ven:"T7",ppm_sow:"T7",grc_ven:"T7",itsm_prb:"T6",itsm_inc:"T5",itsm_home:"T5"};
 
 function coreModel(){const X=G(()=>EXE.cascade(),null);if(!X||!X.company)return null;

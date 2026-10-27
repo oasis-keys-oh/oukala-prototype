@@ -5,11 +5,11 @@
 //     attributes never contain another tenant's organization names, record ids, project names or people names;
 //  3. legacy screens (mode "core"), swept under core and under health on a fresh page each: no industry tenant's fingerprint outside
 //     that tenant, and under health every legacy screen carries the "not tenant-aware yet" label;
-//  4. search never returns another industry tenant's records, and never Meridian records under another tenant (CL-75: the search
+//  4. search never returns another industry tenant's records, and never Atlantic Systems records under another tenant (CL-75: the search
 //     engine scopes every provider centrally, mod_s_search).
 // Fingerprints (wave 2, DC-11, DC-22, DC-23): each industry pack's ids (projects, budget lines, invoices, metrics, objectives, key results,
 // processes, demand, pillars, people, journeys, workflows), its people and project names, its vendors, and its metric, objective, demand
-// and process names of three words or more that no Meridian metric or objective shares.
+// and process names of three words or more that no Atlantic Systems metric or objective shares.
 // Excluded on purpose: tenant choosers and the identity card ([data-tenant-chooser]); the signed-in identity's own name (IDENT).
 // Usage: node tools/tests/tenant_leak.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
@@ -25,7 +25,7 @@ async function open(){const p=await (await b.newContext({viewport:{width:1440,he
     DATA.get('people',{tenant:'core'}).filter(r=>r.kind==='human').forEach(r=>add(r.name))}
    else{['projects','budget_lines','invoices','metrics','objectives','key_results','processes','demand','pillars','people','journeys','workflows'].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>add(r.id)));
     DATA.get('projects',{tenant:t.id}).forEach(r=>add(r.n));DATA.get('people',{tenant:t.id}).forEach(r=>add(r.name));
-    /* names that only this tenant's pack carries (DC-11, DC-22, DC-23); a name a Meridian metric or objective also uses identifies neither */
+    /* names that only this tenant's pack carries (DC-11, DC-22, DC-23); a name an Atlantic Systems metric or objective also uses identifies neither */
     const coreN=new Set(DATA.get('metrics',{tenant:'core'}).map(r=>r.n).concat(DATA.get('objectives',{tenant:'core'}).map(r=>r.n)));
     const addN=(v,any)=>{v=String(v||'');if(!coreN.has(v)&&(any||v.split(/\s+/).length>=3))add(v)}; /* three words or more: short generic names (Renewal, Scheduling) are not fingerprints */
     DATA.get('invoices',{tenant:t.id}).forEach(r=>addN(r.vendor,1));DATA.get('objectives',{tenant:t.id}).forEach(r=>addN(r.n));
@@ -33,7 +33,7 @@ async function open(){const p=await (await b.newContext({viewport:{width:1440,he
    fp[t.id]=[...terms]});
   /* a term shared by two tenants identifies neither */
   const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
-  window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])'))});
+  window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])'))});
   window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
    const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');
    return c.textContent+' '+at};
@@ -70,8 +70,8 @@ for(const t of tenants){
   const ind=[],merS=[];let mer=0;idx.forEach(x=>{const tx=txt(x);window.__hits(tx,t,nc).forEach(h=>ind.push(h));if(t!=='core'){const h=window.__hits(tx,t,['core']);if(h.length){mer++;if(merS.length<4)merS.push(h[0])}}});
   return{n:idx.length,ind:ind.slice(0,4),indN:ind.length,mer,merS}},[t,nonCore]);
  if(s.indN)fail(t+' search shows another industry tenant ('+s.indN+'): '+s.ind.join(' | '));
- if(s.mer)fail(t+' search shows Meridian records ('+s.mer+'): '+s.merS.join(' | '));
- console.log(t,'| search entries',s.n,'| Meridian records in search',s.mer);
+ if(s.mer)fail(t+' search shows Atlantic Systems records ('+s.mer+'): '+s.merS.join(' | '));
+ console.log(t,'| search entries',s.n,'| Atlantic Systems records in search',s.mer);
 }
 // 3. legacy screens on a fresh page per tenant (some legacy screens add sample records when opened)
 for(const t of ['core','health']){const q=await open();await q.evaluate(t=>TENANT.switch(t),t);await q.waitForTimeout(200);

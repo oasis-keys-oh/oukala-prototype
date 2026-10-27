@@ -44,7 +44,7 @@ const LC=["draft","testing","active","paused","retired"];
 const NEXT={draft:["testing","retired"],testing:["active","draft","retired"],active:["paused"],paused:["active","retired"],retired:[]};
 const LCC={draft:"mute",testing:"info",active:"good",paused:"warn",retired:"mute"};
 function oAgents(){return G(()=>ORGX.agents(),[])}
-/* PR-32 B7: another tenant's own agents (DATA agents) join the registry with that tenant's sponsor and backup; Meridian keeps the org chart.
+/* PR-32 B7: another tenant's own agents (DATA agents) join the registry with that tenant's sponsor and backup; Atlantic Systems keeps the org chart.
    A tenant agent is shaped like an org chart agent so the same lifecycle, tier, budget, sponsor and kill switch rules apply. */
 const isCore=()=>tenantNow()==="core";
 function tAgentRows(){return isCore()?[]:G(()=>DATA.get("agents").filter(a=>(a.part||"agent")==="agent"),[])}
@@ -55,7 +55,7 @@ const reg=name=>ST().get("agent_registry",name);
 function sApp(name){return G(()=>S.agents.find(a=>a.n===name),null)||G(()=>tAgent(name).tenantRow,null)}
 const isHuman=nm=>!!nm&&((G(()=>!!window.who(nm),false)&&G(()=>window.who(nm).kind!=="ai",true))||(!isCore()&&G(()=>DATA.get("people").some(p=>p.name===nm&&p.kind==="human"),false)));
 function backupGuess(sp){const u=G(()=>ORGX.up(sp),[]);return Array.isArray(u)&&u[0]?(u[0].name||u[0]):""}
-/* registry entries of the active tenant's agents (seeded once, tagged with the tenant); Meridian entries carry no tenant */
+/* registry entries of the active tenant's agents (seeded once, tagged with the tenant); Atlantic Systems entries carry no tenant */
 function seedTenant(){if(isCore())return;const t=tenantNow();tAgentRows().forEach(r=>{if(reg(r.n))return;const a=tAgent(r.n),tr=tierOf(a.autonomy);
  ST().put("agent_registry",{id:r.n,name:r.n,tenant:t,lifecycle:a.status==="running"?"active":"paused",tier:tr,sponsor:a.sponsor,backup:a.backup,budget_cap:+r["cap$"]||TIERS[tr].cap,confidence_floor:TIERS[tr].floor,note:""},{silent:true})})}
 const regsHere=()=>{seedTenant();const t=tenantNow();return ST().all("agent_registry").filter(r=>(r.tenant||"core")===t)};

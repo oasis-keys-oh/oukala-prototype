@@ -68,7 +68,7 @@ const lOfP=p=>Math.max(1,Math.min(5,Math.ceil((+p||0)/0.2)));
 const iOfAmt=a=>a>=500?5:a>=250?4:a>=100?3:a>=50?2:1;
 X.allRisks=function(){
  const core=X.isCore(),ent=core?arr(G(()=>EXE.E.risks,[])):X.tv("risks","enterprise"),raid=core?arr(G(()=>PPMRAID,[])):X.tv("raid_items","raid");
- /* PR-32: a pack may state likelihood on the 1 to 5 scale and exposure in dollars; Meridian states a probability and $K */
+ /* PR-32: a pack may state likelihood on the 1 to 5 scale and exposure in dollars; Atlantic Systems states a probability and $K */
  const pl=p=>(+p||0)>1?Math.max(1,Math.min(5,Math.round(+p))):lOfP(p),am=a=>(+a||0)>=1000?(+a)/1000:(+a||0);
  const out=X.rk().map(r=>Object.assign({},r,{inh:X.score(r.il,r.ii),res:X.score(r.rl,r.ri),own_:r.own}));
  ent.filter(r=>r.st!=="Closed").forEach(r=>out.push({id:r.id,t:r.n,cat:"Project",own:r.own,bak:core?G(()=>OBK(r.own),""):(r.bak||""),il:pl(r.p),ii:iOfAmt(am(r.amt)),rl:pl(r.p),ri:iOfAmt(am(r.amt)),st:r.st,src:"Project risk",ctl:[],proc:"",ent:"",met:"m_riskexp",proj:r.proj,vend:"",svc:"",kri:null,plan:r.plan,due:iso(30),rev:iso(-10),exc:"",desc:core?"$"+r.amt+"K exposure at "+Math.round(r.p*100)+"% likelihood.":"$"+Math.round(am(r.amt))+"K exposure.",inh:X.score(pl(r.p),iOfAmt(am(r.amt))),res:X.score(pl(r.p),iOfAmt(am(r.amt))),ro:1}));
@@ -217,27 +217,27 @@ hydrate("exception",X.exceptions);
 X.excState=e=>{if(e.st==="Rejected"||e.st==="Closed")return e.st;if(e.st==="Requested")return"Requested";const d=days(e.exp);return d<0?"Expired":d<=30?"Expiring":"Approved"};
 X.excOpen=e=>["Requested","Approved","Expiring","Expired"].includes(X.excState(e));
 
-/* PR-32 B7 tenant views: Meridian reads its registers; another tenant its pack rows (DATA.get), one stable list per part; [] is a gap (R18) */
+/* PR-32 B7 tenant views: Atlantic Systems reads its registers; another tenant its pack rows (DATA.get), one stable list per part; [] is a gap (R18) */
 X.rk=()=>X.tv("risks","control",()=>X.risks);
 X.tst=()=>X.tv("controls","test",()=>X.tests);
 X.fnd=()=>X.tv("audits","finding",()=>X.findings);
 X.aud=()=>X.tv("audits","audit",()=>X.audits);
 X.pol=()=>X.tv("policies","policy",()=>X.policies);
 X.exc=()=>X.tv("policies","exception",()=>X.exceptions);
-/* appetite per category: Meridian's table, or the tenant's own appetite rows */
+/* appetite per category: Atlantic Systems' table, or the tenant's own appetite rows */
 X.app=()=>{if(X.isCore())return X.APPETITE;const o={};X.tv("risks","appetite").forEach(r=>{o[r.cat||r.id]=+r.level});return o};
 X.cats=()=>Object.keys(X.app());
-/* vendors in scope: Meridian's vendor list, or the tenant's vendor rows */
+/* vendors in scope: Atlantic Systems' vendor list, or the tenant's vendor rows */
 X.vlist=()=>X.isCore()?arr(G(()=>S.bud.vend,[])):X.tv("vendors","vendor");
 X.contracts=()=>X.isCore()?arr(G(()=>S.bud.con,[])):G(()=>DATA.get("contracts"),[]);
-/* third-party profiles by vendor id: Meridian's assessments, or one profile per tenant vendor from the fields its row carries */
+/* third-party profiles by vendor id: Atlantic Systems' assessments, or one profile per tenant vendor from the fields its row carries */
 const VPROF=new WeakMap();
 X.ven=()=>{if(X.isCore())return X.vendors;const vs=X.vlist();if(!vs.length)return {};let o=VPROF.get(vs);if(o)return o;o={};
  vs.forEach(v=>{o[v.id]=VI(v.id,+v.tier||3,v.risk||"Medium",v.last||null,+v.score||0,v.dom||{},X.fnd().filter(f=>f.vend===v.id).map(f=>f.id),{data:v.data||v.cat||"",contracts:X.contracts().filter(c=>c.v===v.id).map(c=>c.id),lines:[]})});
  VPROF.set(vs,o);return o};
-/* a named person of the active tenant for form defaults: the Meridian default, or a control owner of the tenant */
+/* a named person of the active tenant for form defaults: the Atlantic Systems default, or a control owner of the tenant */
 X.who=(name,i)=>{if(X.isCore())return name;const l=[];X.ctl().concat(X.rk()).forEach(r=>{[r.own,r.bak].forEach(n=>{if(n&&!l.includes(n))l.push(n)})});return l[(i||0)%Math.max(1,l.length)]||""};
-/* metric ids that the active tenant carries (Meridian carries every GRC metric) */
+/* metric ids that the active tenant carries (Atlantic Systems carries every GRC metric) */
 X.hasMetric=id=>X.isCore()?!!METRICS[id]:!!G(()=>DATA.byId("metrics",id),null);
 
 /* ---------- metrics (computed from the live registers) ---------- */
@@ -262,7 +262,7 @@ Object.assign(METRICS,{
  m_grc_ven_t1:mk("Tier 1 vendors with a current assessment","Tier 1 vendors assessed within 12 months ÷ Tier 1 vendors","%",0,100,70,"max",[50,50,67,67,67,67,100,100],"Camille Ortega",["Third-party risk","GRC overview"],{kind:"sop",ref:"SOP-486",title:"Assess a vendor before renewal",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Pre-fills the assessment from the contract"}),
  m_grc_pol_ack:mk("Policy acknowledgement rate","Acknowledgements received ÷ Acknowledgements required, across published policies","%",0,95,80,"max",[72,75,78,80,83,85,86,88],"Theo Marlowe",["Policies","GRC overview"],{kind:"sop",ref:"SOP-487",title:"Close an acknowledgement campaign",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Reminds people who have not acknowledged"}),
  m_grc_audit_req:mk("Audit requests on time","Audit requests provided or accepted on or before their due date ÷ Requests due so far","%",0,95,75,"max",[70,72,75,78,80,80,82,83],"Avery Chen",["Audit management"],{kind:"sop",ref:"SOP-488",title:"Clear an overdue audit request",agent:"Knowledge Curator",auto:false,state:"idle",prog:"Finds evidence records already linked to the control"})});
-X.syncMetrics=function(){const s=X.stats();if(!X.isCore())return s; /* Meridian metrics only take Meridian figures */const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=v;m.tr=(m.tr||[]).slice(0,7).concat([v])};
+X.syncMetrics=function(){const s=X.stats();if(!X.isCore())return s; /* Atlantic Systems metrics only take Atlantic Systems figures */const set=(id,v)=>{const m=METRICS[id];if(!m)return;m.cur=v;m.tr=(m.tr||[]).slice(0,7).concat([v])};
  set("m_grc_ctl_cov",s.cov);set("m_grc_find_od",s.od);set("m_grc_att_rate",s.att);set("m_grc_risk_app",s.above);set("m_grc_exc_exp",s.exp30);set("m_grc_ven_t1",s.ven1pct);set("m_grc_pol_ack",s.ack);
  const due=X.audits.flatMap(a=>a.reqs).filter(r=>days(r.due)<=0||r.st==="Accepted"||r.st==="Provided");const ontime=due.filter(r=>r.st!=="Overdue"&&r.st!=="Open").length;set("m_grc_audit_req",due.length?Math.round(100*ontime/due.length):100);return s};
 X.syncMetrics();

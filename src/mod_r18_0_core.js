@@ -9,9 +9,9 @@ const H=U.esc;
 const arr=x=>Array.isArray(x)?x:[];
 const R18=W.R18=W.R18||{};
 R18.G=G;R18.H=H;R18.arr=arr;
-/* PR-32 B9 tenant rows (R16 to R18): builds come from GATE.apps() (Meridian: S.gate.apps; another tenant: its own builds rows) and
-   objectives from EXE.E.objs (Meridian) or DATA.get("objectives"). The Meridian seeds below (backups, functions, objective links, the two
-   story builds, hand-drawn processes) apply to Meridian only. A pack build's function is its owner's team; its backup is its builder when
+/* PR-32 B9 tenant rows (R16 to R18): builds come from GATE.apps() (Atlantic Systems: S.gate.apps; another tenant: its own builds rows) and
+   objectives from EXE.E.objs (Atlantic Systems) or DATA.get("objectives"). The Atlantic Systems seeds below (backups, functions, objective links, the two
+   story builds, hand-drawn processes) apply to Atlantic Systems only. A pack build's function is its owner's team; its backup is its builder when
    that is a different person. Figures a pack does not carry (run cost, metric readings) show as not recorded, never as a made-up number. */
 const TCORE=R18.tcore=()=>!W.DATA||DATA.tenant()==="core";
 const tPerson=n=>TCORE()?null:arr(G(()=>DATA.get("people"),[])).find(p=>p&&p.name===n)||null;

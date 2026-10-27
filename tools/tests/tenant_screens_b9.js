@@ -1,12 +1,12 @@
 // PR-32 batch B9 (Build, admin, transformation and showroom): every B9 screen under every tenant.
-// For each screen in the list below and each tenant (Meridian, the three industry packs, and one company made by Bring your company,
+// For each screen in the list below and each tenant (Atlantic Systems, the three industry packs, and one company made by Bring your company,
 // PACKGEN), switched with TENANT.switch (the real path, no reload), it checks:
 //  1. the screen renders (a view of some size) with no page errors;
 //  2. its registered mode is the one this batch declares (DATA.screen from the screen's own module);
 //  3. a screen in mode "data" shows this tenant's own rows (an id or name from the entities it registers, or a person of the tenant),
 //     or a labeled gap ("No data in this sample company yet"); a screen in mode "tenant" follows the tenant its own way (checked for leaks only);
 //     a screen in mode "core" carries the "not tenant-aware yet" label;
-//  4. no other tenant's organization name (a Meridian-only screen, labeled, may still show Meridian; never an industry tenant), record ids, project names or people names on screen (fingerprints as in tenant_leak.js,
+//  4. no other tenant's organization name (an Atlantic Systems-only screen, labeled, may still show Atlantic Systems; never an industry tenant), record ids, project names or people names on screen (fingerprints as in tenant_leak.js,
 //     plus the tenant-prefixed ids of the entities the B9 screens read).
 // A screen registered with no entities (a product page with no tenant business data) needs no own rows, only no leakage.
 // ONLY=id1,id2 limits the run to those screens.
@@ -42,7 +42,7 @@ const setup=await p.evaluate(()=>{const fp={},own={};const esc=s=>s.replace(/[.*
   fp[t.id]=[...terms];own[t.id]=[...mine]});
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
  const ocnt={};Object.values(own).forEach(a=>a.forEach(x=>ocnt[x]=(ocnt[x]||0)+1));
- const rx=x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])');
+ const rx=x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])');
  window.__fp={};window.__own={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(rx);window.__own[k]=own[k].filter(x=>ocnt[x]===1).map(rx)});
  window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],[data-tenant-chip],script,style').forEach(x=>x.remove());
   const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');return c.textContent+' '+at};
@@ -61,11 +61,11 @@ for(const t of setup.tenants){await p.evaluate(t=>TENANT.switch(t),t);await p.wa
   if(report){if(r.hits.length||errs.length>n0)console.log(t,id,r.mode,'own',r.mine,'gap',r.gap,'|',r.hits.slice(0,process.env.NH?+process.env.NH:5).join(' | '),errs.slice(n0).join(' | ').slice(0,300));continue}
   if(r.len<400)fail(t+' '+id+': blank view');
   if(r.mode!==want)fail(t+' '+id+': mode '+r.mode+', expected '+want);
-  /* a Meridian-only screen (mode core, labeled) may show Meridian under another tenant, never an industry tenant */
+  /* an Atlantic Systems-only screen (mode core, labeled) may show Atlantic Systems under another tenant, never an industry tenant */
   const hits=r.mode==='core'?r.hits.filter(h=>h.indexOf('core:')!==0):r.hits;
   if(hits.length)fail(t+' '+id+' shows another tenant: '+hits.slice(0,4).join(' | '));
   if(t!=='core'&&r.mode==='data'&&r.ents&&!r.mine&&!r.gap)fail(t+' '+id+': neither own rows nor a labeled gap');
-  if(t!=='core'&&r.mode==='core'&&!r.legacy)fail(t+' '+id+': Meridian-only screen without the tenant label');
+  if(t!=='core'&&r.mode==='core'&&!r.legacy)fail(t+' '+id+': Atlantic-only screen without the tenant label');
   if(errs.length>n0)fail(t+' '+id+' errors '+errs.slice(n0).join(' | ').slice(0,400))}}
 if(report)Object.keys(summary).forEach(id=>console.log(id.padEnd(14),JSON.stringify(summary[id])));
 console.log('checks',checks,'| failures',bad,'| errors',errs.length?errs.slice(0,3):'none');

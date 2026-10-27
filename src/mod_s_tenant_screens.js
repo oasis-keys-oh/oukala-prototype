@@ -1,5 +1,5 @@
 /* ===== mod_s_tenant_screens: screen adapters that move existing read-only screens to DATA (CL-55, DC-11, DC-22, DC-23, CL-57, JM-07).
-   CSS prefix stn-. No owning module is edited: an adapter wraps the screen's registered renderer. Under Meridian (core) the owning
+   CSS prefix stn-. No owning module is edited: an adapter wraps the screen's registered renderer. Under Atlantic Systems (core) the owning
    module renders exactly as before; under any other tenant the adapter renders the same screen, with the same purpose and the tab
    names the Showroom tours click, from DATA.get only, in the tenant's vocabulary (DATA.term). Registered as mode "data" in the
    tenant-aware screen registry, so the "not tenant-aware yet" label no longer applies to them.
@@ -12,7 +12,7 @@ S.stn=S.stn||{tab:{}};
 
 /* ---------- adapter registry ---------- */
 const AD={};
-function adapt(id,o){AD[id]=o;DT.screen(id,{mode:"data",entities:o.entities,note:"Adapter in mod_s_tenant_screens: Meridian renders the owning module; other tenants render from DATA",adapter:"mod_s_tenant_screens"})}
+function adapt(id,o){AD[id]=o;DT.screen(id,{mode:"data",entities:o.entities,note:"Adapter in mod_s_tenant_screens: Atlantic Systems renders the owning module; other tenants render from DATA",adapter:"mod_s_tenant_screens"})}
 function wrap(id){if(typeof _R==="undefined")return;const cur=_R[id];if(typeof cur!=="function"||cur.__stn)return;
  const f=function(){if(DT.tenant()==="core")return cur.apply(this,arguments);
   try{return AD[id].render()}catch(e){console.error("stn adapter "+id,e);return `<div class="screen stn">${empty("This view could not be drawn for this tenant","The error is in the console. No other tenant's data is shown in its place.")}</div>`}};

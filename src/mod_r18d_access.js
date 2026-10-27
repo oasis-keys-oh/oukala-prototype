@@ -11,8 +11,8 @@ const me=()=>G(()=>R15D.me().name,"Casey Rowan");
 const CLS=["public","internal","personal","confidential","restricted"];
 const STATE={pending:["Waiting for the owner","warn"],approved:["Approved","good"],approved_masked:["Approved with masking","good"],limited:["Limited scope","info"],denied:["Denied","bad"],expired:["Expired","bad"],revoked:["Revoked","mute"],none:["Not requested","mute"]};
 const LIVE=s=>s==="approved"||s==="approved_masked"||s==="limited";
-/* PR-32 B9: access requests are derived state, seeded from the Meridian builds only. Another tenant starts with no requests (a labeled gap)
-   and keeps the ones made in this session apart from Meridian's; the Meridian access metrics are synced and shown under Meridian only. */
+/* PR-32 B9: access requests are derived state, seeded from the Atlantic Systems builds only. Another tenant starts with no requests (a labeled gap)
+   and keeps the ones made in this session apart from Atlantic Systems'; the Atlantic Systems access metrics are synced and shown under Atlantic Systems only. */
 const TCORE=()=>!W.DATA||DATA.tenant()==="core";
 const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
 const kpT=o=>{if(TCORE()||!o)return o;const c=Object.assign({},o);delete c.metric;return c};

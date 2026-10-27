@@ -1,10 +1,10 @@
 // PR-32 B7 (risk, control and AI) and B8 (people, organization and my work): the screens these batches moved onto the tenant data layer.
-// For every screen below and every tenant (Meridian and the three industry tenants, switched with TENANT.switch, no reload):
+// For every screen below and every tenant (Atlantic Systems and the three industry tenants, switched with TENANT.switch, no reload):
 //  1. the screen is registered in mode "data" and renders without page errors, on its first view and on each of its tabs;
 //  2. it shows that tenant's organization or its own rows (an id or a name from the tenant's rows of the screen's entities), or the
 //     labeled gap ("No data in this sample company yet") when the tenant has no rows;
 //  3. it shows no other tenant's names: organization, record ids, project names and people names (the fingerprints of tenant_leak.js),
-//     Meridian included under an industry tenant (R18).
+//     Atlantic Systems included under an industry tenant (R18).
 // Usage: node tools/tests/tenant_screens_b78.js <dir containing full.html> [--verbose] [screen ...]
 const {chromium}=require('playwright');const path=require('path');
 const B7=['grc_home','grc_risk','grc_ctl','grc_find','grc_pol','grc_aud','grc_ven','grc_exc','r15d_agents','agent_defs','ai_runtime'];
@@ -24,7 +24,7 @@ await p.evaluate(()=>{const fp={},own={};const esc=s=>s.replace(/[.*+?^${}()|[\]
    DATA.get('projects',{tenant:t.id}).forEach(r=>add(r.n));DATA.get('people',{tenant:t.id}).forEach(r=>add(r.name))}
   fp[t.id]=[...terms]});
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
- window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])'))});
+ window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])'))});
  window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
   const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');
   return c.textContent+' '+at};

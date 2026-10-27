@@ -428,7 +428,7 @@ function fixStepIO(){const defs=G(()=>PROC.defs,{});let n=0;
  G(()=>PROCLIB.list()).forEach(p=>{const d=defs[p.id];if(!d||!Array.isArray(d.steps))return;const st=d.steps;st.forEach((s,i)=>{if(!s.in&&i>0&&st[i-1].out){s.in=st[i-1].out;s.inInferred=1;n++}if(!s.out&&i<st.length-1&&(st[i+1].in||st[i+1].n)){s.out=st[i+1].in||st[i+1].n;s.outInferred=1;n++}})});
  G(()=>PROCLIB.refresh());FIXLOG("fx_stepio","Filled step inputs and outputs from the neighboring step (flagged inferred)",n,"partial: first and last steps need the real source and result");return n}
 /* PR-32 B2: on a tenant-aware screen under another tenant a role resolves to that tenant's holder: the primary holder in its role
-   assignments (DATA.get("role_assignments")), else a person whose role is that title; never a Meridian person */
+   assignments (DATA.get("role_assignments")), else a person whose role is that title; never an Atlantic Systems person */
 function tenantRolePerson(t,e){const ppl=TREAD.people();const hasP=nm=>ppl.some(x=>norm(x.name)===norm(nm));
  const ra=TREAD.rows("role_assignments","role").find(r=>r&&(norm(r.name)===t||norm(r.name)===e||arr(r.aliases).some(a=>norm(a)===t)));
  const h=ra&&arr(ra.holders).find(x=>x&&x.kind==="primary"&&!x.to);if(h&&hasP(h.who))return h.who;
@@ -568,7 +568,7 @@ function paneFixes(){return card("What was fixed","Each fix uses a registration 
 function paneMetrics(){return card("Connectivity metrics","Formula, owner, target and remediation on each chip",`<div class="row">${["m_zl_score","m_zl_dead","m_zl_fanout","m_zl_orphans"].map(k=>fchip(k)).join("")}</div>`)+card("Maturity","Process maturity of this screen's process on the CMMI scale, rolled up in Maturity models",`<p class="small">${G(()=>{const m=PROCLIB.get("connectivity_audit");return m?"Level "+m.level+" of target "+m.target+" ("+m.model+")":"Process registers with the library once it loads."},"")}</p>`)}
 /* PR-32 B2: under a tenant other than core the screen audits that tenant's own records through DATA (TREAD.audit, data.js): links
    between records (TENANT_ENTITIES.links), owner and backup pairs (R12) and named people, plus the entities the pack has no rows for
-   (recorded gaps, R18). The Meridian registry audit below stays the core view. The score is modeled from these checks. */
+   (recorded gaps, R18). The Atlantic Systems registry audit below stays the core view. The score is modeled from these checks. */
 function tenantScreen(){const X=window.STN||{},A=TREAD.audit(),org=(DATA.tenantInfo()||{}).org||DATA.tenant();
  const refs=A.links.reduce((n,l)=>n+l.n,0),dead=[];A.links.forEach(l=>l.bad.forEach(b=>dead.push({l,b})));
  const pairBad=A.pairs.noBackup.concat(A.pairs.same,A.pairs.notPerson),gaps=A.ents.filter(e=>!e.rows),withRows=A.ents.filter(e=>e.rows);

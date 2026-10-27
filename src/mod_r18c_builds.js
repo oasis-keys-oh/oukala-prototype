@@ -5,7 +5,7 @@
 const W=window,D=document;const R18=W.R18;if(!R18)return;
 const {G,H,arr,usd,pill,fD}=R18;const ST=R18.st;
 /* PR-32 B9: builds, objectives and debt come through R18 (GATE.apps() and DATA.get under another tenant, see mod_r18_0_core). No rows is a
-   labeled gap; a figure the tenant does not carry reads "Not recorded". The process library is written for Meridian builds only. */
+   labeled gap; a figure the tenant does not carry reads "Not recorded". The process library is written for Atlantic Systems builds only. */
 const TCORE=()=>!W.DATA||DATA.tenant()==="core";const usdN=R18.usdN;
 const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
 const me=()=>G(()=>R15D.me().name,"Casey Rowan");

@@ -6,7 +6,7 @@ Read this first in any session that touches the Falconaire (Enterprise Work Plat
 A database-free, single-page prototype of Falconaire, an AI-native work platform for enterprise IT and operations leaders. Live at https://oukala-prototype.netlify.app (Netlify project `oukala-prototype`). The product name is **Falconaire** (`src/brand.json`). It is not trademark-cleared (backlog BR-01): do not use it in anything external, and do not file domains or marks.
 
 ## Hard rules (every session)
-- Fictional sample data only. Sample customer Meridian Standards Foundation, sample executive Casey Rowan. Never put the owner's real name, employer, clients or any real organization's data or brand in a product asset.
+- Fictional sample data only. Sample customer Atlantic Systems, sample executive Casey Rowan. Never put the owner's real name, employer, clients or any real organization's data or brand in a product asset.
 - Label every number: prototype fact, modeled, hypothesis or simulated. Never present a simulated capability (connectors, AI runs, sync, isolation) as live.
 - No price points until a priced bill of materials exists. No certification claims (SOC 2 and similar), only stated plans.
 - No em dashes in user-visible strings. No banned external names (Core, Fabric, Fabric Enterprise, Trellis) in visible text.

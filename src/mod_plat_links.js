@@ -838,7 +838,7 @@ function gapTable(){
 }
 /* ---------- PR-32 B2: tenant views. Under a tenant other than core both screens read that tenant's records through DATA: the data map
    from its entities and the links between their rows (TREAD.audit), the process map from its processes, the metrics they report on and
-   the objectives those metrics serve. Same purpose and tab names as the Meridian views; every figure is sample data (simulated). ---------- */
+   the objectives those metrics serve. Same purpose and tab names as the Atlantic Systems views; every figure is sample data (simulated). ---------- */
 const tX=()=>window.STN||{};
 const tTbl=(c,r)=>tX().table?tX().table(c,r):"";
 const tMet=()=>DATA.get("metrics"),tObj=()=>DATA.get("objectives");

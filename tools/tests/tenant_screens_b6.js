@@ -1,4 +1,4 @@
-// PR-32 B6 Operations and service: every B6 screen under every tenant (Meridian, Larkspur Health, Redstone Resources, Corvane Data Protection).
+// PR-32 B6 Operations and service: every B6 screen under every tenant (Atlantic Systems, Larkspur Health, Redstone Resources, Corvane Data Protection).
 // For each screen and tenant, on one page switched with TENANT.switch (the real path, no reload):
 //  1. the screen renders (view not blank) with no page errors, and so does each of its first view tabs (views() labels, up to 8);
 //  2. it is registered mode "data" (DATA.screens()), so it carries no "not tenant-aware yet" label;
@@ -6,7 +6,7 @@
 //     company made by Bring your company (no operations rows) it shows its organization or the labeled gap "No data in this sample company yet";
 //  4. it shows no other tenant's names: organizations, people, projects, invoice ids (the tenant_leak.js fingerprints) plus the
 //     ids and names of the operations records (services, configuration items, incidents, changes, problems, articles and the rest).
-// Tenants: core, health, mining, storage and one PACKGEN company (Tillbury Market, retail). Meridian (core) renders as before; the core snapshot, smoke and tabs suites guard that separately.
+// Tenants: core, health, mining, storage and one PACKGEN company (Tillbury Market, retail). Atlantic Systems (core) renders as before; the core snapshot, smoke and tabs suites guard that separately.
 // Usage: node tools/tests/tenant_screens_b6.js <dir containing full.html> [--only id,id] [--tenants core,health]
 const {chromium}=require('playwright');const path=require('path');
 const SCREENS={
@@ -37,11 +37,11 @@ const tenants=await p.evaluate(OPS=>{const fp={},own={};const esc=s=>s.replace(/
    /* operations records: ids with the tenant prefix, and names of three words or more */
    OPS.forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>{if(/^[A-Z]{2}-/.test(String(r.id||'')))add(r.id,1);['n','t','name'].forEach(f=>{const v=r[f];if(typeof v==='string'&&v.split(/\s+/).length>=3)add(v,1)})}))}
   fp[t.id]=[...terms];own[t.id]=[...mine]});
- /* names Meridian also uses as platform definitions (a proposed table in mod_r24_ops is called "Permit to work", as is a mining
+ /* names Atlantic Systems also uses as platform definitions (a proposed table in mod_r24_ops is called "Permit to work", as is a mining
     service): such a name identifies no tenant */
  ['Permit to work'].forEach(x=>Object.values(fp).forEach(a=>a.push(x)));
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
- const re=x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])');
+ const re=x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])');
  window.__fp={};window.__own={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(re);window.__own[k]=own[k].filter(x=>cnt[x]===1).map(re)});
  window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
   const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');

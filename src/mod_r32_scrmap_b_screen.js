@@ -202,7 +202,7 @@ function render_(){const RS=build(),t=tally(RS),n=RS.length,pre=RS.filter(r=>r.p
  ${kpiRow([["Screens",n,"registered right now"],["Confirmed",dn+" of "+n,pct+"% confirmed"+(pre?", "+pre+" pre-filled":""),{keep:true}],["Wedge",t.wedge,t.wedge>=5&&t.wedge<=8?"within the 5 to 8 target":"target 5 to 8",{cls:t.wedge>=5&&t.wedge<=8?"":"warn",keep:true}],["Defer",t.defer,"roadmap, not first sale",{keep:true}],["Cut",t.cut,freed?freed+" KB of source files go entirely":"none removed yet",{keep:true}],["Undecided",t.none,"still to review",{cls:t.none?"warn":"",keep:true}]])}
  ${views("scm_v",["Map","Table","Source files","Decisions and export","How this works"],[mapPane(RS),tablePane(),filesPane(RS),decPane(RS),methodPane(RS)])}</div>`}
 REG("scr_map","Screen map","platform","M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM15 15l2 2 3-4",render_);
-/* PR-32 B9: a product page with no tenant business data; it shows nothing Meridian-specific under another tenant */
+/* PR-32 B9: a product page with no tenant business data; it shows nothing Atlantic-specific under another tenant */
 if(W.DATA&&W.DATA.screen)W.DATA.screen("scr_map",{mode:"data",entities:[]});
 
 /* ---------- events ---------- */

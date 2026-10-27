@@ -382,8 +382,8 @@ document.addEventListener("click",e=>{let t;
 });
 DND.on("budrank",(id,from,to,idx)=>{const ids=RQ().filter(r=>r.st==="cnc").sort((a,b)=>(a.rank||99)-(b.rank||99)||scoreNum(b.sc)-scoreNum(a.sc)).map(r=>r.id);const o=ids.indexOf(id);if(o<0)return;ids.splice(o,1);ids.splice(Math.min(idx,ids.length),0,id);ids.forEach((x,i)=>byId(x).rank=i+1);audit("Council ranking changed",id+" to position "+(ids.indexOf(id)+1));toast("Ranking updated","good");render()});
 /* ---------- screen, nav, search, chat, work ---------- */
-/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
-   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+/* PR-32 B5: under a tenant other than Atlantic Systems this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Atlantic Systems renders as before. */
 function tvReq(){const v=FIN.tv,R=DATA.get("budget_requests"),by=f=>{const g={};R.forEach(r=>{const k=f(r)||"Not set";g[k]=g[k]||{n:k,c:0,a:0,w:[]};g[k].c++;g[k].a+=+r.amt||0;g[k].w.push(r.t)});return Object.values(g)},gc=[["Group","n"],["Requests","c"],["Amount",r=>D$(r.a)],["Which",r=>H(r.w.join("; "))]];
  return v.Sc("bud_req",v.tw("budget_request",1),R.length?`${R.length} ${DATA.term("budget_request",{many:true})} (${D$(sum(R,r=>+r.amt||0))}) are moving through the funnel. Sample figures, simulated.`:"No budget requests in this sample company yet.",
  [["Decision funnel",()=>v.C("The decision funnel","Requests by stage","budget_requests",by(r=>r.st),gc)],

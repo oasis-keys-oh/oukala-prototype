@@ -35,7 +35,7 @@ const uid=()=>{D().uid=(D().uid||1)+1;return D().uid};
 const getp=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
 const setp=(o,p,v)=>{const ks=p.split("."),last=ks.pop();const t=ks.reduce((a,k)=>a[k],o);t[last]=v};
 const touch=()=>{B.saved=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",second:"2-digit"})};
-/* PR-32 B9: the in-flight seeds, their owners and the build metrics are Meridian sample values; under another tenant they are a labeled
+/* PR-32 B9: the in-flight seeds, their owners and the build metrics are Atlantic Systems sample values; under another tenant they are a labeled
    gap and the owner picker lists that tenant's own people (R16 to R18). Under core nothing changes. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+E(w):""}.</p>`;

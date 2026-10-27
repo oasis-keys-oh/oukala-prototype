@@ -1,5 +1,5 @@
 /* On-call rotas, skills and availability (svc_oncall, svc_skills). Exposes SKILLSDB, AVAIL, routeBy, ONCALL.
-PR-32 B6: people, services, teams, rotas, leave and skills read the active tenant (TROWS); Meridian seeds only under core. */
+PR-32 B6: people, services, teams, rotas, leave and skills read the active tenant (TROWS); Atlantic Systems seeds only under core. */
 (function(){
 const E=esc,core=TROWS.core,tk=()=>DATA.tenant(),T=TROWS.term,fchip=TROWS.chip,DIR=TROWS.arr("people",null,()=>window.DIR,p=>p.kind==="agent"||p.kind==="robot"?Object.assign({},p,{kind:"ai"}):p),
 SVCREG=TROWS.arr("services","service",()=>window.SVCREG),TEAMS=TROWS.arr("teams","team",()=>window.TEAMS),CL=TROWS.arr("skills","claim",()=>window.SKILLS||[]);

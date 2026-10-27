@@ -24,7 +24,7 @@ function simple(){const k=S.persona,P=PERSONAS[k];const sm=G(()=>R18.spend.stats
  const story=head+(P.story||"");
  const needs=Object.assign({},P,{needs:arr(P.needs).slice(0,3)});
  const lh=G(()=>R18.lensHome?R18.lensHome():"","");
- return `<div class="screen r18-screen r18-exec">${hero(G(()=>NOW.day,"Today")+" · "+(TREAD.core()?"Meridian Standards Foundation":E((DATA.tenantInfo()||{}).org||DATA.tenant())),"Good afternoon, "+E(G(()=>meOf().split(" ")[0],"Casey")),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(P.n)}</b> · Executive level</span><button type="button" class="chip" data-r18-full="1" title="Show the full working home for this role">Show everything</button></div>`)}
+ return `<div class="screen r18-screen r18-exec">${hero(G(()=>NOW.day,"Today")+" · "+(TREAD.core()?"Atlantic Systems":E((DATA.tenantInfo()||{}).org||DATA.tenant())),"Good afternoon, "+E(G(()=>meOf().split(" ")[0],"Casey")),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(P.n)}</b> · Executive level</span><button type="button" class="chip" data-r18-full="1" title="Show the full working home for this role">Show everything</button></div>`)}
  ${lh}
  <section class="card glass"><div class="cardhead"><h3>How we're doing</h3><span class="muted small">Three scores. Select one for its formula and trend.</span></div><div class="rings">${arr(P.rings).slice(0,3).map(id=>G(()=>metricRing(id,132),"")).join("")}</div></section>
  ${arr(P.needs).length?BLK.needs(needs):""}${drill()}</div>`}

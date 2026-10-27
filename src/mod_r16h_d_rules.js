@@ -7,7 +7,7 @@
 "use strict";
 const R=window.R16H;if(!R)return;
 const {G,H,TODAY,fmtD,TCORE,TROWS,TGAP,fchipT}=R;
-const P=S.r16h.appr=Object.assign({rules:[],overlays:{},binds:[],insts:[],sel:"rule_purchase",mode:"base",tenant:"Meridian Standards Foundation",seeded:false,seq:1,sim:{},selInst:null,tab:0,ver:{}},S.r16h.appr||{});
+const P=S.r16h.appr=Object.assign({rules:[],overlays:{},binds:[],insts:[],sel:"rule_purchase",mode:"base",tenant:"Atlantic Systems",seeded:false,seq:1,sim:{},selInst:null,tab:0,ver:{}},S.r16h.appr||{});
 const E={};
 const nowMs=()=>G(()=>WF.clock().sim,Date.now());
 const hrs=ms=>ms/36e5;
@@ -220,7 +220,7 @@ R.addScreen({id:"r16h_rules",name:"Approval rules",own:"Casey Rowan",bk:"Jordan 
  met:[["m_r16_rules_bound","Approval-bearing records bound to a rule","Bindings with a rule that exists ÷ approval kinds in the platform × 100","%",78,90,50,"max","Bind the rule","Approval rules, Bindings tab"],["m_r16_rules_cycle","Approval cycle time per rule","Σ (decision time − request time) ÷ finished approvals, in hours of simulated time","h",31,48,96,"min","Raise the SLA or split the level","Approval rules, Running tab"]],
  fin:[["flw_design","Saved workflows with approval steps","workflow_definition","api"],["r16h_groups","Approver groups","approver_group","api"],["flw_dmn","Decision rules for conditions","decision_rule","api"]],fout:[["inbox","Approvals by level and group","approval","event","Level activated"],["wf_runs","Approval outcome to the workflow","approval","event","Rule finished"],["adm_audit","Level decisions","approval","event","Member decides"]]});
 /* PR-32 B9: another sample company sees its own approval rules and bindings (approval_policies parts rule and binding). The engine
-   (APPR, Meridian rules, level trees, overlays, simulation) is unchanged; the pack carries no level trees, so those tabs show a labeled gap (R18). */
+   (APPR, Atlantic Systems rules, level trees, overlays, simulation) is unchanged; the pack carries no level trees, so those tabs show a labeled gap (R18). */
 function tenantView(){const rules=TROWS("approval_policies","rule"),binds=TROWS("approval_policies","binding"),teams=TROWS("teams");
  const org=(DATA.tenantInfo()||{}).org||"";const tn=id=>(teams.find(t=>t.id===id)||{}).n||id||"";
  const rulesT=rules.length?`<div class="tscroll"><table><thead><tr><th>Rule</th><th>Applies to</th><th>Group</th><th>Bound to</th><th>Owner</th></tr></thead><tbody>${rules.map(r=>{const bs=binds.filter(b=>b.rule===r.id);return `<tr><td><b>${H(r.name)}</b> <code>${H(r.id)}</code><div class="muted small">${H(r.desc||"")}</div></td><td><code>${H(r.entity||"")}</code></td><td>${H(tn(r.grp))}</td><td>${bs.length?bs.slice(0,3).map(b=>`<span class="pill mute">${H(b.label)}</span>`).join(" ")+(bs.length>3?` <span class="muted small">+${bs.length-3}</span>`:""):'<span class="pill warn">Not bound</span>'}</td><td>${r.owner?ownerChip.pair?ownerChip.pair(r.owner,r.backup,{}):pchip(r.owner):TGAP("owner")}</td></tr>`}).join("")}</tbody></table></div>`:TGAP("approval rules");

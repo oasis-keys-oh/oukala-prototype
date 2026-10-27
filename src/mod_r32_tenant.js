@@ -8,7 +8,7 @@ const W=window,D=document;if(!W.SCN||!SCN.list||!SCN.set)return;
 const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const T=W.TENANT={};
 T.info={
- core:{org:"Meridian Standards Foundation",short:"Meridian Standards",kind:"A standards publisher",lead:{n:"Catherine Doyle",t:"Chief executive"}},
+ core:{org:"Atlantic Systems",short:"Atlantic Systems",kind:"A standards publisher",lead:{n:"Catherine Doyle",t:"Chief executive"}},
  health:{org:"Larkspur Health System",short:"Larkspur Health",kind:"A regional health system",lead:{n:"Grace Oduya",t:"Chief operating officer"}},
  mining:{org:"Redstone Resources",short:"Redstone Resources",kind:"A mining company with operational technology",lead:{n:"Jonas Whitfield",t:"Chief operating officer"}},
  storage:{org:"Corvane Data Protection",short:"Corvane Data",kind:"A storage and backup vendor",lead:{n:"Hannah Brooks",t:"Chief operating officer"}}};

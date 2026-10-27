@@ -16,19 +16,19 @@ const TEAMS=[
  {id:"arch",n:"Architecture",mgr:"Jordan Lee"},{id:"ops",n:"Ops team",mgr:"Sam Patel"},{id:"edit",n:"Editors",mgr:"Chief Editor"},
  {id:"desk",n:"Service desk",mgr:"Tom Becker"},{id:"fin",n:"Finance",mgr:"Avery Chen"},{id:"chg",n:"Change management",mgr:"Nia Brooks"},
  {id:"sec",n:"Security",mgr:"Rina Okafor"},{id:"lumen",n:"Lumen (vendor)",mgr:"Marco Ellis"},{id:"agents",n:"AI agents",mgr:"Maya Ortiz"}];
-const D=(name,kind,role,team,o)=>Object.assign({id:name.toLowerCase().replace(/[^a-z0-9]+/g,"-"),name,kind,role,team,org:kind==="human"?"Meridian Standards Foundation":"",skills:[],loc:"Remote",hrs:40,rate:0},o||{});
+const D=(name,kind,role,team,o)=>Object.assign({id:name.toLowerCase().replace(/[^a-z0-9]+/g,"-"),name,kind,role,team,org:kind==="human"?"Atlantic Systems":"",skills:[],loc:"Remote",hrs:40,rate:0},o||{});
 const DIR=[
- D("Maya Ortiz","human","Portfolio lead","PMO",{c:"--p4",email:"maya.ortiz@meridian.example",skills:["Portfolio management","PMP","Vendor management","Risk"],loc:"Washington, DC",mgr:"Casey Rowan",tenure:7}),
- D("Priya Shah","human","Project manager","Platform team",{c:"--s3",email:"priya.shah@meridian.example",skills:["PMP","Agile delivery","Release planning","Stakeholder management"],loc:"Norwalk, CT",mgr:"Maya Ortiz",tenure:5}),
- D("Dev Rao","human","Project manager","Data team",{c:"--u3",email:"dev.rao@meridian.example",skills:["Data engineering","PMP","Azure Data Factory","Taxonomy"],loc:"Chicago, IL",mgr:"Maya Ortiz",tenure:4}),
- D("Tom Becker","human","Service desk lead","Service desk",{c:"--e4",email:"tom.becker@meridian.example",skills:["ITIL 4","Incident management","ServiceNow","Major incident command"],loc:"Norwalk, CT",mgr:"Sam Patel",tenure:9}),
- D("Avery Chen","human","Controller","Finance",{c:"--w1",email:"avery.chen@meridian.example",skills:["Accounting","Standard 842","Invoice approval","Budgeting"],loc:"Norwalk, CT",mgr:"Casey Rowan",tenure:6}),
- D("Jordan Lee","human","Architect","Architecture",{c:"--p2",email:"jordan.lee@meridian.example",skills:["Enterprise architecture","Azure","Integration","TOGAF"],loc:"Remote",mgr:"Casey Rowan",tenure:8}),
- D("Sam Patel","human","Platform engineer","Ops team",{c:"--s2",email:"sam.patel@meridian.example",skills:["Azure","Kubernetes","Terraform","On-call","Observability"],loc:"Remote",mgr:"Casey Rowan",tenure:5}),
- D("Nia Brooks","human","Change manager","Change management",{c:"--u2",email:"nia.brooks@meridian.example",skills:["ITIL 4 Change","CAB facilitation","Risk assessment","Release coordination"],loc:"Norwalk, CT",mgr:"Sam Patel",tenure:3}),
- D("Chief Editor","human","Chief editor","Editors",{c:"--p3",email:"chief.editor@meridian.example",skills:["Standards writing","Editorial review","Standards","Acceptance testing"],loc:"Norwalk, CT",mgr:"Casey Rowan",tenure:12}),
- D("Rina Okafor","human","Security lead","Security",{c:"--e3",email:"rina.okafor@meridian.example",skills:["Entra ID","Defender","NIST CSF","Access reviews","CISSP"],loc:"Remote",mgr:"Casey Rowan",tenure:4}),
- D("Casey Rowan","human","Chief information officer","PMO",{c:"--p1",email:"casey.rowan@meridian.example",skills:["Executive sponsor","Portfolio","Strategy"],loc:"Norwalk, CT",tenure:6}),
+ D("Maya Ortiz","human","Portfolio lead","PMO",{c:"--p4",email:"maya.ortiz@atlantic.example",skills:["Portfolio management","PMP","Vendor management","Risk"],loc:"Washington, DC",mgr:"Casey Rowan",tenure:7}),
+ D("Priya Shah","human","Project manager","Platform team",{c:"--s3",email:"priya.shah@atlantic.example",skills:["PMP","Agile delivery","Release planning","Stakeholder management"],loc:"Norwalk, CT",mgr:"Maya Ortiz",tenure:5}),
+ D("Dev Rao","human","Project manager","Data team",{c:"--u3",email:"dev.rao@atlantic.example",skills:["Data engineering","PMP","Azure Data Factory","Taxonomy"],loc:"Chicago, IL",mgr:"Maya Ortiz",tenure:4}),
+ D("Tom Becker","human","Service desk lead","Service desk",{c:"--e4",email:"tom.becker@atlantic.example",skills:["ITIL 4","Incident management","ServiceNow","Major incident command"],loc:"Norwalk, CT",mgr:"Sam Patel",tenure:9}),
+ D("Avery Chen","human","Controller","Finance",{c:"--w1",email:"avery.chen@atlantic.example",skills:["Accounting","Standard 842","Invoice approval","Budgeting"],loc:"Norwalk, CT",mgr:"Casey Rowan",tenure:6}),
+ D("Jordan Lee","human","Architect","Architecture",{c:"--p2",email:"jordan.lee@atlantic.example",skills:["Enterprise architecture","Azure","Integration","TOGAF"],loc:"Remote",mgr:"Casey Rowan",tenure:8}),
+ D("Sam Patel","human","Platform engineer","Ops team",{c:"--s2",email:"sam.patel@atlantic.example",skills:["Azure","Kubernetes","Terraform","On-call","Observability"],loc:"Remote",mgr:"Casey Rowan",tenure:5}),
+ D("Nia Brooks","human","Change manager","Change management",{c:"--u2",email:"nia.brooks@atlantic.example",skills:["ITIL 4 Change","CAB facilitation","Risk assessment","Release coordination"],loc:"Norwalk, CT",mgr:"Sam Patel",tenure:3}),
+ D("Chief Editor","human","Chief editor","Editors",{c:"--p3",email:"chief.editor@atlantic.example",skills:["Standards writing","Editorial review","Standards","Acceptance testing"],loc:"Norwalk, CT",mgr:"Casey Rowan",tenure:12}),
+ D("Rina Okafor","human","Security lead","Security",{c:"--e3",email:"rina.okafor@atlantic.example",skills:["Entra ID","Defender","NIST CSF","Access reviews","CISSP"],loc:"Remote",mgr:"Casey Rowan",tenure:4}),
+ D("Casey Rowan","human","Chief information officer","PMO",{c:"--p1",email:"casey.rowan@atlantic.example",skills:["Executive sponsor","Portfolio","Strategy"],loc:"Norwalk, CT",tenure:6}),
  D("Marco Ellis","contractor","Lead engineer, search indexer","Lumen (vendor)",{org:"Lumen Search Services",c:"--w2",email:"marco.ellis@lumen.example",skills:["Search indexing","Elasticsearch","Java","Relevance tuning"],loc:"Austin, TX",rate:165,contract:"SOW-4",end:"2027-03-31",hrs:40}),
  D("Hana Koval","contractor","Taxonomy engineer","Lumen (vendor)",{org:"Lumen Search Services",c:"--w3",email:"hana.koval@lumen.example",skills:["Taxonomy","Python","NLP","Ontology"],loc:"Prague (remote)",rate:150,contract:"SOW-4",end:"2027-03-31"}),
  D("Ravi Menon","contractor","Site reliability engineer","Ops team",{org:"Northwind Staffing",c:"--w4",email:"ravi.menon@northwind.example",skills:["Azure","Observability","On-call","Terraform"],loc:"Remote",rate:140,contract:"PO-7712",end:"2027-01-29"}),
@@ -52,7 +52,7 @@ let WIX=null,WIXN=-1;
 const whoIdx=()=>{if(WIX&&WIXN===DIR.length)return WIX;const m=new Map();DIR.forEach((d,i)=>{if(d.name!=null&&!m.has(d.name))m.set(d.name,i);if(d.id!=null&&!m.has(d.id))m.set(d.id,i)});WIX=m;WIXN=DIR.length;return m};
 /* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict, data.js) people, teams and agents come from that tenant's
    rows through DATA.get, seen through a view with the fields the directory helpers draw (kind "agent" reads as the AI kind); a name
-   the tenant does not have resolves to nobody. Under core and on other screens the Meridian directory, exactly as before. */
+   the tenant does not have resolves to nobody. Under core and on other screens the Atlantic Systems directory, exactly as before. */
 const PVIEW=new WeakMap();
 const personView=r=>{if(!r)return null;let v=PVIEW.get(r);if(v)return v;const k=r.kind==="agent"?"ai":(r.kind||"human");
  v=Object.assign(Object.create(r),{kind:k,skills:Array.isArray(r.skills)?r.skills:[],hrs:r.hrs||(k==="ai"||k==="robot"?168:40),rate:r.rate||0,loc:r.loc||"",role:r.role||"",team:r.team||""});PVIEW.set(r,v);return v};
@@ -102,7 +102,7 @@ WORK.push({kind:"Invoices to approve",tag:"INV",fn:n=>INVOICES.filter(i=>i.st!==
 const WFC=new Map(),WFI=new Set();let WFV=-1,WFT=0,WFH=0;
 const wfClear=()=>{WFC.clear();WFT=0;WFI.forEach(f=>f())};
 /* PR-32 B2: on a tenant-aware screen under another tenant the work index is that tenant's open work items (DATA.get("work_items"))
-   owned by the person, grouped by kind; the Meridian providers are not asked, so no other company's work appears. */
+   owned by the person, grouped by kind; the Atlantic Systems providers are not asked, so no other company's work appears. */
 const tenantWork=n=>{const g={},out=[];TREAD.rows("work_items").filter(w=>w&&w.owner===n&&w.st!=="done").forEach(w=>{const kd=w.kind||"Work";
  if(!g[kd]){g[kd]={kind:kd,tag:w.tag||"WORK",rows:[]};out.push(g[kd])}
  g[kd].rows.push({id:w.id,t:w.t||w.n||w.id,sub:w.src||"",due:w.due||"",st:w.risk==="high"?"bad":w.risk==="med"?"warn":"info",hrs:+w.h||1,go:()=>go("tn_projects")})});return out};
@@ -287,7 +287,7 @@ window.stdChip=(key,detail)=>{const s=STD[key];if(!s)return"";const id=pid();ret
 const PROC={defs:{},reg(screen,def){this.defs[screen]=def}};window.PROC=PROC;
 /* PR-32 B2: the process behind a screen is tenant data (entity processes). On a tenant-aware screen under another tenant it is that
    tenant's process for the screen (a pack row with screen and steps); without one the card says so (a labeled gap, R18) and no other
-   company's process is shown. Under core and on other screens the Meridian model in PROC.defs, exactly as before. */
+   company's process is shown. Under core and on other screens the Atlantic Systems model in PROC.defs, exactly as before. */
 const procDef=screen=>TREAD.strict()?(TREAD.rows("processes").find(p=>p&&p.screen===screen&&Array.isArray(p.steps)&&p.steps.length)||null):PROC.defs[screen];
 PROC.def=procDef;
 const procGap=screen=>`<div class="k2-procgap" data-tenant-gap="processes">${card("How this works",TREAD.GAP,`<p class="muted small">This company has no process model for this screen yet. The gap is recorded; another company's process is never shown in its place.</p>`)}</div>`;

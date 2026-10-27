@@ -24,7 +24,7 @@ const PEOPLE=new Set();
 for(const m of (byName['kit.js']||{t:''}).t.matchAll(/\["([A-Z][a-z]+ [A-Z][A-Za-z'-]+)","/g))PEOPLE.add(m[1]);
 for(const m of (byName['kit2.js']||{t:''}).t.matchAll(/\bD\("([A-Z][a-z]+ [A-Z][A-Za-z'-]+)","human"/g))PEOPLE.add(m[1]);
 PEOPLE.add('Casey Rowan');
-const PEOPLE_RE=new RegExp('\\b('+[...PEOPLE].map(n=>n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+'|Meridian)\\b');
+const PEOPLE_RE=new RegExp('\\b('+[...PEOPLE].map(n=>n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+'|Atlantic Systems)\\b');
 /* real names (R32): the owner and his employer's organizations. Patterns are assembled from fragments so this file
    never spells them as one visible token (same convention as the naming rule in mod_plat_contract.js). */
 const REAL=[['Om','ar ','Ha','mid'],['Ha','mid'],['Fin','ancial Acc','ounting Found','ation'],['Fin','ancial Acc','ounting Stand','ards Board'],['Gov','ernmental Acc','ounting Stand','ards Board']].map(a=>a.join(''));

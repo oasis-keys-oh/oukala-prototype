@@ -23,7 +23,7 @@ LABELS = {"fact", "modeled", "hypothesis", "simulated"}
 DIMS = ["defined", "owned", "measured", "integrated", "automated", "governed"]
 AUG = {"rep": .6, "mtg": .25, "apr": .3, "ops": .35}  # modeled share an agent could take (same working defaults as ODX.AUG)
 BANNED = [r"\bCore\b", r"\bFabric\b", r"\bTrellis\b", "—"]
-# Meridian (core) source files a pack person may not share a full name with. Industry files are excluded.
+# Atlantic Systems (core) source files a pack person may not share a full name with. Industry files are excluded.
 SKIP = re.compile(r"(^mod_s_pack_|^mod_s_tenant|^mod_r32_tenant|^mod_r28_jy|^mod_r28_scn|^mod_r29_preset| 2\.js$)")
 
 
@@ -31,7 +31,7 @@ def slug(s):
     return re.sub(r"^-+|-+$", "", re.sub(r"[^a-z0-9]+", "-", str(s).lower()))
 
 
-def meridian_text():
+def atlantic_text():
     out = []
     for f in sorted(glob.glob(os.path.join(SRC, "*.js"))):
         b = os.path.basename(f)
@@ -46,8 +46,8 @@ def meridian_text():
 # PR-32 B0: generator rules for the 58 tenant entities (docs/data/entity-plan.md sections 3 and 4). The spec's "records"
 # section holds the industry words (services, components, vendors, risks, controls, courses and so on); the rules below
 # expand them into rows at the plan's demo volumes (hypothesis), linked to the pack's own people, projects, budget lines,
-# objectives, metrics and processes. Rows carry the Meridian field names the screens read, plus part (which Meridian store
-# the row mirrors; the same parts as src/mod_s_tenant_entities.js) and, where Meridian names a service, svcId as well.
+# objectives, metrics and processes. Rows carry the Atlantic Systems field names the screens read, plus part (which Atlantic Systems store
+# the row mirrors; the same parts as src/mod_s_tenant_entities.js) and, where Atlantic Systems names a service, svcId as well.
 # No "records" section: none of these entities is produced (the screens show a recorded gap, R18).
 # The same link, owner and people rules are repeated in the browser by tools/tests/data_entities.js.
 # ======================================================================================================================
@@ -1467,10 +1467,10 @@ def build(spec, other_orgs):
     for o in other_orgs:
         if o and o != info.get("org") and o in txt:
             E.append("the pack mentions another tenant: " + o)
-    for b, t in meridian_text():
+    for b, t in atlantic_text():
         for n in sorted(names):
             if len(n.split()) >= 2 and n in t:
-                E.append("name collision: " + n + " is a Meridian name in src/" + b)
+                E.append("name collision: " + n + " is an Atlantic Systems name in src/" + b)
 
     for e in ("projects", "budget_lines", "invoices", "metrics", "objectives", "key_results", "processes", "vocabulary", "workload", "value_chain", "demand", "pillars"):
         if not rows.get(e):
@@ -1529,8 +1529,8 @@ def main(argv):
     for f in files:
         with open(f, encoding="utf-8") as fh:
             specs.append((f, json.load(fh)))
-    # other tenants' organization names: every spec in the folder plus Meridian
-    orgs = ["Meridian Standards Foundation"]
+    # other tenants' organization names: every spec in the folder plus Atlantic Systems
+    orgs = ["Atlantic Systems"]
     for f in glob.glob(os.path.join(SPECS, "*.json")):
         with open(f, encoding="utf-8") as fh:
             orgs.append((json.load(fh).get("info") or {}).get("org"))

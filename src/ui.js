@@ -36,7 +36,7 @@ function aiChip(o){const id=pid();return `<button class="aichip" popovertarget="
 <div popover id="${id}" class="pop glass"><div class="eyebrow">AI output</div><h3>${esc(o.title||"Where this came from")}</h3><p class="muted">${esc(o.note||"Generated from the records below, within the access of the person viewing it.")}</p>
 <dl class="kv"><dt>Model</dt><dd>${esc(o.model||"Claude")}${o.verify?` · checked by ${esc(o.verify)}`:""}</dd><dt>Confidence</dt><dd>${o.conf?Math.round(o.conf*100)+"%":"Not scored"}</dd><dt>Data lineage</dt><dd><ul class="steps">${(o.src||["Invoices","Contracts","Purchase orders"]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></dd><dt>Guardrails</dt><dd><ul class="steps">${(o.guards||["Reads only what you can read","Cannot execute payments","Every action is audited"]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></dd></dl>
 <div class="row"><button class="btn" popovertarget="${id}" popovertargetaction="hide">Close</button><button class="btn quiet" data-go="tower">Open AI Control Tower</button></div></div>`}
-/* PR-32 B2: metrics through the tenant data layer. metricOf(id) is the Meridian METRICS record under core and on screens that are not
+/* PR-32 B2: metrics through the tenant data layer. metricOf(id) is the Atlantic METRICS record under core and on screens that are not
    tenant-aware yet (exactly as before); on a tenant-aware screen under another tenant it is that tenant's metric from DATA.get("metrics"),
    seen through a view that draws from the pack's own baseline, current value and target (no history is invented: the spark runs from
    baseline to now), or null when the tenant has no such metric, and the chip shows a labeled gap (R18). */

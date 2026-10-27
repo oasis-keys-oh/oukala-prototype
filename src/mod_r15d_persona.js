@@ -200,7 +200,7 @@ function genericHome(){
  const acts=(d.actions||[]).map(f=>G(f,null)).filter(Boolean);
  const fam={decide:"Decide",operate:"Operate",build:"Build and plan",assure:"Assure",request:"Request"}[d.family];
  const story=G(()=>R15D.storyFor&&R15D.storyFor(k),"")||p.who+".";
- return `<div class="screen">${hero(G(()=>NOW.day,"Today")+" · Meridian Standards Foundation",greeting()+", "+E(meOf().split(" ")[0]),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(p.n)}</b> · ${E(fam)}${d.readonly?" · read only":""}</span><button type="button" class="chip" data-r15d-vas-open>Change role</button>${p.sugg&&p.sugg[0]?`<button class="chip" data-ask="${E(p.sugg[0])}">${E(p.sugg[0])}</button>`:""}</div>`)}${lensNote()}
+ return `<div class="screen">${hero(G(()=>NOW.day,"Today")+" · Atlantic Systems",greeting()+", "+E(meOf().split(" ")[0]),story,`<div class="row"><span class="persona-note">Viewing as <b>${E(p.n)}</b> · ${E(fam)}${d.readonly?" · read only":""}</span><button type="button" class="chip" data-r15d-vas-open>Change role</button>${p.sugg&&p.sugg[0]?`<button class="chip" data-ask="${E(p.sugg[0])}">${E(p.sugg[0])}</button>`:""}</div>`)}${lensNote()}
  ${d.kpis&&d.kpis.length?`<div class="statrow r15d-kpis">${d.kpis.map(kpiTile).join("")}</div>`:""}
  <div class="grid g2" style="align-items:start">
   ${card("Do next","Default actions for this role",`<div class="needs">${acts.map(a=>`<div class="need"><div class="ico info">${ico("bolt")}</div><div><b data-role="story">${E(a[0])}</b><span class="muted" data-role="story">${E(a[1])}</span></div><div class="act"><button class="btn primary" data-needgo="${a[2].join("|")}">${E(a[3])}</button></div></div>`).join("")||'<p class="muted">Nothing assigned to this role yet.</p>'}</div>`)}

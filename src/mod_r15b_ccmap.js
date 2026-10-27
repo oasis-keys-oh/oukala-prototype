@@ -85,8 +85,8 @@ function view(){const c=syncMetrics(),G=gaps(),open=G.filter(x=>x.sev!=="info").
   card("Gaps","Unmapped, ownerless and shared cost centers, with the budget they affect.",gapList()),
   rollup(),
   procPane()])}</div>`}
-/* PR-32 B5: under a tenant other than Meridian this screen is drawn from the tenant's rows only (DATA.get), through the shared
-   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Meridian renders as before. */
+/* PR-32 B5: under a tenant other than Atlantic Systems this screen is drawn from the tenant's rows only (DATA.get), through the shared
+   tenant view kit FIN.tv (mod_plat_fin); a view with no rows of its own is a labeled gap (R18). Atlantic Systems renders as before. */
 function tvCc(){const E=esc,v=FIN.tv,R=DATA.get("cost_centers"),miss=r=>[!r.owner&&"no owner",(!r.backup||r.backup===r.owner)&&"no different backup",!r.gl&&"no GL segment",!(r.units||[]).length&&"no org unit"].filter(Boolean),G=R.filter(r=>miss(r).length);
  const cc=v.tw("cost_center"),by={};R.forEach(r=>{const k=r.owner||"No owner";(by[k]=by[k]||{n:k,c:0,u:[]}).c++;by[k].u.push(r.name)});
  return v.Sc("bud_ccmap","See what technology costs: "+cc+" mapping",R.length?`${R.length} ${DATA.term("cost_center",{many:true})}; ${G.length} lack an owner, a different backup, a GL segment or an org unit.`:"No cost centers in this sample company yet.",

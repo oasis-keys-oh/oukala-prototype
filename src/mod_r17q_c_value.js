@@ -39,7 +39,7 @@ function layerA(){
  const secs=SECS.map(s=>{const fs=s[2].map(k=>by[k]).filter(Boolean);return `<section class="r17q-sec"><div class="r17q-sech"><h3>${H(s[0])}</h3><span class="muted small">${H(s[1])}</span></div><div class="r17q-grid">${fs.map(figCard).join("")}</div></section>`}).join("");
  const lg=typeof legend==="function"?legend([["From this tenant's data","--good-f"],["Measured count times an editable assumption","--warn-f"]]):"";
  return `<div class="r17q-stack">${tiles}
-  <div class="r17q-note"><b>Layer A reads this tenant's registries when the page opens.</b> Nothing here is typed in. The tenant is a sample (Meridian Standards Foundation) with demonstration records, so counts are small: the same formulas read a customer's own records after setup. ${lg}</div>
+  <div class="r17q-note"><b>Layer A reads this tenant's registries when the page opens.</b> Nothing here is typed in. The tenant is a sample (Atlantic Systems) with demonstration records, so counts are small: the same formulas read a customer's own records after setup. ${lg}</div>
   ${secs}</div>`}
 
 /* ---------------- Layer B ---------------- */
@@ -200,7 +200,7 @@ function openPrint(){
  const k=(l,v)=>`<div class="r17q-pk"><span>${H(l)}</span><b class="num">${H(v)}</b></div>`;
  const el=document.createElement("div");el.className="r17q-pv";el.setAttribute("role","dialog");el.setAttribute("aria-label","Print view");
  el.innerHTML=`<div class="r17q-pvbar"><button type="button" class="btn primary" data-r17q-pvprint>Print or save as PDF</button><button type="button" class="btn" data-r17q-pvclose>Close</button></div>
- <article class="r17q-page"><header><div class="r17q-pvt">Value realized: business case model</div><div class="r17q-pvs">${H(G(()=>DATA.tenantInfo().org,"")||"Meridian Standards Foundation")} (sample) · ${H(d)} · <b>A model, not a measured result.</b> Inputs tagged illustrative are example assumptions; replace them with your data.</div></header>
+ <article class="r17q-page"><header><div class="r17q-pvt">Value realized: business case model</div><div class="r17q-pvs">${H(G(()=>DATA.tenantInfo().org,"")||"Atlantic Systems")} (sample) · ${H(d)} · <b>A model, not a measured result.</b> Inputs tagged illustrative are example assumptions; replace them with your data.</div></header>
  <div class="r17q-pks">${k("Annual hours returned",nf(M.H)+" h")}${k("Annual benefit",usd(M.full))}${k("Payback",M.pb==null?"Not within "+M.yrs+" y":nf(M.pb,1)+" months")}${M.quoted?k(M.yrs+"-year NPV",usd(M.npv))+k("ROI",M.roi==null?"n/a":nf(M.roi*100)+"%"):k("NPV and ROI",Q.QUOTE_MSG)}</div>
  <div class="r17q-pcols"><div class="r17q-pcol"><h4>Assumptions</h4><table class="r17q-pt2">${INPUTS.map(i=>`<tr><td>${H(i.l)}</td><td class="r17q-pn">${nf(I[i.k],2)} <span>${H(i.u)}</span></td><td>${ed.has(i.k)?"your data":"illustrative"}</td></tr>`).join("")}</table></div>
  <div class="r17q-pcol"><h4>Sensitivity: low, base, high</h4>${sensSVG(sv)}<h4>Formulas</h4><table class="r17q-pt2">${L.filter(l=>["lab","tools","out","full","lic","npv","roi","pb"].includes(l.id)).map(l=>`<tr><td>${H(l.l)}</td><td class="r17q-pn">${H(Q.fmtLine(l))}</td></tr><tr class="r17q-fr"><td colspan="2">${H(l.fm)}</td></tr>`).join("")}</table></div></div>

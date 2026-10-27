@@ -1,6 +1,6 @@
 /* ===== mod_s_packgen: Bring your company (DC-43). window.PACKGEN builds a full tenant pack in the browser from a few answers,
    runs the same checks as tools/generators/gen_pack.py (links, R12 owner and different backup, R25 metric definitions, R26 six
-   maturity dimensions, no em dash, no banned or real names, no other tenant's organization, no collision with Meridian people)
+   maturity dimensions, no em dash, no banned or real names, no other tenant's organization, no collision with Atlantic Systems people)
    and registers it through the path every pack takes (DATA.pack, DATA.addTenant), so the tenant-aware screens show it.
    API:  PACKGEN.industries() · PACKGEN.match(text) · PACKGEN.spec(answers,opts) · PACKGEN.build(spec) -> {pack,errors,warnings}
          PACKGEN.fromAnswers({name,industry,size,pain,role},{id,switch}) -> {ok,id,pack,errors,warnings,industry,fallback}

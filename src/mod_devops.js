@@ -1,7 +1,7 @@
 /* DevOps and master maps: dev_pipe, itom_dev, plat_map, plat_data. Work item to release closed; the change gate picks standard, normal or
    emergency from the run's evidence. PR-32 B6: another tenant has no runs or releases, so it gets tenScreen (its changes and templates). */
 (function(){
-/* TROWS.who: a Meridian person on a definition screen becomes the active tenant's person with the closest role; other text stays */
+/* TROWS.who: an Atlantic Systems person on a definition screen becomes the active tenant's person with the closest role; other text stays */
 if(!TROWS.who){const K={};TROWS.who=n=>{if(!n||TROWS.core())return n;const hs=DATA.get("people").filter(p=>p&&p.kind==="human"),t=DATA.tenant();let c=K[t];if(!c||c._s!==hs.length)c=K[t]={_s:hs.length};if(n in c)return c[n];
 const cp=DATA.get("people",{tenant:"core"}),ro=DATA.get("role_assignments",{tenant:"core"}).find(x=>x&&x.holders&&(String(x.name).toLowerCase()===n.toLowerCase()||(x.aliases||[]).includes(n))),hw=ro&&((ro.holders||[]).find(y=>y.kind==="primary")||{}).who,d=cp.find(p=>p&&p.name===(hw||n));if(!d)return c[n]=n;if(!hs.length)return c[n]="Not assigned yet";
 const ws=x=>String(x||"").toLowerCase().split(/\W+/).filter(w=>w.length>2),m=ws(d.role),lo=/^(lead|manager|head|officer|director|senior|and)$/;let b=null,bs=0;

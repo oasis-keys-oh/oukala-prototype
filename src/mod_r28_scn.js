@@ -1,5 +1,5 @@
 /* ===== mod_r28_scn: demo scenarios. The industry journeys and workflows (healthcare, mining, storage and backup) are separate demos for separate customers.
-   By default only the Meridian sample is loaded. Choose a scenario on the Journey maps screen, from search, from the tenant switcher, or with
+   By default only the Atlantic Systems sample is loaded. Choose a scenario on the Journey maps screen, from search, from the tenant switcher, or with
    ?tenant= (or ?scenario=) health|mining|storage in the address. Switching removes the previous scenario's journeys, workflows and personas and loads the new one.
    One tenant model (DC-31): DATA owns the active tenant. SCN.set and TENANT.switch both call DATA.setTenant; a DATA change listener swaps the
    journeys, workflows and personas in place, and one tenantChange hook re-renders the same screen with the user's state kept (CL-56, no reload).
@@ -8,7 +8,7 @@
 const W=window,D=document;const X=W.JYX;if(!X||!W.WFX)return;
 const G=(f,d)=>{try{const r=f();return r===undefined?d:r}catch(e){return d}};
 const SCN=W.SCN={cur:"core",list:{
- core:{n:"Meridian Standards Foundation",d:"A standards publisher: a standard from the first need to renewal, plus the internal IT journeys."},
+ core:{n:"Atlantic Systems",d:"A standards publisher: a standard from the first need to renewal, plus the internal IT journeys."},
  health:{n:"Healthcare",ind:"Healthcare",d:"Larkspur Health System (fictional): from the first symptom to the last payment, plus the detailed patient access and discharge journeys."},
  mining:{n:"Mining and operational technology",ind:"Mining",d:"Redstone Resources (fictional): from the mine plan to cash received and the site returned, plus maintenance and safety."},
  storage:{n:"Storage and backup",ind:"Storage and backup",d:"Corvane Data Protection (fictional): from the first data risk to the end of the relationship, plus evaluation and recovery."}}};

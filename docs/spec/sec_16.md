@@ -36,7 +36,7 @@ Decision ids D-01 to D-24 are referenced from sections 13, 14 and 15. "Needed by
 ## 16.2 Naming and wording rules that apply to every decision
 
 1. The product owner's personal name never appears in the product, data, code, fixtures or commits. The sample executive persona is Casey Rowan and commits use a neutral author.
-2. The first customer is a sample standards foundation; the sample tenant is Meridian Standards Foundation with the Standards Portal and the Standards Platform as sample systems. The product never uses the customer's professional-standards vocabulary, abbreviations or standard-setter names; a lint in CI enforces the banned list.
+2. The first customer is a sample standards foundation; the sample tenant is Atlantic Systems with the Standards Portal and the Standards Platform as sample systems. The product never uses the customer's professional-standards vocabulary, abbreviations or standard-setter names; a lint in CI enforces the banned list.
 3. No chatty AI voice in the product: data-driven insight only; AI-authored prose appears on request and is labeled.
 4. AI agents get human first names plus role titles, are visually distinct from humans, and always have a named human sponsor and backup.
 

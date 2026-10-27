@@ -13,9 +13,9 @@ Falconaire is to be a cloud-hosted software-as-a-service (SaaS) application wher
 Decision 4 (Omar, 2026-10-19) set the isolation default: **a shared database with row-level security (RLS) per tenant, with a path to dedicated databases for customers who need them.** Decision 5 parked cross-tenant access (service providers, mergers and acquisitions, parent and child organizations); the design here must not make those impossible later (R46 to R48).
 
 What exists today (prototype fact, 2026-10-19):
-- There is no database and no sign-in. Sample data is in the page. Tenants are four fictional demo scenarios (`core` Meridian Standards Foundation, `health` Larkspur, `mining` Redstone, `storage` Corvane), switched by `SCN.set`.
+- There is no database and no sign-in. Sample data is in the page. Tenants are four fictional demo scenarios (`core` Atlantic Systems, `health` Larkspur, `mining` Redstone, `storage` Corvane), switched by `SCN.set`.
 - `DATA` in `src/platform.js` is a tenant-scoped data access layer (`DATA.get(entity,{tenant,where})`, `DATA.setTenant`) that returns an empty list and records a gap, never another tenant's rows (R18). It is the seam where a real data layer will plug in.
-- Only some screens read through it. Journey maps, Org chart and Build list follow the tenant; most screens still show Meridian data (R16 gap).
+- Only some screens read through it. Journey maps, Org chart and Build list follow the tenant; most screens still show Atlantic Systems data (R16 gap).
 
 The isolation model has to be right before data goes in, because changing it later means moving every customer's data.
 

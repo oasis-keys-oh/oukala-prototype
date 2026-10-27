@@ -1,7 +1,7 @@
 /* ===== mod_s_tenant_entities: the 58 tenant entities of PR-32 batch B0 (docs/data/entity-plan.md section 3). No CSS, no screens.
-   Each entity is defined on DATA with a core getter over the Meridian sources the screens read today, so Meridian output is
+   Each entity is defined on DATA with a core getter over the Atlantic Systems sources the screens read today, so Atlantic Systems output is
    unchanged and a screen can move to DATA.get(entity) without a new data source. 50 record entities, 8 configuration entities.
-   One entity can gather several Meridian stores (the plan's "core getter source" column). Each store is a part: a core row keeps
+   One entity can gather several Atlantic Systems stores (the plan's "core getter source" column). Each store is a part: a core row keeps
    its own object (reads and writes reach the source) and its part is known through TENANT_ENTITIES.part(entity, row); a row
    with no usable id, or an id already taken by an earlier part, gets a read-through copy with a made-up id ("<part>:<n>" or
    "<part>:<old id>"), the part, and srcId (the old id). Tuples and dictionaries become rows the same way.

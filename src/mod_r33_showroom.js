@@ -22,10 +22,10 @@ const CLAIM={
    say (exactly two sentences), do (one interaction), claims (chips). Optional: persona (role key), tenant, approve {kind,id}
    (the persona is then chosen so the Approve click passes group routing, DC-37), setup ("name:arg", see SHOW.setups),
    kids (optional child beats, outside the cut budget).
-   tour: id, title, mins, who, blurb, beats; optional persona, tenant (default core: Meridian), lens, group (main, lens, brief, part). */
+   tour: id, title, mins, who, blurb, beats; optional persona, tenant (default core: Atlantic Systems), lens, group (main, lens, brief, part). */
 const DEMOS=[
 {id:"coo",title:"COO thin thread",mins:15,who:"COO and operations leaders",persona:"coo",lens:"coo",
- blurb:"From the CEO's objectives to the dollar, the work, the agents and the next build. Ten existing screens on the fictional Meridian sample. These are the wedge screens.",
+ blurb:"From the CEO's objectives to the dollar, the work, the agents and the next build. Ten existing screens on the fictional Atlantic Systems sample. These are the wedge screens.",
  beats:[
  {id:"set.1",act:"Set",point:"The CEO's objectives, each with a measure",secs:90,go:"exe_strat",
   say:["These are the company objectives, each with an owner and a measurable outcome.","The alignment score is a sample value, so treat it as modeled, not measured."],
@@ -58,10 +58,10 @@ const DEMOS=[
   say:["You describe the job in plain words and the studio builds it inside the guardrails.","The interview is scripted in this prototype, so show it as a preview."],
   do:"Press Start the click-through demo.",claims:["simulated"]}]},
 /* DC-32: built from the DC-33 inventory (docs/inventory/maturity-tour-map.md). Seven beats; the Process library beat is new and uses an
-   existing screen. Every screen on this tour shows the Meridian sample in every tenant, so the tour runs on Meridian and says so. */
+   existing screen. Every screen on this tour shows the Atlantic Systems sample in every tenant, so the tour runs on Atlantic Systems and says so. */
 {id:"maturity",title:"Process maturity and roadmap",mins:8,who:"COO, CIO and PMO audiences",persona:"coo",tenant:"core",
- tenantWhy:"Four of these screens are not tenant-aware yet, so the tour runs on the Meridian sample in every tenant.",
- blurb:"Pick a process, see its maturity record and target, the measure behind the score, the roadmap and what to build first. Checked against the maturity inventory (DC-33); runs on the Meridian sample.",
+ tenantWhy:"Four of these screens are not tenant-aware yet, so the tour runs on the Atlantic Systems sample in every tenant.",
+ blurb:"Pick a process, see its maturity record and target, the measure behind the score, the roadmap and what to build first. Checked against the maturity inventory (DC-33); runs on the Atlantic Systems sample.",
  beats:[
  {id:"m.1",act:"Pick",point:"Pick any process and find it by number",secs:60,go:"ppl_jrny",tab:"Processes",
   say:["Every process has a stable number such as P-014 and a link you can share.","Press Ctrl K and type a number to jump straight to it."],
@@ -70,7 +70,7 @@ const DEMOS=[
   say:["The process library scores every library process on six dimensions: defined, owned, measured, integrated, automated and governed.","Levels are computed from signals in each process and the counts grow as screens add their processes, so treat them as modeled."],
   do:"Open one process to see its six dimensions and Year 1 target.",claims:["modeled","fact"]},
  {id:"m.3",act:"Level",point:"Maturity today against target, on one shared scale",secs:70,go:"exe_mat",tab:"Models and levels",
-  say:["Each capability is scored on one shared scale, today against the target.","Capability levels are sample values entered for Meridian, so present them as a conversation starter."],
+  say:["Each capability is scored on one shared scale, today against the target.","Capability levels are sample values entered for Atlantic Systems, so present them as a conversation starter."],
   do:"Open one model to see its levels.",claims:["modeled"]},
  {id:"m.4",act:"Evidence",point:"Why that level: a defined measure",secs:60,go:"metrics",
   say:["Every measure has an owner, a formula and a baseline.","Open a formula chip to see exactly how the number is built."],
@@ -161,7 +161,7 @@ function clickTab(txt){if(!txt)return false;const want=txt.toLowerCase();const l
 const cur=()=>{const d=BY[st.demo];if(!d)return null;const b=d.beats[st.i];return st.kid!=null&&b&&b.kids&&b.kids[st.kid]?b.kids[st.kid]:b};
 function tenantChip(d,b){const t=b.tenant||d.tenant||"core",mode=G(()=>DATA.screenMode(b.go),"core");
  let h=`<span class="sr-chip sr-ten" title="${E(d.tenantWhy||"The tour runs on this tenant. Every name and figure is fictional sample data.")}">${E(tName(t))}${st.forced?" (switched for this tour)":""}</span>`;
- if(t!=="core"&&mode==="core")h+=`<span class="sr-chip sr-warnchip" title="This screen is not tenant-aware yet, so it shows the Meridian sample under every tenant.">Meridian-only screen</span>`;
+ if(t!=="core"&&mode==="core")h+=`<span class="sr-chip sr-warnchip" title="This screen is not tenant-aware yet, so it shows the Atlantic Systems sample under every tenant.">Atlantic-only screen</span>`;
  return h}
 function lensStrip(){const L=st.lens&&ST.lensOf?ST.lensOf(st.lens):null;if(!L)return"";
  const ms=(L.metrics||[]).map(id=>G(()=>{const m=METRICS[id];return m?`<span class="sr-met" title="${E(m.n)}: sample value, modeled"><b>${E(mfmt(m))}</b> ${E(m.n)}</span>`:""},"")).join("");
@@ -301,7 +301,7 @@ function demoCard(d){return `<article class="sr-card glass" data-sr-card="${E(d.
  <div class="row"><button type="button" class="btn primary" data-sr-start="${d.id}">Start the tour</button><button type="button" class="btn quiet" data-sr-start="${d.id}" data-sr-mode="rehearse">Rehearse</button>${ST.leaveBehind?`<button type="button" class="btn quiet" data-sr-leave="${d.id}">Leave-behind</button>`:""}</div></article>`}
 ST.demoCard=demoCard;
 function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
- const story=`Guided tours over screens that already exist. Tours run on the fictional ${G(()=>DATA.tenant()!=="core",false)?"sample company each tour names":"Meridian Standards Foundation"} unless a tenant brief says otherwise, and the bar says which. Nothing on a tour is a live connection, and every number carries a label.`;
+ const story=`Guided tours over screens that already exist. Tours run on the fictional ${G(()=>DATA.tenant()!=="core",false)?"sample company each tour names":"Atlantic Systems"} unless a tenant brief says otherwise, and the bar says which. Nothing on a tour is a live connection, and every number carries a label.`;
  const extra=ST.home.map(f=>G(()=>f(),"")).join("");
  /* DC-40: experiences come first (the buyer drives); guided tours stay as rehearsal and backup */
  const exp=ST.expHome?G(()=>ST.expHome(),""):"";
@@ -312,13 +312,13 @@ function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
  <div class="grid g2" style="align-items:start">${main.map(demoCard).join("")}</div>${extra}</section>
  <div class="grid g2" style="align-items:start">
  <section class="sr-card glass"><h3>How labels work</h3><p class="muted small">A label sits on every beat that shows a number or a capability.</p><dl class="kv">${Object.keys(CLAIM).map(k=>`<dt>${chip(k)}</dt><dd>${E(CLAIM[k].d)}</dd>`).join("")}</dl></section>
- <section class="sr-card glass"><h3>Before you present</h3><ul class="sr-ul"><li>Starting a tour switches to the tenant the tour needs (Meridian unless it says otherwise) and the role it is told from, closes chat and notification panels and hides pop-up alerts. The bar names the tenant; exit restores your tenant and role.</li>
+ <section class="sr-card glass"><h3>Before you present</h3><ul class="sr-ul"><li>Starting a tour switches to the tenant the tour needs (Atlantic Systems unless it says otherwise) and the role it is told from, closes chat and notification panels and hides pop-up alerts. The bar names the tenant; exit restores your tenant and role.</li>
   <li>Keys: Right and Left arrows or Page Down and Page Up move between beats, R opens the beat list, T hides the talk track, A toggles audience mode, G opens a beat's optional view, Esc exits. On VibeCheck the arrows drive the click-through; Page Down still moves the tour.</li>
   <li>Modes: Presenter shows the talk track and timer; Audience hides both; Rehearse adds a timer per beat and keeps the times. Presenter window puts the talk track in a second window and turns this one into the audience view.</li>
   <li>Open any beat from the lists above to start mid-tour. A link such as <code>?showroom=coo&amp;beat=4</code> does the same; add <code>&amp;mode=audience</code> or <code>&amp;mode=rehearse</code>.</li>
   <li>The timer is a guide. A tour that runs past its budget turns amber, then red.</li></ul></section></div>
  <section class="sr-card glass" aria-label="Known limits and what changed after the first meeting"><h3>Known limits, and what is done about them</h3><ul class="sr-ul">
-  <li>Most screens are not tenant-aware yet. A tour that needs the Meridian sample says so on its card and in the bar, switches to it on start and switches back on exit; under another tenant a Meridian-only screen is marked in the bar.</li>
+  <li>Most screens are not tenant-aware yet. A tour that needs the Atlantic Systems sample says so on its card and in the bar, switches to it on start and switches back on exit; under another tenant an Atlantic Systems-only screen is marked in the bar.</li>
   <li>The talk track sat on the audience's screen. Use Presenter window to move it to a second window, or Audience mode.</li>
   <li>A presentation clicker sends Page Down and Page Up; both move the tour, even when the VibeCheck chat has focus. VibeCheck beats keep its chat open because the interview lives there.</li>
   <li>Approvals are routed to groups now. A beat that clicks Approve switches to a role in that group and says which.</li></ul></section></div>`}

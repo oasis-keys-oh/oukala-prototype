@@ -6,7 +6,7 @@ Tenant isolation in this prototype is **simulated**: one browser page, sample da
 
 ## 1. Where tenant data lives
 
-All Meridian sample data is held in top-level `const` bindings of the core files (`data.js`, `data2.js`, `kit2.js`) or on `S`. A `const` cannot be reassigned, so a tenant switch can only mutate these in place or route reads around them. Counts below come from a static scan of `src/mod_*.js` (references per module). "Captured at load" is a heuristic: a top-level `const`/`let` whose initializer reads the global outside a function, so the value is fixed when the module loads. Treat it as a candidate list, not proof.
+All Atlantic Systems sample data is held in top-level `const` bindings of the core files (`data.js`, `data2.js`, `kit2.js`) or on `S`. A `const` cannot be reassigned, so a tenant switch can only mutate these in place or route reads around them. Counts below come from a static scan of `src/mod_*.js` (references per module). "Captured at load" is a heuristic: a top-level `const`/`let` whose initializer reads the global outside a function, so the value is fixed when the module loads. Treat it as a candidate list, not proof.
 
 | Global | Defined in | Holds | Modules reading it | Captured at load (candidates) |
 |---|---|---|---|---|
@@ -27,11 +27,11 @@ All Meridian sample data is held in top-level `const` bindings of the core files
 | `WFX.defs` | mod_flow | Workflows | 6 | none |
 | `AGENTS` | data.js | Agent catalog | 4 | mod_people, mod_plat_contract |
 
-Three arrays are tenant-swapped in place today by `SCN` (`mod_r28_scn.js`): `WFX.defs`, `JYX.JY.list` and `JYX.PERSONAS`. Everything else above is Meridian-only.
+Three arrays are tenant-swapped in place today by `SCN` (`mod_r28_scn.js`): `WFX.defs`, `JYX.JY.list` and `JYX.PERSONAS`. Everything else above is Atlantic-only.
 
 ## 2. Who re-reads the tenant at render
 
-Re-read at render (follow the tenant): `mod_r31_jzorg` (org chart with agent assist, `TENANT.orgs`), `mod_r31_jzx` (build list, `TENANT.name`), `mod_r31_jx` (registers generated workflows into the active pack), `mod_r30_jov` (resets its overlay when `SCN.cur` changes), `mod_r32_orgprop` (cache keyed by tenant), `mod_r32_num_b` (record numbers carry a tenant), `mod_r33_showroom` (tours start on Meridian).
+Re-read at render (follow the tenant): `mod_r31_jzorg` (org chart with agent assist, `TENANT.orgs`), `mod_r31_jzx` (build list, `TENANT.name`), `mod_r31_jx` (registers generated workflows into the active pack), `mod_r30_jov` (resets its overlay when `SCN.cur` changes), `mod_r32_orgprop` (cache keyed by tenant), `mod_r32_num_b` (record numbers carry a tenant), `mod_r33_showroom` (tours start on Atlantic Systems).
 
 Version-keyed caches and how they now subscribe:
 | Cache | Before | Now |
@@ -44,7 +44,7 @@ Version-keyed caches and how they now subscribe:
 
 The switch is live. `DATA` owns the active tenant; `SCN.set` and `TENANT.switch` both go through `DATA.setTenant`; a `DATA` change listener in `SCN` swaps the three arrays; one `tenantChange` hook re-renders the same screen with `S` kept (screen, tabs, filters). Reload stays only as an interim fallback for a demo machine that cannot switch live: `TENANT.reloadTo(id)`, or `?tenant=` (alias of `?scenario=`) in the address.
 
-Screens move to `DATA.get` one by one. Until a screen moves, it is listed as `core` in the screen registry and, under any other tenant, shows a label: the tenant name and "This screen is not tenant-aware yet and still shows the Meridian sample data." That keeps R17 (tenant always visible) and is honest about R18 while the migration runs.
+Screens move to `DATA.get` one by one. Until a screen moves, it is listed as `core` in the screen registry and, under any other tenant, shows a label: the tenant name and "This screen is not tenant-aware yet and still shows the Atlantic Systems sample data." That keeps R17 (tenant always visible) and is honest about R18 while the migration runs.
 
 ## 4. Loader spike: Healthcare on three screens
 
@@ -56,26 +56,26 @@ Screens move to `DATA.get` one by one. Until a screen moves, it is listed as `co
 | `tn_people` People directory (tenant view) | people | 9 people and agents (function leaders from `TENANT.orgs` plus the pack) |
 | `tn_metrics` Metrics and objectives (tenant view) | metrics, objectives | 4 metrics, 2 objectives |
 
-Mining and storage have people, journeys, workflows and personas only; their projects, budget lines, metrics, objectives, invoices and processes are recorded gaps and the screens say so. A gap is never filled with Meridian rows (R18). The full industry packs are wave 2 (DC-11, DC-22, DC-23).
+Mining and storage have people, journeys, workflows and personas only; their projects, budget lines, metrics, objectives, invoices and processes are recorded gaps and the screens say so. A gap is never filled with Atlantic Systems rows (R18). The full industry packs are wave 2 (DC-11, DC-22, DC-23).
 
 ## 5. The DATA slice (CL-55, DC-09)
 
 Entities defined over the existing globals in `mod_s_tenant.js`: `projects`, `budget_lines`, `invoices`, `people`, `metrics`, `objectives`, `processes`, `workflows`, `journeys`, `personas`. Industry tenants get `journeys`, `workflows`, `personas` and `people` from content that already exists (`SCN.pack`, `TENANT.orgs`).
 
-Pack format: `DATA.pack(tenantId, {entity: rows | () => rows}, {org, short, kind})`. Each row carries the entity key (`id`). `DATA.validate(tenant)` reports unknown entities, missing or duplicate keys, missing required fields, and any other tenant's organization name inside the pack; gaps are warnings. `DATA.snapshot(tenant)` gives counts and ids per entity. `tools/tests/tenant.js` checks the Meridian core snapshot in `tools/tests/tenant_core_snapshot.json` (exact ids for record entities; no lost ids for the growing `metrics` registry; counts only for `processes` and `workflows`, which register lazily while the page settles).
+Pack format: `DATA.pack(tenantId, {entity: rows | () => rows}, {org, short, kind})`. Each row carries the entity key (`id`). `DATA.validate(tenant)` reports unknown entities, missing or duplicate keys, missing required fields, and any other tenant's organization name inside the pack; gaps are warnings. `DATA.snapshot(tenant)` gives counts and ids per entity. `tools/tests/tenant.js` checks the Atlantic Systems core snapshot in `tools/tests/tenant_core_snapshot.json` (exact ids for record entities; no lost ids for the growing `metrics` registry; counts only for `processes` and `workflows`, which register lazily while the page settles).
 
-Screen registry: `DATA.screen(id, {mode, entities})`, `DATA.screens()`, `DATA.screenMode(id)`. Modes: `data` (reads through DATA: the three spike screens and Tenancy), `tenant` (follows the tenant another way: Journey maps on every tab, Org chart with agent assist), `core` (Meridian only, labeled). The Tenancy screen (`tn_admin`) shows the registry, entity counts per tenant, gaps, pack validation and the demo identity.
+Screen registry: `DATA.screen(id, {mode, entities})`, `DATA.screens()`, `DATA.screenMode(id)`. Modes: `data` (reads through DATA: the three spike screens and Tenancy), `tenant` (follows the tenant another way: Journey maps on every tab, Org chart with agent assist), `core` (Atlantic Systems only, labeled). The Tenancy screen (`tn_admin`) shows the registry, entity counts per tenant, gaps, pack validation and the demo identity.
 
 ## 6. Identity and membership (CL-63, demo side)
 
-`IDENT` holds three fictional identities. Casey Rowan (demo presenter) is a member of all four tenants (Executive and Tenant admin on Meridian, Demo viewer elsewhere); Jordan Lee only of Meridian (Architect); Grace Oduya only of Larkspur Health (Executive). Roles map to actions (`view`, `approve`, `configure`); anything not granted is denied. `DATA.guard` refuses a switch to a registered tenant without a membership, and the switcher, the scenario chooser and search only offer member tenants. Simulated, labeled on screen.
+`IDENT` holds three fictional identities. Casey Rowan (demo presenter) is a member of all four tenants (Executive and Tenant admin on Atlantic Systems, Demo viewer elsewhere); Jordan Lee only of Atlantic Systems (Architect); Grace Oduya only of Larkspur Health (Executive). Roles map to actions (`view`, `approve`, `configure`); anything not granted is denied. `DATA.guard` refuses a switch to a registered tenant without a membership, and the switcher, the scenario chooser and search only offer member tenants. Simulated, labeled on screen.
 
 ## 7. Leakage test findings (CL-56, `tools/tests/tenant_leak.js`)
 
-- The module owner badge in every screen header (`mod_own2`) showed a Meridian owner under every tenant. Fixed: no badge under another tenant until owner records are tenant-scoped.
-- Agent Action (`orgdesign`) presets per tenant but its gaps and options read the Meridian sample. Classified `core` (labeled) instead of tenant-aware.
-- Name collision: the Larkspur chief financial officer shared a name with a Meridian person in the onboarding sample. Renamed to Helena Marsh. Tenant packs should check names against the Meridian corpus (wave 2).
-- Search: about 1,789 Meridian records are returned under other tenants because the legacy search providers are not tenant-aware. Reported by the test, not failed. Industry tenants' records never appear under another tenant.
+- The module owner badge in every screen header (`mod_own2`) showed an Atlantic Systems owner under every tenant. Fixed: no badge under another tenant until owner records are tenant-scoped.
+- Agent Action (`orgdesign`) presets per tenant but its gaps and options read the Atlantic Systems sample. Classified `core` (labeled) instead of tenant-aware.
+- Name collision: the Larkspur chief financial officer shared a name with an Atlantic Systems person in the onboarding sample. Renamed to Helena Marsh. Tenant packs should check names against the Atlantic Systems corpus (wave 2).
+- Search: about 1,789 Atlantic Systems records are returned under other tenants because the legacy search providers are not tenant-aware. Reported by the test, not failed. Industry tenants' records never appear under another tenant.
 - Not tenancy, found on the way: opening `plat_self` adds project PR5 with no run-cost record, after which the budget screens throw (`runTot` reads `run.PR5`). The leak test sweeps legacy screens on a fresh page to stay clear of it.
 
 ## 8. Suggested migration order

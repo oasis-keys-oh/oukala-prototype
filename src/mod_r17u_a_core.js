@@ -196,7 +196,7 @@ M0("m_ben_net","Net benefit, risk adjusted","Σ over initiatives of (planned ben
 M0("m_dash_bound","Dashboard tiles bound to a governed source","Tiles whose source is a certified metric or a registry measure with an owner ÷ all tiles on published dashboards × 100","%",100,100,90,"max",100,OWN.dash[0],REM("Rebind a tile to a metric or registry measure","Portfolio Agent",null,"SOP-DASH-01"),["Dashboards"]);
 M0("m_dash_owned","Dashboards with an owner and a different backup","Published dashboards with a named person as owner and another named person as backup ÷ published dashboards × 100","%",100,100,80,"max",100,OWN.dash[0],REM("Name a backup for each dashboard without one","Portfolio Agent",null,"SOP-DASH-02"),["Dashboards"]);
 M0("m_dash_pubq","Dashboard publications waiting on the group","Dashboard publications sent to the approver group and not yet decided","pubs",1,0,3,"min",6,OWN.dash[0],REM("Nudge the approver group","Portfolio Agent",null,"SOP-DASH-03"),["Dashboards"]);
-U.syncMetrics=function(){if(typeof METRICS==="undefined"||DATA.tenant()!=="core")return; /* the Meridian metrics never take another tenant's figures */
+U.syncMetrics=function(){if(typeof METRICS==="undefined"||DATA.tenant()!=="core")return; /* the Atlantic Systems metrics never take another tenant's figures */
  const bs=B().ben,n=bs.length||1;
  const cov=bs.filter(b=>{const f=flagsOf(b).map(x=>x.k);return !f.includes("owner")&&!f.includes("backup")&&!f.includes("baseline")}).length;
  const at=U.attention().length;

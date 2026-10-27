@@ -2,7 +2,7 @@
 
 Updated 2026-10-20 (CL-47) to match the code and `docs/PLATFORM_RULES.md`. Where this guide and the rules disagree, the rules win. Contracts of the shared foundation are in `docs/ARCHITECTURE.md`; how each rule is checked is in `docs/enforcement.md`. The product name is Falconaire, read from `BRAND.name` (`src/brand.json`); "Oukala" survives only in storage keys, ids and class names so saved state keeps working.
 
-Falconaire is a database-free, single-page prototype of an AI-native work platform. Every application on it (projects, service, change, risk, finance, people, facilities, clinical or site operations) is built from the same five objects: record, process, participant, metric, tenant, plus one shared chat. Sample data is fictional: the core tenant is Meridian Standards Foundation and the sample executive is Casey Rowan.
+Falconaire is a database-free, single-page prototype of an AI-native work platform. Every application on it (projects, service, change, risk, finance, people, facilities, clinical or site operations) is built from the same five objects: record, process, participant, metric, tenant, plus one shared chat. Sample data is fictional: the core tenant is Atlantic Systems and the sample executive is Casey Rowan.
 
 ## 1. Files and build
 

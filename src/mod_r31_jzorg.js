@@ -49,7 +49,7 @@ function teamCol(t){const st=t.st;
   <div class="jo-roles">${t.rl.map(ro=>roleCard(t,ro,t.ext)).join("")}</div></div>`}
 
 
-/* Meridian only: the real org chart (reporting lines, 15 governed agents) with the recommendations drawn on it */
+/* Atlantic Systems only: the real org chart (reporting lines, 15 governed agents) with the recommendations drawn on it */
 const realOrg=()=>!!(W.SCN&&SCN.cur==="core"&&W.ORGX&&ORGX.chartPane&&ORGX.propFor);
 function realChart(){const OS=S.org;OS.tab="chart";OS.outline=OS.outline||false;if(!O.propInit){O.propInit=1;OS.props=true;OS.k=0;try{ORGX.openProp()}catch(e){console.error(e)}setTimeout(()=>{try{ORGX.focusProp()}catch(e){}},300)}
  return `<section class="jo-chart real" aria-label="The organization's chart with recommended agents and robots"><p class="small muted jo-realnote">This is the organization's real chart. Dashed cards are agents and robots recommended from the journey maps, each under the head of the team it would help. Open one for its build summary. Proposed, not built; figures are modeled.</p><div class="jo-jump" role="group" aria-label="Jump to a recommendation">${ORGX.propAll().map(pr=>`<button type="button" class="chip" data-r32-jump="${E(pr.id)}" title="${E(pr.title)} under ${E(pr.head)}">${E(pr.k==="agent"?"Agent":"Robot")}: ${E(pr.title)} <span class="muted">under ${E(pr.head)}</span></button>`).join("")}</div>${ORGX.chartPane()}</section>`}

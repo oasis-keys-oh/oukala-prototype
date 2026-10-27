@@ -26,7 +26,7 @@ const FUNC_SEED=[["Standards","Elena Marsh",["Editors","Editorial"]],["Finance",
  ["Membership","Maya Ortiz",["PMO"]],["Technology","Jordan Lee",["Architecture","Ops team","Platform team"]],["IT service","Tom Becker",["Service desk","Change management"]],
  ["Security","Rina Okafor",["Security"]],["Facilities","Ruben Castillo",["People operations"]],["People","Joanna Pierce",["People operations"]]];
 /* PR-32 B2: on a tenant-aware screen under another tenant (TREAD.strict) the directories are that tenant's: people and teams through
-   DATA.get, functions from its organization units (owner and backup by person id), agents from its people and agents. Meridian otherwise. */
+   DATA.get, functions from its organization units (owner and backup by person id), agents from its people and agents. Atlantic Systems otherwise. */
 const tPerson=id=>(TREAD.rows("people").find(p=>p&&(p.id===id||p.name===id))||{}).name||"";
 const tAgent=n=>{const a=TREAD.rows("agents").find(x=>x&&x.n===n);if(a)return{sponsor:a.owner||"",backup:a.bak||""};const p=TREAD.rows("people").find(x=>x&&x.name===n&&(x.kind==="agent"||x.kind==="robot"));return p?{sponsor:p.sponsor||"",backup:p.backup||""}:null};
 O.functions=function(){if(TREAD.strict())return TREAD.rows("org_units").map(u=>({id:slug(u.label||u.id),name:u.label||u.id,lead:tPerson(u.ownerId),backup:tPerson(u.backupId),teams:[]}));const names=G(()=>W.R18&&R18.FUNCTIONS&&R18.FUNCTIONS.length?R18.FUNCTIONS:null,null)||FUNC_SEED.map(f=>f[0]);

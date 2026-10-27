@@ -6,7 +6,7 @@ One-page summary of the navigation proposal for the sidenav sprint (PH-14, with 
 - `screen-inventory.csv`: one row per registered screen (195), with current name, group, module, archetype, personas, objects, proposed area, sub-group, label, action, reason, R3 comparison, contribution anchor and tenant mode.
 - Scripts that produced the facts: `tools/scratch/ia/` (`extract.js`, `demos.js`, `gen_csv.py`, `families.py`).
 
-All counts are **prototype facts** measured on 2026-10-20 from the built prototype, except where a row says proposal. Sample data is fictional (Meridian Standards Foundation).
+All counts are **prototype facts** measured on 2026-10-20 from the built prototype, except where a row says proposal. Sample data is fictional (Atlantic Systems).
 
 ## The five most important changes
 

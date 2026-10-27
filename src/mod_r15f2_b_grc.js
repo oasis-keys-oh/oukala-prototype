@@ -29,12 +29,12 @@ function debt(type,title,sev,owner,extra){const id=G(()=>DEBT.add(Object.assign(
 const tbl=(cols,rows,cls)=>`<div class="tscroll"><table class="grc-tbl ${cls||""}"><thead><tr>${cols.map(c=>`<th${c.cls?` class="${c.cls}"`:""}>${H(c.h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${cols.map(c=>`<td${c.cls?` class="${c.cls}"`:""}>${c.f(r)}</td>`).join("")}</tr>`).join("")||`<tr><td colspan="${cols.length}" class="muted">Nothing matches.</td></tr>`}</tbody></table></div>`;
 const chips=(items,cur,attr)=>`<div class="grc-chips" role="group">${items.map(i=>`<button type="button" class="chip${(i[0]===cur)?" on":""}" ${attr}="${H(i[0])}" aria-pressed="${i[0]===cur}">${H(i[1])}</button>`).join("")}</div>`;
 const sync=()=>X.syncMetrics();
-/* PR-32 B7: the tenant's own words for its records (DATA.term, plan section 5); Meridian keeps the platform defaults */
+/* PR-32 B7: the tenant's own words for its records (DATA.term, plan section 5); Atlantic Systems keeps the platform defaults */
 const TM=(k,o)=>window.DATA&&DATA.term?DATA.term(k,o):k;
-/* PR-32 B7: metric chips and tiles only for metrics the active tenant carries (Meridian metrics never show under another tenant) */
+/* PR-32 B7: metric chips and tiles only for metrics the active tenant carries (Atlantic Systems metrics never show under another tenant) */
 const fc=id=>X.isCore()?fchip(id):(X.hasMetric(id)&&METRICS[id]?fchip(id):"");
 const KR=items=>kpiRow(X.isCore()?items:items.map(i=>i[3]&&i[3].metric&&!(X.hasMetric(i[3].metric)&&METRICS[i[3].metric])?[i[0],i[1],i[2],Object.assign({},i[3],{metric:null})]:i));
-/* frameworks: Meridian's four generic names, or the frameworks the tenant's controls map to */
+/* frameworks: Atlantic Systems' four generic names, or the frameworks the tenant's controls map to */
 const FWS=()=>X.isCore()?X.FW:X.ctl().flatMap(c=>arr(c.maps).map(m=>m.split(":")[0])).filter((x,i,a)=>x&&a.indexOf(x)===i);
 
 /* ------------------------------------------------------------------ record adapters (the shared shell) ------------------------------------------------------------------ */

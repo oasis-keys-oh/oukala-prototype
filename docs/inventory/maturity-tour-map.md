@@ -2,7 +2,7 @@
 
 Read-only inventory for backlog item DC-33, run before DC-32. It names the screen and module that already does each beat of the Showroom tour "Process maturity and roadmap" (`SHOW.demos`, id `maturity`, in `src/mod_r33_showroom.js`), and checks whether each process has a maturity record as rule R26 requires. Nothing was built or changed. It carries no status or priority. Beats with no existing feature are reported as gaps for DC-34, not built (DC-32 rule).
 
-Method: the prototype was built (`python3 src/build.py`) and opened in a headless browser. Each beat's screen and tab was opened in all four demo scenarios (Meridian "core", Healthcare, Mining, Storage and backup), and `PROCLIB`, `MAT`, `NUM`, `WFX` and `JYX` were read directly. All counts are **prototype facts** measured on 2026-10-19 unless labeled otherwise. Maturity levels shown in the product are **modeled** sample values.
+Method: the prototype was built (`python3 src/build.py`) and opened in a headless browser. Each beat's screen and tab was opened in all four demo scenarios (Atlantic Systems "core", Healthcare, Mining, Storage and backup), and `PROCLIB`, `MAT`, `NUM`, `WFX` and `JYX` were read directly. All counts are **prototype facts** measured on 2026-10-19 unless labeled otherwise. Maturity levels shown in the product are **modeled** sample values.
 
 ## 1. Where maturity lives in the code (so the rest reads clearly)
 
@@ -28,25 +28,25 @@ Tour: 6 beats, 440 seconds in total (60 + 80 + 60 + 80 + 80 + 80), declared as 8
 | m.5 Fix first | What to fix first, in waves | `ppl_jrny` Journey maps | Build list | `src/mod_r31_jzx.js` (Build list, built from the journey boxes) | Yes | Wave logic is labeled hypothesis in the beat |
 | m.6 Build | Build the fix from a plain request | `studio` VibeCheck | None | `src/mod_r25_b_studio.js` | Yes | Scripted interview; the beat labels it simulated |
 
-Result of opening all six beats in each scenario: every beat opened without error in core, Healthcare, Mining and Storage and backup, and the tab named in m.1 and m.5 was found each time. The tour forces the Meridian scenario on start (`SCN.set("core")`), so the other three scenarios are not part of the tour today.
+Result of opening all six beats in each scenario: every beat opened without error in core, Healthcare, Mining and Storage and backup, and the tab named in m.1 and m.5 was found each time. The tour forces the Atlantic Systems scenario on start (`SCN.set("core")`), so the other three scenarios are not part of the tour today.
 
 ### Tenant behavior (R16 to R20)
 | Beat screen | Changes with the scenario? | Evidence |
 |---|---|---|
 | `ppl_jrny` (m.1, m.5) | Yes | Visible text length 3,890 (core), 4,822 (Healthcare), 4,028 (Mining), 4,089 (Storage) |
-| `exe_mat` (m.2) | No | 11,410 characters in every scenario: the Meridian capabilities and models |
+| `exe_mat` (m.2) | No | 11,410 characters in every scenario: the Atlantic Systems capabilities and models |
 | `metrics` (m.3) | Almost none | 9,567 characters in three scenarios, 9,687 in Storage |
-| `r18_mature` (m.4) | No | 2,170 characters in every scenario: the same 13 Meridian builds |
+| `r18_mature` (m.4) | No | 2,170 characters in every scenario: the same 13 Atlantic Systems builds |
 | `studio` (m.6) | No | 1,239 characters in every scenario |
 
-So four of the six beats show Meridian content in every tenant. That is consistent with the known state of R16 (only Journey maps, Org chart and Build list follow the tenant today) and is the tenant seam DC-03 and CL-55 address.
+So four of the six beats show Atlantic Systems content in every tenant. That is consistent with the known state of R16 (only Journey maps, Org chart and Build list follow the tenant today) and is the tenant seam DC-03 and CL-55 address.
 
 ## 3. Maturity record check for every process
 
 ### 3.1 Library processes (`PROCLIB`)
 | Check | Result | Label |
 |---|---|---|
-| Processes in `PROCLIB.list()` at first load | 131 (Meridian) | prototype fact |
+| Processes in `PROCLIB.list()` at first load | 131 (Atlantic Systems) | prototype fact |
 | Processes after other screens have wired themselves in | 311 to 315 depending on which screens were opened | prototype fact |
 | Processes with a maturity level, a model and a Year 1 target | all of them (0 missing) in every scenario | prototype fact |
 | Processes with all six dimensions scored | all of them (0 missing) | prototype fact |
@@ -63,12 +63,12 @@ Observation: the count and several completeness results depend on which screens 
 ### 3.2 Journey-generated drafts (`WFX` workflows linked from journey boxes)
 | Scenario | Workflows loaded | Distinct workflows linked from journey boxes | Of those, with a `PROCLIB` maturity record | Numbered (`P-nnn`) |
 |---|---|---|---|---|
-| Meridian (core) | 46 | 17 (plus 4 library processes) | 0 | 17 of 17 |
+| Atlantic Systems (core) | 46 | 17 (plus 4 library processes) | 0 | 17 of 17 |
 | Healthcare | 80 | 45 | 0 | 45 of 45 |
 | Mining | 51 | 16 | 0 | 16 of 16 |
 | Storage and backup | 47 | 12 | 0 | 12 of 12 |
 
-No `WFX` workflow has a `PROCLIB` record, and no `WFX` definition has a maturity, target or dimension field. The Processes tab of Journey maps states that generated processes "are drafts from the map: manual today, owned, and ready to refine"; it shows an automation level but not a maturity level. Only the 4 library processes (`PROC`) linked from Meridian journeys have maturity records. This means rule R26 is not met for journey-generated drafts.
+No `WFX` workflow has a `PROCLIB` record, and no `WFX` definition has a maturity, target or dimension field. The Processes tab of Journey maps states that generated processes "are drafts from the map: manual today, owned, and ready to refine"; it shows an automation level but not a maturity level. Only the 4 library processes (`PROC`) linked from Atlantic Systems journeys have maturity records. This means rule R26 is not met for journey-generated drafts.
 
 ## 4. Gap list
 Each gap is a finding to turn into backlog rows; this document does not track them.
@@ -76,7 +76,7 @@ Each gap is a finding to turn into backlog rows; this document does not track th
 | No. | Gap | Evidence | Relevant IDs |
 |---|---|---|---|
 | 1 | Journey-generated workflow drafts have no maturity record, dimensions or target (R26) | Section 3.2: 0 of 90 workflow links (17 + 45 + 16 + 12) across four scenarios lead to a record | R26, DC-32, CL-52 |
-| 2 | Four of six beats show Meridian content in every tenant | Section 2, tenant behavior | R16, DC-03, CL-55, DC-31 |
+| 2 | Four of six beats show Atlantic Systems content in every tenant | Section 2, tenant behavior | R16, DC-03, CL-55, DC-31 |
 | 3 | The process count and ownership results change as screens are opened, so the demo's numbers depend on click order | Section 3.1 | DC-32, DC-05 |
 | 4 | m.2 says levels are "self-assessed"; process levels are computed from signals, capability levels are entered | `assess()` in `mod_plat_proclib.js`; m.2 `say` line | DC-32 |
 | 5 | m.4 names a tab (`Maturity roadmaps`) that does not exist, so the tab step silently does nothing; m.2 asks to open "Models and levels" but sets no `tab` | tour data; `exe_mat` tabs | DC-32 |

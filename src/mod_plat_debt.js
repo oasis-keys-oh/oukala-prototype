@@ -3,9 +3,9 @@
 (function(){
 S.debt=S.debt||{ov:{},manual:null,tasks:[],rev:0,trace:{kind:"entity",id:"invoice"},hrs:32,ceil:null,taskDone:{}};
 const E=esc,D=S.debt;
-/* PR-32 B9 tenant rows (R16 to R18): Meridian reads S.debt (its seeded manual items, exceptions and tasks) and the registry detectors as before.
+/* PR-32 B9 tenant rows (R16 to R18): Atlantic Systems reads S.debt (its seeded manual items, exceptions and tasks) and the registry detectors as before.
    Another tenant sees only its own rows: its tech_debt tasks (DATA.get, part task), the items the gate detectors find on its own builds and
-   the items added in this session. The Meridian registry detectors, seeds, debt metrics and the monthly trend are Meridian only. */
+   the items added in this session. The Atlantic Systems registry detectors, seeds, debt metrics and the monthly trend are Atlantic Systems only. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TPARTS=new WeakMap();
 const TROWS=(e,part)=>{const all=DATA.get(e);let m=TPARTS.get(all);if(!m){m={};TPARTS.set(all,m)}return m[part]||(m[part]=all.filter(r=>r.part===part))};
@@ -151,7 +151,7 @@ const DEBT=window.DEBT={TYPES:TY,
  score:scoreApp,
  add(it){
   seed();if(!it||!it.title)return null;
-  /* findings from platform audits (source other than manual) describe the Meridian registry: they stay on Meridian's list under any tenant (R18) */
+  /* findings from platform audits (source other than manual) describe the Atlantic Systems registry: they stay on Atlantic Systems' list under any tenant (R18) */
   const ML=TCORE()||(it.source&&it.source!=="manual")?D.manual:MAN();const id=it.id||"DB-U"+String(ML.length+1).padStart(2,"0");
   const type=TY[it.type]?it.type:(TYK.find(k=>TY[k].n.toLowerCase()===String(it.type||"").toLowerCase())||"ooc");
   ML.push(Object.assign({id,type,title:it.title,sev:it.sev||"Medium",source:it.source||"manual",ents:it.ents||[],apps:it.apps||[],owner:it.owner||"Platform team",steward:it.steward||"Platform lead",created:TODAY,principal:it.principal||8,status:it.status||(it.exp?"accepted":"open"),fix:it.fix||"",note:it.note||""},it.exp?{exp:it.exp}:{},it.reason?{reason:it.reason}:{},it.owner2?{owner2:it.owner2}:{},{id}));
