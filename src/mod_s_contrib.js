@@ -169,7 +169,12 @@ function fx(M,V,P){const pid=G(()=>U.uid("ctbfx"),"ctbfx"+Date.now());const owne
 
 let LVSEL="";
 function levelsFor(V){return V.level==="executive"?["executive","manager","individual"]:V.level==="manager"?["manager","individual"]:["individual"]}
+/* PR-80: one line per row on a wide card (title, progress and points, owner); the row wraps only when it must */
 function nodeRow(M,n,extra){const ch=chainOf(M,n).slice(1);return `<li class="ctb-row"><div class="ctb-rh">${ch.map(c=>seg(M,c,{})).join(SEP)}</div><div class="ctb-rm"><span class="small" data-role="metric">${prog(n.p)} progress · ${n.contrib==null?"no progress yet":r1(n.contrib)+" points of the company score"}</span>${own(n.owner,"objective:"+n.id)}${extra||""}</div></li>`}
+/* PR-80: a long list shows its first five rows; Show all opens the rest for this card until the level changes */
+const CAP=5;let SHOWALL=false;
+function capList(rows){const n=rows.length;if(n<=CAP||SHOWALL)return `<ul class="ctb-list">${rows.join("")}</ul>`+(SHOWALL&&n>CAP?`<button type="button" class="chip ctb-more" data-ctb-more="0">Show fewer</button>`:"");
+ return `<ul class="ctb-list">${rows.slice(0,CAP).join("")}</ul><button type="button" class="chip ctb-more" data-ctb-more="1">Show all ${n}</button>`}
 function cardHTML(){const M=model();if(!M)return `<section class="card glass ctb-card" data-ctb-card="1"><div class="eyebrow">My contribution</div><p class="small">This tenant records no objectives yet, so nothing can be traced.</p>${badge()}</section>`;
  const V=M.V,P=points(M,V),W0=workOf(M,V);const lvls=levelsFor(V);const cur=lvls.indexOf(LVSEL)>=0?LVSEL:lvls[0];
  const top=P.rows.slice().sort((a,b)=>b.pts-a.pts)[0];
@@ -179,18 +184,19 @@ function cardHTML(){const M=model();if(!M)return `<section class="card glass ctb
  const tabs=lvls.length>1?`<div class="row ctb-tabs" role="group" aria-label="View by level">${lvls.map(l=>`<button type="button" class="chip" data-ctb-lv="${l}" aria-pressed="${l===cur}">${l==="executive"?"Company and enterprise":l==="manager"?"Groups and teams":"My thread"}</button>`).join("")}</div>`:"";
  let body="";
  if(cur==="executive"){const ents=M.nodes.filter(n=>n.lvl==="enterprise");
-  body=`<p class="small">Company score <b class="num" data-role="metric">${prog(M.company.p)}</b> ${MODELED}. Each enterprise objective, with its points of the company score; open one to drill down.</p><ul class="ctb-list">${ents.map(n=>nodeRow(M,n)).join("")}</ul>`}
+  body=`<p class="small">Company score <b class="num" data-role="metric">${prog(M.company.p)}</b> ${MODELED}. Each enterprise objective, with its points of the company score; open one to drill down.</p>${capList(ents.map(n=>nodeRow(M,n)))}`}
  else if(cur==="manager"){const mine=M.nodes.filter(n=>(n.lvl==="group"||n.lvl==="team")&&(V.owns.indexOf(n.id)>=0||(n.lvl==="team"&&V.teams.indexOf(n.team)>=0)||(n.lvl==="group"&&V.level==="executive")));
   const list=(mine.length?mine:M.nodes.filter(n=>n.lvl===(M.group?"group":"team")));
-  body=`<p class="small">Team views are totals for the team; no person is listed or compared.</p><ul class="ctb-list">${list.map(n=>{const mem=n.lvl==="team"?membersOf(M,n.team):[];return nodeRow(M,n,n.lvl==="team"?`<span class="small muted">${H(n.team||"Team not recorded")} · ${mem.length} member${mem.length===1?"":"s"}${agentsOf(M,n.team,mem)?" · "+agentsOf(M,n.team,mem)+" agents and robots credited to the team":""}</span>`:"")}).join("")}</ul>`}
+  body=`<p class="small">Team views are totals for the team; no person is listed or compared.</p>${capList(list.map(n=>{const mem=n.lvl==="team"?membersOf(M,n.team):[];return nodeRow(M,n,n.lvl==="team"?`<span class="small muted">${H(n.team||"Team not recorded")} · ${mem.length} member${mem.length===1?"":"s"}${agentsOf(M,n.team,mem)?" · "+agentsOf(M,n.team,mem)+" agents and robots credited to the team":""}</span>`:"")}))}`}
  else{const rows=P.rows.map(r=>{const s=r.share;return nodeRow(M,r.leaf,`<span class="small" data-role="metric">Your share ${Math.round(s.share*100)}% (${s.method==="hours"?`${s.mine} of ${s.team} hours on linked work`:`equal among ${s.members} members`}) = <b>${r1(r.pts)}</b> points ${MODELED}</span>${r.agents?`<span class="small muted">${r.agents} agents and robots sponsored in this team: their work counts for the team, not for a person</span>`:""}`)}).join("");
   const work=W0.slice(0,8).map(w=>{const o=w.objs.map(id=>M.by[id]).filter(Boolean);return `<li class="ctb-w"><span class="small muted">${H(w.kind)}${w.closed?" · closed":" · open"}${w.hrs?" · "+r1(w.hrs)+" hours":""}</span>${w.num?`<button type="button" class="ctb-seg" data-ctb-open="${H(w.num)}" title="Open the thread for ${H(w.num)}"><span class="num-chip">${H(w.num)}</span><span class="ctb-sn">${H(w.n)}</span></button>`:`<b class="small">${H(w.n)}</b>`}${o.length?SEP+o.map(n=>seg(M,n,{})).join(" "):badge()}</li>`}).join("");
   body=`${rows?`<ul class="ctb-list">${rows}</ul>`:`<p class="small">${V.team?H(V.team)+" has no team objective in the cascade. ":""}${badge("Your team has no team objective in the cascade")}</p>`}
   <div class="ctb-sub"><span class="eyebrow">Your open and closed work</span>${work?`<ul class="ctb-wl">${work}</ul>`:`<p class="small muted">No projects, hours or key results are recorded for you in this tenant.</p>`}</div>`}
  const gaps=W0.filter(w=>!w.objs.length).length;
- return `<section class="card glass ctb-card" data-ctb-card="1" aria-label="My contribution"><div class="ctb-ch"><div><div class="eyebrow">${ANCHOR} My contribution</div><h3 class="ctb-h">${head}</h3>
- <p class="small muted">Viewing as ${who} (${H(V.persona)}${V.mapped?", the person in this seat in this tenant: a sample mapping":""}). ${V.teams.length?"Your teams: "+V.teams.map(H).join(", ")+".":"No team in the cascade."}${gaps?" "+gaps+" of your items are not linked to an objective.":""}</p></div>${fx(M,V,P)}</div>
- ${tabs}${body}<p class="small ctb-rule" data-ctb-rule="1"><b>Not a rating.</b> ${H(RULE)}</p></section>`}
+ /* PR-80: the viewing line and the level tabs share one row */
+ return `<section class="card glass ctb-card" data-ctb-card="1" aria-label="My contribution"><div class="ctb-ch"><div><div class="eyebrow">${ANCHOR} My contribution</div><h3 class="ctb-h">${head}</h3></div>${fx(M,V,P)}</div>
+ <div class="ctb-meta"><p class="small muted">Viewing as ${who} (${H(V.persona)}${V.mapped?", the person in this seat in this tenant: a sample mapping":""}). ${V.teams.length?"Your teams: "+V.teams.map(H).join(", ")+".":"No team in the cascade."}${gaps?" "+gaps+" of your items are not linked to an objective.":""}</p>${tabs}</div>
+ ${body}<p class="small ctb-rule" data-ctb-rule="1"><b>Not a rating.</b> ${H(RULE)}</p></section>`}
 
 /* ---------- 8. wiring: thread slot, cards, menu marks, All screens filter ---------- */
 function fillThread(){const s=D.getElementById("tbThread");if(!s)return false;const id=G(()=>S.screen,"");if(!id){s.hidden=true;return true}
@@ -226,7 +232,8 @@ G(()=>{ROUTER.on("click","[data-nx-all]",allLater,{id:"contrib.all.open"});ROUTE
  ROUTER.on("click","#nav",later,{id:"contrib.nav.marks"});
  ROUTER.on("click","[data-ctb-open]",(e,t)=>{e.preventDefault();e.stopPropagation();const n=t.getAttribute("data-ctb-open");if(n&&W.THREAD)THREAD.open(n);else G(()=>toast("Nothing to trace for this level yet","warn"))},{id:"contrib.open"});
  ROUTER.on("click","[data-ctb-me]",e=>{e.preventDefault();open()},{id:"contrib.me"});
- ROUTER.on("click","[data-ctb-lv]",(e,t)=>{LVSEL=t.getAttribute("data-ctb-lv");const c=t.closest("[data-ctb-card]");if(c)c.outerHTML=cardHTML()},{id:"contrib.lv"})});
+ ROUTER.on("click","[data-ctb-lv]",(e,t)=>{LVSEL=t.getAttribute("data-ctb-lv");SHOWALL=false;const c=t.closest("[data-ctb-card]");if(c)c.outerHTML=cardHTML()},{id:"contrib.lv"});
+ ROUTER.on("click","[data-ctb-more]",(e,t)=>{e.preventDefault();SHOWALL=t.getAttribute("data-ctb-more")==="1";const c=t.closest("[data-ctb-card]");if(c)c.outerHTML=cardHTML()},{id:"contrib.more"})});
 /* the drawer form of the card, from the anchor at the start of the thread */
 function open(){G(()=>openDrawer(`<div class="ctb-dr">${cardHTML()}</div>`));return true}
 

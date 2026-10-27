@@ -30,8 +30,11 @@ const roleIn=k=>{try{return W.IDENT?IDENT.roles(k).join(", "):""}catch(e){return
 function ensureBtn(){let b=D.getElementById("tnBtn");const sm=D.querySelector(".rail .brand small");if(!b&&!sm)return;
  if(!b){b=D.createElement("button");b.id="tnBtn";b.type="button";b.className="tn-btn";b.setAttribute("aria-haspopup","menu");b.setAttribute("aria-expanded","false");b.setAttribute("data-r32-tn","open");sm.replaceWith(b)}
  b.setAttribute("data-tenant",T.cur());b.innerHTML=E(T.short())+' <span aria-hidden="true">▾</span>';b.setAttribute("aria-label","Tenant: "+T.name()+". Switch tenant.")}
-function closeMenu(){const m=D.getElementById("tnMenu");if(m)m.remove();const b=D.getElementById("tnBtn");if(b)b.setAttribute("aria-expanded","false")}
-function openMenu(){closeMenu();const b=D.getElementById("tnBtn");if(!b)return;const r=b.getBoundingClientRect();
+/* PR-81: the menu opens from whichever control was clicked: the rail button (#tnBtn) or the tenant chip in the top bar (#r20Tenant) */
+let anchorEl=null;
+const TRIG=()=>[D.getElementById("tnBtn"),D.getElementById("r20Tenant")].filter(Boolean);
+function closeMenu(){const m=D.getElementById("tnMenu");if(m)m.remove();TRIG().forEach(b=>b.setAttribute("aria-expanded","false"))}
+function openMenu(from){closeMenu();const b=(from&&from.getBoundingClientRect)?from:(D.getElementById("r20Tenant")||D.getElementById("tnBtn"));if(!b)return;anchorEl=b;const r=b.getBoundingClientRect();
  const m=D.createElement("div");m.id="tnMenu";m.className="tn-menu";m.setAttribute("role","menu");m.setAttribute("aria-label","Switch tenant");m.setAttribute("data-tenant-chooser","1");
  m.style.left=Math.max(8,r.left)+"px";m.style.top=(r.bottom+6)+"px";
  const who=W.IDENT?IDENT.me():null;
@@ -45,9 +48,10 @@ T.switch=function(k){if(!SCN.list[k])return false;closeMenu();let ok=true;
 T.reloadTo=function(k){if(!SCN.list[k])return;try{const u=new URL(location.href);u.searchParams.set("tenant",k);location.assign(u.toString())}catch(e){}};
 try{HOOKS.on("tenantChange",()=>ensureBtn(),{order:900,id:"tenant-btn"})}catch(e){}
 D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-r32-tn]");
- if(t){const v=t.getAttribute("data-r32-tn");if(v==="open"){D.getElementById("tnMenu")?closeMenu():openMenu()}else T.switch(v);return}
+ if(t){const v=t.getAttribute("data-r32-tn");if(v==="open"){D.getElementById("tnMenu")?closeMenu():openMenu(t)}else T.switch(v);return}
  if(!(e.target.closest&&e.target.closest("#tnMenu")))closeMenu()});
-D.addEventListener("keydown",e=>{if(e.key==="Escape"){const m=D.getElementById("tnMenu");if(m){closeMenu();const b=D.getElementById("tnBtn");if(b)b.focus()}}});
+D.addEventListener("keydown",e=>{if(e.key==="Escape"){const m=D.getElementById("tnMenu");if(m){closeMenu();const b=(anchorEl&&D.contains(anchorEl))?anchorEl:D.getElementById("tnBtn");if(b)b.focus()}}});
+T.openMenu=openMenu;T.closeMenu=closeMenu;
 try{R15D.after.push(ensureBtn)}catch(e){}
 [200,800,2000,5000].forEach(t=>setTimeout(ensureBtn,t));
 try{SEARCHX.push(()=>T.list().map(k=>({g:"Go to",chooser:1,t:"Switch tenant: "+T.name(k),m:(T.info[k]||{}).kind||"",c:"--p4",f:()=>T.switch(k),k:"tenant switch customer demo scenario organization "+T.name(k).toLowerCase()})))}catch(e){}
