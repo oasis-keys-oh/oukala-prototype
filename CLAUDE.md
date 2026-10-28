@@ -32,6 +32,15 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 - Ship: a push to `main` auto-deploys the public site (standing decision PH-09). Keep commit trailers `Co-Authored-By` and `Claude-Session`. Commit only your own files: other sessions may leave uncommitted changes in the working tree; do not sweep them into your commit.
 - Working tree notes: the " 2" duplicate files are quarantined until 2026-11-17 (CL-07); do not delete them earlier without Omar's say-so.
 
+## Working discipline
+- Batch independent reads in parallel. Run tests once per batch of edits.
+- Never weaken or delete an assertion, test or hook to make something pass. Fix the code or stop and ask. If the requirement changed, say so and ask.
+- After writing tests for new logic, break one behavior on purpose and confirm the matching test fails.
+- Commit subject: one line, 72 characters or fewer, imperative (trailers as in Ship above).
+- Before claiming "we do/don't have X" about our code, reopen it and cite file:line in the reply. Use symbol names in committed docs.
+- Docs vs code: follow the code's conventions for style and structure. For behavior or spec conflicts, ask. Report each inconsistency in the final reply.
+- Smallest change that solves the stated problem. No speculative abstraction. Flag complexity only if it crept in.
+
 ## Code conventions
 - Shared foundation is `src/platform.js` (`U`, `HOOKS`, `DATA`, `STEPMODE`, `TRIGGERS`, `CHATADDR`, `ownerChip`); contracts, file territories and build waves are in `docs/ARCHITECTURE.md`. New modules are `mod_s_<domain>`. Tests: `npm test`.
 - Each feature is a module pair `mod_<name>.js` and `.css` in `src/`, wrapped in an IIFE, with a unique CSS prefix. `build.py` concatenates core files, then modules in filename order. New modules sort after `mod_r32_*`. Do not name new files by build round when a domain name works.
