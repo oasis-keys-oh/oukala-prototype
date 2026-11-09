@@ -57,6 +57,8 @@ await p.evaluate(ents=>{const me=new Set(IDENT.people.map(x=>x.name));const esc=
 for(const t of tenants){await p.evaluate(t=>{if(DATA.tenant()!==t){if(window.TENANT&&TENANT.switch)TENANT.switch(t);else DATA.setTenant(t)}},t);await p.waitForTimeout(250);
  for(const [id,mode] of list){const n0=errs.length;checks++;
   await p.evaluate(id=>go(id),id).catch(e=>errs.push(id+': '+e.message));await p.waitForTimeout(150);
+  /* CL-106: some screens (r15_sem) render in stages; check once the view stops changing, not at a fixed delay */
+  await p.evaluate(()=>{window.__b23L=-1});await p.waitForFunction(()=>{const L=document.getElementById('view').innerHTML.length;const same=window.__b23L===L;window.__b23L=L;return same},null,{timeout:6000,polling:400}).catch(()=>{});
   const r=await p.evaluate(t=>window.__b23(t),t);
   if(r.mode!==mode)fail(t+' '+id+' registered mode '+r.mode+', expected '+mode);
   if(r.len<400)fail(t+' '+id+' renders almost nothing ('+r.len+' characters)');
