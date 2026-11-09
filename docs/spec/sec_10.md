@@ -55,19 +55,19 @@ The registry lists 24 notification types. Each type names its event, its default
 
 A person sets preferences per type. Delivery details are in section 3.7.
 
-## 10.5 Connectors and the fabric
+## 10.5 Connectors and the integration layer
 
-The integration fabric holds 13 connectors, for example Microsoft Graph, Entra ID, Jira Cloud, a lease subledger and a search server. Each connector declares its entities, direction, schedule, authority per field and a quarantine rule.
+The integration layer holds 13 connectors, for example Microsoft Graph, Entra ID, Jira Cloud, a lease subledger and a search server. Each connector declares its entities, direction, schedule, authority per field and a quarantine rule.
 
 | Measure | Value |
 |---|---|
 | Connectors | 13 |
 | Runs | 176 |
 | Quarantined records | 8 |
-| Edition | Fabric |
-| Edition limits | 15 connectors, 2 environments, 100,000 runs |
+| Plan level | 2 |
+| Plan level limits | 15 connectors, 2 environments, 100,000 runs |
 
-Other editions: Core allows 3 connectors and 1 environment; Fabric Enterprise allows 60 connectors and 5 environments. A record that fails validation goes to quarantine with a reason and an owner, never into the entity. Conflicts follow the rule on the field (section 6.2).
+Other plan levels: level 1 allows 3 connectors and 1 environment; level 3 allows 60 connectors and 5 environments. A record that fails validation goes to quarantine with a reason and an owner, never into the entity. Conflicts follow the rule on the field (section 6.2).
 
 ## 10.6 MCP tool list
 

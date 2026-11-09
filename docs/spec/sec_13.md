@@ -41,38 +41,38 @@ Selling guidance:
 2. Pilot with two processes the buyer already complains about (for example change approval and a request fulfilment flow) so value shows in weeks.
 3. The proof of value charter names metrics up front, with baseline, target and owner for each. The platform's own metrics (381 in the prototype) supply the definitions.
 4. Use the first customer, a sample standards foundation, as the reference. Its processes arrive as process content; the product never carries its professional-standards vocabulary into product text.
-5. Show the cost of the alternative: the fabric, governance, agent guardrails and BC/DR modules replace several point tools.
+5. Show the cost of the alternative: the integration layer, governance, agent guardrails and BC/DR modules replace several point tools.
 6. Every stage ends with a go or no-go review owned by a named sponsor and the vendor engagement lead.
 
 Pilot to rollout checklist: sponsor and backup named; success metrics agreed; identity provider access confirmed; first foundation sheets loaded; two connectors scheduled; approver groups populated; readiness at or above the stage threshold.
 
-## 13.4 Editions and entitlements
+## 13.4 Plan levels and entitlements
 
-Edition names are working names (Core, Fabric, Fabric Enterprise). The decisions log says not to use them externally until naming is settled; see D-07 and D-08 in section 16.
+Plan levels have no names yet. The earlier working names are retired; see D-07 and D-08 in section 16.
 
-| Edition | Connectors | Environments | Includes |
+| Plan level | Connectors | Environments | Includes |
 |---|---|---|---|
-| Core | 3 | 1 | Platform-internal sync, file import, one identity provider |
-| Fabric | 15 | 2 | Certified connectors, mapping studio, webhooks, dev plus prod |
-| Fabric Enterprise | 60 | 5 | Change-data-capture, five environments, dedicated options |
+| 1 | 3 | 1 | Platform-internal sync, file import, one identity provider |
+| 2 | 15 | 2 | Certified connectors, mapping studio, webhooks, dev plus prod |
+| 3 | 60 | 5 | Change-data-capture, five environments, dedicated options |
 
 Entitlement mechanics:
 
-1. A license key or edition switch in Licensing and billing unlocks the fabric. The screens exist for every edition.
+1. A license key or plan-level switch in Licensing and billing unlocks the integration layer. The screens exist for every plan level.
 2. Locked areas show a working preview with seeded data, a banner stating what unlocks and the current limit, and a request-unlock action that opens a normal approval.
 3. Limits are metered through the usage service: runs, records, connectors, environments, users, agent spend.
 4. A downgrade freezes new runs but keeps read access, history and lineage.
 5. Enforcement is server side: the entitlement service issues signed claims that the application checks. A client-side switch is never the control.
 
-Freshness by edition: Core batch only; Fabric adds webhooks and event streams; Fabric Enterprise adds change-data-capture and low-latency SLAs.
+Freshness by plan level: level 1 batch only; level 2 adds webhooks and event streams; level 3 adds change-data-capture and low-latency service level agreements.
 
 ## 13.5 Pricing levers
 
-At the level the project documents allow, price points are not set. Final edition names and price points are open (D-07).
+At the level the project documents allow, price points are not set. Plan-level names and price points are open (D-07).
 
 | Lever | What varies | Notes |
 |---|---|---|
-| Edition | Core, Fabric, Fabric Enterprise | Sets connector, environment and feature limits |
+| Plan level | 1, 2, 3 | Sets connector, environment and feature limits |
 | Users | Named users by tier (full, light, requester-only, vendor guest) | Requester-only users make service portals affordable at thousands of users |
 | Deployment model | Pooled, dedicated vendor AWS, dedicated customer AWS, private | Premium for isolation; add-on for customer account |
 | Connectors and run volume | Count of certified connectors; runs and records per month | Metered; overage tiers |

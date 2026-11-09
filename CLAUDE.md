@@ -40,6 +40,7 @@ The **Product Backlog** is the only list of work. Source of truth: the vault not
 - Before claiming "we do/don't have X" about our code, reopen it and cite file:line in the reply. Use symbol names in committed docs.
 - Docs vs code: follow the code's conventions for style and structure. For behavior or spec conflicts, ask. Report each inconsistency in the final reply.
 - Smallest change that solves the stated problem. No speculative abstraction. Flag complexity only if it crept in.
+- Non-trivial diffs: before finishing, have a fresh-context cheap-model subagent review the diff against the requirement (bugs only, no style). Report its findings and fix the real ones.
 
 ## Code conventions
 - Shared foundation is `src/platform.js` (`U`, `HOOKS`, `DATA`, `STEPMODE`, `TRIGGERS`, `CHATADDR`, `ownerChip`); contracts, file territories and build waves are in `docs/ARCHITECTURE.md`. New modules are `mod_s_<domain>`. Tests: `npm test`.

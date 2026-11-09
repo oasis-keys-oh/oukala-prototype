@@ -1,6 +1,6 @@
 # Deployment paths and customer setup (Round 16)
 
-Owner: Sam Patel. Backup: Jordan Lee. Decision record: D-R16-01. Screens: Implementation and setup, Deployment paths, Foundation data import, Data sources, Process guides, Tenant overlays (Admin and Platform groups). Edition names are working names (Core, Fabric, Fabric Enterprise).
+Owner: Sam Patel. Backup: Jordan Lee. Decision record: D-R16-01. Screens: Implementation and setup, Deployment paths, Foundation data import, Data sources, Process guides, Tenant overlays (Admin and Platform groups). Plan levels have no names yet; the earlier working edition names are retired.
 
 ## Answer
 
@@ -13,7 +13,7 @@ Default path (D-R16-01): pooled SaaS with per-tenant schema and per-tenant encry
 - Tenant boundary: tenant record, schema, key, subdomain, identity provider connection, region.
 - Control plane (vendor): tenant registry, provisioning pipeline, edition and entitlement service, billing meter, support access with time-boxed grants.
 - Data plane (per tenant or pooled): application services, database schema, object storage prefix, search index, secrets, event bus topics.
-- Fabric: connectors run in the data plane of the tenant; credentials stay in the tenant key store.
+- Plan level 2: connectors run in the data plane of the tenant; credentials stay in the tenant key store.
 - Promotion: dev, test, prod environments per edition; configuration (processes, overlays, roles) promotes as versioned bundles, data does not.
 
 ## Provisioning steps
@@ -48,13 +48,13 @@ A customer override is a delta on a base process, not a copy. Operations: approv
 
 Pricing levers: edition, users, deployment model, connectors and run volume, environments, AI usage, support and services.
 
-## Editions plan
+## Plan levels
 
-| Edition | Connectors | Environments | Includes |
+| Plan level | Connectors | Environments | Includes |
 |---|---|---|---|
-| Core | 3 | 1 | Platform-internal sync, file import, one identity provider |
-| Fabric | 15 | 2 | Certified connectors, mapping studio, webhooks, dev plus prod |
-| Fabric Enterprise | 60 | 5 | Change-data-capture, five environments, dedicated options |
+| 1 | 3 | 1 | Platform-internal sync, file import, one identity provider |
+| 2 | 15 | 2 | Certified connectors, mapping studio, webhooks, dev plus prod |
+| 3 | 60 | 5 | Change-data-capture, five environments, dedicated options |
 
 ## Decision D-R16-01 and risks
 

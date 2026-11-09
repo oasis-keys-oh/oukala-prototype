@@ -74,7 +74,7 @@ flowchart TB
   end
   WF --> ART --> MGW
   ART --> MCP
-  subgraph Fabric[Integration fabric]
+  subgraph Fabric[Integration layer]
     CSDK[Connector runtime and SDK]
     VAULT[Credentials vault]
     ING[Ingest pipelines]
@@ -116,9 +116,9 @@ Text form for reviewers who cannot render the diagram:
 |---|---|---|---|
 | Edge | CDN, WAF, API gateway, rate limiter | Clients, application tier | None |
 | Application | API, MCP server, authorization, domain modules, registry, notification, reporting | Data tier, outbox | Stateless processes |
-| Async | Workflow engine, scheduler, event bus, outbox relay, job workers | Application, agents, fabric | Workflow history, timer table, topic offsets |
+| Async | Workflow engine, scheduler, event bus, outbox relay, job workers | Application, agents, integration layer | Workflow history, timer table, topic offsets |
 | Agent | Agent runtime, model gateway, evaluation harness | MCP server, model providers | Run records |
-| Fabric | Connector runtime, vault, ingest pipelines | External systems | Sync state, quarantine |
+| Integration layer | Connector runtime, vault, ingest pipelines | External systems | Sync state, quarantine |
 | Data | PostgreSQL, replicas, search, cache, object storage, audit chain | Everything above | All durable state |
 | Control plane | Tenant registry, provisioning, entitlements, meter, support grants | Per-tenant stacks | Tenant metadata only, no customer data |
 
@@ -359,7 +359,7 @@ Performance target: p95 decision under 5 ms with cache; row filter compile cache
 
 | Capability | Design |
 |---|---|
-| Sign-in | OIDC and SAML 2.0 against the tenant's identity provider; one identity provider connection on Core, more on higher editions |
+| Sign-in | OIDC and SAML 2.0 against the tenant's identity provider; one identity provider connection at plan level 1, more at higher levels |
 | Provisioning | SCIM 2.0 for users and groups; groups map to roles; join, move and change-status events (from the lifecycle module) keep access current |
 | MFA | Enforced at the identity provider; the platform requires an authentication-context claim for sensitive actions (approvals above a threshold, access to restricted fields, break-glass) and can step up |
 | Local accounts | Break-glass administrator only, hardware key or TOTP, sealed credentials, every use alerts the security group |
@@ -370,7 +370,7 @@ Performance target: p95 decision under 5 ms with cache; row filter compile cache
 
 Preferences service: key-value per user and scope (platform, app, tenant), versioned, readable by apps through a scoped token, never holding restricted data. Admin-locked preferences override user choice (for example mandatory notification channels for approvals).
 
-## 14.14 Connectors and integration fabric
+## 14.14 Connectors and integration layer
 
 Connector runtime in the tenant data plane; credentials in the tenant key store.
 
@@ -545,13 +545,13 @@ BETH3D extends BETH3 (Buildings, Equipment, Technology, Human resources, Third p
 | Third parties (cloud provider, model providers, identity provider) | n/a | Per vendor SLA | n/a | Exit and fallback plan per vendor; evidence on file within a year | n/a | n/a |
 | People and runbooks | n/a | n/a | n/a | Two named operators per component, runbooks in the tenant's knowledge module and offline copy | n/a | n/a |
 
-Options by edition: Core and Fabric pooled use multi-AZ and cross-region backup copies (restore in the second region within the RTO by procedure); Fabric Enterprise and dedicated paths offer a warm standby in a second region with asynchronous replication (RPO at most 5 minutes typical, RTO about 1 hour). Restore is exercised on the tier schedule: Tier 1 live exercise yearly, with quarterly restore tests of a database snapshot into an isolated environment.
+Options by plan level: levels 1 and 2 pooled use multi-AZ and cross-region backup copies (restore in the second region within the RTO by procedure); level 3 and dedicated paths offer a warm standby in a second region with asynchronous replication (RPO at most 5 minutes typical, RTO about 1 hour). Restore is exercised on the tier schedule: Tier 1 live exercise yearly, with quarterly restore tests of a database snapshot into an isolated environment.
 
 ## 14.23 Environments and CI/CD
 
 | Concern | Design |
 |---|---|
-| Environments | Dev, test, prod per edition (Core 1 environment, Fabric 2, Fabric Enterprise 5, per the editions plan); sandboxes with synthetic data for citizen developers; configuration promotes as versioned bundles (processes, overlays, roles, policies), data does not |
+| Environments | Dev, test, prod per plan level (level 1 has 1 environment, level 2 has 2, level 3 has 5, per the plan-level table); sandboxes with synthetic data for citizen developers; configuration promotes as versioned bundles (processes, overlays, roles, policies), data does not |
 | Infrastructure as code | Terraform (or OpenTofu) modules, one set for all four deployment paths; pooled, dedicated and customer-account stacks compose the same modules; Helm chart or Compose bundle for private installs |
 | Migrations | Versioned, forward-only, generated from registry diffs, reviewed by the data council; expand-and-contract pattern so the app runs on N and N+1 schemas; each migration tested on a copy of representative data |
 | Build pipeline | Lint, unit tests, contract tests, registry conformance (the four Feature Contract checks plus the gate checks), data-link walker, accessibility scan, cross-tenant isolation tests, SBOM and scan, image signing |
@@ -591,7 +591,7 @@ Scale checks to run: 5 million rows in a hot table with row-level security and a
 | 1. Core platform | Identity (OIDC, SCIM), authorization service (table, row, attribute tiers) with the 222 prototype rules ported, entity store for the first 40 canonical entities, audit chain, outbox and event bus, notification service | Cross-tenant tests pass; every API call goes through authorization; policy simulation works; audit chain verifies; 70 events registered in the production catalog |
 | 2. Process engine | Workflow engine with all 12 node types, timers, approvals to groups, SLA clocks, tenant overlays and guardrails GR-01 to GR-08, human work queues | All 311 prototype workflows import and run in a test harness; timer accuracy targets met; overlay guardrails reject unsafe changes |
 | 3. Modules in value order | PPM, ITSM, knowledge, approvals first; then ITOM, GRC, BC/DR; foundation import pipeline for 11 sheets | Pilot tenant (the sample standards foundation) loaded from the workbook; 5 million row and 200 events per second tests pass; review point for workflow engine choice |
-| 4. Fabric | Connector runtime and SDK, vault, REST, MCP, identity provider, Microsoft Graph; reconciliation and quarantine | Four first connectors certified; freshness classes verified; M2M project evaluation runs |
+| 4. Integration layer | Connector runtime and SDK, vault, REST, MCP, identity provider, Microsoft Graph; reconciliation and quarantine | Four first connectors certified; freshness classes verified; M2M project evaluation runs |
 | 5. Agents and MCP | MCP server with record tools and write gates, agent runtime, model gateway, evaluation harness, kill switches | Red-team tests pass; budgets enforced; kill switch under 5 seconds; every agent has sponsor and backup |
 | 6. Reporting and semantic layer | Metrics engine, lineage, schedules, exports | 381 metrics compile; every number drills to source |
 | 7. Hardening and launch | BC/DR exercise, penetration test, load test, SOC 2 readiness, runbooks, support model, billing meter | Tier 1 restore exercise within RTO and RPO; no critical findings; first paid pilot live |
