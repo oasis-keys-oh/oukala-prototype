@@ -208,7 +208,7 @@ Why can't I open a standard on my phone?
 FAQ-05 · primary: Codification Portal
 Reset multifactor authentication for an editor
 KB0451 · primary: Identity (Entra ID)
-Acceptable use of Atlantic systems
+Acceptable use of Atlantic Logistics systems
 POL-07 · primary: Email and collaboration (M365)
 Search results stay stale for up to 20 minutes after a deploy
 KB0377 · primary: Search and indexing

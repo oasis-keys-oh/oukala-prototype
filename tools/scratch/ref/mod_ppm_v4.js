@@ -105,7 +105,7 @@ const SAMPLE=`STATEMENT OF WORK NO. 5: SEARCH INDEXER PHASE 2
 Under the Master Services Agreement dated March 3, 2025
 [Page 1]
 1. PARTIES
-Customer: Atlantic Systems ("Atlantic")
+Customer: Atlantic Logistics ("Atlantic")
 Supplier: Lumen Search Systems, Inc. ("Lumen")
 2. TERM
 Effective Date: October 19, 2026

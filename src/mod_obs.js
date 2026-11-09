@@ -1,6 +1,6 @@
 /* Oukala observability, event management and automation (module obs) ===== Screens: itom_evt (Event management), obs_dash (Dashboards and metrics), */
 (function(){
-/* PR-32 B6: tenant views (TROWS); under Atlantic Systems these are the module stores as before */
+/* PR-32 B6: tenant views (TROWS); under Atlantic Logistics these are the module stores as before */
 const CO=TROWS.core,TM=TROWS.term,fchip=TROWS.chip,SVCREG=TROWS.arr("services","service",()=>window.SVCREG),CIREG=TROWS.arr("config_items","item",()=>window.CIREG),CIEDGE=TROWS.arr("config_items","relation",()=>window.CIEDGE,r=>[r.from,r.to,r.rel]),
  INC=TROWS.arr("incidents","incident",()=>(S.itsm&&S.itsm.inc)||[]),CHG=TROWS.arr("changes","change",()=>(S.itsm&&S.itsm.chg)||[]),svcOf=id=>SVCREG.find(s=>s.id===id||s.n===id),SCALE=new Proxy(window.SCALE,{get:(t,k)=>k==="on"?t.on&&CO():t[k]});
 const BB='<button class="btn" data-obs-',BQ='<button class="btn quiet" data-obs-',BP='<button class="btn primary" data-obs-',MS='class="muted small"',H=esc,N0=n=>Math.round(n).toLocaleString("en-US"),P1=n=>(Math.round(n*10)/10).toLocaleString("en-US",{minimumFractionDigits:1,maximumFractionDigits:1}),P2=n=>(Math.round(n*100)/100).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});

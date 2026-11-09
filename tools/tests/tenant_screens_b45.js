@@ -1,5 +1,5 @@
 // PR-32 B4 (portfolio and delivery) and B5 (money and contracts): the screens these batches moved to the tenant data layer, under every tenant.
-// For each screen and each tenant (Atlantic Systems, the three industry packs and one company made by Bring your company):
+// For each screen and each tenant (Atlantic Logistics, the three industry packs and one company made by Bring your company):
 //  1. the screen is registered as mode "data" and renders (no page error, not blank);
 //  2. it shows that tenant's own rows (an id or name from one of the entities it registers) or a labeled gap (a screen that
 //     registers no entities, such as the Product log, carries no tenant business data);

@@ -219,7 +219,7 @@ function pOverview(p){
  if(p.dot)lines.push(`<dt>Dotted line to</dt><dd>${pchip(p.dot)} <span class="muted small">${H(DWHY[p.n]||"")}</span></dd>`);
  if(p.mx.length)lines.push(`<dt>Project matrix</dt><dd>${p.mx.map(m=>`<span class="pill info">${H(PNAME(m.p))} ${m.pct}%</span> <span class="muted small">led by ${H(PLEAD(m.p))}</span>`).join("<br>")}</dd>`);
  if(kids.length)lines.push(`<dt>Direct reports</dt><dd><div class="row">${kids.map(k=>pchip(k)).join("")}</div></dd>`);
- lines.push(`<dt>Team</dt><dd>${H(p.unit)}</dd><dt>Location</dt><dd>${H(p.loc)}, ${p.yrs} year${p.yrs===1?"":"s"} at Atlantic Systems</dd>`);
+ lines.push(`<dt>Team</dt><dd>${H(p.unit)}</dd><dt>Location</dt><dd>${H(p.loc)}, ${p.yrs} year${p.yrs===1?"":"s"} at Atlantic Logistics</dd>`);
  return `<div class="p360grid">${stat("Load",l+"%",loadHrs(p.n),l>95?"crit":"")}${stat("Open items",String(O.pending(p.n).reduce((s,g)=>s+g.rows.length,0)),"across "+O.pending(p.n).length+" areas")}${stat("AI agents",String(ag.length),ag.length?c.returned+" h/week returned":"none yet")}${stat("Still available",c.available+" h","a week in ranked opportunities")}</div>
  ${ownLine(p)}
  <div class="org-go"><div class="eyebrow">Go to ${H(first(p.n))} for</div><ul>${p.fn.map(f=>`<li>${H(f)}</li>`).join("")}</ul></div>

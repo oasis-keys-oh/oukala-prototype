@@ -2,10 +2,10 @@
 // every Showroom tour beat on the tenant the tour declares (beat.tenant, tour.tenant, default core): opens the beat's screen, clicks its tab the way the Showroom does, and checks
 //  1. no other tenant's organization names, record ids, project or people names on screen (same fingerprints as tenant_leak.js);
 //  2. a tenant-aware screen (DATA.screens() mode "data" or "tenant") shows this tenant's own data: its organization name and at
-//     least one of its own record names or ids; an Atlantic Systems-only screen carries the "not tenant-aware yet" label instead;
+//     least one of its own record names or ids; an Atlantic Logistics-only screen carries the "not tenant-aware yet" label instead;
 //  3. no page errors; the tab named by the beat exists.
 // Reports render timings per tenant (ms to open each beat and its tab, median and slowest) and the talk time of each cut.
-// The Showroom itself starts tours on Atlantic Systems today; this check is what makes a tenant tour safe to rehearse.
+// The Showroom itself starts tours on Atlantic Logistics today; this check is what makes a tenant tour safe to rehearse.
 // Usage: node tools/tests/tenant_tour.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');

@@ -1,12 +1,12 @@
 // PR-32 batch B9 (Build, admin, transformation and showroom): every B9 screen under every tenant.
-// For each screen in the list below and each tenant (Atlantic Systems, the three industry packs, and one company made by Bring your company,
+// For each screen in the list below and each tenant (Atlantic Logistics, the three industry packs, and one company made by Bring your company,
 // PACKGEN), switched with TENANT.switch (the real path, no reload), it checks:
 //  1. the screen renders (a view of some size) with no page errors;
 //  2. its registered mode is the one this batch declares (DATA.screen from the screen's own module);
 //  3. a screen in mode "data" shows this tenant's own rows (an id or name from the entities it registers, or a person of the tenant),
 //     or a labeled gap ("No data in this sample company yet"); a screen in mode "tenant" follows the tenant its own way (checked for leaks only);
 //     a screen in mode "core" carries the "not tenant-aware yet" label;
-//  4. no other tenant's organization name (an Atlantic Systems-only screen, labeled, may still show Atlantic Systems; never an industry tenant), record ids, project names or people names on screen (fingerprints as in tenant_leak.js,
+//  4. no other tenant's organization name (an Atlantic Logistics-only screen, labeled, may still show Atlantic Logistics; never an industry tenant), record ids, project names or people names on screen (fingerprints as in tenant_leak.js,
 //     plus the tenant-prefixed ids of the entities the B9 screens read).
 // A screen registered with no entities (a product page with no tenant business data) needs no own rows, only no leakage.
 // ONLY=id1,id2 limits the run to those screens.
@@ -61,7 +61,7 @@ for(const t of setup.tenants){await p.evaluate(t=>TENANT.switch(t),t);await p.wa
   if(report){if(r.hits.length||errs.length>n0)console.log(t,id,r.mode,'own',r.mine,'gap',r.gap,'|',r.hits.slice(0,process.env.NH?+process.env.NH:5).join(' | '),errs.slice(n0).join(' | ').slice(0,300));continue}
   if(r.len<400)fail(t+' '+id+': blank view');
   if(r.mode!==want)fail(t+' '+id+': mode '+r.mode+', expected '+want);
-  /* an Atlantic Systems-only screen (mode core, labeled) may show Atlantic Systems under another tenant, never an industry tenant */
+  /* an Atlantic Logistics-only screen (mode core, labeled) may show Atlantic Logistics under another tenant, never an industry tenant */
   const hits=r.mode==='core'?r.hits.filter(h=>h.indexOf('core:')!==0):r.hits;
   if(hits.length)fail(t+' '+id+' shows another tenant: '+hits.slice(0,4).join(' | '));
   if(t!=='core'&&r.mode==='data'&&r.ents&&!r.mine&&!r.gap)fail(t+' '+id+': neither own rows nor a labeled gap');

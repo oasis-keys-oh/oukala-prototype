@@ -55,7 +55,7 @@ What worked: on Journey maps, Build list tab, the department head sees "Your dep
 **UX-C-01. P0. The Employee persona is the CIO.** Screens `home`, `flw_appr`, rail identity card.
 Evidence: `shots/employee/home-light.jpg` says "Welcome, Casey." with "Viewing as Casey Rowan (Employee)"; `shots/employee/flw_appr-light.jpg` says "16 approvals are waiting on you as Casey Rowan (CIO, Portfolio board, Executive sponsor)". `JXR.purview()` for `emp` returns user Casey Rowan, role "Chief information officer". The Vendor guest rail card also reads "Casey Rowan, Vendor guest". The New hire is "Jamie Okoro" on Home and in the rail but "Rosa Delgado" in the permission model.
 Violates: Nielsen 2 (match with the real world), R38 (contributors see their own work), the purview rule JM-13 (an employee inherits an executive's approvals and builds).
-Fix: one persona-to-person table. In `src/mod_r16g_a_perm.js` line 36, `PERSONA_USER.emp` is "Casey Rowan"; give `emp`, `guest` and `newhire` their own fictional people from Atlantic Systems's directory and make `R15F3.PERSONA_USER` (synced at line 419) read from the same table instead of keeping its own. The rail card, Home greeting, My approvals and the purview all follow from that one change.
+Fix: one persona-to-person table. In `src/mod_r16g_a_perm.js` line 36, `PERSONA_USER.emp` is "Casey Rowan"; give `emp`, `guest` and `newhire` their own fictional people from Atlantic Logistics' directory and make `R15F3.PERSONA_USER` (synced at line 419) read from the same table instead of keeping its own. The rail card, Home greeting, My approvals and the purview all follow from that one change.
 
 **UX-C-02. P0. "Report a problem" has no path.** Screen `svc_portal`.
 Evidence: the screen is titled "Report a problem or order something" but its first heading is "Order something", and its 16 items are all orders (laptop, license, access, phone, AV support, onboarding and so on). No card, tab or button on the page says broken, problem, issue or incident (`tools/scratch/ux/chk.js`). The search palette does offer "Create an incident: Log something that is broken" as a quick action, so the capability exists but is hidden from the screen that promises it.
@@ -214,12 +214,12 @@ Violates: Nielsen 1 and 2, R37.
 Fix: in `src/mod_s_tenant.js`, default "Who you are" to the active persona's person (same table as UX-C-01) and label the tile "Screens that follow the active tenant".
 
 **UX-B-05. P1. The Bring your company dialog does not hold focus and its fields are unlabeled for assistive technology.** Screen `showroom`, `src/mod_s_exp_company.js`.
-Evidence: after opening, focus stays on the trigger and Tab walks the blurred page behind ("Atlantic Systems", "Larkspur Health System", "Start with a presenter"...); after Escape, focus does not return to "Bring your company". The four fields share `name="fk"` and are not tied to their visible labels. Submitting empty shows "Needed so the record tells its story" but sets no `aria-invalid`. Example text in Industry ("A regional health system") and People ("5000") looks like entered values over the painted background (`shots/platform-admin/task-byc-1.jpg`).
+Evidence: after opening, focus stays on the trigger and Tab walks the blurred page behind ("Atlantic Logistics", "Larkspur Health System", "Start with a presenter"...); after Escape, focus does not return to "Bring your company". The four fields share `name="fk"` and are not tied to their visible labels. Submitting empty shows "Needed so the record tells its story" but sets no `aria-invalid`. Example text in Industry ("A regional health system") and People ("5000") looks like entered values over the painted background (`shots/platform-admin/task-byc-1.jpg`).
 Violates: WCAG 2.4.3 Focus Order, 2.4.11 Focus Not Obscured, 1.3.1, 3.3.1 Error Identification, 3.3.2 Labels or Instructions, 4.1.2.
 Fix: move focus to the first field on open, keep Tab inside, return focus on close; connect labels with `for`/`id`; set `aria-invalid` and `aria-describedby` on error with "Enter a company name (a made-up one is fine)"; put fields on a solid surface and show examples as hints below the field, not as values.
 
 **UX-B-06. P2. Showroom shows two companies selected.** Screen `showroom`.
-Evidence: `shots/platform-admin/showroom-light.jpg`: "Bring your company" and "Atlantic Systems" both have the selected fill.
+Evidence: `shots/platform-admin/showroom-light.jpg`: "Bring your company" and "Atlantic Logistics" both have the selected fill.
 Violates: Nielsen 1.
 Fix: in `src/mod_s_showroom.js`, style Bring your company as an action button, not a choice in the company group.
 
@@ -307,4 +307,4 @@ Fix: a CSS lint rule in `tools/lint` that fails new side stripes and layout tran
 
 - Headless Chromium only; no VoiceOver or NVDA session. Screen reader findings come from names, roles and states read from the DOM.
 - Contrast is computed against the nearest opaque background; text over the painted hero images and glass panels was checked by eye only.
-- The rail and screens were walked on the Atlantic Systems sample tenant. Generated tenants were not walked.
+- The rail and screens were walked on the Atlantic Logistics sample tenant. Generated tenants were not walked.

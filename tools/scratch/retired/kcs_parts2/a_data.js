@@ -34,7 +34,7 @@ const EX=[
 ["SOP-221","Approve an invoice above the delegation limit","SOP","svc_fin","Avery Chen","Policy library","Delegation of authority matrix",91,"Confidential","2026-03-05",140,26,62,90,50,"Finance",["p_close"],[],"Published"],
 ["SOP-230","Quarterly lease schedule reconciliation","SOP","svc_erp","Avery Chen","Written by hand","Finance close calendar",83,"Confidential","2026-01-28",54,11,66,82,55,"Finance",["p_close"],[],"Published"],
 ["POL-01","Data classification and handling","Policy","svc_m365","Rina Okafor","Policy library","Security policy 2.1",95,"Internal","2026-02-14",640,88,12,92,90,"All staff",["p_acc"],[],"Published"],
-["POL-07","Acceptable use of Atlantic systems","Policy","svc_m365","Rina Okafor","Policy library","HR handbook",94,"Internal","2025-09-01",905,40,10,90,90,"All staff",["p_onb"],[],"Published"],
+["POL-07","Acceptable use of Atlantic Logistics systems","Policy","svc_m365","Rina Okafor","Policy library","HR handbook",94,"Internal","2025-09-01",905,40,10,90,90,"All staff",["p_onb"],[],"Published"],
 ["POL-15","Third-party access policy","Policy","svc_id","Rina Okafor","Policy library","Security policy 2.1",90,"Internal","2026-04-02",120,34,18,88,85,"Vendors",["p_ven","p_acc"],[],"Published"],
 ["CT-118","Lumen: search availability commitment of 99.5 percent","Contract term","svc_search","Maya Ortiz","Contract clause","Lumen MSA, clause 7.2",96,"Confidential","2026-01-10",44,22,8,95,80,"Executives",["p_ven","p_ctr"],[],"Published"],
 ["CT-121","Northwind Managed Services: P1 response in 15 minutes","Contract term","svc_end","Maya Ortiz","Contract clause","Northwind SOW, schedule B",96,"Confidential","2026-01-10",51,25,8,94,80,"Service desk",["p_inc","p_ctr"],[],"Published"],

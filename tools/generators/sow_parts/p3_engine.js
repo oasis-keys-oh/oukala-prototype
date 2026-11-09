@@ -53,9 +53,9 @@ function analyze(text,ct,doc){ct=ct||{};const out=[];const hasSec=/^\s*\d+\.\s+\
   if(!started||(!m&&/^[A-Z0-9 ,:'().-]{8,}$/.test(ln)))return;
   body.split(/(?<=[.;])\s+(?=[A-Z])/).forEach((o,i)=>{o=o.trim();if(o.length<12)return;n++;
    const s=o.toLowerCase();let type=(TR.find(r=>r[1](s))||["commitment"])[0];
-   let party=/^(?:atlantic|the foundation|customer)\b/.test(s)?"Atlantic Systems":vw.test(s)?"Vendor":null;
-   if(!party)party=({deliverable:"Vendor",milestone:"Vendor",sla:"Vendor",kpi:"Vendor",warranty:"Vendor",data:"Vendor",payment:"Atlantic Systems",dependency:"Atlantic Systems",obl_us:"Atlantic Systems"})[type]||"Both";
-   if(type==="obligation")type=party==="Atlantic Systems"?"obl_us":party==="Vendor"?"obl_vendor":"commitment";
+   let party=/^(?:atlantic|the foundation|customer)\b/.test(s)?"Atlantic Logistics":vw.test(s)?"Vendor":null;
+   if(!party)party=({deliverable:"Vendor",milestone:"Vendor",sla:"Vendor",kpi:"Vendor",warranty:"Vendor",data:"Vendor",payment:"Atlantic Logistics",dependency:"Atlantic Logistics",obl_us:"Atlantic Logistics"})[type]||"Both";
+   if(type==="obligation")type=party==="Atlantic Logistics"?"obl_us":party==="Vendor"?"obl_vendor":"commitment";
    // playbook match
    const hits=[];PB.forEach(p=>{if(p.types&&p.types.indexOf(type)<0)return;if(p.re.test(s)){const r=p.chk(s);if(r)hits.push({p:p,r:r})}});
    let mt="std",pb="",pr=null,ours="",nt=null,pbs=hits.map(h=>h.p.id),rk=({liability:"High",data:"High",ip:"Medium",term:"Medium",payment:"Medium",warranty:"Medium",price:"Medium",sla:"Medium",change:"Medium"})[type]||"Low",why="",rec="ai",fb=false,trap=false,vend="",rlab="";
@@ -67,8 +67,8 @@ function analyze(text,ct,doc){ct=ct||{};const out=[];const hasSec=/^\s*\d+\.\s+\
     else{why="Operational line. The playbook sets no position on it, so the business owner confirms the value."}}
    const due=dateIn(o,ct),nv=normOf(type,o,s,pr,due);
    let metric="",target="";if(type==="sla"||type==="kpi"){metric=(METW.find(w=>w[1].test(s))||["Measure"])[0];const cmp=/at least|no less|minimum|or better|not below/.test(s)?"At least ":/not exceed|no more than|within|maximum|at most/.test(s)?"Within ":"";target=cmp+(nv.norm.replace(/^Stated$/,"")||"")}
-   else if(type==="milestone"){metric="Accepted by Atlantic Systems";target=due?"By "+fdt(due):""}else if(type==="deliverable"){metric="Accepted by Atlantic Systems";target=due?"By "+fdt(due):/review/.test(s)?"":"Review in 10 business days"}else if(type==="payment")metric="Matches accepted work";
-   let owner=party==="Atlantic Systems"?(type==="payment"?"Avery Chen":ct.owner||"Dev Rao"):party==="Vendor"?(ct.vOwner||ct.vendor||"Vendor"):(ct.owner||"Dev Rao");
+   else if(type==="milestone"){metric="Accepted by Atlantic Logistics";target=due?"By "+fdt(due):""}else if(type==="deliverable"){metric="Accepted by Atlantic Logistics";target=due?"By "+fdt(due):/review/.test(s)?"":"Review in 10 business days"}else if(type==="payment")metric="Matches accepted work";
+   let owner=party==="Atlantic Logistics"?(type==="payment"?"Avery Chen":ct.owner||"Dev Rao"):party==="Vendor"?(ct.vOwner||ct.vendor||"Vendor"):(ct.owner||"Dev Rao");
    if(/atlantic monitoring|measured by atlantic/.test(s))owner="Contract Analyst Agent";
    const watch=type==="payment"?"Invoice Advisor":(type==="sla"||type==="kpi"||type==="milestone"||due)?"Contract Analyst Agent":"";
    // suggested links

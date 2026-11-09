@@ -1,8 +1,8 @@
 # Candidate extra demos: ratings from opening each screen
 
-Read-only rating for backlog item DC-27. Each of the 13 candidate demos named in the Demo Center plan was checked by opening its screens in the built prototype (`python3 src/build.py --full`, headless Chromium, 2026-10-20, Atlantic Systems scenario, role CIO). Nothing was built. This page carries no status or priority; the backlog decides what, if anything, becomes a tour. A candidate that needs a screen that does not exist would be dropped and logged under DC-34; none of the 13 needs one.
+Read-only rating for backlog item DC-27. Each of the 13 candidate demos named in the Demo Center plan was checked by opening its screens in the built prototype (`python3 src/build.py --full`, headless Chromium, 2026-10-20, Atlantic Logistics scenario, role CIO). Nothing was built. This page carries no status or priority; the backlog decides what, if anything, becomes a tour. A candidate that needs a screen that does not exist would be dropped and logged under DC-34; none of the 13 needs one.
 
-All counts below are **prototype facts** measured on 2026-10-20. Every figure shown on the screens themselves is **modeled** sample data for the fictional Atlantic Systems.
+All counts below are **prototype facts** measured on 2026-10-20. Every figure shown on the screens themselves is **modeled** sample data for the fictional Atlantic Logistics.
 
 ## How the rating works
 
@@ -12,7 +12,7 @@ All counts below are **prototype facts** measured on 2026-10-20. Every figure sh
 | B | Usable: the screens exist and open clean, but the story needs a decision, a wording check or one more screen check before a cut is written. |
 | C | Thin: the screens exist, but they do not yet carry the story on their own. |
 
-Common to all 13: every screen opened with no page error; none is tenant-aware (`DATA.screenMode` is `core` for all), so each would run on the Atlantic Systems sample and be labeled that way under another tenant, exactly as the maturity tour is (DC-32, DC-36).
+Common to all 13: every screen opened with no page error; none is tenant-aware (`DATA.screenMode` is `core` for all), so each would run on the Atlantic Logistics sample and be labeled that way under another tenant, exactly as the maturity tour is (DC-32, DC-36).
 
 ## Ratings
 

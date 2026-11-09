@@ -4,7 +4,7 @@ Design paper for backlog item PH-14 (sidenav sprint), written with PR-06 (top ba
 
 Binding inputs: Omar's decisions of 2026-10-20 (menu by role, six business areas, a separate Build and admin space, an own Transformation group, a contribution anchor for every person, team and screen) and the platform rules in `docs/PLATFORM_RULES.md` (R2 archetypes, R3 no new screen when a view will do, R34 screen order, R38 information by level).
 
-**Labels.** Counts of screens, groups, families, tabs and links are **prototype facts**, measured on 2026-10-20 by building the prototype (`python3 src/build.py --full`) and reading the live registry in a headless browser (`tools/scratch/ia/extract.js`, `tools/scratch/ia/demos.js`). Proposed placements, labels and families are **proposals**. Science claims are summaries of well-known findings, each one line; effect sizes are not claimed. Targets in section (g) are **hypotheses** until measured. Contribution points in section (f) are **modeled**. All people, teams and objectives named are fictional sample data for the Atlantic Systems.
+**Labels.** Counts of screens, groups, families, tabs and links are **prototype facts**, measured on 2026-10-20 by building the prototype (`python3 src/build.py --full`) and reading the live registry in a headless browser (`tools/scratch/ia/extract.js`, `tools/scratch/ia/demos.js`). Proposed placements, labels and families are **proposals**. Science claims are summaries of well-known findings, each one line; effect sizes are not claimed. Targets in section (g) are **hypotheses** until measured. Contribution points in section (f) are **modeled**. All people, teams and objectives named are fictional sample data for the Atlantic Logistics.
 
 ## What the prototype has today (prototype facts)
 

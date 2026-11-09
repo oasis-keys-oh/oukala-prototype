@@ -29,36 +29,36 @@ const LEGAL="Atlantic Legal";
 const TIERS=[{id:"T1",max:10000,role:"Budget owner",who:"Maya Ortiz"},{id:"T2",max:25000,role:"Portfolio lead",who:"Maya Ortiz"},{id:"T3",max:100000,role:"CIO",who:"Casey Rowan"},{id:"T4",max:250000,role:"CFO",who:"CFO"},{id:"T5",max:1000000,role:"CEO",who:"CEO"},{id:"T6",max:Infinity,role:"Board finance committee",who:"Board finance committee"}];
 const tierOf=amt=>TIERS.find(t=>Math.abs(amt)<=t.max)||TIERS[5];
 const chainFor=amt=>{const t=tierOf(amt),out=[{r:"Contract owner",who:null,why:"Confirms the business need"},{r:LEGAL,who:null,why:"Reviews any change to legal terms"}];if(Math.abs(amt)>10000)out.push({r:"Controller",who:"Avery Chen",why:"Orders above $10,000 need finance review"});out.push({r:t.role,who:t.who,why:"Delegation of authority "+t.id+" covers up to "+(t.max===Infinity?"any amount":D$(t.max))});return out};
-/* ---------- Terms playbook: Atlantic Systems standard clause library ---------- */
+/* ---------- Terms playbook: Atlantic Logistics standard clause library ---------- */
 const ok_=(v,o)=>Object.assign({ok:true,v:v},o||{}),bad_=(v,why,o)=>Object.assign({ok:false,v:v,why:why},o||{});
 const PB=[
 {id:"PB-PAY",n:"Payment terms",cat:"Commercial",risk:"Medium",
- std:"Atlantic Systems pays undisputed amounts within 45 days of receiving a correct invoice.",
+ std:"Atlantic Logistics pays undisputed amounts within 45 days of receiving a correct invoice.",
  fb:"Net 30 is acceptable only with a 2 percent discount for payment within 10 days.",kw:"net, payable within, days of invoice",
  re:/net\s*\d+|payable within|within \w+(?:-\w+)? (?:calendar |business )?days (?:of|after) (?:the )?(?:date of |receipt of )?(?:a |the )?(?:correct |undisputed )?invoice/,
  chk:s=>{const d=m1(s,/(?:net\s*|within\s+)(\d+|thirty|forty-five|sixty|ninety)/);if(d==null)return null;return d>=45?ok_("Net "+d):bad_("Net "+d,"The vendor asks to be paid in "+d+" days. Our standard is 45 days"+(d>=30?"; Net 30 is allowed only with a 2 percent early-payment discount.":"."),{fb:d>=30})}},
 {id:"PB-ACC",n:"Payment only after acceptance",cat:"Commercial",risk:"High",types:["payment"],
- std:"Milestone payments become due only after Atlantic Systems gives written acceptance of the deliverable. No advance payments are made.",
+ std:"Milestone payments become due only after Atlantic Logistics gives written acceptance of the deliverable. No advance payments are made.",
  fb:"A mobilization advance up to 5 percent is acceptable if it is secured by a credit against the final milestone.",kw:"upon delivery, in advance, prepaid, upon signature",
  re:/\b(?:upon|on|at) (?:delivery|completion|signature|signing|execution)|in advance|prepa|upon acceptance|after (?:written )?acceptance|following acceptance/,
- chk:s=>/accept/.test(s)&&!/deemed/.test(s)?ok_("After acceptance"):bad_(/advance|prepa|signature|signing/.test(s)?"Paid in advance":"Paid on delivery","Payment is triggered by delivery or signature, not by Atlantic Systems' acceptance. That is how the invoice for work not yet accepted gets paid.",{fb:/advance|signature/.test(s)&&(pctOf(s)==null||pctOf(s)<=5)})},
+ chk:s=>/accept/.test(s)&&!/deemed/.test(s)?ok_("After acceptance"):bad_(/advance|prepa|signature|signing/.test(s)?"Paid in advance":"Paid on delivery","Payment is triggered by delivery or signature, not by Atlantic Logistics' acceptance. That is how the invoice for work not yet accepted gets paid.",{fb:/advance|signature/.test(s)&&(pctOf(s)==null||pctOf(s)<=5)})},
 {id:"PB-LOL",n:"Limitation of liability",cat:"Legal",risk:"High",
  std:"Each party's aggregate liability is limited to the fees paid or payable in the 12 months before the claim, with a 3x super-cap for data breach and no cap for IP indemnity, gross negligence or willful misconduct.",
  fb:"A 2x super-cap for data breach is acceptable. A cap below 12 months of fees is not.",kw:"aggregate liability, limited to, cap",
  re:/aggregate liability|liability (?:is|shall be|will be) (?:limited|capped)|total liability|cap on liability/,
- chk:s=>{const mo=m1(s,R_("NUM\\s+months?")),yr=m1(s,R_("NUM\\s+years?"));const m=mo!=null?mo:yr!=null?yr*12:null;if(/unlimited/.test(s))return ok_("Unlimited");if(m==null)return bad_("Cap not clear","The cap is not stated in months of fees, so it cannot be compared with our 12 month standard.");return m>=12?ok_(m+" months of fees"):bad_(m+" months of fees","The cap is "+m+" months of fees; our standard is 12 months. A short cap leaves Atlantic Systems exposed to a vendor failure in the middle of the project.")}},
+ chk:s=>{const mo=m1(s,R_("NUM\\s+months?")),yr=m1(s,R_("NUM\\s+years?"));const m=mo!=null?mo:yr!=null?yr*12:null;if(/unlimited/.test(s))return ok_("Unlimited");if(m==null)return bad_("Cap not clear","The cap is not stated in months of fees, so it cannot be compared with our 12 month standard.");return m>=12?ok_(m+" months of fees"):bad_(m+" months of fees","The cap is "+m+" months of fees; our standard is 12 months. A short cap leaves Atlantic Logistics exposed to a vendor failure in the middle of the project.")}},
 {id:"PB-IND",n:"IP infringement indemnity",cat:"Legal",risk:"High",
- std:"The supplier will defend and indemnify Atlantic Systems against third-party claims that the deliverables or services infringe intellectual property rights, without a cap.",
+ std:"The supplier will defend and indemnify Atlantic Logistics against third-party claims that the deliverables or services infringe intellectual property rights, without a cap.",
  fb:"None. This clause is not negotiable.",kw:"indemnify, defend, infringe",
  re:/indemnif|\bdefend\b/,
- chk:s=>/infring/.test(s)&&/(supplier|vendor|lumen|beacon|northwind|microsoft|contoso|legacydocs|will defend|shall defend)/.test(s)?ok_("Vendor indemnity for infringement"):/(atlantic|customer) (?:shall|will) indemnify/.test(s)?bad_("One-way indemnity from Atlantic Systems","Atlantic Systems would indemnify the vendor, but the vendor gives no matching IP indemnity."):ok_("Indemnity stated")},
+ chk:s=>/infring/.test(s)&&/(supplier|vendor|lumen|beacon|northwind|microsoft|contoso|legacydocs|will defend|shall defend)/.test(s)?ok_("Vendor indemnity for infringement"):/(atlantic|customer) (?:shall|will) indemnify/.test(s)?bad_("One-way indemnity from Atlantic Logistics","Atlantic Logistics would indemnify the vendor, but the vendor gives no matching IP indemnity."):ok_("Indemnity stated")},
 {id:"PB-TFC",n:"Termination rights",cat:"Legal",risk:"Medium",
- std:"Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work. Either party may terminate for uncured material breach after 30 days.",
+ std:"Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work. Either party may terminate for uncured material breach after 30 days.",
  fb:"60 days notice for convenience is acceptable on subscriptions with a prepaid term refund.",kw:"terminate, convenience, cause, breach",
  re:/terminat/,
- chk:s=>{if(/(?:may not|cannot|shall not) terminate/.test(s))return bad_("No exit for convenience","Atlantic Systems could not leave before the term ends, even if the service fails to deliver value.");if(/(supplier|vendor|lumen|beacon|northwind|microsoft|contoso|legacydocs) may terminate[^.]*convenience/.test(s))return bad_("Vendor may leave for convenience","The vendor could walk away mid-project.");if(/convenience|without cause|for any reason/.test(s)){const d=m1(s,R_("NUM days"));return d==null||d<=60?ok_("Convenience exit, "+(d||30)+" days"):bad_(d+" days notice","Notice is longer than our 60 day fallback.")}return ok_("For cause, cure period "+(m1(s,R_("NUM days"))||30)+" days")}},
+ chk:s=>{if(/(?:may not|cannot|shall not) terminate/.test(s))return bad_("No exit for convenience","Atlantic Logistics could not leave before the term ends, even if the service fails to deliver value.");if(/(supplier|vendor|lumen|beacon|northwind|microsoft|contoso|legacydocs) may terminate[^.]*convenience/.test(s))return bad_("Vendor may leave for convenience","The vendor could walk away mid-project.");if(/convenience|without cause|for any reason/.test(s)){const d=m1(s,R_("NUM days"));return d==null||d<=60?ok_("Convenience exit, "+(d||30)+" days"):bad_(d+" days notice","Notice is longer than our 60 day fallback.")}return ok_("For cause, cure period "+(m1(s,R_("NUM days"))||30)+" days")}},
 {id:"PB-REN",n:"Renewal and auto-renewal",cat:"Commercial",risk:"High",
- std:"The agreement renews only by a written order signed by Atlantic Systems. The supplier sends a renewal reminder at least 120 days before the term ends.",
+ std:"The agreement renews only by a written order signed by Atlantic Logistics. The supplier sends a renewal reminder at least 120 days before the term ends.",
  fb:"Automatic renewal is acceptable only if notice of non-renewal is 60 days or less and the supplier sends a reminder 120 days before.",kw:"renews automatically, renewal term, non-renewal",
  re:/renew/,
  chk:s=>{const auto=/automatic|automatically|evergreen|successive/.test(s);const nt=m1(s,R_("NUM days'?\\s+(?:written |prior )?(?:notice|before|prior)"))||m1(s,R_("notice[^.]*?NUM days"));if(!auto)return ok_("Renews by written order");if(nt!=null&&nt<=60)return ok_("Auto-renews, "+nt+" days notice",{fbUsed:true});return bad_("Auto-renews, "+(nt!=null?nt+" days notice":"notice not stated"),(nt!=null?"The notice window is "+nt+" days, longer than our 60 day limit. ":"No notice period is stated. ")+"If nobody sends notice in time the contract renews for another term at the vendor's price.",{trap:true,fb:false})}},
@@ -68,7 +68,7 @@ const PB=[
  re:/(?:increase|adjust|escalat|uplift)[^.]*\b(?:fees?|rates?|prices?|pricing)\b|\b(?:fees?|rates?|prices?|pricing)\b[^.]*(?:increase|adjust|escalat|uplift)|fixed for the (?:term|duration)|\bcpi\b/,
  chk:s=>{if(/fixed for the (?:term|duration)/.test(s))return ok_("Rates fixed for the term");const p=pctOf(s);if(p==null)return bad_("No cap on increases","Increases are allowed but no cap is stated.");return p<=3?ok_("Up to "+p+"% a year"):bad_("Up to "+p+"% a year","The vendor may raise prices by "+p+"% each year; our cap is 3%.",{fb:p<=5})}},
 {id:"PB-SLA",n:"Availability service level",cat:"Service levels",risk:"Medium",
- std:"The service is available at least 99.9 percent of each month, measured by Atlantic Systems monitoring, excluding agreed maintenance.",
+ std:"The service is available at least 99.9 percent of each month, measured by Atlantic Logistics monitoring, excluding agreed maintenance.",
  fb:"99.5 percent is acceptable for Tier 2 services only.",kw:"availability, uptime",
  re:/availab(?:le|ility)|uptime/,
  chk:s=>{const p=pctOf(s);if(p==null)return null;return p>=99.9?ok_(p+"% monthly"):bad_(p+"% monthly","The vendor offers "+p+"% availability. That allows about "+Math.round((1-p/100)*43200)+" minutes of downtime a month; our standard is 99.9% (43 minutes).",{fb:p>=99.5})}},
@@ -83,59 +83,59 @@ const PB=[
  re:/sev(?:erity)?\s*(?:1|one)|priority\s*1|critical (?:incident|issue)/,
  chk:s=>{if(!/respon/.test(s))return null;const mi=m1(s,/(\d+)\s*minutes/),h=m1(s,R_("NUM\\s*hours?"));const m=mi!=null?mi:h!=null?h*60:null;if(m==null)return null;return m<=30?ok_(m+" minutes"):bad_(m<60?m+" minutes":(m/60)+" hours","The vendor responds to a critical incident in "+(m<60?m+" minutes":(m/60)+" hours")+"; our standard is 30 minutes.",{fb:m<=60})}},
 {id:"PB-DPA",n:"Breach notification",cat:"Data and security",risk:"High",types:["data"],
- std:"The supplier notifies Atlantic Systems of a security incident affecting Atlantic Systems data within 48 hours of discovery.",
+ std:"The supplier notifies Atlantic Logistics of a security incident affecting Atlantic Logistics data within 48 hours of discovery.",
  fb:"72 hours is acceptable where the supplier also gives hourly updates for Severity 1 events.",kw:"breach, security incident, notify",
  re:/breach|security incident|data incident/,
- chk:s=>{const h=m1(s,R_("NUM\\s*hours"));if(h==null)return bad_("No time limit","Notification time is not stated, so Atlantic Systems could learn of a breach late.");return h<=48?ok_(h+" hours"):h<=72?ok_(h+" hours",{fbUsed:true}):bad_(h+" hours","Notice takes "+h+" hours, past our 72 hour fallback.")}},
+ chk:s=>{const h=m1(s,R_("NUM\\s*hours"));if(h==null)return bad_("No time limit","Notification time is not stated, so Atlantic Logistics could learn of a breach late.");return h<=48?ok_(h+" hours"):h<=72?ok_(h+" hours",{fbUsed:true}):bad_(h+" hours","Notice takes "+h+" hours, past our 72 hour fallback.")}},
 {id:"PB-DPI",n:"Processing on instructions",cat:"Data and security",risk:"High",
- std:"The supplier processes personal data only on Atlantic Systems' documented instructions under the data processing addendum.",fb:"None.",kw:"documented instructions, data processing addendum",
+ std:"The supplier processes personal data only on Atlantic Logistics' documented instructions under the data processing addendum.",fb:"None.",kw:"documented instructions, data processing addendum",
  re:/documented instructions|data processing addendum|processes? personal data/,
  chk:s=>/own purposes|its own/.test(s)?bad_("Vendor own purposes","The vendor reserves the right to use personal data for its own purposes."):ok_("On instructions only")},
 {id:"PB-SUB",n:"Subcontractors and subprocessors",cat:"Data and security",risk:"Medium",
- std:"The supplier may engage subcontractors or subprocessors only with Atlantic Systems' prior written consent and remains responsible for them.",
+ std:"The supplier may engage subcontractors or subprocessors only with Atlantic Logistics' prior written consent and remains responsible for them.",
  fb:"Notice of 30 days with a right to object is acceptable for cloud infrastructure subprocessors.",kw:"subcontractors, subprocessors",
  re:/subcontract|subprocessor|sub-processor/,
- chk:s=>/without (?:the )?(?:prior )?(?:written )?(?:consent|approval|notice)/.test(s)?bad_("No consent needed","Subcontractors could be added without telling Atlantic Systems, including ones that touch Atlantic Systems data.",{fb:false}):/(?:prior|written) (?:written )?(?:consent|approval)|object/.test(s)?ok_("Prior consent"):bad_("Consent not stated","The clause does not say Atlantic Systems must approve subcontractors.")},
+ chk:s=>/without (?:the )?(?:prior )?(?:written )?(?:consent|approval|notice)/.test(s)?bad_("No consent needed","Subcontractors could be added without telling Atlantic Logistics, including ones that touch Atlantic Logistics data.",{fb:false}):/(?:prior|written) (?:written )?(?:consent|approval)|object/.test(s)?ok_("Prior consent"):bad_("Consent not stated","The clause does not say Atlantic Logistics must approve subcontractors.")},
 {id:"PB-SEC",n:"Security certifications",cat:"Data and security",risk:"Medium",
  std:"The supplier maintains a SOC 2 Type II report or ISO/IEC 27001 certification, provides it annually, encrypts data in transit and at rest, and runs an annual penetration test.",fb:"A SOC 2 Type I report is acceptable for one year for a new supplier.",kw:"soc 2, iso 27001, penetration, encrypt",
  re:/soc ?2|iso ?27001|penetration|encrypt|multi-?factor/,
  chk:s=>/type ii|iso ?27001|aes-?256|tls ?1\.[23]|annual/.test(s)?ok_("Certified, reported annually"):bad_("Certification not stated","No recognized certification or reporting cycle is stated.")},
 {id:"PB-RES",n:"Data residency",cat:"Data and security",risk:"Medium",
- std:"Atlantic Systems data is stored and processed in the United States.",fb:"EU regions are acceptable for backup only.",kw:"stored in, hosted in, region",
+ std:"Atlantic Logistics data is stored and processed in the United States.",fb:"EU regions are acceptable for backup only.",kw:"stored in, hosted in, region",
  re:/(?:stored|hosted|reside|processed) in (?:the )?(?:united states|u\.?s\.?|eu|europe|any)/,
  chk:s=>/united states|\bus\b|u\.s\./.test(s)?ok_("United States"):bad_("Outside the United States","Data would be stored outside the United States.")},
 {id:"PB-IPO",n:"Ownership of deliverables",cat:"Intellectual property",risk:"High",
- std:"Atlantic Systems owns all deliverables and work product created under the agreement, and the supplier assigns all rights to Atlantic Systems on payment.",fb:"A license is acceptable for the supplier's own tools, never for custom deliverables.",kw:"owns, ownership, work product, deliverables",
+ std:"Atlantic Logistics owns all deliverables and work product created under the agreement, and the supplier assigns all rights to Atlantic Logistics on payment.",fb:"A license is acceptable for the supplier's own tools, never for custom deliverables.",kw:"owns, ownership, work product, deliverables",
  re:/(?:owns?|ownership|title|assigns?)[^.]*(?:deliverables?|work product)|(?:deliverables?|work product)[^.]*(?:owned|property of)/,
- chk:s=>/atlantic (?:owns|shall own|will own)|owned by atlantic|assigns? [^.]*to atlantic|property of atlantic/.test(s)?ok_("Atlantic Systems owns"):bad_("Vendor keeps ownership","The vendor keeps ownership of work Atlantic Systems pays for.")},
+ chk:s=>/atlantic (?:owns|shall own|will own)|owned by atlantic|assigns? [^.]*to atlantic|property of atlantic/.test(s)?ok_("Atlantic Logistics owns"):bad_("Vendor keeps ownership","The vendor keeps ownership of work Atlantic Logistics pays for.")},
 {id:"PB-BIP",n:"Background IP license",cat:"Intellectual property",risk:"Medium",
- std:"The supplier grants Atlantic Systems a perpetual, royalty-free license to supplier tools embedded in the deliverables.",fb:"A term license that matches the life of the service is acceptable for SaaS.",kw:"background, pre-existing, embedded tools",
+ std:"The supplier grants Atlantic Logistics a perpetual, royalty-free license to supplier tools embedded in the deliverables.",fb:"A term license that matches the life of the service is acceptable for SaaS.",kw:"background, pre-existing, embedded tools",
  re:/background (?:tools|ip|intellectual)|pre-?existing|embedded in the deliverables/,
- chk:s=>/perpetual/.test(s)?ok_("Perpetual license"):bad_("License is not perpetual","Atlantic Systems could lose the right to use deliverables after the contract ends.")},
+ chk:s=>/perpetual/.test(s)?ok_("Perpetual license"):bad_("License is not perpetual","Atlantic Logistics could lose the right to use deliverables after the contract ends.")},
 {id:"PB-WAR",n:"Warranty period",cat:"Legal",risk:"Medium",
  std:"The supplier warrants that deliverables conform to the specification for 90 days after acceptance and corrects defects at no charge.",fb:"60 days is acceptable for low-risk deliverables.",kw:"warrants, conform, days after acceptance",
  re:/warrant/,
  chk:s=>{const d=m1(s,R_("NUM\\s*days"));if(d==null)return null;return d>=90?ok_(d+" days"):bad_(d+" days","The warranty is "+d+" days; our standard is 90.",{fb:d>=60})}},
 {id:"PB-ACP",n:"Acceptance",cat:"Delivery",risk:"High",
- std:"Atlantic Systems has 10 business days to review each deliverable against agreed criteria. Silence is never acceptance.",fb:"A 5 business day reminder before a deliverable is escalated is acceptable.",kw:"deemed accepted, review period",
+ std:"Atlantic Logistics has 10 business days to review each deliverable against agreed criteria. Silence is never acceptance.",fb:"A 5 business day reminder before a deliverable is escalated is acceptable.",kw:"deemed accepted, review period",
  re:/deemed accept|review (?:each|the) deliverable|acceptance (?:period|criteria)|not rejected/,
- chk:s=>{if(/deemed/.test(s))return bad_("Deemed acceptance","Silence counts as acceptance. A missed email would trigger payment for work nobody checked.",{fb:false});const d=m1(s,R_("NUM\\s*(?:business |calendar )?days"));return d==null||d>=10?ok_((d||10)+" business days"):bad_(d+" days to review","Atlantic Systems gets only "+d+" days to review; our standard is 10 business days.")}},
+ chk:s=>{if(/deemed/.test(s))return bad_("Deemed acceptance","Silence counts as acceptance. A missed email would trigger payment for work nobody checked.",{fb:false});const d=m1(s,R_("NUM\\s*(?:business |calendar )?days"));return d==null||d>=10?ok_((d||10)+" business days"):bad_(d+" days to review","Atlantic Logistics gets only "+d+" days to review; our standard is 10 business days.")}},
 {id:"PB-CHG",n:"Change control",cat:"Delivery",risk:"Medium",
  std:"Changes take effect only through a written change order signed by both parties before work begins.",fb:"None.",kw:"change order, change request",
  re:/change (?:order|request|control)|changes (?:require|must)/,
- chk:s=>/unilateral|(?:supplier|vendor|lumen) may (?:change|amend)|without (?:atlantic's )?(?:consent|approval)/.test(s)?bad_("Vendor may change terms","The vendor may change the scope or terms without Atlantic Systems' signature."):ok_("Written change order, both sign")},
+ chk:s=>/unilateral|(?:supplier|vendor|lumen) may (?:change|amend)|without (?:atlantic's )?(?:consent|approval)/.test(s)?bad_("Vendor may change terms","The vendor may change the scope or terms without Atlantic Logistics' signature."):ok_("Written change order, both sign")},
 {id:"PB-EXP",n:"Travel and expenses",cat:"Commercial",risk:"Low",
- std:"Travel and expenses are reimbursed at cost only with Atlantic Systems' prior written approval and within a cap.",fb:"A pre-approved annual travel budget is acceptable.",kw:"travel, expenses",
+ std:"Travel and expenses are reimbursed at cost only with Atlantic Logistics' prior written approval and within a cap.",fb:"A pre-approved annual travel budget is acceptable.",kw:"travel, expenses",
  re:/expense|travel/,
  chk:s=>/prior (?:written )?(?:approval|consent)|pre-?approved|not to exceed|capped/.test(s)?ok_("Prior approval"):bad_("No approval needed","Expenses are billed at cost with no approval step or cap.")},
 {id:"PB-KEY",n:"Key personnel",cat:"Delivery",risk:"Medium",
- std:"Named key personnel are assigned for the term and are replaced only with Atlantic Systems' written consent and a 10 business day handover.",fb:"Replacement with equal skills on 10 days notice is acceptable.",kw:"key personnel, named engineers",
+ std:"Named key personnel are assigned for the term and are replaced only with Atlantic Logistics' written consent and a 10 business day handover.",fb:"Replacement with equal skills on 10 days notice is acceptable.",kw:"key personnel, named engineers",
  re:/key personnel|named (?:staff|resources|engineers)/,
  chk:s=>/(?:written )?(?:consent|approval)/.test(s)?ok_("Consent to replace"):bad_("Replacement is free","Named staff could be replaced at will.")},
 {id:"PB-ASM",n:"Assumption failure",cat:"Delivery",risk:"Medium",
  std:"If an assumption proves false, the supplier raises a change request within 5 business days. Dates and fees do not change automatically.",fb:"Dates may slip day for day for a documented customer delay of more than 5 business days.",kw:"delay extends dates, additional fees",
  re:/(?:delay|failure|late)[^.]*(?:extend|relief|additional (?:fees|charges|cost))|(?:extends?|extended)[^.]*(?:dates|schedule)/,
- chk:s=>/automatic|extends? all dates|additional (?:fees|charges)/.test(s)?bad_("Dates and fees move automatically","A late approval or file from Atlantic Systems would extend every date and add fees with no change request.",{fb:false}):ok_("Through change request")},
+ chk:s=>/automatic|extends? all dates|additional (?:fees|charges)/.test(s)?bad_("Dates and fees move automatically","A late approval or file from Atlantic Logistics would extend every date and add fees with no change request.",{fb:false}):ok_("Through change request")},
 {id:"PB-CONF",n:"Confidentiality",cat:"Legal",risk:"Low",
  std:"Confidentiality is mutual for five years after the term, and indefinitely for trade secrets and personal data.",fb:"Three years for non-sensitive material.",kw:"confidential",
  re:/confidential/,chk:s=>/(?:five|5) years|mutual|both parties/.test(s)?ok_("Mutual, five years"):bad_("One-way or undefined","Confidentiality is not mutual or has no clear period.")},
@@ -148,26 +148,26 @@ const PB=[
 ];
 const PBN=Object.fromEntries(PB.map(p=>[p.id,p]));
 const PBVER={};PB.forEach((p,i)=>{p.ver="v"+(1+(i%4));p.rev=addD(TDY,-30-((i*17)%200));p.owner=LEGAL;p.src="Standard";p.uses=0});
-/* Terms the playbook does not cover yet: the AI drafts a proposed Atlantic Systems position for legal to review */
+/* Terms the playbook does not cover yet: the AI drafts a proposed Atlantic Logistics position for legal to review */
 const NEWT=[
-{id:"NT-AI",n:"AI and model training on Atlantic Systems data",cat:"Data and security",risk:"High",re:/(?:train|fine-?tun|improve)[^.]*(?:model|algorithm|machine learning)|machine learning|artificial intelligence|generative/,
- draft:"The supplier will not use Atlantic Systems content, prompts, outputs or usage data to train, fine-tune or improve any model. AI features require Atlantic Systems' written approval, and the supplier discloses the models and model providers it uses.",
- why:"Atlantic Systems' AI governance policy forbids vendors from learning from our content. The playbook has no clause for this yet, so legal should approve one."},
-{id:"NT-PUB",n:"Publicity and use of Atlantic Systems' name",cat:"Legal",risk:"Low",re:/press release|case stud|publicity|(?:reference|refer to|identify)[^.]*(?:atlantic|customer)[^.]*(?:marketing|publicity|materials)/,
- draft:"The supplier will not use Atlantic Systems' name, logo or any statement about the relationship without Atlantic Systems' prior written approval for each use.",why:"Standards bodies are sensitive about endorsement. There is no publicity clause in the playbook."},
+{id:"NT-AI",n:"AI and model training on Atlantic Logistics data",cat:"Data and security",risk:"High",re:/(?:train|fine-?tun|improve)[^.]*(?:model|algorithm|machine learning)|machine learning|artificial intelligence|generative/,
+ draft:"The supplier will not use Atlantic Logistics content, prompts, outputs or usage data to train, fine-tune or improve any model. AI features require Atlantic Logistics' written approval, and the supplier discloses the models and model providers it uses.",
+ why:"Atlantic Logistics' AI governance policy forbids vendors from learning from our content. The playbook has no clause for this yet, so legal should approve one."},
+{id:"NT-PUB",n:"Publicity and use of Atlantic Logistics' name",cat:"Legal",risk:"Low",re:/press release|case stud|publicity|(?:reference|refer to|identify)[^.]*(?:atlantic|customer)[^.]*(?:marketing|publicity|materials)/,
+ draft:"The supplier will not use Atlantic Logistics' name, logo or any statement about the relationship without Atlantic Logistics' prior written approval for each use.",why:"Standards bodies are sensitive about endorsement. There is no publicity clause in the playbook."},
 {id:"NT-NSO",n:"Non-solicitation of staff",cat:"Legal",risk:"Low",re:/solicit|(?:hire|employ)[^.]*(?:personnel|employees|staff)/,
- draft:"Neither party actively solicits the other's employees working on this agreement during the term and for six months after. General advertisements are not solicitation.",why:"A one-sided or long non-solicit limits Atlantic Systems' hiring. A mutual six month clause is the usual compromise."},
+ draft:"Neither party actively solicits the other's employees working on this agreement during the term and for six months after. General advertisements are not solicitation.",why:"A one-sided or long non-solicit limits Atlantic Logistics' hiring. A mutual six month clause is the usual compromise."},
 {id:"NT-USG",n:"Usage true-up and overage",cat:"Commercial",risk:"High",re:/true-?up|overage charges|invoice any overage|exceed(?:s|ed)? the (?:included|licensed)/,
- draft:"Usage above the committed amount is billed at the contracted rate only after Atlantic Systems receives a usage report, with a 10 percent tolerance and a 30 day right to dispute. True-ups never apply retroactively.",
+ draft:"Usage above the committed amount is billed at the contracted rate only after Atlantic Logistics receives a usage report, with a 10 percent tolerance and a 30 day right to dispute. True-ups never apply retroactively.",
  why:"Usage-based pricing can turn a $186,000 plan into a surprise bill. The playbook needs a rule for tolerance, evidence and dispute time."},
-{id:"NT-AUDU",n:"Vendor audit of Atlantic Systems usage",cat:"Legal",risk:"Medium",re:/audit[^.]*(?:atlantic'?s? use|use of the|usage|compliance with (?:the )?licen)/,
+{id:"NT-AUDU",n:"Vendor audit of Atlantic Logistics usage",cat:"Legal",risk:"Medium",re:/audit[^.]*(?:atlantic'?s? use|use of the|usage|compliance with (?:the )?licen)/,
  draft:"The supplier may verify license compliance once a year, with 30 days written notice, during business hours, by remote self-certification first and at the supplier's cost.",why:"An audit on 10 days notice at any time can disrupt operations and expose confidential data."},
 {id:"NT-EXC",n:"Exclusive remedy",cat:"Legal",risk:"High",re:/sole and exclusive remedy|exclusive remedy/,
- draft:"Service credits are in addition to, and not instead of, Atlantic Systems' other remedies, including termination for chronic failure after three misses in any six months.",why:"If credits are the only remedy Atlantic Systems cannot leave a service that keeps failing."},
+ draft:"Service credits are in addition to, and not instead of, Atlantic Logistics' other remedies, including termination for chronic failure after three misses in any six months.",why:"If credits are the only remedy Atlantic Logistics cannot leave a service that keeps failing."},
 {id:"NT-SUS",n:"Suspension of service",cat:"Commercial",risk:"Medium",re:/suspend[^.]*(?:service|access|work)|withhold[^.]*(?:service|work|delivery)/,
  draft:"The supplier may suspend service for non-payment only after 30 days written notice of an undisputed overdue amount, and never for amounts under dispute.",why:"Suspending a production service on a short invoice delay would harm readers of the standards."},
 {id:"NT-EXL",n:"Exclusivity and minimum commitment",cat:"Commercial",risk:"High",re:/exclusiv(?:e|ity) (?:provider|supplier|vendor)|minimum (?:purchase|annual) commitment|take-or-pay/,
- draft:"Atlantic Systems makes no exclusivity or minimum purchase commitment beyond the fixed fees in the order form.",why:"Commitments bind spend before value is shown."},
+ draft:"Atlantic Logistics makes no exclusivity or minimum purchase commitment beyond the fixed fees in the order form.",why:"Commitments bind spend before value is shown."},
 {id:"NT-GEN",n:"Legal term with no playbook position",cat:"Legal",risk:"Medium",re:/(?!)/,
  draft:"Legal to draft a standard position for this topic.",why:"The playbook has no clause covering this sentence."}
 ];
@@ -227,9 +227,9 @@ function analyze(text,ct,doc){ct=ct||{};const out=[];const hasSec=/^\s*\d+\.\s+\
   if(!started||(!m&&/^[A-Z0-9 ,:'().-]{8,}$/.test(ln)))return;
   body.split(/(?<=[.;])\s+(?=[A-Z])/).forEach((o,i)=>{o=o.trim();if(o.length<12)return;n++;
    const s=o.toLowerCase();let type=(TR.find(r=>r[1](s))||["commitment"])[0];
-   let party=/^(?:atlantic|the foundation|customer)\b/.test(s)?"Atlantic Systems":vw.test(s)?"Vendor":null;
-   if(!party)party=({deliverable:"Vendor",milestone:"Vendor",sla:"Vendor",kpi:"Vendor",warranty:"Vendor",data:"Vendor",payment:"Atlantic Systems",dependency:"Atlantic Systems",obl_us:"Atlantic Systems"})[type]||"Both";
-   if(type==="obligation")type=party==="Atlantic Systems"?"obl_us":party==="Vendor"?"obl_vendor":"commitment";
+   let party=/^(?:atlantic|the foundation|customer)\b/.test(s)?"Atlantic Logistics":vw.test(s)?"Vendor":null;
+   if(!party)party=({deliverable:"Vendor",milestone:"Vendor",sla:"Vendor",kpi:"Vendor",warranty:"Vendor",data:"Vendor",payment:"Atlantic Logistics",dependency:"Atlantic Logistics",obl_us:"Atlantic Logistics"})[type]||"Both";
+   if(type==="obligation")type=party==="Atlantic Logistics"?"obl_us":party==="Vendor"?"obl_vendor":"commitment";
    // playbook match
    const hits=[];PB.forEach(p=>{if(p.types&&p.types.indexOf(type)<0)return;if(p.re.test(s)){const r=p.chk(s);if(r)hits.push({p:p,r:r})}});
    let mt="std",pb="",pr=null,ours="",nt=null,pbs=hits.map(h=>h.p.id),rk=({liability:"High",data:"High",ip:"Medium",term:"Medium",payment:"Medium",warranty:"Medium",price:"Medium",sla:"Medium",change:"Medium"})[type]||"Low",why="",rec="ai",fb=false,trap=false,vend="",rlab="";
@@ -241,8 +241,8 @@ function analyze(text,ct,doc){ct=ct||{};const out=[];const hasSec=/^\s*\d+\.\s+\
     else{why="Operational line. The playbook sets no position on it, so the business owner confirms the value."}}
    const due=dateIn(o,ct),nv=normOf(type,o,s,pr,due);
    let metric="",target="";if(type==="sla"||type==="kpi"){metric=(METW.find(w=>w[1].test(s))||["Measure"])[0];const cmp=/at least|no less|minimum|or better|not below/.test(s)?"At least ":/not exceed|no more than|within|maximum|at most/.test(s)?"Within ":"";target=cmp+(nv.norm.replace(/^Stated$/,"")||"")}
-   else if(type==="milestone"){metric="Accepted by Atlantic Systems";target=due?"By "+fdt(due):""}else if(type==="deliverable"){metric="Accepted by Atlantic Systems";target=due?"By "+fdt(due):/review/.test(s)?"":"Review in 10 business days"}else if(type==="payment")metric="Matches accepted work";
-   let owner=party==="Atlantic Systems"?(type==="payment"?"Avery Chen":ct.owner||"Dev Rao"):party==="Vendor"?(ct.vOwner||ct.vendor||"Vendor"):(ct.owner||"Dev Rao");
+   else if(type==="milestone"){metric="Accepted by Atlantic Logistics";target=due?"By "+fdt(due):""}else if(type==="deliverable"){metric="Accepted by Atlantic Logistics";target=due?"By "+fdt(due):/review/.test(s)?"":"Review in 10 business days"}else if(type==="payment")metric="Matches accepted work";
+   let owner=party==="Atlantic Logistics"?(type==="payment"?"Avery Chen":ct.owner||"Dev Rao"):party==="Vendor"?(ct.vOwner||ct.vendor||"Vendor"):(ct.owner||"Dev Rao");
    if(/atlantic monitoring|measured by atlantic/.test(s))owner="Contract Analyst Agent";
    const watch=type==="payment"?"Invoice Advisor":(type==="sla"||type==="kpi"||type==="milestone"||due)?"Contract Analyst Agent":"";
    // suggested links
@@ -264,7 +264,7 @@ function redlineHTML(theirs,ours){return diffW(theirs,ours).map(x=>x[0]==="="?es
 /* ---------- Sample document text (what a document service would return from PDF or Word) ---------- */
 const TXT={};
 TXT.sow5=`STATEMENT OF WORK 5: SEARCH INDEXER PHASE 2
-Between Atlantic Systems ("Atlantic Systems") and Lumen Data Partners ("Lumen"). Proposal version 2, dated September 29, 2026.
+Between Atlantic Logistics ("Atlantic Logistics") and Lumen Data Partners ("Lumen"). Proposal version 2, dated September 29, 2026.
 
 1. Scope and deliverables
 1.1 Lumen shall deliver a production search indexer for the Standards Platform, including the index schema design document.
@@ -272,7 +272,7 @@ Between Atlantic Systems ("Atlantic Systems") and Lumen Data Partners ("Lumen").
 1.3 The desired outcome is that editors find the correct standard on the first page of results.
 
 2. Milestones and schedule
-2.1 Milestone 1: Design approved by Atlantic Systems on January 29, 2027.
+2.1 Milestone 1: Design approved by Atlantic Logistics on January 29, 2027.
 2.2 Milestone 2: Indexer running in the test environment on March 12, 2027.
 2.3 Milestone 3: Relevance tuning complete and accepted on April 30, 2027.
 2.4 Milestone 4: Production cutover completed on June 25, 2027.
@@ -282,41 +282,41 @@ Between Atlantic Systems ("Atlantic Systems") and Lumen Data Partners ("Lumen").
 3.2 Lumen shall respond to a Severity 1 incident within 15 minutes.
 3.3 For each month below the availability target, Lumen will issue a service credit of 5 percent of the monthly fee.
 3.4 Relevance accuracy shall be at least 90 percent of the top 500 queries returning the correct standard in the first 10 results, measured quarterly.
-3.5 Median query latency shall not exceed 400 milliseconds, measured by Atlantic Systems monitoring.
+3.5 Median query latency shall not exceed 400 milliseconds, measured by Atlantic Logistics monitoring.
 
 4. Fees and payment
 4.1 The fixed fee for this Statement of Work is $348,000.
 4.2 Lumen may invoice each milestone upon delivery, and invoices are payable within 30 days.
-4.3 Travel and expenses require Atlantic Systems' prior written approval.
+4.3 Travel and expenses require Atlantic Logistics' prior written approval.
 4.4 Rates for additional work follow the rate card in Exhibit A and are fixed for the term of this Statement of Work.
 
 5. Assumptions and dependencies
-5.1 Lumen assumes Atlantic Systems will provide production-like test data by January 15, 2027.
-5.2 Any delay in Atlantic Systems providing data, access or approvals automatically extends all dates and may result in additional fees.
-5.3 Atlantic Systems shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
+5.1 Lumen assumes Atlantic Logistics will provide production-like test data by January 15, 2027.
+5.2 Any delay in Atlantic Logistics providing data, access or approvals automatically extends all dates and may result in additional fees.
+5.3 Atlantic Logistics shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
 5.4 The indexer depends on the Standards Platform content API being stable and documented.
 
 6. Acceptance and warranty
-6.1 Atlantic Systems shall review each deliverable within 10 business days of delivery.
+6.1 Atlantic Logistics shall review each deliverable within 10 business days of delivery.
 6.2 A deliverable not rejected in writing within the review period is deemed accepted.
 6.3 Lumen warrants that deliverables will conform to the specification for 90 days after acceptance.
 
 7. Ownership, data and security
-7.1 Atlantic Systems owns all deliverables and work product created under this Statement of Work.
-7.2 Lumen grants Atlantic Systems a perpetual, royalty-free license to Lumen background tools embedded in the deliverables.
-7.3 Lumen shall notify Atlantic Systems of a security incident affecting Atlantic Systems data within 72 hours.
+7.1 Atlantic Logistics owns all deliverables and work product created under this Statement of Work.
+7.2 Lumen grants Atlantic Logistics a perpetual, royalty-free license to Lumen background tools embedded in the deliverables.
+7.3 Lumen shall notify Atlantic Logistics of a security incident affecting Atlantic Logistics data within 72 hours.
 7.4 Lumen shall maintain a SOC 2 Type II report and provide it annually.
 7.5 Lumen may engage subcontractors without prior consent.
-7.6 Lumen may use Atlantic Systems content and query logs to train and improve its relevance models.
-7.7 Lumen may use Atlantic Systems' name and logo in press releases and case studies.
+7.6 Lumen may use Atlantic Logistics content and query logs to train and improve its relevance models.
+7.7 Lumen may use Atlantic Logistics' name and logo in press releases and case studies.
 
 8. Liability and termination
 8.1 Lumen's aggregate liability is limited to the fees paid in the prior three months.
-8.2 Lumen will defend and indemnify Atlantic Systems against third-party claims that the deliverables infringe intellectual property rights.
+8.2 Lumen will defend and indemnify Atlantic Logistics against third-party claims that the deliverables infringe intellectual property rights.
 8.3 Either party may terminate this Statement of Work for cause on 30 days written notice if a material breach is not cured.
-8.4 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
+8.4 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
 8.5 This Statement of Work renews automatically for one year unless either party gives 120 days notice of non-renewal.
-8.6 Lumen will not solicit or hire Atlantic Systems employees during the term and for 12 months after.
+8.6 Lumen will not solicit or hire Atlantic Logistics employees during the term and for 12 months after.
 8.7 This Statement of Work is governed by the laws of the State of Delaware.
 8.8 Lumen may suspend work if any invoice is more than 15 days overdue.
 
@@ -326,7 +326,7 @@ Between Atlantic Systems ("Atlantic Systems") and Lumen Data Partners ("Lumen").
 9.3 Lumen will hold a weekly status meeting and send a monthly status report.
 `;
 TXT.sow4p=`STATEMENT OF WORK 4: TAXONOMY DATA ENGINEERING AND SEARCH INDEXER
-Proposal version 2 from Lumen Data Partners to Atlantic Systems, dated January 19, 2026.
+Proposal version 2 from Lumen Data Partners to Atlantic Logistics, dated January 19, 2026.
 
 1. Scope and deliverables
 1.1 Lumen shall deliver a taxonomy data model and the ingestion pipeline for the Taxonomy Data Hub.
@@ -348,31 +348,31 @@ Proposal version 2 from Lumen Data Partners to Atlantic Systems, dated January 1
 
 4. Fees and payment
 4.1 The fixed fee for this Statement of Work is $548,000.
-4.2 Each milestone is invoiced after written acceptance by Atlantic Systems and is payable within 45 days.
-4.3 Travel and expenses require Atlantic Systems' prior written approval.
+4.2 Each milestone is invoiced after written acceptance by Atlantic Logistics and is payable within 45 days.
+4.3 Travel and expenses require Atlantic Logistics' prior written approval.
 
 5. Assumptions and dependencies
-5.1 Lumen assumes Atlantic Systems will provide production-like data by April 1, 2026.
-5.2 Atlantic Systems shall provide Azure environments and access within 5 business days of the effective date.
+5.1 Lumen assumes Atlantic Logistics will provide production-like data by April 1, 2026.
+5.2 Atlantic Logistics shall provide Azure environments and access within 5 business days of the effective date.
 
 6. Acceptance, warranty and people
-6.1 Atlantic Systems shall review each deliverable within 10 business days of delivery.
+6.1 Atlantic Logistics shall review each deliverable within 10 business days of delivery.
 6.2 Lumen warrants that deliverables will conform to the specification for 90 days after acceptance.
-6.3 Lumen will assign Marco Ellis and Hana Koval as key personnel and will not replace them without Atlantic Systems' written consent.
+6.3 Lumen will assign Marco Ellis and Hana Koval as key personnel and will not replace them without Atlantic Logistics' written consent.
 
 7. Ownership and security
-7.1 Atlantic Systems owns all deliverables and work product created under this Statement of Work.
-7.2 Lumen shall notify Atlantic Systems of a security incident affecting Atlantic Systems data within 48 hours.
+7.1 Atlantic Logistics owns all deliverables and work product created under this Statement of Work.
+7.2 Lumen shall notify Atlantic Logistics of a security incident affecting Atlantic Logistics data within 48 hours.
 
 8. Liability and termination
 8.1 Lumen's aggregate liability is limited to twelve months of fees.
-8.2 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
+8.2 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
 
 9. Change control
 9.1 Changes require a written change order signed by both parties before work begins.
 `;
 TXT.sow4c=`STATEMENT OF WORK 4: TAXONOMY DATA ENGINEERING AND SEARCH INDEXER
-Executed by Lumen Data Partners and Atlantic Systems on February 27, 2026, including Amendment 1.
+Executed by Lumen Data Partners and Atlantic Logistics on February 27, 2026, including Amendment 1.
 
 1. Scope and deliverables
 1.1 Lumen shall deliver a taxonomy data model and the ingestion pipeline for the Taxonomy Data Hub.
@@ -397,47 +397,47 @@ Executed by Lumen Data Partners and Atlantic Systems on February 27, 2026, inclu
 4.4 Travel and expenses are billed at cost.
 
 5. Assumptions and dependencies
-5.1 Lumen assumes Atlantic Systems will provide production-like data by April 15, 2026.
-5.2 Atlantic Systems shall provide Azure environments and access within 5 business days of the effective date.
-5.3 Any delay in Atlantic Systems providing data, access or approvals extends all dates and may result in additional fees.
+5.1 Lumen assumes Atlantic Logistics will provide production-like data by April 15, 2026.
+5.2 Atlantic Logistics shall provide Azure environments and access within 5 business days of the effective date.
+5.3 Any delay in Atlantic Logistics providing data, access or approvals extends all dates and may result in additional fees.
 
 6. Acceptance, warranty and people
-6.1 Atlantic Systems shall review each deliverable within 10 business days of delivery.
+6.1 Atlantic Logistics shall review each deliverable within 10 business days of delivery.
 6.2 Lumen warrants that deliverables will conform to the specification for 60 days after acceptance.
 
 7. Ownership, data and security
-7.1 Atlantic Systems owns all deliverables and work product created under this Statement of Work.
-7.2 Lumen shall notify Atlantic Systems of a security incident affecting Atlantic Systems data within 72 hours.
-7.3 Lumen may use Atlantic Systems content and query logs to improve its relevance models.
+7.1 Atlantic Logistics owns all deliverables and work product created under this Statement of Work.
+7.2 Lumen shall notify Atlantic Logistics of a security incident affecting Atlantic Logistics data within 72 hours.
+7.3 Lumen may use Atlantic Logistics content and query logs to improve its relevance models.
 7.4 Lumen may engage subcontractors without prior consent.
 
 8. Liability and termination
 8.1 Lumen's aggregate liability is limited to six months of fees.
-8.2 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
+8.2 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
 8.3 This Statement of Work renews automatically for one year unless either party gives 120 days notice of non-renewal.
 
 9. Change control
 9.1 Changes require a written change order signed by both parties before work begins.
 `;
 TXT.beacon=`SOFTWARE LICENSE AND SERVICES AGREEMENT: BEACON ANALYTICS PLATFORM
-Order Form 1 proposal from Beacon Analytics to Atlantic Systems, dated September 22, 2026.
+Order Form 1 proposal from Beacon Analytics to Atlantic Logistics, dated September 22, 2026.
 
 1. License and pricing
-1.1 Beacon grants Atlantic Systems a non-exclusive, non-transferable subscription license to use the Beacon Analytics Platform for 100 named users.
+1.1 Beacon grants Atlantic Logistics a non-exclusive, non-transferable subscription license to use the Beacon Analytics Platform for 100 named users.
 1.2 Usage is billed at $0.42 per query credit above the included 5 million credits each year.
 1.3 Beacon may true-up usage quarterly and invoice any overage within 30 days.
-1.4 Beacon may audit Atlantic Systems' use of the platform on 10 days notice at any time.
+1.4 Beacon may audit Atlantic Logistics' use of the platform on 10 days notice at any time.
 1.5 The annual platform fee is $186,000, payable annually in advance.
 1.6 Beacon may increase fees by up to 9 percent at each renewal.
 
 2. Service levels
 2.1 Beacon shall make the platform available 99.5 percent of each month.
 2.2 Beacon will respond to Severity 1 incidents within 2 hours.
-2.3 Service credits are Atlantic Systems' sole and exclusive remedy for downtime.
+2.3 Service credits are Atlantic Logistics' sole and exclusive remedy for downtime.
 
 3. Data and security
-3.1 Beacon shall notify Atlantic Systems of a personal data breach without undue delay and within 72 hours.
-3.2 Beacon processes personal data only on Atlantic Systems' documented instructions under the attached data processing addendum.
+3.1 Beacon shall notify Atlantic Logistics of a personal data breach without undue delay and within 72 hours.
+3.2 Beacon processes personal data only on Atlantic Logistics' documented instructions under the attached data processing addendum.
 3.3 Beacon may use aggregated and de-identified customer data and prompts to train its machine learning models.
 3.4 Beacon maintains ISO 27001 certification and a SOC 2 Type II report.
 3.5 Customer data is stored in the United States.
@@ -445,14 +445,14 @@ Order Form 1 proposal from Beacon Analytics to Atlantic Systems, dated September
 4. Term and termination
 4.1 The initial term is three years and renews automatically for successive one-year terms.
 4.2 Either party may terminate for cause on 30 days written notice.
-4.3 Atlantic Systems may not terminate for convenience during the initial term.
+4.3 Atlantic Logistics may not terminate for convenience during the initial term.
 4.4 Beacon's aggregate liability is limited to the fees paid in the prior twelve months.
-4.5 Beacon will defend Atlantic Systems against claims that the platform infringes third party intellectual property rights.
+4.5 Beacon will defend Atlantic Logistics against claims that the platform infringes third party intellectual property rights.
 4.6 This agreement is governed by the laws of the State of California.
 
 5. Implementation
 5.1 Beacon shall deliver onboarding and single sign-on configuration within 30 days of the effective date.
-5.2 Atlantic Systems shall assign an administrator and provide Entra ID access to Beacon staff.
+5.2 Atlantic Logistics shall assign an administrator and provide Entra ID access to Beacon staff.
 5.3 Beacon will provide a quarterly usage report.
 `;
 TXT.msa=`MASTER SERVICES AGREEMENT
@@ -464,24 +464,24 @@ TXT.msa=`MASTER SERVICES AGREEMENT
 2.1 The supplier shall make the services available at least 99.9 percent each month.
 2.2 The supplier shall respond to a Severity 1 incident within 30 minutes.
 3. Data and legal
-3.1 The supplier shall notify Atlantic Systems of a security incident within 48 hours.
-3.2 Atlantic Systems owns all deliverables and work product.
+3.1 The supplier shall notify Atlantic Logistics of a security incident within 48 hours.
+3.2 Atlantic Logistics owns all deliverables and work product.
 3.3 The supplier's aggregate liability is limited to twelve months of fees.
-3.4 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
+3.4 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
 3.5 This agreement renews automatically for one year unless either party gives 90 days notice of non-renewal.
 3.6 This agreement is governed by the laws of the State of Delaware.
 `;
 TXT.dpa=`DATA PROCESSING ADDENDUM
 1. Processing
-1.1 The processor processes personal data only on Atlantic Systems' documented instructions under this data processing addendum.
-1.2 The processor shall notify Atlantic Systems of a personal data breach within 48 hours.
-1.3 The processor may engage subprocessors only with Atlantic Systems' prior written consent.
+1.1 The processor processes personal data only on Atlantic Logistics' documented instructions under this data processing addendum.
+1.2 The processor shall notify Atlantic Logistics of a personal data breach within 48 hours.
+1.3 The processor may engage subprocessors only with Atlantic Logistics' prior written consent.
 1.4 The processor shall maintain a SOC 2 Type II report and provide it annually.
 1.5 Customer data is stored in the United States.
 1.6 The processor may use customer data to train machine learning models.
 `;
 TXT.nwp=`MASTER SERVICES AGREEMENT: SERVICE DESK AND ENDPOINT MANAGEMENT
-Proposal version 3 from Northwind Managed Services to Atlantic Systems, dated September 30, 2025.
+Proposal version 3 from Northwind Managed Services to Atlantic Logistics, dated September 30, 2025.
 
 1. Services
 1.1 Northwind shall provide Tier 1 service desk and endpoint management for 640 users as described in Schedule A.
@@ -498,15 +498,15 @@ Proposal version 3 from Northwind Managed Services to Atlantic Systems, dated Se
 3.2 Invoices are payable within 45 days of receipt.
 
 4. Data, ownership and legal
-4.1 Northwind shall notify Atlantic Systems of a security incident within 24 hours.
-4.2 Atlantic Systems owns all deliverables and work product, including knowledge articles.
-4.3 Northwind may engage subcontractors only with Atlantic Systems' prior written consent.
+4.1 Northwind shall notify Atlantic Logistics of a security incident within 24 hours.
+4.2 Atlantic Logistics owns all deliverables and work product, including knowledge articles.
+4.3 Northwind may engage subcontractors only with Atlantic Logistics' prior written consent.
 4.4 Northwind's aggregate liability is limited to twelve months of fees.
-4.5 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
-4.6 This agreement renews only by written order signed by Atlantic Systems.
+4.5 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
+4.6 This agreement renews only by written order signed by Atlantic Logistics.
 `;
 TXT.nwc=`MASTER SERVICES AGREEMENT: SERVICE DESK AND ENDPOINT MANAGEMENT
-Executed by Northwind Managed Services and Atlantic Systems on October 24, 2025, including Amendment 1.
+Executed by Northwind Managed Services and Atlantic Logistics on October 24, 2025, including Amendment 1.
 
 1. Services
 1.1 Northwind shall provide Tier 1 service desk and endpoint management for 640 users as described in Schedule A.
@@ -521,11 +521,11 @@ Executed by Northwind Managed Services and Atlantic Systems on October 24, 2025,
 3.2 Invoices are payable within 30 days of receipt.
 
 4. Data, ownership and legal
-4.1 Northwind shall notify Atlantic Systems of a security incident within 72 hours.
-4.2 Atlantic Systems owns all deliverables and work product, including knowledge articles.
+4.1 Northwind shall notify Atlantic Logistics of a security incident within 72 hours.
+4.2 Atlantic Logistics owns all deliverables and work product, including knowledge articles.
 4.3 Northwind may engage subcontractors without prior consent.
 4.4 Northwind's aggregate liability is limited to the fees paid in the prior three months.
-4.5 Atlantic Systems may terminate for convenience on 30 days written notice and pays only for accepted work.
+4.5 Atlantic Logistics may terminate for convenience on 30 days written notice and pays only for accepted work.
 4.6 This agreement renews automatically for one year unless either party gives 120 days notice of non-renewal.
 
 5. Technology
@@ -601,35 +601,35 @@ const CR0=[
 const CRS=CR0.map(x=>Object.assign({ver:1},x));
 const OBL0=[
  ["CLM-1001","Lumen delivers Milestone 3, the taxonomy ingestion pipeline","Vendor","Marco Ellis","2026-09-30","late"],
- ["CLM-1001","Atlantic Systems reviews the Milestone 3 deliverable within 10 business days","Atlantic Systems","Dev Rao","2026-10-23","open"],
+ ["CLM-1001","Atlantic Logistics reviews the Milestone 3 deliverable within 10 business days","Atlantic Logistics","Dev Rao","2026-10-23","open"],
  ["CLM-1001","Lumen delivers Milestone 4, indexer running in the test environment","Vendor","Marco Ellis","2026-10-30","risk"],
  ["CLM-1001","Lumen delivers 8 hours of operator training and the runbook","Vendor","Hana Koval","2026-12-04","open"],
- ["CLM-1001","Final acceptance of all deliverables (Milestone 5)","Atlantic Systems","Chief Editor","2026-12-18","open"],
- ["CLM-1001","Atlantic Systems provides production-like data","Atlantic Systems","Dev Rao","2026-04-15","done","2026-04-13"],
+ ["CLM-1001","Final acceptance of all deliverables (Milestone 5)","Atlantic Logistics","Chief Editor","2026-12-18","open"],
+ ["CLM-1001","Atlantic Logistics provides production-like data","Atlantic Logistics","Dev Rao","2026-04-15","done","2026-04-13"],
  ["CLM-1001","Lumen delivers Milestone 2, indexer design accepted","Vendor","Marco Ellis","2026-05-22","done","2026-06-02"],
  ["CLM-1001","Lumen delivers Milestone 1, data model approved","Vendor","Hana Koval","2026-04-10","done","2026-04-09"],
- ["CLM-1002","Atlantic Systems signs or rejects proposal v2 (target date)","Atlantic Systems","Priya Shah","2026-11-20","open"],
- ["CLM-1002","Legal returns redlines on liability, renewal and AI terms","Atlantic Systems","Atlantic Legal","2026-10-13","open"],
+ ["CLM-1002","Atlantic Logistics signs or rejects proposal v2 (target date)","Atlantic Logistics","Priya Shah","2026-11-20","open"],
+ ["CLM-1002","Legal returns redlines on liability, renewal and AI terms","Atlantic Logistics","Atlantic Legal","2026-10-13","open"],
  ["CLM-1003","Northwind sends the monthly SLA report by the 5th","Vendor","Northwind Managed Services","2026-10-05","late"],
- ["CLM-1003","Hold the quarterly business review","Atlantic Systems","Tom Becker","2026-10-28","open"],
- ["CLM-1003","Decide on renewal or send notice (120 days before Oct 31, 2028)","Atlantic Systems","Tom Becker","2028-07-03","open"],
+ ["CLM-1003","Hold the quarterly business review","Atlantic Logistics","Tom Becker","2026-10-28","open"],
+ ["CLM-1003","Decide on renewal or send notice (120 days before Oct 31, 2028)","Atlantic Logistics","Tom Becker","2028-07-03","open"],
  ["CLM-1003","Northwind sends the September SLA report","Vendor","Northwind Managed Services","2026-09-05","done","2026-09-04"],
- ["CLM-1004","Annual true-up of seat counts","Atlantic Systems","Jordan Lee","2026-11-30","open"],
- ["CLM-1004","Decide on renewal enrollment (notice 90 days before Jun 30, 2027)","Atlantic Systems","Jordan Lee","2027-04-01","open"],
- ["CLM-1005","Negotiate Beacon terms and target signature","Atlantic Systems","Dev Rao","2026-11-20","open"],
- ["CLM-1007","Claim the Q3 availability service credit of $8,200","Atlantic Systems","Tom Becker","2026-10-31","open"],
+ ["CLM-1004","Annual true-up of seat counts","Atlantic Logistics","Jordan Lee","2026-11-30","open"],
+ ["CLM-1004","Decide on renewal enrollment (notice 90 days before Jun 30, 2027)","Atlantic Logistics","Jordan Lee","2027-04-01","open"],
+ ["CLM-1005","Negotiate Beacon terms and target signature","Atlantic Logistics","Dev Rao","2026-11-20","open"],
+ ["CLM-1007","Claim the Q3 availability service credit of $8,200","Atlantic Logistics","Tom Becker","2026-10-31","open"],
  ["CLM-1007","Northwind sends the September usage report","Vendor","Northwind Cloud","2026-10-05","done","2026-10-03"],
- ["CLM-1007","Hold the quarterly business review","Atlantic Systems","Tom Becker","2026-10-28","open"],
- ["CLM-1008","Send notice of non-renewal to LegacyDocs (60 days before Dec 31)","Atlantic Systems","Maya Ortiz","2026-11-01","risk"],
- ["CLM-1008","Export all repository data before support ends","Atlantic Systems","Jordan Lee","2026-12-15","open"],
- ["CLM-1009","Review storage capacity at the quarterly review","Atlantic Systems","Tom Becker","2026-10-28","open"],
- ["CLM-1010","Atlantic Systems provides the Azure landing zone","Atlantic Systems","Sam Patel","2026-10-15","risk"],
+ ["CLM-1007","Hold the quarterly business review","Atlantic Logistics","Tom Becker","2026-10-28","open"],
+ ["CLM-1008","Send notice of non-renewal to LegacyDocs (60 days before Dec 31)","Atlantic Logistics","Maya Ortiz","2026-11-01","risk"],
+ ["CLM-1008","Export all repository data before support ends","Atlantic Logistics","Jordan Lee","2026-12-15","open"],
+ ["CLM-1009","Review storage capacity at the quarterly review","Atlantic Logistics","Tom Becker","2026-10-28","open"],
+ ["CLM-1010","Atlantic Logistics provides the Azure landing zone","Atlantic Logistics","Sam Patel","2026-10-15","risk"],
  ["CLM-1010","Contoso sends the monthly patch compliance report","Vendor","Contoso Cloud Operations","2026-10-08","open"],
  ["CLM-1010","Contoso sends the September patch compliance report","Vendor","Contoso Cloud Operations","2026-09-08","done","2026-09-08"],
- ["CLM-1011","Approve monthly timesheets","Atlantic Systems","Sam Patel","2026-10-30","open"],
- ["CLM-1011","Decide on extending the engagement (30 days before Jan 29)","Atlantic Systems","Sam Patel","2026-12-30","open"],
+ ["CLM-1011","Approve monthly timesheets","Atlantic Logistics","Sam Patel","2026-10-30","open"],
+ ["CLM-1011","Decide on extending the engagement (30 days before Jan 29)","Atlantic Logistics","Sam Patel","2026-12-30","open"],
  ["CLM-1012","Elise Park hands over test suites and documentation","Vendor","Elise Park","2026-12-11","open"],
- ["CLM-1012","Decide on extension notice","Atlantic Systems","Priya Shah","2026-11-18","open"]
+ ["CLM-1012","Decide on extension notice","Atlantic Logistics","Priya Shah","2026-11-18","open"]
 ];
 const OBL=OBL0.map((o,i)=>({id:"OB-"+String(101+i),ct:o[0],t:o[1],party:o[2],who:o[3],due:o[4],st:o[5],dn:o[6]||"",kind:/invoice|pay/i.test(o[1])?"Payment":/notice|renewal|extension/i.test(o[1])?"Renewal notice":/deliver|handover|export/i.test(o[1])?"Deliverable":/report/i.test(o[1])?"Report":/review|approve|accept/i.test(o[1])?"Review or acceptance":"Other"}));
 const REV=[];const RND=[];const AUD=[];
@@ -650,7 +650,7 @@ function buildGen(){const r=RNG("sowgen"),pick=a=>a[Math.floor(r()*a.length)];
  GEN.list=list;GEN.obl=null;GEN.lines=null;GEN.cr=null;GEN.on=true}
 function CTS(){if(SCALE.on){if(!GEN.on)buildGen();return CT0.concat(GEN.list)}return CT0}
 const ctOf=id=>CTS().find(c=>c.id===id)||CT0.find(c=>c.id===id);
-function OBLS(){if(!SCALE.on)return OBL;if(!GEN.obl){const r=RNG("sowobl"),pick=a=>a[Math.floor(r()*a.length)],o=[];GEN.list.filter(c=>c.status==="Executed"||c.status==="Expiring").forEach(c=>{const k=3+Math.floor(r()*4);for(let i=0;i<k;i++){const due=addD(TDY,Math.round(-40+r()*250)),past=due<TDY,x=r();const kind=pick(["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Deliverable","Report"]);const party=kind==="Report"||kind==="Deliverable"?pick(["Vendor","Vendor","Atlantic Systems"]):"Atlantic Systems";
+function OBLS(){if(!SCALE.on)return OBL;if(!GEN.obl){const r=RNG("sowobl"),pick=a=>a[Math.floor(r()*a.length)],o=[];GEN.list.filter(c=>c.status==="Executed"||c.status==="Expiring").forEach(c=>{const k=3+Math.floor(r()*4);for(let i=0;i<k;i++){const due=addD(TDY,Math.round(-40+r()*250)),past=due<TDY,x=r();const kind=pick(["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Deliverable","Report"]);const party=kind==="Report"||kind==="Deliverable"?pick(["Vendor","Vendor","Atlantic Logistics"]):"Atlantic Logistics";
    o.push({id:"OB-G"+o.length,ct:c.id,t:({Deliverable:"Deliver the next scheduled work product",Report:"Send the periodic service report",Payment:"Pay the scheduled invoice",["Review or acceptance"]:"Review and accept the deliverable","Renewal notice":"Decide on renewal before the notice date"})[kind],party:party,who:party==="Vendor"?c.vendor:c.owner,due:due,st:past?(x<.7?"done":x<.82?"done":"late"):x<.04?"risk":"open",dn:past&&x<.7?addD(due,-Math.floor(r()*3)):past&&x<.82?addD(due,2+Math.floor(r()*9)):"",kind:kind})}});GEN.obl=OBL.concat(o)}return GEN.obl}
 function CRALL(){if(!SCALE.on)return CRS;if(!GEN.cr){const r=RNG("sowcr"),pick=a=>a[Math.floor(r()*a.length)],o=[];for(let i=0;i<72;i++){const c=pick(GEN.list.filter(x=>x.status==="Executed")),ty=pick(CRT),amt=ty==="Price or rate change"||ty==="Scope or project change"?Math.round((r()-.2)*180000/1000)*1000:0;o.push({id:"CR-G"+(300+i),ct:c.id,type:ty,title:ty+" for "+c.vendor,st:pick(STAGES.slice(0,4).concat(["Approved","Approved"])),amt:amt,days:ty==="Schedule change"?Math.floor(r()*15):0,task:"",req:c.owner,at:addD(TDY,-Math.floor(r()*60)),reason:"Generated enterprise sample.",oldv:"Current terms",newv:"Requested terms",key:"",thread:[],ver:1,applied:false})}GEN.cr=CRS.concat(o)}return GEN.cr}
 const ctName=id=>{const c=ctOf(id);return c?c.title:id};
@@ -674,14 +674,14 @@ function seed(){
  const byPb=(cid,doc,pb,m)=>lines_(cid,doc).find(l=>l.pb===pb&&(!m||l.m===m));
  const mkRev=(l,route,due,part,st,thread)=>{if(!l)return;REV.push({id:"RV-"+(201+REV.length),ct:l.ct,line:l.id,route:route,st:st,due:due,part:part,opened:addD(due,-7),thread:thread||[]});l.route=route};
  mkRev(byPb("CLM-1002","proposal","PB-LOL"),"legal","2026-10-13",[LEGAL,"Priya Shah"],"In review",[{who:LEGAL,t:"Three months of fees is far below our 12 month floor. Counter with 12 months and a 3x super-cap for data breach.",at:"Sep 30"},{who:"Priya Shah",t:"Lumen's own insurance covers $2M only. I can live with 2x if legal agrees.",at:"Oct 1"}]);
- mkRev(byPb("CLM-1002","proposal","NT-AI"),"legal","2026-10-14",[LEGAL,"Rina Okafor"],"Open",[{who:"Rina Okafor",t:"Our AI policy says no vendor training on Atlantic Systems content. Need a clause we can reuse.",at:"Oct 5"}]);
+ mkRev(byPb("CLM-1002","proposal","NT-AI"),"legal","2026-10-14",[LEGAL,"Rina Okafor"],"Open",[{who:"Rina Okafor",t:"Our AI policy says no vendor training on Atlantic Logistics content. Need a clause we can reuse.",at:"Oct 5"}]);
  mkRev(byPb("CLM-1002","proposal","PB-REN"),"shared","2026-10-16",[LEGAL,"Marco Ellis","Priya Shah"],"In review",[{who:"Marco Ellis",t:"Lumen can drop automatic renewal if you accept the Net 30 payment term.",at:"Oct 2"},{who:"Priya Shah",t:"Net 30 with the 2 percent discount is inside our fallback. Legal, please confirm.",at:"Oct 2"}]);
  mkRev(byPb("CLM-1002","proposal","NT-PUB"),"shared","2026-10-20",[LEGAL,"Marco Ellis","Maya Ortiz"],"Open",[]);
  mkRev(byPb("CLM-1002","proposal","PB-ACP","var"),"legal","2026-10-15",[LEGAL,"Chief Editor"],"Open",[]);
  mkRev(byPb("CLM-1005","proposal","NT-USG"),"legal","2026-10-12",[LEGAL,"Dev Rao","Avery Chen"],"In review",[{who:"Avery Chen",t:"An uncapped true-up makes the budget unforecastable. I want a 10 percent tolerance.",at:"Oct 3"}]);
  mkRev(byPb("CLM-1005","proposal","NT-AI"),"legal","2026-10-12",[LEGAL,"Rina Okafor"],"Escalated",[{who:"Rina Okafor",t:"Prompts include unpublished draft standards. Escalating to the CIO.",at:"Oct 4"}]);
- [["CLM-1002",[["2026-09-08","Lumen","Proposal v1 received","v1",0,0],["2026-09-17","Atlantic Systems","Redlined 14 lines: payment, liability, renewal, service levels","v1 markup",2,0],["2026-09-29","Lumen","Proposal v2 accepts 6 of our edits and keeps liability and renewal","v2",1,6],["2026-10-06","Atlantic Systems","Counter in progress: legal review of 5 lines, shared review of 3","v2 markup",0,0]]],
-  ["CLM-1005",[["2026-09-22","Beacon","Order Form 1 proposal received","v1",0,0],["2026-10-06","Atlantic Systems","Legal review of true-up, audit and AI terms opened","v1 markup",0,0]]],
+ [["CLM-1002",[["2026-09-08","Lumen","Proposal v1 received","v1",0,0],["2026-09-17","Atlantic Logistics","Redlined 14 lines: payment, liability, renewal, service levels","v1 markup",2,0],["2026-09-29","Lumen","Proposal v2 accepts 6 of our edits and keeps liability and renewal","v2",1,6],["2026-10-06","Atlantic Logistics","Counter in progress: legal review of 5 lines, shared review of 3","v2 markup",0,0]]],
+  ["CLM-1005",[["2026-09-22","Beacon","Order Form 1 proposal received","v1",0,0],["2026-10-06","Atlantic Logistics","Legal review of true-up, audit and AI terms opened","v1 markup",0,0]]],
   ["CLM-1001",[["2025-12-08","Lumen","Proposal v1 received","v1",0,0],["2026-01-19","Lumen","Proposal v2 after two rounds of calls","v2",3,5],["2026-02-27","Both","Signed with a $22,000 mobilization advance and shorter warranty","executed",4,2]]]].forEach(r=>r[1].forEach((x,i)=>RND.push({ct:r[0],n:i+1,date:x[0],from:x[1],note:x[2],ver:x[3],us:x[4],ven:x[5]})));
  [["2026-10-06 08:12","Contract Analyst Agent","Analyzed proposal","CLM-1002","41 lines in 3.1 seconds, average confidence 89%."],["2026-10-05 16:40","Priya Shah","Routed to legal review","CLM-1002","Limitation of liability, three months of fees."],["2026-10-05 11:05","Rina Okafor","Opened shared review","CLM-1005","AI training on prompts."],["2026-10-02 15:22","Dev Rao","Raised change request","CLM-1001","CR-201 Milestone 3 slips 7 work days."],["2026-09-30 09:30","Casey Rowan","Approved change","CLM-1007","CR-208 storage tier, $21,400 (inside CIO authority)."],["2026-09-14 13:00","Priya Shah","Applied change","CLM-1012","CR-206 extension signed, amendment A1 stored."]].forEach(a=>audSeed(a[0],a[1],a[2],a[3],a[4]));
  if(DATAMODEL){/* registered below */}
@@ -705,12 +705,12 @@ Object.assign(METRICS,{
 function syncMetrics(){const v=mVals();[["m_sow_cover","cov"],["m_sow_ontime","ot"],["m_sow_cycle","cy"],["m_sow_leak","lk"],["m_sow_trap","traps"]].forEach(a=>{METRICS[a[0]].cur=v[a[1]];METRICS[a[0]].tr[7]=v[a[1]]});return v}
 /* ---------- Data model, standards, process ---------- */
 DATAMODEL.register("contract_line",{label:"Contract line (clause, commitment, outcome)",source:"Contract analyzer",fields:[
- {k:"clause",label:"Clause reference",type:"string"},{k:"page",label:"Page",type:"number"},{k:"source_text",label:"Source text",type:"string"},{k:"type",label:"Type",type:"enum",opts:Object.values(TYP).map(t=>t[0])},{k:"value",label:"Normalized value",type:"string"},{k:"party",label:"Party",type:"enum",opts:["Atlantic Systems","Vendor","Both"]},{k:"owner",label:"Owner",type:"ref"},{k:"due",label:"Due",type:"date"},{k:"measure",label:"Measure",type:"string"},{k:"target",label:"Target",type:"string"},{k:"confidence",label:"AI confidence",type:"percent"},{k:"status",label:"Status",type:"enum",opts:["Proposed","Accepted","Negotiating","Agreed"]},{k:"playbook",label:"Playbook match",type:"enum",opts:["Standard","Variance","Not in playbook"]},{k:"playbook_clause",label:"Playbook clause",type:"ref"},{k:"route",label:"Review route",type:"enum",opts:["AI picks standard","Legal review","Shared review"]},{k:"risk",label:"Risk",type:"enum",opts:["Low","Medium","High"]},{k:"wbs_link",label:"Project WBS line",type:"ref"},{k:"sla_link",label:"SLA",type:"ref"},{k:"invoice_link",label:"Invoice schedule line",type:"ref"},{k:"raid_link",label:"RAID item",type:"ref"},{k:"budget_link",label:"Budget line",type:"ref"}]});
+ {k:"clause",label:"Clause reference",type:"string"},{k:"page",label:"Page",type:"number"},{k:"source_text",label:"Source text",type:"string"},{k:"type",label:"Type",type:"enum",opts:Object.values(TYP).map(t=>t[0])},{k:"value",label:"Normalized value",type:"string"},{k:"party",label:"Party",type:"enum",opts:["Atlantic Logistics","Vendor","Both"]},{k:"owner",label:"Owner",type:"ref"},{k:"due",label:"Due",type:"date"},{k:"measure",label:"Measure",type:"string"},{k:"target",label:"Target",type:"string"},{k:"confidence",label:"AI confidence",type:"percent"},{k:"status",label:"Status",type:"enum",opts:["Proposed","Accepted","Negotiating","Agreed"]},{k:"playbook",label:"Playbook match",type:"enum",opts:["Standard","Variance","Not in playbook"]},{k:"playbook_clause",label:"Playbook clause",type:"ref"},{k:"route",label:"Review route",type:"enum",opts:["AI picks standard","Legal review","Shared review"]},{k:"risk",label:"Risk",type:"enum",opts:["Low","Medium","High"]},{k:"wbs_link",label:"Project WBS line",type:"ref"},{k:"sla_link",label:"SLA",type:"ref"},{k:"invoice_link",label:"Invoice schedule line",type:"ref"},{k:"raid_link",label:"RAID item",type:"ref"},{k:"budget_link",label:"Budget line",type:"ref"}]});
 DATAMODEL.register("contract",{label:"Contract or statement of work",source:"Contract repository",fields:[{k:"id",label:"Contract ID"},{k:"vendor",label:"Vendor",type:"ref"},{k:"type",label:"Type",type:"enum",opts:["SOW","MSA","Software license","DPA","NDA","Order form","Support agreement"]},{k:"status",label:"Status",type:"enum",opts:["Draft","In negotiation","Executed","Expiring","Expired"]},{k:"value",label:"Total contract value",type:"currency"},{k:"start",label:"Start",type:"date"},{k:"end",label:"End",type:"date"},{k:"auto_renew",label:"Auto-renews",type:"boolean"},{k:"notice_days",label:"Notice days",type:"number"},{k:"owner",label:"Contract owner",type:"ref"},{k:"project",label:"Linked project",type:"ref"},{k:"risk",label:"Risk",type:"enum",opts:["Low","Medium","High"]}]});
-DATAMODEL.register("contract_obligation",{label:"Contract obligation",source:"Contract analyzer",fields:[{k:"id",label:"Obligation ID"},{k:"contract",label:"Contract",type:"ref"},{k:"party",label:"Party",type:"enum",opts:["Atlantic Systems","Vendor"]},{k:"owner",label:"Owner",type:"ref"},{k:"due",label:"Due",type:"date"},{k:"status",label:"Status",type:"enum",opts:["Open","Done","Overdue","At risk"]},{k:"kind",label:"Kind",type:"enum"}]});
+DATAMODEL.register("contract_obligation",{label:"Contract obligation",source:"Contract analyzer",fields:[{k:"id",label:"Obligation ID"},{k:"contract",label:"Contract",type:"ref"},{k:"party",label:"Party",type:"enum",opts:["Atlantic Logistics","Vendor"]},{k:"owner",label:"Owner",type:"ref"},{k:"due",label:"Due",type:"date"},{k:"status",label:"Status",type:"enum",opts:["Open","Done","Overdue","At risk"]},{k:"kind",label:"Kind",type:"enum"}]});
 DATAMODEL.register("contract_change",{label:"Contract change request",source:"Contract analyzer",fields:[{k:"id",label:"Change ID"},{k:"contract",label:"Contract",type:"ref"},{k:"type",label:"Type",type:"enum",opts:CRT},{k:"state",label:"State",type:"enum",opts:STAGES},{k:"price_impact",label:"Price impact",type:"currency"},{k:"schedule_days",label:"Schedule impact (work days)",type:"number"},{k:"approver",label:"Required approver",type:"ref"}]});
 STD.worldcc={n:"WorldCC contracting practice",by:"World Commerce and Contracting",d:"Industry practice for contract lifecycle management: clause libraries, playbooks, negotiation tracking and obligation management after signature."};
-STD.coso={n:"Delegation of authority",by:"Atlantic Systems policy, COBIT governance",d:"Approval limits by amount so that nobody signs above their tier."};
+STD.coso={n:"Delegation of authority",by:"Atlantic Logistics policy, COBIT governance",d:"Approval limits by amount so that nobody signs above their tier."};
 PROC.reg("ppm_sow",{title:"From vendor proposal to managed contract",std:["worldcc","cobit","pmbok"],steps:[
  {n:"Intake",d:"A vendor proposal, SOW or terms arrive by upload, email or request. The original file and version are stored.",who:"human",owner:"Maya Ortiz",sla:"Same day",in:"Vendor proposal file",out:"Repository record with metadata"},
  {n:"AI analysis",d:"The Contract Analyst Agent splits the text into typed lines with owners, dates, measures and confidence.",who:"agent",owner:"Contract Analyst Agent",sla:"Under 1 minute",in:"Document text",out:"Line by line register"},
@@ -753,7 +753,7 @@ function attention(){const a=agg(),out=[];
  const l1=CT0[0];if(ctLeak(l1))out.push({c:"warn",t:`${D$(ctLeak(l1))} paid to Lumen ahead of accepted work`,s:"The $22,000 mobilization advance is in the executed contract but was not in the proposal. Invoice INV-20433 for Milestone 3 stays on hold until acceptance.",b:["Compare proposal and contract","data-sow-cmp=CLM-1001"]});
  const off=lines_("CLM-1002","proposal").filter(l=>l.m!=="std"&&l.status!=="agreed");if(off.length)out.push({c:"warn",t:`${off.length} lines in Lumen SOW-5 are off playbook and not agreed`,s:`${off.filter(l=>l.m==="new").length} are new terms with no standard yet, such as AI training on our content. ${REV.filter(r=>r.st!=="Agreed").length} reviews are open with legal or in shared review.`,b:["Open the playbook review","data-sow-tab=3"]});
  const cr=a.open.filter(x=>x.st==="Approval")[0];if(cr)out.push({c:"info",t:`${cr.id} waiting for approval: ${cr.title}`,s:`${S$(cr.amt)} needs ${tierOf(cr.amt).role}. ${cr.amt<=100000?"That is you (CIO) under the delegation of authority.":"That is above your limit of $100,000."}`,b:["Review the change","data-sow-cr="+cr.id]});
- const cl=CT0[6];if(cl.credit&&cl.credit.owed>cl.credit.claimed)out.push({c:"info",t:`${D$(cl.credit.owed-cl.credit.claimed)} of Northwind service credit not claimed`,s:"Q3 availability was 99.62 percent against 99.9 percent. The contract lets Atlantic Systems claim the credit within 30 days of quarter end.",b:["Open obligation","data-sow-tab=6"]});
+ const cl=CT0[6];if(cl.credit&&cl.credit.owed>cl.credit.claimed)out.push({c:"info",t:`${D$(cl.credit.owed-cl.credit.claimed)} of Northwind service credit not claimed`,s:"Q3 availability was 99.62 percent against 99.9 percent. The contract lets Atlantic Logistics claim the credit within 30 days of quarter end.",b:["Open obligation","data-sow-tab=6"]});
  return out}
 /* ---------- tab 1: dashboard and contract list ---------- */
 function tabDash(){const a=agg(),v=syncMetrics();const at=attention();
@@ -790,9 +790,9 @@ function openEng(id){const c=ctOf(id);if(!c)return;const pv=c.prop,ex=c.exe;
  <div class="eyebrow" style="margin-top:16px">Price walk</div><div class="sow-walk">${walk.filter(w=>w[1]!=null).map(w=>`<div class="sow-wk"><span><b>${esc(w[0])}</b></span><span class="num">${/^Amend/.test(w[0])?S$(w[1]):D$(w[1])}</span></div>`).join("")}<div class="sow-wk"><span><b>Value today</b></span><span class="num">${D$(c.value)}</span></div></div>`)}
 /* ---------- scale: synthetic lines for every generated contract ---------- */
 function scaleLines(){if(GEN.lines)return GEN.lines;const r=RNG("sowlines"),pick=a=>a[Math.floor(r()*a.length)],out=[];
- const T={deliverable:["Vendor delivers the monthly service report","Vendor delivers the design document"],milestone:["Milestone 2: configuration complete","Milestone 3: user acceptance test passed"],commitment:["Vendor will hold a weekly status meeting"],outcome:["The service reduces manual effort by 20 percent"],kpi:["Ticket backlog stays under 40 items"],sla:["Availability of at least 99.9 percent each month","Severity 1 response within 30 minutes"],payment:["Invoices are payable within 45 days","Milestone invoices follow written acceptance"],assumption:["Atlantic Systems provides test data by the start date"],dependency:["Depends on Entra ID single sign-on"],obl_us:["Atlantic Systems reviews each deliverable in 10 business days"],obl_vendor:["Vendor keeps the SOC 2 report current"],risk:["Vendor staff turnover may delay delivery"],term:["Renews for one year unless notice is sent","Either party may terminate for cause"],liability:["Liability is limited to 12 months of fees"],data:["Vendor notifies Atlantic Systems of a breach within 72 hours"],ip:["Atlantic Systems owns all deliverables"],warranty:["Deliverables conform for 90 days"],price:["Rates are fixed for the term"],change:["Changes need a signed change order"],legal:["Governed by the laws of Delaware"]};
+ const T={deliverable:["Vendor delivers the monthly service report","Vendor delivers the design document"],milestone:["Milestone 2: configuration complete","Milestone 3: user acceptance test passed"],commitment:["Vendor will hold a weekly status meeting"],outcome:["The service reduces manual effort by 20 percent"],kpi:["Ticket backlog stays under 40 items"],sla:["Availability of at least 99.9 percent each month","Severity 1 response within 30 minutes"],payment:["Invoices are payable within 45 days","Milestone invoices follow written acceptance"],assumption:["Atlantic Logistics provides test data by the start date"],dependency:["Depends on Entra ID single sign-on"],obl_us:["Atlantic Logistics reviews each deliverable in 10 business days"],obl_vendor:["Vendor keeps the SOC 2 report current"],risk:["Vendor staff turnover may delay delivery"],term:["Renews for one year unless notice is sent","Either party may terminate for cause"],liability:["Liability is limited to 12 months of fees"],data:["Vendor notifies Atlantic Logistics of a breach within 72 hours"],ip:["Atlantic Logistics owns all deliverables"],warranty:["Deliverables conform for 90 days"],price:["Rates are fixed for the term"],change:["Changes need a signed change order"],legal:["Governed by the laws of Delaware"]};
  const types=Object.keys(T),pbFor={liability:"PB-LOL",data:"PB-DPA",term:"PB-REN",payment:"PB-PAY",sla:"PB-SLA",warranty:"PB-WAR",price:"PB-CAP",ip:"PB-IPO",change:"PB-CHG",legal:"PB-LAW"};
- GEN.list.forEach(c=>{const n=Math.min(c.n,18);for(let i=0;i<n;i++){const ty=pick(types),x=r(),m=x<.72?"std":x<.9?"var":"new",pb=pbFor[ty]||"";const party=["obl_vendor","deliverable","milestone","sla","kpi","warranty","data"].includes(ty)?"Vendor":["payment","obl_us","dependency"].includes(ty)?"Atlantic Systems":"Both";
+ GEN.list.forEach(c=>{const n=Math.min(c.n,18);for(let i=0;i<n;i++){const ty=pick(types),x=r(),m=x<.72?"std":x<.9?"var":"new",pb=pbFor[ty]||"";const party=["obl_vendor","deliverable","milestone","sla","kpi","warranty","data"].includes(ty)?"Vendor":["payment","obl_us","dependency"].includes(ty)?"Atlantic Logistics":"Both";
   out.push({id:"L"+c.num+"S"+String(i+1).padStart(2,"0"),ct:c.id,doc:"contract",ref:(1+Math.floor(i/4))+"."+(i%4+1),page:1+Math.floor(i/3),src:pick(T[ty]),type:ty,norm:"Stated",val:null,unit:"",party:party,owner:party==="Vendor"?c.vendor:c.owner,watch:"",due:r()<.4?addD(TDY,Math.round(r()*300-30)):"",measure:"",target:"",conf:Math.round((.6+r()*.38)*100)/100,status:pick(["proposed","accepted","accepted","agreed","negotiating"]),lk:{wbs:"",sla:"",inv:"",raid:"",bud:""},m:m,pb:m==="new"?"NT-GEN":m==="var"?(pb||"PB-LOL"):pb,pbs:[],vend:"",why:"Enterprise sample line.",fb:false,risk:pick(["Low","Medium","High"]),rec:"shared",route:"",trap:false,routine:!pb&&m==="std",ours:"",thread:[],by:"Sample",lg:false,synthetic:true,key:ty})}});
  GEN.lines=out;return out}
 function curAn(){return AN[anKey(SW.ct,SW.doc)]||AN[anKey(SW.ct,bestDoc(SW.ct)||"proposal")]||null}
@@ -846,7 +846,7 @@ function openReview(id){openLine(id)}
 const pbUses=id=>allKnownLines().filter(l=>l.pb===id).length;
 function negCard(c){const R=RND.filter(r=>r.ct===c.id).sort((a,b)=>a.n-b.n);const us=sum(R,r=>r.us),ve=sum(R,r=>r.ven),first=R[0],last=R[R.length-1];const mx=Math.max(1,...R.map(r=>Math.max(r.us,r.ven)));
  const days=first?difD(last.date,first.date):0;
- return card("Negotiation tracking: "+esc(ctShort(c.id)),R.length?`${R.length} rounds over ${days} days. Atlantic Systems conceded on ${us} lines and the vendor on ${ve}. ${ve>us?"The vendor has moved more.":us>ve?"Atlantic Systems has moved more, so hold firm on the next round.":"Concessions are even."}`:"No rounds logged yet.",R.length?`<div class="sow-rounds">${R.map(r=>`<div class="sow-rd"><div class="sow-rdh"><b>Round ${r.n}</b><span class="muted small">${fdt(r.date)} · ${esc(r.from)} · ${esc(r.ver)}</span></div><p>${esc(r.note)}</p><div class="sow-rdb"><span class="muted small">Atlantic Systems conceded</span><span class="sow-rbar"><i style="width:${r.us/mx*100}%;background:var(--story-f)"></i></span><b>${r.us}</b></div><div class="sow-rdb"><span class="muted small">Vendor conceded</span><span class="sow-rbar"><i style="width:${r.ven/mx*100}%;background:var(--good-f)"></i></span><b>${r.ven}</b></div></div>`).join("")}</div>${legend([["Lines Atlantic Systems conceded or moved on","--story-f"],["Lines the vendor conceded or moved on","--good-f"]])}`:empty("No negotiation history","Log the first round when the proposal arrives."),`<div class="row">${fchip("m_sow_cycle")}<button class="btn" data-sow-round>Log a round</button></div>`)}
+ return card("Negotiation tracking: "+esc(ctShort(c.id)),R.length?`${R.length} rounds over ${days} days. Atlantic Logistics conceded on ${us} lines and the vendor on ${ve}. ${ve>us?"The vendor has moved more.":us>ve?"Atlantic Logistics has moved more, so hold firm on the next round.":"Concessions are even."}`:"No rounds logged yet.",R.length?`<div class="sow-rounds">${R.map(r=>`<div class="sow-rd"><div class="sow-rdh"><b>Round ${r.n}</b><span class="muted small">${fdt(r.date)} · ${esc(r.from)} · ${esc(r.ver)}</span></div><p>${esc(r.note)}</p><div class="sow-rdb"><span class="muted small">Atlantic Logistics conceded</span><span class="sow-rbar"><i style="width:${r.us/mx*100}%;background:var(--story-f)"></i></span><b>${r.us}</b></div><div class="sow-rdb"><span class="muted small">Vendor conceded</span><span class="sow-rbar"><i style="width:${r.ven/mx*100}%;background:var(--good-f)"></i></span><b>${r.ven}</b></div></div>`).join("")}</div>${legend([["Lines Atlantic Logistics conceded or moved on","--story-f"],["Lines the vendor conceded or moved on","--good-f"]])}`:empty("No negotiation history","Log the first round when the proposal arrives."),`<div class="row">${fchip("m_sow_cycle")}<button class="btn" data-sow-round>Log a round</button></div>`)}
 function reviewsCard(){const g=[["Legal review",r=>r.route==="legal"&&r.st!=="Escalated"&&r.st!=="Agreed"],["Shared review (vendor, legal and business)",r=>r.route==="shared"&&r.st!=="Agreed"],["Escalated to the CIO",r=>r.st==="Escalated"],["Agreed",r=>r.st==="Agreed"]];
  return card("Reviews in progress",REV.filter(r=>r.st!=="Agreed").length+" open. Legal reviews have an owner and a deadline. Shared reviews add the vendor and the business owner to one thread.",lrHTML({id:"sow_rev",limit:8,groups:g.map((x,i)=>({key:"g"+i,label:x[0],rows:REV.filter(x[1]).map(r=>{const l=findLine(r.line)||{};const pn=PBN[l.pb]||NTN[l.pb]||{};return {id:r.id,t:r.id+" §"+(l.ref||"")+" "+(pn.n||"Line"),sub:ctShort(r.ct)+" · "+r.part.join(", "),tag:"due "+fdt(r.due,1)+" · "+r.thread.length+" comments",st:difD(r.due,TDY)<=3?"bad":"info",go:()=>openLine(r.line)}})}))}))}
 function tabPlaybook(){const c=ctOf(SW.ct)||CT0[1],a=curAn();
@@ -860,7 +860,7 @@ function tabPlaybook(){const c=ctOf(SW.ct)||CT0[1],a=curAn();
  const lib=btHTML({id:"sow_pb",h:430,rowH:58,key:"id",exportName:"playbook",facets:["cat","risk"],open:id=>openClause(id),rows:()=>PB,
   cols:[{k:"id",label:"ID"},{k:"n",label:"Clause",wrap:1,fmt:r=>`<b>${esc(r.n)}</b>`},{k:"cat",label:"Category"},{k:"risk",label:"Risk",fmt:r=>rkPill(r.risk),val:r=>r.risk},{k:"std",label:"Approved language",wrap:1,fmt:r=>`<span class="sow-src">${esc(r.std)}</span>`},{k:"fb",label:"Fallback",wrap:1,fmt:r=>`<span class="sow-src">${esc(r.fb)}</span>`},{k:"uses",label:"Lines seen",cls:"num",val:r=>pbUses(r.id)},{k:"ver",label:"Version",val:r=>r.ver+" "+r.rev,fmt:r=>`${esc(r.ver)} <span class="muted small">${fdt(r.rev,1)}</span>`},{k:"owner",label:"Owner"}]});
  return `<div class="sow-tab">${head}${hs}<div class="grid g2 sow-g2">${g1}${g2}</div>
- ${views("sowpb",["Review queue","Reviews in progress","Negotiation","Clause library"],[card("Lines that need a decision","Select a line to see the side by side redline, the explanation and the three routes.",rq),reviewsCard(),negCard(c),card("Atlantic Systems standard terms library",PB.length+" clauses with approved language, fallback positions and a risk rating. Legal owns each clause.",lib,`<div class="row"><button class="btn primary" data-sow-newclause>New clause</button></div>`)])}</div>`}
+ ${views("sowpb",["Review queue","Reviews in progress","Negotiation","Clause library"],[card("Lines that need a decision","Select a line to see the side by side redline, the explanation and the three routes.",rq),reviewsCard(),negCard(c),card("Atlantic Logistics standard terms library",PB.length+" clauses with approved language, fallback positions and a risk rating. Legal owns each clause.",lib,`<div class="row"><button class="btn primary" data-sow-newclause>New clause</button></div>`)])}</div>`}
 function openClause(id){const p=PBN[id];if(!p)return;const ls=allKnownLines().filter(l=>l.pb===id),k={std:0,var:0,new:0};ls.forEach(l=>k[l.m]++);const rate=ls.length?Math.round(100*k.var/ls.length):0;
  openDrawer(`<span class="eyebrow">${esc(p.id)} · ${esc(p.cat)}</span><h2 style="font-size:26px;margin:8px 0">${esc(p.n)}</h2><div class="row">${rkPill(p.risk)}${sPill(p.ver+" · reviewed "+fdt(p.rev),"mute")}${pc(p.owner)}</div>
  <div class="dfullgrid" style="margin-top:14px"><section class="card glass"><div class="cardhead"><h3>Approved language</h3></div><blockquote class="sow-quote good">${esc(p.std)}</blockquote><div class="eyebrow">Fallback ladder</div><blockquote class="sow-quote warn">${esc(p.fb)}</blockquote><dl class="kv"><dt>Keywords</dt><dd>${esc(p.kw||"")}</dd><dt>Owner</dt><dd>${ownerChip(p.owner,{role:"Owner"})} approves any change</dd></dl></section>
@@ -880,7 +880,7 @@ function cmpItems(cid){const P=lines_(cid,"proposal"),C=lines_(cid,"contract");i
   if(a&&!b)kind="promised";else if(!a&&b)kind="extra";else if(a.norm===b.norm&&a.due===b.due&&a.m===b.m)kind="same";else{kind="changed";dir=RK[b.m]>RK[a.m]?"against":RK[b.m]<RK[a.m]?"favor":/\d/.test(a.norm+b.norm)?"neutral":"neutral";if(dir==="neutral"&&a.norm!==b.norm){const x=parseFloat(String(a.val)),y=parseFloat(String(b.val));if(!isNaN(x)&&!isNaN(y)&&l.type==="price")dir=y>x?"against":"favor"}}
   out.push({id:"cmp-"+cid+"-"+k+"-"+i,key:k,p:a,c:b,kind:kind,dir:dir,cat:(a&&b&&l.type==="milestone"&&a.due!==b.due)?"Scope and schedule":CAT(l.type),l:l})}});return out}
 const KINDL={same:"Unchanged",changed:"Changed",promised:"Promised, not in contract",extra:"In contract, not promised"};
-const DIRP={against:["Against Atlantic Systems","bad"],favor:["In Atlantic Systems' favor","good"],neutral:["Changed","warn"]};
+const DIRP={against:["Against Atlantic Logistics","bad"],favor:["In Atlantic Logistics' favor","good"],neutral:["Changed","warn"]};
 function tabCompare(){const pairs=CTS().filter(c=>AN[anKey(c.id,"proposal")]&&AN[anKey(c.id,"contract")]);if(!pairs.length)return `<div class="sow-tab">${empty("No engagement has both documents analyzed","Analyze the proposal and the executed contract in the Analyzer tab to compare them.")}</div>`;
  if(!pairs.some(c=>c.id===SW.cmp))SW.cmp=pairs[0].id;const c=ctOf(SW.cmp),it=cmpItems(c.id),ch=it.filter(x=>x.kind==="changed"),pr=it.filter(x=>x.kind==="promised"),ex=it.filter(x=>x.kind==="extra"),sm=it.filter(x=>x.kind==="same"),ag=ch.filter(x=>x.dir==="against").length+ex.filter(x=>x.l.m!=="std").length+pr.length;
  const cats=["Price and payment","Scope and schedule","Service levels","Assumptions","Terms and conditions"],cc=["--s3","--p2","--u3","--e1","--w3"];const byc=cats.map((t,i)=>({l:t,v:it.filter(x=>x.kind!=="same"&&x.cat===t).length,c:cc[i]}));
@@ -888,7 +888,7 @@ function tabCompare(){const pairs=CTS().filter(c=>AN[anKey(c.id,"proposal")]&&AN
  const ms=it.filter(x=>x.l.type==="milestone"&&x.p&&x.c);
  const row=(x,btns)=>`<div class="need" style="grid-template-columns:auto 1fr auto"><div class="ico ${x.kind==="promised"?"bad":x.l.m!=="std"?"warn":"info"}">${ico(x.kind==="promised"?"warn":"info")}</div><div><b>§${esc(x.l.ref)} ${esc(TYP[x.l.type][0])}${x.l.m!=="std"&&x.kind==="extra"?" "+mPill(x.l.m):""}</b><span class="muted" data-role="story">${esc(x.l.src)}</span></div><div class="act">${btns}</div></div>`;
  return `<div class="sow-tab"><div class="sow-pick glass"><div class="sow-pk"><span class="eyebrow">Engagement</span><b>${esc(c.title)}</b><span class="muted small">Proposal ${esc(c.prop.ver)} (${fdt(c.prop.date,1)}) against the executed contract (${fdt(c.exe.date,1)})</span></div><div class="row"><label class="muted small">Engagement <select class="fin sow-sel" data-sow-cmpsel>${pairs.map(p=>`<option value="${p.id}" ${p.id===c.id?"selected":""}>${esc(p.vendor+" · "+p.id)}</option>`).join("")}</select></label></div></div>
- <div class="statrow">${stat("Price",S$(delta),D$(pv)+" proposed, "+D$(c.value)+" signed",delta>pv*.05?"crit":"")}${stat("Lines changed",ch.length,ag+" moved against Atlantic Systems",ag>3?"crit":"")}${stat("Promised, not in contract",pr.length,"commitments that disappeared",pr.length?"crit":"")}${stat("In contract, not promised",ex.length,ex.filter(x=>x.l.m!=="std").length+" are off playbook",ex.length>3?"crit":"")}${stat("Unchanged",sm.length,"identical in value and date")}</div>
+ <div class="statrow">${stat("Price",S$(delta),D$(pv)+" proposed, "+D$(c.value)+" signed",delta>pv*.05?"crit":"")}${stat("Lines changed",ch.length,ag+" moved against Atlantic Logistics",ag>3?"crit":"")}${stat("Promised, not in contract",pr.length,"commitments that disappeared",pr.length?"crit":"")}${stat("In contract, not promised",ex.length,ex.filter(x=>x.l.m!=="std").length+" are off playbook",ex.length>3?"crit":"")}${stat("Unchanged",sm.length,"identical in value and date")}</div>
  <p class="story" data-role="story"><b>What moved between the proposal and the signature.</b> ${pr.length?`The vendor promised ${pr.map(x=>x.l.measure||TYP[x.l.type][0].toLowerCase()).slice(0,3).join(", ")} in the proposal, but the signed contract no longer has ${pr.length===1?"it":"them"}. `:""}${ex.length?`The contract adds ${ex.length} terms nobody proposed${ex.some(x=>/advance/.test(x.l.src))?", including an advance payment":""}. `:""}${delta?`The price is ${S$(delta)} (${(100*delta/pv).toFixed(1)} percent) from the proposal.`:""}</p>
  <div class="grid g2 sow-g2">${card("Where the changes are","Count of changed, missing and added lines by area.",hbars(byc)+`<p class="muted small">${analyzerChip(.88,"Lines are paired by clause topic, milestone number or measure. Pairs whose value, date or playbook position differ are reported.")}</p>`)}${card("Milestone dates",ms.length?"Proposed date against signed date for each milestone.":"No milestone pairs found.",ms.length?`<div class="sow-walk">${ms.map(x=>`<div class="sow-wk"><span><b>${esc(x.l.src.split(":")[0])}</b><small>${esc(x.l.src.split(":")[1]||"").slice(0,48)}</small></span><span class="num">${fdt(x.p.due,1)} <i aria-hidden="true">→</i> ${fdt(x.c.due,1)}</span>${x.p.due!==x.c.due?sPill((difD(x.c.due,x.p.due)>0?"+":"")+difD(x.c.due,x.p.due)+" days","warn"):sPill("Same","mute")}</div>`).join("")}</div>`:"")}</div>
  ${card("Promised in the proposal, missing from the contract",pr.length+" lines. These are the commitments most likely to be lost without anyone noticing.",`<div class="needs">${pr.map(x=>row(x,`<button class="btn primary" data-sow-newcr="${c.id}" data-sow-cr-key="${esc(x.key)}">Request amendment</button><button class="btn" data-sow-cmpopen="${x.id}">Compare</button>`)).join("")||empty("Nothing missing","Every proposal commitment is in the contract.")}</div>`)}
@@ -900,14 +900,14 @@ function openCmp(id){const it=cmpItems(SW.cmp)||[];const x=it.find(y=>y.id===id)
  ${x.p&&x.c?`<section class="card glass" style="margin-top:14px"><div class="cardhead"><h3>Redline from proposal to contract</h3></div><p class="sow-rl">${redlineHTML(x.p.src,x.c.src)}</p><p class="muted small"><del class="sow-del">Struck through</del> was in the proposal. <ins class="sow-ins">Underlined</ins> is new in the contract.</p></section>`:""}
  <div class="row" style="margin-top:14px"><button class="btn primary" data-sow-newcr="${SW.cmp}" data-sow-cr-key="${esc(x.key)}">Request a change</button>${x.c?`<button class="btn" data-sow-open1="${x.c.id}">Open the contract line</button>`:""}</div>`)}
 /* ---------- change control ---------- */
-const crDraft=cr=>{const c=ctOf(cr.ct)||{},n=(c.amend||[]).length+1,t=cr.type;const hd=`CHANGE ORDER ${cr.id} / AMENDMENT ${n}\nAgreement: ${c.title||cr.ct} (${cr.ct}) between Atlantic Systems and ${c.vendor||"the vendor"}.\nEffective: on signature by both parties.\n\n`;
+const crDraft=cr=>{const c=ctOf(cr.ct)||{},n=(c.amend||[]).length+1,t=cr.type;const hd=`CHANGE ORDER ${cr.id} / AMENDMENT ${n}\nAgreement: ${c.title||cr.ct} (${cr.ct}) between Atlantic Logistics and ${c.vendor||"the vendor"}.\nEffective: on signature by both parties.\n\n`;
  const ft="\n\nExcept as stated in this change order, all terms of the Agreement stay in force. This change order is not effective until signed by both parties (Section: change control).";
  if(t==="Schedule change")return hd+`1. Schedule. The date for ${cr.title.replace(/ slips.*/,"")} is changed from ${cr.oldv} to ${cr.newv}. Dependent dates move only as listed in Exhibit 1.\n2. Fees. No change to fees, and no additional charge arises from this date change.\n3. Acceptance. The review period of 10 business days starts on delivery of the revised milestone.`+ft;
- if(t==="Price or rate change")return hd+`1. Fees. The total fee changes from ${cr.oldv} to ${cr.newv}, a ${S$(cr.amt)} change, for the work described in: ${cr.title}.\n2. Payment. The additional amount is invoiced after Atlantic Systems' written acceptance of the related deliverable and is payable within 45 days.\n3. Rates. Rates not mentioned here stay fixed for the term.`+ft;
+ if(t==="Price or rate change")return hd+`1. Fees. The total fee changes from ${cr.oldv} to ${cr.newv}, a ${S$(cr.amt)} change, for the work described in: ${cr.title}.\n2. Payment. The additional amount is invoiced after Atlantic Logistics' written acceptance of the related deliverable and is payable within 45 days.\n3. Rates. Rates not mentioned here stay fixed for the term.`+ft;
  if(t==="Scope or project change")return hd+`1. Scope. The Agreement is amended to include: ${cr.title}.\n2. Fees. ${cr.amt?"The fee increases by "+D$(cr.amt)+".":"No change to fees."}\n3. Acceptance. Deliverables added here follow the acceptance criteria and the 10 business day review period in the Agreement.`+ft;
  if(t==="Assumption change")return hd+`1. Assumption. The assumption "${cr.oldv}" is replaced with "${cr.newv}".\n2. Effect. The change does not extend any date or add any fee. If it puts a milestone at risk, the vendor raises a change request within 5 business days.`+ft;
  if(t==="SLA change")return hd+`1. Service levels. The service level schedule is amended to: ${cr.newv}. Previously: ${cr.oldv}.\n2. Credits. Service credits apply from the first full month after signature and are not the exclusive remedy.\n3. Reporting. The vendor reports the measure monthly with the service report.`+ft;
- return hd+`1. Term. ${cr.oldv} is changed to: ${cr.newv}.\n2. Notice. This change order serves as written notice under the renewal and termination section where that applies.\n3. Transition. The vendor returns or exports Atlantic Systems data within 30 days after the end date.`+ft};
+ return hd+`1. Term. ${cr.oldv} is changed to: ${cr.newv}.\n2. Notice. This change order serves as written notice under the renewal and termination section where that applies.\n3. Transition. The vendor returns or exports Atlantic Logistics data within 30 days after the end date.`+ft};
 function schedImpact(cr){const c=ctOf(cr.ct);if(!c||!cr.task||!cr.days||typeof cpm==="undefined")return null;const t=TASKS.find(x=>x.id===cr.task);if(!t)return null;const f=(m)=>cpm(x=>Math.max(x.ms?0:1,x.dur+(m&&x.id===cr.task?cr.days:0)));const b=f(false),m=f(true);
  const tasks=TASKS.filter(x=>m.R[x.id].ef!==b.R[x.id].ef).map(x=>({id:x.id,p:x.p,n:x.n,b:fmtD(b.R[x.id].ef),a:fmtD(m.R[x.id].ef),d:m.R[x.id].ef-b.R[x.id].ef}));
  const pj=[...new Set(tasks.map(x=>x.p))].map(p=>({p:p,fb:fmtD(b.pe[p],1),fa:fmtD(m.pe[p],1),d:m.pe[p]-b.pe[p]}));return {tasks:tasks,pj:pj,task:t}}
@@ -939,7 +939,7 @@ function openCR(id){const x=CRALL().find(y=>y.id===id);if(!x)return;const c=ctOf
  <div><div class="eyebrow">Invoice schedule</div>${im.invMoves.length?im.invMoves.map(r=>`<p class="small">${esc(r.n)}: due ${fdt(r.from,1)} moves to ${fdt(r.to,1)}</p>`).join(""):x.amt?`<p class="small">${x.amt>0?"A new payment of "+D$(x.amt)+" is added after written acceptance.":"Scheduled payments fall by "+D$(-x.amt)+"."}</p>`:'<p class="muted">No payment changes.</p>'}</div>
  <div><div class="eyebrow">Budget</div>${im.pj?`<p class="small">${esc(pjn)} has ${K$(im.rem)} left of ${K$(im.pj.bac)}. ${x.amt>0?"After this change "+(im.after<0?`<b>it is ${K$(-im.after)} short</b>, so a reserve draw is needed (tier ${im.tier.id}).`:`${K$(im.after)} remains.`):"No budget effect."}</p>`:`<p class="small">${x.amt?"Run budget "+esc(c.line||"line")+" changes by "+S$(x.amt)+" a contract life.":"No budget effect."}</p>`}</div>
  <div><div class="eyebrow">Service levels and risks</div>${im.sla.length?`<p class="small">Touches ${im.sla.map(l=>esc(l.measure||l.type)).join(", ")}.</p>`:'<p class="small muted">No service level lines touched.</p>'}${im.raid.map(r=>`<p class="small"><b>${esc(r.id)}</b> ${esc(r.n)}</p>`).join("")}${window.openImpact&&c.svc?`<button class="btn quiet" data-sow-svcimp="${x.id}">Service impact: ${esc(c.svc)}</button>`:""}</div></div></section>
- <section class="card glass" style="margin-top:14px"><div class="cardhead"><div><h3>Drafted change order language</h3><span class="muted small">For legal review. Not sent to the vendor.</span></div>${analyzerChip(.82,"Drafted from the change type and the old and new values using Atlantic Systems' change order template. Legal edits and approves.")}</div><pre class="sow-pre sow-co">${esc(crDraft(x))}</pre></section>
+ <section class="card glass" style="margin-top:14px"><div class="cardhead"><div><h3>Drafted change order language</h3><span class="muted small">For legal review. Not sent to the vendor.</span></div>${analyzerChip(.82,"Drafted from the change type and the old and new values using Atlantic Logistics' change order template. Legal edits and approves.")}</div><pre class="sow-pre sow-co">${esc(crDraft(x))}</pre></section>
  <section class="card glass" style="margin-top:14px"><div class="cardhead"><h3>Discussion</h3></div><div class="sow-thread">${x.thread.map(t=>`<div class="sow-cm">${pc(t.who)}<p>${esc(t.t)}</p><small class="muted">${esc(t.at)}</small></div>`).join("")||'<p class="muted small">No comments yet.</p>'}</div><div class="row"><input class="fin" id="sow_cmt" placeholder="Add a comment" aria-label="Comment"><button class="btn" data-sow-cmtcr="${x.id}">Post</button></div></section>
  ${x.st!=="Approved"?`<div class="row" style="margin-top:14px"><button class="btn" data-sow-impact="${x.id}">Mark impact reviewed</button><button class="btn primary" data-sow-approve="${x.id}">Approve and apply</button><button class="btn danger" data-sow-reject="${x.id}">Reject</button></div><p class="muted small">Approving updates the contract value or dates, the line register and the linked schedule. ${im.tier.max<100000||im.tier.id==="T3"?"You can approve this one as CIO.":"This is above your limit, so approval is recorded as a request to the "+im.tier.role+"."}</p>`:""}`);audit("opened change request",x.id)}
 /* ---------- tab 7: obligations and calendar ---------- */
@@ -988,12 +988,12 @@ function editLineForm(l){const people=DIR.filter(d=>!d.generated).map(d=>[d.name
  openForm({id:"sow_line",title:"Edit line §"+l.ref,story:"Correct anything the AI got wrong. Corrections are recorded and improve the next analysis.",submit:"Save line",fields:[{k:"owner",label:"Owner (person, AI agent, contractor or provider)",type:"select",opts:people,req:true},{k:"due",label:"Due date",type:"date"},{k:"measure",label:"Measure",type:"text"},{k:"target",label:"Target",type:"text"},{k:"norm",label:"Normalized value",type:"text",wide:true},{k:"type",label:"Line type",type:"select",opts:Object.keys(TYP).map(k=>[k,TYP[k][0]])}],defaults:{owner:l.owner,due:l.due,measure:l.measure,target:l.target,norm:l.norm,type:l.type},
   onSubmit:v=>{Object.assign(l,{owner:v.owner,due:v.due,measure:v.measure,target:v.target,norm:v.norm,type:v.type});l.by=ME+" corrected";l.conf=Math.min(.99,l.conf+.03);aud(ME,"Edited line",l.ct,"§"+l.ref);render();return {toast:"Line updated",audit:l.id}}})}
 function clauseForm(id,from){const p=id?PBN[id]:null,l=from?findLine(from):null,nt=l?NTN[l.pb]:null;
- openForm({id:"sow_clause",title:p?"Edit clause "+p.n:"New playbook clause",story:"Legal owns the playbook. A new clause is matched against every analyzed line, so lines that were 'new' immediately become standard or variance. Changes are versioned.",submit:p?"Save new version":"Add to the playbook",fields:[{k:"n",label:"Clause name",type:"text",req:true,wide:true},{k:"cat",label:"Category",type:"select",opts:["Commercial","Legal","Data and security","Intellectual property","Service levels","Delivery"],req:true},{k:"risk",label:"Risk if it goes wrong",type:"chips",opts:["Low","Medium","High"],req:true},{k:"std",label:"Approved language",type:"longtext",req:true,wide:true,ai:{label:"Draft with AI",fn:v=>nt?nt.draft:"The supplier will "+(v.n||"comply with this clause").toLowerCase()+" in the manner stated in the agreement, and Atlantic Systems may require evidence of compliance on request."}},{k:"fb",label:"Fallback position",type:"longtext",wide:true,help:"What we can concede without legal, in order."},{k:"kw",label:"Words that find this clause",type:"text",wide:true,help:"Comma separated. Lines containing any of these words are compared with the approved language."}],
+ openForm({id:"sow_clause",title:p?"Edit clause "+p.n:"New playbook clause",story:"Legal owns the playbook. A new clause is matched against every analyzed line, so lines that were 'new' immediately become standard or variance. Changes are versioned.",submit:p?"Save new version":"Add to the playbook",fields:[{k:"n",label:"Clause name",type:"text",req:true,wide:true},{k:"cat",label:"Category",type:"select",opts:["Commercial","Legal","Data and security","Intellectual property","Service levels","Delivery"],req:true},{k:"risk",label:"Risk if it goes wrong",type:"chips",opts:["Low","Medium","High"],req:true},{k:"std",label:"Approved language",type:"longtext",req:true,wide:true,ai:{label:"Draft with AI",fn:v=>nt?nt.draft:"The supplier will "+(v.n||"comply with this clause").toLowerCase()+" in the manner stated in the agreement, and Atlantic Logistics may require evidence of compliance on request."}},{k:"fb",label:"Fallback position",type:"longtext",wide:true,help:"What we can concede without legal, in order."},{k:"kw",label:"Words that find this clause",type:"text",wide:true,help:"Comma separated. Lines containing any of these words are compared with the approved language."}],
   defaults:p?{n:p.n,cat:p.cat,risk:p.risk,std:p.std,fb:p.fb,kw:p.kw}:nt?{n:nt.n,cat:nt.cat,risk:nt.risk,std:nt.draft,fb:"None until legal sets one.",kw:(nt.id==="NT-AI"?"machine learning, train, models":nt.id==="NT-PUB"?"press release, case stud, publicity":nt.id==="NT-NSO"?"solicit, hire":nt.id==="NT-USG"?"true-up, overage":nt.id==="NT-AUDU"?"audit":nt.id==="NT-EXC"?"exclusive remedy":nt.id==="NT-SUS"?"suspend":"")}:{risk:"Medium",cat:"Legal"},
   live:v=>`<p class="story">${p?"Saved as version "+(+String(p.ver).slice(1)+1)+". ":""}Owner: ${LEGAL}. ${v.risk==="High"?"High risk clauses always need legal approval on any variance.":"Variances inside the fallback can be agreed by the business owner."}</p>`,
   onSubmit:v=>{if(p){Object.assign(p,{n:v.n,cat:v.cat,risk:v.risk,std:v.std,fb:v.fb,kw:v.kw,ver:"v"+(+String(p.ver).slice(1)+1),rev:TDY});aud(ME,"Edited playbook clause",from?l.ct:"",p.n+" now "+p.ver);render();return {toast:"New version saved"}}
    const r=addClause(v,from);syncMetrics();render();return {toast:"Added "+r.p.n+". "+r.moved+" lines now match it.",audit:r.p.id}}})}
-function roundForm(){const c=ctOf(SW.ct)||CT0[1];openForm({id:"sow_round",title:"Log a negotiation round",story:"Each exchange with the vendor is one round. Counting what each side conceded shows who is moving and how long the negotiation has run.",submit:"Log round",fields:[{k:"from",label:"Who sent this version",type:"chips",opts:["Atlantic Systems","Vendor","Both"],req:true},{k:"ver",label:"Version",type:"text",req:true,ph:"v3 markup"},{k:"note",label:"What changed",type:"longtext",req:true,wide:true},{k:"us",label:"Lines Atlantic Systems conceded",type:"number",min:0},{k:"ven",label:"Lines the vendor conceded",type:"number",min:0}],defaults:{from:"Atlantic Systems",us:0,ven:0},
+function roundForm(){const c=ctOf(SW.ct)||CT0[1];openForm({id:"sow_round",title:"Log a negotiation round",story:"Each exchange with the vendor is one round. Counting what each side conceded shows who is moving and how long the negotiation has run.",submit:"Log round",fields:[{k:"from",label:"Who sent this version",type:"chips",opts:["Atlantic Logistics","Vendor","Both"],req:true},{k:"ver",label:"Version",type:"text",req:true,ph:"v3 markup"},{k:"note",label:"What changed",type:"longtext",req:true,wide:true},{k:"us",label:"Lines Atlantic Logistics conceded",type:"number",min:0},{k:"ven",label:"Lines the vendor conceded",type:"number",min:0}],defaults:{from:"Atlantic Logistics",us:0,ven:0},
   live:v=>`<p class="story">${esc(ctShort(c.id))} would have ${RND.filter(r=>r.ct===c.id).length+1} rounds.</p>`,onSubmit:v=>{RND.push({ct:c.id,n:RND.filter(r=>r.ct===c.id).length+1,date:TDY,from:v.from==="Vendor"?c.vendor.split(" ")[0]:v.from,note:v.note,ver:v.ver,us:+v.us||0,ven:+v.ven||0});aud(ME,"Logged negotiation round",c.id,v.ver+": "+v.note);render();return {toast:"Round logged"}}})}
 function newCT(v){const num=1001+CT0.length,c={id:"CLM-"+num,num:num,title:v.title||v.vendor+" "+(v.type||"SOW"),vendor:v.vendor,type:v.type||"SOW",status:"In negotiation",value:+v.value||0,start:addD(TDY,45),end:addD(TDY,45+365),auto:false,notice:0,owner:v.owner||ME,vOwner:v.vendor,proj:"",svc:"",risk:"Medium",line:"",gen:false,prop:null,exe:null,amend:[],inv:[],n:0,off:0};CT0.push(c);return c}
 function uploadForm(cid){const ex=CT0.map(c=>[c.id,c.id+" "+c.title]);
@@ -1098,7 +1098,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-sow-pick],
  if(d.sowAccinv){const [id,i]=d.sowAccinv.split(":"),c=ctOf(id),r=c&&genInv(c)[+i];if(r){r.acc=true;r.st="scheduled";aud(ME,"Recorded acceptance",id,r.n+" released for approval.");toast("Acceptance recorded. The payment can now go to invoice approval.","good");syncMetrics();render()}return}
  if(d.sowOffset){const [id,i]=d.sowOffset.split(":"),c=ctOf(id),inv=c&&genInv(c),r=inv&&inv[+i];if(r){const nx=inv.slice(+i+1).find(y=>y.st==="scheduled"||y.st==="held");if(nx){nx.amt=Math.max(0,nx.amt-22000);r.acc=true;r.n+=" (offset against "+nx.n.split(":")[0]+")";aud(ME,"Offset payment",id,"Reduced "+nx.n+" by $22,000.");toast("Next payment reduced by $22,000 so total paid matches accepted work","good");syncMetrics();render()}else toast("No later payment to offset against. Ask the vendor for a credit note.","warn")}return}
  if(d.sowClaim){const c=ctOf(d.sowClaim);if(c&&c.credit){const amt=c.credit.owed-c.credit.claimed;c.credit.claimed=c.credit.owed;OBLS().filter(o=>o.ct===c.id&&/credit/i.test(o.t)).forEach(o=>{o.st="done";o.dn=TDY});aud(ME,"Claimed service credit",c.id,D$(amt));toast(D$(amt)+" credit claimed on the next invoice","good");syncMetrics();render()}return}
- if("sowNewob" in d){const c=ctOf(SW.ct)||CT0[1];openForm({id:"sow_ob",title:"Add an obligation",story:"Adds a dated obligation to the register for "+ctShort(c.id)+" and reminds the owner 10 days ahead.",submit:"Add obligation",fields:[{k:"t",label:"Obligation",type:"text",req:true,wide:true},{k:"party",label:"Whose obligation",type:"chips",opts:["Atlantic Systems","Vendor"],req:true},{k:"who",label:"Owner",type:"select",opts:DIR.filter(x=>!x.generated).map(x=>[x.name,x.name+" ("+KINDS[x.kind]+")"]),req:true},{k:"due",label:"Due",type:"date",req:true},{k:"kind",label:"Kind",type:"select",opts:["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Other"]}],defaults:{party:"Atlantic Systems",who:c.owner,kind:"Other"},onSubmit:v=>{OBL.push({id:"OB-"+(101+OBL.length),ct:c.id,t:v.t,party:v.party,who:v.who,due:v.due,st:"open",dn:"",kind:v.kind||"Other"});aud(ME,"Added obligation",c.id,v.t);render();return {toast:"Obligation added"}}});return}
+ if("sowNewob" in d){const c=ctOf(SW.ct)||CT0[1];openForm({id:"sow_ob",title:"Add an obligation",story:"Adds a dated obligation to the register for "+ctShort(c.id)+" and reminds the owner 10 days ahead.",submit:"Add obligation",fields:[{k:"t",label:"Obligation",type:"text",req:true,wide:true},{k:"party",label:"Whose obligation",type:"chips",opts:["Atlantic Logistics","Vendor"],req:true},{k:"who",label:"Owner",type:"select",opts:DIR.filter(x=>!x.generated).map(x=>[x.name,x.name+" ("+KINDS[x.kind]+")"]),req:true},{k:"due",label:"Due",type:"date",req:true},{k:"kind",label:"Kind",type:"select",opts:["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Other"]}],defaults:{party:"Atlantic Logistics",who:c.owner,kind:"Other"},onSubmit:v=>{OBL.push({id:"OB-"+(101+OBL.length),ct:c.id,t:v.t,party:v.party,who:v.who,due:v.due,st:"open",dn:"",kind:v.kind||"Other"});aud(ME,"Added obligation",c.id,v.t);render();return {toast:"Obligation added"}}});return}
 });
 document.addEventListener("change",e=>{const t=e.target;if(t.matches&&t.matches("[data-sow-cmpsel]")){SW.cmp=t.value;render();return}
  if(t.matches&&t.matches("[data-sow-file]")){const f=t.files&&t.files[0];if(!f)return;if(/\.(txt|md)$/i.test(f.name)){const r=new FileReader();r.onload=()=>{const k="f"+Date.now();TXT[k]=String(r.result);startRun(SW.ct,SW.doc,k,f.name)};r.readAsText(f)}else{toast("PDF and Word files need the document service in production. Showing the sample text for this document type.","info");startRun(SW.ct,SW.doc,SAMPLEFOR((ctOf(SW.ct)||{}).type),f.name)}}});

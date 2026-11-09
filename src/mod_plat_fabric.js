@@ -3,10 +3,10 @@
 (function(){
 const E=esc;
 const F=S.fab=S.fab||{edition:"fabric",key:"FAB-MSF-2026-7Q4K",ready:false,mapConn:"c_graph",sel:null,ovr:{},lastSample:{},mapTest:{},mapVer:{},usage:1412,seq:{run:4900,q:60,ev:9000,wi:1300,rec:300,req:40,prj:7}};
-/* PR-32 B9 tenant rows (R16 to R18): Atlantic Systems reads the entity part's own source live through the entity layer (S.fab.conns, maps,
+/* PR-32 B9 tenant rows (R16 to R18): Atlantic Logistics reads the entity part's own source live through the entity layer (S.fab.conns, maps,
    runs, events and the reconcile work items, the same objects); another tenant reads its own pack rows through DATA.get; no rows is []
    and a labeled gap. Under another tenant the screen shows the tenant's connectors and mappings and labeled gaps for the rest, since
-   the runs, quarantine, reconciliation, M2M projects and samples here are Atlantic Systems records. */
+   the runs, quarantine, reconciliation, M2M projects and samples here are Atlantic Logistics records. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TPARTS=new WeakMap();
 const TROWS=(e,part)=>{if(TCORE()){const d=window.TENANT_ENTITIES&&TENANT_ENTITIES.get(e);const p=d&&(part?d.src.find(x=>x[0]===part):d.src[0]);

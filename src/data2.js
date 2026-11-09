@@ -138,7 +138,7 @@ T4|p1_28|Relevance tuning pass 1|10|p1_27|100|Marco Ellis||Marco Ellis:30,Chief 
 T4|p1_46|Query log analysis|5|p1_28|100|Knowledge Curator||Knowledge Curator:80
 T4|p1_47|Editor relevance panel review|4|p1_46|100|Chief Editor||Chief Editor:40
 T4|p1_29|Relevance tuning pass 2|12|p1_28|85|Marco Ellis||Marco Ellis:30
-M3|p1_30|Indexer accepted by Atlantic Systems|0|p1_3,p1_29|0|Priya Shah||Priya Shah:2|dv=Signed indexer acceptance certificate~acc=Precision at 10 of 0.82 or better on the held-out query set
+M3|p1_30|Indexer accepted by Atlantic Logistics|0|p1_3,p1_29|0|Priya Shah||Priya Shah:2|dv=Signed indexer acceptance certificate~acc=Precision at 10 of 0.82 or better on the held-out query set
 S2|-|Content migration||||Sam Patel
 T3|p1_31|Migration mapping and cleanup rules|8|p1_20|100|Knowledge Curator||Knowledge Curator:80,Chief Editor:20
 T3|p1_7|Content migration|30|p1_2,p1_31|0|Priya Shah|Platform team:4,Editors:1|Sam Patel:60,Knowledge Curator:100|dv=Migrated standards corpus, 18,400 documents~acc=99.5 percent of documents reconciled by count and checksum~note=Starts as the platform build closes. The Platform team has not yet released the people.

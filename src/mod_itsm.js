@@ -1,6 +1,6 @@
 /* ITSM: incidents, problems, changes, major incident, service desk overview ============ Aligned to ITIL 5 (Product and Service Lifecycle Model), */
 (function(){
-/* PR-32 B6: Atlantic Systems as before; another tenant reads only its own pack rows */
+/* PR-32 B6: Atlantic Logistics as before; another tenant reads only its own pack rows */
 const T=TROWS,CO=T.core,TM=(k,o)=>DATA.term(k,o),fchip=T.chip,V={},tn=()=>DATA.tenant(),
 rows=(e,p,m)=>{const s=DATA.get(e),k=tn()+"|"+e+p;let c=V[k];if(!c||c.s!==s)V[k]=c={s,r:s.filter(x=>x&&(!p||x.part===p)).map(m||(x=>x))};return c.r},
 AV=f=>new Proxy([],{get:(t,k)=>{const a=f(),v=a[k];return typeof v==="function"?v.bind(a):v}}),

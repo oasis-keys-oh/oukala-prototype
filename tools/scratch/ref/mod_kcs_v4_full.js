@@ -404,7 +404,7 @@ REG("kcs_gap","Knowledge gaps and analytics","know","M4 20V10M10 20V4M16 20v-7M2
 /* ---------- Prompt library ---------- */
 const rp=(t,e)=>e.reduce((s,x)=>s.replace(x[1],x[0]),t);
 const V=(v,d,by,note,text,sc,st)=>({v,d,by,note,text,sc,st:st||"retired"});
-const B101=`You answer questions for Atlantic Systems staff using only the context chunks below.
+const B101=`You answer questions for Atlantic Logistics staff using only the context chunks below.
 Rules:
 1. Use only facts that appear in the chunks. Never use outside knowledge.
 2. Cite every sentence with the chunk number in square brackets, for example [1].

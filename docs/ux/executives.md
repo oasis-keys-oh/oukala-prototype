@@ -6,7 +6,7 @@ Backlog item PR-31. This paper evaluates what each executive persona sees on a n
 
 **Personas walked (10):** CEO (`ceo`), CIO (`exec`, Casey Rowan, the default), COO (`coo`), CFO (`cfo`), CCO (`cco`), CHRO (`chro`), CISO (`ciso`), CAIO (`caio`), General counsel (`clo`), Board member, read only (`board`).
 
-**For each persona:** the default menu (purview rail), Home and the role's top tasks on the Atlantic Systems sample; Home and three top tasks again on one industry company (switched with `TENANT.switch`, the same call the tenant badge makes); light theme, dark theme and 400 px width; the persona's Showroom lens on Executive lenses (`r18_lens`); every experiential mission listed for the role (`EXP.list({role})`) plus Your Monday, started in self-serve mode; four plain-language searches per role; keyboard order from a fresh load; the contribution thread and the My contribution card.
+**For each persona:** the default menu (purview rail), Home and the role's top tasks on the Atlantic Logistics sample; Home and three top tasks again on one industry company (switched with `TENANT.switch`, the same call the tenant badge makes); light theme, dark theme and 400 px width; the persona's Showroom lens on Executive lenses (`r18_lens`); every experiential mission listed for the role (`EXP.list({role})`) plus Your Monday, started in self-serve mode; four plain-language searches per role; keyboard order from a fresh load; the contribution thread and the My contribution card.
 
 **Industry company per persona:** Larkspur Health System for CEO, CFO and CHRO; Redstone Resources for COO, CAIO and Board member; Corvane Data Protection for CIO, CCO, CISO and General counsel.
 
@@ -15,7 +15,7 @@ Backlog item PR-31. This paper evaluates what each executive persona sees on a n
 **Skills applied:** `impeccable` (critique mode, anti-pattern rules), `critique` (Nielsen heuristics, cognitive load, persona red flags), `audit` (accessibility, performance, theming, responsive, anti-patterns), `clarify` (copy), `layout` (hierarchy, density, rhythm), `typeset` (type scale, sizes, families) and `design:accessibility-review` (WCAG 2.1 AA). The deterministic `impeccable detect` scanner ran over six rendered executive screens.
 
 **Tools (prototype facts, measured 2026-10-21 on commit `d4f979b`, local `python3 src/build.py --full` build, headless Chromium 1440 x 900):**
-- `tools/scratch/ux/walk_exec.js` walks all ten personas and writes `tools/scratch/ux/shots/<persona>/*.jpg` and `data.json` (per-screen word counts, control counts, targets under 24 px, text under 12 px, sampled contrast, unnamed controls, em dashes, Atlantic Systems leaks, thread and card text).
+- `tools/scratch/ux/walk_exec.js` walks all ten personas and writes `tools/scratch/ux/shots/<persona>/*.jpg` and `data.json` (per-screen word counts, control counts, targets under 24 px, text under 12 px, sampled contrast, unnamed controls, em dashes, Atlantic Logistics leaks, thread and card text).
 - `tools/scratch/ux/probe2.js` to `probe6.js` check keyboard order, banners, board read-only actions, chat answers, the mission card, the Showroom role picker, rail signals and Home structure. Output in `tools/scratch/ux/shots/_probe*/`.
 - `tools/scratch/ux/dumpdom.js` saves rendered markup to `tools/scratch/ux/dom/` for `npx impeccable detect --json --fast`.
 - `tools/scratch/ux/summ.js` prints the walk data.
@@ -34,7 +34,7 @@ Backlog item PR-31. This paper evaluates what each executive persona sees on a n
 
 | # | Heuristic | Score | Key issue |
 |---|---|---|---|
-| 1 | Visibility of system status | 2 | Tenant banner is honest, but Home keeps Atlantic Systems numbers under another company (UX-E-01); rail counts disagree (UX-E-08) |
+| 1 | Visibility of system status | 2 | Tenant banner is honest, but Home keeps Atlantic Logistics numbers under another company (UX-E-01); rail counts disagree (UX-E-08) |
 | 2 | Match between system and the real world | 2 | Builder records and raw ids reach executives ("(screen decision)", `screen:plat_proc`); undefined acronyms (UX-E-12, UX-E-25, UX-E-29) |
 | 3 | User control and freedom | 3 | Missions can be minimized or closed; denial page offers Request access |
 | 4 | Consistency and standards | 2 | Pins listed twice, three nav rows on one screen, two favorite stars (UX-E-07, UX-E-13, UX-E-17) |
@@ -72,7 +72,7 @@ Cognitive load checklist (critique skill): 4 of 8 fail on the executive screens 
 
 Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
-**UX-E-01 (P1). Home stays on Atlantic Systems after a tenant switch.** Screen `home` (also `r18_lens`, `tower`, `inv`, `org_chart`, `ppl_perf`, `r15_iam`, `r15d_evidence`). Evidence: `ceo/ten_health_home.jpg`: under Larkspur Health System the CEO hero still shows Member renewal 92% and Days to publish a standard 41 days; the eyebrow is hard-coded "Atlantic Systems" in `mod_r21_home.js`; the banner reads "This screen is not tenant-aware yet and still shows the Atlantic Systems sample data" on Home for all ten personas. Violates: R16 to R20 tenant rules, visibility of status, the "their company first" Showroom principle. Fix: make Home read its hero KPIs and eyebrow from the active tenant (`DATA.get('metrics')`, `DATA.tenantInfo().org`) in `mod_r21_home.js`; each industry pack already carries owned metrics with targets. Then the pinned screens in the list above, in that order.
+**UX-E-01 (P1). Home stays on Atlantic Logistics after a tenant switch.** Screen `home` (also `r18_lens`, `tower`, `inv`, `org_chart`, `ppl_perf`, `r15_iam`, `r15d_evidence`). Evidence: `ceo/ten_health_home.jpg`: under Larkspur Health System the CEO hero still shows Member renewal 92% and Days to publish a standard 41 days; the eyebrow is hard-coded "Atlantic Logistics" in `mod_r21_home.js`; the banner reads "This screen is not tenant-aware yet and still shows the Atlantic Logistics sample data" on Home for all ten personas. Violates: R16 to R20 tenant rules, visibility of status, the "their company first" Showroom principle. Fix: make Home read its hero KPIs and eyebrow from the active tenant (`DATA.get('metrics')`, `DATA.tenantInfo().org`) in `mod_r21_home.js`; each industry pack already carries owned metrics with targets. Then the pinned screens in the list above, in that order.
 
 **UX-E-02 (P1). "What should I look at first?" has no answer.** Screen `home`. Evidence: `_probe6/first_ceo.jpg`, `_probe6/data.json`: for CEO, CFO and Board member the hero button sends "What should I look at first today?" and the chat replies "I have nothing in your history for today." Violates: time to first useful answer, the habit loop cue (navigation principle 10). Fix: answer from what the page already knows: the off-target hero KPI, the top item in Decisions waiting for you and the first role pin, each with Take me there. Home button in `mod_r21_home.js`, intent in `mod_chat.js` or `mod_r15d_ask.js`.
 
@@ -132,9 +132,9 @@ Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
 **Top tasks tried.** Spend against plan (`bst`); dashboard (`exe_dash`); AI agents (`tower`); the build list (`r18_builds`); the change calendar (`itsm_chg`); on Corvane Data Protection, Home, `bst`, `exe_dash`, `tower`; Showroom CIO lens and the mission "The clash in board week" plus Your Monday.
 
-**What worked.** Budget and spend traceability states the scope ("Only the domains you own") and the four headline numbers sit above the table. Watch and control AI agents opens with "5 of 6 agents are running inside the gateway and spend is at 30% of the cap". On Corvane, `bst` and `exe_dash` follow the tenant and say "(simulated)". The CIO mission falls back to Atlantic Systems with a reason (release records exist only there, DC-40).
+**What worked.** Budget and spend traceability states the scope ("Only the domains you own") and the four headline numbers sit above the table. Watch and control AI agents opens with "5 of 6 agents are running inside the gateway and spend is at 30% of the cap". On Corvane, `bst` and `exe_dash` follow the tenant and say "(simulated)". The CIO mission falls back to Atlantic Logistics with a reason (release records exist only there, DC-40).
 
-**Findings.** UX-E-01 (Home and `tower` stay on Atlantic Systems under Corvane), UX-E-04, UX-E-07, UX-E-08, UX-E-09 ("Copilot in Teams"), UX-E-10 ("Live"), UX-E-11, UX-E-13 (`tower`), UX-E-17, UX-E-18, UX-E-22, and:
+**Findings.** UX-E-01 (Home and `tower` stay on Atlantic Logistics under Corvane), UX-E-04, UX-E-07, UX-E-08, UX-E-09 ("Copilot in Teams"), UX-E-10 ("Live"), UX-E-11, UX-E-13 (`tower`), UX-E-17, UX-E-18, UX-E-22, and:
 
 **UX-E-29 (P2). Acronyms an executive is not given.** Screens `itsm_chg`, `exe_dash`, `plat_proc`, `bst`. Evidence: `exec/data.json`: `itsm_chg` opens "1 collide on the same CI (CHG0314 and CHG0315)"; `exe_dash` carries WBS, RAID, SOW and TBM; `plat_proc` carries BPMN, DMN, SLO and CMDB; `bst` uses SOW. Violates: R37 (acronyms defined on first use, plain English), clarify. Fix: first use spelled out ("the same server or service (configuration item)"), or a glossary tooltip from one shared term list; `mod_itsm.js`, `mod_exec.js`, `mod_plat_proclib.js`.
 
@@ -156,7 +156,7 @@ Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
 **What worked.** Approve invoices is the best executive screen walked: one sentence names the problem, the money at stake and the recommendation; the decision buttons and a reason field sit with the invoice. The thread on `inv` reads "your team 38% toward 60%". On Larkspur, `bst` and `bud_over` follow the tenant ("Approved $7.57M, forecast $7.71M... Sample figures, simulated"). The CFO mission's hint names the exact invoice state to look for.
 
-**Findings.** UX-E-01 (`inv` stays on Atlantic Systems under Larkspur), UX-E-02, UX-E-07, UX-E-09 ("Claude + GPT council"), UX-E-11 (banner over `bud_over`), UX-E-13 (`bud_over`), UX-E-16 (invoice list side stripes), UX-E-19 (`bud_over` clipping and hyphenation), UX-E-22.
+**Findings.** UX-E-01 (`inv` stays on Atlantic Logistics under Larkspur), UX-E-02, UX-E-07, UX-E-09 ("Claude + GPT council"), UX-E-11 (banner over `bud_over`), UX-E-13 (`bud_over`), UX-E-16 (invoice list side stripes), UX-E-19 (`bud_over` clipping and hyphenation), UX-E-22.
 
 ## CCO (Lena Hargrove)
 
@@ -176,7 +176,7 @@ Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
 **What worked.** The hero shows Headcount against plan 85%, Days to fill a role 52, Training completion 91%. Performance reviews opens with the cycle status ("55% of 85 reviews are submitted, and 38 are still with managers"). Searches for performance reviews, headcount plan and who is available all land.
 
-**Findings.** UX-E-01 (`org_chart` and `ppl_perf` stay on Atlantic Systems under Larkspur), UX-E-04, UX-E-06 (Larkspur maps the CHRO to Clinical operations), UX-E-07, UX-E-15, UX-E-21 (Your Monday hands the CHRO three access requests), UX-E-32 (`ppl_train` 0% on Larkspur), and:
+**Findings.** UX-E-01 (`org_chart` and `ppl_perf` stay on Atlantic Logistics under Larkspur), UX-E-04, UX-E-06 (Larkspur maps the CHRO to Clinical operations), UX-E-07, UX-E-15, UX-E-21 (Your Monday hands the CHRO three access requests), UX-E-32 (`ppl_train` 0% on Larkspur), and:
 
 **UX-E-27 (P2). A CHRO pin lives in an area the CHRO cannot see.** Screen `ppl_cap`. Evidence: `chro/data.json`: the breadcrumb reads "Portfolio and delivery / Who is available to do the work" while the CHRO rail has Strategy and value, People and organization and Transformation only. Violates: navigation principle 5 (stable placement) and the purview rule (pins sit inside an area the persona sees). Fix: place Who is available to do the work in People and organization (Capacity and skills), where the navigation paper lists Skills and availability, or show it under People for the CHRO. Taxonomy in `mod_nav.js`.
 
@@ -188,7 +188,7 @@ Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
 **What worked.** The CISO has the strongest search scent of the group: "privileged access review", "risks above appetite", "control evidence" and "break glass" all return the right records first. Guardrails states "All of it is simulated in this prototype". `grc_home` and `exe_risk` follow Corvane. The CISO mission's hint names the tab ("Open Identity and access, then the Access requests tab").
 
-**Findings.** UX-E-01 (`r15_iam` stays on Atlantic Systems under Corvane), UX-E-04, UX-E-06 (Corvane maps the CISO to Account management), UX-E-09 ("Entra ID" in results), UX-E-13 (`grc_home`: 120 controls, 54 targets under 24 px), UX-E-32 ("1 exceptions are expiring").
+**Findings.** UX-E-01 (`r15_iam` stays on Atlantic Logistics under Corvane), UX-E-04, UX-E-06 (Corvane maps the CISO to Account management), UX-E-09 ("Entra ID" in results), UX-E-13 (`grc_home`: 120 controls, 54 targets under 24 px), UX-E-32 ("1 exceptions are expiring").
 
 ## CAIO (Kenji Watanabe)
 
@@ -196,7 +196,7 @@ Each finding: id, severity, screen id, evidence, rule or heuristic, fix.
 
 **What worked.** The hero leads with AI with an accountable human 71%, Agent override rate 22%, AI spend 29% of the daily cap. Test AI answers states the gate in one line ("candidate v4 scores 58.3% against 91.7%, so the regression gate is closed"). The agent registry follows Redstone.
 
-**Findings.** UX-E-01 (`tower` stays on Atlantic Systems under Redstone), UX-E-04, UX-E-05 (chat shows "You Casey"), UX-E-09, UX-E-10 (`r17q_value` "computed live", "Layer A"), UX-E-12 (two of the CAIO's three suggested questions return nothing in search and "I do not have a tool for that" in chat), UX-E-21, UX-E-32 (`kcs_test` empty state on Redstone).
+**Findings.** UX-E-01 (`tower` stays on Atlantic Logistics under Redstone), UX-E-04, UX-E-05 (chat shows "You Casey"), UX-E-09, UX-E-10 (`r17q_value` "computed live", "Layer A"), UX-E-12 (two of the CAIO's three suggested questions return nothing in search and "I do not have a tool for that" in chat), UX-E-21, UX-E-32 (`kcs_test` empty state on Redstone).
 
 ## General counsel (Theo Marlowe)
 

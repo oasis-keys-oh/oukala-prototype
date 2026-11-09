@@ -4430,7 +4430,7 @@
   "g": "plat",
   "formal": "Guided tenant setup with readiness computed from real state",
   "tag": "Set up a customer tenant step by step, with readiness computed from real state",
-  "story": "69% of 39 readiness checks pass for Atlantic Systems; 0 of 8 steps signed off.",
+  "story": "69% of 39 readiness checks pass for Atlantic Logistics; 0 of 8 steps signed off.",
   "prim": "Sign off",
   "own": "Jordan Lee",
   "ow": {
@@ -4508,7 +4508,7 @@
   "g": "plat",
   "formal": "Connector registry per source system with field mapping",
   "tag": "Every source system has a type, direction, schedule, owner, backup and field mapping",
-  "story": "7 sources registered for Atlantic Systems; 3 connected. Entries marked Simulated have no live system behind them.",
+  "story": "7 sources registered for Atlantic Logistics; 3 connected. Entries marked Simulated have no live system behind them.",
   "prim": "Add a source",
   "own": "Jordan Lee",
   "ow": {
@@ -4546,7 +4546,7 @@
   "g": "plat",
   "formal": "Upload CSV sheets, map columns, dry run, commit",
   "tag": "Load a customer's foundation data from spreadsheets, checked before anything is written",
-  "story": "11 of 11 foundation sheets are loaded for Atlantic Systems. Upload, map, dry run, commit.",
+  "story": "11 of 11 foundation sheets are loaded for Atlantic Logistics. Upload, map, dry run, commit.",
   "prim": "Upload CSV",
   "own": "Sam Patel",
   "ow": {
@@ -4626,7 +4626,7 @@
   "g": "plat",
   "formal": "Per-customer approvals, owners, steps and SLAs as a delta on the base process",
   "tag": "One base process, a different approval path for each customer",
-  "story": "0 active overlays for Atlantic Systems. Effective process = base plus overlay; guardrails stop unsafe changes and every approval routes to a group.",
+  "story": "0 active overlays for Atlantic Logistics. Effective process = base plus overlay; guardrails stop unsafe changes and every approval routes to a group.",
   "prim": "New overlay",
   "own": "Jordan Lee",
   "ow": {

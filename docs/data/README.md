@@ -1,11 +1,11 @@
 # Tenant data coverage (PR-32)
 
-Goal: every screen shows each sample company's own data. The tenants are fictional: Atlantic Systems (`core`), Larkspur Health System (`health`), Redstone Resources (`mining`), Corvane Data Protection (`storage`). This folder describes; the Product Backlog tracks status and priority.
+Goal: every screen shows each sample company's own data. The tenants are fictional: Atlantic Logistics (`core`), Larkspur Health System (`health`), Redstone Resources (`mining`), Corvane Data Protection (`storage`). This folder describes; the Product Backlog tracks status and priority.
 
 ## Files
-- `tenant-coverage.csv`: one row per registered screen. Columns: `id`, `name`, `area` (from `docs/ia/screen-inventory.csv`), `module_file` (the file holding the render function), `other_files`, `tenant_mode` today (`data`, `tenant`, `core`), `core_paths_read` (Atlantic Systems data paths read at render, measured), `entities_read_by_screen` (by its own files), `entities_read_by_shared_helpers` and `shared_helper_modules` (rows that come through other files), `entities_via_DATA`, `entities_via_work_index` (owner chips and load badges), `entities_needed`, `entities_not_in_DATA`, `module_private_seeds` (sample arrays inside the module that the harness cannot see), then per tenant the row count for each needed entity (`gap` when DATA defines it but the pack has no rows, `no entity` when DATA does not define it) and `ready_<tenant>`.
+- `tenant-coverage.csv`: one row per registered screen. Columns: `id`, `name`, `area` (from `docs/ia/screen-inventory.csv`), `module_file` (the file holding the render function), `other_files`, `tenant_mode` today (`data`, `tenant`, `core`), `core_paths_read` (Atlantic Logistics data paths read at render, measured), `entities_read_by_screen` (by its own files), `entities_read_by_shared_helpers` and `shared_helper_modules` (rows that come through other files), `entities_via_DATA`, `entities_via_work_index` (owner chips and load badges), `entities_needed`, `entities_not_in_DATA`, `module_private_seeds` (sample arrays inside the module that the harness cannot see), then per tenant the row count for each needed entity (`gap` when DATA defines it but the pack has no rows, `no entity` when DATA does not define it) and `ready_<tenant>`.
 - `entity-plan.md`: the 58 entities to add, grouped by business area, with core getter sources, fields, screen counts, demo volumes per pack, vocabulary keys and the batch plan.
-- Scripts in `tools/scratch/data/`: `instrument.js` (the measurement), `entity_map.py` (path to entity), `analyze.py` (writes the CSV), `batches.py` (batch plan), `volumes.js` (Atlantic Systems row counts), `redirects.js`. Their outputs `reads.json`, `summary.json`, `batches.json`, `volumes.json` sit next to them.
+- Scripts in `tools/scratch/data/`: `instrument.js` (the measurement), `entity_map.py` (path to entity), `analyze.py` (writes the CSV), `batches.py` (batch plan), `volumes.js` (Atlantic Logistics row counts), `redirects.js`. Their outputs `reads.json`, `summary.json`, `batches.json`, `volumes.json` sit next to them.
 
 ## Counts (prototype fact, build at 828e227, core tenant)
 
@@ -14,7 +14,7 @@ Goal: every screen shows each sample company's own data. The tenants are fiction
 | Registered screens | 196 |
 | Read through DATA (`data`) | 12 |
 | Follow the tenant another way (`tenant`) | 3 |
-| Atlantic Systems only (`core`) | 181 |
+| Atlantic Logistics only (`core`) | 181 |
 | Data paths instrumented | 657 |
 | Tabs clicked | 743 on 148 screens |
 | Page errors during the run | 0 |
