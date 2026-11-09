@@ -13,7 +13,9 @@ const fails=[];const ok=(c,m)=>{if(!c)fails.push(m)};
 const RETIRED=/\b(Automatic|Function|Agentic|Deterministic)\b/;
 const textOf=sel=>p.evaluate(s=>[...document.querySelectorAll(s)].map(e=>e.textContent).join(" | "),sel);
 const drawerCard=()=>p.evaluate(()=>{const d=document.getElementById('drawer');return !!(d&&d.querySelector('[data-stp-card]'))});
-const closeDrawer=()=>p.evaluate(()=>{const d=document.getElementById('drawer');if(d){try{d.hidePopover&&d.hidePopover()}catch(e){}d.removeAttribute('open')}});
+/* CL-104: closing the drawer schedules its history back-step (mod_r22_hist.js); wait for it to land, or a late popstate undoes the next go() */
+const closeDrawer=async()=>{await p.evaluate(()=>{const d=document.getElementById('drawer');if(d){try{d.hidePopover&&d.hidePopover()}catch(e){}d.removeAttribute('open')}});
+ await p.waitForFunction(()=>!(history.state&&history.state.ovl),null,{timeout:10000}).catch(()=>{})};
 
 /* 1. workflow designer */
 await p.evaluate(()=>FLOWX.open("wf_inv","AG1"));await p.waitForTimeout(700);
