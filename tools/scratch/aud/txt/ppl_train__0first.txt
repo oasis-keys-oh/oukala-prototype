@@ -64,7 +64,7 @@ Privileged access and change control
 due Oct 23
 AI safe use
 Mandatory
-Using AI safely at Meridian
+Using AI safely at Atlantic
 25 min · 4 modules · pass mark 80% · every 12 months
 33% done of 39
 due Oct 30
@@ -96,7 +96,7 @@ New hire first week
 Everyone, within 5 days of starting
 Code of conduct and conflic…
 Security awareness 2026
-Using AI safely at Meridian
+Using AI safely at Atlantic
 Phishing and social enginee…
 63% average completion · 105 minutes total
 Editor certification
@@ -113,6 +113,6 @@ Incident response for the s…
 63% average completion · 120 minutes total
 AI champion
 One per team, supports peers
-Using AI safely at Meridian
+Using AI safely at Atlantic
 Working with the AI draftin…
 17% average completion · 65 minutes total

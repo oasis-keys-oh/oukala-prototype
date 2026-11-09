@@ -344,7 +344,7 @@
   "g": "plat",
   "formal": "",
   "tag": "Shape the platform without code",
-  "story": "Four objects are defined as data, with 1 custom field added by Meridian. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.",
+  "story": "Four objects are defined as data, with 1 custom field added by Atlantic. Every edit you make is captured in a draft package in Dev. The tenant theme is Oukala default.",
   "prim": "Add a field",
   "own": "Sam Patel",
   "ow": {
@@ -412,7 +412,7 @@
   "label": "Licensing and billing",
   "g": "plat",
   "formal": "",
-  "tag": "What Meridian pays for, and why",
+  "tag": "What Atlantic pays for, and why",
   "story": "The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.",
   "prim": "Request a plan change",
   "own": "Sam Patel",
@@ -542,7 +542,7 @@
   "g": "money",
   "formal": "",
   "tag": "Lumen is the vendor to act on: 0.74 on the scorecard, and 5 renewals need a decision within 90 days",
-  "story": "Meridian has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepte",
+  "story": "Atlantic has $2.81M committed across 7 vendors and has paid $2.01M. Lumen holds $905K across two SOWs and a change order, and $62,900 of invoice INV-20433 is on hold because milestone 3 is not accepte",
   "prim": "New purchase order",
   "own": "Camille Ortega",
   "ow": {
@@ -946,7 +946,7 @@
   "g": "tech",
   "formal": "Application portfolio",
   "tag": "Which applications earn their keep?",
-  "story": "Meridian runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, a",
+  "story": "Atlantic runs 15 applications for $4,113,000 a year. 5.2% of that ($213,000) sits in applications that are duplicated or in the Eliminate group. AI recommends retiring 5 of them for $213,000 a year, a",
   "prim": "Add application",
   "own": "Catherine Doyle",
   "ow": {
@@ -2668,7 +2668,7 @@
   "g": "r15hid",
   "formal": "IT financial model",
   "tag": "Every IT dollar has a nature, a color and a TBM position",
-  "story": "21 of 24 budget lines carry a funding color and 3 do not. 4 of 10 control rules pass. The seven colors are placeholders until decision D-01 supplies Meridian's real list.",
+  "story": "21 of 24 budget lines carry a funding color and 3 do not. 4 of 10 control rules pass. The seven colors are placeholders until decision D-01 supplies Atlantic's real list.",
   "own": "Jordan Lee",
   "ow": {
    "o": "Jordan Lee",
@@ -2695,7 +2695,7 @@
   "g": "money",
   "formal": "Color of money",
   "tag": "7 funding colors, each with its own rules",
-  "story": "Headroom is $1,900,400 and $103,694 will lapse when the XR-T grant ends on Dec 31. All 7 colors are placeholders from the spec until Meridian supplies its real list (D-01). Every line carries exactly ",
+  "story": "Headroom is $1,900,400 and $103,694 will lapse when the XR-T grant ends on Dec 31. All 7 colors are placeholders from the spec until Atlantic supplies its real list (D-01). Every line carries exactly ",
   "own": "Jordan Lee",
   "ow": {
    "o": "Jordan Lee",
@@ -4430,7 +4430,7 @@
   "g": "plat",
   "formal": "Guided tenant setup with readiness computed from real state",
   "tag": "Set up a customer tenant step by step, with readiness computed from real state",
-  "story": "69% of 39 readiness checks pass for Meridian Standards Foundation; 0 of 8 steps signed off.",
+  "story": "69% of 39 readiness checks pass for Atlantic Systems; 0 of 8 steps signed off.",
   "prim": "Sign off",
   "own": "Jordan Lee",
   "ow": {
@@ -4508,7 +4508,7 @@
   "g": "plat",
   "formal": "Connector registry per source system with field mapping",
   "tag": "Every source system has a type, direction, schedule, owner, backup and field mapping",
-  "story": "7 sources registered for Meridian Standards Foundation; 3 connected. Entries marked Simulated have no live system behind them.",
+  "story": "7 sources registered for Atlantic Systems; 3 connected. Entries marked Simulated have no live system behind them.",
   "prim": "Add a source",
   "own": "Jordan Lee",
   "ow": {
@@ -4546,7 +4546,7 @@
   "g": "plat",
   "formal": "Upload CSV sheets, map columns, dry run, commit",
   "tag": "Load a customer's foundation data from spreadsheets, checked before anything is written",
-  "story": "11 of 11 foundation sheets are loaded for Meridian Standards Foundation. Upload, map, dry run, commit.",
+  "story": "11 of 11 foundation sheets are loaded for Atlantic Systems. Upload, map, dry run, commit.",
   "prim": "Upload CSV",
   "own": "Sam Patel",
   "ow": {
@@ -4626,7 +4626,7 @@
   "g": "plat",
   "formal": "Per-customer approvals, owners, steps and SLAs as a delta on the base process",
   "tag": "One base process, a different approval path for each customer",
-  "story": "0 active overlays for Meridian Standards Foundation. Effective process = base plus overlay; guardrails stop unsafe changes and every approval routes to a group.",
+  "story": "0 active overlays for Atlantic Systems. Effective process = base plus overlay; guardrails stop unsafe changes and every approval routes to a group.",
   "prim": "New overlay",
   "own": "Jordan Lee",
   "ow": {
@@ -5013,7 +5013,7 @@
   "g": "tech",
   "formal": "Service portfolio and map",
   "tag": "16 services, 5 below their availability target",
-  "story": "Meridian runs 6 Tier 1 services. Network and VPN is the most depended-on: if it fails, 15 other services are touched. Every incident, problem and change can open the same impact analysis, and every se",
+  "story": "Atlantic runs 6 Tier 1 services. Network and VPN is the most depended-on: if it fails, 15 other services are touched. Every incident, problem and change can open the same impact analysis, and every se",
   "prim": "New service",
   "own": "Sam Patel",
   "ow": {
@@ -5047,7 +5047,7 @@
   "g": "money",
   "formal": "Cost transparency (TBM and ATUM)",
   "tag": "See what each service costs, and when it needs more",
-  "story": "Meridian spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week:",
+  "story": "Atlantic spends $320,400 a month on technology, $501 per employee, and every dollar is traced from the ledger to a consumer. Looking 52 weeks ahead, 5 capacity lines are crossed. The first: In 1 week:",
   "prim": "Forecast demand",
   "own": "Avery Chen",
   "ow": {

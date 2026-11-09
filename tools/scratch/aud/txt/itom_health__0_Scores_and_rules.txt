@@ -53,7 +53,7 @@ Compliance = CIs passing every audit rule ÷ active CIs
 ƒ CMDB compliance
 Health = 0.4 × 95.4 + 0.3 × 78.4 + 0.3 × 92.6 = 89.4
 Audit rules
-Switch a rule off if it does not fit Meridian; the score recalculates at once. Relationship rules come from the data model.
+Switch a rule off if it does not fit Atlantic; the score recalculates at once. Relationship rules come from the data model.
 New relationship rule
 RULE	WHAT IT CHECKS	APPLIES TO	FAILING	CONTROL
 CR1	Every CI has a named owner

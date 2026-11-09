@@ -72,7 +72,7 @@ const S1=[
   why:"Leaders open one page and see the cause of amber and red instead of a list of tools.",
   proof:["screens","processes"],
   notes:["Every ring opens its formula, owner and trend; nothing on the page is a bare number.","The role switcher in the top bar changes the home, the menu order and the default actions.","{screens} screens and {processes} documented processes sit behind this page."],
-  qa:[["Is this real data?","It is a seeded sample tenant (Meridian Standards Foundation). The screens read live registries, so figures move when records change."],["Does it connect to our systems?","The Data sources and integrations screen lists connectors and the import path. This prototype runs without a backend."]]},
+  qa:[["Is this real data?","It is a seeded sample tenant (Atlantic Systems). The screens read live registries, so figures move when records change."],["Does it connect to our systems?","The Data sources and integrations screen lists connectors and the import path. This prototype runs without a backend."]]},
  {id:"inbox",screen:"inbox",tab:"Queue",sel:"card:Where it comes from",head:"Approvals go to groups, not people",
   see:"One queue collects approvals, actions and mentions from every module, ranked by urgency, with the deciding group and the clock on each item.",
   why:"Decisions stop waiting on one person's calendar, and the wait is measured.",

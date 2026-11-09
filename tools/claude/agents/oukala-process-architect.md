@@ -27,5 +27,5 @@ Return: (a) the match found or "none", (b) the standard cited, (c) a step table,
 - Drafts only. Mark everything you generated as an AI-suggested draft.
 - Never copy a process that exists; reuse or extend it.
 - Never name a person who is not in the directory; use a role and say the owner must be named.
-- Naming rule: never write FAF, Standards or ASU (or ASC, FASB, GASB). The sample customer is Meridian Standards Foundation with the Standards Portal and the Standards Platform. Other organizations' processes are added later as process content, not baked in.
+- Naming rule: never write FAF, Standards or ASU (or ASC, FASB, GASB). The sample customer is Atlantic Systems with the Standards Portal and the Standards Platform. Other organizations' processes are added later as process content, not baked in.
 - Plain American English, acronyms defined on first use, no em dashes.

@@ -163,7 +163,7 @@ const pOptsAll=ex=>O.staff.filter(p=>p.n!==ex).map(p=>[p.n,p.n+" · "+p.role]);
 const etOpts=ETK.map(k=>[k,ET[k][0]]);
 const LOCS=["Norwalk, CT","Washington, DC","Chicago, IL","Remote"];
 function rtFor(unit){const c={};O.staff.filter(p=>p.unit===unit).forEach(p=>c[p.rt]=(c[p.rt]||0)+1);const k=Object.keys(c).sort((a,b)=>c[b]-c[a])[0];return k||"dev"}
-const emailOf=n=>slug(n).replace(/-/g,".")+"@meridian.example";
+const emailOf=n=>slug(n).replace(/-/g,".")+"@atlantic.example";
 const uniqName=n=>!O.names.has(String(n).trim());
 function ownedCounts(n){const w=O.ownRecs(n),ag=O.agentsOf(n),dm=O.owns(n);let pend=0;G(()=>{pend=O.pending(n).reduce((s,g)=>s+g.rows.length,0)},0);
  return{metrics:w.metrics,procs:w.procs,ents:w.ents,svcs:w.svcs,projs:w.projs,raid:w.raid,backup:w.backup,agents:ag,domains:dm.filter(d=>d.role==="owner"),dombk:dm.filter(d=>d.role==="backup"),kids:O.kids(n),pend,

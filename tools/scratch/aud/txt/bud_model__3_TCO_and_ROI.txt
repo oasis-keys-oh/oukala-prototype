@@ -24,7 +24,7 @@ TCO and ROI
 Showback
 Discount rate
 8%
-Meridian hurdle rate is 8%.
+Atlantic hurdle rate is 8%.
 Run cost growth a year
 3%
 Applies from FY29.

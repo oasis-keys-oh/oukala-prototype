@@ -63,8 +63,8 @@ const hs=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;ret
 const SIM_HOUR=13;
 function hourNow(){const h=S.r15d.agHour;return h==null?SIM_HOUR:h}
 function buildRows(){
- /* PR-32 B7: Meridian reads the org chart and the AI gateway; another tenant reads its own agent rows (DATA agents), which carry
-    the gateway fields (runs, spend, cap, state, owner), and has no Meridian org chart agents (R18) */
+ /* PR-32 B7: Atlantic Systems reads the org chart and the AI gateway; another tenant reads its own agent rows (DATA agents), which carry
+    the gateway fields (runs, spend, cap, state, owner), and has no Atlantic Systems org chart agents (R18) */
  const core=!window.DATA||DATA.tenant()==="core";
  const org=core?G(()=>ORGX.agents(),[]):[],gw=core?(G(()=>S.agents,[])||[]):G(()=>DATA.get("agents").filter(a=>(a.part||"agent")==="agent"),[]);
  const gwBy={};gw.forEach(g=>gwBy[String(g.n).toLowerCase()]=g);const used=new Set();const rows=[];const h=hourNow();

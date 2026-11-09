@@ -65,7 +65,7 @@ All
 Export CSV
 CHECK	TYPE	SERVICE	STATE NOW	SUCCESS, 24 H	P95 RESPONSE	LOCATIONS	EVERY
 Portal home page
-SY1 · https://standards.meridian.example/
+SY1 · https://standards.atlantic.example/
 	HTTP	Codification Portal	Passing	91.7%	1,848 ms	4	1 min
 Editor sign-in and open a draft
 SY2 · codification-platform (5 steps)
@@ -77,22 +77,22 @@ Standards API health
 SY4 · GET /v2/health
 	API	Codification Platform	Failing	79.2%	2,161 ms	2	1 min
 DNS resolution of the portal
-SY5 · standards.meridian.example
+SY5 · standards.atlantic.example
 	DNS	Network and VPN	Passing	100.0%	153 ms	2	5 min
 Portal TLS certificate
-SY6 · standards.meridian.example:443
+SY6 · standards.atlantic.example:443
 	TLS	Codification Portal	Failing	0.0%	64 ms	1	60 min
 VPN tunnel up
-SY7 · vpn.meridian.example:443
+SY7 · vpn.atlantic.example:443
 	ICMP and TCP	Network and VPN	Passing	100.0%	154 ms	2	1 min
 Contract upload (API)
 SY8 · POST /contracts (1 MB test file)
 	API	Contract Repository	Passing	100.0%	243 ms	1	15 min
 Entra ID sign-in page
-SY9 · login.microsoftonline.com/meridian
+SY9 · login.microsoftonline.com/atlantic
 	HTTP	Identity (Entra ID)	Passing	100.0%	153 ms	2	5 min
 Lakehouse SQL endpoint
-SY10 · synapse-meridian:1433
+SY10 · synapse-atlantic:1433
 	TCP	Data platform	Passing	100.0%	66 ms	1	5 min
 10 of 10 rows
 Scroll for more · rows are drawn as you scroll

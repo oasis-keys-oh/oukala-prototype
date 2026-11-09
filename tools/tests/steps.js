@@ -45,6 +45,8 @@ await p.evaluate(()=>{STUDIO.auto=false});await p.waitForTimeout(500);
 /* make one person step an agent through the same call the picker uses, then open it in the step panel */
 await p.evaluate(()=>{STUDIO.view="flow";let i=STUDIO.B.steps.findIndex(s=>s.who==="agent");if(i<0){i=STUDIO.B.steps.findIndex(s=>s.who==="human"&&!s.base);STUDIO.x.setWho(String(i),"agent")}STUDIO.view="flow";STUDIO.sel=String(i);STUDIO.x.render()});
 await p.evaluate(()=>{const b=document.querySelector('[data-stu-zoom="0"]');if(b)b.click()});await p.waitForTimeout(500);
+/* wait for the step panel itself, not a fixed delay: on a loaded runner the picker renders late */
+await p.waitForSelector('.stu-seg button',{timeout:20000}).catch(()=>{});
 const seg=await p.evaluate(()=>[...document.querySelectorAll('.stu-seg button')].map(b=>b.textContent.trim()));
 ok(JSON.stringify(seg)===JSON.stringify(["Human","Robot","Agent","Approval gate"]),'studio picker is Human, Robot, Agent, Approval gate: got '+seg);
 const slab=await textOf('.stu-lab,.stu-nd small,.stu-seg,.stu-ks,.stu-insp .stu-eb');

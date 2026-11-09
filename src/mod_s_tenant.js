@@ -1,10 +1,10 @@
 /* ===== mod_s_tenant: tenancy on top of DATA (docs/tenant-seams.md). CSS prefix stn-.
-   CL-55  core entities defined over the existing Meridian globals, a tenant-aware screen registry (DATA.screens()).
+   CL-55  core entities defined over the existing Atlantic Systems globals, a tenant-aware screen registry (DATA.screens()).
    DC-03  loader spike: three read-only screens that read only through DATA (tn_projects, tn_people, tn_metrics).
    DC-31  one tenant model: SCN.set and TENANT.switch both go through DATA.setTenant; the active tenant is always on screen.
    CL-56  seamless switch: the same screen re-renders with S (tabs, filters) kept; legacy screens are labeled, not hidden.
    CL-63  demo identity: one person, memberships per tenant, roles per membership, default deny (DATA.guard). Simulated.
-   DC-09  tenant pack format, DATA.validate and DATA.snapshot (the Meridian regression snapshot is in tools/tests/tenant.js).
+   DC-09  tenant pack format, DATA.validate and DATA.snapshot (the Atlantic Systems regression snapshot is in tools/tests/tenant.js).
    DC-11 DC-22 DC-23  industry packs are generated modules (src/mod_s_pack_<id>.js) loaded before this file; reuse of SCN content.
    CL-57  vocabulary: DATA.term(key, n | {many, cap, tenant}) and DATA.terms(tenant); defaults below, tenant words from the packs.
    JM-07  COO brief inputs per tenant: entities workload, value_chain, pillars (plus objectives, key_results, people agents).
@@ -18,7 +18,7 @@ const E=s=>U.esc(s);
 /* rows that read the legacy object live (prototype chain), with an id added */
 const live=(obj,id)=>Object.assign(Object.create(obj),{id});
 
-/* ---------- 1. core entities: getters over the existing Meridian globals (CL-55) ---------- */
+/* ---------- 1. core entities: getters over the existing Atlantic Systems globals (CL-55) ---------- */
 const nonCoreIds=key=>{const s=new Set();G(()=>Object.keys(SCN.pack).forEach(k=>{if(k!=="core")SCN.pack[k][key].forEach(x=>s.add(x.id))}));return s};
 DT.define("projects",{label:"Projects",core:()=>PROJ,required:["n"]});
 DT.define("budget_lines",{label:"Budget lines",core:()=>G(()=>S.bud.lines,[]),required:["n","p"]});
@@ -33,13 +33,13 @@ DT.define("journeys",{label:"Journeys",core:()=>G(()=>SCN.pack.core.jys,[]),requ
 DT.define("personas",{label:"Journey personas",core:()=>G(()=>SCN.pack.core.pers,[]).map(n=>({id:U.slug(n),name:n}))});
 
 /* entities added for the industry packs (DC-11, DC-22, DC-23), the COO brief (JM-07) and the vocabulary (CL-57).
-   Their core sources read the Meridian globals live; a module that owns the global keeps owning it. */
+   Their core sources read the Atlantic Systems globals live; a module that owns the global keeps owning it. */
 const PILLARS0=[{id:"MS-PL1",n:"Grow member trust",d:"Members trust the standards and the process that makes them.",obj:"O1"},
  {id:"MS-PL2",n:"Publish faster",d:"A standard moves from draft to published in weeks, not months.",obj:"O1"},
  {id:"MS-PL3",n:"Spend less per standard",d:"Lower cost per published standard without cutting review quality.",obj:"O2"}];
 /* the platform's default words; a tenant pack replaces any of them (R19) */
 const VOC0={project:["project","projects"],change:["change","changes"],problem:["problem","problems"],config_item:["configuration item","configuration items"],knowledge_article:["article","articles"],catalog_item:["catalog item","catalog items"],alert:["alert","alerts"],service_level:["service level","service levels"],rota:["on-call rota","on-call rotas"],risk:["risk","risks"],control:["control","controls"],audit:["audit","audits"],finding:["finding","findings"],policy:["policy","policies"],regulator:["regulator","regulators"],contract:["contract","contracts"],cost_center:["cost center","cost centers"],purchase_order:["purchase order","purchase orders"],budget_request:["budget request","budget requests"],capability:["capability","capabilities"],application:["application","applications"],course:["course","courses"],meeting:["meeting","meetings"],org_unit:["team","teams"],plan_task:["task","tasks"],
- /* PR-32 Meridian defaults for the 25 pack vocabulary keys */ customer:["customer","customers"],incident:["incident","incidents"],ticket:["ticket","tickets"],request:["request","requests"],asset:["asset","assets"],
+ /* PR-32 Atlantic Systems defaults for the 25 pack vocabulary keys */ customer:["customer","customers"],incident:["incident","incidents"],ticket:["ticket","tickets"],request:["request","requests"],asset:["asset","assets"],
  site:["site","sites"],downtime:["outage","outages"],workforce:["team","teams"],work_item:["ticket","tickets"],frontline:["service desk","service desks"],service:["service","services"],
  order:["order","orders"],case:["case","cases"],supplier:["vendor","vendors"],revenue:["revenue","revenue"]};
 DT.define("key_results",{label:"Key results",core:()=>G(()=>S.exe.krs,[]),required:["n","o"]});
@@ -100,15 +100,15 @@ G(()=>HOOKS.on("tenantDenied",id=>G(()=>toast("No membership in "+((DT.tenantInf
  .forEach(([id,ents])=>DT.screen(id,{mode:"data",entities:ents,note:"Reads only through DATA.get"}));
 DT.screen("ppl_jrny",{mode:"tenant",entities:["journeys","workflows","personas"],note:"Journey maps, every tab: follows SCN (in-place swap), not yet DATA"});
 DT.screen("orgassist",{mode:"tenant",entities:["people"],note:"Org chart with agent assist: reads TENANT.orgs, not yet DATA"});
-DT.screen("orgdesign",{mode:"tenant",entities:["workload","value_chain","pillars","people"],note:"Agent Action: the COO brief reads workload, value chain and pillars through DATA (CL-85); presets per tenant through ODX.preset; gaps and options still read the Meridian sample organization"});
+DT.screen("orgdesign",{mode:"tenant",entities:["workload","value_chain","pillars","people"],note:"Agent Action: the COO brief reads workload, value chain and pillars through DATA (CL-85); presets per tenant through ODX.preset; gaps and options still read the Atlantic Systems sample organization"});
 
-/* ---------- 5. labels: the active tenant is always visible; legacy screens say they show the Meridian sample (R17, R18) ---------- */
+/* ---------- 5. labels: the active tenant is always visible; legacy screens say they show the Atlantic Systems sample (R17, R18) ---------- */
 const tname=t=>{const i=DT.tenantInfo(t)||{};return i.org||i.n||t};
 function label(){const t=DT.tenant();const v=D.getElementById("view");if(!v)return;const id=G(()=>S.screen,"");
  const mode=DT.screenMode(id);const host=v.querySelector(".screen")||v;if(host.querySelector(".stn-legacy,.stn-chip"))return;
  /* phone layout hides the side menu, so a small chip names the tenant there (shown by CSS only in the mobile shell) */
  if(t==="core"||mode!=="core"){host.insertAdjacentHTML("afterbegin",`<div class="stn-chip" data-tenant-chip="1"><span class="stn-dot" aria-hidden="true"></span>Tenant: <b>${E((DT.tenantInfo(t)||{}).short||tname(t))}</b></div>`);return}
- host.insertAdjacentHTML("afterbegin",`<div class="stn-legacy" role="note" data-tenant-legacy="1"><span class="stn-dot" aria-hidden="true"></span><span>Tenant: <b>${E(tname(t))}</b>. This screen is not tenant-aware yet and still shows the Meridian sample data.</span><button type="button" class="btn quiet" data-go="tn_admin">Which screens follow the tenant</button></div>`)}
+ host.insertAdjacentHTML("afterbegin",`<div class="stn-legacy" role="note" data-tenant-legacy="1"><span class="stn-dot" aria-hidden="true"></span><span>Tenant: <b>${E(tname(t))}</b>. This screen is not tenant-aware yet and still shows the Atlantic Systems sample data.</span><button type="button" class="btn quiet" data-go="tn_admin">Which screens follow the tenant</button></div>`)}
 G(()=>HOOKS.on("afterRender",()=>{try{label()}catch(e){console.error("stn label",e)}},{order:50,id:"stn-label"}));
 
 /* ---------- 6. screens that read only through DATA ---------- */
@@ -162,14 +162,14 @@ REG("tn_admin","Tenancy","platform","M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6",()=
  const eRows=ents.map(e=>[`<b>${E(e.label)}</b><small class="muted"> ${E(e.entity)}</small>`].concat(tens.map(x=>{const n=DT.get(e.entity,{tenant:x.id}).length;return n?String(n):`<span class="muted">gap</span>`})));
  const cnt=k=>by[k].length;
  return `<div class="screen stn">${head("Platform","Tenancy",`Every tenant is a separate customer with its own data. You are one identity with a membership in each tenant you can open, and a role in each membership. Anything not granted is denied.`)}
- ${tiles([TL("Active tenant",E((DT.tenantInfo(t)||{}).short||tname(t)),"Always shown in the side menu","mute"),TL("Your memberships",IDENT.tenants().length,"Simulated identity","mute"),TL("Screens reading through DATA",cnt("data"),cnt("tenant")+" more follow the tenant another way","mute"),TL("Screens on the Meridian sample only",cnt("core"),"Labeled on screen under other tenants","mute")])}
+ ${tiles([TL("Active tenant",E((DT.tenantInfo(t)||{}).short||tname(t)),"Always shown in the side menu","mute"),TL("Your memberships",IDENT.tenants().length,"Simulated identity","mute"),TL("Screens reading through DATA",cnt("data"),cnt("tenant")+" more follow the tenant another way","mute"),TL("Screens on the Atlantic Systems sample only",cnt("core"),"Labeled on screen under other tenants","mute")])}
  <div data-tenant-chooser="1">${card("Who you are",E(me.name)+" · "+E(me.title),`<div class="stn-row" role="group" aria-label="View as">${IDENT.people.map(p=>`<button type="button" class="chip" data-tn-ident="${E(p.id)}" aria-pressed="${p.id===me.id}">${E(p.name)}</button>`).join("")}</div>
   <p class="muted small">View as another demo identity to see default deny: the switcher only offers tenants that identity is a member of. Permissions in ${E(tname(t))}: ${["view","approve","configure"].map(a=>E(a)+" "+(IDENT.can(a,t)?"allowed":"denied")).join(", ")}.</p>`)}</div>
  <div data-tenant-chooser="1">${card("Tenants",tens.length+" registered (all fictional)",table(["Tenant","Kind","Your roles","Pack","" ],tRows))}</div>
  <div data-tenant-chooser="1">${card("Tenant packs","Generated from a small spec by tools/generators/gen_pack.py, loaded through DATA.pack: the path a real customer's data takes (R20, docs/tenant-packs.md)",table(["Tenant","Source","Reuses","Image","Vocabulary"],tens.filter(x=>x.id!=="core").map(x=>{const pk=PK()[x.id];if(!pk)return[E(x.short||x.id),`<span class="muted">No generated pack</span>`,"","",""];
   return[`<b>${E(x.short||x.id)}</b>`,`<code>${E(pk.spec)}</code>`,E((pk.reuse||[]).join(", ")),pk.images&&pk.images.hero?`<code>${E(pk.images.hero)}</code><small class="muted"> ${E(pk.images.provenance||"")}</small>`:"",E(["customer","incident","ticket","asset","site"].map(k=>k+": "+DT.term(k,{tenant:x.id})).join(" · "))]})))}</div>
  <div data-tenant-chooser="1">${card("Entities per tenant","Row counts read through DATA.get; a gap is never filled with another tenant's rows",table(["Entity"].concat(tens.map(x=>x.short||x.id)),eRows)+(gaps.length?`<p class="muted small">Gaps recorded so far: ${E(gaps.join(", "))}</p>`:""))}</div>
- ${card("Tenant-aware screen registry",scr.length+" screens",`<p class="muted small">Reads through DATA: ${by.data.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">Follows the tenant another way, not yet DATA: ${by.tenant.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">The other ${cnt("core")} screens show the Meridian sample only and are labeled when another tenant is active. They move to DATA screen by screen (CL-55).</p>`)}
+ ${card("Tenant-aware screen registry",scr.length+" screens",`<p class="muted small">Reads through DATA: ${by.data.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">Follows the tenant another way, not yet DATA: ${by.tenant.map(s=>`<button type="button" class="chip" data-go="${E(s.id)}">${E(s.name)}</button>`).join(" ")}</p><p class="muted small">The other ${cnt("core")} screens show the Atlantic Systems sample only and are labeled when another tenant is active. They move to DATA screen by screen (CL-55).</p>`)}
  <p class="muted small">Tenant isolation in this prototype is simulated: one browser page with sample data, no enforcement below the application yet.</p></div>`});
 
 /* ---------- 8. events and search ---------- */

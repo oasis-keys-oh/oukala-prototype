@@ -15,35 +15,35 @@ const CR0=[
 const CRS=CR0.map(x=>Object.assign({ver:1},x));
 const OBL0=[
  ["CLM-1001","Lumen delivers Milestone 3, the taxonomy ingestion pipeline","Vendor","Marco Ellis","2026-09-30","late"],
- ["CLM-1001","Meridian reviews the Milestone 3 deliverable within 10 business days","Meridian","Dev Rao","2026-10-23","open"],
+ ["CLM-1001","Atlantic Systems reviews the Milestone 3 deliverable within 10 business days","Atlantic Systems","Dev Rao","2026-10-23","open"],
  ["CLM-1001","Lumen delivers Milestone 4, indexer running in the test environment","Vendor","Marco Ellis","2026-10-30","risk"],
  ["CLM-1001","Lumen delivers 8 hours of operator training and the runbook","Vendor","Hana Koval","2026-12-04","open"],
- ["CLM-1001","Final acceptance of all deliverables (Milestone 5)","Meridian","Chief Editor","2026-12-18","open"],
- ["CLM-1001","Meridian provides production-like data","Meridian","Dev Rao","2026-04-15","done","2026-04-13"],
+ ["CLM-1001","Final acceptance of all deliverables (Milestone 5)","Atlantic Systems","Chief Editor","2026-12-18","open"],
+ ["CLM-1001","Atlantic Systems provides production-like data","Atlantic Systems","Dev Rao","2026-04-15","done","2026-04-13"],
  ["CLM-1001","Lumen delivers Milestone 2, indexer design accepted","Vendor","Marco Ellis","2026-05-22","done","2026-06-02"],
  ["CLM-1001","Lumen delivers Milestone 1, data model approved","Vendor","Hana Koval","2026-04-10","done","2026-04-09"],
- ["CLM-1002","Meridian signs or rejects proposal v2 (target date)","Meridian","Priya Shah","2026-11-20","open"],
- ["CLM-1002","Legal returns redlines on liability, renewal and AI terms","Meridian","Meridian Legal","2026-10-13","open"],
+ ["CLM-1002","Atlantic Systems signs or rejects proposal v2 (target date)","Atlantic Systems","Priya Shah","2026-11-20","open"],
+ ["CLM-1002","Legal returns redlines on liability, renewal and AI terms","Atlantic Systems","Atlantic Legal","2026-10-13","open"],
  ["CLM-1003","Northwind sends the monthly SLA report by the 5th","Vendor","Northwind Managed Services","2026-10-05","late"],
- ["CLM-1003","Hold the quarterly business review","Meridian","Tom Becker","2026-10-28","open"],
- ["CLM-1003","Decide on renewal or send notice (120 days before Oct 31, 2028)","Meridian","Tom Becker","2028-07-03","open"],
+ ["CLM-1003","Hold the quarterly business review","Atlantic Systems","Tom Becker","2026-10-28","open"],
+ ["CLM-1003","Decide on renewal or send notice (120 days before Oct 31, 2028)","Atlantic Systems","Tom Becker","2028-07-03","open"],
  ["CLM-1003","Northwind sends the September SLA report","Vendor","Northwind Managed Services","2026-09-05","done","2026-09-04"],
- ["CLM-1004","Annual true-up of seat counts","Meridian","Jordan Lee","2026-11-30","open"],
- ["CLM-1004","Decide on renewal enrollment (notice 90 days before Jun 30, 2027)","Meridian","Jordan Lee","2027-04-01","open"],
- ["CLM-1005","Negotiate Beacon terms and target signature","Meridian","Dev Rao","2026-11-20","open"],
- ["CLM-1007","Claim the Q3 availability service credit of $8,200","Meridian","Tom Becker","2026-10-31","open"],
+ ["CLM-1004","Annual true-up of seat counts","Atlantic Systems","Jordan Lee","2026-11-30","open"],
+ ["CLM-1004","Decide on renewal enrollment (notice 90 days before Jun 30, 2027)","Atlantic Systems","Jordan Lee","2027-04-01","open"],
+ ["CLM-1005","Negotiate Beacon terms and target signature","Atlantic Systems","Dev Rao","2026-11-20","open"],
+ ["CLM-1007","Claim the Q3 availability service credit of $8,200","Atlantic Systems","Tom Becker","2026-10-31","open"],
  ["CLM-1007","Northwind sends the September usage report","Vendor","Northwind Cloud","2026-10-05","done","2026-10-03"],
- ["CLM-1007","Hold the quarterly business review","Meridian","Tom Becker","2026-10-28","open"],
- ["CLM-1008","Send notice of non-renewal to LegacyDocs (60 days before Dec 31)","Meridian","Maya Ortiz","2026-11-01","risk"],
- ["CLM-1008","Export all repository data before support ends","Meridian","Jordan Lee","2026-12-15","open"],
- ["CLM-1009","Review storage capacity at the quarterly review","Meridian","Tom Becker","2026-10-28","open"],
- ["CLM-1010","Meridian provides the Azure landing zone","Meridian","Sam Patel","2026-10-15","risk"],
+ ["CLM-1007","Hold the quarterly business review","Atlantic Systems","Tom Becker","2026-10-28","open"],
+ ["CLM-1008","Send notice of non-renewal to LegacyDocs (60 days before Dec 31)","Atlantic Systems","Maya Ortiz","2026-11-01","risk"],
+ ["CLM-1008","Export all repository data before support ends","Atlantic Systems","Jordan Lee","2026-12-15","open"],
+ ["CLM-1009","Review storage capacity at the quarterly review","Atlantic Systems","Tom Becker","2026-10-28","open"],
+ ["CLM-1010","Atlantic Systems provides the Azure landing zone","Atlantic Systems","Sam Patel","2026-10-15","risk"],
  ["CLM-1010","Contoso sends the monthly patch compliance report","Vendor","Contoso Cloud Operations","2026-10-08","open"],
  ["CLM-1010","Contoso sends the September patch compliance report","Vendor","Contoso Cloud Operations","2026-09-08","done","2026-09-08"],
- ["CLM-1011","Approve monthly timesheets","Meridian","Sam Patel","2026-10-30","open"],
- ["CLM-1011","Decide on extending the engagement (30 days before Jan 29)","Meridian","Sam Patel","2026-12-30","open"],
+ ["CLM-1011","Approve monthly timesheets","Atlantic Systems","Sam Patel","2026-10-30","open"],
+ ["CLM-1011","Decide on extending the engagement (30 days before Jan 29)","Atlantic Systems","Sam Patel","2026-12-30","open"],
  ["CLM-1012","Elise Park hands over test suites and documentation","Vendor","Elise Park","2026-12-11","open"],
- ["CLM-1012","Decide on extension notice","Meridian","Priya Shah","2026-11-18","open"]
+ ["CLM-1012","Decide on extension notice","Atlantic Systems","Priya Shah","2026-11-18","open"]
 ];
 const OBL=OBL0.map((o,i)=>({id:"OB-"+String(101+i),ct:o[0],t:o[1],party:o[2],who:o[3],due:o[4],st:o[5],dn:o[6]||"",kind:/invoice|pay/i.test(o[1])?"Payment":/notice|renewal|extension/i.test(o[1])?"Renewal notice":/deliver|handover|export/i.test(o[1])?"Deliverable":/report/i.test(o[1])?"Report":/review|approve|accept/i.test(o[1])?"Review or acceptance":"Other"}));
 const REV=[];const RND=[];const AUD=[];
@@ -64,7 +64,7 @@ function buildGen(){const r=RNG("sowgen"),pick=a=>a[Math.floor(r()*a.length)];
  GEN.list=list;GEN.obl=null;GEN.lines=null;GEN.cr=null;GEN.on=true}
 function CTS(){if(SCALE.on){if(!GEN.on)buildGen();return CT0.concat(GEN.list)}return CT0}
 const ctOf=id=>CTS().find(c=>c.id===id)||CT0.find(c=>c.id===id);
-function OBLS(){if(!SCALE.on)return OBL;if(!GEN.obl){const r=RNG("sowobl"),pick=a=>a[Math.floor(r()*a.length)],o=[];GEN.list.filter(c=>c.status==="Executed"||c.status==="Expiring").forEach(c=>{const k=3+Math.floor(r()*4);for(let i=0;i<k;i++){const due=addD(TDY,Math.round(-40+r()*250)),past=due<TDY,x=r();const kind=pick(["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Deliverable","Report"]);const party=kind==="Report"||kind==="Deliverable"?pick(["Vendor","Vendor","Meridian"]):"Meridian";
+function OBLS(){if(!SCALE.on)return OBL;if(!GEN.obl){const r=RNG("sowobl"),pick=a=>a[Math.floor(r()*a.length)],o=[];GEN.list.filter(c=>c.status==="Executed"||c.status==="Expiring").forEach(c=>{const k=3+Math.floor(r()*4);for(let i=0;i<k;i++){const due=addD(TDY,Math.round(-40+r()*250)),past=due<TDY,x=r();const kind=pick(["Deliverable","Report","Payment","Review or acceptance","Renewal notice","Deliverable","Report"]);const party=kind==="Report"||kind==="Deliverable"?pick(["Vendor","Vendor","Atlantic Systems"]):"Atlantic Systems";
    o.push({id:"OB-G"+o.length,ct:c.id,t:({Deliverable:"Deliver the next scheduled work product",Report:"Send the periodic service report",Payment:"Pay the scheduled invoice",["Review or acceptance"]:"Review and accept the deliverable","Renewal notice":"Decide on renewal before the notice date"})[kind],party:party,who:party==="Vendor"?c.vendor:c.owner,due:due,st:past?(x<.7?"done":x<.82?"done":"late"):x<.04?"risk":"open",dn:past&&x<.7?addD(due,-Math.floor(r()*3)):past&&x<.82?addD(due,2+Math.floor(r()*9)):"",kind:kind})}});GEN.obl=OBL.concat(o)}return GEN.obl}
 function CRALL(){if(!SCALE.on)return CRS;if(!GEN.cr){const r=RNG("sowcr"),pick=a=>a[Math.floor(r()*a.length)],o=[];for(let i=0;i<72;i++){const c=pick(GEN.list.filter(x=>x.status==="Executed")),ty=pick(CRT),amt=ty==="Price or rate change"||ty==="Scope or project change"?Math.round((r()-.2)*180000/1000)*1000:0;o.push({id:"CR-G"+(300+i),ct:c.id,type:ty,title:ty+" for "+c.vendor,st:pick(STAGES.slice(0,4).concat(["Approved","Approved"])),amt:amt,days:ty==="Schedule change"?Math.floor(r()*15):0,task:"",req:c.owner,at:addD(TDY,-Math.floor(r()*60)),reason:"Generated enterprise sample.",oldv:"Current terms",newv:"Requested terms",key:"",thread:[],ver:1,applied:false})}GEN.cr=CRS.concat(o)}return GEN.cr}
 const ctName=id=>{const c=ctOf(id);return c?c.title:id};

@@ -1,5 +1,5 @@
 // PR-32 B4 (portfolio and delivery) and B5 (money and contracts): the screens these batches moved to the tenant data layer, under every tenant.
-// For each screen and each tenant (Meridian, the three industry packs and one company made by Bring your company):
+// For each screen and each tenant (Atlantic Systems, the three industry packs and one company made by Bring your company):
 //  1. the screen is registered as mode "data" and renders (no page error, not blank);
 //  2. it shows that tenant's own rows (an id or name from one of the entities it registers) or a labeled gap (a screen that
 //     registers no entities, such as the Product log, carries no tenant business data);
@@ -34,7 +34,7 @@ await p.evaluate(()=>{const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const
    if(t.id!=='core'||/^(PO|CT|TS|BR|R)-/.test(String(r.id||'')))add(r.id||r.code)}));
   fp[t.id]=[...terms]});
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
- window.__b45={fp:{}};Object.keys(fp).forEach(k=>{window.__b45.fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])'))});
+ window.__b45={fp:{}};Object.keys(fp).forEach(k=>{window.__b45.fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])'))});
  window.__b45.surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
   const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');return c.textContent+' '+at};
  window.__b45.hits=(txt,except)=>{const out=[];Object.keys(window.__b45.fp).forEach(k=>{if(k===except)return;window.__b45.fp[k].forEach(re=>{const m=re.exec(txt);if(m)out.push(k+':'+m[0].trim()+' [..'+txt.slice(Math.max(0,m.index-50),m.index+m[0].length+10).replace(/\s+/g,' ')+'..]')})});return out};

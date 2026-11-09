@@ -1,0 +1,3 @@
+Generated with built-in image_gen.
+
+Use case: background-extraction. Remove ONLY the navy blue background from the supplied Falconaire logo and deliver a genuinely transparent PNG with alpha channel. Preserve the existing logo precisely: gold sweeping falcon symbol, ivory wordmark 'Falconaire' with only internal lowercase 'ai' in gold, exact typography, shape, color, spacing, proportions and placement. All blue areas including enclosed letter counters and gaps within the bird must become completely transparent. Keep opaque ivory and gold foregrounds, clean antialiased edges without navy fringe. Same horizontal canvas and composition. No redesign, no added shadows, no checkerboard baked into image, no replacement solid background.

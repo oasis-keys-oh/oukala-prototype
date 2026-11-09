@@ -47,7 +47,7 @@ const LENSES=[
    do:"Switch from By objective to By function.",claims:["modeled"]},
   lensBeat("ceo","CEO","The CEO lens weighs strategic progress against what it costs."),"coo/track.1",
   {id:"ceo.board",act:"Report",point:"The board pack cites the record behind each claim",secs:80,go:"exe_board",
-   say:["The board pack is generated from the same records, and each claim links to its source.","It is sample content for the fictional Meridian board."],
+   say:["The board pack is generated from the same records, and each claim links to its source.","It is sample content for the fictional Atlantic Systems board."],
    do:"Open the citation on one claim.",claims:["modeled","fact"]}],
  tab:{"track.1":"CEO"},say:{"track.1":["The CEO view leads with mission, members and money.","The figures are the same numbers every executive sees."]}},
 {id:"cio",short:"CIO",name:"Chief Information Officer",r18:"cio",persona:"exec",q:"How do I stop sprawl without blocking builders?",
@@ -138,7 +138,7 @@ function cutOf(l){const beats=l.beats.map(x=>typeof x==="string"?refBeat(x):JSON
   if(l.say&&l.say[b.id])b.say=l.say[b.id].slice();if(l.tab&&l.tab[b.id])b.tab=l.tab[b.id];delete b.kids;return b});
  return{id:"lens-"+l.id,title:l.short+" lens",group:"lens",lens:l.id,persona:l.persona,tenant:"core",who:l.name,
   mins:Math.round(beats.reduce((a,b)=>a+b.secs,0)/60),
-  blurb:"The same platform told for the "+l.name+": "+l.q+" Screens, metrics and wording come from the lens configuration; the data is the fictional Meridian sample.",beats}}
+  blurb:"The same platform told for the "+l.name+": "+l.q+" Screens, metrics and wording come from the lens configuration; the data is the fictional Atlantic Systems sample.",beats}}
 function register(){LENSES.forEach(l=>SHOW.add(cutOf(l)))}
 register();
 Object.assign(SHOW,{lenses:LENSES,lensOf,applyLens,lensCut:id=>SHOW.byId("lens-"+id)});

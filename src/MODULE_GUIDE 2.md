@@ -1,6 +1,6 @@
 # Oukala module guide (read fully before writing code)
 
-Oukala is a single-file prototype (no backend) of an AI-native enterprise work platform (PPM, ITSM, ITOM, knowledge, workflow, AI governance). You are building ONE OR MORE feature modules as `mod_<name>.js` (+ optional `mod_<name>.css`) in `/tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/`. Omar (CIO, first customer is "Meridian Standards Foundation", a ~FAF-sized standards body; Microsoft E5 assumed) wants to SEE forms, features, working interactions. Not mockups of boxes: working prototypes with realistic data.
+Oukala is a single-file prototype (no backend) of an AI-native enterprise work platform (PPM, ITSM, ITOM, knowledge, workflow, AI governance). You are building ONE OR MORE feature modules as `mod_<name>.js` (+ optional `mod_<name>.css`) in `/tmp/claude-0/-home-claude/64b136d5-fe7c-54e7-be41-393e496f5667/scratchpad/v2/`. Omar (CIO, first customer is "Atlantic Systems", a ~FAF-sized standards body; Microsoft E5 assumed) wants to SEE forms, features, working interactions. Not mockups of boxes: working prototypes with realistic data.
 
 ## Hard rules
 1. Do NOT edit any shared file (data*.js, ui.js, kit.js, screens*.js, style*.css, build.py). Only create your `mod_*.js/.css`. If you need a shared change, write it in your final report.
@@ -20,7 +20,7 @@ Oukala is a single-file prototype (no backend) of an AI-native enterprise work p
    - Accessible: buttons are `<button>`, labels, `aria-*`, focus visible, contrast. Phone width (400px) must not scroll horizontally: use grid `minmax(0,1fr)`, wrap rows, wide tables inside `overflow-x:auto` wrappers.
    - Plain language, American English, define acronyms on first use, NO em dashes.
    - Spacing: stack siblings with flex/grid `gap`; cards in a `.pane`/`.screen` are already spaced. Never let tiles touch cards below.
-6. Data realism: Meridian Standards Foundation, people from `PEOPLE`, vendors Lumen (search/indexing vendor), existing projects PR1..PR4, systems like Codification Platform, Contract Repository, Lease subledger (ERP), Azure, Entra ID, M365. Dates: today is Tue Oct 6 2026 (work calendar helpers fmtD/wdOf). Money via `money(n)` or `K$(n)`.
+6. Data realism: Atlantic Systems, people from `PEOPLE`, vendors Lumen (search/indexing vendor), existing projects PR1..PR4, systems like Codification Platform, Contract Repository, Lease subledger (ERP), Azure, Entra ID, M365. Dates: today is Tue Oct 6 2026 (work calendar helpers fmtD/wdOf). Money via `money(n)` or `K$(n)`.
 7. Size discipline: aim 25-60KB per module. Quality over breadth inside each screen, but cover EVERY sub-feature listed in your assignment with at least a working list, a detail drawer, and a create/edit form.
 
 ## Globals you can use

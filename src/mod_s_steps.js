@@ -50,7 +50,7 @@ STEPS.robotTest=def=>{const t=String(def.task||"");const judge=JUDG.test(t)||(de
 const TIERS={1:["Tier 1","Suggests only. A person does the action."],2:["Tier 2","Acts after a person approves each proposal."],3:["Tier 3","Acts inside its limits and reports. A person reviews samples."]};
 const tierOf=v=>v==null?null:typeof v==="number"?Math.max(1,Math.min(3,v)):({suggest:1,propose:1,approval:2,approve:2,act:3,auto:3})[String(v).toLowerCase()]||2;
 const ST=STEPS.state=STEPS.state||{};
-/* PR-32 B7: under another tenant the agents are that tenant's agent rows (DATA agents), shaped like an org chart agent; Meridian keeps ORGX */
+/* PR-32 B7: under another tenant the agents are that tenant's agent rows (DATA agents), shaped like an org chart agent; Atlantic Systems keeps ORGX */
 const isCore=()=>!W.DATA||DATA.tenant()==="core";
 const tAgents=()=>isCore()?[]:G(()=>DATA.get("agents").filter(a=>(a.part||"agent")==="agent"),[]);
 const tAgent=name=>{const r=tAgents().find(a=>a.n===name||a.id===name);return r?{name:r.n,does:r.purpose||r.act||"",autonomy:r.tier,sponsor:r.owner||"",model:r.model||"",guards:[],kill:"agent",status:r.st}:null};

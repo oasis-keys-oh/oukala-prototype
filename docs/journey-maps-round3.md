@@ -2,7 +2,7 @@
 
 Documents backlog items JM-11 and JM-12 (round 3 of the journey work, which the Project doc `claude/journey-maps-round2.md` covers only through round 2). It describes what the round 3 modules do, as changed by wave 2 (JM-01 to JM-09, DC-01, DC-24), so a reader does not have to open the code. It carries no status or priority. Source of the history: the journey handoff of 2026-10-19 (rounds 2 and 3; commit 0ff1e9a for round 3). Every claim was checked against the code in `src/` and against a build of the code on 2026-10-20.
 
-All figures are **prototype facts** about the sample data unless labeled. Every hour, FTE and cost figure inside the journey screens is a **modeled** sample value: a robot is assumed to free 80% of a step's hours, an agent 60%, 140 hours is one full-time equivalent (FTE) a month, and one recommended step can release at most 2 FTE (section 3a). Wave order is a **hypothesis**. Nothing described here is live: agents and robots shown as recommended are proposed, not built. All organizations and people are fictional (Meridian Standards Foundation and the Larkspur, Redstone and Corvane samples).
+All figures are **prototype facts** about the sample data unless labeled. Every hour, FTE and cost figure inside the journey screens is a **modeled** sample value: a robot is assumed to free 80% of a step's hours, an agent 60%, 140 hours is one full-time equivalent (FTE) a month, and one recommended step can release at most 2 FTE (section 3a). Wave order is a **hypothesis**. Nothing described here is live: agents and robots shown as recommended are proposed, not built. All organizations and people are fictional (Atlantic Systems and the Larkspur, Redstone and Corvane samples).
 
 ## 1. Where round 3 sits
 
@@ -48,7 +48,7 @@ The cap is a **modeled** assumption so invented sample volumes cannot produce an
 
 | Scenario | Journeys | Boxes | Boxes with no process | Boxes with more than one process | Draft workflows generated |
 |---|---|---|---|---|---|
-| Meridian (core) | 5 | 48 | 3 | 2 | 11 |
+| Atlantic Systems (core) | 5 | 48 | 3 | 2 | 11 |
 | Healthcare (Larkspur) | 10 | 135 | 3 | 0 | 37 |
 | Mining (Redstone) | 3 | 43 | 3 | 3 | 11 |
 | Storage and backup (Corvane) | 3 | 45 | 3 | 0 | 7 |
@@ -80,12 +80,12 @@ Waves are a hypothesis: sorted by hours freed, wave 1 is risk 3 or lower, has a 
 
 | Scenario | Builds | Agents | Robots | Wave 1 / 2 / 3 | Steps covered | FTE released (modeled) |
 |---|---|---|---|---|---|---|
-| Meridian (core) | 4 | 2 | 2 | 1 / 2 / 1 | 4 | 0.6 |
+| Atlantic Systems (core) | 4 | 2 | 2 | 1 / 2 / 1 | 4 | 0.6 |
 | Healthcare | 40 | 18 | 22 | 9 / 18 / 13 | 78 | 127 |
 | Mining | 10 | 5 | 5 | 2 / 5 / 3 | 16 | 21 |
 | Storage and backup | 13 | 6 | 7 | 3 / 7 / 3 | 19 | 28 |
 
-The table shows the default scope, Detailed journeys. The Healthcare figure was 345 FTE before the per-step cap (section 3a) and is now 127 (modeled); the sample volumes are invented and no step may release more than 2 FTE. Under All journeys the counts are: Meridian 12 builds (6 agents, 6 robots), 13.3 FTE; Healthcare 48 builds, 164 FTE; Mining 18 builds, 32 FTE; Storage and backup 21 builds, 45 FTE (all modeled).
+The table shows the default scope, Detailed journeys. The Healthcare figure was 345 FTE before the per-step cap (section 3a) and is now 127 (modeled); the sample volumes are invented and no step may release more than 2 FTE. Under All journeys the counts are: Atlantic Systems 12 builds (6 agents, 6 robots), 13.3 FTE; Healthcare 48 builds, 164 FTE; Mining 18 builds, 32 FTE; Storage and backup 21 builds, 45 FTE (all modeled).
 
 **Access (JM-09).** The Build list is behind the permission section `section:journey.build`, checked with `PERM.can`. With no explicit rule, these roles see it: executive, portfolio lead, project manager, architect, change manager, platform admin. Other roles see a note saying so. This is a **simulated** permission, not a real access control; switching permission checks off on the Permissions screen shows the tab to everyone.
 
@@ -105,12 +105,12 @@ Scope is one switch: **Detailed journeys** or **All journeys** (`JXR.scopeNow()`
 
 ## 9. Recommendations on the real org chart
 
-`mod_r32_orgprop.js` takes the same builds and draws each as a dashed card under the head of the team it would help, the way an open position is drawn on the existing org chart (`org_chart`). It maps box owners that are not org units to units (for example People office to People operations), falls back to the Executive office when no unit matches, and works for the Meridian scenario only, because the industry scenarios have no real org chart (they use the box-owner org chart in section 8). Core shows 4 such cards in Detailed scope. A toolbar switch ("Recommended agents and robots") turns them on. They are labeled proposed, not built.
+`mod_r32_orgprop.js` takes the same builds and draws each as a dashed card under the head of the team it would help, the way an open position is drawn on the existing org chart (`org_chart`). It maps box owners that are not org units to units (for example People office to People operations), falls back to the Executive office when no unit matches, and works for the Atlantic Systems scenario only, because the industry scenarios have no real org chart (they use the box-owner org chart in section 8). Core shows 4 such cards in Detailed scope. A toolbar switch ("Recommended agents and robots") turns them on. They are labeled proposed, not built.
 
 ## 10. Known limits carried from the handoff
 - The org chart is built from box owners, not from imported HR data; whether to import an org is undecided.
 - Shared touchpoints: 20 keys exist for the core (6), mining (6) and storage (8) samples (JM-05, DC-24), each used in at least two journeys of its own scenario, so overlays and the Process map "shared" count are no longer empty there.
-- COO brief tabs follow the tenant (JM-07). Under an industry tenant, people, load and agent figures read that tenant's rows; where its pack has no data a tile says "No data" instead of showing Meridian figures, panels that can only be drawn from Meridian carry a "Meridian sample" label, and no Meridian person or agent name appears.
+- COO brief tabs follow the tenant (JM-07). Under an industry tenant, people, load and agent figures read that tenant's rows; where its pack has no data a tile says "No data" instead of showing Atlantic Systems figures, panels that can only be drawn from Atlantic Systems carry a "Atlantic Systems sample" label, and no Atlantic Systems person or agent name appears.
 - The "Journey experience score" tile reads "x of 5", not a percentage (DC-01, CL-33).
 - Demo view (DC-24): `JX.demoTabs(true)`, or a Showroom tour, hides Fulfillment, Processes, Personas and Building blocks (`JX.DEMO_HIDE`, tab positions 3, 4, 6, 9). The active tab always stays visible, and a "Show every tab" button restores the rest.
 - Building blocks tab (DC-24): lists each journey building block with what it is, where it is used, the function that draws it and a live example from the current tenant, including the build card and the teammate count rule.

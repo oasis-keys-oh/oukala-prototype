@@ -100,27 +100,27 @@ Export CSV
 VISUAL	TYPE	FAMILY	SOURCE	LINEAGE	ON DASHBOARDS	OWNER	UPDATED
 Incidents opened per week
 Portal incidents rose the week of Sep 28 after the search index change.
-	Line	Line	Meridian incidents (with location)	Bound to registry	Service health	
+	Line	Line	Atlantic incidents (with location)	Bound to registry	Service health	
 Tom Becker
 	Oct 6
 Hours to resolve by priority
 Shows whether P1 and P2 meet the restore targets.
-	Bar	Bar	Meridian incidents (with location)	Bound to registry	Service health	
+	Bar	Bar	Atlantic incidents (with location)	Bound to registry	Service health	
 Tom Becker
 	Oct 6
 Incidents by US state
 Where readers and offices feel the pain; click a state to filter every visual.
-	US state choropleth	Maps	Meridian incidents (with location)	Bound to registry	Service health, Reach and spend	
+	US state choropleth	Maps	Atlantic incidents (with location)	Bound to registry	Service health, Reach and spend	
 Tom Becker
 	Oct 6
 Incidents by country
 International reach and where support hours matter.
-	World choropleth	Maps	Meridian incidents (with location)	Bound to registry	Reach and spend	
+	World choropleth	Maps	Atlantic incidents (with location)	Bound to registry	Reach and spend	
 Tom Becker
 	Oct 6
 Incident points and clusters
 Every incident as a point; clusters split on zoom.
-	Point map with clusters	Maps	Meridian incidents (with location)	Bound to registry	Service health	
+	Point map with clusters	Maps	Atlantic incidents (with location)	Bound to registry	Service health	
 Tom Becker
 	Oct 6
 Tier 1 availability vs target
@@ -150,7 +150,7 @@ Priya Shah
 	Oct 6
 Incident mix by service and priority
 Which services carry the P1 and P2 load.
-	Stacked bar	Bar	Meridian incidents (with location)	Bound to registry	Service health	
+	Stacked bar	Bar	Atlantic incidents (with location)	Bound to registry	Service health	
 Tom Becker
 	Oct 6
 Replication traffic between sites
@@ -170,17 +170,17 @@ Marco Ellis
 	Oct 6
 Incident calendar
 Daily incident volume over 26 weeks.
-	Calendar heatmap	Heat and matrix	Meridian incidents (with location)	Bound to registry	Operations floor	
+	Calendar heatmap	Heat and matrix	Atlantic incidents (with location)	Bound to registry	Operations floor	
 Tom Becker
 	Oct 6
 Priority by service heatmap
 Hot spots between services and priority.
-	Heatmap	Heat and matrix	Meridian incidents (with location)	Bound to registry	Operations floor	
+	Heatmap	Heat and matrix	Atlantic incidents (with location)	Bound to registry	Operations floor	
 Tom Becker
 	Oct 6
 Where incidents flow
 From site type through service to category.
-	Alluvial	Flow and relationship	Meridian incidents (with location)	Bound to registry	None	
+	Alluvial	Flow and relationship	Atlantic incidents (with location)	Bound to registry	None	
 Tom Becker
 	Oct 6
 Project roadmap

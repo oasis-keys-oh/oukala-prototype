@@ -22,7 +22,7 @@ Merged families: one menu entry with a view switcher at the top of each member. 
 | `adm_studio` | Platform and administration | **Admin studio** | Admin studio | Shape the platform without code | Admin studio | headline moved to subtitle |
 | `adm_sec` | Platform and administration | **Security and access** | Security and access | Know who can see what, and why | Security and access | headline moved to subtitle |
 | `adm_env` | Platform and administration | **Environments and releases** | Environments and releases | Promote configuration like code | Environments and releases | family anchor, switcher added; headline moved to subtitle |
-| `adm_meter` | Platform and administration | **Licensing and billing** | Licensing and billing | What Meridian pays for, and why | Licensing and billing | headline moved to subtitle |
+| `adm_meter` | Platform and administration | **Licensing and billing** | Licensing and billing | What Atlantic Systems pays for, and why | Licensing and billing | headline moved to subtitle |
 | `adm_gate` | AI and governance | **AI usage and cost** | AI usage and cost | Route every model call on purpose | AI gateway and tokenomics | headline moved to subtitle |
 | `adm_audit` | Platform and administration | **Audit trail and retention** | Audit and compliance | Prove what happened, and who or what did it | Audit and compliance | renamed; headline moved to subtitle |
 | `bud_over` | Money and contracts | **Budgets** | Budgets | The portfolio is 5.6% over budget, and the reserve can cover it | Budgets overall | family anchor, switcher added; headline moved to subtitle |

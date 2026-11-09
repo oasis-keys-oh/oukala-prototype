@@ -1,6 +1,6 @@
 /* ===== mod_r29_preset: industry presets for Agent Action. When a demo scenario is selected (healthcare, mining, storage and backup), the gap list is built from that
    scenario's workflows: each workflow becomes a gap, sized by its steps, with the steps run by people today and the steps an agent or automation could take. Every figure is modeled from the
-   fictional sample workflows. Choosing Meridian restores the original 16 gaps. ===== */
+   fictional sample workflows. Choosing Atlantic Systems restores the original 16 gaps. ===== */
 (function(){
 const W=window;const X=W.ODX;if(!X||!X.GAPS||!W.SCN)return;
 const BASE=X.GAPS.slice();

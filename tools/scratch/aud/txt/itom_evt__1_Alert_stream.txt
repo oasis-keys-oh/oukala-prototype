@@ -59,7 +59,7 @@ Service
 Group
 Export CSV
 SEVERITY	ALERT	CI	SERVICE	EVENTS COLLAPSED	FIRST SEEN	LAST SEEN▼	STATE	GROUP
-Sev 4	TLS certificate for standards.meridian.example expires in 14 days (renewal failed validation twice)
+Sev 4	TLS certificate for standards.atlantic.example expires in 14 days (renewal failed validation twice)
 EX1 · Event feed · Azure Monitor
 	portal-cdn	Codification Portal	3	05:40	now	Open	G14
 Sev 4	Memory 92.7% (threshold > 85.0%)

@@ -190,7 +190,7 @@ Not a duplicate
 lumen-indexer-01
 vCenter · ci_sea0
 	
-lumen-indexer-01.meridian.local
+lumen-indexer-01.atlantic.local
 vCenter · ci_x_dup1
 	95	Same name after removing the domain; Same IP address 10.26.90.128	
 Merge

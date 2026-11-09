@@ -197,7 +197,7 @@ Promote
 What needs attention
 The four things worth doing today.
 Stale and popular
-Acceptable use of Meridian systems has 905 views and was last reviewed Sep 1, 2025.
+Acceptable use of Atlantic systems has 905 views and was last reviewed Sep 1, 2025.
 Review now
 Close to automatable
 Monthly lease amortization close scores 71. It lacks tests, so it cannot reach 80.

@@ -48,7 +48,7 @@ OUKALA (OWN) · VERSION 1.2
 ITIL 5
 Autonomous service delivery
 
-How much of resolving, changing and fulfilling service work is done by agents instead of people, and under what controls. Meridian wrote this model for its own platform. Owner Jordan Lee. 9 measurable capabilities, average level 2.3 (scaled to 5).
+How much of resolving, changing and fulfilling service work is done by agents instead of people, and under what controls. Atlantic wrote this model for its own platform. Owner Jordan Lee. 9 measurable capabilities, average level 2.3 (scaled to 5).
 
 On track
 Edit levels and details

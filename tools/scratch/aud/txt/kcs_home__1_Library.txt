@@ -117,7 +117,7 @@ KB0462 · SOP
 	SOP	Codification Portal	Published	Vendors	93 Ready to automate	
  84%	Stale 371d	204	7	Priya Shah
 
-Share a draft standard with a reviewer outside Meridian
+Share a draft standard with a reviewer outside Atlantic
 KB0140 · FAQ
 	FAQ	Email and collaboration (M365)	Published	All staff	73 Close, needs tests	
  80%	Stale 463d	251	5	Maya Ortiz
@@ -208,7 +208,7 @@ Why can't I open a standard on my phone?
 FAQ-05 · primary: Codification Portal
 Reset multifactor authentication for an editor
 KB0451 · primary: Identity (Entra ID)
-Acceptable use of Meridian systems
+Acceptable use of Atlantic systems
 POL-07 · primary: Email and collaboration (M365)
 Search results stay stale for up to 20 minutes after a deploy
 KB0377 · primary: Search and indexing

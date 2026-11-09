@@ -143,7 +143,7 @@ function diffNote(r,h){const i=r.hist.indexOf(h);const prev=r.hist[i+1];if(!prev
  return o.length?"Changed: "+o.join(", "):"No content change"}
 
 /* PR-32 B9: under another sample company the rule catalog (product configuration: names, types, triggers, tables) is shown, but the
-   Meridian owners, firing log, approvals and sample records are not; the pack has no rule owners or firings, so they show a labeled gap (R18). */
+   Atlantic Systems owners, firing log, approvals and sample records are not; the pack has no rule owners or firings, so they show a labeled gap (R18). */
 const TCORE=()=>!W.DATA||DATA.tenant()==="core";
 const TGAP=w=>`<p class="muted small" data-tenant-gap="1">No data in this sample company yet${w?": "+H(w):""}.</p>`;
 function tenantScreen(){const org=G(()=>DATA.tenantInfo().org,"");const L=D.rules.filter(r=>r.status!=="retired");

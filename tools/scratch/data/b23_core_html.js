@@ -1,4 +1,4 @@
-// PR-32 B2/B3 (stream data-b23): Meridian must not change by a single character. Records the innerHTML of #view for every
+// PR-32 B2/B3 (stream data-b23): Atlantic must not change by a single character. Records the innerHTML of #view for every
 // registered screen under the core tenant, and diffs two recordings.
 // Math.random is seeded and time is virtual (Playwright clock) so two runs of the same build match.
 // Usage: node tools/scratch/data/b23_core_html.js <build dir> <out.json>

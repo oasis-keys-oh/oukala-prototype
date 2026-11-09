@@ -1,6 +1,6 @@
 /* ===== mod_s_showroom_tours: more Showroom tours over existing screens (backlog DC-15, DC-16, DC-21 children, DC-30).
    DC-15  VibeCheck Executive cut (8 to 10 minutes), opening with the "Build the fix in VibeCheck" hand-off (DC-17)
-   DC-16  tenant VibeCheck briefs: Healthcare referral and prior authorization, Mining permit to work, Storage drive swap, Meridian
+   DC-16  tenant VibeCheck briefs: Healthcare referral and prior authorization, Mining permit to work, Storage drive swap, Atlantic Systems
    DC-21  the six guardrail children attached to the COO cut as optional child beats, one per act, and as a cut of their own
    DC-30  the full-story path (COO cut, then the guardrails cut: two cuts, each under the 1,200 second limit) and a printable
           leave-behind built from the beats and their claim chips
@@ -52,7 +52,7 @@ SHOW.add({id:"vibe",title:"VibeCheck Executive cut",mins:10,who:"Executives who 
 
 /* ---------- DC-16: tenant VibeCheck briefs ---------- */
 const brief=(t,o)=>({id:"brief-"+t,title:o.title,mins:6,who:o.who,tenant:t,persona:"exec",group:"brief",
- tenantWhy:"Journey maps, the Build list, the org chart and the tenant views follow this tenant; VibeCheck's library is the Meridian sample and is labeled.",
+ tenantWhy:"Journey maps, the Build list, the org chart and the tenant views follow this tenant; VibeCheck's library is the Atlantic Systems sample and is labeled.",
  blurb:o.blurb,beats:[
  {id:t+".1",act:"Journey",point:o.p1,secs:60,go:"ppl_jrny",tab:"Map",
   say:[o.s1,"Red boxes have no process behind them yet; every name is fictional."],do:"Filter to No process.",claims:["modeled"]},
@@ -61,9 +61,9 @@ const brief=(t,o)=>({id:"brief-"+t,title:o.title,mins:6,who:o.who,tenant:t,perso
  {id:t+".3",act:"Team",point:"Where the proposed helpers would sit in the team",secs:60,go:"orgassist",
   say:["Dashed cards are proposed agents and robots placed under the team they would help.","None of them is running."],do:"Turn the proposal overlay on and off.",claims:["modeled","simulated"]},
  {id:t+".4",act:"Brief",point:o.p4,secs:90,go:"studio",setup:o.setup,
-  say:[o.s4,"The interview is scripted and the library behind it is the Meridian sample, so show it as a preview."],do:"Press Next in the click-through.",claims:["simulated"]},
+  say:[o.s4,"The interview is scripted and the library behind it is the Atlantic Systems sample, so show it as a preview."],do:"Press Next in the click-through.",claims:["simulated"]},
  {id:t+".5",act:"Measure",point:"The tenant's own objectives and measures",secs:60,go:"tn_metrics",
-  say:["Objectives and measures come from this tenant's own data pack, not from Meridian.","Values are sample data, so present them as modeled."],do:"Open one objective.",claims:["modeled"]}]});
+  say:["Objectives and measures come from this tenant's own data pack, not from Atlantic Systems.","Values are sample data, so present them as modeled."],do:"Open one objective.",claims:["modeled"]}]});
 [["health",{title:"Healthcare brief: referral and prior authorization",who:"Health system operations and IT leaders",
   blurb:"A specialist referral from intake to a booked visit, with prior authorization checked first. Runs on the fictional Healthcare tenant.",
   p1:"The referral journey as patients and coordinators see it",s1:"Each box is a step a patient, a referral coordinator or a clinician goes through, tied to the process behind it.",
@@ -79,8 +79,8 @@ const brief=(t,o)=>({id:"brief-"+t,title:o.title,mins:6,who:o.who,tenant:t,perso
   p1:"The customer support journey as customers and engineers see it",s1:"Each box is a step a customer, a support engineer or the warehouse goes through, tied to the process behind it.",
   p4:"Say the failed drive swap brief in plain words",s4:"The brief is typed as a plain request: approve a failed drive swap within one day and ship the replacement first.",
   setup:"studio:ask:Approve a customer's failed drive swap within one day and ship the replacement first."}],
- ["core",{title:"Meridian brief: damaged deliveries",who:"Operations leaders at the Meridian sample",
-  blurb:"Printed standards arriving damaged: VibeCheck finds the process that exists and extends it. Runs on the fictional Meridian Standards Foundation.",
+ ["core",{title:"Atlantic Systems brief: damaged deliveries",who:"Operations leaders at the Atlantic Systems sample",
+  blurb:"Printed standards arriving damaged: VibeCheck finds the process that exists and extends it. Runs on the fictional Atlantic Systems.",
   p1:"The member journey as members and staff see it",s1:"Each box is a step a member or a staff member goes through, tied to the process behind it.",
   p4:"Damaged deliveries: extend the process that already exists",s4:"The brief is the scripted example: printed standards keep arriving damaged, and VibeCheck extends the existing process.",
   setup:"studio:scen:ret:find"}]].forEach(([t,o])=>SHOW.add(brief(t,o)));
@@ -88,7 +88,7 @@ const brief=(t,o)=>({id:"brief-"+t,title:o.title,mins:6,who:o.who,tenant:t,perso
 /* DC-16 home: the tenant briefs */
 SHOW.home.push(()=>{const briefs=SHOW.demos.filter(d=>d.group==="brief");if(!briefs.length)return"";
  return `<section class="sr-card glass srt" aria-label="Tenant briefs"><div class="sr-ch"><h3>Tenant VibeCheck briefs</h3><span class="sr-pill">About 6 min each</span></div>
- <p class="muted small">The same story on each sample tenant. Journey maps, the Build list, the org chart and the tenant views follow the tenant; VibeCheck's library is the Meridian sample and the bar says so.</p>
+ <p class="muted small">The same story on each sample tenant. Journey maps, the Build list, the org chart and the tenant views follow the tenant; VibeCheck's library is the Atlantic Systems sample and the bar says so.</p>
  <div class="srt-grid">${briefs.map(d=>`<article class="srt-c"><b>${E(d.title)}</b><p class="small muted">${E(d.blurb)}</p><div class="row"><button type="button" class="btn sm" data-sr-start="${E(d.id)}">Start</button>${SHOW.leaveBehind?`<button type="button" class="btn quiet sm" data-sr-leave="${E(d.id)}">Leave-behind</button>`:""}</div></article>`).join("")}</div></section>`});
 
 /* ---------- DC-21: guardrail children as optional child beats, and as their own cut ---------- */
@@ -124,7 +124,7 @@ function leaveBehindHTML(id){const path=String(id).indexOf("path:")===0?SHOW.pat
 ol{list-style:none;padding:0;margin:12px 0}li{border-top:1px solid GrayText;padding:10px 0;break-inside:avoid}li.opt{padding-left:24px}.h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.n{font-weight:700;min-width:22px}.act{color:GrayText;font-size:13px}
 p{margin:4px 0}.muted{color:GrayText}.cl span{display:inline-block;border:1px solid GrayText;border-radius:99px;padding:0 8px;margin:2px 6px 0 0;font-size:12px}dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px}dt{font-weight:700}
 footer{margin-top:28px;border-top:1px solid GrayText;padding-top:10px;font-size:13px;color:GrayText}@media print{body{margin:0 auto}}</style></head><body>
-<h1>${E(title)}</h1><p class="muted">A walkthrough of the ${E(name)} prototype. ${tours.length>1?tours.length+" parts, ":""}about ${Math.round(tot/60)} minutes. Every organization, person and figure is fictional sample data (Meridian Standards Foundation and the sample tenants).</p>
+<h1>${E(title)}</h1><p class="muted">A walkthrough of the ${E(name)} prototype. ${tours.length>1?tours.length+" parts, ":""}about ${Math.round(tot/60)} minutes. Every organization, person and figure is fictional sample data (Atlantic Systems and the sample tenants).</p>
 ${body}<h2>How to read the labels</h2><dl>${Object.keys(C).map(k=>`<dt>${E(C[k].l)}</dt><dd>${E(C[k].d)}</dd>`).join("")}</dl>
 ${sim.length?`<h2>What is simulated</h2><p>Scripted in the prototype, with no live connection, run or enforcement: ${sim.map(E).join("; ")}.</p>`:""}
 <footer>Prototype walkthrough. ${E(name)} is a working name. Nothing here is a certification claim or a price; security and isolation are plans.</footer></body></html>`}

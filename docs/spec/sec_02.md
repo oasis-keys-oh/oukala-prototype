@@ -73,7 +73,7 @@ The product may be shown to peers of the first customer, so some words and names
 |---|---|---|
 | The owner's real name; the executive persona is Casey Rowan (CIO) | Text, data, code, commits | Build sweep; neutral commit author |
 | Six listed standards-body and framework terms (see the contract lint list) | New and existing text | Contract report lint; build sweep |
-| Sample customer is Meridian Standards Foundation | Sample data | Review |
+| Sample customer is Atlantic Systems | Sample data | Review |
 | Sample systems are the Standards Portal and Standards Platform | Sample data | Review |
 | Product name is not final; no name in identifiers | Code, config | One configuration value |
 | Agent display name is "FirstName · Role Title" | Agent lists, org chart | `agentDisplay()` |

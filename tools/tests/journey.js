@@ -75,14 +75,14 @@ ok(demo.api==='function'&&demo.on.length===6&&demo.off.length===10&&demo.stored=
 ok(demo.onActive.indexOf('Processes')>=0&&demo.onActive.length===7,'demo view keeps the active tab visible even when it is one of the hidden four');
 ok(demo.parts>=8&&demo.ex===demo.parts,`Building blocks: ${demo.parts} components, each with a live example`);
 
-// 8. JM-07: the COO brief tabs (orgdesign) follow the tenant: no Meridian person or agent name under another tenant, and labels where data is missing
+// 8. JM-07: the COO brief tabs (orgdesign) follow the tenant: no Atlantic Systems person or agent name under another tenant, and labels where data is missing
 const coo=await p.evaluate(async()=>{const names=[...new Set(ODX.people().map(x=>x.n).concat(ODX.agents().map(a=>a.name)))].filter(n=>n&&n.length>3);const out={};
  for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,150));go('orgdesign');await new Promise(r=>setTimeout(r,200));const hits=new Set();let note=false,lab=0;
   for(let t=0;t<7;t++){const bt=document.querySelector('[data-od="tab|'+t+'"]');if(bt)bt.click();await new Promise(r=>setTimeout(r,120));const tx=document.querySelector('#view').innerText;
-   names.forEach(n=>{if(tx.indexOf(n)>=0)hits.add(n)});if(t===0)note=/No data|Tenant: /.test(tx);lab+=(tx.match(/Meridian sample/g)||[]).length}
+   names.forEach(n=>{if(tx.indexOf(n)>=0)hits.add(n)});if(t===0)note=/No data|Tenant: /.test(tx);lab+=(tx.match(/Atlantic Systems sample/g)||[]).length}
   const bt=document.querySelector('[data-od="tab|0"]');if(bt)bt.click();out[k]={hits:[...hits].slice(0,5),n:hits.size,note,lab}}return out});
-for(const k in coo){if(k==='core')ok(coo[k].n>0,'core: the COO brief tabs still show the Meridian sample organization');
- else ok(coo[k].n===0&&coo[k].note&&coo[k].lab>0,`${k}: COO brief tabs show no Meridian person or agent name (${coo[k].hits.join(', ')||'none'}), say where data is missing, and label ${coo[k].lab} Meridian sample panels`)}
+for(const k in coo){if(k==='core')ok(coo[k].n>0,'core: the COO brief tabs still show the Atlantic Systems sample organization');
+ else ok(coo[k].n===0&&coo[k].note&&coo[k].lab>0,`${k}: COO brief tabs show no Atlantic Systems person or agent name (${coo[k].hits.join(', ')||'none'}), say where data is missing, and label ${coo[k].lab} Atlantic Systems sample panels`)}
 
 // 9. JM-01: industry tenants get the org chart built from box owners by default, and the screen says so
 const own=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN.list)){SCN.set(k);await new Promise(r=>setTimeout(r,150));S.pp2.tab.ppl_jrny=7;go('ppl_jrny');await new Promise(r=>setTimeout(r,200));
@@ -90,7 +90,7 @@ const own=await p.evaluate(async()=>{const out={};for(const k of Object.keys(SCN
  if(sw){sw.click();await new Promise(r=>setTimeout(r,150));alt=JXR.orgSource();const b=document.querySelector('[data-pp2-act="jorgsrc"][data-a="owners"]');if(b)b.click();await new Promise(r=>setTimeout(r,100))}
  out[k]={src:JXR.orgSource(),said:/owning team named on a journey step/.test(tx)&&/HR org chart is an open decision/.test(tx),alt}}
  SCN.set('core');await new Promise(r=>setTimeout(r,150));return out});
-for(const k in own){if(k==='core')ok(own[k].src==='real','core: the org chart tab shows the real Meridian chart');
+for(const k in own){if(k==='core')ok(own[k].src==='real','core: the org chart tab shows the real Atlantic Systems chart');
  else ok(own[k].src==='owners'&&own[k].said&&(own[k].alt===null||own[k].alt==='functions'),`${k}: org chart is built from box owners by default and says so (HR import noted as open)${own[k].alt?'; sample functions view available':''}`)}
 
 // 10. JM-06: manifest keys (trace number, tp:KEY, persona:Name, default), precedence, comments and empty placeholders

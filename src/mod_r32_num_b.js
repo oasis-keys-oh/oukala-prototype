@@ -127,7 +127,7 @@ const RK=NUM.RKINDS={
  line:{pre:"BL",label:"Budget line",ent:"budget_lines",core:()=>G_(()=>S.bud.lines,[]),name:r=>r.n},
  inv:{pre:"IV",label:"Invoice",ent:"invoices",core:()=>G_(()=>INVOICES,[]),name:r=>(r.vendor?r.vendor+" ":"")+r.id},
  led:{pre:"LG",label:"Ledger line",core:()=>G_(()=>S.bud.led,[]),name:r=>r.id+(r.why?" · "+r.why:"")}};
-/* rows of one kind for a tenant: Meridian reads its own registries; any other tenant reads its pack through DATA (none for key results or ledger yet) */
+/* rows of one kind for a tenant: Atlantic Systems reads its own registries; any other tenant reads its pack through DATA (none for key results or ledger yet) */
 NUM.rrows=(kind,t)=>{t=t||ten();const k=RK[kind];if(!k)return[];if(t==="core")return k.core()||[];return k.ent?G_(()=>W.DATA.get(k.ent,{tenant:t}),[]):[]};
 const rkey=(t,id)=>t+"|"+id;
 const rget=(kind,key)=>{const a=L.r[kind]&&L.r[kind][key];return a!=null?a:(DATA.r[kind]?DATA.r[kind][key]:undefined)};

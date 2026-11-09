@@ -33,7 +33,7 @@ Such as every finance agent
 A provider
 Switch off one model vendor
 This tenant
-Everything for Meridian
+Everything for Atlantic
 Platform
 Every tenant (operator only)
 First Officer

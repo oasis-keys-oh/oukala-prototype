@@ -1,18 +1,18 @@
 # Tenant data: entity plan and migration batches (PR-32)
 
-Goal (PR-32): every screen shows each sample company's own data. The four tenants are fictional: Meridian Standards Foundation (`core`), Larkspur Health System (`health`), Redstone Resources (`mining`) and Corvane Data Protection (`storage`). This plan carries no status or priority: those live in the Product Backlog. Rules: R16 to R20. Contract: `docs/ARCHITECTURE.md` section 1 (`DATA`). Background: `docs/tenant-seams.md`, `docs/tenant-packs.md`. Per-screen detail: `docs/data/tenant-coverage.csv`.
+Goal (PR-32): every screen shows each sample company's own data. The four tenants are fictional: Atlantic Systems (`core`), Larkspur Health System (`health`), Redstone Resources (`mining`) and Corvane Data Protection (`storage`). This plan carries no status or priority: those live in the Product Backlog. Rules: R16 to R20. Contract: `docs/ARCHITECTURE.md` section 1 (`DATA`). Background: `docs/tenant-seams.md`, `docs/tenant-packs.md`. Per-screen detail: `docs/data/tenant-coverage.csv`.
 
 Labels used here: **prototype fact** (measured on the build at 828e227), **hypothesis** (a proposal to check in a demo), **simulated** (sample figures inside a pack). Tenant isolation stays simulated: one browser page, application code only.
 
 ## 1. How this was measured
 
-`tools/scratch/data/instrument.js` opens `build_out/full.html` under the core tenant, settles every lazy registry by opening each screen once, then wraps the Meridian sample data in place: each array gets read trackers on its indexes and its iteration methods, each record object gets trackers on its fields, each dictionary of records (such as `METRICS`) gets trackers on its keys. It covers 657 data paths (prototype fact): the core constants of `data.js`, `data2.js`, `kit.js`, `kit2.js` and the `screens*.js` files, the data members of `S`, and the record arrays of module namespaces on `window` (`GRCX.controls`, `REQREG`, `ORGX.staff` and so on). It then opens all 196 registered screens with `go(id)` and clicks up to eight tabs on each (743 tab clicks on 148 screens, prototype fact). A read counts for a screen only while that screen's registered render function runs and `S.screen` is that screen, so a tab that navigates away is not charged to it. Each read samples its caller (first stack frame in `full.html`, mapped to a source file by the build markers), which separates reads by the screen's own module from reads by shared helpers. Reads inside the person work index (the `WORK` providers behind `workFor`, used by owner chips and load badges) go to their own bucket. `DATA.get` calls are counted per screen. The run had no page errors (prototype fact).
+`tools/scratch/data/instrument.js` opens `build_out/full.html` under the core tenant, settles every lazy registry by opening each screen once, then wraps the Atlantic Systems sample data in place: each array gets read trackers on its indexes and its iteration methods, each record object gets trackers on its fields, each dictionary of records (such as `METRICS`) gets trackers on its keys. It covers 657 data paths (prototype fact): the core constants of `data.js`, `data2.js`, `kit.js`, `kit2.js` and the `screens*.js` files, the data members of `S`, and the record arrays of module namespaces on `window` (`GRCX.controls`, `REQREG`, `ORGX.staff` and so on). It then opens all 196 registered screens with `go(id)` and clicks up to eight tabs on each (743 tab clicks on 148 screens, prototype fact). A read counts for a screen only while that screen's registered render function runs and `S.screen` is that screen, so a tab that navigates away is not charged to it. Each read samples its caller (first stack frame in `full.html`, mapped to a source file by the build markers), which separates reads by the screen's own module from reads by shared helpers. Reads inside the person work index (the `WORK` providers behind `workFor`, used by owner chips and load badges) go to their own bucket. `DATA.get` calls are counted per screen. The run had no page errors (prototype fact).
 
-`tools/scratch/data/entity_map.py` classifies each path as tenant records (an entity), tenant configuration, platform definitions (data model, permission engine, module map, contracts) or view state and caches. `analyze.py` writes the CSV; `batches.py` builds the batch plan; `volumes.js` counts the Meridian rows behind each path; `redirects.js` lists screens that land elsewhere.
+`tools/scratch/data/entity_map.py` classifies each path as tenant records (an entity), tenant configuration, platform definitions (data model, permission engine, module map, contracts) or view state and caches. `analyze.py` writes the CSV; `batches.py` builds the batch plan; `volumes.js` counts the Atlantic Systems rows behind each path; `redirects.js` lists screens that land elsewhere.
 
 What it does not see (limits of the method):
 - Drawers, modals, hover cards and timers after render are not opened. Reads behind them are missing.
-- Arrays held inside a module's closure are not reachable from the page. A static scan lists their names per module in the CSV column `module_private_seeds`: 129 of the 181 Meridian-only screens sit in a module with such arrays (prototype fact). They may hold more sample records than this plan names; each batch checks its own modules for them.
+- Arrays held inside a module's closure are not reachable from the page. A static scan lists their names per module in the CSV column `module_private_seeds`: 129 of the 181 Atlantic-only screens sit in a module with such arrays (prototype fact). They may hold more sample records than this plan names; each batch checks its own modules for them.
 - Index reads beyond row 4,000 of one array are not tracked (method calls still are).
 - Two registered screens redirect: `trace` opens `strat_exec`, `plat_data_old` opens `plat_data`. Three render no tenant business data: `log`, `plat_self`, `studio` (prototype fact).
 
@@ -23,13 +23,13 @@ What it does not see (limits of the method):
 | Registered screens | 196 |
 | Mode `data` (read through DATA under another tenant) | 12 |
 | Mode `tenant` (follow the tenant another way) | 3 |
-| Mode `core` (Meridian only, labeled under other tenants) | 181 |
+| Mode `core` (Atlantic Systems only, labeled under other tenants) | 181 |
 | Entities DATA defines today | 17 |
 | Entities to add | 58 (50 record entities, 8 configuration entities) |
-| Meridian-only screens that need only entities DATA already defines, with rows in all three packs | 23 |
-| Meridian-only screens that read no tenant business data | 5 |
-| Meridian-only screens by number of entities still missing: 0, 1, 2, 3, 4, 5, 6 or more | 28, 34, 22, 21, 16, 20, 40 |
-| Meridian-only screens that get some rows through another file (a shared helper such as `ui.js` or `kit2.js`, or another module's data store) | 174 |
+| Atlantic-only screens that need only entities DATA already defines, with rows in all three packs | 23 |
+| Atlantic-only screens that read no tenant business data | 5 |
+| Atlantic-only screens by number of entities still missing: 0, 1, 2, 3, 4, 5, 6 or more | 28, 34, 22, 21, 16, 20, 40 |
+| Atlantic-only screens that get some rows through another file (a shared helper such as `ui.js` or `kit2.js`, or another module's data store) | 174 |
 
 Pack status today: every entity DATA defines has rows in all three industry packs (health, mining and storage each have 6 projects, 11 metrics, 4 objectives, 8 key results, 8 processes and so on). None of the 58 new entities has rows in any pack. So under health, mining or storage the same 23 screens are ready and the same 153 are not; the CSV columns `ready_health`, `ready_mining`, `ready_storage` say so per screen.
 
@@ -37,7 +37,7 @@ The 23 ready screens: `bc_frame`, `bc_trace`, `dec_cov`, `draw_studio`, `flw_bpm
 
 ## 3. Entities to add
 
-Columns: **Entity** (proposed DATA name), **Key**, **Core getter source** (the Meridian paths the core getter should return, with Meridian row counts, prototype fact), **Screens** (registered screens that read it / Meridian-only screens that read it / Meridian-only screens for which it is the only missing entity, prototype fact), **Fields the screens read** (measured, most read first; short keys are the existing Meridian field names). Class is record unless marked configuration.
+Columns: **Entity** (proposed DATA name), **Key**, **Core getter source** (the Atlantic Systems paths the core getter should return, with Atlantic Systems row counts, prototype fact), **Screens** (registered screens that read it / Atlantic-only screens that read it / Atlantic-only screens for which it is the only missing entity, prototype fact), **Fields the screens read** (measured, most read first; short keys are the existing Atlantic Systems field names). Class is record unless marked configuration.
 
 ### Strategy and value
 
@@ -142,15 +142,15 @@ Columns: **Entity** (proposed DATA name), **Key**, **Core getter source** (the M
 | reports (configuration) | id | `S.r15r.reports` (3), `S.r15r.scheds`, `S.r15r.runs`, `S.r16d.charts` (5), `S.viz.lib` (19), `S.viz.dash` (3) | 6 / 6 / 1 (`kcs_viz`) | owner, name, id, title, spec, measure, dim, channel |
 | decision_tables (configuration) | id | `S.flw.dmn` (4) | 2 / 2 / 1 (`flw_dmn`) | id, name, rows, inputs, outputs |
 
-The entities DATA already defines are read widely and need no new definition: metrics (161 Meridian-only screens), processes (150), people (118), projects (32), budget_lines (30), objectives (22), demand (18), invoices (13), workflows (12), journeys (5), key_results (4) (prototype fact). Two gaps inside them: the `objectives` core getter returns `NODES` objectives (2) while the strategy screens read `S.exe.objs` (5) and `EXE.E`; and `people` has three more Meridian sources the screens read (`ORGX.staff` 74, `PEOPLE` 16, `S.ppl.people` 39). The batch that owns the reader aligns them; the core snapshot must not lose ids.
+The entities DATA already defines are read widely and need no new definition: metrics (161 Atlantic-only screens), processes (150), people (118), projects (32), budget_lines (30), objectives (22), demand (18), invoices (13), workflows (12), journeys (5), key_results (4) (prototype fact). Two gaps inside them: the `objectives` core getter returns `NODES` objectives (2) while the strategy screens read `S.exe.objs` (5) and `EXE.E`; and `people` has three more Atlantic Systems sources the screens read (`ORGX.staff` 74, `PEOPLE` 16, `S.ppl.people` 39). The batch that owns the reader aligns them; the core snapshot must not lose ids.
 
 Platform definitions and view state are not tenant data and stay as they are: the permission engine (`PERM`, `S.r16g.rules`), the data model registry (`DATAMODEL`), lineage and link caches (`LIN`, `LINKS`), standards (`STD`), the module map (`MODMAP`), feature contracts (`CONTRACT`), screen helpers (`MPOPT`, `BTC`, `S.bt`, `S.lr`), calendars (`WD`, `MONTHS`, `HOLIDAYS`) and the round-numbered namespaces (`R15`, `R16M`, `R17P`, `R18` constants and so on).
 
 ## 4. Record volumes per pack (hypothesis)
 
-Demo scale for one fictional company of about 25 named people and six projects, enough that lists scroll, filters return something and charts are not flat. Meridian today is the prototype fact for comparison. Enterprise scale (`SCALE.set(true)`) stays a Meridian-only generator; packs do not need it.
+Demo scale for one fictional company of about 25 named people and six projects, enough that lists scroll, filters return something and charts are not flat. Atlantic Systems today is the prototype fact for comparison. Enterprise scale (`SCALE.set(true)`) stays an Atlantic Systems-only generator; packs do not need it.
 
-| Entity | Meridian today (prototype fact) | Each pack (hypothesis) |
+| Entity | Atlantic Systems today (prototype fact) | Each pack (hypothesis) |
 |---|---|---|
 | risks | 24 across three stores | 16, of which 6 enterprise, 6 control risks, 4 finance |
 | benefits | 10 | 8, one or two per project |
@@ -211,13 +211,13 @@ Demo scale for one fictional company of about 25 named people and six projects, 
 | reports | 3 reports, 19 library charts | 4, 8 |
 | decision_tables | 4 | 3 |
 
-Every pack row follows the generator rules already in force: an owner and a different backup who are people in the pack (R12), agents and robots with a human sponsor, no em dash, no banned name, no other tenant's organization name, and no person sharing a full name with Meridian.
+Every pack row follows the generator rules already in force: an owner and a different backup who are people in the pack (R12), agents and robots with a human sponsor, no em dash, no banned name, no other tenant's organization name, and no person sharing a full name with Atlantic Systems.
 
 ## 5. Vocabulary (DATA.term keys to add, hypothesis)
 
 The 15 keys in `docs/tenant-packs.md` section 4 stay. Proposed new keys name each tenant's own business object; IT nouns that are right in every industry (incident, change on an IT system, ticket) are left alone, as that document already says.
 
-| Key | Default (Meridian) | Larkspur Health System | Redstone Resources | Corvane Data Protection |
+| Key | Default (Atlantic Systems) | Larkspur Health System | Redstone Resources | Corvane Data Protection |
 |---|---|---|---|---|
 | project | project | initiative | project | program |
 | change | change | change | management of change | change |
@@ -251,9 +251,9 @@ Plural forms follow the existing `[singular, plural]` pairs. Defaults go into `V
 
 Each source file appears in exactly one of B2 to B10, so those batches never edit the same file twice and can run in parallel once their prerequisites are merged. B0 runs alone before them; B1 touches only specs and generated packs. Within a batch, the lanes listed are independent groups of files and can be split across streams. The grouping comes from `tools/scratch/data/batches.py` (output `batches.json`): a screen's module set is the file holding its render function plus the files that read rows for it; cross-cutting helpers (files that read rows for 20 or more screens they do not define, plus `mod_s_owner`, which resolves owner chips on 14) form B2; data owners (8 to 19 foreign screens) do not link their readers, because switching an owner's accessors to DATA unlocks the readers without editing them; aggregator screens (rows from 5 or more other modules) move with their own module but only become fully tenant-aware after their sources.
 
-Rules for every screen batch: read through `DATA.get` or through the data owner's accessor that now reads `DATA.get`; register the screen's mode from its own module (`DATA.screen(id, {mode: "data", entities})`), never from `mod_s_tenant.js`; use `DATA.term` for the nouns in section 5; leave Meridian output unchanged (`tools/tests/tenant.js` core snapshot, `smoke.js`, `tabs.js`); never fill a gap with Meridian rows (R18); add no lines to `tools/tests/run.sh` (B0 adds one generic check that covers every screen in mode `data`).
+Rules for every screen batch: read through `DATA.get` or through the data owner's accessor that now reads `DATA.get`; register the screen's mode from its own module (`DATA.screen(id, {mode: "data", entities})`), never from `mod_s_tenant.js`; use `DATA.term` for the nouns in section 5; leave Atlantic Systems output unchanged (`tools/tests/tenant.js` core snapshot, `smoke.js`, `tabs.js`); never fill a gap with Atlantic Systems rows (R18); add no lines to `tools/tests/run.sh` (B0 adds one generic check that covers every screen in mode `data`).
 
-| Batch | Name | Depends on | Files | Screens (Meridian-only today) |
+| Batch | Name | Depends on | Files | Screens (Atlantic-only today) |
 |---|---|---|---|---|
 | B0 | Entity layer | none (serial, first) | new `src/mod_s_tenant_entities.js` (58 `DATA.define` calls with core getters over the sources in section 3), `src/modules.json`, `src/mod_s_tenant.js` (vocabulary defaults only), `tools/generators/gen_pack.py` (row rules for the new entities), `tools/tests/tenant.js`, `tools/tests/tenant_core_snapshot.json`, one new `tools/tests/tenant_screens.js` and its line in `run.sh`, `docs/tenant-packs.md` | none |
 | B1 | Pack content, three lanes | B0 | lane health: `tools/generators/gen_pack_specs/health.json`, `src/mod_s_pack_health.js`; lane mining: the mining pair; lane storage: the storage pair | none (fills the rows of section 4) |
@@ -267,7 +267,7 @@ Rules for every screen batch: read through `DATA.get` or through the data owner'
 | B9 | Build, admin, transformation and showroom | B0 | 40 files | 40 of 47 |
 | B10 | Aggregator screens and adapter clean-up | B2 to B9 | 26 files | 14 of 15 |
 
-Order: B0 alone; then B1 (three lanes), B2 and B3 to B9 all in parallel (no shared files); then B10. A screen batch can merge before B1, because its screens then show recorded gaps under the industry tenants (R18), and show rows as soon as B1 lands. Totals: 147 files, 196 screens, 181 of them Meridian-only today (prototype fact). After each merge the orchestrator reruns `gen_scrmap.py` and the IA inventory's `tenant_mode` column is regenerated once, in B10.
+Order: B0 alone; then B1 (three lanes), B2 and B3 to B9 all in parallel (no shared files); then B10. A screen batch can merge before B1, because its screens then show recorded gaps under the industry tenants (R18), and show rows as soon as B1 lands. Totals: 147 files, 196 screens, 181 of them Atlantic-only today (prototype fact). After each merge the orchestrator reruns `gen_scrmap.py` and the IA inventory's `tenant_mode` column is regenerated once, in B10.
 
 ### B2 Cross-cutting helpers
 - Lane `ui.js`, `mod_r15e_data.js`, `mod_r16j_h_metrics.js`: metric chips and metric panels on 125 to 153 screens read `METRICS`; switch to `DATA.get("metrics")`.
@@ -325,7 +325,7 @@ Order: B0 alone; then B1 (three lanes), B2 and B3 to B9 all in parallel (no shar
 - Aggregators whose module has no other batch: `org_chart` (`mod_org2`), `orgassist` (`mod_r31_jzorg`), `r15d_evidence`, `rec_shell` (`mod_r15f2_c_adopt`), `r15_mobile`, the six `r16m_*` screens (`mod_r16m_*`), `r17p_tour`, `r17q_value`, `r17q_thinking`, `r18_lens` (`mod_r18k_biz`). They read rows through five or more other modules, so they go last, when those sources read through DATA.
 - Readers without screens that only serve aggregators: `mod_org3`, `mod_org5`, `mod_r15d_ask`, `mod_r16j_g_contract`, `mod_r16m_a_core`, `mod_r17p_c_moments`, `mod_r17q_b_core`, `mod_r17t_a_actor`, `mod_r18f_wire`, `mod_r31_jx`, `mod_zlink_r15`.
 - `mod_s_tenant_screens.js`: delete each adapter whose owning module now reads DATA itself (`metrics`, `exe_strat`, `strat_exec`, `port`, `bst`, `exe_dash`, `exe_mat`, `r18_mature`), so nothing renders twice.
-- Regenerate `docs/ia/screen-inventory.csv` `tenant_mode` and rerun the instrument to confirm that no screen in mode `data` reads a Meridian global directly.
+- Regenerate `docs/ia/screen-inventory.csv` `tenant_mode` and rerun the instrument to confirm that no screen in mode `data` reads an Atlantic Systems global directly.
 
 ## 7. Rerun
 

@@ -36,7 +36,7 @@ const routePill=r=>pill(r.n,r.k==="auto"?"good":r.k==="council"?"warn":"info");
 const CTYPES=["Generic REST","MCP","Identity provider","Microsoft Graph","Other (custom code)"];
 function mkConnFromProject(p,kind,expiry){
  const id="c_"+p.id.toLowerCase().replace(/-/g,"");const k={"Generic REST":"rest",MCP:"mcp","Identity provider":"idp","Microsoft Graph":"graph"}[p.ctype]||"rest";
- const c={id,name:p.t,kind:k,tier:kind==="certified"?"certified":"project",status:"new",owner:p.owner,min:"fabric",env:"Production",ents:p.ents.slice(),canStream:false,lag:3600,sys:p.systems.join(", "),risk:p.risk,desc:p.purpose,auth:A(["read"],"Set at go-live","pending","vault://meridian-prod/fabric/"+p.id.toLowerCase()+" (created at go-live)","svc-fabric-"+p.id.toLowerCase()),expiry:expiry||undefined,fromProject:p.id};
+ const c={id,name:p.t,kind:k,tier:kind==="certified"?"certified":"project",status:"new",owner:p.owner,min:"fabric",env:"Production",ents:p.ents.slice(),canStream:false,lag:3600,sys:p.systems.join(", "),risk:p.risk,desc:p.purpose,auth:A(["read"],"Set at go-live","pending","vault://atlantic-prod/fabric/"+p.id.toLowerCase()+" (created at go-live)","svc-fabric-"+p.id.toLowerCase()),expiry:expiry||undefined,fromProject:p.id};
  F.conns.splice(F.conns.findIndex(x=>x.kind==="roadmap"),0,c);
  pfields(p).filter(x=>x.hit).forEach(x=>F.maps.push({id:"MP-"+(100+F.maps.length),conn:id,src:x.tok,srcType:"string",ent:x.hit.ent,k:x.hit.k,tf:"As is",conf:.82,status:"proposed",lag:3600,em:null,ver:1,ai:true}));
  return c}

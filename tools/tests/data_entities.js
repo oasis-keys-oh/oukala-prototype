@@ -1,6 +1,6 @@
 // PR-32 entity check (B0, B1): the 58 tenant entities of docs/data/entity-plan.md section 3.
 //  1. every entity in the plan is defined on DATA and listed in TENANT_ENTITIES (50 record entities, 8 configuration);
-//  2. core rows: every entity returns Meridian rows once the screens have rendered (some stores fill on first render),
+//  2. core rows: every entity returns Atlantic Systems rows once the screens have rendered (some stores fill on first render),
 //     with unique keys and a known part on every row;
 //  3. every industry pack validates (DATA.validate); a pack that carries the PR-32 entities carries all 58, every row has a
 //     part, links resolve inside the pack, owners and backups are different people in the pack (R12), people fields name
@@ -29,7 +29,7 @@ const r=await p.evaluate(([PLAN,CONFIG,FILLED])=>{const f=[],w=[],info=[];const 
  ok(L.filter(x=>x.cls==='configuration').map(x=>x.entity).sort().join()===CONFIG.slice().sort().join(),'the 8 configuration entities: '+L.filter(x=>x.cls==='configuration').map(x=>x.entity));
  /* 2. core rows after every screen has rendered once (lazy stores fill on first render; memo cleared by the version bump) */
  SCREENS.forEach(s=>{try{go(s[0])}catch(e){}});DATA.touch();go('home');
- L.forEach(d=>{const rows=DATA.get(d.entity,{tenant:'core'});ok(rows.length>0,'core '+d.entity+' has Meridian rows');const keys=new Set();
+ L.forEach(d=>{const rows=DATA.get(d.entity,{tenant:'core'});ok(rows.length>0,'core '+d.entity+' has Atlantic Systems rows');const keys=new Set();
   rows.forEach(x=>{const k=x[d.key];if(k==null||k===''||keys.has(k))f.push('core '+d.entity+': missing or duplicate '+d.key+' '+k);keys.add(k);
    if(!d.parts.includes(TE.part(d.entity,x)))f.push('core '+d.entity+': unknown part '+TE.part(d.entity,x))});
   info.push('core '+d.entity+' '+rows.length)});
@@ -65,7 +65,7 @@ const r=await p.evaluate(([PLAN,CONFIG,FILLED])=>{const f=[],w=[],info=[];const 
   ok(g('approval_policies').filter(x=>x.grp).length>0&&g('approval_policies').filter(x=>x.grp).every(x=>g('teams').some(tm=>tm.id===x.grp)),t+': approval policies name groups (teams) in the pack');
   const tl=g('trace_links'),edges=tl.filter(x=>x.part==='edge');ok(['obj','proj','bud','inv'].every(k=>tl.some(x=>x.t===k)),t+': trace links carry objectives, projects, budget lines and invoices');
   ok(g('invoices').every(v=>edges.some(e=>e.to===v.id)),t+': every invoice is reached by a trace edge');
-  ok(JSON.stringify(L.map(d=>g(d.entity))).indexOf('Meridian')<0,t+': no Meridian text in the PR-32 rows')});
+  ok(JSON.stringify(L.map(d=>g(d.entity))).indexOf('Atlantic Systems')<0,t+': no Atlantic Systems text in the PR-32 rows')});
  return{f,w,info,counts}},[PLAN,CONFIG,FILLED]);
 r.w.forEach(x=>console.log('warn',x));
 Object.keys(r.counts||{}).forEach(t=>{const c=r.counts[t];const n=Object.values(c).reduce((a,o)=>a+Object.values(o).reduce((x,y)=>x+y,0),0);if(n)console.log('pack',t,n,'rows in',Object.keys(c).filter(e=>Object.keys(c[e]).length).length,'entities')});

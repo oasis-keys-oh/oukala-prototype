@@ -13,7 +13,7 @@ const BUS=[["invoice.decided","Invoice approved, held or rejected","Finance","Fi
  ["decision.approved","Decision approved","Approvals","Requester, approver"],["decision.rejected","Decision rejected","Approvals","Requester, approver"],["decision.deferred","Decision deferred","Approvals","Requester"],["approval.escalated","Approval escalated","Approvals","Escalation role"]];
 const DEFCH={Urgent:{teams:1,email:1,sms:1,push:1,inapp:1},High:{teams:1,email:1,sms:0,push:1,inapp:1},Normal:{teams:1,email:1,sms:0,push:0,inapp:1},Info:{teams:0,email:1,sms:0,push:0,inapp:1}};
 /* PR-32 B9 (R16 to R18): under another tenant the pane lists that tenant's own notification types (events part "service") and hides
-   Meridian holders and deliveries; Meridian is unchanged. */
+   Atlantic Systems holders and deliveries; Atlantic Systems is unchanged. */
 const TCORE=()=>!window.DATA||DATA.tenant()==="core";
 const TWHO=n=>G(()=>EVENTS.who(n),n);
 const svcEv=()=>TCORE()?G(()=>window.SVCEVT,[]):DATA.get("events").filter(r=>r.part==="service");

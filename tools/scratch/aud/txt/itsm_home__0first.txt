@@ -1,4 +1,4 @@
-SERVICE MANAGEMENT · MERIDIAN STANDARDS FOUNDATION
+SERVICE MANAGEMENT · ATLANTIC SYSTEMS
 Service desk overview
 
 5 open P1 or P2 incidents, led by the Codification Portal slowdown that has run 4h 18m. 6 SLA timers are at risk and 3 already breached; 4 incidents wait in a team queue for someone to claim them. The change calendar has 3 changes in the next 7 days and 1 waiting for approval, with 1 collision to resolve; the next freeze, Financial close freeze, starts Nov 16 and 1 planned change would land inside it.

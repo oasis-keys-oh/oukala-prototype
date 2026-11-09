@@ -41,7 +41,7 @@ Packages
 1 here
 Drift
 3 settings differ from the next environment
-MERIDIAN RUNS ON THIS
+ATLANTIC RUNS ON THIS
 Prod
 Healthy, 99.62% available
 26.09.14+136

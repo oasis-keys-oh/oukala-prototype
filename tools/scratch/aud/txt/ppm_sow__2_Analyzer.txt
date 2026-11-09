@@ -120,13 +120,13 @@ CLAUSE AND PAGE	TYPE	SOURCE TEXT	NORMALIZED VALUE	PARTY	OWNER	DUE	MEASURE AND TA
 §1.1 p.1	
 Deliverable	
 Lumen shall deliver a production search indexer for the Codification Platform, including the index schema design document.
-	Stated	Vendor	Marco Ellis	None	Accepted by Meridian Review in 10 business days	
+	Stated	Vendor	Marco Ellis	None	Accepted by Atlantic Review in 10 business days	
 84%
 	Proposed	Standard	Low	CLM-1002	WBS
 §1.2 p.1	
 Deliverable	
 Lumen shall deliver a relevance tuning report covering the top 500 standards queries by December 18, 2026.
-	Due Dec 18, 2026	Vendor	Marco Ellis	Dec 18, 2026	Accepted by Meridian By Dec 18, 2026	
+	Due Dec 18, 2026	Vendor	Marco Ellis	Dec 18, 2026	Accepted by Atlantic By Dec 18, 2026	
 95%
 	Accepted	Standard	Low	CLM-1002	WBS
 §1.3 p.1	
@@ -137,26 +137,26 @@ The desired outcome is that editors find the correct standard on the first page 
 	Proposed	Standard	Low	CLM-1002	None
 §2.1 p.1	
 Milestone	
-Milestone 1: Design approved by Meridian on January 29, 2027.
-	Due Jan 29, 2027	Vendor	Marco Ellis	Jan 29, 2027	Accepted by Meridian By Jan 29, 2027	
+Milestone 1: Design approved by Atlantic on January 29, 2027.
+	Due Jan 29, 2027	Vendor	Marco Ellis	Jan 29, 2027	Accepted by Atlantic By Jan 29, 2027	
 90%
 	Accepted	Standard	Low	CLM-1002	WBS
 §2.2 p.1	
 Milestone	
 Milestone 2: Indexer running in the test environment on March 12, 2027.
-	Due Mar 12, 2027	Vendor	Marco Ellis	Mar 12, 2027	Accepted by Meridian By Mar 12, 2027	
+	Due Mar 12, 2027	Vendor	Marco Ellis	Mar 12, 2027	Accepted by Atlantic By Mar 12, 2027	
 95%
 	Proposed	Standard	Low	CLM-1002	WBS
 §2.3 p.1	
 Milestone	
 Milestone 3: Relevance tuning complete and accepted on April 30, 2027.
-	Due Apr 30, 2027	Vendor	Marco Ellis	Apr 30, 2027	Accepted by Meridian By Apr 30, 2027	
+	Due Apr 30, 2027	Vendor	Marco Ellis	Apr 30, 2027	Accepted by Atlantic By Apr 30, 2027	
 93%
 	Accepted	Standard	Low	CLM-1002	WBS
 §2.4 p.1	
 Milestone	
 Milestone 4: Production cutover completed on June 25, 2027.
-	Due Jun 25, 2027	Vendor	Marco Ellis	Jun 25, 2027	Accepted by Meridian By Jun 25, 2027	
+	Due Jun 25, 2027	Vendor	Marco Ellis	Jun 25, 2027	Accepted by Atlantic By Jun 25, 2027	
 90%
 	Proposed	Standard	Low	CLM-1002	WBS
 §3.1 p.1	
@@ -185,7 +185,7 @@ Relevance accuracy shall be at least 90 percent of the top 500 queries returning
 	Proposed	Standard	Low	CLM-1002	SLA
 §3.5 p.1	
 Measure or KPI	
-Median query latency shall not exceed 400 milliseconds, measured by Meridian monitoring.
+Median query latency shall not exceed 400 milliseconds, measured by Atlantic monitoring.
 	400 ms	Vendor	Contract Analyst Agent	None	Query latency Within 400 ms	
 93%
 	Accepted	Standard	Low	CLM-1002	SLA
@@ -203,7 +203,7 @@ Lumen may invoice each milestone upon delivery, and invoices are payable within 
 	Negotiating	Variance	Medium	CLM-1002	INVRAIDBUD
 §4.3 p.1	
 Price or rate card	
-Travel and expenses require Meridian's prior written approval.
+Travel and expenses require Atlantic's prior written approval.
 	Prior approval	Both	Priya Shah	None	None	
 94%
 	Accepted	Standard	Low	CLM-1002	None
@@ -215,38 +215,38 @@ Rates for additional work follow the rate card in Exhibit A and are fixed for th
 	Proposed	Standard	Medium	CLM-1002	None
 §5.1 p.2	
 Assumption	
-Lumen assumes Meridian will provide production-like test data by January 15, 2027.
+Lumen assumes Atlantic will provide production-like test data by January 15, 2027.
 	Due Jan 15, 2027	Vendor	Marco Ellis	Jan 15, 2027	None	
 94%
 	Accepted	Standard	Low	CLM-1002	RAID
 §5.2 p.2	
 Assumption	
-Any delay in Meridian providing data, access or approvals automatically extends all dates and may result in additional fees.
+Any delay in Atlantic providing data, access or approvals automatically extends all dates and may result in additional fees.
 	Dates and fees move automatically	Both	Priya Shah	None	None	
 87%
 	Negotiating	Variance	Medium	CLM-1002	RAID
 §5.3 p.2	
 Dependency	
-Meridian shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
-	5 days	Meridian	Priya Shah	Jan 18, 2027	None	
+Atlantic shall provide Azure environments and access for Lumen staff within 5 business days of the effective date.
+	5 days	Atlantic	Priya Shah	Jan 18, 2027	None	
 92%
 	Proposed	Standard	Low	CLM-1002	RAID
 §5.4 p.2	
 Dependency	
 The indexer depends on the Codification Platform content API being stable and documented.
-	Stated	Meridian	Priya Shah	None	None	
+	Stated	Atlantic	Priya Shah	None	None	
 87%
 	Accepted	Standard	Low	CLM-1002	RAID
 §6.1 p.2	
 Deliverable	
-Meridian shall review each deliverable within 10 business days of delivery.
-	10 business days	Meridian	Priya Shah	None	Accepted by Meridian	
+Atlantic shall review each deliverable within 10 business days of delivery.
+	10 business days	Atlantic	Priya Shah	None	Accepted by Atlantic	
 93%
 	Proposed	Standard	High	CLM-1002	WBS
 §6.2 p.2	
 Deliverable	
 A deliverable not rejected in writing within the review period is deemed accepted.
-	Deemed acceptance	Vendor	Marco Ellis	None	Accepted by Meridian	
+	Deemed acceptance	Vendor	Marco Ellis	None	Accepted by Atlantic	
 94%
 	Negotiating	Variance	High	CLM-1002	WBSRAID
 §6.3 p.2	
@@ -257,13 +257,13 @@ Lumen warrants that deliverables will conform to the specification for 90 days a
 	Accepted	Standard	Medium	CLM-1002	None
 §7.1 p.2	
 Intellectual property	
-Meridian owns all deliverables and work product created under this Statement of Work.
-	Meridian owns	Meridian	Priya Shah	None	None	
+Atlantic owns all deliverables and work product created under this Statement of Work.
+	Atlantic owns	Atlantic	Priya Shah	None	None	
 94%
 	Agreed	Standard	High	CLM-1002	None
 §7.2 p.2	
 Intellectual property	
-Lumen grants Meridian a perpetual, royalty-free license to Lumen background tools embedded in the deliverables.
+Lumen grants Atlantic a perpetual, royalty-free license to Lumen background tools embedded in the deliverables.
 	Perpetual license	Vendor	Marco Ellis	None	None	
 89%
 	Accepted	Standard	Medium	CLM-1002	None

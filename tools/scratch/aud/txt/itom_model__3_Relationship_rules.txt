@@ -31,7 +31,7 @@ Relationship types
 CSDM 5 domains
 Relationship rules
 Relationship rules (suggested relationships)
-A CI of the class must have at least one relationship of this kind. Rules feed the compliance score; turn one off if it does not fit Meridian.
+A CI of the class must have at least one relationship of this kind. Rules feed the compliance score; turn one off if it does not fit Atlantic.
 Add rule
 RULE	CLASS	NEEDS	FAILING NOW	ACTIVE
 RR1	Application	runs on Computer or Cloud or Software

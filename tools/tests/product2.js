@@ -58,7 +58,7 @@ const pal=async q=>{await p.evaluate(()=>{try{NAVX.palette.close()}catch(e){}go(
  await p.waitForFunction(q=>NAVX.int.PAL.q===q&&document.querySelector('#nxPalList [data-nx-i="0"]'),q,{timeout:10000});await p.waitForTimeout(120)};
 const palState=()=>p.evaluate(()=>({offer:!!document.querySelector('#nxPalList [data-srch-builder="1"]'),locked:(document.querySelector('#nxPalList [data-srch-locked]')||{}).textContent||'',
  listed:NAVX.int.PAL.rows.some(r=>r.sid==='flw_design'),can:SRCH.canBuild(),on:SRCH.builder()}));
-// a person with neither role (Grace Oduya has no membership in the Meridian tenant) under the CIO persona
+// a person with neither role (Grace Oduya has no membership in the Atlantic Systems tenant) under the CIO persona
 await p.evaluate(()=>{window.__p2cur=IDENT.cur;IDENT.cur='grace-oduya';NAVX.persona.set('exec');U.store.set('falconaire-search-builder',true);SRCH.dirty()});
 await pal('workflow designer');let s87=await palState();
 const set87=await p.evaluate(()=>SRCH.setBuilder(true));
@@ -69,7 +69,7 @@ ok(s87.can&&s87.on&&s87.listed,'CL-87 the Architect persona gets builder mode: '
 // an identity with the Architect role (Jordan Lee) under a non-builder persona
 await p.evaluate(()=>{IDENT.cur='jordan-lee';NAVX.persona.set('exec');SRCH.dirty()});await pal('workflow designer');s87=await palState();
 ok(s87.can&&s87.on&&s87.listed,'CL-87 the Architect role (IDENT) gets builder mode: '+JSON.stringify(s87));
-// the presenter (Tenant admin in the Meridian tenant) keeps the offer
+// the presenter (Tenant admin in the Atlantic Systems tenant) keeps the offer
 await p.evaluate(()=>{IDENT.cur=window.__p2cur;U.store.set('falconaire-search-builder',false);SRCH.dirty()});await pal('workflow designer');s87=await palState();
 ok(s87.can&&!s87.on&&s87.offer&&!s87.listed,'CL-87 the Tenant admin is offered builder mode: '+JSON.stringify(s87));
 await p.evaluate(()=>{try{NAVX.palette.close()}catch(e){}});

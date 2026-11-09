@@ -124,7 +124,7 @@ X.register({id:"ciso_agent",title:"The agent that wants more",role:["ciso"],tena
 /* ---------- 4. CIO: a change collides with a release the week of a board meeting ---------- */
 function clashOf(){const R=arr(G(()=>RELX.releases,[]));for(const r of R){const c=arr(G(()=>RELX.clashes(r.id),[])).find(x=>x.k==="hard"&&/^CHG/.test(x.w||""));if(c)return{rel:r,chg:c.w}}return null}
 const hardLeft=id=>arr(G(()=>RELX.clashes(id),[])).filter(x=>x.k==="hard").length;
-X.register({id:"cio_clash",title:"The clash in board week",role:["cio"],tenants:"any",clock:180,needs:t=>t==="core", /* release records exist only in the Meridian sample until PR-36 */labels:["simulated","modeled","fact"],
+X.register({id:"cio_clash",title:"The clash in board week",role:["cio"],tenants:"any",clock:180,needs:t=>t==="core", /* release records exist only in the Atlantic Systems sample until PR-36 */labels:["simulated","modeled","fact"],
  screens:["itsm_rel","itsm_chg"],ripples:["risk","objective"],
  brief:"A change and a release hit the same service on the same day in the week of a board meeting, so find the clash and resolve it.",
  goal:"No hard clash is left on the release and you have seen what the move does to the objective it serves.",

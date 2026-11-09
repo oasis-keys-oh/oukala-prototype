@@ -1,6 +1,6 @@
 /* ===== mod_r32_orgprop: recommended agents and robots drawn on the real org chart.
    Each build from the Build list becomes a dashed card under the head of the team it would help, the same way an open position does.
-   Proposed, not built; every figure is a modeled sample value. Meridian scenario only: the industry scenarios have no real org chart. ===== */
+   Proposed, not built; every figure is a modeled sample value. Atlantic Systems scenario only: the industry scenarios have no real org chart. ===== */
 (function(){
 const W=window,O=W.ORGX,R=W.JXR;if(!O||!R||!R.builds||!W.SCN)return;
 const OS=S.org;

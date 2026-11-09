@@ -10,7 +10,7 @@ const D=BX.D,UI=BX.ui,days=BX.days,date=BX.date,mins=BX.mins,TODAY=BX.TODAY;
 UI.plK=UI.plK||"all";UI.plS=UI.plS||"all";
 const KIND={application:"Application",site:"Site",process:"Process",vendor:"Vendor",enterprise:"Enterprise"};
 const V=(v,dt,by,change,st)=>({v,date:dt,by,change,st});
-const scopeName=p=>{if(p.kind==="application")return(BX.app(p.scope)||{n:p.scope}).n;if(p.kind==="site")return(D().sites.find(s=>s.id===p.scope)||{n:p.scope}).n;if(p.kind==="process")return(D().bps.find(b=>b.id===p.scope)||{n:p.scope}).n;if(p.kind==="vendor")return G(()=>S.bud.vend.find(v=>v.id===p.scope).n,p.scope);return"All of Meridian"};
+const scopeName=p=>{if(p.kind==="application")return(BX.app(p.scope)||{n:p.scope}).n;if(p.kind==="site")return(D().sites.find(s=>s.id===p.scope)||{n:p.scope}).n;if(p.kind==="process")return(D().bps.find(b=>b.id===p.scope)||{n:p.scope}).n;if(p.kind==="vendor")return G(()=>S.bud.vend.find(v=>v.id===p.scope).n,p.scope);return"All of Atlantic Systems"};
 const tierOf=p=>p.kind==="application"?(BX.app(p.scope)||{tier:p.tier}).tier:p.tier;
 const objs=p=>{const a=p.kind==="application"?BX.app(p.scope):null;const t=BX.tierOf(a?a.tier:p.tier)||BX.tierOf(1);return{rto:a?a.rtoT:t.rto,rpo:a?a.rpoT:t.rpo,mtd:a?a.mtd:t.mtd}};
 const nextReview=p=>p.lastReview?BX.addM(p.lastReview,p.cadence):"";

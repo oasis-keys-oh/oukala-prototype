@@ -2,10 +2,10 @@
 // every Showroom tour beat on the tenant the tour declares (beat.tenant, tour.tenant, default core): opens the beat's screen, clicks its tab the way the Showroom does, and checks
 //  1. no other tenant's organization names, record ids, project or people names on screen (same fingerprints as tenant_leak.js);
 //  2. a tenant-aware screen (DATA.screens() mode "data" or "tenant") shows this tenant's own data: its organization name and at
-//     least one of its own record names or ids; a Meridian-only screen carries the "not tenant-aware yet" label instead;
+//     least one of its own record names or ids; an Atlantic Systems-only screen carries the "not tenant-aware yet" label instead;
 //  3. no page errors; the tab named by the beat exists.
 // Reports render timings per tenant (ms to open each beat and its tab, median and slowest) and the talk time of each cut.
-// The Showroom itself starts tours on Meridian today; this check is what makes a tenant tour safe to rehearse.
+// The Showroom itself starts tours on Atlantic Systems today; this check is what makes a tenant tour safe to rehearse.
 // Usage: node tools/tests/tenant_tour.js <dir containing full.html>
 const {chromium}=require('playwright');const path=require('path');
 (async()=>{const dir=path.resolve(process.argv[2]||'build_out');
@@ -21,7 +21,7 @@ const setup=await p.evaluate(()=>{const fp={},own={};const esc=s=>s.replace(/[.*
    ['projects','objectives','metrics'].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>add(r.n)));DATA.get('people',{tenant:t.id}).forEach(r=>add(r.name));DATA.get('journeys',{tenant:t.id}).forEach(r=>add(r.n))}
   fp[t.id]=[...terms]});
  const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
- window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])'))});
+ window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])'))});
  window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
   const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');return c.textContent+' '+at};
  window.__hits=(txt,t)=>{const out=[];Object.keys(window.__fp).forEach(k=>{if(k===t)return;window.__fp[k].forEach(re=>{const m=re.exec(txt);if(m)out.push(k+':'+m[0].trim())})});return out};
@@ -49,13 +49,13 @@ for(const t of setup.tenants){
   if(!r.tabOk)fail(where+': tab not found');
   const hits=[...new Set(r.hits.concat(late))];if(hits.length)fail(where+' shows another tenant: '+hits.slice(0,4).join(' | '));
   if(r.mode!=='core'){aware++;if(t!=='core'&&(!r.org&&r.own<2))fail(where+': tenant-aware screen does not show the tenant\'s own data (org '+r.org+', own terms '+r.own+')');}
-  else{legacy++;legacyIds.add(bt.go);if(t!=='core'&&!r.lab)fail(where+': Meridian-only screen without the tenant label')}
+  else{legacy++;legacyIds.add(bt.go);if(t!=='core'&&!r.lab)fail(where+': Atlantic-only screen without the tenant label')}
   if(errs.length>n0)fail(where+' errors '+errs.slice(n0).join(' | ').slice(0,400))}
  const ms=times.map(x=>x.ms).sort((a,b)=>a-b);const med=ms[Math.floor(ms.length/2)]||0,slow=times.slice().sort((a,b)=>b.ms-a.ms)[0]||{};
  report.push({t,aware,legacy,legacyIds:[...legacyIds],med:Math.round(med),slow:slow.beat+' '+Math.round(slow.ms||0),total:Math.round(ms.reduce((a,x)=>a+x,0))});
 }
 await p.evaluate(()=>TENANT.switch('core'));
-console.log('tenant   | beats on tenant-aware screens | beats on Meridian-only screens | render ms median | slowest beat ms | total ms');
+console.log('tenant   | beats on tenant-aware screens | beats on Atlantic-only screens | render ms median | slowest beat ms | total ms');
 report.forEach(r=>console.log(r.t.padEnd(8),'|',String(r.aware).padEnd(29),'|',(r.legacy+(r.legacyIds.length?' ('+r.legacyIds.join(', ')+')':'')).padEnd(30),'|',String(r.med).padEnd(16),'|',r.slow.padEnd(15),'|',r.total));
 console.log('tenant tour',bad?'FAIL '+bad:'ok','| errors',errs.length?errs.slice(0,3):'none');
 await b.close();process.exit(bad||errs.length?1:0)})();

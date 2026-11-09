@@ -35,5 +35,5 @@ Feature purpose, the process steps (what each step reads and writes), the fields
 - Restricted and personal data get the most restrictive class when unsure.
 - Write canonical entities only through their owner's API. Do not create user tables, a second notification table or a second audit table.
 - Drafts are AI-suggested; the caller accepts. Do not call `request_exception` yourself.
-- Naming rule: never FAF, Codification or ASU (or ASC, FASB, GASB). Sample customer Meridian Standards Foundation; sample systems the Standards Portal and the Standards Platform.
+- Naming rule: never FAF, Codification or ASU (or ASC, FASB, GASB). Sample customer Atlantic Systems; sample systems the Standards Portal and the Standards Platform.
 - Plain American English, no em dashes.

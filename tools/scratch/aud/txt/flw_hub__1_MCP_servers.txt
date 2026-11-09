@@ -24,7 +24,7 @@ Webhooks and keys
 Retries and dead letters
 5 MCP servers, 17 tools. Agents can only call a tool when the server allows the agent and the tool permission is Allow, or Ask first with a person approving. Register a server
 oukala-records
-https://mcp.meridian.example/records
+https://mcp.atlantic.example/records
 Streamable HTTP
 Healthy
 4,210 calls, 7 days
@@ -71,7 +71,7 @@ Knowledge Curator
 Forecast Agent
 Edit access
 azure-devops
-https://mcp.dev.azure.example/meridian
+https://mcp.dev.azure.example/atlantic
 Streamable HTTP
 Healthy
 1,380 calls, 7 days
@@ -115,7 +115,7 @@ Ops Agent
 First Officer
 Edit access
 sharepoint-docs
-npx @meridian/mcp-sharepoint
+npx @atlantic/mcp-sharepoint
 stdio (local gateway)
 Degraded
 2,240 calls, 7 days
@@ -151,7 +151,7 @@ Knowledge Curator
 Contract Analyst
 Edit access
 servicenow-compat
-https://mcp.meridian.example/itsm
+https://mcp.atlantic.example/itsm
 Streamable HTTP
 Healthy
 3,050 calls, 7 days
@@ -188,7 +188,7 @@ Triage Agent
 Ops Agent
 Edit access
 entra-directory
-https://mcp.meridian.example/directory
+https://mcp.atlantic.example/directory
 Streamable HTTP
 Healthy
 760 calls, 7 days

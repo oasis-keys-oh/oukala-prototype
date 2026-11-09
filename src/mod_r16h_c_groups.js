@@ -232,7 +232,7 @@ R.addScreen({id:"r16h_groups",name:"Approval groups",own:"Casey Rowan",bk:"Rina 
  fin:[["adm_sec","Group membership from the directory","person","api"],["org_chart","People and managers","person","api"],["inbox","Pending approvals","approval","event","Inbox opened"]],fout:[["inbox","Group on each approval item","approval","event","Approval created"],["adm_audit","Group decisions","approver_action","event","Member decides"],["flw_design","Groups for approval steps","approver_group","api","Step edited"]]});
 R.apg_screen=true;
 /* PR-32 B9: another sample company sees its own approver groups. Its approval policies name a team (grp); the team is the group, its
-   members are the team's people. The routing engine (APG) and its Meridian groups are unchanged; this view only reads tenant rows (R18). */
+   members are the team's people. The routing engine (APG) and its Atlantic Systems groups are unchanged; this view only reads tenant rows (R18). */
 function tenantView(){const teams=TROWS("teams"),pol=TROWS("approval_policies"),ppl=G(()=>DATA.get("people").filter(p=>p.kind==="human"),[]);
  const LB={doa:"Delegation of authority",control:"Spend control",rule:"Approval rule",binding:"Approval binding"};
  const use=t=>pol.filter(r=>r.grp===t.id);const mem=t=>{const m=ppl.filter(p=>p.team===t.n).map(p=>p.name);if(t.mgr&&m.indexOf(t.mgr)<0)m.unshift(t.mgr);return m};

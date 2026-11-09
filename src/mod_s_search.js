@@ -84,33 +84,33 @@ SRCH.nameHit=function(it,q){if(!it||it.ty!=="screen"||!it.sid)return 0;const qn=
  if(words(qn).length>1&&names.some(n=>wordsCover(qn,n)))return 1500;
  return 0};
 
-/* ---------- CL-75: tenant scope (R18). Every index item carries tn: null (product, any tenant), "core" (the Meridian
-   sample) or a tenant id. Search providers still read the Meridian globals, so their records are tagged "core" here, centrally,
+/* ---------- CL-75: tenant scope (R18). Every index item carries tn: null (product, any tenant), "core" (the Atlantic Systems
+   sample) or a tenant id. Search providers still read the Atlantic Systems globals, so their records are tagged "core" here, centrally,
    instead of in each provider; under another tenant they are hidden and the palette says how many. ---------- */
 const tenant=()=>G(()=>DATA.tenant(),"core");
 const tname=t=>G(()=>{const i=DATA.tenantInfo(t);return i.short||i.org||t},t);
-/* sources and provider groups that describe the product, not a customer's records (still checked for Meridian names) */
+/* sources and provider groups that describe the product, not a customer's records (still checked for Atlantic Systems names) */
 const NEUTRAL_SRC=/^(Screens|Actions|Screen tabs|Data entities|Data fields)$/;
 const NEUTRAL_G=/^(go to|screens|actions|chat tools|agent tools|mcp tools|chart types|data model tables|data diagram tables|registry|proposed entities|data model coverage|data model gaps|data connections|process connections|modules|feature contract|screen decisions|product decisions|tour stories|tour moments)$/i;
 let FP=null;
-/* Meridian fingerprint: organization, invoice ids, project names and human names that no other tenant shares */
+/* Atlantic Systems fingerprint: organization, invoice ids, project names and human names that no other tenant shares */
 function fingerprint(){if(FP)return FP;const terms=new Set();const add=v=>{v=String(v||"").trim();if(v.length>=3)terms.add(v)};
- G(()=>{const ci=DATA.tenantInfo("core")||{};add(ci.org);add(ci.short)});add("Meridian");
+ G(()=>{const ci=DATA.tenantInfo("core")||{};add(ci.org);add(ci.short)});add("Atlantic Systems");
  G(()=>DATA.get("invoices",{tenant:"core"}).forEach(r=>add(r.id)));G(()=>DATA.get("projects",{tenant:"core"}).forEach(r=>{add(r.n);add(r.id)}));
  G(()=>DATA.get("people",{tenant:"core"}).filter(r=>r.kind==="human").forEach(r=>add(r.name)));
  const shared=new Set();G(()=>DATA.tenants().filter(t=>t.id!=="core").forEach(t=>{shared.add(t.org);shared.add(t.short);["projects","people"].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>{shared.add(r.n);shared.add(r.name);shared.add(r.id)}))}));
  G(()=>IDENT.people.forEach(p=>shared.add(p.name)));
  const L=[...terms].filter(x=>!shared.has(x)).sort((a,b)=>b.length-a.length).map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
  FP=L.length?new RegExp("(^|[^A-Za-z0-9_-])("+L.join("|")+")($|[^A-Za-z0-9_-])"):/$^/;return FP}
-SRCH.isMeridian=txt=>fingerprint().test(String(txt||""));
+SRCH.isAtlantic=txt=>fingerprint().test(String(txt||""));
 const textOf=x=>[x.g,x.t,x.m,x.k].join(" ");
 /* tag an index item once, when the index is built (mod_nav ensureIndex) */
 SRCH.tag=function(it,src){if(!it||it.tn!==undefined)return it;
- if(it.ty==="screen"||it.ty==="action"||NEUTRAL_SRC.test(src||"")||NEUTRAL_G.test(it.g||""))it.tn=SRCH.isMeridian(textOf(it))?"core":null;
+ if(it.ty==="screen"||it.ty==="action"||NEUTRAL_SRC.test(src||"")||NEUTRAL_G.test(it.g||""))it.tn=SRCH.isAtlantic(textOf(it))?"core":null;
  else it.tn="core";return it};
-/* a screen that still shows only the Meridian sample says so under another tenant */
-function sayMeridianOnly(it){const t=tenant();if(it._mt===t)return;if(it.m0==null)it.m0=it.m;it._mt=t;
- const core=t!=="core"&&G(()=>DATA.screenMode(it.sid)==="core",false);it.m=core?it.m0+" · Meridian sample only":it.m0;it._z=null}
+/* a screen that still shows only the Atlantic Systems sample says so under another tenant */
+function sayAtlanticOnly(it){const t=tenant();if(it._mt===t)return;if(it.m0==null)it.m0=it.m;it._mt=t;
+ const core=t!=="core"&&G(()=>DATA.screenMode(it.sid)==="core",false);it.m=core?it.m0+" · Atlantic Systems sample only":it.m0;it._z=null}
 
 /* tenant records: each industry tenant's own rows, searchable only inside that tenant */
 const TREC=[["projects","Projects","Project","tn_projects",r=>r.n,r=>[r.short,r.owner,r.id].join(" ")],
@@ -154,18 +154,18 @@ SRCH.facetOk=facetOk;
 const wedgeOk=it=>{if(!it.view)return true;return !G(()=>SHOW.wedge.on(),false)||G(()=>SHOW.wedge.screens().indexOf(it.view)>=0,true)};
 
 /* ---------- visibility: one central check, applied by both search engines ---------- */
-const CNT={hiddenIds:new Set(),meridian:new Set()};
-SRCH.reset=()=>{CNT.hiddenIds.clear();CNT.meridian.clear()};
-SRCH.counts=()=>({hidden:CNT.hiddenIds.size,meridian:CNT.meridian.size,tenant:tenant()});
+const CNT={hiddenIds:new Set(),atlantic:new Set()};
+SRCH.reset=()=>{CNT.hiddenIds.clear();CNT.atlantic.clear()};
+SRCH.counts=()=>({hidden:CNT.hiddenIds.size,atlantic:CNT.atlantic.size,tenant:tenant()});
 SRCH.allow=function(it){if(!it)return false;const t=tenant();if(!facetOk(it)||!wedgeOk(it))return false;
- if(it.tn!=null&&it.tn!==t){if(it.tn==="core")CNT.meridian.add(it);return false}
+ if(it.tn!=null&&it.tn!==t){if(it.tn==="core")CNT.atlantic.add(it);return false}
  if(it.sid&&SRCH.hiddenScreen(it.sid)){if(!SRCH.builder()){CNT.hiddenIds.add(it.sid);return false}SRCH.label(it)}
- if(it.sid&&it.ty==="screen")sayMeridianOnly(it);
+ if(it.sid&&it.ty==="screen")sayAtlanticOnly(it);
  return true};
 
-/* CL-87: Recently viewed and Favorites follow the active tenant. Screens stay (they are product, labeled "Meridian sample only"
+/* CL-87: Recently viewed and Favorites follow the active tenant. Screens stay (they are product, labeled "Atlantic Systems sample only"
    where that applies); a record entry shows only under the tenant it was opened in: a tenant record ("tn:<tenant>:" key) or one
-   tagged with that tenant. Under another tenant every Meridian record is hidden. SRCH.hist(list) filters a history list. */
+   tagged with that tenant. Under another tenant every Atlantic Systems record is hidden. SRCH.hist(list) filters a history list. */
 SRCH.histAllow=function(h){if(!h)return false;const t=tenant();if(t==="core")return !h.tn||h.tn==="core";
  if(h.kind==="screen")return true;
  if(h.tn!=null)return h.tn===t;
@@ -182,8 +182,8 @@ SRCH.scopeList=function(list){const t=tenant();if(t==="core")return list.filter(
  list.forEach(x=>{if(!x)return;
   if(x.tn!=null){if(x.tn===t)out.push(x);return}
   if(x.chooser){out.push(x);return}
-  if(!NEUTRAL_G.test(String(x.g||""))||SRCH.isMeridian(textOf(x)))return;
-  if(x.g==="Go to"&&byName[x.t]&&G(()=>DATA.screenMode(byName[x.t])==="core",false))x=Object.assign({},x,{m:(x.m||"Screen")+" · Meridian sample only"});
+  if(!NEUTRAL_G.test(String(x.g||""))||SRCH.isAtlantic(textOf(x)))return;
+  if(x.g==="Go to"&&byName[x.t]&&G(()=>DATA.screenMode(byName[x.t])==="core",false))x=Object.assign({},x,{m:(x.m||"Screen")+" · Atlantic Systems sample only"});
   out.push(x)});
  return out.concat(tenantRows(t))};
 /* the label a hidden screen carries when builder mode shows it */
@@ -191,7 +191,7 @@ SRCH.label=function(it){if(it&&it.sid&&SRCH.hiddenScreen(it.sid)&&it.m&&it.m.ind
 
 /* palette notes above the results */
 SRCH.noteHTML=function(){const c=SRCH.counts();let h="";
- if(c.meridian&&c.tenant!=="core")h+=`<li class="nx-fixed ss-note" role="presentation" data-srch-scope="${E(c.tenant)}">Search follows the active tenant, ${E(tname(c.tenant))}. ${c.meridian.toLocaleString("en-US")} result${c.meridian===1?"":"s"} from the Meridian sample ${c.meridian===1?"is":"are"} hidden (tenant isolation is simulated in this prototype).</li>`;
+ if(c.atlantic&&c.tenant!=="core")h+=`<li class="nx-fixed ss-note" role="presentation" data-srch-scope="${E(c.tenant)}">Search follows the active tenant, ${E(tname(c.tenant))}. ${c.atlantic.toLocaleString("en-US")} result${c.atlantic===1?"":"s"} from the Atlantic Systems sample ${c.atlantic===1?"is":"are"} hidden (tenant isolation is simulated in this prototype).</li>`;
  if(c.hidden&&!SRCH.canBuild())h+=`<li class="nx-fixed ss-note ss-locked" role="presentation" data-srch-locked="1">${c.hidden} hidden screen${c.hidden===1?"":"s"} also match${c.hidden===1?"es":""}. ${E(SRCH.builderWhy())}</li>`;
  else if(c.hidden&&!SRCH.builder())h+=`<li class="nx-fixed ss-note" role="presentation">${c.hidden} hidden screen${c.hidden===1?"":"s"} also match${c.hidden===1?"es":""}. <button type="button" class="btn quiet sm" data-srch-builder="1">Show hidden screens (builder mode)</button></li>`;
  else if(SRCH.builder())h+=`<li class="nx-fixed ss-note" role="presentation">Builder mode: hidden screens are included. <button type="button" class="btn quiet sm" data-srch-builder="0">Turn off</button></li>`;

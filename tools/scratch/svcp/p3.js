@@ -1,13 +1,13 @@
  /* ================= SLAs, OLAs and underpinning contracts ================= */
  const PAUSEOPT=["Awaiting caller","Awaiting approval","Awaiting vendor","Awaiting requester feedback","Awaiting vendor shipment"];
  const SLA_STARTS=["Incident created with Priority = 1","Incident created with Priority = 2","Incident created with Priority = 3 or 4","Requested item created","Approval state = Approved","Task assigned to the group","Vendor ticket opened"];
- const SLA_STOPS=["State = Resolved","Requested item state = Delivered","Task state = Closed complete","Vendor marks restored and Meridian confirms"];
+ const SLA_STOPS=["State = Resolved","Requested item state = Delivered","Task state = Closed complete","Vendor marks restored and Atlantic confirms"];
  const TICKS=[
   {id:"INC0004417",t:"Contract Repository search timing out",sla:"SLA-INC-P2",start:"2026-10-05T14:30",own:"Sam Patel",rem:4,pauseH:0,uc:"UC-LUMEN-P1",note:"Lumen is investigating the index shard. Waiting on their fix."},
   {id:"INC0004421",t:"Teams call quality drops in Standards Hall",sla:"SLA-INC-P2",start:"2026-10-06T08:30",own:"Tom Becker",rem:3,pauseH:0,note:"Network OLA: packet loss on the 2nd-floor switch."},
   {id:"INC0004409",t:"Lease subledger export fails for the October close",sla:"SLA-INC-P3",start:"2026-10-02T10:00",own:"Jordan Lee",rem:9,pauseH:2,note:"Paused 2 h while the caller confirmed the period."},
   {id:"INC0004423",t:"Standards Platform publish queue is stuck",sla:"SLA-INC-P1",start:"2026-10-06T09:40",own:"Sam Patel",rem:1.5,pauseH:0,note:"Queue worker restarted; verifying backlog drains."},
-  {id:"LUM-88213",t:"Lumen index rebuild for the new Standards collection",sla:"UC-LUMEN-CHG",start:"2026-10-05T09:00",own:"Dev Rao",rem:8,pauseH:0,note:"Lumen change ticket. Meridian approved on Oct 5 at 09:40.",uc:"UC-LUMEN-CHG"}];
+  {id:"LUM-88213",t:"Lumen index rebuild for the new Standards collection",sla:"UC-LUMEN-CHG",start:"2026-10-05T09:00",own:"Dev Rao",rem:8,pauseH:0,note:"Lumen change ticket. Atlantic approved on Oct 5 at 09:40.",uc:"UC-LUMEN-CHG"}];
  function forecast(){const out=[];TICKS.forEach(k=>{const sd=SDI(k.sla),s=ms(k.start),used=Math.max(0,workBetween(s,NOW,sd.cal)-k.pauseH),fc=used+k.rem,risk=fc/sd.tgt;out.push({kind:"tk",id:k.id,t:k.t,own:k.own,sd,used,pct:used/sd.tgt*100,fc,risk,breachAt:addWork(NOW,Math.max(0,sd.tgt-used),sd.cal),note:k.note,k})});
   REQS.filter(r=>r.st==="Fulfilling").forEach(r=>{const c=ritmClock(r),rem=r.tasks.filter(t=>t.st!=="Done").reduce((a,t)=>a+t.h,0)*1.5,fc=c.used+rem;out.push({kind:"rq",id:r.id,t:itemOf(r).n+" for "+(r.vals.name||r.by),own:(r.tasks.find(t=>t.st!=="Done")||{a:r.by}).a,sd:c.sd,used:c.used,pct:c.pct,fc,risk:fc/c.sd.tgt,breachAt:c.due,note:"Open tasks: "+r.tasks.filter(t=>t.st!=="Done").length+" of "+r.tasks.length+", estimated "+hh(rem)+" including wait time.",r})});
   return out.sort((a,b)=>b.risk-a.risk)}

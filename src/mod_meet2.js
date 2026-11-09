@@ -16,7 +16,7 @@ const stPill=a=>{const s=M.ST_A[a.st]||["?","mute"];return `<span class="pill ${
 const ratPill=d=>d.rat==="pending"?'<span class="pill warn">Awaiting ratification</span>':d.rat==="ratified"?'<span class="pill good">Ratified</span>':d.rat==="rejected"?'<span class="pill bad">Rejected</span>':'<span class="pill mute">No ratification needed</span>';
 const mtTitle=id=>{const m=M.mById(id);return m?m.t+" · "+fd(m.dt):id};
 const hours=m=>m.e-m.s;
-/* PR-32 B8: under another tenant the registers are that tenant's (MEETX tenant views); Meridian metric chips and figures stay on Meridian */
+/* PR-32 B8: under another tenant the registers are that tenant's (MEETX tenant views); Atlantic Systems metric chips and figures stay on Atlantic Systems */
 const core=()=>!M.isCore||M.isCore();
 const fc=id=>core()?fchip(id):"";
 const KR=items=>kpiRow(core()?items:items.map(i=>i[3]&&i[3].metric?[i[0],i[1],i[2],Object.assign({},i[3],{metric:null})]:i));

@@ -1,5 +1,5 @@
 /* ===== mod_r28_jy3: end-to-end journeys. The whole relationship, not a single request: from the first sign of the need to the last payment and the end of the relationship.
-   One per demo scenario (healthcare, mining, storage and backup) plus one for the Meridian core sample. Fictional organizations, modeled sample figures only.
+   One per demo scenario (healthcare, mining, storage and backup) plus one for the Atlantic Systems core sample. Fictional organizations, modeled sample figures only.
    Each box carries minutes, cost and monthly volume, a pain point and an opportunity, and links to the detailed workflows from the other journey files where they exist. ===== */
 (function(){
 const W=window,X=W.JYX,I=W.JYI;if(!X||!I)return;
@@ -124,9 +124,9 @@ J("JS0","Storage and backup: from data risk to relationship end","Corvane Data P
   B("b22","Finance analyst","Issue the final invoice and close the account","ERP","Settle the account and release the licence",3,45,40,40,"ERP","Finance","Final billing and returns are reconciled by hand","Close the account from one checklist",[],4,3),
   B("b23","Account manager","Understand why and keep the door open","Call","Hold an exit interview",3,45,35,40,"CRM","Account management","Reasons are recorded loosely","Record structured reasons and a win-back date",[],3,2)])]);
 
-/* ---------- Meridian Standards Foundation (the core fictional sample) ---------- */
+/* ---------- Atlantic Systems (the core fictional sample) ---------- */
 add(["Committee member","Standards editor","Chief editor","Publishing manager","Member","Licensing and sales"]);
-J("JY5","Meridian: a standard from the first need to renewal","Meridian Standards Foundation (fictional). The whole life of a standard and the member who depends on it: the need appears, the work is approved, drafted, put to public comment and a ballot, published, sold and licensed, used and supported, then renewed or retired. Figures are modeled sample values.","Member","End to end",[
+J("JY5","Atlantic Systems: a standard from the first need to renewal","Atlantic Systems (fictional). The whole life of a standard and the member who depends on it: the need appears, the work is approved, drafted, put to public comment and a ballot, published, sold and licensed, used and supported, then renewed or retired. Figures are modeled sample values.","Member","End to end",[
  S("s1","A need appears",[
   B("b1","Member","Notice a gap and ask for a standard","Email and meetings","Describe the need to a committee or staff",3,90,0,60,"Email","Standards development","Requests arrive by email and some are lost","Take proposals in one place with a status the requester can see",[],3,2),
   B("b2","Committee member","Weigh the proposal against the agenda","Committee meeting","Debate whether it merits the effort",3,60,80,40,"Meeting notes","Standards development","The agenda is set by who speaks loudest","Score proposals against the strategy and capacity",[],3,3)]),

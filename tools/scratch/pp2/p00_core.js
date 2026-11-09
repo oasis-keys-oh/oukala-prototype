@@ -46,7 +46,7 @@ Object.assign(STD,{
  capplan:{n:"Capacity and demand planning",by:"ITIL, PMI, Planview, Kantata practice",d:"Match the supply of hours and skills to demand across every kind of work, then level, add, borrow or defer."}
 });
 
-/* ---------- directory growth: the rest of Meridian, so the org chart looks like an organization ---------- */
+/* ---------- directory growth: the rest of Atlantic, so the org chart looks like an organization ---------- */
 const ROSTER_TEXT_PLACEHOLDER=0;
 /*ROSTER*/
 const SKN={si:"Search and indexing",dm:"Data modeling",tx:"Taxonomy",cf:"Cloud and failover",ia:"Integration and APIs",ir:"Incident response",er:"Editorial review",sa:"Security architecture",pm:"Project management",vc:"Vendor and contracts"};
@@ -60,7 +60,7 @@ const ROLEOV={};
 const ROOT="Catherine Doyle";
 function seedDir(){if(window.__pp2Dir)return;window.__pp2Dir=1;
  const idn={};ROSTER0.forEach(r=>idn[r[0]]=r[1]);idn.em="Chief Editor";
- const mk=(o)=>{if(who(o.name)&&who(o.name).name===o.name)return;DIR.push(Object.assign({id:slug(o.name),org:o.kind==="human"?"Meridian Standards Foundation":"",skills:[],loc:"Remote",hrs:40,rate:0,c:COLS[Math.floor(hs(o.name)*COLS.length)],tenure:1+Math.floor(hs(o.name+"t")*9),email:slug(o.name).replace(/-/g,".")+(o.kind==="human"?"@meridian.example":"@lumen.example")},o))};
+ const mk=(o)=>{if(who(o.name)&&who(o.name).name===o.name)return;DIR.push(Object.assign({id:slug(o.name),org:o.kind==="human"?"Atlantic Systems":"",skills:[],loc:"Remote",hrs:40,rate:0,c:COLS[Math.floor(hs(o.name)*COLS.length)],tenure:1+Math.floor(hs(o.name+"t")*9),email:slug(o.name).replace(/-/g,".")+(o.kind==="human"?"@atlantic.example":"@lumen.example")},o))};
  ROSTER0.forEach(r=>{const nm=r[1];const vend=r[6]==="vendor";const mg=r[4]?idn[r[4]]:null;
   if(nm==="Elena Marsh")return;
   if(who(nm)&&who(nm).name===nm){if(mg&&!MGR[nm]&&!who(nm).mgr)MGR[nm]=mg;return}

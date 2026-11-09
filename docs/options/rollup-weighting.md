@@ -1,6 +1,6 @@
 # Option paper: roll-up weighting and de-duplication across metrics with different units
 
-Backlog item PR-22 (origin: GTM open question of 2026-10-19, COO pitch). This paper compares ways to roll metrics up to an objective, a function or an executive score when the metrics have different units, and ways to stop one dollar, hour or step being counted twice. It ends with a recommendation. It changes no code, carries no status or priority, and is for Omar to accept, change or reject. Numbers in the worked examples are **modeled** and fictional (Meridian Standards Foundation). The rules in section 2 describe the prototype as it is on 2026-10-19 (**prototype fact**); the recommendation is a **hypothesis** until a COO-type reader has tested it.
+Backlog item PR-22 (origin: GTM open question of 2026-10-19, COO pitch). This paper compares ways to roll metrics up to an objective, a function or an executive score when the metrics have different units, and ways to stop one dollar, hour or step being counted twice. It ends with a recommendation. It changes no code, carries no status or priority, and is for Omar to accept, change or reject. Numbers in the worked examples are **modeled** and fictional (Atlantic Systems). The rules in section 2 describe the prototype as it is on 2026-10-19 (**prototype fact**); the recommendation is a **hypothesis** until a COO-type reader has tested it.
 
 ## 1. The question
 

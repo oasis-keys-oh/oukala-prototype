@@ -26,8 +26,9 @@ function profile(){const p=D.getElementById("profilePop");if(!p)return;const old
  const h=p.querySelector("h3");if(h)h.insertAdjacentHTML("afterend",html);else p.insertAdjacentHTML("afterbegin",html)}
 /* the tenant badge in the bar: the same control as the switcher in the rail, always showing the active tenant (R17) */
 function tenantShort(){return G(()=>{const i=DATA.tenantInfo(DATA.tenant())||{};return i.short||i.org||DATA.tenant()},"")}
-function tenantChip(tb){if(!D.getElementById("tnBtn"))return;let b=D.getElementById("r20Tenant");const t=tenantShort();
- if(!b){b=D.createElement("button");b.type="button";b.id="r20Tenant";b.className="btn quiet r20-tenant";b.setAttribute("data-r20-tenant","");tb.insertBefore(b,tb.firstChild)}
+/* PR-81: the chip is itself the switcher. data-r32-tn="open" lets mod_r32_tenant open the menu anchored to the chip, with no dependency on the rail button */
+function tenantChip(tb){if(!W.TENANT||!TENANT.list)return;let b=D.getElementById("r20Tenant");const t=tenantShort();
+ if(!b){b=D.createElement("button");b.type="button";b.id="r20Tenant";b.className="btn quiet r20-tenant";b.setAttribute("data-r20-tenant","");b.setAttribute("data-r32-tn","open");b.setAttribute("aria-haspopup","menu");b.setAttribute("aria-expanded","false");tb.insertBefore(b,tb.firstChild)}
  const html=`<span class="r20-tdot" aria-hidden="true"></span><span>${E(t)}</span>`;if(b.innerHTML!==html){b.innerHTML=html;b.setAttribute("aria-label","Active tenant: "+t+". Switch tenant");b.setAttribute("data-tip","Active tenant: "+t+" (tenant isolation is simulated)")}}
 /* the contribution thread slot under the bar's search: empty and hidden until the thread is rendered */
 function threadSlot(){const bar=D.querySelector(".topbar");if(!bar||D.getElementById("tbThread"))return;const s=D.createElement("div");s.id="tbThread";s.className="r20-thread";s.hidden=true;s.setAttribute("aria-label","Your contribution thread");
@@ -45,7 +46,6 @@ let timer=0;
 function later(){clearTimeout(timer);timer=setTimeout(()=>{try{topbar()}catch(e){console.error("r20 topbar",e)}},40)}
 HOOKS.on("afterRender",()=>later(),{id:"r20a.topbar"});
 HOOKS.on("tenantChange",()=>later(),{id:"r20a.tenant"});
-ROUTER.on("click","[data-r20-tenant]",()=>{const b=D.getElementById("tnBtn");if(b)b.click()},{id:"r20a.tenant"});
 ROUTER.on("click","[data-r20-q]",(e,t)=>{const k=t.dataset.r20Q;if(k==="fav"||k==="hist")return; /* native popover buttons */
  const p=D.getElementById("profilePop");try{if(p&&p.matches(":popover-open"))p.hidePopover()}catch(x){}
  if(k==="lens"){const l=D.getElementById("lens");if(l){l.checked=!l.checked;l.dispatchEvent(new Event("change",{bubbles:true}))}return}

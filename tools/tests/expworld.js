@@ -34,7 +34,7 @@ if(!only||only==='company'){const p=await open();
     DATA.get('invoices',{tenant:t.id}).forEach(r=>addN(r.vendor,1));['objectives','metrics','demand','processes'].forEach(e=>DATA.get(e,{tenant:t.id}).forEach(r=>addN(r.n)))}
    fp[t.id]=[...terms]});
   const cnt={};Object.values(fp).forEach(a=>a.forEach(x=>cnt[x]=(cnt[x]||0)+1));
-  window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>Object.assign(new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+'($|[^A-Za-z0-9_-])'),{__t:x}))});
+  window.__fp={};Object.keys(fp).forEach(k=>{window.__fp[k]=fp[k].filter(x=>cnt[x]===1).map(x=>Object.assign(new RegExp('(^|[^A-Za-z0-9_-])'+esc(x)+(((DATA.tenantInfo('core')||{}).org===x||(DATA.tenantInfo('core')||{}).short===x)?'(?! sample)':'')+'($|[^A-Za-z0-9_-])'),{__t:x}))});
   window.__surface=()=>{const v=document.getElementById('view');const c=v.cloneNode(true);c.querySelectorAll('[data-tenant-chooser],script,style').forEach(x=>x.remove());
    const at=[...c.querySelectorAll('[title],[aria-label],[alt],[placeholder]')].map(x=>['title','aria-label','alt','placeholder'].map(a=>x.getAttribute(a)||'').join(' ')).join(' ');return c.textContent+' '+at};
   window.__hits=(txt,skip)=>{const out=[];Object.keys(window.__fp).forEach(k=>window.__fp[k].forEach(re=>{const m=re.exec(txt);if(m&&!(skip&&skip.has(re.__t)))out.push(k+':'+m[0].trim()+' [..'+txt.slice(Math.max(0,m.index-50),m.index+m[0].length+10).replace(/\s+/g,' ')+'..]')}));return out}});

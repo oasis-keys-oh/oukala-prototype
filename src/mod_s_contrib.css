@@ -24,16 +24,24 @@
 .ctb-anc .ctb-ico{width:12px;height:12px}
 .ctb-tag{flex:none}
 /* the card on Home and in My work */
-.ctb-card{margin:var(--sp-3) 0;padding:var(--card-pad);display:flex;flex-direction:column;gap:var(--sp-2)}
+.ctb-card{margin:var(--sp-3) 0;padding:var(--card-pad);display:flex;flex-direction:column;gap:var(--sp-1)}
 .ctb-ch{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-3);flex-wrap:wrap}
 .ctb-ch .eyebrow{display:flex;align-items:center;gap:6px}
-.ctb-h{margin:4px 0;font-size:var(--fs-lg);line-height:1.35}
+.ctb-h{margin:2px 0;font-size:var(--fs-md);line-height:1.3}
 .ctb-tabs{gap:var(--sp-1);flex-wrap:wrap}
-.ctb-list,.ctb-wl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--sp-2)}
-.ctb-row{display:flex;flex-direction:column;gap:4px;padding:var(--sp-2) 0;border-top:1px solid var(--hair)}
+.ctb-list,.ctb-wl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.ctb-row{display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;gap:2px var(--sp-3);padding:var(--sp-1) 0;border-top:1px solid var(--hair)}
 .ctb-row:first-child{border-top:0}
 .ctb-rh,.ctb-rm,.ctb-w{display:flex;align-items:center;gap:var(--sp-1);flex-wrap:wrap;min-width:0}
-.ctb-rm{gap:var(--sp-2)}
+/* PR-80: the title takes the free width and cuts only when the row is full; progress, points and owner sit on the same line */
+.ctb-row .ctb-rh{flex:1 1 240px;flex-wrap:nowrap;overflow:hidden}
+.ctb-row .ctb-rh .ctb-seg{max-width:none;flex:0 1 auto}
+.ctb-row .ctb-rm{flex:0 1 auto}
+.ctb-meta{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-1) var(--sp-3);flex-wrap:wrap}
+.ctb-meta>p{margin:0}
+.ctb-more{align-self:flex-start;margin-top:var(--sp-1)}
+.ctb-rm{gap:var(--sp-2);flex-wrap:nowrap}
+@media(max-width:700px){.ctb-rm{flex-wrap:wrap}}
 .ctb-sub{display:flex;flex-direction:column;gap:var(--sp-1);margin-top:var(--sp-1)}
 .ctb-rule{margin:0;padding:var(--sp-2) var(--sp-3);border-radius:var(--rad-md);background:var(--info-s);color:var(--ink)}
 .ctb-pop{max-width:min(520px,calc(100vw - 32px))}

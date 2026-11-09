@@ -1,7 +1,7 @@
 SERVICE PORTFOLIO AND MAP
 16 services, 5 below their availability target
 
-Meridian runs 6 Tier 1 services. Network and VPN is the most depended-on: if it fails, 15 other services are touched. Every incident, problem and change can open the same impact analysis, and every service is mapped seven ways: how it is built, what strategy it serves, which projects touch it, who is involved, how it performs, what it costs and what depends on it.
+Atlantic runs 6 Tier 1 services. Network and VPN is the most depended-on: if it fails, 15 other services are touched. Every incident, problem and change can open the same impact analysis, and every service is mapped seven ways: how it is built, what strategy it serves, which projects touch it, who is involved, how it performs, what it costs and what depends on it.
 
 New service
 New offering

@@ -48,7 +48,7 @@ const ROLE={Owner:"story",Horizon:"story",Budget:"metric",Health:"metric",Projec
 /* ---- PR-32 B2: shared tenant reads for the core files (R16 to R18). strict(): a tenant other than core is active and the open
    screen is registered mode "data" (DATA.screen), so the shared helpers (metric chips, people, processes, the work index, node
    lookups) read only that tenant's rows through DATA.get and show a labeled gap for anything it does not have (R18). Under core,
-   and on screens that are not tenant-aware yet, they read the Meridian sources exactly as before. rows(entity, part) is the
+   and on screens that are not tenant-aware yet, they read the Atlantic Systems sources exactly as before. rows(entity, part) is the
    active tenant's rows of one entity, optionally one part (TENANT_ENTITIES.part). ---- */
 const TREAD=window.TREAD=(()=>{const R={};
  R.core=()=>{try{return !window.DATA||DATA.tenant()==="core"}catch(e){return true}};
@@ -73,7 +73,7 @@ const TREAD=window.TREAD=(()=>{const R={};
   return out};
  R.gap=what=>`<span class="pill mute" data-tenant-gap="${String(what||"").replace(/[^a-z0-9_-]/gi,"")}" title="The gap is recorded. Rows from another company are never shown in their place.">${R.GAP}</span>`;
  return R})();
-/* node lookups: the tenant's trace links (nodes and edges) on a tenant-aware screen, the Meridian graph otherwise */
+/* node lookups: the tenant's trace links (nodes and edges) on a tenant-aware screen, the Atlantic Systems graph otherwise */
 const N=id=>TREAD.strict()?TREAD.rows("trace_links","node").find(n=>n.id===id):NODES.find(n=>n.id===id);
 const nbrs=id=>(TREAD.strict()?TREAD.rows("trace_links","edge").map(e=>[e.from,e.to,e.rel]):EDGES).filter(e=>e[0]===id||e[1]===id).map(e=>({o:e[0]===id?e[1]:e[0],l:e[2],out:e[0]===id}));
 
@@ -167,7 +167,7 @@ const AGENTS=[
 {id:"cp",n:"Copilot in Teams",kind:"Third-party AI",prov:"Microsoft",model:"Microsoft-managed",cap:"external",auto:-1,runs:0,spend:0,cap$:0,hits:0,st:"observed",owner:"Microsoft",tools:["Teams chat"],data:["Observed only"],guards:["Observe only: outside the gateway"],act:[0,0,0,0,0,0,0,1,2,3,2,1,1,2,3,2,1,0,0,0,0,0,0,0]}
 ];
 const AUTO_LEVELS=["Suggest","Draft","Act with approval","Act within rules"];
-const SCOPES=[["run","One run","Stops a single execution"],["agent","One agent","Pauses all of an agent's work"],["capability","A capability","Such as every finance agent"],["provider","A provider","Switch off one model vendor"],["tenant","This tenant","Everything for Meridian"],["platform","Platform","Every tenant (operator only)"]];
+const SCOPES=[["run","One run","Stops a single execution"],["agent","One agent","Pauses all of an agent's work"],["capability","A capability","Such as every finance agent"],["provider","A provider","Switch off one model vendor"],["tenant","This tenant","Everything for Atlantic Systems"],["platform","Platform","Every tenant (operator only)"]];
 const SPEND30=[3.2,3.8,3.5,4.1,4.4,3.9,4.8,5.2,4.6,5.0,5.5,5.1,5.9,6.3,5.8,6.1,6.8,6.4,7.0,7.3,6.9,7.6,8.1,7.7,8.4,8.9,8.2,9.0,9.4,9.8];
 const LIVEEVENTS=[["13:29","good","Invoice Advisor scored INV-20451: approve, 91%"],["13:27","info","First Officer filed 3 records from IT operations daily"],["13:24","warn","Guardrail: redacted a personal phone number in a transcript"],["13:20","good","Test Agent passed 24 of 24 invoice flow checks"],["13:12","bad","Knowledge Curator blocked: output cited no source"],["13:05","info","Forecast Agent drafted a reforecast for FY26 Vendor services"]];
 const PROV_SHARE=[["Anthropic",52,"--p4"],["OpenAI",31,"--w1"],["Google",13,"--u3"],["Other",4,"--faint"]];

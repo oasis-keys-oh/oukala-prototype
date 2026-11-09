@@ -59,12 +59,12 @@ Drafts a refreshed version from the latest incidents and asks the owner to revie
 Nudge all 4 owners
 See knowledge gaps
 
-The oldest is Share a draft standard with a reviewer outside Meridian, 463 days since review. Its owner Maya Ortiz has not been nudged yet.
+The oldest is Share a draft standard with a reviewer outside Atlantic, 463 days since review. Its owner Maya Ortiz has not been nudged yet.
 
 Stale articles
 Published articles past 12 months since review or past expiry, oldest first.
 ARTICLE	DAYS SINCE REVIEW	EXPIRY	OWNER	USED LAST 90 DAYS	
-Share a draft standard with a reviewer outside Meridian
+Share a draft standard with a reviewer outside Atlantic
 KB0140 · M365
 	463	Jun 30, 2026 expired	Maya Ortiz	12 reuses	
 Nudge owner

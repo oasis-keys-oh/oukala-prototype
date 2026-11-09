@@ -127,7 +127,7 @@ function inject(){
   const sc=S.screen;
   /* screen header */
   const eb=document.querySelector("#view .hero .eyebrow");
-  /* ownership records are the Meridian sample: under another tenant there is no owner record yet, so no badge (R18, CL-56) */
+  /* ownership records are the Atlantic Systems sample: under another tenant there is no owner record yet, so no badge (R18, CL-56) */
   if(eb&&sc&&sc!=="home"&&sc!=="own_gaps"&&(!window.DATA||DATA.tenant()==="core")){const r=OW.get("module",sc);const want=r?(r.gap||r.accepted?"g:"+r.key+top2(r):"ok:"+r.ownerName):"";
    let cur=eb.querySelector(":scope>[data-ownx-slot]");if(cur&&cur.dataset.ownxSlot!==want){cur.remove();cur=null}
    if(r&&!cur){const h=(r.gap||r.accepted)?badge("module",sc):(r.ownerName?badge("module",sc,{always:true}):"");if(h){const s=document.createElement("span");s.className="ownx-slot";s.dataset.ownxSlot=want;s.innerHTML=h;eb.appendChild(s)}}}

@@ -1,5 +1,5 @@
 /* ===== mod_r28_od1: Agent Action (working name). Part 1 of 2: data and models. Prefix od. Global: window.ODX.
-   Reads the live prototype org (ORGX: 74 staff of the fictional Meridian Standards Foundation, per-person workload and time, AI agents, vacancies).
+   Reads the live prototype org (ORGX: 74 staff of the fictional Atlantic Systems, per-person workload and time, AI agents, vacancies).
    Every number carries a source label: fact (computed from prototype data), modeled (computed with a stated assumption), hyp (working default or judgment), sim (simulated).
    Nothing here is a live connector. 10-K parsing runs in the browser on text the person supplies; sample filings are fictional. ===== */
 (function(){

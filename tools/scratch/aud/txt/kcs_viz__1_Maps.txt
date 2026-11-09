@@ -31,7 +31,7 @@ Heat overlay
 Click a bar, slice, region or point to filter every other visual that shares the field.
 WHAT IS BEHIND THIS MAP
 
-Meridian incidents (with location). Incident records, geocoded to the reader or office location · DATAMODEL.incident
+Atlantic incidents (with location). Incident records, geocoded to the reader or office location · DATAMODEL.incident
 
 Low
 High

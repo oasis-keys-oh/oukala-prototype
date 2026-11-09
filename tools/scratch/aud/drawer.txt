@@ -68,7 +68,7 @@ svc_oncall   opened 3 fullbtn 3 fullworks 0 tried 7 New rota FULLFAIL | Service 
 svc_skills   opened 3 fullbtn 3 fullworks 0 tried 11 Request time off FULLFAIL | Avery Chen FULLFAIL | Event Correlator FULLFAIL
 ppl_org      opened 3 fullbtn 3 fullworks 0 tried 9 Add a worker FULLFAIL | Add a vacancy FULLFAIL | Platform team FULLFAIL
 ppl_cap      opened 3 fullbtn 3 fullworks 0 tried 11 Sam Patel FULLFAIL | Sam Patel FULLFAIL | Sam Patel FULLFAIL
-ppl_train    opened 3 fullbtn 3 fullworks 0 tried 12 Import a SCORM or xAPI package FULLFAIL | Using AI safely at Meridian FULLFAIL | Working with the AI drafting a FULLFAIL
+ppl_train    opened 3 fullbtn 3 fullworks 0 tried 12 Import a SCORM or xAPI package FULLFAIL | Using AI safely at Atlantic FULLFAIL | Working with the AI drafting a FULLFAIL
 ppl_av       opened 3 fullbtn 3 fullworks 0 tried 12 Boardroom FULLFAIL | Vendor call FULLFAIL | Finance check-in FULLFAIL
 ppl_jrny     opened 3 fullbtn 3 fullworks 0 tried 19 Welcome message and checklist FULLFAIL | New hire onboarding (parent wo FULLFAIL | Laptop and accounts ready FULLFAIL
 ppl_meet     opened 3 fullbtn 3 fullworks 0 tried 7 File minutes FULLFAIL | Architecture Review Board FULLFAIL | Build an agenda FULLFAIL
@@ -79,7 +79,7 @@ itsm_rel     opened 3 fullbtn 3 fullworks 0 tried 17 New release FULLFAIL | Go o
 agile_board  opened 3 fullbtn 3 fullworks 0 tried 3 New story FULLFAIL | Plan a sprint FULLFAIL | Estimate a story FULLFAIL
 agile_art    opened 3 fullbtn 3 fullworks 0 tried 11 New program increment FULLFAIL | New PI objective FULLFAIL | Security scanning in the pipel FULLFAIL
 svc_sla      opened 3 fullbtn 3 fullworks 0 tried 30 New agreement FULLFAIL | New agreement FULLFAIL | INC004441 FULLFAIL
-ppm_sow      opened 3 fullbtn 3 fullworks 0 tried 14 Add or analyze a document FULLFAIL | Legal returns redlines on liab FULLFAIL | Meridian provides the Azure la FULLFAIL
+ppm_sow      opened 3 fullbtn 3 fullworks 0 tried 14 Add or analyze a document FULLFAIL | Legal returns redlines on liab FULLFAIL | Atlantic provides the Azure la FULLFAIL
 svc_cat      opened 3 fullbtn 3 fullworks 0 tried 13 Design a catalog item FULLFAIL | Avery Chen FULLFAIL | Rina Okafor FULLFAIL
 svc_req      opened 3 fullbtn 3 fullworks 0 tried 11 Dev Rao FULLFAIL | Mobile phone FULLFAIL | Tess Whitaker FULLFAIL
 svc_portal   opened 3 fullbtn 3 fullworks 0 tried 11 Maya Ortiz FULLFAIL | Approval: Manager approval FULLFAIL | Approval: Budget owner FULLFAIL

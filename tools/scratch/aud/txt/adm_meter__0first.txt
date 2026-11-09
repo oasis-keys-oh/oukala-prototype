@@ -1,5 +1,5 @@
 PLATFORM · LICENSING, USAGE AND BILLING
-What Meridian pays for, and why
+What Atlantic pays for, and why
 
 The October statement is projected at $10,638. $481 of it is overage on api calls and ai tokens and notifications, and $1,379 pays for seats nobody has been given.
 

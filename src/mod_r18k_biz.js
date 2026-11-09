@@ -1,4 +1,4 @@
-/* ===== Round 18, K: executive lenses in the language of the business. Meridian Standards Foundation publishes standards, runs ballots and comment periods for 300 member organizations,
+/* ===== Round 18, K: executive lenses in the language of the business. Atlantic Systems publishes standards, runs ballots and comment periods for 300 member organizations,
    and lives on dues. Each lens leads with what that executive actually answers for: comments closed, ballots, renewals, invoices, spend; platform safety is one line underneath.
    Owns the lens screen and the home strip (replaces the figures in mod_r18e). All dollar and volume figures are illustrative demo data, labeled as such. ===== */
 (function(){

@@ -57,7 +57,7 @@ Rows cite pages opened on 14 October 2026. Vendor statements are the vendor's ow
 
 Ten features carry the story. Open each by route, cite the proof number from the screen, then say the talk track. Routes are screen ids appended to the site address, for example `#r16g_perm`. Where a friendlier route exists it is shown. Confirm each route in the address bar before a live demo.
 
-Proof numbers come from the seeded Meridian Standards Foundation sample tenant in build v16 (spec sections 7 to 12). They show the prototype's data, not a customer result. Read the number off the screen before you quote it.
+Proof numbers come from the seeded Atlantic Systems sample tenant in build v16 (spec sections 7 to 12). They show the prototype's data, not a customer result. Read the number off the screen before you quote it.
 
 | Feature | Problem it removes | Route | Live proof number | 30-second talk track |
 | --- | --- | --- | --- | --- |
@@ -193,7 +193,7 @@ The Value screen (`#value`, being added this round) separates two kinds of numbe
 
 ### Layer A: what the tenant already measures
 
-These are Meridian sample figures from build v16. They show the product tracking itself.
+These are Atlantic sample figures from build v16. They show the product tracking itself.
 
 | Measure | Value | Screen |
 | --- | --- | --- |
@@ -262,7 +262,7 @@ Collect these in the first working session. Leave a cell blank rather than guess
 4. Count only benefits the prospect's finance partner accepts. Drop the rest.
 5. Treat soft benefits (risk reduction, speed) as a separate list, not a dollar total.
 6. State the baseline date. Without a baseline, say "modeled".
-7. Never present a sample tenant figure as a customer outcome. Do not name customers other than Meridian Standards Foundation (sample).
+7. Never present a sample tenant figure as a customer outcome. Do not name customers other than Atlantic Systems (sample).
 
 ### One-page business case
 
