@@ -1,4 +1,4 @@
-// PR-31: walk each manager and specialist persona through its default menu on Meridian and its industry tenant.
+// PR-31: walk each manager and specialist persona through its default menu on Atlantic Systems and its industry tenant.
 // Usage: NODE_PATH=<repo>/node_modules node tools/scratch/ux/walk.js [personaKey ...]
 // Writes tools/scratch/ux/shots/<persona>/*.png and tools/scratch/ux/out/<persona>.json
 const L=require('./lib');const path=require('path'),fs=require('fs');
@@ -37,7 +37,7 @@ const METRICS=()=>{const v=document.querySelector('#view');const t=v?v.innerText
  const gapEx=(t.match(/[^\n]*(no data|not available|no records|nothing (to|here|yet)|not yet|gap|missing|not in this tenant|no .{0,20} yet)[^\n]*/gi)||[]).slice(0,6).map(s=>s.slice(0,120));
  const thr=(document.getElementById('tbThread')||{});
  return {title:(document.querySelector('.topbar h1, h1')||{}).innerText||'',h,len:t.length,words:t.split(/\s+/).length,nums,honest,emdash:(t.match(/—/g)||[]).length,
-  banned:(t.match(/\b(Core|Fabric Enterprise|Fabric|Trellis|Project Online|SolarWinds|ServiceNow|Jira)\b/g)||[]).slice(0,6),meridian:(t.match(/Meridian/g)||[]).length,
+  banned:(t.match(/\b(Core|Fabric Enterprise|Fabric|Trellis|Project Online|SolarWinds|ServiceNow|Jira)\b/g)||[]).slice(0,6),meridian:(t.match(/Atlantic Systems/g)||[]).length,
   tables:tables.length,rows,buttons:btns.length,noName,clickDivs,inputs:inputs.length,unlabeled:unl,low,lowEx,small,smallEx,tiny,gapEx,
   thread:thr.hidden?'(hidden)':(thr.innerText||'').replace(/\s+/g,' ').slice(0,240),ox:document.documentElement.scrollWidth>innerWidth+1,sw:document.documentElement.scrollWidth,
   head:t.slice(0,700)}};

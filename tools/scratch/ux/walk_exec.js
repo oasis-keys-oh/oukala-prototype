@@ -1,5 +1,5 @@
 // PR-31 executive experience walk. Usage: node tools/scratch/ux/walk_exec.js [persona,...]
-// For each executive persona: Home and the role's top tasks on Meridian (light, dark, 400 px), one industry company, the
+// For each executive persona: Home and the role's top tasks on Atlantic Systems (light, dark, 400 px), one industry company, the
 // Showroom lens and the role's missions, keyboard and search findability. Writes screenshots to tools/scratch/ux/shots/<persona>/
 // and measurements to tools/scratch/ux/shots/<persona>/data.json. Fictional sample data only.
 const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
@@ -58,7 +58,7 @@ for(const k of want){const cfg=P[k];if(!cfg){console.log('skip',k);continue}
   const card=v.querySelector('[data-ctb-card]');
   const jargon=(txt.match(/\b(RACI|SLA|SLO|CMDB|TBM|DOA|BPMN|DMN|KCS|ITSM|ITOM|RAID|WBS|CI|P2P|SOW|GRC|IAM|KPI|OKR|MTTR|DORA|CFR|NPS|CSAT)\b/g)||[]);
   return {id,name:(SCREENS.find(s=>s[0]===id)||[])[1],thrown,ms,h1,h2,fonts,sizes,under12,words,aboveTxt,inter:inter.length,above:above.length,tiny,noname:noname.slice(0,8),nonameN:noname.length,
-   lowContrast:low.slice(0,8),lowN:low.length,checked,unknown,emdash:(txt.match(/—/g)||[]).length,meridian:(txt.match(/Meridian/g)||[]).length,
+   lowContrast:low.slice(0,8),lowN:low.length,checked,unknown,emdash:(txt.match(/—/g)||[]).length,meridian:(txt.match(/Atlantic Systems/g)||[]).length,
    broken:/could not be drawn|undefined|NaN|\[object Object\]/.test(txt),brokenHit:(txt.match(/.{0,30}(could not be drawn|undefined|NaN|\[object Object\]).{0,30}/)||[''])[0],
    labels,thread,card:card?card.innerText.replace(/\s+/g,' ').slice(0,400):null,jargon:[...new Set(jargon)],
    hero:!!v.querySelector('.hero,[class*=hero]'),proc:!!v.querySelector('.proccard,[class*=procCard],[class*=proc-card],.pcard'),
@@ -67,7 +67,7 @@ for(const k of want){const cfg=P[k];if(!cfg){console.log('skip',k);continue}
  await p.evaluate(k=>{NAVX.persona.set(k)},k);await wait(500);
  D.who=await p.evaluate(()=>({n:PERSONAS[S.persona].n,who:PERSONAS[S.persona].who,as:PERSONAS[S.persona].as,ro:!!PERSONAS[S.persona].readonly,nav:document.getElementById('nav').innerText.replace(/\n+/g,' | ').slice(0,900),
    level:(()=>{try{return CONTRIB.viewer().level}catch(e){return null}})(),points:(()=>{try{return CONTRIB.points().total}catch(e){return null}})(),missions:EXP.list({role:null}).map(m=>m.id)}));
- /* Home and tasks, Meridian, light */
+ /* Home and tasks, Atlantic Systems, light */
  for(const id of ['home',...cfg.tasks]){const m=await measure(id);D.screens[id]=m;await shot('core_'+id);}
  /* home, scrolled: My contribution */
  await p.evaluate(()=>go('home'));await wait(400);
