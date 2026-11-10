@@ -57,13 +57,30 @@ if(B.bad.length)fail('variant B events '+B.bad.join('; '));
 if(B.items.length||B.types.includes('item.mapped')||B.types.includes('data.requested'))fail('variant B found '+JSON.stringify(B.items));
 if(!B.fin||B.fin.found_mapped||B.fin.found_needs_data)fail('variant B outcomes '+JSON.stringify(B.fin));else ok('variant B: no weakness, no mapping, no data request');
 
-// 3. the guard: a weakness the filing does not state is refused, and so is an event about an item never extracted
-const G=await p.evaluate(()=>{RSR.reset();const r=[];const t=e=>{try{RSR.emit(e);r.push('accepted '+e.type)}catch(x){r.push('refused')}};
- RSR.emit({run:'X',type:'run.started',filing:{registrant:'x',title:'x',variant:'a'}});
- t({run:'X',type:'item.extracted',item:'fake',title:'Material weakness 3: inventory counts',area:'Inventory',quote:'We did not maintain effective controls over inventory counts.',page:59});
- t({run:'X',type:'item.extracted',item:'fake2',title:'x',area:'x',quote:'Role assignments in the ledger allowed members',page:14});
- t({run:'X',type:'item.mapped',item:'never',mapping:{}});RSR.reset();return r});
-if(G.join()!=='refused,refused,refused')fail('guard '+G.join());else ok('a fabricated weakness, a quote on the wrong page and an unknown item are refused');
+// 3. the guard: nothing the filing does not support reaches the screen (invented quotes, real quotes under invented titles,
+//    wrong kinds, wrong classifications, data requests for an item that is not a weakness, counts that are not the items)
+const G=await p.evaluate(()=>{const r={};const t=(k,e)=>{try{RSR.emit(e);r[k]='accepted'}catch(x){r[k]='refused'}};
+ const E=RSR.events('a');const ex=E.find(e=>e.type==='item.extracted'&&e.item==='mw_je');const st=E[0];const C=o=>Object.assign(JSON.parse(JSON.stringify(ex)),o);
+ const start=()=>{RSR.reset();RSR.emit(JSON.parse(JSON.stringify(st)))};
+ start();t('fabricated quote',C({item:'f1',title:'Material weakness 3: inventory counts',quote:'We did not maintain effective controls over inventory counts.',page:59}));
+ start();t('real quote, invented title',C({item:'f2',title:'Material weakness 3: inventory counts'}));
+ start();t('real quote, invented area',C({item:'f3',area:'Payroll and pensions'}));
+ start();t('real quote, wrong kind',C({item:'f4',kind:'effective'}));
+ start();t('real quote, wrong page',C({item:'f5',page:14}));
+ start();t('risk factor quoted as a weakness',C({item:'f6',quote:'We have identified material weaknesses in our internal control over financial reporting.',page:14,section:'Item 1A. Risk Factors',corroboration:null}));
+ start();t('not disclosed citing a weakness',{run:'X',type:'check.not_disclosed',item:'f7',kind:'effective',title:'Manual journal entries',area:'manual journal entries',quote:ex.quote,page:58,section:ex.section});
+ start();t('not disclosed citing the not effective conclusion',{run:'X',type:'check.not_disclosed',item:'f8',kind:'effective',title:'ICFR',area:'internal control over financial reporting',quote:'management concluded that our internal control over financial reporting was not effective',page:58,section:ex.section});
+ start();RSR.emit(JSON.parse(JSON.stringify(ex)));t('wrong classification',{run:'X',type:'item.classified',item:'mw_je',gap:'Operating gap',quote:'Role assignments in the ledger allowed members of the finance operations team to create and post manual entries without an independent review.',page:58,section:ex.section});
+ const cl=E.find(e=>e.type==='check.not_disclosed');RSR.emit(JSON.parse(JSON.stringify(cl)));
+ t('data request for a not disclosed area',{run:'X',type:'data.requested',item:cl.item,source:'Inventory counts',reason:'needed to test: counts'});
+ t('data request without a reason',{run:'X',type:'data.requested',item:'mw_je',source:'Ledger',reason:''});
+ t('counts that are not the items',{run:'X',type:'run.finished',outcomes:{found_mapped:2,found_needs_data:1,not_disclosed:1}});
+ t('event for an unknown item',{run:'X',type:'item.mapped',item:'never',mapping:{}});
+ RSR.emit(JSON.parse(JSON.stringify(ex)));const dup=RSR.state().order.length;
+ RSR.emit(JSON.parse(JSON.stringify(st)));const after=RSR.state().order.length;RSR.reset();return{r,dup,after}});
+const acc=Object.entries(G.r).filter(([k,v])=>v!=='refused').map(([k])=>k);
+if(acc.length)fail('guard accepted: '+acc.join('; '));else ok('guard refuses all '+Object.keys(G.r).length+' unsupported events, including a real quote under an invented title');
+if(G.dup!==1)fail('a repeated item.extracted gave '+G.dup+' items');if(G.after!==0)fail('run.started did not reset the state ('+G.after+' items)');else ok('repeated items are deduplicated and run.started resets the state');
 
 // 4. the same stream from a live source gives the same screen as the replay
 const same=await p.evaluate(()=>{RSR.run('a',{delay:0});const a=RSR.card();RSR.reset();RSR.events('a').forEach(e=>RSR.emit(JSON.parse(JSON.stringify(e))));const b=RSR.card();RSR.reset();return a===b});
@@ -78,7 +95,12 @@ await p.click('#view [data-rsr-run="a"]');await settle(1500);
 bn=await ban();const mid=await p.evaluate(()=>!RSR.state().finished&&!!RSR.state().run);
 if(!mid)fail('run finished too fast to check the banner during it');if(!bn||!bn.vis)fail('banner during the run '+JSON.stringify(bn));
 await p.waitForFunction(()=>RSR.state().finished,null,{timeout:30000});await settle(300);
-bn=await ban();if(!bn||!bn.vis)fail('banner on the results');else ok('simulated banner visible before, during and after the run');
+bn=await ban();if(!bn||!bn.vis)fail('banner on the results');
+// with the results scrolled into view, a simulated banner is inside the viewport
+const inView=async sel=>{await p.evaluate(s=>{const e=document.querySelector(s);if(e)e.scrollIntoView({block:'end'})},sel);await settle(300);
+ const v=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-banner]')].map(b=>{const r=b.getBoundingClientRect();return{t:Math.round(r.top),b:Math.round(r.bottom),h:innerHeight,ok:r.height>0&&(Math.min(r.bottom,innerHeight)-Math.max(r.top,0))/r.height>=0.8&&/Simulated/.test(b.textContent)}}));if(!v.some(x=>x.ok))console.log('banners',JSON.stringify(v));return v.some(x=>x.ok)};
+for(const sel of ['#view [data-rsr-counts]','#view [data-rsr-item]:last-of-type','#view [data-rsr-item="mw_uar"] [data-rsr-need]:last-child'])if(!await inView(sel))fail('no simulated banner in the viewport with '+sel+' in view');
+if(!bad)ok('simulated banner visible before, during and after the run, and in the viewport while results are in view');
 const want=await p.evaluate(()=>RSR.events('a').map(e=>e.type));if(JSON.stringify(seen)!==JSON.stringify(want))fail('stream seen on screen differs from RSR.events: '+seen.length+' vs '+want.length);else ok('the screen ran on the event stream ('+seen.length+' events)');
 await p.evaluate(()=>window.__rsrOff&&window.__rsrOff());
 const D=await p.evaluate(()=>{const c=document.querySelector('#view [data-rsr-card]');const f=RSR.filing('a');
@@ -92,6 +114,8 @@ const outs=D.items.map(i=>i.out).join();if(outs!=='mapped,needs,clear')fail('out
 D.items.forEach(i=>{if(!i.q.length)fail(i.title+' shows no quote');i.q.forEach(q=>{if(!q.ok)fail(i.title+' quote not in the filing at page '+q.pg);if(!new RegExp('page '+q.pg+'$').test(q.cite))fail(i.title+' cite '+q.cite)});
  if(!i.labels.includes('fictional'))fail(i.title+' quote not labeled fictional');if(i.out==='mapped'&&!i.labels.includes('modeled'))fail(i.title+' mapping not labeled modeled')});
 if(D.items[1]&&D.items[1].needs!==3)fail('data sources on screen '+D.items[1].needs);
+const TR=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-test]')].map(t=>t.dataset.rsrTest+': '+t.textContent.replace(/\s+/g,' ').trim()));
+if(TR.length!==2||!/^checked: Checked/.test(TR[0])||!/^blocked: Not tested/.test(TR[1]))fail('test results on screen '+JSON.stringify(TR));
 if(!/Simulated/.test(D.counts))fail('outcome counts not labeled '+D.counts);
 if(D.steps!==7||D.done!==7)fail('step log '+D.steps+' steps, '+D.done+' done');if(D.dash)fail('em dash in the card');if(D.filing<4)fail('filing text pages '+D.filing);if(!D.after)fail('card not after the hero');
 if(!bad)ok('on screen: '+outs+', every quote with its page, counts labeled, 7 steps done');
@@ -100,7 +124,7 @@ await p.click('#view [data-rsr-run="b"]');await p.waitForFunction(()=>RSR.state(
 const DB=await p.evaluate(()=>({none:!!document.querySelector('#view [data-rsr-none]'),found:[...document.querySelectorAll('#view [data-rsr-outcome="mapped"],#view [data-rsr-outcome="needs"],#view [data-rsr-need]')].length}));
 if(!DB.none||DB.found)fail('variant B on screen '+JSON.stringify(DB));else ok('variant B on screen: no weakness disclosed');
 // 6. other tenants: no card (the filing belongs to the core company)
-const others=await p.evaluate(()=>DATA.tenants().map(t=>t.id).filter(t=>t!=='core'));
+const others=await p.evaluate(()=>DATA.tenants().map(t=>t.id).filter(t=>t!=='core'));if(!others.length)fail('no other tenant to check');
 for(const t of others){await p.evaluate(t=>{DATA.setTenant(t);go('grc_find')},t);await settle(500);if(await p.$('#view [data-rsr-card]'))fail('card shown under tenant '+t)}
 await p.evaluate(()=>DATA.setTenant('core'));ok('no card under '+others.join(', '));
 if(errs.length)fail('page errors '+errs.slice(0,5).join(' | '));

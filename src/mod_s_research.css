@@ -26,3 +26,5 @@
 .rsr-doc summary{cursor:pointer;font-weight:600}
 .rsr-page h4{margin:10px 0 4px;font-size:13px}
 .rsr-lab{margin-left:4px}
+.rsr-banner[data-rsr-banner="top"]{position:sticky;top:0;z-index:var(--z-local);background:linear-gradient(var(--warn-s),var(--warn-s)),var(--bg)}
+.rsr-live{min-height:1.2em;margin:0 0 6px}
