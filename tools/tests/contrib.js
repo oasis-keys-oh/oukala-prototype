@@ -66,9 +66,11 @@ add(await step('card',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout
  return f}));
 
 /* ---- 4. gaps read "Not linked to an objective", styled like No backup ---- */
-add(await step('gaps',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout(r,ms));const g=CONTRIB.gaps();if(!g.length)return ['gaps: no screen without an anchor'];
- go(g[0]);await w(60);const b=document.querySelector('#tbThread .ctb-gapb');if(!b||b.textContent.trim()!=='Not linked to an objective'||!b.classList.contains('ownx-badge')||!b.classList.contains('warn'))f.push('gaps: the badge on '+g[0]+' is missing or not styled like No backup');
- NAVX.persona.set('emp');await w(250);go('home');await w(80);if(!document.querySelector('#view [data-ctb-card] .ctb-gapb'))f.push('gaps: a viewer whose team has no team objective sees no gap badge');
+add(await step('gaps',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout(r,ms));
+ /* CL-107: wait for the element instead of a fixed delay; on a loaded machine the badge renders late */
+ const until=async(fn,ms)=>{const t0=Date.now();let v=fn();while(!v&&Date.now()-t0<ms){await w(100);v=fn()}return v};const g=CONTRIB.gaps();if(!g.length)return ['gaps: no screen without an anchor'];
+ go(g[0]);await w(60);const b=await until(()=>document.querySelector('#tbThread .ctb-gapb'),5000);if(!b||b.textContent.trim()!=='Not linked to an objective'||!b.classList.contains('ownx-badge')||!b.classList.contains('warn'))f.push('gaps: the badge on '+g[0]+' is missing or not styled like No backup');
+ NAVX.persona.set('emp');await w(250);go('home');await w(80);if(!await until(()=>document.querySelector('#view [data-ctb-card] .ctb-gapb'),5000))f.push('gaps: a viewer whose team has no team objective sees no gap badge');
  NAVX.persona.set('ops');await w(250);return f}));
 
 /* ---- 5. menu anchor marks and the All screens filter ---- */
