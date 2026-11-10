@@ -16,7 +16,10 @@ const url='file://'+dir+'/full.html';const SRC=fs.readFileSync(path.join(dir,'fu
 async function open(ctx,q){ctx=ctx||await b.newContext({viewport:{width:1440,height:900}});const p=await ctx.newPage();p.errs=[];
  p.on('pageerror',e=>p.errs.push('PAGEERROR '+e.message));p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&p.errs.push('console: '+m.text().slice(0,300)));
  await p.route(/^https?:/,r=>r.abort());await p.goto(url+(q||''),{waitUntil:'domcontentloaded',timeout:120000});
- await p.waitForFunction(()=>window.PACKGEN&&PACKGEN.fromAnswers&&window.DATA&&window.IDENT&&window.TENANT&&window.SCN,null,{timeout:60000});await p.waitForTimeout(1500);return p}
+ await p.waitForFunction(()=>window.PACKGEN&&PACKGEN.fromAnswers&&window.DATA&&window.IDENT&&window.TENANT&&window.SCN,null,{timeout:60000});await p.waitForTimeout(1500);
+ /* PR-96: the workflow engine boots 1.5 s after the store hydrates and seeds agent runs under whatever tenant is active (CL-109);
+    wait for that boot before switching into a generated tenant, so the seeded core runs stay in core, instead of a fixed delay */
+ await p.waitForFunction(()=>!window.WF||WF.booted===true,null,{timeout:60000}).catch(()=>{});return p}
 
 /* ---------------- DC-43 Bring your company ---------------- */
 if(!only||only==='company'){const p=await open();
