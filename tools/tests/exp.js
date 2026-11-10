@@ -41,9 +41,21 @@ const RUN={
  two_seats:async()=>{await p.evaluate(()=>{if(!SEATS.role())SEATS.pick('cfo');const ch=new BroadcastChannel('falconaire-seats'); /* acts as the other window */
   ch.postMessage({v:1,id:'test-other-seat',type:'hello',role:'coo',tenant:'core'});
   setTimeout(()=>ch.postMessage({v:1,id:'test-other-seat',type:'audit',role:'coo',tenant:'core',entry:{a:'approved budget request',d:'BL-012 moved $12,000',s:'bud_req'},num:'$12,000'}),300)});await settle(2000)},
+ // DC-51: the executive tracks, six stages each, driven in order on the real screens
+ trk_cost:async()=>{await p.evaluate(()=>go('exe_strat'));await settle();await p.click('#view [data-exe-newkr]');await settle();
+  await p.evaluate(()=>{const v=FORMST.exe_kr.vals;v.n='Run-rate cost taken out';v.start=0;v.cur=0;v.tgt=300000;v.u='$';submitForm('exe_kr')});await settle(1000);
+  await p.evaluate(()=>{try{closeDrawer()}catch(e){}go('bst')});await settle(1000);await p.evaluate(()=>go('bud_req'));await settle(1000);
+  const br=await p.evaluate(()=>EXP.current().ctx.br);await p.evaluate(id=>BUDREQ.openReq(id),br);await settle(800);
+  await p.click('[data-br-act="'+br+':Decline"]');await settle(600);await p.evaluate(()=>{FORMST.budreq_dec.vals.note='Does not earn its cost this year';submitForm('budreq_dec')});await settle(1200);
+  await p.evaluate(()=>{try{closeDrawer()}catch(e){}go('strat_exec')});await settle(1500);await p.evaluate(()=>go('bud_ben'));await settle(1000);
+  await p.click('#view [data-r17u-rec]');await settle(600);await p.evaluate(()=>{const v=FORMST.r17u_rec.vals;v.ben='BEN-2';v.amount=20000;v.ev='Decommission ticket, experience test';submitForm('r17u_rec')});await settle(1500)},
+ trk_strat:async()=>{await p.evaluate(()=>go('exe_strat'));await settle(1000);await p.evaluate(()=>go('strat_exec'));await settle(1500);
+  await p.evaluate(()=>{S.v.sx=2;render()});await settle(1500);await p.evaluate(()=>go('exe_dash'));await settle(1000);
+  await p.evaluate(()=>go('strat_exec'));await settle(1000);await p.evaluate(()=>document.querySelector('#view [data-sx-form="goal"]').click());await settle(800);
+  await p.evaluate(()=>{const v=FORMST.sx_goal.vals;v.proj='X1';v.goal='O1';v.w=100;submitForm('sx_goal')});await settle(1500);await p.evaluate(()=>{try{closeDrawer()}catch(e){}go('exe_board')});await settle(1500)},
  monday:async()=>{await p.evaluate(()=>go('inbox'));await settle();await p.evaluate(()=>{const it=INBOX.items().sort((a,b)=>(b.sim?1:0)-(a.sim?1:0));for(const x of it){const r=INBOX.decide(x.id,'approve',{note:'experience test'});if(r.ok)break}INBOX.flush()});await settle(1500)}};
-const ROLE={break_it:'ciso',two_seats:'cfo',cfo_invoice:'cfo',coo_journey:'coo',ciso_agent:'ciso',cio_clash:'cio',monday:'chro'};
-const TEN={break_it:'core',two_seats:'core',cfo_invoice:'health',coo_journey:'storage',ciso_agent:'core',cio_clash:'mining',monday:'core'};
+const ROLE={trk_cost:'coo',trk_strat:'ceo',break_it:'ciso',two_seats:'cfo',cfo_invoice:'cfo',coo_journey:'coo',ciso_agent:'ciso',cio_clash:'cio',monday:'chro'};
+const TEN={trk_cost:'core',trk_strat:'core',break_it:'core',two_seats:'core',cfo_invoice:'health',coo_journey:'storage',ciso_agent:'core',cio_clash:'mining',monday:'core'};
 for(const id of await p.evaluate(()=>EXP.missions().map(m=>m.id))){const n0=errs.length;
  if(!RUN[id]){fail('no test driver for mission '+id);continue}
  const ev=await p.evaluate(([id,role,ten])=>{window.__ev=[];['checkpoint','ripple','success'].forEach(k=>EXP.on(k,d=>window.__ev.push(k)));return EXP.start(id,{role,tenant:ten,mode:'facilitated'})},[id,ROLE[id],TEN[id]]);

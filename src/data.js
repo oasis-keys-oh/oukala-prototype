@@ -18,6 +18,8 @@ m_aispend:{n:"AI spend against daily cap",f:"AI spend today ÷ Daily cap",u:"%",
 m_kb:{n:"Knowledge freshness",f:"Articles reviewed in the last 12 months ÷ Active articles",u:"%",cur:74,tgt:90,badAt:70,dir:"max",max:100,tr:[82,80,79,78,77,76,75,74],owner:"Knowledge",use:["Executive trace","Metrics"],rem:{kind:"agent",ref:"Knowledge Curator",title:"Draft refreshes for stale articles",agent:"Knowledge Curator",auto:true,state:"running",prog:"11 refresh drafts waiting for owner review"}},
 m_yield:{n:"Meeting capture yield",f:"Actions and decisions captured ÷ Actions and decisions stated",u:"%",cur:94,tgt:90,badAt:80,dir:"max",max:100,tr:[88,89,91,92,93,93,94,94],owner:"PMO",use:["First Officer"],rem:null}
 };
+/* ---- DC-51: cost takeout target the Cost Takeout track sets and TKVT measures against (modeled; annualized run-rate dollars, fictional) ---- */
+const TAKEOUT={tgt:300000,ty:"Cost avoidance",due:"2027-06-30",basis:"Cost savings recorded as realized by their owner in the benefits register"};
 function mstat(m){const v=m.cur;if(m.dir==="max")return v>=m.tgt?"good":v>=m.badAt?"warn":"bad";return v<=m.tgt?"good":v<=m.badAt?"warn":"bad"}
 function mfmt(m,v){v=v==null?m.cur:v;if(m.u==="%")return (Math.round(v*100)/100)+"%";if(m.u==="idx")return v.toFixed(2);if(m.u==="h")return v+"h";if(m.u==="days")return v+" days";return String(v)}
 

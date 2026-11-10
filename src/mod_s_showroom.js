@@ -70,6 +70,7 @@ let resetting=false;
 W.addEventListener("pagehide",()=>{if(resetting)clearStorage()}); /* registered after the modules that flush on pagehide, so it runs last */
 function reset(o){o=o||{};const d=o.demo?SHOW.byId(o.demo):null;const persona=o.persona||(d&&d.persona)||"exec";
  if(G(()=>SHOW.state.demo,null))G(()=>SHOW.exit({stay:true}));
+ G(()=>{if(W.TRACKS&&TRACKS.current())EXP.stop({quiet:true,keep:true})}); /* DC-51: a running track ends; its ?track and &stage go with it */
  const cleared=clearStorage();
  G(()=>{if(W.SCN&&SCN.cur!=="core")SCN.set("core");else if(DATA.tenant()!=="core")DATA.setTenant("core")});
  G(()=>{if(S.persona!==persona)NAVX.persona.set(persona)});
@@ -78,7 +79,7 @@ function reset(o){o=o||{};const d=o.demo?SHOW.byId(o.demo):null;const persona=o.
  G(()=>CHATX.close());G(()=>INBOX.closePanel());G(()=>closeDrawer());
  SHOW.lastReset={at:new Date().toISOString(),cleared,persona,tenant:"core",demo:o.demo||null};
  if(o.reload===false){G(()=>go(o.demo?"showroom":"home"));if(o.demo)G(()=>SHOW.start(o.demo,0));return SHOW.lastReset}
- const u=new URL(location.href);["showroom","beat","kid","mode","srwin","lens","srpath"].forEach(k=>u.searchParams.delete(k));u.searchParams.set("srreset","1");u.searchParams.set("srpersona",persona);if(o.demo)u.searchParams.set("showroom",o.demo);
+ const u=new URL(location.href);["showroom","beat","kid","mode","srwin","lens","srpath","track","stage"].forEach(k=>u.searchParams.delete(k));u.searchParams.set("srreset","1");u.searchParams.set("srpersona",persona);if(o.demo)u.searchParams.set("showroom",o.demo);
  G(()=>history.replaceState(null,"",u));resetting=true;
  if(W.STORE&&STORE.reset)STORE.reset();else G(()=>location.reload());
  return SHOW.lastReset}

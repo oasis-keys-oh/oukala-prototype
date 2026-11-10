@@ -63,7 +63,7 @@ const P={
   care:["budget","capital","cash"],
   dec:{want:/budget|overspend|reforecast|contract|renew|demand|funding|hosting|forecast|invoice|move \$/i,amt:25000,inv:50000}},
  coo:{kind:"exec",art:"pages",pal:["#3a1608","#c4571e","#f6bd8c"],sub:"Chief operating officer · Chief editor",
-  top:[["m_biz_comment","Comments answered"],["m_biz_ballot","Ballots at quorum"],["m_biz_cycle","Days to publish"]],
+  top:[["m_tkvt","Takeout against target","cost"],["m_stsh","Spend traced to strategy","strat"],["m_mwls","Weaknesses not concluded","mw"]], /* DC-51: the three track metrics, each opens its track */
   care:["pipe","member2","cost"],
   dec:{want:/release|go or no|publish|ballot|comment|standard|portal|retire|member login|beta|hosting|demand|connector/i,amt:60000}},
  chro:{kind:"exec",art:"sunrise",pal:["#3a1b2c","#c47a8f","#f7d3d6"],sub:"Chief human resources officer · Head of people operations",
@@ -128,6 +128,9 @@ function tile(spec,who){const id=spec[0],lab=spec[1];
  const sv=selfVal(id,who);
  if(sv)return `<button type="button" class="r21-tile st-good" data-go="svc_req" aria-label="${E(lab)}: ${E(sv.v)}"><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(sv.v)}</span><span class="r21-tt">${E(sv.sub)}</span></button>`;
  const m=M(id);if(!m)return"";const s=stOf(m),c=stCls(s);
+ /* DC-51: a track tile opens its executive track (mod_s_tracks) and says how its number was made */
+ if(spec[2]&&W.TRACKS){const lb=m.label==="simulated"?"Simulated":"Modeled";
+  return `<button type="button" class="r21-tile st-${c}" data-trk-open="${E(spec[2])}" aria-label="${E(lab)}: ${E(mfmt(m))}, ${stTxt(s)}, ${lb.toLowerCase()}. Open the ${E(G(()=>TRACKS.get(spec[2]).title,""))} track."><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(mfmt(m))}</span><span class="r21-tt"><span class="trk-lab">${lb}</span>${stTxt(s)} · target ${m.dir==="max"?"≥":"≤"} ${E(mfmt(m,m.tgt))}</span>${spark(m.tr,"currentColor",150,34)}</button>`}
  return `<button type="button" class="r21-tile st-${c}" data-r21-met="${E(id)}" aria-label="${E(lab)}: ${E(mfmt(m))}, ${stTxt(s)}. Open the metric."><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(mfmt(m))}</span><span class="r21-tt"><i class="r21-dot"></i>${stTxt(s)} · target ${m.dir==="max"?"≥":"≤"} ${E(mfmt(m,m.tgt))}</span>${spark(m.tr,"currentColor",150,34)}</button>`}
 
 /* ---------- painted hero art (Round 24): one image per role from HEROMAP, falling back to the generated line art ---------- */
