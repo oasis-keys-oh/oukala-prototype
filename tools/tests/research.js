@@ -99,29 +99,104 @@ bn=await ban();if(!bn||!bn.vis)fail('banner on the results');
 // with the results scrolled into view, a simulated banner is inside the viewport
 const inView=async sel=>{await p.evaluate(s=>{const e=document.querySelector(s);if(e)e.scrollIntoView({block:'end'})},sel);await settle(300);
  const v=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-banner]')].map(b=>{const r=b.getBoundingClientRect();return{t:Math.round(r.top),b:Math.round(r.bottom),h:innerHeight,ok:r.height>0&&(Math.min(r.bottom,innerHeight)-Math.max(r.top,0))/r.height>=0.8&&/Simulated/.test(b.textContent)}}));if(!v.some(x=>x.ok))console.log('banners',JSON.stringify(v));return v.some(x=>x.ok)};
-for(const sel of ['#view [data-rsr-counts]','#view [data-rsr-item]:last-of-type','#view [data-rsr-item="mw_uar"] [data-rsr-need]:last-child'])if(!await inView(sel))fail('no simulated banner in the viewport with '+sel+' in view');
+for(const sel of ['#view [data-rsr-counts]','#view [data-rsr-table]','#view [data-rsr-sources] [data-rsr-need]:last-child'])if(!await inView(sel))fail('no simulated banner in the viewport with '+sel+' in view');
 if(!bad)ok('simulated banner visible before, during and after the run, and in the viewport while results are in view');
 const want=await p.evaluate(()=>RSR.events('a').map(e=>e.type));if(JSON.stringify(seen)!==JSON.stringify(want))fail('stream seen on screen differs from RSR.events: '+seen.length+' vs '+want.length);else ok('the screen ran on the event stream ('+seen.length+' events)');
 await p.evaluate(()=>window.__rsrOff&&window.__rsrOff());
-const D=await p.evaluate(()=>{const c=document.querySelector('#view [data-rsr-card]');const f=RSR.filing('a');
- const items=[...c.querySelectorAll('[data-rsr-item]')].map(a=>({out:a.dataset.rsrOutcome,title:a.querySelector('b').textContent,
-  q:[...a.querySelectorAll('[data-rsr-quote]')].map(q=>({pg:+q.dataset.rsrPage,cite:q.querySelector('cite').textContent,ok:(f.pages.find(x=>x.page===+q.dataset.rsrPage)||{text:''}).text.includes(q.firstChild.textContent)})),
-  needs:a.querySelectorAll('[data-rsr-need]').length,labels:[...a.querySelectorAll('[data-rsr-label]')].map(l=>l.dataset.rsrLabel)}));
- const counts=c.querySelector('[data-rsr-counts]');
- return{items,counts:counts?counts.textContent.replace(/\s+/g,' '):'',steps:c.querySelectorAll('[data-rsr-step]').length,done:c.querySelectorAll('[data-rsr-status="done"]').length,
-  dash:/\u2014/.test(c.textContent),filing:c.querySelectorAll('[data-rsr-filing-page]').length,after:!!document.querySelector('#view .hero + [data-rsr-card], #view .hero ~ [data-rsr-card]')}});
-const outs=D.items.map(i=>i.out).join();if(outs!=='mapped,needs,clear')fail('outcomes on screen '+outs);
-D.items.forEach(i=>{if(!i.q.length)fail(i.title+' shows no quote');i.q.forEach(q=>{if(!q.ok)fail(i.title+' quote not in the filing at page '+q.pg);if(!new RegExp('page '+q.pg+'$').test(q.cite))fail(i.title+' cite '+q.cite)});
- if(!i.labels.includes('fictional'))fail(i.title+' quote not labeled fictional');if(i.out==='mapped'&&!i.labels.includes('modeled'))fail(i.title+' mapping not labeled modeled')});
-if(D.items[1]&&D.items[1].needs!==3)fail('data sources on screen '+D.items[1].needs);
-const TR=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-test]')].map(t=>t.dataset.rsrTest+': '+t.textContent.replace(/\s+/g,' ').trim()));
-if(TR.length!==2||!/^checked: Checked/.test(TR[0])||!/^blocked: Not tested/.test(TR[1]))fail('test results on screen '+JSON.stringify(TR));
-if(!/Simulated/.test(D.counts))fail('outcome counts not labeled '+D.counts);
-if(D.steps!==7||D.done!==7)fail('step log '+D.steps+' steps, '+D.done+' done');if(D.dash)fail('em dash in the card');if(D.filing<4)fail('filing text pages '+D.filing);if(!D.after)fail('card not after the hero');
-if(!bad)ok('on screen: '+outs+', every quote with its page, counts labeled, 7 steps done');
+// PR-100 and PR-101: the maps, the tiles, the table and the detail
+const NODES=m=>p.evaluate(m=>[...document.querySelectorAll('#view [data-rsr-map="'+m+'"] [data-rsr-node]')].map(n=>({k:n.dataset.rsrNode,st:n.dataset.rsrStatus,flag:n.dataset.rsrFlag||'',badge:(n.querySelector('[data-rsr-badge] text')||{}).textContent||'',tip:(n.querySelector('title')||{}).textContent||'',tab:n.getAttribute('tabindex'),aria:n.getAttribute('aria-label')||'',hasShape:!!n.querySelector('.r17pd-sh')})),m);
+const F=await p.evaluate(()=>{const c=document.querySelector('#view [data-rsr-card]');const f=RSR.filing('a');
+ const q=[...c.querySelectorAll('[data-rsr-quote]')].map(x=>({pg:+x.dataset.rsrPage,cite:x.querySelector('cite').textContent,ok:(f.pages.find(y=>y.page===+x.dataset.rsrPage)||{text:''}).text.includes(x.firstChild.textContent)}));
+ return{counts:c.querySelector('[data-rsr-counts]').textContent.replace(/\s+/g,' '),dash:/—/.test(c.textContent),filing:c.querySelectorAll('[data-rsr-filing-page]').length,after:!!document.querySelector('#view .hero + [data-rsr-card], #view .hero ~ [data-rsr-card]'),
+  oldSteps:c.querySelectorAll('.rsr-steps,[data-rsr-step]').length,svgs:c.querySelectorAll('[data-rsr-map="run"] svg').length,q}});
+if(!/Simulated/.test(F.counts))fail('outcome counts not labeled '+F.counts);if(F.dash)fail('em dash in the card');if(F.filing<4)fail('filing text pages '+F.filing);if(!F.after)fail('card not after the hero');
+if(F.oldSteps)fail('the plain step list is still on screen');if(F.svgs!==1)fail('run map svgs '+F.svgs);
+F.q.forEach(x=>{if(!x.ok)fail('quote not in the filing at page '+x.pg);if(!new RegExp('page '+x.pg+'$').test(x.cite))fail('cite '+x.cite)});
+// the run map (simulated): seven nodes in step order, human, robot or agent, all done, flags on steps 6 and 7 with their counts
+const RN=await NODES('run');
+if(RN.length!==7||RN.map(n=>n.k).join()!=='1,2,3,4,5,6,7')fail('run map nodes '+JSON.stringify(RN.map(n=>n.k)));
+if(RN.some(n=>n.st!=='done'||!n.hasShape||n.tab!=='0'||!n.tip||!n.aria))fail('run map node states, tooltips or focus '+JSON.stringify(RN.map(n=>[n.st,n.tab])));
+const fl=RN.filter(n=>n.flag).map(n=>n.k+':'+n.flag+':'+n.badge).join();if(fl!=='6:1:1,7:3:3')fail('flagged nodes '+fl);
+const lanes=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-map="run"] .r17pd-lt')].map(t=>t.textContent).join('|'));
+if(lanes!=='Presenter|Research robot|Research agent')fail('run map lanes '+lanes);
+const labs=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-map="run"] figcaption [data-rsr-label]')].map(l=>l.dataset.rsrLabel).join());if(labs!=='simulated')fail('run map label '+labs);
+// the tiles filter the table
+const rowsNow=()=>p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-row]')].map(r=>r.dataset.rsrOutcome).join());
+let outs=await rowsNow();if(outs!=='mapped,needs,clear')fail('outcomes on screen '+outs);
+const tiles=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-tile]')].map(t=>t.dataset.rsrTile+':'+t.querySelector('.rsr-cv').textContent));if(tiles.join()!=='mapped:1,needs:1,clear:1')fail('tiles '+tiles);
+for(const k of ['mapped','needs','clear']){await p.click('#view [data-rsr-tile="'+k+'"]');const r=await rowsNow();const pr=await p.getAttribute('#view [data-rsr-tile="'+k+'"]','aria-pressed');if(r!==k||pr!=='true')fail('tile '+k+' filtered to '+r+' pressed '+pr)}
+await p.click('#view [data-rsr-tile="clear"]');outs=await rowsNow();if(outs!=='mapped,needs,clear')fail('selecting the tile again did not clear the filter: '+outs);
+// the table: columns, one row per weakness, pills
+const T=await p.evaluate(()=>{const t=document.querySelector('#view [data-rsr-table]');return{heads:[...t.querySelectorAll('th')].map(h=>h.textContent),rows:[...t.querySelectorAll('[data-rsr-row]')].map(r=>[...r.children].map(c=>c.textContent.replace(/\s+/g,' ').trim())),pills:t.querySelectorAll('tbody .pill').length,tbl:t.classList.contains('tbl')}});
+if(T.heads.join()!=='Weakness,Area,Gap type,Outcome,Test result,Data needs')fail('table columns '+T.heads);
+if(!T.tbl||T.pills<6)fail('table or pill components not used '+T.tbl+' '+T.pills);
+if(T.rows[0][2]!=='Design gap'||T.rows[0][3]!=='Found and mapped'||T.rows[0][4]!=='Checked'||T.rows[0][5]!=='0')fail('row 1 '+JSON.stringify(T.rows[0]));
+if(T.rows[1][2]!=='Operating gap'||T.rows[1][3]!=='Found, needs data'||T.rows[1][4]!=='Needs data'||T.rows[1][5]!=='3')fail('row 2 '+JSON.stringify(T.rows[1]));
+if(!/Not disclosed/.test(T.rows[2][3]))fail('row 3 '+JSON.stringify(T.rows[2]));
+// the detail: one at a time, with the chain, the auditor's line, Map B and the quotes collapsed
+const detail=async id=>{await p.evaluate(id=>{const cur=document.querySelector('#view [data-rsr-detail]');if(cur&&cur.dataset.rsrDetail===id)return;document.querySelector('#view [data-rsr-open="'+id+'"]').click()},id);await settle(150);
+ return p.evaluate(()=>{const ds=document.querySelectorAll('#view [data-rsr-detail]');const d=ds[0];if(!d)return{n:0};const f=RSR.filing('a');
+  return{n:ds.length,id:d.dataset.rsrDetail,chain:[...d.querySelectorAll('.rsr-map dt')].map(x=>x.textContent).join(),auditor:(d.querySelector('[data-rsr-auditor]')||{textContent:''}).textContent,
+   collapsed:!!d.querySelector('details.rsr-qd:not([open])'),summary:(d.querySelector('details.rsr-qd summary')||{textContent:''}).textContent,
+   q:[...d.querySelectorAll('[data-rsr-quote]')].map(x=>({pg:+x.dataset.rsrPage,ok:(f.pages.find(y=>y.page===+x.dataset.rsrPage)||{text:''}).text.includes(x.firstChild.textContent),cite:x.querySelector('cite').textContent})),
+   labels:[...d.querySelectorAll('[data-rsr-label]')].map(l=>l.dataset.rsrLabel),test:(d.querySelector('[data-rsr-test]')||{dataset:{}}).dataset.rsrTest||'',
+   maps:d.querySelectorAll('[data-rsr-map="business"]').length,note:(d.querySelector('[data-rsr-flagnote]')||{textContent:''}).textContent}})};
+const d1=await detail('mw_je');
+if(d1.n!==1||d1.chain!=='Process,Control,Metric'||!/Auditor's report agrees \(page 60\)/.test(d1.auditor)||!d1.collapsed||d1.summary!=='Show the filing text')fail('detail 1 '+JSON.stringify(d1));
+if(d1.q.length!==3||d1.q.some(x=>!x.ok||!new RegExp('page '+x.pg+'$').test(x.cite)))fail('detail 1 quotes '+JSON.stringify(d1.q));
+if(!d1.labels.includes('fictional')||!d1.labels.includes('modeled')||!d1.labels.includes('simulated')||d1.test!=='checked'||d1.maps!==1)fail('detail 1 labels or test '+JSON.stringify(d1.labels));
+let BN=await NODES('business');
+if(BN.map(n=>n.k).join()!=='1,2,3,4'||BN.filter(n=>n.flag).map(n=>n.k+':'+n.flag+':'+n.badge).join()!=='3:design:✓')fail('weakness 1 map B '+JSON.stringify(BN.map(n=>[n.k,n.st,n.flag,n.badge])));
+const kinds=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-map="business"] [data-rsr-node]')].map(n=>n.getAttribute('aria-label').split(' | ')[1]).join());
+if(kinds!=='Human,Robot,Approval gate,Human')fail('map B step kinds '+kinds);
+const mlab=await p.evaluate(()=>[...document.querySelectorAll('#view [data-rsr-map="business"] figcaption [data-rsr-label]')].map(l=>l.dataset.rsrLabel).join());if(mlab!=='modeled')fail('map B label '+mlab);
+const d2=await detail('mw_uar');
+if(d2.id!=='mw_uar'||d2.n!==1||d2.q.length!==3||d2.q.some(x=>!x.ok)||d2.test!=='blocked'||d2.maps!==1)fail('detail 2 '+JSON.stringify(d2));
+BN=await NODES('business');
+if(BN.map(n=>n.k).join()!=='1,2,3'||BN.filter(n=>n.flag).map(n=>n.k+':'+n.flag+':'+n.badge).join()!=='2:operating:3')fail('weakness 2 map B '+JSON.stringify(BN.map(n=>[n.k,n.st,n.flag,n.badge])));
+if(!/Operating gap\..*3 sources/.test(d2.note))fail('weakness 2 flag note '+d2.note);
+const d3=await detail('ok_cut');
+if(d3.id!=='ok_cut'||d3.maps!==0||d3.q.length!==1||!d3.q[0].ok||!d3.collapsed)fail('detail 3 '+JSON.stringify(d3));
+await p.click('#view [data-rsr-open="ok_cut"]');if(await p.$('#view [data-rsr-detail]'))fail('selecting the open row again did not close its detail');
+// the data sources table
+const DS=await p.evaluate(()=>{const t=document.querySelector('#view [data-rsr-sources]');return{heads:[...t.querySelectorAll('th')].map(h=>h.textContent).join(),rows:[...t.querySelectorAll('[data-rsr-need]')].map(r=>[...r.children].map(c=>c.textContent.replace(/\s+/g,' ').trim()))}});
+if(DS.heads!=='Source,Reason,Status'||DS.rows.length!==3||DS.rows.some(r=>!r[0]||!/^needed to test: /.test(r[1])||!r[2]))fail('data sources table '+JSON.stringify(DS));
+// keyboard and screen reader order: tiles, then row buttons, in reading order; Enter and Space operate them; focus survives the repaint
+await p.evaluate(()=>document.querySelector('#view [data-rsr-tile="mapped"]').focus());
+await p.keyboard.press('Enter');await settle(100);
+let kb=await p.evaluate(()=>({f:document.activeElement.dataset.rsrTile,rows:document.querySelectorAll('#view [data-rsr-row]').length}));
+if(kb.f!=='mapped'||kb.rows!==1)fail('keyboard on a tile (focus kept, filter applied) '+JSON.stringify(kb));
+await p.keyboard.press('Space');await settle(100);
+await p.keyboard.press('Tab');await p.keyboard.press('Tab');await p.keyboard.press('Tab');await settle(100);
+const ord=await p.evaluate(()=>{const a=document.activeElement;return a.dataset.rsrOpen||a.tagName});if(ord!=='mw_je')fail('tab order from the tiles reaches '+ord+' (want the first row)');
+await p.keyboard.press('Enter');await settle(100);
+const ex=await p.evaluate(()=>({o:document.activeElement.dataset.rsrOpen,e:document.activeElement.getAttribute('aria-expanded'),d:!!document.querySelector('#view [data-rsr-detail="mw_je"]')}));
+if(ex.o!=='mw_je'||ex.e!=='true'||!ex.d)fail('keyboard on a row '+JSON.stringify(ex));
+const dom=await p.evaluate(()=>{const els=[...document.querySelectorAll('#view [data-rsr-card] [data-rsr-map="run"],#view [data-rsr-card] [data-rsr-counts],#view [data-rsr-card] [data-rsr-table],#view [data-rsr-card] [data-rsr-detail],#view [data-rsr-card] [data-rsr-sources]')];return els.map(e=>e.dataset.rsrMap?'map-'+e.dataset.rsrMap:Object.keys(e.dataset).find(k=>/^rsr(Counts|Table|Detail|Sources)$/.test(k))).join()});
+if(dom!=='map-run,rsrCounts,rsrTable,rsrDetail,rsrSources')fail('reading order '+dom);
+// layout: at 1440 pixels the summary tiles and the table fit one screen when the card is at the top
+await p.evaluate(()=>{RSR.run('a',{delay:0});document.querySelector('#view [data-rsr-open="mw_je"]')&&document.querySelector('#view [data-rsr-open="mw_je"]').click()});await settle(300);
+const fit=await p.evaluate(()=>{document.querySelector('#view [data-rsr-card]').scrollIntoView({block:'start'});const c=document.querySelector('#view [data-rsr-counts]').getBoundingClientRect(),t=document.querySelector('#view [data-rsr-table]').getBoundingClientRect();return{tiles:Math.round(c.top)+'-'+Math.round(c.bottom),table:Math.round(t.top)+'-'+Math.round(t.bottom),h:innerHeight}});
+const bot=+fit.table.split('-')[1];if(!(bot<=fit.h))fail('summary and table do not fit one screen at 1440 wide: '+JSON.stringify(fit));
+if(!bad)ok('on screen: run map 7 nodes done, flags 6:1 and 7:3, tiles filter, table rows, detail with map B per weakness, quotes collapsed, data sources, keyboard; table bottom '+bot+' of '+fit.h);
+// the maps follow the events in order: after each event the run map matches the steps so far, and map B follows classify, test and request
+const FL=await p.evaluate(()=>{const bad=[];const E=RSR.events('a');RSR.reset();let seenB={};
+ const nodes=m=>[...document.querySelectorAll('#view [data-rsr-map="'+m+'"] [data-rsr-node]')];
+ E.forEach(e=>{RSR.emit(JSON.parse(JSON.stringify(e)));const st=RSR.state().steps.map(t=>t.status);
+  const got=nodes('run').map(n=>n.dataset.rsrStatus);const want=st.map(x=>x==='done'?'done':x);
+  if(JSON.stringify(got)!==JSON.stringify(want))bad.push('seq '+e.seq+' '+e.type+': nodes '+got.join()+' steps '+want.join());
+  if(e.type==='step'&&e.status==='running'&&got[e.step-1]!=='running')bad.push('step '+e.step+' not lit while running');
+  if(e.type==='item.mapped'&&e.item==='mw_je'){const b=nodes('business');if(b.length!==4)bad.push('map B after mapped '+b.length)}
+  if(e.type==='item.tested'&&e.item==='mw_je'){const f=document.querySelector('#view [data-rsr-map="business"] [data-rsr-flag]');if(!f||f.querySelector('[data-rsr-badge] text').textContent!=='✓')bad.push('tested badge on weakness 1 gate')}
+  if(e.type==='run.finished'&&!document.querySelector('#view [data-rsr-counts]'))bad.push('no tiles at the end')});
+ RSR.reset();return bad});
+if(FL.length)fail('map follows events: '+FL.slice(0,4).join(' | '));else ok('run map matches the steps after every one of the '+32+' events; map B follows mapped, tested');
+// the guard and banner are unchanged by the layout: a refused event leaves the maps as they were
 // variant B on screen
 await p.click('#view [data-rsr-run="b"]');await p.waitForFunction(()=>RSR.state().finished,null,{timeout:30000});await settle(300);
-const DB=await p.evaluate(()=>({none:!!document.querySelector('#view [data-rsr-none]'),found:[...document.querySelectorAll('#view [data-rsr-outcome="mapped"],#view [data-rsr-outcome="needs"],#view [data-rsr-need]')].length}));
+const DB=await p.evaluate(()=>({none:!!document.querySelector('#view [data-rsr-none]'),found:[...document.querySelectorAll('#view [data-rsr-outcome="mapped"],#view [data-rsr-outcome="needs"],#view [data-rsr-need]')].length,
+ run:[...document.querySelectorAll('#view [data-rsr-map="run"] [data-rsr-node]')].map(n=>n.dataset.rsrStatus+(n.dataset.rsrFlag?'!':'')).join(),maps:document.querySelectorAll('#view [data-rsr-map="business"]').length}));
+if(DB.run!=='done,done,done,done,done,done,done'||DB.maps)fail('variant B maps: run '+DB.run+', business maps '+DB.maps);
 if(!DB.none||DB.found)fail('variant B on screen '+JSON.stringify(DB));else ok('variant B on screen: no weakness disclosed');
 // 6. other tenants: no card (the filing belongs to the core company)
 const others=await p.evaluate(()=>DATA.tenants().map(t=>t.id).filter(t=>t!=='core'));if(!others.length)fail('no other tenant to check');
