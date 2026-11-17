@@ -9,6 +9,12 @@ const b=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.
 const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
 const errs=[];p.on('pageerror',e=>errs.push('PAGEERROR '+String(e.message||e).slice(0,300)));
 p.on('console',m=>m.type()==='error'&&!/Failed to load resource|CORS policy|URL scheme "file" is not supported/.test(m.text())&&errs.push('console: '+m.text().slice(0,300)));
+await p.addInitScript(()=>{window.__tr=[];const T=m=>window.__tr.push(Math.round(performance.now())+' '+m);
+ const hb=history.back.bind(history);history.back=function(){T('history.back '+String(new Error().stack).split('\n').slice(2,4).join('|'));return hb()};
+ addEventListener('popstate',()=>T('popstate hash='+location.hash+' st='+JSON.stringify(history.state)),true);
+ addEventListener('hashchange',()=>T('hashchange '+location.hash),true);
+ const iv=setInterval(()=>{if(window.HOOKS&&HOOKS.on){clearInterval(iv);HOOKS.on('beforeGo',(sc)=>T('go '+sc),{id:'diag.go',order:-1})}},20);
+});
 await p.route(/^https?:/,r=>r.abort());await p.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});
 await p.waitForFunction(()=>window.CONTRIB&&window.THREAD&&window.EXE&&window.NAVX&&typeof go==='function',null,{timeout:120000});
 await p.waitForTimeout(1500);
@@ -69,7 +75,7 @@ add(await step('card',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout
 add(await step('gaps',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout(r,ms));
  /* CL-107: wait for the element instead of a fixed delay; on a loaded machine the badge renders late */
  const until=async(fn,ms)=>{const t0=Date.now();let v=fn();while(!v&&Date.now()-t0<ms){await w(100);v=fn()}return v};const g=CONTRIB.gaps();if(!g.length)return ['gaps: no screen without an anchor'];
- go(g[0]);await w(60);const b=await until(()=>document.querySelector('#tbThread .ctb-gapb'),5000);if(!b){let te='ok';try{CONTRIB.gaps();document.getElementById('tbThread').getAttribute('data-ctb');const h=CONTRIB.threadHTML(g[0]);te='len '+h.length}catch(e){te='THROWS '+e.message+' '+String(e.stack).slice(0,300)}f.push('DIAG screen='+S.screen+' persona='+S.persona+' tb='+document.getElementById('tbThread').outerHTML.slice(0,400)+' | threadHTML '+te+' | gapb count '+document.querySelectorAll('.ctb-gapb').length+' | anchor '+JSON.stringify(CONTRIB.anchor(g[0])).slice(0,200))}if(!b||b.textContent.trim()!=='Not linked to an objective'||!b.classList.contains('ownx-badge')||!b.classList.contains('warn'))f.push('gaps: the badge on '+g[0]+' is missing or not styled like No backup');
+ go(g[0]);await w(60);const b=await until(()=>document.querySelector('#tbThread .ctb-gapb'),5000);if(!b){let te='ok';try{CONTRIB.gaps();document.getElementById('tbThread').getAttribute('data-ctb');const h=CONTRIB.threadHTML(g[0]);te='len '+h.length}catch(e){te='THROWS '+e.message+' '+String(e.stack).slice(0,300)}f.push('TRACE '+JSON.stringify(window.__tr.slice(-14)));f.push('DIAG screen='+S.screen+' persona='+S.persona+' tb='+document.getElementById('tbThread').outerHTML.slice(0,400)+' | threadHTML '+te+' | gapb count '+document.querySelectorAll('.ctb-gapb').length+' | anchor '+JSON.stringify(CONTRIB.anchor(g[0])).slice(0,200))}if(!b||b.textContent.trim()!=='Not linked to an objective'||!b.classList.contains('ownx-badge')||!b.classList.contains('warn'))f.push('gaps: the badge on '+g[0]+' is missing or not styled like No backup');
  NAVX.persona.set('emp');await w(250);go('home');await w(80);if(!await until(()=>document.querySelector('#view [data-ctb-card] .ctb-gapb'),5000))f.push('gaps: a viewer whose team has no team objective sees no gap badge');
  NAVX.persona.set('ops');await w(250);return f}));
 

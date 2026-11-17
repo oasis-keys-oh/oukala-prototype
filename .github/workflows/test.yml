@@ -13,6 +13,8 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -24,7 +26,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: |
           python3 src/build.py --out "$PWD/build_out" --full >/dev/null
-          for i in 1 2 3; do node tools/tests/contrib.js build_out || true; done
+          echo NEWBUILD; for i in 1 2 3 4 5 6; do node tools/tests/contrib.js build_out || true; done
+          git checkout 43d7371 -- src
+          python3 src/build.py --out "$PWD/build_old" --full >/dev/null
+          echo OLDBUILD; for i in 1 2 3 4 5 6; do node tools/tests/contrib.js build_old || true; done
       - name: Keep the build for inspection
         if: failure()
         uses: actions/upload-artifact@v4
