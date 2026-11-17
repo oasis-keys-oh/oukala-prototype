@@ -12,7 +12,7 @@ const first=n=>String(n).split(" ")[0];
 const rnd=(seed)=>RNG(seed);
 const TODAY="2026-10-10";
 
-/* ---------- the 59 staff of Atlantic Logistics. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
+/* ---------- the 61 staff of Atlantic Logistics. name|title|reports to|unit|template|dotted line to|matrix (project:percent)|go to them for|value |location|years ---------- */
 const RAW=`Catherine Doyle|Chief executive|-|Executive office|ceo|||Board relations and annual priorities;The final call when two departments disagree;Member and regulator relationships|Keeps 300 member organizations confident that the standards they rely on are independent, current and trusted.|Norwalk, CT|3
 Casey Rowan|Chief information officer|Catherine Doyle|Technology|cio|||Technology strategy and the portfolio;Spend above $25,000 on technology;Escalated vendor problems|Turns the Foundation's publishing mission into systems that work, and protects every dollar of technology spend.|Norwalk, CT|6
 Marcus Reid|Chief financial officer|Catherine Doyle|Finance|cfo|||Budget and forecast questions;Audit, tax and treasury;Spend above $100,000|Gives the board a single, trusted view of the Foundation's money and keeps it audit-ready.|Norwalk, CT|5
@@ -57,6 +57,8 @@ Hollis Grey|Release coordinator|Nia Brooks|Change and release|chg|||Release sche
 Avery Chen|Controller|Marcus Reid|Finance|ctrl|||Month-end close and journal entries;Invoice approval exceptions;Audit evidence and accounting policy|Closes the books accurately and on time, so the board and auditors trust every number.|Norwalk, CT|6
 Noelle Park|Accounts payable lead|Avery Chen|Finance|apfa|||Why an invoice has not been paid;Vendor payment runs;Three-way match exceptions|Pays vendors correctly and on time, and catches duplicates before the money leaves.|Norwalk, CT|6
 Victor Amaya|Finance and budget lead|Avery Chen|Finance|apfa|Maya Ortiz||Budget versus actual;Forecast updates;Technology business management reports|Explains where the money went and where it is going.|Norwalk, CT|5
+Tomas Alvarez|Director of Financial Planning and Analysis|Marcus Reid|Finance|apfa|||Forecast against approved budget;Budget and forecast cycles;Variance explanations for the executive team|Keeps the forecast honest and explains every gap to the approved budget before the executive team asks.|Norwalk, CT|4
+Renee Lindqvist|Director of Financial Reporting and Controls|Marcus Reid|Finance|ctrl|||Material weakness remediation and disclosure;Control deficiencies and their conclusions;Financial reporting and audit evidence|Makes sure every control weakness is tracked to a conclusion a person records, and that reported numbers can be traced.|Norwalk, CT|5
 Camille Ortega|Procurement lead|Marcus Reid|Finance|legal|Theo Marlowe||Vendor selection and quotes;Purchase orders over $25,000;Contract renewals calendar|Gets the Foundation better terms and no surprise auto-renewals.|Norwalk, CT|6
 Kenji Watanabe|AI platform lead|Casey Rowan|Technology|ai|Theo Marlowe||Whether an AI agent may go live;Guardrails, models and spend caps;AI incident reviews|Lets the Foundation use AI aggressively and safely, with every agent sponsored and governed.|Remote|2
 Noor Haddad|Standards editor|Elena Marsh|Editorial|editor|||Edits to a standard in progress;Comment-letter responses;Terminology questions|Turns committee drafts into clear, consistent standards.|Norwalk, CT|1

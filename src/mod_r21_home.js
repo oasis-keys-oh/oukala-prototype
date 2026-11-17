@@ -59,10 +59,10 @@ const P={
   care:["members","strat","finh"],
   dec:{want:/contract|renew|demand|data lake|retire|member|beta|reforecast|hosting|portal|board|strategy/i,amt:100000}},
  cfo:{kind:"exec",art:"ledger",pal:["#05353c","#1f8a8a","#a6e8d4"],sub:"Chief financial officer",
-  top:[["m_spend_var","Forecast against approved"],["m_biz_dso","Days to collect dues"],["m_biz_close","Days to close the books"]],
+  top:[["m_budvar","Forecast against approved",null,"modeled"],["m_biz_close","Days to close the books",null,"modeled"],["m_mwls","Weaknesses not concluded",null,"simulated"]], /* PR-106: forecast, close, MWLS; one target per metric (PR-103), each tile labeled */
   care:["budget","capital","cash"],
   dec:{want:/budget|overspend|reforecast|contract|renew|demand|funding|hosting|forecast|invoice|move \$/i,amt:25000,inv:50000}},
- coo:{kind:"exec",art:"pages",pal:["#3a1608","#c4571e","#f6bd8c"],sub:"Chief operating officer · Chief editor",
+ coo:{kind:"exec",art:"pages",pal:["#3a1608","#c4571e","#f6bd8c"],sub:"Chief operating officer",
   top:[["m_tkvt","Takeout against target","cost"],["m_stsh","Spend traced to strategy","strat"],["m_mwls","Weaknesses not concluded","mw"]], /* DC-51: the three track metrics, each opens its track */
   care:["pipe","member2","cost"],
   dec:{want:/release|go or no|publish|ballot|comment|standard|portal|retire|member login|beta|hosting|demand|connector/i,amt:60000}},
@@ -131,7 +131,9 @@ function tile(spec,who){const id=spec[0],lab=spec[1];
  /* DC-51: a track tile opens its executive track (mod_s_tracks) and says how its number was made */
  if(spec[2]&&W.TRACKS){const lb=m.label==="simulated"?"Simulated":"Modeled";
   return `<button type="button" class="r21-tile st-${c}" data-trk-open="${E(spec[2])}" aria-label="${E(lab)}: ${E(mfmt(m))}, ${stTxt(s)}, ${lb.toLowerCase()}. Open the ${E(G(()=>TRACKS.get(spec[2]).title,""))} track."><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(mfmt(m))}</span><span class="r21-tt"><span class="trk-lab">${lb}</span>${stTxt(s)} · target ${m.dir==="max"?"≥":"≤"} ${E(mfmt(m,m.tgt))}</span>${spark(m.tr,"currentColor",150,34)}</button>`}
- return `<button type="button" class="r21-tile st-${c}" data-r21-met="${E(id)}" aria-label="${E(lab)}: ${E(mfmt(m))}, ${stTxt(s)}. Open the metric."><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(mfmt(m))}</span><span class="r21-tt"><i class="r21-dot"></i>${stTxt(s)} · target ${m.dir==="max"?"≥":"≤"} ${E(mfmt(m,m.tgt))}</span>${spark(m.tr,"currentColor",150,34)}</button>`}
+ /* PR-103: a tile whose spec names a data state (4th item) says so, as the track tiles do (R29) */
+ const dsl=spec[3]?(m.label==="simulated"||spec[3]==="simulated"?"Simulated":"Modeled"):"";
+ return `<button type="button" class="r21-tile st-${c}" data-r21-met="${E(id)}" aria-label="${E(lab)}: ${E(mfmt(m))}, ${stTxt(s)}${dsl?", "+dsl.toLowerCase():""}. Open the metric."><span class="r21-tl">${E(lab)}</span><span class="r21-tv">${E(mfmt(m))}</span><span class="r21-tt">${dsl?`<span class="trk-lab">${dsl}</span>`:`<i class="r21-dot"></i>`}${stTxt(s)} · target ${m.dir==="max"?"≥":"≤"} ${E(mfmt(m,m.tgt))}</span>${spark(m.tr,"currentColor",150,34)}</button>`}
 
 /* ---------- painted hero art (Round 24): one image per role from HEROMAP, falling back to the generated line art ---------- */
 function heroArt(k,p){const h=(window.HEROMAP||{})[k];if(!h)return art(p.art,p.pal,k.length*131+7);
@@ -298,5 +300,5 @@ D.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.cla
 D.addEventListener("change",e=>{const t=e.target;if(t&&t.matches&&t.matches("[data-r21-s]")){UI.s=t.value;redo()}if(t&&t.matches&&t.matches('#r21CusPop input[name="care"]'))cusCount()});
 D.addEventListener("submit",e=>{const f=e.target;if(f&&f.matches&&f.matches("[data-r21-form]")){e.preventDefault();saveCus(f)}});
 function redo(){const host=D.getElementById("r21WorkHost");if(!host)return;const k=S.persona,p=P[k];if(!p||!p.work&&p.kind!=="line"&&p.kind!=="lead"){return}const tmp=D.createElement("div");tmp.innerHTML=workHTML(k,p);const n=tmp.firstElementChild;host.replaceWith(n)}
-W.R21H={profiles:P,panels:PL,build,decisions,pool,art,openMet,openCus};
+W.R21H={profiles:P,panels:PL,build,decisions,pool,art,openMet,openCus,effTop,tile};
 })();

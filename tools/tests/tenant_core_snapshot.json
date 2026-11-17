@@ -40,7 +40,7 @@
   ]
  },
  "people": {
-  "count": 113,
+  "count": 115,
   "ids": [
    "maya-ortiz",
    "priya-shah",
@@ -154,7 +154,9 @@
    "tessa-lin",
    "viktor-sokol",
    "amara-diallo",
-   "marcus-webb"
+   "marcus-webb",
+   "tomas-alvarez",
+   "renee-lindqvist"
   ]
  },
  "metrics": {
@@ -754,7 +756,7 @@
   ]
  },
  "workload": {
-  "count": 74,
+  "count": 76,
   "ids": [
    "wl-catherine-doyle",
    "wl-casey-rowan",
@@ -829,7 +831,9 @@
    "wl-sofia-arenas",
    "wl-hugo-baptiste",
    "wl-joel-tran",
-   "wl-alba-torres"
+   "wl-alba-torres",
+   "wl-tomas-alvarez",
+   "wl-renee-lindqvist"
   ]
  },
  "value_chain": {
