@@ -26,10 +26,12 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: |
           python3 src/build.py --out "$PWD/build_out" --full >/dev/null
-          echo NEWBUILD; for i in 1 2 3 4 5 6; do node tools/tests/contrib.js build_out || true; done
-          git checkout 43d7371 -- src
-          python3 src/build.py --out "$PWD/build_old" --full >/dev/null
-          echo OLDBUILD; for i in 1 2 3 4 5 6; do node tools/tests/contrib.js build_old || true; done
+          echo OLDBUILD
+          git worktree add ../old 43d7371 || echo WORKTREE_FAIL
+          python3 ../old/src/build.py --out "$PWD/build_old" --full >/dev/null || echo BUILD_FAIL
+          ls build_old | head -3
+          for i in 1 2 3 4 5 6 7 8; do node tools/tests/contrib.js build_old || true; done
+          echo NEWBUILD2; for i in 1 2 3 4 5 6 7 8; do node tools/tests/contrib.js build_out || true; done
       - name: Keep the build for inspection
         if: failure()
         uses: actions/upload-artifact@v4
