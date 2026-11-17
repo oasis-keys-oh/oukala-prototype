@@ -57,3 +57,6 @@
 :root:root .cxo-home p{margin:0}
 .cxo-tile{container-type:inline-size}
 @container (max-width:300px){.cxo-own{flex-wrap:wrap}}
+/* the first view must fit 1440x900 on a machine without the design fonts (Linux falls back to wider fonts): state pills stay short and rows do not wrap */
+.cxo-wf b{white-space:nowrap}
+.cxo-dm{gap:4px 6px}.cxo-dm .pill{padding:2px 6px;white-space:nowrap}

@@ -36,6 +36,8 @@ const WHY={
  m_cycle:"Invoices that wait too long cost late fees and goodwill.",
  m_budgetburn:"Cloud spend over its monthly budget eats the room left for the rest of the year.",
  m_capex:"Capital spend off plan changes what can be funded next."};
+/* shorter names where the full metric name would wrap the tile heading on a narrower fallback font */
+const SHORT={m_budgetburn:"Cloud spend vs budget"};
 const CFG={
  coo:{watch:{pin:[{metric:"m_spend_var",head:"Cost to serve"},{proc:true}],pool:["m_biz_cycle","m_biz_renew","m_biz_comment","m_biz_ballot","m_biz_lic","m_biz_conf"]}},
  cfo:{watch:{pin:[{held:true},{metric:"m_biz_dso",head:"Cash collection"}],pool:["m_apsla","m_apcycle","m_cycle","m_budgetburn","m_capex"]}}};
@@ -77,7 +79,7 @@ function movedScore(m){const t=(m.tr||[]).filter(v=>typeof v==="number");if(t.le
  const was=G(()=>mstat(Object.assign({},m,{cur:p})),"good"),now=stOf(m);return{mv:Math.abs(c-p)/rng,cross:was==="good"&&now!=="good"}}
 function metricWatch(id,head){const m=M(id);if(!m)return null;const s=stOf(m),mv=movedScore(m),tr=trend(m);
  const sev=s==="good"?0:s==="warn"?1:2;
- return{score:sev*1000+mv.mv*100+(mv.cross?5:0),head:head||m.n,fig:mfmt(m),state:stTxt(s)+(tr?", "+tr.toLowerCase():""),cls:stCls(s),line:WHY[id]||"It moved or is off target, so it is worth a look.",tgt:tgtTxt(m),ds:dsLabel(m),met:id}}
+ return{score:sev*1000+mv.mv*100+(mv.cross?5:0),head:head||SHORT[id]||m.n,fig:mfmt(m),state:stTxt(s),cls:stCls(s),line:(tr?tr+". ":"")+(WHY[id]||"It moved or is off target, so it is worth a look."),tgt:tgtTxt(m),ds:dsLabel(m),met:id}}
 function procWatch(){const L=G(()=>PROCLIB.list(),[]).filter(p=>p.target>p.level).sort((a,b)=>(b.target-b.level)-(a.target-a.level)||String(a.name).localeCompare(b.name))[0];if(!L)return null;
  const gap=G(()=>PROCLIB.maturity(L.id).gaps[0],"");const wk=gap?gap.split(":")[0].toLowerCase():"";
  return{score:100,head:"Process with the biggest gap",fig:"Level "+L.level,state:"Target "+L.target,cls:"warn",line:`${L.name} is at level ${L.level} against a target of ${L.target}${wk?", weakest on "+wk:""}. A step that stalls here holds up the work behind it.`,ds:"Modeled",proc:L.id}}
