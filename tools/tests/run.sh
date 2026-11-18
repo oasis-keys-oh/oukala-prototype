@@ -25,6 +25,8 @@ node tools/tests/tracks.js build_out
 node tools/tests/showroom_roles.js build_out
 # PR-106 phase 1, PR-103, PR-108: COO and CFO Home (three bands of three, labels, one target per metric, owners, Show details)
 node tools/tests/cxo_home.js build_out
+# PR-113: Org chart fills the viewport band, balanced tree, nodes and connectors rendered, person view and filters unchanged
+node tools/tests/org_chart.js build_out
 # PR-96: 10-K research run, phase A (simulated replay on the fictional filing reproduces the run key, variant B finds nothing, no invented weakness)
 node tools/tests/research.js build_out
 node tools/tests/platform.js build_out

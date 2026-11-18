@@ -26,23 +26,27 @@ function buildTree(){seedCollapse();
   const np=(!aiMode&&OS.props&&O.propFor)?O.propFor(n).length:0;const nv=((!aiMode&&O.vacFor)?O.vacFor(n).length:0)+np;nd.nKids=O.kids(n).filter(keep).length+nv;nd.hidden=col?total(n)+(mode!=="human"?(ag[n]||[]).length:0)+nv:0;nd.nAg=(ag[n]||[]).length;
   nd.hit=!!q&&hit(p,q);nd.dim=(filtersOn()&&!match(p))||(!!q&&!nd.hit&&false);nd.ctx=mode==="aionly"&&!nd.nAg;return nd};
  return node(root)}
-const CW=232,CH=88,GX=18,GY=56,PAD=28;
+const CW=232,CH=88,GX=18,GY=56,PAD=28,HI=28,HG=30,HV=24;
 const hexAv=(name,size)=>`<span class="av-hex" style="width:${size+4}px;height:${size+4}px">${avatar(name,{size})}</span>`;
 O.hexAvatar=hexAv;
 const aiChip2=t=>`<span class="ai-chip" title="AI agent: sponsored by a named person, runs inside guardrails"><i></i>${t||"AI"}</span>`;
 O.aiChip=aiChip2;
 /* Layout is deterministic: every card is CW by CH; layer d sits at y = PAD + d*(CH+GY); a subtree is as wide as its children side by side (or one card); a parent is centered over its first and last child. */
+/* PR-113: a manager whose reports are all leaves hangs them in one column under the card (spine on the left), so the tree grows down as well as across instead of one very wide row */
+function hangs(nd){return nd.kids.length>=2&&nd.kids.every(k=>!k.kids.length)}
 function lay(nd){if(!nd.kids.length){nd.w=CW;return}
- nd.kids.forEach(lay);nd.tw=nd.kids.reduce((a,k)=>a+k.w,0)+GX*(nd.kids.length-1);nd.w=Math.max(CW,nd.tw)}
-function put(nd,x,d,o){nd.y=PAD+d*(CH+GY);o.cards.push(nd);o.maxD=Math.max(o.maxD,d);
+ nd.kids.forEach(lay);if(hangs(nd)){nd.hang=true;nd.tw=nd.w=HI+CW;return}
+ nd.tw=nd.kids.reduce((a,k)=>a+k.w,0)+GX*(nd.kids.length-1);nd.w=Math.max(CW,nd.tw)}
+function put(nd,x,d,o,y){nd.y=y==null?PAD+d*(CH+GY):y;o.cards.push(nd);o.maxD=Math.max(o.maxD,d);o.maxB=Math.max(o.maxB||0,nd.y+CH);
  if(!nd.kids.length){nd.x=x+(nd.w-CW)/2;return}
+ if(nd.hang){nd.x=x;nd.kids.forEach((k,i)=>{put(k,x+HI,d+1,o,nd.y+CH+HG+i*(CH+HV));o.edges.push({f:nd.id,t:k.id,k:k.t==="a"?"ag":"line",hang:1,prev:i?nd.kids[i-1].id:null})});return}
  let cx=x+(nd.w-nd.tw)/2;nd.kids.forEach(k=>{put(k,cx,d+1,o);cx+=k.w+GX});
  const f=nd.kids[0],l=nd.kids[nd.kids.length-1];nd.x=Math.round((f.x+l.x)/2);
  nd.kids.forEach(k=>o.edges.push({f:nd.id,t:k.id,k:k.t==="a"?"ag":"line"}))}
-function layout(){const t=buildTree();lay(t);const o={cards:[],edges:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=PAD*2+(o.maxD+1)*CH+o.maxD*GY;o.root=t;
+function layout(){const t=buildTree();lay(t);const o={cards:[],edges:[],e:[],dot:[],mx:[],maxD:0};put(t,PAD,0,o);o.W=t.w+PAD*2;o.H=o.maxB+PAD;o.root=t;
  const by={};o.cards.forEach(c=>by[c.id]=c);o.by=by;
  /* dotted and matrix links are edges too: drawn after paint from the real rendered rects */
-if(OS.lines.svc!==false)o.edges.filter(e=>e.k==="ag").forEach(e=>{const par=o.by[e.f];const h=par&&par.kids.find(k=>k.t==="h");if(h)o.edges.push({f:e.t,t:h.id,k:"svc"})});
+if(OS.lines.svc!==false)o.edges.filter(e=>e.k==="ag").forEach(e=>{const par=o.by[e.f];const h=par&&par.kids.find(k=>k.t==="h");if(h)o.edges.push({f:e.t,t:h.id,k:"svc",hang:par.hang?1:0})});
  if(OS.lines.dotted)O.staff.forEach(p=>{if(p.dot&&o.by[p.n]&&o.by[p.dot])o.edges.push({f:p.dot,t:p.n,k:"dot"})});
  if(OS.lines.matrix)O.staff.forEach(p=>p.mx.forEach(m=>{const l=PLEAD(m.p);if(l&&l!==p.n&&o.by[p.n]&&o.by[l])o.edges.push({f:l,t:p.n,k:"mx"})}));
  return o}
@@ -98,6 +102,8 @@ function drawLines(){const cv=document.getElementById("orgcv");if(!cv||!LAST)ret
  const minTop={};edges.filter(e=>e.k==="line"||e.k==="ag").forEach(e=>{const c=rr(e.t);if(c)minTop[e.f]=Math.min(minTop[e.f]==null?1e9:minTop[e.f],c.y)});
  const out=[],laneN={};
  edges.forEach(e=>{const a=rr(e.f),b=rr(e.t);if(!a||!b)return;let d,pts=null;
+  if(e.hang&&e.k==="svc"){const xr=a.x+a.w+7+(laneN.sv=(laneN.sv||0)+1)%2*4;out.push(`<path class="org-ln svc" d="M${a.x+a.w} ${a.y+a.h/2}H${xr}V${b.y+b.h/2}H${b.x+b.w}"/>`);return}
+  if(e.hang){const sx=a.x+HI/2,pv=e.prev?rr(e.prev):null,y0=pv?pv.y+pv.h/2:a.y+a.h,cy=b.y+b.h/2;out.push(`<path class="org-ln ${e.k==="ag"?"ag":""}${e.k==="ag"&&O.agLine?" "+O.agLine(e.t):""}" data-from="${H(e.f)}" data-to="${H(e.t)}" data-k="${e.k}" d="M${sx} ${y0}V${cy}H${b.x}"/>`);if(e.k==="ag"&&O.agLabel)out.push(O.agLabel(b.x+b.w/2,b.y-7));return}
   if(e.k==="svc"){const x1=a.x+a.w/2,yb=a.y+a.h+9,x2=b.x+b.w/2;out.push(`<path class="org-ln svc" d="M${x1} ${a.y+a.h}V${yb}H${x2}V${b.y+b.h}"/>`);return}
   if(e.k==="line"||e.k==="ag"){const x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y,by=Math.round(y1+(minTop[e.f]-y1)/2);d=x1===x2?`M${x1} ${y1}V${y2}`:`M${x1} ${y1}V${by}H${x2}V${y2}`}
   else{const ln=(e.k==="mx"?41:10)+(laneN[e.k]=(laneN[e.k]||0)+1)%3*4;
@@ -290,10 +296,11 @@ function orgScreen(){
  const pane=xp!=null?xp:OS.tab==="chart"?chartPane():OS.tab==="report"?reportPane():OS.tab==="dir"?dirPane():OS.tab==="own"?ownPane():OS.tab==="acct"?acctPane():(O.studioPane?O.studioPane():"");
  const story=`<b>${st.heads}</b> people · <b>${st.layers}</b> layers · <b>${st.agents}</b> AI agents, each with a named sponsor · <b>${st.returned} h/wk</b> returned · <b>${st.open} h/wk</b> open opportunity`;
  return `<div class="screen">${hero("People and teams","Who does what, and who supports them",story,`<div class="row">${fchip("m_org_cap")}${fchip("m_org_gov")}${fchip("m_org_own")}${fchip("m_org_span")}${stdChip("togaf","Org and capability model in the chart")}${stdChip("agentic","Agent autonomy levels and sponsor accountability")}</div>`)}${lensNote()}
+ <div class="org-tabs" role="tablist" aria-label="Org chart sections">${O.tabs.map(t=>`<button type="button" role="tab" class="org-tab" aria-selected="${OS.tab===t[0]}" data-org-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
+ <div class="org-pane" role="tabpanel">${pane}</div>
  ${OS.tab==="chart"?`<div class="org-strip" role="list"><span role="listitem"><b data-role="metric">${st.heads}</b> people</span><span role="listitem"><b data-role="metric">${st.mgrs}</b> managers</span><span role="listitem"><b data-role="metric">${st.avgSpan}</b> average span (widest ${st.maxSpan})</span><span role="listitem"><b data-role="metric">${st.layers}</b> layers</span><span role="listitem"><b data-role="metric">${st.agents}</b> AI agents</span><span role="listitem"><b data-role="metric">${st.returned} h</b> a week returned</span></div>`:kpiRow([["People",String(st.heads),st.mgrs+" managers, "+st.layers+" layers"],["AI teammates",String(st.agents),st.covered+" sponsors"],["Average span",String(st.avgSpan),"max "+st.maxSpan+" direct reports",{metric:"m_org_span"}],["Hours returned",st.returned+" h","a week by agents",{metric:"m_org_cap"}],["Ownership",st.ownPct+"%","of registry items name a person",{metric:"m_org_own"}]])}
  ${O.workBand&&OS.tab==="chart"?O.workBand():""}
- <div class="org-tabs" role="tablist" aria-label="Org chart sections">${O.tabs.map(t=>`<button type="button" role="tab" class="org-tab" aria-selected="${OS.tab===t[0]}" data-org-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
- <div class="org-pane" role="tabpanel">${pane}</div>${procCard("org_chart")}</div>`}
+ ${procCard("org_chart")}</div>`}
 REG("org_chart","Org chart","people","M12 3h-3v5h3M9 5.5H5v4M15 5.5h4v4M5 14h3v5H5zM16 14h3v5h-3zM10.5 14h3v5h-3zM12 8v3M6.5 11h11v3",orgScreen);
 O.go=n=>{S.screen="org_chart";go("org_chart")};
 })();

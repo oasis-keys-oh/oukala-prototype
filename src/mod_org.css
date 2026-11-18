@@ -15,7 +15,7 @@
 .org-sel{flex:0 1 180px;min-width:140px}
 .org-chips{display:flex;flex-wrap:wrap;gap:6px}
 .org-wrap{position:relative;padding:0;overflow:hidden}
-.org-vp{position:relative;height:clamp(460px,66vh,720px);overflow:hidden;cursor:grab;touch-action:none;background:radial-gradient(circle at 1px 1px,var(--hair) 1px,transparent 0) 0 0/22px 22px}
+.org-vp{position:relative;height:clamp(480px,calc(100vh - 10rem),1200px);overflow:hidden;cursor:grab;touch-action:none;background:radial-gradient(circle at 1px 1px,var(--hair) 1px,transparent 0) 0 0/22px 22px}
 .org-vp.pan{cursor:grabbing}
 .org-cv{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
 .org-svg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
