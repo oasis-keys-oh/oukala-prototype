@@ -13,11 +13,11 @@ const PL={
  portf:{t:"Portfolio and demand",q:"What should be funded next, and can we staff it?",go:"port",cta:"Open demand",lead:"m_demcap",rows:["m_roi","m_align"]},
  deliv:{t:"Delivery health",q:"Are projects landing on their dates?",go:"ims",cta:"Open the schedule",lead:"m_delivery",rows:["m_mshit","m_schedvar"]},
  spend:{t:"Technology money",q:"Are we inside the approved plan?",go:"r18_spend",cta:"Open spend",lead:"m_budvar",rows:["m_capex","m_budgetburn"]},
- budget:{t:"Budget against forecast",q:"Where will we land against the approved budget?",go:"r18_spend",cta:"Open spend",lead:"m_budvar",rows:["m_fin_variance","m_budgetburn"]},
+ budget:{t:"Forecast variance to budget",q:"Where will we land against the approved budget?",go:"r18_spend",cta:"Open spend",lead:"m_budvar",rows:["m_fin_variance","m_budgetburn"]},
  capital:{t:"Capital and operating spend",q:"Is the capital plan on pace and funded?",go:"bud_lines",cta:"Open budget lines",lead:"m_capex",rows:["m_fin_headroom","m_fin_capital"]},
  cash:{t:"Dues and cash",q:"Are members paying on time, and are we closing the books on time?",go:"inv",cta:"Open invoices",lead:"m_biz_dso",rows:["m_biz_close","m_apcycle"]},
  vend:{t:"Vendors and contracts",q:"Which contracts need a decision, and are vendors delivering?",go:"bud_ven",cta:"Open vendors",lead:"m_renew",rows:["m_vendor","m_contr"]},
- airisk:{t:"AI and risk",q:"Is AI working inside its guardrails?",go:"ai_runtime",cta:"Open AI",lead:"m_override",rows:["m_aiown","m_grc_ctl_cov"]},
+ airisk:{t:"AI and risk",q:"Is AI working inside its guardrails?",go:"ai_runtime",cta:"Open agent runtime",lead:"m_override",rows:["m_aiown","m_grc_ctl_cov"]},
  ai:{t:"AI under control",q:"Is every agent owned, capped and governed?",go:"tower",cta:"Open the control tower",lead:"m_aiown",rows:["m_aispend","m_guard"]},
  aival:{t:"AI value",q:"What is AI returning to people, and at what cost?",go:"r17q_value",cta:"Open value realized",lead:"m_agentauto",rows:["m_tokcost","m_org_cap"]},
  aiq:{t:"AI quality",q:"Can we trust what the agents answer?",go:"kcs_test",cta:"Open AI testing",lead:"m_ground",rows:["m_judge","m_skill_ok"]},
@@ -28,22 +28,22 @@ const PL={
  third:{t:"Third-party risk",q:"Are our vendors assessed and meeting their service levels?",go:"grc_ven",cta:"Open third-party risk",lead:"m_grc_ven_t1",rows:["m_renew","m_pf_msp_sla"]},
  pol:{t:"Policies and attestations",q:"Has everyone read and signed what they must?",go:"grc_pol",cta:"Open policies",lead:"m_grc_pol_ack",rows:["m_grc_att_rate","m_trainc"]},
  rely:{t:"Reliability",q:"Are the services members depend on staying up?",go:"itom_slo",cta:"Open observability",lead:"m_avail",rows:["m_mttr","m_slobudget"]},
- members:{t:"Mission and members",q:"Are we serving and keeping our members?",go:"exe_dash",cta:"Open dashboards",lead:"m_biz_renew",rows:["m_biz_onb","m_biz_conf"]},
- member2:{t:"Members",q:"Are member organizations renewing and taking part?",go:"ppl_org",cta:"Open the org chart",lead:"m_biz_renew",rows:["m_biz_onb","m_biz_committee"]},
+ members:{t:"Mission and members",q:"Are we serving and keeping our members?",go:"exe_dash",cta:"Open executive dashboard",lead:"m_biz_renew",rows:["m_biz_onb","m_biz_conf"]},
+ member2:{t:"Members",q:"Are member organizations renewing and taking part?",go:"ppl_org",cta:"Open workload by team",lead:"m_biz_renew",rows:["m_biz_onb","m_biz_committee"]},
  pipe:{t:"Standards pipeline",q:"Is every standard moving from comment to vote to publication?",go:"plat_proc",cta:"Open the process library",lead:"m_biz_cycle",rows:["m_biz_comment","m_biz_ballot"]},
  lic:{t:"Licensing and contracts",q:"Are licensing requests answered and contracts reviewed in time?",go:"ppm_sow",cta:"Open contracts",lead:"m_biz_lic",rows:["m_biz_contract","m_renew"]},
- finh:{t:"Financial health",q:"Are we living within our means?",go:"exe_dash",cta:"Open dashboards",lead:"m_budvar",rows:["m_biz_dso","m_biz_close"]},
+ finh:{t:"Financial health",q:"Are we living within our means?",go:"exe_dash",cta:"Open executive dashboard",lead:"m_budvar",rows:["m_biz_dso","m_biz_close"]},
  cost:{t:"Cost to serve",q:"What does the work cost and where is it late?",go:"r18_spend",cta:"Open spend",lead:"m_spend_var",rows:["m_biz_conf","m_biz_lic"]},
- work:{t:"Workforce",q:"Do we have the people we planned for?",go:"ppl_org",cta:"Open the org chart",lead:"m_org_hc_plan",rows:["m_org_vac_age","m_org_span"]},
- hire:{t:"Hiring and onboarding",q:"How fast do we fill roles and get people ready?",go:"ppl_org",cta:"Open the org chart",lead:"m_biz_hire",rows:["m_org_vac_age","m_r15d_fw_ready"]},
+ work:{t:"Workforce",q:"Do we have the people we planned for?",go:"ppl_org",cta:"Open workload by team",lead:"m_org_hc_plan",rows:["m_org_vac_age","m_org_span"]},
+ hire:{t:"Hiring and onboarding",q:"How fast do we fill roles and get people ready?",go:"ppl_org",cta:"Open workload by team",lead:"m_biz_hire",rows:["m_org_vac_age","m_r15d_fw_ready"]},
  perf:{t:"Performance and reviews",q:"Is the review cycle complete and fair?",go:"ppl_perf",cta:"Open performance",lead:"m_pf_revdone",rows:["m_pf_calspread","m_pf_align"]},
  learn:{t:"Learning and readiness",q:"Is everyone trained for what they do?",go:"ppl_train",cta:"Open learning",lead:"m_trainc",rows:["m_r15d_fw_ready","m_skill_depth"]},
- cap:{t:"Capacity and load",q:"Do we have the people for what we promised?",go:"ppl_cap",cta:"Open capacity",lead:"m_util",rows:["m_wload","m_pp_gap"]},
+ cap:{t:"Capacity and load",q:"Do we have the people for what we promised?",go:"ppl_cap",cta:"Open resource planning",lead:"m_util",rows:["m_wload","m_pp_gap"]},
  shift:{t:"Work shifting to agents",q:"How much capacity are agents returning, and are they governed?",go:"org_chart",cta:"Open the org chart",lead:"m_org_cap",rows:["m_org_gov","m_org_accept"]},
  proj:{t:"Your projects",q:"Which are behind baseline?",go:"ppm_proj",cta:"Open projects",lead:"m_ontime",rows:["m_spi","m_util"]},
  inc:{t:"Incidents",q:"What is burning right now?",go:"itsm_inc",cta:"Open incidents",lead:"m_mttr",rows:["m_slaatt","m_ops"]},
  chg:{t:"Changes this week",q:"Can everything go in without collisions?",go:"itsm_chg",cta:"Open changes",lead:"m_itsm_cfr",rows:["m_itsm_appr","m_mttr"]},
- plat:{t:"Platform health",q:"Is every module owned and passing its gates?",go:"plat_gate",cta:"Open gates",lead:"m_gate_conf",rows:["m_own_cov","m_own_nobk"]},
+ plat:{t:"Platform health",q:"Is every module owned and passing its gates?",go:"plat_gate",cta:"Open citizen apps",lead:"m_gate_conf",rows:["m_own_cov","m_own_nobk"]},
  debt:{t:"Data model and debt",q:"What is unmapped, unowned or aging?",go:"plat_debt",cta:"Open debt",lead:"m_debt_open",rows:["m_debt_int","m_own_cov"]},
  inv:{t:"Invoices",q:"What is waiting, and what is late?",go:"inv",cta:"Open invoices",lead:"m_apsla",rows:["m_apcycle","m_aprover"]},
  evid:{t:"Evidence",q:"Can every claim be traced to a record?",go:"r15d_evidence",cta:"Open the evidence room",lead:"m_grc_ctl_cov",rows:["m_grc_audit_req","m_grc_pol_ack"]}};
@@ -51,15 +51,15 @@ const PL={
 const SKIP_X=/^(debt decision|catalog request|time off request|training|proposed entity|data access|alert|meeting review|review to write|project task|process gate|app certification|access request)$/i;
 const P={
  exec:{kind:"exec",art:"skyline",pal:["#1b1a4a","#5b5bd6","#cfccff"],sub:"Chief information officer",
-  top:[["m_delivery","Delivery health"],["m_spend_var","Spend against plan"],["m_grc_risk_app","Risks above appetite"]],
+  top:[["m_delivery","Delivery health"],["m_spend_var","Forecast against approved"],["m_grc_risk_app","Risks above appetite"]],
   care:["strat","spend","airisk"],
   dec:{want:/contract|renew|demand|data lake|release|go or no|retire|hosting|break-glass|conditional access|connector|ai agent|token|overspend|reforecast|beta|architecture|vendor/i,amt:40000}},
  ceo:{kind:"exec",art:"skyline",pal:["#0c1633","#c9962f","#f6dc92"],sub:"Chief executive officer",
-  top:[["m_biz_renew","Member renewal"],["m_budvar","Budget against forecast"],["m_biz_cycle","Days to publish a standard"]],
+  top:[["m_biz_renew","Member renewal"],["m_budvar","Forecast variance to budget"],["m_biz_cycle","Days to publish a standard"]],
   care:["members","strat","finh"],
   dec:{want:/contract|renew|demand|data lake|retire|member|beta|reforecast|hosting|portal|board|strategy/i,amt:100000}},
  cfo:{kind:"exec",art:"ledger",pal:["#05353c","#1f8a8a","#a6e8d4"],sub:"Chief financial officer",
-  top:[["m_budvar","Forecast against approved",null,"modeled"],["m_biz_close","Days to close the books",null,"modeled"],["m_mwls","Weaknesses not concluded",null,"simulated"]], /* PR-106: forecast, close, MWLS; one target per metric (PR-103), each tile labeled */
+  top:[["m_budvar","Forecast variance to budget",null,"modeled"],["m_biz_close","Days to close the books",null,"modeled"],["m_mwls","Weaknesses not concluded",null,"simulated"]], /* PR-106: forecast, close, MWLS; one target per metric (PR-103), each tile labeled */
   care:["budget","capital","cash"],
   dec:{want:/budget|overspend|reforecast|contract|renew|demand|funding|hosting|forecast|invoice|move \$/i,amt:25000,inv:50000}},
  coo:{kind:"exec",art:"pages",pal:["#3a1608","#c4571e","#f6bd8c"],sub:"Chief operating officer",
@@ -71,7 +71,7 @@ const P={
   care:["work","perf","learn"],
   dec:{want:/hire|onboard|role|leave|people|headcount|training|new hire|time off|offboard|manager/i,amt:1e12,cats:/^(time off request|training|access request)$/i}},
  ciso:{kind:"exec",art:"shield",pal:["#061a2b","#3fb4d6","#d4f5ff"],sub:"Chief information security officer · Security lead",
-  top:[["m_grc_risk_app","Risks above appetite"],["m_access","Access reviews complete"],["m_grc_ctl_cov","Controls with evidence"]],
+  top:[["m_grc_risk_app","Risks above appetite"],["m_access","Access reviews complete"],["m_grc_ctl_cov","Control coverage"]],
   care:["sec","risk","ctrl"],
   dec:{want:/break-glass|conditional access|legacy|privileged|access|alert|security|exception|connector|tenant|sign-in|debt/i,amt:1e12,cats:/^(access request|alert|change request|debt decision|connector request)$/i}},
  caio:{kind:"exec",art:"network",pal:["#2a1146","#9b5de5","#e6d2ff"],sub:"Chief AI officer · AI platform lead",
@@ -83,7 +83,7 @@ const P={
   care:["lic","vend","pol"],
   dec:{want:/contract|renew|e-signature|licen|policy|exception|data access|privacy|vendor|terms|liability/i,amt:60000}},
  board:{kind:"exec",art:"shield",pal:["#101a30","#7e93b8","#e8eef9"],sub:"Board member",ro:true,
-  top:[["m_biz_renew","Member renewal"],["m_spend_var","Spend against plan"],["m_grc_ctl_cov","Controls with evidence"]],
+  top:[["m_biz_renew","Member renewal"],["m_spend_var","Forecast against approved"],["m_grc_ctl_cov","Control coverage"]],
   care:["members","finh","risk"]},
  audit:{kind:"lead",art:"shield",pal:["#1a2330","#8aa0a8","#e8dcb6"],sub:"Auditor",ro:true,
   top:[["m_grc_ctl_cov","Control coverage"],["m_grc_find_od","Overdue findings"],["m_grc_att_rate","Attestations complete"]],
@@ -188,7 +188,7 @@ function panelOf(id){if(PL[id])return PL[id];if(/^m:/.test(id)){const mid=id.sli
 function effCare(k){const p=P[k],c=cusGet(k);const ids=c&&Array.isArray(c.care)?c.care:p.care;return ids.map(id=>({id,p:panelOf(id)})).filter(x=>x.p)}
 const stOf=m=>G(()=>mstat(m),"good");
 const stCls=s=>s==="good"?"good":s==="warn"?"warn":"bad";
-const stTxt=s=>s==="good"?"On target":s==="warn"?"Watch":"Off target";
+const stTxt=s=>s==="good"?"On trend":"Off trend";
 /* ---------- panels ---------- */
 function care(c){const m=M(c.lead);if(!m)return"";const s=stOf(m),cl=stCls(s);
  const rows=(c.rows||[]).map(id=>M(id)?{id,m:M(id)}:null).filter(Boolean).map(({id,m})=>{const s2=stOf(m);return `<li class="r21-row"><button type="button" data-r21-met="${E(id)}"><span class="r21-rl">${E(m.n)}</span><b>${E(mfmt(m))}</b><span class="r21-bar st-${stCls(s2)}" role="img" aria-label="${stTxt(s2)}, target ${m.dir==="max"?"at least":"at most"} ${E(mfmt(m,m.tgt))}"><i style="width:${fillPct(m).toFixed(0)}%"></i></span></button></li>`}).join("");

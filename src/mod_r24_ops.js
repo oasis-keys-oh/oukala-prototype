@@ -197,11 +197,11 @@ const DEFS={
  proc:{n:"Process control lead",who:"Keeps control systems safe, quiet and under change control",role:"control",family:"operate",as:PEOPLE.proc,groups:["fix","tech","plan","my"],pin:["itsm_chg","plat_proc","metrics","svc_req"],kpis:["m_ops_alarm","m_ops_moc","m_ops_permit"],sugg:["Which alarms are nuisance alarms?","Show open permits","Which control changes lack a record?"]}
 };
 const PANELS={
- cust:{t:"Customers and revenue",q:"Are buyers happy and are publications selling to plan?",go:"metrics",cta:"Open the numbers",lead:"m_ops_csat",rows:["m_ops_pubrev","m_ops_case"]},
+ cust:{t:"Customers and revenue",q:"Are buyers happy and are publications selling to plan?",go:"metrics",cta:"Open metrics",lead:"m_ops_csat",rows:["m_ops_pubrev","m_ops_case"]},
  fulfil:{t:"Orders and stock",q:"Is every order leaving on time, and is stock right?",go:"plat_proc",cta:"Open processes",lead:"m_ops_otd",rows:["m_ops_invacc","m_ops_d2s"]},
  fclt:{t:"Buildings and maintenance",q:"Is maintenance on time and is anything unsafe?",go:"svc_req",cta:"Open requests",lead:"m_ops_pm",rows:["m_ops_wo_age","m_ops_safety"]},
  supply:{t:"Suppliers and spend",q:"Are suppliers delivering and is spend under contract?",go:"plat_proc",cta:"Open processes",lead:"m_ops_sotd",rows:["m_ops_contract","m_ops_supprisk"]},
- plantp:{t:"Plant performance",q:"Is the pilot plant running and are batches right?",go:"metrics",cta:"Open the numbers",lead:"m_ops_oee",rows:["m_ops_downtime","m_ops_fpy"]},
+ plantp:{t:"Plant performance",q:"Is the pilot plant running and are batches right?",go:"metrics",cta:"Open metrics",lead:"m_ops_oee",rows:["m_ops_downtime","m_ops_fpy"]},
  quality:{t:"Quality holds",q:"Which batches are held and how old are the reports?",go:"plat_proc",cta:"Open processes",lead:"m_ops_ncr",rows:["m_ops_fpy"]},
  ctrlp:{t:"Control room",q:"Are alarms under control and are changes recorded?",go:"itsm_chg",cta:"Open changes",lead:"m_ops_alarm",rows:["m_ops_moc","m_ops_permit"]},
  handover:{t:"Shift handover",q:"Is every item handed over and acknowledged?",go:"plat_proc",cta:"Open processes",lead:"m_ops_handover",rows:["m_ops_permit"]}

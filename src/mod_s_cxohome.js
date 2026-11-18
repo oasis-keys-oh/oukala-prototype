@@ -41,7 +41,7 @@ const WHY={
  m_budgetburn:"Cloud spend over its monthly budget eats the room left for the rest of the year.",
  m_capex:"Capital spend off plan changes what can be funded next."};
 /* shorter names where the full metric name would wrap the panel heading on a narrower fallback font */
-const SHORT={m_budgetburn:"Cloud spend vs budget",m_spend_var:"Cost to serve"};
+const SHORT={m_budgetburn:"Cloud spend vs budget",m_spend_var:"Forecast against approved"};
 const CFG={
  coo:{pool:["m_biz_cycle","m_biz_renew","m_biz_comment","m_biz_ballot","m_biz_lic","m_biz_conf"]},
  cfo:{pool:["m_apsla","m_apcycle","m_cycle","m_budgetburn","m_capex"]}};
@@ -49,7 +49,7 @@ const CFG={
 /* ---------- helpers ---------- */
 const stOf=m=>G(()=>mstat(m),"good");
 const stCls=s=>s==="good"?"good":s==="warn"?"warn":"bad";
-const stTxt=s=>s==="good"?"On target":s==="warn"?"Watch":"Off target";
+const stTxt=s=>s==="good"?"On trend":"Off trend";
 const dsLabel=m=>m&&m.label==="simulated"?"Simulated":"Modeled";
 /* PR-46 is the copy sweep for real brand names in seed data; until it lands, rows on this Home never show them (R32) */
 const clean=s=>String(s==null?"":s).replace(/Contoso Cloud Operations/g,"The cloud operations provider").replace(/\bAzure\b/g,"Cloud").replace(/\bLumen\b/g,"Search vendor");

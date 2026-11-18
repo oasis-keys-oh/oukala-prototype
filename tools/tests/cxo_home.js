@@ -147,6 +147,28 @@ const Q=await p.evaluate(()=>({trk:[...document.querySelectorAll('.r21-top .r21-
 if(Q.trk.join()!=='cost,strat,mw')fail('COO hero tiles open tracks '+Q.trk);else ok('COO hero tiles open cost, strat and mw');
 await p.click('#view [data-trk-open="mw"]');await p.waitForTimeout(500);
 const Z=await p.evaluate(()=>({cur:TRACKS.current(),bar:!!document.getElementById('trkBar')}));if(Z.cur||Z.bar)fail('MWLS tile '+JSON.stringify(Z));else ok('MWLS hero tile starts no track');
+// status words are the app's own (On trend, Off trend), never Watch / On target / Off target; each watch head and each top-tile label
+// says what the metric it opens is called; every Home CTA names the screen it opens
+for(const k of ['coo','cfo']){await home(p,k);
+ const t=await p.evaluate(()=>({state:[...document.querySelectorAll('#view .cxo-wp .cxo-st,#view .cxo-wp .pill')].map(e=>e.textContent.trim()),txt:document.querySelector('#view').textContent.replace(/\s+/g,' '),
+  aria:[...document.querySelectorAll('#view .r21-tile,#view .r21-bar,#view .cxo-wp')].map(e=>e.getAttribute('aria-label')||'').join(' | '),
+  heads:[...document.querySelectorAll('#view .cxo-wp')].map(w=>({h:(w.querySelector('.cxo-tl')||{}).textContent,n:(METRICS[(w.querySelector('[data-r21-met]')||{dataset:{}}).dataset.r21Met]||{}).n}))}));
+ if(!t.state.length||t.state.some(x=>!/^(On|Off) trend$/.test(x))||/\b(Watch|On target|Off target)\b/.test(t.aria))fail(k+' Home still says Watch / On target / Off target');else ok(k+' Home status words are On trend / Off trend');
+ if(!/\b(On|Off) trend\b/.test(t.txt+' '+t.aria))fail(k+' Home shows no On trend / Off trend status');
+ t.heads.forEach(x=>{const w=s=>String(s||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').split(' ').filter(Boolean);const nm=w(x.n);if(!x.h||!x.n||!w(x.h).every(a=>nm.includes(a)))fail(k+' watch head "'+x.h+'" does not match the metric it opens "'+x.n+'"')});ok(k+' watch heads match their metrics')}
+const lab=await p.evaluate(()=>{const bad=[];const want={work:'workload by team',hire:'workload by team',member2:'workload by team',plat:'citizen apps',airisk:'agent runtime',members:'executive dashboard',finh:'executive dashboard',cap:'resource planning',cust:'metrics',plantp:'metrics'};
+ Object.entries(want).forEach(([id,nm])=>{const pl=R21H.panels[id],sc=SCREENS.find(x=>x[0]===(pl||{}).go);if(!pl||!sc||sc[1].toLowerCase()!==nm||pl.cta.replace(/^Open (the )?/,'').toLowerCase()!==nm)bad.push(id+': '+(pl&&pl.cta)+' -> '+(sc&&sc[1]))});
+ const old=[];Object.entries(R21H.profiles).forEach(([k,pr])=>R21H.effTop(k).forEach(t=>{if(/^(Spend against plan|Budget against forecast|Controls with evidence)$/.test(t[1]))old.push(k+':'+t[1])}));
+ return{bad,old}});
+const tl=await p.evaluate(()=>{const w=x=>String(x||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').split(' ').filter(Boolean),o=[];Object.keys(R21H.profiles).forEach(k=>R21H.effTop(k).forEach(t=>{const m=METRICS[t[0]];if(['m_budvar','m_spend_var','m_grc_ctl_cov'].includes(t[0])&&!w(t[1]).every(a=>w(m.n).includes(a)))o.push(k+': "'+t[1]+'" opens "'+m.n+'"')}));return o});
+if(tl.length)fail('Home tile label does not match its metric: '+tl.join('; '));else ok('forecast and control tile labels use words from their metric names');
+if(lab.bad.length)fail('Home CTA does not name its screen: '+lab.bad.join('; '));else ok('Home CTAs name the screen they open');
+if(lab.old.length)fail('Home tile labels that differ from their metric: '+lab.old.join(', '));else ok('Home tile labels match their metrics');
+// the formula chip on a tile is one function glyph, not two ("ƒ ƒ"); a chip with a label or a metric name keeps its glyph and text
+const fc=await p.evaluate(()=>{const t=d=>{const e=document.createElement('div');e.innerHTML=d;return e};const k=t(kpi('Forecast','1','',{metric:'m_budvar'})).querySelector('.fchip'),a=t(fchip('m_budvar')).querySelector('.fchip'),l=t(fchip('m_budvar','Forecast')).querySelector('.fchip');
+ return{k:k&&k.textContent.trim(),ka:k&&k.getAttribute('aria-label'),a:a&&a.textContent.trim(),an:METRICS.m_budvar.n,l:l&&l.textContent.trim()}});
+if(fc.k!=='ƒ'||!/^Formula for /.test(fc.ka||''))fail('tile formula chip is "'+fc.k+'" ('+fc.ka+'), expected a single ƒ with an aria-label');else ok('tile formula chip is a single ƒ');
+if(fc.a!=='ƒ '+fc.an||fc.l!=='ƒ Forecast')fail('fchip with a name or label changed: '+JSON.stringify(fc));else ok('fchip with a label or name unchanged');
 // other personas keep the old Home
 await home(p,'ceo');if(await p.evaluate(()=>!!document.querySelector('#view .cxo-home')))fail('CEO Home was replaced (phase 2)');else ok('CEO Home unchanged in phase 1');
 await p.context().close();
