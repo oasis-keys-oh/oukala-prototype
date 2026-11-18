@@ -67,6 +67,9 @@ add(await step('card',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout
 
 /* ---- 4. gaps read "Not linked to an objective", styled like No backup ---- */
 add(await step('gaps',async()=>{const f=[];const w=ms=>new Promise(r=>setTimeout(r,ms));
+ /* settle: the previous step closed a drawer; its delayed history.back() must land before go(), or popstate returns to the old screen */
+ const until0=async(fn,ms)=>{const t0=Date.now();while(!fn()&&Date.now()-t0<ms)await w(50)};
+ await until0(()=>!document.querySelector('#drawer:popover-open')&&!(history.state&&history.state.ovl),3000);await w(150);
  /* CL-107: wait for the element instead of a fixed delay; on a loaded machine the badge renders late */
  const until=async(fn,ms)=>{const t0=Date.now();let v=fn();while(!v&&Date.now()-t0<ms){await w(100);v=fn()}return v};const g=CONTRIB.gaps();if(!g.length)return ['gaps: no screen without an anchor'];
  go(g[0]);await w(60);const b=await until(()=>document.querySelector('#tbThread .ctb-gapb'),5000);if(!b||b.textContent.trim()!=='Not linked to an objective'||!b.classList.contains('ownx-badge')||!b.classList.contains('warn'))f.push('gaps: the badge on '+g[0]+' is missing or not styled like No backup');
