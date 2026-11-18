@@ -1,41 +1,48 @@
-/* PR-106 phase 1: the simplified CxO Home. Bento Grid with Minimalism restraint: three bands of three tiles, one idea per tile. Tokens only. */
+/* PR-106 phase 1, PR-111: the simplified CxO Home. The original hero on top, then decision rows with fixed columns, then three metric panels
+   in the hero tile's family (serif value, status, data-state label, trend line, Trace). Tokens only. */
 .cxo-home{display:grid;gap:var(--sp-3,12px)}
-.cxo-hero{position:relative;overflow:hidden;border-radius:var(--rad-2xl);min-height:52px;display:flex;align-items:center;color:var(--white);background:var(--ink);isolation:isolate}
-.cxo-art{position:absolute;inset:0;z-index:var(--z-local)}
-.cxo-img{width:100%;height:100%;object-fit:cover;display:block;opacity:.7}
-.cxo-hero::before{content:"";position:absolute;inset:0;z-index:calc(var(--z-local) + 1);background:linear-gradient(100deg,rgba(7,17,31,.88) 0%,rgba(7,17,31,.6) 55%,rgba(7,17,31,.3) 100%)}
-.cxo-hc{position:relative;z-index:calc(var(--z-local) + 2);display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4,16px);flex-wrap:wrap;padding:var(--sp-2,8px) var(--sp-4,16px);width:100%}
-.cxo-who h1{font-family:var(--serif,Georgia,serif);font-weight:400;font-size:clamp(20px,2vw,26px);line-height:1.1;margin:0;color:var(--white)}
-.cxo-who p{margin:2px 0 0;font-size:13px;color:var(--white);opacity:.86}
-.cxo-contrib{all:unset;cursor:pointer;font-size:13px;color:var(--white);border-bottom:1px solid var(--white);padding:2px 0}
-.cxo-contrib:focus-visible{outline:2px solid var(--white);outline-offset:3px}
 .cxo-band{display:grid;gap:var(--sp-2,8px)}
-.cxo-bh{display:flex;align-items:baseline;gap:var(--sp-3,12px);flex-wrap:wrap}
+.cxo-bh{display:flex;align-items:baseline;gap:var(--sp-3,12px);flex-wrap:wrap;min-height:24px}
 :root:root .cxo-bh h2{margin:0;font-family:inherit;font-size:15px;font-weight:600;letter-spacing:0}
 .cxo-all{margin-left:auto}
-.cxo-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-3,12px)}
-:root:root .cxo-tile,:root:root .cxo-dec,:root:root .cxo-watch{display:grid;gap:6px;align-content:start;padding:10px 14px;min-width:0}
-.cxo-tile{position:relative}.cxo-ds{position:absolute;top:10px;right:14px}
-.cxo-main{all:unset;cursor:pointer;display:grid;gap:2px;min-width:0;border-radius:var(--rad-lg)}
-.cxo-main:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.cxo-tl{font-size:13px;color:var(--muted);padding-right:84px}
-.cxo-tv{font-family:var(--serif,Georgia,serif);font-size:clamp(28px,2.4vw,34px);line-height:1.05;font-variant-numeric:tabular-nums}
-.cxo-tt,.cxo-tr{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.cxo-dot{width:9px;height:9px;border-radius:var(--rad-round);background:var(--good-f,currentColor);flex:none}
-.cxo-tile.st-warn .cxo-dot,.cxo-watch.st-warn .cxo-dot{background:var(--warn-f,currentColor)}
-.cxo-tile.st-bad .cxo-dot{background:var(--bad-f,currentColor)}
-.cxo-meta,.cxo-da{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.cxo-tt,.cxo-tr{display:inline}.cxo-main{gap:1px}
-.cxo-own{display:inline-flex;align-items:center;gap:4px;flex-wrap:nowrap}
-.cxo-own .pchipx,.cxo-own .pchip{font-size:12.5px}
-.cxo-ol{font-size:11.5px;color:var(--muted)}
+:root:root .cxo-home p{margin:0}
+:root:root .cxo-home .btn{min-height:30px;padding:3px 12px;font-size:13px}
 .cxo-lab{font-size:11.5px;font-weight:700;letter-spacing:.02em;padding:2px 8px;border-radius:var(--rad-pill);border:1px solid var(--hair,currentColor);color:var(--muted);white-space:nowrap}
-:root:root .cxo-dh{margin:0;font-family:inherit;font-size:14px;font-weight:600;line-height:1.3;letter-spacing:0;overflow-wrap:anywhere}
-.cxo-dm{margin:0;display:flex;gap:6px 10px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--muted)}
-.cxo-wf{margin:0;display:flex;align-items:center;gap:var(--sp-2,8px);flex-wrap:wrap}.cxo-wf .pill{margin:0}
-.cxo-wf b{font-size:16px}
-.cxo-wl{margin:0;font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);line-height:1.4}
 .cxo-empty{grid-column:1/-1}
+:root:root .cxo-dh{margin:0;font-family:inherit;font-size:14px;font-weight:600;line-height:1.3;letter-spacing:0;overflow-wrap:anywhere}
+
+/* decisions: one row each; the title column flexes, risk, time left and the actions have fixed widths so the three rows line up */
+.cxo-dlist{display:grid;gap:var(--sp-2,8px);container-type:inline-size;--cxo-cols:minmax(0,1fr) 112px 128px 196px}
+.cxo-dcols,:root:root .cxo-dec{display:grid;grid-template-columns:var(--cxo-cols);column-gap:var(--sp-3,12px);align-items:center;min-width:0}
+.cxo-dcols{padding:0 14px;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+:root:root .cxo-dec{padding:8px 14px}
+.cxo-dt{display:grid;gap:2px;min-width:0}
+.cxo-dm{display:flex;gap:4px 10px;flex-wrap:wrap;align-items:center;font-size:12.5px;color:var(--muted)}
+.cxo-dc{display:flex;align-items:center;min-width:0}
+.cxo-dm .avx{display:none}.cxo-dm .r18-pn{padding:0;background:none;border:0;min-height:0}
+.cxo-dec .pill{font-size:11.5px;padding:2px 8px;min-height:0;margin:0;white-space:nowrap}
+.cxo-da{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:nowrap}
+@container (max-width:760px){
+ .cxo-dcols{display:none}
+ :root:root .cxo-dec{grid-template-columns:auto auto minmax(0,1fr);row-gap:6px}
+ .cxo-dt{grid-column:1/-1}.cxo-dr{grid-column:1}.cxo-dw{grid-column:2}.cxo-da{grid-column:1/-1;justify-content:flex-start;flex-wrap:wrap}}
+
+/* three to watch: metric panels */
+.cxo-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-3,12px)}
+:root:root .cxo-wp{position:relative;display:grid;gap:4px;align-content:start;padding:12px 16px;min-width:0}
+.cxo-ds{position:absolute;top:12px;right:16px}
+.cxo-tl{font-size:12.5px;color:var(--muted);padding-right:84px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em;line-height:1.3}
+.cxo-vr{display:flex;align-items:baseline;gap:var(--sp-2,8px);flex-wrap:wrap}
+.cxo-tv{font-family:var(--serif,Georgia,serif);font-size:clamp(30px,2.6vw,38px);line-height:1.05;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cxo-trd{font-size:12.5px;color:var(--muted)}
+.cxo-tt{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cxo-tt .pill{font-size:11.5px;padding:2px 8px;min-height:0;margin:0;white-space:nowrap}
+.cxo-wb{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2,8px);min-height:34px}
+.cxo-wp .r21-sp{color:var(--accent);height:30px;max-width:100%;flex:0 1 130px}
+.cxo-wp.st-warn .r21-sp{color:var(--warn-f,var(--accent))}.cxo-wp.st-bad .r21-sp{color:var(--bad-f,var(--accent))}.cxo-wp.st-good .r21-sp{color:var(--good-f,var(--accent))}
+.cxo-tr2{margin-left:auto}
+
+/* Show details */
 .cxo-details>summary{display:flex;align-items:baseline;gap:var(--sp-3,12px);flex-wrap:wrap;cursor:pointer;list-style:none;padding:4px 2px}
 .cxo-details>summary::-webkit-details-marker{display:none}
 .cxo-details>summary::before{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .18s;align-self:center;flex:none}
@@ -45,18 +52,3 @@
 .cxo-details>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media(max-width:900px){.cxo-g{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.cxo-details>summary::before{transition:none}}
-.cxo-watch{position:relative}.cxo-watch .cxo-dh{padding-right:84px}.cxo-tr2{margin-left:auto}
-.cxo-dm .avx{display:none}.cxo-dm{gap:4px 8px}
-:root:root .cxo-home .btn{min-height:30px;padding:3px 12px;font-size:13px}
-.cxo-dm{font-size:12px}.cxo-dm .r18-pn{padding:0;background:none;border:0;min-height:0}
-.cxo-dm .pill,.cxo-wf .pill{font-size:11.5px;padding:2px 8px;min-height:0}
-.cxo-bh{min-height:24px}
-.cxo-vr{display:flex;align-items:baseline;gap:var(--sp-2,8px);flex-wrap:wrap}
-.cxo-who{display:flex;align-items:baseline;gap:var(--sp-3,12px);flex-wrap:wrap}
-:root:root .cxo-who p{margin:0}
-:root:root .cxo-home p{margin:0}
-.cxo-tile{container-type:inline-size}
-@container (max-width:300px){.cxo-own{flex-wrap:wrap}}
-/* the first view must fit 1440x900 on a machine without the design fonts (Linux falls back to wider fonts): state pills stay short and rows do not wrap */
-.cxo-wf b{white-space:nowrap}
-.cxo-dm{gap:4px 6px}.cxo-dm .pill{padding:2px 6px;white-space:nowrap}
