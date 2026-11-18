@@ -7,7 +7,8 @@
 .trk-chip .trk-n{display:inline-grid;place-items:center;min-width:18px;height:18px;border-radius:var(--rad-round);background:var(--glass2);font-size:11px}
 .trk-chip.trk-done .trk-n{background:var(--good);color:var(--white)}
 .trk-chip.trk-skip{color:var(--muted)}
-.trk-chip.trk-now{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.trk-chip.trk-now{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.trk-chip.trk-now .trk-n{background:var(--accent-ink);color:var(--accent)}
 .trk-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .trk-tile{grid-area:tile;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .trk-tl{font:600 12px var(--f-body);color:var(--muted)}
