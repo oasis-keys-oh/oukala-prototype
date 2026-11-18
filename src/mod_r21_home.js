@@ -300,5 +300,5 @@ D.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.cla
 D.addEventListener("change",e=>{const t=e.target;if(t&&t.matches&&t.matches("[data-r21-s]")){UI.s=t.value;redo()}if(t&&t.matches&&t.matches('#r21CusPop input[name="care"]'))cusCount()});
 D.addEventListener("submit",e=>{const f=e.target;if(f&&f.matches&&f.matches("[data-r21-form]")){e.preventDefault();saveCus(f)}});
 function redo(){const host=D.getElementById("r21WorkHost");if(!host)return;const k=S.persona,p=P[k];if(!p||!p.work&&p.kind!=="line"&&p.kind!=="lead"){return}const tmp=D.createElement("div");tmp.innerHTML=workHTML(k,p);const n=tmp.firstElementChild;host.replaceWith(n)}
-W.R21H={profiles:P,panels:PL,build,decisions,pool,art,openMet,openCus,effTop,tile};
+W.R21H={profiles:P,panels:PL,build,decisions,pool,art,openMet,openCus,effTop,care:effCare,spark,tile};
 })();

@@ -50,7 +50,7 @@ if(B||/track=/.test(left.url)||left.cur||left.persona!=='coo')fail('leave '+JSON
 await p.evaluate(()=>go('home'));await settle(800);await p.click('#view [data-trk-open="strat"]');await settle(1600);B=await bar();
 if(!B||B.cur.id!=='strat'||B.persona!=='ceo'||!/STSH/.test(B.tile))fail('strat tile '+JSON.stringify(B));else ok('strat tile opens its track as '+B.persona);
 await p.evaluate(()=>EXP.stop({stay:true}));await settle(600);await p.evaluate(()=>go('home'));await settle(800);
-await p.click('#view .cxo-tile[data-cxo-metric="m_mwls"] .cxo-main');await settle(800); /* PR-106: the old hero tile sits behind Show details; the visible MWLS tile opens the metric trace and still starts no track */const mw=await p.evaluate(()=>({cur:TRACKS.current(),bar:!!document.getElementById('trkBar')}));
+await p.click('#view [data-trk-open="mw"]');await settle(800);const mw=await p.evaluate(()=>({cur:TRACKS.current(),bar:!!document.getElementById('trkBar')}));
 if(mw.cur||mw.bar)fail('mw tile started something '+JSON.stringify(mw));else ok('mw tile: no track yet, nothing started');
 // deep link resumes a stage
 const d=await ctx.newPage();watch(d);await d.goto(URL0+'?track=strat&stage=5',{waitUntil:'domcontentloaded',timeout:120000});
