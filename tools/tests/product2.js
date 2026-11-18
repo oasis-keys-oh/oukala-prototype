@@ -128,7 +128,7 @@ const fxState=pg=>pg.evaluate(()=>({mode:EFFECTS.mode(),reduced:EFFECTS.reduced(
  ok(s.cls&&s.reasons.some(r=>/reduced motion/.test(r))&&n===0,'CL-30 reduced motion turns glass off: '+JSON.stringify(s)+' glass '+n);await o.c.close()}
 {// reduced transparency from the system (Chromium media emulation), and a low-end device hint
  const o=await open();const cdp=await o.c.newCDPSession(o.p);await o.p.evaluate(()=>EFFECTS.set('auto'));
- await cdp.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-transparency',value:'reduce'}]});await o.p.waitForTimeout(300);
+ await cdp.send('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-transparency',value:'reduce'}]});/* the matchMedia change event is delivered on the next rendering update; wait for the class instead of a fixed 300 ms (slow CI runners deliver it late). The check below still requires the class. */await o.p.waitForFunction(()=>document.documentElement.classList.contains('fx-reduced'),null,{timeout:5000}).catch(()=>{});await o.p.waitForTimeout(50);
  const s=await fxState(o.p);ok(s.cls&&s.reasons.some(r=>/reduced transparency/.test(r))&&await glassN(o.p)===0,'CL-30 reduced transparency turns glass off: '+JSON.stringify(s));await o.c.close();
  const c2=await b.newContext({viewport:{width:1440,height:900}});await c2.addInitScript(()=>{Object.defineProperty(navigator,'hardwareConcurrency',{get:()=>2})});const p2=await c2.newPage();await p2.route(/^https?:/,r=>r.abort());
  await p2.goto('file://'+dir+'/full.html',{waitUntil:'domcontentloaded',timeout:120000});await p2.waitForFunction(()=>window.EFFECTS,null,{timeout:120000});
