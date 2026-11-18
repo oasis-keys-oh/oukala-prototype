@@ -92,6 +92,22 @@ G(()=>{const q=new URLSearchParams(location.search);if(!q.get("srreset"))return;
   SHOW.lastReset={at:new Date().toISOString(),reloaded:true,persona:p,tenant:G(()=>DATA.tenant(),"core")};
   if(!SHOW.state.demo)G(()=>toast("Demo reset: browser storage cleared, Atlantic Logistics sample, viewing as "+G(()=>PERSONAS[S.persona].n,""),"good"))},1400)});
 
+/* ---------- DC-51 front door (PR-110): one role card per executive track, one click to start it ----------
+   COO Cost Takeout and CEO Strategy Implementation start their track through TRACKS (data-trk-open). The CFO card is disabled:
+   its track is not built, so it starts nothing and says what it waits on. More demos (below the cards) holds the experiences and tours. */
+const FRONT=[
+ {t:"cost",role:"COO",title:"Cost Takeout",what:"Set a takeout target, find where the money goes, decide one cut and see the saving land.",m:"TKVT, takeout realized against target",lab:"modeled"},
+ {t:"mw",role:"CFO",title:"Material Weakness Traceability",what:"From a disclosed weakness to the process, control, owner and remediation that closes it.",m:"MWLS, weaknesses not yet concluded",lab:"simulated"},
+ {t:"strat",role:"CEO",title:"Strategy Implementation",what:"Follow strategy from objectives to funded work, find orphan spend and re-point it.",m:"STSH, spend traced to strategy",lab:"modeled"}];
+SHOW.front=()=>{const T=W.TRACKS;if(!T)return "";
+ return `<section class="srs-front" aria-label="Start a role thread"><div class="srs-fh"><h2 class="sr-bh">Start a role thread</h2><button type="button" class="btn quiet sm srs-more" data-srs-more aria-controls="srMore">More demos</button></div>
+ <div class="srs-cards">${FRONT.map(f=>{const tr=G(()=>T.get(f.t),null);const on=!!(tr&&tr.mission);const stages=on?G(()=>EXP.byId(tr.mission).checkpoints.length,6):0;
+  return `<article class="srs-rc${on?"":" srs-off"}" data-srs-role="${E(f.t)}"><span class="srs-eye">${E(f.role)}</span><h3>${E(f.title)}</h3><p class="small">${E(f.what)}</p>
+  <p class="muted small">${E(f.m)} ${G(()=>EXP.chip(f.lab),"")}</p>
+  ${on?`<p class="muted small">${stages} stages on screens that already exist. Simulated sample data.</p><div class="row"><button type="button" class="btn primary" data-trk-open="${E(f.t)}" aria-label="${E("Start the "+f.title+" thread as the "+f.role)}">Start the thread</button></div>`
+  :`<p class="muted small">Coming. Waits on the weakness map, the tie-out to the financials and the remediation lifecycle. The CFO Home number is simulated.</p><div class="row"><button type="button" class="btn" disabled aria-disabled="true" aria-label="${E(f.title+" thread is not built yet")}">Not built yet</button></div>`}</article>`}).join("")}</div></section>`};
+D.addEventListener("click",e=>{const t=e.target.closest&&e.target.closest("[data-srs-more]");if(!t)return;e.preventDefault();const m=D.getElementById("srMore");if(m)m.scrollIntoView({behavior:"smooth",block:"start"})});
+
 /* ---------- Showroom home: presenter settings ---------- */
 SHOW.home.push(()=>{const main=SHOW.demos.filter(d=>!d.group||d.group==="main"||d.group==="lens");const ws=wedgeSet();
  return `<div class="grid g2" style="align-items:start"><section class="sr-card glass srs" aria-label="Wedge mode"><div class="sr-ch"><h3>Wedge mode</h3><span class="sr-pill">${wedgeOn?"On":"Off"}</span></div>

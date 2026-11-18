@@ -305,7 +305,9 @@ function render_(){const main=DEMOS.filter(d=>!d.group||d.group==="main");
  const extra=ST.home.map(f=>G(()=>f(),"")).join("");
  /* DC-40: experiences come first (the buyer drives); guided tours stay as rehearsal and backup */
  const exp=ST.expHome?G(()=>ST.expHome(),""):"";
- return `<div class="screen sr-home">${hero("Showroom","Showroom",exp?"Experiences first: the buyer drives a short mission on the real screens and sees every decision ripple. "+story:story,"")}
+ const front=ST.front?G(()=>ST.front(),""):"";
+ return `<div class="screen sr-home">${hero("Showroom","Showroom",front?"Pick a role to start its thread in one click. "+story:exp?"Experiences first: the buyer drives a short mission on the real screens and sees every decision ripple. "+story:story,"")}
+ ${front}${front?`<h2 class="sr-bh" id="srMore">More demos</h2><p class="muted small">Experiences and guided tours. Use them to rehearse, for a different role, or when the buyer wants to drive a short mission.</p>`:""}
  ${exp}
  <section class="sr-backup" aria-label="Rehearse and backup"><h2 class="sr-bh">Rehearse and backup: guided tours</h2><p class="muted small">Use a tour to rehearse, or when the buyer would rather watch. Experiences are the default.</p>
  <div class="row"><label class="sr-chk"><input type="checkbox" id="srAud"> Start in audience mode (no talk track or timer)</label></div>

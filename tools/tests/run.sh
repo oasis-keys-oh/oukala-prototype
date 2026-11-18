@@ -21,6 +21,8 @@ node tools/tests/showroom.js build_out
 node tools/tests/exp.js build_out
 # DC-51: executive tracks (track bar, stages in order, COO home tiles TKVT, STSH, MWLS, deep link, metric definitions)
 node tools/tests/tracks.js build_out
+# PR-110 (DC-51 front door): Showroom role cards (one click starts the track, CFO card honest, More demos, first-view fit)
+node tools/tests/showroom_roles.js build_out
 # PR-106 phase 1, PR-103, PR-108: COO and CFO Home (three bands of three, labels, one target per metric, owners, Show details)
 node tools/tests/cxo_home.js build_out
 # PR-96: 10-K research run, phase A (simulated replay on the fictional filing reproduces the run key, variant B finds nothing, no invented weakness)
